@@ -43,6 +43,7 @@
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
         <exec command="svn export -r${svn_revision} https://code.zikula.org/svn/core/branches/zikula-1.3/src ${packagepath}" />
+        <exec command="svn export --force https://code.zikula.org/svn/tour/trunk/src/Tour ${packagepath}/modules/Tour" />
 
         <echo msg="Prepare permissions..." />
         <chmod file="${packagepath}/config/config.php" mode="0666" />
@@ -95,7 +96,7 @@
         
         <!-- this needs to be the regex escaped of the OLD branch -->
         <!-- ATTN url requires manual edit -->
-        <property name="patchregex" value="https://code.zikula.org/svn/core/tags/Zikula-1.2.0/" />
+        <property name="patchregex" value="https://code.zikula.org/svn/core/tags/Zikula-1.3.0/" />
         
         <!-- A or M, ignoring svn-property changes (2nd char), strip the svn-path from the remaining lines, store in ${tmpdir}/FILES -->
         <exec escape="false" command="cat ${tmpdir}/AM | sed -e 's!^[AM]. *${patchregex}!!g'  > ${tmpdir}/FILES" />
