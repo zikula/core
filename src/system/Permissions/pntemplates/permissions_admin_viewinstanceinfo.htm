@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" dir="{langdirection}">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
+    <title>{title}</title>
+    <meta name="description" content="{slogan}" />
+    <meta name="keywords" content="{keywords}" />
+    <link rel="stylesheet" type="text/css" href="javascript/style.css" media="print,projection,screen" />
+    <link rel="stylesheet" type="text/css" href="{$stylepath}/style.css" media="print,projection,screen" />
+    <link rel="stylesheet" type="text/css" href="{$stylepath}/print.css" media="print" />
+</head>
+<body>
+    <h1 style="margin: 1em 0;">{gt text="Permission rule information"}</h1>
+    <table class="z-datatable">
+        <thead>
+        <tr>
+            <th>{gt text="Registered component"}</th>
+            <th>{gt text="Instance template"}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach from=$schemas key=component item=instance name=schemas}
+        <tr class="{cycle values="z-odd,z-even"}">
+            <td>{$component|varprepfordisplay}</td>
+            <td>{$instance|varprepfordisplay}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{*  $Id$  *}
+{pagesetvar name=title value=$templatetitle}
+<h2 class="userheader">{gt text="Groups manager"}</h2>
+{insert name="getstatusmsg"}
+{if $mainpage eq false}
+<div class="z-menu">
+    <span class="z-menuitem-title">[ <a href="{modurl modname="Groups"}" title="{gt text="Go to groups index page"}">{gt text="Go to groups index page"}</a> ]</span>
+</div>
+{/if}

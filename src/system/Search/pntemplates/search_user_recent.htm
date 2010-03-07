@@ -1,0 +1,32 @@
+{*  $Id$  *}
+{include file=search_user_menu.htm}
+{pnmodurl modname='Search' func='recent' assign='recentsearchurl'}
+
+<div class="z-menu">
+    <span class="z-menuitem-title">
+        [ <a href="{pnmodurl modname=search func=main}">{gt text="New search" domain='zikula'}</a> |
+        {gt text='<a href="%s">Recent searches list</a>' tag1=$recentsearchurl|pnvarprepfordisplay domain='zikula'} ]
+    </span>
+</div>
+
+<h3>{gt text="Recent searches" domain='zikula'}</h3>
+<table class="z-datatable">
+    <thead>
+        <tr>
+            <th>{gt text="Search keywords" domain='zikula'}</th>
+            <th>{gt text="Number of searches" domain='zikula'}</th>
+            <th>{gt text="Date of last search" domain='zikula'}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach from=$recentsearches item=recentsearch}
+        <tr class="{cycle values="z-odd,z-even"}">
+            <td><a href="{pnmodurl modname=Search func=search q=$recentsearch.search|urlencode}">{$recentsearch.search|replace:' ':', '|pnvarprepfordisplay}</a></td>
+            <td>{$recentsearch.count|pnvarprepfordisplay}</td>
+            <td>{$recentsearch.date|pndate_format}</td>
+        </tr>
+        {foreachelse}
+        <tr class="z-datatableempty"><td colspan="3">{gt text="No items found." domain='zikula'}</td></tr>
+        {/foreach}
+    </tbody>
+</table>

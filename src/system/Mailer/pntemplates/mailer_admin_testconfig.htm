@@ -1,0 +1,50 @@
+{*  $Id$  *}
+{include file="mailer_admin_menu.htm"}
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{img modname=core src=inbox.gif set=icons/large __alt="Test current settings"}</div>
+    <h2>{gt text="Test current settings"}</h2>
+    <form class="z-form" action="{modurl modname="Mailer" type="admin" func="sendmessage"}" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Mailer"}" />
+            <fieldset>
+                <legend>{gt text="Settings test"}</legend>
+                <div class="z-formrow">
+                    <label for="mailer_fromname">{gt text="Sender's name"}</label>
+                    <span id="mailer_fromname">{configgetvar name=sitename}</span>
+                </div>
+                <div class="z-formrow">
+                    <label for="mailer_fromname">{gt text="Sender's e-mail address"}</label>
+                    <span id="mailer_fromaddress">{configgetvar name=adminmail}</span>
+                </div>
+                <div class="z-formrow">
+                    <label for="mailer_toname">{gt text="Recipient's name"}</label>
+                    <input id="mailer_toname" name="toname" type="text" size="30" maxlength="50" />
+                </div>
+                <div class="z-formrow">
+                    <label for="mailer_toname">{gt text="Recipient's e-mail address"}</label>
+                    <input id="mailer_toaddress" name="toaddress" type="text" size="30" maxlength="50" />
+                </div>
+                <div class="z-formrow">
+                    <label for="mailer_subject">{gt text="Subject"}</label>
+                    <input id="mailer_subject" name="subject" type="text" size="30" maxlength="50" />
+                </div>
+                <div class="z-formrow">
+                    <label for="mailer_html">{gt text="HTML-formatted message"}</label>
+                    <input id="mailer_html" type="checkbox" name="html" value="1" />
+                </div>
+                <div class="z-formrow">
+                    <label for="mailer_pnmail">{gt text="Send message via Mailer API"}</label>
+                    <input id="mailer_pnmail" type="checkbox" name="pnmail" value="1" />
+                </div>
+                <div class="z-formrow">
+                    <label for="mailer_body">{gt text="Message"}</label>
+                    <textarea id="mailer_body" name="body" cols="50" rows="10"></textarea>
+                </div>
+            </fieldset>
+            <div class="z-formbuttons">
+                {button src=button_ok.gif set=icons/small __alt="Test settings now" __title="Test settings now"}
+                <a href="{modurl modname=Mailer type=admin}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+            </div>
+        </div>
+    </form>
+</div>

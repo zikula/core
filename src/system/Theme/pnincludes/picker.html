@@ -1,0 +1,45 @@
+<!--
+Title: Tigra Color Picker
+URL: http://www.softcomplex.com/products/tigra_color_picker/
+Version: 1.1
+Date: 06/26/2003 (mm/dd/yyyy)
+Feedback: feedback@softcomplex.com (specify product title in the subject)
+Note: Permission given to use this script in ANY kind of applications if
+   header lines are left unchanged.
+Note: Script consists of two files: picker.js and picker.html
+About us: Our company provides offshore IT consulting services.
+    Contact us at sales@softcomplex.com if you have any programming task you
+   want to be handled by professionals. Our typical hourly rate is $20.
+-->
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+	<title>Tigra Color Picker</title>
+	<style type="text/css">
+		body { margin: 5px; }
+		.bd { border : 1px inset InactiveBorder; }
+		.s  { width:181 }
+	</style>
+</head>
+<body onload="P.C(P.initPalette)">
+<form action="">
+<table cellpadding="0" cellspacing="2" border="0" width="184">
+<tr><td align="center">
+<select name="type" onchange="P.C(this.selectedIndex)" class="s">
+	<option>Web Safe Palette</option>
+	<option>Windows System Palette</option>
+	<option>Grey Scale Palette</option>
+</select>
+</td></tr>
+<tr><td align="center">
+<script type="text/javascript">
+	var P = opener.TCP;
+	onload = "P.show(P.initPalette)";
+	document.forms[0].elements[0].selectedIndex = P.initPalette;
+	P.draw(window, document);
+</script>
+</td></tr>
+</table>
+</form>
+</body>
+</html>

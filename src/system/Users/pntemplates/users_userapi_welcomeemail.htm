@@ -1,0 +1,16 @@
+{*  $Id$  *}
+
+<h2>{gt text='Welcome to %1$s (%2$s)!' tag1=$sitename tag2=$siteurl}</h2>
+
+<p>{gt text='Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.' tag1=$email tag2=$sitename}
+{gt text="The personal information registered is as follows:"}</p>
+
+<p>{gt text="User name"}: {$uname}</p>
+{if not $moderated}
+    <p>{gt text="Password"}: {$makepass}</p>
+{else}
+    <p>{gt text="Hello! Your account application has been approved. Thank you for your understanding about the account registration review process. Your password has been sent to you in a separate message."}</p>
+{/if}
+{if $moderation}
+    <p>{gt text="Hello! Thank you for your registration request.  All registrations are forwarded to the site administrator for review. Please be expecting a message once the review process is complete."} {gt text="Please store your password safely for future consultation."}</p>
+{/if}

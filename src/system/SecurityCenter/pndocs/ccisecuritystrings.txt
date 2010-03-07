@@ -1,0 +1,22 @@
+The following strings are for the cci security script. Until this functionality is introduced then the string
+have been removed from the standard language files
+
+define('_SECURITYCENTER_USEHTACCESSBANS', 'Use .htaccess to ban IP addresses');
+define('_SECURITYCENTER_EXTRAPOSTPROTECTION', 'Use extra \'post\' protection');
+define('_SECURITYCENTER_EXTRAGETPROTECTION', 'Use extra \'get\' protection');
+define('_SECURITYCENTER_CHECKMULTIPOST', 'Only allow \'maxmultiPOST\' number of successive posts');
+define('_SECURITYCENTER_MAXMULTIPOST', 'Maximum number of post operations in succession, if checkmultipost is enabled');
+define('_SECURITYCENTER_CPULOADMONITOR', 'Block access if system load exceeds certain value');
+define('_SECURITYCENTER_CPUMAXLOAD', 'Maximum 5-minute system load average before blocking access');
+define('_SECURITYCENTER_CCISESSIONPATH', 'Directory path for storing session files');
+define('_SECURITYCENTER_HTACCESSFILELOCATION', '.htaccess file location');
+define('_SECURITYCENTER_NOCOOKIEBANTHRESHOLD', 'Number of attempts before banning, when site accessed without cookies being enabled');
+define('_SECURITYCENTER_NOCOOKIEWARNINGTHRESHOLD', 'Number of attempts before warning, when site accessed without cookies being enabled');
+define('_SECURITYCENTER_FASTACCESSBANTHRESHOLD', 'Number of fast attempts before banning');
+define('_SECURITYCENTER_FASTACCESSWARNTHRESHOLD', 'Number of fast attempts before warning');
+define('_SECURITYCENTER_JAVABABBLE', 'Use encoding/encrypting (must be on for any)');
+define('_SECURITYCENTER_JAVAENCRYPT', 'Do actual encrypting of HTML, not just escaping (warning: may slow display)');
+define('_SECURITYCENTER_PRESERVEHEAD', 'Only encode/encrypt between BODY tags');
+define('_SECURITYCENTER_DENIALOFSERVICE', 'Denial of service');
+define('_SECURITYCENTER_ENCRYPTION', 'Encryption');
+define('_SECURITYCENTER_FILTERARRAYS', 'Filter arrays in HTTP variables');

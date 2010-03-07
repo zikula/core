@@ -1,0 +1,25 @@
+# Zikula Application Framework
+#
+# @copyright (c) Zikula Development Team
+# @link http://www.zikula.org
+# @version $Id$
+# @author David Pahl
+# @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+# @link http://code.google.com/apis/ajaxlibs/documentation/index.html
+#
+# ----------------------------------------------------------------------
+# Place this file in your Zikula javascript/ajax directory, alongside the prototype
+# and script.aculo.us javascript files. Before uncommenting these three lines make sure
+# that the version numbers are correct! 
+#
+# To use Google's AJAX Libraries API uncomment the RewriteRules (remove the leading #s)
+#
+# This format can be used to redirect to any location, adjust as needed.
+#
+# This is set to a permanate (301) file redirect.
+# ----------------------------------------------------------------------
+
+# RewriteEngine On
+
+# RewriteRule 	^prototype\.js$ http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js [R=301,NC,L]
+# RewriteRule 	^scriptaculous\.js$ http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js [R=301,NC,L]

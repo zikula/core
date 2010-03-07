@@ -1,0 +1,14 @@
+<h2>{gt text="Accept licence"}</h2>
+<p>{gt text="Zikula is Open Source software licensed under the GNU General Public License (GPL). Zikula is free software, but the GPL lays down requirements governing distribution and modification. Please read the terms and conditions below."}</p>
+<div class="licence">
+    {$licence|htmlentities|nl2br}
+</div>
+<form class="z-form" action="install.php?lang={$lang}" method="post">
+    <div>
+        <input type="hidden" name="action" value="requirements" />
+        <input type="hidden" name="locale" value="{$locale}" />
+        <div class="z-formbuttons">
+            <input type="submit" value="{gt text="Accept licence"}" />
+        </div>
+    </div>
+</form>

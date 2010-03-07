@@ -1,0 +1,61 @@
+/* multi-column list using technique 1 from http://builder.com.com/5100-6371_14-5810687.html */
+div.z-formrow ul.blocks-modulefilter-splitlist {
+    list-style-type:none;
+    margin:0 !important;
+    padding:0 0 0 30%!important;
+}
+div.z-formrow ul.blocks-modulefilter-splitlist li {
+    width:30%;
+    margin:0;
+    padding:0;
+    line-height:15px;
+    float:left;
+}
+
+/* styles for extmenu block */
+.imagebutton,
+.imagebutton-nofloat {
+    padding: 0;
+    margin: 0;
+    border:none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.imagebutton {
+    float: left;
+}
+
+#appendmenuitem {
+    background:transparent url(../../../images/icons/extrasmall/insert_table_row.gif) no-repeat scroll 0 50%;
+    display:block;
+    margin:1em 5px;
+    padding-left:19px;
+}
+
+button {
+    cursor: pointer;
+}
+
+button .deletebutton {
+    /* don't remove this */
+}
+
+#empty_li_repository {
+    display:none;
+}
+
+ul.errorlist {
+    padding: 0;
+    margin: 0;
+}
+
+ul.errorlist li {
+    padding: 0;
+    margin: 0;
+    list-style-image: url(../../../images/icons/extrasmall/error.gif);
+}
+
+.activationbutton {
+    display: none;
+}

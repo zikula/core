@@ -1,0 +1,10 @@
+{*  $Id$  *}
+<div class="warning-container">
+    {img modname=core set=icons/large src=error.gif}
+    <ul>
+        {if $zrcexists}
+        <li><strong>{gt text="Stop! The Zikula recovery console tool (file 'zrc.php') is present in the site webroot, but must be removed before you can access the site admin panel."}</strong></li>
+        {/if}
+    </ul>
+    <p><a href="{$adminpanellink|varprepfordisplay}">{gt text="Continue"}</a></p>
+</div>

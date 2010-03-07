@@ -1,0 +1,51 @@
+<?php
+/**
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv2 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
+/**
+ * Dateformat modifier
+ * Include the shared.make_timestamp.php plugin
+ *
+ * Example:
+ * <!--[$timestamp|pndate_format:'%a, %d %b %Y']-->
+ * Saturday, 12 Dec 2009
+ *
+ * <!--[$timestamp|pndate_format:'%a, %d %b %Y':$defaultimestamp]-->
+ * If $timestamp is empty the $defaultimestamp will be used
+ */
+require_once $smarty->_get_plugin_filepath('shared', 'make_timestamp');
+
+/**
+ * Smarty modifier to format datestamps via strftime according to
+ * locale setting in Zikula
+ *
+ * @param    string   $string         input date string
+ * @param    string   format          strftime format for output
+ * @param    string   default_date    default date if $string is empty
+ * @return   string   the modified output
+ * @uses     smarty_make_timestamp()
+ */
+function smarty_modifier_date_format($string, $format = 'datebrief', $default_date = null)
+{
+    if (empty($format)) {
+        $format = 'datebrief';
+    }
+
+    if (!empty($string)) {
+        return DateUtil::formatDatetime($string, $format);
+    } elseif (!empty($default_date)) {
+        return DateUtil::formatDatetime($default_date, $format);
+    }
+
+    return '';
+}

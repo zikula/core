@@ -1,0 +1,26 @@
+# File: $Id$
+# ----------------------------------------------------------------------
+# Purpose of file: block any web access to files stored under
+#                  the system/ directory
+# ----------------------------------------------------------------------
+SetEnvIf Request_URI "\.css$" object_is_css=css
+SetEnvIf Request_URI "\.js$" object_is_js=js
+SetEnvIf Request_URI "\.jpg$" object_is_jpg=jpg
+SetEnvIf Request_URI "\.gif$" object_is_gif=gif
+SetEnvIf Request_URI "\.png$" object_is_png=png
+SetEnvIf Request_URI "\.tif$" object_is_tif=tif
+SetEnvIf Request_URI "\.swf$" object_is_swf=swf
+SetEnvIf Request_URI "\.flv$" object_is_flv=flv
+SetEnvIf Request_URI "\.ico$" object_is_ico=ico
+SetEnvIf Request_URI "\.cur$" object_is_ico=cur
+Order deny,allow
+Deny from all
+Allow from env=object_is_css
+Allow from env=object_is_js
+Allow from env=object_is_jpg
+Allow from env=object_is_gif
+Allow from env=object_is_png
+Allow from env=object_is_tif
+Allow from env=object_is_swf
+Allow from env=object_is_flv
+Allow from env=object_is_ico

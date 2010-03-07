@@ -1,0 +1,41 @@
+img#theme_credits_preview {
+    padding: 5px;
+    margin: 10px;
+    border:1px solid #D9E0E6;
+}
+
+div#theme_undefinedblockpositions {
+    width: 85%;
+}
+div#theme_undefinedblockpositions p {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+div#theme_undefinedblockpositions ul {
+    display: inline;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+div#theme_undefinedblockpositions ul li {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+div#theme_undefinedblockpositions ul li:after {
+    content: ", ";
+}
+
+div#theme_undefinedblockpositions ul li.last:after {
+    content: ". ";
+}
+
+/* styles for the navigation filter on main page */
+div#mthemes-alphafilter {
+    font-size:xx-small;
+}
+
+img.theme_colorpicker_image {
+    margin-left: 5px;
+}

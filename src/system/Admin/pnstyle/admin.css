@@ -1,0 +1,300 @@
+/*
+Admin interface stylesheet
+
+This stylesheet implements a set of styles used throughout the admin interface of
+Zikula allowing the site administrator to configure via standard css techniques the
+presentation of the admin interface.
+
+Themers can create a theme specific version of this stylesheet by creating a copy of
+the file in themes/<themename>/style/Admin/admin.css. This version of stylesheet is
+kept as generic as possible to avoid many potential theme clashes. Re-styling this
+stylesheet requires a working knowledge of both CSS1 and CSS2.
+
+Legacy themes support the admin stylesheet by virtue of the header of these themes
+being templated in the Header_Footer module.
+
+*/
+
+/*******************************************************************************/
+/* Container for admin icons in main admin panel
+/*******************************************************************************/
+
+/* style for Immediate template under the tab menu */
+div.z-adminbox {
+    width: auto;
+    color: inherit;
+    border-top: 0px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 0px solid #ccc;
+    padding: 5px 1% 5px 1%;
+}
+div.z-adminbox .z-menu {
+    margin-bottom:0;
+}
+/* style for Immediate template under the admin menu */
+div.z-admincontainer {
+    width: auto;
+    color: inherit;
+    margin-bottom: 1.25em;
+    border-top: 0px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 0px 1% 5px 1%;
+
+}
+
+/* admin category description */
+div.z-admincategorydescription {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* style for Immediate template under the admin menu */
+div.z-adminbox h1 {
+    text-align: left;
+}
+div.z-admincontainer h2 {
+    text-align: left;
+    border-bottom: 1px solid #cccccc;
+    margin-top: 0px;
+    padding-top:0.5em;
+}
+
+/* styling for a page icon */
+div.z-adminpageicon {
+    padding: 0;
+}
+div.z-adminpageicon img {
+    float: right;
+    padding-top: 5px;
+}
+div.z-adminpageicon + h2 {
+    margin-bottom:20px !important;
+    padding-top:20px !important;
+}
+
+/* disabled admin function links */
+div.z-admincontainer a.z-disabledadminlink,
+div.z-adminbox a.z-disabledadminlink {
+    text-decoration:line-through;
+}
+
+/* styling for noscript category propertly selector label */
+div.property_selector_noscript {
+    display: inline;
+}
+
+/* style the button tag */
+div.z-admincontainer button {
+    border: 0px;
+    padding: 0px;
+    background-color: transparent;
+}
+
+/*******************************************************************************/
+/* style for admin tables
+/*******************************************************************************/
+
+table.z-admintable {
+    width: 100%;
+    color: inherit;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    margin-top: 0px;
+    margin-bottom: 1em;
+    padding: 5px 5px 10px 5px;
+}
+
+table.z-admintable tr.z-admintableempty {
+    background-color: #f3f3f3;
+    text-align: center;
+    font-weight: bold;
+}
+
+table.z-admintable caption {
+    background-color: #f3f3f3;
+    font-weight: bold;
+    border-bottom: 2px solid #CFCFCF;
+    text-transform: uppercase;
+    padding:10px;
+}
+
+table.z-admintable thead tr {
+    background-color: #CFCFCF;
+}
+
+/* stying for the cell elements in admin tables */
+table.z-admintable tbody td,
+table.z-admintable thead th {
+    padding: 5px;
+    border-width: 0px;
+}
+
+/* style to highlight a default row in a table */
+table.z-admintable tbody tr.z-defaulttablerow {
+    background-color: #add8e6;
+    color: inherit;
+}
+
+table.z-admintable ul {
+    margin: 0;
+}
+
+/*******************************************************************************/
+/* Styling for module icon list in the admin panel
+/*******************************************************************************/
+
+#z-adminiconlist {
+    margin:5px;
+}
+#z-adminiconlist dl.z-adminiconcontainer {
+    float:left;
+    margin:0 0 0.5em;
+    min-height:6.5em;
+    overflow:hidden;
+    padding:0.5em 0;
+}
+#z-adminiconlist .z-admincenter {
+    text-align:center;
+}
+#z-adminiconlist .z-adminfloat {
+    float:left;
+}
+#z-adminiconlist dl.z-adminiconcontainer dt,
+#z-adminiconlist dl.z-adminiconcontainer dd {
+    line-height:1.3em;
+    margin:2px;
+    padding:0;
+    overflow:hidden;
+}
+#z-adminiconlist dl.z-adminiconcontainer dt {
+    font-size:1.1em;
+    font-weight:bold;
+    overflow:hidden;
+    /*    white-space:nowrap;*/
+}
+#z-adminiconlist dl.z-adminiconcontainer dd.z-adminimg {
+    margin-right:5px;
+}
+#z-adminiconlist dl.z-adminiconcontainer dd.z-adminimg img {
+    background:#fff;
+    border-color:#D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
+    border-style:solid;
+    border-width:1px;
+    padding:4px;
+}
+#z-adminiconlist dl.z-adminiconcontainer dd.z-adminimg img:hover {
+    border:1px solid #aaa;
+}
+#z-adminiconlist dl.z-adminiconcontainer ul.infoModuleFunctions {
+    background-color:#fff;
+    border:1px solid #aaa;
+    display:block;
+    list-style:none;
+    margin:0;
+    padding:6px;
+    position:absolute;
+    z-index:100;
+}
+#z-adminiconlist dl.z-adminiconcontainer ul.infoModuleFunctions li {
+    font-size:0.9em;
+    line-height:1.1em;
+    margin:0;
+    padding:2px;
+}
+#z-adminiconlist .z-adminmodtitle {
+    /* text-transform:capitalize; */
+}
+
+/*******************************************************************************/
+/* Styling for status security analyzer, update checker and more
+/*******************************************************************************/
+
+div#z-securityanalyzer {
+    border: 1px solid red;
+    background: #ffffea url(../../../images/icons/large/error.gif) no-repeat 2% 50%;
+    margin: 0 auto;
+    font-weight: bold;
+    padding: 1.2em 1em 0.5em 8em;
+    width: 80%;
+    min-height: 2.5em;
+    margin-bottom: 1em;
+}
+
+/* styling for status update checker */
+div#z-updatechecker {
+    border: 1px solid green;
+    background: #ffffea url(../../../images/icons/large/agt_update_recommended.gif) no-repeat 2% 50%;
+    margin: 0 auto;
+    font-weight: bold;
+    padding: 2em 2em 1em 6em;
+    width: 90%;
+    min-height: 1em;
+    margin-bottom: 1em;
+}
+
+/* styles for the warning message shown if any of the install directory, install.php or psak.php are found */
+div.warning-container {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    background-color: #ffffea;
+    color: inherit;
+    text-align: center;
+    border: 1px solid red;
+    padding: 10px;
+}
+div.warning-container ul {
+    list-style-type: none;
+}
+div.warning-container ul li {
+    line-height: 2.5em;
+    padding: 0.5em 0;
+}
+div.warning-container ul li strong {
+    color: red;
+    background-color: inherit;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+div.warning-container h2 {
+    color: red;
+    background-color: inherit;
+    display: block;
+}
+div.warning-container img {
+    float: left;
+}
+
+/* Used to style the cancel delete button when asking for a confirmation */
+div.canceldelete-container {
+    margin: 0 auto;
+    color: inherit;
+    background-color: #ffffea;
+    width: 30%;
+    text-align: center;
+    border: 1px solid #cccccc;
+    padding: 10px 0px 10px 0px;
+}
+
+div.canceldelete-container h2 {
+    color: gray;
+    background-color: inherit;
+    display: inline;
+}
+div.canceldelete-container img {
+    float: left;
+}
+
+/* styles for the buttons on a view table */
+div.z-adminviewbuttons  {
+    text-align: right;
+    margin-bottom: 1.25em;
+}
+div.z-adminviewbuttons img {
+    margin: 5px;
+    float: right;
+}

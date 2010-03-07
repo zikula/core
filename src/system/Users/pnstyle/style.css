@@ -1,0 +1,85 @@
+/* $Id$ */
+
+#liveusersearch {
+    margin: 1em 0 1em 0;
+}
+
+#liveusersearch .autocomplete_user {
+    position: absolute;
+    width: 25em;
+    background-color: white;
+    border: 1px solid #888;
+    margin: 0;
+    padding: 0;
+}
+#liveusersearch .autocomplete_user ul {
+    list-style:none;
+    margin: 0;
+    padding: 0;
+}
+#liveusersearch .autocomplete_user ul li.selected {
+    background-color: #ffb;
+}
+
+#liveusersearch .autocomplete_user ul li {
+    background:transparent url(../../../images/icons/extrasmall/edit_user.gif) no-repeat scroll 0 50%;
+    cursor:pointer;
+    margin:0;
+    padding:3px 0 3px 25px;
+}
+
+.newuserinfo {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: red;
+    font-weight: bold;
+}
+
+.newuserinfook {
+    color: green;
+}
+
+.errorrequired {
+    border: 2px red solid;
+}
+
+.z-errormsg,
+#z-expirewarning {
+    border: 1px solid red;
+    background: #ffffea url(../../../images/icons/large/error.gif) no-repeat 2em;
+    color: inherit;
+}
+#z-expirewarning {
+    margin: 0 auto;
+    font-weight: bold;
+    padding: 2em 1em 1em 8em;
+    width: 80%;
+    min-height: 40px;
+    margin-bottom: 1em;
+}
+
+div.z-accountlink {
+    text-align: center;
+    float: left;
+    height:9em;
+}
+
+/* password strength meter */
+input.pwsinput {
+	float: left !important;
+}
+
+div#pwscontainer {
+    height: 18px;
+    width: 100px;
+    border: 1px solid #000;
+    float: left; 
+    margin-left: 5px;
+    background-color: #dddddd;
+}
+
+div#pwsmeter {
+    background-image: url('../pnimages/pwstrength.jpg');
+    height: 18px;
+    width: 0px;
+}

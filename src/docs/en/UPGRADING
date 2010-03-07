@@ -1,0 +1,96 @@
+ZIKULA UPGRADE INSTRUCTIONS
+
+More detailed documentation is available in the Documentation Wiki at
+http://community.zikula.org. Support and help with upgrading to this version can
+be obtained from the forums.
+
+========
+CONTENTS
+========
+1. Server Considerations
+2. Upgrading
+3. Caution
+4. Final Note
+
+
+1. Server Consideration
+=======================
+Zikula can be upgraded to this version from any of the following versions: 1.1.x
+or greater. If your installation is less than that, please upgrade to one of these
+versions before proceeding with these instructions.
+
+Before you begin your upgrade, there are some requirements and guidelines you
+should consider to make upgrading, installing, running, and securing Zikula easier.
+Please read the Zikula software condsiderations document.
+
+2. Upgrading
+============
+Please follow the steps below in order, and read each in detail before proceeding.
+Providing the instructions are followed exactly, the upgrade should proceed with
+no problems.
+
+  2.1 Backup your database and files
+  2.2 Prepare your existing installation
+  2.3 Run the upgrade
+  2.4 Clean up and additional configuration
+  2.1 Backup your database and files
+
+  It is vital to backup your database and file system before proceeding with the
+  upgrade. Upgrades cannot be rolled back, therefore the only solution is to
+  restore from backup if problems occur. To backup your database, try using a
+  tool such as mysqldumper, phpMyAdmin or alternately use SSH or your hosting
+  control panel. Full instructions and tutorials on database backups can be found
+  by searching the web and the documentation of your tool set.
+
+  --->>> You will need your original config/config.php later, so do NOT <<<---
+  --->>> overwrite it or delete it, and keep it in a safe place.        <<<---
+
+  2.2 Prepare your existing installation
+  ---------------------------------------------
+  i.   Login to your Zikula site with an administrator account. If you want, you can
+       disable your site during the upgrade by changing the configuration in
+       index.php?module=Settings&type=admin.
+
+  ii.  Move the module system/legal to modules/legal. If you have not customised the
+       legal module you can just delete it from the system/ folder.
+
+  iii. If you have the Profile in the system/ directory, move the system/Profile to
+       modules/Profile. If you have not customised the Profile module you can just
+       delete it from the system/ folder. If Profile is already in modules/ then ignore
+       this step.
+
+  iv. Upload all files from the package you downloaded, copying over your files.
+      Replace config/config.php with the backup you made in step 2.1.
+
+  2.3 Run the upgrade
+  -------------------
+  Run the upgrade script upgrade.php and follow the steps as described. There is
+  no real interaction needed other than clicking on 'next'. All database changes
+  that are necessary will be done automatically. At the end you will be redirected
+  to your admin panel.
+
+  2.4 Clean up and additional configuration
+  -----------------------------------------
+  After a successful upgrade you can remove the install folder and the files
+  install.php and upgrade.php from the root folder of your site.
+  If you use your own themes, please note that themes now require specific header
+  information which you must update to use the lang, langdirection and charset
+  plugin tags. Please refer to both andreas08's and voodoodolly's master.htm
+  templates which have variations for XHTML 1.0 STRICT and HTML 1.1.
+  If you disabled your site before starting the upgrade (see 2.2) you should
+  re-enable it now.
+
+3. Caution
+==========
+It should be noted that Zikula does not support any modification of the core code
+or data structure. Zikula has been designed to be flexible enough to avoid any
+need to modify the core, but if you find something missing that you believe could
+be of widespread use, please submit a feature request to the feature request tracker
+at http://code.zikula.org/core
+
+4. Final Note
+=============
+Congratulations! Your upgrade is complete. We hope you enjoy using this new
+Zikula version. If you have any comments, please use the feedback forum on
+http://community.zikula.org.
+

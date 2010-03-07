@@ -1,0 +1,3 @@
+v4bCategories Changelog
+
+v1.0 Initial version 10 Dec 2004 

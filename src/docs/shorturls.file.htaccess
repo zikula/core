@@ -1,0 +1,78 @@
+# Zikula Application Framework
+#
+# @copyright (c) 2001, Zikula Development Team
+# @link http://www.zikula.org
+# @version $Id$
+# @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+#
+# Based upon the .htaccess of MD-Pro, written by
+# LongiTEKK.com NETWORK Admin - chtekk@longitekk.com
+# MaxDev Devel - chtekk@maxdev.com
+#
+# ----------------------------------------------------------------------
+# Place this file in your Zikula root directory, alongside the main
+# index.php file
+# The "Options FollowSymLinks" line may be deleted, since on certain
+# hosts it causes a config error!
+# ----------------------------------------------------------------------
+
+# security options if they work in your environment.  If you get a 500 error then they wont.
+# These settings are best turned off in php.ini and will be on modern hosting environemnts.
+#php_flag register_globals off
+#php_flag magic_quotes_gpc off
+
+RewriteEngine On
+
+# ENG
+# This option is for use in Virtual Hosts or .htaccess files to inherit rewrite rules in the main section,
+# so if you have your own server you don't have to copy the rules into every Virtual Host you run.
+# Will cause an error if placed in the main httpd.conf section, as there's nothing to inherit.
+
+# RewriteOptions 'inherit'
+
+# Exclude certain directories
+RewriteRule ^modules/.*$ - [PT]
+RewriteRule ^themes/.*$ - [PT]
+RewriteRule ^javascript/.*$ - [PT]
+
+# Basic entry point rules
+RewriteRule ^index\.p?html?$ index.php [L,NC,NS]
+RewriteRule ^user\.p?html?$ user.php [L,NC,NS]
+
+# Language changing
+RewriteRule ^changelang-([^-]+)\.p?html?$ index.php?newlang=$1 [L,NC,NS]
+
+# Theme changing
+RewriteRule ^changetheme-([^-]+)\.p?html?$ index.php?newtheme=$1 [L,NC,NS]
+RewriteRule ^previewtheme-([^-]+)\.p?html?$ index.php?theme=$1 [L,NC,NS]
+
+# LANG: General rules for modules with index.php?module=...
+RewriteRule ^module-([^-]+)-lang-(.*)\.p?html?$ index.php?module=$1&func=main&lang=$2 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-lang-(.*)\.p?html?$ index.php?module=$1&func=$2&lang=$3 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-lang-(.*)\.p?html?$ index.php?module=$1&func=$2&$3=$4&lang=$5 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-lang-(.*)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6&lang=$7 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-lang-(.*)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6&$7=$8&lang=$9 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-lang-(.*)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6&$7=$8&$9=$10&lang=$11 [L,NC,NS]
+
+# General rules for modules with index.php?module=...
+#RewriteRule ^module-([^-]+)\.p?html?$ index.php?module=$1&func=main [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2&$3=$4 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6 [L,NC,NS]
+RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6&$7=$8 [L,NC,NS]
+
+# General rules for modules with index.php?name=...
+RewriteRule ^([^-]+)\.p?html?$ index.php?name=$1 [L,NC,NS]
+RewriteRule ^([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3 [L,NC,NS]
+RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3&$4=$5 [L,NC,NS]
+RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3&$4=$5&$6=$7 [L,NC,NS]
+# RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3&$4=$5&$6=$7&$8=$9 [L,NC,NS]
+
+# General rules for modules with index.php?name=...&file=...
+RewriteRule ^([^-]+)\+([^-]+)\.p?html?$ index.php?name=$1&req=$2 [L,NC,NS]
+RewriteRule ^([^-]+)\.p?html?$ index.php?name=$1 [L,NC,NS]
+RewriteRule ^([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2 [L,NC,NS]
+RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2&$3=$4 [L,NC,NS]
+RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2&$3=$4&$5=$6 [L,NC,NS]
+RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2&$3=$4&$5=$6&$7=$8 [L,NC,NS]
+

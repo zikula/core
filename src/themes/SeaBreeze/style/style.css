@@ -1,0 +1,823 @@
+/* $Id$ */
+
+body {
+    font: 12px/140% Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    color: #333333;
+    background: #FFFFFF;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* *** Page Layout *** */
+
+#pagewidth {
+    width: 100%;
+    text-align: left;
+    margin: 0 auto;
+    background-image: url(../images/fc_left.png);
+    background-position: 20% 0;
+    background-repeat: repeat-y;
+}
+
+#wrapper {
+    background-image: url(../images/fc_right.png);
+    background-position: 80% 0;
+    background-repeat: repeat-y;
+    padding-bottom:2em;
+}
+
+#leftcol {
+    float:left;
+    overflow:hidden;
+    position:relative;
+    width:20%;
+}
+
+#rightcol {
+    float:right;
+    position:relative;
+    width:20%;
+}
+
+#maincol {
+    display:inline;
+    float:left;
+    margin-bottom:20px;
+    margin-left:1%;
+    position:relative;
+    width:58%;
+}
+
+.onecol #pagewidth,
+.onecol #wrapper,
+.noleftcol #pagewidth,
+.norightcol #wrapper {
+    background-image:none;
+}
+
+.noleftcol #maincol,
+.norightcol #maincol {
+    width:78%;
+}
+
+.onecol #maincol {
+    float:none;
+    width:auto;
+}
+
+#footer {
+    background: #ffffff url(../images/bottombg.png) repeat-x top;
+    color:#000000;
+    padding: 5px;
+    margin:0 auto;
+    position:relative;
+    text-align: center;
+}
+
+/*printer styles*/
+@media print{
+    /*hide the left column when printing*/
+    #leftcol{display:none;}
+
+    /*hide the right column when printing*/
+    #rightcol{display:none;}
+    #twocols, #maincol{width:100%; float:none;}
+}
+
+
+/*STYLING THE FORMS AND INPUT */
+
+
+.button {
+    font: 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+    background-color: #D7E5F2;
+    color: #102132;
+    margin-left: 12px;
+    margin-top: 3px;
+    margin-bottom: 2px;
+}
+
+select,
+select.z-normal,
+select.z-text {
+    background-color: #f3f3f3;
+    color: #999999;
+}
+
+select:focus,
+select.z-normal:focus
+{
+    background: #f3f3f3;
+    border-color: #53B021;
+}
+
+textarea,
+textarea.z-normal {
+    background: #ffffff url(../images/input.png) repeat-x top;
+    color: #000000;
+    border: 0;
+    padding: 3px;
+    margin-top: 5px;
+    max-width: 700px;
+}
+
+input
+{
+    background: #FFFFFF url(../images/input.png) repeat-x top;
+    color: #000000;
+    border: 0;
+    padding: 3px;
+    max-width: 700px;
+    border: 1px solid #999999;
+}
+
+input,
+input.z-normal,
+input.z-text,
+input.z-button,
+textarea,
+textarea.z-normal,
+textarea.z-text {
+    margin: 5px 0;
+    padding: 1px 6px;
+}
+
+textarea.z-normal {
+    width: 100%;
+    margin: 5px 0;
+}
+
+* html textarea.z-normal { padding: 1px 0px;} /* IE fix */
+
+
+input.z-button {
+    border-collapse: collapse;
+}
+
+input.r-button {
+    font-size: 10pt;
+    color: #000000;
+    background: none;
+}
+
+
+
+input:hover,
+input.z-normal:hover,
+select:hover,
+select.z-normal:hover,
+textarea:hover {
+    border-color: #cccccc;
+}
+
+input:focus,
+input.z-normal:focus,
+textarea:focus {
+    background: #ffffff url(../images/input.png) repeat-x top;
+    border-color: #8DC741;
+}
+
+
+.pnRightBlock input:focus {
+    background-color: #FFF;
+}
+
+
+
+/* Temporary fix for old modules in standards browsers */
+table[border="1"],
+table[border="2"],
+table[border="3"] {
+    border: 0px;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+table[border="1"] td,
+table[border="1"] th,
+table[border="2"] td,
+table[border="2"] th,
+table[border="3"] td,
+table[border="3"] th {
+    text-align: left;
+    border: 2px solid #4C5EA8;
+    margin: 0px;
+    padding: 3px 0.5em;
+}
+
+table[border="1"] th,
+table[border="2"] th,
+table[border="3"] th {
+    font-size: 11px;
+    background-color: #EBF2FD;
+    text-align: center;
+}
+
+/*  IE hacks, "* html" style only read by IE, as it selects nothing */
+/*
+IE6 only uses the standard W3C Boxmodel in CSS1Compat mode, which requires a full Doctype declaration with Label and URL to the Dtd.
+It defaults to BackCompat mode, which works like previous versions of IE.
+*/
+* html #LeftCol {
+    width: 155px; /* IE 5.x uses non-standard Box Model */
+    wid\th: 140px;  /* IE 6 can uses W3C Standard box model (in CSS1Compat mode), IE 5.x chokes on escape character */
+}
+
+#CenterCol {
+    padding: 15px 15px 15px 0px;
+    vertical-align: top;
+    text-align: left;
+}
+
+#box_content {
+    display:block;
+    background:#fff;
+    border:0 solid #fff;
+    padding:0 10px;
+}
+
+#header {
+    width: 100%;
+    height: 100px;
+    clear: both;
+    background-color: #ffffff;
+    background-image: url("../images/content_bkg.gif");
+}
+
+#header .logotop {
+    padding-top:7px;
+    padding-left:20px;
+}
+
+
+#topmenu {
+    margin: 0px;
+    padding: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: center;
+    vertical-align: middle;
+    clear: both;
+
+}
+#topmenu a {
+    text-decoration: none;
+}
+#bottomMenu {
+    font-size: 10px;
+    text-align: center;
+    background-color: #DFE5FF;
+    margin: 0px;
+    padding: 3px 0;
+    clear: both;
+}
+
+
+
+/* STANDARD */
+.z-formbuttons {
+    color:#336699;
+}
+
+.z-formbuttons a:hover{
+    color:#336699;
+}
+.z-formbuttons a:active{
+    color:#999999;
+}
+
+
+
+/* navigation top */
+
+/*Tab Start */
+#navi {
+    height:25px;
+    left:20px;
+    line-height:normal;
+    position:absolute;
+    text-align:center;
+    top:100px;
+}
+#nav {
+    clear:both;
+    float:left;
+    height:30px;
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+    margin:0;
+    overflow:hidden;
+    padding:0;
+}
+#nav li {
+    float: left;
+    background: url(../images/navtabr.png) top right repeat-x;
+    margin: 0;
+    line-height:30px;
+    margin-left:2px;
+}
+#nav .page_item a {
+    color:#FFFFFF;
+    display:block;
+    font-size:12px;
+    font-weight:bold;
+    line-height:normal;
+    padding:8px;
+}
+
+#nav .page_item a:hover {
+    background-position: 0 -14px;
+    border: none;
+    color: #F8981D;
+}
+* html #nav .page_item a:hover {
+    background-position: 0 0;
+    border: none;
+    color: #F8981D;
+}
+#nav li.current_page_item {
+    color: #fff;
+    text-decoration: none;
+    background: url(../images/navtabr.png) no-repeat right;
+    background-position: 100% -34px;
+}
+#nav .current_page_item a, #nav .current_page_item a:visited {
+    color: #fff;
+    text-decoration: none;
+    background: url(../images/navtabl.png) no-repeat;
+    background-position: 0 -34px;
+}
+
+/* footer area */
+
+
+#footer a,
+#footer a:visited {
+    color:#000000;
+    font:11px Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    text-decoration:none;
+    clear: both;
+}
+
+#footer a:hover { color:#333; }
+/* alignments */
+.center {
+    text-align: center;
+}
+
+
+/* Main menu in PN 0.76+ */
+#pnMainMenu {
+    padding-left: 1em;
+    margin-left: 0em;
+}
+/* Stories block menu */
+.storiesmenu {
+    padding-left: 1em;
+    margin-left: 0em;
+}
+
+
+/* Center blocks and admin messages */
+div#CenterBlocks {
+    font-family:Verdana,Tahoma,Arial,Helvetica,sans-serif;
+    font-size:11px;
+    font-size-adjust:none;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+}
+#CenterBlocks .z-title {
+    font: bold 14px Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    color: #CC6600; /*#4C5EA8; #006699 #003366;*/
+}
+#CenterBlocks td,
+#CenterBlocks div {
+    margin-bottom: 15px;
+}
+
+.z-normal,
+td.z-normal {
+    font: 8pt Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    line-height: 1.3em;
+    text-align: left;
+    color: #666666;
+    background: none;
+    text-decoration: none;
+}
+a img, img {border: 0px; }
+
+/* Anchor styles */
+a:link, a:visited {
+    color: #4C5EA8;
+    text-decoration: none;
+}
+a:hover,
+a:active {
+    color: #8CC63F;
+}
+a.z-normal:link,
+a.z-normal:visited {
+    color: #4C5EA8;
+    text-decoration: underline;
+    background: none;
+}
+a.z-normal:hover {
+    color: #CC6600;
+    text-decoration: underline;
+    background: none;
+}
+a.z-normal:active {
+    color: #FF9900;
+    text-decoration: underline;
+    background: none;
+}
+
+/* ----------  side bar rollovers ------- */
+
+#sidebar {
+    color: #999999;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#sidebar ul li {
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    border: 0;
+    text-align: left;
+    padding-left:0;
+    margin-left: 0;
+    text-decoration: none;
+}
+
+#sidebar ul ul ul.children {
+    padding-left: 4px;
+}
+
+#sidebar ul {
+    margin-left: 0;
+    padding-left: 0;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+}
+
+#sidebar ul  a {
+    color: #000000;
+    background-image: url("../images/icon.gif");
+    padding: 3px;
+    padding-left: 17px;
+    background-repeat: no-repeat;
+    background-position: 0 55%;
+    text-decoration: none;
+}
+
+#sidebar ul.navlist a {
+    display: block;
+}
+
+#sidebar ul a:link,
+#sidebar ul a:visited {
+    text-decoration: none;
+}
+
+#sidebar ul a:hover {
+    background-image: url("../images/icon2.gif");
+    color: #C45915;
+    text-decoration: none;
+}
+
+/* Titles */
+.z-title {
+    font: bold 14px/150% Verdana, Helvetica, Arial, sans-serif;
+    color: #CC6600;
+    text-align: center;
+    text-decoration: none;
+    background: none;
+    margin-top: 0.5em;
+    margin-bottom: 6px;
+}
+
+h1,
+h1.z-pagetitle {
+    font: bold 22px/160% Verdana, Helvetica, Arial, sans-serif;
+    color: #F8981D;
+    text-decoration: none;
+    letter-spacing: 1pt;
+    background: none;
+    margin-top: 0.3em;
+    margin-bottom: 20px;
+}
+
+h1.title {
+    font: bold 30px/190% Verdana, Helvetica, Arial, sans-serif;
+    color: #990000;
+    text-decoration: none;
+    letter-spacing: 1pt;
+    margin-left: 18px;
+}
+
+h2,
+h2.z-title {
+    font: bold 18px Verdana, Helvetica, Arial, sans-serif;
+    color: #656567;
+}
+
+h3,
+h3.z-title {
+    font: bold 14px Verdana, Helvetica, Arial, sans-serif;
+    color: #999999;
+    text-decoration: none;
+    background: none;
+    margin-top: 3px;
+    margin-bottom: 6px;
+    padding: 6px 0;
+    line-height: 130%;
+}
+
+h4,
+h4.z-title{
+    font-size: 14px;
+    line-height: 130%;
+    font-weight: bold;
+    color: #8DC741;
+    margin-top: 1em;
+    margin-bottom: 3px;
+    text-decoration: none;
+}
+
+td.z-title {
+    font: bold 14px/150% Verdana,Helvetica,sans-serif;
+    color: #4C5EA8;
+    text-decoration: none;
+    background: none;
+}
+
+a.z-title {
+    font-weight: bold;
+    color: #8DC741;
+    text-decoration: underline;
+    background: none;
+}
+
+span.z-title,
+a.z-title:link,
+a.z-title:visited {
+    color: #4C5EA8;
+    text-decoration: underline;
+}
+a.z-title:hover {
+    color: #CC6600;
+    text-decoration: underline;
+}
+a.z-title:active {
+    color: #FF9900;
+    text-decoration: underline;
+}
+
+/* used in /templates/modules/News/newsuserdisplay.htm */
+.z-art {
+    font: 10pt/1.5em Verdana, Helvetica, Arial, sans-serif;
+    color: #191919;
+    background: none;
+    text-decoration: none;
+}
+
+/* "More" and "Posted by" text */
+.pnsub {
+    font: 10px Verdana, Helvetica, Arial, sans-serif;
+    color: #999999;
+}
+a.pnsub:link {
+    color: #666666;
+    text-decoration: underline;
+    background: none;
+}
+a.pnsub:visited {
+color: #4C5EA8; }
+a.pnsub:hover {
+color: #CC6600; }
+a.pnsub:active {
+color: #FF9900; }
+
+div.pnsub a.z-normal {
+    font: 8pt Verdana, Helvetica, Arial, sans-serif;
+    color: #666666;
+}
+div.pnsub a.z-normal:visited {
+    color: #4C5EA8;
+}
+div.pnsub a.z-normal:hover {
+    color: #CC6600;
+}
+div.pnsub a.z-normal:active {
+    color: #FF9900;
+}
+
+/* News articles */
+.ArticleBlock {
+    margin-bottom: 0.8em;
+}
+.ArticleHead {
+    margin-bottom: 6px;
+}
+.Article {
+    background: white;
+    line-height: 1.3em;
+}
+.storytitle, z-storytitle {
+    font-size: 12px;
+    line-height: 130%;
+    font-weight: bold;
+    color: #4C5EA8;
+    margin-top: 1em;
+    margin-bottom: 3px;
+    text-decoration: none;
+}
+h4.storytitle img { /* align Article image */
+    margin-bottom: -5px;
+}
+
+div.pnsub img { /* Print this and Email this images */
+    margin-bottom: -3px;
+}
+.note { margin-bottom: 1.2em; }
+
+/* News title links */
+h4.storytitle {
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+h4.storytitle a:link,
+h4.storytitle a:visited {
+    color: #4C5EA8;
+}
+h4.storytitle a:hover,
+h4.storytitle a:active  {
+    color: #CC6600;
+}
+
+/* Block titles */
+h4.blocktitle,
+h4.BlockTitleRight,
+#CenterBlocks h4.z-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #CC6600;
+    margin-bottom: 3px;
+}
+
+/* Block styles */
+.pnLeftBlock {
+    width: 100%; /* 150-6px */
+    padding: 3px;
+}
+
+.pnRightBlock {
+    width: 95%; /* 150-6px */
+    padding: 10px 0px 5px 10px; /*top right bottom left */
+    margin-bottom: 5px;
+    margin-right: 0px;
+}
+
+.pnRightBlock ul li {
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    text-align: left;
+    padding-left: 0;
+    margin-left: 0;
+    text-decoration: none;
+}
+
+.pnRightBlock ul ul ul.children {
+    padding-left: 4px;
+}
+
+.pnRightBlock ul {
+    margin-left: 0;
+    padding-left: 0;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.pnRightBlock a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.pnRightBlock a:link, .pnRightBlock a:visited {
+    text-decoration: none;
+}
+
+.pnRightBlock a:hover {
+    color: #C45915;
+    text-decoration: none;
+}
+
+/* menu styles */
+.z-menu {
+    text-align: left;
+}
+.z-menuitem-title {
+    text-align: left;
+}
+
+#z-maincontent .z-statusmsg {
+    background-color: #f3f3f3;
+    margin: 10px;
+    padding: 35px;
+}
+
+/* General*/
+.clear  { clear: both; }
+.nobreak   { white-space: nowrap; }
+.pnleft {
+    vertical-align: middle;
+    float: left;
+    text-align: left;
+}
+
+.pnright {
+    float: right;
+    /*    clear: right; */
+    text-align: right;
+}
+
+/* News topic image styles */
+.TopicImage,
+.TopicImageLeft {
+    float: left;
+    vertical-align: top;
+    margin-left: -2px;
+    margin-right: 6px;
+    margin-top: 3px;
+    margin-bottom: 4px;
+}
+.TopicImageRight {
+    float: right;
+    vertical-align: top;
+    margin-left: 6px;
+    margin-right: -2px;
+    margin-top: 3px;
+    margin-bottom: 4px;
+}
+.pntable1,
+.z-datatable,
+.container,
+.opentable,
+.opentable1 {
+    border: 1px solid #CCCCCC;
+    background: #F3F3F3;
+    padding: 8px;
+    margin: 0px;
+}
+
+.pntable2,
+.opentable2 {
+    background: #E6E6E6;
+    border: 2px solid #739FC4;
+    padding: 6px 12px;
+    margin: 6px;
+    margin-left: auto; margin-right: auto;
+}
+
+
+/* Other Stuff */
+
+.feeds-image {
+    float: left;
+    padding: 10px;
+}
+
+#z-maincontent p {
+    font-size:12px;
+    line-height:1.5em;
+}
+
+#z-maincontent {
+    padding-top: 10px;
+    list-style-type: none;
+    text-decoration: none;
+}
+
+#z-maincontent ul {
+    margin-left: 0;
+    padding-left: 0;
+    list-style-type: none;
+    text-decoration: none;
+}
+
+div#z-maincontent a#news_notes_collapse {
+    padding-bottom:0em;
+}
+
+.admin_messages_block {
+    margin-top:1em;
+}

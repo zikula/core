@@ -1,0 +1,4 @@
+Credits
+
+Bernd Plagge for enhancing the module to support multiple to addresses, different reply to addresses 
+and overridable content types and encoding via patch [#4191] Mailer-1.0 drop-in replacement

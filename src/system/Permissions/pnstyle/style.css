@@ -1,0 +1,51 @@
+/* style.css */
+.z-permissioninfo {
+    text-align: center;
+    font-weight: bold;
+    color: red;
+}
+#permissions-header {
+    margin:1em 0;
+    width:100%;
+}
+#appendajax {
+    float: left;
+    padding: 2px 0 2px 19px;
+    background: url(../../../images/icons/extrasmall/insert_table_row.gif) no-repeat 0 50%;
+}
+#permgroupfilterform {
+    float: right;
+}
+#permgroupfilterform button {
+    background: #eee;
+    border: 2px outset #eee;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 1px;
+}
+#permgroupfilter {
+    float: right;
+}
+#permgrp {
+    float: left;
+}
+ol#permissionlist .adminpermission {
+    background-image:url(../../../images/icons/extrasmall/locked.gif);
+    background-position:5px 50%;
+    background-repeat:no-repeat;
+    border:1px solid red;
+    padding-left: 30px !important;
+}
+select#permissions_rowview,
+select#permissions_roweditheight {
+    width: 50px;
+}
+#permissiontestinfo {
+    font-weight: bold;
+}
+#permissiontestinfored {
+    color: red;
+}
+#permissiontestinfogreen {
+    color: green;
+}

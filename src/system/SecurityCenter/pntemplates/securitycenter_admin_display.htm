@@ -1,0 +1,21 @@
+{*  $Id$  *}
+{include file="securitycenter_admin_menu.htm"}
+<div class="z-admincontainer">
+    <h2>{$title|varprepfordisplay}</h2>
+    <table class="z-admintable">
+        <thead>
+            <tr>
+                <th>{gt text="Variable"}</th>
+                <th>{gt text="Variable value"}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {section name=arrayvariables loop=$arrayvariables}
+            <tr class="{cycle values="z-odd,z-even"}">
+                <td>{$arrayvariables[arrayvariables].key|varprepfordisplay}</td>
+                <td>{$arrayvariables[arrayvariables].value|varprepfordisplay}</td>
+            </tr>
+            {/section}
+        </tbody>
+    </table>
+</div>

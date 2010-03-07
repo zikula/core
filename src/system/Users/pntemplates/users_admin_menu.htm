@@ -1,0 +1,12 @@
+{*  $Id$  *}
+{configgetvar name='profilemodule' assign='profilemodule'}
+{ajaxheader modname='Users' filename='users.js'}
+
+{admincategorymenu}
+<div class="z-adminbox">
+    <h1>{gt text='Users manager'}</h1>
+    <div class="z-menu">
+        {moduleadminlinks modname='Users'}
+        <div id="profileadminlinks" class="z-hide">{moduleadminlinks modname=$profilemodule}</div>
+    </div>
+</div>

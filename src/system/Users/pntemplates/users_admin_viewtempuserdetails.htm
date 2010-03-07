@@ -1,0 +1,38 @@
+{*  $Id$  *}
+{gt text='Registration applications list' assign='templatetitle'}
+
+{include file='users_admin_menu.htm'}
+
+<div class="z-admincontainer">
+    <div class="z-adminpageicon"><img src="system/Users/pnimages/admin.gif" alt="{$templatetitle}" /></div>
+
+    <h2>{$templatetitle}</h2>
+
+    <table class="z-admintable" summary="{$uname|varprepfordisplay}">
+        <thead>
+            <tr>
+                <th colspan="2">{$uname|varprepfordisplay}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="{cycle values='z-odd,z-even'}">
+                <td>{gt text='User name'}</td>
+                <td>{$userinfo.uname}</td>
+            </tr>
+            <tr class="{cycle values='z-odd,z-even'}">
+                <td>{gt text='E-mail'}</td>
+                <td>{$userinfo.email}</td>
+            </tr>
+            {configgetvar name='profilemodule' assign='profilemodule'}
+            {if $profilemodule}
+                {modfunc modname=$profilemodule type='form' func='display' userinfo=$userinfo}
+            {/if}
+        </tbody>
+    </table>
+
+    <div class="z-formbuttons">
+        <a href="{modurl modname='Users' type='admin' func='processusers' op='approve' userid=$userid}">{button src=add_user.gif set=icons/small __alt="Approve" __title="Approve"}</a>
+        <a href="{modurl modname='Users' type='admin' func='processusers' op='deny' userid=$userid}">{img modname=core src=delete_user.gif set=icons/small  __alt="Deny" __title="Deny"}</a>
+        <a href="{pnmodurl modname='Users' type='admin' func='viewapplications'}">{pnimg modname=core src=button_cancel.gif set=icons/small  __alt="Cancel" __title="Cancel"}</a>
+    </div>
+</div>

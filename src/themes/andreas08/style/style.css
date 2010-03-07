@@ -1,0 +1,236 @@
+/* andreas08 - an open source xhtml/css website layout by Andreas Viklund - http://andreasviklund.com . Free to use in any way and for any purpose as long as the proper credits are given to the original designer. Version: 1.0, November 28, 2005 */
+
+/**************** Body and tag styles ****************/
+
+*{margin:0; padding:0;}
+
+body{
+font:76% Verdana,Tahoma,Arial,sans-serif;
+line-height:1.4em;
+text-align:center;
+color:#303030;
+background:#e8eaec;
+margin: 0 0 0 0;
+padding: 0 0 0 0;
+}
+
+a{
+color:#467aa7;
+font-weight:bold;
+text-decoration:none;
+background-color:inherit;
+}
+
+a:hover{color:#2a5a8a; text-decoration:none; background-color:inherit;}
+a img{border:none;}
+
+p{padding:0 0 1.6em 0;}
+p form{margin-top:0; margin-bottom:20px;}
+
+img.left,img.center,img.right{padding:4px; border:1px solid #a0a0a0;}
+img.left{float:left; margin:0 12px 5px 0;}
+img.center{display:block; margin:0 auto 5px auto;}
+img.right{float:right; margin:0 0 5px 12px;}
+
+/**************** Header and navigation styles ****************/
+
+#theme_page_container{
+width:95%;
+margin:20px auto;
+padding:1px 0;
+text-align:left;
+background:#ffffff;
+color:#303030;
+border:2px solid #a0a0a0;
+}
+
+#theme_header{
+height:110px;
+width:100%;
+margin:0 1px 1px 1px;
+background:#467aa7;
+color:#ffffff;
+}
+
+#theme_header h1{
+padding:35px 0 0 20px;
+font-size:2.4em;
+background-color:inherit;
+color:#ffffff;
+letter-spacing:-2px;
+font-weight:normal;
+}
+
+#theme_header h2{
+margin:10px 0 0 40px;
+font-size:1.4em;
+background-color:inherit;
+color:#f0f2f4;
+letter-spacing:-1px;
+font-weight:normal;
+}
+
+#theme_navigation_bar{
+height:2.2em;
+line-height:2.2em;
+width:100%;
+margin:0 1px;
+background:#578bb8;
+color:#ffffff;
+}
+
+#theme_navigation_bar li{
+float:left;
+list-style-type:none;
+border-right:1px solid #ffffff;
+white-space:nowrap;
+}
+
+#theme_navigation_bar li a{
+display:block;
+padding:0 10px;
+font-size:0.8em;
+font-weight:normal;
+text-transform:uppercase;
+text-decoration:none;
+background-color:inherit;
+color: #ffffff;
+}
+
+* html #theme_navigation_bar a {width:1%;} /* this hack targets IE<7 */
+
+#theme_navigation_bar .selected, #theme_navigation_bar a:hover{
+background:#80b0da;
+color:#ffffff;
+text-decoration:none;
+}
+
+/**************** Content styles ****************/
+
+#theme_content{
+float:left;
+width:75%;
+font-size:0.9em;
+padding:20px 0 0 20px;
+}
+
+#theme_content h1{
+display:block;
+margin:0 0 16px 0;
+font-size:1.9em;
+font-weight:normal;
+letter-spacing:-1px;
+color:#505050;
+background-color:inherit;
+}
+
+#theme_content h2{
+display:block;
+margin:0 0 16px 0;
+font-size:1.7em;
+font-weight:normal;
+letter-spacing:-1px;
+color:#505050;
+background-color:inherit;
+}
+
+#theme_content h2 a{font-weight:normal;}
+#theme_content h3{margin:0 0 5px 0; font-size:1.4em; letter-spacing:-1px;}
+#theme_content .z-block h4{margin:0 0 5px 0; font-size:1.2em; letter-spacing:-1px;}
+#theme_content a:hover,#subcontent a:hover{text-decoration:underline;}
+#theme_content ul,#theme_content ol{margin:0 5px 16px 35px;}
+#theme_content dl{margin:0 5px 10px 25px;}
+#theme_content dt{font-weight:bold; margin-bottom:5px;}
+#theme_content dd{margin:0 0 10px 15px;}
+
+/**************** Sidebar styles ****************/
+
+#theme_subcontent{
+float:right;
+width:20%;
+padding:20px 10px 10px 0;
+line-height:1.4em;
+}
+
+#theme_subcontent h2{
+display:block;
+margin:0 0 15px 0;
+font-size:1.6em;
+font-weight:normal;
+text-align:left;
+letter-spacing:-1px;
+color:#505050;
+background-color:inherit;
+}
+
+#theme_subcontent p{margin:0 0 16px 0; font-size:0.9em;}
+
+/**************** Menublock styles ****************/
+
+/*.z--bkey-menu, .z--bkey-extmenu {margin:0 0 20px 8px; font-size:0.9em;}*/
+div.navcontainer ul, div#navcontainer ul {
+margin:0 0 20px 20px;
+font-size:0.9em;
+}
+
+.z--bkey-menu li, .z--bkey-extmenu li{list-style:none; display:block; padding:2px; margin-bottom:2px;}
+.z--bkey-menu li a, .z--bkey-extmenu li a{font-weight:bold; text-decoration:none;}
+.z--bkey-menu li a:hover, .z--bkey-extmenu li a:hover{text-decoration:none;}
+.z--bkey-menu li ul, .z--bkey-extmenu li ul{margin:3px 0 3px 15px; font-size:1em; font-weight:normal;}
+.z--bkey-menu li ul li, .z--bkey-extmenu li ul li{margin-bottom:0;}
+.z--bkey-menu li ul a, .z--bkey-extmenu li ul a{font-weight:normal;}
+
+
+/**************** Footer styles ****************/
+
+#theme_footer{
+text-align:center;
+clear:both;
+width:100%;
+padding:5px 0;
+margin:0 1px;
+font-size:0.9em;
+color:#f0f0f0;
+background:#467aa7;
+}
+
+#theme_footer p{padding:0; margin:0; text-align:center;}
+#theme_footer a{color:#f0f0f0; background-color:inherit; font-weight:bold;}
+#theme_footer a:hover{color:#ffffff; background-color:inherit; text-decoration: underline;}
+
+/**************** Misc classes and styles ****************/
+
+.theme_splitcontentleft{float:left; width:48%;}
+.theme_splitcontentright{float:right; width:48%;}
+.clear{clear:both;}
+.small{font-size:0.8em;}
+.hide{display:none;}
+.textcenter{text-align:center;}
+.textright{text-align:right;}
+.important{color:#f02025; background-color:inherit; font-weight:bold;}
+
+/* images */
+img {
+border:none;
+}
+
+.theme_box{
+margin:0 0 20px 0;
+padding:10px;
+border:1px solid #c0c0c0;
+background-color:#fafbfc;
+color:#505050;
+line-height:1.5em;
+}
+
+#news_articlecontent	{} /*open to design ideas*/
+.news_title		{} /*open to design ideas*/
+#news_editlinks		{} /*open to design ideas*/
+#news_editlinks_ajax	{} /*open to design ideas*/
+.news_meta		{} /*open to design ideas*/
+#news_topic		{} /*open to design ideas*/
+#news_body		{} /*open to design ideas*/
+.news_body		{} /*open to design ideas*/
+#news_notes		{} /*open to design ideas*/
+#news_modify		{} /*open to design ideas*/
+

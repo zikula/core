@@ -1,0 +1,9 @@
+{*  $Id$  *}
+{gt text="Categories list" assign=templatetitle}
+{include file="categories_admin_menu.htm"}
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View" }</div>
+    <h2>{$templatetitle}</h2>
+    {categories_treemenu_include}
+    {$menuTxt}
+</div>

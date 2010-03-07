@@ -1,0 +1,144 @@
+/* $Id: unipagercssexample.css 18547 2006-04-02 21:33:59Z markwest $ */
+div.z-pager {
+	color: #000;
+	margin: 0 auto;
+/*        padding: 4em 10px 0; */
+	text-align: right;
+	margin: 0 0 1em 0;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+div.z-pager a, div.z-pager strong {
+	font-weight: 700;
+	color: #333;
+	background-color: #EEE;
+	border-color: #333;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: top;
+	float: left;
+	padding: 0;
+	margin-right: 2px;
+	border: 1px solid #333;
+	width: 30px;
+	height: 22px;
+}
+
+div.z-pager strong {
+	border: 1px solid #CCC;
+	background-color: #CCC;
+}
+
+div.z-pager a:visited {
+	background-color: #EEE;
+	border-color: #333;
+	color: #999;
+	text-decoration: none;
+}
+
+div.z-pager a:hover, div.z-pager a:active, div.z-pager a:focus {
+	text-decoration: none;
+	background-color: #CCC;
+	color: #000;
+	border-color: #000;
+}
+
+
+
+div.z-pager span {
+	position: absolute;
+	left: -1000px;
+}
+
+div.z-pager::after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+div.z-pager span.select {
+	text-align: center;
+	position: relative;
+	left: 0;
+	float: left;
+	background-color: #EEE;
+	color: inherit;
+	margin-right: 2px;
+	padding: 0;
+	border: 1px solid #333;
+	width: 30px;
+	height: 22px;
+}
+
+div.z-pager span.select:hover {
+	background-color: #CCC;
+	color: #000;
+	border-color: #000;
+}
+
+div.z-pager span.select::before {
+	content: "...";
+	position: static;
+	display: inline;
+	cursor: default;
+	font-weight: bold;
+	color: #036;
+	background-color: transparent;
+}
+
+div.z-pager span.select:hover::before {
+	color: #000;
+	background-color: transparent;
+}
+
+div.z-pager span.select span.option {
+	display: none;
+	position: absolute;
+	z-index: 9;
+/*        left: -1px;*/
+	left: -50px;
+
+	text-align: left;
+	padding: 0 1em 1em;
+	margin-left: -1em;
+	width: 9.5em;
+}
+
+div.z-pager span.select:hover span.option {
+	display: block;
+}
+
+div.z-pager span.select span.option span.items {
+	position: static;
+	background-color: #FFF;
+	color: inherit;
+	border: 1px solid #F00;
+	padding: 2px 2px 0;
+	float: left;
+}
+
+div.z-pager span.select span.option span.items::after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	overflow: hidden;
+}
+
+div.z-pager span.select:hover span.option {
+	bottom: 1.75em;
+	padding: 1em 1em 0;
+	z-index: 11;
+}
+
+div.z-pager span.select span.buttons::after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}

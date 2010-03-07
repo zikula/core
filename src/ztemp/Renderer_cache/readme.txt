@@ -1,0 +1,1 @@
+This is the the directory where pnRender template caches are stored.

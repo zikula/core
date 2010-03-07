@@ -1,0 +1,261 @@
+CHANGELOG - ZIKULA 1.3.0
+------------------------
+Moved minimum PHP version to 5.2.6.
+Deprecated module type 1.
+Deprecated language define based support.
+Removed all legacy support (old-old stuff) in the Core.
+Added database caching capabilities to DBUtil.
+Migrated to using { } in templates with backward compatability for old delimiters.
+When using template logic inside <script> use the delimiters {{ and }}.
+Removed requirement to delete install* and upgrade.php to access administration.
+pnUserGetVars & pnUserGetIDFromName functions can retrieve by all-numeric username.
+Outsourced AuthPN, Admin_Messages and Ephemerids.
+Replacement HTML center block to replace Admin_Messages which was outsourced to VA.
+Remove the writable bits from config.php after install is possible.
+Removed autocreate of 'thelang' and 'online' blocks from new install.
+Set installer script memory limit to 64M.
+Fixed JS/CSS minifying.
+Removed on-the-fly JS minifier.
+Removed ADODB and replaced with Doctrine 1.2.1.
+DBUtil updated to use Doctrine for backward compatibility.
+Upgraded to PHPMailer 5.1.
+Deprecated all but type 3 themes.
+Added password complexity meter to User's module.
+Removed the need to 'regenerate' module list, this is now done automatically each time the module list is viewed. It will also automatically remove invalid modules that have been removed from the file system.
+Merged pnRender module to Theme module.
+Refactored $PNConfig, $PNRuntime and $PNDebug -> Z*.
+Renamed pnTemp to ztemp.
+added support for PHPIDS/HTMLPurifier.
+Removed Header_Footer module.
+Removed header.php and footer.php.
+Simplified security checks.
+Removed all legacy block handling.
+Theme list now auto regenerates on view.
+Moved includes/ -> lib/.
+Moved classes/ -> vendor/.
+Moved *Util.php -> util/.
+Moved all template plugins to lib/render/plugins.
+Removed pnForm module and moved plugins to lib/form/plugins.
+Added autoloader.
+Intelligently disable theme and render caching for write operations.
+Removed MD5 as a valid hash method for user passwords.
+Improved installer requirements.
+pnRender class is now Renderer with legacy support.
+Fixed theme force_compile.
+Introduced DSN DB representation into config.php.
+Deprecated base64 encoding in config.php.
+PNObject* is now DBObject*.
+Removed prefix from smarty plugins and added a backward compatibility prefilter.
+Updated robots.txt.
+Introduced LivePipe UI library.
+SecurityUtil::checkPermission - possibility to test if user has ANY access to given component.
+Display active groups of a user in user overview.
+Related module blocks are now removed during module uninstall.
+Bulk import of users via CSV file import.
+Rewrote ZLanguageBrowser.
+When you regenerate the list of modules the "hooks" are refreshed correctly.
+Confirm e-mail when user changes the e-mail address.
+When an administrator creates a new user it is set as active although the moderation is required.
+Allow forced password change on login.
+Users module doesn't depends on legal.
+Outsourced legal module.
+Fix permission check with JavaScript disable for permission module.
+Set colors (green, red) for permission check results.
+Replace old function pnSecAddSchema in some blocks of the system's modules.
+The system modules don't initialise variables by creating insert queries with serialised data.
+Users' last login is always saved if the system is configured accordingly.
+Fix max length of userprofilelink (modifier of pnRender).
+Ability for an administrator to set user status when creating a new account.
+Corrected link for undefined blocks positions in theme configuration.
+Store the hash_method of users who are pending registrations.
+Users can be deleted from edit screen. 
+
+CHANGELOG - ZIKULA 1.2.2
+------------------------
+Fixed issue with Zikula lightbox replacement showing previews out of the visible area.
+Removed Credits module template overrides from rss theme.
+Fix max length of userprofilelink (modifier of pnRender).
+Existing database encoding is set to utf8 during installation. 
+Concordance in icons text between users view details and pending users list.
+Fix a include issue in CSS/JS combination.
+Updated DataUtil::mb_unserialise() so it is not affected by special characters.
+Restored 'updated' plugin and, published and updated modifiers in the rss theme
+Reverted to old behaviour where admin created users are automatically activated.
+DBUtil::select*ObjectArray methods do not correctly resume after permission filtering has occurred.
+Added the FilterUtil library as part of the core. 
+
+CHANGELOG - ZIKULA 1.2.1
+------------------------
+Fixed translation for modules when being accessed via directory based short URLs.
+Fixed JS/CSS minify for scribite.
+Fixed JS/CSS relative paths issue.
+Improved DataUtil::is_serialized().
+Fixed bug in Users->Admin->Delete User.
+Prevent double loading of pagevars outputfilter helper functions.
+Fixed timezone selector was not displayed in the current language.
+Fixed admin panel header switches to English when viewing 3rd party modules.
+Fixed Avatar path and lowercase uname not being saved.
+Fixed translation for multiple instances of modules running at once.
+Fixed JS/CSS combination not included scriptaculous sublibraries (eg effects.js).
+Fixed Mailer sendmail path not used.
+Fixed permissions checks for ajax calls in Groups module.
+Removed JSMin.
+Fixed customisation path for translation overrides.
+Fixed email for password recovery.
+Fixed module sort order in Modules Module.
+Moved includes/templates/siteoff.htm to system/Themes/pntemplates.
+Fixed problems with double colons in site name and slogan.
+Fixed login problem using the email in Theme-plugin.
+Fixed deletion of category registries and items for 3rd party modules. issue #1647
+Added "Zikula Itemlist" and "width" stylesheets.
+Remove question mark from permalinks.
+Remove timezone handling from search reqsults.
+Fixed issue with magic gettext handler __ that could not parse strings with apostrophes.
+Added dataformat to locale.ini options.
+Replaced lightbox.js with native ImageViewer.js which is completely BC with Lightbox.
+Removed fabtabulous.js from release.
+Removed behaviour.js from release.
+Fixed bug with return URL and directory based short URLs.
+Fixed bug with register user and legal stuff is requested only if legal module is installed.
+Fixed missing prototype in pnFormTabbedPanelSet.
+Fixed display of translated pnversion definitions.
+Save and restore $smarty->renderDomain property before and after calling pnmodfunc/pnmodapifunc to prevent overwriting the render domain in a partially rendered template.
+Prevent system init hooks from overwriting translation domain for core.
+Introduced ability not to calculate timezone in DateUtil::formatDateTime().
+Expanded DateUtil::parseUIDate() and DateUtil::parseUIDateTime() to work with locale settings defined in language pack.
+Added DateUtil::transformInternalDate() and DateUtil::transformInternalDateTime() to get internal and storage representation of date and date time from user input.
+Fixed pnformdateinput plugin to work with date format set in language pack.
+Fixed Andreas08 theme name in theme version.php file.
+Corrected getter in ZLanguage::getLanguageUrl() was supposed to be ZLanguage::getLangUrlRule().
+Fixed homepage url into the extmenu block.
+New link to "Component and Instance help page" in Permissions module.
+Fixed Search module templates which were untranslated.
+Fixed wrong links for 'Term of Use' and 'Privacy policy' in User's register. 
+
+CHANGELOG - ZIKULA 1.2.0
+------------------------
+Added support for gettext enabled module. Modules and themes can now support the old define based language system or the new gettext method, but not both. If a module or theme has /locale, the core will not search for defines for that component.
+Example of gettext enabled module should be legal or Ephemerids and not the core modules and themes which are handled slightly differently.
+Core languages installed in /locale/$lang and must contain locale.ini file. Legacy language packs will not load without the corrisponding new language pack in /locale.
+New language codes: Zikula now uses short language code and additionally supports language variation, e.g en, en_GB and en_US.
+Gettext and i18n support is independent of the OS of the webserver, and independent of system locales.
+Added right to left support in themes with <!--[langdirection]-->
+General facelift to the user interface.
+
+Added translation functions:
+  ZLanguage::getModuleDomain() returns translation domain for a given module.
+  ZLanguage::getThemeDomain() returns translation domain for a given theme.
+  __() translate string.
+  _n() translate with pural.
+  __f() translate with sprintf().
+  _fn() translate plural with sprintf().
+
+<!--[pndate_format]--> no longer takes defines (but is backwards comapatible). Please use the following strings instead: datelong, datebrief, datestring, datestring2, datetimebrief, datetimelong, timebrief, timelong.
+
+New Plugins:
+  <!--[homepage]--> will return the actual homepage of the site (supported by pnGetHomePageURL()).
+  <!--[langdirection]--> will return 'ltr' or 'rtl' for use in HTML templates to indicate language direction.
+  formatcurrency modifier will format a number according to the current monetary locale.
+  formatnumber modifier will format a number according to the current locale.
+  <!--[array_field_pop]-->
+  dataformat modifier
+  <!--[pngetbaseuri]-->
+  <!--[gt]--> will translate a given string.
+  gt modifier - this is for internal use, (do not use it).
+  <!--[langdirection]--> returns ZLanguage::getDirection() (ltr or rtl for language direction).
+  <!--[charset]--> returns ZLanguage::getEncoding().
+  <!--[case]-->
+  <!--[checkgroup]-->
+  <!--[switch]-->
+
+locale/$lang/locale.ini used to store locale information for a language code.
+CSS classes renamed to z- (old pn- classes will continue to work).
+CSS/JS on-the-fly optimization supports:
+  Concatenation of all CSS into one file.
+  Concatenation of all JS into one file.
+
+Minify JS and CSS.
+Forced gz compression for JS and CSS.
+Header cache control.
+Improved module workflow. The new workflows are:
+   Uninitialised->Active->Inactive->Remove
+   Inactive->Active
+   Upgrade->Active->Inactive->Remove
+
+Improved installer and upgrader layout.
+New easy upgrade.php script: this performs all actions required for an upgrade. No need to tediously perform unnecessary manual tasks.
+upgrade.php will automatically convert MySQL installations to UTF8 format.
+
+Multi-lingual settings:
+   Enable/Disable multi-lingual facility.
+   Fix lang parameter to the URL where necessary or always by force.
+   Enable/Disable language variations.
+   Set default language for site.
+   Improved and accurate browser detection (enable/disable)
+
+Module $modversion['displayname'] no longer used to build URL, this has been replaced with $modversion['url'].
+pnversion.php format extended with $modversion['url'] = __('foo', $dom); this should generally be a lower case get, but not similar to displayname.
+Modules Manager: option added to restore customised module fields to their defaults globally from Module->Settings or individually from each module's edit screen.
+Short URLs now support the lang param.
+'thelang' block no longer set's user's language preference, this has been moved to the User module.
+
+Deprecated the following defines:
+  _CHARSET
+  _LOCALE
+  _LOCALEWIN
+  _DATEBRIEF
+  _DATELONG
+  _DATESTRING
+  _DATESTRING2
+  _DATETIMEBRIEF
+  _DATETIMELONG
+  _DATEINPUT
+  _DATETIMEINPUT
+  _TIMEBRIEF
+  _TIMELONG
+  _DATEFIRSTWEEKDAY
+  _TIMEFORMAT
+
+SessionUtil::getVar('lang') totally deprecated, returns ZLanguage::getLanguageCodeLegacy()
+pnUserGetLang() deprecated, returns old 3 digit language code using ZLanguage::getLanguageCodeLegacy().
+ZLanguage::getLanguageCode() to get current language of the user.
+ZLanguage::getLanguageCodeLegacy() returns the legacy code in use.
+ZLanguage::transformFS() returns the language code in file system format.
+ZLanguage::getEncoding() will return the encoding in use (usually UTF8).
+ZLanguage::setLocale can be used to change the language mid-session for given page load ONLY. This is generally not used except in loading multi-linguage default data in the Blocks init routines.
+Added ZI18n class to handle numbers and currency.
+DataUtil methods to convert user input to internal format according to the input locale: transformNumberInternal(), transformCurrencyInternal().
+DataUtil methods to format numbers for display according to the locale: formatNumber() and formatCurrency().
+Improved DataUtil::is_serialized().
+Added DataUtil::parseIniFile() to cope with variations according to OS.
+DateUtil class fixed to correctly calculate the difference between the server and user's timezone when formatting a string. Also format the month/day names with the translation strings instead rely on the server's installed locales.
+Introduced DataUtil::mb_unserialize() to handle multibyte data that was once stored in the database in ISO format and later converted to UTF8. Such serialised data will be broken. This method will correctly unserialise it. This should be used once only to fix serialised data - emphasis that this issue only affects serialised data with multibyte content. Several routines have been stored in Users/pninit.php, Modules/pninit.php, Blocks/pninit.php showing this conversion for known tables with issues these issues.
+Upgrade script migrates Blocks and Category data to use new language codes, example code in respective module's pninit.php files.
+Fixed SeaBreeze theme.
+Added auto update notification when a new version of the Core is released.
+Users module introduces an API to let the site's Profile module to handle the dynamic user data in the Users' forms (see system/Users/pndocs).
+Profile module update to handle the dynamic user data in the Users' forms.
+Reviewed language used throughout the core.
+Moved legal module to the modules/ directory.
+Removed dependency on Profile module.
+Reviewed FileUtil to work properly when get the list the contents of a path.
+HTMLUtil updated.
+Installer no longer offers unusable modules as start module options.
+Installer offers a 'no start module' option.
+Installer database error checking improved.
+Installer checks for compulsory mbstring.
+pnConfigGetVar('language') is deprecated, should use pnConfigGetVar('language_i18n') instead. This specifies the system default language which is used as part of the algorythm to determine which language to serve - this does NOT tell you the language in use, ZLanguage::getLanguageCode() returns this.
+Dynamic keywords facility removed.
+Removed WHERE_IS_PERSO.
+Integrated automatic use of addition of advMailer if installed.
+Prepared core to use new MultiSites module if installed.
+Added LogUtil::registerArgsError().
+Completed integration of LogUtil::registerPermissionsError().
+'extmenu' block supresses Error, Header_Footer and Blocks modules in 'display installed modules' option.
+Fixed flawed pninit upgrade logic. Modules should return the current version number as a string on fail. Case statements have no break to allow automatic flow of one upgrade routine to the next. See all system modules as examples.
+Added Texpand.js to expand text boxes.
+Added Zikula.itemlist.js
+HTML settings moved from Settings module to SecurityCenter.
+Outsourced AuthLDAP, blank, FAQ, Feeds, MultiSites (legacy), Pages, PendingContent, Ratings, Recommend_Us, Reviews, Sniffer, Thumbnail, and Topics to Parked projects.
+Users can change their mail address and passwords in the 'User account panel'
+Revision of the admin panel: The admin area has been redesigned and the display of the module description, and adds a shortcut to the Admin module functions. Settings can also be switch back to an alternative layout. 

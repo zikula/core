@@ -1,0 +1,620 @@
+/* $Id $ */
+
+/* class to show a sortable li or div */
+.z-sortable {
+    /* cursor: move; has to be set in the js code to avoid wrong css in non javascript environments */
+}
+
+/* classes to show/hide elements */
+.z-hide {
+    display: none;
+}
+.z-show {
+    display: inherit;
+}
+.z-center {
+    text-align: center !important;
+}
+.z-left {
+    text-align: left !important;
+}
+.z-right {
+    text-align: right !important;
+}
+.z-nowrap {
+    white-space: nowrap !important;
+}
+.z-floatleft {
+    display: inline;
+    float: left;
+    margin-bottom: 0.15em;
+    margin-right: 1em;
+}
+.z-floatright {
+    display: inline;
+    float: right;
+    margin-bottom: 0.15em;
+    margin-left: 1em;
+}
+
+/* style for buttons in inline 'ajax' forms */
+button.z-imagebutton {
+    padding: 0;
+    margin: 3px 0 0 0;
+    float: left;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* generic clearfix solution */
+.z-clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+/* IE-Patches for clearfix */
+.z-clearfix {
+    display: inline-block;
+}
+/* Hides from IE-mac \*/
+* html .z-clearfix {
+    height: 1px;
+}
+.z-clearfix {
+    display: block;
+}
+/* End hide from IE-mac */
+
+/* Overflow-Method to clear float environments */
+.z-floatbox {
+    overflow: hidden;
+}
+
+/* generic clearer */
+.z-clearer {
+    clear: both;
+}
+
+/* generic secondary text */
+.z-sub {
+    color: #999;
+    font-size: 0.9em;
+}
+
+/* Miscellaneous styles */
+.z-toggle {
+    display: block;
+    background-image: url(../images/global/toggle.gif);
+    background-repeat: no-repeat;
+    background-position: 0px;
+    border: 0pt none;
+    margin: 0pt;
+    /*overflow: hidden;*/
+    padding: 0pt;
+    width: 27px;
+    height: 25px;
+}
+.z-toggle-open,
+.z-toggle-open:visited {
+    background-position: 0pt -18px;
+    height: 25px;
+    width: 27px;
+}
+
+.z-toggle-link,
+.z-toggle-link:visited {
+    background-image: url(../images/global/toggle.gif);
+    background-repeat: no-repeat;
+    background-position: right top;
+    padding-right: 25px;
+    border: 0pt none;
+}
+.z-toggle-link-open,
+.z-toggle-link-open:visited {
+    background-position: right -18px;
+}
+
+/* styles for module menus */
+.z-menu {
+    color: #aaa;
+    text-align: left;
+    width: 100%;
+    margin-bottom:1.5em;
+}
+
+.z-menuitem-title {
+    width: 99%;
+    background: url(../images/global/button_bkg.gif) repeat;
+    line-height: 23px;
+    min-height: 23px;
+    height: auto !important;
+    height: 23px;
+    display: block;
+    padding-left: 5px;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.z-menu a {
+    padding: 3px;
+}
+
+.z-calendarimg {
+    background-color: transparent;
+}
+.z-calendarimg:hover {
+    background-color: blue;
+}
+
+/**************************************************
+* CSS Based Messages
+* http://www.edg3.co.uk/resources/css-based-messages/
+* http://creativecommons.org/licenses/by/2.5/
+**************************************************/
+
+.z-errormsg {
+    background: #ffeae5 url('../images/icons/extrasmall/error.gif') 13px 50% no-repeat;
+    border: 2px solid #f34f4f;
+    color: #a40000;
+    padding: 5px 5px 5px 36px;
+    margin: 5px;
+}
+.z-informationmsg {
+    background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat;
+    border: 2px solid #9bb8d9;
+    color: #37527d;
+    padding: 5px 5px 5px 36px;
+    margin: 5px;
+}
+.z-statusmsg {
+    background: #edfdee url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
+    border: 2px solid #9c9;
+    color: #005a00;
+    padding: 5px 5px 5px 36px;
+    margin: 5px;
+}
+.z-warningmsg {
+    background: #fffdcd url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
+    border: 2px solid #ffd324;
+    color: #7f2e02;
+    padding: 5px 5px 5px 36px;
+    margin: 5px;
+}
+
+/*******************************************************************************/
+/* classes to define two colors for alternating rows in views
+/*******************************************************************************/
+
+.z-even {
+    background-color: #fff;
+    color: inherit;
+}
+.z-odd {
+    background-color: #f3f3f3;
+    color: inherit;
+}
+
+/*******************************************************************************/
+/* styles for pager plugins
+/*******************************************************************************/
+
+.z-pager {
+    color: #999;
+    padding: 5px 4px;
+    text-align: center;
+}
+/* style for the selected item of the pager abc plugin */
+.z-pager a.z-pagerselected {
+    font-weight: bold;
+    text-decoration: underline;
+}
+/* style for the selected item of the pager plugin */
+.z-pager span.z-pagerselected {
+    font-weight: bold;
+}
+
+/*******************************************************************************/
+/* z-datatable
+/*******************************************************************************/
+
+table.z-datatable {
+    width: 100%;
+    color: inherit;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    margin-top: 0px;
+    margin-bottom: 1em;
+    padding: 5px 5px 10px 5px;
+}
+table.z-datatable tr.z-datatableempty {
+    background-color: #f3f3f3;
+    text-align: center;
+    font-weight: bold;
+}
+table.z-datatable caption {
+    background-color: #f3f3f3;
+    font-weight: bold;
+    border-bottom: 2px solid #CFCFCF;
+    text-transform: uppercase;
+    padding:10px;
+}
+table.z-datatable thead tr {
+    background-color: #CFCFCF;
+}
+table.z-datatable tbody td,
+table.z-datatable thead th {
+    padding: 5px;
+    border-width: 0px;
+}
+table.z-datatable tbody tr.z-defaulttablerow {
+    background-color: #add8e6;
+    color: inherit;
+}
+table.z-datatable tbody tr:hover {
+    background-color: #CFCFCF;
+}
+table.z-datatable ul {
+    margin: 0;
+}
+
+/*******************************************************************************/
+/* z-form style (generic)
+/*******************************************************************************/
+
+.z-form {
+    margin: 0 0 1em 0;
+    padding: 1em 0;
+    overflow: hidden;
+}
+.z-form fieldset,
+.z-form .z-fieldset {
+    border: 1px #ddd solid;
+    background: #fafafa;
+    margin: 0 0 1em 0;
+    padding: 0.5em 1em;
+    overflow: hidden;
+}
+.z-form legend {
+    font-size: 1.25em;
+    font-weight: normal;
+    color: #000;
+    background: transparent;
+    border: 0;
+}
+.z-form .z-formrow .z-mandatorysym {
+    color: #f00;
+    font-weight: bold;
+    padding-left: 3px;
+    display: inline;
+}
+.z-form .z-formrow input,
+.z-form .z-formrow textarea,
+.z-form .z-formrow select {
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid #ddd;
+    font-size: 1em;
+    margin: 0;
+    max-width: none;
+}
+.z-form .z-formrow input[type=checkbox] {
+    display:inline;
+    margin:0.5em 0;
+    width:auto;
+}
+.z-form .z-formrow input[type=radio] {
+    width: auto;
+    border: 1px solid #fafafa;
+}
+.z-form .z-formrow select optgroup {
+    font-style: normal;
+    font-weight: bold;
+}
+
+.z-form div.z-formrow input:focus,
+.z-form div.z-formrow select:focus,
+.z-form div.z-formrow textarea:focus,
+.z-form div.z-formrow input:hover,
+.z-form div.z-formrow select:hover,
+.z-form div.z-formrow textarea:hover,
+.z-form div.z-formrow input:active,
+.z-form div.z-formrow select:active,
+.z-form div.z-formrow textarea:active {
+    border: 1px solid #aaa;
+    background: #fff;
+}
+
+/* hide hidden fields (firefox) */
+.z-form input[type=hidden] {
+    display: none !important;
+}
+
+div.z-formrow,
+div.z-formbuttons {
+    padding: 0.5em 0;
+    min-height: 2em;
+    overflow: hidden;
+    clear: both;
+}
+div.z-formlist {
+    overflow: hidden;
+}
+div.z-formlist label {
+    display: inline;
+}
+
+/*******************************************************************************/
+/* styles for the buttons on a view table
+/*******************************************************************************/
+
+div.z-viewbuttons  {
+    text-align: right;
+    margin-bottom: 1.25em;
+}
+div.z-viewbuttons img {
+    margin: 5px;
+    float: right;
+}
+
+/*******************************************************************************/
+/* styles for the buttons in a z-form
+/*******************************************************************************/
+
+div.z-formbuttons {
+    text-align: left;
+    display: block;
+    margin-left: 30%;
+}
+div.z-formbuttons input,
+div.z-formbuttons img {
+    text-align: center;
+    margin: 5px;
+    width: auto;
+    cursor: pointer;
+}
+div.z-formbuttons button {
+    border: 0px;
+    padding: 0px;
+    background-color: transparent;
+    width: auto;
+    cursor: pointer;
+}
+
+/*******************************************************************************/
+/* z-form style (column-view = default)
+/*******************************************************************************/
+
+.z-form label {
+    cursor: pointer;
+}
+.z-form div.z-formrow .z-label,
+.z-form div.z-formrow label {
+    display: block;
+    float: left;
+    padding: 0.3em 1% 0.3em 0;
+    text-align: right;
+    width: 29%;
+    font-weight: normal;
+}
+.z-form .z-formlist {
+    margin-left: 30%;
+}
+.z-form .z-formnote {
+    display: block;
+    margin-left: 30% ! important;
+}
+.z-form div.z-formrow input,
+.z-form div.z-formrow textarea {
+    padding: 0.3em 0.3em;
+    width: 67.8%;
+    display: block;
+    position: relative;
+}
+.z-form div.z-formrow input[type=text].z-mandatoryinput,
+.z-form div.z-formrow select.z-mandatoryinput,
+.z-form div.z-formrow textarea.z-mandatoryinput {
+    width: 66%;
+}
+.z-form div.z-formrow select {
+    padding: 0.3em 2px 0.3em 1px;
+    cursor: pointer;
+    width: 68.6%;
+    display: block;
+    position: relative;
+}
+.z-form div.z-formlist input {
+    width: auto;
+}
+.z-form div.z-formrow .z-listselector {
+    list-style: none;
+}
+.z-form div.z-formrow > span,
+.z-form div.z-formrow > div {
+    display: block;
+    padding-bottom: 0.3em;
+    padding-top: 0.3em;
+}
+.z-form div.z-formrow span label,
+.z-form div.z-formrow div label {
+    display: inline;
+    float: none;
+    padding: 0 1em;
+    width: auto;
+}
+.z-form div.z-formrow span input,
+.z-form div.z-formrow span textarea,
+.z-form div.z-formrow span select,
+.z-form div.z-formrow div input,
+.z-form div.z-formrow div textarea,
+.z-form div.z-formrow div select {
+    display: inline;
+    width: auto;
+}
+.z-form .z-formrow .readonly {
+    background: #FAFAFA;
+    color: #AAAAAA;
+    cursor: not-allowed;
+}
+.z-form .z-formrow .error {
+    background: #ffe1da;
+    border: 1px solid #f34f4f;
+}
+.validationSummary label {
+    cursor: pointer;
+}
+
+/* adjust width for IE 5 and IE6 */
+* html .z-form div.z-formrow input,
+* html .z-form div.z-formrow textarea,
+* html .z-form div.z-formrow select {
+    width: auto;
+}
+
+/*******************************************************************************/
+/* z-form style (z-linearize elements / use additional class 'z-linear')
+/*******************************************************************************/
+
+.z-linear div.z-formrow .z-label,
+.z-linear div.z-formrow label {
+    float: none;
+    width: auto;
+    display: block;
+    padding: 0;
+    text-align: left;
+}
+.z-linear div.z-formrow input ,
+.z-linear div.z-formrow textarea {
+    display: block;
+    width: 98%;
+}
+.z-linear div.z-formrow .z-listselector,
+.z-linear div.z-formrow .z-listselector li {
+    margin-left: 0;
+}
+.z-linear div.z-formrow select {
+    display: block;
+    width: 99%;
+}
+.z-linear .z-formnote,
+.z-linear .z-formlist {
+    margin: 0 ! important;
+}
+.z-linear .z-formbuttons {
+    padding: 0;
+    margin: 0;
+}
+
+/*******************************************************************************/
+/* IE-fixes for Fieldset/Legend
+/*******************************************************************************/
+
+/* all IE */
+.z-form {
+    padding-top: 0\9;
+}
+.z-form fieldset {
+    padding: 0 5px\9;
+    padding-top: 1em\9;
+}
+.z-form legend {
+    position: absolute\9;
+    top: -.5em\9;
+    *left: 0\9;
+}
+.z-form fieldset {
+    position: relative\9;
+    overflow: visible\9;
+    margin-top: 1.5em\9;
+    zoom: 1;
+}
+/* IE5.x, IE6 & IE7 */
+.z-form legend {
+    *padding: 0 5px;
+}
+.z-form fieldset {
+    *padding-top: 1.5em;
+}
+/* IE5.x & IE6 */
+* html .z-form {
+    padding-top: 10px;
+}
+
+
+/*******************************************************************************/
+/* z-itemlist styles
+/*******************************************************************************/
+
+.z-itemlist {
+    border: 1px solid #ccc;
+    padding: 0 !important;
+    margin: 1em 0  !important;
+    list-style: none;
+}
+.z-itemlist li {
+    font-size: 1em;
+    border: 1px dotted #999999;
+    line-height: 2em;
+    margin: 0.5em !important;
+    padding: 0.2em !important;
+}
+.z-itemlist li.z-itemheader {
+    background: #CFCFCF;
+    border: 1px solid #999999;
+    font-weight: bold;
+}
+.z-itemlist li.z-itemsort {
+    background-image:url(../images/icons/extrasmall/move.gif);
+    background-position:5px 50%;
+    background-repeat:no-repeat;
+    padding-left: 30px !important;
+    cursor: move;
+}
+.z-itemlist li.z-itemsortheader {
+    padding-left: 30px !important;
+}
+.z-itemlist li:hover {
+    background-color: #CFCFCF;
+}
+.z-itemlist li input,
+.z-itemlist li textarea,
+.z-itemlist li select {
+    max-width:90%;
+}
+.z-itemlist li  * {
+    margin: 0 !important;
+    vertical-align: middle;
+}
+.z-itemlist .z-itemcell {
+    float: left;
+    margin: 0;
+    text-align: left;
+    overflow: hidden;
+}
+.z-w90 { width: 90%; }
+.z-w85 { width: 85%; }
+.z-w80 { width: 80%; }
+.z-w75 { width: 75%; }
+.z-w70 { width: 70%; }
+.z-w66 { width: 66%; }
+.z-w60 { width: 60%; }
+.z-w50 { width: 50%; }
+.z-w45 { width: 45%; }
+.z-w40 { width: 40%; }
+.z-w35 { width: 35%; }
+.z-w33 { width: 33%; }
+.z-w30 { width: 30%; }
+.z-w25 { width: 25%; }
+.z-w22 { width: 22%; }
+.z-w20 { width: 20%; }
+.z-w15 { width: 15%; }
+.z-w10 { width: 10%; }
+.z-w08 { width: 8%; }
+.z-w07 { width: 7%; }
+.z-w06 { width: 6%; }
+.z-w05 { width: 5%; }
+.z-w04 { width: 4%; }
+.z-w02 { width: 2%; }

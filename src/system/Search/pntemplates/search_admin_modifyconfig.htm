@@ -1,0 +1,37 @@
+{*  $Id$  *}
+{include file="search_admin_menu.htm"}
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{pnimg modname=core src=configure.gif set=icons/large __alt="Settings"}</div>
+    <h2>{gt text="Settings"}</h2>
+    <form class="z-form" action="{pnmodurl modname="Search" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Search"}" />
+            <fieldset>
+                <legend>{gt text="General settings"}</legend>
+                <div class="z-formrow">
+                    <label for="search_itemsperpage">{gt text="Items per page"}</label>
+                    <input id="search_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|pnvarprepfordisplay}" />
+                </div>
+                <div class="z-formrow">
+                    <label for="search_limitsummary">{gt text="Number of characters to display in item summaries"}</label>
+                    <input id="search_limitsummary" type="text" name="limitsummary" size="5" value="{$limitsummary|pnvarprepfordisplay}" />
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{gt text="Disable search plug-ins"}</legend>
+                {foreach from=$plugins item=plugin}
+                <div class="z-formrow">
+                    <label for="search_disable{$plugin.title|pnvarprepfordisplay}">{pnmodgetinfo info=displayname modname=$plugin.title}</label>
+                    <input id="search_disable{$plugin.title|pnvarprepfordisplay}" type="checkbox" name="disable[{$plugin.title|pnvarprepfordisplay}]" value="1"
+                    {if $plugin.disabled} checked="checked"{/if} />
+                </div>
+                {/foreach}
+            </fieldset>
+            {pnmodcallhooks hookobject=module hookaction=modifyconfig module=Search}
+            <div class="z-formbuttons">
+                {pnbutton src=button_ok.gif set=icons/small __alt="Save" __title="Save"}
+                <a href="{pnmodurl modname=Admin type=admin func=adminpanel}">{pnimg modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+            </div>
+        </div>
+    </form>
+</div>

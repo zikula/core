@@ -1,0 +1,23 @@
+Xanthia 3.0 theme engine based, in part, on the work of the following people and systems
+
+// Xanthia Theme Engine FOR PostNuke Content Management System
+// Copyright (C) 2003 By Larry E. Masters, Shorewood, Illinois.
+// nut@phpnut.com
+// http://www.larrymasters.com/
+// http://www.phpnut.com/
+// ----------------------------------------------------------------------
+// Based on: Encompass Theme Engine - http://madhatt.info/
+// Original Author: Brian K. Virgin (MADHATter7)
+// Based on: NoMoreBlocks module - http://www.envolution.it
+// Original Authors: ZXvision, TiMax, Cino
+// ----------------------------------------------------------------------
+// Based on:
+// eNvolution Content Management System
+// Copyright (C) 2002 by the eNvolution Development Team.
+// http://www.envolution.com/
+// ----------------------------------------------------------------------
+// Based on:
+// Postnuke Content Management System - www.postnuke.com
+// PHP-NUKE Web Portal System - http://phpnuke.org/
+// Thatware - http://thatware.org/
+// ----------------------------------------------------------------------

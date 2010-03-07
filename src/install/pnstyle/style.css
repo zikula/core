@@ -1,0 +1,192 @@
+html,
+body {
+    background-color:#EEEEEE;
+    color:#000000;
+    font-family:verdana,arial,helvetica,sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0;
+    padding:0;
+    overflow:auto;
+    width:100%;
+}
+
+img {
+    border: none;
+}
+
+a:active,
+a:visited,
+a {
+    background-color:inherit;
+    color:#2147B3;
+}
+
+h1 {
+    border-bottom:1px dashed #999999;
+    font-size:large;
+    font-weight:bold;
+    padding-bottom:2px;
+}
+
+h2 {
+    font-size: medium;
+    font-weight: bold;
+}
+
+/*
+* application specific classes
+*/
+#container {
+    background:#FAFAFA none repeat scroll 0 0;
+    border-left:1px solid #2147B3;
+    border-right:1px solid #2147B3;
+    margin:0 auto;
+    min-height:100%;
+    padding:0 10px;
+    width:960px;
+}
+
+#header {
+    background-image:url(../pnimages/bg.gif);
+    margin:0;
+    padding:0;
+}
+#headertopleft {
+    float:left;
+}
+#headertopright {
+    float:right;
+}
+#wrapper {
+    background:#FAFAFA none repeat scroll 0 0;
+    line-height:1.4em;
+    min-height:100%;
+    padding-top:10px;
+    padding-bottom:2em;
+    position:relative;
+}
+* html #wrapper {
+    height: 100%;
+}
+#content {
+    padding-top:7px;
+    margin-left:240px;
+}
+
+.menu {
+    float:left;
+    margin:0;
+    width:210px;
+    line-height:1.5em;
+}
+
+.menu ol {
+    padding-bottom: 1.5em;
+    border-bottom: 1px dashed #999;
+}
+
+.menu2 {
+    float:left;
+    margin:0;
+    width:180px;
+}
+#notice {
+    background:#EEEEEE none repeat scroll 0 0;
+    border:1px solid #999999;
+    font-size:0.9em;
+    margin-top:2em;
+    padding:5px;
+}
+
+li.menu_selected {
+    background-color:inherit;
+    color:#2147B3;
+    font-weight:bold;
+}
+div.menu2 ul li.highlight,
+div.menu2 ul li.highlight a {
+    color: #DEB84C;
+    background-color: inherit;
+}
+
+.qualitystatement {
+    background-color:#FBE786;
+    border:1px dashed red;
+    color:inherit;
+    font-weight:bold;
+    margin:1em;
+    padding:1em;
+    text-align:center;
+}
+/* progress bar styles */
+.progress {
+    border: solid 1px black;
+    height: 13px;
+    position: relative;
+    width: 50%;
+    background-color: #cccccc;
+    color: inherit;
+    margin-left: 25%;
+}
+.bar {
+    position: absolute;
+    left: 0px;
+    background: #264CB7;
+    color: #FFF;
+    font-size: 11px;
+    text-align: center;
+}
+.progressbarcontainer {
+    text-align: center;
+    padding: 10px;
+}
+
+/* licence and credits box */
+.licence,
+.credits {
+    height: 150px;
+    width: auto;
+    overflow: auto;
+    border: 1px dotted;
+    margin-bottom: 5px;
+}
+
+/* system requirements */
+ul.systemrequirements {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+ul.systemrequirements li
+{
+    padding-left: 25px;
+    min-height: 22px;
+    background-repeat: no-repeat;
+    background-position: 0;
+}
+ul.systemrequirements li.passed
+{
+    background-image: url(../../images/icons/small/ok.gif);
+}
+ul.systemrequirements li.failed
+{
+    background-image: url(../../images/icons/small/cancel.gif);
+}
+ul.systemrequirements li.warning
+{
+    background-image: url(../../images/icons/small/info.gif);
+}
+
+.validationfailed {
+    border-color: red;
+}
+
+/* theme selection */
+table#themeselector td.themeselect {
+    width: 10%;
+}
+table#themeselector td.themeselect input {
+    width: auto;
+}

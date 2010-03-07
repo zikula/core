@@ -1,0 +1,36 @@
+{*  $Id$  *}
+{gt text="Registration applications list" assign=templatetitle}
+
+{include file="users_admin_menu.htm"}
+
+<div class="z-admincontainer">
+    <div class="z-adminpageicon"><img src="system/Users/pnimages/admin.gif" alt="{$templatetitle}" /></div>
+
+    <h2>{$templatetitle}</h2>
+
+    <table class="z-admintable">
+        <thead>
+            <tr>
+                <th>{gt text="User name"}</th>
+                <th>{gt text="E-mail address"}</th>
+                <th>{gt text="Actions"}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {section name="usersitems" loop=$usersitems}
+            <tr class="{cycle values='z-odd,z-even'}">
+                <td>{$usersitems[usersitems].uname|varprephtmldisplay}</td>
+                <td>{$usersitems[usersitems].email|varprephtmldisplay}</td>
+                <td>
+                    {assign var="options" value=$usersitems[usersitems].options}
+                    {section name=options loop=$options}
+                    <a href="{$options[options].url|varprepfordisplay}">{img src=$options[options].imgfile modname=core set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>
+                    {/section}
+                </td>
+            </tr>
+            {/section}
+        </tbody>
+    </table>
+
+    {pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
+</div>

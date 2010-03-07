@@ -1,0 +1,92 @@
+{*  $Id$  *}
+{include file="blocks_admin_menu.htm"}
+{ajaxheader modname=Blocks filename=blocks.js}
+{gt text="Click to activate this block" assign=activate}
+{gt text="Click to deactivate this block" assign=deactivate}
+
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View" }</div>
+    <h2>{gt text="Blocks list"}</h2>
+    <p class="z-informationmsg">{gt text="This is the list of blocks present in your system. It shows either all blocks, both active and inactive (click on 'Show all blocks' to get this view), or active blocks only (click on 'Show active blocks' in the menu). The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
+    <table class="z-admintable">
+        <thead>
+            <tr>
+                <th>{gt text="Block ID"}</th>
+                <th>{gt text="Title"}</th>
+                <th>{gt text="Module"}</th>
+                <th>{gt text="Name"}</th>
+                <th>{gt text="Position(s)"}</th>
+                <th>{gt text="Language"}</th>
+                <th>{gt text="State"}</th>
+                <th>{gt text="Actions"}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach item=block from=$blocks}
+            <tr class="{cycle values="z-odd,z-even" name=blocks}">
+                <td>{$block.bid|varprepfordisplay}</td>
+                <td>{$block.title|varprepfordisplay}</td>
+                <td>{$block.modname|varprepfordisplay}</td>
+                <td>{$block.bkey|varprepfordisplay}</td>
+                <td>{$block.positions|varprepfordisplay}</td>
+                <td>{$block.language|varprepfordisplay}</td>
+                <td>
+                    {if $block.active}
+                    <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.gif" modname="core" set="icons/extrasmall" title=$deactivate alt=$deactivate id="active_`$block.bid`"}{img src="redled.gif" modname="core" set="icons/extrasmall" title=$activate alt=$activate style="display: none;" id="inactive_`$block.bid`"}</a>
+                    <noscript><div>{img src=greenled.gif modname=core set=icons/extrasmall __title="Active" __alt="Active" }</div></noscript>
+                    &nbsp;<span id="activity_{$block.bid}">{gt text="Active"}</span>
+                    {else}
+                    <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.gif" modname="core" set="icons/extrasmall" title=$deactivate alt=$deactivate style="display: none;" id="active_`$block.bid`"}{img src="redled.gif" modname="core" set="icons/extrasmall" title=$deactivate alt=$deactivate id="inactive_`$block.bid`"}</a>
+                    <noscript><div>{img src=redled.gif modname=core set=icons/extrasmall __title="Inactive" __alt="Inactive" }</div></noscript>
+                    &nbsp;<span id="activity_{$block.bid}">{gt text="Inactive"}</span>
+                    {/if}
+                </td>
+                <td>
+                    {foreach item=option from=$block.options}
+                    {if $option.noscript eq true}<noscript><div>{/if}
+                        <a href="{$option.url|varprepfordisplay}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
+                    {if $option.noscript eq true}</div></noscript>{/if}
+                    {/foreach}
+                </td>
+            </tr>
+            {foreachelse}
+            <tr class="z-admintableempty"><td colspan="7">{gt text="No items found."}</td></tr>
+            {/foreach}
+        </tbody>
+    </table>
+
+    <h2 id="blockpositions">{gt text="Block positions list"}</h2>
+    <p class="z-informationmsg">{gt text="This is the list of block positions currently existing for your site's pages. You can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position, or to reorder the blocks within a block position, click on the 'Edit' icon beside that particular position. To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display."}</p>
+    <table class="z-admintable">
+        <thead>
+            <tr>
+                <th>{gt text="Name"}</th>
+                <th>{gt text="Description"}</th>
+                <th>{gt text="Theme tag"}</th>
+                <th>{gt text="Actions"}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$positions item=position}
+            <tr class="{cycle values="z-odd,z-even" name=blockpositions}">
+                <td>{$position.name|varprephtmldisplay}</td>
+                <td>{$position.description|truncate:25|varprephtmldisplay}</td>
+                <td>&lt;!--[blockposition name={$position.name|varprephtmldisplay}]--&gt;</td>
+                <td>
+                    {foreach item=option from=$position.options}
+                    <a href="{$option.url|varprepfordisplay}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
+                    {/foreach}
+                </td>
+            </tr>
+            {foreachelse}
+            <tr class="z-admintableempty"><td colspan="4">{gt text="No items found."}</td></tr>
+            {/foreach}
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var msgBlockStatusActive = '{{gt text="Active"}}';
+    var msgBlockStatusInactive = '{{gt text="Inactive"}}';
+    Event.observe(window, 'load', initactivationbuttons, false);
+</script>

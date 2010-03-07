@@ -1,0 +1,12 @@
+{*  $Id$  *}
+<div class="navcontainer">
+    <ul class="navlist">
+    {foreach from=$menuitems item=item}
+        {if $item.MENUITEMTITLE != '' && $item.MENUITEMURL != ''}
+            <li><a href="{$item.MENUITEMURL|varprepfordisplay}" title="{$item.MENUITEMCOMMENT}">{$item.MENUITEMTITLE|varprepfordisplay}</a></li>
+        {else}
+            <li style="list-style:none">{$item.MENUITEMTITLE|varprephtmldisplay}</li>
+        {/if}
+    {/foreach}
+    </ul>
+</div>

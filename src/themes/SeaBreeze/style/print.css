@@ -1,0 +1,48 @@
+body 
+{
+	color: #000;
+	background: #FFF;
+	margin: 0px;
+	padding: 0px;	
+}
+
+#header,
+#topmenu,
+#LeftCol,
+#RightCol,
+#bottomMenu,
+#footer
+{
+  display: none;
+}
+
+#main,
+#main h1, 
+#main h2, 
+#main h3, 
+#main h4, 
+#main p, 
+#main td
+{
+  color: #000;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a
+{
+  text-decoration: none;
+  color: #000;
+}
+
+#main a
+{
+  text-decoration: underline;
+  color: #000;
+}
+
+img 
+{
+  border: none;
+}

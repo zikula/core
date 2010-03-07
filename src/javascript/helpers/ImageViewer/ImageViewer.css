@@ -1,0 +1,83 @@
+#ImageViewer {
+    position:absolute;
+    background:#000000;
+    padding:0px;
+    margin: 0px;
+    border:1px solid #FFFFFF;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    text-align:center;
+    color:#FFFFFF;
+    line-height:0;
+    z-index: 1001;
+ }
+#ImageViewer * {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+}
+#ImageViewerCapition {
+    margin:10px 5px 5px 5px;
+    line-height:16px;
+    text-align:left;
+    cursor: pointer;
+}
+#ImageViewerClose {
+    position:absolute;
+    right:5px;
+    top: 10px;
+    width:16px;
+    height:16px;
+    background:url(close.png) no-repeat;
+    cursor:pointer;
+    z-index: 1003;
+}
+#ImageViewerImgContainer {
+    position: relative;
+}
+#ImageViewerImg {
+    margin:5px;
+    display: block;
+}
+#ImageViewerNext, #ImageViewerPrev {
+    width: 50%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    z-index: 1002;
+    cursor: pointer;
+}
+#ImageViewerPrev {
+    left: -32px;
+    background: url(prev.png) left center no-repeat;
+    padding-left: 32px;
+}
+#ImageViewerNext {
+    right: -32px;
+    background: url(next.png) right center no-repeat;
+    padding-right:32px;
+}
+.loading#ImageViewer #ImageViewerImgContainer,
+.loading#ImageViewer #ImageViewerCapition,
+.loading#ImageViewer #ImageViewerImg,
+.loading#ImageViewer a {
+    visibility: hidden;
+}
+.loading#ImageViewer{
+    background: #000000 url(zktimer.gif) no-repeat center center;
+}
+#ImageViewerOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: #000000;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}

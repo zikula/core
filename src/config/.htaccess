@@ -1,0 +1,6 @@
+SetEnvIf Request_URI "\.css$" object_is_css=css
+SetEnvIf Request_URI "\.js$" object_is_js=js
+Order deny,allow
+Deny from all
+Allow from env=object_is_css
+Allow from env=object_is_js

@@ -1,0 +1,11 @@
+
+{*  $Id$  *}
+<h2>{gt text='Welcome to %1$s (%2$s)!' tag1=$sitename tag2=$siteurl}</h2>
+
+<p>{gt text='Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.' tag1=$email tag2=$sitename}
+{gt text="The personal information registered is as follows:"}</p>
+
+<p>{gt text="Please click on the following link to complete the e-mail address check: "}<a href="{modurl modname="Users" func="activation" code=$code|urlencode fqurl=true}">{modurl modname="Users" func="activation" code=$code fqurl=true}</a></p>
+<p>{gt text="Once activated, your account details will be as follows:"}</p>
+<p>{gt text="User name: %s" tag1=$uname}</p>
+<p>{gt text="Password: %s" tag1=$makepass}</p>

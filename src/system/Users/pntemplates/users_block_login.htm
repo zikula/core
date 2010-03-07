@@ -1,0 +1,29 @@
+{*  $Id$  *}
+{modgetvar module='Users' name='loginviaoption' assign='loginviaoption'}
+
+<form action="{modurl modname="Users" type="user" func="login"}" method="post">
+    <div style="text-align:left">
+        {if $loginviaoption eq 0}
+        <div><label for="loginblock_username">{gt text="User name" domain='zikula'}</label></div>
+        <div><input id="loginblock_username" type="text" name="uname" size="14" maxlength="25" value="{gt text="User name" domain='zikula'}" onblur="if(this.value=='')this.value='{gt text="User name" domain='zikula'}';" onfocus="if(this.value=='{gt text="User name" domain='zikula'}')this.value='';" /></div>
+        {else}
+        <div><label for="loginblock_email">{gt text="E-mail address" domain='zikula'}</label></div>
+        <div><input id="loginblock_email" type="text" name="email" size="14" maxlength="64" /></div>
+        {/if}
+        <div><label for="loginblock_password">{gt text="Password" domain='zikula'}</label></div>
+        <div><input id="loginblock_password" type="password" name="pass" size="14" maxlength="20" /></div>
+        {if $seclevel neq 'High'}
+        <input id="loginblock_rememberme" type="checkbox" value="1" name="rememberme" />
+        <label for="loginblock_rememberme">{gt text="Remember me" domain='zikula'}</label>
+        {/if}
+        <input type="hidden" name="url" value="{$returnurl|varprepfordisplay}" />
+        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
+        <div><input type="submit" value="{gt text="Log in" domain='zikula'}" /></div>
+        {if $allowregistration}
+        <ul>
+            <li><a href="{modurl modname=Users func=register}">{gt text="New account" domain='zikula'}</a></li>
+            <li><a href="{modurl modname=Users func=lostpassword}">{gt text="Lost password" domain='zikula'}</a></li>
+        </ul>
+        {/if}
+    </div>
+</form>

@@ -1,0 +1,273 @@
+/*
+culture shock: voodoo dolly v1.0
+pogy366: http://www.raykdesign.net
+Oct. 2005
+*/
+
+/* general page structure and layout */
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:.8em;
+    color:#000000;
+    margin:20px 0 0 0;
+    padding:0 0 0 0;
+    background:#ffffff;
+    text-align:center;
+}
+
+.top {
+    margin:0 auto;
+    padding:0 0 0 0;
+    width:780px;
+    height:9px;
+    background:#ffffff url(../images/page_top.jpg) no-repeat;
+}
+
+.page_wrap {
+    /* includes the header, main body content and the footer */
+    margin:0 auto;
+    padding:0 0 0 0;
+    width:780px;
+    background:#ffffff url(../images/body_bg.jpg) repeat-y;
+    text-align:center;
+}
+
+.header {
+    position:relative;
+    margin:0 0 0 0 !important;
+    margin:-7px 0 0 0;
+    padding:0 0 0 ;
+    width:780px !important;
+    width:742px;
+    height:125px;
+    background:#ffffff url(../images/header_bg.jpg);
+    text-align:left;
+}
+
+.header_block {
+    position:relative;
+    margin:0 20px 0 20px;
+    padding:0 0 0 0;
+    width:740px;
+    background:transparent;
+    text-align:left;
+    color:#eeeeee;
+}
+
+.logo {
+    position:relative;
+    float:left;
+    margin:0 20px 0 0;
+    padding:0 0 0 0;
+}
+
+.navbar {
+    position:relative;
+    margin:0 0 0 0;
+    padding:0 0 0 0;
+    width:780px !important;
+    width:742px;
+    height:39px;
+    background:#ffffff url(../images/nav_bg.jpg);
+    text-align:left;
+    color:#000000;
+    font-size:.9em;
+}
+
+.container {
+    position:relative;
+    margin:10px 0 0 10px;
+    padding:0 0 0 0;
+    width:760px !important;
+    width:742px;
+    background:transparent;
+    text-align:left;
+}
+
+.left_column {
+    float:left;
+    width:140px;
+    margin:0 0 0 0;
+    padding:0 4px 0 0;
+    background:transparent;
+    font-size:.9em;
+    color:#6E312A;
+    border-right:1px solid #999999;
+}
+
+.center_column {
+    margin:0 165px 0 155px;
+    padding:0;
+}
+
+.box_right {
+    position:relative;
+    float:right;
+    width:150px;
+    margin:0 0 3px 10px !important;
+    margin:0 5px 3px 10px;
+    padding:2px 5px 2px 10px;
+    background:#eeeeee;
+    border:1px solid #cccccc;
+    text-align:left;
+    color:#616161;
+    font-size:.9em;
+}
+
+.footer {
+    position:relative;
+    margin:0 0 0 0;
+    padding:10px 0 0 0;
+    width:780px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:.8em;
+    color:#6E312A;
+    background:transparent;
+    text-align:right;
+}
+
+.footer_logo {
+    position:relative;
+    float:right;
+    margin:0 0 0 15px;
+    padding:0 0 0 0;
+}
+
+#footer {
+    /* aligns the text to the middle of the footer, in relation to the logo */
+    vertical-align:-250%;
+}
+
+.bottom {
+    margin:0 auto;
+    padding:0 0 0 0;
+    width:780px;
+    height:11px;
+    background:#ffffff url(../images/page_bottom.jpg) no-repeat top;
+}
+
+/* navigation bar */
+#nav ul{
+    padding:0 0 0 0;
+    margin: 0 0 0 1.5em;
+    white-space: nowrap;
+    font-size:1.1em;
+    color:#ffffff;
+    float:left;
+    width:100%;
+    height:39px;
+    background:transparent;
+    list-style:none;
+}
+
+#nav ul li{
+    display:inline;
+    list-style:none;
+}
+
+#nav ul li a{
+    margin: .8em 0 0 0;
+    padding: .4em 1em .46em 1em;
+    color:#ffffff;
+    text-decoration:none;
+    float: left;
+    border-left:1px solid #999999;
+    background:transparent;
+}
+
+#nav ul li a:hover{
+    color:#000000;
+    text-decoration:none;
+    border-left:1px solid #999999;
+}
+
+/* fonts and colors */
+div.header h1 {
+    color:#eeeeee;
+    font-size:2em;
+    letter-spacing:.1em;
+    margin:0 0 0 0;
+    padding:20px 0 0 0;
+}
+
+h1 {
+    color:#000000;
+    font-size:1.5em;
+    font-weight:bold;
+    padding:0 0 0 0;
+    margin:0 0 0 0;
+}
+
+h2 {
+    color:#000000;
+    font-size:1.2em;
+    font-weight:bold;
+    padding:0 0 0 0;
+    margin:0 0 0 0;
+}
+
+h2:after {
+    color: #000000;
+    content: "\0020 \00BB";
+}
+
+h3 {
+    color:#000000;
+    font-size:1.1em;
+    text-transform:capitalize;
+    font-weight:bold;
+    padding:0 0 0 0;
+    margin:0 0 0 0;
+}
+
+h3:after {
+    color: #000000;
+    content: "\0020 \00BB";
+}
+
+.box_right h3 {
+    color:#6E312A;
+    margin:0 0 0 0;
+}
+
+.box_right h3:after {
+    color: #6E312A;
+    content: "\0020 \00BB";
+}
+
+a {
+    color:#6E312A;
+    text-decoration:underline;
+}
+
+a:hover {
+    color:#999999;
+    text-decoration:none;
+}
+
+.left_column a {
+    color:#000000;
+    text-decoration:underline;
+}
+
+.left_column a:hover {
+    color:#999999;
+    text-decoration:none;
+}
+
+/* images */
+img {
+    border:none;
+}
+
+.left {
+    float:left;
+    margin:0 0 0 0;
+    padding:0 0 0 0;
+}
+
+.right {
+    float:right;
+    margin:0 0 0 0;
+    padding:0 0 0 0;
+}

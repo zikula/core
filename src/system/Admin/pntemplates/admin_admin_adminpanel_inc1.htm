@@ -1,0 +1,61 @@
+{* $Id$ *}
+
+{math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
+<div id="z-adminiconlist">
+    {assign var="count" value="0"}
+    {assign var="moduleid" value="0"}
+    {foreach from=$adminlinks name=adminlink item=adminlink}
+    {math equation="$count+1" assign="count"}
+
+    {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
+
+        <dl class="z-adminiconcontainer" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
+            {if $modvars.admingraphic eq 1}
+            <dd class="z-adminimg z-adminfloat">
+                <a class="admininfo" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
+                    <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
+                </a>
+            </dd>
+            {/if}
+            <dt>
+                <a id="switchModuleFunctions{$moduleid}" class="z-admininfo"><img src="images/icons/extrasmall/utilities.gif" width="16" height="16" alt="{gt text='Functions'}" /></a>
+                <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
+            </dt>
+            <dd>
+                <ul id="infoModuleFunctions{$moduleid}" class="infoModuleFunctions" style="display: none">
+                    {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
+                    {if $modlinks}
+                    {foreach from=$modlinks item=modlink}
+                    <li><a title="{$modlink.text|varprepfordisplay}" href="{$modlink.url|varprepfordisplay}">{$modlink.text|varprepfordisplay}</a></li>
+                    {/foreach}
+                    {else}
+                    <li><a title="{gt text='Module administration'}" href="{$adminlink.menutexturl|varprepfordisplay}">{gt text="Module administration"}</a></li>
+                    {/if}
+                    {assign var="modlinks" value=false}
+                </ul>
+            </dd>
+            <dd>{$adminlink.menutexttitle|varprepfordisplay|truncate:$trunLen:"&hellip;":false}</dd>
+        </dl>
+
+        <script type="text/javascript">
+            var clearTimer{{$moduleid}} = null;
+            function hidePIPr{{$moduleid}}() {
+                $('infoModuleFunctions{{$moduleid}}').hide();
+            }
+
+            $('switchModuleFunctions{{$moduleid}}').observe('click', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
+            $('switchModuleFunctions{{$moduleid}}').observe('keypress', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
+            $('infoModuleFunctions{{$moduleid}}').observe('mouseover', function() { clearTimeout(clearTimer{{$moduleid}}); }, false);
+            $('infoModuleFunctions{{$moduleid}}').observe('mouseout', function() { clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 500); }, false);
+        </script>
+
+        {if $count eq $modvars.modulesperrow}
+            {assign var="count" value="0"}
+            </div>
+        {else}
+            {if $smarty.foreach.adminlink.last}</div>{/if}
+        {/if}
+
+    {math equation="$moduleid+1" assign="moduleid"}
+    {/foreach}
+</div>

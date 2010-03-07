@@ -1,0 +1,39 @@
+{*  $Id$  *}
+{include file=theme_admin_menu.htm}
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="Credits"}</div>
+    <h2>{gt text="Theme credits"}</h2>
+    {if $themeinfo.system neq 1}
+    <div style="text-align:center;">{previewimage name=$themeinfo.name id=theme_credits_preview}</div>
+    {/if}
+    <table class="z-admintable">
+        <tbody>
+            {foreach from=$themeinfo item=field key=key}
+            {if $field neq ''}
+            <tr class="{cycle values=z-odd,z-even}">
+                {if $key eq 'id'}<td>{gt text="Internal ID"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'name'}<td>{gt text="Name"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'type'}<td>{gt text="Type"}</td><td>{$field|themetype}</td>{/if}
+                {if $key eq 'displayname'}<td>{gt text="Display name"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'description'}<td>{gt text="Description"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'regid'}<td>{gt text="Registration ID"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'directory'}<td>{gt text="Directory"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'version'}<td>{gt text="Version"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'official'}<td>{gt text="Official"}</td><td>{$field|yesno|varprepfordisplay}</td>{/if}
+                {if $key eq 'author'}<td>{gt text="Author"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'contact'}<td>{gt text="Contact"}</td><td>{$field|varprepfordisplay|activatelinks}</td>{/if}
+                {if $key eq 'admin'}<td>{gt text="Admin panel theme"}</td><td>{$field|yesno|varprepfordisplay}</td>{/if}
+                {if $key eq 'user'}<td>{gt text="User theme"}</td><td>{$field|yesno|varprepfordisplay}</td>{/if}
+                {if $key eq 'system'}<td>{gt text="System theme"}</td><td>{$field|yesno|varprepfordisplay}</td>{/if}
+                {if $key eq 'state'}<td>{gt text="State"}</td><td>{$field|varprepfordisplay|activeinactive}</td>{/if}
+                {if $key eq 'credits'}<td>{gt text="Credits"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'changelog'}<td>{gt text="Change log"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'help'}<td>{gt text="Help"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'license'}<td>{gt text="License"}</td><td>{$field|varprepfordisplay}</td>{/if}
+                {if $key eq 'xhtml'}<td>{gt text="XHTML-capable"}</td><td>{$field|yesno|varprepfordisplay}</td>{/if}
+            </tr>
+            {/if}
+            {/foreach}
+        </tbody>
+    </table>
+</div>

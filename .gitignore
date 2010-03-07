@@ -1,0 +1,28 @@
+# /
+.git_externals
+/nbproject
+/.project
+/.settings
+/.buildpath
+
+# /src/config/
+/src/config/personal_config.php
+
+# /src/lib/vendor/
+
+# /src/locale/
+
+# /src/modules/
+/src/modules/*
+/src/modules/!index\.html
+/src/modules/!\.htaccess
+
+# /src/ztemp
+/src/ztemp/errors_log/*
+/src/ztemp/purifierCache/*
+/src/ztemp/Renderer_cache/*
+/src/ztemp/Renderer_compiled/*
+/src/ztemp/Theme_cache/*
+/src/ztemp/Theme_compiled/*
+/src/ztemp/Theme_Config/*
+

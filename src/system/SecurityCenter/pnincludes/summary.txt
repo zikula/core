@@ -1,0 +1,25 @@
+For the attention of %sitename% administration staff:
+
+On %date% at %time%, Zikula detected that somebody tried to interact with the site in a way that may have been intended compromise its security. This is not necessarily the case: it could have been caused by work you were doing on the site, or may have been due to some other reason. In any case, it was detected and blocked. 
+
+The suspicious activity was recognised in '%filename%' at line %linenumber%.
+
+Type: %type%. 
+
+Additional information: %additionalinfo%.
+
+Below is logged information that may help you identify what happened and who was responsible.
+
+=====================================
+Information about the user:
+=====================================
+User name:  %username%
+User's e-mail address: %useremail%
+User's real name: %userrealname%
+
+=====================================
+IP numbers (if this was a cracker, the IP numbers may not be the true point of origin)
+=====================================
+IP according to HTTP_CLIENT_IP: %httpclientip%
+IP according to REMOTE_ADDR: %remoteaddr%
+IP according to GetHostByName($REMOTE_ADDR): %gethostbyremoteaddr%

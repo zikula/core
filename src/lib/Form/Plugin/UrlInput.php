@@ -1,0 +1,55 @@
+<?php
+/**
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv2 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
+/**
+ * URL input for pnForms
+ *
+ * The URL input plugin is a text input plugin that only allows URLs to be posted.
+ *
+ * You can also use all of the features from the pnFormTextInput plugin since the URL input
+ * inherits from it.
+ *
+ * A valid URL must contain a protocol prefix ("http:" for instance)
+ */
+class Form_Plugin_URLInput extends Form_Plugin_TextInput
+{
+    function getFilename()
+    {
+        return __FILE__;
+    }
+    
+    function create(&$render, &$params)
+    {
+        $this->maxLength = 2000;
+        
+        parent::create($render, $params);
+        
+        $this->cssClass .= ' url';
+    }
+    
+    function validate(&$render)
+    {
+        parent::validate($render);
+        if (!$this->isValid) {
+            return;
+        }
+        
+        if (!empty($this->text)) {
+            if (!pnVarValidate($this->text, 'url')) {
+                $this->setError(__('Error! Invalid URL.'));
+            }
+        }
+    }
+}
+

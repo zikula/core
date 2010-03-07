@@ -1,0 +1,5 @@
+PostNuke Search Changelog
+
+May 2007  : Jorn Wildt - new search API
+July 2003 : garubi - ported to pnAPI
+07-12-2001: Greg - CSS encased

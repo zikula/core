@@ -1,0 +1,99 @@
+{*  $Id$  *}
+{gt text='User log-in' assign='templatetitle'}
+{ajaxheader modname='Users' filename='users.js'}
+
+<div class="z-menu">
+    <span class="z-menuitem-title">
+        [
+        {if $allowregistration}
+        <a href="{modurl modname="Users" func="register"}">{gt text="New account"}</a> |
+        {/if}
+        <a href="{modurl modname="Users" func="lostpassword"}">{gt text="Lost password"}</a>
+        ]
+    </span>
+</div>
+
+{include file='users_user_menu.htm'}
+
+<form class="z-form" action="{modurl modname="Users" type="user" func="login"}" method="post">
+    <div>
+        <input type="hidden" name="url" value="{$returnurl|varprepfordisplay}" />
+        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
+        <fieldset>
+            <legend>{gt text="User account"}</legend>
+
+            {if $loginviaoption eq 1}
+            <div class="z-formrow">
+                <label for="users_email">{gt text="E-mail address"}</label>
+                <input id="users_email" type="text" name="email" size="20" maxlength="64" />
+            </div>
+            {else}
+            <div class="z-formrow">
+                <label for="users_uname">{gt text="User name"}</label>
+                <input id="users_uname" type="text" name="uname" size="20" maxlength="25" />
+            </div>
+            {/if}
+
+            <div class="z-formrow">
+                <label for="users_pass">{$passwordtext}</label>
+                <input id="users_pass" type="password" name="pass" size="20" maxlength="20" />
+            </div>
+
+            {if $changepassword eq 1}
+            <div class="z-formrow">
+                <label for="users_newpass">{gt text="New password"}</label>
+                {if $use_password_strength_meter eq 1}
+                <input type="password" id="users_newpass" name="newpass" size="20" maxlength="20" value="" class="pwsinput" onkeyup="updatePasswordStrength(this.value)" /> <div id="pwscontainer"><div id="pwsmeter"></div></div>
+                {else}
+                <input type="password" id="users_newpass" name="newpass" size="20" maxlength="20" value="" />
+                {/if}
+            </div>
+
+            <div class="z-formrow">
+                <label for="users_confirmnewpass">{gt text="New password (repeat for verification)"}</label>
+                <input id="users_confirmnewpass" type="password" name="confirmnewpass" size="20" maxlength="20" />
+            </div>
+            {/if}
+
+            {if $seclevel != "High"}
+            <div class="z-formrow">
+                <label for="users_rememberme">{gt text="Remember me"}</label>
+                <input id="users_rememberme" type="checkbox" name="rememberme" />
+            </div>
+            {/if}
+
+            {if $changepassword eq 1}
+            <p class="z-warningmsg">{gt text="Important: For security reasons, you must change your password before you can log in. Thank you for your understanding."}</p>
+            {/if}
+
+            {if $confirmtou eq 1 && ($tou_active || $pp_active)}
+            {gt text="terms of use" assign=touString}
+            {gt text="privacy policy" assign=ppString}
+            {modurl fqurl=true modname="Legal" type="user" func="main" assign=touUrl}
+            {modurl fqurl=true modname="Legal" type="user" func="privacy" assign=ppUrl}
+            {gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">\'Terms of use\'</a>' tag1=$touUrl|varprepfordisplay assign=touURLString}
+            {gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">\'Privacy policy\'</a>' tag1=$ppUrl|varprepfordisplay assign=ppURLString}
+            {if $tou_active && $pp_active}
+            {gt text='%1$s and %2$s' tag1=$touURLString tag2=$ppURLString assign=touppURLString}
+            {gt text='%1$s and %2$s' tag1=$touString tag2=$ppString assign=touppTextString}
+            {elseif  $tou_active}
+            {assign var='touppURLString' value=$touURLString}
+            {assign var='touppTextString' value=$touString}
+            {elseif $pp_active}
+            {assign var='touppURLString' value=$ppURLString}
+            {assign var='touppTextString' value=$ppString}
+            {/if}
+
+            <p class="z-warningmsg">{gt text='Notice: Please be informed that the site\'s %1$s have changed. You are asked to read the new %2$s, and to state your acceptance of them by activating the following checkbox. This is required before you can log in. Thank you for your understanding.' tag1=$touppURLString tag2=$touppTextString}</p>
+            <div class="z-formrow">
+                <label for="users_touaccepted">&nbsp;{gt text="I accept the %s" tag1=$touppURLString}</label>
+                <input id="users_touaccepted" type="checkbox" name="touaccepted" value="1" />
+            </div>
+            {/if}
+
+        </fieldset>
+        <div class="z-formbuttons">
+            {button src=button_ok.gif set=icons/small __alt="Log in" __title="Log in"}
+        </div>
+    </div>
+</form>

@@ -1,0 +1,400 @@
+<?php
+/**
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv2 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
+/**
+ * Dropdown list plugin
+ *
+ * @copyright (c) 2006, Zikula Development Team
+ * @link http://www.zikula.org
+ * @version $Id$
+ * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @author Jorn Wildt
+ * @package Zikula_Template_Plugins
+ * @subpackage Functions
+ */
+
+/**
+ * Drop down list
+ *
+ * Renders an HTML <select> element with the supplied items.
+ *
+ * You can set the items directly like this:
+ * <code>
+ * <!--[formdropdownlist id="mylist" items=$items]-->
+ * </code>
+ * with the form event handler code like this:
+ * <code>
+ * class mymodule_user_testHandler extends pnFormHandler
+ * {
+ * function initialize(&$render)
+ * {
+ * $items = array( array('text' => 'A', 'value' => '1'),
+ * array('text' => 'B', 'value' => '2'),
+ * array('text' => 'C', 'value' => '3') );
+ *
+ * $render->assign('items', $items); // Supply items
+ * $render->assign('mylist', 2);     // Supply selected value
+ * }
+ * }
+ * </code>
+ * Or you can set them indirectly using the plugin's databased features:
+ * <code>
+ * <!--[formdropdownlist id="mylist"]-->
+ * </code>
+ * with the form event handler code like this:
+ * <code>
+ * class mymodule_user_testHandler extends pnFormHandler
+ * {
+ * function initialize(&$render)
+ * {
+ * $items = array( array('text' => 'A', 'value' => '1'),
+ * array('text' => 'B', 'value' => '2'),
+ * array('text' => 'C', 'value' => '3') );
+ *
+ * $render->assign('mylistItems', $items);  // Supply items
+ * $render->assign('mylist', 2);            // Supply selected value
+ * }
+ * }
+ * </code>
+ *
+ * Selected index is zero based. Selected value is a string - and the PHP null
+ * value is also a valid value.
+ *
+ * Option groups can be added by setting an 'optgroup' attribute on each item.
+ * For instance:
+ *
+ * <code>
+ * class mymodule_user_testHandler extends pnFormHandler
+ * {
+ * function initialize(&$render)
+ * {
+ * $items = array( array('text' => 'A', 'value' => '1', 'optgroup' => 'AAA'),
+ * array('text' => 'B', 'value' => '2', 'optgroup' => 'BBB'),
+ * array('text' => 'C', 'value' => '3', 'optgroup' => 'CCC') );
+ *
+ * $render->assign('mylistItems', $items);  // Supply items
+ * $render->assign('mylist', 2);            // Supply selected value
+ * }
+ * }
+ * </code>
+ *
+ * You can also encourage reuse of dropdown lists by inheriting from
+ * the dropdown list into a specialized list a'la MyCategorySelector or
+ * MyColorSelector, and then use this plugin where ever you want
+ * a category or color selector. In this way you don't have to remember
+ * to assign the items to the render every time you need such a selector.
+ * In these plugins you must set the items in the load event handler.
+ * See {@link pnFormLanguageSelector} for a good example of how this
+ * can be done.
+ */
+class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
+{
+    /**
+     * Selected value
+     *
+     * You can assign to this in your templates like:
+     * <code>
+     * <!--[formdropdownlist selectedValue=B]-->
+     * </code>
+     * But in your code you should use {@link pnFormDropdownList::setSelectedValue()}
+     * and {@link pnFormDropdownList::getSelectedValue()}.
+     *
+     * Selected value is an array of values if you have set selectionMode=multiple.
+     * @var mixed
+     */
+    protected $selectedValue;
+
+    /**
+     * Selected item index
+     *
+     * You can assign to this in your templates like:
+     * <code>
+     * <!--[formdropdownlist selectedIndex=2]-->
+     * </code>
+     * But in your code you should use {@link pnFormDropdownList::setSelectedIndex()}
+     * and {@link pnFormDropdownList::getSelectedIndex()}.
+     *
+     * Select index is not valid when selectionMode=multiple.
+     * @var int Zero based index
+     */
+    protected $selectedIndex;
+
+    /**
+     * Enable or disable auto postback
+     *
+     * Auto postback means "generate a server side event when selected index changes".
+     * If enabled then the event handler named in $onSelectedIndexChanged will be fired
+     * in the main form event handler.
+     * @var bool
+     */
+    protected $autoPostBack;
+
+    /**
+     * Enable or disable mandatory asterisk
+     * @var bool
+     */
+    protected $mandatorysym;
+
+    /**
+     * Selection mode
+     *
+     * Sets selection mode to either single item selection (standard dropdown) or
+     * multiple item selection.
+     * @var string Possible values are 'single' and 'multiple'
+     */
+    protected $selectionMode = 'single';
+
+    /**
+     * Size of dropdown
+     *
+     * This corresponds to the "size" attribute of the HTML <select> element.
+     * @var int
+     */
+    protected $size = null;
+
+    /**
+     * Enable saving of multiple selected values as a colon delimited string
+     *
+     * Enable this to save the selected values as a single string instead of
+     * an array of selected values. The result is a colon separated string
+     * like ":10:20:30".
+     * @var bool
+     */
+    protected $saveAsString;
+
+    /**
+     * Name of selected index changed method
+     *
+     * @var string Default is "handleSelectedIndexChanged"
+     */
+    protected $onSelectedIndexChanged = 'handleSelectedIndexChanged';
+
+    function getFilename()
+    {
+        return __FILE__;
+    }
+
+    function create(&$render, $params)
+    {
+        parent::create($render, $params);
+        $this->selectedIndex = -1;
+    }
+
+    function load(&$render, &$params)
+    {
+        parent::load($render, $params);
+
+        // If someone decided to set selected value from the template then try to "set it for real"
+        // (meaning: set also selected Index) - after the items, potentially, have been loaded.
+        if (array_key_exists('selectedValue', $params)) {
+            $this->setSelectedValue($params['selectedValue']);
+        }
+
+        if (array_key_exists('selectedIndex', $params)) {
+            $this->setSelectedIndex($params['selectedIndex']);
+        }
+    }
+
+    function render(&$render)
+    {
+        $idHtml = $this->getIdHtml();
+
+        $nameHtml = " name=\"{$this->inputName}[]\"";
+
+        $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
+
+        $class = '';
+        if (!$this->isValid) {
+            $class .= ' error';
+        }
+        if ($this->mandatorysym) {
+            $class .= ' z-mandatoryinput';
+        }
+        if ($this->readOnly) {
+            $class .= ' readonly';
+        }
+        if ($this->cssClass != null) {
+            $class .= ' ' . $this->cssClass;
+        }
+
+        $classHtml = ($class == '' ? '' : " class=\"$class\"");
+
+        $sizeHtml = ($this->size == null ? '' : " size=\"$this->size\"");
+
+        $postbackHtml = '';
+        if ($this->autoPostBack) {
+            $postbackHtml = " onchange=\"" . $render->GetPostBackEventReference($this, '') . "\"";
+        }
+
+        $multipleHtml = '';
+        if ($this->selectionMode == 'multiple')
+            $multipleHtml = " multiple=\"multiple\"";
+
+        $attributes = $this->renderAttributes($render);
+
+        $result = "<select{$idHtml}{$nameHtml}{$readOnlyHtml}{$classHtml}{$postbackHtml}{$multipleHtml}{$sizeHtml}{$attributes}>\n";
+        $currentOptGroup = null;
+        foreach ($this->items as $item) {
+            $optgroup = (isset($item['optgroup']) ? $item['optgroup'] : null);
+            if ($optgroup != $currentOptGroup) {
+                if ($currentOptGroup != null) {
+                    $result .= "</optgroup>\n";
+                }
+                if ($optgroup != null) {
+                    $result .= "<optgroup label=\"" . DataUtil::formatForDisplay($optgroup) . "\">\n";
+                }
+                $currentOptGroup = $optgroup;
+            }
+
+            $text = DataUtil::formatForDisplay($item['text']);
+
+            if ($item['value'] === null) {
+                $value = '#null#';
+            } else {
+                $value = DataUtil::formatForDisplay($item['value']);
+            }
+
+            if ($this->selectionMode == 'single' && $value == $this->selectedValue) {
+                $selected = ' selected="selected"';
+            } else if ($this->selectionMode == 'multiple' && in_array($value, $this->selectedValue)) {
+                $selected = ' selected="selected"';
+            } else {
+                $selected = '';
+            }
+            $result .= "<option value=\"$value\"{$selected}>$text</option>\n";
+        }
+        if ($currentOptGroup != null) {
+            $result .= "</optgroup>\n";
+        }
+        $result .= "</select>\n";
+        if ($this->mandatorysym) {
+            $result .= '<span class="z-mandatorysym">*</span>';
+        }
+
+        return $result;
+    }
+
+    function raisePostBackEvent(&$render, $eventArgument)
+    {
+        $args = array(
+            'commandName' => null,
+            'commandArgument' => null);
+        if (!empty($this->onSelectedIndexChanged)) {
+            $render->RaiseEvent($this->onSelectedIndexChanged, $args);
+        }
+    }
+
+    function decode(&$render)
+    {
+        // Do not read new value if readonly (evil submiter might have forged it)
+        if (!$this->readOnly) {
+            $value = FormUtil::getPassedValue($this->inputName, null, 'POST');
+            if ($value == null) {
+                $value = array();
+            }
+
+            for ($i = 0, $count = count($value); $i < $count; ++$i) {
+                if (get_magic_quotes_gpc()) {
+                    $value[$i] = stripslashes($value[$i]);
+                }
+                if ($value[$i] == '#null#') {
+                    $value[$i] = null;
+                }
+            }
+
+            if ($this->selectionMode == 'single') {
+                $value = $value[0];
+            }
+
+            $this->setSelectedValue($value);
+        }
+    }
+
+    function validate(&$render)
+    {
+        $this->clearValidation($render);
+
+        // we have to allow 0 as a value, see #986
+        $valueNotSelected = ((empty($this->selectedValue) && !is_numeric($this->selectedValue)) || $this->selectedValue === null);
+        if ($this->mandatory && $valueNotSelected) {
+            $this->setError(__('Error! You must make a selection.'));
+        }
+    }
+
+    function setSelectedValue($value)
+    {
+        if ($this->selectionMode == 'single') {
+            // Check for exiting value in list (avoid tampering with post values)
+            for ($i = 0, $count = count($this->items); $i < $count; ++$i) {
+                $item = &$this->items[$i];
+
+                if ($item['value'] == $value) {
+                    $this->selectedValue = $value;
+                    $this->selectedIndex = $i;
+                }
+            }
+        } else {
+            if (is_string($value)) {
+                $value = explode(':', $value);
+            }
+
+            $ok = true;
+            for ($j = 0, $jcount = count($value); $j < $jcount; ++$j) {
+                $ok2 = false;
+                // Check for exiting value in list (avoid tampering with post values)
+                for ($i = 0, $icount = count($this->items); $i < $icount; ++$i) {
+                    $item = &$this->items[$i];
+
+                    if ($item['value'] == $value[$j]) {
+                        $ok2 = true;
+                        break;
+                    }
+                }
+                $ok = $ok && $ok2;
+            }
+
+            if ($ok) {
+                $this->selectedValue = $value;
+                $this->selectedIndex = 0;
+            }
+        }
+    }
+
+    function getSelectedValue()
+    {
+        if ($this->saveAsString) {
+            $s = '';
+            for ($i = 0, $count = count($this->selectedValue); $i < $count; ++$i) {
+                $s .= (empty($s) ? '' : ':') . $this->selectedValue[$i];
+            }
+            return $s;
+        }
+
+        return $this->selectedValue;
+    }
+
+    function setSelectedIndex($index)
+    {
+        if ($index >= 0 && $index < count($this->items)) {
+            $this->selectedValue = $this->items[$index]['value'];
+            $this->selectedIndex = $index;
+        }
+    }
+
+    function getSelectedIndex()
+    {
+        return $this->selectedIndex;
+    }
+}
+

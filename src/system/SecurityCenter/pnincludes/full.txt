@@ -1,0 +1,47 @@
+=====================================
+Information in the $_REQUEST array
+=====================================
+%requestarray%
+
+=====================================
+Information in the $_GET array
+(variables that may have been in the URL string or in a 'GET'-type form)
+=====================================
+%getarray%
+
+=====================================
+Information in the $_POST array
+(visible and invisible form elements)
+=====================================
+%postarray%
+
+=====================================
+Browser information
+=====================================
+%browserinfo%
+
+=====================================
+Information in the $_SERVER array
+=====================================
+%serverarray%
+
+=====================================
+Information in the $_ENV array
+=====================================
+%envarray%
+
+=====================================
+Information in the $_COOKIE array
+=====================================
+%cookiearray%
+
+=====================================
+Information in the $_FILES array
+=====================================
+%filearray%
+
+=====================================
+Information in the $_SESSION array
+(session information -- variables starting with PNSV are Zikula session variables)
+=====================================
+%sessionarray%

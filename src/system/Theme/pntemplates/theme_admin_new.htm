@@ -1,0 +1,70 @@
+{*  $Id$  *}
+{include file="theme_admin_menu.htm"}
+{gt text="Create new theme" assign=templatetitle}
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$templatetitle}</div>
+    <h2>{$templatetitle}</h2>
+    <form class="z-form" action="{modurl modname="Theme" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Theme"}" />
+            <fieldset>
+                <legend>{gt text="New theme"}</legend>
+                <div class="z-formrow">
+                    <label for="theme_name">{gt text="Name"}</label>
+                    <input id="theme_name" type="text" name="themeinfo[name]" size="30" maxlength="64" />
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_displayname">{gt text="Display name"}</label>
+                    <input id="theme_displayname" type="text" name="themeinfo[displayname]" size="30" maxlength="64" />
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_description">{gt text="Description"}</label>
+                    <input id="theme_description" type="text" name="themeinfo[description]" size="30" maxlength="64" />
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_author">{gt text="Author"}</label>
+                    <input id="theme_author" type="text" name="themeinfo[author]" size="30" maxlength="64" />
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_contact">{gt text="Contact"}</label>
+                    <input id="theme_contact" type="text" name="themeinfo[contact]" size="30" maxlength="64" />
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_usertheme">{gt text="User theme"}</label>
+                    <div>
+                        <input id="theme_usertheme" type="checkbox" name="themeinfo[user]" value="1" checked="checked" />
+                        <span class="z-sub">{gt text="Notice: This category is for 'browser-oriented' themes that can be selected by users for their sessions on the site."}</span>
+                    </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_systemtheme">{gt text="System theme"}</label>
+                    <div>
+                        <input id="theme_systemtheme" type="checkbox" name="themeinfo[system]" value="1" />
+                        <span class="z-sub">{gt text="Notice: This category is for themes used to deliver back-end services (such as RSS feeds, etc.)."}</span>
+                    </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_admintheme">{gt text="Admin panel theme"}</label>
+                    <div>
+                        <input id="theme_admintheme" type="checkbox" name="themeinfo[admin]" value="1" />
+                        <span class="z-sub">{gt text="Notice: This category is for themes used to display the site administration panel."}</span>
+                    </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="theme_layout">{gt text="Layout"}</label>
+                    <select id="theme_layout" name="themeinfo[layout]">
+                        <option value="">{gt text="Empty template"}</option>
+                        <option value="2coll">{gt text="2 columns, left-side menu"}</option>
+                        <option value="2colr">{gt text="2 columns, right-side menu"}</option>
+                        <option value="3col">{gt text="3 columns, flanking menus"}</option>
+                    </select>
+                    <p class="z-formnote">{gt text='Notice: Layouts from the <a href="http://www.bluerobot.com/web/layouts/">Layout reservoir</a> at <a href="http://www.bluerobot.com/">BlueRobot.com</a>'}</p>
+                </div>
+            </fieldset>
+            <div class="z-formbuttons">
+                {button src=button_ok.gif set=icons/small __alt="Save" __title="Save"}
+                <a href="{modurl modname=Theme type=admin func=view}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+            </div>
+        </div>
+    </form>
+</div>

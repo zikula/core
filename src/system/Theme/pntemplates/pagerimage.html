@@ -1,0 +1,29 @@
+{* $Id: pagerimage.html 18557 2006-04-03 11:56:53Z markwest $ *}
+
+{assign var="separator" value=" "}
+<div class="{$pagerPluginArray.class}">
+    {if $pagerPluginArray.currentPage > 1}
+        <a href="{$pagerPluginArray.firstUrl}" title="{gt text="First page"}">
+            {pnimg modname=core set=icons/extrasmall src="previousend.gif" __title="First Page" __alt="First Page"}
+        </a>
+        {$separator} 
+        <a href="{$pagerPluginArray.prevUrl}" title="{gt text="Previous page"}">
+            {pnimg modname=core set=icons/extrasmall src="previous.gif" __title="Previous Page" __alt="Previous Page"}
+        </a> {$separator} 
+    {/if}
+
+    <span>
+    {gt text="Page"} {$pagerPluginArray.currentPage} / {$pagerPluginArray.countPages} ({$pagerPluginArray.itemStart} - {$pagerPluginArray.itemEnd} {gt text="of"} {$pagerPluginArray.total} {gt text="Total"})
+    </span>
+
+    {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
+         {$separator} 
+        <a href="{$pagerPluginArray.nextUrl}" title="{gt text="Next page"}">
+            {pnimg modname=core set=icons/extrasmall src="next.gif" __title="Next Page" __alt="Next Page"}
+        </a>
+        {$separator} 
+        <a href="{$pagerPluginArray.lastUrl}" title="{gt text="Last page"}">
+            {pnimg modname=core set=icons/extrasmall src="nextend.gif" __title="Last Page" __alt="Last Page"}
+        </a>
+    {/if}
+</div>

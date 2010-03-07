@@ -1,0 +1,116 @@
+{*  $Id$  *}
+{include file="permissions_admin_menu.htm"}
+{include file="componentinstance.js"}
+<div class="z-admincontainer">
+    {if $action eq add}
+    <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$submit}</div>
+    {else}
+    <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$submit}</div>
+    {/if}
+    <h2>{$title|varprepfordisplay}</h2>
+
+    {if $action eq "insert" or $action eq "modify" or $action eq "add"}
+    <form class="z-form" action="{$formurl|varprepfordisplay}" method="post" enctype="application/x-www-form-urlencoded">
+        <div>
+            <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Permissions"}" />
+            <input type="hidden" name="insseq" value="{$insseq|varprepfordisplay}" />
+            <input type="hidden" name="realm" value="0" />
+            {/if}
+            <table class="z-admintable">
+                <thead>
+                    <tr>
+                        <th>{gt text="Sequence"}</th>
+                        <th>{$mlpermtype|varprepfordisplay}</th>
+                        <th><a href="javascript:showinstanceinformation()">{gt text="Component"}</a></th>
+                        <th><a href="javascript:showinstanceinformation()">{gt text="Instance"}</a></th>
+                        <th>{gt text="Permission level"}</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {section name=permissions loop=$permissions}
+                    <tr class="{cycle values="z-odd,z-even"}">
+                        {if ($insseq eq $permissions[permissions].sequence) and ($action eq insert)}
+                        <td>&nbsp;</td>
+                        <td>
+                            <select name="id">
+                                {html_options options=$idvalues}
+                            </select>
+                        </td>
+                        <td><textarea name="component"></textarea></td>
+                        <td><textarea name="instance"></textarea></td>
+                        <td>
+                            <select name="level">
+                                {html_options options=$permissionlevels}
+                            </select>
+                        </td>
+                        <td>
+                            <input name="submit" type="submit" value="{$submit}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{$permissions[permissions].sequence|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].group|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].component|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].instance|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].accesslevel|varprepfordisplay}</td>
+                        <td>&nbsp;</td>
+                        {elseif ($chgpid eq $permissions[permissions].pid) and ($action eq modify)}
+                        <td>
+                            <input type="text" name="seq" size="3" value="{$permissions[permissions].sequence|varprepfordisplay}" />
+                            <input type="hidden" name="oldseq" value="{$permissions[permissions].sequence}" />
+                            <input type="hidden" name="pid" value="{$permissions[permissions].pid}" />
+                        </td>
+                        <td>
+                            <select name="id">
+                                {html_options options=$idvalues selected=$selectedid}
+                            </select>
+                        </td>
+                        <td><textarea name="component">{$permissions[permissions].component|varprepfordisplay}</textarea></td>
+                        <td><textarea name="instance">{$permissions[permissions].instance|varprepfordisplay}</textarea></td>
+                        <td>
+                            <select name="level">
+                                {html_options options=$permissionlevels selected=$permissions[permissions].level}
+                            </select>
+                        </td>
+                        <td>
+                            <input name="submit" type="submit" value="{$submit|varprepfordisplay}" />
+                        </td>
+                        {else}
+                        <td>{$permissions[permissions].sequence|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].group|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].component|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].instance|varprepfordisplay}</td>
+                        <td>{$permissions[permissions].accesslevel|varprepfordisplay}</td>
+                        <td>&nbsp;</td>
+                        {/if}
+                    </tr>
+                    {/section}
+                    {if $action eq "add"}
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <select name="id">
+                                {html_options options=$idvalues selected=$idvalue}
+                            </select>
+                        </td>
+                        <td><textarea name="component">{$permissions[permissions].component|varprepfordisplay}</textarea></td>
+                        <td><textarea name="instance">{$permissions[permissions].instance|varprepfordisplay}</textarea></td>
+                        <td>
+                            <select name="level">
+                                {html_options options=$permissionlevels selected=$permissions[permissions].level}
+                            </select>
+                        </td>
+                        <td>
+                            {button src=button_ok.gif set=icons/small alt=$submit title=$submit constants=false}
+                        </td>
+                    </tr>
+                    {/if}
+                </tbody>
+            </table>
+            {if $action eq "insert" or $action eq "modify" or $action eq "add"}
+        </div>
+    </form>
+    {/if}
+    {$pager}
+</div>

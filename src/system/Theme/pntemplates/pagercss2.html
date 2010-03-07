@@ -1,0 +1,55 @@
+{* $Id: pagercss2.html 18557 2006-04-03 11:56:53Z markwest $ *}
+
+{if $pagerPluginArray.includeStylesheet}
+{pnpageaddvar name="stylesheet" value="system/Theme/pnstyle/pagercssadvanced.css"}
+{/if}
+{assign var="separator" value=" | "}
+
+<div class="{$pagerPluginArray.class}">
+    {if $pagerPluginArray.currentPage > 1}
+        <a href="{$pagerPluginArray.prevUrl}" class="skip">
+            {pnimg modname=core set=icons/extrasmall src="previous.gif" __alt="Previous" __title="Previous Page"}
+        </a>
+    {else}
+        <span class="skip">
+            {pnimg modname=core set=icons/extrasmall src="previousinactive.gif" __alt="No previous pages" __title="No previous pages"}
+        </span>
+    {/if}
+    <span>{$separator}</span>
+
+    {foreach name="pages" item="currentPage" key="currentItem" from=$pagerPluginArray.pages}
+        {if $currentPage.isVisible eq 1 && $hiddenPageBoxOpened eq 1 && $hiddenPageBoxClosed eq 0}
+                    </span>
+                </span>
+            </span>
+            {assign var="hiddenPageBoxClosed" value="1"}
+            {assign var="hiddenPageBoxOpened" value="0"}
+        {/if}
+
+        {if $currentPage.isVisible eq 0 && $hiddenPageBoxOpened eq 0}
+            <span class="select">
+                <span class="option">
+                    <span class="items">
+            {assign var="hiddenPageBoxOpened" value="1"}
+            {assign var="hiddenPageBoxClosed" value="0"}
+        {/if}
+
+        {if $currentPage.isCurrentPage}
+            <strong>{$currentPage.pagenr}</strong>
+        {else}
+            <a href="{$currentPage.url}">{$currentPage.pagenr}</a>
+        {/if}
+
+        <span>{$separator}</span>
+    {/foreach}
+
+    {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
+        <a href="{$pagerPluginArray.nextUrl}" class="skip">
+            {pnimg modname=core set=icons/extrasmall src="next.gif" __alt="Next" __title="Next Page"}
+        </a>
+    {else}
+        <span class="skip">
+            {pnimg modname=core set=icons/extrasmall src="nextinactive.gif" __alt="No further pages" __title="No further pages"}
+        </span>
+    {/if}
+</div>

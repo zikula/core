@@ -1,0 +1,132 @@
+/* 
+culture shock: voodoo dolly v1.0
+pogy366: http://www.raykdesign.net
+Oct. 2005 
+*/
+
+/* general page structure and layout */
+body 
+{
+  color: #000; 
+  margin: 0;
+  padding: 0;
+}
+
+.page_wrap 
+{
+  margin: 0;
+  padding: 0;
+  width: auto;
+  text-align: center;
+}
+
+.top 
+{
+  display: none;
+}
+
+.header
+{
+  position: normal;
+  width: auto;
+  height: auto;
+  color: #000;
+}
+
+div.header h1
+{
+  color: #000;
+}
+
+.header h2
+{
+  display: none;
+}
+
+.header_block 
+{
+  position: normal;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  color: #000;
+}
+
+.logo 
+{
+  display: none;
+}
+
+.navbar 
+{
+  display: none;
+}
+
+.container
+{
+  width: auto;
+}
+
+.left_column 
+{
+  display:none;
+}
+
+.center_column 
+{
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.box_right 
+{
+  display:none;
+}
+
+.footer 
+{
+  display:none;
+}
+
+.footer_logo 
+{
+  display:none;
+}
+
+.bottom
+{
+  display:none;
+}
+
+/* navigation bar */
+#nav 
+{
+  display:none;
+}
+
+h3:after 
+{
+  display:none;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a
+{
+  text-decoration: none;
+  color: #000;
+}
+
+a
+{
+  text-decoration: underline;
+  color: #000;
+}
+
+img 
+{
+  border: none;
+}
+

@@ -1,0 +1,142 @@
+{*  $Id$ $changed by Charlie 2007-10-07 $ *}
+{gt text='New account registration' assign='templatetitle'}
+{ajaxheader modname='Users' filename='users.js'}
+
+{include file="users_user_menu.htm"}
+
+{if !$reg_allowreg}
+<h3>{gt text="Sorry! New user registration is currently disabled."}</h3>
+<div class="z-warningmsg">
+    {gt text="Reason"}: {$reg_noregreasons|varprepfordisplay}
+</div>
+{else}
+
+{modurl fqurl=true modname="Legal" type="user" func="main" assign=touUrl}
+{modurl fqurl=true modname="Legal" type="user" func="privacy" assign=ppUrl}
+{gt text='\'Terms of use\'' assign=touTextString}
+{gt text='\'Privacy policy\'' assign=ppTextString}
+{gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">%2$s</a>' tag1=$touUrl|varprepfordisplay tag2=$touTextString assign=touString}
+{gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">%2$s</a>' tag1=$ppUrl|varprepfordisplay tag2=$ppTextString assign=ppString}
+
+{if $legal && ($tou_active || $pp_active)}
+{if $tou_active && $pp_active}
+{gt text=' Please read the site\'s %1$s and %2$s beforehand.' tag1=$touString tag2=$ppString assign=touppString}
+{gt text='%1$s and %2$s' tag1=$touTextString tag2=$ppTextString assign=touppTextString}
+{elseif  $tou_active}
+{gt text=' Please read the site\'s %s beforehand.' tag1=$touString assign=touppString}
+{assign var='touppTextString' value=$touTextString}
+{elseif $pp_active}
+{gt text=' Please read the site\'s %s beforehand.' tag1=$ppString assign=touppString}
+{assign var='touppTextString' value=$ppTextString}
+{/if}
+{/if}
+
+<p>{gt text='Registering for a user account is easy. Registration can give you access to content and to features of the site that are not available to anonymous guests.'}
+{if $legal && ($tou_active || $pp_active)}
+{$touppString}
+{/if}
+{gt text='During your visits, you are recommended to set your browser to accept cookies from this site, because various features of the site use cookies.'}</p>
+<p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
+
+<form class="z-form" action="{modurl modname="Users" type="user" func="finishnewuser"}" method="post" id="newuser">
+    <div>
+        <input type="hidden" id="newuserauthid" name="authid" value="{insert name="generateauthkey" module="Users"}" />
+        <fieldset>
+            <legend>{gt text="Choose a user name"}</legend>
+            <div class="z-formrow">
+                <label for="users_uname">{gt text="User name"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <input id="users_uname" type="text" name="uname" size="25" maxlength="25" />
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>{if !$reg_verifyemail or ($reg_verifyemail eq 2)}{gt text="Set a password and enter your e-mail address"}{else}{gt text="Enter your e-mail address"}{/if}</legend>
+            {if !$reg_verifyemail or ($reg_verifyemail eq 2)}
+            <div class="z-formrow">
+                <label for="users_pass">{gt text="Password"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                {if $use_password_strength_meter eq 1}
+                <input id="users_pass" type="password" name="pass" size="25" maxlength="60"  class="pwsinput" onkeyup="updatePasswordStrength(this.value)" /> <div id="pwscontainer"><div id="pwsmeter"></div></div>
+                {else}
+                <input id="users_pass" type="password" name="pass" size="25" maxlength="60" />
+                {/if}
+            </div>
+            <div class="z-formrow">
+                <label for="users_vpass">{gt text="Password (repeat for verification)"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <input id="users_vpass" type="password" name="vpass" size="25" maxlength="60" />
+                <span class="z-sub z-formnote">({gt text="Notice: The minimum length for user passwords is:"} {$minpass})</span>
+            </div>
+            {/if}
+            <div class="z-formrow">
+                <label for="users_email">{gt text="E-mail address"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <input id="users_email" type="text" name="email" size="25" maxlength="60" />
+            </div>
+            <div class="z-formrow">
+                <label for="users_vemail">{gt text="E-mail address (repeat for verification)"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <input id="users_vemail" type="text" name="vemail" size="25" maxlength="60" />
+                {if $reg_verifyemail}
+                <span class="z-sub z-formnote">{gt text="Notice: Once your registration has been checked and accepted, your password will be sent to the e-mail address you enter here."}</span>
+                {/if}
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>{gt text="Select your preferences for e-mail"}</legend>
+            <div class="z-formrow">
+                <label for="users_viewemail">{gt text="Allow other users to see your e-mail address"}</label>
+                <input id="users_viewemail" type="checkbox" name="user_viewemail" value="1" />
+            </div>
+        </fieldset>
+
+        {if $legal && ($tou_active || $pp_active)}
+        <fieldset>
+            <legend>{gt text='Accept the site\'s %s' tag1=$touppTextString}</legend>
+            <div class="z-formrow">
+                {if $tou_active && $pp_active}
+                <label for="users_agreetoterms">{gt text='I agree to be bound by this site\'s %1$s and %2$s' tag1=$touString tag2=$ppString}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                {elseif  $tou_active}
+                <label for="users_agreetoterms">{gt text='I agree to be bound by this site\'s %1$s' tag1=$touString}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                {elseif $pp_active}
+                <label for="users_agreetoterms">{gt text='I agree to be bound by this site\'s %1$s' tag1=$ppString}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                {/if}
+                <input id="users_agreetoterms" type="checkbox" name="agreetoterms" value="1" />
+            </div>
+        </fieldset>
+        {else}
+        <input type="hidden" name="agreetoterms" value="1" />
+        {/if}
+
+        {configgetvar name="profilemodule" assign="profilemodule"}
+        {if $reg_optitems and $profilemodule}
+            {modfunc modname=$profilemodule type='form' func='edit'}
+        {/if}
+
+        {if $reg_question neq '' and $reg_answer neq ''}
+        <fieldset>
+            <legend>{gt text="Answer the security question (this prevents automated sign-ups by bots and scripts)"}</legend>
+            <div class="z-formrow">
+                <label for="users_reg_answer">{$reg_question|varprephtmldisplay}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <input id="users_reg_answer" type="text" name="reg_answer" size="25" maxlength="60" />
+            </div>
+        </fieldset>
+        {/if}
+
+        <fieldset>
+            <legend>{gt text="Check your entries and submit your registration"}</legend>
+            <span class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit registration' to continue."}</span>
+            <div class="z-formbuttons">
+                <input type="button" id="checkuserajax" class="z-hide" value="{gt text="Check your entries"}" />
+                <input type="submit" value="{gt text="Submit registration"}" id="submitnewuser" />
+                {img id="ajax_indicator" style="display: none;" modname=core set=icons/extrasmall src="indicator_circle.gif" alt=""}
+            </div>
+        </fieldset>
+
+        <div id="userinfo" class="newuserinfo z-hide"></div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $('submitnewuser').disabled = true;
+    Element.removeClassName('checkuserajax', 'z-hide');
+    Event.observe('checkuserajax', 'click', function(){callusercheck()}, false);
+</script>
+{/if}

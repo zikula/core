@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" lang="{lang}" dir="{langdirection}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={charset}" />
+<title>{title}</title>
+<meta name="description" content="{slogan}" />
+<meta name="keywords" content="{keywords}" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<link rel="stylesheet" type="text/css" href="{$stylepath}/style.css" media="screen,projection,print" />
+<link rel="stylesheet" type="text/css" href="{$stylepath}/print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="{$stylepath}/handheld.css" media="handheld" />
+</head>
+<body>
+<div class="top"></div>
+<div class="page_wrap z-clearfix">
+  <div class="header">
+    <div class="header_block">
+      <div class="logo"><img alt="logo" src="{$imagepath}/pc_logo.jpg" /></div>
+      <h1>{sitename}</h1>
+      {slogan}
+    </div>
+  </div>
+  <div class="navbar" id="nav">
+    <ul>
+      <li class="selected"><a href="{homepage}">{gt text="Home"}</a></li>
+      <li><a href="{modurl modname=News func=new}">{gt text="Submit article"}</a></li>
+      <li><a href="{modurl modname=Downloads}">{gt text="Downloads"}</a></li>
+      <li><a href="{modurl modname=Web_Links}">{gt text="Web links"}</a></li>
+      <li><a href="{modurl modname=Search}">{gt text="Search"}</a></li>
+{configgetvar name="profilemodule" assign="profileMod"}
+{if $profileMod ne ""}
+      <li><a href="{modurl modname=$profileMod}">{gt text="Your account"}</a></li>
+{/if}
+    </ul>
+  </div>
+  <div class="container z-clearfix">
+    <div class="left_column">
+      {blockposition name=left}
+    </div>
+    <div class="box_right">
+        {blockposition name=right}
+    </div>
+    <div class="center_column">
+      {$maincontent}
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer_logo"><img alt="logo" src="{$imagepath}/footer_logo.jpg" /></div>
+    <span id="footer">{gt text="Copyright"} 2007 {sitename} &nbsp;&#8226;&nbsp; <a href="http://zikula.org/">Zikula</a> &nbsp;&#8226;&nbsp; <a href="http://validator.w3.org/check?uri=referer">XHTML</a>' &nbsp;&#8226;&nbsp; <a href="http://jigsaw.w3.org/css-validator/">CSS</a></span>
+    {nocache}{pagerendertime}{/nocache}
+    {nocache}{sqldebug}{/nocache}
+  </div>
+</div>
+<div class="bottom"></div>
+</body>
+</html>
