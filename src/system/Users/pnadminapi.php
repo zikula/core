@@ -412,7 +412,15 @@ function users_adminapi_getapplication($args)
         return false;
     }
 
-    $item = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid');
+    $permFilter[] = array('realm' => 0,
+                          'component_left'   => 'Users',
+                          'component_middle' => '',
+                          'component_right'  => '',
+                          'instance_left'    => 'uname',
+                          'instance_middle'  => '',
+                          'instance_right'   => 'tid',
+                          'level'            => ACCESS_READ);
+    $item = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid', null, $permFilter);
 
     if ($item === false) {
         LogUtil::registerError(__('Error! Could not load data.'));

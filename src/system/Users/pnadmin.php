@@ -395,22 +395,29 @@ function users_admin_viewtempuserinfo()
     }
 
     // Get parameters from whatever input we need.
-    $userid = FormUtil::getPassedValue('userid', null, 'GET');
+    // (Note that the name of the passed parameter is 'userid' but that it
+    // is actually a registration application id.)
+    $regid = FormUtil::getPassedValue('userid', null, 'GET');
 
-    if (empty($userid) || !is_numeric($userid)) {
+    if (empty($regid) || !is_numeric($regid)) {
         return LogUtil::registerArgsError();
     }
 
-    $tempuser = pnModAPIFunc('Users', 'admin', 'getapplication', array('userid' => $userid));
+    $regApplication = pnModAPIFunc('Users', 'admin', 'getapplication', array('userid' => $regid));
+    if (!$regApplication) {
+        // getapplication could fail (return false) because of a nonexistant
+        // record, no permission to read an existing record, or a database error
+        return LogUtil::registerError(__('Unable to retrieve registration record. The record with the specified id might not exist, or you might not have permission to access that record.'));
+    }
 
-    $userinfo = array_merge($tempuser, (array)@unserialize($tempuser['dynamics']));
+    $regApplication = array_merge($regApplication, (array)@unserialize($regApplication['dynamics']));
 
     // Create output object
     $pnRender = Renderer::getInstance('Users', false);
 
-    $pnRender->assign('uname',    $userinfo['uname']);
-    $pnRender->assign('userid',   $userid);
-    $pnRender->assign('userinfo', $userinfo);
+    $pnRender->assign('uname',    $regApplication['uname']);
+    $pnRender->assign('userid',   $regid);
+    $pnRender->assign('userinfo', $regApplication);
 
     return $pnRender->fetch('users_admin_viewtempuserdetails.htm');
 }
