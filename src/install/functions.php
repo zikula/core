@@ -138,30 +138,33 @@ function install()
                 $GLOBALS['ZConfig'] = $ZConfig;
 
                 // Easier to create initial DB direct with PDO
-                try {
-                    $dbh = new PDO("$dbtype:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
-                } catch (PDOException $e) {
-                    $dbh = false;
-                }
                 if ($createdb) {
-                	try {
+                    try {
                         $dbh = new PDO("$dbtype:host=$dbhost", $dbusername, $dbpassword);
                         $result = makedb($dbh, $dbname, $dbtype);
-                	} catch (PDOException $e) {
-                		$result = false;
-                		$smarty->assign('reason', $e->getMessage());
-                	}
+                    } catch (PDOException $e) {
+                        $result = false;
+                        $smarty->assign('reason', $e->getMessage());
+                    }
                     // check if we've successfully made the db
                     if (!$result) {
                         $action = 'dbinformation';
                         $smarty->assign('dbcreatefailed', true);
                     }
                 } else {
+                    try {
+                        $dbh = new PDO("$dbtype:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
+                    } catch (PDOException $e) {
+                        $smarty->assign('reason', $e->getMessage());
+                        $dbh = false;
+                    }
+                    
                     if (!$dbh) {
                         $action = 'dbinformation';
                         $smarty->assign('dbconnectfailed', true);
                     }
                 }
+                
                 // if it is the distribution and the process have not failed in a previous step
                 if($installbySQL && $action != 'dbinformation') {
                     // checks if exists a previous installation with the same prefix
