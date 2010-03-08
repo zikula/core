@@ -201,12 +201,11 @@ function users_admin_view($args)
 
     // check what groups can access the user
     $userGroupsAccess = array();
-    $canSeeGroups = false;
+    $groupsArray = array();
+    $canSeeGroups = (!empty($groups));
     foreach($groups as $group){
-        if (SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_READ)) {
-            $canSeeGroups = true;
-            $userGroupsAccess[$group['gid']] = array('gid' => $group['gid']);
-        }
+        $userGroupsAccess[$group['gid']] = array('gid' => $group['gid']);
+
         // rewrite the groups array with the group id as key and the group name as value
         $groupsArray[$group['gid']] = array('name' => DataUtil::formatForDisplayHTML($group['name']));
     }
