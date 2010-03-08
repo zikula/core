@@ -57,15 +57,6 @@ class ZLoader
             }
         }
 
-        // class matches $plugin_SystemPlugin
-        if (preg_match('#(\w+)_SystemPlugin$#i', $class, $match)) {
-            $plugin = $match[1];
-            $path = "plugins/$plugin/Plugin.php";
-            if (file_exists($path)) {
-                return include $path;
-            }
-        }
-
         // class matches FilterUtil_*
         if (strpos($class, 'FilterUtil_')) {
             $array = explode('_', $class);
@@ -95,10 +86,6 @@ class ZLoader
     public static function map()
     {
         return array(
-            'pnForm' => 'form',
-            'pnFormHandler' => 'form',
-            'pnFormPlugin' => 'form',
-            'pnFormStyledPlugin' => 'form',
             'ZLanguage' => 'i18n',
             'ZI18n' => 'i18n',
             'ZL10n' => 'i18n',
