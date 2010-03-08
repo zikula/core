@@ -1,12 +1,12 @@
 <h2>{gt text="Enter database information"}</h2>
 {if $dbcreatefailed or $dbconnectfailed or $dbconnectmissing or $dbinvalidprefix or $dbdumpfailed or $dbexists}
 <div class="z-errormsg">
-    {if $dbconnectmissing}{gt text="Error! Some of the required information was not entered. Please check your entries and try again."}
-    {elseif $dbinvalidprefix}{gt text="Error! Invalid table prefix. Please use only letters or numbers."}
-    {elseif $dbconnectfailed}{gt text="Error! Could not connect to the database. Please check that you have entered the correct database information and try again."}
-    {elseif $dbcreatefailed}{gt text="Error! Could not create database (perhaps, it already exists?). Please check that you have entered the correct database information and try again."}
-    {elseif $dbdumpfailed}{gt text="Error! Could not dump the database. Please check that the file zikulacms.sql is located within the folder install/sql and it is readable."}
-    {elseif $dbexists}{gt text="Error! The database exists and contain tables. Please delete all tables before to proceed."}
+    {if $dbconnectmissing}{gt text="Error! Some of the required information was not entered. Please check your entries and try again."}<br />{$reason}
+    {elseif $dbinvalidprefix}{gt text="Error! Invalid table prefix. Please use only letters or numbers."}<br />{$reason}
+    {elseif $dbconnectfailed}{gt text="Error! Could not connect to the database. Please check that you have entered the correct database information and try again."}<br />{$reason}
+    {elseif $dbcreatefailed}{gt text="Error! Could not create database. Please check that you have entered the correct database information and try again."}<br />{$reason}
+    {elseif $dbdumpfailed}{gt text="Error! Could not dump the database. Please check that the file zikulacms.sql is located within the folder install/sql and it is readable."}<br />{$reason}
+    {elseif $dbexists}{gt text="Error! The database exists and contain tables. Please delete all tables before to proceed."}<br />{$reason}
     {/if}
 </div>
 {/if}

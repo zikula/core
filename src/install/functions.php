@@ -144,17 +144,23 @@ function install()
                     $dbh = false;
                 }
                 if ($createdb) {
-                    $dbh = new PDO("$dbtype:host=$dbhost", $dbusername, $dbpassword);
-                    $result = makedb($dbh, $dbname, $dbtype);
+                	try {
+                        $dbh = new PDO("$dbtype:host=$dbhost", $dbusername, $dbpassword);
+                        $result = makedb($dbh, $dbname, $dbtype);
+                	} catch (PDOException $e) {
+                		$result = false;
+                	}
                     // check if we've successfully made the db
                     if (!$result) {
                         $action = 'dbinformation';
                         $smarty->assign('dbcreatefailed', true);
+                        $smarty->assign('reason', $e->getMessage());
                     }
                 } else {
                     if (!$dbh) {
                         $action = 'dbinformation';
                         $smarty->assign('dbconnectfailed', true);
+                        $smarty->assign('reason', $e->getMessage());
                     }
                 }
                 // if it is the distribution and the process have not failed in a previous step
