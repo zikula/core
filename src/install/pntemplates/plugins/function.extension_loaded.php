@@ -13,7 +13,7 @@ function smarty_function_extension_loaded($params, &$smarty)
     }
 
     // check if the file exists
-    $result = extension_loaded($params['extension_loaded']);
+    $result = extension_loaded($params['extension']);
 
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);
