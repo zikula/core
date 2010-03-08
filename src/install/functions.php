@@ -141,26 +141,18 @@ function install()
                 if ($createdb) {
                     try {
                         $dbh = new PDO("$dbtype:host=$dbhost", $dbusername, $dbpassword);
-                        $result = makedb($dbh, $dbname, $dbtype);
+                        makedb($dbh, $dbname, $dbtype);
                     } catch (PDOException $e) {
-                        $result = false;
+                    	$action = 'dbinformation';
                         $smarty->assign('reason', $e->getMessage());
-                    }
-                    // check if we've successfully made the db
-                    if (!$result) {
-                        $action = 'dbinformation';
                         $smarty->assign('dbcreatefailed', true);
                     }
                 } else {
                     try {
                         $dbh = new PDO("$dbtype:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
                     } catch (PDOException $e) {
+                    	$action = 'dbinformation';
                         $smarty->assign('reason', $e->getMessage());
-                        $dbh = false;
-                    }
-                    
-                    if (!$dbh) {
-                        $action = 'dbinformation';
                         $smarty->assign('dbconnectfailed', true);
                     }
                 }
@@ -368,10 +360,8 @@ function makedb($dbh, $dbname, $dbtype)
     try {
         $dbh->query($query);
     } catch (PDOException $e) {
-        return false;
+    	throw new PDOException($e);
     }
-
-    return true;
 }
 
 /**
