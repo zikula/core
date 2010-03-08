@@ -12,6 +12,12 @@
                 {else}
                 <li class="failed">{gt text="You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.2.6 or later." tag1=$phpversion}</li>{assign var=checkfailed value=true}
                 {/if}
+                {extension_loaded assign=pdo assign=pdo}
+                {if $pdo}
+                <li class="passed">{gt text="PDO extension loaded."}</li>
+                {else}
+                <li class="failed">{gt text="You PHP installation doesn't have the PDO extension loaded."}</li>{assign var=checkfailed value=true}
+                {/if}
                 {phpfunctionexists func=token_get_all assign=phptokens}
                 {if $phptokens}
                 <li class="passed">{gt text="Your PHP installation has the necessary token functions available."}</li>
