@@ -12,7 +12,7 @@
                 {else}
                 <li class="failed">{gt text="You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.2.6 or later." tag1=$phpversion}</li>{assign var=checkfailed value=true}
                 {/if}
-                {extension_loaded extension='PDO' assign=pdo}
+                {extension_loaded extension=pdo assign=pdo}
                 {if $pdo}
                 <li class="passed">{gt text="PDO extension loaded."}</li>
                 {else}
