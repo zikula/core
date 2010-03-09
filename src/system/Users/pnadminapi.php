@@ -125,24 +125,7 @@ function users_adminapi_findusers($args)
 
     $where = 'WHERE ' . $args['condition'];
 
-    // Select basic user data
-    $sql = "SELECT     $userscolumn[uname] as uname,
-                       $userscolumn[uid] as uid,
-                       $userscolumn[email] as email
-            FROM       $pntable[users]
-            $where
-            ORDER BY $userscolumn[uname] ASC";
-
-    $result = DBUtil::executeSQL($sql);
-
-    $objArray = array();
-    if (!$result) {
-        $objArray = null;
-    } else {
-        for (; !$result->EOF; $result->MoveNext()) {
-            $objArray[] = $result->GetRowAssoc(2);
-        }
-    }
+    $objArray = DBUtil::selectObjectArray('users', $where, 'uname');
 
     return $objArray;
 }
