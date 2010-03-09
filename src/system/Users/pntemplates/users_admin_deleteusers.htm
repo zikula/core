@@ -8,7 +8,7 @@
 
     <h2>{$templatetitle}</h2>
 
-    <p class="z-warningmsg">{gt text='Do you really want to delete this user account?' plural='Do you really want to delete these user accounts?' count=$users|@count}</p>
+    <p class="z-warningmsg">{gt text='Do you really want to delete this user account?'}</p>
 
     <form class="z-form" action="{modurl modname='Users' type='admin' func='processusers' op='delete'}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
@@ -16,13 +16,11 @@
             <input type="hidden" name="do" value="yes" />
             <fieldset>
                 <legend>{gt text='Confirmation prompt'}</legend>
-                {foreach from=$users key='uid' item='uname'}
-                <input type="hidden" name="userid[]" value="{$uid|varprepfordisplay}" />
+                <input type="hidden" name="userid[]" value="{$userid|varprepfordisplay}" />
                 <div class="z-formrow">
                     <label>{gt text='User name'}</label>
                     <span>{$uname}</span>
                 </div>
-                {/foreach}
             </fieldset>
             <div class="z-formbuttons">
                 {button src='button_ok.gif' set='icons/small' __alt='Delete user account' __title='Delete user account'}
@@ -31,3 +29,4 @@
         </div>
     </form>
 </div>
+

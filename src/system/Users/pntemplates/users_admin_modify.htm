@@ -35,16 +35,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {foreach key='groupid' item='group' from=$access_types_array}
+                        {foreach key='group_id' item='group' from=$groups_infos}
                         <tr class="{cycle values='z-odd,z-even'}">
-                            <td>{$group}</td>
-                            {assign var='groupmember' value=false}
-                            {foreach item='member' from='$permissions_array}
-                            {if $member eq $groupid}
-                            {assign var='groupmember' value=true}
-                            {/if}
-                            {/foreach}
-                            <td style="text-align:right;"><input type="checkbox"{if $groupmember} checked="checked" {/if}name="access_permissions[]" value="{$groupid}" /></td>
+                            <td>{$group.name}</td>
+                            <td style="text-align:right;"><input type="checkbox" name="access_permissions[]" value="{$group_id}" {if $group.access}checked="checked" {/if}/></td>
                         </tr>
                         {/foreach}
                     </tbody>
@@ -109,3 +103,4 @@
         </div>
     </form>
 </div>
+

@@ -677,13 +677,25 @@ function users_admin_modify($args)
         return LogUtil::registerPermissionError();
     }
 
-    // get our input
-    $op     = FormUtil::getPassedValue('op', (isset($args['op']) ? $args['op'] : null), 'GET');
+    // get arguments
     $userid = FormUtil::getPassedValue('userid', (isset($args['userid']) ? $args['userid'] : null), 'GET');
     $uname  = FormUtil::getPassedValue('uname', (isset($args['uname']) ? $args['uname'] : null), 'GET');
 
-    if (is_null($userid) && !is_null($uname) && !empty($uname)) {
+    // check arguments
+    if (is_null($userid) && is_null($uname)) {
+        LogUtil::registerError(__('Sorry! No such user found.'));
+        return pnRedirect(pnModURL('Users', 'admin', 'main'));
+    }
+
+    // retreive userid from uname
+    if (is_null($userid) && !empty($uname)) {
         $userid = pnUserGetIDFromName($uname);
+    }
+
+    // warning for guest account
+    if ($userid == 1) {
+        LogUtil::registerError(__("Error! You can't edit the guest account."));
+        return pnRedirect(pnModURL('Users', 'admin', 'main'));
     }
 
     // get the user vars
@@ -692,9 +704,6 @@ function users_admin_modify($args)
         LogUtil::registerError(__('Sorry! No such user found.'));
         return pnRedirect(pnModURL('Users', 'admin', 'main'));
     }
-
-    $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfile = (!empty($profileModule) && pnModAvailable($profileModule));
 
     // if module Legal is not available show the equivalent states for user activation value
     if(!pnModAvailable('legal') || (!pnModGetVar('legal', 'termsofuse') && !pnModGetVar('legal', 'privacypolicy'))) {
@@ -706,37 +715,41 @@ function users_admin_modify($args)
     }
 
     // create the output oject
-    $pnRender = Renderer::getInstance('Users', false);
+    $Renderer = Renderer::getInstance('Users', false);
 
     // urls
-    $pnRender->assign('urlprocessusers', pnModUrl('Users', 'admin', 'processusers', array('op' => 'edit', 'do' => 'yes')));
-    $pnRender->assign('op', 'edit');
-    $pnRender->assign('userid', $userid);
-    $pnRender->assign('userinfo', $uservars);
+    $Renderer->assign('urlprocessusers', pnModUrl('Users', 'admin', 'processusers', array('op' => 'edit', 'do' => 'yes')));
+    $Renderer->assign('op', 'edit');
+    $Renderer->assign('userid', $userid);
+    $Renderer->assign('userinfo', $uservars);
 
     // groups
     $permissions_array = array();
     $access_types_array = array();
-    $usergroups = pnModAPIFunc('Groups', 'user', 'getusergroups', array('uid' => $userid));
-    foreach ($usergroups as $usergroup) {
-        if(SecurityUtil::checkPermission('Groups::', "$usergroup[gid]::", ACCESS_EDIT)) {
-            $permissions_array[] = (int)$usergroup['gid'];
-        }
-    }
-    $allgroups = pnModAPIFunc('Groups', 'user', 'getall');
-    foreach ($allgroups as $group) {
+    $user_groups = pnModAPIFunc('Groups', 'user', 'getusergroups', array('uid' => $userid));
+    $all_groups = pnModAPIFunc('Groups', 'user', 'getall');
+
+    foreach ($all_groups as $group) {
         if(SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
-            $access_types_array[$group['gid']] = $group['name'];
+            $groups_infos[$group['gid']] = array();
+            $groups_infos[$group['gid']]['name'] = $group['name'];
+
+            foreach ($user_groups as $user_group) {
+                if ($user_group['gid'] == $group['gid']) {
+                    $groups_infos[$group['gid']]['access'] = true;
+                } else {
+                    $groups_infos[$group['gid']]['access'] = false;
+                }
+            }
         }
     }
 
-    $pnRender->assign('permissions_array', $permissions_array);
-    $pnRender->assign('access_types_array', $access_types_array);
-    $pnRender->assign('legal', pnModAvailable('legal'));
-    $pnRender->assign('tou_active', pnModGetVar('legal', 'termsofuse', true));
-    $pnRender->assign('pp_active',  pnModGetVar('legal', 'privacypolicy', true));
+    $Renderer->assign('groups_infos', $groups_infos);
+    $Renderer->assign('legal', pnModAvailable('legal'));
+    $Renderer->assign('tou_active', pnModGetVar('legal', 'termsofuse', true));
+    $Renderer->assign('pp_active',  pnModGetVar('legal', 'privacypolicy', true));
 
-    return $pnRender->fetch('users_admin_modify.htm');
+    return $Renderer->fetch('users_admin_modify.htm');
 }
 
 /**
@@ -753,42 +766,41 @@ function users_admin_deleteusers($args)
     }
 
     // get arguments
-    $op     = FormUtil::getPassedValue('op', null, 'GET');
-    $userid = isset($args['userid']) ? $args['userid'] : FormUtil::getPassedValue('userid', null, 'GET');
-    $uname  = isset($args['uname'])  ? $args['uname']  : FormUtil::getPassedValue('uname', null, 'GET');
+    $userid = FormUtil::getPassedValue('userid', (isset($args['userid']) ? $args['userid'] : null), 'GET');
+    $uname  = FormUtil::getPassedValue('uname', (isset($args['uname']) ? $args['uname'] : null), 'GET');
 
-    // buld the users array
-    $users = array();
-
-    if (is_null($userid) && !is_null($uname) && !empty($uname)) {
-        $userid = pnUserGetIDFromName($uname);
-        $users[$userid] = $uname;
-
-    } elseif (is_null($uname)) {
-        if (is_array($userid)) {
-            foreach ($userid as $uid) {
-                if ($name == pnUserGetVar('uname', $uid)) {
-                    $users[$uid] = $name;
-                }
-            }
-
-        } elseif ($uname == pnUserGetVar('uname', $userid)) {
-            $users[$userid] = $uname;
-        }
+    // check arguments
+    if (is_null($userid) && is_null($uname)) {
+        LogUtil::registerError(__('Sorry! No such user found.'));
+        return pnRedirect(pnModURL('Users', 'admin', 'main'));
     }
 
-    if ($userid == 1 || empty($users)) {
+    // retreive userid from uname
+    if (is_null($userid) && !empty($uname)) {
+        $userid = pnUserGetIDFromName($uname);
+    }
+
+    // warning for guest account
+    if ($userid == 1) {
+        LogUtil::registerError(__("Error! You can't delete the guest account."));
+        return pnRedirect(pnModURL('Users', 'admin', 'main'));
+    }
+
+    // get the user vars
+    $uname = pnUserGetVar('uname', $userid);
+    if ($uname == false) {
         LogUtil::registerError(__('Sorry! No such user found.'));
         return pnRedirect(pnModURL('Users', 'admin', 'main'));
     }
 
     // create the output object
-    $pnRender = Renderer::getInstance('Users', false);
+    $Renderer = Renderer::getInstance('Users', false);
 
-    $pnRender->assign('users', $users);
+    $Renderer->assign('userid', $userid);
+    $Renderer->assign('uname', $uname);
 
     // return output
-    return $pnRender->fetch('users_admin_deleteusers.htm');
+    return $Renderer->fetch('users_admin_deleteusers.htm');
 }
 
 /**
