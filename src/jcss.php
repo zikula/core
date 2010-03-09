@@ -71,10 +71,7 @@ exit;
 
 function is_serialized($string)
 {
-    if ($string == 'b:0;') {
-        return true;
-    }
-    return (self::mb_unserialize($string) === false ? false : true);
+    return ($string == 'b:0;' ? true : (bool) @unserialize($string));
 }
 
 function pnStripslashes(&$value)
@@ -96,3 +93,4 @@ class SecurityUtil
         return true;
     }
 }
+

@@ -497,14 +497,20 @@ class DataUtil
      * check for serialization
      *
      * @param string $string
+     * @param checkmb true or false
      * @return bool
      */
-    public static function is_serialized($string)
+    public static function is_serialized($string, $checkmb = true)
     {
         if ($string == 'b:0;') {
             return true;
         }
-        return (self::mb_unserialize($string) === false ? false : true);
+
+        if ($checkmb) {
+            return (self::mb_unserialize($string) === false ? false : true);
+        } else {
+            return (@unserialize($string) === false ? false : true);
+        }
     }
 
     /**
