@@ -689,7 +689,8 @@ function users_admin_modify($args)
     // get the user vars
     $uservars = pnUserGetVars($userid);
     if ($uservars == false) {
-        return LogUtil::registerError(__('Sorry! No items found.'), 404);
+        LogUtil::registerError(__('Sorry! No such user found.'));
+        return pnRedirect(pnModURL('Users', 'admin', 'main'));
     }
 
     $profileModule = pnConfigGetVar('profilemodule', '');
@@ -777,7 +778,8 @@ function users_admin_deleteusers($args)
     }
 
     if ($userid == 1 || empty($users)) {
-        return LogUtil::registerArgsError();
+        LogUtil::registerError(__('Sorry! No such user found.'));
+        return pnRedirect(pnModURL('Users', 'admin', 'main'));
     }
 
     // create the output object

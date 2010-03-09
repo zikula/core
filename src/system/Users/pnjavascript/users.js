@@ -155,14 +155,14 @@ function showdynamicsmenu()
 function liveusersearch()
 {
     Element.removeClassName('liveusersearch', 'z-hide');
-    Event.observe('modifyuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=Users&type=admin&func=modify&uname=" + $F('username');}, false);
-    Event.observe('deleteuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=Users&type=admin&func=deleteusers&uname=" + $F('username');}, false);
-    new Ajax.Autocompleter('username', 'username_choices', document.location.pnbaseURL + 'ajax.php?module=Users&func=getusers',
+    Event.observe('modifyuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=users&type=admin&func=modify&uname=" + $F('username');}, false);
+    Event.observe('deleteuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=users&type=admin&func=deleteusers&uname=" + $F('username');}, false);
+    new Ajax.Autocompleter('username', 'username_choices', document.location.pnbaseURL + 'ajax.php?module=users&func=getusers',
                            {paramName: 'fragment',
                             minChars: 3,
                             afterUpdateElement: function(data){
-                                Event.observe('modifyuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=Users&type=admin&func=modify&userid=" + $($(data).value).value;}, false);
-                                Event.observe('deleteuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=Users&type=admin&func=deleteusers&userid=" + $($(data).value).value;}, false);
+                                Event.observe('modifyuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=users&type=admin&func=modify&userid=" + $($(data).value).value;}, false);
+                                Event.observe('deleteuser', 'click', function() { window.location.href=document.location.entrypoint + "?module=users&type=admin&func=deleteusers&userid=" + $($(data).value).value;}, false);
                                 }
                             }
                             );
