@@ -53,10 +53,7 @@ function users_searchapi_search($args)
 
     // get the db and table info
     $pntable = pnDBGetTables();
-    $userstable  = $pntable['users'];
     $userscolumn = $pntable['users_column'];
-    $searchTable = $pntable['search_result'];
-    $searchColumn = $pntable['search_result_column'];
 
     $q = DataUtil::formatForStore($args['q']);
     $q = str_replace('%', '\\%', $q);  // Don't allow user input % as wildcard
@@ -82,53 +79,32 @@ function users_searchapi_search($args)
         $where[] = "$userscolumn[uname] LIKE '%$q%'";
     }
 
-    $where = 'WHERE '.implode(' AND ', $where);
+    $where = implode(' AND ', $where);
 
-    // Select basic user data
-    $sql = "SELECT     $userscolumn[uname] as uname,
-                       $userscolumn[uid] as uid,
-                       $userscolumn[user_regdate] as user_regdate
-            FROM       $pntable[users]
-            $where";
+    $users = DBUtil::selectObjectArray ('users', $where, '', -1, -1, 'uid');
 
-    $result = DBUtil::executeSQL($sql);
-    if (!$result) {
+    if (!$users) {
         return LogUtil::registerError(__('Error! Could not load data.'));
     }
 
     $sessionId = session_id();
 
-    $insertSql = "INSERT INTO $searchTable
-                      ($searchColumn[title],
-                       $searchColumn[text],
-                       $searchColumn[extra],
-                       $searchColumn[module],
-                       $searchColumn[created],
-                       $searchColumn[session])
-                    VALUES ";
-
-    // process the result set into an array of records
-    for (; !$result->EOF; $result->MoveNext()) {
-        $user = $result->GetRowAssoc(2);
+    foreach ($users as $user) {
         if ($user['uid'] != 1 && SecurityUtil::checkPermission('Users::', "$user[uname]::$user[uid]", ACCESS_READ)) {
             $qtext = __('Registration date'). ': ' . DateUtil::formatDatetime($user['user_regdate'], 'datebrief') . "\n"
                    . __("Click the user's name to view his/her complete profile.");
-
-            $sql = $insertSql . '('
-                   . '\'' . __('Registered users') . ': ' . DataUtil::formatForStore($user['uname']) . '\', '
-                   . '\'' . DataUtil::formatForStore($qtext) . '\', ';
-            $sql .=  '\'' . DataUtil::formatForStore($user['uid']) . '\', '
-                   . '\'' . 'Users' . '\', '
-                   . '\'' . DataUtil::formatForStore($user['user_regdate']) . '\', '
-                   . '\'' . DataUtil::formatForStore($sessionId) . '\')';
-
-            $insertResult = DBUtil::executeSQL($sql);
+            $items = array('title' => __('Registered users') . ': ' . DataUtil::formatForStore($user['uname']),
+                           'text' => DataUtil::formatForStore($qtext),
+                           'extra' => DataUtil::formatForStore($user['uid']),
+                           'module' => 'Users',
+                           'created' => DataUtil::formatForStore($user['user_regdate']),
+                           'session' => DataUtil::formatForStore($sessionId));
+            $insertResult = DBUtil::insertObject($items, 'search_result');
             if (!$insertResult) {
                 return LogUtil::registerError(__('Error! Could not load data.'));
             }
         }
     }
-
     return true;
 }
 
