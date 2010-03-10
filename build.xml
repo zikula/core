@@ -138,7 +138,7 @@
     <!-- PHP CodeSniffer -->
     <target name="phpcs">
         <echo msg="PHP CodeSniffer..." />
-        <exec command="phpcs --report=checkstyle --standard=Zikula --ignore=lib/vendor/*,javascript/*,system/SecurityCenter/pnincludes/*,*.css,*.js ${sourcedir}/src > ${builddir}/logs/phpcs.xml" escape="false" />
+        <exec command="phpcs --report=checkstyle --standard=Zikula --ignore=lib/vendor/*,javascript/*,system/SecurityCenter/pnincludes/*,system/Mailer/pnincludes/*,*.css,*.js ${sourcedir}/src > ${builddir}/logs/phpcs.xml" escape="false" />
     </target>
 
     <!-- Unit Tests & coverage analysis -->
