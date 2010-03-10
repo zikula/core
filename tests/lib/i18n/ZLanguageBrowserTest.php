@@ -35,6 +35,15 @@ class ZLanguageBrowserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('fr', $return);
     }
 
+    public function testReturnBrowserPrefFRBis()
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en;q=0.3,fr';
+        $sysLang = array('fr', 'en', 'de', 'nl');
+        $ZLanguageBrowser = new ZLanguageBrowser($sysLang);
+        $return = $ZLanguageBrowser->discover();
+        $this->assertEquals('fr', $return);
+    }
+
     public function testReturnBrowserPrefEN()
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en;q=0.8,fr;q=0.3';
