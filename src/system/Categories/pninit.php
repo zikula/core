@@ -424,16 +424,16 @@ function Categories_insertData_10()
         'status' => 'A',
         '__ATTRIBUTES__' => array('code' => 'A'));
     $objArray[] = array(
-	'id' => 31,
-	'parent_id' => 1,
-	'is_locked' => 0,
-	'is_leaf' => 0,
-	'name' => 'Users',
-	'display_name' => Categories_makeDisplayName(__('Users')),
-	'display_desc' => Categories_makeDisplayDesc(),
-	'path' => '/__SYSTEM__/Users',
-	'ipath' => '/1/31',
-	'status' => 'A');
+        'id' => 31,
+        'parent_id' => 1,
+        'is_locked' => 0,
+        'is_leaf' => 0,
+        'name' => 'Users',
+        'display_name' => Categories_makeDisplayName(__('Users')),
+        'display_desc' => Categories_makeDisplayDesc(),
+        'path' => '/__SYSTEM__/Users',
+        'ipath' => '/1/31',
+        'status' => 'A');
     $objArray[] = array(
         'id' => 32,
         'parent_id' => 2,
