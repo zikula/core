@@ -344,9 +344,9 @@ function users_admin_viewapplications()
     // Loop through each returned item adding in the options that the user has over
     // each item based on the permissions the user has.
     foreach ($items as $key => $item) {
+        // Options for the item.
         $options = array();
 
-        // Options for the item.
         if (pnModGetVar('Users', 'reg_optitems')) {
             $options[] = array(
                 'url'       => pnModURL('Users', 'admin', 'viewtempuserinfo',
