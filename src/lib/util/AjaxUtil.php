@@ -57,7 +57,7 @@ class AjaxUtil
         // check if an error message is set
         $msgs = LogUtil::getErrorMessagesText ('<br />');
         if ($msgs != false && !empty($msgs)) {
-            AjaxUtil::error($msgs);
+            self::error($msgs);
         }
 
         // now check if a status message is set

@@ -93,7 +93,7 @@ class DateUtil
      */
     public function transformInternalDateTime($timestamp)
     {
-        return DateUtil::strftime(DATEFORMAT_FIXED, $timestamp);
+        return self::strftime(DATEFORMAT_FIXED, $timestamp);
     }
 
     /**
@@ -103,7 +103,7 @@ class DateUtil
      */
     public function transformInternalDate($timestamp)
     {
-        return DateUtil::strftime(DATEONLYFORMAT_FIXED, $timestamp);
+        return self::strftime(DATEONLYFORMAT_FIXED, $timestamp);
     }
 
 
@@ -578,7 +578,7 @@ class DateUtil
      */
     public function parseUIDate($text, $format=null)
     {
-        return DateUtil::parseUIDateTime($text, $format);
+        return self::parseUIDateTime($text, $format);
         }
 
 
@@ -590,7 +590,7 @@ class DateUtil
      */
     public function parseUIDateTime($text, $dateformat=null)
     {
-        $format = DateUtil::getDateFormatData($dateformat);
+        $format = self::getDateFormatData($dateformat);
         $yearPos = $format['matches']['year'];
         $monthPos = $format['matches']['month'];
         $dayPos = $format['matches']['day'];
@@ -704,7 +704,7 @@ class DateUtil
             return false;
         }
 
-        $timezones = DateUtil::getTimezones();
+        $timezones = self::getTimezones();
         if (isset($timezones[$tz])) {
             return $timezones[$tz];
         }

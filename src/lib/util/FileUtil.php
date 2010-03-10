@@ -321,7 +321,7 @@ class FileUtil
     public static function readFileLines($filename, $absolute = false)
     {
         $lines = false;
-        if ($data = FileUtil::readFile($filename, $absolute)) {
+        if ($data = self::readFile($filename, $absolute)) {
             $lines = explode("\n", $data);
         }
         return $lines;
