@@ -344,9 +344,9 @@ function users_admin_viewapplications()
     // Loop through each returned item adding in the options that the user has over
     // each item based on the permissions the user has.
     foreach ($items as $key => $item) {
+        $options = array();
         if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[tid]", ACCESS_READ)) {
             // Options for the item.
-            $options = array();
             if (pnModGetVar('Users', 'reg_optitems')) {
                 $options[] = array('url'   => pnModURL('Users', 'admin', 'viewtempuserinfo', array('userid' => $item['tid'])),
                                    'imgfile' => 'list.gif',
@@ -364,8 +364,8 @@ function users_admin_viewapplications()
             }
 
             // Add the calculated menu options to the item array
-            $items[$key]['options'] = $options;
         }
+        $items[$key]['options'] = $options;
     }
 
     // Assign the items to the template
