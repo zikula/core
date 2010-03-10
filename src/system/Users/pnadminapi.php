@@ -369,15 +369,7 @@ function users_adminapi_getallpendings($args)
     $permFilter = array();
     // corresponding filter permission to filter anonymous in admin view:
     // Administrators | Users:: | Anonymous:: | None
-    $permFilter[] = array('realm' => 0,
-                          'component_left'   => 'Users',
-                          'component_middle' => '',
-                          'component_right'  => '',
-                          'instance_left'    => '',
-                          'instance_middle'  => '',
-                          'instance_right'   => '',
-                          'level'            => ACCESS_EDIT);
-    $result = DBUtil::selectObjectArray('users_temp', $where, $orderby, $startnum-1, $numitems, '', $permFilter);
+    $result = DBUtil::selectObjectArray('users_temp', $where, $orderby, $startnum-1, $numitems, '');
 
     if ($result === false) {
         LogUtil::registerError(__('Error! Could not load data.'));
@@ -395,15 +387,7 @@ function users_adminapi_getapplication($args)
         return false;
     }
 
-    $permFilter[] = array('realm' => 0,
-                          'component_left'   => 'Users',
-                          'component_middle' => '',
-                          'component_right'  => '',
-                          'instance_left'    => '',
-                          'instance_middle'  => '',
-                          'instance_right'   => '',
-                          'level'            => ACCESS_READ);
-    $item = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid', null, $permFilter);
+    $item = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid');
 
     if ($item === false) {
         LogUtil::registerError(__('Error! Could not load data.'));
