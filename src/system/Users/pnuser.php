@@ -930,6 +930,6 @@ function Users_user_confirmchemail($args)
     pnModAPIFunc('Users', 'admin', 'deny',
                 array('userid' => $preemail['tid']));
     
-	LogUtil::registerStatus(__('Done! Changed your e-mail address.'));
-	return pnRedirect(pnModURL('Users', 'user', 'main'));    
+    LogUtil::registerStatus(__('Done! Changed your e-mail address.'));
+    return pnRedirect(pnModURL('Users', 'user', 'main'));    
 }

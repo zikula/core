@@ -68,9 +68,9 @@ function Groups_ajax_updategroup($args)
         $msgs = LogUtil::getStatusMessagesText();
         if (!empty($msgs)) {
             // return with msg, but not via AjaxUtil::error
-            return array('error'   => true,
-                         'gid'     => $gid,
-			             'message' => $msgs);
+            return array(   'error'   => true,
+                            'gid'     => $gid,
+                            'message' => $msgs);
         }
     }
 

@@ -103,7 +103,7 @@ class pnForm extends Form
     
     public function __construct()
     {
-    	parent::__construct();
+        parent::__construct();
         $this->pnFormState = &$this->State;
         $this->pnFormIncludes = &$this->Includes;
         $this->pnFormPlugins = &$this->Plugins;

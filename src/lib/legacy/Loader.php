@@ -72,7 +72,7 @@ class Loader
      */
     public static function loadAllFiles($files, $path = null, $exitOnError = false)
     {
-        return Loader::loadFiles($files, $path, true, $exitOnError);
+        return self::loadFiles($files, $path, true, $exitOnError);
     }
 
     /**
@@ -87,7 +87,7 @@ class Loader
      */
     public static function loadOneFile($files, $path = null, $exitOnError = false)
     {
-        return Loader::loadFiles($files, $path, false, $exitOnError);
+        return self::loadFiles($files, $path, false, $exitOnError);
     }
 
     /**
@@ -113,7 +113,7 @@ class Loader
 
         $loaded = false;
         foreach ($files as $file) {
-            $rc = Loader::loadFile($file, $path, $exitOnError, $returnVar);
+            $rc = self::loadFile($file, $path, $exitOnError, $returnVar);
 
             if ($rc) {
                 $loaded = true;
@@ -151,9 +151,9 @@ class Loader
         }
 
         $classFile = $className . '.class.php';
-        $rc = Loader::loadFile($classFile, "config/classes/$classPath", false);
+        $rc = self::loadFile($classFile, "config/classes/$classPath", false);
         if (!$rc) {
-            $rc = Loader::loadFile($classFile, $classPath, $exitOnError);
+            $rc = self::loadFile($classFile, $classPath, $exitOnError);
         }
 
         return $rc;
@@ -213,7 +213,7 @@ class Loader
         foreach ($classFiles as $classFile) {
             $classFile = DataUtil::formatForOS($classFile);
             if (is_readable($classFile)) {
-                if (Loader::includeOnce($classFile)) {
+                if (self::includeOnce($classFile)) {
                     return $class;
                 }
 
@@ -241,7 +241,7 @@ class Loader
      */
     public static function loadArrayClassFromModule($module, $base_obj_type, $exitOnError = false, $prefix = 'PN')
     {
-        return Loader::loadClassFromModule($module, $base_obj_type, true, $exitOnError, $prefix);
+        return self::loadClassFromModule($module, $base_obj_type, true, $exitOnError, $prefix);
     }
 
     /**

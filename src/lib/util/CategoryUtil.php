@@ -817,9 +817,9 @@ class CategoryUtil
      * @param $tree array Tree or branch
      * @param $entry array
      */
-    public static function _tree_insert(&$tree, $entry, $currentpath = NULL)
+    public static function _tree_insert(&$tree, $entry, $currentpath = null)
     {
-        if ($currentpath === NULL) {
+        if ($currentpath === null) {
             $currentpath = $entry['ipath'];
         }
         $currentpath = trim($currentpath, '/ ');

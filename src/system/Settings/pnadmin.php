@@ -72,7 +72,7 @@ function settings_admin_updateconfig($args) {
     $settings = FormUtil::getPassedValue('settings', null, 'POST');
 
     // if this form wasnt posted to redirect back
-    if ($settings === NULL) {
+    if ($settings === null) {
         return pnRedirect(pnModURL('Settings', 'admin', 'modifyconfig'));
     }
 

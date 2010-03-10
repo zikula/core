@@ -477,13 +477,13 @@ function Admin_admin_updateconfig()
     $modvars['modulesperrow'] = isset($modvars['modulesperrow']) ? $modvars['modulesperrow'] : 5;
     if (!is_numeric($modvars['modulesperrow'])) {
         unset($modvars['modulesperrow']);
-    	LogUtil::registerError(__("Error! You must enter a number for the 'Modules per row' setting."));
+        LogUtil::registerError(__("Error! You must enter a number for the 'Modules per row' setting."));
     }
     $modvars['ignoreinstallercheck'] = isset($modvars['ignoreinstallercheck']) ? $modvars['ignoreinstallercheck'] : false;
     $modvars['itemsperpage'] = isset($modvars['itemsperpage']) ? $modvars['itemsperpage'] : 5;
     if (!is_numeric($modvars['itemsperpage'])) {
         unset($modvars['itemsperpage']);
-    	LogUtil::registerError(__("Error! You must enter a number for the 'Modules per page' setting."));
+        LogUtil::registerError(__("Error! You must enter a number for the 'Modules per page' setting."));
     }
     $modvars['modulestylesheet'] = isset($modvars['modulestylesheet']) ? $modvars['modulestylesheet'] : 'navtabs.css';
     $modvars['admingraphic'] = isset($modvars['admingraphic']) ? $modvars['admingraphic'] : 0;

@@ -182,7 +182,7 @@ class DataUtil
                                 ";&#064;&#" .
                                 sprintf("%03d", ord("\\2")) . ";";');
 
-        static $allowedtags = NULL;
+        static $allowedtags = null;
         static $outputfilter;
 
         if (!isset($allowedtags)) {

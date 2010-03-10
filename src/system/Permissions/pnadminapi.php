@@ -109,10 +109,10 @@ function permissions_adminapi_dec($args)
     // MMaes, 2003-06-23; Filter-view
     if (!is_null($args['permgrp']) && ($args['permgrp'] != PNPERMS_ALL)) {
         $where = " AND ($permcolumn[gid]=".PNPERMS_ALL." OR  $permcolumn[gid]='".(int)DataUtil::formatForStore($args['permgrp'])."')";
-        $showpartly = TRUE;
+        $showpartly = true;
     } else {
         $where = '';
-        $showpartly = FALSE;
+        $showpartly = false;
     }
 
     // Get info on current perm
