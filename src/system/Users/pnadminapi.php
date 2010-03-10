@@ -366,9 +366,7 @@ function users_adminapi_getallpendings($args)
     $userscolumn = $pntable['users_temp_column'];
     $where = "$userscolumn[type] = 1";
     $orderby = "ORDER BY $userscolumn[tid]";
-    $permFilter = array();
-    // corresponding filter permission to filter anonymous in admin view:
-    // Administrators | Users:: | Anonymous:: | None
+
     $result = DBUtil::selectObjectArray('users_temp', $where, $orderby, $startnum-1, $numitems, '');
 
     if ($result === false) {
