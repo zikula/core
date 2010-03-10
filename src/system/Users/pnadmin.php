@@ -735,22 +735,24 @@ function users_admin_modify($args)
     $Renderer->assign('userinfo', $uservars);
 
     // groups
-    $permissions_array = array();
-    $access_types_array = array();
+    $groups_infos = array();
+    $user_groups_register = array();
     $user_groups = pnModAPIFunc('Groups', 'user', 'getusergroups', array('uid' => $userid));
     $all_groups = pnModAPIFunc('Groups', 'user', 'getall');
+
+    foreach ($user_groups as $user_group) {
+        $user_groups_register[] = $user_group['gid'];
+    }
 
     foreach ($all_groups as $group) {
         if(SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
             $groups_infos[$group['gid']] = array();
             $groups_infos[$group['gid']]['name'] = $group['name'];
 
-            foreach ($user_groups as $user_group) {
-                if ($user_group['gid'] == $group['gid']) {
-                    $groups_infos[$group['gid']]['access'] = true;
-                } else {
-                    $groups_infos[$group['gid']]['access'] = false;
-                }
+            if (in_array($group['gid'], $user_groups_register)) {
+                $groups_infos[$group['gid']]['access'] = true;
+            } else {
+                $groups_infos[$group['gid']]['access'] = false;
             }
         }
     }
