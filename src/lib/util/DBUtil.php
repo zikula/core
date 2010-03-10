@@ -62,7 +62,7 @@ class DBUtil
     public static function flushCache($table)
     {
         if (self::hasObjectCache($table)) {
-        	$prefix = md5(DBConnectionStack::getConnectionDSN());
+            $prefix = md5(DBConnectionStack::getConnectionDSN());
             $cacheDriver = DBConnectionStack::getCacheDriver();
             $cacheDriver->deleteByPrefix($prefix.$table);
         }

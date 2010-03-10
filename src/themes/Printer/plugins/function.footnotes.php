@@ -21,39 +21,39 @@
  * Example
  *   <!--[footnotes]-->
  *
- * @author		 Jochen Roemling
- * @author       Mark West
- * @since        23/02/2004
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @author      Jochen Roemling
+ * @author      Mark West
+ * @since       23/02/2004
+ * @param       array       $params      All attributes passed to this function from the template
+ * @param       object      &$smarty     Reference to the Smarty object
  */
 function smarty_function_footnotes($params, &$smarty)
 {
-	// globalise the links array
-	global $link_arr;
+    // globalise the links array
+    global $link_arr;
 
     $text = '';
 
-	if (is_array($link_arr) && !empty($link_arr)) {
+    if (is_array($link_arr) && !empty($link_arr)) {
         $text .= '<ol>';
-		foreach ($link_arr as $key => $link) {
+        foreach ($link_arr as $key => $link) {
             // check for an e-mail address
-			if (preg_match("/^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,4}$/i", $link)) {
+            if (preg_match("/^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,4}$/i", $link)) {
                 $linktext = $link;
                 $link = 'mailto:' . $link;
-			// append base URL for local links (not web links)
-            } elseif (!preg_match("/^http:\/\//i",$link))	{
+            // append base URL for local links (not web links)
+            } elseif (!preg_match("/^http:\/\//i",$link))    {
                 $link = pnGetBaseURL().$link;
                 $linktext = $link;
-			} else {
+            } else {
                 $linktext = $link;
             }
             $linktext = DataUtil::formatForDisplay($linktext);
             $link = DataUtil::formatForDisplay($link);
-			// output link
-			$text .= '<li><a class="print-normal" href="'.$link.'">'.$linktext.'</a></li>'."\n";
-		}
+            // output link
+            $text .= '<li><a class="print-normal" href="'.$link.'">'.$linktext.'</a></li>'."\n";
+        }
         $text .= '</ol>';
-	}
-	return $text;
+    }
+    return $text;
 }

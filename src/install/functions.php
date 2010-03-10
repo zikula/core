@@ -143,7 +143,7 @@ function install()
                         $dbh = new PDO("$dbtype:host=$dbhost", $dbusername, $dbpassword);
                         makedb($dbh, $dbname, $dbtype);
                     } catch (PDOException $e) {
-                    	$action = 'dbinformation';
+                        $action = 'dbinformation';
                         $smarty->assign('reason', $e->getMessage());
                         $smarty->assign('dbcreatefailed', true);
                     }
@@ -151,7 +151,7 @@ function install()
                     try {
                         $dbh = new PDO("$dbtype:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
                     } catch (PDOException $e) {
-                    	$action = 'dbinformation';
+                        $action = 'dbinformation';
                         $smarty->assign('reason', $e->getMessage());
                         $smarty->assign('dbconnectfailed', true);
                     }
@@ -177,7 +177,7 @@ function install()
                             $action = 'dbinformation';
                             $smarty->assign('dbdumpfailed', true);
                         } else {
-                        	// execute the SQL dump
+                            // execute the SQL dump
                             $installed = true;
                             $lines = file($fileurl);
                             $exec = '';
@@ -360,7 +360,7 @@ function makedb($dbh, $dbname, $dbtype)
     try {
         $dbh->query($query);
     } catch (PDOException $e) {
-    	throw new PDOException($e);
+        throw new PDOException($e);
     }
 }
 
