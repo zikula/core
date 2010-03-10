@@ -345,26 +345,37 @@ function users_admin_viewapplications()
     // each item based on the permissions the user has.
     foreach ($items as $key => $item) {
         $options = array();
-        if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[tid]", ACCESS_READ)) {
-            // Options for the item.
-            if (pnModGetVar('Users', 'reg_optitems')) {
-                $options[] = array('url'   => pnModURL('Users', 'admin', 'viewtempuserinfo', array('userid' => $item['tid'])),
-                                   'imgfile' => 'list.gif',
-                                   'title' => __('Details'));
-            }
-            if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[tid]", ACCESS_ADD)) {
-                $options[] = array('url'   => pnModURL('Users', 'admin', 'processusers', array('userid' => $item['tid'], 'op' => 'approve')),
-                                   'imgfile' => 'add_user.gif',
-                                   'title' => __('Approve'));
-                if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[tid]", ACCESS_DELETE)) {
-                    $options[] = array('url'   => pnModURL('Users', 'admin', 'processusers', array('userid' => $item['tid'], 'op' => 'deny')),
-                                       'imgfile' => 'delete_user.gif',
-                                       'title' => __('Deny'));
-                }
-            }
 
-            // Add the calculated menu options to the item array
+        // Options for the item.
+        if (pnModGetVar('Users', 'reg_optitems')) {
+            $options[] = array(
+                'url'       => pnModURL('Users', 'admin', 'viewtempuserinfo',
+                                    array('userid' => $item['tid'])),
+                'imgfile'   => 'list.gif',
+                'title'     => __('Details'));
         }
+        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+            $options[] = array(
+                'url'       => pnModURL('Users', 'admin', 'processusers',
+                                    array('userid'  => $item['tid'],
+                                          'op'      => 'approve')),
+                'imgfile'   => 'add_user.gif',
+                'title'     => __('Approve'));
+
+            // Note: the ACCESS_DELETE check is here because there is no sense
+            // in checking it if the user does not also have the lower
+            // ACCESS_ADD, not because the user needs both add and delete access.
+            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
+                $options[] = array(
+                    'url'       => pnModURL('Users', 'admin', 'processusers',
+                                        array('userid'  => $item['tid'],
+                                              'op'      => 'deny')),
+                    'imgfile'   => 'delete_user.gif',
+                    'title'     => __('Deny'));
+            }
+        }
+
+        // Add the calculated menu options to the item array
         $items[$key]['options'] = $options;
     }
 

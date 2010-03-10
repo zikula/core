@@ -373,7 +373,7 @@ function users_adminapi_getallpendings($args)
                           'component_left'   => 'Users',
                           'component_middle' => '',
                           'component_right'  => '',
-                          'instance_left'    => 'uname',
+                          'instance_left'    => '',
                           'instance_middle'  => '',
                           'instance_right'   => '',
                           'level'            => ACCESS_EDIT);
@@ -399,9 +399,9 @@ function users_adminapi_getapplication($args)
                           'component_left'   => 'Users',
                           'component_middle' => '',
                           'component_right'  => '',
-                          'instance_left'    => 'uname',
+                          'instance_left'    => '',
                           'instance_middle'  => '',
-                          'instance_right'   => 'tid',
+                          'instance_right'   => '',
                           'level'            => ACCESS_READ);
     $item = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid', null, $permFilter);
 
