@@ -380,7 +380,7 @@ class SessionUtil
     {
         // now traverse down the path and set the var
         if ($path == '/' || !$path) {
-            return LogUtil::registerError(__f('Error! Invalid %s received.', 'path'));
+            return LogUtil::registerError(__f('Error! Invalid %s received.', __('path')));
         }
 
         // remove leading '/' so that explode doesn't deliver an empty 1st element
