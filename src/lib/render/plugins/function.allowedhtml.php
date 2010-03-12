@@ -13,17 +13,19 @@
  */
 
 /**
- * Smarty function to display the list of allowed html tags
+ * Display the list of allowed HTML tags
  *
  * Available parameters:
- *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
+ *  - assign    (string)    (optional) If set, the results are assigned to the
+ *                          corresponding variable instead of printed out
  *
- * Example
- *   <!--[allowedhtml]-->
+ * Example:
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the value of the last status message posted, or void if no status message exists
+ * <samp>{allowedhtml}</samp>
+ *
+ * @param   array   $params      All attributes passed to this function from the template
+ * @param   Smarty  &$smarty     Reference to the {@link Renderer} object
+ * @return  string  A string containing the allowable HTML tags.
  */
 function smarty_function_allowedhtml($params, &$smarty)
 {
