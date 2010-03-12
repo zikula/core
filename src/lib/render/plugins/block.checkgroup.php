@@ -15,20 +15,23 @@
 /**
  * Smarty block to implement group checks in a template
  *
- * available parameters:
- *  - component   the component under test
- *  - instance    the instance under test
- *  - level       the level of access required
+ * Available attributes:
+ *  - gid (numeric) The ID number of the group to be tested.
  *
- * Example
- * <!--[checkgroup gid='1']-->
- * do some stuff now we have permission
- * <!--[/checkgroup]-->
+ * Example:
+ * <pre>
+ * {checkgroup gid='1'}
+ *   do some stuff now we have permission
+ * {/checkgroup}
+ * </pre>
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    string   $content    The content between the block tags
- * @param    object   $smarty     Reference to the Smarty object
- * @return   mixed    the content if permission is held, null if no permissions is held (or on the opening tag), false on an error
+ * @param   array   $params         All attributes passed to this function from the template
+ * @param   string  $content        The content between the block tags
+ * @param   Smarty  &$smarty        Reference to the {@link Renderer} object
+ * @return  string  The content of the matching case
+ * @return  mixed   If the user is a member of the group specified by the gid,
+ *                  then the content contained in the block, otherwise null;
+ *                  false on error
  */
 function smarty_block_checkgroup($params, $content, &$smarty)
 {
