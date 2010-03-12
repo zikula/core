@@ -13,11 +13,34 @@
  */
 
 /**
- * assign an array key to the specified value
+ * Assign a template variable with the value found in an array element at the
+ * specified key.
  *
- * @param   array           the array we wish to get an element from
- * @param   key         the array key we wish to retrieve
- * @param   assign          the smarty variable to assign the result to
+ * Available attributes:
+ *  - array     (array)         The array template variable in which to retrieve the value
+ *  - key       (string|int)    The key into the specified array where the value is to be retrieved from
+ *  - assign    (string)        The name of the template variable to assign the value to (required)
+ *
+ * Examples:
+ *
+ *  Assign the template variable $myVar with the value found in the template
+ *  variable $myArray['myKey']:
+ *
+ *  <samp>{assign_arrayval array=$myArray key='myKey' assign='myVar'}</samp>
+ *
+ *  Assign the template variable $myVar with the value found in the template
+ *  variable $myArray[3]:
+ *
+ *  <samp>{assign_arrayval array=$myArray key=3 assign='myVar'}</samp>
+ *
+ *  In the following example, assume the template variable $myArray[4] is not
+ *  set (isset would return false). In this case $myVar is set to null:
+ *
+ *  <samp>{assign_arrayval array=$myArray key=4 assign='myVar'}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  null
  */
 function smarty_function_assign_arrayval ($params, &$smarty)
 {
