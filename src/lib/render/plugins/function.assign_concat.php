@@ -13,11 +13,32 @@
  */
 
 /**
- * assign_concat
+ * Concatenate several values together and assign the resultant string to a
+ * template variable.
  *
- * @param   1..10           the 1st through 10th value we wish to assign
- * @param   name        the variable name we wish to assign
- * @param   html        wether or not to pnVarPrepHTMLDisplay the value
+ * Available attributes:
+ *  - 1..10 (string)    The 1st through 10th value(s) we wish to assign
+ *  - name  (string)    The name of the template variable to which the
+ *                      concatenated string will be assigned
+ *  - html  (bool)      (optional) If the specified value(s) contain HTML,
+ *                      this should be set to true (or 1)
+ *
+ * Examples:
+ *
+ *  Concatenate the template variables $myVar1, $myVar2 and $myVar2 and store
+ *  the resultant string in the template variable $myString:
+ *
+ *  <samp>{assign_concat name='myString' 1=$myVar1 2=$myVar2 3=$myVar3}</samp>
+ *
+ *  Concatenate the template variables $myVar1, $myVar2 and $myVar2 and store
+ *  the resultant string in the template variable $myString. The string contains
+ *  HTML, therefore it is passed through DataUtil::formatForDisplayHTML:
+ *
+ *  <samp>{assign_concat name='myString' 1=$myVar1 2=$myVar2 3=$myVar3 html=true}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  null
  */
 function smarty_function_assign_concat($params, &$smarty)
 {
