@@ -10,7 +10,7 @@
 function smarty_function_ini_get($params, &$smarty)
 {
     if (!isset($params['varname'])) {
-        $smarty->trigger_error("ini_get: parameter 'name' required");
+        $smarty->trigger_error("ini_get: parameter 'varname' required");
         return false;
     }
 

@@ -5,40 +5,40 @@
         <fieldset>
             <legend>{gt text="PHP"}</legend>
             <ul class="systemrequirements">
-                {phpversion assign=phpversion}
-                {versioncompare minversion='5.2.6' assign=phpsatisfied}
+                {phpversion assign="phpversion"}
+                {versioncompare minversion="5.2.6" assign="phpsatisfied"}
                 {if $phpsatisfied}
                 <li class="passed">{gt text="Your PHP version is %s."  tag1=$phpversion}</li>
                 {else}
                 <li class="failed">{gt text="You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version 5.2.6 or later." tag1=$phpversion}</li>{assign var=checkfailed value=true}
                 {/if}
-                {* PHP 5.3.0+ requires date.timezone to be set in php.ini *}
-                {versioncompare minversion='5.3.0' assign=checkdatetimezone}
-                {ini_get varname="date.timezone" assign=datetimezone}
+                {* PHP 5.3.0 or greater requires date.timezone to be set in php.ini *}
+                {versioncompare minversion="5.3.0" assign="checkdatetimezone"}
+                {ini_get varname="date.timezone" assign="datetimezone"}
                 {if $checkdatetimezone && $datetimezone}
                 <li class="passed">{gt text="php.ini: date.timezone is set to %s"  tag1=$datetimezone}</li>
                 {else}
                 <li class="failed">{gt text="date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."}</li>{assign var=checkfailed value=true}
                 {/if}
-                {extension_loaded extension=pdo assign=pdo}
+                {extension_loaded extension="pdo" assign="pdo"}
                 {if $pdo}
                 <li class="passed">{gt text="PDO extension loaded."}</li>
                 {else}
                 <li class="failed">{gt text="You PHP installation doesn't have the PDO extension loaded."}</li>{assign var=checkfailed value=true}
                 {/if}
-                {phpfunctionexists func=token_get_all assign=phptokens}
+                {phpfunctionexists func="token_get_all" assign="phptokens"}
                 {if $phptokens}
                 <li class="passed">{gt text="Your PHP installation has the necessary token functions available."}</li>
                 {else}
                 <li class="failed">{gt text="You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."}</li>{assign var=checkfailed value=true}
                 {/if}
-                {phpfunctionexists func=mb_get_info assign=mbstring}
+                {phpfunctionexists func="mb_get_info" assign="mbstring"}
                 {if $mbstring}
                 <li class="passed">{gt text="Your PHP installation has the multi-byte string functions available."}</li>
                 {else}
                 <li class="failed">{gt text="Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."}</li>
                 {/if}
-                {phpfunctionexists func=json_encode assign=json_encode}
+                {phpfunctionexists func="json_encode" assign="json_encode"}
                 {if $json_encode}
                 <li class="passed">{gt text="Your PHP installation has the JSON functions available."}</li>
                 {else}
@@ -49,7 +49,7 @@
         <fieldset>
             <legend>{gt text="Personal configuration file"}</legend>
             <ul class="systemrequirements">
-                {fileexists file=config/personal_config.php assign=file}
+                {fileexists file="config/personal_config.php" assign="file"}
                 {if $file neq true}
                 <li class="passed">{gt text="'%s' has not present.  This is OK." tag1="config/personal_config.php"}</li>
                 {else}
@@ -60,49 +60,49 @@
         <fieldset>
             <legend>{gt text="File system permissions"}</legend>
             <ul class="systemrequirements">
-                {iswriteable file=config/config.php assign=file}
+                {iswriteable file="config/config.php" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1="config/config.php"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="config/config.php"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file=`$temp` assign=file}
+                {iswriteable file="`$temp`" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1=$temp}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1=$temp}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file=`$temp`/error_logs assign=file}
+                {iswriteable file="`$temp`/error_logs" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1="$temp/error_logs"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/error_logs"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file=`$temp`/Renderer_compiled assign=file}
+                {iswriteable file="`$temp`/Renderer_compiled" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1="$temp/Renderer_compiled"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Renderer_compiled"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file=`$temp`/Renderer_cache assign=file}
+                {iswriteable file="`$temp`/Renderer_cache" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1="$temp/Renderer_cache"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Renderer_cache"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file=`$temp`/Theme_compiled assign=file}
+                {iswriteable file="`$temp`/Theme_compiled" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1="$temp/Theme_compiled"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Theme_compiled"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file=`$temp`/Theme_cache assign=file}
+                {iswriteable file="`$temp`/Theme_cache" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1="$temp/Theme_cache"}</li>
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Theme_cache"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file=`$temp`/Theme_Config assign=file}
+                {iswriteable file="`$temp`/Theme_Config" assign="file"}
                 {if $file}
                 <li class="passed">{gt text="%s is writeable." tag1="$temp/Theme_Config"}</li>
                 {else}
