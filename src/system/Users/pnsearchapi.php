@@ -88,12 +88,15 @@ function users_searchapi_search($args)
     }
 
     $sessionId = session_id();
+    $profileModule = pnConfigGetVar('profilemodule', '');
 
     foreach ($users as $user) {
         if ($user['uid'] != 1 && SecurityUtil::checkPermission('Users::', "$user[uname]::$user[uid]", ACCESS_READ)) {
-            $qtext = __('Registration date'). ': ' . DateUtil::formatDatetime($user['user_regdate'], 'datebrief') . "\n"
-                   . __("Click the user's name to view his/her complete profile.");
-            $items = array('title' => __('Registered users') . ': ' . DataUtil::formatForStore($user['uname']),
+            $qtext = __('Registration date:'). ' ' . DateUtil::formatDatetime($user['user_regdate'], 'datebrief');
+            if ($useProfileMod) {
+                 $qtext .= "\n" . __("Click the user's name to view his/her complete profile.");
+            }
+            $items = array('title' => __('Registered users:') . ' ' . DataUtil::formatForStore($user['uname']),
                            'text' => DataUtil::formatForStore($qtext),
                            'extra' => DataUtil::formatForStore($user['uid']),
                            'module' => 'Users',
