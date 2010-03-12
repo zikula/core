@@ -139,7 +139,15 @@ class DateUtil
 
 
     /**
-     * Build a datetime string from the supplied fields
+     * Build a datetime string from the supplied fields.
+     *
+     * This method uses the PHP function {@link http://www.php.net/mktime mktime}
+     * to construct a UNIX timestamp prior to returning the output from
+     * {@link DateUtil::strftime}. It is, therefore, subject to the same
+     * limitations as mktime. Specifically, on most systems where time is stored
+     * as a 32-bit integer the possible timestamps that can be constructed fall
+     * between 13 Decemnber 1901 at 20:45:52 UTC and 19 January 2038 at
+     * 03:14:07 UTC.
      *
      * @param year      The year
      * @param month     The month
@@ -147,7 +155,7 @@ class DateUtil
      * @param hour      The hour (optional) (default==0)
      * @param minute    The minute (optional) (default==0)
      * @param second    The second (optional) (default==0)
-     * @param format    The format to use when formatting the date (optional)
+     * @param format    The format to use when formatting the date (optional) (default==DATEFORMAT_FIXED)
      *
      * @return datetime The datetime formatted according to the specified format
      */
