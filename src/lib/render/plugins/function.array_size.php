@@ -13,11 +13,42 @@
  */
 
 /**
- * array_size
+ * Counts all elements in the specified array. (Returns the value of the PHP
+ * count function, if the specified variable is an array.)
  *
- * @param    name        the variable name we wish to assign
- * @param    value        the value we wish to assign to the named variable
- * @param    html        wether or not to pnVarPrepHTMLDisplay the value
+ * Available attributes:
+ *  - array     (array)     the array to be counted
+ *  - assign    (string)    (optional) the name of a template variable to assign the
+ *                          count to, instead of returning the value.
+ *
+ * Examples:
+ *
+ *  Returns the value 3, if the template variable $myarray is an array containing
+ *  three elements:
+ *
+ *  <samp>{array_size array=$myarray}</samp>
+ *
+ *  Assigns the value 3 to the template variable $mycount, if the template
+ *  variable $myarray is an array containing three elements:
+ *
+ *  <samp>{array_size array=$myarray assign='mycount'}</samp>
+ *
+ *  Returns the value 0, if the template variable $myvar is not an array, or
+ *  if $myvar is an empty array:
+ *
+ *  <samp>{array_size array=$myvar}</samp>
+ *
+ *  Assigns the value 0 to the template variable $mycount, if the template
+ *  variable $myvar is not an array or is an empty array:
+ *
+ *  <samp>{array_size array=$myvar assign='mycount'}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  int     the number of elements in the specified array, or 0 (zero)
+ *                  if the array is empty, or 0 (zero) if the specified
+ *                  template variable is not an array; returns null if the
+ *                  assign parameter is specified.
  */
 function smarty_function_array_size($params, &$smarty)
 {
