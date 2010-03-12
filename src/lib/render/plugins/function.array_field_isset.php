@@ -13,14 +13,45 @@
  */
 
 /**
- * Smarty function check if an array subscript is set
+ * Check if an array element (subscript) is set
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        array       $array       The array we wish to check
- * @param        field       string       The string name of the array subscript we wish to check
- * @param        assign      string       The variable to assign the result to (optional)
- * @return       bool                     Wheather or not the array subscript is set
+ * Available attributes:
+ *  - array         (array)     an array template variable
+ *  - field         (string)    the value of a key in the array specified above
+ *  - returnValue   (bool|int)  if set, then the contents of the array element
+ *                              $array[$field] is returned if it is set, otherwise false is returned
+ *  - assign        (string)    (optional) if provided, a template variable with
+ *                              the specified name is set with the return value,
+ *                              instead of returning the value to the template
+ *
+ * Examples:
+ *
+ *  Return true to the template if the template variable $myarray['arraykey']
+ *  is set, otherwise return false to the template:
+ *
+ *  <samp>{array_field_isset array=$myarray field='arraykey'}</samp>
+ *
+ *  Return the value of the template variable $myarray['arraykey'] to the
+ *  template if it is set, otherwise return false to the template:
+ *
+ *  <samp>{array_field_isset array=$myarray field='arraykey' returnValue=1}</samp>
+ *
+ *  Assign true to the template variable $myValue if the template variable
+ *  $myarray['arraykey'] is set, otherwise set $myValue to false:
+ *
+ *  <samp>{array_field_isset array=$myarray field='arraykey' assign='myValue'}</samp>
+ *
+ *  Assign the value of the template variable $myarray['arraykey'] to the
+ *  template variable $myValue if it is set, otherwise assign false to $myValue:
+ *
+ *  <samp>{array_field_isset array=$myarray field='arraykey' returnValue=1 assign='myValue'}</samp>
+ *
+ * @param   array       $params      All attributes passed to this function from the template
+ * @param   Smarty      &$smarty     Reference to the {@link Renderer} object
+ * @return  bool|mixed  if returnValue is not set, then returns true if the array
+ *                      element is set, otherwise false; if returnValue is set,
+ *                      then returns the value of the array element if it is set,
+ *                      otherwise false
  */
 function smarty_function_array_field_isset($params, &$smarty)
 {
