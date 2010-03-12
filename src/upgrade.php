@@ -178,7 +178,7 @@ function _upg_convertdb($username, $password)
 
     // sanity checks
     if ($dbchar == $charset) {
-        $feedback .= '<p class="z-warningmsg">' . __("Your config.php claims your database is already in utf8 format. <strong>Are you sure you are using your original config.php as instructed?</strong> If you haven't intentionally converted your database to UTF8 using this script or other means you might need to re-check if you overwrote your original config.php with this upgrade. After converting your database to UTF8, this script will automatically change your config.php to reflect this.") . "</p>\n";
+        $feedback .= '<p class="z-informationmsg">' . __("Your config.php reports your database is already in utf8 format.") . "</p>\n";
         $converted = true;
     } elseif (!strstr($dbtype, 'mysql')) {
         $feedback .= '<p class="z-errormsg">' . __f('This script is only for MySQL databases, you are using %s.', $dbtype) . "<br />\n";
@@ -430,6 +430,12 @@ function _upg_sanity_check($username, $password)
         echo '<p class="z-errormsg">' . '<strong>' . __('config/personal_config.php must be writable before this script will run. Please correct this and try again') . "</strong></p>\n";
         echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
         $validupgrade = false;
+    } elseif (version_compare(PHP_VERSION, '5.3.0', '>=')) {
+        if (ini_get('date.timezone') == '') {
+            echo '<p class="z-errormsg">' . '<strong>' . __('date.timezone is currently not set.  Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.') . "</strong></p>\n";
+            echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
+            $validupgrade = false;
+        }
     }
 
     if (!$validupgrade) {
