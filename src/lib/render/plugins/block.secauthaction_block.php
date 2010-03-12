@@ -13,23 +13,28 @@
  */
 
 /**
- * Smarty block to implement PN permissions checks in a template
+ * Implement permissions checks in a template
  *
- * available parameters:
- *  - component   the component under test
- *  - instance    the instance under test
- *  - level       the level of access required
+ * Available attributes:
+ *  - component (string) The component to be tested, e.g., 'ModuleName::'
+ *  - instance  (string) The instance to be tested, e.g., 'name::1'
+ *  - level     (int)    The level of access required, e.g., ACCESS_READ
  *
- * Example
- * <!--[secauthaction_block component='News::' instance='1::' level=ACCESS_COMMENT]-->
- * do some stuff now we have permission
- * <!--[/secauthaction_block]-->
+ * Example:
+ * <pre>
+ * {secauthaction_block component='News::' instance='1::' level=ACCESS_COMMENT}
+ *   do some stuff now that we have permission
+ * {/secauthaction_block}
+ * </pre>
  *
- * @deprecated
- * @param    array    $params     All attributes passed to this function from the template
- * @param    string   $content    The content between the block tags
- * @param    object   $smarty     Reference to the Smarty object
- * @return   mixed    the content if permission is held, null if no permissions is held (or on the opening tag), false on an error
+ * @deprecated See {@link smarty_block_securityutil_checkpermission_block}.
+ *
+ * @param   array   $params   All attributes passed to this function from the template
+ * @param   string  $content  The content between the block tags
+ * @param   Smarty  &$smarty  Reference to the {@link Renderer} object
+ * @return  mixed   The content of the block, if the user has the specified
+ *                  access level for the component and instance, otherwise null;
+ *                  false on an error
  */
 function smarty_block_secauthaction_block($params, $content, &$smarty)
 {
