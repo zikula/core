@@ -15,13 +15,34 @@
 /**
  * Smarty function return and unset an array field if set
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        array       string       The name of the array template variable
- * @param        field       string       The string name of the array field that we wish to pop and unset
- * @param        unset       boolean      The flag to control if unset the field after extraction or not
- * @param        assign      string       The variable to assign the result to (optional)
- * @return       bool                     Wheather or not the array subscript is set
+ * Available attributes:
+ *  - array     (string)    The name of an array template variable
+ *  - field     (string)    The name of an array key in the array template variable above
+ *  - unset     (bool|int)  If true, the array element will be unset, if false the
+ * \                        array element will remain unchanged
+ *  - assign    (string)    The name of a template variable that the value of
+ *                          $array['field'] will be assigned to
+ *
+ * Examples:
+ *
+ *  Assign the value of the template variable $myarray['arraykey'] to the
+ *  template variable $myValue if it is set, otherwise assign false to $myValue.
+ *  The template variable $myarray['arraykey'] is NOT unset:
+ *
+ *  <samp>{array_field_pop array='myarray' field='arraykey' assign='myValue'}</samp>
+ *
+ *  Assign the value of the template variable $myarray['arraykey'] to the
+ *  template variable $myValue if it is set, otherwise assign false to $myValue.
+ *  The template variable $myarray['arraykey'] IS unset:
+ *
+ *  <samp>{array_field_pop array='myarray' field='arraykey' unset=1 assign='myValue'}</samp>
+ *
+ * @param   array   $params      All attributes passed to this function from the template
+ * @param   Smarty  &$smarty     Reference to the {@link Renderer} object
+ * @param   assign  string       The template variable to assign the result to (required)
+ * @return  null    The value of the specified array element is return
+ *                  in the specified template variable if it is set,
+ *                  otherwise the template variable is set to false; no output to the template
  */
 function smarty_function_array_field_pop($params, &$smarty)
 {
