@@ -13,33 +13,38 @@
  */
 
 /**
- * Smarty function to insert the common ajax javascript files (prototype, scriptaculous) in the page header using page vars
- * All other jsvascript files have to added manually on demand using the PageUtil::addVar plugin
+ * Insert the common ajax javascript files (prototype, scriptaculous) in the
+ * page header using page vars.  <i>All other javascript files have to be added
+ * manually on-demand using the {@link smarty_function_pageaddvar() pageaddvar} plugin.</i>
  *
- * Available parameters:
- *   - modname:          define the module name in which to look for the base javascript file for the module (ajax.js), default to top level module
- *                       when used in a block template, make sure this parameter is set correctly!
- *   - filename:         (optional) filename to load (default ajax.js)
- *   - noscriptaculous:  (optional) does not include scriptaculous.js if set
- *   - validation:       (optional) includes validation.js if set
- *   - fabtabulous:      (optional) includes fabtabulous.js if set
- *   - builder:          (optional) includes builder.js if set. Only effective if noscriptaculous is set
- *   - effects:          (optional) includes effects.js if set. Only effective if noscriptaculous is set
- *   - dragdrop:         (optional) includes dragdrop.js if set. Only effective if noscriptaculous is set
- *   - controls:         (optional) includes controls.js if set. Only effective if noscriptaculous is set
- *   - slider:           (optional) includes slider.js if set. Only effective if noscriptaculous is set
- *   - lightbox:         (optional) includes lightbox.js if set (loads scriptaculous effects if noscriptaculous is set)
- *   - imageviewer:      (optional) includes Zikula.ImageViewer.js if set (loads scriptaculous effects and dragdrop if noscriptaculous is set)
- *   - assign:           (optional) creates script tags and assign them if set
+ * Available attributes:
+ *  - modname           (string)    the module name in which to look for the base
+ *                                  javascript file for the module (ajax.js); defaults to
+ *                                  top level module when used in a block template. <i>Make
+ *                                  sure this parameter is set correctly!</i>
+ *  - filename          (string)    (optional) filename to load (default ajax.js)
+ *  - noscriptaculous   (mixed)     (optional) does not include scriptaculous.js if set
+ *  - validation        (mixed)     (optional) includes validation.js if set
+ *  - fabtabulous       (mixed)     (optional) includes fabtabulous.js if set
+ *  - builder           (mixed)     (optional) includes builder.js if set. Only effective if noscriptaculous is set
+ *  - effects           (mixed)     (optional) includes effects.js if set. Only effective if noscriptaculous is set
+ *  - dragdrop          (mixed)     (optional) includes dragdrop.js if set. Only effective if noscriptaculous is set
+ *  - controls          (mixed)     (optional) includes controls.js if set. Only effective if noscriptaculous is set
+ *  - slider            (mixed)     (optional) includes slider.js if set. Only effective if noscriptaculous is set
+ *  - lightbox          (mixed)     (optional) includes lightbox.js if set (loads scriptaculous effects if noscriptaculous is set)
+ *  - imageviewer       (mixed)     (optional) includes Zikula.ImageViewer.js if set (loads scriptaculous effects and dragdrop if noscriptaculous is set)
+ *  - assign            (string)    (optional) the name of the template variable to which the script tag string is assigned, <i>instead of</i> adding them to the page variables through PageUtil::addVar
  *
  *
  * Examples:
- *   <!--[pnajaxheader modname=Example filename=example.js]-->
- *   <!--[pnajaxheader modname=Example noscriptaculous=1]-->
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       null
+ * <samp>{ajaxheader modname='Example' filename='example.js'}</samp>
+ * 
+ * <samp>{ajaxheader modname='Example' noscriptaculous=1}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  null
  */
 function smarty_function_ajaxheader($params, &$smarty)
 {
