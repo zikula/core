@@ -88,7 +88,6 @@ function users_searchapi_search($args)
     }
 
     $sessionId = session_id();
-    $profileModule = pnConfigGetVar('profilemodule', '');
 
     foreach ($users as $user) {
         if ($user['uid'] != 1 && SecurityUtil::checkPermission('Users::', "$user[uname]::$user[uid]", ACCESS_READ)) {
@@ -101,7 +100,7 @@ function users_searchapi_search($args)
                            'text' => DataUtil::formatForStore($qtext),
                            'extra' => DataUtil::formatForStore($user['uid']),
                            'module' => 'Users',
-                           'created' => DataUtil::formatForStore($user['user_regdate']),
+                           'created' => '',
                            'session' => DataUtil::formatForStore($sessionId));
             $insertResult = DBUtil::insertObject($items, 'search_result');
             if (!$insertResult) {
