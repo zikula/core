@@ -92,9 +92,10 @@ function users_searchapi_search($args)
 
     foreach ($users as $user) {
         if ($user['uid'] != 1 && SecurityUtil::checkPermission('Users::', "$user[uname]::$user[uid]", ACCESS_READ)) {
-            $qtext = __('Registration date:'). ' ' . DateUtil::formatDatetime($user['user_regdate'], 'datebrief');
             if ($useProfileMod) {
-                 $qtext .= "\n" . __("Click the user's name to view his/her complete profile.");
+                 $qtext = __("Click the user's name to view his/her complete profile.");
+            } else {
+                $qtext = '';
             }
             $items = array('title' => __('Registered users:') . ' ' . DataUtil::formatForStore($user['uname']),
                            'text' => DataUtil::formatForStore($qtext),
