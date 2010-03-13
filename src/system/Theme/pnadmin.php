@@ -601,6 +601,15 @@ function theme_admin_modifypageconfigtemplates($args)
         $pageconfiguration['blockwrapper'] = true;
     }
 
+    // filter defaults
+    if (!isset($pageconfiguration['filters'])) {
+        $pageconfiguration['filters'] = array(
+            'outputfilters' => null,
+            'prefilters' => null,
+            'postfilters' => null
+        );
+    }
+
     // assign the page configuration array
     $pnRender->assign('pageconfiguration', $pageconfiguration);
 
