@@ -28,10 +28,10 @@ function groupinit(defgroupid, frstgroup)
 
     appending = false;
     Element.removeClassName('appendajax', 'z-hide');
-    
+
     // set observers on all existing groups images
     $$('button.z-imagebutton').each(
-    function(singlebutton) 
+    function(singlebutton)
     {
         var groupid = singlebutton.id.split('_')[1];
         switch(singlebutton.id.split('_')[0])
@@ -47,7 +47,7 @@ function groupinit(defgroupid, frstgroup)
                 break;
         }
     });
-}    
+}
 
 /**
  * Append a new permission at the end of the list
@@ -120,7 +120,7 @@ function groupappend_response(req)
 
     // hide cancel icon for new groups
 //    Element.addClassName('groupeditcancel_' + json.gid, 'z-hide');
-    // update delete icon to show cancel icon 
+    // update delete icon to show cancel icon
 //    Element.update('groupeditdelete_' + json.gid, canceliconhtml);
 
     // update some innerHTML
@@ -236,7 +236,7 @@ function groupmodifycancel(groupid)
         groupdelete(groupid);
         adding = adding.without(groupid);
         return;
-    } 
+    }
     disableeditfields(groupid);
     setmodifystatus(groupid, 0)
 }
@@ -289,7 +289,8 @@ function groupmodify(groupid)
                    + "&nbumax="      + $F('nbumax_' + groupid);
         var myAjax = new Ajax.Request("ajax.php", { method: 'post',
                                                     parameters: pars,
-                                                    onComplete: groupmodify_response
+                                                    onComplete: groupmodify_response,
+                                                    onFailure: function(){groupfailure_response(groupid);}
                                                   });
 
 
@@ -321,7 +322,7 @@ function groupmodify_response(req)
         showinfo();
         Element.addClassName($('groupinfo_' + json.gid), 'z-hide');
         Element.removeClassName($('groupcontent_' + json.gid), 'z-hide');
-        
+
         /*
         // add events
         Event.observe('modifyajax_'      + json.gid, 'click', function(){groupmodifyinit(json.gid)}, false);
@@ -335,7 +336,7 @@ function groupmodify_response(req)
         groupmodifyinit(json.gid);
         return;
     }
-   
+
     $('gtype_' + json.gid).value = json.gtype;
     $('state_' + json.gid).value = json.state;
 
@@ -348,10 +349,10 @@ function groupmodify_response(req)
     Element.update('groupnbumax_'      + json.gid, json.nbumax);
 
     adding = adding.without(json.gid);
-    
+
     // show trascan icon for new permissions if necessary
     Element.removeClassName('groupeditcancel_' + json.gid, 'z-hide');
-    // update delete icon to show trashcan icon 
+    // update delete icon to show trashcan icon
     Element.update('groupeditdelete_' + json.gid, deleteiconhtml);
 
     setmodifystatus(json.gid, 0);
@@ -379,7 +380,8 @@ function groupdelete(groupid)
             {
                 method: 'get',
                 parameters: pars,
-                onComplete: groupdelete_response
+                onComplete: groupdelete_response,
+                onFailure: function(){groupfailure_response(groupid);}
             });
     }
 }
@@ -405,6 +407,21 @@ function groupdelete_response(req)
     setmodifystatus(json.gid, 0);
     Element.remove('group_' + json.gid);
 }
+
+/**
+ * Generic Ajax response function for failures; restores previous view
+ *
+ *@params groupid group id;
+ *@return none;
+ */
+function groupfailure_response(groupid)
+{
+    showinfo(groupid);
+    disableeditfields(groupid);
+    setmodifystatus(groupid, 0);
+}
+
+
 
 /**
  * Use to temporarily show an infotext instead of the permission. Must be
