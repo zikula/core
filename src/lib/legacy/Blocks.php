@@ -180,16 +180,20 @@ function pnBlockThemeBlock($row)
     // check for collapsable menus being enabled, and setup the collapsable menu image.
     if (!isset($upb)) {
         if (file_exists('themes/' . $themedir . '/images/upb.gif')) {
-            $upb = '<img src="themes/' . $themedir . '/images/upb.gif" alt="" />';
+            $upb = '<img src="themes/' . $themedir . '/images/upb.gif" alt="-" />';
+        } elseif (file_exists('themes/' . $themedir . '/images/14_layer_raiselayer.gif')) {
+            $upb = '<img src="themes/' . $themedir . '/images/14_layer_raiselayer.gif" alt="-" />';
         } else {
-            $upb = '<img src="images/global/upb.gif" alt="" />';
+            $upb = '<img src="images/icons/extrasmall/14_layer_raiselayer.gif" alt="-" />';
         }
     }
     if (!isset($downb)) {
         if (file_exists('themes/' . $themedir . '/images/downb.gif')) {
-            $downb = '<img src="themes/' . $themedir . '/images/downb.gif" alt="" />';
+            $downb = '<img src="themes/' . $themedir . '/images/downb.gif" alt="+" />';
+        } elseif (file_exists('themes/' . $themedir . '/images/14_layer_lowerlayer.gif')) {
+            $downb = '<img src="themes/' . $themedir . '/images/14_layer_lowerlayer.gif" alt="+" />';
         } else {
-            $downb = '<img src="images/global/downb.gif" alt="" />';
+            $downb = '<img src="images/icons/extrasmall/14_layer_lowerlayer.gif" alt="+" />';
         }
     }
 
