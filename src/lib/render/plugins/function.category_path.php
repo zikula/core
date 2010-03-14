@@ -13,21 +13,35 @@
  */
 
 /**
- * Available parameters:
- *   - assign:      If set, the results are assigned to the corresponding variable instead of printed out
- *   - id:          category ID
- *   - idcolumn:    other field to use as ID (default: id)
- *   - field:       category field to return (default: path)
- *   - html:        return HTML? (default: false)
+ * Retrieve and display the value of a category field (by default, the category's
+ * path).
  *
- * Example:
- * <!--[category_path cid='1' assign='category']-->
- * "get the path of category #1 and assign it to $category"
+ * Available attributes:
+ *  - id        (numeric|string)    if a numeric value is specified, then the
+ *                                  category id, if a string is specified, then
+ *                                  the category's path.
+ *  - idcolumn  (string)            [NOT USED] other field to use as ID (default: id)
+ *  - field     (string)            category field to return (optional, default: path)
+ *  - html      (boolean)           if set, return HTML (optional, default: false)
+ *  - assign    (string)            the name of a template variable to assign the
+ *                                  output to, instead of returning it to the template. (optional)
  *
- * Example from a Content module template:
- * <!--[category_path id=$page.categoryId field='sort_value' assign='catsortvalue']-->
- * "get the sort value of the current page's category and assign it to $catsortvalue"
+ * Examples:
  *
+ * Get the path of category #1 and assign it to the template variable $category:
+
+ * <samp>{category_path id='1' assign='category'}</samp>
+ *
+ * Example from a Content module template: get the sort value of the current 
+ * page's category and assign it to the template variable $catsortvalue:
+ *
+ * <samp>{category_path id=$page.categoryId field='sort_value' assign='catsortvalue'}</samp>
+ *
+ * @todo the 'idcolumn' attribute is specified but not used.
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  string  the value of the specified category field.
  */
 function smarty_function_category_path($params, &$smarty)
 {

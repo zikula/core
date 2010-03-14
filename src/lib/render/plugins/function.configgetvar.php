@@ -13,27 +13,31 @@
  */
 
 /**
- * Smarty function to get configuration variable
+ * Obtain and display a configuration variable from the Zikula system.
  *
- * This function obtains a configuration variable from the Zikula system.
+ * Available attributes:
+ *  - name      (string)    The name of the configuration variable to obtain
+ *  - html      (bool)      If set, the output is prepared for display by
+ *                          DataUtil::formatForDisplayHTML instead of
+ *                          DataUtil::formatForDisplay
+ *  - assign    (string)    the name of a template variable to assign the
+ *                          output to, instead of returning it to the template. (optional)
  *
- * Note that the results should be handled by the pnvarprepfordisplay or the
- * pnvarprephtmldisplay modifier before being displayed.
+ * <i>Note that if the the result is assigned to a template variable, it is not
+ * prepared for display by either DataUtil::formatForDisplayHTML or
+ * DataUtil::formatForDisplay. If it is to be displayed, the varprepfordisplay
+ * or varprephtmldisplay should be used.</i>
  *
+ * Examples:
  *
- * Available parameters:
- *   - name:     The name of the config variable to obtain
- *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
+ * <samp><p>Welcome to {pnconfiggetvar name='sitename'}!</p></samp>
  *
- * Example
- *   Welcome to <!--[pnconfiggetvar name='sitename']-->!
+ * <samp>{pnconfiggetvar name='sitename' assign='thename'}</samp><br>
+ * <samp><p>Welcome to {$thename|varprepfordisplay}!</p></samp>
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        bool        $html        (optional) If true then result will be treated as html content
- * @param        string      $assign      (optional) If set then result will be assigned to this template variable
- * @param        string      $default     (optional) The default value to return if the config variable is not set
- * @return       string      the value of the last status message posted, or void if no status message exists
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  mixed   The value of the configuration variable
  */
 function smarty_function_configgetvar($params, &$smarty)
 {

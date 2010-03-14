@@ -13,11 +13,22 @@
  */
 
 /**
- * Smarty function to return the html code for opentable() located in theme.php.
+ * Retrieve an HTML unordered list of the categories assigned to a specified
+ * item. The assigned categories are retrieved from $item['__CATEGORIES__'].
  *
- * @param array $params All attributes passed to this function from the template
- * @param  object &$smarty Reference to the Smarty object
- * @return string  the html code for opentable() located in theme.php
+ * Available attributes:
+ *  - item  (array) The item from which to retrieve the assigned categories.
+ *
+ * Example:
+ *
+ * <samp>{assignedcategorieslist item=$myVar}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template.
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object.
+ * @return  string  The HTML code for an unordered list containing the item's
+ *                  assigned categories. If no categories are assigned to the
+ *                  item, then the list will contain a single list-item (<li>)
+ *                  with a message to that effect.
  */
 function smarty_function_assignedcategorieslist($params, &$smarty)
 {

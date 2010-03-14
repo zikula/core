@@ -13,19 +13,19 @@
  */
 
 /**
- * Smarty function to show a zikula block by blockinfo array or blockid.
+ * Renderes and displays a single Zikula block by blockinfo array or block id.
  *
- * This function returns a zikula block by blockinfo array or blockid
+ * Available attributes:
+ *  - module    (string)    The internal name of the module that defines the block.
+ *  - blockname (string)    The internal name of the block.
+ *  - block     (int|array) Either the integer block id (bid) of the block, or
+ *                          an array containing the blockinfo for the block.
+ *  - assign    (string)    If set, the results are assigned to the corresponding
+ *                          template variable instead of being returned to the template (optional)
  *
- * Available parameters:
- *   - module
- *   - blockname
- *   - block
- *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
- *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the zikula block
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  string  The rendered output of the specified block.
  */
 function smarty_function_blockshow($params, &$smarty)
 {

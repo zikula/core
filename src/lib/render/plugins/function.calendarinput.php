@@ -13,29 +13,29 @@
  */
 
 /**
- * Smarty function to display a calendar input control
- *
+ * Display a calendar input control consisting of a calendar image, an optional
+ * hidden input field, and associated javascript to render a pop-up calendar.
  * This function displays a javascript (jscalendar) calendar control
  *
- * Available parameters:
- *   - objectname     The name of the object the field will be placed in
- *   - htmlname:      The html fieldname under which the date value will be submitted
- *   - dateformat:    The dateformat to use for displaying the chosen date
- *   - ifformat:      Format of the date field sent in the form (optional - defaults to dateformat)
- *   - defaultstring: The String to display before a value has been selected
- *   - defaultdate:   The Date the calendar should to default to (format: Y/m/d)
- *   - hidden:        Boolean to show a hidden input or not
- *   - display:       Boolean to show a display output (when date is added in a hidden field)
- *   - class:         The class to apply to the html elements
- *   - time:          If set show time selection
+ * Available attributes:
+ *   - objectname       (string)    The name of the object the field will be placed in
+ *   - htmlname:        (string)    The html fieldname under which the date value will be submitted
+ *   - dateformat:      (string)    The dateformat to use for displaying the chosen date
+ *   - ifformat:        (string)    Format of the date field sent in the form (optional - defaults to dateformat)
+ *   - defaultstring    (string)    The String to display before a value has been selected
+ *   - defaultdate:     (string)    The Date the calendar should to default to (format: Y/m/d)
+ *   - hidden:          (bool)      If set, a hidden input field will be generated to hold the selected date
+ *   - display:         (bool)      If set, a <span> is generated to display the selected date (when date is added in a hidden field)
+ *   - class:           (string)    The class to apply to the html elements
+ *   - time:            (bool)      If set, show time selection
  *
- * Example
- * <!--[pncalendarinput objectname=myobject htmlname=from dateformat='%Y-%m-%d' defaultdate='2005/12/31']-->
+ * Example:
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        assign      The smarty variable to assign the resulting menu HTML to
- * @return       string      the language constant
+ * <samp>{calendarinput objectname='myobject' htmlname='from' dateformat='%Y-%m-%d' defaultdate='2005/12/31'}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  string  The HTML and Javascript code to display a calendar control.
  */
 function smarty_function_calendarinput($params, &$smarty)
 {

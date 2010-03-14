@@ -13,17 +13,19 @@
  */
 
 /**
- * Smarty function to get the site's charset
+ * Retrieve and display the site's charset.
  *
- * available parameters:
- *  - assign      if set, the language will be assigned to this variable
+ * Available attributes:
+ *  - assign    (string)    the name of a template variable to assign the
+ *                          output to, instead of returning it to the template. (optional)
  *
- * Example
- * <meta http-equiv="Content-Type" content="text/html; charset=<!--[charset]-->">
+ * Example:
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
- * @return   string   the charset
+ * <samp><meta http-equiv="Content-Type" content="text/html; charset={charset}"></samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  string  the value of the charset
  */
 function smarty_function_charset($params, &$smarty)
 {

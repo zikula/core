@@ -13,23 +13,24 @@
  */
 
 /**
- * Smarty function to display the welcome message
+ * Renders and displays all active blocks assigned to the specified position.
  *
- * Example
- * <!--[blockposition name=left]-->
+ * Available attributes:
+ * - name       (string)    name of the block position to render and display; to
+ *                          support legacy templates, the strings 'l', 'r', and
+ *                          'c' will be translated to 'left', 'right' and 'center'
+ * - implode    (bool|int)  if set, the indiviual blocks in the position will be
+ *                          'imploded' to a single string (optional, default == true)
+ * - assign     (string)    if set, the rendered output will be assigned to this
+ *                          variable instead of being returned to the template (optional)
  *
- * available parameters:
- * - name      name of the block position to display
- * - assign    if set, the title will be assigned to this variable
- * - implode   if set, the indiviual blocks in the position will be 'imploded' to a single string (default:true)
+ * Example:
  *
- * @see          function.blockposition.php::smarty_function_blockposition()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      name         The name of the block position to render
- * @param        string      assign       Assign the output to template variable
- * @param        string      name         'implode' the output to a single string
- * @return       string      the output of the block position
+ * <samp>{blockposition name='left'}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  string  The rendered ouput of all of the blocks assigned to this position
  */
 function smarty_function_blockposition($params, &$smarty)
 {

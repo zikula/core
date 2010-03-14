@@ -13,19 +13,27 @@
  */
 
 /**
- * Smarty function to obtain the a block variable
+ * Obtain the value of one block variable or all block variables for a specified
+ * block.
  *
- * Note: If the name parameter is not set then the assign parameter must be set since there is an array of
- * block variables available.
+ * Note: If the name of the block variable is not set, then the assign parameter
+ * must be set since an array of block variables will be returned.
  *
- * Available parameters:
- *   - bid: the block id
- *   - name: If set the name of the parameter to get otherwise the entire block array is assigned to the template
- *   - assign: If set, the results are assigned to the corresponding variable instead of printed out
+ * Available attributes:
+ *   - bid      (numeric)   The block id
+ *   - name     (string)    The name of the block variable to get, otherwise the
+ *                          entire block array is assigned is returned.
+ *                          (required, if the assign attribute is not specified,
+ *                          otherwise, optional)
+ *   - assign   (string)    The name of the template variable to which the value
+ *                          is assigned, instead of being output to the template.
+ *                          (optional if the name attribute is set, otherwise
+ *                          required)
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the variables content
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  mixed   the value of the block variable specified by the name attribute,
+ *                  or an array containing the full block information.
  */
 function smarty_function_blockgetinfo($params, &$smarty)
 {

@@ -13,26 +13,65 @@
  */
 
 /**
- * Smarty function to display an image form submission button
+ * Display an core image form submission button using either the <button> or the <input>
+ * HTML element. This tag calls the img tag to determine the full path of the image
+ * for the src attribute of the img element within the button element, or
+ * for the src attribute of the input element.
  *
- * BEWARE: Internt Explorer 6.x does NOT work especially well with <button> tags!
+ * <i>BEWARE: Internt Explorer 6.x does NOT work especially well with <button> tags!</i>
  *
- * available parameters:
- *  - assign      if set, the button will be assigned to this variable
- *  - type        if set, the type of button that will be generated (default: submit)
- *  - mode        if set, the type of HTML element to be used (default: <button>). Values = [button|input]
- *  - name        if set, the name of button that will be generated (default: value of 'type' parameter)
- *  - value       if set, the value of button that will be generated
- *  - id          if set, the ID of button
- *  - class       if set, the class of button
- *  - src         image source name
- *  - set         image set name
- *  - alt         if set, will be used for the alt attribute
- *  - title       if set, will be used for the title attribute
+ * Available attributes:
+ *  - src       (string)    The file name of the image. The full path of the image
+ *                          will be determined by the smarty_function_img function.
+ *  - set       (string)    The name of the image set from which to retrieve the
+ *                          image file (the name of a subdirectory under /images/icons).
+ *  - mode      (string)    if set, the type of HTML element to be used (optional,
+ *                          default: button). Values = [button|input]
+ *  - type      (string)    if set, the type of button that will be generated
+ *                          (optional, default: submit, used only if mode is set to 'button')
+ *  - name      (string)    if set, the name of button that will be generated as
+ *                          the name attribute on the button or input element
+ *                          (optional, default: value of 'type' parameter)
+ *  - value     (string)    if set, the value that will be generated as the
+ *                          value attribute on the button or input element (optional,
+ *                          however should be set if mode is input)
+ *  - id        (string)    if set, the value of the id attribute on the button
+ *                          or input element (optional)
+ *  - class     (string)    if set, the value of the class attribute on the
+ *                          button or input element (optional)
+ *  - alt       (string)    if set, the value for the alt attribute. If mode is
+ *                          'button' then the alt attribute is generated for
+ *                          the img element embedded in the button element. If
+ *                          mode is 'input' then the alt attribute is generated
+ *                          for the input element. (optional)
+ *  - title     (string)    if set, the value for the title attribute of the
+ *                          button or input element. (optional)
+ *  - assign    (string)    If set, the results are assigned to the corresponding
+ *                          template variable instead of being returned to the template (optional)
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
- * @return   string   the version string
+ * Examples:
+ *
+ * Display a submit button with button_ok.gif (a green check mark) from the set of
+ * small icons (/images/icons/small) with the <button ...> HTML element.
+ *
+ * <samp>{button src='button_ok.gif' set='small'}</samp>
+ *
+ * Display a cancel button with button_cancel.gif (a red 'X') from the set of
+ * extra small icons (/images/icons/extrasmall) with the <button ...> HTML element.
+ *
+ * <samp>{button src='button_cancel.gif' set='extrasmall' type='cancel'}</samp>
+ *
+ * Display a submit button with button_cancel.gif (a red 'X') from the set of
+ * medium icons (/images/icons/medium) and a value of
+ * 'cancel' with the <input ...> HTML element. The id attribute of the input
+ * element is set to 'cancelbutton'.
+ *
+ * <samp>{button src='button_cancel.gif' set='medium' mode='input' value='cancel' id='cancelbutton'}</samp>
+ *
+ * @param   array   $params     All attributes passed to this function from the template
+ * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
+ * @return  string  The rendered <button ...><img ...></button> or <input ...>
+ *                  element for the form button.
  */
 function smarty_function_button($params, &$smarty)
 {
