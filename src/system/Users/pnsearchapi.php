@@ -84,7 +84,7 @@ function users_searchapi_search($args)
     $users = DBUtil::selectObjectArray ('users', $where, '', -1, -1, 'uid');
 
     if (!$users) {
-        return LogUtil::registerError(__('Error! Could not load data.'));
+        return true;
     }
 
     $sessionId = session_id();
@@ -104,7 +104,7 @@ function users_searchapi_search($args)
                            'session' => DataUtil::formatForStore($sessionId));
             $insertResult = DBUtil::insertObject($items, 'search_result');
             if (!$insertResult) {
-                return LogUtil::registerError(__('Error! Could not load data.'));
+                return LogUtil::registerError(__("Error! Could not load the results of the user's search."));
             }
         }
     }
