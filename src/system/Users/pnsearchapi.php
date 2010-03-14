@@ -96,11 +96,11 @@ function users_searchapi_search($args)
             } else {
                 $qtext = '';
             }
-            $items = array('title' => __('Registered users:') . ' ' . DataUtil::formatForStore($user['uname']),
+            $items = array('title' => DataUtil::formatForStore($user['uname']),
                            'text' => DataUtil::formatForStore($qtext),
                            'extra' => DataUtil::formatForStore($user['uid']),
                            'module' => 'Users',
-                           'created' => '',
+                           'created' => null,
                            'session' => DataUtil::formatForStore($sessionId));
             $insertResult = DBUtil::insertObject($items, 'search_result');
             if (!$insertResult) {
