@@ -174,7 +174,7 @@ function users_admin_create()
  * @param        startnum     The number of the first item to show
  * @return       output       The main module admin page
  */
-function users_admin_view($args)
+function users_admin_view($args = array())
 {
     // Get parameters from whatever input we need.
     $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');

@@ -74,7 +74,7 @@ function theme_admin_create($args)
 /**
  * view all themes
  */
-function theme_admin_view($args)
+function theme_admin_view($args = array())
 {
     // Security check
     if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
