@@ -12,11 +12,13 @@
     margin: 0;
     padding: 0;
 }
+
 #liveusersearch .autocomplete_user ul {
     list-style:none;
     margin: 0;
     padding: 0;
 }
+
 #liveusersearch .autocomplete_user ul li.selected {
     background-color: #ffb;
 }
@@ -39,8 +41,9 @@
     color: green;
 }
 
-.errorrequired {
-    border: 2px red solid;
+#newuser input.errorrequired,
+#newuser input:hover.errorrequired {
+    border: 1px red solid;
 }
 
 .z-errormsg,
@@ -49,6 +52,7 @@
     background: #ffffea url(../../../images/icons/large/error.gif) no-repeat 2em;
     color: inherit;
 }
+
 #z-expirewarning {
     margin: 0 auto;
     font-weight: bold;
