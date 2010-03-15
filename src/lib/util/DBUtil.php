@@ -2451,7 +2451,7 @@ class DBUtil
         $tables = pnDBGetTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && Zikula::getConfigVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && pnModAvailable('Categories')) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && pnConfigGetVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && pnModAvailable('Categories')) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
