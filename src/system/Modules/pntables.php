@@ -164,7 +164,7 @@ function Modules_pntables_detectversion()
                       'help'           => 'pn_help',
                       'license'        => 'pn_license',
                       'securityschema' => 'pn_securityschema');
-    } else if (isset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom120'])) {
+    } else if (isset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom110'])) {
         return array ('id'             => 'pn_id',
                       'name'           => 'pn_name',
                       'type'           => 'pn_type',

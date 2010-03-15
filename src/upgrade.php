@@ -25,7 +25,7 @@ define('_Z_MINUPGVER', '1.1.0');
 require_once 'install/modify_config.php';
 $GLOBALS['ZConfig']['System']['multilingual'] = true;
 $GLOBALS['ZConfig']['System']['language_bc'] = false;
-$_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom120'] = true;
+$_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom110'] = true;
 pnInit(PN_CORE_ALL);
 $action = FormUtil::getPassedValue('action', false, 'GETPOST');
 
