@@ -248,7 +248,7 @@ class DataUtil
             $var = htmlspecialchars($var);
 
             // Fix the HTML that we want
-            $var = preg_replace_callback('#\022([^\024]*)\024#', create_function('$m', 'return formatForDisplayHTML_callback($m);'), $var);
+            $var = preg_replace_callback('#\022([^\024]*)\024#', create_function('$m', 'return DataUtil::formatForDisplayHTML_callback($m);'), $var);
 
             // Fix entities if required
             if (pnConfigGetVar('htmlentities')) {
