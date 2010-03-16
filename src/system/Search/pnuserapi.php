@@ -13,6 +13,138 @@
  * @author Stefano Garuti (ported to pnAPI)
  */
 
+/**
+ * perform the search
+ *
+ * @param    string $args['g']              query string to search
+ * @param    bool   $args['firstPage']      is this first search attempt? is so - basic search is performed
+ * @param    string $args['searchtype']     (optional) search type (default='AND')
+ * @param    string $args['searchorder']    (optional) search order (default='newest')
+ * @param    int    $args['numlimit']       (optional) number of items to return (default value based on Search settings, -1 for no limit)
+ * @param    int    $args['page']           (optional) page number (default=1)
+ * @param    array  $args['active']         (optional) array of search plugins to search (if empty all plugins are used)
+ * @param    array  $args['modvar']         (optional) array with extrainfo for search plugins
+ * @return   array  array of items array and result count, or false on failure
+ */
+function search_userapi_search($args)
+{
+    // query string and firstPage params are required
+    if(!isset($args['q']) || empty($args['q']) || !isset($args['firstPage'])) {
+        return LogUtil::registerArgsError();
+    }
+    $vars = array();
+    $vars['q'] = $args['q'];
+    $vars['searchtype'] = isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND';
+    $vars['searchorder'] = isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest';
+    $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : pnModGetVar('Search', 'itemsperpage', 25);
+    $vars['page'] = isset($args['page']) && !empty($args['page']) ? (int)$args['page'] : 1;
+
+    $firstPage = isset($args['firstPage']) ? $args['firstPage'] : true;
+
+    $active = isset($args['active']) && is_array($args['active']) && !empty($args['active']) ? $args['active'] : array();
+    $modvar = isset($args['modvar']) && is_array($args['modvar']) && !empty($args['modvar']) ? $args['modvar'] : array();
+
+    // work out row index from page number
+    $vars['startnum'] =  $vars['numlimit'] > 0 ? (($vars['page'] - 1) * $vars['numlimit']) + 1 : 1;
+
+    // Load database stuff
+    pnModDBInfoLoad('Search');
+    $pntable      = pnDBGetTables();
+    $userId       = (int)pnUserGetVar('uid');
+    $searchTable  = $pntable['search_result'];
+    $searchColumn = $pntable['search_result_column'];
+
+    // Create restriction on result table (so user only sees own results)
+    $userResultWhere = "$searchColumn[session] = '" . session_id() . "'";
+
+    // Do all the heavy database stuff on the first page only
+    if ($firstPage) {
+        // Clear current search result for current user - before showing the first page
+        // Clear also older searches from other users.
+        $dbType = DBConnectionStack::getConnectionDBType();
+        $where  = $userResultWhere;
+        if ($dbType=='postgres') {
+            $where .= " OR $searchColumn[found] + INTERVAL '8 HOUR' < NOW()" ;
+        } else {
+            $where .= " OR DATE_ADD($searchColumn[found], INTERVAL 8 HOUR) < NOW()" ;
+        }
+
+        DBUtil::deleteWhere ('search_result', $where);
+
+        // get all the search plugins
+        $search_modules = pnModAPIFunc('Search', 'user', 'getallplugins');
+
+        // Ask active modules to find their items and put them into $searchTable for the current user
+        // At the same time convert modules list from numeric index to modname index
+
+        $searchModulesByName = array();
+        foreach($search_modules as $mod) {
+            // check we've a valid search plugin
+            if (isset($mod['functions']) && (empty($active) || isset($active[$mod['title']]))) {
+                foreach ($mod['functions'] as $contenttype => $function) {
+                    if (isset($modvar[$mod['title']])) {
+                        $param = array_merge($vars, $modvar[$mod['title']]);
+                    } else {
+                        $param = $vars;
+                    }
+                    $searchModulesByName[$mod['name']] = $mod;
+                    $ok = pnModAPIFunc($mod['title'], 'search', $function, $param);
+                    if (!$ok) {
+                        LogUtil::registerError(__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
+                        return pnRedirect(pnModUrl('Search', 'user', 'main'));
+                    }
+                }
+            }
+        }
+
+        // Count number of found results
+        $resultCount = DBUtil::selectObjectCount ('search_result', $userResultWhere);
+        SessionUtil::setVar('searchResultCount', $resultCount);
+        SessionUtil::setVar('searchModulesByName', $searchModulesByName);
+    } else {
+        $resultCount = SessionUtil::getVar('searchResultCount');
+        $searchModulesByName = SessionUtil::getVar('searchModulesByName');
+    }
+
+    // Fetch search result - do sorting and paging in database
+
+    // Figure out what to sort by
+    switch ($args['searchorder']) {
+        case 'alphabetical':
+            $sort = 'title';
+            break;
+        case 'oldest':
+            $sort = 'created';
+            break;
+        case 'newest':
+            $sort = 'created DESC';
+            break;
+        default:
+            $sort = 'title';
+            break;
+    }
+
+    // Get next N results from the current user's result set
+    // The "checker" object is used to:
+    // 1) do secondary access control (deprecated more or less)
+    // 2) let the modules add "url" to the found (and viewed) items
+    $checker = new search_result_checker($searchModulesByName);
+    $sqlResult = DBUtil::selectObjectArrayFilter('search_result', $userResultWhere, $sort,
+                                                 $vars['startnum']-1, $vars['numlimit'], '',
+                                                 $checker, null);
+    // add displayname of modules found
+    $cnt = count($sqlResult);
+    for ($i=0; $i<$cnt; $i++) {
+        $modinfo = pnModGetInfo(pnModGetIDFromName($sqlResult[$i]['module']));
+        $sqlResult[$i]['displayname'] = $modinfo['displayname'];
+    }
+
+    $result = array(
+        'resultCount' => $resultCount,
+        'sqlResult' => $sqlResult
+    );
+    return $result;
+}
 
 /**
  * get all previous search queries
@@ -211,4 +343,129 @@ function search_userapi_decodeurl($args)
     }
 
     return true;
+}
+
+/*
+* Splits the query string into words suitable for a mysql query
+*
+* This function is ported 'as is' from the old, nonAPI, module
+* it is called from each plugin so we can't delete it or change it's name
+*
+* @author Patrick Kellum
+* @param string $q the string to parse and split
+* @param string $dbwildcard wrap each word in a DB wildcard character (%)
+* @return array an array of words optionally surrounded by '%'
+*/
+function search_split_query($q, $dbwildcard = true)
+{
+    if (!isset($q)) {
+        return;
+    }
+
+    $w = array();
+    $stripped = DataUtil::formatForStore($q);
+    $qwords = preg_split('/ /', $stripped, -1, PREG_SPLIT_NO_EMPTY);
+
+    foreach($qwords as $word) {
+        if ($dbwildcard) {
+            $w[] = '%' . $word . '%';
+        } else {
+            $w[] = $word;
+        }
+    }
+
+    return $w;
+}
+
+/*
+* Contruct part of a where clause out of the supplied search parameters
+*
+*/
+function search_construct_where($args, $fields, $mlfield = null)
+{
+    $where = '';
+
+    if (!isset($args) || empty($args) || !isset($fields) || empty($fields)) {
+        return $where;
+    }
+
+    if (!empty($args['q'])) {
+        $q = DataUtil::formatForStore($args['q']);
+        $q = str_replace('%', '\\%', $q);  // Don't allow user input % as wildcard
+        $where .= ' (';
+        if ($args['searchtype'] !== 'EXACT') {
+            $searchwords = search_split_query($q);
+            $connector = $args['searchtype'] == 'AND' ? ' AND ' : ' OR ';
+        } else {
+            $searchwords = array("%{$q}%");
+        }
+        $start = true;
+        foreach($searchwords as $word) {
+            $where .= (!$start ? $connector : '') . ' (';
+            // I'm not sure if "LIKE" is the best solution in terms of DB portability (PC)
+            foreach ($fields as $field) {
+                $where .= "{$field} LIKE '$word' OR ";
+            }
+            $where = substr($where, 0 , -4);
+            $where .= ')';
+            $start = false;
+        }
+        $where .= ') ';
+    }
+
+    // Check if we're in a multilingual setup
+    if (isset($mlfield) && pnConfigGetVar('multilingual') == 1) {
+        $currentlang = ZLanguage::getLanguageCode();
+        $where .= "AND ({$mlfield} = '$currentlang' OR {$mlfield} = '')";
+    }
+
+    return $where;
+}
+
+/** Class for doing module based access check and URL creation of search result
+ *
+ * - The module based access is somewhat deprecated (it still works but is not
+ *   used since it makes it impossible to count the number of search result).
+ * - The URL for each found item is created here. By doing this we only create
+ *   URLs for results the user actually view and save some time this way.
+ * @package Zikula_System_Modules
+ * @subpackage Search
+ */
+class search_result_checker
+{
+    // This variable contains a table of all search plugins (indexed by module name)
+    var $search_modules = array();
+
+
+    function search_result_checker($search_modules)
+    {
+        $this->search_modules = $search_modules;
+    }
+
+
+    // This method is called by DBUtil::selectObjectArrayFilter() for each and every search result.
+    // A return value of true means "keep result" - false means "discard".
+    // The decision is delegated to the search plugin (module) that generated the result
+    function checkResult(&$datarow)
+    {
+        // Get module name
+        $module = $datarow['module'];
+
+        // Get plugin information
+        $mod = $this->search_modules[$module];
+
+        $ok = true;
+
+        if (isset($mod['functions'])) {
+            foreach ($mod['functions'] as $contenttype => $function) {
+                // Delegate check to search plugin
+                // (also allow plugin to write 'url' => ... into $datarow by passing it by reference)
+                $ok = $ok && pnModAPIFunc($mod['title'], 'search', $function.'_check',
+                                          array('datarow'     => &$datarow,
+                                                'contenttype' => $contenttype));
+            }
+        }
+
+        return $ok;
+    }
 }
