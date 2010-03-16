@@ -117,6 +117,178 @@ class ZLocale implements ArrayAccess
         return false;
     }
 
+    // getters
+
+    /**
+     * @return the $n_sign_posn
+     */
+    public function getN_sign_posn()
+    {
+        return $this->localeData['n_sign_posn'];
+    }
+
+    /**
+     * @return the $p_sign_posn
+     */
+    public function getP_sign_posn()
+    {
+        return $this->localeData['p_sign_posn'];
+    }
+
+    /**
+     * @return the $n_sep_by_space
+     */
+    public function getN_sep_by_space()
+    {
+        return $this->localeData['n_sep_by_space'];
+    }
+
+    /**
+     * @return the $n_cs_precedes
+     */
+    public function getN_cs_precedes()
+    {
+        return $this->localeData['n_cs_precedes'];
+    }
+
+    /**
+     * @return the $p_sep_by_space
+     */
+    public function getP_sep_by_space()
+    {
+        return $this->localeData['p_sep_by_space'];
+    }
+
+    /**
+     * @return the $p_cs_precedes
+     */
+    public function getP_cs_precedes()
+    {
+        return $this->localeData['p_cs_precedes'];
+    }
+
+    /**
+     * @return the $frac_digits
+     */
+    public function getFrac_digits()
+    {
+        return $this->localeData['frac_digits'];
+    }
+
+    /**
+     * @return the $int_frac_digits
+     */
+    public function getInt_frac_digits()
+    {
+        return $this->localeData['int_frac_digits'];
+    }
+
+    /**
+     * @return the $negative_sign
+     */
+    public function getNegative_sign()
+    {
+        return $this->localeData['negative_sign'];
+    }
+
+    /**
+     * @return the $positive_sign
+     */
+    public function getPositive_sign()
+    {
+        return $this->localeData['positive_sign'];
+    }
+
+    /**
+     * @return the $mon_thousands_sep
+     */
+    public function getMon_thousands_sep()
+    {
+        return $this->localeData['mon_thousands_sep'];
+    }
+
+    /**
+     * @return the $mon_decimal_point
+     */
+    public function getMon_decimal_point()
+    {
+        return $this->localeData['mon_decimal_point'];
+    }
+
+    /**
+     * @return the $currency_symbol
+     */
+    public function getCurrency_symbol()
+    {
+        return $this->localeData['currency_symbol'];
+    }
+
+    /**
+     * @return the $int_curr_symbol
+     */
+    public function getInt_curr_symbol()
+    {
+        return $this->localeData['int_curr_symbol'];
+    }
+
+    /**
+     * @return the $thousands_sep
+     */
+    public function getThousands_sep()
+    {
+        return $this->localeData['thousands_sep'];
+    }
+
+    /**
+     * @return the $decimal_point
+     */
+    public function getDecimal_point()
+    {
+        return $this->localeData['decimal_point'];
+    }
+
+    /**
+     * @return the $language_direction
+     */
+    public function getLanguage_direction()
+    {
+        return $this->localeData['language_direction'];
+    }
+
+    /**
+     * @return the $firstweekday
+     */
+    public function getFirstweekday()
+    {
+        return $this->localeData['firstweekday'];
+    }
+
+    /**
+     * @return the $timeformat
+     */
+    public function getTimeformat()
+    {
+        return $this->localeData['timeformat'];
+    }
+
+    /**
+     * @return the $grouping
+     */
+    public function getGrouping()
+    {
+        return $this->localeData['grouping'];
+    }
+
+    /**
+     * @return the $mon_grouping
+     */
+    public function getMon_grouping()
+    {
+        return $this->localeData['mon_grouping'];
+    }
+
+    // automatic getters through ArrayAccess
+
     public function offsetExists($offset)
     {
         return (isset($this->$offset));
