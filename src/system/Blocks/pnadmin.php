@@ -68,11 +68,12 @@ function blocks_admin_view()
         $block['modname'] = $modinfo['displayname'];
 
         // set the blocks language
-        if (empty($block['blanguage'])) {
+        if (empty($block['language'])) {
             $block['language'] = __('All');
         } else {
-            $block['language'] = $block['blanguage'];
+            $block['language'] = ZLanguage::getLanguageName($block['language']);
         }
+
         $thisblockspositions = pnModAPIFunc('Blocks', 'user', 'getallblockspositions', array('bid' => $block['bid']));
         $bposarray = array();
         foreach($thisblockspositions as $singleblockposition){
