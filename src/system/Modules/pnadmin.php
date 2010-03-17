@@ -199,7 +199,7 @@ function modules_admin_view()
     // Get parameters from whatever input we need.
     $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
     $letter = FormUtil::getPassedValue('letter', null, 'GET');
-    $state = FormUtil::getPassedValue('state', (!strstr(pnServerGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('state', null), 'GET');
+    $state = FormUtil::getPassedValue('state', (!strstr(pnServerGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('state', null), 'GETPOST');
     $sort = FormUtil::getPassedValue('sort', (!strstr(pnServerGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sort', null), 'GET');
 
     // do some clean up
@@ -337,25 +337,37 @@ function modules_admin_view()
                         break;
                     case PNMODULE_STATE_UNINITIALISED:
                     default:
-                        $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'initialise', array(
-                                'id' => $mod['id'],
-                                'startnum' => $startnum,
-                                'authid' => $authid,
-                                'letter' => $letter,
-                                'state' => $state)),
-                            'image' => 'agt_update_misc.gif',
-                            'title' => __('Install'));
-                        if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || $GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')) {
+                        if ($mod['state'] < 10) {
                             $actions[] = array(
-                                'url' => pnModURL('Modules', 'admin', 'remove', array(
+                                'url' => pnModURL('Modules', 'admin', 'initialise', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
                                     'authid' => $authid,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                'image' => '14_layer_deletelayer.gif',
-                                'title' => __('Remove module'));
+                                'image' => 'agt_update_misc.gif',
+                                'title' => __('Install'));
+                            if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || $GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')) {
+                                $actions[] = array(
+                                    'url' => pnModURL('Modules', 'admin', 'remove', array(
+                                        'id' => $mod['id'],
+                                        'startnum' => $startnum,
+                                        'authid' => $authid,
+                                        'letter' => $letter,
+                                        'state' => $state)),
+                                    'image' => '14_layer_deletelayer.gif',
+                                    'title' => __('Remove module'));
+                            }
+                        } else {
+                             $actions[] = array(
+                                'url' => pnModURL('Modules', 'admin', 'compinfo', array(
+                                    'id' => $mod['id'],
+                                    'startnum' => $startnum,
+                                    'authid' => $authid,
+                                    'letter' => $letter,
+                                    'state' => $state)),
+                                'image' => 'info.gif',
+                                'title' => __('Incompatibility information'));       
                         }
                         break;
                 }
@@ -396,7 +408,11 @@ function modules_admin_view()
                     break;
                 case PNMODULE_STATE_UNINITIALISED:
                 default:
-                    $status = __('Not installed');
+                    if ($mod['state'] < 10) {
+                        $status = __('Not installed');
+                    } else {
+                        $status = __('Incompatible version');
+                    }
                     $statusimage = 'redled.gif';
                     break;
             }
@@ -1054,4 +1070,51 @@ function modules_admin_updateconfig()
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
     return pnRedirect(pnModURL('Modules', 'admin', 'view'));
+}
+
+/**
+ * Display information of a module compatibility with the version of the core
+ * @author Albert Pérez Monfort
+ * @param  int 'id' identity of the module
+ * @return string HTML output string
+ */
+function modules_admin_compinfo()
+{
+    // get our input
+    $id = (int) FormUtil::getPassedValue('id', null, 'GET');
+    $startnum = (int) FormUtil::getPassedValue('startnum');
+    $letter = FormUtil::getPassedValue('letter');
+    $state = (int) FormUtil::getPassedValue('state');
+
+    // check the input
+    if (!is_numeric($id)) {
+        return LogUtil::registerArgsError(pnModURL('Modules', 'admin', 'view'));
+    }
+
+    // get the modules information from the data base
+    $modinfo = pnModGetInfo($id);
+    if ($modinfo == false) {
+        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, pnModURL('Modules', 'admin', 'view'));
+    }
+
+    if (!SecurityUtil::checkPermission('Modules::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    // get the module information from the files system
+    $moduleInfo = pnModAPIFunc('Modules', 'admin', 'getfilemodules',
+                                array('name' => $modinfo['name']));
+
+    // Create output object
+    $pnRender = Renderer::getInstance('Modules', false);
+    // assign the module information to the template
+    $pnRender->assign('moduleInfo', $moduleInfo);
+    // pass values to template
+    $pnRender->assign('id', $id);
+    $pnRender->assign('startnum', $startnum);
+    $pnRender->assign('letter', $letter);
+    $pnRender->assign('state', $state);
+
+    // Return the output that has been generated by this function
+    return $pnRender->fetch('modules_admin_compinfo.htm');
 }

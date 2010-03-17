@@ -223,6 +223,9 @@ function modules_adminapi_list($args)
     } else {
         $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > 5) ? 0 : (int) $args['state'];
     }
+    // for incompatible versions of the modules with the core
+    $state = ($args['state'] == 10) ? 10 : $state;
+
     $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > 3) ? 0 : (int) $args['type'];
     $sort = empty($args['sort']) ? null : (string) $args['sort'];
 
@@ -256,6 +259,10 @@ function modules_adminapi_list($args)
         case PNMODULE_STATE_INVALID:
             $where[] = "$modulescolumn[state] = '" . DataUtil::formatForStore($state) . "'";
             break;
+    }
+
+    if ($state == 10) {
+        $where[] = "$modulescolumn[state] > 10";
     }
 
     // generate where clause
@@ -323,7 +330,9 @@ function modules_adminapi_setstate($args)
                     return LogUtil::registerError(__('Error! Invalid module state transition.'));
                 }
             } else {
-                return LogUtil::registerError(__('Error! Invalid module state transition.'));
+                if ($args['state'] > 10) {
+                    return LogUtil::registerError(__('Error! Invalid module state transition.'));
+                }
             }
             break;
         case PNMODULE_STATE_INACTIVE:
@@ -479,7 +488,7 @@ function modules_adminapi_remove($args)
  * @author J?rg Napp
  * @return array Array of modules found in the file system
  */
-function modules_adminapi_getfilemodules()
+function modules_adminapi_getfilemodules($args)
 {
     // Security check
     if (!defined('_ZINSTALLVER')) {
@@ -578,6 +587,20 @@ function modules_adminapi_getfilemodules()
                     $url = $displayname;
                 }
 
+                // bc for core_min
+                if (isset($modversion['core_min']) && !empty($modversion['core_min'])) {
+                    $core_min = $modversion['core_min'];
+                } else {
+                    $core_min = '';
+                }
+
+                // bc for core_max
+                if (isset($modversion['core_max']) && !empty($modversion['core_max'])) {
+                    $core_max = $modversion['core_max'];
+                } else {
+                    $core_max = '';
+                }
+
                 if (isset($modversion['securityschema']) && is_array($modversion['securityschema'])) {
                     $securityschema = serialize($modversion['securityschema']);
                 } else {
@@ -589,31 +612,63 @@ function modules_adminapi_getfilemodules()
                 } else {
                     $moddependencies = serialize(array());
                 }
-
-                $filemodules["$rootdir/$dir"] = array(
-                                           'directory'       => $dir,
-                                           'name'            => $name,
-                                           'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
-                                           'type'            => $modtype,
-                                           'displayname'     => $displayname,
-                                           'url'             => $url,
-                                           'regid'           => $regid,
-                                           'version'         => $version,
-                                           'description'     => $description,
-                                           'admin_capable'   => $adminCapable,
-                                           'user_capable'    => $userCapable,
-                                           'profile_capable' => $profileCapable,
-                                           'message_capable' => $messageCapable,
-                                           'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
-                                           'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
-                                           'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
-                                           'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
-                                           'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
-                                           'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
-                                           'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
-                                           'securityschema'  => $securityschema,
-                                           'moddependencies' => $moddependencies
-                                          );
+                if (!isset($args['name'])) {
+                    $filemodules["$rootdir/$dir"] = array(
+                                               'directory'       => $dir,
+                                               'name'            => $name,
+                                               'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
+                                               'type'            => $modtype,
+                                               'displayname'     => $displayname,
+                                               'url'             => $url,
+                                               'regid'           => $regid,
+                                               'version'         => $version,
+                                               'description'     => $description,
+                                               'admin_capable'   => $adminCapable,
+                                               'user_capable'    => $userCapable,
+                                               'profile_capable' => $profileCapable,
+                                               'message_capable' => $messageCapable,
+                                               'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
+                                               'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
+                                               'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
+                                               'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
+                                               'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
+                                               'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
+                                               'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
+                                               'securityschema'  => $securityschema,
+                                               'moddependencies' => $moddependencies,
+                                               'core_min'        => $core_min,
+                                               'core_max'        => $core_max
+                                              );
+                } else {
+                    if ($name == $args['name']) {
+                        $filemodules = array(
+                                               'directory'       => $dir,
+                                               'name'            => $name,
+                                               'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
+                                               'type'            => $modtype,
+                                               'displayname'     => $displayname,
+                                               'url'             => $url,
+                                               'regid'           => $regid,
+                                               'version'         => $version,
+                                               'description'     => $description,
+                                               'admin_capable'   => $adminCapable,
+                                               'user_capable'    => $userCapable,
+                                               'profile_capable' => $profileCapable,
+                                               'message_capable' => $messageCapable,
+                                               'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
+                                               'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
+                                               'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
+                                               'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
+                                               'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
+                                               'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
+                                               'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
+                                               'securityschema'  => $securityschema,
+                                               'moddependencies' => $moddependencies,
+                                               'core_min'        => $core_min,
+                                               'core_max'        => $core_max
+                                              );
+                    }
+                }
 
                 // important: unset modversion and modtype, otherwise the
                 // following modules will have some values not defined in
@@ -708,6 +763,25 @@ function modules_adminapi_regenerate($args)
         }
     }
 
+    // see if we have any module that is not compatible with corrent version of the core. In this case set it as innactive
+    $version = str_replace('-dev', '', PN_VERSION_NUM);
+    foreach ($filemodules as $modinfo) {
+        if ($modinfo['core_min'] != '' && $modinfo['core_min'] > $version || $modinfo['core_max'] != '' && $modinfo['core_max'] < $version) {
+            if ($dbmodules[$modinfo['name']]['state'] != '' && $dbmodules[$modinfo['name']]['state'] < 10) {
+                // set the module as invalid version increasing the state value with 10 in order to recover the previous state in case the module files were compatible again
+                modules_adminapi_setstate(array('id'   => $dbmodules[$modinfo['name']]['id'],
+                                                'state' => $dbmodules[$modinfo['name']]['state'] + 10));
+            }
+        } else {
+            // set the previous state for the module
+            if ($dbmodules[$modinfo['name']]['state'] > 10) {
+                // set the module as valid preserving the previous state
+                modules_adminapi_setstate(array('id'   => $dbmodules[$modinfo['name']]['id'],
+                                                'state' => $dbmodules[$modinfo['name']]['state'] - 10));
+            }
+        }
+    }
+
     // See if we have lost any modules since last generation
     foreach ($dbmodules as $name => $modinfo) {
         if (!in_array($name, $module_names)) {
@@ -745,7 +819,11 @@ function modules_adminapi_regenerate($args)
         if (empty($dbmodules[$name])) {
             // New module
             // RNG: set state to invalid if we can't determine an ID
-            $modinfo['state'] = PNMODULE_STATE_UNINITIALISED;
+            if ($modinfo['core_min'] != '' && $modinfo['core_min'] > $version || $modinfo['core_max'] != '' && $modinfo['core_max'] < $version) {
+                $modinfo['state'] = PNMODULE_STATE_UNINITIALISED + 10;
+            } else {
+                $modinfo['state'] = PNMODULE_STATE_UNINITIALISED;
+            }
             if (!$modinfo['version']) {
                 $modinfo['state'] = PNMODULE_STATE_INVALID;
             }

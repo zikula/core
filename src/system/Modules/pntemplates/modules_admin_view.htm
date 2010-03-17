@@ -29,6 +29,7 @@
                                 {if $multi}
                                 <option value="{ml name=PNMODULE_STATE_NOTALLOWED}"{if $state eq 6} selected="selected"{/if}>{gt text="Not allowed"}</option>
                                 {/if}
+                                <option value="10"{if $state eq 10} selected="selected"{/if}>{gt text="Incompatible version"}</option>
                                 <option value="{ml name="PNMODULE_STATE_INVALID"}"{if $state eq -1} selected="selected"{/if}>{gt text="Invalid structure"}</option>
                             </select>
                         </div>
