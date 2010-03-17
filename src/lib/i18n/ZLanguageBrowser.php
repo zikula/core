@@ -35,36 +35,33 @@ class ZLanguageBrowser
         $browserLang = (empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? false : $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 
         // Check arguments
-        if (!$browserLang || !$sysLang || empty($sysLang))
-        {
+        if (!$browserLang || !$sysLang || empty($sysLang)) {
             return false;
         }
 
         // Explode the browser languages into a table
-        $browserLang      = explode(',', $browserLang);
+        $browserLang = explode(',', $browserLang);
         $browserLangArray = array();
 
-        foreach ($browserLang as $curLang)
-        {
+        foreach ($browserLang as $curLang) {
             $curLang = trim($curLang);
             $curLang = explode(';', $curLang);
 
-            if(!empty($curLang[1])) {
+            if (!empty($curLang[1])) {
                 $curLangScore = explode('=', $curLang[1]);
-                $browserLangArray[$curLang[0]] = (float)$curLangScore[1];
+                $browserLangArray[$curLang[0]] = (float) $curLangScore[1];
             } else {
-                $browserLangArray[$curLang[0]] = (float)1.0;
+                $browserLangArray[$curLang[0]] = (float) 1.0;
             }
         }
 
         // Check if one of the specific browser language is in the list of system languages
         $langScore = 0;
 
-        foreach ($browserLangArray as $key => $value)
-        {
+        foreach ($browserLangArray as $key => $value) {
             if (in_array($key, $sysLang) && ($value > $langScore)) {
                 $langScore = $value;
-                $langName  = $key;
+                $langName = $key;
             }
         }
 
