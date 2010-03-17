@@ -127,10 +127,6 @@ class ZLoader
             'UserUtil' => 'util',
             'ValidationUtil' => 'util',
             'WorkflowUtil' => 'util',
-            'ZEvent' => 'event',
-            'ZEventManager' => 'event',
-            'ZBase' => 'common',
-            'ZException' => 'exception',
             'Loader' => 'legacy',
             'ZLanguageBrowser' => 'i18n',
             'ZDBManipulation' => 'module');
