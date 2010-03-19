@@ -1,4 +1,4 @@
-﻿// ** I18N
+// ** I18N
 // Greek, utf8
 Calendar._DN = new Array
 ("Κυριακή",
@@ -54,13 +54,13 @@ Calendar._FD = 1;
 
 // tooltips
 Calendar._TT = {};
-Calendar._TT["INFO"] = "Για το ημερολόγιο";
+Calendar._TT["INFO"] = "Σχετικά με το ημερολόγιο";
 
 Calendar._TT["ABOUT"] =
 "Επιλογέας ημερομηνίας/ώρας σε DHTML\n" +
 "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
-"Για τελευταία έκδοση: http://www.dynarch.com/projects/calendar/\n" +
-"Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
+"Για την τελευταία έκδοση επισκεφτείτε τη διεύθυνση: http://www.dynarch.com/projects/calendar/\n" +
+"Διανέμεται βάσει της άδειας GNU LGPL.  Δείτε τη σελίδα http://gnu.org/licenses/lgpl.html για περισσότερες λεπτομέρειες." +
 "\n\n" +
 "Επιλογή ημερομηνίας:\n" +
 "- Χρησιμοποιείστε τα κουμπιά \xab, \xbb για επιλογή έτους\n" +
@@ -71,7 +71,7 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- Κάντε κλικ σε ένα από τα μέρη της ώρας για αύξηση\n" +
 "- ή Shift-κλικ για μείωση\n" +
 "- ή κλικ και μετακίνηση για πιο γρήγορη επιλογή.";
-Calendar._TT["TOGGLE"] = "Μπάρα πρώτης ημέρας της εβδομάδας";
+
 Calendar._TT["PREV_YEAR"] = "Προηγ. έτος (κρατήστε για το μενού)";
 Calendar._TT["PREV_MONTH"] = "Προηγ. μήνας (κρατήστε για το μενού)";
 Calendar._TT["GO_TODAY"] = "Σήμερα";
@@ -80,8 +80,11 @@ Calendar._TT["NEXT_YEAR"] = "Επόμενο έτος (κρατήστε για τ
 Calendar._TT["SEL_DATE"] = "Επιλέξτε ημερομηνία";
 Calendar._TT["DRAG_TO_MOVE"] = "Σύρτε για να μετακινήσετε";
 Calendar._TT["PART_TODAY"] = " (σήμερα)";
-Calendar._TT["MON_FIRST"] = "Εμφάνιση Δευτέρας πρώτα";
-Calendar._TT["SUN_FIRST"] = "Εμφάνιση Κυριακής πρώτα";
+
+Calendar._TT["DAY_FIRST"] = "Εμφάνιση της %s πρώτα";
+
+Calendar._TT["WEEKEND"] = "0,6";
+
 Calendar._TT["CLOSE"] = "Κλείσιμο";
 Calendar._TT["TODAY"] = "Σήμερα";
 Calendar._TT["TIME_PART"] = "(Shift-)κλικ ή μετακίνηση για αλλαγή";
@@ -91,4 +94,5 @@ Calendar._TT["DEF_DATE_FORMAT"] = "dd-mm-y";
 Calendar._TT["TT_DATE_FORMAT"] = "D, d M";
 
 Calendar._TT["WK"] = "εβδ";
+Calendar._TT["TIME"] = "Ώρα:";
 
