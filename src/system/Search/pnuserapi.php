@@ -39,7 +39,7 @@ function search_userapi_search($args)
     $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : pnModGetVar('Search', 'itemsperpage', 25);
     $vars['page'] = isset($args['page']) && !empty($args['page']) ? (int)$args['page'] : 1;
 
-    $firstPage = isset($args['firstPage']) ? $args['firstPage'] : true;
+    $firstPage = isset($args['firstPage']) ? $args['firstPage'] : false;
 
     $active = isset($args['active']) && is_array($args['active']) && !empty($args['active']) ? $args['active'] : array();
     $modvar = isset($args['modvar']) && is_array($args['modvar']) && !empty($args['modvar']) ? $args['modvar'] : array();
