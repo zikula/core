@@ -62,13 +62,14 @@ function users_searchapi_search($args)
     $where   = array();
     $where[] = "$userscolumn[activated] = '1'";
 
+    $unameClause = search_construct_where($args,array($userscolumn['uname']));
     // invoke the current profilemodule search query
     if ($useProfileMod) {
         $uids = pnModAPIFunc($profileModule, 'user', 'searchdynadata',
                              array('dynadata' => array('all' => $q)));
 
         if (is_array($uids) && !empty($uids)) {
-            $tmp = "($userscolumn[uname] LIKE '%$q%' OR $userscolumn[uid] IN (";
+            $tmp = $unameClause . " OR $userscolumn[uid] IN (";
             foreach ($uids as $uid) {
                 $tmp .= DataUtil::formatForStore($uid) . ',';
             }
@@ -76,7 +77,7 @@ function users_searchapi_search($args)
             $where[] = $tmp;
         }
     } else {
-        $where[] = "$userscolumn[uname] LIKE '%$q%'";
+        $where[] = $unameClause;
     }
 
     $where = implode(' AND ', $where);
