@@ -97,12 +97,12 @@ function users_searchapi_search($args)
             } else {
                 $qtext = '';
             }
-            $items = array('title' => DataUtil::formatForStore($user['uname']),
-                           'text' => DataUtil::formatForStore($qtext),
-                           'extra' => DataUtil::formatForStore($user['uid']),
+            $items = array('title' => $user['uname'],
+                           'text' => $qtext,
+                           'extra' => $user['uid'],
                            'module' => 'Users',
                            'created' => null,
-                           'session' => DataUtil::formatForStore($sessionId));
+                           'session' => $sessionId);
             $insertResult = DBUtil::insertObject($items, 'search_result');
             if (!$insertResult) {
                 return LogUtil::registerError(__("Error! Could not load the results of the user's search."));
