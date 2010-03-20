@@ -342,9 +342,8 @@ function Admin_admin_adminpanel($args)
     // get admin capable modules
     $adminmodules = pnModGetAdminMods();
     $adminlinks = array();
-    foreach ($adminmodules as $adminmodule)
-    {
-        if (SecurityUtil::checkPermission("$adminmodule[name]::", '::', ACCESS_EDIT)) {
+    foreach ($adminmodules as $adminmodule) {
+        if (SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
             $catid = pnModAPIFunc('Admin', 'admin', 'getmodcategory',
                                   array('mid' => pnModGetIDFromName($adminmodule['name'])));
 
