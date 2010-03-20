@@ -32,7 +32,13 @@ $module = FormUtil::getPassedValue('module', '', 'GETPOST');
 
 if (empty($module)) {
     // call for admin.php without module parameter
-    pnRedirect(pnModURL('Admin', 'admin', 'adminpanel'));
+    if (!pnUserLoggedIn()) {
+        pnRedirect(pnModURL('Users', 'user', 'loginscreen', array(
+            'returnpage'    => urlencode(pnModURL('Admin', 'admin', 'adminpanel'))
+        )));
+    } else {
+        pnRedirect(pnModURL('Admin', 'admin', 'adminpanel'));
+    }
     pnShutDown();
 } else if (!pnModAvailable($module) || !SecurityUtil::checkPermission("$module::", '::', ACCESS_EDIT)) {
     // call for an unavailable module - either not available or not authorized
