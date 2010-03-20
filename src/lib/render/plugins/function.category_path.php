@@ -20,7 +20,10 @@
  *  - id        (numeric|string)    if a numeric value is specified, then the
  *                                  category id, if a string is specified, then
  *                                  the category's path.
- *  - idcolumn  (string)            [NOT USED] other field to use as ID (default: id)
+ *  - idcolumn  (string)            field to use as the unique ID, either 'id',
+ *                                  'path', or 'ipath' (optional,
+ *                                  default: 'id' if the id attribute is numeric,
+ *                                  'path' if the id attribute is not numeric)
  *  - field     (string)            category field to return (optional, default: path)
  *  - html      (boolean)           if set, return HTML (optional, default: false)
  *  - assign    (string)            the name of a template variable to assign the
@@ -29,15 +32,25 @@
  * Examples:
  *
  * Get the path of category #1 and assign it to the template variable $category:
-
+ *
  * <samp>{category_path id='1' assign='category'}</samp>
+ *
+ * Get the path of the category with an ipath of '/1/3/28/30' and display it.
+ *
+ * <samp>{category_path id='/1/3/28/30' idcolumn='ipath' field='path'}</samp>
+ *
+ * Get the parent_id of the category with a path of
+ * '/__SYSTEM__/General/ActiveStatus/Active' and assign it to the template
+ * variable $parentid. Then use that template variable to retrieve and display
+ * the parent's path.
+ *
+ * <samp>{category_path id='/__SYSTEM__/General/ActiveStatus/Active' field='parent_id' assign='parentid'}</samp>
+ * <samp>{category_path id=$parentid}</samp>
  *
  * Example from a Content module template: get the sort value of the current 
  * page's category and assign it to the template variable $catsortvalue:
  *
  * <samp>{category_path id=$page.categoryId field='sort_value' assign='catsortvalue'}</samp>
- *
- * @todo the 'idcolumn' attribute is specified but not used.
  *
  * @param   array   $params     All attributes passed to this function from the template
  * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
@@ -47,12 +60,18 @@ function smarty_function_category_path($params, &$smarty)
 {
     $assign    = isset($params['assign'])   ? $params['assign']   : null;
     $id        = isset($params['id'])       ? $params['id']       : 0;
-    $idcolumn  = isset($params['idcolumn']) ? $params['idcolumn'] : 'id';
+    $idcolumn  = isset($params['idcolumn']) ? $params['idcolumn'] : (is_numeric($id) ? 'id' : 'path');
     $field     = isset($params['field'])    ? $params['field']    : 'path';
     $html      = isset($params['html'])     ? $params['html']     : false;
 
     if (!$id) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'id')));
+    }
+
+    if (!$idcolumn) {
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'idcolumn')));
+    } elseif (($idcolumn != 'id') && ($idcolumn != 'path') && ($idcolumn != 'ipath')) {
+        $smarty->trigger_error(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', array('category_path', 'idcolumn', $idcolumn)));
     }
 
     if (!$field) {
@@ -62,10 +81,10 @@ function smarty_function_category_path($params, &$smarty)
     Loader::loadClass('CategoryUtil');
 
     $result = null;
-    if (is_numeric($id)) {
+    if ($idcolumn == 'id') {
         $cat = CategoryUtil::getCategoryByID($id);
-    } else {
-        $cat = CategoryUtil::getCategoryByPath($id, $field);
+    } elseif (($idcolumn == 'path') || ($idcolumn == 'ipath')) {
+        $cat = CategoryUtil::getCategoryByPath($id, $idcolumn);
     }
 
     if ($cat) {
