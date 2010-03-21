@@ -308,7 +308,11 @@ class FormUtil
         }
 
         $ve = self::getValidationErrors();
-        return (boolean) ($ve[$objectType][$field]);
+        if (isset($ve[$objectType][$field])) {
+            return (boolean)$ve[$objectType][$field];
+        } else {
+            return false;
+        }
     }
 
     /**
