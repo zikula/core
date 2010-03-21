@@ -6,19 +6,18 @@
 
 {assign_debug_info}
 {debugenvironment}
-{capture name='pndebugoutput' assign='pndebugoutput'}
+{capture name='debugoutput' assign='debugoutput'}
 	<table border="0" width="100%">
 	<tr bgcolor="#cccccc">
 	    <th colspan="2" style="text-align: left;">{gt text="Rendering engine debug console"}</th>
 	</tr>
 	<tr bgcolor="#eeeeee">
         <td colspan="2">
-            {gt text='pndebug plugin found at line <strong>%1$s</strong> in template <strong>%3$s/%2$s</strong>'  tag1=$_line tag2=$_template|default:'-' tag3=$_path}
+            {gt text='zdebug plugin found at line <strong>%1$s</strong> in template <strong>%3$s/%2$s</strong>'  tag1=$_line tag2=$_template|default:'-' tag3=$_path}
         </td>
     </tr>
 	<tr bgcolor="#eeeeee">
         <td colspan="2">
-            pnRender <strong>v{$_pnrenderversion}</strong>, 
             Smarty <strong>v{$_smartyversion}</strong>,
             {gt text="Theme"} <strong>v{$_themeversion}</strong>
         </td>
@@ -62,7 +61,7 @@
 		{if $_debug_keys[vars] neq 'renderObject'}
 		<tr bgcolor="{cycle values='#eeeeee,#fafafa'}">
 		    <td valign="top">
-		        <tt style="color: blue;">&lt;!--[${$_debug_keys[vars]}]--&gt;</tt>
+		        <tt style="color: blue;">{ldelim}${$_debug_keys[vars]}{rdelim}</tt>
 		    </td>
 		    <td nowrap="nowrap">
 		        <tt style="color: green;white-space:pre"><!--raw-->{$_debug_vals[vars]|@debug_print_var:0:1000}<!--/raw--></tt>
@@ -82,13 +81,19 @@
 	        <strong>{gt text="Zikula session variables"}:</strong>
 	    </td>
 	</tr>
-	{section name=vars loop=$_pnsession_keys}
+	{section name=vars loop=$_ZSession_keys}
 		<tr bgcolor="{cycle values='#eeeeee,#fafafa'}">
 		    <td style="vertical-align: top; color: blue;">
-		        <tt>&lt;!--[${$_pnsession_keys[vars]}]--&gt;</tt>
+		        <tt>{ldelim}${$_ZSession_keys[vars]}{rdelim}</tt>
 		    </td>
 		    <td nowrap="nowrap" style="color: green;">
-		        <tt style="white-space:pre;"><!--raw-->{$_pnsession_vals[vars]|@debug_print_var:0:1000}<!--/raw--></tt>
+		        <tt style="white-space:pre;"><!--raw-->{$_ZSession_vals[vars]|@debug_print_var:0:1000}<!--/raw--></tt>
+		    </td>
+		</tr>
+	{sectionelse}
+		<tr bgcolor="{cycle values='#eeeeee,#fafafa'}" colspan="2">
+		    <td style="vertical-align: top; font-style: italic;">
+		        ({gt text="none"})
 		    </td>
 		</tr>
 	{/section}
@@ -101,7 +106,7 @@
 	{section name=config_vars loop=$_debug_config_keys}
 		<tr bgcolor="{cycle values='#eeeeee,#fafafa'}">
 		    <td valign="top">
-		        <tt style="color: maroon;">&lt;!--[#{$_debug_config_keys[config_vars]}#]--&gt;</tt>
+		        <tt style="color: maroon;">{ldelim}#{$_debug_config_keys[config_vars]}#{rdelim}</tt>
 		    </td>
 		    <td>
 		        <tt style="color: green;white-space:pre;"><!--raw-->{$_debug_config_vals[config_vars]|@debug_print_var:0:1000}<!--/raw--></tt>
@@ -119,9 +124,9 @@
 
 
 {if isset($_smarty_debug_output) and $_smarty_debug_output eq "html"}
-    {$pndebugoutput}
+    {$debugoutput}
 {else}
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 	if( self.name == '' ) {
 	   var title = 'Console';
 	} else {
@@ -130,7 +135,7 @@
 	_dbg_console = window.open("",title.value,"width=680,height=600,resizable,scrollbars=yes");
  	_dbg_console.document.write('<html><body><div id="debugcontent"></div></body class="donotremovemeorthepopupwillbreak"></html>');
 	_dbg_console.document.close();
-    _dbg_console.document.getElementById('debugcontent').innerHTML = '{$pndebugoutput|escape:javascript}';
+    _dbg_console.document.getElementById('debugcontent').innerHTML = '{{$debugoutput|escape:javascript}}';
 
 </script>
 {/if}
