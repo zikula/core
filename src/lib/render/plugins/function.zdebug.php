@@ -35,7 +35,7 @@
  *
  * This plugin is basing on the original debug plugin written by Monte Ohrt <monte@ispi.net>
  */
-function smarty_function_debug($params, &$smarty)
+function smarty_function_zdebug($params, &$smarty)
 {
     $out = '';
     $thismodule = pnModGetName();
