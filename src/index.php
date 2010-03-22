@@ -33,7 +33,7 @@ $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST');
 
 // Check for site closed
 if (pnConfigGetVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
-    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && pnUserLoggedIn()){
+    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && pnUserLoggedIn()) {
         pnUserLogOut();
     }
     header('HTTP/1.1 503 Service Unavailable');

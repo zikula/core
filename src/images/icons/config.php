@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zikula Application Framework
  *
@@ -7,6 +6,7 @@
  * @link http://www.zikula.org
  * @version $Id: config.php 19408 2006-07-13 13:20:58Z markwest $
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * @package Zikula
  */
 
 /**

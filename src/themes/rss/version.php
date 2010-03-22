@@ -8,7 +8,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_Themes
  * @subpackage rss
-*/
+ */
 
 $themeversion['name']           = 'RSS';
 $themeversion['displayname']    = __('RSS');
