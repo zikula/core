@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <project name="zikula" default="clean">
     <!-- invokation
-        phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcpd phpunit phpcb build -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
+        phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcpd phpunit phpcb build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
         # note phpcb must be the last artifact run in the chain 
     -->
     <!--
@@ -67,7 +67,11 @@
         
         <!-- ATTN phingcall target="build_patch" / -->
         <phingcall target="build_checksums" />
-                   
+    </target>
+    
+    <target name="build_delete" depends="build">
+        <!-- clean up export dir, this is not needed (unless we are debugging) -->
+        <delete dir="${packagepath}" includeemptydirs="true" />
     </target>
     
     <target name="build_checksums">
