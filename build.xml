@@ -69,7 +69,7 @@
         <phingcall target="build_checksums" />
     </target>
     
-    <target name="build_delete" depends="build">
+    <target name="build_delete">
         <!-- clean up export dir, this is not needed (unless we are debugging) -->
         <delete dir="${packagepath}" includeemptydirs="true" />
     </target>
