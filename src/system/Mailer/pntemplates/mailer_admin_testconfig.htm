@@ -1,11 +1,13 @@
 {*  $Id$  *}
 {include file="mailer_admin_menu.htm"}
+{ajaxheader modname=Mailer filename=mailer_admin_testconfig.js nobehaviour=true noscriptaculous=true effects=true}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=inbox.gif set=icons/large __alt="Test current settings"}</div>
     <h2>{gt text="Test current settings"}</h2>
     <form class="z-form" action="{modurl modname="Mailer" type="admin" func="sendmessage"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Mailer"}" />
+            <input id="mailer_html" type="hidden" name="html" value="0" />
             <fieldset>
                 <legend>{gt text="Settings test"}</legend>
                 <div class="z-formrow">
@@ -29,16 +31,24 @@
                     <input id="mailer_subject" name="subject" type="text" size="30" maxlength="50" />
                 </div>
                 <div class="z-formrow">
-                    <label for="mailer_html">{gt text="HTML-formatted message"}</label>
-                    <input id="mailer_html" type="checkbox" name="html" value="1" />
+                    <label>{gt text="Message Type:"}</label>
+                    <div>
+                        <input id="mailer_msgtype_text" type="radio" name="msgtype" value="text" checked="checked">&nbsp;{gt text="Plain-text message" assign="radioLabel"}{$radioLabel|replace:' ':'&nbsp;'}&nbsp;
+                        <input id="mailer_msgtype_html" type="radio" name="msgtype" value="html">&nbsp;{gt text="HTML-formatted message" assign="radioLabel"}{$radioLabel|replace:' ':'&nbsp;'}&nbsp;
+                        <input id="mailer_msgtype_multipart" type="radio" name="msgtype" value="multipart">&nbsp;{gt text="Multi-part message" assign="radioLabel"}{$radioLabel|replace:' ':'&nbsp;'}
+                    </div>
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_pnmail">{gt text="Send message via Mailer API"}</label>
                     <input id="mailer_pnmail" type="checkbox" name="pnmail" value="1" />
                 </div>
                 <div class="z-formrow">
-                    <label for="mailer_body">{gt text="Message"}</label>
+                    <label for="mailer_body"><span id="mailer_body_html" style="display: none;">{gt text="HTML"} </span>{gt text="Message"}</label>
                     <textarea id="mailer_body" name="body" cols="50" rows="10"></textarea>
+                </div>
+                <div id="mailer_altbody_div" class="z-formrow" style="display: none;">
+                    <label for="mailer_altbody">{gt text="Plain-text Message"}</label>
+                    <textarea id="mailer_altbody" name="altbody" cols="50" rows="10"></textarea>
                 </div>
             </fieldset>
             <div class="z-formbuttons">

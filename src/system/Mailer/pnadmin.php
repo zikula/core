@@ -178,6 +178,7 @@ function Mailer_admin_sendmessage($args)
     $toaddress = (string)FormUtil::getPassedValue('toaddress', isset($args['toaddress']) ? $args['toaddress'] : null, 'POST');
     $subject = (string)FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
     $body = (string)FormUtil::getPassedValue('body', isset($args['body']) ? $args['body'] : null, 'POST');
+    $altBody = (string)FormUtil::getPassedValue('altbody', isset($args['altbody']) ? $args['altbody'] : null, 'POST');
     $pnmail = (bool)FormUtil::getPassedValue('pnmail', isset($args['pnmail']) ? $args['pnmail'] : false, 'POST');
     $html = (bool)FormUtil::getPassedValue('html', isset($args['html']) ? $args['html'] : false, 'POST');
 
@@ -189,13 +190,14 @@ function Mailer_admin_sendmessage($args)
     // set the email
     if ($pnmail) {
         $from = pnConfigGetVar('adminmail');
-        $result = pnMail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html);
+        $result = pnMail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html, $altBody);
     } else {
         $result = pnModAPIFunc('Mailer', 'user', 'sendmessage',
                                array('toname' => $toname,
                                      'toaddress' => $toaddress,
                                      'subject' => $subject,
                                      'body' => $body,
+                                     'altbody' => $altBody,
                                      'html' => $html));
     }
 

@@ -753,7 +753,7 @@ function pnLocalReferer($strict = false)
  * @param debug $ - if 1, echo mail content
  * @return bool true if the email was sent, false if not
  */
-function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0)
+function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
 {
     if (empty($to) || !isset($subject)) {
         return false;
@@ -769,6 +769,7 @@ function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug =
                         'subject' => $subject,
                         'headers' => $headers,
                         'body' => $message,
+                        'altbody' => $altbody,
                         'headers' => $headers,
                         'html' => $html));
     }

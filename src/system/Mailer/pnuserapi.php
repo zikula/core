@@ -23,14 +23,24 @@
  * @param string args['contenttype '] optional contenttype of the mail (default config)
  * @param string args['charset'] optional charset of the mail (default config)
  * @param string args['encoding'] optional mail encoding (default config)
- * @param string args['body'] message body
+ * @param string args['body'] message body, if altbody is provided then this
+ *                  is the HTML version of the body
+ * @param string args['altbody'] alternative plain-text message body, if
+ *                  specified the e-mail will be sent as multipart/alternative
  * @param array  args['cc'] addresses to add to the cc list
  * @param array  args['bcc'] addresses to add to the bcc list
- * @param array/string args['headers'] custom headers to add
- * @param int args['html'] HTML flag
- * @param array args['attachments'] array of either absolute filenames to attach to the mail or array of arays in format array($string,$filename,$encoding,$type)
- * @param array args['stringattachments'] array of arrays to treat as attachments, format array($string,$filename,$encoding,$type)
- * @param array args['embeddedimages'] array of absolute filenames to image files to embed in the mail
+ * @param array|string args['headers'] custom headers to add
+ * @param int args['html'] HTML flag, if altbody is not specified then this
+ *                  indicates whether body contains HTML or not; if altbody is
+ *                  specified, then this value is ignored, the body is assumed
+ *                  to be HTML, and the altbody is assumed to be plain text
+ * @param array args['attachments'] array of either absolute filenames to attach
+ *                  to the mail or array of arays in format
+ *                  array($string,$filename,$encoding,$type)
+ * @param array args['stringattachments'] array of arrays to treat as attachments,
+ *                  format array($string,$filename,$encoding,$type)
+ * @param array args['embeddedimages'] array of absolute filenames to image files
+ *                  to embed in the mail
  * @todo Loading of language file based on Zikula language
  * @return bool true if successful, false otherwise
  */
@@ -161,6 +171,9 @@ function Mailer_userapi_sendmessage($args)
     // add message subject and body
     $mail->Subject = $args['subject'];
     $mail->Body    = $args['body'];
+    if (isset($args['altbody']) && !empty($args['altbody'])) {
+        $mail->AltBody = $args['altbody'];
+    }
 
     // add attachments
     if (isset($args['attachments']) && !empty($args['attachments'])) {
@@ -200,9 +213,13 @@ function Mailer_userapi_sendmessage($args)
     // send message
     if (!$mail->Send()) {
         // message not send
-        $args['errorinfo'] = ($mail->IsError()) ? $mail->ErrorInfo : __('Error! Mailer encountered an \'unidentified problem\'.');
+        $args['errorinfo'] = ($mail->IsError()) ? $mail->ErrorInfo : __('Error! An unidentified problem occurred while sending the e-mail message.');
         LogUtil::log(__f('Error! A problem occurred while sending an e-mail message from \'%1$s\' (%2$s) to (%3$s) (%4$s) with the subject line \'%5$s\': %6$s', $args));
-        return LogUtil::registerError(__('Error! An unidentified problem occurred while sending e-mail message.'));
+        if (SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerError($args['errorinfo']);
+        } else {
+            return LogUtil::registerError(__('Error! A problem occurred while sending the e-mail message.'));
+        }
     }
     return true; // message sent
 }
