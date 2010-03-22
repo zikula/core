@@ -652,34 +652,38 @@ function z_get_trusted($tpl_name, &$smarty)
 }
 
 /**
- * prefilter javascript in templates
+ * Callback function for preg_replace_callback, for the script tag contents
+ * prefilter in templates. Allows the use of {{ and }} as
+ * delimiters in scripts, even if they use { and } as block delimiters.
  *
- * allows usage of old delimiters in inline js
- *
- * idea taken from http://www.phpinsider.com/smarty-forum/viewtopic.php?p=16825#16825
- *
+ * @param   array   $matches    The $matches array from preg_replace_callback,
+ *                              containing the matched groups.
+ * @return  string  The replacement string for the match.
  */
 function z_prefilter_escape_script_callback($matches)
 {
-    $type = $matches[2];
-    $script = $matches[3];
+    $tagOpen = $matches[1];
+    $script = $matches[2];
+    $tagClose = $matches[3];
     $script = str_replace('{{', '{/literal}{', $script);
     $script = str_replace('}}', '}{literal}', $script);
 
-    $result = '{literal}';
-    if (empty($type)) {
-        $result .= '<script>';
-    } else {
-        $result .= "<script type=$type>";
-    }
-    $result .= $script . '</script>{/literal}';
+    $result = $tagOpen . '{literal}' . $script . '{/literal}' . $tagClose;
 
     return $result;
 }
 
+/**
+ * Prefilter for script blocks, allowing the use of {{ and }} as delimiters,
+ * even if the script language uses { and } as block delimters.
+ *
+ * @param   string  $tpl_source The template's source prior to prefiltering.
+ * @param   Smarty  $smarty     A reference to the renderer object.
+ * @return  string  The prefiltered template contents.
+ */
 function z_prefilter_escape_script($tpl_source, &$smarty)
 {
-    return preg_replace_callback('/<script(\s+type=(\S+))?>(.*)<\/script>/sU', 'z_prefilter_escape_script_callback', $tpl_source);
+    return preg_replace_callback('`(<script[^>]*>)(.*?)(</script>)`s', 'z_prefilter_escape_script_callback', $tpl_source);
 }
 
 function z_prefilter_gettext_params($tpl_source, &$smarty)
