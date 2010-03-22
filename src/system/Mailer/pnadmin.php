@@ -23,15 +23,8 @@
  */
 function Mailer_admin_main()
 {
-    // security check
-    if (!SecurityUtil::checkPermission('Mailer::', '::', ACCESS_EDIT)) {
-        return LogUtil::registerPermissionError();
-    }
-
-    // create a new output object
-    $pnRender = Renderer::getInstance('Mailer', false);
-
-    return $pnRender->fetch('mailer_admin_main.htm');
+    // Security check will be done in modifyconfig()
+    return Mailer_admin_modifyconfig();
 }
 
 /**

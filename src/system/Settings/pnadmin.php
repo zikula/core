@@ -17,14 +17,8 @@
  */
 function settings_admin_main($args)
 {
-    // security check
-    if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
-        return LogUtil::registerPermissionError();
-    }
-    // create a new output object
-    $pnRender = Renderer::getInstance('Settings', false);
-
-    return $pnRender->fetch('settings_admin_main.htm');
+    // Security check will be done in modifyconfig()
+    return settings_admin_modifyconfig();
 }
 
 /**
