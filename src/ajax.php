@@ -26,7 +26,7 @@ $func   = FormUtil::getPassedValue('func', '', 'GETPOST');
 
 // Check for site closed
 if (pnConfigGetVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
-    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && pnUserLoggedIn()){
+    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && pnUserLoggedIn()) {
         pnUserLogOut();
     }
     AjaxUtil::error(__('The site is currently off-line.'));
@@ -46,8 +46,7 @@ if (!pnModAvailable($modinfo['name'])) {
     AjaxUtil::error(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
 }
 
-if ($modinfo['type'] == 2 || $modinfo['type'] == 3)
-{
+if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     // New-new style of loading modules
     if (!isset($arguments)) {
         $arguments = array();
