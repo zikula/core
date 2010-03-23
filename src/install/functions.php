@@ -15,9 +15,9 @@ function install()
     // no time limit since installation might take a while
     // error reporting level for debugging
     ini_set('max_execution_time', 86400);
-    ini_set('memory_limit', '64M'); 
+    ini_set('memory_limit', '64M');
 
-    define('_ZINSTALLVER', '1.7.0-dev');
+    define('_ZINSTALLVER', '1.3.0-dev');
 
     $installbySQL = false;
 
@@ -156,13 +156,13 @@ function install()
                         $smarty->assign('dbconnectfailed', true);
                     }
                 }
-                
+
                 // if it is the distribution and the process have not failed in a previous step
                 if($installbySQL && $action != 'dbinformation') {
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
                     $exec = "SHOW TABLES FROM $dbname LIKE '".$dbprefix."_%'";
-                    $tables = DBUtil::executeSQL($exec);                    
+                    $tables = DBUtil::executeSQL($exec);
                     if($tables->rowCount() > 0) {
                         $proceed = false;
                         $action = 'dbinformation';
