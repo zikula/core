@@ -296,8 +296,10 @@ function search_userapi_encodeurl($args)
         return $args['modname'] . '/';
     } elseif (empty($args['func'])) {
         return $args['modname'] . '/' . $vars . '/';
+    } elseif (empty($vars) && isset($args['args']['startnum']) && !empty($args['args']['startnum'])) {
+        return $args['modname'] . '/' . $args['func'] . '/'. $args['args']['startnum'];
     } elseif (empty($vars)) {
-        return $args['modname'] . '/' . $args['func'] . '/'. $args['startnum'];
+        return $args['modname'] . '/' . $args['func'];
     } else {
         return $args['modname'] . '/' . $args['func'] . '/' . $vars . '/';
     }
