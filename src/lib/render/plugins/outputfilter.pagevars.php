@@ -47,10 +47,12 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     $stylesheets[] = 'javascript/style.css';
 
     // check if we need to perform ligthbox replacement -- javascript
-    $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-    if($key && !is_readable('javascript/ajax/lightbox.js')) {
-        $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-        $replaceLightbox = true;
+    if (is_array($javascripts) && !empty($javascripts)) {
+        $key = array_search('javascript/ajax/lightbox.js', $javascripts);
+        if($key && !is_readable('javascript/ajax/lightbox.js')) {
+            $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
+            $replaceLightbox = true;
+        }
     }
 
     // check if we need to perform ligthbox replacement -- css
@@ -61,53 +63,57 @@ function smarty_outputfilter_pagevars($source, &$smarty)
         }
     }
 
-
-    if (is_array($stylesheets) && !empty($stylesheets)) {
-        foreach ($stylesheets as $s => $stylesheet) {
-            if (empty($stylesheet)) {
-                unset($stylesheets[$s]);
-                continue;
-            }
-            // check if the stylesheets is in the additional_header array
-            _smarty_outputfilter_pagevars_clean_additional_header($additional_header, $stylesheet);
+    // create the html tag link for the stylesheet file
+    foreach ($stylesheets as $s => $stylesheet) {
+        if (empty($stylesheet)) {
+            unset($stylesheets[$s]);
+            continue;
         }
-        $stylesheets = array_unique(array_values($stylesheets));
-        // Perform a check on import and expand those for packing later on
-        $stylesheetFile = _smarty_outputfilter_pagevars_save($stylesheets,'css',$smarty->cache_dir);
-        if ($themeinfo['xhtml']) {
-            $return .= '<link rel="stylesheet" href="'.DataUtil::formatForDisplay($stylesheetFile).'" type="text/css" />'."\n";
-        } else {
-            $return .= '<link rel="stylesheet" href="'.DataUtil::formatForDisplay($stylesheetFile).'" type="text/css">'."\n";
-        }
+        // check if the stylesheets is in the additional_header array
+        _smarty_outputfilter_pagevars_clean_additional_header($additional_header, $stylesheet);
+    }
+    $stylesheets = array_unique(array_values($stylesheets));
+    // Perform a check on import and expand those for packing later on
+    $stylesheetFile = _smarty_outputfilter_pagevars_save($stylesheets,'css',$smarty->cache_dir);
+    if ($themeinfo['xhtml']) {
+        $return .= '<link rel="stylesheet" href="'.DataUtil::formatForDisplay($stylesheetFile).'" type="text/css" />'."\n";
+    } else {
+        $return .= '<link rel="stylesheet" href="'.DataUtil::formatForDisplay($stylesheetFile).'" type="text/css">'."\n";
     }
 
-    if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/pnajax.js', $javascripts)) {
-        // prototype found, we also load pnajax.js now
-        $javascripts[] = 'javascript/ajax/pnajax.js';
-    }
-
-    $scriptaculousKey = array_search('javascript/ajax/scriptaculous.js', $javascripts);
-    if ($scriptaculousKey) {
-        $scriptaculousOldLinks = array('javascript/ajax/scriptaculous.js?load=builder',
-                                   'javascript/ajax/scriptaculous.js?load=effects',
-                                   'javascript/ajax/scriptaculous.js?load=dragdrop',
-                                   'javascript/ajax/scriptaculous.js?load=controls',
-                                   'javascript/ajax/scriptaculous.js?load=slider',
-                                   'javascript/ajax/scriptaculous.js?load=sound');
-        $scriptaculousNewLinks = array('javascript/ajax/builder.js',
-                                       'javascript/ajax/effects.js',
-                                       'javascript/ajax/dragdrop.js',
-                                       'javascript/ajax/controls.js',
-                                       'javascript/ajax/slider.js',
-                                       'javascript/ajax/sound.js');
-
-        foreach ($javascripts as $key => $currentJS) {
-            if (in_array($currentJS, $scriptaculousOldLinks)) {
-                unset($javascripts[$key]);
-            }
+    // some check for prototype/pnajax/scriptaculous
+    if (is_array($javascripts) && !empty($javascripts)) {
+        if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/pnajax.js', $javascripts)) {
+            // prototype found, we also load pnajax.js now
+            $javascripts[] = 'javascript/ajax/pnajax.js';
         }
 
-        array_splice($javascripts,$scriptaculousKey+1,0,$scriptaculousNewLinks);
+        $implodeJavascripts  = implode('@',$javascripts); 
+        $enableScriptaculous = strpos($implodeJavascripts,'javascript/ajax/scriptaculous.js'); 
+        if ($enableScriptaculous !== false) {
+            $scriptaculousOldLinks = array('javascript/ajax/scriptaculous.js',
+                                       'javascript/ajax/scriptaculous.js?load=builder',
+                                       'javascript/ajax/scriptaculous.js?load=effects',
+                                       'javascript/ajax/scriptaculous.js?load=dragdrop',
+                                       'javascript/ajax/scriptaculous.js?load=controls',
+                                       'javascript/ajax/scriptaculous.js?load=slider',
+                                       'javascript/ajax/scriptaculous.js?load=sound');
+            $scriptaculousNewLinks = array('javascript/ajax/scriptaculous.js',
+                                           'javascript/ajax/builder.js',
+                                           'javascript/ajax/effects.js',
+                                           'javascript/ajax/dragdrop.js',
+                                           'javascript/ajax/controls.js',
+                                           'javascript/ajax/slider.js',
+                                           'javascript/ajax/sound.js');
+
+            foreach ($javascripts as $key => $currentJS) {
+                if (in_array($currentJS, $scriptaculousOldLinks)) {
+                    unset($javascripts[$key]);
+                }
+            }
+
+            array_splice($javascripts,0,0,$scriptaculousNewLinks);
+        }
     }
 
     if (is_array($javascripts) && !empty($javascripts)) {

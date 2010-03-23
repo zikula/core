@@ -46,10 +46,12 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     $stylesheets = PageUtil::getVar('stylesheet');
 
     // check if we need to perform ligthbox replacement -- javascript
-    $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-    if($key && !is_readable('javascript/ajax/lightbox.js')) {
-        $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-        $replaceLightbox = true;
+    if (is_array($javascripts) && !empty($javascripts)) {
+        $key = array_search('javascript/ajax/lightbox.js', $javascripts);
+        if($key && !is_readable('javascript/ajax/lightbox.js')) {
+            $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
+            $replaceLightbox = true;
+        }
     }
 
     // check if we need to perform ligthbox replacement -- css
@@ -75,11 +77,13 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
         }
     }
 
-    if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/pnajax.js', $javascripts)) {
-        // prototype found, we also load pnajax.js now
-        $javascripts[] = 'javascript/ajax/pnajax.js';
-    }
     if (is_array($javascripts) && !empty($javascripts)) {
+        // check for prototype and pnajax
+        if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/pnajax.js', $javascripts)) {
+            // prototype found, we also load pnajax.js now
+            $javascripts[] = 'javascript/ajax/pnajax.js';
+        }
+
         // Ugly but necessary inline javascript for now: Some javascripts, eg. the lightbox, need to know the path to the system and
         // the entrypoint as well (which can be configured in the settings) otherwise they may fail in case of short urls being
         // enabled. We will now add some inline javascript to extend the DOM:
