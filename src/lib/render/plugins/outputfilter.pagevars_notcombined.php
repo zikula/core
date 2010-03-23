@@ -41,22 +41,26 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
 
     // get any javascript page vars
     $javascripts = PageUtil::getVar('javascript');
-    // check if we need to perform ligthbox replacement
-    if(false !== $key = array_search('javascript/ajax/lightbox.js', $javascripts)) {
-        if(!is_readable('javascript/ajax/lightbox.js')) {
-            $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-            $replaceLightbox = true;
-        }
-    }
 
     // get any stylesheet page vars
     $stylesheets = PageUtil::getVar('stylesheet');
-    //lightbox replacement
+
+    // check if we need to perform ligthbox replacement -- javascript
+    $key = array_search('javascript/ajax/lightbox.js', $javascripts);
+    if($key && !is_readable('javascript/ajax/lightbox.js')) {
+        $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
+        $replaceLightbox = true;
+    }
+
+    // check if we need to perform ligthbox replacement -- css
     if(isset($replaceLightbox) && $replaceLightbox === true) {
-        if(false !== $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets)) {
+        $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
+        if($key) {
             $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
         }
     }
+
+
     if (is_array($stylesheets) && !empty($stylesheets)) {
         foreach ($stylesheets as $stylesheet) {
             if (empty($stylesheet))

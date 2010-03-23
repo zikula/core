@@ -41,23 +41,27 @@ function smarty_outputfilter_pagevars($source, &$smarty)
 
     // get any javascript page vars
     $javascripts = PageUtil::getVar('javascript');
-    // check if we need to perform ligthbox replacement
-    if(false !== $key = array_search('javascript/ajax/lightbox.js', $javascripts)) {
-        if(!is_readable('javascript/ajax/lightbox.js')) {
-            $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-            $replaceLightbox = true;
-        }
-    }
 
     // get any stylesheet page vars
     $stylesheets = PageUtil::getVar('stylesheet');
     $stylesheets[] = 'javascript/style.css';
-    //lightbox replacement
+
+    // check if we need to perform ligthbox replacement -- javascript
+    $key = array_search('javascript/ajax/lightbox.js', $javascripts);
+    if($key && !is_readable('javascript/ajax/lightbox.js')) {
+        $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
+        $replaceLightbox = true;
+    }
+
+    // check if we need to perform ligthbox replacement -- css
     if(isset($replaceLightbox) && $replaceLightbox === true) {
-        if(false !== $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets)) {
+        $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
+        if($key) {
             $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
         }
     }
+
+
     if (is_array($stylesheets) && !empty($stylesheets)) {
         foreach ($stylesheets as $s => $stylesheet) {
             if (empty($stylesheet)) {
@@ -82,25 +86,28 @@ function smarty_outputfilter_pagevars($source, &$smarty)
         $javascripts[] = 'javascript/ajax/pnajax.js';
     }
 
-    $implodeJavascripts  = implode('@',$javascripts);
-    $enableScriptaculous = strpos($implodeJavascripts,'javascript/ajax/scriptaculous.js');
+    $scriptaculousKey = array_search('javascript/ajax/scriptaculous.js', $javascripts);
+    if ($scriptaculousKey) {
+        $scriptaculousOldLinks = array('javascript/ajax/scriptaculous.js?load=builder',
+                                   'javascript/ajax/scriptaculous.js?load=effects',
+                                   'javascript/ajax/scriptaculous.js?load=dragdrop',
+                                   'javascript/ajax/scriptaculous.js?load=controls',
+                                   'javascript/ajax/scriptaculous.js?load=slider',
+                                   'javascript/ajax/scriptaculous.js?load=sound');
+        $scriptaculousNewLinks = array('javascript/ajax/builder.js',
+                                       'javascript/ajax/effects.js',
+                                       'javascript/ajax/dragdrop.js',
+                                       'javascript/ajax/controls.js',
+                                       'javascript/ajax/slider.js',
+                                       'javascript/ajax/sound.js');
 
-    if ($enableScriptaculous !== false) {
-        preg_match('`javascript/ajax/scriptaculous.js\?load=([a-z]+)`', $implodeJavascripts, $enableScriptaculousLoad);
-        if (sizeof($enableScriptaculousLoad) > 0) {
-            foreach($javascripts as $id => $javascript) {
-                if ($javascript == $enableScriptaculousLoad[0]) {
-                    $javascripts[$id] = 'javascript/ajax/scriptaculous.js';
-                }
+        foreach ($javascripts as $key => $currentJS) {
+            if (in_array($currentJS, $scriptaculousOldLinks)) {
+                unset($javascripts[$key]);
             }
         }
 
-        $javascripts[] = 'javascript/ajax/builder.js';
-        $javascripts[] = 'javascript/ajax/effects.js';
-        $javascripts[] = 'javascript/ajax/dragdrop.js';
-        $javascripts[] = 'javascript/ajax/controls.js';
-        $javascripts[] = 'javascript/ajax/slider.js';
-        $javascripts[] = 'javascript/ajax/sound.js';
+        array_splice($javascripts,$scriptaculousKey+1,0,$scriptaculousNewLinks);
     }
 
     if (is_array($javascripts) && !empty($javascripts)) {
