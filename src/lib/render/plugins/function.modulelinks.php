@@ -91,7 +91,7 @@ function smarty_function_modulelinks($params, &$smarty)
 
         $html .= '<li';
         $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
-        $html .= !empty($class) ? ' class="'.$class.'">' : '';
+        $html .= !empty($class) ? ' class="'.$class.'"' : '';
         $html .= '>';
         $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
         $attr .= !empty($menuitem['class']) ? ' class="'.$menuitem['class'].'"' : '';

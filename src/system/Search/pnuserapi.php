@@ -476,8 +476,7 @@ class search_result_checker
 /**
  * get available menu links
  *
- * @author Carsten VOlmer
- * @return array array of admin links
+ * @return array array of menu links
  */
 function search_userapi_getlinks($args)
 {
