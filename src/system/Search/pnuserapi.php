@@ -471,3 +471,22 @@ class search_result_checker
         return $ok;
     }
 }
+
+
+/**
+ * get available menu links
+ *
+ * @author Carsten VOlmer
+ * @return array array of admin links
+ */
+function search_userapi_getlinks($args)
+{
+    $links = array();
+
+    if (SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
+        $links[] = array('url' => pnModURL('Search', 'user', 'main', array()), 'text' => __('New search'), 'class' => 'z-icon-es-search');
+        $links[] = array('url' => pnModURL('Search', 'user', 'recent', array()), 'text' => __('Recent searches list'), 'class' => 'z-icon-es-view');
+    }
+
+    return $links;
+}

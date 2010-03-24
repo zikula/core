@@ -1,18 +1,7 @@
 {*  $Id$  *}
-{gt text='User log-in' assign='templatetitle'}
 {ajaxheader modname='Users' filename='users.js'}
-
-<div class="z-menu">
-    <span class="z-menuitem-title">
-        [
-        {if $allowregistration}
-        <a href="{modurl modname="Users" func="register"}">{gt text="New account"}</a> |
-        {/if}
-        <a href="{modurl modname="Users" func="lostpassword"}">{gt text="Lost password"}</a>
-        ]
-    </span>
-</div>
-
+{gt text='User log-in' assign='templatetitle'}
+{modulelinks modname='Users' type='user'}
 {include file='users_user_menu.htm'}
 
 <form class="z-form" action="{modurl modname="Users" type="user" func="login"}" method="post">

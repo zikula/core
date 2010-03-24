@@ -1,15 +1,6 @@
 {*  $Id$  *}
+{gt text="Search results" assign=templatetitle domain='zikula'}
 {include file="search_user_menu.htm"}
-{gt text="Search results" assign=templatetitle}
-{pnpagesetvar name=title value=$templatetitle}
-{pnmodurl modname='Search' func='recent' assign='recentsearchurl'}
-
-<div class="z-menu">
-    <span class="z-menuitem-title">
-        [ <a href="{pnmodurl modname=search func=main}">{gt text="New search" domain='zikula'}</a> |
-        {gt text='<a href="%s">Recent searches list</a>' tag1=$recentsearchurl|pnvarprepfordisplay} ]
-    </span>
-</div>
 
 <h3>{$templatetitle}</h3>
 

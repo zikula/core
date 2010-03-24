@@ -8,11 +8,6 @@
     margin:1em 0;
     width:100%;
 }
-#appendajax {
-    float: left;
-    padding: 2px 0 2px 19px;
-    background: url(../../../images/icons/extrasmall/insert_table_row.gif) no-repeat 0 50%;
-}
 #permgroupfilterform {
     float: right;
 }

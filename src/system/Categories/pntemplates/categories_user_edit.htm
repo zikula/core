@@ -11,15 +11,12 @@
 {formutil_getpassedvalue key="dr" default="0" assign="dr"}
 {modurl modname="Categories" type="userform" func="resequence" assign="resq" dr=$dr}
 
-<div class="z-menu">
-    <span class="z-menuitem-title">
-        [ <a href="{$resq|varprepfordisplay}">{gt text="Resequence"}</a>
-        {if ($referer)}
-        | <a href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a>
-        {/if}
-        ]
-    </span>
-</div>
+<ul class="z-menulinks">
+    <li><a href="{$resq|varprepfordisplay}">{gt text="Resequence"}</a></li>
+    {if ($referer)}
+    <li><a href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    {/if}
+</ul>
 
 {insert name="getstatusmsg"}
 {include file="categories_user_list.htm"}

@@ -1,19 +1,6 @@
 {*  $Id$  *}
 {gt text='Search keywords' assign='templatetitle' domain='zikula'}
-{pnpagesetvar name='title' value=$templatetitle}
-{pnmodurl modname='Search' func='recent' assign='recentsearchurl'}
-
-
-{if $titles}
 {include file='search_user_menu.htm'}
-{/if}
-
-<div class="z-menu">
-    <span class="z-menuitem-title">
-        [ <a href="{pnmodurl modname=search func=main}">{gt text="New search" domain='zikula'}</a> |
-        {gt text='<a href="%s">Recent searches list</a>' tag1=$recentsearchurl|pnvarprepfordisplay domain='zikula'} ]
-    </span>
-</div>
 
 <form class="z-form" id="search_form" method="post" action="{pnmodurl modname='Search' type='user' func='search'}">
     <fieldset>

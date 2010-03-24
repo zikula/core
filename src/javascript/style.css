@@ -7,10 +7,10 @@
 
 /* classes to show/hide elements */
 .z-hide {
-    display: none;
+    display: none !important;
 }
 .z-show {
-    display: inherit;
+    display: inherit !important;
 }
 .z-center {
     text-align: center !important;
@@ -142,7 +142,7 @@ ul.z-menulinks li {
     display:inline;
     padding:0 10px;
 }
-ul.z-menulinks li.z-ml-first {
+ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
     margin-left:5px;
 }
@@ -718,6 +718,10 @@ div.z-formbuttons button {
 }
 .z-icon-es-user {
     background:url("../images/icons/extrasmall/edit_user.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-adduser {
+    background:url("../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
 .z-icon-es-info {

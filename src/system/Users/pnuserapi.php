@@ -775,3 +775,27 @@ function users_userapi_getuserpreemail()
     }
     return $item;
 }
+
+/**
+ * get available menu links
+ *
+ * @return array array of menu links
+ */
+function Users_userapi_getlinks()
+{
+
+    $allowregistration = pnModGetVar('Users', 'reg_allowreg');
+
+    $links = array();
+
+    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        $links[] = array('url' => pnModURL('Users', 'user', 'loginscreen'), 'text' => __('Log in'), 'class' => 'z-icon-es-user');
+        $links[] = array('url' => pnModURL('Users', 'user', 'lostpassword'), 'text' => __('Lost password'), 'class' => 'z-icon-es-password');
+    }
+
+    if ($allowregistration) {
+        $links[] = array('url' => pnModURL('Users', 'user', 'register'), 'text' => __('New account'), 'class' => 'z-icon-es-adduser');
+    }
+
+    return $links;
+}

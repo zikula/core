@@ -16,7 +16,7 @@
  * Smarty function to display menulinks in an unordered list
  *
  * Example
- * <!--[modulelinks data=$links id='listid' class='z-menulinks']-->
+ * <!--[modulelinks data=$links id='listid' class='z-menulinks' itemclass='z-ml-item' first='z-ml-first' last='z-ml-last']-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -30,7 +30,7 @@
  * @param        string      $last        class for the last element (optional)
  * @param        string      $seperator   link seperator (optional)
  * @param        string      $class       CSS class (optional)
-  * @return       string      a formatted string containing navigation for the module admin panel
+ * @return       string      a formatted string containing navigation for the module admin panel
  */
  
 /**
@@ -51,9 +51,9 @@ function smarty_function_modulelinks($params, &$smarty)
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
     $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';
     $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'z-menulinks';
-    $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : 'z-ml-item';
-    $menuItemFirst      = isset($params['first'])       ? $params['first'] : 'z-ml-first';
-    $menuItemLast       = isset($params['last'])        ? $params['last'] : 'z-ml-last';
+    $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
+    $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
+    $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
 
     if (empty($menuLinks)) {
         if (!isset($params['modname']) || !pnModAvailable($params['modname'])) {
@@ -90,7 +90,9 @@ function smarty_function_modulelinks($params, &$smarty)
         $i++;
 
         $html .= '<li';
-        $html .= ' class="'.$class.'">';
+        $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
+        $html .= !empty($class) ? ' class="'.$class.'">' : '';
+        $html .= '>';
         $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
         $attr .= !empty($menuitem['class']) ? ' class="'.$menuitem['class'].'"' : '';
 
