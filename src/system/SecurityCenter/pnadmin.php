@@ -92,7 +92,7 @@ function securitycenter_admin_delete($args)
  * @param int $startnum number of item to start view from
  * @return string HTML string
  */
-function securitycenter_admin_view($args)
+function securitycenter_admin_view($args = array())
 {
     // Security check
     if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {

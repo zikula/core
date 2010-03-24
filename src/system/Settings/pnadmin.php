@@ -15,7 +15,7 @@
  *
  * @return string html output
  */
-function settings_admin_main($args)
+function settings_admin_main()
 {
     // Security check will be done in modifyconfig()
     return settings_admin_modifyconfig();
@@ -26,7 +26,7 @@ function settings_admin_main($args)
  *
  * @return string html output
  */
-function settings_admin_modifyconfig($args)
+function settings_admin_modifyconfig()
 {
     // security check
     if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -55,7 +55,7 @@ function settings_admin_modifyconfig($args)
  *
  * @return mixed true if successful, false if unsuccessful, error string otherwise
  */
-function settings_admin_updateconfig($args) {
+function settings_admin_updateconfig() {
 
     // security check
     if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -140,7 +140,7 @@ function settings_admin_updateconfig($args) {
  *
  * @return string html output
  */
-function settings_admin_multilingual($args)
+function settings_admin_multilingual()
 {
     // security check
     if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -169,7 +169,7 @@ function settings_admin_multilingual($args)
  *
  * @return mixed true if successful, false if unsuccessful, error string otherwise
  */
-function settings_admin_updatemultilingual($args)
+function settings_admin_updatemultilingual()
 {
     // security check
     if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -244,7 +244,7 @@ function settings_admin_updatemultilingual($args)
  *
  * @return string html output
  */
-function settings_admin_errorhandling($args)
+function settings_admin_errorhandling()
 {
     // security check
     if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -274,7 +274,7 @@ function settings_admin_errorhandling($args)
  *
  * @return mixed true if successful, false if unsuccessful, error string otherwise
  */
-function settings_admin_updateerrorhandling($args) {
+function settings_admin_updateerrorhandling() {
 
     // security check
     if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {

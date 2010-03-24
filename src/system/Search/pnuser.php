@@ -37,7 +37,7 @@ function search_user_main()
 *
 * @return string HTML string templated
 */
-function search_user_form($vars)
+function search_user_form($vars = array())
 {
     // Security check
     if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
