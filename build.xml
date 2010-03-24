@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <project name="zikula" default="clean">
     <!-- invokation
-        phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcpd phpunit phpcb build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
+        phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcpd phpunit phpcb pdepend phpmd phpdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
         # note phpcb must be the last artifact run in the chain 
     -->
     <!--
@@ -21,7 +21,12 @@
     <property name="checksumpath" value="${archivedir}/${package}-checksums" />
     <property name="patchdir" value="${builddir}/patch" />
     <property name="tmpdir" value="${builddir}/tmp" />
-
+    <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/SecurityCenter/pnincludes/*,system/Mailer/pnincludes/*" />
+    
+    <!-- need a second property since phpdoc doesn't respect wildcard patterns -->
+    <property name="phpdocignorepaths" value="lib/vendor/,javascript/,system/SecurityCenter/pnincludes/,system/Mailer/pnincludes/" />
+    <property name="ignorefiletypes" value="*.css,*.js" />
+    
     <target name="clean">
         <echo msg="Clean..." />
         <delete dir="${builddir}" includeemptydirs="true" />
@@ -31,7 +36,7 @@
         <echo msg="Prepare..." />
         <mkdir dir="${builddir}" />
         <mkdir dir="${builddir}/logs" />
-        <mkdir dir="${builddir}/logs/coverage" />
+        <mkdir dir="${builddir}/coverage" />
         <mkdir dir="${builddir}/docs" />
         <mkdir dir="${builddir}/phpcb" />
         <mkdir dir="${builddir}/archive" />
@@ -113,46 +118,46 @@
         <exec escape="false" command="cd ${patchdir}; zip -D -r ${archivedir}/${package}.patch.zip ." />
     </target>
 
-    <!-- PHP API Documentation -->
+    <!-- PHPDocumentor -->
     <target name="phpdoc">
-        <echo msg="PHP Documentor..." />
-        <phpdoc title="API Documentation"
-                destdir="${builddir}/docs"
-                sourcecode="yes"
-                defaultpackagename="MHTest"
-                output="HTML:Smarty:PHP">
-            <fileset dir="./src">
-                <include name="**/*.php" />
-            </fileset>
-        </phpdoc>
+        <echo msg="PHPDocumentor..." />
+        <exec command="phpdoc --directory ${sourcedir}/src/lib --ignore ${phpdocignorepaths} --target ${builddir}/docs" escape="false" />
     </target>
 
     <!-- PHP copy/paste analysis -->
     <target name="phpcpd">
         <echo msg="PHP Copy/Paste..." />
-        <exec command="phpcpd --log-pmd=${builddir}/logs/phpcpd.xml ${sourcedir}/src" escape="false" />
+        <exec command="phpcpd --log-pmd ${builddir}/logs/phpcpd.xml --suffixes php --exclude ${ignorepaths} ${sourcedir}/src" escape="false" />
+    </target>
+    
+    <!-- PHP MD analysis -->
+    <target name="phpmd">
+        <echo msg="PHP_MD..." />
+        <exec command="phpmd ${sourcedir}/src xml codesize --reportfile=${builddir}/logs/pmd.xml --ignore=${ignorepaths}" escape="false" />
     </target>
 
     <!-- PHP dependency checker -->
     <target name="pdepend">
-        <echo msg="PHP Depend..." />
-        <exec command="pdepend --jdepend-xml=${builddir}/logs/jdepend.xml --ignore=lib/vendor/Doctrine,lib/vendor/dwoo --optimization=best --suffix=php ${sourcedir}/src" escape="false" />
+    <!-- PHP dependency checker -->
+        <echo msg="PHP_Depend..." />
+        <exec command="pdepend --jdepend-xml=${builddir}/logs/jdepend.xml --jdepend-chart=${builddir}/logs/jdepend.png --phpunit-xml=${builddir}/logs/pdepend_phpunit.xml --overview-pyramid=${builddir}/logs/pdepend_pyramid.png  --summary-xml=${builddir}/logs/pdepend_summary.xml --ignore=${ignorepaths} --optimization=best --suffix=php ${sourcedir}/src" escape="false" />
     </target>
 
     <!-- PHP CodeSniffer -->
     <target name="phpcs">
-        <echo msg="PHP CodeSniffer..." />
-        <exec command="phpcs --report=checkstyle --standard=Zikula --ignore=lib/vendor/*,javascript/*,system/SecurityCenter/pnincludes/*,system/Mailer/pnincludes/*,*.css,*.js ${sourcedir}/src > ${builddir}/logs/phpcs.xml" escape="false" />
+        <echo msg="PHP_CodeSniffer..." />
+        <exec command="phpcs --extensions=php --report=checkstyle --standard=Zikula --ignore=${ignorepaths} ${sourcedir}/src > ${builddir}/logs/phpcs.xml" escape="false" />
     </target>
 
     <!-- Unit Tests & coverage analysis -->
     <target name="phpunit">
-        <echo msg="PHP Unit..." />
-        <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/logs/coverage/clover.xml --coverage-html ${builddir}/logs/coverage/ ${sourcedir}/tests"/>
+        <echo msg="PHPUnit..." />
+        <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/coverage/clover.xml --coverage-html ${builddir}/coverage/ ${sourcedir}/tests"/>
     </target>
 
     <!-- Code Browser -->
     <target name="phpcb">
+        <echo msg="PHP_CodeBrowser..." />
         <exec command="phpcb --log ${builddir}/logs --source ${sourcedir}/src --output ${builddir}/phpcb" />
     </target>
 </project>
