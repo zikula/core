@@ -462,13 +462,13 @@ function Groups_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Groups', 'admin', 'view'), 'text' => __('Groups list'), 'id' => 'groups_view');
+        $links[] = array('url' => pnModURL('Groups', 'admin', 'view'), 'text' => __('Groups list'), 'id' => 'groups_view', 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Groups', 'admin', 'new'), 'text' => __('Create new group'), 'id' => 'groups_new');
+        $links[] = array('url' => pnModURL('Groups', 'admin', 'new'), 'text' => __('Create new group'), 'id' => 'groups_new', 'class' => 'z-icon-es-new');
     }
     if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Groups', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'id' => 'groups_modifyconfig');
+        $links[] = array('url' => pnModURL('Groups', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'id' => 'groups_modifyconfig', 'class' => 'z-icon-es-config');
     }
 
     return $links;

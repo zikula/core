@@ -1374,11 +1374,11 @@ function modules_adminapi_getlinks()
     $letter = FormUtil::getPassedValue('letter', null, 'GET');
 
     if (SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Modules', 'admin', 'view'), 'text' => __('Modules list'));
+        $links[] = array('url' => pnModURL('Modules', 'admin', 'view'), 'text' => __('Modules list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => __('System hooks'));
-        $links[] = array('url' => pnModURL('Modules', 'admin', 'modifyconfig'), 'text' => __('Settings'));
+        $links[] = array('url' => pnModURL('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => __('System hooks'), 'class' => 'z-icon-es-package');
+        $links[] = array('url' => pnModURL('Modules', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;

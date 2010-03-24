@@ -128,24 +128,22 @@ button.z-imagebutton {
 
 ul.z-menulinks {
     background:url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
-    border:1px solid #CCCCCC;
-    color:#AAAAAA;
-    display:block;
+    border:1px solid #ccc;
+    color:#aaa;
     height:auto !important;
     line-height:25px !important;
     list-style:none outside none;
-    margin-bottom:1.5em;
+    margin-bottom:1em;
     min-height:25px !important;
     padding:0 5px !important;
-    text-align:left;
 }
 ul.z-menulinks li {
-    border-right:1px solid #AAAAAA;
+    border-right:1px solid #aaa;
     display:inline;
     padding:0 10px;
 }
 ul.z-menulinks li.z-ml-first {
-    border-left:1px solid #AAAAAA;
+    border-left:1px solid #aaa;
     margin-left:5px;
 }
 ul.z-menulinks li.z-ml-disabled a {
@@ -160,7 +158,7 @@ ul.z-menulinks li.z-ml-disabled a {
 }
 .z-menuitem-title {
     background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
-    border: 1px solid #CCCCCC;
+    border: 1px solid #ccc;
     display: block;
     height: auto !important;
     line-height: 23px;
@@ -643,146 +641,114 @@ div.z-formbuttons button {
 
 
 /*******************************************************************************/
-/* Proof of concecpt: icons-styles
+/* Proof of concecpt: icons-styles (es=extrasmall)
 /*******************************************************************************/
 
-.z-icon-extrasmall-windowlist {
-    background:url("../images/icons/extrasmall/windowlist.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-ok {
+    background:url("../images/icons/extrasmall/button_ok.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-configure {
-    background:url("../images/icons/extrasmall/configure.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-delete {
+    background:url("../images/icons/extrasmall/14_layer_deletelayer.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-filenew {
-    background:url("../images/icons/extrasmall/filenew.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-help {
+    background:url("../images/icons/extrasmall/agt_support.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-personal {
-    background:url("../images/icons/extrasmall/personal.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-cancel {
+    background:url("../images/icons/extrasmall/button_cancel.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-xedit {
+.z-icon-es-edit {
     background:url("../images/icons/extrasmall/xedit.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-password {
-    background:url("../images/icons/extrasmall/password.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-config {
+    background:url("../images/icons/extrasmall/configure.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-package {
-    background:url("../images/icons/extrasmall/package.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-new {
+    background:url("../images/icons/extrasmall/filenew.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-14_layer_visible {
-    background:url("../images/icons/extrasmall/14_layer_visible.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-agt_family {
-    background:url("../images/icons/extrasmall/agt_family.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-agt_update-product {
-    background:url("../images/icons/extrasmall/agt_update-product.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-attach {
-    background:url("../images/icons/extrasmall/attach.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-ok {
-    background:url("../images/icons/extrasmall/ok.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-cancel {
-    background:url("../images/icons/extrasmall/cancel.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-demo {
-    background:url("../images/icons/extrasmall/demo.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-edit_group {
-    background:url("../images/icons/extrasmall/edit_group.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-edit_user {
-    background:url("../images/icons/extrasmall/edit_user.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-error {
+.z-icon-es-error {
     background:url("../images/icons/extrasmall/error.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-exec {
-    background:url("../images/icons/extrasmall/exec.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-home {
+    background:url("../images/icons/extrasmall/home.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-favorites {
-    background:url("../images/icons/extrasmall/favorites.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-list {
+    background:url("../images/icons/extrasmall/windowlist.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-file_locked {
-    background:url("../images/icons/extrasmall/file_locked.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-fileprint {
-    background:url("../images/icons/extrasmall/fileprint.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-filesave {
+.z-icon-es-save {
     background:url("../images/icons/extrasmall/filesave.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-folder_green {
-    background:url("../images/icons/extrasmall/folder_green.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-profile {
+    background:url("../images/icons/extrasmall/personal.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-info {
+.z-icon-es-password {
+    background:url("../images/icons/extrasmall/password.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-look {
+    background:url("../images/icons/extrasmall/14_layer_visible.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-update {
+    background:url("../images/icons/extrasmall/agt_update-product.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-attach {
+    background:url("../images/icons/extrasmall/attach.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-view {
+    background:url("../images/icons/extrasmall/demo.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-group {
+    background:url("../images/icons/extrasmall/edit_group.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-user {
+    background:url("../images/icons/extrasmall/edit_user.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-info {
     background:url("../images/icons/extrasmall/info.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-help {
-    background:url("../images/icons/extrasmall/help.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-locked {
+.z-icon-es-locked {
     background:url("../images/icons/extrasmall/locked.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-mail_generic {
+.z-icon-es-mail {
     background:url("../images/icons/extrasmall/mail_generic.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-mydocuments {
-    background:url("../images/icons/extrasmall/mydocuments.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-package_settings {
-    background:url("../images/icons/extrasmall/package_settings.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-package_system {
-    background:url("../images/icons/extrasmall/package_system.gif") no-repeat scroll 0 50% transparent;
-    padding:2px 0 2px 20px;
-}
-.z-icon-extrasmall-search {
+.z-icon-es-search {
     background:url("../images/icons/extrasmall/search.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-services {
-    background:url("../images/icons/extrasmall/services.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-warning {
+    background:url("../images/icons/extrasmall/bell.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-terminal {
-    background:url("../images/icons/extrasmall/terminal.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-package {
+    background:url("../images/icons/extrasmall/package.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-status_unknown {
-    background:url("../images/icons/extrasmall/status_unknown.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-world {
+    background:url("../images/icons/extrasmall/agt_internet.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.z-icon-extrasmall-utilities {
-    background:url("../images/icons/extrasmall/utilities.gif") no-repeat scroll 0 50% transparent;
+.z-icon-es-cubes {
+    background:url("../images/icons/extrasmall/kcmdf.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }

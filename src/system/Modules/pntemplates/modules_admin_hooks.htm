@@ -2,14 +2,12 @@
 {include file="modules_admin_menu.htm"}
 {ajaxheader modname="Modules" filename="hooks.js"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=package_utilities.gif set=icons/large __alt="Hooks to enable for this module"}</div>
+    <div class="z-adminpageicon">{img modname=core src=package.gif set=icons/large __alt="Hooks to enable for this module"}</div>
     <h2>{gt text="Basic hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
-    <p id="extendedhookslinks" class="z-hide z-menu">
-        <span class="z-menuitem-title">
-            [ <span><a href="{modurl modname=Modules type=admin func=hooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic hook settings"}</a> | </span>
-            <span><a href="{modurl modname=Modules type=admin func=extendedhooks id=$id}" title="{gt text="Extended hook settings"}">{gt text="Extended hook settings"}</a> </span>]
-        </span>
-    </p>
+    <ul id="extendedhookslinks" class="z-hide z-menulinks">
+        <li class="z-ml-first"><a href="{modurl modname=Modules type=admin func=hooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic hook settings"}</a></li>
+        <li><a href="{modurl modname=Modules type=admin func=extendedhooks id=$id}" title="{gt text="Extended hook settings"}">{gt text="Extended hook settings"}</a></li>
+    </ul>
     {if $hooks}
     <form class="z-form" action="{modurl modname="Modules" type="admin" func="updatehooks"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>

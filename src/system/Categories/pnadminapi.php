@@ -21,15 +21,15 @@ function categories_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Categories', 'admin', 'view'), 'text' => __('Categories list'));
+        $links[] = array('url' => pnModURL('Categories', 'admin', 'view'), 'text' => __('Categories list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Categories', 'admin', 'new'), 'text' => __('Create new category'));
+        $links[] = array('url' => pnModURL('Categories', 'admin', 'new'), 'text' => __('Create new category'), 'class' => 'z-icon-es-new');
     }
     if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Categories', 'admin', 'editregistry'), 'text' => __('Category registry'));
-        $links[] = array('url' => pnModURL('Categories', 'admin', 'config'), 'text' => __('Rebuild paths'));
-        $links[] = array('url' => pnModURL('Categories', 'admin', 'preferences'), 'text' => __('Settings'));
+        $links[] = array('url' => pnModURL('Categories', 'admin', 'editregistry'), 'text' => __('Category registry'), 'class' => 'z-icon-es-cubes');
+        $links[] = array('url' => pnModURL('Categories', 'admin', 'config'), 'text' => __('Rebuild paths'), 'class' => 'z-icon-es-update');
+        $links[] = array('url' => pnModURL('Categories', 'admin', 'preferences'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;

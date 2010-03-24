@@ -2,14 +2,12 @@
 {include file="modules_admin_menu.htm"}
 {ajaxheader modname="Modules" filename="extendedhooks.js"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=package_utilities.gif set=icons/large alt=""}</div>
+    <div class="z-adminpageicon">{img modname=core src=package.gif set=icons/large alt=""}</div>
     <h2>{gt text="Extended hook settings for"} {modgetinfo modid=$id info=displayname}</h2>
-    <p class="z-menu">
-        <span class="z-menuitem-title">
-            [ <span><a href="{modurl modname=Modules type=admin func=hooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic hook settings"}</a> | </span>
-            <span><a href="{modurl modname=Modules type=admin func=extendedhooks id=$id}" title="{gt text="Extended hook settings"}">{gt text="Extended hook settings"}</a> </span>]
-        </span>
-    </p>
+    <ul class="z-menulinks">
+        <li class="z-ml-first"><a href="{modurl modname=Modules type=admin func=hooks id=$id}" title="{gt text="Basic hook settings"}">{gt text="Basic hook settings"}</a></li>
+        <li><a href="{modurl modname=Modules type=admin func=extendedhooks id=$id}" title="{gt text="Extended hook settings"}">{gt text="Extended hook settings"}</a></li>
+    </ul>
     <p class="z-informationmsg">{gt text="Notice: In this page, you can enable individual hooked modules and change the order in which they are invoked. If you are not sure about the effects, you are recommended to not change their order. You can drag and drop hooked modules to position them where you want <strong>within</strong> sections. You cannot move a hooked module from one section to another."}</p>
     {if $grouped_hooks}
     <form class="z-form" action="{modurl modname="Modules" type="admin" func="extendedupdatehooks"}" method="post" enctype="application/x-www-form-urlencoded">

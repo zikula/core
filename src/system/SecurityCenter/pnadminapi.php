@@ -57,13 +57,13 @@ function securitycenter_adminapi_getlinks()
         $args = array();
         $args['ot'] = 'log_event';
 
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'view'), 'text' => __('Hacking attempts list'));
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', $args), 'text' => __('Logged events list'));
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'modifyconfig'), 'text' => __('Settings'));
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'view'), 'text' => __('Hacking attempts list'), 'class' => 'z-icon-es-list');
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', $args), 'text' => __('Logged events list'), 'class' => 'z-icon-es-list');
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
 
         $args['ot'] = 'intrusion';
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', $args), 'text' => __('View IDS Log'));
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'allowedhtml'), 'text' => __('HTML settings'));
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', $args), 'text' => __('View IDS Log'), 'class' => 'z-icon-es-locked');
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'allowedhtml'), 'text' => __('HTML settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;

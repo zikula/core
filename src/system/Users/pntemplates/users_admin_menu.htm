@@ -5,8 +5,6 @@
 {admincategorymenu}
 <div class="z-adminbox">
     <h1>{gt text='Users manager'}</h1>
-    <div class="z-menu">
-        {moduleadminlinks modname='Users'}
-        <div id="profileadminlinks" class="z-hide">{moduleadminlinks modname=$profilemodule}</div>
-    </div>
+    {modulelinks modname='Users' type='admin'}
+    {modulelinks menuid='profileadminlinks' menuclass='z-hide z-menulinks' modname=$profilemodule type='admin'}
 </div>

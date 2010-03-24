@@ -22,10 +22,10 @@ function Mailer_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Mailer', 'admin', 'testconfig'), 'text' => __('Test current settings'));
+        $links[] = array('url' => pnModURL('Mailer', 'admin', 'testconfig'), 'text' => __('Test current settings'), 'class' => 'z-icon-es-mail');
     }
     if (SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Mailer', 'admin', 'modifyconfig'), 'text' => __('Settings'));
+        $links[] = array('url' => pnModURL('Mailer', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;

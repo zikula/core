@@ -394,14 +394,14 @@ function admin_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'view'), 'text' => __('Module categories list'));
+        $links[] = array('url' => pnModURL('Admin', 'admin', 'view'), 'text' => __('Module categories list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'new'), 'text' => __('Create new module category'));
+        $links[] = array('url' => pnModURL('Admin', 'admin', 'new'), 'text' => __('Create new module category'), 'class' => 'z-icon-es-new');
     }
     if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'help'), 'text' => __('Help'));
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'modifyconfig'), 'text' => __('Settings'));
+        $links[] = array('url' => pnModURL('Admin', 'admin', 'help'), 'text' => __('Help'), 'class' => 'z-icon-es-help');
+        $links[] = array('url' => pnModURL('Admin', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;

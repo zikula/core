@@ -21,9 +21,9 @@ function Settings_adminapi_getlinks()
 
     $domain = ZLanguage::getModuleDomain('settings');
     if (SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Settings', 'admin', 'modifyconfig'), 'text' => __('Owner settings'));
-        $links[] = array('url' => pnModURL('Settings', 'admin', 'multilingual'), 'text' => __('Localisation settings'));
-        $links[] = array('url' => pnModURL('Settings', 'admin', 'errorhandling'), 'text' => __('Error settings'));
+        $links[] = array('url' => pnModURL('Settings', 'admin', 'modifyconfig'), 'text' => __('Owner settings'), 'class' => 'z-icon-es-home');
+        $links[] = array('url' => pnModURL('Settings', 'admin', 'multilingual'), 'text' => __('Localisation settings'), 'class' => 'z-icon-es-world');
+        $links[] = array('url' => pnModURL('Settings', 'admin', 'errorhandling'), 'text' => __('Error settings'), 'class' => 'z-icon-es-error');
     }
 
     return $links;

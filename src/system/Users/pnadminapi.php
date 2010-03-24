@@ -418,32 +418,32 @@ function Users_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'view'), 'text' => __('Users list'));
+        $links[] = array('url' => pnModURL('Users', 'admin', 'view'), 'text' => __('Users list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
         $pending = pnModAPIFunc('Users', 'admin', 'countpending');
         if ($pending) {
             $links[] = array('url' => pnModURL('Users', 'admin', 'viewapplications'), 'text' => __('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
         }
-        $links[] = array('url' => pnModURL('Users', 'admin', 'new'), 'text' => __('Create new user'));
-        $links[] = array('url' => pnModURL('Users', 'admin', 'import'), 'text' => __('Import users'));
+        $links[] = array('url' => pnModURL('Users', 'admin', 'new'), 'text' => __('Create new user'), 'class' => 'z-icon-es-new');
+        $links[] = array('url' => pnModURL('Users', 'admin', 'import'), 'text' => __('Import users'), 'class' => 'z-icon-es-save');
     }
     if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find and e-mail users'));
+        $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find and e-mail users'), 'class' => 'z-icon-es-mail');
     } else if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find users'));
+        $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find users'), 'class' => 'z-icon-es-search');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'modifyconfig'), 'text' => __('Settings'));
+        $links[] = array('url' => pnModURL('Users', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     $profileModule = pnConfigGetVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && pnModAvailable($profileModule));
     if ($useProfileMod && SecurityUtil::checkPermission($profileModule . '::', '::', ACCESS_READ)) {
         if (pnModGetName() == 'Users') {
-            $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => __('Account panel manager'));
+            $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
         } else {
-            $links[] = array('url' => pnModURL($profileModule, 'admin', 'main'), 'text' => __('Account panel manager'));
+            $links[] = array('url' => pnModURL($profileModule, 'admin', 'main'), 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
         }
     }
 
