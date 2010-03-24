@@ -133,7 +133,7 @@
     <!-- PHP MD analysis -->
     <target name="phpmd">
         <echo msg="PHP_MD..." />
-        <exec command="phpmd ${sourcedir}/src xml codesize --reportfile=${builddir}/logs/pmd.xml --ignore=${ignorepaths}" escape="false" />
+        <exec command="phpmd ${sourcedir}/src xml codesize --reportfile ${builddir}/logs/pmd.xml --ignore ${ignorepaths}" escape="false" />
     </target>
 
     <!-- PHP dependency checker -->
