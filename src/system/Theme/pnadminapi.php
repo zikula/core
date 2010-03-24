@@ -150,17 +150,17 @@ function Theme_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Theme', 'admin', 'view'), 'text' => __('Themes list'));
+        $links[] = array('url' => pnModURL('Theme', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-extrasmall-windowlist');
     }
     if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
         if (is_writable('themes')) {
-            $links[] = array('url' => pnModURL('Theme', 'admin', 'new'), 'text' => __('Create new theme'));
+            $links[] = array('url' => pnModURL('Theme', 'admin', 'new'), 'text' => __('Create new theme'), 'class' => 'z-icon-extrasmall-filenew');
        } else {
-            $links[] = array('url' => pnModURL('Theme', 'admin', 'new'), 'text' => __('Create new theme'), 'title' => __("Notice: Theme creation from within the themes manager is disabled because Zikula does not have write permissions for the theme directory."), 'disabled' => true);
+            $links[] = array('url' => pnModURL('Theme', 'admin', 'new'), 'text' => __('Create new theme'), 'class' => 'z-icon-extrasmall-filenew', 'title' => __("Notice: Theme creation from within the themes manager is disabled because Zikula does not have write permissions for the theme directory."), 'disabled' => true);
        }
     }
     if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Theme', 'admin', 'modifyconfig'), 'text' => __('Settings'));
+        $links[] = array('url' => pnModURL('Theme', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-extrasmall-configure');
     }
 
     return $links;

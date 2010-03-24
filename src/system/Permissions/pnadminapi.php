@@ -502,16 +502,16 @@ function Permissions_adminapi_getlinks($args)
     $links = array();
 
     if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Permissions', 'admin', 'view', array()), 'text' => __('Permission rules list'), 'id' => 'permissions_view');
+        $links[] = array('url' => pnModURL('Permissions', 'admin', 'view', array()), 'text' => __('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-extrasmall-windowlist');
     }
     if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Permissions', 'admin', 'listedit', array('action' => 'add')), 'text' => __('Create new permission rule'), 'id' => 'permissions_new');
+        $links[] = array('url' => pnModURL('Permissions', 'admin', 'listedit', array('action' => 'add')), 'text' => __('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'z-icon-extrasmall-filenew');
     }
     if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Permissions', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'id' => 'permissions_modifyconfig');
+        $links[] = array('url' => pnModURL('Permissions', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-extrasmall-configure');
     }
     if (pnModGetName() == 'Permissions') {
-        $links[] = array('url' => 'javascript:showinstanceinformation()', 'text' => __('Permission rules information'));
+        $links[] = array('url' => 'javascript:showinstanceinformation()', 'text' => __('Permission rules information'), 'class' => 'z-icon-extrasmall-info');
     }
 
 
