@@ -729,12 +729,6 @@ h4.BlockTitleRight,
     text-align: left;
 }
 
-#z-maincontent .z-statusmsg {
-    background-color: #f3f3f3;
-    margin: 10px;
-    padding: 35px;
-}
-
 /* General*/
 .clear  { clear: both; }
 .nobreak   { white-space: nowrap; }
@@ -768,26 +762,6 @@ h4.BlockTitleRight,
     margin-top: 3px;
     margin-bottom: 4px;
 }
-.pntable1,
-.z-datatable,
-.container,
-.opentable,
-.opentable1 {
-    border: 1px solid #CCCCCC;
-    background: #F3F3F3;
-    padding: 8px;
-    margin: 0px;
-}
-
-.pntable2,
-.opentable2 {
-    background: #E6E6E6;
-    border: 2px solid #739FC4;
-    padding: 6px 12px;
-    margin: 6px;
-    margin-left: auto; margin-right: auto;
-}
-
 
 /* Other Stuff */
 
