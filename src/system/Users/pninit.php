@@ -53,6 +53,8 @@ function users_init()
     pnModSetVar('Users', 'reg_optitems', 0);
     pnModSetVar('Users', 'userimg', 'images/menu');
     pnModSetVar('Users', 'avatarpath', 'images/avatar');
+    pnModSetVar('Users', 'allowgravatars', 1);
+    pnModSetVar('Users', 'gravatarimage', 'gravatar.gif');
     pnModSetVar('Users', 'minage', 13);
     pnModSetVar('Users', 'minpass', 5);
     pnModSetVar('Users', 'anonymous', 'Guest');
@@ -97,6 +99,8 @@ function users_upgrade($oldversion)
             }
         case '1.15':
             pnModDelVar('Users', 'savelastlogindate');
+            pnModSetVar('Users', 'allowgravatars', 1);
+            pnModSetVar('Users', 'gravatarimage', 'gravatar.gif');
             if (!DBUtil::changeTable('users_temp')) {
                 return '1.15';
             }

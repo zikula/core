@@ -20,6 +20,19 @@
                 <input id="users_avatarpath" type="text" name="config[avatarpath]" value="{$config.avatarpath|default:'images/avatar'|varprepfordisplay}" size="50" maxlength="255" />
             </div>
             <div class="z-formrow">
+                <label for="users_allowgravatars">{gt text="Allow globally recognized avatars"}</label>
+                <div id="users_allowgravatars">
+                    <input id="allowgravatarsyes" type="radio" name="config[allowgravatars]" value="1" {if $config.allowgravatars eq 1} checked="checked"{/if} />
+                    <label for="allowgravatarsyes">{gt text="Yes"}</label>
+                    <input id="allowgravatarsno" type="radio" name="config[allowgravatars]" value="0" {if $config.allowgravatars eq 0} checked="checked"{/if} />
+                    <label for="allowgravatarsno">{gt text="No"}</label>
+                </div>
+            </div>
+            <div class="z-formrow">
+                <label for="users_gravatarimage">{gt text="Default gravatar image"}</label>
+                <input id="users_gravatarimage" type="text" name="config[gravatarimage]" value="{$config.gravatarimage|default:'gravatar.gif'|varprepfordisplay}" size="50" maxlength="255" />
+            </div>
+            <div class="z-formrow">
                 <label for="users_itemsperpage">{gt text="Links per page"}</label>
                 <input id="users_itemsperpage" type="text" name="config[itemsperpage]" size="3" value="{$config.itemsperpage|varprepfordisplay}" />
             </div>

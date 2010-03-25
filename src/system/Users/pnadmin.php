@@ -893,6 +893,8 @@ function users_admin_updateconfig()
     pnModSetVar('Users', 'idnnames', $config['idnnames']);
     pnModSetVar('Users', 'use_password_strength_meter', $config['use_password_strength_meter']);
     pnModSetVar('Users', 'avatarpath', $config['avatarpath']);
+    pnModSetVar('Users', 'allowgravatars', $config['allowgravatars']);
+    pnModSetVar('Users', 'gravatarimage', $config['gravatarimage']);
     pnModSetVar('Users', 'lowercaseuname', $config['lowercaseuname']);
 
     if(pnModAvailable('legal')) {
