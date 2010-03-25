@@ -475,8 +475,9 @@ function theme_adminapi_deletepageconfigurationassignment($args)
 function theme_adminapi_create($args)
 {
     // Argument check
-    if (!isset($args['themeinfo'])) {
-        return LogUtil::registerArgsError();
+    if (!isset($args) || !isset($args['name']) || empty($args) || empty($args['name'])) {
+        $url = pnModURL('Theme', 'admin', 'new');
+        return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
     }
 
     $themeinfo = DataUtil::formatForOS($args['themeinfo']);

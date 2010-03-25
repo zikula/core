@@ -50,8 +50,9 @@ function theme_admin_create($args)
     $themeinfo = FormUtil::getPassedValue('themeinfo', isset($args['themeinfo']) ? $args['themeinfo'] : null, 'POST');
 
     // check our input
-    if (!isset($themeinfo) || empty($themeinfo)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+    if (!isset($themeinfo) || !isset($themeinfo['name']) || empty($themeinfo) || empty($themeinfo['name'])) {
+        $url = pnModURL('Theme', 'admin', 'new');
+        return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
     }
 
     // Security check
@@ -61,7 +62,7 @@ function theme_admin_create($args)
 
     // rewrite the variables to the running config
     if (pnModAPIFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo))) {
-        LogUtil::registerStatus(__f('Done! Created %s.', __('Themes manager')));
+        LogUtil::registerStatus(__f('Done! Theme %s created.', $themeinfo['name']));
     }
 
     // regenerate theme list
