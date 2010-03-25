@@ -28,6 +28,14 @@ function Blocks_thelangblock_init()
  */
 function Blocks_thelangblock_info()
 {
+    // Requirement
+    // $requirement_message must contain the error message or be empty
+    $requirement_message = '';
+    $multilanguageEnable = pnConfigGetVar('multilingual');
+    if (!$multilanguageEnable) {
+        $requirement_message .= __('Notice: This language block will not be display until you enable the multilanguage into the settings of Zikula.');
+    }
+
     return array('module'          => 'Blocks',
                  'text_type'       => __('Language'),
                  'text_type_long'  => __('Language selector block'),
@@ -35,7 +43,8 @@ function Blocks_thelangblock_info()
                  'form_content'    => false,
                  'form_refresh'    => false,
                  'show_preview'    => true,
-                 'admin_tableless' => true);
+                 'admin_tableless' => true,
+                 'requirement'     => $requirement_message);
 }
 
 /**
@@ -232,4 +241,5 @@ function _blocks_thelangblock_sort($a, $b)
 {
     return strcmp($a['name'], $b['name']);
 }
+
 

@@ -315,11 +315,21 @@ function blocks_admin_modify()
     // the blocks will have reset the renderDomain property (bad singleton design) - drak
     $pnRender->renderDomain = null;
 
+    // Block output
+    $pnRender->assign('blockoutput', $blockoutput);
+
+    // Tableless for blockoutput
     if (!isset($GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]['admin_tableless'])) {
         $GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]['admin_tableless'] = false;
     }
+
+    // Requirement for the block
+    if (!isset($GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]['requirement'])) {
+        $GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]['requirement'] = '';
+    }
+
+    // Assign blockinfo to the template
     $pnRender->assign($GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]);
-    $pnRender->assign('blockoutput', $blockoutput);
 
     // Refresh
     $refreshtimes = array( 1800 => __('Half an hour'),
@@ -840,4 +850,5 @@ function blocks_admin_updateconfig()
 
     return pnRedirect(pnModURL('Blocks', 'admin', 'main'));
 }
+
 

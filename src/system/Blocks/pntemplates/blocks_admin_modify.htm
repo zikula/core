@@ -9,6 +9,11 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />
             <input type="hidden" name="bid" value="{$bid|varprepfordisplay}" />
+            {if $requirement neq ''}
+            <p class="z-warningmsg">
+                {$requirement}
+            </p>
+            {/if}
             <fieldset>
                 <legend>{$modtitle|varprepfordisplay}</legend>
                 <div class="z-formrow">
@@ -117,3 +122,4 @@
         </div>
     </form>
 </div>
+
