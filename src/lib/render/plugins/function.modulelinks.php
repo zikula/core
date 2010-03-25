@@ -20,7 +20,7 @@
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $links       array with menulinks (text, url, title, class, disabled) (optional)
+ * @param        string      $links       array with menulinks (text, url, title, id, class, disabled) (optional)
  * @param        string      $modname     module name to display links for (optional)
  * @param        string      $type        function type where the getlinks-function is located (optional)
  * @param        string      $menuid      ID for the unordered list (optional)
@@ -32,19 +32,6 @@
  * @param        string      $class       CSS class (optional)
  * @return       string      a formatted string containing navigation for the module admin panel
  */
- 
-/**
-*
-* Available parameters:
-*   - links:        array with tree data (array, required)
-*   - menuid:          id for main UL element (string, optional)
-*   - menuclass:       class for main UL element (string, optional)
-*   - itemclass: if provided - LI elements will get class with this prefix and node id (string, optional)
-*   - assign:      if set, the results are assigned to the corresponding variable instead of printed out
-*   - first:       li element is first in node
-*   - last:        li element is last in node
-
-*/
 
 function smarty_function_modulelinks($params, &$smarty)
 {
