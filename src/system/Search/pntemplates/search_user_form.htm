@@ -2,11 +2,11 @@
 {gt text='Search keywords' assign='templatetitle' domain='zikula'}
 {include file='search_user_menu.htm'}
 
-<form class="z-form" id="search_form" method="post" action="{pnmodurl modname='Search' type='user' func='search'}">
+<form class="z-form" id="search_form" method="post" action="{modurl modname='Search' type='user' func='search'}">
     <fieldset>
         <div class="z-formrow">
             <label for="search_q" id="search_q_label">{$templatetitle}</label>
-            <input type="text" id="search_q" name="q" size="20" maxlength="255" value="{$q|pnvarprepfordisplay}" />
+            <input type="text" id="search_q" name="q" size="20" maxlength="255" value="{$q|varprepfordisplay}" />
         </div>
         <div class="z-formrow">
             <label for="searchtype">{gt text='Keyword settings' domain='zikula'}</label>

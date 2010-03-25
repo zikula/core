@@ -14,9 +14,9 @@
     <tbody>
         {foreach from=$recentsearches item=recentsearch}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{pnmodurl modname=Search func=search q=$recentsearch.search|urlencode}">{$recentsearch.search|replace:' ':', '|pnvarprepfordisplay}</a></td>
-            <td>{$recentsearch.count|pnvarprepfordisplay}</td>
-            <td>{$recentsearch.date|pndate_format}</td>
+            <td><a href="{modurl modname=Search func=search q=$recentsearch.search|urlencode}">{$recentsearch.search|replace:' ':', '|varprepfordisplay}</a></td>
+            <td>{$recentsearch.count|varprepfordisplay}</td>
+            <td>{$recentsearch.date|date_format}</td>
         </tr>
         {foreachelse}
         <tr class="z-datatableempty"><td colspan="3">{gt text="No items found." domain='zikula'}</td></tr>

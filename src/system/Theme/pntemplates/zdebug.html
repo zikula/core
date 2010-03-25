@@ -42,7 +42,7 @@
 	{section name=templates loop=$_debug_tpls}
 		<tr bgcolor="{cycle values='#eeeeee,#fafafa'}">
 		    <td colspan="2">
-		        <tt>{section name=indent loop=$_debug_tpls[templates].depth}&nbsp;&nbsp;&nbsp;{/section}<span style="color: {if $_debug_tpls[templates].type eq "template"}brown{elseif $_debug_tpls[templates].type eq "insert"}black{else}green{/if};">{$_debug_tpls[templates].filename|pnvarprepfordisplay}</span>{if isset($_debug_tpls[templates].exec_time)} <span style="font-size: 90%;"><em>({$_debug_tpls[templates].exec_time|string_format:"%.5f"}){if %templates.index% eq 0} (total){/if}</em></span>{/if}</tt>
+		        <tt>{section name=indent loop=$_debug_tpls[templates].depth}&nbsp;&nbsp;&nbsp;{/section}<span style="color: {if $_debug_tpls[templates].type eq "template"}brown{elseif $_debug_tpls[templates].type eq "insert"}black{else}green{/if};">{$_debug_tpls[templates].filename|varprepfordisplay}</span>{if isset($_debug_tpls[templates].exec_time)} <span style="font-size: 90%;"><em>({$_debug_tpls[templates].exec_time|string_format:"%.5f"}){if %templates.index% eq 0} (total){/if}</em></span>{/if}</tt>
 		    </td>
 		</tr>
 	{sectionelse}

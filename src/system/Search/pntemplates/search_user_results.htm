@@ -11,11 +11,11 @@
     {foreach from=$results item=result}
     <dt class="search_hit">
         {if isset($result.url) && $result.url neq ''}
-            <a href="{$result.url|pnvarprepfordisplay}">{$result.title|google_highlight:$q:$limitsummary}</a>
-            &nbsp;&nbsp;<span class="z-sub">(<a href="{pnmodurl modname=$result.module}">{$result.displayname}</a>)</span>
+            <a href="{$result.url|varprepfordisplay}">{$result.title|google_highlight:$q:$limitsummary}</a>
+            &nbsp;&nbsp;<span class="z-sub">(<a href="{modurl modname=$result.module}">{$result.displayname}</a>)</span>
         {else}
             {$result.title|google_highlight:$q:$limitsummary}
-            &nbsp;&nbsp;<span class="z-sub">(<a href="{pnmodurl modname=$result.module}">{$result.displayname}</a>)</span>
+            &nbsp;&nbsp;<span class="z-sub">(<a href="{modurl modname=$result.module}">{$result.displayname}</a>)</span>
         {/if}
 
     </dt>
@@ -38,5 +38,5 @@
     <li>{gt text="Use keywords that are more general." domain='zikula'}</li>
     <li>{gt text="Use fewer words." domain='zikula'}</li>
 </ul>
-{pnmodfunc modname='Search' func='form' titles=false}
+{modfunc modname='Search' func='form' titles=false}
 {/if}

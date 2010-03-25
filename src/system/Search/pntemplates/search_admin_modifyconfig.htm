@@ -10,19 +10,19 @@
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
                     <label for="search_itemsperpage">{gt text="Items per page"}</label>
-                    <input id="search_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|pnvarprepfordisplay}" />
+                    <input id="search_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|varprepfordisplay}" />
                 </div>
                 <div class="z-formrow">
                     <label for="search_limitsummary">{gt text="Number of characters to display in item summaries"}</label>
-                    <input id="search_limitsummary" type="text" name="limitsummary" size="5" value="{$limitsummary|pnvarprepfordisplay}" />
+                    <input id="search_limitsummary" type="text" name="limitsummary" size="5" value="{$limitsummary|varprepfordisplay}" />
                 </div>
             </fieldset>
             <fieldset>
                 <legend>{gt text="Disable search plug-ins"}</legend>
                 {foreach from=$plugins item=plugin}
                 <div class="z-formrow">
-                    <label for="search_disable{$plugin.title|pnvarprepfordisplay}">{modgetinfo info=displayname modname=$plugin.title}</label>
-                    <input id="search_disable{$plugin.title|pnvarprepfordisplay}" type="checkbox" name="disable[{$plugin.title|pnvarprepfordisplay}]" value="1"
+                    <label for="search_disable{$plugin.title|varprepfordisplay}">{modgetinfo info=displayname modname=$plugin.title}</label>
+                    <input id="search_disable{$plugin.title|varprepfordisplay}" type="checkbox" name="disable[{$plugin.title|varprepfordisplay}]" value="1"
                     {if $plugin.disabled} checked="checked"{/if} />
                 </div>
                 {/foreach}
