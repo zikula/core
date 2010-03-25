@@ -44,6 +44,8 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
 
     // get any stylesheet page vars
     $stylesheets = PageUtil::getVar('stylesheet');
+    // Add generic stylesheet as the first stylesheet.
+    array_unshift($stylesheets, 'javascript/style.css');
 
     // check if we need to perform ligthbox replacement -- javascript
     if (is_array($javascripts) && !empty($javascripts)) {
@@ -114,13 +116,6 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     $rawtext = PageUtil::getVar('rawtext');
     if (is_array($rawtext) && !empty($rawtext)) {
         $return .= implode("\n", $rawtext) . "\n";
-    }
-
-    // add generic stylesheet
-    if ($themeinfo['xhtml']) {
-        $return .= '<link rel="stylesheet" href="javascript/style.css" type="text/css" />' . "\n";
-    } else {
-        $return .= '<link rel="stylesheet" href="javascript/style.css" type="text/css">' . "\n";
     }
 
     // implode the remaining additional header global to a string

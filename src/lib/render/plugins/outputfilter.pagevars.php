@@ -44,7 +44,8 @@ function smarty_outputfilter_pagevars($source, &$smarty)
 
     // get any stylesheet page vars
     $stylesheets = PageUtil::getVar('stylesheet');
-    $stylesheets[] = 'javascript/style.css';
+    // Add generic stylesheet as the first stylesheet.
+    array_unshift($stylesheets, 'javascript/style.css');
 
     // check if we need to perform ligthbox replacement -- javascript
     if (is_array($javascripts) && !empty($javascripts)) {
