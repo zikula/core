@@ -132,7 +132,7 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     // suitable identifiying comments when in development mode
     $return = trim($return);
     if (!empty($return) && pnConfigGetVar('development') != 0) {
-        $return = "<!-- zk_pagevars -->\n" . $return . "\n<!-- /zk_pagevars -->";
+        $return = "<!-- zikula pagevars -->\n" . $return . "\n<!-- /zikula pagevars -->";
     }
 
     // get any body page vars
