@@ -20,6 +20,7 @@
 # /src/ztemp
 /src/ztemp/errors_log/*
 /src/ztemp/purifierCache/*
+/src/ztemp/idsTmp/*
 /src/ztemp/Renderer_cache/*
 /src/ztemp/Renderer_compiled/*
 /src/ztemp/Theme_cache/*
