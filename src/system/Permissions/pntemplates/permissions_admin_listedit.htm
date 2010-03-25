@@ -2,7 +2,7 @@
 {include file="permissions_admin_menu.htm"}
 {include file="componentinstance.js"}
 <div class="z-admincontainer">
-    {if $action eq add}
+    {if $action eq "add"}
     <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$submit}</div>
     {else}
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$submit}</div>
@@ -30,7 +30,7 @@
                 <tbody>
                     {section name=permissions loop=$permissions}
                     <tr class="{cycle values="z-odd,z-even"}">
-                        {if ($insseq eq $permissions[permissions].sequence) and ($action eq insert)}
+                        {if ($insseq eq $permissions[permissions].sequence) and ($action eq "insert")}
                         <td>&nbsp;</td>
                         <td>
                             <select name="id">
@@ -55,7 +55,7 @@
                         <td>{$permissions[permissions].instance|varprepfordisplay}</td>
                         <td>{$permissions[permissions].accesslevel|varprepfordisplay}</td>
                         <td>&nbsp;</td>
-                        {elseif ($chgpid eq $permissions[permissions].pid) and ($action eq modify)}
+                        {elseif ($action eq "modify") and ($chgpid eq $permissions[permissions].pid)}
                         <td>
                             <input type="text" name="seq" size="3" value="{$permissions[permissions].sequence|varprepfordisplay}" />
                             <input type="hidden" name="oldseq" value="{$permissions[permissions].sequence}" />
@@ -91,14 +91,14 @@
                         <td>&nbsp;</td>
                         <td>
                             <select name="id">
-                                {html_options options=$idvalues selected=$idvalue}
+                                {html_options options=$idvalues}
                             </select>
                         </td>
-                        <td><textarea name="component">{$permissions[permissions].component|varprepfordisplay}</textarea></td>
-                        <td><textarea name="instance">{$permissions[permissions].instance|varprepfordisplay}</textarea></td>
+                        <td><textarea name="component">.*</textarea></td>
+                        <td><textarea name="instance">.*</textarea></td>
                         <td>
                             <select name="level">
-                                {html_options options=$permissionlevels selected=$permissions[permissions].level}
+                                {html_options options=$permissionlevels}
                             </select>
                         </td>
                         <td>
