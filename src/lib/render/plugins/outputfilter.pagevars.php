@@ -81,42 +81,40 @@ function smarty_outputfilter_pagevars($source, &$smarty)
         $return .= '<link rel="stylesheet" href="'.DataUtil::formatForDisplay($stylesheetFile).'" type="text/css">'."\n";
     }
 
-    // some check for prototype/pnajax/scriptaculous
     if (is_array($javascripts) && !empty($javascripts)) {
-        if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/pnajax.js', $javascripts)) {
-            // prototype found, we also load pnajax.js now
-            $javascripts[] = 'javascript/ajax/pnajax.js';
-        }
+        // some check for prototype/pnajax/scriptaculous
+        $enableSplice = false;
+        $javascriptLinksToCheck = array('javascript/ajax/prototype.js',
+                                        'javascript/ajax/scriptaculous.js',
+                                        'javascript/ajax/scriptaculous.js?load=builder',
+                                        'javascript/ajax/scriptaculous.js?load=effects',
+                                        'javascript/ajax/scriptaculous.js?load=dragdrop',
+                                        'javascript/ajax/scriptaculous.js?load=controls',
+                                        'javascript/ajax/scriptaculous.js?load=slider',
+                                        'javascript/ajax/scriptaculous.js?load=sound',
+                                        'javascript/ajax/pnajax.js');
+ 
+        $javascriptNewLinks     = array('javascript/ajax/prototype.js',
+                                        'javascript/ajax/scriptaculous.js',
+                                        'javascript/ajax/builder.js',
+                                        'javascript/ajax/effects.js',
+                                        'javascript/ajax/dragdrop.js',
+                                        'javascript/ajax/controls.js',
+                                        'javascript/ajax/slider.js',
+                                        'javascript/ajax/sound.js',
+                                        'javascript/ajax/pnajax.js');
 
-        $implodeJavascripts  = implode('@',$javascripts); 
-        $enableScriptaculous = strpos($implodeJavascripts,'javascript/ajax/scriptaculous.js'); 
-        if ($enableScriptaculous !== false) {
-            $scriptaculousOldLinks = array('javascript/ajax/scriptaculous.js',
-                                       'javascript/ajax/scriptaculous.js?load=builder',
-                                       'javascript/ajax/scriptaculous.js?load=effects',
-                                       'javascript/ajax/scriptaculous.js?load=dragdrop',
-                                       'javascript/ajax/scriptaculous.js?load=controls',
-                                       'javascript/ajax/scriptaculous.js?load=slider',
-                                       'javascript/ajax/scriptaculous.js?load=sound');
-            $scriptaculousNewLinks = array('javascript/ajax/scriptaculous.js',
-                                           'javascript/ajax/builder.js',
-                                           'javascript/ajax/effects.js',
-                                           'javascript/ajax/dragdrop.js',
-                                           'javascript/ajax/controls.js',
-                                           'javascript/ajax/slider.js',
-                                           'javascript/ajax/sound.js');
-
-            foreach ($javascripts as $key => $currentJS) {
-                if (in_array($currentJS, $scriptaculousOldLinks)) {
-                    unset($javascripts[$key]);
-                }
+        foreach ($javascripts as $key => $currentJS) {
+            if (in_array($currentJS, $javascriptLinksToCheck)) {
+                unset($javascripts[$key]);
+                $enableSplice = true;
             }
-
-            array_splice($javascripts,0,0,$scriptaculousNewLinks);
         }
-    }
 
-    if (is_array($javascripts) && !empty($javascripts)) {
+        if ($enableSplice) {
+            array_splice($javascripts,0,0,$javascriptNewLinks);
+        }
+
         // Ugly but necessary inline javascript for now: Some javascripts, eg. the lightbox, need to know the path to the system and
         // the entrypoint as well (which can be configured in the settings) otherwise they may fail in case of short urls being
         // enabled. We will now add some inline javascript to extend the DOM:
