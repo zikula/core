@@ -107,7 +107,7 @@ abstract class FileSystem_Error
         $this->errors = array_merge(array(
             array(
                 'message' => $e,
-                'code' => $code)), &$this->errors);
+                'code' => $code)), $this->errors);
     }
 
     public function error_handler($errno, $errstr, $errfile, $errline)
