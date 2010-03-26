@@ -24,15 +24,84 @@
  */
 interface FileSystem_Interface
 {
+    /**
+     * Interface connect function.
+     */
     public function connect();
+    
+    /**
+     * Interface get function.
+     *
+     * @param string $local  The pathname to the desired local file.
+     * @param string $remote The pathname to the remote file to get.
+     */
     public function get($local, $remote);
+    
+    /**
+     * Interface fget function.
+     *
+     * @param string $remote The path to the remote file.
+     */
     public function fget($remote);
+    
+    /**
+     * Interface put function.
+     *
+     * @param string $local  The pathname to the local file.
+     * @param string $remote The pathname to the desired remote file.
+     */
     public function put($local, $remote);
+    
+    /**
+     * Interface fput function.
+     *
+     * @param stream|resource $stream The resource to put remotely, probably the resource returned from a fget.
+     * @param string          $remote The pathname to the desired remote pathname.
+     */
     public function fput($stream, $remote);
+    
+    /**
+     * Interface chmod function.
+     *
+     * @param integer $perm The permission to assign to the file, unix style (example: 777 for full permission).
+     * @param string  $file The pathname to the remote file to chmod.
+     */
     public function chmod($perm, $file);
+    
+    /**
+     * Interface ls function.
+     *
+     * @param string $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
+     */
     public function ls($dir = '');
+    
+    /**
+     * Interface cd function.
+     *
+     * @param string $dir The directory on the remote machine to enter, start with '/' for absolute path.
+     */
     public function cd($dir = '');
+    
+    /**
+     * Interface cp function.
+     *
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to copy the source file.
+     */
     public function cp($sourcepath, $destpath);
+    
+    /**
+     * Interface mf function.
+     *
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to move the source file.
+     */
     public function mv($sourcepath, $destpath);
+    
+    /**
+     * Interface rm function.
+     *
+     * @param string $sourcepath The path to the remote file to remove.
+     */
     public function rm($sourcepath);
 }

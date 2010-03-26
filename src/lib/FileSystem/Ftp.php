@@ -13,9 +13,11 @@
  */
 
 /**
- * FileSystem_Ftp is the standard driver for FTP connections. This class extends FileSystem_Driver
- * and thus inherits the construct and FileSystem_Error functions from FileSystem_Driver.
- * This class must implement FileSystem_Interface, the requirement to implement this interface
+ * FileSystem_Ftp is the standard driver for FTP connections.
+ *
+ * This class extends FileSystem_Driver and thus inherits the construct
+ * and FileSystem_Error functions from FileSystem_Driver. This class must
+ * implement FileSystem_Interface, the requirement to implement this interface
  * is inherited from FileSystem_Driver.
  *
  * @author kage
@@ -80,8 +82,8 @@ class FileSystem_Ftp extends FileSystem_Driver
      * FileSystem classes by the fact that it gets the local file without using the
      * local driver.
      *
-     * @param string $local	    The pathname to the local file.
-     * @param string $remote	The pathname to the desired remote file.
+     * @param string $local  The pathname to the local file.
+     * @param string $remote The pathname to the desired remote file.
      *
      * @return boolean True if file put to remote, false if not.
      */
@@ -102,8 +104,8 @@ class FileSystem_Ftp extends FileSystem_Driver
      *
      * This should be used instead of put in most cases.
      *
-     * @param stream|resource $stream	The resource to put remotely, probably the resource returned from a fget.
-     * @param string          $remote	The pathname to the desired remote pathname.
+     * @param stream|resource $stream The resource to put remotely, probably the resource returned from a fget.
+     * @param string          $remote The pathname to the desired remote pathname.
      *
      * @return integer|boolean  number of bytes written on success, false on failure.
      */
@@ -126,8 +128,8 @@ class FileSystem_Ftp extends FileSystem_Driver
      * FileSystem classes by the fact that it saves the file localy without using the
      * local driver.
      *
-     * @param string $local	    The pathname to the desired local file.
-     * @param string $remote	The pathname to the remote file to get.
+     * @param string $local  The pathname to the desired local file.
+     * @param string $remote The pathname to the remote file to get.
      *
      * @return bool True on success, false on failure.
      */
@@ -191,9 +193,9 @@ class FileSystem_Ftp extends FileSystem_Driver
     /**
      * Get the entire contents of a directory.
      *
-     * @param   string $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
+     * @param string $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
      *
-     * @return	array|boolean  An array of the contents of $dir or false if fail.
+     * @return array|boolean  An array of the contents of $dir or false if fail.
      */
     public function ls($dir = '')
     {
@@ -232,8 +234,8 @@ class FileSystem_Ftp extends FileSystem_Driver
      *
      * This can also be used to rename files.
      *
-     * @param string $sourcepath	The path to the original source file.
-     * @param string $destpath		The path to where you want to move the source file.
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to move the source file.
      *
      * @return boolean  True if file moved, false if failed.
      */
@@ -254,8 +256,8 @@ class FileSystem_Ftp extends FileSystem_Driver
      *
      * Same as mv method but leaves the original file.
      *
-     * @param string $sourcepath	The path to the original source file.
-     * @param string $destpath		The path to where you want to copy the source file.
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to copy the source file.
      *
      * @return boolean True on success, false on failure.
      */
@@ -276,7 +278,8 @@ class FileSystem_Ftp extends FileSystem_Driver
     /**
      * Remove a file from the remote file system.
      *
-     * @param 	string $sourcepath The path to the remote file to remove.
+     * @param string $sourcepath The path to the remote file to remove.
+     *
      * @return	boolean True on success, false on failure.
      */
     public function rm($sourcepath)

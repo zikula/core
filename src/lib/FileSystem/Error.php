@@ -36,9 +36,9 @@ class FileSystem_Error
     /**
      * Get the last error to occur and return it.
      *
-     * @param boolean $clear if true the last error will be removed (optional) (default = false).
+     * @param boolean $clear True the last error will be removed (optional) (default = false).
      *
-     * @return 			  an array of the last error or false on no errors
+     * @return An array of the last error or false on no errors
      */
     public function error_get_last($clear = false)
     {
@@ -149,13 +149,13 @@ class FileSystem_Error
      * @param integer $errno   The error number.
      * @param string  $errstr  The error message.
      * @param string  $errfile The file where the error occurred.
-     * @param integer     $errline The line number where the error occurred.
+     * @param integer $errline The line number where the error occurred.
      *
      * @return void
      */
     public function error_handler($errno, $errstr, $errfile, $errline)
     {
-        /**
+        /*
         $errors = $this->error_codes();
         foreach ($errors as $key => $error) {
             if (stripos($errstr, $error['search']) !== FALSE) {

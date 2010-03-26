@@ -81,16 +81,14 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
     /**
      * Constructs a configuration for the FTP driver.
      *
-     * @param String $host The host to connect to.
-     * @param String $user The username when connecting (default = Anonymous)
-     * @param String $pass The password associated with $user (default = "")
-     * @param String $dir  The directory on which to enter immediatly after connecting (default = "/") (optional)
-     * @param Int $port    The port to use when connecting to $host (default = 21 if ftp or 990 if $sftp = true) (optional)
-     * @param Int $timeout The timeout in seconds for the connection (default = 10) (optional)
-     * @param boolean $ssl	   True to use FTPS false for normal FTP (default = false) (optional)
-     * @param boolean $pasv   True to enable passive mode, false for active mode (default = true) (optional)
-     *
-     * @return void
+     * @param String  $host    The host to connect to.
+     * @param String  $user    The username when connecting (default = Anonymous).
+     * @param String  $pass    The password associated with $user (default = "").
+     * @param String  $dir     The directory on which to enter immediatly after connecting (default = "/") (optional).
+     * @param integer $port    The port to use when connecting to $host (default = 21 if ftp or 990 if $sftp = true) (optional).
+     * @param integer $timeout The timeout in seconds for the connection (default = 10) (optional).
+     * @param boolean $ssl	   True to use FTPS false for normal FTP (default = false) (optional).
+     * @param boolean $pasv    True to enable passive mode, false for active mode (default = true) (optional).
      */
     public function __construct($host = 'localhost', $user = "Anonymous", $pass = '', $dir = '', $port = 21, $timeout = 10, $ssl = false, $pasv = true)
     {

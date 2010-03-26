@@ -13,15 +13,23 @@
  */
 
 /**
- * FileSystem_Local is the standard driver for Local/Direct connections. This class extends FileSystem_Driver
+ * FileSystem_Local is the standard driver for Local/Direct connections.
+ *
+ * This class extends FileSystem_Driver
  * and thus inherits the construct and FileSystem_Error functions from FileSystem_Driver.
  * This class must implement FileSystem_Interface, the requirement to implement this interface
  * is inherited from FileSystem_Driver.
- * @author kage
  *
+ * @author kage
  */
 class FileSystem_Local extends FileSystem_Driver
 {
+    
+    /**
+     * Resource handle.
+     *
+     * @var resource
+     */
     private $resource;
 
     /**
@@ -46,10 +54,10 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * This command is an alias for the cp() command.
      *
-     * @param $local	The pathname to the local source file
-     * @param $remote	The pathname to the local target file
+     * @param string $local  The pathname to the local source file.
+     * @param string $remote The pathname to the local target file.
      *
-     * @return void
+     * @return boolean True on success false on failure.
      */
     public function put($local, $remote)
     {
@@ -62,8 +70,8 @@ class FileSystem_Local extends FileSystem_Driver
      * Similar to put but does not use a local file as the source,
      * instead it uses a stream or resource.
      *
-     * @param $stream The resource to save as a file, probably the resource returned from a fget
-     * @param $remote The pathname to the desired local file.
+     * @param string $stream The resource to save as a file, probably the resource returned from a fget.
+     * @param string $remote The pathname to the desired local file.
      *
      * @return mixed Number of bytes written on success, false on failure.
      */
@@ -88,7 +96,7 @@ class FileSystem_Local extends FileSystem_Driver
      * @param $local  The pathname to the local target file.
      * @param $remote The pathname to the local source file.
      *
-     * @return ???
+     * @return boolean True on success false on failure.
      */
     public function get($local, $remote)
     {
@@ -98,7 +106,9 @@ class FileSystem_Local extends FileSystem_Driver
     /**
      *
      *
-     * Similar to get() but does not save the file. instead it returns a
+     * Similar to get() but does not save the file.
+     *
+     * Instead it returns a
      * resource handle which can then be saved with fput(), or can be manipulated
      * in the same manner as any other file resouce handle.
      * <samp>
@@ -113,7 +123,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @param $remote The pathname to the local source file.
      *
-     * @return mixed  File resource handle or false on failure.
+     * @return mixed File resource handle or false on failure.
      */
     public function fget($remote)
     {
@@ -130,8 +140,8 @@ class FileSystem_Local extends FileSystem_Driver
     /**
      * Change the permissions of a file.
      *
-     * @param $perm The permission to assign to the file, unix style (example: 777 for full permission).
-     * @param $file The pathname to the remote file to chmod.
+     * @param integer $perm The permission to assign to the file, unix style (example: 777 for full permission).
+     * @param strin   $file The pathname to the remote file to chmod.
      *
      * @return mixed The new permission or false if failed.
      */
@@ -153,7 +163,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @param $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
      *
-     * @return mixed an array of the contents of $dir or false if fail.
+     * @return mixed An array of the contents of $dir or false if fail.
      */
     public function ls($dir = "")
     {
@@ -169,9 +179,9 @@ class FileSystem_Local extends FileSystem_Driver
     /**
      * Change the current working directory on the Local machine.
      *
-     * @param $dir	The directory on the remote machine to enter, start with '/' for absolute path.
+     * @param string $dir The directory on the remote machine to enter, start with '/' for absolute path.
      *
-     * @return bool Result.
+     * @return boolean True if changed dir, false otherwise.
      */
     public function cd($dir = '')
     {
@@ -189,10 +199,10 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * This can also be used to rename files.
      *
-     * @param $sourcepath The path to the original source file
-     * @param $destpath   The path to where you want to move the source file
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to move the source file.
      *
-     * @return bool Result.
+     * @return boolean True on success, false on failure.
      */
     public function mv($sourcepath, $destpath)
     {
@@ -210,10 +220,10 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * Similar to mv() method but leaves the original file.
      *
-     * @param $sourcepath The path to the original source file.
-     * @param $destpath   The path to where you want to copy the source file.
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to copy the source file.
      *
-     * @return bool Result.
+     * @return boolean True on success, false on failure.
      */
     public function cp($sourcepath, $destpath)
     {
@@ -229,9 +239,9 @@ class FileSystem_Local extends FileSystem_Driver
     /**
      * Remove a file from the local file system.
      *
-     * @param $sourcepath The path to the file to be removed.
+     * @param string $sourcepath The path to the file to be removed.
      *
-     * @return bool Result.
+     * @return boolean True if file removed, false if not.
      */
     public function rm($sourcepath)
     {
@@ -246,6 +256,8 @@ class FileSystem_Local extends FileSystem_Driver
 
     /**
      * Return error codes.
+     *
+     * This function is not yet used.
      *
      * @return array Error codes.
      */

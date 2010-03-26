@@ -65,8 +65,6 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
      * @param string  $pass The password associated with $user (default = '').
      * @param string  $dir  The directory on which to enter immediatly after connecting (default = './') (optional).
      * @param integer $port The port to use when connecting to $host (default = 22) (optional).
-     *
-     * @return void
      */
     public function __construct($host = 'localhost', $user = 'Anonymous', $pass = '', $dir = './', $port = 22)
     {

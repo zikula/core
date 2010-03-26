@@ -37,7 +37,7 @@ class FileSystem_SFtp extends FileSystem_Driver
     private $ssh_resource;
 
     /**
-     * Directory.
+     * Current working directory.
      *
      * @var string
      */
@@ -51,7 +51,7 @@ class FileSystem_SFtp extends FileSystem_Driver
      * upon completion, which alleviates the need to ever call this function
      * manually.
      *
-     * @return boolean
+     * @return boolean True on connect false on failure
      */
     public function connect()
     {
@@ -65,7 +65,7 @@ class FileSystem_SFtp extends FileSystem_Driver
                     if (($this->dir = ssh2_sftp_realpath($this->resource, $this->configuration->getDir())) !== false) {
                         //changed dir
                         $this->stop_handler();
-                        return; //how to return object?
+                        return true; //return object?
                     }
                     //could not enter dir
                 }
@@ -85,8 +85,10 @@ class FileSystem_SFtp extends FileSystem_Driver
      * FileSystem classes by the fact that it gets the local file without using the
      * local driver.
      *
-     * @param $local	The pathname to the local file
-     * @param $remote	The pathname to the desired remote file
+     * @param string $local  The pathname to the local file.
+     * @param string $remote The pathname to the desired remote file.
+     *
+     * @return boolean True on success false on failure.
      */
     public function put($local, $remote)
     {
@@ -104,10 +106,10 @@ class FileSystem_SFtp extends FileSystem_Driver
      *
      * This should be used instead of put in most cases.
      *
-     * @param $stream The resource to put remotely, probably the resource returned from a fget.
-     * @param $remote The pathname to the desired remote pathname.
+     * @param string $stream The resource to put remotely, probably the resource returned from a fget.
+     * @param string $remote The pathname to the desired remote pathname.
      *
-     * @return mixed Number of bytes written on success, false on failure.
+     * @return boolean Number of bytes written on success, false on failure.
      */
     public function fput($stream, $remote)
     {
@@ -130,10 +132,10 @@ class FileSystem_SFtp extends FileSystem_Driver
      * FileSystem classes by the fact that it saves the file localy without using the
      * local driver.
      *
-     * @param $local	The pathname to the desired local file.
-     * @param $remote	The pathname to the remote file to access.
+     * @param string $local  The pathname to the desired local file.
+     * @param string $remote The pathname to the remote file to access.
      *
-     * @return void
+     * @return boolean True on success false on failure.
      */
     public function get($local, $remote)
     {
@@ -151,9 +153,9 @@ class FileSystem_SFtp extends FileSystem_Driver
      *
      * This should usually be used instead of get in most cases.
      *
-     * @param $remote The path to the remote file.
+     * @param string $remote The path to the remote file.
      *
-     * @return mixed The resource on success false on fail.
+     * @return resource|bool The resource on success false on fail.
      */
     public function fget($remote)
     {
@@ -171,10 +173,10 @@ class FileSystem_SFtp extends FileSystem_Driver
     /**
      * Change the permissions of a file.
      *
-     * @param $perm The permission to assign to the file, unix style (example: 777 for full permission).
-     * @param $file The pathname to the remote file to chmod.
+     * @param integer $perm The permission to assign to the file, unix style (example: 777 for full permission).
+     * @param string  $file The pathname to the remote file to chmod.
      *
-     * @return mixed The new permission or false if failed.
+     * @return The new permission or false if failed.
      */
     public function chmod($perm, $file)
     {
@@ -216,9 +218,9 @@ class FileSystem_SFtp extends FileSystem_Driver
     /**
      * Get the entire contents of a directory.
      *
-     * @param string $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
+     * @param string $dir the directory to get the contents of, blank for current directory, start with / for absolute path.
      *
-     * @return mixed Array of the contents of $dir or false if fail.
+     * @return array|bool An array of the contents of $dir or false if fail.
      */
     public function ls($dir = "")
     {
@@ -253,7 +255,7 @@ class FileSystem_SFtp extends FileSystem_Driver
      *
      * @param string $dir The directory on the remote machine to enter, start with '/' for absolute path.
      *
-     * @return boolean
+     * @return boolean True on success false on failure.
      */
     public function cd($dir = '')
     {
@@ -273,10 +275,10 @@ class FileSystem_SFtp extends FileSystem_Driver
      *
      * This can also be used to rename files.
      *
-     * @param $sourcepath The path to the original source file.
-     * @param $destpath   The path to where you want to move the source file.
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to move the source file.
      *
-     * @return boolean
+     * @return boolean True on success false on failure.
      */
     public function mv($sourcepath, $destpath)
     {
@@ -301,10 +303,10 @@ class FileSystem_SFtp extends FileSystem_Driver
      *
      * Same as mv method but leaves the original file.
      *
-     * @param $sourcepath The path to the original source file.
-     * @param $destpath   The path to where you want to copy the source file.
+     * @param string $sourcepath The path to the original source file.
+     * @param string $destpath   The path to where you want to copy the source file.
      *
-     * @return boolean
+     * @return boolean True on success false on failure.
      */
     public function cp($sourcepath, $destpath)
     {

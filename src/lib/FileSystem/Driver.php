@@ -25,7 +25,7 @@
  */
 abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_Interface
 {
-    /*
+    /**
      * Configuration object.
      *
      * @var FileSystem_Configuration
