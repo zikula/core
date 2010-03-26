@@ -13,9 +13,7 @@
  */
 
 /**
- * Abstract class for configuration classes. every configuration class will extend this class.
- * @author kage
- *
+ * Abstract class for configuration classes.
  */
 abstract class FileSystem_Configuration
 {
