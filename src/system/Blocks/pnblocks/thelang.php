@@ -33,7 +33,7 @@ function Blocks_thelangblock_info()
     $requirement_message = '';
     $multilanguageEnable = pnConfigGetVar('multilingual');
     if (!$multilanguageEnable) {
-        $requirement_message .= __('Notice: This language block will not be display until you enable the multilanguage into the settings of Zikula.');
+        $requirement_message .= __('Notice: This language block will not be display until you enable the multilanguage, you can enable/disable this into into the settings of Zikula.');
     }
 
     return array('module'          => 'Blocks',

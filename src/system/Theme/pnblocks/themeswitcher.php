@@ -34,6 +34,12 @@ function theme_themeswitcherblock_init()
  */
 function theme_themeswitcherblock_info()
 {
+    $requirement_message = '';
+    $switchThemeEnable = pnConfigGetVar('theme_change');
+    if (!$switchThemeEnable) {
+        $requirement_message .= __("Notice: This theme switcher block will not be display until you allow users to change themes, you can enable/disable this into the settings of the 'Theme' module.");
+    }
+
     return array('module'           => 'Theme',
                  'text_type'        => __('Theme switcher'),
                  'text_type_long'   => __('Theme switcher'),
@@ -41,7 +47,8 @@ function theme_themeswitcherblock_info()
                  'form_content'     => false,
                  'form_refresh'     => false,
                  'show_preview'     => true,
-                 'admin_tableless'  => true);
+                 'admin_tableless'  => true,
+                 'requirement'      => $requirement_message);
 }
 
 function theme_themeswitcherblock_display($blockinfo)
