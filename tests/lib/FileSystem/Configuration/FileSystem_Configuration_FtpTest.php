@@ -14,6 +14,9 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      * @var FileSystem_Configuration_Ftp
      */
     private $FileSystem_Configuration_Ftp;
+    private $FileSystem_Configuration_Ftp2;
+    private $FileSystem_Configuration_Ftp3;
+
 
     /**
      * Prepares the environment before running a test.
@@ -25,8 +28,9 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
         // TODO Auto-generated FileSystem_Configuration_FtpTest::setUp()
 
 
-        $this->FileSystem_Configuration_Ftp = new FileSystem_Configuration_Ftp(/* parameters */);
-
+        $this->FileSystem_Configuration_Ftp = new FileSystem_Configuration_Ftp('host', 'user', 'pass', 'dir', 21, 10, false, true);
+	$this->FileSystem_Configuration_Ftp2 = new FileSystem_Configuration_Ftp('', 'user', 'pass', '', '', '', true, false);
+	$this->FileSystem_Configuration_Ftp3 = new FileSystem_Configuration_Ftp('', 'user', 'pass', '', '', '', '', '');
     }
 
     /**
@@ -67,10 +71,7 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetUser()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetUser()
-        $this->markTestIncomplete("getUser test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getUser(/* parameters */);
+        $this->assertEquals('user', $this->FileSystem_Configuration_Ftp->getUser());
 
     }
 
@@ -79,10 +80,7 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPass()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetPass()
-        $this->markTestIncomplete("getPass test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getPass(/* parameters */);
+        $this->assertEquals('pass', $this->FileSystem_Configuration_Ftp->getPass());
 
     }
 
@@ -91,10 +89,8 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetHost()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetHost()
-        $this->markTestIncomplete("getHost test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getHost(/* parameters */);
+        $this->assertEquals('host', $this->FileSystem_Configuration_Ftp->getHost());
+        $this->assertEquals('localhost', $this->FileSystem_Configuration_Ftp2->getHost());
 
     }
 
@@ -103,10 +99,9 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPort()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetPort()
-        $this->markTestIncomplete("getPort test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getPort(/* parameters */);
+        $this->assertEquals('21', $this->FileSystem_Configuration_Ftp->getPort());
+        $this->assertEquals('990', $this->FileSystem_Configuration_Ftp->getPort());
+        $this->assertEquals('21', $this->FileSystem_Configuration_Ftp->getPort());
 
     }
 
@@ -115,11 +110,8 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetDir()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetDir()
-        $this->markTestIncomplete("getDir test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getDir(/* parameters */);
-
+        $this->assertEquals('dir', $this->FileSystem_Configuration_Ftp->getDir());
+        $this->assertEquals('/', $this->FileSystem_Configuration_Ftp->getDir());
     }
 
     /**
@@ -127,11 +119,8 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetTimeout()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetTimeout()
-        $this->markTestIncomplete("getTimeout test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getTimeout(/* parameters */);
-
+        $this->assertEquals('10', $this->FileSystem_Configuration_Ftp->getTimeout());
+        $this->assertEquals('10', $this->FileSystem_Configuration_Ftp2->getTimeout());
     }
 
     /**
@@ -139,11 +128,9 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetSSL()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetSSL()
-        $this->markTestIncomplete("getSSL test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getSSL(/* parameters */);
-
+        $this->assertEquals(false, $this->FileSystem_Configuration_Ftp->getSSL());
+        $this->assertEquals(true, $this->FileSystem_Configuration_Ftp2->getSSL());
+        $this->assertEquals(false, $this->FileSystem_Configuration_Ftp2->getSSL());
     }
 
     /**
@@ -151,11 +138,9 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPasv()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->testGetPasv()
-        $this->markTestIncomplete("getPasv test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->getPasv(/* parameters */);
-
+        $this->assertEquals(true, $this->FileSystem_Configuration_Ftp2->getPasv());
+        $this->assertEquals(false, $this->FileSystem_Configuration_Ftp2->getPasv());
+        $this->assertEquals(true, $this->FileSystem_Configuration_Ftp2->getPasv());
     }
 
 }
