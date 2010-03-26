@@ -81,7 +81,7 @@ function _upg_header()
     echo '<div id="headertopright"><img src="install/pnimages/top2.jpg" alt="" /></div>' . "\n";
     echo '</div>' . "\n";
     echo '<div class="menu">' . "\n";
-    echo '<p id="notice">' . __('For more information about the upgrade process, please read the <a href="docs/upgrade.html">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>') . '</p>';
+    echo '<p id="notice">' . __('For more information about the upgrade process, please read the <a href="docs/upgrade.html">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.') . '</p>';
     echo '</div>';
     echo '<div id="content">';
     if (pnUserLoggedIn()) {
@@ -238,26 +238,26 @@ function _upg_convertdb($username, $password)
                 add_src_rep('dbcharset', $charset);
                 $feedback .= "<div>";
                 if (modify_file($reg_src, $reg_rep)) {
-                    $feedback .= '<p class="z-statusmsg">' . __f('Updated %s', 'config/config.php $ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
+                    $feedback .= '<p class="z-statusmsg">' . __f('Updated %s.', 'config/config.php $ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
                     if (file_exists('config/personal_config.php')) {
                         if (modify_file($reg_src, $reg_rep, 'config/personal_config.php')) {
-                            $feedback .= '<p class="z-statusmsg">' . __f('Updated %s', 'config/personal_config.php $ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
+                            $feedback .= '<p class="z-statusmsg">' . __f('Updated %s.', 'config/personal_config.php $ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
                         } else {
-                            $feedback .= '<p class="z-errormsg">' . __f('Failed to update %s', '$ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
+                            $feedback .= '<p class="z-errormsg">' . __f('Failed to update %s.', '$ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
                         }
                     }
                 } else {
-                    $feedback .= '<p class="z-errormsg">' . __f('Failed to update %s', '$ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
+                    $feedback .= '<p class="z-errormsg">' . __f('Failed to update %s.', '$ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
                 }
                 $feedback .= "</div>";
             } else {
                 $feedback .= mysql_error() . "<br />\n";
             }
 
-            $feedback .= '<p class="z-statusmsg">' . __('Conversion to UTF8 completed - now move to next step') . "</p>\n";
+            $feedback .= '<p class="z-statusmsg">' . __('Conversion to UTF8 completed - now move to next step.') . "</p>\n";
             $converted = true;
         } else {
-            $feedback .= '<p class="z-errormsg">' . __("Unable to connect to the database. Please check the details in config/config.php") . "</p>\n";
+            $feedback .= '<p class="z-errormsg">' . __("Unable to connect to the database. Please check the details in config/config.php.") . "</p>\n";
             $feedback .= mysql_error() . "<br />\n";
         }
     }
@@ -395,44 +395,44 @@ function _upg_sanity_check($username, $password)
     if (version_compare(_ZINSTALLEDVERSION, _ZINSTALLVER, '=')) {
         // Already installed the correct version
         $validupgrade = false;
-        echo '<h2>' . __('Already up to date') . '</h2>' . "\n";
-        echo '<p class="z-errormsg">' . __f("It seems that you have already installed version %s. Please remove this upgrade script, you do not need it anymore", _ZINSTALLEDVERSION) . '</p>' . "\n";
+        echo '<h2>' . __('Already up to date') . "</h2>\n";
+        echo '<p class="z-errormsg">' . __f("It seems that you have already installed version %s. Please remove this upgrade script, you do not need it anymore.", _ZINSTALLEDVERSION) . "</p>\n";
     } elseif (is_dir('system/Profile')) {
         $validupgrade = false;
-        echo '<h2>' . __f('Duplicate %1$s module found in %2$s.', array('Profile', 'system/Profile')) . '</h2>' . "\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in <strong>system/</strong> should be removed.  Please delete %1$s from the system/ directory and re-run this script.', array('Profile', 'system')) . '</p>' . "\n";
+        echo '<h2>' . __f('Duplicate %1$s module found in %2$s.', array('Profile', 'system/Profile')) . "</h2>\n";
+        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('Profile', '<strong>system/</strong>')) . "</p>\n";
         echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
     } elseif (is_dir('system/legal')) {
         $validupgrade = false;
-        echo '<h2>' . __f('Duplicate %1$s module found in %2$s.', array('legal', 'system/legal')) . '</h2>' . "\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in <strong>system/</strong> should be removed.  Please delete %1$s from the system/ directory and re-run this script.', array('legal', 'system')) . '</p>' . "\n";
+        echo '<h2>' . __f('Duplicate %1$s module found in %2$s.', array('legal', 'system/legal')) . "</h2>\n";
+        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('legal', '<strong>system/</strong>')) . "</p>\n";
         echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
     } elseif (!is_dir('modules/Profile')) {
         $validupgrade = false;
-        echo '<h2>' . __f('Missing %s module.', 'Profile') . '</h2>' . "\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the %1$s module must be present in the <strong>%2$s/</strong> directory.  Please copy the %1$s module to the %2$s/ directory and re-run this script.', array('Profile', 'modules')) . '</p>' . "\n";
+        echo '<h2>' . __f('Missing %s module.', 'Profile') . "</h2>\n";
+        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('Profile', '<strong>modules/</strong>')) . "</p>\n";
         echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
     } elseif (!is_dir('modules/legal')) {
         $validupgrade = false;
-        echo '<h2>' . __f('Missing %s module.', 'legal') . '</h2>' . "\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the %1$s module must be present in the <strong>%2$s/</strong> directory.  Please copy the %1$s module to the %2$s/ directory and re-run this script.', array('legal', 'modules')) . '</p>' . "\n";
+        echo '<h2>' . __f('Missing %s module.', 'legal') . "</h2>\n";
+        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('legal', '<strong>modules/</strong>')) . "</p>\n";
         echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
     } elseif (version_compare(_ZINSTALLEDVERSION, _Z_MINUPGVER, '<')) {
         // Not on version _Z_MINUPGVER yet
         $validupgrade = false;
-        echo '<h2>' . __('Possible incompatible version found.') . '</h2>' . "\n";
-        echo '<p class="z-warningmsg">' . __f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER)) . '</p>';
+        echo '<h2>' . __('Possible incompatible version found.') . "</h2>\n";
+        echo '<p class="z-warningmsg">' . __f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER)) . "</p>\n";
     } elseif (!is_writeable('config/config.php')) {
-        echo '<p class="z-errormsg">' . '<strong>' . __('config/config.php must be writable before this script will run. Please correct this and try again') . "</strong></p>\n";
+        echo '<p class="z-errormsg"><strong>' . __('config/config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
         echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
         $validupgrade = false;
     } elseif (file_exists('config/personal_config.php') && !is_writeable('config/config.php')) {
-        echo '<p class="z-errormsg">' . '<strong>' . __('config/personal_config.php must be writable before this script will run. Please correct this and try again') . "</strong></p>\n";
+        echo '<p class="z-errormsg"><strong>' . __('config/personal_config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
         echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
         $validupgrade = false;
     } elseif (version_compare(PHP_VERSION, '5.3.0', '>=')) {
         if (ini_get('date.timezone') == '') {
-            echo '<p class="z-errormsg">' . '<strong>' . __('date.timezone is currently not set.  Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.') . "</strong></p>\n";
+            echo '<p class="z-errormsg"><strong>' . __('date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.') . "</strong></p>\n";
             echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
             $validupgrade = false;
         }
