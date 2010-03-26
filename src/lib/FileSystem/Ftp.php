@@ -41,7 +41,7 @@ class FileSystem_Ftp extends FileSystem_Driver
             if (ftp_login($this->resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
                 if (ftp_pasv($this->resource, $this->configuration->getPasv())) {
-                    if (ftp_chdir(&$this->resource, $this->configuration->getDir())) {
+                    if (ftp_chdir($this->resource, $this->configuration->getDir())) {
                         $this->dir = ftp_pwd(&$this->resource);
                         $this->stop_handler();
                         return true;
@@ -66,7 +66,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->start_handler();
-        if (ftp_put(&$this->resource, $remote, $local, FTP_BINARY)) {
+        if (ftp_put($this->resource, $remote, $local, FTP_BINARY)) {
             $this->stop_handler();
             return true;
         }
@@ -86,7 +86,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->start_handler();
-        if (ftp_fput(&$this->resource, $remote, $stream, FTP_BINARY)) {
+        if (ftp_fput($this->resource, $remote, $stream, FTP_BINARY)) {
             $this->stop_handler();
             return true;
         }
@@ -126,7 +126,7 @@ class FileSystem_Ftp extends FileSystem_Driver
         $this->isAlive(true);
         $this->start_handler();
         $handle = fopen('php://temp', 'r+');
-        if (ftp_fget(&$this->resource, $handle, $remote, FTP_BINARY)) {
+        if (ftp_fget($this->resource, $handle, $remote, FTP_BINARY)) {
             rewind($handle);
             $this->stop_handler();
             return $handle;
@@ -166,7 +166,7 @@ class FileSystem_Ftp extends FileSystem_Driver
         $this->isAlive(true);
         $this->start_handler();
         $dir = ($dir == "" ? ftp_pwd(&$this->resource) : $dir);
-        if (($ls = ftp_nlist(&$this->resource, $dir)) !== false) {
+        if (($ls = ftp_nlist($this->resource, $dir)) !== false) {
             $this->stop_handler();
             return $ls;
         }
@@ -183,7 +183,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->start_handler();
-        if (ftp_chdir(&$this->resource, $dir)) {
+        if (ftp_chdir($this->resource, $dir)) {
             $this->stop_handler();
             return true;
         }
@@ -201,7 +201,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->start_handler();
-        if (ftp_rename(&$this->resource, $sourcepath, $destpath)) {
+        if (ftp_rename($this->resource, $sourcepath, $destpath)) {
             $this->stop_handler();
             return true;
         }
