@@ -100,8 +100,8 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
     public function testGetPort()
     {
         $this->assertEquals('21', $this->FileSystem_Configuration_Ftp->getPort());
-        $this->assertEquals('990', $this->FileSystem_Configuration_Ftp->getPort());
-        $this->assertEquals('21', $this->FileSystem_Configuration_Ftp->getPort());
+        $this->assertEquals('990', $this->FileSystem_Configuration_Ftp2->getPort());
+        $this->assertEquals('21', $this->FileSystem_Configuration_Ftp3->getPort());
 
     }
 
@@ -111,7 +111,7 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
     public function testGetDir()
     {
         $this->assertEquals('dir', $this->FileSystem_Configuration_Ftp->getDir());
-        $this->assertEquals('/', $this->FileSystem_Configuration_Ftp->getDir());
+        $this->assertEquals('/', $this->FileSystem_Configuration_Ftp2->getDir());
     }
 
     /**

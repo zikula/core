@@ -13,6 +13,7 @@ class FileSystem_Configuration_LocalTest extends PHPUnit_Framework_TestCase
      * @var FileSystem_Configuration_Local
      */
     private $FileSystem_Configuration_Local;
+    private $FileSystem_Configuration_Local2;
 
     /**
      * Prepares the environment before running a test.
@@ -24,7 +25,8 @@ class FileSystem_Configuration_LocalTest extends PHPUnit_Framework_TestCase
         // TODO Auto-generated FileSystem_Configuration_LocalTest::setUp()
 
 
-        $this->FileSystem_Configuration_Local = new FileSystem_Configuration_Local(/* parameters */);
+        $this->FileSystem_Configuration_Local = new FileSystem_Configuration_Local('dir');
+        $this->FileSystem_Configuration_Local2 = new FileSystem_Configuration_Local();
 
     }
 
@@ -66,11 +68,8 @@ class FileSystem_Configuration_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testGetDir()
     {
-        // TODO Auto-generated FileSystem_Configuration_LocalTest->testGetDir()
-        $this->markTestIncomplete("getDir test not implemented");
-
-        $this->FileSystem_Configuration_Local->getDir(/* parameters */);
-
+        $this->assertEquals('dir',$this->FileSystem_Configuration_Local->getDir());
+        $this->assertEquals('',$this->FileSystem_Configuration_Local2->getDir());
     }
 
 }

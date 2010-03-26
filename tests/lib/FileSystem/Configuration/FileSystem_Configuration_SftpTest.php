@@ -13,6 +13,9 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
      * @var FileSystem_Configuration_Sftp
      */
     private $FileSystem_Configuration_Sftp;
+    private $FileSystem_Configuration_Sftp2;
+    private $FileSystem_Configuration_Sftp3;
+    private $FileSystem_Configuration_Sftp4;
 
     /**
      * Prepares the environment before running a test.
@@ -24,7 +27,10 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
         // TODO Auto-generated FileSystem_Configuration_SftpTest::setUp()
 
 
-        $this->FileSystem_Configuration_Sftp = new FileSystem_Configuration_Sftp(/* parameters */);
+        $this->FileSystem_Configuration_Sftp = new FileSystem_Configuration_Sftp('host', 'user', 'pass', '/', 22);
+        $this->FileSystem_Configuration_Sftp2 = new FileSystem_Configuration_Sftp();
+        $this->FileSystem_Configuration_Sftp3 = new FileSystem_Configuration_Sftp('host', 'user', 'pass', 'dir', 'port');
+        $this->FileSystem_Configuration_Sftp4 = new FileSystem_Configuration_Sftp('host', 'user', 'pass', '/test', 'port');
 
     }
 
@@ -66,10 +72,8 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetUser()
     {
-        // TODO Auto-generated FileSystem_Configuration_SftpTest->testGetUser()
-        $this->markTestIncomplete("getUser test not implemented");
-
-        $this->FileSystem_Configuration_Sftp->getUser(/* parameters */);
+        $this->assertEquals('user', $this->FileSystem_Configuration_Sftp->getUser());
+        $this->assertEquals('Anonymous', $this->FileSystem_Configuration_Sftp2->getUser());
 
     }
 
@@ -78,10 +82,8 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPass()
     {
-        // TODO Auto-generated FileSystem_Configuration_SftpTest->testGetPass()
-        $this->markTestIncomplete("getPass test not implemented");
-
-        $this->FileSystem_Configuration_Sftp->getPass(/* parameters */);
+        $this->assertEquals('pass', $this->FileSystem_Configuration_Sftp->getPass());
+        $this->assertEquals('', $this->FileSystem_Configuration_Sftp2->getPass());
 
     }
 
@@ -90,10 +92,8 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetHost()
     {
-        // TODO Auto-generated FileSystem_Configuration_SftpTest->testGetHost()
-        $this->markTestIncomplete("getHost test not implemented");
-
-        $this->FileSystem_Configuration_Sftp->getHost(/* parameters */);
+                $this->assertEquals('host',$this->FileSystem_Configuration_Sftp->getHost());
+                $this->assertEquals('localhost',$this->FileSystem_Configuration_Sftp2->getHost());
 
     }
 
@@ -102,10 +102,9 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPort()
     {
-        // TODO Auto-generated FileSystem_Configuration_SftpTest->testGetPort()
-        $this->markTestIncomplete("getPort test not implemented");
-
-        $this->FileSystem_Configuration_Sftp->getPort(/* parameters */);
+        $this->assertEquals('22', $this->FileSystem_Configuration_Sftp->getPort());
+        $this->assertEquals('22', $this->FileSystem_Configuration_Sftp2->getPort());
+        $this->assertEquals('22', $this->FileSystem_Configuration_Sftp3->getPort());
 
     }
 
@@ -114,10 +113,10 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetDir()
     {
-        // TODO Auto-generated FileSystem_Configuration_SftpTest->testGetDir()
-        $this->markTestIncomplete("getDir test not implemented");
-
-        $this->FileSystem_Configuration_Sftp->getDir(/* parameters */);
+        $this->assertEquals('/',$this->FileSystem_Configuration_Sftp->getDir());
+        $this->assertEquals('./',$this->FileSystem_Configuration_Sftp2->getDir());
+        $this->assertEquals('./dir',$this->FileSystem_Configuration_Sftp3->getDir());
+        $this->assertEquals('/test',$this->FileSystem_Configuration_Sftp4->getDir());
 
     }
 
