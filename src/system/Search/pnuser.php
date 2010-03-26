@@ -49,6 +49,10 @@ function search_user_form($vars = array())
     $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
     $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
     $vars['numlimit'] = pnModGetVar('Search', 'itemsperpage', 25);
+    $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
+    $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
+
+
     // this var allows the headers to not be displayed
     if (!isset($vars['titles']))
       $vars['titles'] = true;
