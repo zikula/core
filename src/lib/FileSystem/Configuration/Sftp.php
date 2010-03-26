@@ -53,18 +53,18 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
     /**
      * SFTP port number.
      *
-     * @var int
+     * @var integer
      */
     protected $port;
 
     /**
      * Constructs a configuration for the SFTP driver.
      *
-     * @param string $host The host to connect to.
-     * @param string $user The username when connecting (default = 'Anonymous')
-     * @param string $pass The password associated with $user (default = '')
-     * @param string $dir  The directory on which to enter immediatly after connecting (default = './') (optional)
-     * @param int $port    The port to use when connecting to $host (default = 22) (optional)
+     * @param string  $host The host to connect to.
+     * @param string  $user The username when connecting (default = 'Anonymous').
+     * @param string  $pass The password associated with $user (default = '').
+     * @param string  $dir  The directory on which to enter immediatly after connecting (default = './') (optional).
+     * @param integer $port The port to use when connecting to $host (default = 22) (optional).
      *
      * @return void
      */
@@ -73,7 +73,7 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
         $this->host = ($host == '' ? 'localhost' : $host);
         $this->user = $user;
         $this->pass = $pass;
-        $this->dir = ($dir == '' ? './' : (substr($dir, 0, 1) == '/' ? $dir : "./$dir"));
+        $this->dir = ($dir == '' ? './' : (substr($dir, 0, 1) == '/' || substr($dir, 0, 2) == './' ? $dir : "./$dir"));
         $this->port = ($port == "" || !is_numeric($port) ? 22 : $port);
     }
 

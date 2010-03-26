@@ -22,9 +22,9 @@ class FileSystem_Error
     /**
      * Error level.
      *
-     * @var int
+     * @var integer
      */
-    private $error_level;
+    //private $error_level;
 
     /**
      * Error container.
@@ -35,8 +35,10 @@ class FileSystem_Error
 
     /**
      * Get the last error to occur and return it.
-     * @param $clear	if true the last error will be removed (optional) (default = false)
-     * @return 			an array of the last error or false on no errors
+     *
+     * @param boolean $clear if true the last error will be removed (optional) (default = false).
+     *
+     * @return 			  an array of the last error or false on no errors
      */
     public function error_get_last($clear = false)
     {
@@ -55,6 +57,7 @@ class FileSystem_Error
 
     /**
      * Count all errors which have occured, this is reset if the errors are cleared.
+     *
      * @return 		Integer of the number of errors which exist.
      */
     public function error_count()
@@ -67,9 +70,10 @@ class FileSystem_Error
      *
      * If the errors have been cleared then this will only get errors which
      * have occured since them.
-     * @param $clear If true the last error will be removed (optional) (default = false).
      *
-     * @return array Array of arrays which contain the errors.
+     * @param boolean $clear If true the last error will be removed (optional) (default = false).
+     *
+     * @return Array of arrays which contain the errors.
      */
     public function error_get_all($clear = false)
     {
@@ -126,8 +130,8 @@ class FileSystem_Error
      * TODO determine a list of error codes for every possible failure.
      * TODO registered errors should have the method, file, message, code in the error so you know exactly what failed.
      *
-     * @param $e    The error message to store.
-     * @param $code The error code.
+     * @param string  $e    The error message to store.
+     * @param integer $code The error code.
      *
      * @return void
      */
@@ -140,12 +144,12 @@ class FileSystem_Error
     }
 
     /**
-     * Error handler
+     * Error handler.
      *
-     * @param int    $errno   The error number.
-     * @param string $errstr  The error message.
-     * @param string $errfile The file where the error occurred.
-     * @param int    $errline The line number where the error occurred.
+     * @param integer $errno   The error number.
+     * @param string  $errstr  The error message.
+     * @param string  $errfile The file where the error occurred.
+     * @param integer     $errline The line number where the error occurred.
      *
      * @return void
      */

@@ -53,28 +53,28 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
     /**
      * FTP Port.
      *
-     * @var int
+     * @var integer
      */
     protected $port;
 
     /**
      * FTP Timeout in seconds.
      *
-     * @var int
+     * @var integer
      */
     protected $timeout;
 
     /**
      * SSL flag.
      *
-     * @var bool
+     * @var boolean
      */
     protected $ssl;
 
     /**
      * PASV flag.
      *
-     * @var bool
+     * @var boolean
      */
     protected $pasv;
 
@@ -87,8 +87,8 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
      * @param String $dir  The directory on which to enter immediatly after connecting (default = "/") (optional)
      * @param Int $port    The port to use when connecting to $host (default = 21 if ftp or 990 if $sftp = true) (optional)
      * @param Int $timeout The timeout in seconds for the connection (default = 10) (optional)
-     * @param Bool $ssl	   True to use FTPS false for normal FTP (default = false) (optional)
-     * @param Bool $pasv   True to enable passive mode, false for active mode (default = true) (optional)
+     * @param boolean $ssl	   True to use FTPS false for normal FTP (default = false) (optional)
+     * @param boolean $pasv   True to enable passive mode, false for active mode (default = true) (optional)
      *
      * @return void
      */
@@ -137,7 +137,7 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
     /**
      * Get FTP port property.
      *
-     * @return int Port number.
+     * @return integer Port number.
      */
     public function getPort()
     {
@@ -157,7 +157,7 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
     /**
      * Get timeout property.
      *
-     * @return int Timeout value in seconds.
+     * @return integer Timeout value in seconds.
      */
     public function getTimeout()
     {
@@ -167,7 +167,7 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
     /**
      * Get SSL property.
      *
-     * @return bool True if SSL set.
+     * @return boolean True if SSL set.
      */
     public function getSSL()
     {
@@ -177,7 +177,7 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
     /**
      * Get PASV setting.
      *
-     * @return bool True if PASV mode set.
+     * @return boolean True if PASV mode set.
      */
     public function getPasv()
     {

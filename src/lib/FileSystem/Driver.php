@@ -13,7 +13,7 @@
  */
 
 /**
- * Driver Abstract
+ * Driver Abstract.
  *
  * This abstract class contains the basic construct for every driver, which
  * simply gets the FileSystem_Configuration and saves it. all drivers which
@@ -25,6 +25,11 @@
  */
 abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_Interface
 {
+    /*
+     * Configuration object.
+     *
+     * @var FileSystem_Configuration
+     */
     protected $configuration;
 
     /**
