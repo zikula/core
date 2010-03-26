@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv2 (or at your option, any later version).
  * @package Zikula
+ * @author  Kyle Giovannetti
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -87,7 +88,7 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
      * @param String  $dir     The directory on which to enter immediatly after connecting (default = "/") (optional).
      * @param integer $port    The port to use when connecting to $host (default = 21 if ftp or 990 if $sftp = true) (optional).
      * @param integer $timeout The timeout in seconds for the connection (default = 10) (optional).
-     * @param boolean $ssl	   True to use FTPS false for normal FTP (default = false) (optional).
+     * @param boolean $ssl     True to use FTPS false for normal FTP (default = false) (optional).
      * @param boolean $pasv    True to enable passive mode, false for active mode (default = true) (optional).
      */
     public function __construct($host = 'localhost', $user = "Anonymous", $pass = '', $dir = '', $port = 21, $timeout = 10, $ssl = false, $pasv = true)

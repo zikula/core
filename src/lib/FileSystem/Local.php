@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv2 (or at your option, any later version).
  * @package Zikula
+ * @author  Kyle Giovannetti
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,7 +21,6 @@
  * This class must implement FileSystem_Interface, the requirement to implement this interface
  * is inherited from FileSystem_Driver.
  *
- * @author kage
  */
 class FileSystem_Local extends FileSystem_Driver
 {
@@ -30,7 +30,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @var resource
      */
-    private $resource;
+    private $_resource;
 
     /**
      * Create local connection.
@@ -45,7 +45,7 @@ class FileSystem_Local extends FileSystem_Driver
      */
     public function connect()
     {
-        $this->resource = stream_context_create();
+        $this->_resource = stream_context_create();
         return true;
     }
 
@@ -77,13 +77,13 @@ class FileSystem_Local extends FileSystem_Driver
      */
     public function fput($stream, $remote)
     {
-        $this->start_handler();
-        if (($bytes = file_put_contents($remote, $stream, 0, $this->resource)) !== false) {
+        $this->startHandler();
+        if (($bytes = file_put_contents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
-            $this->stop_handler();
+            $this->stopHandler();
             return $bytes;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
@@ -93,8 +93,8 @@ class FileSystem_Local extends FileSystem_Driver
      * This command is an alias for the cp() or put() function,
      * but in reverse: $remote is the source and $local is the target.
      *
-     * @param $local  The pathname to the local target file.
-     * @param $remote The pathname to the local source file.
+     * @param string $local  The pathname to the local target file.
+     * @param string $remote The pathname to the local source file.
      *
      * @return boolean True on success false on failure.
      */
@@ -104,8 +104,6 @@ class FileSystem_Local extends FileSystem_Driver
     }
 
     /**
-     *
-     *
      * Similar to get() but does not save the file.
      *
      * Instead it returns a
@@ -121,19 +119,19 @@ class FileSystem_Local extends FileSystem_Driver
      * //$contents now has the contents of $resource in a text format.
      * </samp>
      *
-     * @param $remote The pathname to the local source file.
+     * @param string $remote The pathname to the local source file.
      *
      * @return mixed File resource handle or false on failure.
      */
     public function fget($remote)
     {
-        $this->start_handler();
+        $this->startHandler();
         if (($handle = fopen($remote, 'r+')) !== false) {
             rewind($handle);
-            $this->stop_handler();
+            $this->stopHandler();
             return $handle;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
@@ -141,38 +139,38 @@ class FileSystem_Local extends FileSystem_Driver
      * Change the permissions of a file.
      *
      * @param integer $perm The permission to assign to the file, unix style (example: 777 for full permission).
-     * @param strin   $file The pathname to the remote file to chmod.
+     * @param string  $file The pathname to the remote file to chmod.
      *
      * @return mixed The new permission or false if failed.
      */
     public function chmod($perm, $file)
     {
-        $this->start_handler();
+        $this->startHandler();
         $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = chmod($file, $perm)) !== false) {
             $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
-            $this->stop_handler();
+            $this->stopHandler();
             return $perm;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
     /**
      * Get the entire contents of a directory.
      *
-     * @param $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
+     * @param string $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
      *
      * @return mixed An array of the contents of $dir or false if fail.
      */
     public function ls($dir = "")
     {
         $dir = ($dir == "" ? getcwd() : $dir);
-        $this->start_handler();
-        if (($files = scandir($dir, 0, $this->resource)) !== false) {
+        $this->startHandler();
+        if (($files = scandir($dir, 0, $this->_resource)) !== false) {
             return $files;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
@@ -185,12 +183,12 @@ class FileSystem_Local extends FileSystem_Driver
      */
     public function cd($dir = '')
     {
-        $this->start_handler();
+        $this->startHandler();
         if (chdir($dir)) {
-            $this->stop_handler();
+            $this->stopHandler();
             return true;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
@@ -206,12 +204,12 @@ class FileSystem_Local extends FileSystem_Driver
      */
     public function mv($sourcepath, $destpath)
     {
-        $this->start_handler();
-        if (rename($sourcepath, $destpath, $this->resource)) {
-            $this->stop_handler();
+        $this->startHandler();
+        if (rename($sourcepath, $destpath, $this->_resource)) {
+            $this->stopHandler();
             return true;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
@@ -227,12 +225,12 @@ class FileSystem_Local extends FileSystem_Driver
      */
     public function cp($sourcepath, $destpath)
     {
-        $this->start_handler();
-        if (copy($sourcepath, $destpath, $this->resource)) {
-            $this->stop_handler();
+        $this->startHandler();
+        if (copy($sourcepath, $destpath, $this->_resource)) {
+            $this->stopHandler();
             return true;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
@@ -245,12 +243,12 @@ class FileSystem_Local extends FileSystem_Driver
      */
     public function rm($sourcepath)
     {
-        $this->start_handler();
-        if (unlink($sourcepath, $this->resource)) {
-            $this->stop_handler();
+        $this->startHandler();
+        if (unlink($sourcepath, $this->_resource)) {
+            $this->stopHandler();
             return true;
         }
-        $this->stop_handler();
+        $this->stopHandler();
         return false;
     }
 
@@ -261,9 +259,9 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return array Error codes.
      */
-    public function error_codes()
+    public function errorCodes()
     {
-        $this->stop_handler();
+        $this->stopHandler();
         $errors = array();
         return $errors;
     }

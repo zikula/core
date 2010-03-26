@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv2 (or at your option, any later version).
  * @package Zikula
+ * @author  Kyle Giovannetti
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -40,7 +41,7 @@ class FileSystem_Error
      *
      * @return An array of the last error or false on no errors
      */
-    public function error_get_last($clear = false)
+    public function errorGetLast($clear = false)
     {
         if (count($this->errors) < 1) {
             return false;
@@ -60,7 +61,7 @@ class FileSystem_Error
      *
      * @return 		Integer of the number of errors which exist.
      */
-    public function error_count()
+    public function errorCount()
     {
         return count($this->errors);
     }
@@ -75,11 +76,11 @@ class FileSystem_Error
      *
      * @return Array of arrays which contain the errors.
      */
-    public function error_get_all($clear = false)
+    public function errorGetAll($clear = false)
     {
         if ($clear) {
             $errors = $this->errors;
-            $this->error_clear_all();
+            $this->errorClearAll();
             return $errors;
         }
         return $this->errors;
@@ -90,7 +91,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function error_clear_all()
+    public function errorClearAll()
     {
         unset($this->errors);
         $this->errors = array();
@@ -101,14 +102,14 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function start_handler()
+    public function startHandler()
     {
         // $this->error_level = error_reporting();
         // error_reporting(EALL | EWARNING);
         // return;
         set_error_handler(array(
             $this,
-            'error_handler'));
+            'errorHandler'));
     }
 
     /**
@@ -116,7 +117,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function stop_handler()
+    public function stopHandler()
     {
         //   error_reporting($this->error_level);
         restore_error_handler();
@@ -135,7 +136,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    protected function error_register($e, $code)
+    protected function errorRegister($e, $code)
     {
         $this->errors = array_merge(array(
             array(
@@ -153,16 +154,14 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function error_handler($errno, $errstr, $errfile, $errline)
+    public function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        /*
-        $errors = $this->error_codes();
-        foreach ($errors as $key => $error) {
-            if (stripos($errstr, $error['search']) !== FALSE) {
-                $this->error_register($errstr, $error['code']);
-                return true;
-            }
-         */
-        $this->error_register($errstr, '0');
+        //$errors = $this->error_codes();
+        //foreach ($errors as $key => $error) {
+        //    if (stripos($errstr, $error['search']) !== FALSE) {
+        //    $this->error_register($errstr, $error['code']);
+        //    return true;
+        //}
+        $this->errorRegister($errstr, '0');
     }
 }
