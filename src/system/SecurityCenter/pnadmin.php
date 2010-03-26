@@ -23,7 +23,7 @@
 function securitycenter_admin_main()
 {
     // Security check will be done in view()
-    return securitycenter_admin_view();
+    return securitycenter_admin_view(null);
 }
 
 /**
@@ -431,6 +431,235 @@ function securitycenter_admin_updateconfig()
         pnUserLogOut();
         return pnRedirect(pnModURL('Users', 'user', 'loginscreen'));
     }
+
+    // This function generated no output, and so now it is complete we redirect
+    // the user to an appropriate page for them to carry on their work
+    return pnRedirect(pnModURL('SecurityCenter','admin', 'main'));
+}
+
+/**
+ */
+function securitycenter_admin_purifierconfig()
+{
+    // Security check
+    if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    $reset = (bool)(FormUtil::getPassedValue('reset', null, 'GET') == 'default');
+
+    // Create output object
+    $renderer = Renderer::getInstance('SecurityCenter', false);
+
+    $renderer->assign('itemsperpage', pnModGetVar('SecurityCenter', 'itemsperpage'));
+
+    $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier');
+
+    if (!$reset) {
+        $config = $purifier->config;
+    } else {
+        $config = HTMLPurifier_Config::createDefault();
+    }
+
+    if (is_array($config) && isset($config[0])) {
+        $config = $config[1];
+    }
+
+    $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm(true, $config->def);
+    $purifierAllowed = array();
+    foreach ($allowed as $allowedDirective) {
+        list($namespace, $directive) = $allowedDirective;
+
+        if ($namespace == 'Filter') {
+            if (
+                // Do not allow Filter.Custom for now. Causing errors.
+                // TODO research why Filter.Custom is causing exceptions and correct.
+                ($directive == 'Custom')
+                // Do not allow Filter.ExtractStyleBlock* for now. Causing errors.
+                // TODO Filter.ExtractStyleBlock* requires CSSTidy
+                || (stripos($directive, 'ExtractStyleBlock') !== false)
+                )
+            {
+                continue;
+            }
+        }
+
+        $directiveRec = array();
+        $directiveRec['key'] = $namespace . '.' . $directive;
+        $def = $config->def->info[$directiveRec['key']];
+        $directiveRec['value'] = $config->get($directiveRec['key']);
+        if (is_int($def)) {
+            $directiveRec['allowNull'] = ($def < 0);
+            $directiveRec['type'] = abs($def);
+        } else {
+            $directiveRec['allowNull'] = (isset($def->allow_null) && $def->allow_null);
+            $directiveRec['type'] = (isset($def->type) ? $def->type : 0);
+            if (isset($def->allowed)) {
+                $directiveRec['allowedValues'] = array();
+                foreach ($def->allowed as $val => $b) {
+                    $directiveRec['allowedValues'][] = $val;
+                }
+            }
+        }
+        if (is_array($directiveRec['value'])) {
+            switch ($directiveRec['type']) {
+                case HTMLPurifier_VarParser::LOOKUP:
+                    $value = array();
+                    foreach ($directiveRec['value'] as $val => $b) {
+                        $value[] = $val;
+                    }
+                    $directiveRec['value'] = implode(PHP_EOL, $value);
+                    break;
+                case HTMLPurifier_VarParser::ALIST:
+                    $directiveRec['value'] = implode(PHP_EOL, $value);
+                    break;
+                case HTMLPurifier_VarParser::HASH:
+                    $value = '';
+                    foreach ($directiveRec['value'] as $i => $v) {
+                        $value .= "{$i}:{$v}" . PHP_EOL;
+                    }
+                    $directiveRec['value'] = $value;
+                    break;
+                default:
+                    $directiveRec['value'] = '';
+            }
+        }
+        // Editing for only these types is supported
+        $directiveRec['supported'] = (($directiveRec['type'] == HTMLPurifier_VarParser::STRING)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::ISTRING)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::TEXT)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::ITEXT)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::INT)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::FLOAT)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::BOOL)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::LOOKUP)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::ALIST)
+            || ($directiveRec['type'] == HTMLPurifier_VarParser::HASH));
+
+        $purifierAllowed[$namespace][$directive] = $directiveRec;
+    }
+
+$renderer->assign('purifier', $purifier);
+    $renderer->assign('purifierTypes', HTMLPurifier_VarParser::$types);
+    $renderer->assign('purifierAllowed', $purifierAllowed);
+
+    // Return the output that has been generated by this function
+    return $renderer->fetch('securitycenter_admin_purifierconfig.htm');
+}
+
+/**
+ */
+function securitycenter_admin_updatepurifierconfig()
+{
+    // Security check
+    if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    // Confirm authorisation code.
+    if (!SecurityUtil::confirmAuthKey()) {
+        return LogUtil::registerAuthidError(pnModURL('SecurityCenter','admin','view'));
+    }
+
+    // Load HTMLPurifier Classes
+    $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier');
+
+    // Update module variables.
+    $config = FormUtil::getPassedValue('purifierConfig', null, 'POST');
+    $config = HTMLPurifier_Config::prepareArrayFromForm($config, false, true, true, $purifier->config->def);
+//echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n";
+
+    $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm(true, $purifier->config->def);
+    foreach ($allowed as $allowedDirective) {
+        list($namespace, $directive) = $allowedDirective;
+
+        $directiveKey = $namespace . '.' . $directive;
+        $def = $purifier->config->def->info[$directiveKey];
+
+        if (isset($config[$namespace])
+            && array_key_exists($directive, $config[$namespace])
+            && is_null($config[$namespace][$directive]))
+        {
+            unset($config[$namespace][$directive]);
+
+            if (count($config[$namespace]) <= 0) {
+                unset($config[$namespace]);
+            }
+        }
+
+        if (isset($config[$namespace]) && isset($config[$namespace][$directive])) {
+            if (is_int($def)) {
+                $directiveType = abs($def);
+            } else {
+                $directiveType = (isset($def->type) ? $def->type : 0);
+            }
+
+            switch ($directiveType) {
+                case HTMLPurifier_VarParser::LOOKUP:
+                    $value = explode(PHP_EOL, $config[$namespace][$directive]);
+                    $config[$namespace][$directive] = array();
+                    foreach ($value as $val) {
+                        $val = trim($val);
+                        if (!empty($val)) {
+                            $config[$namespace][$directive][$val] = true;
+                        }
+                    }
+                    if (empty($config[$namespace][$directive])) {
+                        unset($config[$namespace][$directive]); 
+                    }
+                    break;
+                case HTMLPurifier_VarParser::ALIST:
+                    $value = explode(PHP_EOL, $config[$namespace][$directive]);
+                    $config[$namespace][$directive] = array();
+                    foreach ($value as $val) {
+                        $val = trim($val);
+                        if (!empty($val)) {
+                            $config[$namespace][$directive][] = $val;
+                        }
+                    }
+                    if (empty($config[$namespace][$directive])) {
+                        unset($config[$namespace][$directive]);
+                    }
+                    break;
+                case HTMLPurifier_VarParser::HASH:
+                    $value = explode(PHP_EOL, $config[$namespace][$directive]);
+                    $config[$namespace][$directive] = array();
+                    foreach ($value as $val) {
+                        list($i, $v) = explode(':', $val);
+                        $i = trim($i);
+                        $v = trim($v);
+                        if (!empty($i) && !empty($v)) {
+                            $config[$namespace][$directive][$i] = $v;
+                        }
+                    }
+                    if (empty($config[$namespace][$directive])) {
+                        unset($config[$namespace][$directive]);
+                    }
+                    break;
+            }
+        }
+
+        if (isset($config[$namespace])
+            && array_key_exists($directive, $config[$namespace])
+            && is_null($config[$namespace][$directive]))
+        {
+            unset($config[$namespace][$directive]);
+
+            if (count($config[$namespace]) <= 0) {
+                unset($config[$namespace]);
+            }
+        }
+    }
+//echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
+    pnModSetVar('SecurityCenter', 'purifierConfig', serialize($config));
+
+    $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
+
+    // clear all cache and compile directories
+    pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');
+
+    // the module configuration has been updated successfuly
+    LogUtil::registerStatus(__('Done! Saved HTMLPurifier configuration.'));
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work

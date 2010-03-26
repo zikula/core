@@ -54,16 +54,17 @@ function securitycenter_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
-        $args = array();
-        $args['ot'] = 'log_event';
-
         $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'view'), 'text' => __('Hacking attempts list'), 'class' => 'z-icon-es-list');
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', $args), 'text' => __('Logged events list'), 'class' => 'z-icon-es-list');
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', array('ot' => 'log_event')), 'text' => __('Logged events list'), 'class' => 'z-icon-es-list');
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', array('ot' => 'intrusion')), 'text' => __('View IDS Log'), 'class' => 'z-icon-es-locked');
 
-        $args['ot'] = 'intrusion';
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'viewobj', $args), 'text' => __('View IDS Log'), 'class' => 'z-icon-es-locked');
-        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'allowedhtml'), 'text' => __('HTML settings'), 'class' => 'z-icon-es-config');
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
+        $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'allowedhtml'), 'text' => __('Allowed HTML settings'), 'class' => 'z-icon-es-config');
+        
+        $outputfilter = pnConfigGetVar('outputfilter');
+        if ($outputfilter == 1) {
+            $links[] = array('url' => pnModURL('SecurityCenter', 'admin', 'purifierconfig'), 'text' => __('HTMLPurifier settings'), 'class' => 'z-icon-es-config');
+        }
     }
 
     return $links;

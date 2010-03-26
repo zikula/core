@@ -464,6 +464,78 @@ function securitycenter_userapi_mailhackattempt($args)
     return;
 }
 
+function &securitycenter_userapi_getpurifier($args = null)
+{
+    $force = (isset($args['force']) ? $args['force'] : false);
+
+    // prepare htmlpurifier class
+    static $purifier;
+
+    if (!isset($purifier) || $force) {
+        $purifierPath = 'system/SecurityCenter/pnincludes/IDS/vendors/htmlpurifier/';
+        // setup the HTML Purifier autoloader (commented out at the moment as we use a fallback way to load the classes below)
+        // Loader::requireOnce($htmlPurifierPath . 'HTMLPurifier.auto.php');
+
+        // add HTML Purifier library path to include path
+        Loader::requireOnce($purifierPath . 'HTMLPurifier.path.php');
+
+        // include all important files in an opcode cache friendly manner
+        Loader::requireOnce('HTMLPurifier.includes.php');
+
+        // use autoloader only for catching additional classes that are missing
+        Loader::requireOnce('HTMLPurifier.autoload.php');
+
+        $config = pnModGetVar('SecurityCenter', 'purifierConfig', null);
+        if (!is_null($config)) {
+            $config = unserialize($config);
+        } else {
+            // Nothing, so set defaults
+            $config = array();
+
+            $charset = ZLanguage::getEncoding();
+            if (strtolower($charset) != 'utf-8') {
+                // set a different character encoding with iconv
+                $config['Core']['Encoding'] = $charset;
+                // Note that HTML Purifier's support for non-Unicode encodings is crippled by the
+                // fact that any character not supported by that encoding will be silently
+                // dropped, EVEN if it is ampersand escaped.  If you want to work around
+                // this, you are welcome to read docs/enduser-utf8.html in the full package for a fix,
+                // but please be cognizant of the issues the "solution" creates (for this
+                // reason, I do not include the solution in this document).
+            }
+
+            // determine doctype of current theme
+            // supported doctypes include:
+            //
+            // HTML 4.01 Strict
+            // HTML 4.01 Transitional
+            // XHTML 1.0 Strict
+            // XHTML 1.0 Transitional (default)
+            // XHTML 1.1
+            //
+            // TODO - we need a new theme field for doctype declaration
+            // for now we will use non-strict modes
+            $currentThemeID = ThemeUtil::getIDFromName(pnUserGetTheme());
+            $themeInfo = ThemeUtil::getInfo($currentThemeID);
+            $useXHTML = (isset($themeInfo['xhtml']) && $themeInfo['xhtml']) ? true : false;
+
+            // as XHTML 1.0 Transitional is the default, we only set HTML (for now)
+            if (!$useXHTML) {
+                $config['HTML']['Doctype'] = 'HTML 4.01 Transitional';
+            }
+
+            // define where our cache directory lives
+            $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
+
+            pnModSetVar('SecurityCenter', 'purifierConfig', serialize($config));
+        }
+
+        $purifier = new HTMLPurifier($config);
+    }
+
+    return $purifier;
+}
+
 /**
  * secureoutput
  * loads all necessary files for a selected outputfilter and calls it
@@ -500,90 +572,92 @@ function securitycenter_userapi_secureoutput($args)
             switch($args['filter']) {
                 case 1:
                     // prepare htmlpurifier class
-                    static $purifier, $safecache, $dummy;
+//                    static $purifier, $safecache, $dummy;
+                    static $safecache, $dummy;
+                    $purifier = &securitycenter_userapi_getpurifier();
 
-                    if (!isset($purifier)) {
-                        $purifierPath = 'system/SecurityCenter/pnincludes/IDS/vendors/htmlpurifier/';
-                        // setup the HTML Purifier autoloader (commented out at the moment as we use a fallback way to load the classes below)
-                        // Loader::requireOnce($htmlPurifierPath . 'HTMLPurifier.auto.php');
-
-                        // add HTML Purifier library path to include path
-                        Loader::requireOnce($purifierPath . 'HTMLPurifier.path.php');
-
-                        // include all important files in an opcode cache friendly manner
-                        Loader::requireOnce('HTMLPurifier.includes.php');
-
-                        // use autoloader only for catching additional classes that are missing
-                        Loader::requireOnce('HTMLPurifier.autoload.php');
-
-
-                        // normally we are done here, unless we are either not using UTF-8 or not XHTML 1.0 Transitional
-
-
-                        // instantiate a configuration object
-                        $config = HTMLPurifier_Config::createDefault();
-
-                        $dbcharset = ZLanguage::getDBCharset();
-                        $charset = ZLanguage::getEncoding();
-                        if (strtolower($charset) != 'utf-8') {
-                            // set a different character encoding with iconv
-                            $config->set('Core.Encoding', $charset);
-                            // Note that HTML Purifier's support for non-Unicode encodings is crippled by the
-                            // fact that any character not supported by that encoding will be silently
-                            // dropped, EVEN if it is ampersand escaped.  If you want to work around
-                            // this, you are welcome to read docs/enduser-utf8.html in the full package for a fix,
-                            // but please be cognizant of the issues the "solution" creates (for this
-                            // reason, I do not include the solution in this document).
-                        }
-
-                        /*
-                         * determine doctype of current theme
-                         * supported doctypes include:
-                         *
-                         * HTML 4.01 Strict
-                         * HTML 4.01 Transitional
-                         * XHTML 1.0 Strict
-                         * XHTML 1.0 Transitional (default)
-                         * XHTML 1.1
-                         *
-                         * @todo: we need a new theme field for doctype declaration
-                         * for now we will use non-strict modes
-                         */
-                        $currentThemeID = ThemeUtil::getIDFromName(pnUserGetTheme());
-                        $themeInfo = ThemeUtil::getInfo($currentThemeID);
-                        $useXHTML = (isset($themeInfo['xhtml']) && $themeInfo['xhtml']) ? true : false;
-
-                        // as XHTML 1.0 Transitional is the default, we only set HTML (for now)
-                        if (!$useXHTML) {
-                            $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
-                        }
-
-                        /*
-                         * Other settings
-                         *
-                         * There are many many different options available, read http://htmlpurifier.org/live/configdoc/plain.html
-                         * Some of the more interesting ones are configurable at the demo at http://htmlpurifier.org/demo.php
-                         * and are well worth looking into for our implementation.
-                         *
-                         * For example, one can fine tune allowed elements and attributes, convert
-                         * relative URLs to absolute ones, and even autoparagraph input text! These
-                         * are, respectively, %HTML.Allowed, %URI.MakeAbsolute and %URI.Base, and
-                         * %AutoFormat.AutoParagraph.
-                         *
-                         * The %Namespace.Directive naming convention translates to:
-                         *      $config->set('Namespace', 'Directive', $value);
-                         * E.g.
-                         *      $config->set('HTML', 'Allowed', 'p,b,a[href],i');
-                         *      $config->set('URI', 'Base', 'http://www.example.com');
-                         *      $config->set('URI', 'MakeAbsolute', true);
-                         *      $config->set('AutoFormat', 'AutoParagraph', true);
-                         */
-
-                        // define where our cache directory lives
-                        $config->set('Cache.SerializerPath', CacheUtil::getLocalDir() . '/purifierCache');
-
-                        $purifier = new HTMLPurifier($config);
-                    }
+//                    if (!isset($purifier)) {
+//                        $purifierPath = 'system/SecurityCenter/pnincludes/IDS/vendors/htmlpurifier/';
+//                        // setup the HTML Purifier autoloader (commented out at the moment as we use a fallback way to load the classes below)
+//                        // Loader::requireOnce($htmlPurifierPath . 'HTMLPurifier.auto.php');
+//
+//                        // add HTML Purifier library path to include path
+//                        Loader::requireOnce($purifierPath . 'HTMLPurifier.path.php');
+//
+//                        // include all important files in an opcode cache friendly manner
+//                        Loader::requireOnce('HTMLPurifier.includes.php');
+//
+//                        // use autoloader only for catching additional classes that are missing
+//                        Loader::requireOnce('HTMLPurifier.autoload.php');
+//
+//
+//                        // normally we are done here, unless we are either not using UTF-8 or not XHTML 1.0 Transitional
+//
+//
+//                        // instantiate a configuration object
+//                        $config = HTMLPurifier_Config::createDefault();
+//
+//                        $dbcharset = ZLanguage::getDBCharset();
+//                        $charset = ZLanguage::getEncoding();
+//                        if (strtolower($charset) != 'utf-8') {
+//                            // set a different character encoding with iconv
+//                            $config->set('Core.Encoding', $charset);
+//                            // Note that HTML Purifier's support for non-Unicode encodings is crippled by the
+//                            // fact that any character not supported by that encoding will be silently
+//                            // dropped, EVEN if it is ampersand escaped.  If you want to work around
+//                            // this, you are welcome to read docs/enduser-utf8.html in the full package for a fix,
+//                            // but please be cognizant of the issues the "solution" creates (for this
+//                            // reason, I do not include the solution in this document).
+//                        }
+//
+//                        /*
+//                         * determine doctype of current theme
+//                         * supported doctypes include:
+//                         *
+//                         * HTML 4.01 Strict
+//                         * HTML 4.01 Transitional
+//                         * XHTML 1.0 Strict
+//                         * XHTML 1.0 Transitional (default)
+//                         * XHTML 1.1
+//                         *
+//                         * @todo: we need a new theme field for doctype declaration
+//                         * for now we will use non-strict modes
+//                         */
+//                        $currentThemeID = ThemeUtil::getIDFromName(pnUserGetTheme());
+//                        $themeInfo = ThemeUtil::getInfo($currentThemeID);
+//                        $useXHTML = (isset($themeInfo['xhtml']) && $themeInfo['xhtml']) ? true : false;
+//
+//                        // as XHTML 1.0 Transitional is the default, we only set HTML (for now)
+//                        if (!$useXHTML) {
+//                            $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
+//                        }
+//
+//                        /*
+//                         * Other settings
+//                         *
+//                         * There are many many different options available, read http://htmlpurifier.org/live/configdoc/plain.html
+//                         * Some of the more interesting ones are configurable at the demo at http://htmlpurifier.org/demo.php
+//                         * and are well worth looking into for our implementation.
+//                         *
+//                         * For example, one can fine tune allowed elements and attributes, convert
+//                         * relative URLs to absolute ones, and even autoparagraph input text! These
+//                         * are, respectively, %HTML.Allowed, %URI.MakeAbsolute and %URI.Base, and
+//                         * %AutoFormat.AutoParagraph.
+//                         *
+//                         * The %Namespace.Directive naming convention translates to:
+//                         *      $config->set('Namespace', 'Directive', $value);
+//                         * E.g.
+//                         *      $config->set('HTML', 'Allowed', 'p,b,a[href],i');
+//                         *      $config->set('URI', 'Base', 'http://www.example.com');
+//                         *      $config->set('URI', 'MakeAbsolute', true);
+//                         *      $config->set('AutoFormat', 'AutoParagraph', true);
+//                         */
+//
+//                        // define where our cache directory lives
+//                        $config->set('Cache.SerializerPath', CacheUtil::getLocalDir() . '/purifierCache');
+//
+//                        $purifier = new HTMLPurifier($config);
+//                    }
 
 
                     if (!isset($dummy)) {
