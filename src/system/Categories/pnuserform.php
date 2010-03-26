@@ -153,7 +153,7 @@ function Categories_userform_moveField ()
     }
 
     if (!$dir) { 
-        return LogUtil::registerError(__f('Error! Invalid %s received.', 'direction'), null, $url);
+        return LogUtil::registerError(__f('Error! Invalid [%s] received.', 'direction'), null, $url);
     }
 
     if (!($class = Loader::loadClass ('CategoryUtil'))) {

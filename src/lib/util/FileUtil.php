@@ -171,7 +171,7 @@ class FileUtil
         $type  = strtolower ($type);
 
         if ($type && $type != 'd' && $type != 'f') {
-            pn_exit(__f('Error! Invalid %s received.', "type [$type]"));
+            pn_exit(__f('Error! Invalid type of object [%s] received.', $type));
         }
 
         if (!is_dir($rootPath) || !is_readable($rootPath)) {

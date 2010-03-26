@@ -1163,7 +1163,7 @@ function users_admin_uploadImport($args)
         return __("Error! Trying to read the existing user names in database.");
     } else {
         if(count($usersInDB) > 0) {
-            return __f("Sorry! One or more user names really exist in database. The user names must be uniques.");
+            return __("Sorry! One or more user names really exist in database. The user names must be uniques.");
         }
     }
 
@@ -1176,14 +1176,14 @@ function users_admin_uploadImport($args)
             return __("Error! Trying to read the existing users' emails in database.");
         } else {
             if(count($emailsInDB) > 0) {
-                return __f("Sorry! One or more users' emails really exists in database. The users' emails must be uniques.");
+                return __("Sorry! One or more users' emails really exists in database. The users' emails must be uniques.");
             }
         }
     }
 
     // seems that the values in import file are ready. Procceed creating users
     if(!pnModAPIFunc('Users', 'admin', 'createImport', array('importValues' => $importValues))) {
-        return __f("Error! The creation of users has failed.");
+        return __("Error! The creation of users has failed.");
     }
 
     return '';

@@ -51,14 +51,14 @@ class WorkflowUtil
         // Get module info
         $modinfo = pnModGetInfo(pnModGetIDFromName($module));
         if (!$modinfo) {
-            return pn_exit(__f('%1$s: The specified module [%2$s] does not exist', array('WorkflowUtil', $module)));
+            return pn_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }
 
         $path = self::_findpath("$schema.xml", $module);
         if ($path) {
             $workflowXML = file_get_contents($path);
         } else {
-            return pn_exit(__f('%1$s: Unable to find the workflow file [%2$s]', array('WorkflowUtil', $path)));
+            return pn_exit(__f('%1$s: Unable to find the workflow file [%2$s].', array('WorkflowUtil', $path)));
         }
 
         // instanciate Workflow Parser
@@ -95,7 +95,7 @@ class WorkflowUtil
         // Get module info
         $modinfo = pnModGetInfo(pnModGetIDFromName($module));
         if (!$modinfo) {
-            return pn_exit(__f('%1$s: The specified module [%2$s] does not exist', array('WorkflowUtil', $module)));
+            return pn_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }
 
         $moduledir = $modinfo['directory'];
@@ -106,12 +106,12 @@ class WorkflowUtil
         } else if ($modinfo['type'] == 2) { // non system module
             $modulepath = "modules/$moduledir";
         } else {
-            return pn_exit(__f('%s: Unsupported module type', 'WorkflowUtil'));
+            return pn_exit(__f('%s: Unsupported module type.', 'WorkflowUtil'));
         }
 
         // ensure module is active
         if (!$modinfo['state'] == 3) {
-            return pn_exit(__f('%1$s: The module [%2$s] is not active', array('WorkflowUtil', $module)));
+            return pn_exit(__f('%1$s: The module [%2$s] is not active.', array('WorkflowUtil', $module)));
         }
 
         $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
@@ -145,7 +145,7 @@ class WorkflowUtil
     public static function executeAction($schema, &$obj, $actionID, $table = null, $module = null, $idcolumn = 'id')
     {
         if (!isset($obj)) {
-            return pn_exit(__f('%s: $obj not set', 'WorkflowUtil'));
+            return pn_exit(__f('%s: $obj not set.', 'WorkflowUtil'));
         }
 
         if (!is_array($obj)) {
@@ -417,13 +417,13 @@ class WorkflowUtil
         // test operation file exists
         $path = self::_findpath("function.{$schema}_permissioncheck.php", $module);
         if (!$path) {
-            return pn_exit(__f("permission check file: function.%s_permissioncheck.php : does not exist", $schema));
+            return pn_exit(__f("Permission check file [%s] does not exist.", "function.{$schema}_permissioncheck.php"));
         }
 
         // load file and test if function exists
         Loader::includeOnce($path);
         if (!function_exists($function)) {
-            return pn_exit(__f("permission check function: %s: not defined", $function));
+            return pn_exit(__f("Permission check function [%s] not defined.", $function));
         }
 
         // function must be loaded so now we can execute the function

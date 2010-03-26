@@ -155,7 +155,7 @@ class HtmlUtil
         } else {
             $classname = Loader::loadClassFromModule($modname, $objectType, true);
             if (!$classname) {
-                return __f('Unable to load class [%s] for module [%s]', array($objectType, $modname));
+                return __f('Unable to load class [%s] for module [%s].', array($objectType, $modname));
             }
 
             $class = new $classname();
@@ -232,7 +232,7 @@ class HtmlUtil
     public static function getSelector_Categories($cats, $name, $field = 'id', $selectedValue = '0', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1)
     {
         if (!Loader::loadClass('CategoryUtil')) {
-            return pn_exit(__f('Error! Unable to load class [%s]', 'CategoryUtil'));
+            return pn_exit(__f('Error! Unable to load class [%s].', 'CategoryUtil'));
         }
 
         return CategoryUtil::getSelector_Categories($cats, $field, $selectedValue, $name, $defaultValue, $defaultText, $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize);
@@ -252,7 +252,7 @@ class HtmlUtil
     public static function getCheckboxes_CategoryField($categoryPath, $values = array(), $namePrefix = '', $excludeList = null, $disabled = false)
     {
         if (!Loader::loadClass('CategoryUtil')) {
-            return pn_exit(__f('Error! Unable to load class [%s]', 'CategoryUtil'));
+            return pn_exit(__f('Error! Unable to load class [%s].', 'CategoryUtil'));
         }
 
         if (!$categoryPath) {

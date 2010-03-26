@@ -124,8 +124,8 @@ class LogUtil
      */
     public static function registerStatus($message, $url = null)
     {
-        if (empty($message)) {
-            return pn_exit(__f('Empty %s received.', 'message'));
+        if (!isset($message) || empty($message)) {
+            return pn_exit(__f('Empty [%s] received.', 'message'));
         }
 
         $msgs = SessionUtil::getVar('_ZStatusMsg', array());
@@ -206,8 +206,8 @@ class LogUtil
      */
     public static function registerError($message, $type = null, $url = null)
     {
-        if (empty($message)) {
-            return pn_exit(__f('Empty %s received.', 'message'));
+        if (!isset($message) || empty($message)) {
+            return pn_exit(__f('Empty [%s] received.', 'message'));
         }
 
         global $ZConfig;

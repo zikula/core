@@ -498,7 +498,7 @@ function users_user_mailpasswd()
         SessionUtil::setVar('lostpassword_code', $code);
     }
     if (!$email && !$uname) {
-        LogUtil::registerError(__f('Error! User name and e-mail address fields are empty.'));
+        LogUtil::registerError(__('Error! User name and e-mail address fields are empty.'));
         return pnRedirect(pnModURL('Users', 'user', 'lostpassword'));
     }
 
@@ -507,7 +507,7 @@ function users_user_mailpasswd()
     SessionUtil::setVar('lostpassword_email', $email);
 
     if (!empty($email) && !empty($uname)) {
-        LogUtil::registerError(__f('Error! Please enter a user name OR e-mail address, no both of them.'));
+        LogUtil::registerError(__('Error! Please enter a user name OR e-mail address, no both of them.'));
         return pnRedirect(pnModURL('Users', 'user', 'lostpassword'));
     }
 
