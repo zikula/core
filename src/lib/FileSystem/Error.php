@@ -18,7 +18,7 @@
  * @author kage
  *
  */
-abstract class FileSystem_Error
+class FileSystem_Error
 {
     private $error_level;
     protected $errors = array();

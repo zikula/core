@@ -3,9 +3,6 @@ require_once dirname(__FILE__) . '/../../../bootstrap.php';
 require_once dirname(__FILE__) . '/../../../../src/lib/FileSystem/Configuration.php';
 require_once dirname(__FILE__) . '/../../../../src/lib/FileSystem/Configuration/Local.php';
 
-
-require_once 'PHPUnit\Framework\TestCase.php';
-
 /**
  * FileSystem_Configuration_Local test case.
  */
