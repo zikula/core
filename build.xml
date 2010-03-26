@@ -36,7 +36,7 @@
         <echo msg="Prepare..." />
         <mkdir dir="${builddir}" />
         <mkdir dir="${builddir}/logs" />
-        <mkdir dir="${builddir}/coverage" />
+        <mkdir dir="${builddir}/logs/coverage" />
         <mkdir dir="${builddir}/docs" />
         <mkdir dir="${builddir}/phpcb" />
         <mkdir dir="${builddir}/archive" />
@@ -152,7 +152,7 @@
     <!-- Unit Tests & coverage analysis -->
     <target name="phpunit">
         <echo msg="PHPUnit..." />
-        <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/coverage/clover.xml --coverage-html ${builddir}/coverage/ ${sourcedir}/tests"/>
+        <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/logs/coverage/clover.xml --coverage-html ${builddir}/coverage/ ${sourcedir}/tests"/>
     </target>
 
     <!-- Code Browser -->
