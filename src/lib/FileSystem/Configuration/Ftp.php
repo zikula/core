@@ -12,28 +12,74 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
+ * FTP Configuration class.
+ *
  * Configuration class for FTP driver. please see documentation for FileSystem_Configuration
  * for more details on configuration classes. This class extends FileSystem_Configuration.
  * The only purpose to this class is to provide a configuration object to be used by the
  * ftp driver.
- * @author kage
- *
  */
 class FileSystem_Configuration_Ftp extends FileSystem_Configuration
 {
-    protected $host = "localhost";
-    protected $user = "Anonymous";
-    protected $pass = "";
-    protected $dir = "/";
-    protected $port = "21";
-    protected $timeout = "10";
-    protected $ssl = false;
-    protected $pasv = true;
+    /**
+     * FTP host.
+     *
+     * @var string
+     */
+    protected $host;
 
     /**
-     *	Constructs a configuration for the FTP driver.
+     * FTP user.
+     *
+     * @var string
+     */
+    protected $user;
+
+    /**
+     * FTP Directory.
+     *
+     * @var string
+     */
+    protected $pass;
+
+    /**
+     * FTP Directory.
+     *
+     * @var string
+     */
+    protected $dir = "/";
+
+    /**
+     * FTP Port.
+     *
+     * @var int
+     */
+    protected $port;
+
+    /**
+     * FTP Timeout in seconds.
+     *
+     * @var int
+     */
+    protected $timeout;
+
+    /**
+     * SSL flag.
+     *
+     * @var bool
+     */
+    protected $ssl;
+
+    /**
+     * PASV flag.
+     *
+     * @var bool
+     */
+    protected $pasv;
+
+    /**
+     * Constructs a configuration for the FTP driver.
      *
      * @param String $host The host to connect to.
      * @param String $user The username when connecting (default = Anonymous)
@@ -43,57 +89,96 @@ class FileSystem_Configuration_Ftp extends FileSystem_Configuration
      * @param Int $timeout The timeout in seconds for the connection (default = 10) (optional)
      * @param Bool $ssl	   True to use FTPS false for normal FTP (default = false) (optional)
      * @param Bool $pasv   True to enable passive mode, false for active mode (default = true) (optional)
+     *
+     * @return void
      */
-    public function __construct($host = 'localhost', $user = "Anonymous", $pass
-    = "", $dir = "", $port = "", $timeout = "10", $ssl = false, $pasv = true)
+    public function __construct($host = 'localhost', $user = "Anonymous", $pass = '', $dir = '', $port = 21, $timeout = 10, $ssl = false, $pasv = true)
     {
         $this->host = ($host == "" ? 'localhost' : $host);
         $this->user = $user;
         $this->pass = $pass;
         $this->dir = ($dir == "" ? '/' : $dir);
-        $this->port = ($port == "" || !is_numeric($port) ? ($ssl ? '990' : '21')
-        : $port);
-        $this->timeout = ($timeout == '' || !is_numeric($timeout) ? '10' :
-        $timeout);
+        $this->port = ($port == "" || !is_numeric($port) ? ($ssl ? '990' : '21') : $port);
+        $this->timeout = ($timeout == '' || !is_numeric($timeout) ? '10' : $timeout);
         $this->ssl = (is_bool($ssl) ? $ssl : false);
         $this->pasv = (is_bool($pasv) ? $pasv : true);
     }
 
+    /**
+     * Get user property.
+     *
+     * @return string User.
+     */
     public function getUser()
     {
         return $this->user;
     }
 
+    /**
+     * Get pass property.
+     *
+     * @return string Password.
+     */
     public function getPass()
     {
         return $this->pass;
     }
 
+    /**
+     * Get host property.
+     *
+     * @return string Host.
+     */
     public function getHost()
     {
         return $this->host;
     }
 
+    /**
+     * Get FTP port property.
+     *
+     * @return int Port number.
+     */
     public function getPort()
     {
         return $this->port;
     }
 
+    /**
+     * Get directory property.
+     *
+     * @return string Directory.
+     */
     public function getDir()
     {
         return $this->dir;
     }
-    
+
+    /**
+     * Get timeout property.
+     *
+     * @return int Timeout value in seconds.
+     */
     public function getTimeout()
     {
         return $this->timeout;
     }
-    
+
+    /**
+     * Get SSL property.
+     *
+     * @return bool True if SSL set.
+     */
     public function getSSL()
     {
         return $this->ssl;
     }
-    
+
+    /**
+     * Get PASV setting.
+     *
+     * @return bool True if PASV mode set.
+     */
     public function getPasv()
     {
         return $this->pasv;

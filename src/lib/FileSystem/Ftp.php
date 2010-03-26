@@ -24,7 +24,7 @@ class FileSystem_Ftp extends FileSystem_Driver
 {
     private $resource;
     private $dir = "/";
-    
+
     /**
      * Standard function for creating a FTP connection and logging in, this must be called
      * before any of the other functions in the FileSystem_Interface. However the construct
@@ -36,18 +36,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->start_handler();
         //create the connection
-        if (($this->resource = ($this->configuration->getSSL() ? $this->resource
-        = ftp_ssl_connect($this->configuration->getHost(), $this->configuration
-        ->getPort(), $this->configuration->getTimeout()) : ftp_connect($this->
-            configuration->getHost(), $this->configuration->getPort(), $this->
-            configuration->getTimeout()))) !== FALSE) {
+        if (($this->resource = ($this->configuration->getSSL() ? $this->resource = ftp_ssl_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout()) : ftp_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout()))) !== false) {
             //log in
-            if (ftp_login($this->resource, $this->configuration->getUser(),
-                $this->configuration->getPass())) {
+            if (ftp_login($this->resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
                 if (ftp_pasv($this->resource, $this->configuration->getPasv())) {
-                    if (ftp_chdir(&$this->resource, $this->configuration->getDir
-                    ())) {
+                    if (ftp_chdir(&$this->resource, $this->configuration->getDir())) {
                         $this->dir = ftp_pwd(&$this->resource);
                         $this->stop_handler();
                         return true;
@@ -153,7 +147,7 @@ class FileSystem_Ftp extends FileSystem_Driver
         $this->isAlive(true);
         $this->start_handler();
         $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
-        if (($perm = ftp_chmod($this->resource, $perm, $file)) !== FALSE) {
+        if (($perm = ftp_chmod($this->resource, $perm, $file)) !== false) {
             $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->stop_handler();
             return $perm;
@@ -172,7 +166,7 @@ class FileSystem_Ftp extends FileSystem_Driver
         $this->isAlive(true);
         $this->start_handler();
         $dir = ($dir == "" ? ftp_pwd(&$this->resource) : $dir);
-        if (($ls = ftp_nlist(&$this->resource, $dir)) !== FALSE) {
+        if (($ls = ftp_nlist(&$this->resource, $dir)) !== false) {
             $this->stop_handler();
             return $ls;
         }
@@ -225,7 +219,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->start_handler();
-        if (($handle = $this->fget($sourcepath)) !== FALSE) {
+        if (($handle = $this->fget($sourcepath)) !== false) {
             $val = $this->fput($handle, $destpath);
             $this->stop_handler();
             return $val;
@@ -244,14 +238,14 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->start_handler();
-        if ((ftp_delete($this->resource, $sourcepath)) !== FALSE) {
+        if ((ftp_delete($this->resource, $sourcepath)) !== false) {
             $this->stop_handler();
             return true;
         }
         $this->stop_handler();
         return false;
     }
-    
+
     public function isAlive($reconnect = false)
     {
         if (!@ftp_systype($this->resource)) {
@@ -263,21 +257,37 @@ class FileSystem_Ftp extends FileSystem_Driver
         return true;
     }
 
-
     public function error_codes()
     {
         $this->stop_handler();
         $errors = array(
-            array('code' => '2', 'search' => 'getaddrinfo failed'),
-            array('code' => '3', 'search' => 'Failed to change directory'),
-            array('code' => '4', 'search' => 'No such file or directory'),
-            array('code' => '5', 'search' => 'Failed to open file'),
-            array('code' => '6', 'search' => 'SITE CHMOD command failed'),
-            array('code' => '7', 'search' => 'Could not create file'),
-            array('code' => '8', 'search' => 'RNFR command failed', ),
-            array('code' => '11', 'search' => 'Delete operation failed'),
-            array('code'   => '12', 'search' => 'not a valid resource handle')
-        );
+            array(
+                'code' => '2',
+                'search' => 'getaddrinfo failed'),
+            array(
+                'code' => '3',
+                'search' => 'Failed to change directory'),
+            array(
+                'code' => '4',
+                'search' => 'No such file or directory'),
+            array(
+                'code' => '5',
+                'search' => 'Failed to open file'),
+            array(
+                'code' => '6',
+                'search' => 'SITE CHMOD command failed'),
+            array(
+                'code' => '7',
+                'search' => 'Could not create file'),
+            array(
+                'code' => '8',
+                'search' => 'RNFR command failed'),
+            array(
+                'code' => '11',
+                'search' => 'Delete operation failed'),
+            array(
+                'code' => '12',
+                'search' => 'not a valid resource handle'));
         return $errors;
     }
 }

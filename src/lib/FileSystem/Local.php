@@ -20,7 +20,7 @@
  * @author kage
  *
  */
-Class FileSystem_Local extends FileSystem_Driver
+class FileSystem_Local extends FileSystem_Driver
 {
     private $resource;
 
@@ -61,8 +61,7 @@ Class FileSystem_Local extends FileSystem_Driver
     public function fput($stream, $remote)
     {
         $this->start_handler();
-        if (($bytes = file_put_contents($remote, $stream, 0, $this->resource))
-            !== FALSE) {
+        if (($bytes = file_put_contents($remote, $stream, 0, $this->resource)) !== false) {
             fclose($stream);
             $this->stop_handler();
             return $bytes;
@@ -88,12 +87,12 @@ Class FileSystem_Local extends FileSystem_Driver
      * Similar to get() but does not save the file. instead it returns a
      * resource handle which can then be saved with fput(), or can be manipulated
      * in the same manner as any other file resouce handle.
-     * 		eg: $local = new FileSystemLocal($conf);
-     * 			$resource = $local->fget('filename.ext');
-     * 			$local->fput($resource,'filename2.ext');
-     * 			//or
-     * 			$contents = stream_get_contents($resource);
-     * 			//$contents now has the contents of $resource in a text format.
+     * eg: $local = new FileSystemLocal($conf);
+     * $resource = $local->fget('filename.ext');
+     * $local->fput($resource,'filename2.ext');
+     * //or
+     * $contents = stream_get_contents($resource);
+     * //$contents now has the contents of $resource in a text format.
      *
      * @param $remote	The pathname to the local source file
      * @return 			File resource handle or false on failure
@@ -101,7 +100,7 @@ Class FileSystem_Local extends FileSystem_Driver
     public function fget($remote)
     {
         $this->start_handler();
-        if (($handle = fopen($remote, 'r+')) !== FALSE) {
+        if (($handle = fopen($remote, 'r+')) !== false) {
             rewind($handle);
             $this->stop_handler();
             return $handle;
@@ -121,7 +120,7 @@ Class FileSystem_Local extends FileSystem_Driver
     {
         $this->start_handler();
         $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
-        if (($perm = chmod($file, $perm)) !== FALSE) {
+        if (($perm = chmod($file, $perm)) !== false) {
             $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->stop_handler();
             return $perm;
@@ -139,7 +138,7 @@ Class FileSystem_Local extends FileSystem_Driver
     {
         $dir = ($dir == "" ? getcwd() : $dir);
         $this->start_handler();
-        if (($files = scandir($dir, 0, $this->resource)) !== FALSE) {
+        if (($files = scandir($dir, 0, $this->resource)) !== false) {
             return $files;
         }
         $this->stop_handler();

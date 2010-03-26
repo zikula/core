@@ -17,4 +17,6 @@
  * @author kage
  *
  */
-abstract class FileSystem_Configuration{}
+abstract class FileSystem_Configuration
+{
+}

@@ -21,7 +21,7 @@
 abstract class FileSystem_Error
 {
     private $error_level;
-        protected $errors = array();
+    protected $errors = array();
 
     /**
      * Get the last error to occur and return it.
@@ -76,26 +76,23 @@ abstract class FileSystem_Error
         unset($this->errors);
         $this->errors = array();
     }
-    
-    
-    
+
     public function start_handler()
     {
-       // $this->error_level = error_reporting();
-       // error_reporting(EALL | EWARNING);
-       // return;
+        // $this->error_level = error_reporting();
+        // error_reporting(EALL | EWARNING);
+        // return;
         set_error_handler(array(
             $this,
-            'error_handler'
-        ));
+            'error_handler'));
     }
-    
+
     public function stop_handler()
     {
-     //   error_reporting($this->error_level);
+        //   error_reporting($this->error_level);
         restore_error_handler();
     }
-/**
+    /**
      * Register an error. This helps to keep track of internal errors.
      * The use of the error code allows the user to figure out why something went wrong.
      * The errors are registered in reverse order such that errors['0'] is most recent.
@@ -107,13 +104,14 @@ abstract class FileSystem_Error
      */
     protected function error_register($e, $code)
     {
-        $this->errors = array_merge(array(array('message' => $e, 'code'    =>
-        $code
-        )), &$this->errors);
+        $this->errors = array_merge(array(
+            array(
+                'message' => $e,
+                'code' => $code)), &$this->errors);
     }
-    
-     public function error_handler($errno, $errstr, $errfile, $errline)
-     {
+
+    public function error_handler($errno, $errstr, $errfile, $errline)
+    {
         /**
         $errors = $this->error_codes();
         foreach ($errors as $key => $error) {
@@ -121,7 +119,7 @@ abstract class FileSystem_Error
                 $this->error_register($errstr, $error['code']);
                 return true;
             }
-        }*/
+         */
         $this->error_register($errstr, '0');
     }
 }
