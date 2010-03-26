@@ -197,7 +197,7 @@ class FileSystem_Local extends FileSystem_Driver
     public function mv($sourcepath, $destpath)
     {
         $this->start_handler();
-        if (rename($sourcepath, $destpath, &$this->resource)) {
+        if (rename($sourcepath, $destpath, $this->resource)) {
             $this->stop_handler();
             return true;
         }
@@ -218,7 +218,7 @@ class FileSystem_Local extends FileSystem_Driver
     public function cp($sourcepath, $destpath)
     {
         $this->start_handler();
-        if (copy($sourcepath, $destpath, &$this->resource)) {
+        if (copy($sourcepath, $destpath, $this->resource)) {
             $this->stop_handler();
             return true;
         }
@@ -236,7 +236,7 @@ class FileSystem_Local extends FileSystem_Driver
     public function rm($sourcepath)
     {
         $this->start_handler();
-        if (unlink($sourcepath, &$this->resource)) {
+        if (unlink($sourcepath, $this->resource)) {
             $this->stop_handler();
             return true;
         }

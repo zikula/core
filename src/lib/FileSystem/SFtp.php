@@ -315,7 +315,7 @@ class FileSystem_SFtp extends FileSystem_Driver
         //check the file actauly exists.
         if (($sourcepath = ssh2_sftp_realpath($this->resource, $sourcepath)) !== false) {
             //file exists
-            if (ssh2_sftp_unlink(&$this->resource, $sourcepath)) {
+            if (ssh2_sftp_unlink($this->resource, $sourcepath)) {
                 //file deleted
                 $this->stop_handler();
                 return true;
