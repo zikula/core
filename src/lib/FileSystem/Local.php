@@ -25,12 +25,15 @@ class FileSystem_Local extends FileSystem_Driver
     private $resource;
 
     /**
+     * Create local connection.
+     *
      * Standard function for creating a Local connection, this must be called
      * before any of the other functions in the FileSystem_Interface. However the construct
      * itself calles this function upon completion, which alleviates the need to ever call
      * this function manualy. For Local this function does very little, most local functions
      * will work even without the connect() function being called.
-     * @return Boolean
+     *
+     * @return bool True.
      */
     public function connect()
     {
@@ -39,11 +42,14 @@ class FileSystem_Local extends FileSystem_Driver
     }
 
     /**
-     * Put a local file to another local target file. This command is an alias
-     * for the cp() command.
+     * Put a local file to another local target file.
+     *
+     * This command is an alias for the cp() command.
      *
      * @param $local	The pathname to the local source file
      * @param $remote	The pathname to the local target file
+     *
+     * @return void
      */
     public function put($local, $remote)
     {
@@ -51,12 +57,15 @@ class FileSystem_Local extends FileSystem_Driver
     }
 
     /**
+     * Stream/resource put.
+     *
      * Similar to put but does not use a local file as the source,
      * instead it uses a stream or resource.
-     * @param $stream	The resource to save as a file, probably the resource returned from a fget
-     * @param $remote	The pathname to the desired local file
      *
-     * @return 			number of bytes written on success, false on failure
+     * @param $stream The resource to save as a file, probably the resource returned from a fget
+     * @param $remote The pathname to the desired local file.
+     *
+     * @return mixed Number of bytes written on success, false on failure.
      */
     public function fput($stream, $remote)
     {
@@ -71,12 +80,15 @@ class FileSystem_Local extends FileSystem_Driver
     }
 
     /**
-     * get a local file and put it to  another local target file.
+     * Get a local file and put it to  another local target file.
+     *
      * This command is an alias for the cp() or put() function,
      * but in reverse: $remote is the source and $local is the target.
      *
-     * @param $local	The pathname to the local target file
-     * @param $remote	The pathname to the local source file
+     * @param $local  The pathname to the local target file.
+     * @param $remote The pathname to the local source file.
+     *
+     * @return ???
      */
     public function get($local, $remote)
     {
@@ -84,18 +96,24 @@ class FileSystem_Local extends FileSystem_Driver
     }
 
     /**
+     *
+     *
      * Similar to get() but does not save the file. instead it returns a
      * resource handle which can then be saved with fput(), or can be manipulated
      * in the same manner as any other file resouce handle.
-     * eg: $local = new FileSystemLocal($conf);
+     * <samp>
+     * $local = new FileSystem_Local($config);
      * $resource = $local->fget('filename.ext');
      * $local->fput($resource,'filename2.ext');
+     *
      * //or
      * $contents = stream_get_contents($resource);
      * //$contents now has the contents of $resource in a text format.
+     * </samp>
      *
-     * @param $remote	The pathname to the local source file
-     * @return 			File resource handle or false on failure
+     * @param $remote The pathname to the local source file.
+     *
+     * @return mixed  File resource handle or false on failure.
      */
     public function fget($remote)
     {
@@ -112,9 +130,10 @@ class FileSystem_Local extends FileSystem_Driver
     /**
      * Change the permissions of a file.
      *
-     * @param $perm		The permission to assign to the file, unix style (example: 777 for full permission)
-     * @param $file		The pathname to the remote file to chmod
-     * @return 			The new permission or false if failed.
+     * @param $perm The permission to assign to the file, unix style (example: 777 for full permission).
+     * @param $file The pathname to the remote file to chmod.
+     *
+     * @return mixed The new permission or false if failed.
      */
     public function chmod($perm, $file)
     {
@@ -131,8 +150,10 @@ class FileSystem_Local extends FileSystem_Driver
 
     /**
      * Get the entire contents of a directory.
-     * @param	$dir the directory to get the contents of, blank for current directory, start with / for absolute path
-     * @return	an array of the contents of $dir or false if fail.
+     *
+     * @param $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
+     *
+     * @return mixed an array of the contents of $dir or false if fail.
      */
     public function ls($dir = "")
     {
@@ -147,8 +168,10 @@ class FileSystem_Local extends FileSystem_Driver
 
     /**
      * Change the current working directory on the Local machine.
+     *
      * @param $dir	The directory on the remote machine to enter, start with '/' for absolute path.
-     * @return 		Boolean
+     *
+     * @return bool Result.
      */
     public function cd($dir = '')
     {
@@ -163,9 +186,13 @@ class FileSystem_Local extends FileSystem_Driver
 
     /**
      * Move a remote file to a new location on the local machine.
+     *
      * This can also be used to rename files.
-     * @param $sourcepath	The path to the original source file
-     * @param $destpath		The path to where you want to move the source file
+     *
+     * @param $sourcepath The path to the original source file
+     * @param $destpath   The path to where you want to move the source file
+     *
+     * @return bool Result.
      */
     public function mv($sourcepath, $destpath)
     {
@@ -180,9 +207,13 @@ class FileSystem_Local extends FileSystem_Driver
 
     /**
      * Copy a file on the local machine to a new location on the local machine.
+     *
      * Similar to mv() method but leaves the original file.
-     * @param $sourcepath	The path to the original source file
-     * @param $destpath		The path to where you want to copy the source file
+     *
+     * @param $sourcepath The path to the original source file.
+     * @param $destpath   The path to where you want to copy the source file.
+     *
+     * @return bool Result.
      */
     public function cp($sourcepath, $destpath)
     {
@@ -198,8 +229,9 @@ class FileSystem_Local extends FileSystem_Driver
     /**
      * Remove a file from the local file system.
      *
-     * @param 	$sourcepath The path to the file to be removed
-     * @return	Boolean
+     * @param $sourcepath The path to the file to be removed.
+     *
+     * @return bool Result.
      */
     public function rm($sourcepath)
     {
@@ -212,6 +244,11 @@ class FileSystem_Local extends FileSystem_Driver
         return false;
     }
 
+    /**
+     * Return error codes.
+     *
+     * @return array Error codes.
+     */
     public function error_codes()
     {
         $this->stop_handler();
