@@ -130,7 +130,7 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(false, $this->FileSystem_Configuration_Ftp->getSSL());
         $this->assertEquals(true, $this->FileSystem_Configuration_Ftp2->getSSL());
-        $this->assertEquals(false, $this->FileSystem_Configuration_Ftp2->getSSL());
+        $this->assertEquals(false, $this->FileSystem_Configuration_Ftp3->getSSL());
     }
 
     /**
@@ -138,9 +138,9 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGetPasv()
     {
-        $this->assertEquals(true, $this->FileSystem_Configuration_Ftp2->getPasv());
+        $this->assertEquals(true, $this->FileSystem_Configuration_Ftp->getPasv());
         $this->assertEquals(false, $this->FileSystem_Configuration_Ftp2->getPasv());
-        $this->assertEquals(true, $this->FileSystem_Configuration_Ftp2->getPasv());
+        $this->assertEquals(true, $this->FileSystem_Configuration_Ftp3->getPasv());
     }
 
 }
