@@ -1,6 +1,7 @@
 <?php
 /**
  * Zikula Application Framework
+ *
  * @copyright (c) 2001, Zikula Development Team
  * @link http://www.zikula.org
  * @version $Id$
@@ -13,11 +14,12 @@
 */
 
 /**
- * get all hack attempts in db
- * @author Mark West
- * @param int $args['startnum'] the start number for the record set
- * @param int $args['numitems'] number of items to get
- * @return mixed array of items, or false on failure
+ * Get all hack attempts in db.
+ *
+ * @param   int         $args['startnum']   The start number for the record set.
+ * @param   int         $args['numitems']   Number of items to get.
+ *
+ * @return  array|bool  Array of items, or false on failure.
  */
 function securitycenter_userapi_getall($args)
 {
@@ -60,10 +62,11 @@ function securitycenter_userapi_getall($args)
 }
 
 /**
- * get a specific hack attempt
- * @author Mark West
- * @param int $args['hid'] id of hack item to get
- * @return mixed item array, or false on failure
+ * Get a specific hack attempt.
+ *
+ * @param   int         $args['hid']    Id of hack item to get.
+ *
+ * @return  array|bool  Item array, or false on failure.
  */
 function securitycenter_userapi_get($args)
 {
@@ -83,9 +86,9 @@ function securitycenter_userapi_get($args)
 }
 
 /**
- * utility function to count the number of items held by this module
- * @author Mark West
- * @return int number of items held by this module
+ * Utility function to count the number of items held by this module.
+ *
+ * @return  int     Number of items held by this module.
  */
 function securitycenter_userapi_countitems()
 {
@@ -93,22 +96,16 @@ function securitycenter_userapi_countitems()
 }
 
 /**
- * Secure input
- * Protects against basic attempts of Cross-Site Scripting
- * see http://technicalinfo.net/papers/CSS.html
- * @author Andreas Krapohl
- * @author Brook Humphrey
- * @author Francisco Sam Castillo
- * @author Timax
- * @return bool true on success, false otherwise
+ * Secure input. Protects against basic attempts of Cross-Site Scripting
+ * see http://technicalinfo.net/papers/CSS.html.
+ *
+ * @return  bool    True on success, false otherwise.
  */
 function securitycenter_userapi_secureinput()
 {
     if (pnConfigGetVar('enableanticracker')) {
 
-        /**
-         * Lets now sanitize the GET vars
-         */
+        // Lets now sanitize the GET vars
         if (pnConfigGetVar('filtergetvars') == 1) {
             if (count($_GET) > 0) {
                 foreach ($_GET as $key => $secvalue) {
@@ -125,9 +122,7 @@ function securitycenter_userapi_secureinput()
             }
         }
 
-        /**
-         * Lets now sanitize the POST vars
-         */
+        // Lets now sanitize the POST vars
         if (pnConfigGetVar('filterpostvars') == 1) {
             if (count($_POST) > 0) {
                 foreach ($_POST as $key => $secvalue) {
@@ -144,9 +139,7 @@ function securitycenter_userapi_secureinput()
             }
         }
 
-        /**
-         * Lets now sanitize the COOKIE vars
-         */
+        // Lets now sanitize the COOKIE vars
         if (pnConfigGetVar('filtercookievars') == 1) {
             if (count($_COOKIE) > 0) {
                 foreach ($_COOKIE as $secvalue) {
@@ -163,9 +156,7 @@ function securitycenter_userapi_secureinput()
             }
         }
 
-        /**
-         * Run IDS if desired
-         */
+        // Run IDS if desired
         if (pnConfigGetVar('useids') == 1) {
             try {
                 // include the PHPIDS and get access to the result object
@@ -211,12 +202,10 @@ function securitycenter_userapi_secureinput()
                 if (!$result->isEmpty()) {
                     // process the IDS_Report object
                     _securitycenter_userapi_processIdsResult($init, $result);
-                }
-                else {
+                } else {
                     // no attack detected
                 }
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 // sth went wrong - maybe the filter rules weren't found
                 // @todo: handle together with own exceptions (Guite)
                 pn_exit(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
@@ -228,10 +217,13 @@ function securitycenter_userapi_secureinput()
 }
 
 /**
- * Log hack attempt
- * @author Mark West
- * @param array $args args array is passed directly to other functions
- * @return none
+ * Log hack attempt.
+ *
+ * @param   array   $args                   Full set of http post, get etc. arguments.
+ * @param   string  $args['detecting_file'] File the hack attempt comes from.
+ * @param   int     $args['detecting_line'] Line in detecting_file.
+ * @param   string  $args['hacktype']       Type of the hack.
+ * @param   string  $args['message']        Info/message about the hack.
  */
 function securitycenter_userapi_loghackattempt($args)
 {
@@ -246,15 +238,15 @@ function securitycenter_userapi_loghackattempt($args)
 }
 
 /**
- * Logs hack attempt in DB
- * @author Mark West
- * @param array $args full set of http post, get etc. args
- * @param string detecting_file File the hack attempt comes from
- * @param int detecting_line Line in detecting_file
- * @param string hacktype Type of the hack
- * @param string message Info/message about the hack
+ * Logs hack attempt in the database.
  *
- * @return bool true if successful, false otherwise
+ * @param   array   $args                   Full set of http post, get etc. arguments.
+ * @param   string  $args['detecting_file'] File the hack attempt comes from.
+ * @param   int     $args['detecting_line'] Line in detecting_file.
+ * @param   string  $args['hacktype']       Type of the hack.
+ * @param   string  $args['message']        Info/message about the hack.
+ *
+ * @return  bool    True if successful, false otherwise
  */
 function securitycenter_userapi_loghackattempttodb($args)
 {
@@ -274,7 +266,7 @@ function securitycenter_userapi_loghackattempttodb($args)
         $userid = 0;
     }
 
-    $browser = (array)@get_browser();
+    $browser = (array) @get_browser();
     // browser_name_regex might break serialization and is not usefull anyway
     unset($browser['browser_name_regex']);
     // add at least some information for enviroments without browscap.ini
@@ -325,14 +317,15 @@ function securitycenter_userapi_loghackattempttodb($args)
 }
 
 /**
- * E-mail hack attempt
- * @author Mark West
- * @param array $args full set of http post, get etc. args
- * @param string detecting_file File the hack attempt comes from
- * @param int detecting_line Line in detecting_file
- * @param string hacktype Type of the hack
- * @param string message Info/message about the hack
- * @return bool true if successful, false otherwise
+ * E-mail hack attempt.
+ *
+ * @param   array   $args                   Full set of http post, get etc. arguments.
+ * @param   string  $args['detecting_file'] File the hack attempt comes from.
+ * @param   int     $args['detecting_line'] Line in detecting_file.
+ * @param   string  $args['hacktype']       Type of the hack.
+ * @param   string  $args['message']        Info/message about the hack.
+ *
+ * @return  bool    True if successful, otherwise false.
  */
 function securitycenter_userapi_mailhackattempt($args)
 {
