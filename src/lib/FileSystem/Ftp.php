@@ -280,7 +280,7 @@ class FileSystem_Ftp extends FileSystem_Driver
             if ($this->fput($handle, $destpath)) {
                 $this->stopHandler();
                 return true;
-            }
+            };
         }
         $this->stopHandler();
         return false;
@@ -306,13 +306,15 @@ class FileSystem_Ftp extends FileSystem_Driver
     }
 
     /**
-     * Checks to see if connection is alive(experimental)
+     * Checks to see if connection is alive(experimental).
      *
      * Reconnects if not still alive, this function needs to
      * be fixed up.
      * TODO: make this better
      *
      * @param boolean $reconnect Reconnect if connection is dead?
+     * 
+     * @return boolean True if connected, false if not.
      */
     public function isAlive($reconnect = false)
     {

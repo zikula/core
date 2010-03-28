@@ -54,8 +54,14 @@ class FileSystem_Local extends FileSystem_Driver
      */
     public function connect()
     {
-        $this->_resource = stream_context_create();
-        return true;
+    	$this->_resource = stream_context_create();
+    	if ($this->configuration->getDir() == '') {
+    		return true;
+    	}
+    	if (chdir($this->configuration->getDir()) == true ) {
+        		return true;
+    	} 
+    	return false;
     }
 
     /**

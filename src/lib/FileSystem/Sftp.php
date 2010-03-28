@@ -391,7 +391,7 @@ class FileSystem_Sftp extends FileSystem_Driver
      *
      * @return array Array of possible error codes.
      */
-    private function errorCodes()
+    public function errorCodes()
     {
         $this->stopHandler();
         $errors = array(

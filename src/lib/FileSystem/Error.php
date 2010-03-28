@@ -60,7 +60,7 @@ class FileSystem_Error
     /**
      * Count all errors which have occured, this is reset if the errors are cleared.
      *
-     * @return 		Integer of the number of errors which exist.
+     * @return integer Number of errors which exist.
      */
     public function errorCount()
     {
@@ -75,7 +75,7 @@ class FileSystem_Error
      *
      * @param boolean $clear If true the last error will be removed (optional) (default = false).
      *
-     * @return Array of arrays which contain the errors.
+     * @return array Array of arrays which contain the errors.
      */
     public function errorGetAll($clear = false)
     {
