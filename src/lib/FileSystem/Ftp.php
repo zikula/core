@@ -35,7 +35,7 @@ class FileSystem_Ftp extends FileSystem_Driver
      *
      * @var string
      */
-    private $_dir = "/";
+    private $_dir = '/';
 
     /**
      * Standard function for creating a FTP connection and logging in.
@@ -50,8 +50,15 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function connect()
     {
         $this->startHandler();
+
         //create the connection
-        if (($this->_resource = ($this->configuration->getSSL() ? $this->_resource = ftp_ssl_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout()) : ftp_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout()))) !== false) {
+        if ($this->configuration->getSSL()) {
+            $this->_resource = ftp_ssl_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+        } else {
+            $this->_resource = ftp_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+        }
+
+        if ($this->resource !== false) {
             //log in
             if (ftp_login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
@@ -194,7 +201,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->startHandler();
-        $dir = ($dir == "" ? ftp_pwd($this->_resource) : $dir);
+        $dir = ($dir == '' ? ftp_pwd($this->_resource) : $dir);
         if (($ls = ftp_nlist($this->_resource, $dir)) !== false) {
             $this->stopHandler();
             return $ls;
@@ -210,7 +217,7 @@ class FileSystem_Ftp extends FileSystem_Driver
      *
      * @return boolean
      */
-    public function cd($dir = "")
+    public function cd($dir = '')
     {
         $this->isAlive(true);
         $this->startHandler();
