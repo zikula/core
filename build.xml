@@ -154,7 +154,7 @@
     <!-- Unit Tests & coverage analysis -->
     <target name="phpunit">
         <echo msg="PHPUnit..." />
-        <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/logs/clover.xml --coverage-html ${builddir}/coverage/ ${sourcedir}/tests"/>
+        <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/clover.xml --coverage-html ${builddir}/coverage/ ${sourcedir}/tests"/>
     </target>
 
     <!-- Code Browser -->
