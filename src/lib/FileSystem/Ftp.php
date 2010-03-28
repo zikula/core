@@ -7,7 +7,6 @@
  *
  * @license GNU/LGPLv2 (or at your option, any later version).
  * @package Zikula
- * @author  Kyle Giovannetti
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -191,9 +190,9 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->startHandler();
-        $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = ftp_chmod($this->_resource, $perm, $file)) !== false) {
-            $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
+            $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->stopHandler();
             return $perm;
         }
@@ -310,9 +309,9 @@ class FileSystem_Ftp extends FileSystem_Driver
      *
      * Reconnects if not still alive, this function needs to
      * be fixed up.
-     * TODO: make this better
+     * TODO: make this better.
      *
-     * @param boolean $reconnect Reconnect if connection is dead?
+     * @param boolean $reconnect Reconnect if connection is dead?.
      * 
      * @return boolean True if connected, false if not.
      */

@@ -7,7 +7,6 @@
  *
  * @license GNU/LGPLv2 (or at your option, any later version).
  * @package Zikula
- * @author  Kyle Giovannetti
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,8 +21,7 @@
  * is inherited from FileSystem_Driver.
  *
  */
-class FileSystem_Local extends FileSystem_Driver
-{
+class FileSystem_Local extends FileSystem_Driver {
 
     /**
      * Resource handle.
@@ -37,8 +35,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return void
      */
-    public function setup()
-    {
+    public function setup() {
     }
 
     /**
@@ -52,16 +49,15 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return bool True.
      */
-    public function connect()
-    {
-    	$this->_resource = stream_context_create();
-    	if ($this->configuration->getDir() == '') {
-    		return true;
-    	}
-    	if (chdir($this->configuration->getDir()) == true ) {
-        		return true;
-    	} 
-    	return false;
+    public function connect() {
+        $this->_resource = stream_context_create();
+        if ($this->configuration->getDir() == '') {
+            return true;
+        }
+        if (chdir($this->configuration->getDir()) == true) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -74,8 +70,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return boolean True on success false on failure.
      */
-    public function put($local, $remote)
-    {
+    public function put($local, $remote) {
         return $this->cp($local, $remote);
     }
 
@@ -90,8 +85,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return mixed Number of bytes written on success, false on failure.
      */
-    public function fput($stream, $remote)
-    {
+    public function fput($stream, $remote) {
         $this->startHandler();
         if (($bytes = file_put_contents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
@@ -113,8 +107,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return boolean True on success false on failure.
      */
-    public function get($local, $remote)
-    {
+    public function get($local, $remote) {
         return $this->cp($remote, $local);
     }
 
@@ -138,8 +131,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return mixed File resource handle or false on failure.
      */
-    public function fget($remote)
-    {
+    public function fget($remote) {
         $this->startHandler();
         if (($handle = fopen($remote, 'r+')) !== false) {
             rewind($handle);
@@ -158,12 +150,11 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return mixed The new permission or false if failed.
      */
-    public function chmod($perm, $file)
-    {
+    public function chmod($perm, $file) {
         $this->startHandler();
-        $perm = (int) octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = chmod($file, $perm)) !== false) {
-            $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
+            $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->stopHandler();
             return $perm;
         }
@@ -178,8 +169,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return mixed An array of the contents of $dir or false if fail.
      */
-    public function ls($dir = '')
-    {
+    public function ls($dir = '') {
         $dir = ($dir == '' ? getcwd() : $dir);
         $this->startHandler();
         if (($files = scandir($dir, 0, $this->_resource)) !== false) {
@@ -196,8 +186,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return boolean True if changed dir, false otherwise.
      */
-    public function cd($dir = '')
-    {
+    public function cd($dir = '') {
         $this->startHandler();
         if (chdir($dir)) {
             $this->stopHandler();
@@ -217,8 +206,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return boolean True on success, false on failure.
      */
-    public function mv($sourcepath, $destpath)
-    {
+    public function mv($sourcepath, $destpath) {
         $this->startHandler();
         if (rename($sourcepath, $destpath, $this->_resource)) {
             $this->stopHandler();
@@ -238,8 +226,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return boolean True on success, false on failure.
      */
-    public function cp($sourcepath, $destpath)
-    {
+    public function cp($sourcepath, $destpath) {
         $this->startHandler();
         if (copy($sourcepath, $destpath, $this->_resource)) {
             $this->stopHandler();
@@ -256,8 +243,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return boolean True if file removed, false if not.
      */
-    public function rm($sourcepath)
-    {
+    public function rm($sourcepath) {
         $this->startHandler();
         if (unlink($sourcepath, $this->_resource)) {
             $this->stopHandler();
@@ -274,8 +260,7 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return array Error codes.
      */
-    public function errorCodes()
-    {
+    public function errorCodes() {
         $this->stopHandler();
         $errors = array();
         return $errors;
