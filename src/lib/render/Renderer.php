@@ -150,7 +150,7 @@ class Renderer extends Smarty
         }
 
         // register prefilters
-        $this->register_prefilter('z_prefilter_escape_script'); // TODO B [not required for Smarty 3] (drak)
+        $this->register_prefilter('z_prefilter_escape_doubleBrace'); // TODO B [not required for Smarty 3] (drak)
         $this->register_prefilter('z_prefilter_legacy');
         $this->register_prefilter('z_prefilter_gettext_params');
 
@@ -652,19 +652,18 @@ function z_get_trusted($tpl_name, &$smarty)
 }
 
 /**
- * Callback function for preg_replace_callback, for the script tag contents
- * prefilter in templates. Allows the use of {{ and }} as
- * delimiters in scripts, even if they use { and } as block delimiters.
+ * Callback function for preg_replace_callback. Allows the use of {{ and }} as
+ * delimiters within certain tags, even if they use { and } as block delimiters.
  *
  * @param   array   $matches    The $matches array from preg_replace_callback,
  *                              containing the matched groups.
  * @return  string  The replacement string for the match.
  */
-function z_prefilter_escape_script_callback($matches)
+function z_prefilter_escape_doubleBrace_callback($matches)
 {
     $tagOpen = $matches[1];
-    $script = $matches[2];
-    $tagClose = $matches[3];
+    $script = $matches[3];
+    $tagClose = $matches[4];
     $script = str_replace('{{', '{/literal}{', $script);
     $script = str_replace('}}', '}{literal}', $script);
 
@@ -674,16 +673,17 @@ function z_prefilter_escape_script_callback($matches)
 }
 
 /**
- * Prefilter for script blocks, allowing the use of {{ and }} as delimiters,
- * even if the script language uses { and } as block delimters.
+ * Prefilter for tags that might contain { or } as block delimiters, such as
+ * <script> or <style>. Allows the use of {{ and }} as smarty delimiters,
+ * even if the language uses { and } as block delimters.
  *
  * @param   string  $tpl_source The template's source prior to prefiltering.
  * @param   Smarty  $smarty     A reference to the renderer object.
  * @return  string  The prefiltered template contents.
  */
-function z_prefilter_escape_script($tpl_source, &$smarty)
+function z_prefilter_escape_doubleBrace($tpl_source, &$smarty)
 {
-    return preg_replace_callback('`(<script[^>]*>)(.*?)(</script>)`s', 'z_prefilter_escape_script_callback', $tpl_source);
+    return preg_replace_callback('`(<(script|style)[^>]*>)(.*?)(</\2>)`s', 'z_prefilter_escape_doubleBrace_callback', $tpl_source);
 }
 
 function z_prefilter_gettext_params($tpl_source, &$smarty)
