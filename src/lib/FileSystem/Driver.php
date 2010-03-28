@@ -34,6 +34,13 @@ abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_
     protected $configuration;
 
     /**
+     * The Driver object (facade).
+     *
+     * @var object
+     */
+    public $driver;
+
+    /**
      * Construct the driver with the configuration.
      *
      * @param FileSystem_Configuration $configuration The configuration to be used.
@@ -41,6 +48,19 @@ abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_
     public function __construct(FileSystem_Configuration $configuration)
     {
         $this->configuration = $configuration;
+        $this->setup(); // setup $this->driver
         $this->connect();
+    }
+
+    /**
+     * Setter for facade driver.
+     *
+     * @param object $driver The facade driver.
+     *
+     * @return void
+     */
+    public function setDriver($driver)
+    {
+        $this->driver = $driver;
     }
 }

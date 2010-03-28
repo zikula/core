@@ -13,12 +13,13 @@
  */
 
 /**
- * FileSystem_Facad_Ftp is a facad interface for FTP connections.
+ * FileSystem_Facade_Ftp is a facad interface for FTP connections.
  */
-class FileSystem_Facad_Ftp
+class FileSystem_Facade_Ftp
 {
-    public static function put($ftp_stream, $remote_file, $local_file, $mode, $startpos=0)
+    public function put($ftp_stream, $remote_file, $local_file, $mode, $startpos=0)
     {
+        echo "THIS IS NOT THE RIGHT ONE!\n";
         return ftp_put($ftp_stream, $remote_file, $local_file, $mode, $startpos);
     }
 }

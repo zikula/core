@@ -37,6 +37,17 @@ class FileSystem_Ftp extends FileSystem_Driver
      */
     private $_dir = '/';
 
+
+    /**
+     * Implement Setup.
+     *
+     * @return void
+     */
+    public function setup()
+    {
+        $this->driver = new FileSystem_Facade_Ftp();
+    }
+
     /**
      * Standard function for creating a FTP connection and logging in.
      *
@@ -91,7 +102,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->startHandler();
-        if (FileSystem_Facad_Ftp::put($this->_resource, $remote, $local, FTP_BINARY)) {
+        if ($this->driver->put($this->_resource, $remote, $local, FTP_BINARY)) {
             $this->stopHandler();
             return true;
         }

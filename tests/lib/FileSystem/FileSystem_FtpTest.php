@@ -4,6 +4,10 @@ require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Interface.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Error.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Driver.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Ftp.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Facade/Ftp.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration/Ftp.php';
+
 
 /**
  * FileSystem_Ftp test case.
@@ -22,12 +26,8 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-
-        // TODO Auto-generated FileSystem_FtpTest::setUp()
-
-
-        $this->FileSystem_Ftp = new FileSystem_Ftp(/* parameters */);
-
+        $config = new FileSystem_Configuration_Ftp();
+        $this->FileSystem_Ftp = new FileSystem_Ftp($config);
     }
 
     /**
@@ -35,11 +35,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        // TODO Auto-generated FileSystem_FtpTest::tearDown()
-
-
         $this->FileSystem_Ftp = null;
-
         parent::tearDown();
     }
 
@@ -68,11 +64,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testPut()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testPut()
-        $this->markTestIncomplete("put test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('put')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->put(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->put(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('put')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->put(1,2));
     }
 
     /**
