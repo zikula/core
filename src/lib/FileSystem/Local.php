@@ -24,7 +24,7 @@
  */
 class FileSystem_Local extends FileSystem_Driver
 {
-    
+
     /**
      * Resource handle.
      *

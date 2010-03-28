@@ -27,6 +27,7 @@ class FileSystem_Error
      */
     //private $error_level;
 
+
     /**
      * Error container.
      *

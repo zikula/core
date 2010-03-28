@@ -51,18 +51,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->startHandler();
         //create the connection
-        if (($this->_resource = ($this->configuration->getSSL() ? $this->_resource
-            = ftp_ssl_connect($this->configuration->getHost(), $this->
-            configuration->getPort(), $this->configuration->getTimeout()) :
-            ftp_connect($this->configuration->getHost(), $this->configuration->
-            getPort(), $this->configuration->getTimeout()))) !== false) {
+        if (($this->_resource = ($this->configuration->getSSL() ? $this->_resource = ftp_ssl_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout()) : ftp_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout()))) !== false) {
             //log in
-            if (ftp_login($this->_resource, $this->configuration->getUser(),
-                $this->configuration->getPass())) {
+            if (ftp_login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
                 if (ftp_pasv($this->_resource, $this->configuration->getPasv())) {
-                    if (ftp_chdir($this->_resource, $this->configuration->getDir(
-                        ))) {
+                    if (ftp_chdir($this->_resource, $this->configuration->getDir())) {
                         $this->_dir = ftp_pwd($this->_resource);
                         $this->stopHandler();
                         return true;
@@ -265,7 +259,7 @@ class FileSystem_Ftp extends FileSystem_Driver
         $this->isAlive(true);
         $this->startHandler();
         if (($handle = $this->fget($sourcepath)) !== false) {
-            if($this->fput($handle, $destpath)) {
+            if ($this->fput($handle, $destpath)) {
                 $this->stopHandler();
                 return true;
             }
@@ -323,31 +317,31 @@ class FileSystem_Ftp extends FileSystem_Driver
         $this->stopHandler();
         $errors = array(
             array(
-                'code'   => '2',
+                'code' => '2',
                 'search' => 'getaddrinfo failed'),
             array(
-                'code'   => '3',
+                'code' => '3',
                 'search' => 'Failed to change directory'),
             array(
-                'code'   => '4',
+                'code' => '4',
                 'search' => 'No such file or directory'),
             array(
-                'code'   => '5',
+                'code' => '5',
                 'search' => 'Failed to open file'),
             array(
-                'code'   => '6',
+                'code' => '6',
                 'search' => 'SITE CHMOD command failed'),
             array(
-                'code'   => '7',
+                'code' => '7',
                 'search' => 'Could not create file'),
             array(
-                'code'   => '8',
+                'code' => '8',
                 'search' => 'RNFR command failed'),
             array(
-                'code'   => '11',
+                'code' => '11',
                 'search' => 'Delete operation failed'),
             array(
-                'code'   => '12',
+                'code' => '12',
                 'search' => 'not a valid resource handle'));
         return $errors;
     }
