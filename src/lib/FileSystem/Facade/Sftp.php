@@ -17,21 +17,6 @@
  *
  * Created especially to allow easy unit testing.
  */
-class FileSystem_Facade_Ftp
+class FileSystem_Facade_Sftp
 {
-    /**
-     * Facade for ftp_put().
-     *
-     * @param resource $ftp_stream
-     * @param string   $remote_file
-     * @param string   $local_file
-     * @param integer  $mode
-     * @param integer  $startpos
-     *
-     * @return boolean True on success.
-     */
-    public function put($ftp_stream, $remote_file, $local_file, $mode, $startpos=0)
-    {
-        return ftp_put($ftp_stream, $remote_file, $local_file, $mode, $startpos);
-    }
 }

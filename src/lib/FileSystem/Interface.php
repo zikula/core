@@ -25,7 +25,7 @@ interface FileSystem_Interface
     /**
      * Setup.
      *
-     * Use this to instanciate any facade driver class.
+     * Use this to instanciate any facade driver class required.
      *
      * @return void
      */

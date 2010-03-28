@@ -33,6 +33,15 @@ class FileSystem_Local extends FileSystem_Driver
     private $_resource;
 
     /**
+     * Implement Setup.
+     *
+     * @return void
+     */
+    public function setup()
+    {
+    }
+
+    /**
      * Create local connection.
      *
      * Standard function for creating a Local connection, this must be called
@@ -163,9 +172,9 @@ class FileSystem_Local extends FileSystem_Driver
      *
      * @return mixed An array of the contents of $dir or false if fail.
      */
-    public function ls($dir = "")
+    public function ls($dir = '')
     {
-        $dir = ($dir == "" ? getcwd() : $dir);
+        $dir = ($dir == '' ? getcwd() : $dir);
         $this->startHandler();
         if (($files = scandir($dir, 0, $this->_resource)) !== false) {
             return $files;

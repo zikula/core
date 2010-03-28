@@ -21,7 +21,7 @@
  * This class must implement FileSystem_Interface, the requirement to implement this interface
  * is inherited from FileSystem_Driver.
  */
-class FileSystem_SFtp extends FileSystem_Driver
+class FileSystem_Sftp extends FileSystem_Driver
 {
     /**
      * Resource.
@@ -43,6 +43,16 @@ class FileSystem_SFtp extends FileSystem_Driver
      * @var string
      */
     private $_dir;
+
+    /**
+     * Implement Setup.
+     *
+     * @return void
+     */
+    public function setup()
+    {
+        $this->driver = new FileSystem_Facade_Ftp();
+    }
 
     /**
      * Standard function for creating a SFTP connection and logging in.
