@@ -91,7 +91,7 @@ class FileSystem_Ftp extends FileSystem_Driver
     {
         $this->isAlive(true);
         $this->startHandler();
-        if (ftp_put($this->_resource, $remote, $local, FTP_BINARY)) {
+        if (FileSystem_Facad_Ftp::put($this->_resource, $remote, $local, FTP_BINARY)) {
             $this->stopHandler();
             return true;
         }

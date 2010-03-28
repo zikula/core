@@ -17,7 +17,7 @@
  */
 class FileSystem_Facad_Ftp
 {
-    public static function ftp_put($ftp_stream, $remote_file, $local_file, $mode, $startpos=0)
+    public static function put($ftp_stream, $remote_file, $local_file, $mode, $startpos=0)
     {
         return ftp_put($ftp_stream, $remote_file, $local_file, $mode, $startpos);
     }
