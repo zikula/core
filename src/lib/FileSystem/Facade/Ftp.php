@@ -152,12 +152,12 @@ class FileSystem_Facade_Ftp
     /**
      * Facade for ftp_systype().
      *
-     * @param resource $resource The ftp resource.
+     * @param resource $ftp_stream The ftp resource.
      *
      * @return boolean True on ftp systype.
      */
-    public function systype($resource)
+    public function systype($ftp_stream)
     {
-        return ftp_systype($resource);
+        return ftp_systype($ftp_stream);
     }
 }

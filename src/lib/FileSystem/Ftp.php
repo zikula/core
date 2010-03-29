@@ -68,7 +68,7 @@ class FileSystem_Ftp extends FileSystem_Driver
             $this->_resource = ftp_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         }
 
-        if ($this->resource !== false) {
+        if ($this->_resource !== false) {
             //log in
             if (ftp_login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
