@@ -243,4 +243,43 @@ class FileSystem_Facade_Sftp
         //@codeCoverageIgnoreEnd
     }
     
+    /**
+     * Facade for ssh2_shell function.
+     *
+     * @param resource $resource The SSH resource to use.
+     * @param string   $type     The enviroment to use(eg:vanill or xterm).
+     * 
+     * @return resoure|boolean Shell resource on success, false on failure.
+     */
+    public function sshShell($resource, $type = "xterm")
+    {
+        return ssh2_shell($resource, $type);
+    }
+    
+    /**
+     * Facade for fwrite over the shell.
+     *
+     * @param resource $resource The SSH Shell resource to use.
+     * @param string   $command  The command to send to server (end it with PHP_EOL).
+     * 
+     * @return intiger|boolean Bytes written on success, false on failure.
+     */
+    public function sshShellWrite($resource, $command)
+    {
+        return fwrite($resource, $command);
+    }
+    
+    /**
+     * Facade for fwrite over the shell.
+     *
+     * @param resource $resource The SSH Shell resource to use.
+     * @param intiger  $length   Number of bytes to read.
+     * 
+     * @return string|boolean Response read from shell on success, false on failure.
+     */
+    public function sshShellRead($resource, $length = 4096)
+    {
+        return fread($shell, $length);
+    }
+    
 }

@@ -197,16 +197,28 @@ class FileSystem_Sftp extends FileSystem_Driver
             return false;
         }
         //TODO should xterm be used?
-        $shell = ssh2_shell($this->_ssh_resource, "xterm");
-        fwrite($shell, "chmod --silent $perm $file;echo :::$?:::" . PHP_EOL);
+        if (($shell = $this->driver->sshShell($this->_ssh_resource, "xterm")) == false) {
+            //TODO error logged?
+            //could not get shell.
+            return false;
+        }
+        if ($this->driver->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
+            //couldnt write to shell
+            //TODO error logged?
+            return false;
+        }
         usleep(350000);
-        $resp = fread($shell, 4096);
-        fclose($shell);
+        if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
+            //could not read from shell
+            //TODO: error logged?
+            return false;
+        }
+        fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
         $this->connect(); //TODO we need a way to make sure that the connection is alive
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (intval($matches[0])) {
+            switch (str_replace(':','',$matches[0])) {
                 case 1:
                     $this->errorHandler('0', "Chmod returned with Code 1: failure.", '', '');
                     $this->stopHandler();
@@ -330,16 +342,28 @@ class FileSystem_Sftp extends FileSystem_Driver
         }
 
         //TODO should xterm be used?
-        $shell = ssh2_shell($this->_ssh_resource, "xterm");
-        fwrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL);
+        if (($shell = $this->driver->sshShell($this->_ssh_resource, "xterm")) == false) {
+            //TODO error logged?
+            //could not get shell.
+            return false;
+        }
+        if ($this->driver->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
+            //couldnt write to shell
+            //TODO error logged?
+            return false;
+        }
         usleep(350000);
-        $resp = fread($shell, 4096);
+        if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
+            //could not read from shell
+            //TODO: error logged?
+            return false;
+        }
         fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
         $this->connect(); //TODO we need a way to make sure that the connection is alive
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (intval($matches[0])) {
+            switch (str_replace(':','',$matches[0])) {
                 case 1:
                     $this->errorHandler('0', "cp returned with Code 1: failure.", '', '');
                     $this->stopHandler();

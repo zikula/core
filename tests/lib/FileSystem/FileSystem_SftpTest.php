@@ -238,11 +238,103 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function testChmod()
     {
-        // TODO Auto-generated FileSystem_SftpTest->testChmod()
-        $this->markTestIncomplete("chmod test not implemented");
-
-        $this->FileSystem_Sftp->chmod(/* parameters */);
-
+    	$perm = 777;
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals($perm,$this->FileSystem_Sftp->chmod($perm,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(":::1:::"));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(''));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
+    	
     }
 
     /**
@@ -362,10 +454,101 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function testCp()
     {
-        // TODO Auto-generated FileSystem_SftpTest->testCp()
-        $this->markTestIncomplete("cp test not implemented");
-
-        $this->FileSystem_Sftp->cp(/* parameters */);
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(true,$this->FileSystem_Sftp->cp(1,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(":::1:::"));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(''));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
 
     }
 
