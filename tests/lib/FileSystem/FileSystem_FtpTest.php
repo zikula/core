@@ -88,11 +88,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testFput()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testFput()
-        $this->markTestIncomplete("fput test not implemented");
+        /// Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fput')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->fput(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->fput(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fput')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->fput(1,2));
     }
 
     /**
@@ -100,10 +112,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testGet()
-        $this->markTestIncomplete("get test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('get')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->get(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->get(1,2));
+
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('get')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->get(1,2));
 
     }
 
@@ -112,11 +137,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testFget()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testFget()
-        $this->markTestIncomplete("fget test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fget')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->fget(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertType('resource', $this->FileSystem_Ftp->fget(1));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fget')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->fget(1));
     }
 
     /**
@@ -124,11 +161,24 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testChmod()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testChmod()
-        $this->markTestIncomplete("chmod test not implemented");
+        // Configure the stub.
+        $perm = '777';
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('chmod')
+             ->will($this->returnValue((int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT))));
 
-        $this->FileSystem_Ftp->chmod(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals($perm, $this->FileSystem_Ftp->chmod($perm,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('chmod')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->chmod(1,2));
     }
 
     /**
@@ -136,11 +186,24 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testLs()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testLs()
-        $this->markTestIncomplete("ls test not implemented");
+    	$array = array('1','2');
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('nlist')
+             ->will($this->returnValue($array));
 
-        $this->FileSystem_Ftp->ls(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertType('array', $this->FileSystem_Ftp->ls(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('nlist')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->get(1,2));
     }
 
     /**
@@ -148,11 +211,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testCd()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testCd()
-        $this->markTestIncomplete("cd test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->cd(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->cd(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->cd(1,2));
     }
 
     /**
@@ -160,10 +235,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testMv()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testMv()
-        $this->markTestIncomplete("mv test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('rename')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->mv(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->mv(1,2));
+
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('rename')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->mv(1,2));
 
     }
 
@@ -172,11 +260,36 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testCp()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testCp()
-        $this->markTestIncomplete("cp test not implemented");
+        // Configure the stub.
+        $handle = fopen('php://temp', 'r+');
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fget')
+             ->will($this->returnValue($handle));
+        $stub->expects($this->any())
+             ->method('fput')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->cp(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->cp(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fget')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->cp(1,2));
+        
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fput')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->cp(1,2));
     }
 
     /**
@@ -184,11 +297,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testRm()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testRm()
-        $this->markTestIncomplete("rm test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('delete')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->rm(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->rm(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('delete')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->rm(1,2));
     }
 
     /**
@@ -196,11 +321,23 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testIsAlive()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testIsAlive()
-        $this->markTestIncomplete("isAlive test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('systype')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Ftp->isAlive(/* parameters */);
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Ftp->isAlive());
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('systype')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Ftp->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Ftp->isAlive());
     }
 
     /**
@@ -208,11 +345,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testError_codes()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testError_codes()
-        $this->markTestIncomplete("error_codes test not implemented");
-
-        $this->FileSystem_Ftp->error_codes(/* parameters */);
-
+        $this->assertType('array',$this->FileSystem_Ftp->errorCodes());
     }
 
 }

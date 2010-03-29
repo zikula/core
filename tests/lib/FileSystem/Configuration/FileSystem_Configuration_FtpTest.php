@@ -59,11 +59,8 @@ class FileSystem_Configuration_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        // TODO Auto-generated FileSystem_Configuration_FtpTest->test__construct()
-        $this->markTestIncomplete("__construct test not implemented");
-
-        $this->FileSystem_Configuration_Ftp->__construct(/* parameters */);
-
+	    $this->assertType('FileSystem_Configuration',$this->FileSystem_Configuration_Ftp);
+	    $this->assertType('FileSystem_Configuration_Ftp',$this->FileSystem_Configuration_Ftp);
     }
 
     /**

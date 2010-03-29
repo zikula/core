@@ -56,11 +56,9 @@ class FileSystem_Configuration_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        // TODO Auto-generated FileSystem_Configuration_LocalTest->test__construct()
-        $this->markTestIncomplete("__construct test not implemented");
-
-        $this->FileSystem_Configuration_Local->__construct(/* parameters */);
-
+        $this->assertType('FileSystem_Configuration',$this->FileSystem_Configuration_Local);
+	    $this->assertType('FileSystem_Configuration_Local',$this->FileSystem_Configuration_Local);
+    	
     }
 
     /**

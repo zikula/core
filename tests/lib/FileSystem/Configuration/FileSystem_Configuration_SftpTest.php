@@ -60,11 +60,8 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        // TODO Auto-generated FileSystem_Configuration_SftpTest->test__construct()
-        $this->markTestIncomplete("__construct test not implemented");
-
-        $this->FileSystem_Configuration_Sftp->__construct(/* parameters */);
-
+	    $this->assertType('FileSystem_Configuration', $this->FileSystem_Configuration_Sftp);
+	    $this->assertType('FileSystem_Configuration_Sftp', $this->FileSystem_Configuration_Sftp);
     }
 
     /**
