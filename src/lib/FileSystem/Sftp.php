@@ -50,7 +50,7 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function setup()
     {
-        $this->driver = new FileSystem_Facade_Ftp();
+        $this->driver = new FileSystem_Facade_Sftp();
     }
 
     /**
@@ -65,14 +65,14 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function connect()
     {
-        $this->startHandler();
-        if (($this->_ssh_resource = ssh2_connect($this->configuration->getHost(), $this->configuration->getPort())) !== false) {
+        //$this->startHandler();
+        if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort())) !== false) {
             //connected
-            if ((ssh2_auth_password($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass())) !== false) {
+            if (($this->driver->auth_password($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass())) !== false) {
                 //logged in
-                if (($this->_resource = ssh2_sftp($this->_ssh_resource)) !== false) {
+                if (($this->_resource = $this->driver->sftp($this->_ssh_resource)) !== false) {
                     //started sftp
-                    if (($this->_dir = ssh2_sftp_realpath($this->_resource, $this->configuration->getDir())) !== false) {
+                    if (($this->_dir = $this->driver->realpath($this->_resource, $this->configuration->getDir())) !== false) {
                         //changed dir
                         $this->stopHandler();
                         return true; //return object?
@@ -103,7 +103,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function put($local, $remote)
     {
         $this->startHandler();
-        if (ssh2_scp_send($this->_resource, $local, $remote)) {
+        if ($this->driver->scp_send($this->_resource, $local, $remote)) {
             $this->stopHandler();
             return true;
         }
@@ -126,7 +126,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         $remote = ($remote == '' || substr($remote, 0, 1) !== '/' ? $this->_dir . '/' . $remote : $remote);
         $res = $this->_resource;
         $this->startHandler();
-        if (($bytes = file_put_contents("ssh2.sftp://$this->_resource/$remote", $stream, 0)) !== false) {
+        if (($bytes = $this->driver->put_contents($this->_driver,$remote,$stream)) !== false) {
             fclose($stream);
             $this->stopHandler();
             return $bytes;
@@ -150,7 +150,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function get($local, $remote)
     {
         $this->startHandler();
-        if (ssh2_scp_recv($this->_resource, $remote, $local)) {
+        if ($this->driver->scp_recv($this->_resource, $remote, $local)) {
             $this->stopHandler();
             return true;
         }
@@ -171,7 +171,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     {
         $remote = ($remote == "" || substr($remote, 0, 1) !== "/" ? $this->_dir . '/' . $remote : $remote);
         $this->startHandler();
-        if (($handle = fopen("ssh2.sftp://$this->_resource/$remote", 'r+')) !== false) {
+        if (($handle = $this->driver->sftp_fopen($this->_resource, $remote, 'r+')) !== false) {
             rewind($handle);
             $this->stopHandler();
             return $handle;
@@ -192,7 +192,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     {
         $this->startHandler();
         $file = ($file == "" || substr($file, 0, 1) !== "/" ? $this->_dir . '/' . $file : $file);
-        if (($file = ssh2_sftp_realpath($this->_resource, $file)) === false) {
+        if (($file = $this->driver->realpath($this->_resource, $file)) === false) {
             $this->stopHandler(); //source file not found.
             return false;
         }
@@ -236,18 +236,18 @@ class FileSystem_Sftp extends FileSystem_Driver
     {
         $dir = ($dir == "" || substr($dir, 0, 1) !== "/" ? $this->_dir . '/' . $dir : $dir);
 
-        $dir2 = "ssh2.sftp://$this->_resource/$dir";
+       
 
-        if (!file_exists($dir2)) {
+        if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
             $this->errorRegister("$dir does not exist.", 0);
             //TODO use either errorRegister or errorHandler not both.
             return false;
         }
 
-        if (is_dir($dir2)) {
-            $handle = opendir($dir2);
+        if ($this->driver->sftpIsDir($this->_resource, $dir)) {
+            $handle = $this->driver->sftpOpenDir($this->_resource, $dir);
             $files = array();
-            while (false !== ($file = readdir($handle))) {
+            while (false !== ($file = $this->driver->sftpReadDir($handle))) {
                 if (substr("$file", 0, 1) != ".") {
                     //if (!is_dir($file)) {
                     $files[] = $file;
@@ -257,7 +257,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             //finished searching the directory
             return $files;
         }
-        $this->errorHandler(0, "Directory: $dir is not a directory or does not exist", 'SFtp.php', '0');
+        $this->errorHandler(0, "$dir is not a directory", 'SFtp.php', '0');
         return false;
     }
 
@@ -272,7 +272,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     {
         $dir = ($dir == '' || substr($dir, 0, 1) !== '/' ? $this->_dir . '/' . $dir : $dir);
         $this->startHandler();
-        if (($dir = ssh2_sftp_realpath($this->_resource, $dir)) !== false) {
+        if (($dir = $this->driver->realpath($this->_resource, $dir)) !== false) {
             $this->_dir = $dir;
             $this->stopHandler();
             return true;
@@ -296,8 +296,8 @@ class FileSystem_Sftp extends FileSystem_Driver
         $this->startHandler();
         $sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
         $destpath = ($destpath == "" || substr($destpath, 0, 1) !== "/" ? $this->_dir . '/' . $destpath : $destpath);
-        if (($sourcepath = ssh2_sftp_realpath($this->_resource, $sourcepath)) !== false) {
-            if ((ssh2_sftp_rename($this->_resource, $sourcepath, $destpath)) !== false) {
+        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
+            if (($this->driver->sftpRename($this->_resource, $sourcepath, $destpath)) !== false) {
                 //renamed file
                 $this->stopHandler();
                 return true;
@@ -324,7 +324,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         $this->startHandler();
         $sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
         $destpath = ($destpath == "" || substr($destpath, 0, 1) !== "/" ? $this->_dir . '/' . $destpath : $destpath);
-        if (($sourcepath = ssh2_sftp_realpath($this->_resource, $sourcepath)) === false) {
+        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) === false) {
             $this->stopHandler(); //source file not found.
             return false;
         }
@@ -370,9 +370,9 @@ class FileSystem_Sftp extends FileSystem_Driver
         $sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
         $this->startHandler();
         //check the file actauly exists.
-        if (($sourcepath = ssh2_sftp_realpath($this->_resource, $sourcepath)) !== false) {
+        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
             //file exists
-            if (ssh2_sftp_unlink($this->_resource, $sourcepath)) {
+            if ($this->driver->sftpDelete($this->_resource, $sourcepath)) {
                 //file deleted
                 $this->stopHandler();
                 return true;
