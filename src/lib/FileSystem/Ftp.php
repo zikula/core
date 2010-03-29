@@ -63,7 +63,7 @@ class FileSystem_Ftp extends FileSystem_Driver
 
         //create the connection
         if ($this->configuration->getSSL()) {
-            $this->_resource = $this->driver->ssl_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+            $this->_resource = $this->driver->sslConnect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         } else {
             $this->_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         }

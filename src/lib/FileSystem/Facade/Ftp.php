@@ -19,24 +19,67 @@
  */
 class FileSystem_Facade_Ftp
 {
-	public function connect($host, $port = 21, $timeout = 10)
-	{
-		return ftp_connect($host, $port, $timeout);
-	}
-	
-    public function ssl_connect($host, $port = 21, $timeout = 10)
+    /**
+     * Facade for ftp_connect.
+     *
+     * @param string $host    Hostname to connect to.
+     * @param int    $port    Port to connect on.
+     * @param int    $timeout Timeout in seconds.
+     * 
+     * @return boolean True on success
+     */
+    public function connect($host, $port = 21, $timeout = 10)
     {
-        return ftp_ssl_connect($host, $port, $timeout);
+        //@codeCoverageIgnoreStart
+        return ftp_connect($host, $port, $timeout);
+        //@codeCoverageIgnoreEnd
     }
     
+    /**
+     * Facade for ftp_ssl_connect.
+     *
+     * @param string $host    Hostname to connect to.
+     * @param int    $port    Port to connect on.
+     * @param int    $timeout Timeout in seconds.
+     * 
+     * @return boolean True on success
+     */
+    public function sslConnect($host, $port = 21, $timeout = 10)
+    {
+        //@codeCoverageIgnoreStart
+        return ftp_ssl_connect($host, $port, $timeout);
+        //@codeCoverageIgnoreEnd
+    }
+    
+    /**
+     * Facade for ftp_login.
+     *
+     * @param resource $ftp_stream Ftp Resource to login to.
+     * @param string   $username   Username to login with.
+     * @param string   $password   Password to login with.
+     * 
+     * @return boolean True on success.
+     */
     public function login($ftp_stream, $username, $password)
     {
-    	return ftp_login($ftp_stream, $username, $password);
+        //@codeCoverageIgnoreStart
+        return ftp_login($ftp_stream, $username, $password);
+        //@codeCoverageIgnoreEnd
     }
     
+    /**
+     * Facade for ftp_pasv.
+     * 
+     * @param resource $ftp_stream Ftp resource to set pasv for.
+     * @param boolean  $pasv       True for passive, false for not.
+     * 
+     * @return boolean True on success.
+     */
     public function pasv($ftp_stream, $pasv)
     {
-    	return ftp_pasv($ftp_stream, $pasv);
+        //@codeCoverageIgnoreStart
+        return ftp_pasv($ftp_stream, $pasv);
+        //@codeCoverageIgnoreEnd
     }
     /**
      * Facade for ftp_put().
