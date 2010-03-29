@@ -203,7 +203,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(false));
 
         $this->FileSystem_Ftp->setDriver($stub);
-        $this->assertEquals(false, $this->FileSystem_Ftp->get(1,2));
+        $this->assertEquals(false, $this->FileSystem_Ftp->ls(1,2));
     }
 
     /**
@@ -284,6 +284,9 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         
         // Configure the stub.
         $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('fget')
+             ->will($this->returnValue($handle));
         $stub->expects($this->any())
              ->method('fput')
              ->will($this->returnValue(false));

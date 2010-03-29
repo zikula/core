@@ -32,7 +32,9 @@ class FileSystem_Facade_Ftp
      */
     public function put($ftp_stream, $remote_file, $local_file, $mode, $startpos=0)
     {
+        //@codeCoverageIgnoreStart
         return ftp_put($ftp_stream, $remote_file, $local_file, $mode, $startpos);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -47,7 +49,9 @@ class FileSystem_Facade_Ftp
      */
     public function fput($ftp_stream, $remote_file, $handle, $mode = FTP_BINARY)
     {
+        //@codeCoverageIgnoreStart
         return fput($ftp_stream, $remote_file, $handle, $mode);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -63,7 +67,9 @@ class FileSystem_Facade_Ftp
      */
     public function get($ftp_stream, $local_file, $remote_file, $mode, $resumepos = 0)
     {
+        //@codeCoverageIgnoreStart
         return fget($ftp_stream, $local_file, $remote_file, $mode, $resumepos);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -79,7 +85,9 @@ class FileSystem_Facade_Ftp
      */
     public function fget($ftp_stream, $handle, $remote_file, $mode, $resumepos = 0)
     {
+        //@codeCoverageIgnoreStart
         return ftp_fget($ftp_stream, $handle, $remote_file, $mode, $resumepos = 0);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -93,7 +101,9 @@ class FileSystem_Facade_Ftp
      */
     public function chmod($ftp_stream, $mode, $filename)
     {
+        //@codeCoverageIgnoreStart
         return ftp_chmod($ftp_stream, $mode, $filename);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -106,7 +116,9 @@ class FileSystem_Facade_Ftp
      */
     public function nlist($ftp_stream, $directory)
     {
+        //@codeCoverageIgnoreStart
         return ftp_nlist($ftp_stream, $directory);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -119,7 +131,9 @@ class FileSystem_Facade_Ftp
      */
     public function chdir($ftp_stream, $directory)
     {
+        //@codeCoverageIgnoreStart
         return ftp_chdir($ftp_stream, $directory);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -133,7 +147,9 @@ class FileSystem_Facade_Ftp
      */
     public function rename($ftp_stream, $oldname, $newname)
     {
+        //@codeCoverageIgnoreStart
         return ftp_rename($ftp_stream, $oldname, $newname);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -146,7 +162,9 @@ class FileSystem_Facade_Ftp
      */
     public function delete($ftp_stream, $path)
     {
+        //@codeCoverageIgnoreStart
         return delete($ftp_stream, $path);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -158,6 +176,8 @@ class FileSystem_Facade_Ftp
      */
     public function systype($ftp_stream)
     {
+        //@codeCoverageIgnoreStart
         return ftp_systype($ftp_stream);
+        //@codeCoverageIgnoreEnd
     }
 }
