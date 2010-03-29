@@ -109,7 +109,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
         // Configure the stub.
         $stub = $this->getMock('FileSystem_Facade_Local');
         $stub->expects($this->any())
-             ->method('put_contents')
+             ->method('putContents')
              ->will($this->returnValue(333));
 
         $this->FileSystem_Local->setDriver($stub);
@@ -118,7 +118,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
         // Configure the stub.
         $stub = $this->getMock('FileSystem_Facade_Local');
         $stub->expects($this->any())
-             ->method('put_contents')
+             ->method('putContents')
              ->will($this->returnValue(false));
 
         $this->FileSystem_Local->setDriver($stub);
@@ -159,7 +159,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
         $handle = fopen('php://temp', 'r+');
         $stub = $this->getMock('FileSystem_Facade_Local');
         $stub->expects($this->any())
-             ->method('file_open')
+             ->method('fileOpen')
              ->will($this->returnValue($handle));
 
         $this->FileSystem_Local->setDriver($stub);
@@ -168,7 +168,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
         // Configure the stub.
         $stub = $this->getMock('FileSystem_Facade_Local');
         $stub->expects($this->any())
-             ->method('file_open')
+             ->method('fileOpen')
              ->will($this->returnValue(false));
 
         $this->FileSystem_Local->setDriver($stub);

@@ -89,7 +89,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function fput($stream, $remote) {
         $this->startHandler();
-        if (($bytes = $this->driver->put_contents($remote, $stream, 0, $this->_resource)) !== false) {
+        if (($bytes = $this->driver->putContents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
             $this->stopHandler();
             return $bytes;
@@ -135,7 +135,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function fget($remote) {
         $this->startHandler();
-        if (($handle = $this->driver->file_open($remote, 'r+', false, $this->_resource)) !== false) {
+        if (($handle = $this->driver->fileOpen($remote, 'r+', false, $this->_resource)) !== false) {
             rewind($handle);
             $this->stopHandler();
             return $handle;

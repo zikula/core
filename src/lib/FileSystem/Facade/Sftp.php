@@ -31,7 +31,9 @@ class FileSystem_Facade_Sftp
      */
     public function connect($host, $port = 22)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_connect($host, $port);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -45,7 +47,9 @@ class FileSystem_Facade_Sftp
      */
     public function authPassword($session, $username, $password)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_auth_password($session, $username, $password);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -57,7 +61,9 @@ class FileSystem_Facade_Sftp
      */
     public function sftp($session)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_sftp($session);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -72,7 +78,9 @@ class FileSystem_Facade_Sftp
      */
     public function realpath($sftp, $filename)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_sftp_realpath($sftp, $filename);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -87,7 +95,9 @@ class FileSystem_Facade_Sftp
      */
     public function scpSend($session, $local_file, $remote_file, $create_mode = 0644)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_scp_send($session, $local_file, $remote_file, $create_mode);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -101,7 +111,9 @@ class FileSystem_Facade_Sftp
      */
     public function putContents($resource, $remote_file, $stream)
     {
+        //@codeCoverageIgnoreStart
         return file_put_contents("ssh2.sftp://$resource/$remote_file", $stream, 0);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -115,7 +127,9 @@ class FileSystem_Facade_Sftp
      */
     public function scpRecv($session, $remote_file, $local_file)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_scp_recv($session, $remote_file, $local_file);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -129,7 +143,9 @@ class FileSystem_Facade_Sftp
      */
     public function sftpFopen($resource, $remote_file, $mode = 'r+')
     {
+        //@codeCoverageIgnoreStart
         return fopen("ssh2.sftp://$resource/$remote_file", $mode);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -142,8 +158,10 @@ class FileSystem_Facade_Sftp
      */
     public function sftpFileExists($resource, $dir)
     {
+        //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
         return file_exists($dir2);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -156,8 +174,10 @@ class FileSystem_Facade_Sftp
      */
     public function sftpIsDir($resource, $dir)
     {
+        //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
         return is_dir($dir2);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -170,8 +190,10 @@ class FileSystem_Facade_Sftp
      */
     public function sftpOpenDir($resource, $dir)
     {
+        //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
         return opendir($dir2);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -185,7 +207,9 @@ class FileSystem_Facade_Sftp
      */
     public function sftpReadDir($handle)
     {
+        //@codeCoverageIgnoreStart
         return readdir($handle);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -199,7 +223,9 @@ class FileSystem_Facade_Sftp
      */
     public function sftpRename($resource, $source_path, $dest_path)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_sftp_rename($resource, $source_path, $dest_path);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -212,7 +238,9 @@ class FileSystem_Facade_Sftp
      */
     public function sftpDelete($resource, $source_path)
     {
+        //@codeCoverageIgnoreStart
         return ssh2_sftp_unlink($resource, $source_path);
+        //@codeCoverageIgnoreEnd
     }
     
 }
