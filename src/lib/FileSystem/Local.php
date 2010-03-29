@@ -35,7 +35,9 @@ class FileSystem_Local extends FileSystem_Driver {
      *
      * @return void
      */
-    public function setup() {
+    public function setup()
+    {
+        $this->driver = new FileSystem_Facade_Local();
     }
 
     /**
@@ -54,7 +56,7 @@ class FileSystem_Local extends FileSystem_Driver {
         if ($this->configuration->getDir() == '') {
             return true;
         }
-        if (chdir($this->configuration->getDir()) == true) {
+        if ($this->driver->chdir($this->configuration->getDir()) == true) {
             return true;
         }
         return false;
@@ -87,7 +89,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function fput($stream, $remote) {
         $this->startHandler();
-        if (($bytes = file_put_contents($remote, $stream, 0, $this->_resource)) !== false) {
+        if (($bytes = $this->driver->put_contents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
             $this->stopHandler();
             return $bytes;
@@ -133,7 +135,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function fget($remote) {
         $this->startHandler();
-        if (($handle = fopen($remote, 'r+')) !== false) {
+        if (($handle = $this->driver->file_open($remote, 'r+', false, $this->_resource)) !== false) {
             rewind($handle);
             $this->stopHandler();
             return $handle;
@@ -153,7 +155,7 @@ class FileSystem_Local extends FileSystem_Driver {
     public function chmod($perm, $file) {
         $this->startHandler();
         $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
-        if (($perm = chmod($file, $perm)) !== false) {
+        if (($perm = $this->driver->chmod($file, $perm)) !== false) {
             $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->stopHandler();
             return $perm;
@@ -172,7 +174,7 @@ class FileSystem_Local extends FileSystem_Driver {
     public function ls($dir = '') {
         $dir = ($dir == '' ? getcwd() : $dir);
         $this->startHandler();
-        if (($files = scandir($dir, 0, $this->_resource)) !== false) {
+        if (($files = $this->driver->scandir($dir, 0, $this->_resource)) !== false) {
             return $files;
         }
         $this->stopHandler();
@@ -188,7 +190,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function cd($dir = '') {
         $this->startHandler();
-        if (chdir($dir)) {
+        if ($this->driver->chdir($dir)) {
             $this->stopHandler();
             return true;
         }
@@ -208,7 +210,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function mv($sourcepath, $destpath) {
         $this->startHandler();
-        if (rename($sourcepath, $destpath, $this->_resource)) {
+        if ($this->driver->rename($sourcepath, $destpath, $this->_resource)) {
             $this->stopHandler();
             return true;
         }
@@ -228,7 +230,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function cp($sourcepath, $destpath) {
         $this->startHandler();
-        if (copy($sourcepath, $destpath, $this->_resource)) {
+        if ($this->driver->copy($sourcepath, $destpath, $this->_resource)) {
             $this->stopHandler();
             return true;
         }
@@ -245,7 +247,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function rm($sourcepath) {
         $this->startHandler();
-        if (unlink($sourcepath, $this->_resource)) {
+        if ($this->driver->delete($sourcepath, $this->_resource)) {
             $this->stopHandler();
             return true;
         }

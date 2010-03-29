@@ -1,6 +1,12 @@
 <?php
 require_once dirname(__FILE__) . '/../../bootstrap.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Interface.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Error.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Driver.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Ftp.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Facade/Ftp.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration/Ftp.php';
 
 /**
  * FileSystem_Error test case.
@@ -20,10 +26,8 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        // TODO Auto-generated FileSystem_ErrorTest::setUp()
-
-
-        $this->FileSystem_Error = new FileSystem_Error(/* parameters */);
+        $config = new FileSystem_Configuration_Ftp();
+        $this->FileSystem_Ftp = new FileSystem_Ftp($config);
 
     }
 
@@ -53,10 +57,9 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
      */
     public function testError_get_last()
     {
-        // TODO Auto-generated FileSystem_ErrorTest->testError_get_last()
-        $this->markTestIncomplete("error_get_last test not implemented");
+        $this->FileSystem_Ftp->errorRegister('Error',1);
 
-        $this->FileSystem_Error->error_get_last(/* parameters */);
+        AssertType('aray', $this->FileSystem_Ftp->error_get_last());
 
     }
 

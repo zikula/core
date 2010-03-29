@@ -1,7 +1,10 @@
 <?php
 require_once dirname(__FILE__) . '/../../bootstrap.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Interface.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration/Local.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Error.php';
+require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Facade/Local.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Driver.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Local.php';
 
@@ -22,12 +25,8 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-
-        // TODO Auto-generated FileSystem_LocalTest::setUp()
-
-
-        $this->FileSystem_Local = new FileSystem_Local(/* parameters */);
-
+        $config = new FileSystem_Configuration_Local();
+        $this->FileSystem_Local = new FileSystem_Local($config);
     }
 
     /**
@@ -56,11 +55,21 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testConnect()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testConnect()
-        $this->markTestIncomplete("connect test not implemented");
+        // Configure the stub.
+        $config = new FileSystem_Configuration_Local();
+        $fs = new FileSystem_Local($config);
+       // $stub = $this->getMock('FileSystem_Facade_Local');
+       // $stub->expects($this->any())
+       //      ->method('chdir')
+       //      ->will($this->returnValue(true));
 
-        $this->FileSystem_Local->connect(/* parameters */);
+        $fs->setDriver($config);
+        $this->assertEquals(true, $fs->connect());
 
+        // Configure the stub.
+       // $config = new FileSystem_Configuration_Local('/dir');
+        //$fs = new FileSystem_Local($config);
+        //$this->assertEquals(true, $fs->connect());
     }
 
     /**
@@ -68,11 +77,24 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testPut()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testPut()
-        $this->markTestIncomplete("put test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('copy')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Local->put(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Local->put(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('copy')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->put(1,2));
+    	
     }
 
     /**
@@ -80,11 +102,24 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testFput()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testFput()
-        $this->markTestIncomplete("fput test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('put_contents')
+             ->will($this->returnValue(333));
 
-        $this->FileSystem_Local->fput(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(333, $this->FileSystem_Local->fput(1,2,3,4));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('put_contents')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->fput(1,2,3,4));
+        
     }
 
     /**
@@ -92,11 +127,23 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testGet()
-        $this->markTestIncomplete("get test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('copy')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Local->get(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Local->get(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('copy')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->get(1,2));
     }
 
     /**
@@ -104,11 +151,24 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testFget()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testFget()
-        $this->markTestIncomplete("fget test not implemented");
+        // Configure the stub.
+        $handle = fopen('php://temp', 'r+');
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('file_open')
+             ->will($this->returnValue($handle));
 
-        $this->FileSystem_Local->fget(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertType('resource', $this->FileSystem_Local->fget(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('file_open')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->fget(1,2));
     }
 
     /**
@@ -116,10 +176,25 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testChmod()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testChmod()
-        $this->markTestIncomplete("chmod test not implemented");
+    	$perm = '777';
+    	$perm2 = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('chmod')
+             ->will($this->returnValue($perm2));
 
-        $this->FileSystem_Local->chmod(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals($perm, $this->FileSystem_Local->chmod(1,2));
+
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('chmod')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->chmod(1,2));
 
     }
 
@@ -128,11 +203,24 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testLs()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testLs()
-        $this->markTestIncomplete("ls test not implemented");
+        // Configure the stub.
+        $array = array('1','2');
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('scandir')
+             ->will($this->returnValue($array));
 
-        $this->FileSystem_Local->ls(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertType('array', $this->FileSystem_Local->ls(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('scandir')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->ls(1,2));
     }
 
     /**
@@ -140,10 +228,23 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testCd()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testCd()
-        $this->markTestIncomplete("cd test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Local->cd(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Local->cd(1));
+
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->cd(1));
 
     }
 
@@ -152,11 +253,23 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testMv()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testMv()
-        $this->markTestIncomplete("mv test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('rename')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Local->mv(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Local->mv(1,2,3));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('rename')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->mv(1,2,3));
     }
 
     /**
@@ -164,11 +277,23 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testCp()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testCp()
-        $this->markTestIncomplete("cp test not implemented");
+       // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('copy')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Local->cp(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Local->cp(1,2));
 
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('copy')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->cp(1,2));
     }
 
     /**
@@ -176,10 +301,23 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testRm()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testRm()
-        $this->markTestIncomplete("rm test not implemented");
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('delete')
+             ->will($this->returnValue(true));
 
-        $this->FileSystem_Local->rm(/* parameters */);
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(true, $this->FileSystem_Local->rm(1,2));
+
+        // Configure the stub.
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('delete')
+             ->will($this->returnValue(false));
+
+        $this->FileSystem_Local->setDriver($stub);
+        $this->assertEquals(false, $this->FileSystem_Local->rm(1,2));
 
     }
 
