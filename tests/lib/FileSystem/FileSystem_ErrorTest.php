@@ -25,9 +25,7 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $config = new FileSystem_Configuration_Ftp();
-        $this->FileSystem_Ftp = new FileSystem_Ftp($config);
+        $this->FileSystem_Error = new FileSystem_Error();
 
     }
 
@@ -55,11 +53,11 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
     /**
      * Tests FileSystem_Error->error_get_last()
      */
-    public function testError_get_last()
+    public function testErrorGetLast()
     {
-        $this->FileSystem_Ftp->errorRegister('Error',1);
+        $this->FileSystem_Error->errorRegister('Error',1);
 
-        AssertType('aray', $this->FileSystem_Ftp->error_get_last());
+        $this->assertType('array', $this->FileSystem_Error->errorGetLast());
 
     }
 

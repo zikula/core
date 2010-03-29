@@ -136,7 +136,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    protected function errorRegister($e, $code)
+    public function errorRegister($e, $code)
     {
         $this->errors = array_merge(array(
             array(
