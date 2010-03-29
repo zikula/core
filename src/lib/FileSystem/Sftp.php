@@ -68,7 +68,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         //$this->startHandler();
         if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort())) !== false) {
             //connected
-            if (($this->driver->auth_password($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass())) !== false) {
+            if (($this->driver->authPassword($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass())) !== false) {
                 //logged in
                 if (($this->_resource = $this->driver->sftp($this->_ssh_resource)) !== false) {
                     //started sftp
@@ -103,7 +103,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function put($local, $remote)
     {
         $this->startHandler();
-        if ($this->driver->scp_send($this->_resource, $local, $remote)) {
+        if ($this->driver->scpSend($this->_resource, $local, $remote)) {
             $this->stopHandler();
             return true;
         }
@@ -126,7 +126,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         $remote = ($remote == '' || substr($remote, 0, 1) !== '/' ? $this->_dir . '/' . $remote : $remote);
         $res = $this->_resource;
         $this->startHandler();
-        if (($bytes = $this->driver->put_contents($this->_driver,$remote,$stream)) !== false) {
+        if (($bytes = $this->driver->putContents($this->_driver,$remote,$stream)) !== false) {
             fclose($stream);
             $this->stopHandler();
             return $bytes;
@@ -150,7 +150,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function get($local, $remote)
     {
         $this->startHandler();
-        if ($this->driver->scp_recv($this->_resource, $remote, $local)) {
+        if ($this->driver->scpRecv($this->_resource, $remote, $local)) {
             $this->stopHandler();
             return true;
         }
@@ -171,7 +171,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     {
         $remote = ($remote == "" || substr($remote, 0, 1) !== "/" ? $this->_dir . '/' . $remote : $remote);
         $this->startHandler();
-        if (($handle = $this->driver->sftp_fopen($this->_resource, $remote, 'r+')) !== false) {
+        if (($handle = $this->driver->sftpFopen($this->_resource, $remote, 'r+')) !== false) {
             rewind($handle);
             $this->stopHandler();
             return $handle;
