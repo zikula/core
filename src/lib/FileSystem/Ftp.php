@@ -63,17 +63,17 @@ class FileSystem_Ftp extends FileSystem_Driver
 
         //create the connection
         if ($this->configuration->getSSL()) {
-            $this->_resource = ftp_ssl_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+            $this->_resource = $this->driver->ssl_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         } else {
-            $this->_resource = ftp_connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+            $this->_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         }
 
         if ($this->_resource !== false) {
             //log in
-            if (ftp_login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
+            if ($this->driver->login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
-                if (ftp_pasv($this->_resource, $this->configuration->getPasv())) {
-                    if (ftp_chdir($this->_resource, $this->configuration->getDir())) {
+                if ($this->driver->pasv($this->_resource, $this->configuration->getPasv())) {
+                    if ($this->driver->chdir($this->_resource, $this->configuration->getDir())) {
                         $this->_dir = ftp_pwd($this->_resource);
                         $this->stopHandler();
                         return true;

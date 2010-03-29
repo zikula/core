@@ -19,6 +19,25 @@
  */
 class FileSystem_Facade_Ftp
 {
+	public function connect($host, $port = 21, $timeout = 10)
+	{
+		return ftp_connect($host, $port, $timeout);
+	}
+	
+    public function ssl_connect($host, $port = 21, $timeout = 10)
+    {
+        return ftp_ssl_connect($host, $port, $timeout);
+    }
+    
+    public function login($ftp_stream, $username, $password)
+    {
+    	return ftp_login($ftp_stream, $username, $password);
+    }
+    
+    public function pasv($ftp_stream, $pasv)
+    {
+    	return ftp_pasv($ftp_stream, $pasv);
+    }
     /**
      * Facade for ftp_put().
      *

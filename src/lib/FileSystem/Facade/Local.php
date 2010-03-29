@@ -19,17 +19,6 @@
  */
 class FileSystem_Facade_Local
 {
-    /**
-     * Implement Setup.
-     *
-     * @return void
-     */
-    public function setup()
-    {
-    	//@codeCoverageIgnoreStart
-        $this->driver = new FileSystem_Facade_Ftp();
-        //@codeCoverageIgnoreEnd
-    }
     
     public function copy($source, $dest, $context)
     {

@@ -52,11 +52,113 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     public function testConnect()
     {
-        // TODO Auto-generated FileSystem_FtpTest->testConnect()
-        $this->markTestIncomplete("connect test not implemented");
-
-        $this->FileSystem_Ftp->connect(/* parameters */);
-
+        $config = new FileSystem_Configuration_Ftp(1,2,3,4,5,6,true);
+        $fs = @new FileSystem_Ftp($config);
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('ssl_connect')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('login')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('pasv')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
+        $fs->setDriver($stub);
+        $this->assertEquals(true, $fs->connect());
+        
+        $config = new FileSystem_Configuration_Ftp();
+        $fs = @new FileSystem_Ftp($config);
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('connect')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('login')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('pasv')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
+        $fs->setDriver($stub);
+        $this->assertEquals(true, $fs->connect());
+        
+        $config = new FileSystem_Configuration_Ftp();
+        $fs = @new FileSystem_Ftp($config);
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('connect')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('login')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('pasv')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
+        $fs->setDriver($stub);
+        $this->assertEquals(false, $fs->connect());
+        
+        $config = new FileSystem_Configuration_Ftp();
+        $fs = @new FileSystem_Ftp($config);
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('connect')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('login')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('pasv')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
+        $fs->setDriver($stub);
+        $this->assertEquals(false, $fs->connect());
+        
+        $config = new FileSystem_Configuration_Ftp();
+        $fs = @new FileSystem_Ftp($config);
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('connect')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('login')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('pasv')
+             ->will($this->returnValue(false));
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
+        $fs->setDriver($stub);
+        $this->assertEquals(false, $fs->connect());
+        
+        $config = new FileSystem_Configuration_Ftp();
+        $fs = @new FileSystem_Ftp($config);
+        $stub = $this->getMock('FileSystem_Facade_Ftp');
+        $stub->expects($this->any())
+             ->method('connect')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('login')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('pasv')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(false));
+        $fs->setDriver($stub);
+        $this->assertEquals(false, $fs->connect());
     }
 
     /**
