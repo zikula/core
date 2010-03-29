@@ -107,9 +107,11 @@ class FileSystem_Error
         // $this->error_level = error_reporting();
         // error_reporting(EALL | EWARNING);
         // return;
+        //@codeCoverageIgnoreStart
         set_error_handler(array(
             $this,
             'errorHandler'));
+        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -119,8 +121,10 @@ class FileSystem_Error
      */
     public function stopHandler()
     {
+        //@codeCoverageIgnoreStart
         //   error_reporting($this->error_level);
         restore_error_handler();
+        //@codeCoverageIgnoreEnd
     }
 
     /**

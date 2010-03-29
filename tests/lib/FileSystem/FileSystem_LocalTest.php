@@ -58,18 +58,22 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
         // Configure the stub.
         $config = new FileSystem_Configuration_Local();
         $fs = new FileSystem_Local($config);
-       // $stub = $this->getMock('FileSystem_Facade_Local');
-       // $stub->expects($this->any())
-       //      ->method('chdir')
-       //      ->will($this->returnValue(true));
-
         $fs->setDriver($config);
         $this->assertEquals(true, $fs->connect());
-
-        // Configure the stub.
-       // $config = new FileSystem_Configuration_Local('/dir');
-        //$fs = new FileSystem_Local($config);
-        //$this->assertEquals(true, $fs->connect());
+        $config = new FileSystem_Configuration_Local('/dir');
+        $fs = @new FileSystem_Local($config);
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(true));
+        $fs->setDriver($stub);
+        $this->assertEquals(true, $fs->connect());
+        $stub = $this->getMock('FileSystem_Facade_Local');
+        $stub->expects($this->any())
+             ->method('chdir')
+             ->will($this->returnValue(false));
+        $fs->setDriver($stub);
+        $this->assertEquals(false, $fs->connect());
     }
 
     /**
@@ -326,10 +330,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     public function testError_codes()
     {
-        // TODO Auto-generated FileSystem_LocalTest->testError_codes()
-        $this->markTestIncomplete("error_codes test not implemented");
-
-        $this->FileSystem_Local->error_codes(/* parameters */);
+        $this->assertType('array',$this->FileSystem_Local->errorCodes());
 
     }
 

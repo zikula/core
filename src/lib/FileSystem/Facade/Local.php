@@ -26,47 +26,65 @@ class FileSystem_Facade_Local
      */
     public function setup()
     {
+    	//@codeCoverageIgnoreStart
         $this->driver = new FileSystem_Facade_Ftp();
+        //@codeCoverageIgnoreEnd
     }
     
     public function copy($source, $dest, $context)
     {
+    	//@codeCoverageIgnoreStart
         return copy($source, $dest, $context);
+        //@codeCoverageIgnoreEnd
     }
     
     public function put_contents($filename, $data, $flags = 0, $context)
     {
+    	//@codeCoverageIgnoreStart
         return file_put_contents($filename, $data, $flags, $context);
+        //@codeCoverageIgnoreEnd
     }
       
     public function file_open($filename, $mode, $use_include_path = false, $context)
     {
+    	//@codeCoverageIgnoreStart
         return fopen($filename, $mode, $use_include_path, $context);
+        //@codeCoverageIgnoreEnd
     }
     
     public function chmod($filename, $mode)
     {
+    	//@codeCoverageIgnoreStart
         return chmod($filename, $mode);
+        //@codeCoverageIgnoreEnd
     }
     
     public function scandir($directory, $sorting_order = 0, $context)
     {
+    	//@codeCoverageIgnoreStart
         return scandir($directory, $sorting_order, $context);
+        //@codeCoverageIgnoreEnd
     }
     
     public function chdir($dir)
     {
+    	//@codeCoverageIgnoreStart
         return chdir($dir);
+        //@codeCoverageIgnoreEnd
     }
     
     public function rename($oldname, $newname, $context)
     {
+    	//@codeCoverageIgnoreStart
         return rename($oldname, $newname, $context);
+        //@codeCoverageIgnoreEnd
     }
     
     public function delete($filename, $context)
     {
+    	//@codeCoverageIgnoreStart
         return unlink($filename, $context);
+        //@codeCoverageIgnoreEnd
     }
     
 }
