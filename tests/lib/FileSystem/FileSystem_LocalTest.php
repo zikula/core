@@ -1,5 +1,9 @@
 <?php
 require_once dirname(__FILE__) . '/../../bootstrap.php';
+
+// exclude the following file from code coverage reports.
+PHPUnit_Util_Filter::addFileToFilter(dirname(__FILE__). '/../../../src/lib/FileSystem/Facade/Local.php');
+
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Interface.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration/Local.php';
@@ -98,7 +102,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
 
         $this->FileSystem_Local->setDriver($stub);
         $this->assertEquals(false, $this->FileSystem_Local->put(1,2));
-    	
+
     }
 
     /**
@@ -123,7 +127,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
 
         $this->FileSystem_Local->setDriver($stub);
         $this->assertEquals(false, $this->FileSystem_Local->fput(1,2,3,4));
-        
+
     }
 
     /**

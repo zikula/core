@@ -1,5 +1,9 @@
 <?php
 require_once dirname(__FILE__) . '/../../bootstrap.php';
+
+// exclude the following file from code coverage reports.
+PHPUnit_Util_Filter::addFileToFilter(dirname(__FILE__). '/../../../src/lib/FileSystem/Facade/Ftp.php');
+
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Interface.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Error.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Driver.php';
@@ -69,7 +73,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(true, $fs->connect());
-        
+
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
@@ -87,7 +91,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(true, $fs->connect());
-        
+
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
@@ -105,7 +109,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
-        
+
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
@@ -123,7 +127,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
-        
+
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
@@ -141,7 +145,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
-        
+
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
@@ -383,7 +387,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
 
         $this->FileSystem_Ftp->setDriver($stub);
         $this->assertEquals(false, $this->FileSystem_Ftp->cp(1,2));
-        
+
         // Configure the stub.
         $stub = $this->getMock('FileSystem_Facade_Ftp');
         $stub->expects($this->any())

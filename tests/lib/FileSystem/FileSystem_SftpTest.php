@@ -1,5 +1,9 @@
 <?php
 require_once dirname(__FILE__) . '/../../bootstrap.php';
+
+// exclude the following file from code coverage reports.
+PHPUnit_Util_Filter::addFileToFilter(dirname(__FILE__). '/../../../src/lib/FileSystem/Facade/Sftp.php');
+
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Interface.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Error.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Driver.php';
@@ -74,7 +78,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(true, $fs->connect());
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -90,7 +94,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -106,7 +110,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -122,7 +126,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $fs->setDriver($stub);
         $this->assertEquals(false, $fs->connect());
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -151,7 +155,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(true,$this->FileSystem_Sftp->put(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('scpSend')
@@ -172,7 +176,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(true,$this->FileSystem_Sftp->fput(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('putContents')
@@ -193,7 +197,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(true,$this->FileSystem_Sftp->get(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('scpRecv')
@@ -215,7 +219,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue($handle));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertType('resource',$this->FileSystem_Sftp->fget(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('sftpFopen')
@@ -246,7 +250,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals($perm,$this->FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -262,7 +266,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -278,7 +282,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -294,7 +298,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -310,7 +314,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(false));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -326,7 +330,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(":::1:::"));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -342,7 +346,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(":::2:::"));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -358,7 +362,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(''));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
-    	
+
     }
 
     /**
@@ -381,7 +385,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->onConsecutiveCalls(true,false,false,false));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertType('array',$this->FileSystem_Sftp->ls());
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('sftpFileExists')
@@ -397,7 +401,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(false));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->ls());
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('sftpFileExists')
@@ -427,7 +431,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(true,$this->FileSystem_Sftp->cd(1));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -450,7 +454,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(true,$this->FileSystem_Sftp->mv(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -460,7 +464,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->mv(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -493,7 +497,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(true,$this->FileSystem_Sftp->cp(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -509,7 +513,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -525,7 +529,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -541,7 +545,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -557,7 +561,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(":::1:::"));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -573,7 +577,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(":::2:::"));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -589,7 +593,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(''));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -622,7 +626,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(true,$this->FileSystem_Sftp->rm(1));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -632,7 +636,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->rm(1));
-        
+
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -643,7 +647,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->rm(1));
     }
-    
+
 /**
      * Tests FileSystem_Ftp->error_codes()
      */
