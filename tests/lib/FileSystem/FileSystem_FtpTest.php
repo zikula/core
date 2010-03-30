@@ -53,7 +53,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
     public function testConnect()
     {
         $config = new FileSystem_Configuration_Ftp(1,2,3,4,5,6,true);
-        $fs = @new FileSystem_Ftp($config);
+        $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
         $stub->expects($this->any())
              ->method('ssl_connect')
@@ -71,7 +71,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $fs->connect());
         
         $config = new FileSystem_Configuration_Ftp();
-        $fs = @new FileSystem_Ftp($config);
+        $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -89,7 +89,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $fs->connect());
         
         $config = new FileSystem_Configuration_Ftp();
-        $fs = @new FileSystem_Ftp($config);
+        $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -107,7 +107,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $fs->connect());
         
         $config = new FileSystem_Configuration_Ftp();
-        $fs = @new FileSystem_Ftp($config);
+        $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -125,7 +125,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $fs->connect());
         
         $config = new FileSystem_Configuration_Ftp();
-        $fs = @new FileSystem_Ftp($config);
+        $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
         $stub->expects($this->any())
              ->method('connect')
@@ -143,7 +143,7 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $fs->connect());
         
         $config = new FileSystem_Configuration_Ftp();
-        $fs = @new FileSystem_Ftp($config);
+        $fs = new FileSystem_Ftp($config);
         $stub = $this->getMock('FileSystem_Facade_Ftp');
         $stub->expects($this->any())
              ->method('connect')

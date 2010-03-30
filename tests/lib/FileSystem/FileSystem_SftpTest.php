@@ -27,7 +27,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         $config = new FileSystem_Configuration_Sftp();
-        $this->FileSystem_Sftp = @new FileSystem_Sftp($config);
+        $this->FileSystem_Sftp = new FileSystem_Sftp($config);
 
     }
 
@@ -58,7 +58,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
     public function testConnect()
     {
         $config = new FileSystem_Configuration_Sftp(1,2,3,4,5);
-        $fs = @new FileSystem_Sftp($config);
+        $fs = new FileSystem_Sftp($config);
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('connect')

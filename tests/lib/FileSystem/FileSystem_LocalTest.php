@@ -61,7 +61,7 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
         $fs->setDriver($config);
         $this->assertEquals(true, $fs->connect());
         $config = new FileSystem_Configuration_Local('/dir');
-        $fs = @new FileSystem_Local($config);
+        $fs = new FileSystem_Local($config);
         $stub = $this->getMock('FileSystem_Facade_Local');
         $stub->expects($this->any())
              ->method('chdir')

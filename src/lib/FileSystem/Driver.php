@@ -48,7 +48,6 @@ abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_
     {
         $this->configuration = $configuration;
         $this->setup(); // setup $this->driver
-        $this->connect();
     }
 
     /**
