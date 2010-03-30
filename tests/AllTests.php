@@ -4,8 +4,8 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 }
 
 require_once dirname(__FILE__) . '/bootstrap.php';
-require_once dirname(__FILE__) . '/DummyTest.php';
 require_once dirname(__FILE__) . '/lib/i18n/AllTests.php';
+require_once dirname(__FILE__) . '/lib/FileSystem/AllTests.php';
 
 class AllTests
 {
@@ -17,7 +17,7 @@ class AllTests
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('Zikula Core - All Tests');
-        $suite->addTestSuite('DummyTest');
+        $suite->addTest(I18nAllTests::suite());
         $suite->addTest(I18nAllTests::suite());
         return $suite;
     }
