@@ -646,7 +646,7 @@ class DBUtil
         if ($res === false) {
             return $res;
         }
-        
+
         self::flushCache($table);
 
         if ((!$preserve || !isset($object[$idfield])) && isset($columnList[$idfield])) {
@@ -749,7 +749,7 @@ class DBUtil
                 return $res;
             }
         }
-        
+
         self::flushCache($table);
 
         if (!DBConnectionStack::isDefaultConnection()) {
@@ -979,7 +979,7 @@ class DBUtil
         if ($res === false) {
             return $res;
         }
-        
+
         self::flushCache($table);
 
         // Attribution and logging only make sense if we do object-based deletion.
@@ -1518,22 +1518,22 @@ class DBUtil
     }
 
     /**
-     * Select & return a field by an ID-field value
+     * Select & return a field by an ID-field value.
      *
-     * @param table         The treated table reference
-     * @param field        The field we wish to select
-     * @param id           The ID value we wish to select with
-     * @param idfield       The idfield to use (optional) (default='id');
-     * @return The resulting field value
+     * @param tableName     The treated table reference.
+     * @param field         The field we wish to select.
+     * @param id            The ID value we wish to select with.
+     * @param idfield       The idfield to use (optional) (default='id');.
+     * @return The resulting field value.
      */
-    public static function selectFieldByID($table, $field, $id, $idfield = 'id')
+    public static function selectFieldByID($tableName, $field, $id, $idfield = 'id')
     {
         $tables = pnDBGetTables();
-        $cols = $tables["{$tablename}_column"];
+        $cols = $tables["{$table}_column"];
         $idFieldName = $cols[$idfield];
 
         $where = $idFieldName . " = '" . DataUtil::formatForStore($id) . "'";
-        return self::selectField($table, $field, $where);
+        return self::selectField($tableName, $field, $where);
     }
 
     /**
