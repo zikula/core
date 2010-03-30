@@ -4,12 +4,12 @@
 {pageaddvar name="javascript" value="javascript/helpers/texpand.js"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname="core" src="configure.gif" set="icons/large" __alt="Settings"}</div>
-    <h2>{gt text="Owner settings"}</h2>
+    <h2>{gt text="Main settings"}</h2>
     <form class="z-form" action="{modurl modname="Settings" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Settings"}" />
             <fieldset>
-                <legend>{gt text="Owner info"}</legend>
+                <legend>{gt text="Main info"}</legend>
                 <div class="z-formrow">
                     <label for="settings_sitename">{gt text="Site name"}</label>
                     <input id="settings_sitename" type="text" name="settings[sitename]" value="{$settings.sitename|varprepfordisplay}" size="50" maxlength="100" />

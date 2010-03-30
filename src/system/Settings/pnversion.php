@@ -12,7 +12,7 @@
 
 $modversion['name']           = 'Settings';
 $modversion['displayname']    = __('General settings');
-$modversion['description']    = __("Provides an interface for managing the site's general settings, i.e. ownership information, site start page settings, multi-lingual settings, error reporting options, and various other features that are not administered within other modules.");
+$modversion['description']    = __("Provides an interface for managing the site's general settings, i.e. site start page settings, multi-lingual settings, error reporting options and various other features that are not administered within other modules.");
 //! module name that appears in URL
 $modversion['url']            = __('settings');
 $modversion['version']        = '2.9.2';
