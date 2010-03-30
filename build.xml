@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <project name="zikula" default="clean">
     <!-- invokation
-        phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcpd phpunit phpcb pdepend phpmd phpdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
+        phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcb phpcpd phpunit pdepend phpmd phpdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
         # note phpcb must be the last artifact run in the chain 
     -->
     <!--
@@ -159,7 +159,7 @@
 
     <!-- Code Browser -->
     <target name="phpcb">
-        <echo msg="PHP_CodeBrowser checkstyle voilations..." />
+        <echo msg="PHP_CodeBrowser on XML for voilations..." />
         <exec command="phpcb --log ${builddir}/logs --output ${builddir}/phpcb" />
     </target>
 </project>
