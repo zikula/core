@@ -218,7 +218,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         $matches = array();
         preg_match("/:::\d:::/", $resp, $matches);
         if (sizeof($matches) > 0) {
-            switch (str_replace(':','',$matches[0])) {
+            switch (intval(str_replace(':','',$matches[0]))) {
                 case 1:
                     $this->errorHandler('0', "Chmod returned with Code 1: failure.", '', '');
                     $this->stopHandler();

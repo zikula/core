@@ -378,7 +378,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('sftpReadDir')
-             ->will($this->returnValue(false));
+             ->will($this->onConsecutiveCalls(true,false,false,false));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertType('array',$this->FileSystem_Sftp->ls());
         
@@ -572,7 +572,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('sshShellRead')
              ->will($this->returnValue(":::2:::"));
         $this->FileSystem_Sftp->setDriver($stub);
-        $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
+        $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
         
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
@@ -587,6 +587,22 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
         $stub->expects($this->any())
              ->method('sshShellRead')
              ->will($this->returnValue(''));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
+        
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(false));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->cp(1,2));
 
