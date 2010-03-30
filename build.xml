@@ -159,7 +159,7 @@
 
     <!-- Code Browser -->
     <target name="phpcb">
-        <echo msg="PHP_CodeBrowser..." />
-        <exec command="phpcb --log ${builddir}/logs --source ${sourcedir}/src --output ${builddir}/phpcb" />
+        <echo msg="PHP_CodeBrowser checkstyle voilations..." />
+        <exec command="phpcb --log ${builddir}/logs --output ${builddir}/phpcb" />
     </target>
 </project>
