@@ -253,7 +253,9 @@ class FileSystem_Facade_Sftp
      */
     public function sshShell($resource, $type = "xterm")
     {
+    	//@codeCoverageIgnoreStart
         return ssh2_shell($resource, $type);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -266,7 +268,9 @@ class FileSystem_Facade_Sftp
      */
     public function sshShellWrite($resource, $command)
     {
+    	//@codeCoverageIgnoreStart
         return fwrite($resource, $command);
+        //@codeCoverageIgnoreEnd
     }
     
     /**
@@ -279,7 +283,9 @@ class FileSystem_Facade_Sftp
      */
     public function sshShellRead($resource, $length = 4096)
     {
+    	//@codeCoverageIgnoreStart
         return fread($shell, $length);
+        //@codeCoverageIgnoreEnd
     }
     
 }
