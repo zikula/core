@@ -37,7 +37,6 @@ class DBUtil
     public static function getCache($table, $key)
     {
         if (self::hasObjectCache($table)) {
-            $originalKey = $key;
             $key = md5($key);
             $prefix = md5(DBConnectionStack::getConnectionDSN());
             $cacheDriver = DBConnectionStack::getCacheDriver();
@@ -1069,7 +1068,7 @@ class DBUtil
             return $res;
         }
 
-        self::flushTable($tableName);
+        self::flushCache($tableName);
 
         return $res;
     }
@@ -1127,11 +1126,12 @@ class DBUtil
     }
 
     /**
-     * Convenience function to ensure that the order-by-clause starts with "ORDER BY"
+     * Convenience function to ensure that the order-by-clause starts with "ORDER BY".
      *
-     * @param orderby    The original order-by clause
-     * @param table      The table reference, only used for oracle quote determination (optional) (default=null)
-     * @return The (potentially) altered order-by-clause
+     * @param orderby    The original order-by clause.
+     * @param tableName  The table reference, only used for oracle quote determination (optional) (default=null).
+     *
+     * @return The (potentially) altered order-by-clause.
      */
     public static function _checkOrderByClause($orderby, $table = null)
     {
@@ -1148,7 +1148,7 @@ class DBUtil
             $t = str_replace('order by ', '', $t); // remove "order by" for easier parsing
 
 
-            $columns = $tables["{$tablename}_column"];
+            $columns = $tables["{$tableName}_column"];
 
             // anything which doesn't look like a basic ORDER BY clause (with possibly an ASC/DESC modifier)
             // we don't touch. To use such stuff with Oracle, you'll have to apply the quotes yourself.
@@ -1529,7 +1529,7 @@ class DBUtil
     public static function selectFieldByID($tableName, $field, $id, $idfield = 'id')
     {
         $tables = pnDBGetTables();
-        $cols = $tables["{$table}_column"];
+        $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
         $where = $idFieldName . " = '" . DataUtil::formatForStore($id) . "'";
@@ -1590,23 +1590,24 @@ class DBUtil
     }
 
     /**
-     * Select & return an array of field by an ID-field value
+     * Select & return an array of field by an ID-field value.
      *
-     * @param table        The treated table reference
-     * @param field        The field we wish to select
-     * @param id           The ID value we wish to select with
-     * @param idfield       The idfield to use (optional) (default='id');
-     * @return The resulting field value
+     * @param tableName    The treated table reference.
+     * @param field        The field we wish to select.
+     * @param id           The ID value we wish to select with.
+     * @param idfield       The idfield to use (optional) (default='id');.
+     *
+     * @return The resulting field value.
      */
-    public static function selectFieldArrayByID($table, $field, $id, $idfield = 'id')
+    public static function selectFieldArrayByID($tableName, $field, $id, $idfield = 'id')
     {
         $tables = pnDBGetTables();
-        $cols = $tables["{$tablename}_column"];
+        $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
         $where = $idFieldName . " = '" . DataUtil::formatForStore($id) . "'";
 
-        return self::selectFieldArray($table, $field, $where);
+        return self::selectFieldArray($tableName, $field, $where);
     }
 
     /**
@@ -1661,7 +1662,7 @@ class DBUtil
         $fieldName = $columns[$field];
 
         if (!$assocKey) {
-            $assocKey = isset($tables["{$table}_primary_key_column"]) ? $pntables["{$table}_primary_key_column"] : 'id';
+            $assocKey = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
         }
 
         $sql = "SELECT $assocKey AS $assocKey, $option($fieldName) AS $option FROM $tableName AS tbl";
@@ -2011,7 +2012,7 @@ class DBUtil
         } while ($limitNumRows != -1 && $limitNumRows > 0 && $fetchedObjectCount > 0 && count($objects) < $limitNumRows);
 
         if (!DBConnectionStack::isDefaultConnection()) {
-            return $object;
+            return $objects;
         }
 
         $tables = pnDBGetTables();
@@ -2299,7 +2300,7 @@ class DBUtil
         }
 
         if (!DBConnectionStack::isDefaultConnection()) {
-            return $object;
+            return $objects;
         }
 
         $idFieldName = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
@@ -2555,7 +2556,7 @@ class DBUtil
         try {
             if (!$resultID = Doctrine_Manager::connection()->lastInsertId($tableName, $fieldName)) {
                 if ($verbose) {
-                    print '<br />' . $dbconn->ErrorMsg() . '<br />';
+                    print '<br />' . $dbconn->ErrorMsg() . '<br />'; //TODO A this isnt right (drak)
                 }
 
                 if ($exitOnError) {
@@ -3367,6 +3368,8 @@ class DBUtil
             $dbType = DBConnectionStack::getConnectionDBType();
         }
 
+        $prefix = self::getTablePrefix($table);
+
         switch ($dbType) {
             case 'oci8': // Oracle
             case 'oci': // oracle
@@ -3389,7 +3392,6 @@ class DBUtil
         }
 
         // finally build the tablename
-        $prefix = self::getTablePrefix($table);
         $tablename = $prefix . '_' . $table;
         return $tablename;
     }
