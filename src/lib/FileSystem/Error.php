@@ -46,11 +46,9 @@ class FileSystem_Error
         if (count($this->errors) < 1) {
             return false;
         }
-        //TODO isnt there a php function get get an element from array and remove it?
+
         if ($clear) {
-            $error = $this->errors[0];
-            unset($this->errors[0]);
-            $this->errors = array_values($this->errors);
+            $error = array_shift($this->errors);
             return $error;
         }
         return $this->errors[0];
@@ -93,7 +91,6 @@ class FileSystem_Error
      */
     public function errorClearAll()
     {
-        unset($this->errors);
         $this->errors = array();
     }
 
@@ -142,10 +139,12 @@ class FileSystem_Error
      */
     public function errorRegister($e, $code)
     {
-        $this->errors = array_merge(array(
+        $this->errors = array_unshift($this->errors,
             array(
                 'message' => $e,
-                'code' => $code)), $this->errors);
+                'code' => $code
+                )
+            );
     }
 
     /**
