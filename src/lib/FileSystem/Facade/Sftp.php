@@ -253,7 +253,6 @@ class FileSystem_Facade_Sftp
      */
     public function sshShell($resource, $type = "xterm")
     {
-    	$resource = "";
         //@codeCoverageIgnoreStart
         return ssh2_shell($resourced, $type);
         //@codeCoverageIgnoreEnd
