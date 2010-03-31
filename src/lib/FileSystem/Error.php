@@ -139,7 +139,7 @@ class FileSystem_Error
      */
     public function errorRegister($e, $code)
     {
-        $this->errors = array_unshift($this->errors,
+        array_unshift($this->errors,
             array(
                 'message' => $e,
                 'code' => $code
