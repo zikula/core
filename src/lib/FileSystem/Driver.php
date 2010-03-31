@@ -43,9 +43,18 @@ abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_
      * Construct the driver with the configuration.
      *
      * @param FileSystem_Configuration $configuration The configuration to be used.
+     *
+     * @throws InvalidArgumentException if wrong configuration class received.
      */
     public function __construct(FileSystem_Configuration $configuration)
     {
+        // validate we get correct configuration class type.
+        $class = str_ireplace('FileSystem_', '', get_class($this));
+        $validName = "FileSystem_Configuration_{$class}";
+        if ($validName != get_class($configuration)) {
+            throw new InvalidArgumentException(sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.', get_class($this), $validName, get_class($configuration)));
+        }
+
         $this->configuration = $configuration;
         $this->setup(); // setup $this->driver
     }
