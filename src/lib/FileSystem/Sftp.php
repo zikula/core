@@ -123,8 +123,10 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function fput($stream, $remote)
     {
-        $remote = ($remote == '' || substr($remote, 0, 1) !== '/' ? $this->_dir . '/' . $remote : $remote);
-        $res = $this->_resource;
+        if ($remote == "" || substr($remote, 0, 1) !== "/") {
+            $remote = $this->_dir . '/' . $remote;
+        }
+    	$res = $this->_resource;
         $this->startHandler();
         if (($bytes = $this->driver->putContents($this->_driver,$remote,$stream)) !== false) {
             fclose($stream);
@@ -169,7 +171,9 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function fget($remote)
     {
-        $remote = ($remote == "" || substr($remote, 0, 1) !== "/" ? $this->_dir . '/' . $remote : $remote);
+        if ($remote == "" || substr($remote, 0, 1) !== "/") {
+            $remote = $this->_dir . '/' . $remote;
+        }
         $this->startHandler();
         if (($handle = $this->driver->sftpFopen($this->_resource, $remote, 'r+')) !== false) {
             rewind($handle);
@@ -191,27 +195,24 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function chmod($perm, $file)
     {
         $this->startHandler();
-        $file = ($file == "" || substr($file, 0, 1) !== "/" ? $this->_dir . '/' . $file : $file);
+        if ($file == '' || substr($file, 0, 1) !== '/') {
+            $file = $this->_dir . '/' . $file;
+        }
+
         if (($file = $this->driver->realpath($this->_resource, $file)) === false) {
             $this->stopHandler(); //source file not found.
             return false;
         }
         //TODO should xterm be used?
         if (($shell = $this->driver->sshShell($this->_ssh_resource, "xterm")) == false) {
-            //TODO error logged?
-            //could not get shell.
-            return false;
+            return false; //could not get shell.
         }
-        if ($this->driver->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
-            //couldnt write to shell
-            //TODO error logged?
-            return false;
+        if ($this->driver->sshShellWrite($shell, "chmod $perm $file;echo :::$?:::" . PHP_EOL) === false) {
+            return false; //couldnt write to shell
         }
         usleep(350000);
         if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
-            //could not read from shell
-            //TODO: error logged?
-            return false;
+            return false; //could not read from shell
         }
         fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
         $this->connect(); //TODO we need a way to make sure that the connection is alive
@@ -246,30 +247,28 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function ls($dir = "")
     {
-        $dir = ($dir == "" || substr($dir, 0, 1) !== "/" ? $this->_dir . '/' . $dir : $dir);
-
-       
-
-        if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
-            $this->errorRegister("$dir does not exist.", 0);
-            //TODO use either errorRegister or errorHandler not both.
-            return false;
+        if ($dir == '' || substr($dir, 0, 1) !== '/') {
+            $dir = $this->_dir . '/' . $dir;
         }
-
         if ($this->driver->sftpIsDir($this->_resource, $dir)) {
             $handle = $this->driver->sftpOpenDir($this->_resource, $dir);
             $files = array();
             while (false !== ($file = $this->driver->sftpReadDir($handle))) {
                 if (substr("$file", 0, 1) != ".") {
-                    //if (!is_dir($file)) {
                     $files[] = $file;
-                    //}
                 }
             }
             //finished searching the directory
             return $files;
         }
-        $this->errorHandler(0, "$dir is not a directory", 'SFtp.php', '0');
+        
+        //if IsDir fails that means its either not a directory or doesnt exist
+        if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
+            $this->errorRegister("$dir does not exist.", 0);
+            //TODO use either errorRegister or errorHandler not both.
+            return false;
+        }
+        $this->errorRegister("$dir is not a directory", 0);
         return false;
     }
 
@@ -282,7 +281,10 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function cd($dir = '')
     {
-        $dir = ($dir == '' || substr($dir, 0, 1) !== '/' ? $this->_dir . '/' . $dir : $dir);
+        if ($dir == '' || substr($dir, 0, 1) !== '/') {
+            $dir = $this->_dir . '/' . $dir;
+        }
+  
         $this->startHandler();
         if (($dir = $this->driver->realpath($this->_resource, $dir)) !== false) {
             $this->_dir = $dir;
@@ -306,17 +308,18 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function mv($sourcepath, $destpath)
     {
         $this->startHandler();
-        $sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
-        $destpath = ($destpath == "" || substr($destpath, 0, 1) !== "/" ? $this->_dir . '/' . $destpath : $destpath);
+        if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
+            $sourcepath = $this->_dir . '/' . $sourcepath;
+        }
+        if ($destpath == "" || substr($destpath, 0, 1) !== "/") {
+            $destpath = $this->_dir . '/' . $destpath;
+        }
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
             if (($this->driver->sftpRename($this->_resource, $sourcepath, $destpath)) !== false) {
-                //renamed file
-                $this->stopHandler();
+                $this->stopHandler(); //renamed file
                 return true;
-            }
-            //could not rename file
-        }
-        //Could not get reapath of sourcefile, it does not exist
+            }//could not rename file
+        }//Could not get reapath of sourcefile, it does not exist
         $this->stopHandler();
         return false;
     }
@@ -334,8 +337,12 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function cp($sourcepath, $destpath)
     {
         $this->startHandler();
-        $sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
-        $destpath = ($destpath == "" || substr($destpath, 0, 1) !== "/" ? $this->_dir . '/' . $destpath : $destpath);
+        if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
+            $sourcepath = $this->_dir . '/' . $sourcepath;
+        }
+        if ($destpath == "" || substr($destpath, 0, 1) !== "/") {
+            $destpath = $this->_dir . '/' . $destpath;
+        }
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) === false) {
             $this->stopHandler(); //source file not found.
             return false;
@@ -343,20 +350,14 @@ class FileSystem_Sftp extends FileSystem_Driver
 
         //TODO should xterm be used?
         if (($shell = $this->driver->sshShell($this->_ssh_resource, "xterm")) == false) {
-            //TODO error logged?
-            //could not get shell.
-            return false;
+            return false; //could not get shell.
         }
         if ($this->driver->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
-            //couldnt write to shell
-            //TODO error logged?
-            return false;
+            return false; //couldnt write to shell
         }
         usleep(350000);
         if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
-            //could not read from shell
-            //TODO: error logged?
-            return false;
+            return false; //could not read from shell
         }
         fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
         $this->connect(); //TODO we need a way to make sure that the connection is alive
@@ -375,10 +376,9 @@ class FileSystem_Sftp extends FileSystem_Driver
                     $this->stopHandler();
                     return false;
             }
-        }
-        //size of matches less then 1, there is no readable response
+        } //size of matches less then 1, there is no readable response
         $this->stopHandler();
-        $this->errorHandler('0', "Did not get acknowledgment from host, cp may or may not have succeeded.", '', '');
+        $this->errorRegister("Did not get acknowledgment from host, cp may or may not have succeeded.", 0);
         return false;
     }
 
@@ -391,8 +391,11 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function rm($sourcepath)
     {
-        $sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
-        $this->startHandler();
+        if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
+            $sourcepath = $this->_dir . '/' . $sourcepath;
+        }
+        //$sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
+        $this->startHandler();  
         //check the file actauly exists.
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
             //file exists

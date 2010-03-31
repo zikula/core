@@ -317,7 +317,7 @@ class FileSystem_Ftp extends FileSystem_Driver
      */
     public function isAlive($reconnect = false)
     {
-        if (!@$this->driver->systype($this->_resource)) {
+        if (!$this->driver->systype($this->_resource)) {
             if ($reconnect) {
                 return $this->connect();
             }
