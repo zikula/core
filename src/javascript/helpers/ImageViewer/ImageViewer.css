@@ -23,6 +23,7 @@
     line-height:16px;
     text-align:left;
     cursor: pointer;
+    color: #FFFFFF;
 }
 #ImageViewerClose {
     position:absolute;
