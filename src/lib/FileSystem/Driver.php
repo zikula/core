@@ -63,8 +63,10 @@ abstract class FileSystem_Driver implements FileSystem_Interface
         }
 
         $this->configuration = $configuration;
+
+        $facade = "FileSystem_Facade_{$class}";
+        $this->driver = new $facade();
         $this->errorHandler = new FileSystem_Error();
-        $this->setup(); // setup $this->driver
     }
 
     /**

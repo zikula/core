@@ -44,16 +44,6 @@ class FileSystem_Sftp extends FileSystem_Driver
     private $_dir;
 
     /**
-     * Implement Setup.
-     *
-     * @return void
-     */
-    public function setup()
-    {
-        $this->driver = new FileSystem_Facade_Sftp();
-    }
-
-    /**
      * Standard function for creating a SFTP connection and logging in.
      *
      * This must be called before any of the other functions in the

@@ -31,16 +31,6 @@ class FileSystem_Local extends FileSystem_Driver {
     private $_resource;
 
     /**
-     * Implement Setup.
-     *
-     * @return void
-     */
-    public function setup()
-    {
-        $this->driver = new FileSystem_Facade_Local();
-    }
-
-    /**
      * Create local connection.
      *
      * Standard function for creating a Local connection, this must be called
