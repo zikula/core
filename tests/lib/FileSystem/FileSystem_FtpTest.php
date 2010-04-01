@@ -44,14 +44,6 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Constructs the test case.
-     */
-    public function __construct()
-    {
-        // TODO Auto-generated constructor
-    }
-
-    /**
      * Tests FileSystem_Ftp->connect()
      */
     public function testConnect()

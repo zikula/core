@@ -14,34 +14,6 @@ require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration/Sft
  */
 class FileSystem_DriverTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * Prepares the environment before running a test.
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-    
-    
-
-    /**
-     * Cleans up the environment after running a test.
-     */
-    protected function tearDown()
-    {
-        // TODO Auto-generated FileSystem_ErrorTest::tearDown()
-
-        parent::tearDown();
-    }
-
-    /**
-     * Constructs the test case.
-     */
-    public function __construct()
-    {
-        // TODO Auto-generated constructor
-    }
-
     public function test_construct()
     {
     	try {
@@ -54,6 +26,4 @@ class FileSystem_DriverTest extends PHPUnit_Framework_TestCase
         $config = new FileSystem_Configuration_Sftp();
         $driverAbstract = new FileSystem_Ftp($config);
     }
-    
-
 }

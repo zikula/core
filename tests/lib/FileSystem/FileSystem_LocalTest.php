@@ -38,20 +38,8 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        // TODO Auto-generated FileSystem_LocalTest::tearDown()
-
-
         $this->FileSystem_Local = null;
-
         parent::tearDown();
-    }
-
-    /**
-     * Constructs the test case.
-     */
-    public function __construct()
-    {
-        // TODO Auto-generated constructor
     }
 
     /**

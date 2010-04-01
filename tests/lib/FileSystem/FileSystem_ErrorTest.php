@@ -37,20 +37,8 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        // TODO Auto-generated FileSystem_ErrorTest::tearDown()
-
-
         $this->FileSystem_Error = null;
-
         parent::tearDown();
-    }
-
-    /**
-     * Constructs the test case.
-     */
-    public function __construct()
-    {
-        // TODO Auto-generated constructor
     }
 
     /**
