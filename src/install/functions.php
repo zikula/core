@@ -171,7 +171,7 @@ function install()
                     if($proceed){
                         // create the database
                         // set sql dump file path
-                        $fileurl = 'install/sql/zikulacms.sql';
+                        $fileurl = 'install/sql/Zikula-MySQL.sql';
                         // checks if file exists
                         if (!file_exists($fileurl)) {
                             $action = 'dbinformation';
