@@ -99,7 +99,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function startHandler()
+    public function start()
     {
         // $this->error_level = error_reporting();
         // error_reporting(EALL | EWARNING);
@@ -116,7 +116,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function stopHandler()
+    public function stop()
     {
         //@codeCoverageIgnoreStart
         //   error_reporting($this->error_level);
