@@ -44,7 +44,7 @@ abstract class FileSystem_Driver implements FileSystem_Interface
      *
      * @var object
      */
-    protected $errorHandler;
+    public $errorHandler;
 
     /**
      * Construct the driver with the configuration.

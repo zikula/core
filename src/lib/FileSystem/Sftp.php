@@ -221,7 +221,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         if (sizeof($matches) > 0) {
             switch (intval(str_replace(':','',$matches[0]))) {
                 case 1:
-                    $this->errorHandler('0', "Chmod returned with Code 1: failure.", '', '');
+                    $this->errorHandler->handler('0', "Chmod returned with Code 1: failure.", '', '');
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -234,7 +234,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         }
         //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
-        $this->errorHandler('0', "Did not get acknowledgment from host, chmod may or may not have succeeded.", '', '');
+        $this->errorHandler->handler('0', "Did not get acknowledgment from host, chmod may or may not have succeeded.", '', '');
         return false;
     }
 
@@ -264,11 +264,11 @@ class FileSystem_Sftp extends FileSystem_Driver
 
         //if IsDir fails that means its either not a directory or doesnt exist
         if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
-            $this->errorRegister("$dir does not exist.", 0);
-            //TODO use either errorRegister or errorHandler not both.
+            $this->errorHandler->register("$dir does not exist.", 0);
+            //TODO use either register or handler not both.
             return false;
         }
-        $this->errorRegister("$dir is not a directory", 0);
+        $this->errorHandler->register("$dir is not a directory", 0);
         return false;
     }
 
@@ -366,7 +366,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         if (sizeof($matches) > 0) {
             switch (str_replace(':','',$matches[0])) {
                 case 1:
-                    $this->errorHandler('0', "cp returned with Code 1: failure.", '', '');
+                    $this->errorHandler->handler('0', "cp returned with Code 1: failure.", '', '');
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -378,7 +378,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             }
         } //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
-        $this->errorRegister("Did not get acknowledgment from host, cp may or may not have succeeded.", 0);
+        $this->errorHandler->register("Did not get acknowledgment from host, cp may or may not have succeeded.", 0);
         return false;
     }
 
@@ -408,7 +408,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         }
         //file does not exist.
         $this->errorHandler->stop();
-        $this->errorHandler('0', "Could not delete: $sourcepath", '', '');
+        $this->errorHandler->handler('0', "Could not delete: $sourcepath", '', '');
         return false;
     }
 }

@@ -27,8 +27,8 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
         parent::setUp();
         $config = new FileSystem_Configuration_Ftp();
         $this->FileSystem_Ftp = new FileSystem_Ftp($config);
-        $this->FileSystem_Ftp->errorRegister('Error',1);
-        $this->FileSystem_Ftp->errorRegister('Error2',2);
+        $this->FileSystem_Ftp->errorHandler->register('Error',1);
+        $this->FileSystem_Ftp->errorHandler->register('Error2',2);
 
     }
 
@@ -58,16 +58,16 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
      */
     public function testErrorGetLast()
     {
-        $this->assertType('array', $this->FileSystem_Ftp->errorGetLast());
+        $this->assertType('array', $this->FileSystem_Ftp->errorHandler->getLast());
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
-        $this->assertEquals(false, $fs->errorGetLast());
+        $this->assertEquals(false, $fs->errorHandler->getLast());
         $fs = new FileSystem_Ftp($config);
-        $fs->errorRegister('Error',1);
-        $fs->errorRegister('Error2',2);
-        $this->assertType('array', $fs->errorGetLast(true));
-        $this->assertType('array', $fs->errorGetLast(true));
-        $this->assertEquals(false, $fs->errorGetLast(true));
+        $fs->errorHandler->register('Error',1);
+        $fs->errorHandler->register('Error2',2);
+        $this->assertType('array', $fs->errorHandler->getLast(true));
+        $this->assertType('array', $fs->errorHandler->getLast(true));
+        $this->assertEquals(false, $fs->errorHandler->getLast(true));
     }
 
     /**
@@ -75,7 +75,7 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
      */
     public function testErrorCount()
     {
-         $this->assertEquals(2, $this->FileSystem_Ftp->errorCount());
+         $this->assertEquals(2, $this->FileSystem_Ftp->errorHandler->count());
     }
 
     /**
@@ -85,10 +85,10 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
     {
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
-        $fs->errorRegister('Error',1);
-        $fs->errorRegister('Error2',2);
-        $this->assertType('array', $fs->errorGetAll(true));
-        $this->assertEquals(array(), $fs->errorGetAll(true));
+        $fs->errorHandler->register('Error',1);
+        $fs->errorHandler->register('Error2',2);
+        $this->assertType('array', $fs->errorHandler->getAll(true));
+        $this->assertEquals(array(), $fs->errorHandler->getAll(true));
     }
 
     /**
@@ -98,10 +98,10 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
     {
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
-        $fs->errorRegister('Error',1);
-        $fs->errorRegister('Error2',2);
-        $fs->errorClearAll();
-        $this->assertEquals(false, $fs->errorGetLast(true));
+        $fs->errorHandler->register('Error',1);
+        $fs->errorHandler->register('Error2',2);
+        $fs->errorHandler->clearAll();
+        $this->assertEquals(false, $fs->errorHandler->getLast(true));
     }
 
     /**
@@ -111,9 +111,9 @@ class FileSystem_ErrorTest extends PHPUnit_Framework_TestCase
     {
         $config = new FileSystem_Configuration_Ftp();
         $fs = new FileSystem_Ftp($config);
-        $fs->errorHandler(0,'Error','1','2');
-        $this->assertType('array', $fs->errorGetAll(false));
-        $this->assertEquals(1, $fs->errorCount(true));
+        $fs->errorHandler->handler(0,'Error','1','2');
+        $this->assertType('array', $fs->errorHandler->getAll(false));
+        $this->assertEquals(1, $fs->errorHandler->count(true));
     }
 
 }

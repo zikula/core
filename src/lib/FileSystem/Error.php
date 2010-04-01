@@ -41,7 +41,7 @@ class FileSystem_Error
      *
      * @return An array of the last error or false on no errors
      */
-    public function errorGetLast($clear = false)
+    public function getLast($clear = false)
     {
         if (count($this->errors) < 1) {
             return false;
@@ -59,7 +59,7 @@ class FileSystem_Error
      *
      * @return integer Number of errors which exist.
      */
-    public function errorCount()
+    public function count()
     {
         return count($this->errors);
     }
@@ -74,11 +74,11 @@ class FileSystem_Error
      *
      * @return array Array of arrays which contain the errors.
      */
-    public function errorGetAll($clear = false)
+    public function getAll($clear = false)
     {
         if ($clear) {
             $errors = $this->errors;
-            $this->errorClearAll();
+            $this->clearAll();
             return $errors;
         }
         return $this->errors;
@@ -89,7 +89,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function errorClearAll()
+    public function clearAll()
     {
         $this->errors = array();
     }
@@ -107,7 +107,7 @@ class FileSystem_Error
         //@codeCoverageIgnoreStart
         set_error_handler(array(
             $this,
-            'errorHandler'));
+            'handler'));
         //@codeCoverageIgnoreEnd
     }
 
@@ -137,7 +137,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function errorRegister($e, $code)
+    public function register($e, $code)
     {
         array_unshift($this->errors,
             array(
@@ -157,7 +157,7 @@ class FileSystem_Error
      *
      * @return void
      */
-    public function errorHandler($errno, $errstr, $errfile, $errline)
+    public function handler($errno, $errstr, $errfile, $errline)
     {
         //$errors = $this->error_codes();
         //foreach ($errors as $key => $error) {
@@ -165,6 +165,6 @@ class FileSystem_Error
         //    $this->error_register($errstr, $error['code']);
         //    return true;
         //}
-        $this->errorRegister($errstr, '0');
+        $this->register($errstr, '0');
     }
 }
