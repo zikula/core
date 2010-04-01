@@ -372,13 +372,13 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
     {
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
-             ->method('sftpFileExists')
-             ->will($this->returnValue(true));
-        $stub->expects($this->any())
              ->method('sftpIsDir')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('sftpOpenDir')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sftpFileExists')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('sftpReadDir')
@@ -388,11 +388,11 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
 
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
-             ->method('sftpFileExists')
+             ->method('sftpIsDir')
              ->will($this->returnValue(false));
         $stub->expects($this->any())
-             ->method('sftpIsDir')
-             ->will($this->returnValue(true));
+             ->method('sftpFileExists')
+             ->will($this->returnValue(false));
         $stub->expects($this->any())
              ->method('sftpOpenDir')
              ->will($this->returnValue(true));
@@ -417,7 +417,6 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(false));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->ls());
-
     }
 
     /**
