@@ -254,17 +254,4 @@ class FileSystem_Local extends FileSystem_Driver {
         $this->errorHandler->stop();
         return false;
     }
-
-    /**
-     * Return error codes.
-     *
-     * This function is not yet used.
-     *
-     * @return array Error codes.
-     */
-    public function errorCodes() {
-        $this->errorHandler->stop();
-        $errors = array();
-        return $errors;
-    }
 }

@@ -325,43 +325,4 @@ class FileSystem_Ftp extends FileSystem_Driver
         }
         return true;
     }
-
-    /**
-     * Not used at the moment.
-     *
-     * @return array Array of error codes.
-     */
-    public function errorCodes()
-    {
-        $this->errorHandler->stop();
-        $errors = array(
-            array(
-                'code' => '2',
-                'search' => 'getaddrinfo failed'),
-            array(
-                'code' => '3',
-                'search' => 'Failed to change directory'),
-            array(
-                'code' => '4',
-                'search' => 'No such file or directory'),
-            array(
-                'code' => '5',
-                'search' => 'Failed to open file'),
-            array(
-                'code' => '6',
-                'search' => 'SITE CHMOD command failed'),
-            array(
-                'code' => '7',
-                'search' => 'Could not create file'),
-            array(
-                'code' => '8',
-                'search' => 'RNFR command failed'),
-            array(
-                'code' => '11',
-                'search' => 'Delete operation failed'),
-            array(
-                'code' => '12',
-                'search' => 'not a valid resource handle'));
-        return $errors;
-    }
 }
