@@ -23,7 +23,7 @@
  * the documentation for FileSystem_Error and FileSystem_Interface for more
  * information.
  */
-abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_Interface
+abstract class FileSystem_Driver implements FileSystem_Interface
 {
     /**
      * Configuration object.
@@ -38,6 +38,13 @@ abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_
      * @var object
      */
     public $driver;
+
+    /**
+     * The error handler.
+     *
+     * @var object
+     */
+    protected $errorHandler;
 
     /**
      * Construct the driver with the configuration.
@@ -56,6 +63,7 @@ abstract class FileSystem_Driver extends FileSystem_Error implements FileSystem_
         }
 
         $this->configuration = $configuration;
+        $this->errorHandler = new FileSystem_Error();
         $this->setup(); // setup $this->driver
     }
 

@@ -59,7 +59,7 @@ class FileSystem_Ftp extends FileSystem_Driver
      */
     public function connect()
     {
-        $this->startHandler();
+        $this->errorHandler->start();
 
         //create the connection
         if ($this->configuration->getSSL()) {
@@ -75,13 +75,13 @@ class FileSystem_Ftp extends FileSystem_Driver
                 if ($this->driver->pasv($this->_resource, $this->configuration->getPasv())) {
                     if ($this->driver->chdir($this->_resource, $this->configuration->getDir())) {
                         $this->_dir = ftp_pwd($this->_resource);
-                        $this->stopHandler();
+                        $this->errorHandler->stop();
                         return true;
                     }
                 }
             }
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -100,12 +100,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function put($local, $remote)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->put($this->_resource, $remote, $local, FTP_BINARY)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -122,12 +122,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function fput($stream, $remote)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->fput($this->_resource, $remote, $stream, FTP_BINARY)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -146,12 +146,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function get($local, $remote)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->get($this->_resource, $local, $remote, FTP_BINARY)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -167,14 +167,14 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function fget($remote)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         $handle = fopen('php://temp', 'r+');
         if ($this->driver->fget($this->_resource, $handle, $remote, FTP_BINARY)) {
             rewind($handle);
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $handle;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -189,14 +189,14 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function chmod($perm, $file)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = $this->driver->chmod($this->_resource, $perm, $file)) !== false) {
             $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $perm;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -210,13 +210,13 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function ls($dir = '')
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         $dir = ($dir == '' ? ftp_pwd($this->_resource) : $dir);
         if (($ls = $this->driver->nlist($this->_resource, $dir)) !== false) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $ls;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -230,12 +230,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function cd($dir = '')
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->chdir($this->_resource, $dir)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -252,12 +252,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function mv($sourcepath, $destpath)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->rename($this->_resource, $sourcepath, $destpath)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -274,14 +274,14 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function cp($sourcepath, $destpath)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         if (($handle = $this->fget($sourcepath)) !== false) {
             if ($this->fput($handle, $destpath)) {
-                $this->stopHandler();
+                $this->errorHandler->stop();
                 return true;
             };
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -295,12 +295,12 @@ class FileSystem_Ftp extends FileSystem_Driver
     public function rm($sourcepath)
     {
         $this->isAlive(true);
-        $this->startHandler();
+        $this->errorHandler->start();
         if (($this->driver->delete($this->_resource, $sourcepath)) !== false) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -312,7 +312,7 @@ class FileSystem_Ftp extends FileSystem_Driver
      * TODO: make this better.
      *
      * @param boolean $reconnect Reconnect if connection is dead?.
-     * 
+     *
      * @return boolean True if connected, false if not.
      */
     public function isAlive($reconnect = false)
@@ -333,7 +333,7 @@ class FileSystem_Ftp extends FileSystem_Driver
      */
     public function errorCodes()
     {
-        $this->stopHandler();
+        $this->errorHandler->stop();
         $errors = array(
             array(
                 'code' => '2',

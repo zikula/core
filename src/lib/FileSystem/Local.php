@@ -88,13 +88,13 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return mixed Number of bytes written on success, false on failure.
      */
     public function fput($stream, $remote) {
-        $this->startHandler();
+        $this->errorHandler->start();
         if (($bytes = $this->driver->putContents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $bytes;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -134,13 +134,13 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return mixed File resource handle or false on failure.
      */
     public function fget($remote) {
-        $this->startHandler();
+        $this->errorHandler->start();
         if (($handle = $this->driver->fileOpen($remote, 'r+', false, $this->_resource)) !== false) {
             rewind($handle);
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $handle;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -153,14 +153,14 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return mixed The new permission or false if failed.
      */
     public function chmod($perm, $file) {
-        $this->startHandler();
+        $this->errorHandler->start();
         $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = $this->driver->chmod($file, $perm)) !== false) {
             $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $perm;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -173,11 +173,11 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function ls($dir = '') {
         $dir = ($dir == '' ? getcwd() : $dir);
-        $this->startHandler();
+        $this->errorHandler->start();
         if (($files = $this->driver->scandir($dir, 0, $this->_resource)) !== false) {
             return $files;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -189,12 +189,12 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return boolean True if changed dir, false otherwise.
      */
     public function cd($dir = '') {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->chdir($dir)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -209,12 +209,12 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return boolean True on success, false on failure.
      */
     public function mv($sourcepath, $destpath) {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->rename($sourcepath, $destpath, $this->_resource)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -229,12 +229,12 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return boolean True on success, false on failure.
      */
     public function cp($sourcepath, $destpath) {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->copy($sourcepath, $destpath, $this->_resource)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -246,12 +246,12 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return boolean True if file removed, false if not.
      */
     public function rm($sourcepath) {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->delete($sourcepath, $this->_resource)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -263,7 +263,7 @@ class FileSystem_Local extends FileSystem_Driver {
      * @return array Error codes.
      */
     public function errorCodes() {
-        $this->stopHandler();
+        $this->errorHandler->stop();
         $errors = array();
         return $errors;
     }

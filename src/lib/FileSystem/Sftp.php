@@ -65,7 +65,7 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function connect()
     {
-        //$this->startHandler();
+        //$this->errorHandler->start();
         if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort())) !== false) {
             //connected
             if (($this->driver->authPassword($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass())) !== false) {
@@ -74,7 +74,7 @@ class FileSystem_Sftp extends FileSystem_Driver
                     //started sftp
                     if (($this->_dir = $this->driver->realpath($this->_resource, $this->configuration->getDir())) !== false) {
                         //changed dir
-                        $this->stopHandler();
+                        $this->errorHandler->stop();
                         return true; //return object?
                     }
                     //could not enter dir
@@ -84,7 +84,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             //Could not log in
         }
         //Could not connect to host/port
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -102,12 +102,12 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function put($local, $remote)
     {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->scpSend($this->_resource, $local, $remote)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -127,13 +127,13 @@ class FileSystem_Sftp extends FileSystem_Driver
             $remote = $this->_dir . '/' . $remote;
         }
     	$res = $this->_resource;
-        $this->startHandler();
+        $this->errorHandler->start();
         if (($bytes = $this->driver->putContents($this->_driver,$remote,$stream)) !== false) {
             fclose($stream);
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $bytes;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -151,12 +151,12 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function get($local, $remote)
     {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($this->driver->scpRecv($this->_resource, $remote, $local)) {
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -174,13 +174,13 @@ class FileSystem_Sftp extends FileSystem_Driver
         if ($remote == "" || substr($remote, 0, 1) !== "/") {
             $remote = $this->_dir . '/' . $remote;
         }
-        $this->startHandler();
+        $this->errorHandler->start();
         if (($handle = $this->driver->sftpFopen($this->_resource, $remote, 'r+')) !== false) {
             rewind($handle);
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return $handle;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -194,13 +194,13 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function chmod($perm, $file)
     {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($file == '' || substr($file, 0, 1) !== '/') {
             $file = $this->_dir . '/' . $file;
         }
 
         if (($file = $this->driver->realpath($this->_resource, $file)) === false) {
-            $this->stopHandler(); //source file not found.
+            $this->errorHandler->stop(); //source file not found.
             return false;
         }
         //TODO should xterm be used?
@@ -222,18 +222,18 @@ class FileSystem_Sftp extends FileSystem_Driver
             switch (intval(str_replace(':','',$matches[0]))) {
                 case 1:
                     $this->errorHandler('0', "Chmod returned with Code 1: failure.", '', '');
-                    $this->stopHandler();
+                    $this->errorHandler->stop();
                     return false;
                 case 0:
-                    $this->stopHandler();
+                    $this->errorHandler->stop();
                     return $perm;
                 default:
-                    $this->stopHandler();
+                    $this->errorHandler->stop();
                     return false;
             }
         }
         //size of matches less then 1, there is no readable response
-        $this->stopHandler();
+        $this->errorHandler->stop();
         $this->errorHandler('0', "Did not get acknowledgment from host, chmod may or may not have succeeded.", '', '');
         return false;
     }
@@ -261,7 +261,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             //finished searching the directory
             return $files;
         }
-        
+
         //if IsDir fails that means its either not a directory or doesnt exist
         if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
             $this->errorRegister("$dir does not exist.", 0);
@@ -284,14 +284,14 @@ class FileSystem_Sftp extends FileSystem_Driver
         if ($dir == '' || substr($dir, 0, 1) !== '/') {
             $dir = $this->_dir . '/' . $dir;
         }
-  
-        $this->startHandler();
+
+        $this->errorHandler->start();
         if (($dir = $this->driver->realpath($this->_resource, $dir)) !== false) {
             $this->_dir = $dir;
-            $this->stopHandler();
+            $this->errorHandler->stop();
             return true;
         }
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -307,7 +307,7 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function mv($sourcepath, $destpath)
     {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
             $sourcepath = $this->_dir . '/' . $sourcepath;
         }
@@ -316,11 +316,11 @@ class FileSystem_Sftp extends FileSystem_Driver
         }
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
             if (($this->driver->sftpRename($this->_resource, $sourcepath, $destpath)) !== false) {
-                $this->stopHandler(); //renamed file
+                $this->errorHandler->stop(); //renamed file
                 return true;
             }//could not rename file
         }//Could not get reapath of sourcefile, it does not exist
-        $this->stopHandler();
+        $this->errorHandler->stop();
         return false;
     }
 
@@ -336,7 +336,7 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function cp($sourcepath, $destpath)
     {
-        $this->startHandler();
+        $this->errorHandler->start();
         if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
             $sourcepath = $this->_dir . '/' . $sourcepath;
         }
@@ -344,7 +344,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             $destpath = $this->_dir . '/' . $destpath;
         }
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) === false) {
-            $this->stopHandler(); //source file not found.
+            $this->errorHandler->stop(); //source file not found.
             return false;
         }
 
@@ -367,17 +367,17 @@ class FileSystem_Sftp extends FileSystem_Driver
             switch (str_replace(':','',$matches[0])) {
                 case 1:
                     $this->errorHandler('0', "cp returned with Code 1: failure.", '', '');
-                    $this->stopHandler();
+                    $this->errorHandler->stop();
                     return false;
                 case 0:
-                    $this->stopHandler();
+                    $this->errorHandler->stop();
                     return true;
                 default:
-                    $this->stopHandler();
+                    $this->errorHandler->stop();
                     return false;
             }
         } //size of matches less then 1, there is no readable response
-        $this->stopHandler();
+        $this->errorHandler->stop();
         $this->errorRegister("Did not get acknowledgment from host, cp may or may not have succeeded.", 0);
         return false;
     }
@@ -395,19 +395,19 @@ class FileSystem_Sftp extends FileSystem_Driver
             $sourcepath = $this->_dir . '/' . $sourcepath;
         }
         //$sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
-        $this->startHandler();  
+        $this->errorHandler->start();
         //check the file actauly exists.
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
             //file exists
             if ($this->driver->sftpDelete($this->_resource, $sourcepath)) {
                 //file deleted
-                $this->stopHandler();
+                $this->errorHandler->stop();
                 return true;
             }
             //file not deleted
         }
         //file does not exist.
-        $this->stopHandler();
+        $this->errorHandler->stop();
         $this->errorHandler('0', "Could not delete: $sourcepath", '', '');
         return false;
     }
@@ -419,7 +419,7 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function errorCodes()
     {
-        $this->stopHandler();
+        $this->errorHandler->stop();
         $errors = array(
             array(
                 'code' => '2',
