@@ -448,14 +448,4 @@ class FileSystem_FtpTest extends PHPUnit_Framework_TestCase
         $this->FileSystem_Ftp->setDriver($stub);
         $this->assertEquals(false, $this->FileSystem_Ftp->isAlive());
     }
-
-    /**
-     * Tests FileSystem_Ftp->error_codes()
-     */
-    public function testError_codes()
-    {
-        $this->assertType('array',$this->FileSystem_Ftp->errorCodes());
-    }
-
 }
-

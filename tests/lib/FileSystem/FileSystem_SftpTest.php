@@ -646,12 +646,4 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->rm(1));
     }
-
-/**
-     * Tests FileSystem_Ftp->error_codes()
-     */
-    public function testError_codes()
-    {
-        $this->assertType('array',$this->FileSystem_Sftp->errorCodes());
-    }
 }

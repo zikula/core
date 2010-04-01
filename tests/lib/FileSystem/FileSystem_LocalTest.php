@@ -328,15 +328,4 @@ class FileSystem_LocalTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, $this->FileSystem_Local->rm(1,2));
 
     }
-
-    /**
-     * Tests FileSystem_Local->error_codes()
-     */
-    public function testError_codes()
-    {
-        $this->assertType('array',$this->FileSystem_Local->errorCodes());
-
-    }
-
 }
-
