@@ -130,6 +130,5 @@ class ZLoader
             'Loader' => 'legacy',
             'ZLanguageBrowser' => 'i18n',
             'ZDBManipulation' => 'module');
-        return $map;
     }
 }
