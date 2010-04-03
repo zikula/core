@@ -125,7 +125,16 @@ function users_adminapi_findusers($args)
 
     $where = 'WHERE ' . $args['condition'];
 
-    $objArray = DBUtil::selectObjectArray('users', $where, 'uname');
+    $permFilter = array();
+    $permFilter[] = array('realm' => 0,
+                      'component_left'   => 'Users',
+                      'component_middle' => '',
+                      'component_right'  => '',
+                      'instance_left'    => 'uname',
+                      'instance_middle'  => '',
+                      'instance_right'   => 'uid',
+                      'level'            => ACCESS_READ);
+    $objArray = DBUtil::selectObjectArray('users', $where, 'uname', null, null, null, $permFilter);
 
     return $objArray;
 }
@@ -288,13 +297,19 @@ function users_adminapi_deleteuser($args)
 }
 
 /**
- * users_adminapi_denyuser()
+ * Removes a registration request from the database, either because of a
+ * denial or because of an approval. Internal use only. Not intended to be
+ * used through an API call. Security check done in the API function that
+ * calls this.
  *
  * @param $args
  * @return true if successful, false otherwise
  **/
-function users_adminapi_deny($args)
+function _adminapi_removeRegistration($args)
 {
+    // Don't do a security check here. Do it in the function that calls this one.
+    // This is an internal-only function.
+
     if (!isset($args['userid']) || !$args['userid']) {
         return false;
     }
@@ -306,6 +321,21 @@ function users_adminapi_deny($args)
 }
 
 /**
+ * users_adminapi_denyuser()
+ *
+ * @param $args
+ * @return true if successful, false otherwise
+ **/
+function users_adminapi_deny($args)
+{
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
+        return false;
+    }
+
+    return _adminapi_removeRegistration($args);
+}
+
+/**
  * users_adminapi_approveuser()
  *
  * @param $args
@@ -313,10 +343,12 @@ function users_adminapi_deny($args)
  **/
 function users_adminapi_approve($args)
 {
-    $false = false;
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+        return false;
+    }
 
     if (!isset($args['userid']) || !$args['userid']) {
-        return $false;
+        return false;
     }
 
     $user = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid');
@@ -333,9 +365,9 @@ function users_adminapi_approve($args)
 
     if ($insert) {
         // $insert has uid, we remove it from the temp
-        $result = pnModAPIFunc('Users', 'admin', 'deny', array('userid' => $args['userid']));
+        $result = _adminapi_removeRegistration(array('userid' => $args['userid']));
     } else {
-        $result = $false;
+        $result = false;
     }
 
     return $result;
@@ -350,6 +382,10 @@ function users_adminapi_approve($args)
  */
 function users_adminapi_getallpendings($args)
 {
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+        return false;
+    }
+
     // Optional arguments.
     $startnum = (isset($args['startnum']) && is_numeric($args['startnum'])) ? $args['startnum'] : 1;
     $numitems = (isset($args['numitems']) && is_numeric($args['numitems'])) ? $args['numitems'] : -1;
@@ -381,6 +417,10 @@ function users_adminapi_getallpendings($args)
  */
 function users_adminapi_getapplication($args)
 {
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+        return false;
+    }
+
     if (!isset($args['userid']) || !$args['userid']) {
         return false;
     }
@@ -402,6 +442,10 @@ function users_adminapi_getapplication($args)
  **/
 function users_adminapi_countpending()
 {
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+        return false;
+    }
+
     $pntable = pnDBGetTables();
     $userscolumn = $pntable['users_temp_column'];
     $where = "$userscolumn[type] = 1";
@@ -417,20 +461,22 @@ function Users_adminapi_getlinks()
 {
     $links = array();
 
-    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         $links[] = array('url' => pnModURL('Users', 'admin', 'view'), 'text' => __('Users list'), 'class' => 'z-icon-es-list');
     }
-    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         $pending = pnModAPIFunc('Users', 'admin', 'countpending');
         if ($pending) {
             $links[] = array('url' => pnModURL('Users', 'admin', 'viewapplications'), 'text' => __('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
         }
+    }
+    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
         $links[] = array('url' => pnModURL('Users', 'admin', 'new'), 'text' => __('Create new user'), 'class' => 'z-icon-es-new');
         $links[] = array('url' => pnModURL('Users', 'admin', 'import'), 'text' => __('Import users'), 'class' => 'z-icon-es-save');
     }
-    if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
+    if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
         $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find and e-mail users'), 'class' => 'z-icon-es-mail');
-    } else if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+    } else if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find users'), 'class' => 'z-icon-es-search');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
@@ -439,11 +485,19 @@ function Users_adminapi_getlinks()
 
     $profileModule = pnConfigGetVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && pnModAvailable($profileModule));
-    if ($useProfileMod && SecurityUtil::checkPermission($profileModule . '::', '::', ACCESS_READ)) {
-        if (pnModGetName() == 'Users') {
-            $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
-        } else {
-            $links[] = array('url' => pnModURL($profileModule, 'admin', 'main'), 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
+    if ($useProfileMod) {
+        // Make sure there are links for the user to see in the submenu. Don't try
+        // to guess at what permission level the profule module might have for its
+        // links in its getlinks function. Just try to get the links and see if
+        // it is not empty. If it is not empty, then the user has permissions for
+        // at least one function in there (maybe more).
+        $profileAdminLinks = pnModAPIFunc($profileModule, 'admin', 'getlinks');
+        if (!empty($profileAdminLinks)) {
+            if (pnModGetName() == 'Users') {
+                $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
+            } else {
+                $links[] = array('url' => pnModURL($profileModule, 'admin', 'main'), 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
+            }
         }
     }
 
@@ -548,7 +602,7 @@ function Users_adminapi_createImport($args)
     // create an array with the groups identities where the user can add other users
     $allGroupsArray = array();
     foreach($allGroups as $group){
-        if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT)) {
+        if (SecurityUtil::checkPermission('Groups::', $group['name'] . '::' . $group['gid'], ACCESS_EDIT)) {
             $allGroupsArray[] = $group['gid'];
         }
     }
@@ -556,7 +610,7 @@ function Users_adminapi_createImport($args)
     $groupstable = $pntable['group_membership'];
     $groupscolumn = $pntable['group_membership_column'];
 
-    $addUsersToGroupsSQL = "INSERT INTO " . $groupstable . "($groupscolumn[uid],$groupscolumn[gid]) VALUES ";
+    $addUsersToGroupsSQL = "INSERT INTO " . $groupstable . "({$groupscolumn['uid']},{$groupscolumn['gid']}) VALUES ";
 
     // construct a sql statement with all the inserts to avoid to much database connections
     foreach($importValues as $value) {

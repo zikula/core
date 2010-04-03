@@ -180,7 +180,7 @@ function users_admin_view($args = array())
     $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
     $letter = FormUtil::getPassedValue('letter', isset($args['letter']) ? $args['letter'] : null, 'GET');
 
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -244,7 +244,7 @@ function users_admin_view($args = array())
             $userGroups = pnModAPIFunc('Groups', 'user', 'getusergroups',
                                         array('uid' => $item['uid'],
                                               'clean' => 1));
-            // we need a associative array by the key to compare with the groups that the user can see
+            // we need an associative array by the key to compare with the groups that the user can see
             $userGroupsByKey = array();
             foreach($userGroups as $userGroup){
                 $userGroupsByKey[$userGroup['gid']] = array('gid' => $userGroup['gid']);
@@ -323,7 +323,7 @@ function users_admin_view($args = array())
 function users_admin_viewapplications()
 {
     // security check
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -362,17 +362,12 @@ function users_admin_viewapplications()
                 'imgfile'   => 'add_user.gif',
                 'title'     => __('Approve'));
 
-            // Note: the ACCESS_DELETE check is here because there is no sense
-            // in checking it if the user does not also have the lower
-            // ACCESS_ADD, not because the user needs both add and delete access.
-            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
-                $options[] = array(
-                    'url'       => pnModURL('Users', 'admin', 'processusers',
-                                        array('userid'  => $item['tid'],
-                                              'op'      => 'deny')),
-                    'imgfile'   => 'delete_user.gif',
-                    'title'     => __('Deny'));
-            }
+            $options[] = array(
+                'url'       => pnModURL('Users', 'admin', 'processusers',
+                                    array('userid'  => $item['tid'],
+                                          'op'      => 'deny')),
+                'imgfile'   => 'delete_user.gif',
+                'title'     => __('Deny'));
         }
 
         // Add the calculated menu options to the item array
@@ -400,7 +395,7 @@ function users_admin_viewapplications()
 function users_admin_viewtempuserinfo()
 {
     // security check
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -422,12 +417,34 @@ function users_admin_viewtempuserinfo()
 
     $regApplication = array_merge($regApplication, (array)@unserialize($regApplication['dynamics']));
 
+    $options = array();
+    if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+        $options[] = array(
+            'url'       => pnModURL('Users', 'admin', 'processusers',
+                                array('userid'  => $regid,
+                                      'op'      => 'approve')),
+            'imgfile'   => 'add_user.gif',
+            'title'     => __('Approve'));
+
+        $options[] = array(
+            'url'       => pnModURL('Users', 'admin', 'processusers',
+                                array('userid'  => $regid,
+                                      'op'      => 'deny')),
+            'imgfile'   => 'delete_user.gif',
+            'title'     => __('Deny'));
+    }
+    $options[] = array(
+        'url'       => pnModURL('Users', 'admin', 'viewapplications'),
+        'imgfile'   => 'button_cancel.gif',
+        'title'     => __('Return to applications'));
+
     // Create output object
     $pnRender = Renderer::getInstance('Users', false);
 
     $pnRender->assign('uname',    $regApplication['uname']);
     $pnRender->assign('userid',   $regid);
     $pnRender->assign('userinfo', $regApplication);
+    $pnRender->assign('options',  $options);
 
     return $pnRender->fetch('users_admin_viewtempuserdetails.htm');
 }
@@ -443,7 +460,7 @@ function users_admin_viewtempuserinfo()
 function users_admin_search($args)
 {
     // security check
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)){
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)){
         return LogUtil::registerPermissionError();
     }
 
@@ -452,7 +469,7 @@ function users_admin_search($args)
 
     // get group items
     // TODO: move to a call to the groups module
-    $groups = pnModAPIFunc('Users', 'admin', 'getusergroups', array());
+    $groups = pnModAPIFunc('Users', 'admin', 'getusergroups');
     $pnRender->assign('groups', $groups);
 
     return $pnRender->fetch('users_admin_search.htm');
@@ -1173,10 +1190,10 @@ function users_admin_uploadImport($args)
                                       array('valuesArray' => $emailsArray,
                                             'key' => 'email'));
         if($emailsInDB === false) {
-            return __("Error! Trying to read the existing users' emails in database.");
+            return __("Error! Trying to read the existing users' email addressess in database.");
         } else {
             if(count($emailsInDB) > 0) {
-                return __("Sorry! One or more users' emails really exists in database. The users' emails must be uniques.");
+                return __("Sorry! One or more users' email addresses exist in the database. Each user's e-mail address must be unique.");
             }
         }
     }

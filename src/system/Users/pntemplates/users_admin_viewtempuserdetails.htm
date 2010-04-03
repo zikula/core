@@ -31,8 +31,10 @@
     </table>
 
     <div class="z-formbuttons">
-        <a href="{modurl modname='Users' type='admin' func='processusers' op='approve' userid=$userid}">{button src=add_user.gif set=icons/small __alt="Approve" __title="Approve"}</a>
-        <a href="{modurl modname='Users' type='admin' func='processusers' op='deny' userid=$userid}">{img modname=core src=delete_user.gif set=icons/small  __alt="Deny" __title="Deny"}</a>
+        {section name=options loop=$options}
+        <a href="{$options[options].url|varprepfordisplay}">{img src=$options[options].imgfile modname='core' set='icons/small' title=$options[options].title alt=$options[options].title}</a>
+        {sectionelse}
         <a href="{modurl modname='Users' type='admin' func='viewapplications'}">{img modname=core src=button_cancel.gif set=icons/small  __alt="Cancel" __title="Cancel"}</a>
+        {/section}
     </div>
 </div>

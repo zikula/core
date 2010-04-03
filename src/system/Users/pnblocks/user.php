@@ -47,7 +47,7 @@ function Users_userblock_info()
  */
 function Users_userblock_display($blockinfo)
 {
-    if (!SecurityUtil::checkPermission('Userblock::', "$blockinfo[title]::", ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('Userblock::', $blockinfo['title']."::", ACCESS_READ)) {
         return;
     }
 

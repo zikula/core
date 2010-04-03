@@ -37,7 +37,7 @@ function users_userapi_getall($args)
                       'component_right'  => '',
                       'instance_left'    => 'uname',
                       'instance_middle'  => '',
-                      'instance_right'   => '',
+                      'instance_right'   => 'uid',
                       'level'            => ACCESS_READ);
 
     // form where clause

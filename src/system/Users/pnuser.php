@@ -18,7 +18,9 @@
 function users_user_main()
 {
     // Security check
-    if ((!pnUserLoggedIn()) || (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))) {
+    if (!pnUserLoggedIn()) {
+        pnRedirect(pnModURL('Users', 'user', 'loginscreen'));
+    } elseif (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
         return LogUtil::registerPermissionError();
     }
 

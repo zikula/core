@@ -19,7 +19,7 @@
  */
 function Users_ajax_getusers()
 {
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         return true;
     }
 
