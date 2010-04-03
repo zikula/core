@@ -8,17 +8,21 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Users
-*/
+ */
 
 /**
- * users_adminapi_userexists()
- * Find whether the user exists. return true or false
+ * Find whether the user exists.
  *
- * @param $args args['chng_user'] can be both username and userid
- * @return bool
- **/
+ * @param array $args All parameters passed to the function.
+ *                    $args['chng_user'] (string|numeric) Either a user name or a user id for which to search.
+ *
+ * @return bool True if the specified user exists, otherwise false.
+ */
 function users_adminapi_userexists($args)
 {
+    // Do not check for is_numeric() here to determine if the chng_user is a user name or a user id.
+    // Some sites might have all numeric user names (e.g., a membership number). Since there is no way to tell if the
+    // parameter should be treated as a user name or a user id, check both defaulting to user name first.
     $user = DBUtil::selectObjectByID('users', $args['chng_user'], 'uname');
     if (!$user) {
         $user = DBUtil::selectObjectByID('users', $args['chng_user'], 'uid');
@@ -28,13 +32,13 @@ function users_adminapi_userexists($args)
 }
 
 /**
- * users_adminapi_getusergroups()
- * Get a list of usergroups
+ * Get a list of user groups. DO NOT confuse this function with users_user_getusergroups.
  *
- * @param $args
- * @return array of items
- **/
-function users_adminapi_getusergroups($args)
+ * @see    users_user_getusergroups()
+ *
+ * @return array|bool An array of user groups ordered by name; false on error.
+ */
+function users_adminapi_getusergroups()
 {
     // Need read access to call this function
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
@@ -52,18 +56,23 @@ function users_adminapi_getusergroups($args)
 }
 
 /**
- * users_adminapi_findusers()
- * Find users
+ * Find users.
  *
- * @param $args['uname']         username
- * @param $args['email']         email address
- * @param $args['ugroup']        users group
- * @param $args['regdateafter']  reg date after ...
- * @param $args['regdatebefore'] reg date before ...
- * @param $args['dynadata']      array with attribute name to look for
- * @param $args['condition']     predefined condition for finding users, makes all others arguments obsolete
+ * @param array $args All parameters passed to this function.
+ *                    $args['uname']         (string) A fragment of a user name on which to search using an SQL LIKE clause. The user name will be surrounded by wildcards.
+ *                    $args['ugroup']        (int)    A group id in which to search (only users who are members of the specified group are returned).
+ *                    $args['email']         (string) A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address will be surrounded by
+ *                                                      wildcards.
+ *                    $args['regdateafter']  (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date after the date specified
+ *                                                      will be returned.
+ *                    $args['regdatebefore'] (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date before the date specified
+ *                                                      will be returned.
+ *                    $args['dynadata']      (array)  An array of search values to be passed to the designated profile module. Only those user records also satisfying the profile
+ *                                                      module's search of its data are returned.
+ *                    $args['condition']     (string) An SQL condition for finding users; overrides all other parameters.
+ *
  * @return mixed array of items if succcessful, false otherwise
- **/
+ */
 function users_adminapi_findusers($args)
 {
     // Need read access to call this function
@@ -140,12 +149,19 @@ function users_adminapi_findusers($args)
 }
 
 /**
- * users_adminapi_saveuser()
- * Save User
+ * Save a new user record.
  *
- * @param $args
- * @return bool true if successful, false otherwise
- **/
+ * @param array $args All parameters passed to this function.
+ *                    $args['uname']              (string) The user name to store on the new user record.
+ *                    $args['email']              (string) The e-mail address to store on the new user record.
+ *                    $args['pass']               (string) The new password to store on the new user record.
+ *                    $args['vpass']              (string) A verification of the new password to store on the new user record.
+ *                    $args['dynadata']           (array)  An array of additional information to be stored by the designated profile module, and linked to the newly created
+ *                                                           user account.
+ *                    $args['access_permissions'] (array)  Used only for 'edit' operations; an array of group ids to which the user should belong.
+ *
+ * @return bool true if successful, false otherwise.
+ */
 function users_adminapi_saveuser($args)
 {
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
@@ -165,7 +181,8 @@ function users_adminapi_saveuser($args)
 
     if ($checkpass) {
         if (isset($args['pass']) && isset($args['vpass']) && $args['pass'] !== $args['vpass']) {
-            return LogUtil::registerError(__('Error! You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).'));
+            return LogUtil::registerError(__('Error! You did not enter the same password in each password field. '
+                . 'Please enter the same password once in each password field (this is required for verification).'));
         }
 
         $pass  = $args['pass'];
@@ -226,14 +243,13 @@ function users_adminapi_saveuser($args)
     // Fixing a high numitems to be sure to get all groups
     $groups = pnModAPIFunc('Groups', 'user', 'getall', array('numitems' => 1000));
 
-    foreach ($groups as $group)
-    {
+    foreach ($groups as $group) {
         if (in_array($group['gid'], $args['access_permissions'])) {
             // Check if the user is already in the group
             $useringroup = false;
             $usergroups  = pnModAPIFunc('Groups', 'user', 'getusergroups', array('uid' => $args['uid']));
             if ($usergroups) {
-                foreach($usergroups as $usergroup) {
+                foreach ($usergroups as $usergroup) {
                     if ($group['gid'] == $usergroup['gid']) {
                         $useringroup = true;
                         break;
@@ -247,7 +263,7 @@ function users_adminapi_saveuser($args)
         } else {
             // We don't need to do a complex check, if the user is not in the group, the SQL will not return
             // an error anyway.
-            if(SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
+            if (SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
                 pnModAPIFunc('Groups', 'admin', 'removeuser', array('gid' => $group['gid'], 'uid' => $args['uid']));
             }
         }
@@ -260,11 +276,13 @@ function users_adminapi_saveuser($args)
 }
 
 /**
- * users_adminapi_deleteuser()
+ * Delete one or more user account records.
  *
- * @param $args[uid] int/array(int) one or many user IDs to delete
- * @return bool true if successful, false otherwise
- **/
+ * @param array $args All parameters passed to this function.
+ *                    $args['uid'] (numeric|array) A single (int) user id, or an array of user ids to delete.
+ *
+ * @return bool True if successful, false otherwise.
+ */
 function users_adminapi_deleteuser($args)
 {
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
@@ -280,7 +298,7 @@ function users_adminapi_deleteuser($args)
         $args['uid'] = array(0 => $args['uid']);
     }
 
-    foreach($args['uid'] as $id) {
+    foreach ($args['uid'] as $id) {
         if (!DBUtil::deleteObjectByID('group_membership', $id, 'uid')) {
             return false;
         }
@@ -297,14 +315,15 @@ function users_adminapi_deleteuser($args)
 }
 
 /**
- * Removes a registration request from the database, either because of a
- * denial or because of an approval. Internal use only. Not intended to be
- * used through an API call. Security check done in the API function that
+ * Removes a registration request from the database, either because of a denial or because of an approval.
+ * Internal use only. Not intended to be used through an API call. Security check done in the API function that
  * calls this.
  *
- * @param $args
- * @return true if successful, false otherwise
- **/
+ * @param array $args All parameters passed to this function.
+ *                    $args['userid'] (numeric) The tid of the temporary user record (registration request) to delete.
+ *
+ * @return bool True if successful, false otherwise.
+ */
 function _adminapi_removeRegistration($args)
 {
     // Don't do a security check here. Do it in the function that calls this one.
@@ -317,15 +336,16 @@ function _adminapi_removeRegistration($args)
     $res = DBUtil::deleteObjectByID('users_temp', $args['userid'], 'tid');
 
     return $res;
-    //return (boolean)$res->Affected_Rows(); Currently not working
 }
 
 /**
- * users_adminapi_denyuser()
+ * Deny an application for a new user account (deny a registration request).
  *
- * @param $args
- * @return true if successful, false otherwise
- **/
+ * @param array $args All parameters passed to this function.
+ *                    $args['userid'] (int) The tid of the temporary user record (registration request) to deny.
+ *
+ * @return bool True if successful, false otherwise.
+ */
 function users_adminapi_deny($args)
 {
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
@@ -336,11 +356,13 @@ function users_adminapi_deny($args)
 }
 
 /**
- * users_adminapi_approveuser()
+ * Approve an application for a new user account (approve a registration request).
  *
- * @param $args
+ * @param array $args All parameters passed to this function.
+ *                    $args['userid'] (numeric) The tid of the temporary user record (registration request) to approve.
+ *
  * @return true if successful, false otherwise
- **/
+ */
 function users_adminapi_approve($args)
 {
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
@@ -374,11 +396,13 @@ function users_adminapi_approve($args)
 }
 
 /**
- * get all example items
+ * Retrieve all pending applications for a new user account (all registration requests).
  *
- * @param    int     $args['starnum']    (optional) first item to return
- * @param    int     $args['numitems']   (optional) number if items to return
- * @return   array   array of items, or false on failure
+ * @param array $args All parameters passed to this function.
+ *                    $args['starnum']  (int) The ordinal number of the first item to return.
+ *                    $args['numitems'] (int) The number (count) of items to return.
+ *
+ * @return array|bool Array of registration requests, or false on failure.
  */
 function users_adminapi_getallpendings($args)
 {
@@ -413,7 +437,12 @@ function users_adminapi_getallpendings($args)
 }
 
 /**
- * Get an application registry
+ * Retrieve one application for a new user account (one registration request).
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['userid'] (numeric) The tid of the temporary user record (registration request) to return.
+ *
+ * @return array|bool An array containing the record, or false on error.
  */
 function users_adminapi_getapplication($args)
 {
@@ -435,11 +464,10 @@ function users_adminapi_getapplication($args)
 }
 
 /**
- * users_adminapi_countpending()
+ * Returns the number of pending applications for new user accounts (registration requests).
  *
- * @param $args
- * @return nb of pending applications, false otherwise
- **/
+ * @return int|bool Numer of pending applications, false on error.
+ */
 function users_adminapi_countpending()
 {
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
@@ -453,9 +481,9 @@ function users_adminapi_countpending()
 }
 
 /**
- * get available admin panel links
+ * Get available admin panel links.
  *
- * @return array array of admin links
+ * @return array Array of admin links.
  */
 function Users_adminapi_getlinks()
 {
@@ -505,12 +533,13 @@ function Users_adminapi_getlinks()
 }
 
 /**
- * get the number of values that exist in the database table from an array
+ * Retrieve an array of user records whose field specified by the key parameter match one of the values specified in the valuesArray parameter.
  *
- * @author Albert Pérez Monfort
- * @param  array with the values that must be checked
- * @param  the value that must be searched. It can be uname or email
- * @return the number of values in database contained in the array
+ * @param array $args All parameters passed to this function.
+ *                    $args['key']      (string) The field to be searched, typically 'uname' or 'email'.
+ *                    $args['keyValue'] (array)  An array containing the values to be matched.
+ *
+ * @return array|bool An array of user records indexed by user name, each whose key field matches one value in the valueArray; false on error.
  */
 function Users_adminapi_checkMultipleExistence($args)
 {
@@ -534,19 +563,20 @@ function Users_adminapi_checkMultipleExistence($args)
 
     $items = DBUtil::selectObjectArray ('users', $where, '', '-1', '-1', 'uname');
 
-    if($items === false) {
+    if ($items === false) {
         return false;
     }
 
     return $items;
 }
 
-
 /**
- * proceed with the values of the import file
+ * Add new user accounts from the import process.
  *
- * @param  array with the values that must be proceeded
- * @return true if success and false otherwise
+ * @param array $args All parameters passed to this function.
+ *                    $args['importValues'] (array) An array of information used to create new user records.
+ *
+ * @return bool True on success; false otherwise.
  */
 function Users_adminapi_createImport($args)
 {
@@ -557,7 +587,7 @@ function Users_adminapi_createImport($args)
 
     $importValues = $args['importValues'];
 
-    if(empty($importValues)) {
+    if (empty($importValues)) {
         return false;
     }
 
@@ -573,7 +603,7 @@ function Users_adminapi_createImport($args)
     $createUsersSQL = "INSERT INTO " . $userstable . "($userscolumn[uname],$userscolumn[email],$userscolumn[activated],$userscolumn[pass],$userscolumn[hash_method]) VALUES ";
 
     // construct a sql statement with all the inserts to avoid to much database connections
-    foreach($importValues as $value) {
+    foreach ($importValues as $value) {
         $value = DataUtil::formatForStore($value);
         $password = DataUtil::hash(trim($value['pass']), $method);
         $createUsersSQL .= "('" . trim($value['uname']) . "','" . trim($value['email']) . "'," . $value['activated'] . ",'" . $password . "', $methodNumber),";
@@ -584,7 +614,7 @@ function Users_adminapi_createImport($args)
 
     // execute sql to create users
     $result = DBUtil::executeSQL($createUsersSQL);
-    if(!$result){
+    if (!$result) {
         return false;
     }
 
@@ -592,8 +622,9 @@ function Users_adminapi_createImport($args)
     $usersInDB = pnModAPIFunc('Users', 'admin', 'checkMultipleExistence',
                                   array('valuesArray' => $usersArray,
                                         'key' => 'uname'));
-    if(!$usersInDB){
-        return LogUtil::registerError(__('Error! The users have been created but something has failed trying to get them from the database. Now all these users do not have group.'));
+    if (!$usersInDB) {
+        return LogUtil::registerError(__('Error! The users have been created but something has failed trying to get them from the database. '
+            . 'Now all these users do not have group.'));
     }
 
     // get available groups
@@ -601,7 +632,7 @@ function Users_adminapi_createImport($args)
 
     // create an array with the groups identities where the user can add other users
     $allGroupsArray = array();
-    foreach($allGroups as $group){
+    foreach ($allGroups as $group) {
         if (SecurityUtil::checkPermission('Groups::', $group['name'] . '::' . $group['gid'], ACCESS_EDIT)) {
             $allGroupsArray[] = $group['gid'];
         }
@@ -613,10 +644,10 @@ function Users_adminapi_createImport($args)
     $addUsersToGroupsSQL = "INSERT INTO " . $groupstable . "({$groupscolumn['uid']},{$groupscolumn['gid']}) VALUES ";
 
     // construct a sql statement with all the inserts to avoid to much database connections
-    foreach($importValues as $value) {
+    foreach ($importValues as $value) {
         $groupsArray = explode('|', $value['groups']);
-        foreach($groupsArray as $group) {
-            if(in_array(trim($group), $allGroupsArray)) {
+        foreach ($groupsArray as $group) {
+            if (in_array(trim($group), $allGroupsArray)) {
                 $addUsersToGroupsSQL .= "(" . $usersInDB[$value['uname']]['uid'] . "," . $group . "),";
             }
         }
@@ -626,31 +657,34 @@ function Users_adminapi_createImport($args)
 
     // execute sql to create users
     $result = DBUtil::executeSQL($addUsersToGroupsSQL);
-    if(!$result){
-        return LogUtil::registerError(__('Error! The users have been created but something has failed trying to add the users to their groups. Now all these users do not have group.'));
+    if (!$result) {
+        return LogUtil::registerError(__('Error! The users have been created but something has failed while trying to add the users to their groups. '
+            . 'Now all these users do not have group.'));
     }
 
     // check if module Mailer is active
     $modinfo = pnModGetInfo(pnModGetIDFromName('Mailer'));
-    if($modinfo['state'] == 3) {
+    if ($modinfo['state'] == 3) {
         $sitename  = pnConfigGetVar('sitename');
         $siteurl   = pnGetBaseURL();
         $pnRender = Renderer::getInstance('Users', false);
         $pnRender->assign('sitename', $sitename);
         $pnRender->assign('siteurl', $siteurl);
-        foreach($importValues as $value) {
-            if($value['activated'] == 1 && $value['sendMail'] == 1) {
+        foreach ($importValues as $value) {
+            if ($value['activated'] == 1 && $value['sendMail'] == 1) {
                 $pnRender->assign('email', $value['email']);
                 $pnRender->assign('uname', $value['uname']);
                 $pnRender->assign('pass', $value['pass']);
                 $message = $pnRender->fetch('users_adminapi_notifyemail.htm');
                 $subject = __f('Password for %1$s from %2$s', array($value['uname'], $sitename));
-                if(!pnModAPIFunc('Mailer', 'user', 'sendmessage',
+                if (!pnModAPIFunc('Mailer', 'user', 'sendmessage',
                                     array('toaddress' => $value['email'],
                                           'subject' => $subject,
                                           'body' => $message,
-                                          'html' => true))) {
-                    LogUtil::registerError(__f('Error! Some problem has happened while sending messages. The first error has happened trying to send the message to the user %s. After this error no more messages have been sent.', $value['uname']));
+                                          'html' => true)))
+                {
+                    LogUtil::registerError(__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. '
+                        . 'After this error, no more messages were sent.', $value['uname']));
                     break;
                 }
             }

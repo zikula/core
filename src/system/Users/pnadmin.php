@@ -56,11 +56,11 @@ function users_admin_new()
  * Create a new user.
  *
  * Available Post Parameters:
- * - add_uname (string) The user name to store on the new user record.
- * - add_email (string) The e-mail address to store on the new user record.
- * - add_pass (string) The new password to store on the new user record.
- * - add_vpass (string) A verification of the new password to store on the new user record.
- * - dynadata (array) An array of additional information to be stored by the designated profile module, and linked to the newly created user account.
+ * - add_uname       (string)   The user name to store on the new user record.
+ * - add_email       (string)   The e-mail address to store on the new user record.
+ * - add_pass        (string)   The new password to store on the new user record.
+ * - add_vpass       (string)   A verification of the new password to store on the new user record.
+ * - dynadata        (array)    An array of additional information to be stored by the designated profile module, and linked to the newly created user account.
  * - usermustconfirm (int|bool) If true, the newly created user must activate his account; if false, the newly created account is activate.
  *
  * @return bool True if successful, false otherwise.
@@ -179,8 +179,8 @@ function users_admin_create()
  * Shows all items and lists the administration options.
  *
  * Available Get Parameters:
- * - startnum (int) The ordinal number at which to start displaying user records.
- * - letter (string) The first letter of the user names to display.
+ * - startnum (int)    The ordinal number at which to start displaying user records.
+ * - letter   (string) The first letter of the user names to display.
  *
  * @param array $args All parameters passed to the function.
  *                    $args['startnum'] (int) The ordinal number at which to start displaying user records. Used as a default if
@@ -496,13 +496,13 @@ function users_admin_search()
  * List the users as a result of a form post.
  *
  * Available Post Parameters:
- * - uname (string) A fragment of a user name on which to search using an SQL LIKE clause. The user name will be surrounded by wildcards.
- * - ugroup (int) A group id in which to search (only users who are members of the specified group are returned).
- * - email (string) A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address will be surrounded by wildcards.
- * - regdateafter (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date after the date specified will be returned.
+ * - uname         (string) A fragment of a user name on which to search using an SQL LIKE clause. The user name will be surrounded by wildcards.
+ * - ugroup        (int)    A group id in which to search (only users who are members of the specified group are returned).
+ * - email         (string) A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address will be surrounded by wildcards.
+ * - regdateafter  (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date after the date specified will be returned.
  * - regdatebefore (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date before the date specified will be returned.
- * - dynadata (array) An array of search values to be passed to the designated profile module. Only those user records also satisfying the profile module's search of its data
- *      are returned.
+ * - dynadata      (array)  An array of search values to be passed to the designated profile module. Only those user records also satisfying the profile module's search of its data
+ *                          are returned.
  *
  * @return string HTML string containing the rendered template.
  */
@@ -545,22 +545,22 @@ function users_admin_listusers()
  * Perform one of several possible operations on a user as a result of a form post.
  *
  * Available Post Parameters:
- * - op (string) The operation. One of: 'edit', 'delete', 'mail', 'approve', or 'deny'.
- * - do (string) Used only for 'edit' or 'delete' operations; either the value 'yes' or null. Controls whether
- *      a confirmation page is displayed for the operation (value of null) or the operation is actually
- *      performed (value 'yes').
- * - userid (numeric) The user id of the user record on which the operation is to be performed.
- * - uname (string) Used only for 'edit' operations; the user name to be saved to the user record.
- * - email (string) Used only for 'edit' operations; the e-mail address to be saved to the user record.
- * - activated (bool) Used only for 'edit' operations; the activation state to be saved to the user record.
- * - pass (string) Used only for 'edit' operations; the new password to be saved to the user record.
- * - vpass (string) Used only for 'edit' operations; the confirmation of the new password to be saved to the user record.
- * - theme (string) Used only for 'edit' operations; the name of the theme to be saved to the user record.
- * - access_permissions (array) Used only for 'edit' operations; an array of group ids to which the user should belong.
- * - dynadata (array) Used only for 'edit' operations; an array of dynamic user data to be stored with the designated profile module for the user account.
- * - sendmail (array) Used only for 'mail' operations; an array containing the e-mail to be sent.
- * - tag (int) Used only for 'approve' and 'deny' operations; if not 1, then a confirmation page is displayed; if 1 the operation is carried out.
- * - action (string) Used only for 'approve' and 'deny' operations; a fragment of the name of the function to call, either 'approve' or 'deny'.
+ * - op                 (string)  The operation. One of: 'edit', 'delete', 'mail', 'approve', or 'deny'.
+ * - do                 (string)  Used only for 'edit' or 'delete' operations; either the value 'yes' or null. Controls whether
+ *                                  a confirmation page is displayed for the operation (value of null) or the operation is actually
+ *                                  performed (value 'yes').
+ * - userid             (numeric) The user id of the user record on which the operation is to be performed.
+ * - uname              (string)  Used only for 'edit' operations; the user name to be saved to the user record.
+ * - email              (string)  Used only for 'edit' operations; the e-mail address to be saved to the user record.
+ * - activated          (bool)    Used only for 'edit' operations; the activation state to be saved to the user record.
+ * - pass               (string)  Used only for 'edit' operations; the new password to be saved to the user record.
+ * - vpass              (string)  Used only for 'edit' operations; the confirmation of the new password to be saved to the user record.
+ * - theme              (string)  Used only for 'edit' operations; the name of the theme to be saved to the user record.
+ * - access_permissions (array)   Used only for 'edit' operations; an array of group ids to which the user should belong.
+ * - dynadata           (array)   Used only for 'edit' operations; an array of dynamic user data to be stored with the designated profile module for the user account.
+ * - sendmail           (array)   Used only for 'mail' operations; an array containing the e-mail to be sent.
+ * - tag                (int)     Used only for 'approve' and 'deny' operations; if not 1, then a confirmation page is displayed; if 1 the operation is carried out.
+ * - action             (string)  Used only for 'approve' and 'deny' operations; a fragment of the name of the function to call, either 'approve' or 'deny'.
  *
  * @return mixed true successful, false or string otherwise
  */
@@ -739,8 +739,8 @@ function users_admin_processusers()
  * Display a form to edit one user account.
  *
  * Available Get Parameters:
- * - userid (numeric) the user id of the user to be modified.
- * - uname (string) the user name of the user to be modified.
+ * - userid (numeric) The user id of the user to be modified.
+ * - uname  (string)  The user name of the user to be modified.
  *
  * @param array $args All arguments passed to the function.
  *                    $args['userid'] (numeric) the user id of the user to be modified. Used as a default value if the get parameter
@@ -838,8 +838,8 @@ function users_admin_modify($args)
  * Display a form to confirm the deletion of one user.
  * 
  * Available Get Parameters:
- * - userid (numeric) the user id of the user to be deleted.
- * - uname (string) the user name of the user to be deleted.
+ * - userid (numeric) The user id of the user to be deleted.
+ * - uname  (string)  The user name of the user to be deleted.
  *
  * @param array $args All arguments passed to the function.
  *                    $args['userid'] (numeric) the user id of the user to be deleted. Used as a default value if the get parameter
@@ -995,10 +995,10 @@ function users_admin_updateconfig()
  * Show the form to choose a CSV file and import several users from this file.
  *
  * Available Post Parameters:
- * - confirmed (int|bool) True if the user has confirmed the upload/import.
- * - importFile (array) Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored in $_FILES['fileFieldName'].
- *      See http://php.net/manual/en/features.file-upload.post-method.php .
- * - delimiter (int) A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
+ * - confirmed  (int|bool) True if the user has confirmed the upload/import.
+ * - importFile (array)    Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored in $_FILES['fileFieldName'].
+ *                         See http://php.net/manual/en/features.file-upload.post-method.php .
+ * - delimiter  (int)      A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
  *
  * @param array $args All arguments passed to the function.
  *                    $args['confirmed'] (int|bool) True if the user has confirmed the upload/import. Used
@@ -1062,8 +1062,8 @@ function users_admin_import($args)
  *
  * Available Parameters:
  * - importFile (array) Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored in $_FILES['fileFieldName'].
- *      See http://php.net/manual/en/features.file-upload.post-method.php .
- * - delimiter (int) A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
+ *                        See http://php.net/manual/en/features.file-upload.post-method.php .
+ * - delimiter  (int)   A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
  *
  * @param array $args All arguments passed to the function.
  *                    $args['importFile'] (array) Information about the file to import. Used as the default
