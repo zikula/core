@@ -56,23 +56,59 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
      * @var integer
      */
     protected $port;
+    
+    /**
+     * The auth type.
+     * 
+     * @var string
+     */
+    protected $auth_type;
+    
+    /**
+     * The path to private key file.
+     * 
+     * @var string
+     */
+    protected $priv_key;
+    
+    /**
+     * Path to public key file.
+     * 
+     * @var string
+     */
+    protected $pub_key;
+    
+    /**
+     * Passphrase for the key.
+     * 
+     * @var string
+     */
+    protected $passphrase;
 
     /**
      * Constructs a configuration for the SFTP driver.
      *
-     * @param string  $host The host to connect to.
-     * @param string  $user The username when connecting (default = 'Anonymous').
-     * @param string  $pass The password associated with $user (default = '').
-     * @param string  $dir  The directory on which to enter immediatly after connecting (default = './') (optional).
-     * @param integer $port The port to use when connecting to $host (default = 22) (optional).
+     * @param string  $host       The host to connect to.
+     * @param string  $user       The username when connecting (default = 'Anonymous').
+     * @param string  $pass       The password associated with $user (default = '').
+     * @param string  $dir        The directory on which to enter immediatly after connecting (default = './') (optional).
+     * @param integer $port       The port to use when connecting to $host (default = 22) (optional).
+     * @param string  $auth_type  Authenication type, default is "pass" other common methods are "ssh-rsa" and "ssh-dss".
+     * @param string  $pub_key    Path to the public key, key must be of type $auth_type.
+     * @param string  $priv_key   Path to the private key, must match $pub_key.
+     * @param string  $passphrase The passphrase for the key (default = '').
      */
-    public function __construct($host = 'localhost', $user = 'Anonymous', $pass = '', $dir = './', $port = 22)
+    public function __construct($host = 'localhost', $user = 'Anonymous', $pass = '', $dir = './', $port = 22, $auth_type = "pass", $pub_key = "", $priv_key = "", $passphrase = "")
     {
         $this->host = ($host == '' ? 'localhost' : $host);
         $this->user = $user;
         $this->pass = $pass;
         $this->dir = ($dir == '' ? './' : (substr($dir, 0, 1) == '/' || substr($dir, 0, 2) == './' ? $dir : "./$dir"));
         $this->port = ($port == "" || !is_numeric($port) ? 22 : $port);
+        $this->auth_type = ($auth_type == "") ? "pass" : $auth_type;
+        $this->pub_key = $pub_key;
+        $this->priv_key = $priv_key;
+        $this->passphrase = $passphrase;
     }
 
     /**
@@ -123,5 +159,45 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
     public function getDir()
     {
         return $this->dir;
+    }
+    
+    /**
+     * Get the authentication method.
+     *
+     * @return string Authentication type.
+     */
+    public function getAuthType()
+    {
+        return $this->auth_type;
+    }
+    
+    /**
+     * Get the path to the public key.
+     *
+     * @return string Path to public key.
+     */
+    public function getPubKey()
+    {
+        return $this->pub_key;
+    }
+    
+    /**
+     * Get the path to the private key.
+     *
+     * @return string Path to private key.
+     */
+    public function getPrivKey()
+    {
+        return $this->priv_key;
+    }
+    
+    /**
+     * Get the passphrase associated with the key.
+     *
+     * @return string Passphrase.
+     */
+    public function getPassphrase()
+    {
+        return $this->passphrase;
     }
 }

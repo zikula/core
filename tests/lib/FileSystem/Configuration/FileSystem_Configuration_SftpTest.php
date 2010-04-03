@@ -16,6 +16,7 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
     private $FileSystem_Configuration_Sftp2;
     private $FileSystem_Configuration_Sftp3;
     private $FileSystem_Configuration_Sftp4;
+    private $FileSystem_Configuration_Sftp5;
 
     /**
      * Prepares the environment before running a test.
@@ -31,6 +32,7 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
         $this->FileSystem_Configuration_Sftp2 = new FileSystem_Configuration_Sftp();
         $this->FileSystem_Configuration_Sftp3 = new FileSystem_Configuration_Sftp('host', 'user', 'pass', 'dir', 'port');
         $this->FileSystem_Configuration_Sftp4 = new FileSystem_Configuration_Sftp('host', 'user', 'pass', '/test', 'port');
+        $this->FileSystem_Configuration_Sftp5 = new FileSystem_Configuration_Sftp('host', 'user', '', '', 22, 'ssh-rsa', 'pubkey', 'privkey', 'passphrase');
 
     }
 
@@ -114,8 +116,42 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('./',$this->FileSystem_Configuration_Sftp2->getDir());
         $this->assertEquals('./dir',$this->FileSystem_Configuration_Sftp3->getDir());
         $this->assertEquals('/test',$this->FileSystem_Configuration_Sftp4->getDir());
-
+    }
+    
+    /**
+     * Tests FileSystem_Configuration_Sftp->getDir()
+     */
+    public function testGetPubkey()
+    {
+        $this->assertEquals('',$this->FileSystem_Configuration_Sftp->getPubKey());
+        $this->assertEquals('pubkey',$this->FileSystem_Configuration_Sftp5->getPubKey());
+    }
+    
+    /**
+     * Tests FileSystem_Configuration_Sftp->getDir()
+     */
+    public function testGetPrivKey()
+    {
+        $this->assertEquals('',$this->FileSystem_Configuration_Sftp->getPrivKey());
+        $this->assertEquals('privkey',$this->FileSystem_Configuration_Sftp5->getPrivKey());
+    }
+    
+    /**
+     * Tests FileSystem_Configuration_Sftp->getDir()
+     */
+    public function testGetPassphrase()
+    {
+        $this->assertEquals('',$this->FileSystem_Configuration_Sftp->getPassphrase());
+        $this->assertEquals('passphrase',$this->FileSystem_Configuration_Sftp5->getPassphrase());
+    }
+    
+    /**
+     * Tests FileSystem_Configuration_Sftp->getDir()
+     */
+    public function testGetAuthType()
+    {
+        $this->assertEquals('pass',$this->FileSystem_Configuration_Sftp->getAuthType());
+        $this->assertEquals('ssh-rsa',$this->FileSystem_Configuration_Sftp5->getAuthType());
     }
 
 }
-

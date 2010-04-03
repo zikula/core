@@ -24,15 +24,16 @@ class FileSystem_Facade_Sftp
      * 
      * TODO methods and callbacks, check php api.
      * 
-     * @param string  $host The host to connect to.
-     * @param intiger $port The port to connect on.
+     * @param string  $host    The host to connect to.
+     * @param intiger $port    The port to connect on.
+     * @param array   $methods Associative array of methods, see php ssh2_connect api docs.
      * 
      * @return boolean True if connected.
      */
-    public function connect($host, $port = 22)
+    public function connect($host, $port = 22, $methods = array())
     {
         //@codeCoverageIgnoreStart
-        return ssh2_connect($host, $port);
+        return ssh2_connect($host, $port, $methods);
         //@codeCoverageIgnoreEnd
     }
     
@@ -49,6 +50,24 @@ class FileSystem_Facade_Sftp
     {
         //@codeCoverageIgnoreStart
         return ssh2_auth_password($session, $username, $password);
+        //@codeCoverageIgnoreEnd
+    }
+    
+    /**
+     * Facade for ssh2_auth_pubkey_file.
+     * 
+     * @param resource $session    The resource to login to.
+     * @param string   $username   The username to login with.
+     * @param string   $pubkey     The path to the public key to use.
+     * @param string   $privkey    The path to the private key.
+     * @param string   $passphrase The passphrase for the key.
+     * 
+     * @return boolean True if logged in.
+     */
+    public function authPubkey($session, $username, $pubkey, $privkey, $passphrase)
+    {
+        //@codeCoverageIgnoreStart
+        return ssh2_auth_pubkey_file($session, $username, $pubkey, $privkey, $passphrase);
         //@codeCoverageIgnoreEnd
     }
     
@@ -254,7 +273,7 @@ class FileSystem_Facade_Sftp
     public function sshShell($resource, $type = "xterm")
     {
         //@codeCoverageIgnoreStart
-        return ssh2_shell($resourced, $type);
+        return ssh2_shell($resource, $type);
         //@codeCoverageIgnoreEnd
     }
     

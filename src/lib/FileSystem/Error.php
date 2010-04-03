@@ -159,12 +159,6 @@ class FileSystem_Error
      */
     public function handler($errno, $errstr, $errfile, $errline)
     {
-        //$errors = $this->error_codes();
-        //foreach ($errors as $key => $error) {
-        //    if (stripos($errstr, $error['search']) !== FALSE) {
-        //    $this->error_register($errstr, $error['code']);
-        //    return true;
-        //}
-        $this->register($errstr, '0');
+        $this->register($errstr, 0);
     }
 }

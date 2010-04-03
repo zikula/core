@@ -15,11 +15,8 @@
 /**
  * FileSystem_Local is the standard driver for Local/Direct connections.
  *
- * This class extends FileSystem_Driver
- * and thus inherits the construct and FileSystem_Error functions from FileSystem_Driver.
- * This class must implement FileSystem_Interface, the requirement to implement this interface
- * is inherited from FileSystem_Driver.
- *
+ * This class extends FileSystem_Driver, as such this class implements the
+ * FileSystem_Interface.
  */
 class FileSystem_Local extends FileSystem_Driver {
 

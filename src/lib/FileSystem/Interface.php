@@ -16,7 +16,7 @@
  * FileSystem_Interface is the interface including all functions which individual drivers
  * must implement. This assures that all drivers operate in similar/expected ways and all
  * have roughly the same capabilities. If a function has no meaning for a driver then that
- * function must be included in the driver, however it mustregister an error when called,
+ * function must be included in the driver, however it should register an error when called,
  * and then return false.
  */
 interface FileSystem_Interface

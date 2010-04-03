@@ -15,10 +15,8 @@
 /**
  * FileSystem_SFtp is the standard driver for SFTP connections.
  *
- * This class extends FileSystem_Driver
- * and thus inherits the construct and FileSystem_Error functions from FileSystem_Driver.
- * This class must implement FileSystem_Interface, the requirement to implement this interface
- * is inherited from FileSystem_Driver.
+ * This class extends FileSystem_Driver, as such this class implements the
+ * FileSystem_Interface.
  */
 class FileSystem_Sftp extends FileSystem_Driver
 {
@@ -42,6 +40,13 @@ class FileSystem_Sftp extends FileSystem_Driver
      * @var string
      */
     private $_dir;
+    
+    /**
+     * Shell type to use when creating a ssh shell.
+     * 
+     * @var string
+     */
+    private $_terminal = "xterm";
 
     /**
      * Standard function for creating a SFTP connection and logging in.
@@ -55,17 +60,33 @@ class FileSystem_Sftp extends FileSystem_Driver
      */
     public function connect()
     {
-        //$this->errorHandler->start();
-        if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort())) !== false) {
+        $this->errorHandler->start();
+        $methods = array();
+        if ($this->configuration->getAuthType() !== "pass") {
+            $methods['hostkey'] = $this->configuration->getAuthType();
+        }
+        if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $methods)) !== false) {
             //connected
-            if (($this->driver->authPassword($this->_ssh_resource, $this->configuration->getUser(), $this->configuration->getPass())) !== false) {
+            if ($this->configuration->getAuthType() !== "pass") {
+                $auth = $this->driver->authPubkey(
+                    $this->_ssh_resource, 
+                    $this->configuration->getUser(), 
+                    $this->configuration->getPubKey(), 
+                    $this->configuration->getPrivKey(), 
+                    $this->configuration->getPassphrase());
+            } else {
+                $auth = $this->driver->authPassword($this->_ssh_resource, 
+                    $this->configuration->getUser(), 
+                    $this->configuration->getPass());
+            }
+            if ($auth !== false) {
                 //logged in
                 if (($this->_resource = $this->driver->sftp($this->_ssh_resource)) !== false) {
                     //started sftp
                     if (($this->_dir = $this->driver->realpath($this->_resource, $this->configuration->getDir())) !== false) {
                         //changed dir
                         $this->errorHandler->stop();
-                        return true; //return object?
+                        return true;
                     }
                     //could not enter dir
                 }
@@ -116,9 +137,8 @@ class FileSystem_Sftp extends FileSystem_Driver
         if ($remote == "" || substr($remote, 0, 1) !== "/") {
             $remote = $this->_dir . '/' . $remote;
         }
-    	$res = $this->_resource;
         $this->errorHandler->start();
-        if (($bytes = $this->driver->putContents($this->_driver,$remote,$stream)) !== false) {
+        if (($bytes = $this->driver->putContents($this->_resource, $remote, $stream)) !== false) {
             fclose($stream);
             $this->errorHandler->stop();
             return $bytes;
@@ -193,8 +213,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             $this->errorHandler->stop(); //source file not found.
             return false;
         }
-        //TODO should xterm be used?
-        if (($shell = $this->driver->sshShell($this->_ssh_resource, "xterm")) == false) {
+        if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
             return false; //could not get shell.
         }
         if ($this->driver->sshShellWrite($shell, "chmod $perm $file;echo :::$?:::" . PHP_EOL) === false) {
@@ -211,7 +230,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         if (sizeof($matches) > 0) {
             switch (intval(str_replace(':','',$matches[0]))) {
                 case 1:
-                    $this->errorHandler->handler('0', "Chmod returned with Code 1: failure.", '', '');
+                    $this->errorHandler->register("Chmod returned with Code 1: failure.",0);
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -224,7 +243,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         }
         //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
-        $this->errorHandler->handler('0', "Did not get acknowledgment from host, chmod may or may not have succeeded.", '', '');
+        $this->errorHandler->register("Did not get acknowledgment from host, chmod may or may not have succeeded.", 0);
         return false;
     }
 
@@ -255,7 +274,6 @@ class FileSystem_Sftp extends FileSystem_Driver
         //if IsDir fails that means its either not a directory or doesnt exist
         if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
             $this->errorHandler->register("$dir does not exist.", 0);
-            //TODO use either register or handler not both.
             return false;
         }
         $this->errorHandler->register("$dir is not a directory", 0);
@@ -337,9 +355,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             $this->errorHandler->stop(); //source file not found.
             return false;
         }
-
-        //TODO should xterm be used?
-        if (($shell = $this->driver->sshShell($this->_ssh_resource, "xterm")) == false) {
+        if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
             return false; //could not get shell.
         }
         if ($this->driver->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
@@ -356,7 +372,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         if (sizeof($matches) > 0) {
             switch (str_replace(':','',$matches[0])) {
                 case 1:
-                    $this->errorHandler->handler('0', "cp returned with Code 1: failure.", '', '');
+                    $this->errorHandler->register("cp returned with Code 1: failure.",0);
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -393,12 +409,10 @@ class FileSystem_Sftp extends FileSystem_Driver
                 //file deleted
                 $this->errorHandler->stop();
                 return true;
-            }
-            //file not deleted
-        }
-        //file does not exist.
+            } //file not deleted
+        } //file does not exist.
         $this->errorHandler->stop();
-        $this->errorHandler->handler('0', "Could not delete: $sourcepath", '', '');
+        $this->errorHandler->register("Could not delete: $sourcepath", 0);
         return false;
     }
 }
