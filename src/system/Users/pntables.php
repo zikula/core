@@ -11,13 +11,13 @@
  */
 
 /**
- * Populate pntables array for Users module
+ * Populate pntables array for Users module.
  *
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.
  * It can be loaded explicitly using the pnModDBInfoLoad() API function.
  *
- * @return       array       The table information.
+ * @return array The table information.
  */
 function Users_pntables()
 {

@@ -69,7 +69,7 @@ function Users_ajax_getusers()
  *               9=EmailTaken 10=emails different 11=User Agent Banned
  *               12=Email Domain banned 13=DUD incorrect 14=spam question incorrect
  *               15=Pass too short 16=Pass different 17=No pass
- **/
+ */
 function Users_ajax_checkuser()
 {
     if (!SecurityUtil::confirmAuthKey()) {
@@ -248,7 +248,7 @@ function Users_ajax_checkuser()
  *
  * @return array|bool False if there is no dynamic data, if there is no designated profile module, or if there are no errors;
  *                    otherwise an array containg a result message, an error code, and an array of fields containing errors.
- **/
+ */
 function Users_ajax_checkrequired($dynadata = array())
 {
     if (empty($dynadata)) {

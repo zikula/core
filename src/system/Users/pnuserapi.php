@@ -8,14 +8,17 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Users
-*/
+ */
 
 /**
- * get all example items
+ * Get all users (for which the current user has permission to read).
  *
- * @param    int     $args['starnum']    (optional) first item to return
- * @param    int     $args['numitems']   (optional) number if items to return
- * @return   array   array of items, or false on failure
+ * @param array $args All parameters passed to this function.
+ *                    $args['letter']   (string) The first letter of the set of user names to return.
+ *                    $args['starnum']  (int)    First item to return (optional).
+ *                    $args['numitems'] (int)    Number if items to return (optional).
+ *
+ * @return array An array of users, or false on failure.
  */
 function users_userapi_getall($args)
 {
@@ -57,10 +60,13 @@ function users_userapi_getall($args)
 }
 
 /**
- * get a specific item
+ * Get a specific user record.
  *
- * @param    $args['uid']  id of user item to get
- * @return   array         item array, or false on failure
+ * @param array $args All parameters passed to this function.
+ *                    $args['uid']   (numeric) The id of user to get (required, unless uname specified).
+ *                    $args['uname'] (string)  The user name of user to get (ignored if uid is specified, otherwise required).
+ *
+ * @return array The user record as an array, or false on failure.
  */
 function users_userapi_get($args)
 {
@@ -85,7 +91,7 @@ function users_userapi_get($args)
 
     // Security check
     if ($obj && !SecurityUtil::checkPermission('Users::', "$obj[uname]::$obj[uid]", ACCESS_READ)) {
-       return false;
+        return false;
     }
 
     // Return the item array
@@ -93,11 +99,14 @@ function users_userapi_get($args)
 }
 
 /**
- * utility function to count the number of items held by this module
+ * Count and return the number of users.
  *
- * TODO: shouldn't there be some sort of limit on the select/loop ??
+ * @param array $args All parameters passed to this function.
+ *                    $args['letter'] (string) If specified, then only those user records whose user name begins with the specified letter are counted.
  *
- * @return   integer   number of items held by this module
+ * @todo Shouldn't there be some sort of limit on the select/loop??
+ *
+ * @return int Number of users.
  */
 function users_userapi_countitems($args)
 {
@@ -111,11 +120,13 @@ function users_userapi_countitems($args)
 }
 
 /**
- * users_userapi_optionalitems()
- * get opition items
+ * Get user properties.
  *
- * @return array of items, or false on failure
- **/
+ * @param array $args All parameters passed to this function.
+ *                    $args['proplabel'] (string) If specified only the value of the specified property (label) is returned.
+ *
+ * @return array An array of user properties, or false on failure.
+ */
 function users_userapi_optionalitems($args)
 {
     $items = array();
@@ -149,8 +160,7 @@ function users_userapi_optionalitems($args)
     }
 
     $ak = array_keys($objArray);
-    foreach ($ak as $v)
-    {
+    foreach ($ak as $v) {
         $prop_validation = @unserialize($objArray[$v]['prop_validation']);
         $prop_array = array('prop_viewby'      => $prop_validation['viewby'],
                             'prop_displaytype' => $prop_validation['displaytype'],
@@ -165,14 +175,20 @@ function users_userapi_optionalitems($args)
 }
 
 /**
- * users_userapi_checkuser()
- * Check whether the user is validated
+ * Validate new user information entered by the user.
  *
- * @return errorcodes -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
- *         3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
- *         6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
- *         9=EmailTaken 11=UserAgentBanned 12=DomainBanned
- **/
+ * @param array $args All parameters passed to this function.
+ *                    $args['uname']        (string) The proposed user name for the new user record.
+ *                    $args['email']        (string) The proposed e-mail address for the new user record.
+ *                    $args['agreetoterms'] (int)    A flag indicating that the user has agreed to the site's terms and policies; 0 indicates no, otherwise yes.
+ *
+ * @return array An array containing an error code and a result message. Possible error codes are:
+ *               -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
+ *               3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
+ *               6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
+ *               9=EmailTaken 11=User Agent Banned 12=Email Domain banned
+ *
+ */
 function users_userapi_checkuser($args)
 {
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
@@ -205,7 +221,7 @@ function users_userapi_checkuser($args)
             $usernames = explode(" ", $reg_illegalusername);
             $count = count($usernames);
             $pregcondition = "/((";
-            for ($i = 0;$i < $count;$i++) {
+            for ($i = 0; $i < $count; $i++) {
                 if ($i != $count-1) {
                     $pregcondition .= $usernames[$i] . ")|(";
                 } else {
@@ -262,7 +278,7 @@ function users_userapi_checkuser($args)
         $checkdisallowed_useragents = explode(',', $disallowed_useragents);
         $count = count($checkdisallowed_useragents);
         $pregcondition = "/((";
-        for ($i = 0;$i < $count;$i++) {
+        for ($i = 0; $i < $count; $i++) {
             if ($i != $count-1) {
                 $pregcondition .= $checkdisallowed_useragents[$i] . ")|(";
             } else {
@@ -289,7 +305,25 @@ function users_userapi_checkuser($args)
 }
 
 /**
- * users_userapi_finishnewuser
+ * Complete the process of creating a new user or new user registration from a registration request form.
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['isadmin']           (bool)   Whether the new user record is being submitted by a user with admin permissions or not.
+ *                    $args['user_regdate']      (string) An SQL date-time to override the registration date and time.
+ *                    $args['user_viewmail']     (int)    Whether the user has selected to allows his e-mail address to be viewed or not.
+ *                    $args['storynum']          (int)    The number of News module stories to show on the main page.
+ *                    $args['commentlimit']      (int)    The limit on the size of this user's comments.
+ *                    $args['timezoneoffset']    (int)    The user's time zone offset.
+ *                    $args['usermustconfirm']   (int)    Whether the user must activate his account or not.
+ *                    $args['skipnotifications'] (bool)   Whether e-mail notifications should be skipped or not.
+ *                    $args['moderated']         (bool)   If true, then this record is being added as a result of an admin approval of a pending registration.
+ *                    $args['hash_method']       (int)    A code indicated what hash method was used to store the user's encrypted password in the users_temp table.
+ *                    $args['uname']             (string) The user name to store on the new user record.
+ *                    $args['email']             (string) The e-mail address to store on the new user record.
+ *                    $args['pass']              (string) The new password to store on the new user record.
+ *                    $args['dynadata']          (array)  An array of data to be stored by the designated profile module and associated with this user record.
+ *
+ * @return bool True on success, otherwise false.
  */
 function users_userapi_finishnewuser($args)
 {
@@ -515,10 +549,14 @@ function users_userapi_finishnewuser($args)
 }
 
 /**
- * users_userapi_mailpasswd()
+ * Send the user a lost password.
  *
- * @param $args
- * @return code 0=DatabaseError 1=WrongCode 2=NoSuchUsernameOrEmailAddress 3=PasswordMailed 4=ConfirmationCodeMailed
+ * @param array $args All parameters passed to this function.
+ *                    $args['uname'] (string) The user's user name.
+ *                    $args['email'] (string) The user's e-mail address.
+ *                    $args['code']  (string) The confirmation code.
+ *
+ * @return int An error code: 0=DatabaseError 1=WrongCode 2=NoSuchUsernameOrEmailAddress 3=PasswordMailed 4=ConfirmationCodeMailed
  */
 function users_userapi_mailpasswd($args)
 {
@@ -584,11 +622,14 @@ function users_userapi_mailpasswd($args)
 }
 
 /**
- * users_userapi_activateuser()
+ * Activate a user's account.
  *
- * @param $args
- * @return bool
- **/
+ * @param array $args All parameters passed to this function.
+ *                    $args['regdate'] (string)  An SQL date-time containing the user's original registration date-time.
+ *                    $args['uid']     (numeric) The id of the user account to activate.
+ *
+ * @return bool True on success, otherwise false.
+ */
 function users_userapi_activateuser($args)
 {
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
@@ -607,16 +648,20 @@ function users_userapi_activateuser($args)
 }
 
 /**
- * users_userapi_expiredsession
+ * Display a message indicating that the user's session has expired.
+ *
+ * @return string The rendered template.
  */
-function users_userapi_expiredsession($args)
+function users_userapi_expiredsession()
 {
     $pnRender = Renderer::getInstance('Users', false);
     return $pnRender->fetch('users_userapi_expiredsession.htm');
 }
 
 /**
- * _users_userapi_makePass
+ * Generate a password for the user.
+ *
+ * @return string The generated password.
  */
 function _users_userapi_makePass()
 {
@@ -625,7 +670,12 @@ function _users_userapi_makePass()
 }
 
 /**
- * users_userapi_gethashmethods
+ * Retrieve an array of hash method codes indexed by hash method name, or an array of hash method names indexed by hash method codes.
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['reverse'] (bool) If false, then an array of codes index by name; if true, then an array of names indexed by code.
+ *
+ * @return array The array of hash method codes and names.
  */
 function users_userapi_gethashmethods($args)
 {
@@ -645,10 +695,11 @@ function users_userapi_gethashmethods($args)
 }
 
 /**
- * Utility function to get the account links for each user module
- * @return array
+ * Retrieve the account links for each user module.
+ *
+ * @return array An array of links for the user account page.
  */
-function Users_userapi_accountlinks($args)
+function Users_userapi_accountlinks()
 {
     // Get all user modules
     $mods = pnModGetAllMods();
@@ -659,8 +710,7 @@ function Users_userapi_accountlinks($args)
 
     $accountlinks = array();
 
-    foreach ($mods as $mod)
-    {
+    foreach ($mods as $mod) {
         // saves 17 system checks
         if ($mod['type'] == 3 && !in_array($mod['name'], array('Admin', 'Categories', 'Groups', 'Theme', 'Users'))) {
             continue;
@@ -691,10 +741,12 @@ function Users_userapi_accountlinks($args)
 }
 
 /**
- * Save the preliminar user e-mail until user's confirmation
+ * Save the preliminary user e-mail until user's confirmation.
  *
- * @param the user new e-mail
- * @return true if success and false otherwise
+ * @param array $args All parameters passed to this function.
+ *                    $args['newemail'] (string) The new e-mail address to store pending confirmation.
+ *
+ * @return bool True if success and false otherwise.
  */
 function Users_userapi_savepreemail($args)
 {
@@ -726,7 +778,7 @@ function Users_userapi_savepreemail($args)
     // checks if user has request the change recently and it is not confirmed
     $exists = DBUtil::selectObjectCountByID('users_temp', $uname, 'uname', 'lower');
 
-    if(!$exists) {
+    if (!$exists) {
         // create a new insert
         $obj = DBUtil::insertObject($obj, 'users_temp', 'tid');
     } else {
@@ -752,7 +804,7 @@ function Users_userapi_savepreemail($args)
     $message = $pnRender->fetch('users_userapi_confirmchemail.htm');
     $sent = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['newemail'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
-    if(!$sent) {
+    if (!$sent) {
         return false;
     }
 
@@ -760,26 +812,26 @@ function Users_userapi_savepreemail($args)
 }
 
 /**
- * users_userapi_getuserpreemail()
+ * Retrieve the user's new e-mail address that is awaiting his confirmation.
  *
- * @return the e-mail address waiting for confirmation for the current user
- **/
+ * @return string The e-mail address waiting for confirmation for the current user.
+ */
 function users_userapi_getuserpreemail()
 {
     if (!pnUserLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
     $item = DBUtil::selectObjectById('users_temp', pnUserGetVar('uname'), 'uname');
-    if(!$item) {
+    if (!$item) {
         return false;
     }
     return $item;
 }
 
 /**
- * get available menu links
+ * Get available user menu links.
  *
- * @return array array of menu links
+ * @return array An array of menu links.
  */
 function Users_userapi_getlinks()
 {

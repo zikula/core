@@ -6,14 +6,16 @@
  * @link http://www.zikula.org
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @category   Zikula_Core
- * @package    System_Modules
+ * @category Zikula_Core
+ * @package System_Modules
  * @subpackage Users
-*/
+ */
 
 /**
- * Search plugin info
- **/
+ * Return search plugin info.
+ *
+ * @return array An array containing information for the searc API.
+ */
 function users_searchapi_info()
 {
     return array('title' => 'Users',
@@ -21,8 +23,13 @@ function users_searchapi_info()
 }
 
 /**
- * Search form component
- **/
+ * Render the search form component for Users.
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['active'] (?) ?.
+ *
+ * @return string The rendered template for the Users search component.
+ */
 function users_searchapi_options($args)
 {
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
@@ -36,6 +43,15 @@ function users_searchapi_options($args)
     return '';
 }
 
+/**
+ * Perform a search.
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['q'] (?) ?.
+ *                    $args[?] (?) ?.
+ *
+ * @return bool True on success or null result, false on error.
+ */
 function users_searchapi_search($args)
 {
     // Security check
@@ -113,10 +129,14 @@ function users_searchapi_search($args)
 }
 
 /**
- * Do last minute access checking and assign URL to items
+ * Do last minute access checking and assign URL to items.
  *
  * Access checking is ignored since access check has
- * already been done. But we do add a URL to the found user
+ * already been done. But we do add a URL to the found user.
+ *
+ * @param array &$args The search results.
+ *
+ * @return bool True.
  */
 function users_searchapi_search_check(&$args)
 {

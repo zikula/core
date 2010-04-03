@@ -11,13 +11,12 @@
 */
 
 /**
- * initialise the users module
+ * Initialise the users module.
  *
  * This function is only ever called once during the lifetime of a particular
- * module instance.
- * This function MUST exist in the pninit file for a module
+ * module instance. This function MUST exist in the pninit file for a module.
  *
- * @return       bool       true on success, false otherwise
+ * @return bool True on success, false otherwise.
  */
 function users_init()
 {
@@ -73,13 +72,14 @@ function users_init()
 }
 
 /**
- * upgrade the users module from an old version
+ * Upgrade the users module from an older version.
  *
  * This function must consider all the released versions of the module!
  * If the upgrade fails at some point, it returns the last upgraded version.
  *
- * @param        string   $oldVersion   version number string to upgrade from
- * @return       mixed    true on success, last valid version string or false if fails
+ * @param string $oldVersion Version number string to upgrade from.
+ *
+ * @return mixed True on success, last valid version string or false if fails.
  */
 function users_upgrade($oldversion)
 {
@@ -113,15 +113,14 @@ function users_upgrade($oldversion)
 }
 
 /**
- * delete the users module
+ * Delete the users module.
  *
  * This function is only ever called once during the lifetime of a particular
- * module instance
- * This function MUST exist in the pninit file for a module
+ * module instance. This function MUST exist in the pninit file for a module.
  *
- * Since the users module should never be deleted we'all always return false here
- * @author       Mark West
- * @return       bool       false
+ * Since the users module should never be deleted we'all always return false here.
+ *
+ * @return bool false
  */
 function users_delete()
 {
@@ -130,13 +129,10 @@ function users_delete()
 }
 
 /**
- * create the default data for the users module
+ * Create the default data for the users module.
  *
  * This function is only ever called once during the lifetime of a particular
- * module instance
- *
- * Since the users module should never be deleted we'all always return false here
- * @return       bool       false
+ * module instance.
  */
 function users_defaultdata()
 {
@@ -185,8 +181,9 @@ function users_defaultdata()
 }
 
 /**
- * migrate old DUDs to attributes
+ * Migrate old DUDs to attributes.
  *
+ * @return bool True.
  */
 function users_migrate_duds_to_attributes()
 {
@@ -263,6 +260,9 @@ function users_migrate_duds_to_attributes()
     return true;
 }
 
+/**
+ * Migrate serialized data in users_temp.
+ */
 function users_upgrade_migrateSerialisedUserTemp()
 {
     $array = DBUtil::selectObjectArray('users_temp');

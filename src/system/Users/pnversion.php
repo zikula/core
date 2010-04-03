@@ -8,7 +8,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Users
-*/
+ */
 
 $modversion['name']           = 'Users';
 $modversion['oldnames']       = array('User');

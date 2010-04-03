@@ -8,12 +8,12 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Users
-*/
+ */
 
 /**
- * main function
- * if user isn't logged in, direct him to getlogin screen
- * else to your account screen
+ * Render and display the user's account panel. If he is not logged in, then redirect to the login screen.
+ *
+ * @return string The rendered template.
  */
 function users_user_main()
 {
@@ -42,9 +42,11 @@ function users_user_main()
 }
 
 /**
- * display the base user form (login/lostpassword/register options)
+ * Display the base user form (login/lostpassword/register options).
+ *
+ * @return string The rendered template.
  */
-function users_user_view($args)
+function users_user_view()
 {
     // If has logged in, header to index.php
     if (pnUserLoggedIn()) {
@@ -61,10 +63,18 @@ function users_user_view($args)
 }
 
 /**
- * display the login form
+ * Display the login form.
  *
- * @param bool stop display the invalid username/password message
- * @param int redirectype type of redirect 0 = redirect to referer (default), 1 = redirect to current uri
+ * Available Get Parameters:
+ * - returnpage     (string) The encoded URL of the page to which the user is returned after a successful login.
+ * - confirmtou     (int)    Whether the terms and policies need to be reconfirmed or not. 1 = reconfirm, otherwise do not reconfirm.
+ * - changepassword (it)     Whether to force a change of password. 1 = force the change, otherwise do not.
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['confirmtou']     (int) Used as a default if the 'confirmtou' get parameter is not set.
+ *                    $args['changepassword'] (int) Used as a default if the 'changepassword' get parameter is not set.
+ *
+ * @return string The rendered template.
  */
 function users_user_loginscreen($args)
 {
@@ -77,16 +87,15 @@ function users_user_loginscreen($args)
     }
 
     // TODO C Appears to be unused If confirmed, it can be removed. ph
-    /*    $redirecttype = (int)FormUtil::getPassedValue('redirecttype', isset($args['redirecttype']) ? $args['redirecttype'] : 0, 'GET');
-    if ($redirecttype == 0) {
-        $returnurl = pnServerGetVar('HTTP_REFERER');
-    } else {
-        $returnurl = pnGetCurrentURI();
-    }
-    if (empty($returnurl)) {
-        $returnurl = pnGetBaseURL();
-    }
-    */
+    //    $redirecttype = (int)FormUtil::getPassedValue('redirecttype', isset($args['redirecttype']) ? $args['redirecttype'] : 0, 'GET');
+    //    if ($redirecttype == 0) {
+    //        $returnurl = pnServerGetVar('HTTP_REFERER');
+    //    } else {
+    //        $returnurl = pnGetCurrentURI();
+    //    }
+    //    if (empty($returnurl)) {
+    //        $returnurl = pnGetBaseURL();
+    //    }
 
     $returnurl = FormUtil::getPassedValue('returnpage', null, 'GET');
     $confirmtou = (int)FormUtil::getPassedValue('confirmtou', isset($args['confirmtou']) ? $args['confirmtou'] : 0, 'GET');
@@ -100,7 +109,7 @@ function users_user_loginscreen($args)
     $pnRender->assign('allowregistration', pnModGetVar('Users', 'reg_allowreg'));
     $pnRender->assign('returnurl', $returnurl);
     // do we have to show a note about reconfirming the terms of use?
-    if(pnModAvailable('legal') && (pnModGetVar('legal', 'termsofuse') || pnModGetVar('legal', 'privacypolicy'))) {
+    if (pnModAvailable('legal') && (pnModGetVar('legal', 'termsofuse') || pnModGetVar('legal', 'privacypolicy'))) {
         $pnRender->assign('tou_active', pnModGetVar('legal', 'termsofuse', true));
         $pnRender->assign('pp_active',  pnModGetVar('legal', 'privacypolicy', true));
     } else {
@@ -117,18 +126,22 @@ function users_user_loginscreen($args)
 }
 
 /**
- * set an underage flag and route the user back to the first user page
+ * Set an underage error message and route the user back to the first user page.
+ *
+ * @return bool True, and the user is redirected to the view function.
  */
-function users_user_underage($args)
+function users_user_underage()
 {
     LogUtil::registerError(__f('Sorry! You must be %s or over to register for a user account here.', pnModGetVar('Users', 'minage')));
     return pnRedirect(pnModURL('Users', 'user', 'view'));
 }
 
 /**
- * display the registration form
+ * Display the registration form.
+ *
+ * @return string The rendered template.
  */
-function users_user_register($args)
+function users_user_register()
 {
     // If has logged in, header to index.php
     if (pnUserLoggedIn()) {
@@ -157,9 +170,11 @@ function users_user_register($args)
 }
 
 /**
- * display the lost password form
+ * Display the lost password form.
+ *
+ * @return string The rendered template.
  */
-function users_user_lostpassword($args)
+function users_user_lostpassword()
 {
     // we shouldn't get here if logged in already....
     if (pnUserLoggedIn()) {
@@ -174,8 +189,13 @@ function users_user_lostpassword($args)
 }
 
 /**
- * login function
- * login a user. if username or password is wrong, display error msg.
+ * Login a user.
+ * 
+ * If the user is already logged in, then he is redirected to the main user function.
+ * If a redirect URL is specified, then the user is redirected to that page upon 
+ * successful login.
+ *
+ * @return bool True on successful login, otherwise false.
  */
 function users_user_login()
 {
@@ -214,7 +234,7 @@ function users_user_login()
     $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
     $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));           
     $passhash = hash($hashmethodsarray[$pnuser_hash_number], $pass);
-    if($passhash != $pnuser_current_pass) {
+    if ($passhash != $pnuser_current_pass) {
         $errormsg = __('Sorry! The current password you entered is not correct. Please correct your entry and try again.');
         $tryagain = true;
     }
@@ -226,7 +246,7 @@ function users_user_login()
         $confirmnewpass = FormUtil::getPassedValue('confirmnewpass', null, 'POST');
         // checks if the new password is valid
         // the new password must be different of the current password
-        if($pass == $newpass && $validnewpass) {
+        if ($pass == $newpass && $validnewpass) {
             $errormsg = __('Sorry! The new and the current passwords must be different. Please correct your entries and try again.');
             $validnewpass = false;
         }
@@ -239,13 +259,13 @@ function users_user_login()
         }
 
         // checks if the new password and the repeated new password are the same
-        if(($newpass != $confirmnewpass) && $validnewpass) {
+        if (($newpass != $confirmnewpass) && $validnewpass) {
             $errormsg = __('Sorry! The two passwords you entered do not match. Please correct your entries and try again.');
             $validnewpass = false;
         }
 
         // checks if the new password and the repeated new password are the same
-        if(empty($newpass)) {
+        if (empty($newpass)) {
             $validnewpass = false;
         }
 
@@ -255,15 +275,17 @@ function users_user_login()
         }
     }
 
-    if($tryagain) {
+    if ($tryagain) {
         // user had to accept the terms of use, but didn't
-        if($errormsg == '') { $errormsg = __('Error! Log-in was not completed. Please read the information below.');}
+        if ($errormsg == '') {
+            $errormsg = __('Error! Log-in was not completed. Please read the information below.');
+        }
         return LogUtil::registerError($errormsg , 403, pnModURL('Users','user','loginscreen',
                                                                 array('confirmtou' => $confirmtou,
                                                                       'changepassword' => $changepassword,
                                                                       'returnpage' => $url)));        
     } else {
-        if($userstatus == 4 || $userstatus == 6) {
+        if ($userstatus == 4 || $userstatus == 6) {
             // change the user's password
             $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
             $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));           
@@ -300,8 +322,12 @@ function users_user_login()
 }
 
 /**
- * logout function
- * log a user out.
+ * Log a user out.
+ * 
+ * The user is redirected to the entry point of the site, or to a redirect
+ * page if specified in the site configuration.
+ *
+ * @return bool True (whether successfully logged out or not.)
  */
 function users_user_logout()
 {
@@ -328,8 +354,19 @@ function users_user_logout()
 }
 
 /**
- * users_user_finishnewuser()
+ * Complete the process of creating a new user or new user registration from a registration request form.
  *
+ * Available Post Parameters:
+ * - uname         (string) The user name to store on the new user record.
+ * - agreetoterms  (int)    Whether the user has agreed to the terms and policies or not.
+ * - email         (string) The e-mail address to store on the new user record.
+ * - pass          (string) The new password to store on the new user record.
+ * - vpass         (string) A verification of the new password to store on the new user record.
+ * - user_viewmail (mixed)  Not Used.
+ * - reg_answer    (string) The user-entered answer to the configured registration anti-spam question.
+ *
+ * @return string|bool If registration is moderated, then the string rendering of a template, otherwise true on successful
+ *                     registration; false on error.
  */
 function users_user_finishnewuser()
 {
@@ -343,6 +380,7 @@ function users_user_finishnewuser()
     $vemail         = FormUtil::getPassedValue ('vemail', null, 'POST');
     $pass           = FormUtil::getPassedValue ('pass', null, 'POST');
     $vpass          = FormUtil::getPassedValue ('vpass', null, 'POST');
+    // TODO - user_viewmail is not used anywhere in the function. Is it an old legacy field, or does it need to be processed?
     $user_viewemail = FormUtil::getPassedValue ('user_viewmail', null, 'POST');
     $reg_answer     = FormUtil::getPassedValue ('reg_answer', null, 'POST');
 
@@ -363,7 +401,7 @@ function users_user_finishnewuser()
             $checkrequired = pnModAPIFunc($profileModule, 'user', 'checkrequired');
 
             if ($checkrequired) {
-                /*! %s is a comma separated list of fields that were left blank */
+                // ! %s is a comma separated list of fields that were left blank
                 $message = __f('Error! One or more required fields were left blank or incomplete (%s).', $checkrequired['translatedFieldsStr']);
 
                 return LogUtil::registerError($message, null, pnModURL('Users', 'user', 'register'));
@@ -436,7 +474,8 @@ function users_user_finishnewuser()
 
     if (!$modvars['reg_verifyemail'] || $modvars['reg_verifyemail'] == 2) {
         if ((isset($pass)) && ("$pass" != "$vpass")) {
-            $message = __('Error! You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).');
+            $message = __('Error! You did not enter the same password in each password field. '
+                . 'Please enter the same password once in each password field (this is required for verification).');
 
         } elseif (isset($pass) && (strlen($pass) < $minpass)) {
             $message =  _fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass);
@@ -473,7 +512,8 @@ function users_user_finishnewuser()
             $pnr = Renderer::getInstance('Users');
             return $pnr->fetch('users_user_registrationfinished.htm');
         } else {
-            LogUtil::registerStatus(__('Done! You are now a registered user. You should receive your user account details (including your password) at the e-mail address you entered.'));
+            LogUtil::registerStatus(__('Done! You are now a registered user. You should receive your user '
+                . 'account details (including your password) at the e-mail address you entered.'));
             if (pnModGetVar('Users', 'reg_verifyemail') == 2) {
                 LogUtil::registerStatus(__('Please use the link in the e-mail message to activate your account.'));
             }
@@ -485,7 +525,14 @@ function users_user_finishnewuser()
 }
 
 /**
- * users_user_mailpasswd()
+ * Send the user a lost password.
+ *
+ * Available Post Parameters:
+ * - uname (string) The user's user name.
+ * - email (string) The user's e-mail address.
+ * - code  (string) The confirmation code.
+ *
+ * @return bool True if successful request or expected error, false if unexpected error.
  */
 function users_user_mailpasswd()
 {
@@ -567,10 +614,15 @@ function users_user_mailpasswd()
 }
 
 /**
- * users_user_activation($args)
+ * Activate a user account.
  *
- * Get rid of user activation Link
+ * Available Get/Post Parameters;
+ * - code (string) Confirmation/Activation code.
  *
+ * @param array $args All parameters passed to this function.
+ *                    $args['code'] (string) Used as a default if the get/post parameter 'code' is not set.
+ *
+ * @return bool True on success, otherwise false.
  */
 function users_user_activation($args)
 {
@@ -609,10 +661,14 @@ function users_user_activation($args)
 }
 
 /**
- * print a redirect page
- * original function name is 'redirect_index' in NS-User/tools.php
+ * Print a PostNuke-style login/logout redirect page. Internal use only, not intended to be called through the API.
+ *
+ * @param string $message The message to display on the redirect page.
+ * @param string $url     The URL of the page to redirect to after this redirect page has been displayed.
  *
  * @access private
+ *
+ * @return bool True.
  */
 function users_print_redirectpage($message, $url)
 {
@@ -641,8 +697,16 @@ function users_print_redirectpage($message, $url)
 }
 
 /**
- * login to disabled site
+ * Log into a site that is currently "off" (normal logins are not allowed).
  *
+ * Allows the administrator to access the site during maintenance.
+ *
+ * Available Post Parameters:
+ * - user       (string) The user name of the user attempting to log in.
+ * - pass       (string) The password of the user attempting to log in.
+ * - rememberme (int)    Whether the login session should persist.
+ *
+ * @return bool True.
  */
 function users_user_siteofflogin()
 {
@@ -669,8 +733,9 @@ function users_user_siteofflogin()
 }
 
 /**
- * display the configuration options for the users block
+ * Display the configuration options for the users block.
  *
+ * @return string The rendered template.
  */
 function users_user_usersblock()
 {
@@ -694,8 +759,13 @@ function users_user_usersblock()
 }
 
 /**
- * update users block
+ * Update the custom users block.
  *
+ * Available Post Parameters:
+ * - ublockon (int)   Whether the block is displayed or not.
+ * - ublock   (mixed) ?.
+ *
+ * @return bool True on success, otherwise false.
  */
 function users_user_updateusersblock()
 {
@@ -729,8 +799,9 @@ function users_user_updateusersblock()
 }
 
 /**
- * change your password
+ * Display the change password form.
  *
+ * @return string The rendered template.
  */
 function Users_user_changepassword()
 {
@@ -754,8 +825,14 @@ function Users_user_changepassword()
 }
 
 /**
- * update the password
+ * Update the user's password.
  *
+ * Available Post Parameters:
+ * - oldpassword        (string) The original password.
+ * - newpassword        (string) The new password to be stored for the user.
+ * - newpasswordconfirm (string) Verification of the new password to be stored for the user.
+ *
+ * @return bool True on success, otherwise false.
  */
 function Users_user_updatepassword()
 {
@@ -787,17 +864,20 @@ function Users_user_updatepassword()
     $opass = hash($hashmethodsarray[$pnuser_hash_number], $oldpassword);
 
     if (empty($oldpassword) || $opass != $upass) {
-        return LogUtil::registerError(__('Sorry! The password you entered is not correct. Please correct your entry and try again.'), null, pnModURL('Users', 'user', 'changepassword'));
+        return LogUtil::registerError(__('Sorry! The password you entered is not correct. Please correct your entry and try again.'),
+            null, pnModURL('Users', 'user', 'changepassword'));
     }
 
     $minpass = pnModGetVar('Users', 'minpass');
     if (strlen($newpassword) < $minpass) {
-        return LogUtil::registerError(_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minpass, $minpass), null, pnModURL('Users', 'user', 'changepassword'));
+        return LogUtil::registerError(_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minpass, $minpass),
+            null, pnModURL('Users', 'user', 'changepassword'));
     }
 
     // check if the new password and the confirmation are identical
     if ($newpassword != $newpasswordconfirm) {
-        return LogUtil::registerError(__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.'), null, pnModURL('Users', 'user', 'changepassword'));
+        return LogUtil::registerError(__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.'),
+            null, pnModURL('Users', 'user', 'changepassword'));
     }
 
     // set the new password
@@ -808,7 +888,9 @@ function Users_user_updatepassword()
 }
 
 /**
- * change your email address
+ * Display the change email address form.
+ *
+ * @return string The rendered template.
  */
 function Users_user_changeemail()
 {
@@ -829,7 +911,12 @@ function Users_user_changeemail()
 }
 
 /**
- * update the email address
+ * Update the email address.
+ *
+ * Available Post Parameters:
+ * - newemail (string) The new e-mail address to store for the user.
+ *
+ * @return bool True on success, otherwise false.
  */
 function Users_user_updateemail()
 {
@@ -875,7 +962,7 @@ function Users_user_updateemail()
     }
 
     // save the provisional email until confimation
-    if(!pnModAPIFunc('Users', 'user', 'savepreemail',
+    if (!pnModAPIFunc('Users', 'user', 'savepreemail',
                     array('newemail' => $newemail))) {
         return LogUtil::registerError(__('Error! It has not been possible to change the e-mail address.'), null, pnModURL('Users', 'user', 'changeemail'));
     }
@@ -885,7 +972,9 @@ function Users_user_updateemail()
 }
 
 /**
- * change your language
+ * Display the form that allows the user to change the language displayed to him on the site.
+ *
+ * @return string The rendered template.
  */
 function Users_user_changelang()
 {
@@ -905,7 +994,15 @@ function Users_user_changelang()
 }
 
 /**
- * confirm the update of the email address
+ * Confirm the update of the email address.
+ *
+ * Available Get Parameters:
+ * - confirmcode (string) The confirmation code.
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['confirmcode'] (string) Default value for the 'confirmcode' get parameter. Allows this function to be called internally.
+ *
+ * @return bool True on success, otherwise false.
  */
 function Users_user_confirmchemail($args)
 {
@@ -920,7 +1017,7 @@ function Users_user_confirmchemail($args)
     // the e-mail change is valid during 5 days
     $fiveDaysAgo =  time() - 5*24*60*60;
 
-    if(!$preemail || $confirmcode != $preemail['comment'] || $preemail['dynamics'] < $fiveDaysAgo) {
+    if (!$preemail || $confirmcode != $preemail['comment'] || $preemail['dynamics'] < $fiveDaysAgo) {
         LogUtil::registerError(__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'));
         return pnRedirect(pnModURL('Users', 'user', 'main'));        
     }
