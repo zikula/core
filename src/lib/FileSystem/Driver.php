@@ -52,17 +52,17 @@ abstract class FileSystem_Driver implements FileSystem_Interface
     public function __construct(FileSystem_Configuration $configuration)
     {
         // validate we get correct configuration class type.
-        $class = str_ireplace('FileSystem_', '', get_class($this));
-        $validName = "FileSystem_Configuration_{$class}";
+        $type = str_ireplace('FileSystem_', '', get_class($this));
+        $validName = "FileSystem_Configuration_{$type}";
         if ($validName != get_class($configuration)) {
             throw new InvalidArgumentException(
-                sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.', 
+                sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.',
                 get_class($this), $validName, get_class($configuration)));
         }
 
         $this->configuration = $configuration;
 
-        $facade = "FileSystem_Facade_{$class}";
+        $facade = "FileSystem_Facade_{$type}";
         $this->driver = new $facade();
         $this->errorHandler = new FileSystem_Error();
     }
