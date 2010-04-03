@@ -11,10 +11,9 @@
  */
 
 /**
- * users_admin_main()
- * Redirects users to the "view" page
+ * Redirects users to the "view" page.
  *
- * @return bool true if successful false otherwise
+ * @return string HTML string containing the rendered view template.
  */
 function users_admin_main()
 {
@@ -23,13 +22,13 @@ function users_admin_main()
 }
 
 /**
- * form to add new item
+ * Display a form to add a new user account.
  *
- * This is a standard function that is called whenever an administrator
- * wishes to create a new module item
+ * Available Request Parameters:
+ * - userinfo (array) An associative array of initial values for the form fields. The elements of the array correspond to the
+ *      post parameters expected by users_admin_create().
  *
- * @author       The Zikula Development Team
- * @return       output       The main module admin page.
+ * @return string HTML string containing the rendered template.
  */
 function users_admin_new()
 {
@@ -54,10 +53,17 @@ function users_admin_new()
 }
 
 /**
- * Create user
+ * Create a new user.
  *
- * @param  $args
- * @return mixed true if successful, string otherwise
+ * Available Post Parameters:
+ * - add_uname (string) The user name to store on the new user record.
+ * - add_email (string) The e-mail address to store on the new user record.
+ * - add_pass (string) The new password to store on the new user record.
+ * - add_vpass (string) A verification of the new password to store on the new user record.
+ * - dynadata (array) An array of additional information to be stored by the designated profile module, and linked to the newly created user account.
+ * - usermustconfirm (int|bool) If true, the newly created user must activate his account; if false, the newly created account is activate.
+ *
+ * @return bool True if successful, false otherwise.
  */
 function users_admin_create()
 {
@@ -140,7 +146,8 @@ function users_admin_create()
         $errormsg[] = __('Sorry! You did not provide a password. Please correct your entry and try again.');
 
     } elseif ((isset($pass)) && ("$pass" != "$vpass")) {
-        $errormsg[] = __('Sorry! You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).');
+        $errormsg[] = __('Sorry! You did not enter the same password in each password field. '
+            . 'Please enter the same password once in each password field (this is required for verification).');
 
     } elseif (($pass != '') && (strlen($pass) < $minpass)) {
         $errormsg[] = _fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass);
@@ -171,8 +178,17 @@ function users_admin_create()
 /**
  * Shows all items and lists the administration options.
  *
- * @param        startnum     The number of the first item to show
- * @return       output       The main module admin page
+ * Available Get Parameters:
+ * - startnum (int) The ordinal number at which to start displaying user records.
+ * - letter (string) The first letter of the user names to display.
+ *
+ * @param array $args All parameters passed to the function.
+ *                    $args['startnum'] (int) The ordinal number at which to start displaying user records. Used as a default if
+ *                      the get parameter is not set. Allows the function to be called internally.
+ *                    $args['letter'] (string) The first letter of the user names to display. Used as a default if
+ *                      the get parameter is not set. Allows the function to be called internally.
+ *
+ * @return string HTML string containing the rendered template.
  */
 function users_admin_view($args = array())
 {
@@ -203,7 +219,7 @@ function users_admin_view($args = array())
     $userGroupsAccess = array();
     $groupsArray = array();
     $canSeeGroups = (!empty($groups));
-    foreach($groups as $group){
+    foreach ($groups as $group) {
         $userGroupsAccess[$group['gid']] = array('gid' => $group['gid']);
 
         // rewrite the groups array with the group id as key and the group name as value
@@ -218,8 +234,7 @@ function users_admin_view($args = array())
 
     // Loop through each returned item adding in the options that the user has over
     // each item based on the permissions the user has.
-    foreach ($items as $key => $item)
-    {
+    foreach ($items as $key => $item) {
         $options = array();
         if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_READ) && $item['uid'] != 1) {
 
@@ -246,13 +261,13 @@ function users_admin_view($args = array())
                                               'clean' => 1));
             // we need an associative array by the key to compare with the groups that the user can see
             $userGroupsByKey = array();
-            foreach($userGroups as $userGroup){
+            foreach ($userGroups as $userGroup) {
                 $userGroupsByKey[$userGroup['gid']] = array('gid' => $userGroup['gid']);
             }
             $userGroupsView = array_intersect_key($userGroupsAccess, $userGroupsByKey);
         }
 
-        if($item['uid'] == 1){
+        if ($item['uid'] == 1) {
             $userGroupsView = array();
         }
         // format the dates
@@ -263,15 +278,15 @@ function users_admin_view($args = array())
         $activationImg = '';
         $activationTitle = '';
         // adapt states if it is necessary
-        if($adaptState) {
-            if($items[$key]['activated'] == 2) {
+        if ($adaptState) {
+            if ($items[$key]['activated'] == 2) {
                 $items[$key]['activated'] = 1;
             } else if ($items[$key]['activated'] == 6) {
                 $items[$key]['activated'] = 4;
             }
         }
         // show user's activation state
-        if($items[$key]['activated'] == 1) {
+        if ($items[$key]['activated'] == 1) {
             $activationImg = 'greenled.gif';
             $activationTitle = __('Active');
         } else if ($items[$key]['activated'] == 2) {
@@ -315,10 +330,12 @@ function users_admin_view($args = array())
 }
 
 /**
- * Shows all the applications and the available options.
+ * Shows all the registration requests (applications), and the options available to the current user.
  *
- * @param        startnum     The number of the first item to show
- * @return       output       The main module admin page
+ * Available Request Parameters:
+ * - startnum (int) The ordinal number of the first record to display, especially if using itemsperpage to limit the number of records on a single page.
+ *
+ * @return string HTML string containing the rendered template.
  */
 function users_admin_viewapplications()
 {
@@ -387,10 +404,12 @@ function users_admin_viewapplications()
 }
 
 /**
- * Shows the information for the temporary user
+ * Displays the information on a single registration request (users_temp).
  *
- * @param  $args
- * @return string HTML string
+ * Available Get Parameters:
+ * - userid (numeric) The id of the registration request (tid) to retrieve and display.
+ *
+ * @return string HTML string containing the rendered template.
  */
 function users_admin_viewtempuserinfo()
 {
@@ -412,7 +431,8 @@ function users_admin_viewtempuserinfo()
     if (!$regApplication) {
         // getapplication could fail (return false) because of a nonexistant
         // record, no permission to read an existing record, or a database error
-        return LogUtil::registerError(__('Unable to retrieve registration record. The record with the specified id might not exist, or you might not have permission to access that record.'));
+        return LogUtil::registerError(__('Unable to retrieve registration record. '
+            . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
     }
 
     $regApplication = array_merge($regApplication, (array)@unserialize($regApplication['dynamics']));
@@ -450,17 +470,14 @@ function users_admin_viewtempuserinfo()
 }
 
 /**
- * user_admin_view()
- * Shows the search box for Edit/Delete
- * Shows Add User Dialog
+ * Displays a user account search form.
  *
- * @param  $args
- * @return string HTML string
+ * @return string HTML string containing the rendered template.
  */
-function users_admin_search($args)
+function users_admin_search()
 {
     // security check
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)){
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -476,13 +493,20 @@ function users_admin_search($args)
 }
 
 /**
- * users_admin_listusers()
- * list users
+ * List the users as a result of a form post.
  *
- * @param  $args
- * @return string HTML string
+ * Available Post Parameters:
+ * - uname (string) A fragment of a user name on which to search using an SQL LIKE clause. The user name will be surrounded by wildcards.
+ * - ugroup (int) A group id in which to search (only users who are members of the specified group are returned).
+ * - email (string) A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address will be surrounded by wildcards.
+ * - regdateafter (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date after the date specified will be returned.
+ * - regdatebefore (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date before the date specified will be returned.
+ * - dynadata (array) An array of search values to be passed to the designated profile module. Only those user records also satisfying the profile module's search of its data
+ *      are returned.
+ *
+ * @return string HTML string containing the rendered template.
  */
-function users_admin_listusers($args)
+function users_admin_listusers()
 {
     $uname         = FormUtil::getPassedValue('uname', null, 'POST');
     $ugroup        = FormUtil::getPassedValue('ugroup', null, 'POST');
@@ -518,16 +542,32 @@ function users_admin_listusers($args)
 }
 
 /**
- * users_admin_processusers()
- * Edit, Delete and Mail Users
+ * Perform one of several possible operations on a user as a result of a form post.
  *
- * @param  $args
+ * Available Post Parameters:
+ * - op (string) The operation. One of: 'edit', 'delete', 'mail', 'approve', or 'deny'.
+ * - do (string) Used only for 'edit' or 'delete' operations; either the value 'yes' or null. Controls whether
+ *      a confirmation page is displayed for the operation (value of null) or the operation is actually
+ *      performed (value 'yes').
+ * - userid (numeric) The user id of the user record on which the operation is to be performed.
+ * - uname (string) Used only for 'edit' operations; the user name to be saved to the user record.
+ * - email (string) Used only for 'edit' operations; the e-mail address to be saved to the user record.
+ * - activated (bool) Used only for 'edit' operations; the activation state to be saved to the user record.
+ * - pass (string) Used only for 'edit' operations; the new password to be saved to the user record.
+ * - vpass (string) Used only for 'edit' operations; the confirmation of the new password to be saved to the user record.
+ * - theme (string) Used only for 'edit' operations; the name of the theme to be saved to the user record.
+ * - access_permissions (array) Used only for 'edit' operations; an array of group ids to which the user should belong.
+ * - dynadata (array) Used only for 'edit' operations; an array of dynamic user data to be stored with the designated profile module for the user account.
+ * - sendmail (array) Used only for 'mail' operations; an array containing the e-mail to be sent.
+ * - tag (int) Used only for 'approve' and 'deny' operations; if not 1, then a confirmation page is displayed; if 1 the operation is carried out.
+ * - action (string) Used only for 'approve' and 'deny' operations; a fragment of the name of the function to call, either 'approve' or 'deny'.
+ *
  * @return mixed true successful, false or string otherwise
  */
-function users_admin_processusers($args)
+function users_admin_processusers()
 {
     // security check
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)){
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -570,7 +610,7 @@ function users_admin_processusers($args)
 
     } elseif ($op == 'delete' && !empty($userid)) {
         $userid = FormUtil::getPassedValue('userid', null, 'POST');
-        if ($do != 'yes'){
+        if ($do != 'yes') {
             return pnRedirect(pnModURL('Users', 'admin', 'deleteusers', array('userid' => $userid)));
         } else {
             $return = pnModAPIFunc('Users', 'admin', 'deleteuser', array('uid' => $userid));
@@ -593,8 +633,7 @@ function users_admin_processusers($args)
         $bcclist = array();
         $mailssent = 0;
         $recipientscount = 0;
-        foreach ($sendmail['recipientsemail'] as $uid => $recipient)
-        {
+        foreach ($sendmail['recipientsemail'] as $uid => $recipient) {
             if (in_array($uid, $userid)) {
                 $bcclist[] = array('name'    => $sendmail['recipientsname'][$uid],
                                    'address' => $recipient);
@@ -640,7 +679,11 @@ function users_admin_processusers($args)
             }
         }
         if ($mailssent > 0) {
-            LogUtil::registerStatus(_fn('Done! %1$c e-mail message has been sent to %2$c user.', 'Done! %1$c e-mail messages have been sent to %2$c users.', $mailssent, array($mailssent, $recipientscount)));
+            LogUtil::registerStatus(_fn(
+                'Done! %1$c e-mail message has been sent to %2$c user.',
+                'Done! %1$c e-mail messages have been sent to %2$c users.',
+                $mailssent,
+                array($mailssent, $recipientscount)));
         }
         return pnRedirect(pnModURL('Users', 'admin', 'main'));
 
@@ -693,15 +736,24 @@ function users_admin_processusers($args)
 }
 
 /**
- * users_admin_modify()
+ * Display a form to edit one user account.
  *
- * @param  $args
- * @return string HTML string
+ * Available Get Parameters:
+ * - userid (numeric) the user id of the user to be modified.
+ * - uname (string) the user name of the user to be modified.
+ *
+ * @param array $args All arguments passed to the function.
+ *                    $args['userid'] (numeric) the user id of the user to be modified. Used as a default value if the get parameter
+ *                      is not set. Allow the function to be called internally.
+ *                    $args['uname'] (string) the user name of the user to be modified. Used as a default value if the get parameter
+ *                      is not set. Allow the function to be called internally.
+ *
+ * @return string HTML string containing the rendered template.
  */
 function users_admin_modify($args)
 {
     // security check
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)){
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -734,8 +786,8 @@ function users_admin_modify($args)
     }
 
     // if module Legal is not available show the equivalent states for user activation value
-    if(!pnModAvailable('legal') || (!pnModGetVar('legal', 'termsofuse') && !pnModGetVar('legal', 'privacypolicy'))) {
-        if($uservars['activated'] == 2) {
+    if (!pnModAvailable('legal') || (!pnModGetVar('legal', 'termsofuse') && !pnModGetVar('legal', 'privacypolicy'))) {
+        if ($uservars['activated'] == 2) {
             $uservars['activated'] = 1;
         } else if ($uservars['activated'] == 6) {
             $uservars['activated'] = 4;
@@ -762,7 +814,7 @@ function users_admin_modify($args)
     }
 
     foreach ($all_groups as $group) {
-        if(SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
+        if (SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
             $groups_infos[$group['gid']] = array();
             $groups_infos[$group['gid']]['name'] = $group['name'];
 
@@ -783,15 +835,24 @@ function users_admin_modify($args)
 }
 
 /**
- * users_admin_deleteusers()
+ * Display a form to confirm the deletion of one user.
+ * 
+ * Available Get Parameters:
+ * - userid (numeric) the user id of the user to be deleted.
+ * - uname (string) the user name of the user to be deleted.
  *
- * @param $args
- * @return string HTML string
- **/
+ * @param array $args All arguments passed to the function.
+ *                    $args['userid'] (numeric) the user id of the user to be deleted. Used as a default value if the get parameter
+ *                      is not set. Allow the function to be called internally.
+ *                    $args['uname'] (string) the user name of the user to be deleted. Used as a default value if the get parameter
+ *                      is not set. Allow the function to be called internally.
+ *
+ * @return string HTML string containing the rendered template.
+ */
 function users_admin_deleteusers($args)
 {
     // check permissions
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)){
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -834,12 +895,12 @@ function users_admin_deleteusers($args)
 }
 
 /**
- * users_admin_modifyconfig()
+ * Edit user configuration settings.
  *
- * User configuration settings
- * @see function settings_admin_main()
- * @return string HTML string
- **/
+ * @see    function settings_admin_main()
+ *
+ * @return string HTML string containing the rendered template.
+ */
 function users_admin_modifyconfig()
 {
     // Security check
@@ -862,12 +923,15 @@ function users_admin_modifyconfig()
 }
 
 /**
- * users_admin_updateconfing()
+ * Update user configuration settings.
  *
- * Update user configuration settings
- * @see function settings_admin_main()
- * @return string HTML string
- **/
+ * Available Post Parameters:
+ * - config (array) An associative array of configuration settings for the Users module.
+ *
+ * @see    function settings_admin_main()
+ *
+ * @return bool True if configuration saved; false if permission error.
+ */
 function users_admin_updateconfig()
 {
     // security check
@@ -914,7 +978,7 @@ function users_admin_updateconfig()
     pnModSetVar('Users', 'gravatarimage', $config['gravatarimage']);
     pnModSetVar('Users', 'lowercaseuname', $config['lowercaseuname']);
 
-    if(pnModAvailable('legal')) {
+    if (pnModAvailable('legal')) {
         pnModSetVar('Legal', 'termsofuse', $config['termsofuse']);
         pnModSetVar('Legal', 'privacypolicy', $config['privacypolicy']);
     }
@@ -928,11 +992,27 @@ function users_admin_updateconfig()
 }
 
 /**
- * users_admin_import()
+ * Show the form to choose a CSV file and import several users from this file.
  *
- * Show the form to choose a CSV file and import several users from this file
+ * Available Post Parameters:
+ * - confirmed (int|bool) True if the user has confirmed the upload/import.
+ * - importFile (array) Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored in $_FILES['fileFieldName'].
+ *      See http://php.net/manual/en/features.file-upload.post-method.php .
+ * - delimiter (int) A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
+ *
+ * @param array $args All arguments passed to the function.
+ *                    $args['confirmed'] (int|bool) True if the user has confirmed the upload/import. Used
+ *                      as the default if $_POST['confirmed'] is not set. Allows this function to be called
+ *                      internally, rather than as a result of a form post.
+ *                    $args['importFile'] (array) Information about the file to import. Used as the default
+ *                      if $_FILES['importFile'] is not set. Allows this function to be called internally,
+ *                      rather than as a result of a form post.
+ *                    $args['delimiter'] (int) A code indicating the delimiter used in the file. Used as the
+ *                      default if $_POST['delimiter'] is not set. Allows this function to be called internally,
+ *                      rather than as a result of a form post.
+ *
  * @return redirect user to admin main page if success and show again the forn otherwise
- **/
+ */
 function users_admin_import($args)
 {
     // security check
@@ -947,14 +1027,14 @@ function users_admin_import($args)
     $minpass = pnModGetVar('Users', 'minpass');
     $defaultGroup = pnModGetVar('Groups', 'defaultgroup');
 
-    if($confirmed == 1) {
+    if ($confirmed == 1) {
         // get other import values
         $importFile = FormUtil::getPassedValue('importFile', (isset($args['importFile']) ? $args['importFile'] : null), 'FILES');
         $delimiter = FormUtil::getPassedValue('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null), 'POST');
         $importResults = pnModFunc('Users', 'admin', 'uploadImport',
                                    array('importFile' => $importFile,
                                          'delimiter' => $delimiter));
-        if($importResults == '') {
+        if ($importResults == '') {
             // the users have been imported successfully
             LogUtil::registerStatus(__('Done! Users imported successfully.'));
             return pnRedirect(pnModURL('Users', 'admin', 'main'));
@@ -978,11 +1058,23 @@ function users_admin_import($args)
 }
 
 /**
- * users_admin_uploadImport($args)
+ * Import several users from a CSV file. Checks needed values and format.
  *
- * Import several users from a CSV file. Checks needed values and format
+ * Available Parameters:
+ * - importFile (array) Structured information about the file to import, from <input type="file" name="fileFieldName" ... /> and stored in $_FILES['fileFieldName'].
+ *      See http://php.net/manual/en/features.file-upload.post-method.php .
+ * - delimiter (int) A code indicating the type of delimiter found in the import file. 1 = comma, 2 = semicolon, 3 = colon.
+ *
+ * @param array $args All arguments passed to the function.
+ *                    $args['importFile'] (array) Information about the file to import. Used as the default
+ *                      if $_FILES['importFile'] is not set. Allows this function to be called internally,
+ *                      rather than as a result of a form post.
+ *                    $args['delimiter'] (int) A code indicating the delimiter used in the file. Used as the
+ *                      default if $_POST['delimiter'] is not set. Allows this function to be called internally,
+ *                      rather than as a result of a form post.
+ *
  * @return a empty message if success or an error message otherwise
- **/
+ */
 function users_admin_uploadImport($args)
 {
     // security check
@@ -1005,7 +1097,7 @@ function users_admin_uploadImport($args)
         $usernames = explode(" ", $reg_illegalusername);
         $count = count($usernames);
         $pregcondition = "/((";
-        for ($i = 0;$i < $count;$i++) {
+        for ($i = 0; $i < $count; $i++) {
             if ($i != $count-1) {
                 $pregcondition .= $usernames[$i] . ")|(";
             } else {
@@ -1019,7 +1111,7 @@ function users_admin_uploadImport($args)
 
     // create an array with the groups identities where the user can add other users
     $allGroupsArray = array();
-    foreach($allGroups as $group){
+    foreach ($allGroups as $group) {
         if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT)) {
             $allGroupsArray[] = $group['gid'];
         }
@@ -1043,17 +1135,17 @@ function users_admin_uploadImport($args)
 
     // check that the user have selected a file
     $fileName = $importFile['name'];
-    if($fileName == '') {
+    if ($fileName == '') {
         return __("Error! You have not chosen any file.");
     }
 
     // check if user have selected a correct file
-    if(FileUtil::getExtension($fileName) != 'csv') {
+    if (FileUtil::getExtension($fileName) != 'csv') {
         return __("Error! The file extension is incorrect. The only allowed extension is csv.");
     }
 
     // read the choosen file
-    if(!$lines = file($importFile['tmp_name'])) {
+    if (!$lines = file($importFile['tmp_name'])) {
         return __("Error! It has not been possible to read the import file.");
     }
     $expectedFields = array('uname', 'pass', 'email', 'activated', 'sendMail', 'groups');
@@ -1061,11 +1153,11 @@ function users_admin_uploadImport($args)
     $importValues = array();
     // read the lines and create an array with the values. Check if the values passed are correct and set the default values if it is necessary
     foreach ($lines as $line_num => $line) {
-        if($counter == 0) {
+        if ($counter == 0) {
             // check the fields defined in the first row
             $firstLineArray = DataUtil::formatForOS(explode($delimiterChar, trim($line)));
-            foreach($firstLineArray as $field) {
-                if(!in_array(trim($field), $expectedFields)) {
+            foreach ($firstLineArray as $field) {
+                if (!in_array(trim($field), $expectedFields)) {
                     return __("Error! The import file does not have the expected fields in the first row. Please check your import file.");
                 }
             }
@@ -1077,7 +1169,7 @@ function users_admin_uploadImport($args)
         $lineArray = DataUtil::formatForOS(explode($delimiterChar, str_replace('"','',$line)));
 
         // check if the line have all the needed values
-        if(count($lineArray) != count($firstLineArray)) {
+        if (count($lineArray) != count($firstLineArray)) {
             return __f('Error! The number of parameters in line %s is not correct. Please check your import file.', $counter);
         }
         $importValues[] = array_combine($firstLineArray, $lineArray);
@@ -1085,8 +1177,9 @@ function users_admin_uploadImport($args)
         // check all the obtained values
         // check user name
         $uname = trim($importValues[$counter - 1]['uname']);
-        if($uname == '' || strlen($uname) > 25) {
-            return __f('Sorry! The user name is not valid in line %s. The user name is mandatory and the maximum length is 25 characters. Please check your import file.', $counter);
+        if ($uname == '' || strlen($uname) > 25) {
+            return __f('Sorry! The user name is not valid in line %s. The user name is mandatory and the maximum length is 25 characters. Please check your import file.',
+                $counter);
         }
 
         // check if it is a valid user name
@@ -1104,25 +1197,26 @@ function users_admin_uploadImport($args)
         }
 
         // check if the user name is repeated
-        if(in_array($uname, $usersArray)) {
-            return __f('Sorry! The user name %s is repeated in line %s, and it cannot be used twice for creating accounts. Please check your import file.', array($uname, $counter));
+        if (in_array($uname, $usersArray)) {
+            return __f('Sorry! The user name %s is repeated in line %s, and it cannot be used twice for creating accounts. Please check your import file.',
+                array($uname, $counter));
         }
         $usersArray[] = $uname;
 
         // check password
         $pass = trim($importValues[$counter - 1]['pass']);
-        if($pass == '') {
+        if ($pass == '') {
             return __f('Sorry! You did not provide a password in line %s. Please check your import file.', $counter);
         }
 
         // check password lenght
-        if(strlen($pass) <  $minpass) {
+        if (strlen($pass) <  $minpass) {
             return __f('Sorry! The password must be at least %s characters long in line %s. Please check your import file.', array($minpass, $counter));
         }
 
         // check email
         $email = trim($importValues[$counter - 1]['email']);
-        if($email == '') {
+        if ($email == '') {
             return __f('Sorry! You did not provide a email in line %s. Please check your import file.', $counter);
         }
 
@@ -1132,9 +1226,10 @@ function users_admin_uploadImport($args)
         }
 
         // check if email is unique only if it is necessary
-        if($reg_uniemail == 1){
-            if(in_array($email, $emailsArray)) {
-                return __f('Sorry! The %s e-mail address is repeated in line %s, and it cannot be used twice for creating accounts. Please check your import file.', array($email, $counter));
+        if ($reg_uniemail == 1) {
+            if (in_array($email, $emailsArray)) {
+                return __f('Sorry! The %s e-mail address is repeated in line %s, and it cannot be used twice for creating accounts. Please check your import file.',
+                    array($email, $counter));
             }
             $emailsArray[] = $email;
         }
@@ -1154,12 +1249,12 @@ function users_admin_uploadImport($args)
 
         // check groups and set defaultGroup as default if there are not groups defined
         $groups = trim($importValues[$counter - 1]['groups']);
-        if($groups == '') {
+        if ($groups == '') {
             $importValues[$counter - 1]['groups'] = $defaultGroup;
         } else {
             $groupsArray = explode('|', $groups);
-            foreach($groupsArray as $group) {
-                if(!in_array($group, $allGroupsArray)) {
+            foreach ($groupsArray as $group) {
+                if (!in_array($group, $allGroupsArray)) {
                     return __f('Sorry! The identity of the group %s is not not valid in line %s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
                 }
             }
@@ -1168,7 +1263,7 @@ function users_admin_uploadImport($args)
     }
 
     // seams that the import file is formated correctly and its values are valid
-    if(empty($importValues)) {
+    if (empty($importValues)) {
         return __("Error! The import file does not have values.");
     }
 
@@ -1176,30 +1271,30 @@ function users_admin_uploadImport($args)
     $usersInDB = pnModAPIFunc('Users', 'admin', 'checkMultipleExistence',
                                   array('valuesArray' => $usersArray,
                                         'key' => 'uname'));
-    if($usersInDB === false) {
+    if ($usersInDB === false) {
         return __("Error! Trying to read the existing user names in database.");
     } else {
-        if(count($usersInDB) > 0) {
+        if (count($usersInDB) > 0) {
             return __("Sorry! One or more user names really exist in database. The user names must be uniques.");
         }
     }
 
     // check if emails exists in data base in case the email have to be unique
-    if($reg_uniemail == 1){
+    if ($reg_uniemail == 1) {
         $emailsInDB = pnModAPIFunc('Users', 'admin', 'checkMultipleExistence',
                                       array('valuesArray' => $emailsArray,
                                             'key' => 'email'));
-        if($emailsInDB === false) {
+        if ($emailsInDB === false) {
             return __("Error! Trying to read the existing users' email addressess in database.");
         } else {
-            if(count($emailsInDB) > 0) {
+            if (count($emailsInDB) > 0) {
                 return __("Sorry! One or more users' email addresses exist in the database. Each user's e-mail address must be unique.");
             }
         }
     }
 
     // seems that the values in import file are ready. Procceed creating users
-    if(!pnModAPIFunc('Users', 'admin', 'createImport', array('importValues' => $importValues))) {
+    if (!pnModAPIFunc('Users', 'admin', 'createImport', array('importValues' => $importValues))) {
         return __("Error! The creation of users has failed.");
     }
 

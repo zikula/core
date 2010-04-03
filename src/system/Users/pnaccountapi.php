@@ -2,18 +2,20 @@
 /**
  * Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
+ * @copyright 2001 Zikula Development Team
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Users
+ * @version $Id$
+ * @link http://www.zikula.org
  */
 
 /**
- * Return an array of items to show in the your account panel
+ * Return an array of items to show in the the user's account panel.
  *
- * @return   array   indexed array of items
+ * @param mixed $args Not used.
+ * 
+ * @return array Indexed array of items.
  */
 function Users_accountapi_getall($args)
 {
@@ -22,7 +24,7 @@ function Users_accountapi_getall($args)
     $modvars = pnModGetVar('Users');
 
     if ($modvars['changepassword'] == 1) {
-        /* show edit password link */
+        // show edit password link
         $items['1'] = array('url' => pnModURL('Users', 'user', 'changepassword'),
                             'module' => 'core',
                             'set' => 'icons/large',
@@ -31,7 +33,7 @@ function Users_accountapi_getall($args)
     }
 
     if ($modvars['changeemail'] == 1) {
-        /* show edit email link */
+        // show edit email link
         $items['2'] = array('url' => pnModURL('Users', 'user', 'changeemail'),
                             'module' => 'Users',
                             'title' => __('E-mail address manager'),
