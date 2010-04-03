@@ -187,13 +187,14 @@ class LogUtil
         $obj['sec_permission'] = $strLevels[$ZRuntime['security']['last_failed_check']['level']];
 
         self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
+        $code = 403;
         if (!pnUserLoggedIn()) {
-            if (is_null($url)) {
+        	if (is_null($url)) {
                 $url = pnModURL('Users', 'user', 'loginscreen', array('returnpage' => urlencode(pnGetCurrentURI())));
-            }
-            return self::registerStatus(__('Sorry! You have not been granted access to this page.'), $url);
+        	}
+            $code = null;
         }
-        return self::registerError(__('Sorry! You have not been granted access to this page.'), 403, $url);
+        return self::registerError(__('Sorry! You have not been granted access to this page.'), $code, $url);
     }
 
     /**
