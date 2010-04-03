@@ -13,7 +13,7 @@
  */
 
 /**
- * User interaction handler for pnForm system
+ * User interaction handler for pnForm system.
  *
  * This class is the main entry point for using the pnForm system. It is expected to be used in Zikula's
  * user files, such as "pnuser.php", like this:
@@ -32,74 +32,98 @@
 class Form extends Renderer
 {
     /**
-     * Variable saving all required state information
+     * Variable saving all required state information.
+     * 
+     * @var array
      * @internal
      */
     public $State;
 
     /**
-     * List of included files required to recreate plugins (Smarty function.xxx.php files)
+     * List of included files required to recreate plugins (Smarty function.xxx.php files).
+     * 
+     * @var array
      * @internal
      */
     public $Includes;
 
     /**
-     * List of instantiated plugins
+     * List of instantiated plugins.
+     * 
+     * @var array
      * @internal
      */
     public $Plugins;
 
     /**
-     * Stack with all instantiated blocks (push when starting block, pop when ending block)
+     * Stack with all instantiated blocks (push when starting block, pop when ending block).
+     * 
+     * @var array
      * @internal
      */
     public $BlockStack;
 
     /**
-     * List of validators on page
+     * List of validators on page.
+     * 
+     * @var array
      * @internal
      */
     public $Validators;
 
     /**
-     * Flag indicating if validation has been done or not
+     * Flag indicating if validation has been done or not.
+     * 
+     * @var boolean
      * @internal
      */
     public $ValidationChecked;
 
     /**
-     * Indicates whether page is valid or not
+     * Indicates whether page is valid or not.
+     * 
+     * @var boolean
      * @internal
      */
     public $_IsValid;
 
     /**
-     * Current ID count - used to assign automatic ID's to all items
+     * Current ID count - used to assign automatic ID's to all items.
+     * 
+     * @var intiger
      * @internal
      */
     public $IdCount;
 
     /**
-     * Reference to the main user code event handler
+     * Reference to the main user code event handler.
+     * 
+     * @var pnFormHandler
      * @internal
      */
     public $EventHandler;
 
     /**
-     * Error message has been set
+     * Error message has been set.
+     * 
+     * @var boolean
      * @internal
      */
     public $ErrorMsgSet;
 
     /**
      * Set to true if pnFormRedirect was called. Means no HTML output should be returned.
+     * 
+     * @var boolean
      * @internal
      */
     public $Redirected;
 
     /**
-     * Constructor
+     * Constructor.
+     * 
      * Use FormUtil::newpnForm() instead of instantiating pnFormRender directly.
+     * 
      * @internal
      */
     public function __construct($module)
@@ -123,11 +147,13 @@ class Form extends Renderer
         $this->InitializeIncludes();
     }
 
-    /** Main event loop handler
+    /** Main event loop handler.
      *
-     * This is the function to call instead of the normal $render->fetch(...)
-     * @param bool $template Name of template file
-     * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler
+     * This is the function to call instead of the normal $render->fetch(...).
+     * 
+     * @param boolean       $template     Name of template file.
+     * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler.
+     * 
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
     public function Execute($template, &$eventHandler)
@@ -176,7 +202,7 @@ class Form extends Renderer
     }
 
     /**
-     * Register a plugin
+     * Register a plugin.
      *
      * This method registers a plugin used in a template. Plugins must beregistered to be used in pnForm
      * (unlike Smarty plugins). The register call must be done inside the Smarty plugin function in a
@@ -202,10 +228,11 @@ class Form extends Renderer
      *
      * See also all the function.formXXX.php plugins for examples.
      *
-     * @param string $pluginName Full class name of the plugin to register.
-     * @param array &$params Parameters passed from the Smarty plugin function
-     * @param bool $isBlock Indicates whether the plugin is a Smarty block or a Smarty function (internal)
-     * @return string Returns what the render() method of the plugin returns
+     * @param string  $pluginName Full class name of the plugin to register.
+     * @param array   &$params    Parameters passed from the Smarty plugin function.
+     * @param boolean $isBlock    Indicates whether the plugin is a Smarty block or a Smarty function (internal).
+     * 
+     * @return string Returns what the render() method of the plugin returns.
      */
     public function RegisterPlugin($pluginName, &$params, $isBlock = false)
     {
@@ -275,7 +302,7 @@ class Form extends Renderer
     }
 
     /**
-     * Regiser a block plugin
+     * Regiser a block plugin.
      *
      * Use this like {@link pnFormRegisterPlugin} but for Smarty blocks instead of Smarty plugins.
      * <code>
@@ -291,9 +318,10 @@ class Form extends Renderer
      *   return return $render->RegisterBlock('MyBlock', $params, $content);
      * }
      * </code>
+     * 
      * @param string $pluginName Full class name of the plugin to register.
-     * @param array &$params Parameters passed from the Smarty block function
-     * @param string &$content Content passed from the Smarty block function
+     * @param array  &$params    Parameters passed from the Smarty block function.
+     * @param string &$content   Content passed from the Smarty block function.
      */
     public function RegisterBlock($pluginName, &$params, &$content)
     {
@@ -305,7 +333,8 @@ class Form extends Renderer
     }
 
     /**
-     * pnFormRegisterBlockBegin
+     * pnFormRegisterBlockBegin.
+     * 
      * @internal
      */
     public function RegisterBlockBegin($pluginName, &$params)
@@ -316,7 +345,8 @@ class Form extends Renderer
     }
 
     /**
-     * pnFormRegisterBlockEnd
+     * pnFormRegisterBlockEnd.
+     * 
      * @internal
      */
     public function RegisterBlockEnd($pluginName, &$params, $content)
@@ -334,7 +364,8 @@ class Form extends Renderer
     }
 
     /**
-     * pnFormGetPluginId
+     * pnFormGetPluginId.
+     * 
      * @internal
      */
     public function GetPluginId(&$params)
@@ -346,6 +377,11 @@ class Form extends Renderer
         return $params['id'];
     }
 
+    /**
+     * GetPluginById.
+     *
+     * @param intiger $id Plugin ID.
+     */
     public function &GetPluginById($id)
     {
         $lim = count($this->Plugins);
@@ -360,6 +396,12 @@ class Form extends Renderer
         return $null;
     }
 
+    /**
+     * GetPluginById_rec.
+     *
+     * @param plugin? $plugin Plugin
+     * @param intiger $id     Plugin ID.
+     */
     public function &GetPluginById_rec(&$plugin, $id)
     {
         if ($plugin->id == $id) {
@@ -378,17 +420,35 @@ class Form extends Renderer
         return $null;
     }
 
+    /**
+     * IsPostBack.
+     *
+     * @return boolean
+     */
     public function IsPostBack()
     {
         return isset($_POST['__pnFormSTATE']);
     }
 
+    /**
+     * FormDie.
+     *
+     * @param string $msg Message to echo.
+     */
     public function FormDie($msg)
     {
         echo ($msg);
         pnShutDown(0);
     }
 
+    /**
+     * TranslateForDisplay.
+     *
+     * @param string  $txt      Text to translate for display.
+     * @param boolean $doEncode True to formatForDisplay.
+     * 
+     * @return string Text.
+     */
     public function TranslateForDisplay($txt, $doEncode = true)
     {
         $txt = (strlen($txt) > 0 && $txt[0] == '_' && defined($txt) ? constant($txt) : $txt);
@@ -400,11 +460,22 @@ class Form extends Renderer
 
     /* --- Validation --- */
 
+    /**
+     * AddValidator.
+     *
+     * @param validator $validator Validator to add.
+     */
     public function AddValidator(&$validator)
     {
         $this->Validators[] = &$validator;
     }
 
+    /**
+     * IsValid. calls Validate() if validation not yet checked.
+     * Then returns true if all validators pass.
+     *
+     * @return boolean True if all validators are valid.
+     */
     public function IsValid()
     {
         if (!$this->ValidationChecked) {
@@ -414,11 +485,20 @@ class Form extends Renderer
         return $this->_IsValid;
     }
 
+    /**
+     * GetValidators.
+     * 
+     * @return array Array of all Validators.
+     */
     public function &GetValidators()
     {
         return $this->Validators;
     }
 
+    /**
+     * Validate all validators and set ValidationChecked to true.
+     * 
+     */
     public function Validate()
     {
         $this->_IsValid = true;
@@ -432,6 +512,10 @@ class Form extends Renderer
         $this->ValidationChecked = true;
     }
 
+    /**
+     * Clears the validation for all validators.
+     *
+     */
     public function ClearValidation()
     {
         $this->_IsValid = true;
@@ -936,4 +1020,3 @@ class Form extends Renderer
         }
     }
 }
-

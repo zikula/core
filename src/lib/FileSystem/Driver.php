@@ -47,7 +47,7 @@ abstract class FileSystem_Driver implements FileSystem_Interface
      *
      * @param FileSystem_Configuration $configuration The configuration to be used.
      *
-     * @throws InvalidArgumentException if wrong configuration class received.
+     * @throws InvalidArgumentException If wrong configuration class received.
      */
     public function __construct(FileSystem_Configuration $configuration)
     {
@@ -55,7 +55,9 @@ abstract class FileSystem_Driver implements FileSystem_Interface
         $class = str_ireplace('FileSystem_', '', get_class($this));
         $validName = "FileSystem_Configuration_{$class}";
         if ($validName != get_class($configuration)) {
-            throw new InvalidArgumentException(sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.', get_class($this), $validName, get_class($configuration)));
+            throw new InvalidArgumentException(
+                sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.', 
+                get_class($this), $validName, get_class($configuration)));
         }
 
         $this->configuration = $configuration;
