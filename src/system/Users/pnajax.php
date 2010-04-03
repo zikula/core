@@ -11,11 +11,14 @@
  */
 
 /**
- * getusers
- * performs a user search based on the fragment entered so far
+ * Performs a user search based on the user name fragment entered so far.
+ * 
+ * Sends output directly via echo.
  *
- * @param fragment string the fragment of the username entered
- * @return void nothing, direct ouptut using echo!
+ * Available Request Parameters:
+ * - fragment (string) A partial user name entered by the user.
+ *
+ * @return boolean True.
  */
 function Users_ajax_getusers()
 {
@@ -35,8 +38,9 @@ function Users_ajax_getusers()
 
     $out = '<ul>';
     if (is_array($results) && count($results) > 0) {
-        foreach($results as $result) {
-            $out .= '<li>' . DataUtil::formatForDisplay($result['uname']) .'<input type="hidden" id="' . DataUtil::formatForDisplay($result['uname']) . '" value="' . $result['uid'] . '" /></li>';
+        foreach ($results as $result) {
+            $out .= '<li>' . DataUtil::formatForDisplay($result['uname']) .'<input type="hidden" id="'
+                 . DataUtil::formatForDisplay($result['uname']) . '" value="' . $result['uid'] . '" /></li>';
         }
     }
     $out .= '</ul>';
@@ -45,25 +49,33 @@ function Users_ajax_getusers()
 }
 
 /**
- * Check new user information
+ * Validate new user information entered by the user.
  *
- * Check whether the user can be validated
+ * Available Post Parameters:
+ * - authid       (string) The system authid used to prevent XSS.
+ * - uname        (string) The proposed user name for the new user record.
+ * - email        (string) The proposed e-mail address for the new user record.
+ * - vemail       (string) A verification of the proposed e-mail address for the new user record.
+ * - dynadata     (array)  An array containing data to be stored by the designated profile module and associated with the new account.
+ * - agreetoterms (int)    A flag indicating that the user has agreed to the site's terms and policies; 0 indicates no, otherwise yes.
+ * - pass         (string) The proposed password for the new user record.
+ * - vpass        (string) A verification of the proposed password for the new user record.
+ * - reg_answer   (string) The user-entered answer to the registration question.
  *
- * @param username
- * @param email
- * @param dynadata - Coming soon
- * @return mixed true or Ajax error
- * errorcodes -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
- *            3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
- *            6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
- *            9=EmailTaken 10=emails different 11=User Agent Banned
- *            12=Email Domain banned 13=DUD incorrect 14=spam question incorrect
- *            15=Pass too short 16=Pass different 17=No pass
+ * @return array An array containing an error code and a result message. Possible error codes are:
+ *               -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
+ *               3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
+ *               6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
+ *               9=EmailTaken 10=emails different 11=User Agent Banned
+ *               12=Email Domain banned 13=DUD incorrect 14=spam question incorrect
+ *               15=Pass too short 16=Pass different 17=No pass
  **/
 function Users_ajax_checkuser()
 {
     if (!SecurityUtil::confirmAuthKey()) {
-        AjaxUtil::error(FormUtil::getPassedValue('authid') . ' : ' . __("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+        AjaxUtil::error(FormUtil::getPassedValue('authid') . ' : ' . __("Sorry! Invalid authorisation key ('authkey'). "
+            . "This is probably either because you pressed the 'Back' button to return to a page which does not allow that, "
+            . "or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
     }
 
     $modvars = pnModGetVar('Users');
@@ -94,7 +106,7 @@ function Users_ajax_checkuser()
         $usernames = explode(' ', $reg_illegalusername);
         $count = count($usernames);
         $pregcondition = '/((';
-        for ($i = 0;$i < $count;$i++) {
+        for ($i = 0; $i < $count; $i++) {
             if ($i != $count-1) {
                 $pregcondition .= $usernames[$i] . ')|(';
             } else {
@@ -123,7 +135,8 @@ function Users_ajax_checkuser()
     }
 
     if (!pnVarValidate($email, 'email')) {
-        return array('result' => __('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. Please correct your entry and try again.'), 'errorcode' => 2);
+        return array('result' => __('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. '
+            . 'Please correct your entry and try again.'), 'errorcode' => 2);
     }
 
     if ($modvars['reg_uniemail']) {
@@ -153,9 +166,12 @@ function Users_ajax_checkuser()
 
     if (!$modvars['reg_verifyemail'] || $modvars['reg_verifyemail'] == 2) {
         if ((isset($pass)) && ("$pass" != "$vpass")) {
-            return array('result' => __('Error! You did not enter the same password in each password field. Please enter the same password once in each password field (this is required for verification).'), 'errorcode' => 16);
+            return array('result' => __('Error! You did not enter the same password in each password field. '
+                . 'Please enter the same password once in each password field (this is required for verification).'),
+                'errorcode' => 16);
         } elseif (isset($pass) && (strlen($pass) < $modvars['minpass'])) {
-            return array('result' => _fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $modvars['minpass'], $modvars['minpass']), 'errorcode' => 15);
+            return array('result' => _fn('Your password must be at least %s character long', 'Your password must be at least %s characters long',
+                $modvars['minpass'], $modvars['minpass']), 'errorcode' => 15);
         } elseif (empty($pass) && !$modvars['reg_verifyemail']) {
             return array('result' => __('Error! Please enter a password.'), 'errorcode' => 17);
         }
@@ -182,7 +198,7 @@ function Users_ajax_checkuser()
         $checkdisallowed_useragents = explode(',', $disallowed_useragents);
         $count = count($checkdisallowed_useragents);
         $pregcondition = '/((';
-        for ($i = 0;$i < $count;$i++) {
+        for ($i = 0; $i < $count; $i++) {
             if ($i != $count-1) {
                 $pregcondition .= $checkdisallowed_useragents[$i] . ')|(';
             } else {
@@ -222,11 +238,16 @@ function Users_ajax_checkuser()
 }
 
 /**
- * Check required dynamic data
+ * Validates dynamic user data stored by the designated profile module.
+ *
+ * Internal use only. Not intended to be called through the API.
+ *
+ * @param array $dynadata An array of data to be validated by the designated profile module.
  *
  * @access private
- * @param dynadata - array of user input
- * @return false or mixed array (errorno and fields)
+ *
+ * @return array|bool False if there is no dynamic data, if there is no designated profile module, or if there are no errors;
+ *                    otherwise an array containg a result message, an error code, and an array of fields containing errors.
  **/
 function Users_ajax_checkrequired($dynadata = array())
 {
