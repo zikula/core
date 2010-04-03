@@ -13,14 +13,93 @@
  */
 
 /**
- * FileSystem_Interface is the interface including all functions which individual drivers
- * must implement. This assures that all drivers operate in similar/expected ways and all
- * have roughly the same capabilities. If a function has no meaning for a driver then that
- * function must be included in the driver, however it should register an error when called,
- * and then return false.
+ * Driver Abstract.
+ *
+ * This abstract class contains the basic construct for every driver, which
+ * simply gets the FileSystem_Configuration and saves it. all drivers which
+ * extend this class must implement FileSystem_Interface.
  */
-interface FileSystem_Interface
+abstract class FileSystem_AbstractDriver
 {
+    /**
+     * Configuration object.
+     *
+     * @var FileSystem_Configuration
+     */
+    protected $configuration;
+
+    /**
+     * The Driver object (facade).
+     *
+     * @var object
+     */
+    protected $driver;
+
+    /**
+     * The error handler.
+     *
+     * @var object
+     */
+    protected $errorHandler;
+
+    /**
+     * Construct the driver with the configuration.
+     *
+     * @param $configuration The configuration to be used.
+     *
+     * @throws InvalidArgumentException If wrong configuration class received.
+     */
+    public function __construct(FileSystem_Configuration $configuration)
+    {
+        // validate we get correct configuration class type.
+        $type = str_ireplace('FileSystem_', '', get_class($this));
+        $validName = "FileSystem_Configuration_{$type}";
+
+        if ($validName != get_class($configuration)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid configuration class for %1$s.  Expected %2$s but got %3$s instead.',
+                get_class($this), $validName, get_class($configuration)));
+        }
+
+        $this->configuration = $configuration;
+
+        $facade = "FileSystem_Facade_{$type}";
+        $this->driver = new $facade();
+        $this->errorHandler = new FileSystem_Error();
+    }
+
+    /**
+     * Setter for facade driver.
+     *
+     * @param object $driver The facade driver.
+     *
+     * @return void
+     */
+    public function setDriver($driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * Getter for facade driver.
+     *
+     * @return object Driver (facade) class.
+     */
+    public function getDriver()
+    {
+        return $this->driver;
+    }
+
+    /**
+     * Getter for errorHanler.
+     *
+     * @return object ErrorHandler class.
+     */
+    public function getErrorHandler()
+    {
+        return $this->errorHandler;
+    }
+
     /**
      * Interface connect function.
      *
@@ -29,7 +108,7 @@ interface FileSystem_Interface
      *
      * @return boolean True on connect, false on failure.
      */
-    public function connect();
+    abstract public function connect();
 
     /**
      * Interface get function.
@@ -39,7 +118,7 @@ interface FileSystem_Interface
      *
      * @return boolean True on success false on failure.
      */
-    public function get($local, $remote);
+    abstract public function get($local, $remote);
 
     /**
      * Interface fget function.
@@ -48,7 +127,7 @@ interface FileSystem_Interface
      *
      * @return resource|bool The resource on success false on fail.
      */
-    public function fget($remote);
+    abstract public function fget($remote);
 
     /**
      * Interface put function.
@@ -58,7 +137,7 @@ interface FileSystem_Interface
      *
      * @return boolean True on success false on failure.
      */
-    public function put($local, $remote);
+    abstract public function put($local, $remote);
 
     /**
      * Interface fput function.
@@ -68,7 +147,7 @@ interface FileSystem_Interface
      *
      * @return boolean|integer Number of bytes written on success, false on failure.
      */
-    public function fput($stream, $remote);
+    abstract public function fput($stream, $remote);
 
     /**
      * Interface chmod function.
@@ -78,7 +157,7 @@ interface FileSystem_Interface
      *
      * @return boolean|integer The new permission or false if failed.
      */
-    public function chmod($perm, $file);
+    abstract public function chmod($perm, $file);
 
     /**
      * Interface ls function.
@@ -87,7 +166,7 @@ interface FileSystem_Interface
      *
      * @return array|boolean An array of the contents of $dir or false if fail.
      */
-    public function ls($dir = '');
+    abstract public function ls($dir = '');
 
     /**
      * Interface cd function.
@@ -96,7 +175,7 @@ interface FileSystem_Interface
      *
      * @return boolean True on success false on failure.
      */
-    public function cd($dir = '');
+    abstract public function cd($dir = '');
 
     /**
      * Interface cp function.
@@ -106,7 +185,7 @@ interface FileSystem_Interface
      *
      * @return boolean True on success false on failure.
      */
-    public function cp($sourcepath, $destpath);
+    abstract public function cp($sourcepath, $destpath);
 
     /**
      * Interface mf function.
@@ -116,7 +195,7 @@ interface FileSystem_Interface
      *
      * @return boolean True on success false on failure.
      */
-    public function mv($sourcepath, $destpath);
+    abstract public function mv($sourcepath, $destpath);
 
     /**
      * Interface rm function.
@@ -125,5 +204,5 @@ interface FileSystem_Interface
      *
      * @return boolean
      */
-    public function rm($sourcepath);
+    abstract public function rm($sourcepath);
 }

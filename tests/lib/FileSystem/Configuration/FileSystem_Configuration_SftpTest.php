@@ -117,7 +117,7 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('./dir',$this->FileSystem_Configuration_Sftp3->getDir());
         $this->assertEquals('/test',$this->FileSystem_Configuration_Sftp4->getDir());
     }
-    
+
     /**
      * Tests FileSystem_Configuration_Sftp->getDir()
      */
@@ -126,7 +126,7 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('',$this->FileSystem_Configuration_Sftp->getPubKey());
         $this->assertEquals('pubkey',$this->FileSystem_Configuration_Sftp5->getPubKey());
     }
-    
+
     /**
      * Tests FileSystem_Configuration_Sftp->getDir()
      */
@@ -135,7 +135,7 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('',$this->FileSystem_Configuration_Sftp->getPrivKey());
         $this->assertEquals('privkey',$this->FileSystem_Configuration_Sftp5->getPrivKey());
     }
-    
+
     /**
      * Tests FileSystem_Configuration_Sftp->getDir()
      */
@@ -144,7 +144,7 @@ class FileSystem_Configuration_SftpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('',$this->FileSystem_Configuration_Sftp->getPassphrase());
         $this->assertEquals('passphrase',$this->FileSystem_Configuration_Sftp5->getPassphrase());
     }
-    
+
     /**
      * Tests FileSystem_Configuration_Sftp->getDir()
      */

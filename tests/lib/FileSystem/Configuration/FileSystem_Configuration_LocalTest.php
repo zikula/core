@@ -58,7 +58,7 @@ class FileSystem_Configuration_LocalTest extends PHPUnit_Framework_TestCase
     {
         $this->assertType('FileSystem_Configuration',$this->FileSystem_Configuration_Local);
 	    $this->assertType('FileSystem_Configuration_Local',$this->FileSystem_Configuration_Local);
-    	
+
     }
 
     /**

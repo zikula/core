@@ -15,10 +15,9 @@
 /**
  * FileSystem_SFtp is the standard driver for SFTP connections.
  *
- * This class extends FileSystem_Driver, as such this class implements the
- * FileSystem_Interface.
+ * This class extends FileSystem_AbstractDriver.
  */
-class FileSystem_Sftp extends FileSystem_Driver
+class FileSystem_Sftp extends FileSystem_AbstractDriver
 {
     /**
      * Resource.
@@ -40,10 +39,10 @@ class FileSystem_Sftp extends FileSystem_Driver
      * @var string
      */
     private $_dir;
-    
+
     /**
      * Shell type to use when creating a ssh shell.
-     * 
+     *
      * @var string
      */
     private $_terminal = "xterm";
@@ -65,25 +64,25 @@ class FileSystem_Sftp extends FileSystem_Driver
         if ($this->configuration->getAuthType() !== "pass") {
             $methods['hostkey'] = $this->configuration->getAuthType();
         }
-        if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $methods)) !== false) {
+        if (($this->_ssh_resource = $this->getDriver()->connect($this->configuration->getHost(), $this->configuration->getPort(), $methods)) !== false) {
             //connected
             if ($this->configuration->getAuthType() !== "pass") {
-                $auth = $this->driver->authPubkey(
-                    $this->_ssh_resource, 
-                    $this->configuration->getUser(), 
-                    $this->configuration->getPubKey(), 
-                    $this->configuration->getPrivKey(), 
+                $auth = $this->getDriver()->authPubkey(
+                    $this->_ssh_resource,
+                    $this->configuration->getUser(),
+                    $this->configuration->getPubKey(),
+                    $this->configuration->getPrivKey(),
                     $this->configuration->getPassphrase());
             } else {
-                $auth = $this->driver->authPassword($this->_ssh_resource, 
-                    $this->configuration->getUser(), 
+                $auth = $this->getDriver()->authPassword($this->_ssh_resource,
+                    $this->configuration->getUser(),
                     $this->configuration->getPass());
             }
             if ($auth !== false) {
                 //logged in
-                if (($this->_resource = $this->driver->sftp($this->_ssh_resource)) !== false) {
+                if (($this->_resource = $this->getDriver()->sftp($this->_ssh_resource)) !== false) {
                     //started sftp
-                    if (($this->_dir = $this->driver->realpath($this->_resource, $this->configuration->getDir())) !== false) {
+                    if (($this->_dir = $this->getDriver()->realpath($this->_resource, $this->configuration->getDir())) !== false) {
                         //changed dir
                         $this->errorHandler->stop();
                         return true;
@@ -114,7 +113,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function put($local, $remote)
     {
         $this->errorHandler->start();
-        if ($this->driver->scpSend($this->_resource, $local, $remote)) {
+        if ($this->getDriver()->scpSend($this->_resource, $local, $remote)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -138,7 +137,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             $remote = $this->_dir . '/' . $remote;
         }
         $this->errorHandler->start();
-        if (($bytes = $this->driver->putContents($this->_resource, $remote, $stream)) !== false) {
+        if (($bytes = $this->getDriver()->putContents($this->_resource, $remote, $stream)) !== false) {
             fclose($stream);
             $this->errorHandler->stop();
             return $bytes;
@@ -162,7 +161,7 @@ class FileSystem_Sftp extends FileSystem_Driver
     public function get($local, $remote)
     {
         $this->errorHandler->start();
-        if ($this->driver->scpRecv($this->_resource, $remote, $local)) {
+        if ($this->getDriver()->scpRecv($this->_resource, $remote, $local)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -185,7 +184,7 @@ class FileSystem_Sftp extends FileSystem_Driver
             $remote = $this->_dir . '/' . $remote;
         }
         $this->errorHandler->start();
-        if (($handle = $this->driver->sftpFopen($this->_resource, $remote, 'r+')) !== false) {
+        if (($handle = $this->getDriver()->sftpFopen($this->_resource, $remote, 'r+')) !== false) {
             rewind($handle);
             $this->errorHandler->stop();
             return $handle;
@@ -209,18 +208,18 @@ class FileSystem_Sftp extends FileSystem_Driver
             $file = $this->_dir . '/' . $file;
         }
 
-        if (($file = $this->driver->realpath($this->_resource, $file)) === false) {
+        if (($file = $this->getDriver()->realpath($this->_resource, $file)) === false) {
             $this->errorHandler->stop(); //source file not found.
             return false;
         }
-        if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
+        if (($shell = $this->getDriver()->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
             return false; //could not get shell.
         }
-        if ($this->driver->sshShellWrite($shell, "chmod $perm $file;echo :::$?:::" . PHP_EOL) === false) {
+        if ($this->getDriver()->sshShellWrite($shell, "chmod $perm $file;echo :::$?:::" . PHP_EOL) === false) {
             return false; //couldnt write to shell
         }
         usleep(350000);
-        if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
+        if (($resp = $this->getDriver()->sshShellRead($shell, 4096)) === false) {
             return false; //could not read from shell
         }
         fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
@@ -259,10 +258,10 @@ class FileSystem_Sftp extends FileSystem_Driver
         if ($dir == '' || substr($dir, 0, 1) !== '/') {
             $dir = $this->_dir . '/' . $dir;
         }
-        if ($this->driver->sftpIsDir($this->_resource, $dir)) {
-            $handle = $this->driver->sftpOpenDir($this->_resource, $dir);
+        if ($this->getDriver()->sftpIsDir($this->_resource, $dir)) {
+            $handle = $this->getDriver()->sftpOpenDir($this->_resource, $dir);
             $files = array();
-            while (false !== ($file = $this->driver->sftpReadDir($handle))) {
+            while (false !== ($file = $this->getDriver()->sftpReadDir($handle))) {
                 if (substr("$file", 0, 1) != ".") {
                     $files[] = $file;
                 }
@@ -272,7 +271,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         }
 
         //if IsDir fails that means its either not a directory or doesnt exist
-        if (!$this->driver->sftpFileExists($this->_resource,$dir)) {
+        if (!$this->getDriver()->sftpFileExists($this->_resource,$dir)) {
             $this->errorHandler->register("$dir does not exist.", 0);
             return false;
         }
@@ -294,7 +293,7 @@ class FileSystem_Sftp extends FileSystem_Driver
         }
 
         $this->errorHandler->start();
-        if (($dir = $this->driver->realpath($this->_resource, $dir)) !== false) {
+        if (($dir = $this->getDriver()->realpath($this->_resource, $dir)) !== false) {
             $this->_dir = $dir;
             $this->errorHandler->stop();
             return true;
@@ -322,8 +321,8 @@ class FileSystem_Sftp extends FileSystem_Driver
         if ($destpath == "" || substr($destpath, 0, 1) !== "/") {
             $destpath = $this->_dir . '/' . $destpath;
         }
-        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
-            if (($this->driver->sftpRename($this->_resource, $sourcepath, $destpath)) !== false) {
+        if (($sourcepath = $this->getDriver()->realpath($this->_resource, $sourcepath)) !== false) {
+            if (($this->getDriver()->sftpRename($this->_resource, $sourcepath, $destpath)) !== false) {
                 $this->errorHandler->stop(); //renamed file
                 return true;
             }//could not rename file
@@ -351,18 +350,18 @@ class FileSystem_Sftp extends FileSystem_Driver
         if ($destpath == "" || substr($destpath, 0, 1) !== "/") {
             $destpath = $this->_dir . '/' . $destpath;
         }
-        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) === false) {
+        if (($sourcepath = $this->getDriver()->realpath($this->_resource, $sourcepath)) === false) {
             $this->errorHandler->stop(); //source file not found.
             return false;
         }
-        if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
+        if (($shell = $this->getDriver()->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
             return false; //could not get shell.
         }
-        if ($this->driver->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
+        if ($this->getDriver()->sshShellWrite($shell, "cp $sourcepath $destpath;echo :::$?:::" . PHP_EOL) === false) {
             return false; //couldnt write to shell
         }
         usleep(350000);
-        if (($resp = $this->driver->sshShellRead($shell, 4096)) === false) {
+        if (($resp = $this->getDriver()->sshShellRead($shell, 4096)) === false) {
             return false; //could not read from shell
         }
         fclose($shell); //the shell closes even if we dont put this, thats why next line is needed
@@ -403,9 +402,9 @@ class FileSystem_Sftp extends FileSystem_Driver
         //$sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
         $this->errorHandler->start();
         //check the file actauly exists.
-        if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
+        if (($sourcepath = $this->getDriver()->realpath($this->_resource, $sourcepath)) !== false) {
             //file exists
-            if ($this->driver->sftpDelete($this->_resource, $sourcepath)) {
+            if ($this->getDriver()->sftpDelete($this->_resource, $sourcepath)) {
                 //file deleted
                 $this->errorHandler->stop();
                 return true;

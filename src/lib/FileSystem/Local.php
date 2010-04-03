@@ -15,10 +15,9 @@
 /**
  * FileSystem_Local is the standard driver for Local/Direct connections.
  *
- * This class extends FileSystem_Driver, as such this class implements the
- * FileSystem_Interface.
+ * This class extends FileSystem_AbstractDriver.
  */
-class FileSystem_Local extends FileSystem_Driver {
+class FileSystem_Local extends FileSystem_AbstractDriver {
 
     /**
      * Resource handle.
@@ -43,7 +42,7 @@ class FileSystem_Local extends FileSystem_Driver {
         if ($this->configuration->getDir() == '') {
             return true;
         }
-        if ($this->driver->chdir($this->configuration->getDir()) == true) {
+        if ($this->getDriver()->chdir($this->configuration->getDir()) == true) {
             return true;
         }
         return false;
@@ -76,7 +75,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function fput($stream, $remote) {
         $this->errorHandler->start();
-        if (($bytes = $this->driver->putContents($remote, $stream, 0, $this->_resource)) !== false) {
+        if (($bytes = $this->getDriver()->putContents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
             $this->errorHandler->stop();
             return $bytes;
@@ -122,7 +121,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function fget($remote) {
         $this->errorHandler->start();
-        if (($handle = $this->driver->fileOpen($remote, 'r+', false, $this->_resource)) !== false) {
+        if (($handle = $this->getDriver()->fileOpen($remote, 'r+', false, $this->_resource)) !== false) {
             rewind($handle);
             $this->errorHandler->stop();
             return $handle;
@@ -142,7 +141,7 @@ class FileSystem_Local extends FileSystem_Driver {
     public function chmod($perm, $file) {
         $this->errorHandler->start();
         $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
-        if (($perm = $this->driver->chmod($file, $perm)) !== false) {
+        if (($perm = $this->getDriver()->chmod($file, $perm)) !== false) {
             $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
             return $perm;
@@ -161,7 +160,7 @@ class FileSystem_Local extends FileSystem_Driver {
     public function ls($dir = '') {
         $dir = ($dir == '' ? getcwd() : $dir);
         $this->errorHandler->start();
-        if (($files = $this->driver->scandir($dir, 0, $this->_resource)) !== false) {
+        if (($files = $this->getDriver()->scandir($dir, 0, $this->_resource)) !== false) {
             return $files;
         }
         $this->errorHandler->stop();
@@ -177,7 +176,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function cd($dir = '') {
         $this->errorHandler->start();
-        if ($this->driver->chdir($dir)) {
+        if ($this->getDriver()->chdir($dir)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -197,7 +196,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function mv($sourcepath, $destpath) {
         $this->errorHandler->start();
-        if ($this->driver->rename($sourcepath, $destpath, $this->_resource)) {
+        if ($this->getDriver()->rename($sourcepath, $destpath, $this->_resource)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -217,7 +216,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function cp($sourcepath, $destpath) {
         $this->errorHandler->start();
-        if ($this->driver->copy($sourcepath, $destpath, $this->_resource)) {
+        if ($this->getDriver()->copy($sourcepath, $destpath, $this->_resource)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -234,7 +233,7 @@ class FileSystem_Local extends FileSystem_Driver {
      */
     public function rm($sourcepath) {
         $this->errorHandler->start();
-        if ($this->driver->delete($sourcepath, $this->_resource)) {
+        if ($this->getDriver()->delete($sourcepath, $this->_resource)) {
             $this->errorHandler->stop();
             return true;
         }

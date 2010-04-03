@@ -16,11 +16,11 @@
  * SFTP Configuration class.
  *
  * Configuration class for SFTP driver. please see documentation for FileSystem_Configuration
- * for more details on configuration classes. This class extends FileSystem_Configuration.
+ * for more details on configuration classes. This class implments FileSystem_Configuration.
  * The only purpose to this class is to provide a configuration object to be used by the
  * sftp driver.
  */
-class FileSystem_Configuration_Sftp extends FileSystem_Configuration
+class FileSystem_Configuration_Sftp implements FileSystem_Configuration
 {
     /**
      * SFTP host.
@@ -56,31 +56,31 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
      * @var integer
      */
     protected $port;
-    
+
     /**
      * The auth type.
-     * 
+     *
      * @var string
      */
     protected $auth_type;
-    
+
     /**
      * The path to private key file.
-     * 
+     *
      * @var string
      */
     protected $priv_key;
-    
+
     /**
      * Path to public key file.
-     * 
+     *
      * @var string
      */
     protected $pub_key;
-    
+
     /**
      * Passphrase for the key.
-     * 
+     *
      * @var string
      */
     protected $passphrase;
@@ -160,7 +160,7 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
     {
         return $this->dir;
     }
-    
+
     /**
      * Get the authentication method.
      *
@@ -170,7 +170,7 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
     {
         return $this->auth_type;
     }
-    
+
     /**
      * Get the path to the public key.
      *
@@ -180,7 +180,7 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
     {
         return $this->pub_key;
     }
-    
+
     /**
      * Get the path to the private key.
      *
@@ -190,7 +190,7 @@ class FileSystem_Configuration_Sftp extends FileSystem_Configuration
     {
         return $this->priv_key;
     }
-    
+
     /**
      * Get the passphrase associated with the key.
      *

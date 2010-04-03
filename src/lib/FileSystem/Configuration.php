@@ -15,6 +15,6 @@
 /**
  * Abstract class for configuration classes.
  */
-abstract class FileSystem_Configuration
+interface FileSystem_Configuration
 {
 }

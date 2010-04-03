@@ -16,11 +16,11 @@
  * FTP Configuration class.
  *
  * Configuration class for FTP driver. please see documentation for FileSystem_Configuration
- * for more details on configuration classes. This class extends FileSystem_Configuration.
+ * for more details on configuration classes. This class implements FileSystem_Configuration.
  * The only purpose to this class is to provide a configuration object to be used by the
  * ftp driver.
  */
-class FileSystem_Configuration_Ftp extends FileSystem_Configuration
+class FileSystem_Configuration_Ftp implements FileSystem_Configuration
 {
     /**
      * FTP host.
