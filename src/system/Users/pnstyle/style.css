@@ -87,3 +87,25 @@ div#pwsmeter {
     height: 18px;
     width: 0px;
 }
+
+#newpassword {
+    width:200px;
+    border:0px;
+}
+
+#colorbar {
+    margin-top: -6px;
+    width: 1px;
+    background-image: url(../pnjavascript/passwordStrengthMeter/passwordstrength.jpg);
+    height: 3px;
+}
+
+#percent {
+    margin-top: 0px;
+    float: left;
+}
+
+#result {
+    color: green;
+    float: left;
+}
