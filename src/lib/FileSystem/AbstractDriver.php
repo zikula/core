@@ -81,16 +81,6 @@ abstract class FileSystem_AbstractDriver
     }
 
     /**
-     * Getter for facade driver.
-     *
-     * @return object Driver (facade) class.
-     */
-    public function getDriver()
-    {
-        return $this->driver;
-    }
-
-    /**
      * Getter for errorHanler.
      *
      * @return object ErrorHandler class.

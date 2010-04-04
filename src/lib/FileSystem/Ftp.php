@@ -49,17 +49,17 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
 
         //create the connection
         if ($this->configuration->getSSL()) {
-            $this->_resource = $this->getDriver()->sslConnect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+            $this->_resource = $this->driver->sslConnect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         } else {
-            $this->_resource = $this->getDriver()->connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
+            $this->_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $this->configuration->getTimeout());
         }
 
         if ($this->_resource !== false) {
             //log in
-            if ($this->getDriver()->login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
+            if ($this->driver->login($this->_resource, $this->configuration->getUser(), $this->configuration->getPass())) {
                 //change directory
-                if ($this->getDriver()->pasv($this->_resource, $this->configuration->getPasv())) {
-                    if ($this->getDriver()->chdir($this->_resource, $this->configuration->getDir())) {
+                if ($this->driver->pasv($this->_resource, $this->configuration->getPasv())) {
+                    if ($this->driver->chdir($this->_resource, $this->configuration->getDir())) {
                         $this->_dir = ftp_pwd($this->_resource);
                         $this->errorHandler->stop();
                         return true;
@@ -87,7 +87,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->getDriver()->put($this->_resource, $remote, $local, FTP_BINARY)) {
+        if ($this->driver->put($this->_resource, $remote, $local, FTP_BINARY)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -109,7 +109,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->getDriver()->fput($this->_resource, $remote, $stream, FTP_BINARY)) {
+        if ($this->driver->fput($this->_resource, $remote, $stream, FTP_BINARY)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -133,7 +133,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->getDriver()->get($this->_resource, $local, $remote, FTP_BINARY)) {
+        if ($this->driver->get($this->_resource, $local, $remote, FTP_BINARY)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -155,7 +155,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         $handle = fopen('php://temp', 'r+');
-        if ($this->getDriver()->fget($this->_resource, $handle, $remote, FTP_BINARY)) {
+        if ($this->driver->fget($this->_resource, $handle, $remote, FTP_BINARY)) {
             rewind($handle);
             $this->errorHandler->stop();
             return $handle;
@@ -177,7 +177,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
-        if (($perm = $this->getDriver()->chmod($this->_resource, $perm, $file)) !== false) {
+        if (($perm = $this->driver->chmod($this->_resource, $perm, $file)) !== false) {
             $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
             return $perm;
@@ -198,7 +198,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         $dir = ($dir == '' ? ftp_pwd($this->_resource) : $dir);
-        if (($ls = $this->getDriver()->nlist($this->_resource, $dir)) !== false) {
+        if (($ls = $this->driver->nlist($this->_resource, $dir)) !== false) {
             $this->errorHandler->stop();
             return $ls;
         }
@@ -217,7 +217,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->getDriver()->chdir($this->_resource, $dir)) {
+        if ($this->driver->chdir($this->_resource, $dir)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -239,7 +239,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if ($this->getDriver()->rename($this->_resource, $sourcepath, $destpath)) {
+        if ($this->driver->rename($this->_resource, $sourcepath, $destpath)) {
             $this->errorHandler->stop();
             return true;
         }
@@ -282,7 +282,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
     {
         $this->isAlive(true);
         $this->errorHandler->start();
-        if (($this->getDriver()->delete($this->_resource, $sourcepath)) !== false) {
+        if (($this->driver->delete($this->_resource, $sourcepath)) !== false) {
             $this->errorHandler->stop();
             return true;
         }
@@ -303,7 +303,7 @@ class FileSystem_Ftp extends FileSystem_AbstractDriver
      */
     public function isAlive($reconnect = false)
     {
-        if (!$this->getDriver()->systype($this->_resource)) {
+        if (!$this->driver->systype($this->_resource)) {
             if ($reconnect) {
                 return $this->connect();
             }
