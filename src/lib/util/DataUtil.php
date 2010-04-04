@@ -56,6 +56,28 @@ class DataUtil
         return base64_decode($value);
     }
 
+    /** Take a name-value-pair string and convert it to an associative array, optionally urldecoding the response. 
+      * 
+      * @param nvpstr       Name-value-pair String.
+      * @param separator    Separator used in the NVP string
+      * @param urldecode    Whether to urldecode the NVP fields
+      *
+      * @return assoc is associative array.
+     */
+    function decodeNVP ($nvpstr, $separator='&', $urldecode=true)                                                                                   
+    {                                                                                                                                               
+        $assoc = array();                                                                                                                           
+        $items = explode ($separator, $nvpstr);                                                                                                     
+        foreach ($items as $item) {                                                                                                                 
+            $fields = explode ('=', $item);                                                                                                         
+            $key    = $urldecode ? urldecode($fields[0]) : $fields[0];                                                                              
+            $value  = $urldecode ? urldecode($fields[1]) : $fields[1];                                                                              
+            $assoc[$key] = $value;                                                                                                                  
+        } 
+
+        return $assoc;
+    }         
+
     /**
      * Decrypt the given value using the mcrypt library function. If the mcrypt
      * functions do not exist, we fallback to the RC4 implementation which is
@@ -96,6 +118,47 @@ class DataUtil
     public static function encode($value)
     {
         return base64_encode($value);
+    }
+
+    /** Take a key and value and encode them into an NVP-string entity
+      * 
+      * @param key          The key to encode
+      * @param value        The value to encode
+      * @param separator    The Separator to use in the NVP string
+      * @param includeEmpty Whether to also include empty values
+      *
+      * @return string-encoded NVP or an empty string
+     */
+    function encodeNVP ($key, $value, $separator='&', $includeEmpty=true)                                                                                                      
+    {                                                                                                                                                           
+        if (!$key) {                                                                                                                                           
+            return LogUtil::registerError ('Invalid NVP key received');                                                                                        
+        }                                                                                                                                                       
+
+        if ($includeEmpty || ($value != null && strlen($value) > 1)) {                                                                                          
+            return ("&".urlencode($key) ."=" .urlencode($value));                                                                                              
+        }                                                                                                                                                       
+
+        return '';
+    }
+
+    /** Take an array and encode it as a NVP string
+      * 
+      * @param nvap         The array of name-value paris
+      * @param separator    The Separator to use in the NVP string
+      * @param includeEmpty Whether to also include empty values
+      *
+      * @return string-encoded NVP or an empty string
+     */
+    function encodeNVPArray ($nvps, $separator='&', $includeEmpty=true)
+    {
+        $str = '';
+
+        foreach ($nvps as $k=>$v) {
+            $str .= WebstoreUtil::encodeNVP ($k, $v, $separator, $includeEmpty);
+        }
+
+        return $str;
     }
 
     /**
