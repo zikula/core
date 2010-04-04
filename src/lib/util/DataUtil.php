@@ -64,7 +64,7 @@ class DataUtil
       *
       * @return assoc is associative array.
      */
-    function decodeNVP ($nvpstr, $separator='&', $urldecode=true)                                                                                   
+    public static function decodeNVP ($nvpstr, $separator='&', $urldecode=true)                                                                                   
     {                                                                                                                                               
         $assoc = array();                                                                                                                           
         $items = explode ($separator, $nvpstr);                                                                                                     
@@ -129,7 +129,7 @@ class DataUtil
       *
       * @return string-encoded NVP or an empty string
      */
-    function encodeNVP ($key, $value, $separator='&', $includeEmpty=true)                                                                                                      
+    public static function encodeNVP ($key, $value, $separator='&', $includeEmpty=true) 
     {                                                                                                                                                           
         if (!$key) {                                                                                                                                           
             return LogUtil::registerError ('Invalid NVP key received');                                                                                        
@@ -150,7 +150,7 @@ class DataUtil
       *
       * @return string-encoded NVP or an empty string
      */
-    function encodeNVPArray ($nvps, $separator='&', $includeEmpty=true)
+    public static function encodeNVPArray ($nvps, $separator='&', $includeEmpty=true)
     {
         $str = '';
 
