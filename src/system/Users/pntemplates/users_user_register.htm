@@ -45,7 +45,7 @@
             <legend>{gt text="Choose a user name"}</legend>
             <div class="z-formrow">
                 <label for="users_uname">{gt text="User name"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_uname" type="text" name="uname" size="25" maxlength="25" />
+                <input id="users_uname" class="users_uname" type="text" name="uname" size="25" maxlength="25" />
             </div>
         </fieldset>
 
@@ -54,8 +54,24 @@
             {if !$reg_verifyemail or ($reg_verifyemail eq 2)}
             <div class="z-formrow">
                 <label for="users_pass">{gt text="Password"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                {if $use_password_strength_meter eq 1}
-                <input id="users_pass" type="password" name="pass" size="25" maxlength="60"  class="pwsinput" onkeyup="updatePasswordStrength(this.value)" /> <div id="pwscontainer"><div id="pwsmeter"></div></div>
+                {if $use_password_strength_meter eq 1}  
+                    {pnpageaddvar name='javascript' value='system/Users/pnjavascript/passwordStrengthMeter/jquery.js'}
+                    {pnpageaddvar name='javascript' value='system/Users/pnjavascript/passwordStrengthMeter/passwordStrengthMeter.js'}
+
+                    <script type="text/javascript">
+
+                        var shortPass = '{{gt text="Too Short Password"}}';
+                        var badPass = '{{gt text="Weak, Use letters & numbers"}}';
+                        var goodPass = '{{gt text="Medium, Use special characters"}}';
+                        var strongPass = '{{gt text="Strong Password"}}';
+                        var sameAsUsername = '{{gt text="Password can not match the username, choose a different password."}}';
+
+                    </script>
+                    {pnpageaddvar name='javascript' value='system/Users/pnjavascript/passwordStrengthMeter_register.js'}
+
+                <input id="users_pass" class="users_pass" type="password" name="pass" size="25" maxlength="60" />   
+<div id="colorbar" class="z-formnote"></div>
+        <span id="percent" class="z-formnote">0%</span><span id="result">&nbsp;&nbsp;{gt text='Enter your new password'}</span>
                 {else}
                 <input id="users_pass" type="password" name="pass" size="25" maxlength="60" />
                 {/if}

@@ -68,31 +68,6 @@ div.z-accountlink {
     height:9em;
 }
 
-/* password strength meter */
-input.pwsinput {
-	float: left !important;
-}
-
-div#pwscontainer {
-    height: 18px;
-    width: 100px;
-    border: 1px solid #000;
-    float: left; 
-    margin-left: 5px;
-    background-color: #dddddd;
-}
-
-div#pwsmeter {
-    background-image: url('../pnimages/pwstrength.jpg');
-    height: 18px;
-    width: 0px;
-}
-
-#newpassword {
-    width:200px;
-    border:0px;
-}
-
 #colorbar {
     margin-top: -6px;
     width: 1px;
