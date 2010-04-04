@@ -152,8 +152,11 @@ class DataUtil
      */
     public static function encodeNVPArray ($nvps, $separator='&', $includeEmpty=true)
     {
-        $str = '';
+        if (!is_array($nvps)) {
+            return LogUtil::registerError ('NVPS array is not an array');
+        }
 
+        $str = '';
         foreach ($nvps as $k=>$v) {
             $str .= WebstoreUtil::encodeNVP ($k, $v, $separator, $includeEmpty);
         }
