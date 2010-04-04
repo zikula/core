@@ -58,7 +58,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('authPassword')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
-             ->method('sftp')
+             ->method('sftpStart')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('realpath')
@@ -74,7 +74,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('authPassword')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
-             ->method('sftp')
+             ->method('sftpStart')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('realpath')
@@ -90,7 +90,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('authPassword')
              ->will($this->returnValue(false));
         $stub->expects($this->any())
-             ->method('sftp')
+             ->method('sftpStart')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('realpath')
@@ -106,7 +106,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('authPassword')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
-             ->method('sftp')
+             ->method('sftpStart')
              ->will($this->returnValue(false));
         $stub->expects($this->any())
              ->method('realpath')
@@ -122,7 +122,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('authPassword')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
-             ->method('sftp')
+             ->method('sftpStart')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('realpath')
@@ -140,7 +140,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('authPubkey')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
-             ->method('sftp')
+             ->method('sftpStart')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('realpath')
@@ -158,7 +158,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->method('authPubkey')
              ->will($this->returnValue(false));
         $stub->expects($this->any())
-             ->method('sftp')
+             ->method('sftpStart')
              ->will($this->returnValue(true));
         $stub->expects($this->any())
              ->method('realpath')

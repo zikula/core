@@ -80,7 +80,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
             }
             if ($auth !== false) {
                 //logged in
-                if (($this->_resource = $this->getDriver()->sftp($this->_ssh_resource)) !== false) {
+                if (($this->_resource = $this->getDriver()->sftpStart($this->_ssh_resource)) !== false) {
                     //started sftp
                     if (($this->_dir = $this->getDriver()->realpath($this->_resource, $this->configuration->getDir())) !== false) {
                         //changed dir
