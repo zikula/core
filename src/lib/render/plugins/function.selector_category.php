@@ -41,7 +41,7 @@ function smarty_function_selector_category ($params, &$smarty)
     $assign           = isset($params['assign'])           ? $params['assign']           : null;
     $editLink         = isset($params['editLink'])         ? $params['editLink']         : true;
     $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
-    $sortField        = isset($params['sortField'])        ? $params['sortField']        : null;
+    $sortField        = isset($params['sortField'])        ? $params['sortField']        : 'sort_value';
     $doReplaceRootCat = isset($params['doReplaceRootCat']) ? $params['doReplaceRootCat'] : null;
 
     // disable attribution if we don't need it
