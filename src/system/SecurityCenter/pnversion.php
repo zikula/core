@@ -7,7 +7,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage AntiCracker
-*/
+ */
 
 $modversion['name']           = 'SecurityCenter';
 $modversion['oldnames']       = array('AntiCracker');

@@ -8,7 +8,7 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Theme
-*/
+ */
 
 $modversion['name']           = 'Theme';
 $modversion['oldnames']       = array('Xanthia');

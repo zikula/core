@@ -12,13 +12,13 @@
  *                   This file contains all information on database
  *                   tables for the module
  *
- * @package      Zikula_System_Modules
+ * @package Zikula_System_Modules
  * @subpackage   Permissions
  */
 
 
 /**
- * Populate pntables array for Permissions module
+ * Populate pntables array for Permissions module.
  *
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.

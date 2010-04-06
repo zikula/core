@@ -11,7 +11,7 @@
  */
 
 /**
- * pntables for the Workflow
+ * pntables for the Workflow.
  *
  * @return array of table data
  */

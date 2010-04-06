@@ -12,13 +12,14 @@
  */
 
 /**
- * Smarty modifier format an issue date for an atom news feed
+ * Smarty modifier format an issue date for an atom news feed.
  *
  * Example
  *
  *   <!--[$MyVar|updated]-->
  *
- * @param        array    $string     the contents to transform
+ * @param array $string The contents to transform.
+ *
  * @return       string   the updated output
  */
 function smarty_modifier_updated($string)
