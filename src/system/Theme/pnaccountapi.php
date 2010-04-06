@@ -11,11 +11,11 @@
  */
 
 /**
- * Return an array of items to show in the your account panel
+ * Return an array of items to show in the your account panel.
  *
  * @return   array   indexed array of items
  */
-function Theme_accountapi_getall($args)
+function Theme_accountapi_getall()
 {
     $items = array();
 

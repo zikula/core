@@ -11,8 +11,8 @@
  */
 
 /**
- * This function is called internally by the core whenever the module is
- * loaded.  It adds in the information
+ * Internal Groups module function.
+ * This function is called internally by the core whenever the module is loaded.  It adds in the information.
  */
 function Groups_pntables()
 {

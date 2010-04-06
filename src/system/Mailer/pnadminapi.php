@@ -12,7 +12,7 @@
  */
 
 /**
- * get available admin panel links
+ * Get available admin panel links.
  *
  * @author Mark West
  * @return array array of admin links
