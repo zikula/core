@@ -17,9 +17,9 @@
  */
 class DBUtil
 {
-	/**
-	 * Constructor of DBUtil class.
-	 */
+    /**
+     * Constructor of DBUtil class.
+     */
     private function __construct()
     {
     }
@@ -36,13 +36,13 @@ class DBUtil
         return ($tablename != 'session_info' && !defined('_ZINSTALLVER') && DBConnectionStack::isDefaultConnection() && pnConfigGetVar('OBJECT_CACHE_ENABLE'));
     }
 
-	/**
-	 * Get the cache.
-	 *
-	 * @param string $table Table name.
-	 * @param string $key Key choise.
-	 *
-	 */
+    /**
+     * Get the cache.
+     *
+     * @param string $table Table name.
+     * @param string $key Key choise.
+     *
+     */
     public static function getCache($table, $key)
     {
         if (self::hasObjectCache($table)) {
@@ -55,14 +55,14 @@ class DBUtil
         return false;
     }
 
-	/**
-	 * Set the cache.
-	 *
-	 * @param string $table Table name.
-	 * @param string $key Key choise.
-	 * @param string $fields Fields to cache.
-	 *
-	 */
+    /**
+     * Set the cache.
+     *
+     * @param string $table Table name.
+     * @param string $key Key choise.
+     * @param string $fields Fields to cache.
+     *
+     */
     public static function setCache($table, $key, $fields)
     {
         if (self::hasObjectCache($table)) {
@@ -73,12 +73,12 @@ class DBUtil
         }
     }
 
-	/**
-	 * Flush the cache.
-	 *
-	 * @param string $table Table name.
-	 *
-	 */
+    /**
+     * Flush the cache.
+     *
+     * @param string $table Table name.
+     *
+     */
     public static function flushCache($table)
     {
         if (self::hasObjectCache($table)) {
@@ -160,7 +160,7 @@ class DBUtil
      */
     public static function getTables()
     {
-		return pnDBGetTables();
+        return pnDBGetTables();
     }
 
     /**
@@ -174,8 +174,8 @@ class DBUtil
      * If $table param is set and there is a set of options configured
      * for this table via pntables.php then we return these options,
      * the default options are returned otherwise
-	 *
-	 * @return array Return the table options.
+     *
+     * @return array Return the table options.
      */
     public static function getTableOptions($table = '')
     {
@@ -206,7 +206,7 @@ class DBUtil
      * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
      * @param boolean $exitOnError  Whether to exit on error (default=true) (optional).
      * @param boolean $verbose Whether to be verbose (default=true) (optional).
-	 *
+     *
      * @return mixed The result set of the successfully executed query or false on error.
      */
     public static function executeSQL($sql, $limitOffset = -1, $limitNumRows = -1, $exitOnError = true, $verbose = true)
@@ -241,6 +241,7 @@ class DBUtil
                     // TODO D [use normal Select instead of showing an error message if paging is desired for something different than SELECTs] (Guite)
                     throw new Exception(__('Paging parameters can only be used for SELECT statements'));
                 }
+
                 if ($limitOffset > 0) {
                     $sql = $connection->modifyLimitQuery($sql, $limitNumRows, $limitOffset);
                 } else {
@@ -299,12 +300,12 @@ class DBUtil
         return false;
     }
 
-	/**
+    /**
      * Same as Api function but without AS aliasing.
      *
      * @param string $table The treated table reference.
      * @param array $columnArray The columns to marshall into the resulting object (optional) (default=null).
-	 *
+     *
      * @return string The generated sql string.
      */
     public static function _getAllColumns($table, $columnArray = null)
@@ -333,7 +334,7 @@ class DBUtil
      * @param string $table The treated table reference.
      * @param string $tablealias The SQL table alias to use in the SQL statement.
      * @param array $columnArray The columns to marshall into the resulting object (optional) (default=null).
-	 *
+     *
      * @return The generated sql string
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
@@ -370,7 +371,7 @@ class DBUtil
      *
      * @param string $table The treated table reference.
      * @param array $columnArray The columns to marshall into the resulting object (optional) (default=null).
-	 *
+     *
      * @return The column array for the given table.
      */
     public static function getColumnsArray($table, $columnArray = null)
@@ -408,7 +409,7 @@ class DBUtil
      *
      * @param array $columns    Column array.
      * @param array $joinInfo   JoinInfo array.
-	 *
+     *
      * @return array            Expanded column array.
      * @deprecated
      * @see    Doctrine_Record
@@ -452,7 +453,7 @@ class DBUtil
      * @param string $oldcolumn The existing name of the column (full database name of column).
      * @param string $newcolumn The new name of the column from the pntables array.
      * @param string $fields Field specific options (optional) (default=null).
-	 *
+     *
      * @return boolean
      */
     public static function renameColumn($table, $oldcolumn, $newcolumn, $fields = null)
@@ -489,7 +490,7 @@ class DBUtil
      *
      * @param string $table The treated table reference.
      * @param array $fields Fields to add from the table.
-	 *
+     *
      * @return  boolean
      */
     public static function addColumn($table, array $fields)
@@ -528,7 +529,7 @@ class DBUtil
      *
      * @param string $table The treated table reference.
      * @param array $fields Fields to drop from the table.
-	 *
+     *
      * @return boolean
      */
     public static function dropColumn($table, $fields)
@@ -557,13 +558,13 @@ class DBUtil
         return true;
     }
 
-	/**
+    /**
      * Format value for use in SQL statement.
      *
      * Special handling for integers and booleans (the last is required for MySQL 5 strict mode).
      *
      * @param mixed $value The value to format.
-	 *
+     *
      * @return string string ready to add to SQL statement.
      */
     public static function _formatForStore($value)
@@ -592,7 +593,7 @@ class DBUtil
      * @deprecated
 	 * @see Doctrine_Record::save()
      * @deprecated
-	 * @see Doctrine_Table
+     * @see Doctrine_Table
      */
     public static function insertObject(array &$object, $table, $idfield = 'id', $preserve = false, $force = false)
     {
@@ -690,15 +691,16 @@ class DBUtil
     }
 
     /**
-     * Generate and execute an update SQL statement for the given object
+     * Generate and execute an update SQL statement for the given object.
      *
-     * @param object        The object we wish to update
-     * @param table         The treated table reference
-     * @param where         The where clause (optional) (default='')
-     * @param idfield       The column which stores the primary key (optional) (default='id')
-     * @param force         whether or not to insert empty values as NULL (optional) (default=false)
-     * @param updateid      Allow primary key to be updated (default=false)
-     * @return The result set from the update operation
+     * @param array $object     The object we wish to update.
+     * @param string $table     The treated table reference.
+     * @param string $where     The where clause (optional) (default='').
+     * @param string $idfield   The column which stores the primary key (optional) (default='id').
+     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false).
+     * @param boolean $updateid Allow primary key to be updated (default=false).
+     *
+     * @return integer The result set from the update operation
      * @deprecated
      * @see Doctrine_Record::save()
      */
@@ -786,14 +788,16 @@ class DBUtil
     }
 
     /**
-     * Loop through the array and feed it to self::insertObject()
+     * Loop through the array and feed it to self::insertObject().
      *
-     * @param objects       The objectArray we wish to insert
-     * @param table         The treated table reference
-     * @param idfield       The column which stores the primary key (optional) (default='id')
-     * @param preserve      whether or not to preserve existing/set standard fields (optional) (default=false)
-     * @param force         whether or not to insert empty values as NULL (optional) (default=false)
-     * @return The result set from the last insert operation. The objects are updated with the newly generated ID.
+     * @param array $objects    The objectArray we wish to insert.
+     * @param string $table     The treated table reference.
+     * @param string $idfield   The column which stores the primary key (optional) (default='id').
+     * @param boolean $preserve Whether or not to preserve existing/set standard fields (optional) (default=false).
+     * @param boolean $force    Whether or not to insert empty values as NULL (optional) (default=false).
+     *
+     * @return integer The result set from the last insert operation. The objects are updated with the newly generated ID.
+     *
      * @deprecated
      * @see Doctrine_Table
      */
@@ -811,13 +815,14 @@ class DBUtil
     }
 
     /**
-     * Loop through the array and feed it to self::updateObject()
+     * Loop through the array and feed it to self::updateObject().
      *
-     * @param objects       The objectArray we wish to insert
-     * @param table         The treated table reference
-     * @param idfield       The column which stores the primary key
-     * @param force         whether or not to insert empty values as NULL
-     * @return The result set from the last update operation.
+     * @param array $objects    The objectArray we wish to insert.
+     * @param string $table     The treated table reference.
+     * @param string $idfield   The column which stores the primary key.
+     * @param boolean $force    Whether or not to insert empty values as NULL.
+     *
+     * @return integer The result set from the last update operation.
      */
     public static function updateObjectArray(array &$objects, $table, $idfield = 'id', $force = false)
     {
@@ -834,16 +839,17 @@ class DBUtil
     }
 
     /**
-     * Post-processing after this object has beens saved. This routine
-     * is responsible for writing the 'extra' data (attributes, categories,
+     * Post-processing after this object has beens saved. 
+     * This routine is responsible for writing the 'extra' data (attributes, categories,
      * and meta data) to the database and the optionally creating an
-     * entry in the object-log table
+     * entry in the object-log table.
      *
-     * @param  object  the object wehave just saved
-     * @param  table   the treated table reference
-     * @param  idfield the id column for the object/table combination
-     * @param  update whether or not this was an update (default=false, signifies operation was an insert).
-     * @return the object
+     * @param mixed $object     The object wehave just saved.
+     * @param string $table     The treated table reference.
+     * @param integer $idfield  The id column for the object/table combination.
+     * @param boolean $update   Whether or not this was an update (default=false, signifies operation was an insert).
+     *
+     * @return mixed The object.
      * @deprecated
      * @see CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
      */
@@ -916,14 +922,15 @@ class DBUtil
 
 
     /**
-     * Increment a field by the given increment
+     * Increment a field by the given increment.
      *
-     * @param table         The treated table reference
-     * @param incfield      The column which stores the field to increment
-     * @param id            The ID value of the object holding the field we wish to increment
-     * @param idfield       The idfield to use (optional) (default='id')
-     * @param inccount      The amount by which to increment the field (optional) (default=1);
-     * @return The result from the increment operation
+     * @param string $table     The treated table reference.
+     * @param string $incfield  The column which stores the field to increment.
+     * @param integer $id       The ID value of the object holding the field we wish to increment.
+     * @param string $idfield   The idfield to use (optional) (default='id').
+     * @param integer $inccount The amount by which to increment the field (optional) (default=1).
+     *
+     * @return The result from the increment operation.
      */
     public static function incrementObjectFieldByID($table, $incfield, $id, $idfield = 'id', $inccount = 1)
     {
@@ -948,14 +955,15 @@ class DBUtil
     }
 
     /**
-     * Decrement a field by the given decrement
+     * Decrement a field by the given decrement.
      *
-     * @param table         The treated table reference
-     * @param decfield      The column which stores the field to increment
-     * @param id            The ID value of the object holding the field we wish to increment
-     * @param idfield       The idfield to use (optional) (default='id')
-     * @param deccount      The amount by which to decrement the field (optional) (default=1);
-     * @return The result from the decrement operation
+     * @param string $table     The treated table reference.
+     * @param string $decfield  The column which stores the field to decrement.
+     * @param integer $id       The ID value of the object holding the field we wish to increment.
+     * @param string $idfield   The idfield to use (optional) (default='id').
+     * @param integer $deccount The amount by which to decrement the field (optional) (default=1).
+     *
+     * @return integer The result from the decrement operation.
      */
     public static function decrementObjectFieldByID($table, $decfield, $id, $idfield = 'id', $deccount = 1)
     {
@@ -963,13 +971,14 @@ class DBUtil
     }
 
     /**
-     * Generate and execute a delete SQL statement for the given object
+     * Generate and execute a delete SQL statement for the given object.
      *
-     * @param object       The object we wish to delete
-     * @param table        The treated table reference
-     * @param where        The where clause to use (optional) (default='')
-     * @param idfield      The column which contains the ID field (optional) (default='id')
-     * @return The result from the delete operation
+     * @param array $object     The object we wish to delete.
+     * @param string $table     The treated table reference.
+     * @param string $where     The where clause to use (optional) (default='').
+     * @param string $idfield   The column which contains the ID field (optional) (default='id').
+     *
+     * @return The result from the delete operation.
      * @deprecated
      * @see CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
      */
@@ -1066,12 +1075,13 @@ class DBUtil
 
 
     /**
-     * generate and execute a delete SQL statement
+     * Generate and execute a delete SQL statement.
      *
-     * @param array $keyarray
-     * @param mixed $table
-     * @param string $field
-     * @return unknown
+     * @param array $keyarray The KeyArray todelete.
+     * @param mixed $table The treated table reference.
+     * @param string $field The field to use.
+     *
+     * @return mixed
      */
     public static function deleteObjectsFromKeyArray(array $keyarray, $table, $field = 'id')
     {
@@ -1101,10 +1111,11 @@ class DBUtil
     /**
      * Delete an object by its ID.
      *
-     * @param table       The treated table reference
-     * @param id          The ID of the object to delete
-     * @param idFieldName The column which contains the ID field (optional) (default='id')
-     * @return The result from the delete operation
+     * @param string $table         The treated table reference.
+     * @param integer $id           The ID of the object to delete.
+     * @param string $idFieldName   The column which contains the ID field (optional) (default='id').
+     *
+     * @return integer The result from the delete operation
      */
     public static function deleteObjectByID($table, $id, $idFieldName = 'id')
     {
@@ -1114,11 +1125,12 @@ class DBUtil
     }
 
     /**
-     * Delete (an) object(s) via a where clause
+     * Delete (an) object(s) via a where clause.
      *
-     * @param table        The treated table reference
-     * @param where        The where-clause to use
-     * @return The result from the delete operation
+     * @param string $table The treated table reference.
+     * @param string $where The where-clause to use.
+     *
+     * @return mixed The result from the delete operation.
      */
     public static function deleteWhere($table, $where)
     {
@@ -1129,11 +1141,12 @@ class DBUtil
         return self::executeSQL($sql);
     }
 
-/**
-     * Convenience function to ensure that the where-clause starts with "WHERE"
+    /**
+     * Convenience function to ensure that the where-clause starts with "WHERE".
      *
-     * @param where        The original where clause
-     * @return The value held by the global counter
+     * @param string $where The original where clause.
+     *
+     * @return string The value held by the global counter.
      */
     public static function _checkWhereClause($where)
     {
@@ -1153,10 +1166,10 @@ class DBUtil
     /**
      * Convenience function to ensure that the order-by-clause starts with "ORDER BY".
      *
-     * @param orderby    The original order-by clause.
-     * @param tableName  The table reference, only used for oracle quote determination (optional) (default=null).
+     * @param string $orderby   The original order-by clause.
+     * @param string $table     The table reference, only used for oracle quote determination (optional) (default=null).
      *
-     * @return The (potentially) altered order-by-clause.
+     * @return string The (potentially) altered order-by-clause.
      */
     public static function _checkOrderByClause($orderby, $table = null)
     {
@@ -1217,12 +1230,15 @@ class DBUtil
     }
 
     /**
-     * Convenience function to ensure that the field to be used as ORDER BY
+     * Convenience function.
+     *
+     * Ensures that the field to be used as ORDER BY
      * is not a CLOB/BLOB when using Oracle
      *
-     * @param table     The treated table reference
-     * @param field     The field name to be used for order by
-     * @return string   the order-by-clause to be used, may be ''
+     * @param string $table The treated table reference.
+     * @param string $field The field name to be used for order by.
+     *
+     * @return string The order-by-clause to be used, may be ''.
      */
     public static function _checkOrderByField($table = '', $field = '')
     {
@@ -1256,13 +1272,14 @@ class DBUtil
     }
 
     /**
-     * Build a basic select clause for the specified table with the specified where and orderBy clause
+     * Build a basic select clause for the specified table with the specified where and orderBy clause.
      *
-     * @param table          The treated table reference
-     * @param where          The original where clause (optional) (default='')
-     * @param orderBy        The original order-by clause (optional) (default='')
-     * @param columnArray    The columns to marshall into the resulting object (optional) (default=null)
-     * @return Nothing, the order-by-clause is altered in place
+     * @param string $table         The treated table reference.
+     * @param string $where         The original where clause (optional) (default='').
+     * @param string $orderBy       The original order-by clause (optional) (default='').
+     * @param array $columnArray    The columns to marshall into the resulting object (optional) (default=null).
+     *
+     * @return Nothing, the order-by-clause is altered in place.
      */
     public static function _getSelectAllColumnsFrom($table, $where = '', $orderBy = '', $columnArray = null)
     {
@@ -1283,12 +1300,13 @@ class DBUtil
     }
 
     /**
-     * Set the gobal object fetch counter to the specified value
+     * Set the gobal object fetch counter to the specified value.
      *
-     * This function is workaround for PHP4 limitations when passing default arguments by reference
+     * This function is workaround for PHP4 limitations when passing default arguments by reference.
      *
-     * @param count        The value to set the object marhsall counter to
-     * @return Nothing, the global variable is assigned counter
+     * @param integer $count The value to set the object marhsall counter to.
+     *
+     * @return void Nothing, the global variable is assigned counter.
      */
     public static function _setFetchedObjectCount($count = 0)
     {
@@ -1297,11 +1315,11 @@ class DBUtil
     }
 
     /**
-     * Get the gobal object fetch counter
+     * Get the gobal object fetch counter.
      *
-     * This function is workaround for PHP4 limitations when passing default arguments by reference
+     * This function is workaround for PHP4 limitations when passing default arguments by reference.
      *
-     * @return The value held by the global
+     * @return integer The value held by the global.
      * @deprecated
      */
     public static function _getFetchedObjectCount()
@@ -1315,13 +1333,14 @@ class DBUtil
     }
 
     /**
-     * Transform a result set into an array of field values
+     * Transform a result set into an array of field values.
      *
-     * @param result          The result set we wish to marshall
-     * @param closeResultSet  whether or not to close the supplied result set (optional) (default=true)
-     * @param assocKey        The key field to use to build the associative index (optional) (default='')
-     * @param clean            whether or not to clean up the marshalled data (optional) (default=true)
-     * @return The resulting field array
+     * @param mixed $result             The result set we wish to marshall.
+     * @param boolean $closeResultSet   Whether or not to close the supplied result set (optional) (default=true).
+     * @param string $assocKey          The key field to use to build the associative index (optional) (default='').
+     * @param boolean $clean            Whether or not to clean up the marshalled data (optional) (default=true).
+     *
+     * @return The resulting field array.
      */
     public static function marshallFieldArray($result, $closeResultSet = true, $assocKey = '', $clean = true)
     {
@@ -1357,15 +1376,16 @@ class DBUtil
     }
 
     /**
-     * Transform a SQL query result set into an object/array, optionally applying an permission filter
+     * Transform a SQL query result set into an object/array, optionally applying an permission filter.
      *
-     * @param result           The result set we wish to marshall
-     * @param objectColumns    The column array to map onto the result set
-     * @param closeResultSet   whether or not to close the supplied result set (optional) (default=true)
-     * @param assocKey         The key field to use to build the associative index (optional) (default='')
-     * @param clean            whether or not to clean up the marshalled data (optional) (default=true)
-     * @param permissionFilter The permission structure to use for permission checking (optional) (default=null)
-     * @return The marshalled array of objects
+     * @param mixed $result           The result set we wish to marshall.
+     * @param array $objectColumns    The column array to map onto the result set.
+     * @param boolean $closeResultSet   Whether or not to close the supplied result set (optional) (default=true).
+     * @param string $assocKey         The key field to use to build the associative index (optional) (default='').
+     * @param boolean $clean            Whether or not to clean up the marshalled data (optional) (default=true).
+     * @param string $permissionFilter The permission structure to use for permission checking (optional) (default=null).
+     *
+     * @return array The marshalled array of objects.
      */
     public static function marshallObjects($result, $objectColumns, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null)
     {
@@ -1489,11 +1509,14 @@ class DBUtil
     }
 
     /**
-     * Execute SQL select statement and return the value of the first column in the first row
+     * Execute SQL select statement and return the value of the first column in the first row.
      *
      * Mostly useful for places where you want to do a "select count(*)" or similar scalar selection.
      *
-     * @return mixed selected value
+     * @param string $sql Sql string.
+     * @param boolean $exitOnError Exit on error.
+     *
+     * @return mixed selected value.
      */
     public static function selectScalar($sql, $exitOnError = true)
     {
@@ -1523,13 +1546,13 @@ class DBUtil
     }
 
     /**
-     * Select & return a field
+     * Select & return a field.
      *
-     * @param table         The treated table reference
-     * @param field         The name of the field we wish to marshall
-     * @param where         The where clause (optional) (default='');
+     * @param string $table The treated table reference.
+     * @param string $field The name of the field we wish to marshall.
+     * @param string $where The where clause (optional) (default='').
      *
-     * @return The resulting field array
+     * @return The resulting field array.
      */
     public static function selectField($table, $field, $where = '')
     {
