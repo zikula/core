@@ -273,7 +273,7 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue(':::0:::'));
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals($perm,$this->FileSystem_Sftp->chmod($perm,2));
-
+        
         $stub = $this->getMock('FileSystem_Facade_Sftp');
         $stub->expects($this->any())
              ->method('realpath')
@@ -386,6 +386,22 @@ class FileSystem_SftpTest extends PHPUnit_Framework_TestCase
         $this->FileSystem_Sftp->setDriver($stub);
         $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
 
+        $perm = 'b747';
+        $stub = $this->getMock('FileSystem_Facade_Sftp');
+        $stub->expects($this->any())
+             ->method('realpath')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShell')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellWrite')
+             ->will($this->returnValue(true));
+        $stub->expects($this->any())
+             ->method('sshShellRead')
+             ->will($this->returnValue(':::0:::'));
+        $this->FileSystem_Sftp->setDriver($stub);
+        $this->assertEquals(false,$this->FileSystem_Sftp->chmod($perm,2));
     }
 
     /**

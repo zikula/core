@@ -45,7 +45,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
      *
      * @var string
      */
-    private $_terminal = "xterm";
+    private $_terminal = 'xterm';
 
     /**
      * Standard function for creating a SFTP connection and logging in.
@@ -61,12 +61,12 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
     {
         $this->errorHandler->start();
         $methods = array();
-        if ($this->configuration->getAuthType() !== "pass") {
+        if ($this->configuration->getAuthType() !== 'pass') {
             $methods['hostkey'] = $this->configuration->getAuthType();
         }
         if (($this->_ssh_resource = $this->driver->connect($this->configuration->getHost(), $this->configuration->getPort(), $methods)) !== false) {
             //connected
-            if ($this->configuration->getAuthType() !== "pass") {
+            if ($this->configuration->getAuthType() !== 'pass') {
                 $auth = $this->driver->authPubkey(
                     $this->_ssh_resource,
                     $this->configuration->getUser(),
@@ -133,7 +133,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
      */
     public function fput($stream, $remote)
     {
-        if ($remote == "" || substr($remote, 0, 1) !== "/") {
+        if ($remote == '' || substr($remote, 0, 1) !== '/') {
             $remote = $this->_dir . '/' . $remote;
         }
         $this->errorHandler->start();
@@ -180,7 +180,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
      */
     public function fget($remote)
     {
-        if ($remote == "" || substr($remote, 0, 1) !== "/") {
+        if ($remote == '' || substr($remote, 0, 1) !== '/') {
             $remote = $this->_dir . '/' . $remote;
         }
         $this->errorHandler->start();
@@ -208,7 +208,8 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
             $file = $this->_dir . '/' . $file;
         }
         if (!is_numeric($perm)) { //make sure that $perm is numeric, this also stops injection
-        	$this->errorHandler->register('permission "' . $perm . '" must be numeric.')
+        	$this->errorHandler->register('permission "' . $perm . '" must be numeric.');
+        	return false;
         }
         $perm = intval($perm);
 
@@ -233,7 +234,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
         if (sizeof($matches) > 0) {
             switch (intval(str_replace(':','',$matches[0]))) {
                 case 1:
-                    $this->errorHandler->register("Chmod returned with Code 1: failure.",0);
+                    $this->errorHandler->register('Chmod returned with Code 1: failure.',0);
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -246,7 +247,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
         }
         //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
-        $this->errorHandler->register("Did not get acknowledgment from host, chmod may or may not have succeeded.", 0);
+        $this->errorHandler->register('Did not get acknowledgment from host, chmod may or may not have succeeded.', 0);
         return false;
     }
 
@@ -257,7 +258,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
      *
      * @return array|boolean An array of the contents of $dir or false if fail.
      */
-    public function ls($dir = "")
+    public function ls($dir = '')
     {
         if ($dir == '' || substr($dir, 0, 1) !== '/') {
             $dir = $this->_dir . '/' . $dir;
@@ -266,7 +267,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
             $handle = $this->driver->sftpOpenDir($this->_resource, $dir);
             $files = array();
             while (false !== ($file = $this->driver->sftpReadDir($handle))) {
-                if (substr("$file", 0, 1) != ".") {
+                if (substr("$file", 0, 1) != '.') {
                     $files[] = $file;
                 }
             }
@@ -319,10 +320,10 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
     public function mv($sourcepath, $destpath)
     {
         $this->errorHandler->start();
-        if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
+        if ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/') {
             $sourcepath = $this->_dir . '/' . $sourcepath;
         }
-        if ($destpath == "" || substr($destpath, 0, 1) !== "/") {
+        if ($destpath == '' || substr($destpath, 0, 1) !== '/') {
             $destpath = $this->_dir . '/' . $destpath;
         }
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
@@ -348,10 +349,10 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
     public function cp($sourcepath, $destpath)
     {
         $this->errorHandler->start();
-        if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
+        if ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/') {
             $sourcepath = $this->_dir . '/' . $sourcepath;
         }
-        if ($destpath == "" || substr($destpath, 0, 1) !== "/") {
+        if ($destpath == '' || substr($destpath, 0, 1) !== '/') {
             $destpath = $this->_dir . '/' . $destpath;
         }
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) === false) {
@@ -375,7 +376,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
         if (sizeof($matches) > 0) {
             switch (str_replace(':','',$matches[0])) {
                 case 1:
-                    $this->errorHandler->register("cp returned with Code 1: failure.",0);
+                    $this->errorHandler->register('cp returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
                     return false;
                 case 0:
@@ -387,7 +388,7 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
             }
         } //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
-        $this->errorHandler->register("Did not get acknowledgment from host, cp may or may not have succeeded.", 0);
+        $this->errorHandler->register('Did not get acknowledgment from host, cp may or may not have succeeded.', 0);
         return false;
     }
 
@@ -400,10 +401,10 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
      */
     public function rm($sourcepath)
     {
-        if ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/") {
+        if ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/') {
             $sourcepath = $this->_dir . '/' . $sourcepath;
         }
-        //$sourcepath = ($sourcepath == "" || substr($sourcepath, 0, 1) !== "/" ? $this->_dir . '/' . $sourcepath : $sourcepath);
+        //$sourcepath = ($sourcepath == '' || substr($sourcepath, 0, 1) !== '/' ? $this->_dir . '/' . $sourcepath : $sourcepath);
         $this->errorHandler->start();
         //check the file actauly exists.
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {

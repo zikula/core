@@ -11,7 +11,7 @@ require_once dirname(__FILE__) . '/Configuration/FileSystem_Configuration_LocalT
 require_once dirname(__FILE__) . '/FileSystem_FtpTest.php';
 require_once dirname(__FILE__) . '/FileSystem_SftpTest.php';
 require_once dirname(__FILE__) . '/FileSystem_LocalTest.php';
-require_once dirname(__FILE__) . '/FileSystem_DriverTest.php';
+require_once dirname(__FILE__) . '/FileSystem_AbstractDriverTest.php';
 
 
 class I18nAllTests
@@ -31,7 +31,7 @@ class I18nAllTests
         $suite->addTestSuite('FileSystem_FtpTest');
         $suite->addTestSuite('FileSystem_SftpTest');
         $suite->addTestSuite('FileSystem_LocalTest');
-        $suite->addTestSuite('FileSystem_DriverTest');
+        $suite->addTestSuite('FileSystem_AbstractDriverTest');
         return $suite;
     }
 }
