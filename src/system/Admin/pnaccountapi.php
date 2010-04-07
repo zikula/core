@@ -15,7 +15,7 @@
  *
  * @return   array   indexed array of items.
  */
-function admin_accountapi_getall()
+function admin_accountapi_getall($args)
 {
     $items = array();
 

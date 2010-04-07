@@ -15,7 +15,7 @@
  *
  * @return   array   indexed array of items
  */
-function Theme_accountapi_getall()
+function Theme_accountapi_getall($args)
 {
     $items = array();
 
