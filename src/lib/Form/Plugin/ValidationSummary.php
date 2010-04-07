@@ -33,7 +33,8 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
         $html = '';
         foreach ($validators as $validator) {
             if (!$validator->isValid) {
-                $html .= "<li><label for=\"$validator->id\">" . DataUtil::formatForDisplay($validator->myLabel) . ': ' . DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
+                $html .= "<li><label for=\"$validator->id\">" . DataUtil::formatForDisplay($validator->myLabel) . ': ';
+		$html .=  DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
             }
         }
 

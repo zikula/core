@@ -69,11 +69,29 @@ header('Expires: ' . gmdate("D, d M Y H:i:s", time() + $dataArray['lifetime']) .
 echo $dataArray['contents'];
 exit;
 
+/**
+ * Check if a string is serialized.
+ *
+ * This function check if a string is serialized.
+ *
+ * @param string $string to check.
+ *
+ * @return true if it's serialized, false if it's not.
+ */ 
 function is_serialized($string)
 {
     return ($string == 'b:0;' ? true : (bool) @unserialize($string));
 }
 
+/**
+ * Un-quotes a quoted string.
+ *
+ * This function Un-quotes a quoted string.
+ *
+ * @param string $value to un-quotes.
+ *
+ * @return return the un-quoted string.
+ */
 function pnStripslashes(&$value)
 {
     if (empty($value))
@@ -86,11 +104,25 @@ function pnStripslashes(&$value)
     }
 }
 
+/**
+ * Class SecurityUtil fake
+ *
+ * This is a  fake SecurityUtil class
+ *
+ * @package zikula
+ */
 class SecurityUtil
 {
+
+/**
+ * fake checkPermission function.
+ *
+ * This is a fake function.
+ *
+ * @return return true.
+ */
     function checkPermission()
     {
         return true;
     }
 }
-

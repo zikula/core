@@ -10,10 +10,11 @@
  * @package Zikula_Core
  */
 
-
 /**
- * categories table info
-*/
+ * Populate pntables array for Categories module.
+ *
+ * @return array Array of informations related to the Categories module tables.
+ */
 function Categories_pntables()
 {
     // Initialise table array
@@ -42,7 +43,9 @@ function Categories_pntables()
 
     $pathType = 'X';
     $dbType = DBConnectionStack::getConnectionDBType();
-    if ($dbType == 'mssql') { // mssql can't sort on fields of type text
+
+   // mssql can't sort on fields of type text
+    if ($dbType == 'mssql') {
         $pathType = 'C(8000)';
     }
 

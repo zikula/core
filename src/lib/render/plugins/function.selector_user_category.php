@@ -20,7 +20,12 @@
  * Example
  * <!--[selector_user_category cid="1" assign="category"]-->
  *
+ * @param array $params All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
+ *
+ * @return string HTML code of the selector.
  */
+
 function smarty_function_selector_user_category($params, &$smarty)
 {
     $field            = isset($params['field'])            ? $params['field']            : 'id';

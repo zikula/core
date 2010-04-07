@@ -11,7 +11,7 @@
  */
 
 /**
- * get available admin panel links
+ * Get available admin panel links.
  *
  * @return array array of admin links
  */
@@ -30,9 +30,11 @@ function Settings_adminapi_getlinks()
 }
 
 /**
- * clear all compiled and cache directories
+ * Clear all compiled and cache directories.
  *
- * This function simply calls the theme and pnrender modules to refresh the entire site
+ * This function simply calls the theme and pnrender modules to refresh the entire site.
+ *
+ * @return boolean true.
  */
 function settings_adminapi_clearallcompiledcaches()
 {

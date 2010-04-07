@@ -1,10 +1,19 @@
 <?php
 
+/**
+ * Display an HTML progressbar.
+ *
+ * @param array $params All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
+ *
+ * @return string HTML code of the progressbar.
+ */
+
 function smarty_function_progress($params, &$smarty)
 {
     if (!isset($params['percent'])) {
         $percent = 0;
-    }else{
+    } else {
         $percent = $params['percent'];
     }
 

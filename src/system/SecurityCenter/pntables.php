@@ -7,12 +7,12 @@
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage SecurityCenter
-*/
+ */
 
 /**
- * This function is called internally by the core whenever the module is
- * loaded.  It adds in the information
- * @return array pntables array
+ * Populate pntables array for securitycenter module.
+ *
+ * @return array pntables array.
  */
 function securitycenter_pntables()
 {
