@@ -13,18 +13,21 @@
  */
 
 /**
- * DBUtil
+ * DBUtil is the database abstraction class of Zikula.
  */
 class DBUtil
 {
+	/**
+	 * Constructor of DBUtil class.
+	 */
     private function __construct()
     {
     }
 
     /**
-     * Check whether the object cache should be used for a specific query/operation
+     * Check whether the object cache should be used for a specific query/operation.
      *
-     * @param tablename    The Zikula tablename
+     * @param string $tablename The Zikula tablename.
      *
      * @return true/false
      */
@@ -33,7 +36,13 @@ class DBUtil
         return ($tablename != 'session_info' && !defined('_ZINSTALLVER') && DBConnectionStack::isDefaultConnection() && pnConfigGetVar('OBJECT_CACHE_ENABLE'));
     }
 
-
+	/**
+	 * Get the cache.
+	 *
+	 * @param string $table Table name.
+	 * @param string $key Key choise.
+	 *
+	 */
     public static function getCache($table, $key)
     {
         if (self::hasObjectCache($table)) {
@@ -46,7 +55,14 @@ class DBUtil
         return false;
     }
 
-
+	/**
+	 * Set the cache.
+	 *
+	 * @param string $table Table name.
+	 * @param string $key Key choise.
+	 * @param string $fields Fields to cache.
+	 *
+	 */
     public static function setCache($table, $key, $fields)
     {
         if (self::hasObjectCache($table)) {
@@ -57,7 +73,12 @@ class DBUtil
         }
     }
 
-
+	/**
+	 * Flush the cache.
+	 *
+	 * @param string $table Table name.
+	 *
+	 */
     public static function flushCache($table)
     {
         if (self::hasObjectCache($table)) {
@@ -68,9 +89,9 @@ class DBUtil
     }
 
     /**
-     * return server information
+     * Return server information.
      *
-     * @return array of server info
+     * @return array Array of server info.
      */
     public static function serverInfo()
     {
@@ -82,10 +103,10 @@ class DBUtil
     }
 
     /**
-     * create database
+     * Create database.
      *
-     * @param  dbname the database name
-     * @param  optionsarray the options array
+     * @param string $dbname The database name.
+     * @param boolean $optionsarray The options array.
      * @return bool
      */
     public static function createDatabase($dbname, $optionsarray = false)
@@ -101,17 +122,16 @@ class DBUtil
             // TODO C [use $optionsarray in DBUtil::createDatabase() for backwards compatability] (Guite)
             $connection->export->createDatabase($dbname);
             return true;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             echo 'Database error: ' . $e->getMessage();
             return false;
         }
     }
 
     /**
-     * get a list of databases available on the server
+     * Get a list of databases available on the server.
      *
-     * @return  array of databases
+     * @return array Array of databases.
      */
     public static function metaDatabases()
     {
@@ -119,12 +139,12 @@ class DBUtil
     }
 
     /**
-     * get a list of tables in the currently connected database
+     * Get a list of tables in the currently connected database.
      *
-     * @param  ttype type of 'tables' to get
-     * @param  showSchema add the schema name to the table
-     * @param  mask mask to apply to return result set
-     * @return  array of tables
+     * @param boolean $ttype Type of 'tables' to get.
+     * @param boolean $showSchema Add the schema name to the table.
+     * @param boolean $mask Mask to apply to return result set.
+     * @return array Array of tables.
      */
     public static function metaTables($ttype = false, $showSchema = false, $mask = false)
     {
@@ -133,27 +153,29 @@ class DBUtil
     }
 
     /**
-     * get a list of database tables
+     * Get a list of database tables.
      *
      * @deprecated
      * @return array array of database tables
      */
     public static function getTables()
     {
-       return pnDBGetTables();
+		return pnDBGetTables();
     }
 
     /**
-     * get a list of dbms specific table options
+     * Get a list of dbms specific table options.
      *
      * For use by ADODB's data dictionary
      * Additional database specific settings can be defined here
      * See ADODB's data dictionary docs for full details
      *
-     * @param $table (optional, string with table name).
+     * @param string $table Optional, string with table name.
      * If $table param is set and there is a set of options configured
      * for this table via pntables.php then we return these options,
      * the default options are returned otherwise
+	 *
+	 * @return array Return the table options.
      */
     public static function getTableOptions($table = '')
     {
@@ -179,13 +201,13 @@ class DBUtil
     /**
      * Execute SQL, check for errors and return result. Uses Doctrine's DBAL to generate DB-portable paging code.
      *
-     * @param sql          The SQL statement to execute
-     * @param limitOffset  The lower limit bound (optional) (default=-1)
-     * @param limitNumRows The upper limit bound (optional) (default=-1)
-     * @param sql          The SQL statement to execute
-     * @param exitOnError  whether to exit on error (default=true) (optional)
-     * @param verbose      whether to be verbose (default=true) (optional)
-     * @return mixed The result set of the successfully executed query or false on error
+     * @param string $sql The SQL statement to execute.
+     * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
+     * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
+     * @param boolean $exitOnError  Whether to exit on error (default=true) (optional).
+     * @param boolean $verbose Whether to be verbose (default=true) (optional).
+	 *
+     * @return mixed The result set of the successfully executed query or false on error.
      */
     public static function executeSQL($sql, $limitOffset = -1, $limitNumRows = -1, $exitOnError = true, $verbose = true)
     {
@@ -207,8 +229,7 @@ class DBUtil
             static $timer;
             if (!$timer) {
                 $timer = new Timer();
-            }
-            else {
+            } else {
                 $timer->reset();
             }
         }
@@ -263,8 +284,7 @@ class DBUtil
 
                 return $result;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             die('Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />' . nl2br($e->getTraceAsString()));
         }
 /*
@@ -279,12 +299,13 @@ class DBUtil
         return false;
     }
 
-/**
-     * Same as Api function but without AS aliasing
+	/**
+     * Same as Api function but without AS aliasing.
      *
-     * @param table          The treated table reference
-     * @param columnArray    The columns to marshall into the resulting object (optional) (default=null)
-     * @return The generated sql string
+     * @param string $table The treated table reference.
+     * @param array $columnArray The columns to marshall into the resulting object (optional) (default=null).
+	 *
+     * @return string The generated sql string.
      */
     public static function _getAllColumns($table, $columnArray = null)
     {
@@ -307,11 +328,12 @@ class DBUtil
     }
 
     /**
-     * Same as Api function but returns fully qualified fieldnames
+     * Same as Api function but returns fully qualified fieldnames.
      *
-     * @param table          The treated table reference
-     * @param tablealias     The SQL table alias to use in the SQL statement
-     * @param columnArray    The columns to marshall into the resulting object (optional) (default=null)
+     * @param string $table The treated table reference.
+     * @param string $tablealias The SQL table alias to use in the SQL statement.
+     * @param array $columnArray The columns to marshall into the resulting object (optional) (default=null).
+	 *
      * @return The generated sql string
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
@@ -344,11 +366,12 @@ class DBUtil
     }
 
     /**
-     * return the column array for the given table
+     * Return the column array for the given table.
      *
-     * @param table          The treated table reference
-     * @param columnArray    The columns to marshall into the resulting object (optional) (default=null)
-     * @return The column array for the given table
+     * @param string $table The treated table reference.
+     * @param array $columnArray The columns to marshall into the resulting object (optional) (default=null).
+	 *
+     * @return The column array for the given table.
      */
     public static function getColumnsArray($table, $columnArray = null)
     {
@@ -378,14 +401,15 @@ class DBUtil
     }
 
     /**
-     * Expand column array with JOIN-Fields
+     * Expand column array with JOIN-Fields.
      *
      * This adds all joined fields to the column array by their alias defined in $joinInfo.
      * Also it adds the field's table alias to avoid ambiguous queries.
      *
-     * @param array $columns    Column array
-     * @param array $joinInfo   JoinInfo array
-     * @return array            Expanded column array
+     * @param array $columns    Column array.
+     * @param array $joinInfo   JoinInfo array.
+	 *
+     * @return array            Expanded column array.
      * @deprecated
      * @see    Doctrine_Record
      */
@@ -422,13 +446,14 @@ class DBUtil
     }
 
     /**
-     * rename column(s) in a table
+     * Rename column(s) in a table.
      *
-     * @param  table     The treated table reference
-     * @param  oldcolumn The existing name of the column (full database name of column)
-     * @param  newcolumn The new name of the column from the pntables array
-     * @param  fields    field specific options (optional) (default=null)
-     * @return  bool
+     * @param string $table The treated table reference.
+     * @param string $oldcolumn The existing name of the column (full database name of column).
+     * @param string $newcolumn The new name of the column from the pntables array.
+     * @param string $fields Field specific options (optional) (default=null).
+	 *
+     * @return boolean
      */
     public static function renameColumn($table, $oldcolumn, $newcolumn, $fields = null)
     {
@@ -460,11 +485,12 @@ class DBUtil
     }
 
     /**
-     * add column(s) to a table
+     * Add column(s) to a table.
      *
-     * @param  table     The treated table reference
-     * @param  fields    fields to add from the table
-     * @return  bool
+     * @param string $table The treated table reference.
+     * @param array $fields Fields to add from the table.
+	 *
+     * @return  boolean
      */
     public static function addColumn($table, array $fields)
     {
@@ -489,8 +515,7 @@ class DBUtil
                 $options = self::getTableOptions($table);
                 $connection->export->alterTable($tableName, array('add' => array($field => $options)), true);
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column creation failed.') . ' ' . $e->getMessage());
         }
 
@@ -499,11 +524,12 @@ class DBUtil
     }
 
     /**
-     * drop column(s) from a table
+     * Drop column(s) from a table.
      *
-     * @param  table     The treated table reference
-     * @param  fields    fields to drop from the table
-     * @return  bool
+     * @param string $table The treated table reference.
+     * @param array $fields Fields to drop from the table.
+	 *
+     * @return boolean
      */
     public static function dropColumn($table, $fields)
     {
@@ -523,8 +549,7 @@ class DBUtil
             foreach ($fields as $field) {
                 $connection->export->alterTable($tableName, array('remove' => array($field => array())), true);
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column deletion failed.') . ' ' . $e->getMessage());
         }
 
@@ -532,13 +557,14 @@ class DBUtil
         return true;
     }
 
-/**
-     * Format value for use in SQL statement
+	/**
+     * Format value for use in SQL statement.
      *
-     * Special handling for integers and booleans (the last is required for MySQL 5 strict mode)
+     * Special handling for integers and booleans (the last is required for MySQL 5 strict mode).
      *
-     * @param @value mixed the value to format
-     * @return string string ready to add to SQL statement
+     * @param mixed $value The value to format.
+	 *
+     * @return string string ready to add to SQL statement.
      */
     public static function _formatForStore($value)
     {
@@ -554,18 +580,19 @@ class DBUtil
     }
 
     /**
-     * Generate and execute an insert SQL statement for the given object
+     * Generate and execute an insert SQL statement for the given object.
      *
-     * @param object        The object we wish to insert
-     * @param table         The treated table reference
-     * @param idfield       The column which stores the primary key (optional) (default='id')
-     * @param preserve      whether or not to preserve existing/set standard fields (optional) (default=false)
-     * @param force         whether or not to insert empty values as NULL (optional) (default=false)
+     * @param array $object		The object we wish to insert.
+     * @param string $table		The treated table reference.
+     * @param string $idfield	The column which stores the primary key (optional) (default='id').
+     * @param boolean $preserve	Whether or not to preserve existing/set standard fields (optional) (default=false).
+     * @param boolean $force	Whether or not to insert empty values as NULL (optional) (default=false).
+	 *
      * @return The result set from the update operation. The object is updated with the newly generated ID.
      * @deprecated
-     * @see Doctrine_Record::save()
+	 * @see Doctrine_Record::save()
      * @deprecated
-     * @see Doctrine_Table
+	 * @see Doctrine_Table
      */
     public static function insertObject(array &$object, $table, $idfield = 'id', $preserve = false, $force = false)
     {
@@ -619,15 +646,13 @@ class DBUtil
                     $cArray[] = $columnList[$key];
                     $vArray[] = self::_formatForStore($object[$key]);
                 }
-            }
-            else {
+            } else {
                 if ($key == $idfield) {
                     if ($dbType == 'pgsql') {
                         $cArray[] = $columnList[$key];
                         $vArray[] = 'DEFAULT';
                     }
-                }
-                elseif ($force) {
+                } elseif ($force) {
                     $cArray[] = $columnList[$key];
                     $vArray[] = 'NULL';
                 }
