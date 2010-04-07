@@ -207,6 +207,10 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
         if ($file == '' || substr($file, 0, 1) !== '/') {
             $file = $this->_dir . '/' . $file;
         }
+        if (!is_numeric($perm)) { //make sure that $perm is numeric, this also stops injection
+        	$this->errorHandler->register('permission "' . $perm . '" must be numeric.')
+        }
+        $perm = intval($perm);
 
         if (($file = $this->driver->realpath($this->_resource, $file)) === false) {
             $this->errorHandler->stop(); //source file not found.
