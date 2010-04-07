@@ -18,10 +18,7 @@
  * manually on-demand using the {@link smarty_function_pageaddvar() pageaddvar} plugin.</i>
  *
  * Available attributes:
- *  - modname           (string)    the module name in which to look for the base
- *                                  javascript file for the module (ajax.js); defaults to
- *                                  top level module when used in a block template. <i>Make
- *                                  sure this parameter is set correctly!</i>
+ *  - modname           (string)    the module name in which to look for the base javascript file for the module; defaults to top level module when used in a block template.
  *  - filename          (string)    (optional) filename to load (default ajax.js)
  *  - noscriptaculous   (mixed)     (optional) does not include scriptaculous.js if set
  *  - validation        (mixed)     (optional) includes validation.js if set
@@ -66,12 +63,6 @@ function smarty_function_ajaxheader($params, &$smarty)
 
     // create an empty return
     $return = '';
-
-    $modinfo = pnModGetInfo(pnModGetIDFromName($modname));
-    if ($modinfo == false) {
-        $smarty->trigger_error('pnajaxheader: '.__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($modname)));
-        return false;
-    }
 
     // we always need those
     $scripts = array('javascript/ajax/prototype.js', 'javascript/ajax/pnajax.js');
@@ -123,12 +114,15 @@ function smarty_function_ajaxheader($params, &$smarty)
         }
     }
 
-    $osdirectory = DataUtil::formatForOS($modinfo['directory']);
-    $osfilename  = DataUtil::formatForOS($filename);
+    $modinfo = pnModGetInfo(pnModGetIDFromName($modname));
+    if ($modinfo !== false) {
+        $osdirectory = DataUtil::formatForOS($modinfo['directory']);
+        $osfilename  = DataUtil::formatForOS($filename);
 
-    if (($modinfo['type'] == 3 && file_exists($file = "system/$osdirectory/pnjavascript/$osfilename")) ||
-       ($modinfo['type'] == 2 && file_exists($file = "modules/$osdirectory/pnjavascript/$osfilename"))) {
-        $scripts[] = DataUtil::formatForDisplay($file);
+        if (($modinfo['type'] == 3 && file_exists($file = "system/$osdirectory/pnjavascript/$osfilename")) ||
+           ($modinfo['type'] == 2 && file_exists($file = "modules/$osdirectory/pnjavascript/$osfilename"))) {
+            $scripts[] = DataUtil::formatForDisplay($file);
+        }
     }
 
     if (isset($params['assign'])) {
