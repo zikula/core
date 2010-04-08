@@ -16,9 +16,8 @@ define('_MARKER_NONE',                '&nbsp;&nbsp;');
 define('_REQUIRED_MARKER',            '<span style="font-size:larger;color:blue"><b>*</b></span>');
 define('_VALIDATION_MARKER',          '<span style="font-size:larger;color:red"><b>!</b></span>');
 
-
 /**
- * HTMLUtil
+ * HTMLUtil is a class used to generate specific HTML code
  *
  * @package Zikula_Core
  * @subpackage HTMLUtil
@@ -26,15 +25,15 @@ define('_VALIDATION_MARKER',          '<span style="font-size:larger;color:red">
 class HtmlUtil
 {
     /**
-     * Return the HTML code for the specified date selector input box
+     * Return the HTML code for the specified date selector input box.
      *
-     * @param objectname    The name of the object the field will be placed in
-     * @param htmlname      The html fieldname under which the date value will be submitted
-     * @param dateFormat    The dateformat to use for displaying the chosen date
-     * @param defaultString The String to display before a value has been selected
-     * @param defaultDate   The Date the calendar should to default to
+     * @param string $objectname    The name of the object the field will be placed in.
+     * @param string $htmlname      The html fieldname under which the date value will be submitted.
+     * @param string $dateFormat    The dateformat to use for displaying the chosen date.
+     * @param string $defaultString The String to display before a value has been selected.
+     * @param string $defaultDate   The Date the calendar should to default to.
      *
-     * @return The resulting HTML string
+     * @return The resulting HTML string.
      */
     public static function buildCalendarInputBox($objectname, $htmlname, $dateFormat, $defaultString = '', $defaultDate = '')
     {
@@ -82,20 +81,20 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML for a generic selector
+     * Return the HTML for a generic selector.
      *
-     * @param name           The name of the generated selector (default='countries') (optional)
-     * @param data           The data to build the selector from (default='array()') (optional)
-     * @param selectedValue  The value which is currently selected (default='') (optional)
-     * @param defaultValue   The default value to select (default='') (optional)
-     * @param defaultText    The text for the default value (default='') (optional)
-     * @param allValue       The value to assign for the "All" choice (optional) (default=0)
-     * @param allText        The text to display for the "All" choice (optional) (default='')
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param string  $name          The name of the generated selector (default='countries') (optional).
+     * @param array   $data          The data to build the selector from (default='array()') (optional).
+     * @param string  $selectedValue The value which is currently selected (default='') (optional).
+     * @param string  $defaultValue  The default value to select (default='') (optional).
+     * @param string  $defaultText   The text for the default value (default='') (optional).
+     * @param string  $allValue      The value to assign for the "All" choice (optional) (default=0).
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The generated HTML for the selector
+     * @return The generated HTML for the selector.
      */
     public static function getSelector_Generic($name = 'genericSelector', $data = array(), $selectedValue = null, $defaultValue = null, $defaultText = null, $allValue = null, $allText = null, $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -112,17 +111,17 @@ class HtmlUtil
         $html = "<select name=\"$name\" id=\"$id\" $multipleSize $multiple $submit $disabled>";
 
         if ($defaultText && !$selectedValue) {
-            $sel = ((string) $defaultValue == (string) $selectedValue ? 'selected="selected"' : '');
+            $sel = ((string)$defaultValue == (string) $selectedValue ? 'selected="selected"' : '');
             $html .= "<option value=\"$defaultValue\" $sel>$defaultText</option>";
         }
 
         if ($allText) {
-            $sel = ((string) $allValue == (string) $selectedValue ? 'selected="selected"' : '');
+            $sel = ((string)$allValue == (string) $selectedValue ? 'selected="selected"' : '');
             $html .= "<option value=\"$allValue\" $sel>$allText</option>";
         }
 
         foreach ($data as $k => $v) {
-            $sel = ((string) $selectedValue == (string) $k ? 'selected="selected"' : '');
+            $sel = ((string)$selectedValue == (string) $k ? 'selected="selected"' : '');
             $html .= "<option value=\"$k\" $sel>" . DataUtil::formatForDisplayHTML($v) . '</option>';
         }
 
@@ -212,22 +211,22 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML selector code for the given category hierarchy, maps to CategoryUtil::getSelector_Categories()
+     * Return the HTML selector code for the given category hierarchy, maps to CategoryUtil::getSelector_Categories().
      *
-     * @param cats              The category hierarchy to generate a HTML selector for
-     * @param name              The name of the selector field to generate (optional) (default='category[parent_id]')
-     * @param field             The field value to return (optional) (default='id')
-     * @param selectedValue     The selected category (optional) (default=0)
-     * @param defaultValue      The default value to present to the user (optional) (default=0)
-     * @param defaultText       The default text to present to the user (optional) (default='')
-     * @param allValue          The value to assign for the "All" choice (optional) (default=0)
-     * @param allText           The text to display for the "All" choice (optional) (default='')
-     * @param submit            whether or not to submit the form upon change (optional) (default=false)
-     * @param displayPath       If false, the path is simulated, if true, the full path is shown (optional) (default=false)
-     * @param doReplaceRootCat  Whether or not to replace the root category with a localized string (optional) (default=true)
-     * @param multipleSize      If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1)
+     * @param array  $cats              The category hierarchy to generate a HTML selector for.
+     * @param string  $name             The name of the selector field to generate (optional) (default='category[parent_id]').
+     * @param string  $field            The field value to return (optional) (default='id').
+     * @param integer $selectedValue    The selected category (optional) (default=0).
+     * @param integer $defaultValue     The default value to present to the user (optional) (default=0).
+     * @param string  $defaultText      The default text to present to the user (optional) (default='').
+     * @param integer $allValue         The value to assign for the "All" choice (optional) (default=0).
+     * @param string  $allText          The text to display for the "All" choice (optional) (default='').
+     * @param boolean $submit           Whether or not to submit the form upon change (optional) (default=false).
+     * @param boolean $displayPath      If false, the path is simulated, if true, the full path is shown (optional) (default=false).
+     * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
+     * @param integer $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1).
      *
-     * @return The HTML selector code for the given category hierarchy
+     * @return The HTML selector code for the given category hierarchy.
      */
     public static function getSelector_Categories($cats, $name, $field = 'id', $selectedValue = '0', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1)
     {
@@ -239,15 +238,15 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML code for the values in a given category
+     * Return the HTML code for the values in a given category.
      *
-     * @param categoryPath  The identifying category path
-     * @param values        The values used to populate the defautl states (optional) (default=array())
-     * @param namePrefix    The path/object prefix to apply to the field name (optional) (default='')
-     * @param excludeList   A (string) list of IDs to exclude (optional) (default=null)
-     * @param disabled      whether or not the checkboxes are to be disabled (optional) (default=false)
+     * @param string  $categoryPath The identifying category path.
+     * @param array   $values       The values used to populate the defautl states (optional) (default=array()).
+     * @param string  $namePrefix   The path/object prefix to apply to the field name (optional) (default='').
+     * @param string  $excludeList  A (string) list of IDs to exclude (optional) (default=null).
+     * @param boolean $disabled     Whether or not the checkboxes are to be disabled (optional) (default=false).
      *
-     * @return The resulting dropdown data
+     * @return The resulting dropdown data.
      */
     public static function getCheckboxes_CategoryField($categoryPath, $values = array(), $namePrefix = '', $excludeList = null, $disabled = false)
     {
@@ -365,12 +364,12 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML code for the Yes/No dropdown
+     * Return the HTML code for the Yes/No dropdown.
      *
-     * @param selected    The value which should be selected (default=1) (optional)
-     * @param name        The name of the generated selector (optional)
+     * @param integer $selected    The value which should be selected (default=1) (optional).
+     * @param string $name        The name of the generated selector (optional).
      *
-     * @return The resulting HTML string
+     * @return The resulting HTML string.
      */
     public static function getSelector_YesNo($selected = '1', $name = '')
     {
@@ -386,11 +385,11 @@ class HtmlUtil
     }
 
     /**
-     * Return the localized string for the specified yes/no value
+     * Return the localized string for the specified yes/no value.
      *
-     * @param val        The value for which we wish to obtain the string representation
+     * @param integer $val The value for which we wish to obtain the string representation
      *
-     * @return The string representation for the selected value
+     * @return The string representation for the selected value.
      */
     public static function getSelectorValue_YesNo($val)
     {
@@ -402,11 +401,11 @@ class HtmlUtil
     }
 
     /**
-     * Return the dropdown data for the language selector
+     * Return the dropdown data for the language selector.
      *
-     * @param includeAll     whether or not to include the 'All' choice
+     * @param boolean $includeAll Whether or not to include the 'All' choice.
      *
-     * @return The string representation for the selected value
+     * @return The string representation for the selected value.
      */
     public static function getSelectorData_Language($includeAll = true)
     {
@@ -429,11 +428,11 @@ class HtmlUtil
     }
 
     /**
-     * Return the localized string for the given value
+     * Return the localized string for the given value.
      *
-     * @param value        The currently active/selected value
+     * @param mixed $value The currently active/selected value.
      *
-     * @return The resulting HTML string
+     * @return The resulting HTML string.
      */
     public static function getSelectorValue_Permission($value)
     {
@@ -447,12 +446,12 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML code for the Permission dropdown
+     * Return the HTML code for the Permission dropdown.
      *
-     * @param name           The name of the generated selector (optional) (default='permission')
-     * @param selectedValue  The value which should be selected (optional) (default=2)
+     * @param string  $name           The name of the generated selector (optional) (default='permission').
+     * @param integer $selectedValue  The value which should be selected (optional) (default=2).
      *
-     * @return The resulting HTML string
+     * @return The resulting HTML string.
      */
     public static function getSelector_Permission($name = 'permission', $selectedValue = 'U')
     {
@@ -470,12 +469,12 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML code for the Permission Level dropdown
+     * Return the HTML code for the Permission Level dropdown.
      *
-     * @param name          The name of the generated selector (optional) (default='permission')
-     * @param selectedValue The value which should be selected (optional) (default=2)
+     * @param string $name           The name of the generated selector (optional) (default='permission').
+     * @param integer $selectedValue The value which should be selected (optional) (default=0).
      *
-     * @return The resulting HTML string
+     * @return The resulting HTML string.
      */
     public static function getSelector_PermissionLevel($name = 'permission', $selectedValue = '0')
     {
@@ -488,20 +487,20 @@ class HtmlUtil
     }
 
     /**
-     * Return the html for the PN user group selector
+     * Return the html for the PN user group selector.
      *
-     * @param name           The selector name
-     * @param selectedValue  The currently selected value of the selector (optional) (default=0)
-     * @param defaultValue   The default value of the selector (optional) (default=0)
-     * @param defaultText    The text of the default value (optional) (default='')
-     * @param allValue       The value to assign for the "All" choice (optional) (default=0)
-     * @param allText        The text to display for the "All" choice (optional) (default='')
-     * @param excludeList    A (string) list of IDs to exclude (optional) (default=null)
-     * @param submit         Whether or not to auto-submit the selector (optional) (default=false)
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param string  $name          The selector name.
+     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
+     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
+     * @param string  $defaultText   The text of the default value (optional) (default='').
+     * @param integer $allValue      The value to assign for the "All" choice (optional) (default=0).
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param string  $excludeList   A (string) list of IDs to exclude (optional) (default=null).
+     * @param boolean $submit        Whether or not to auto-submit the selector (optional) (default=false).
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The html for the user group selector
+     * @return The html for the user group selector.
      */
     public static function getSelector_PNGroup($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -521,21 +520,21 @@ class HtmlUtil
     }
 
     /**
-     * Return a PN array strcuture for the PN user dropdown box
+     * Return a PN array strcuture for the PN user dropdown box.
      *
-     * @param name           The selector name
-     * @param gid            The group ID to get users for (optional) (default=null)
-     * @param selectedValue  The currently selected value of the selector (optional) (default=0)
-     * @param defaultValue   The default value of the selector (optional) (default=0)
-     * @param defaultText    The text of the default value (optional) (default='')
-     * @param allValue       The value to assign for the "All" choice (optional) (default='')
-     * @param allText        The text to display for the "All" choice (optional) (default='')
-     * @param excludeList    A (string) list of IDs to exclude (optional) (default=null)
-     * @param submit         Whether or not to auto-submit the selector (optional) (default=false)
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param string  $name          The selector name.
+     * @param integer $gid           The group ID to get users for (optional) (default=null).
+     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
+     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
+     * @param string  $defaultText   The text of the default value (optional) (default='').
+     * @param integer $allValue      The value to assign for the "All" choice (optional) (default='').
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param string  $excludeList   A (string) list of IDs to exclude (optional) (default=null).
+     * @param boolean $submit        Whether or not to auto-submit the selector (optional) (default=false).
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The string for the user group selector
+     * @return The string for the user group selector.
      */
     public static function getSelector_PNUser($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -564,19 +563,19 @@ class HtmlUtil
     }
 
     /**
-     * Return the html for the PNModule selector
+     * Return the html for the PNModule selector.
      *
-     * @param name           The selector name
-     * @param selectedValue  The currently selected value of the selector (optional) (default=0)
-     * @param defaultValue   The default value of the selector (optional) (default=0)
-     * @param defaultText    The text of the default value (optional) (default='')
-     * @param allValue       The value to assign the "All" choice (optional) (default=0)
-     * @param allText        The text to display for the "All" choice (optional) (default='')
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param string  $name          The selector name.
+     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
+     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
+     * @param string  $defaultText   The text of the default value (optional) (default='').
+     * @param integer $allValue      The value to assign the "All" choice (optional) (default=0).
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The string for the user group selector
+     * @return The string for the user group selector.
      */
      public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1)
      {
@@ -594,15 +593,15 @@ class HtmlUtil
      }
 
     /**
-     * Return the HTML for the date day selector
+     * Return the HTML for the date day selector.
      *
-     * @param selectedValue  The value which should be selected (default=0) (optional)
-     * @param name           The name of the generated selector (default='day') (optional)
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param integer $selectedValue The value which should be selected (default=0) (optional).
+     * @param string  $name          The name of the generated selector (default='day') (optional).
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The generated HTML for the selector
+     * @return The generated HTML for the selector.
      */
     public static function getSelector_DatetimeDay($selectedValue = 0, $name = 'day', $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -620,15 +619,15 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML for the date hour selector
+     * Return the HTML for the date hour selector.
      *
-     * @param selectedValue  The value which should be selected (default=0) (optional)
-     * @param name           The name of the generated selector (default='hour') (optional)
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param integer $selectedValue The value which should be selected (default=0) (optional).
+     * @param string  $name          The name of the generated selector (default='hour') (optional).
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The generated HTML for the selector
+     * @return The generated HTML for the selector.
      */
     public static function getSelector_DatetimeHour($selectedValue = 0, $name = 'hour', $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -646,15 +645,15 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML for the date minute selector
+     * Return the HTML for the date minute selector.
      *
-     * @param selectedValue  The value which should be selected (default=0) (optional)
-     * @param name           The name of the generated selector (default='minute') (optional)
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param integer $selectedValue The value which should be selected (default=0) (optional).
+     * @param string  $name          The name of the generated selector (default='minute') (optional).
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The generated HTML for the selector
+     * @return The generated HTML for the selector.
      */
     public static function getSelector_DatetimeMinute($selectedValue = 0, $name = 'minute', $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -672,15 +671,15 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML for the date month selector
+     * Return the HTML for the date month selector.
      *
-     * @param selectedValue  The value which should be selected (default=0) (optional)
-     * @param name           The name of the generated selector (default='month') (optional)
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param integer $selectedValue The value which should be selected (default=0) (optional).
+     * @param string  $name          The name of the generated selector (default='month') (optional).
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The generated HTML for the selector
+     * @return The generated HTML for the selector.
      */
     public static function getSelector_DatetimeMonth ($selected=0, $name='month', $submit=false, $disabled=false, $multipleSize=1, $text=0)
     {
@@ -714,17 +713,17 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML for the date year selector
+     * Return the HTML for the date year selector.
      *
-     * @param selectedValue  The value which should be selected (default=2009) (optional)
-     * @param name           The name of the generated selector (default='year') (optional)
-     * @param first          The start year for the selector (default=2003) (optional)
-     * @param last           The name of the generated selector (default=2007) (optional)
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param integer $selectedValue The value which should be selected (default=2009) (optional).
+     * @param string  $name          The name of the generated selector (default='year') (optional).
+     * @param integer $first         The start year for the selector (default=2003) (optional).
+     * @param integer $last          The name of the generated selector (default=2007) (optional).
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The generated HTML for the selector
+     * @return The generated HTML for the selector.
      */
     public static function getSelector_DatetimeYear($selectedValue = 2009, $name = 'year', $first = 2003, $last = 2008, $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -741,19 +740,19 @@ class HtmlUtil
     }
 
     /**
-     * Return the HTML for the country selector
+     * Return the HTML for the country selector.
      *
-     * @param name           The name of the generated selector (default='countries') (optional)
-     * @param selectedValue  The value which is currently selected (default='') (optional)
-     * @param defaultValue   The default value to select (default='') (optional)
-     * @param defaultText    The text for the default value (default='') (optional)
-     * @param allValue       The value to assign for the "All" choice (optional) (default=0)
-     * @param allText        The text to display for the "All" choice (optional) (default='')
-     * @param submit         Whether or not to auto-submit the selector
-     * @param disabled       Whether or not to disable selector (optional) (default=false)
-     * @param multipleSize   The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1)
+     * @param string  $name          The name of the generated selector (default='countries') (optional).
+     * @param string  $selectedValue The value which is currently selected (default='') (optional).
+     * @param string  $defaultValue  The default value to select (default='') (optional).
+     * @param string  $defaultText   The text for the default value (default='') (optional).
+     * @param integer $allValue      The value to assign for the "All" choice (optional) (default=0).
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @return The generated HTML for the selector
+     * @return The generated HTML for the selector.
      */
     public static function getSelector_Countries($name = 'countries', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -764,7 +763,7 @@ class HtmlUtil
     }
 
     /**
-     * Same as PN HTMLApi function but adds javascript form submit code to selector
+     * Same as PN HTMLApi function but adds javascript form submit code to selector.
      */
     public static function FormSelectMultipleSubmit($fieldname, $data, $multiple = 0, $size = 1, $selected = '', $accesskey = '', $onchange = '')
     {
