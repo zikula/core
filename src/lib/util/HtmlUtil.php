@@ -17,7 +17,7 @@ define('_REQUIRED_MARKER',            '<span style="font-size:larger;color:blue"
 define('_VALIDATION_MARKER',          '<span style="font-size:larger;color:red"><b>!</b></span>');
 
 /**
- * HTMLUtil is a class used to generate specific HTML code
+ * HTMLUtil is a class used to generate specific HTML code.
  *
  * @package Zikula_Core
  * @subpackage HTMLUtil
@@ -111,17 +111,17 @@ class HtmlUtil
         $html = "<select name=\"$name\" id=\"$id\" $multipleSize $multiple $submit $disabled>";
 
         if ($defaultText && !$selectedValue) {
-            $sel = ((string)$defaultValue == (string) $selectedValue ? 'selected="selected"' : '');
+            $sel = ((string)$defaultValue == (string)$selectedValue ? 'selected="selected"' : '');
             $html .= "<option value=\"$defaultValue\" $sel>$defaultText</option>";
         }
 
         if ($allText) {
-            $sel = ((string)$allValue == (string) $selectedValue ? 'selected="selected"' : '');
+            $sel = ((string)$allValue == (string)$selectedValue ? 'selected="selected"' : '');
             $html .= "<option value=\"$allValue\" $sel>$allText</option>";
         }
 
         foreach ($data as $k => $v) {
-            $sel = ((string)$selectedValue == (string) $k ? 'selected="selected"' : '');
+            $sel = ((string)$selectedValue == (string)$k ? 'selected="selected"' : '');
             $html .= "<option value=\"$k\" $sel>" . DataUtil::formatForDisplayHTML($v) . '</option>';
         }
 
@@ -213,7 +213,7 @@ class HtmlUtil
     /**
      * Return the HTML selector code for the given category hierarchy, maps to CategoryUtil::getSelector_Categories().
      *
-     * @param array  $cats              The category hierarchy to generate a HTML selector for.
+     * @param array   $cats             The category hierarchy to generate a HTML selector for.
      * @param string  $name             The name of the selector field to generate (optional) (default='category[parent_id]').
      * @param string  $field            The field value to return (optional) (default='id').
      * @param integer $selectedValue    The selected category (optional) (default=0).
@@ -366,8 +366,8 @@ class HtmlUtil
     /**
      * Return the HTML code for the Yes/No dropdown.
      *
-     * @param integer $selected    The value which should be selected (default=1) (optional).
-     * @param string $name        The name of the generated selector (optional).
+     * @param integer $selected The value which should be selected (default=1) (optional).
+     * @param string  $name     The name of the generated selector (optional).
      *
      * @return The resulting HTML string.
      */
@@ -387,7 +387,7 @@ class HtmlUtil
     /**
      * Return the localized string for the specified yes/no value.
      *
-     * @param integer $val The value for which we wish to obtain the string representation
+     * @param integer $val The value for which we wish to obtain the string representation.
      *
      * @return The string representation for the selected value.
      */
@@ -448,8 +448,8 @@ class HtmlUtil
     /**
      * Return the HTML code for the Permission dropdown.
      *
-     * @param string  $name           The name of the generated selector (optional) (default='permission').
-     * @param integer $selectedValue  The value which should be selected (optional) (default=2).
+     * @param string  $name          The name of the generated selector (optional) (default='permission').
+     * @param integer $selectedValue The value which should be selected (optional) (default=2).
      *
      * @return The resulting HTML string.
      */
@@ -471,7 +471,7 @@ class HtmlUtil
     /**
      * Return the HTML code for the Permission Level dropdown.
      *
-     * @param string $name           The name of the generated selector (optional) (default='permission').
+     * @param string  $name          The name of the generated selector (optional) (default='permission').
      * @param integer $selectedValue The value which should be selected (optional) (default=0).
      *
      * @return The resulting HTML string.
@@ -673,11 +673,12 @@ class HtmlUtil
     /**
      * Return the HTML for the date month selector.
      *
-     * @param integer $selectedValue The value which should be selected (default=0) (optional).
+     * @param integer $selected     The value which should be selected (default=0) (optional).
      * @param string  $name          The name of the generated selector (default='month') (optional).
      * @param boolean $submit        Whether or not to auto-submit the selector.
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     * @param boolean $text Text to print.
      *
      * @return The generated HTML for the selector.
      */
