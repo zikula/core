@@ -56,7 +56,7 @@ class DataUtil
         return base64_decode($value);
     }
 
-   /** 
+    /** 
      * Take a name-value-pair string and convert it to an associative array, optionally urldecoding the response. 
      * 
      * @param string  $nvpstr    Name-value-pair String.
@@ -81,8 +81,7 @@ class DataUtil
 
     /**
      * Decrypt the given value using the mcrypt library function. 
-     * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is
-     * shipped with Zikula.
+     * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
      * @param string  $key     The encryption key to use (optional) (default=null).
@@ -121,7 +120,8 @@ class DataUtil
         return base64_encode($value);
     }
 
-   /** Take a key and value and encode them into an NVP-string entity.
+    /** 
+     * Take a key and value and encode them into an NVP-string entity.
      * 
      * @param string  $key          The key to encode.
      * @param string  $value        The value to encode.
@@ -143,7 +143,7 @@ class DataUtil
         return '';
     }
 
-   /** 
+    /** 
      * Take an array and encode it as a NVP string.
      * 
      * @param string  $nvps         The array of name-value paris.
@@ -168,8 +168,7 @@ class DataUtil
 
     /**
      * Encrypt the given value using the mcrypt library function. 
-     * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is
-     * shipped with Zikula.
+     * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
      * @param string  $key     The encryption key to use (optional) (default=null).
@@ -328,10 +327,11 @@ class DataUtil
     }
 
     /**
-     * formatForDisplayHTML callback.
+     * Function formatForDisplayHTML callback.
+     *
+     * @param array $m String to format.
      *
      * @access private
-     * @param array $m String to format.
      *
      * @return string|void on empty
      */
@@ -524,15 +524,14 @@ class DataUtil
 
     /**
      * Hash function.
-     * Perform SHA1 or SHA256 hashing on a string using native
-     * PHP functions if available and if not uses own classes.
+     * Perform SHA1 or SHA256 hashing on a string using native PHP functions if available and if not uses own classes.
+     *
+     * @param string $string String to be hashed.
+     * @param string $type   String element of hash_algos() (default=sha1).
      *
      * @author Drak
      * @deprecated
      * @see hash()
-     *
-     * @param string $string String to be hashed.
-     * @param string $type   String element of hash_algos() (default=sha1).
      *
      * @return string hex hash
      */
@@ -544,14 +543,15 @@ class DataUtil
 
     /**
      * Get boolean ini value.
+     *
      * This method converts the several possible return values from
      * allegedly "boolean" ini settings to proper booleans
      * Properly converted input values are: 'off', 'on', 'false', 'true', '0', '1'
      * If the ini_value doesn't match any of those, the value is returned as-is.
      *
-     * @author Ed Finkler
-     *
      * @param string $ini_key The ini_key you need the value of.
+     *
+     * @author Ed Finkler
      * 
      * @return boolean|mixed
      */
@@ -585,7 +585,7 @@ class DataUtil
     /**
      * Check for serialization.
      *
-     * @param string $string String to check.
+     * @param string  $string  String to check.
      * @param boolean $checkmb True or false.
      *
      * @return boolean
@@ -605,10 +605,11 @@ class DataUtil
 
     /**
      * Unserialize function.
+     *
      * Will unserialise serialised data that was previously encoded as iso and converted to utf8
      * This generally not required.
      *
-     * @param $string Serialised data.
+     * @param string $string Serialised data.
      *
      * @return mixed
      */
@@ -620,11 +621,13 @@ class DataUtil
 
     /**
      * Private callback function for mb_unserialize().
+     *
      * Note this is still a private method although we have to use public visibility.
+     *
+     * @param string $match String to use.
      *
      * @access private
      *
-     * @param string $match String to use.
      */
     public static function _mb_unserialize_callback($match)
     {
@@ -634,6 +637,7 @@ class DataUtil
 
     /**
      * Convert to UTF8 function.
+     *
      * Converts a string or an array (recursivly) to utf-8.
      *
      * @param mixed $input String or array to convert to utf-8.
