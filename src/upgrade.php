@@ -62,6 +62,13 @@ switch ($action) {
         _upg_selectlanguage();
 }
 
+/**
+ * Generate the header of upgrade page.
+ *
+ * This function generate the header of upgrade page.
+ *
+ * @return void
+ */
 function _upg_header()
 {
     $lang = ZLanguage::getLanguageCode();
@@ -90,6 +97,13 @@ function _upg_header()
     }
 }
 
+/**
+ * Generate the footer of upgrade page.
+ *
+ * This function generate the footer of upgrade page.
+ *
+ * @return void
+ */
 function _upg_footer()
 {
     echo '</div></div></div>' . "\n";
@@ -98,6 +112,13 @@ function _upg_footer()
     exit();
 }
 
+/**
+ * Generate the language selector page.
+ *
+ * This function generate the language selector page.
+ *
+ * @return void
+ */
 function _upg_selectlanguage()
 {
     _upg_header();
@@ -119,6 +140,13 @@ function _upg_selectlanguage()
     _upg_footer();
 }
 
+/**
+ * Upgrade initial.
+ * 
+ * Display initial upgrade page.
+ * 
+ * @return void
+ */
 function _upg_upgradeinit()
 {
     _upg_header();
@@ -129,6 +157,15 @@ function _upg_upgradeinit()
     _upg_footer();
 }
 
+/**
+ * Generate the login bloc of login page.
+ *
+ * This function generate the authentification part of login page.
+ *
+ * @param boolean $showheader Show header and footer.
+ *
+ * @return void
+ */
 function _upg_login($showheader = true)
 {
     $lang = ZLanguage::getLanguageCode();
@@ -154,6 +191,16 @@ function _upg_login($showheader = true)
     }
 }
 
+/**
+ * Generate the convertdb page.
+ *
+ * This function generate the page to change the db caracter set.
+ *
+ * @param string $username Username of the admin user.
+ * @param string $password Password of the admin user.
+ *
+ * @return void
+ */
 function _upg_convertdb($username, $password)
 {
     _upg_header();
@@ -275,6 +322,16 @@ function _upg_convertdb($username, $password)
     _upg_footer();
 }
 
+/**
+ * Generate the upgrade module page.
+ *
+ * This function upgrade available module to an upgrade
+ *
+ * @param string $username Username of the admin user.
+ * @param string $password Password of the admin user.
+ *
+ * @return mixed UI or false if it failed.
+ */
 function _upg_upgrademodules($username, $password)
 {
     _upg_header();
@@ -371,6 +428,18 @@ function _upg_upgrademodules($username, $password)
     _upg_footer();
 }
 
+/**
+ * Generate the button for the next step of the upgrade.
+ *
+ * This function generate the button to allow users to go to the next step of the upgrade.
+ *
+ * @param string $action   Name of the next function called (without upgrade_upg_).
+ * @param string $text     Text printed.
+ * @param string $username Username of the admin user.
+ * @param string $password Password of the admin user.
+ *
+ * @return void
+ */
 function _upg_continue($action, $text, $username, $password)
 {
     $lang = ZLanguage::getLanguageCode();
@@ -387,6 +456,16 @@ function _upg_continue($action, $text, $username, $password)
     return;
 }
 
+/**
+ * Generate the sanity check page.
+ *
+ * This function do and generate the stanity check page.
+ *
+ * @param string $username Username of the admin user.
+ * @param string $password Password of the admin user.
+ *
+ * @return void
+ */
 function _upg_sanity_check($username, $password)
 {
     _upg_header();
@@ -447,6 +526,17 @@ function _upg_sanity_check($username, $password)
     _upg_footer();
 }
 
+/**
+ * Do a SQL query.
+ *
+ * This function do a sql query.
+ *
+ * @param string   $sql       Sql query.
+ * @param mixed    $resource  Ressource.
+ * @param callback &$feedback Return HTML code with sql request and if error, the mysql error.
+ *
+ * @return boolean|resource Result of mysql_query.
+ */
 function doSQL($sql, $resource, &$feedback)
 {
     $result = mysql_query($sql, $resource);
@@ -459,6 +549,13 @@ function doSQL($sql, $resource, &$feedback)
     return $result;
 }
 
+/**
+ * Clear the Zikula cache.
+ *
+ * This function clear the zikula cache.
+ *
+ * @return void
+ */
 function upgrade_clear_caches()
 {
     pnModAPIFunc('Theme', 'user', 'render_clear_compiled');

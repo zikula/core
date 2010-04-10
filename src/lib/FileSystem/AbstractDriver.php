@@ -45,7 +45,7 @@ abstract class FileSystem_AbstractDriver
     /**
      * Construct the driver with the configuration.
      *
-     * @param $configuration The configuration to be used.
+     * @param FileSystem_Configuration $configuration The configuration to be used.
      *
      * @throws InvalidArgumentException If wrong configuration class received.
      */

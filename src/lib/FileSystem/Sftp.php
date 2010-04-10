@@ -207,9 +207,10 @@ class FileSystem_Sftp extends FileSystem_AbstractDriver
         if ($file == '' || substr($file, 0, 1) !== '/') {
             $file = $this->_dir . '/' . $file;
         }
-        if (!is_numeric($perm)) { //make sure that $perm is numeric, this also stops injection
-        	$this->errorHandler->register('permission "' . $perm . '" must be numeric.');
-        	return false;
+        //make sure that $perm is numeric, this also stops injection
+        if (!is_numeric($perm)) {
+            $this->errorHandler->register('permission "' . $perm . '" must be numeric.');
+            return false;
         }
         $perm = intval($perm);
 
