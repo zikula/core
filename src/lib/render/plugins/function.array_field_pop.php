@@ -13,7 +13,7 @@
  */
 
 /**
- * Smarty function return and unset an array field if set
+ * Smarty function return and unset an array field if set.
  *
  * Available attributes:
  *  - array     (string)    The name of an array template variable
@@ -37,12 +37,13 @@
  *
  *  <samp>{array_field_pop array='myarray' field='arraykey' unset=1 assign='myValue'}</samp>
  *
- * @param   array   $params      All attributes passed to this function from the template
- * @param   Smarty  &$smarty     Reference to the {@link Renderer} object
- * @param   assign  string       The template variable to assign the result to (required)
- * @return  null    The value of the specified array element is return
- *                  in the specified template variable if it is set,
- *                  otherwise the template variable is set to false; no output to the template
+ * @param array  $params         All attributes passed to this function from the template.
+ * @param Smarty &$smarty        Reference to the {@link Renderer} object.
+ * @param string $params[assign] The template variable to assign the result to (required).
+ * 
+ * @return null The value of the specified array element is return
+ *              in the specified template variable if it is set,
+ *              otherwise the template variable is set to false; no output to the template.
  */
 function smarty_function_array_field_pop($params, &$smarty)
 {

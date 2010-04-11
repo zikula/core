@@ -13,8 +13,7 @@
  */
 
 /**
- * Obtain the value of one block variable or all block variables for a specified
- * block.
+ * Obtain the value of one block variable or all block variables for a specified block.
  *
  * Note: If the name of the block variable is not set, then the assign parameter
  * must be set since an array of block variables will be returned.
@@ -30,10 +29,11 @@
  *                          (optional if the name attribute is set, otherwise
  *                          required)
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  mixed   the value of the block variable specified by the name attribute,
- *                  or an array containing the full block information.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return mixed the value of the block variable specified by the name attribute,
+ *               or an array containing the full block information.
  */
 function smarty_function_blockgetinfo($params, &$smarty)
 {

@@ -13,8 +13,7 @@
  */
 
 /**
- * Add additional information to the <head>...</head> section of a Zikula
- * document
+ * Add additional information to the <head>...</head> section of a Zikula document.
  *
  * Available attributes:
  *   - header (string|array) If set, the value is assigned to the global
@@ -27,11 +26,12 @@
  * 
  *  OR
  * 
- * <samp>{add_additional_header header=$title}</samp>
+ * <samp>{add_additional_header header=$title}</samp>.
  *
- * @param   array   $params      All attributes passed to this function from the template
- * @param   Smarty  &$smarty     Reference to the {@link Renderer} object
- * @return  null    (The value is added to the <head> section of the document.)
+ * @param array  $args    All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return void (The value is added to the <head> section of the document).
  */
 function smarty_function_add_additional_header($args, &$smarty)
 {
@@ -42,7 +42,7 @@ function smarty_function_add_additional_header($args, &$smarty)
     global $additional_header;
 
     if (is_array($args['header'])) {
-        foreach($args['header'] as $header) {
+        foreach ($args['header'] as $header) {
             $additional_header[] = $header;
       }
     } else {

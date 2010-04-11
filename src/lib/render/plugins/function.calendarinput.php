@@ -13,9 +13,11 @@
  */
 
 /**
+ * Display a calendar input control.
+ * 
  * Display a calendar input control consisting of a calendar image, an optional
  * hidden input field, and associated javascript to render a pop-up calendar.
- * This function displays a javascript (jscalendar) calendar control
+ * This function displays a javascript (jscalendar) calendar control.
  *
  * Available attributes:
  *   - objectname       (string)    The name of the object the field will be placed in
@@ -33,9 +35,10 @@
  *
  * <samp>{calendarinput objectname='myobject' htmlname='from' dateformat='%Y-%m-%d' defaultdate='2005/12/31'}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  string  The HTML and Javascript code to display a calendar control.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string The HTML and Javascript code to display a calendar control.
  */
 function smarty_function_calendarinput($params, &$smarty)
 {
@@ -67,8 +70,15 @@ function smarty_function_calendarinput($params, &$smarty)
     if ($firstTime) {
         $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
         // map of the jscalendar supported languages
-        $map = array('ca' => 'ca_ES', 'cz' => 'cs_CZ', 'da' => 'da_DK', 'de' => 'de_DE', 'el' => 'el_GR', 'en-us' => 'en_US', 'es' => 'es_ES', 'fi' => 'fi_FI', 'fr' => 'fr_FR', 'he' => 'he_IL', 'hr' => 'hr_HR', 'hu' => 'hu_HU', 'it' => 'it_IT', 'ja' => 'ja_JP',
-                     'ko' => 'ko_KR', 'lt' => 'lt_LT', 'lv' => 'lv_LV', 'nl' => 'nl_NL', 'no' => 'no_NO', 'pl' => 'pl_PL', 'pt' => 'pt_BR', 'ro' => 'ro_RO', 'ru' => 'ru_RU', 'si' => 'si_SL', 'sk' => 'sk_SK', 'sv' => 'sv_SE', 'tr' => 'tr_TR');
+        $map = array('ca' => 'ca_ES', 'cz' => 'cs_CZ', 'da' => 'da_DK',
+                     'de' => 'de_DE', 'el' => 'el_GR', 'en-us' => 'en_US',
+                     'es' => 'es_ES', 'fi' => 'fi_FI', 'fr' => 'fr_FR', 
+                     'he' => 'he_IL', 'hr' => 'hr_HR', 'hu' => 'hu_HU', 
+                     'it' => 'it_IT', 'ja' => 'ja_JP', 'ko' => 'ko_KR', 
+                     'lt' => 'lt_LT', 'lv' => 'lv_LV', 'nl' => 'nl_NL', 
+                     'no' => 'no_NO', 'pl' => 'pl_PL', 'pt' => 'pt_BR', 
+                     'ro' => 'ro_RO', 'ru' => 'ru_RU', 'si' => 'si_SL', 
+                     'sk' => 'sk_SK', 'sv' => 'sv_SE', 'tr' => 'tr_TR');
 
         if (isset($map[$lang])) {
             $lang = $map[$lang];
@@ -112,7 +122,8 @@ function smarty_function_calendarinput($params, &$smarty)
         $html .= '<input type="hidden" name="'.$fieldKey.'" id="'.$params['htmlname'].'" value="'.$params['defaultdate'].'" />';
     }
 
-    $html .= '<img class="z-calendarimg" src="'.pnGetBaseURL().'javascript/jscalendar/img.gif" id="'.$triggerName.'" style="cursor: pointer;" title="' . DataUtil::formatForDisplay(__('Date selector')) . '"  alt="' . DataUtil::formatForDisplay(__('Date selector')) . '" />';
+    $html .= '<img class="z-calendarimg" src="'.pnGetBaseURL().'javascript/jscalendar/img.gif" id="'.$triggerName.
+    '" style="cursor: pointer;" title="' . DataUtil::formatForDisplay(__('Date selector')) . '"  alt="' . DataUtil::formatForDisplay(__('Date selector')) . '" />';
 
     $i18n = & ZI18n::getInstance();
 

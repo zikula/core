@@ -13,8 +13,7 @@
  */
 
 /**
- * Concatenate several values together and assign the resultant string to a
- * template variable.
+ * Concatenate several values together and assign the resultant string to a template variable.
  *
  * Available attributes:
  *  - 1..10 (string)    The 1st through 10th value(s) we wish to assign
@@ -36,9 +35,10 @@
  *
  *  <samp>{assign_concat name='myString' 1=$myVar1 2=$myVar2 3=$myVar3 html=true}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  null
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return Void
  */
 function smarty_function_assign_concat($params, &$smarty)
 {

@@ -13,7 +13,7 @@
  */
 
 /**
- * Display the list of allowed HTML tags
+ * Display the list of allowed HTML tags.
  *
  * Available parameters:
  *  - assign    (string)    (optional) If set, the results are assigned to the
@@ -23,9 +23,10 @@
  *
  * <samp>{allowedhtml}</samp>
  *
- * @param   array   $params      All attributes passed to this function from the template
- * @param   Smarty  &$smarty     Reference to the {@link Renderer} object
- * @return  string  A string containing the allowable HTML tags.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string A string containing the allowable HTML tags.
  */
 function smarty_function_allowedhtml($params, &$smarty)
 {

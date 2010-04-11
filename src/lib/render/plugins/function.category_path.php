@@ -13,8 +13,7 @@
  */
 
 /**
- * Retrieve and display the value of a category field (by default, the category's
- * path).
+ * Retrieve and display the value of a category field (by default, the category's path).
  *
  * Available attributes:
  *  - id        (numeric|string)    if a numeric value is specified, then the
@@ -52,9 +51,10 @@
  *
  * <samp>{category_path id=$page.categoryId field='sort_value' assign='catsortvalue'}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  string  the value of the specified category field.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string The value of the specified category field.
  */
 function smarty_function_category_path($params, &$smarty)
 {

@@ -14,9 +14,10 @@
 
 /**
  * Display an existing Zikula block.
- *  - The block is choosen by its id.
- *  - The block state is ignored, so even deactivated blocks can be shown.
- *  - The parameters specific to the block can be overridden.
+ * 
+ *  The block is choosen by its id.
+ *  The block state is ignored, so even deactivated blocks can be shown.
+ *  The parameters specific to the block can be overridden.
  *
  * Available parameters:
  *  - id        (numeric)   ID of the block to be displayed
@@ -44,12 +45,14 @@
  * variable $myBlockContents.
  *
  * <samp>{block id=6 assign='myBlockContents'}</samp>
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string The block.
  *
  * @todo the attribute 'name' is not used.
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  string  The block.
  */
 function smarty_function_block($params, &$smarty)
 {

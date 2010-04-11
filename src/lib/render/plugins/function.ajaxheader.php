@@ -13,6 +13,8 @@
  */
 
 /**
+ * Inserts the common ajax javascript files in page header.
+ * 
  * Insert the common ajax javascript files (prototype, scriptaculous) in the
  * page header using page vars.  <i>All other javascript files have to be added
  * manually on-demand using the {@link smarty_function_pageaddvar() pageaddvar} plugin.</i>
@@ -30,7 +32,8 @@
  *  - slider            (mixed)     (optional) includes slider.js if set. Only effective if noscriptaculous is set
  *  - lightbox          (mixed)     (optional) includes lightbox.js if set (loads scriptaculous effects if noscriptaculous is set)
  *  - imageviewer       (mixed)     (optional) includes Zikula.ImageViewer.js if set (loads scriptaculous effects and dragdrop if noscriptaculous is set)
- *  - assign            (string)    (optional) the name of the template variable to which the script tag string is assigned, <i>instead of</i> adding them to the page variables through PageUtil::addVar
+ *  - assign            (string)    (optional) the name of the template variable to which the script tag string is assigned, <i>instead of</i> 
+ *                                             adding them to the page variables through PageUtil::addVar
  *
  *
  * Examples:
@@ -39,9 +42,10 @@
  * 
  * <samp>{ajaxheader modname='Example' noscriptaculous=1}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  null
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return void
  */
 function smarty_function_ajaxheader($params, &$smarty)
 {
@@ -94,7 +98,7 @@ function smarty_function_ajaxheader($params, &$smarty)
     }
     if ($lightbox) {
         // check if lightbox is present - if not, load ImageViewer instead
-        if(is_readable('javascript/ajax/lightbox.js')) {
+        if (is_readable('javascript/ajax/lightbox.js')) {
             $scripts[] = 'javascript/ajax/lightbox.js';
             if (isset($params['assign'])) {
                 $return = '<link rel="stylesheet" href="javascript/ajax/lightbox/lightbox.css" type="text/css" media="screen" />';
@@ -127,7 +131,7 @@ function smarty_function_ajaxheader($params, &$smarty)
 
     if (isset($params['assign'])) {
         // create script tags now
-        foreach($scripts as $script) {
+        foreach ($scripts as $script) {
             $return .= '<script type="text/javascript" src="' . $script . '"></script' . "\n";
         }
         $smarty->assign($params['assign'], $return);

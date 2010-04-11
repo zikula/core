@@ -13,7 +13,7 @@
  */
 
 /**
- * Smarty block to implement group checks in a template
+ * Smarty block to implement group checks in a template.
  *
  * Available attributes:
  *  - gid (numeric) The ID number of the group to be tested.
@@ -23,15 +23,16 @@
  * {checkgroup gid='1'}
  *   do some stuff now we have permission
  * {/checkgroup}
- * </pre>
+ * </pre>.
  *
- * @param   array   $params         All attributes passed to this function from the template
- * @param   string  $content        The content between the block tags
- * @param   Smarty  &$smarty        Reference to the {@link Renderer} object
- * @return  string  The content of the matching case
- * @return  mixed   If the user is a member of the group specified by the gid,
- *                  then the content contained in the block, otherwise null;
- *                  false on error
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param string $content The content between the block tags.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string|boolean|void The content of the matching case.
+ *                             If the user is a member of the group specified by the gid,
+ *                             then the content contained in the block, otherwise null,
+ *                             false on error.
  */
 function smarty_block_checkgroup($params, $content, &$smarty)
 {
@@ -51,7 +52,7 @@ function smarty_block_checkgroup($params, $content, &$smarty)
         return;
     }
 
-    if (!pnModAPIFunc('Groups', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))){
+    if (!pnModAPIFunc('Groups', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))) {
         return;
     }
 

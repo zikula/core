@@ -28,9 +28,10 @@
  *
  * <samp>{blockposition name='left'}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  string  The rendered ouput of all of the blocks assigned to this position
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string The rendered ouput of all of the blocks assigned to this position.
  */
 function smarty_function_blockposition($params, &$smarty)
 {

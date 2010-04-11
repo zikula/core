@@ -13,8 +13,9 @@
  */
 
 /**
- * Counts all elements in the specified array. (Returns the value of the PHP
- * count function, if the specified variable is an array.)
+ * Counts all elements in the specified array. 
+ * 
+ * Returns the value of the PHP count function, if the specified variable is an array.
  *
  * Available attributes:
  *  - array     (array)     the array to be counted
@@ -43,12 +44,13 @@
  *
  *  <samp>{array_size array=$myvar assign='mycount'}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  int     the number of elements in the specified array, or 0 (zero)
- *                  if the array is empty, or 0 (zero) if the specified
- *                  template variable is not an array; returns null if the
- *                  assign parameter is specified.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return integer The number of elements in the specified array, or 0 (zero)
+ *                 if the array is empty, or 0 (zero) if the specified
+ *                 template variable is not an array; returns null if the
+ *                 assign parameter is specified.
  */
 function smarty_function_array_size($params, &$smarty)
 {

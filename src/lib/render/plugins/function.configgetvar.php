@@ -35,9 +35,10 @@
  * <samp>{pnconfiggetvar name='sitename' assign='thename'}</samp><br>
  * <samp><p>Welcome to {$thename|varprepfordisplay}!</p></samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  mixed   The value of the configuration variable
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return mixed The value of the configuration variable.
  */
 function smarty_function_configgetvar($params, &$smarty)
 {

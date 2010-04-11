@@ -23,9 +23,10 @@
  *
  * <samp><meta http-equiv="Content-Type" content="text/html; charset={charset}"></samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  string  the value of the charset
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string The value of the charset.
  */
 function smarty_function_charset($params, &$smarty)
 {

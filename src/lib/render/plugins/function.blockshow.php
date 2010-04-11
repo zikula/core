@@ -23,9 +23,10 @@
  *  - assign    (string)    If set, the results are assigned to the corresponding
  *                          template variable instead of being returned to the template (optional)
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  string  The rendered output of the specified block.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string The rendered output of the specified block.
  */
 function smarty_function_blockshow($params, &$smarty)
 {

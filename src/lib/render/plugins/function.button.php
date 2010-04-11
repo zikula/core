@@ -13,8 +13,9 @@
  */
 
 /**
- * Display an core image form submission button using either the <button> or the <input>
- * HTML element. This tag calls the img tag to determine the full path of the image
+ * Display an core image form submission button using either the <button> or the <input> HTML element. 
+ * 
+ * This tag calls the img tag to determine the full path of the image
  * for the src attribute of the img element within the button element, or
  * for the src attribute of the input element.
  *
@@ -68,10 +69,11 @@
  *
  * <samp>{button src='button_cancel.gif' set='medium' mode='input' value='cancel' id='cancelbutton'}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  string  The rendered <button ...><img ...></button> or <input ...>
- *                  element for the form button.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return string The rendered <button ...><img ...></button> or <input ...>
+ *                element for the form button.
  */
 function smarty_function_button($params, &$smarty)
 {
@@ -119,9 +121,14 @@ function smarty_function_button($params, &$smarty)
 
     // form the button html
     if ($mode == 'button') {
-        $return = '<button'.$id.$class.' type="'.DataUtil::formatForDisplay($type).'"'.$name.$value.' title="'.DataUtil::formatForDisplay($title).'"><img src="'.DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).'" /></button>';
+        $return = '<button'.$id.$class.' type="'.DataUtil::formatForDisplay($type).
+        '"'.$name.$value.' title="'.DataUtil::formatForDisplay($title).'"><img src="'.
+        DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).
+        '" /></button>';
     } else {
-        $return = '<input'.$id.$class.' type="image"'.$name.$value.' title="'.DataUtil::formatForDisplay($title).'" src="'.DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).'" />';
+        $return = '<input'.$id.$class.' type="image"'.$name.$value.' title="'.
+        DataUtil::formatForDisplay($title).'" src="'.DataUtil::formatForDisplay($imgsrc).
+        '" alt="'.DataUtil::formatForDisplay($alt).'" />';
     }
 
     if (isset($params['assign'])) {

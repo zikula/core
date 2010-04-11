@@ -13,7 +13,7 @@
  */
 
 /**
- * Smarty switch block
+ * Smarty switch block.
  *
  * Available attributes:
  *  - expr (string|numeric) The variable to be tested against each of the
@@ -32,19 +32,20 @@
  *     default stuff
  *   {/case}
  * {/switch}
- * </pre>
+ * </pre>.
  *
- * @author  messju mohr <messju@lammfellpuschen.de>
- * @author  dasher <dasher@inspiredthinking.co.uk>
- * @link    http://phpinsider.com/smarty-forum/viewtopic.php?t=11121
- * @see     smarty_block_case
- * @todo    Document the &$pages parameter, or correct it (possibly &$repeat?).
+ * @author messju mohr <messju@lammfellpuschen.de>.
+ * @author dasher <dasher@inspiredthinking.co.uk>.
+ * @link   http://phpinsider.com/smarty-forum/viewtopic.php?t=11121.
+ * @see    smarty_block_case.
+ * @todo   Document the &$pages parameter, or correct it (possibly &$repeat?).
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   string  $content    The content between the block tags
- * @param   Smarty  $smarty     Reference to the {@link Renderer} object
- * @param   mixed   &$pages
- * @return  string  The content of the matching case
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param string $content The content between the block tags.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * @param mixed  &$pages  Pages?.
+ * 
+ * @return string The content of the matching case.
  */
 function smarty_block_switch($params, $content, &$smarty, &$pages)
 {

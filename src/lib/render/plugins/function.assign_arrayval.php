@@ -13,8 +13,7 @@
  */
 
 /**
- * Assign a template variable with the value found in an array element at the
- * specified key.
+ * Assign a template variable with the value found in an array element at the specified key.
  *
  * Available attributes:
  *  - array     (array)         The array template variable in which to retrieve the value
@@ -38,9 +37,10 @@
  *
  *  <samp>{assign_arrayval array=$myArray key=4 assign='myVar'}</samp>
  *
- * @param   array   $params     All attributes passed to this function from the template
- * @param   Smarty  &$smarty    Reference to the {@link Renderer} object
- * @return  null
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * 
+ * @return void
  */
 function smarty_function_assign_arrayval ($params, &$smarty)
 {
