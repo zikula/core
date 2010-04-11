@@ -679,7 +679,7 @@ class DBUtil
 
         self::flushCache($table);
 
-        if ((!$preserve || !isset($object[$idfield])) && isset($object[$idfield])) {
+        if ((!$preserve || !isset($object[$idfield])) && isset($columnList[$idfield])) {
             $obj_id = self::getInsertID($table, $idfield);
             $object[$idfield] = $obj_id;
         }
