@@ -8,9 +8,10 @@
  */
 
 /**
- * pnModInitCoreVars
+ * The pnModInitCoreVars preloads some module vars.
  *
- * preloads module vars for a number of key modules to reduce sql statements
+ * Preloads module vars for a number of key modules to reduce sql statements.
+ * 
  * @return void
  */
 function pnModInitCoreVars()
@@ -28,7 +29,8 @@ function pnModInitCoreVars()
         $pntables = pnDBGetTables();
         $col = $pntables['module_vars_column'];
 
-        $where = "$col[modname]='" . PN_CONFIG_MODULE . "' OR $col[modname]='pnRender' OR $col[modname]='Theme' OR $col[modname]='Blocks' OR $col[modname]='Users' OR $col[modname]='Settings'";
+        $where = "$col[modname]='" . PN_CONFIG_MODULE .
+        "' OR $col[modname]='pnRender' OR $col[modname]='Theme' OR $col[modname]='Blocks' OR $col[modname]='Users' OR $col[modname]='Settings'";
         $profileModule = pnConfigGetVar('profilemodule', '');
         if (!empty($profileModule) && pnModAvailable($profileModule)) {
             $where .= " OR $col[modname] = '" . $profileModule . "'";
@@ -42,16 +44,18 @@ function pnModInitCoreVars()
 }
 
 /**
- * pnModVarExists - check to see if a module variable is set
- * @param 'modname' the name of the module
- * @param 'name' the name of the variable
- * @return  true if the variable exists in the database, false if not
+ * Checks to see if a module variable is set.
+ * 
+ * @param string $modname The name of the module.
+ * @param string $name    The name of the variable.
+ * 
+ * @return boolean True if the variable exists in the database, false if not.
  */
 function pnModVarExists($modname, $name)
 {
     // define input, all numbers and booleans to strings
-    $modname = isset($modname) ? ((string) $modname) : '';
-    $name = isset($name) ? ((string) $name) : '';
+    $modname = isset($modname) ? ((string)$modname) : '';
+    $name = isset($name) ? ((string)$name) : '';
 
     // make sure we have the necessary parameters
     if (!pnVarValidate($modname, 'mod') || !pnVarValidate($name, 'modvar')) {
@@ -65,17 +69,18 @@ function pnModVarExists($modname, $name)
 }
 
 /**
- * pnModGetVar - get a module variable
+ * The pnModGetVar function gets a module variable.
  *
- * if the name parameter is included then function returns the
+ * If the name parameter is included then function returns the
  * module variable value.
  * if the name parameter is ommitted then function returns a multi
  * dimentional array of the keys and values for the module vars.
  *
- * @param 'modname' the name of the module
- * @param 'name' the name of the variable
- * @param 'default' the value to return if the requested modvar is not set
- * @return  if the name parameter is included then function returns
+ * @param string  $modname The name of the module.
+ * @param string  $name    The name of the variable.
+ * @param boolean $default The value to return if the requested modvar is not set.
+ * 
+ * @return string|array If the name parameter is included then function returns
  *          string - module variable value
  *          if the name parameter is ommitted then function returns
  *          array - multi dimentional array of the keys
@@ -130,17 +135,18 @@ function pnModGetVar($modname, $name = '', $default = false)
 }
 
 /**
- * pnModSetVar - set a module variable
+ * The pnModSetVar Function sets a module variable.
  *
- * @param 'modname' the name of the module
- * @param 'name' the name of the variable
- * @param 'value' the value of the variable
- * @return bool true if successful, false otherwise
+ * @param string $modname The name of the module.
+ * @param string $name    The name of the variable.
+ * @param string $value   The value of the variable.
+ * 
+ * @return boolean True if successful, false otherwise.
  */
 function pnModSetVar($modname, $name, $value = '')
 {
     // define input, all numbers and booleans to strings
-    $modname = isset($modname) ? ((string) $modname) : '';
+    $modname = isset($modname) ? ((string)$modname) : '';
 
     // validate
     if (!pnVarValidate($modname, 'mod') || !isset($name)) {
@@ -174,14 +180,16 @@ function pnModSetVar($modname, $name, $value = '')
         $pnmodvar[$modname][$name] = $value;
     }
 
-    return (bool) $res;
+    return (bool)$res;
 }
 
 /**
- * pnModSetVars - set multiple module variables
- * @param 'modname' the name of the module
- * @param 'vars' an associative array of varnames/varvalues.
- * @return bool true if successful, false otherwise
+ * The pnModSetVars function sets multiple module variables.
+ * 
+ * @param string $modname The name of the module.
+ * @param array  $vars    An associative array of varnames/varvalues.
+ * 
+ * @return boolean True if successful, false otherwise.
  */
 function pnModSetVars($modname, $vars)
 {
@@ -192,18 +200,20 @@ function pnModSetVars($modname, $vars)
 }
 
 /**
- * pnModDelVar
+ * The pnModDelVar function deletes a module variable.
  *
  * Delete a module variables. If the optional name parameter is not supplied all variables
- * for the module 'modname' are deleted
- * @param 'modname' the name of the module
- * @param 'name' the name of the variable (optional)
- * @return bool true if successful, false otherwise
+ * for the module 'modname' are deleted.
+ * 
+ * @param string $modname The name of the module.
+ * @param string $name    The name of the variable (optional).
+ * 
+ * @return boolean True if successful, false otherwise.
  */
 function pnModDelVar($modname, $name = '')
 {
     // define input, all numbers and booleans to strings
-    $modname = isset($modname) ? ((string) $modname) : '';
+    $modname = isset($modname) ? ((string)$modname) : '';
 
     // validate
     if (!pnVarValidate($modname, 'modvar')) {
@@ -235,19 +245,21 @@ function pnModDelVar($modname, $name = '')
     }
 
     $where = "WHERE $cols[modname] = '$modname' $specificvar";
-    $res = (bool) DBUtil::deleteWhere('module_vars', $where);
+    $res = (bool)DBUtil::deleteWhere('module_vars', $where);
     return ($val ? $val : $res);
 }
 
 /**
- * pnModGetIDFromName - get module ID given its name
- * @param 'module' the name of the module
- * @return int module ID
+ * The pnModGetIDFromName function gets module ID given its name.
+ * 
+ * @param string $module The name of the module.
+ * 
+ * @return integer module ID.
  */
 function pnModGetIDFromName($module)
 {
     // define input, all numbers and booleans to strings
-    $module = (isset($module) ? strtolower((string) $module) : '');
+    $module = (isset($module) ? strtolower((string)$module) : '');
 
     // validate
     if (!pnVarValidate($module, 'mod')) {
@@ -286,10 +298,13 @@ function pnModGetIDFromName($module)
 }
 
 /**
- * get information on module
- * return array of module information or false if core ( id = 0 )
- * @param 'id' module ID
- * @return mixed module information array or false
+ * The pnModGetInfo function gets information on module.
+ * 
+ * Return array of module information or false if core ( id = 0 ).
+ * 
+ * @param integer $modid The module ID.
+ * 
+ * @return array|boolean Module information array or false.
  */
 function pnModGetInfo($modid = 0)
 {
@@ -329,8 +344,9 @@ function pnModGetInfo($modid = 0)
 }
 
 /**
- * get list of user modules
- * @return array array of module information arrays
+ * The pnModGetUserMods function gets a list of user modules.
+ * 
+ * @return array An array of module information arrays.
  */
 function pnModGetUserMods()
 {
@@ -338,9 +354,9 @@ function pnModGetUserMods()
 }
 
 /**
- * get list of profile modules
+ * The pnModGetProfilesMods function gets a list of profile modules.
  *
- * @return array array of module information arrays
+ * @return array An array of module information arrays.
  */
 function pnModGetProfileMods()
 {
@@ -348,9 +364,9 @@ function pnModGetProfileMods()
 }
 
 /**
- * get list of message modules
+ * The pnModGetMessageMods function gets a list of message modules.
  *
- * @return array array of module information arrays
+ * @return array An array of module information arrays.
  */
 function pnModGetMessageMods()
 {
@@ -358,8 +374,9 @@ function pnModGetMessageMods()
 }
 
 /**
- * get list of administration modules
- * @return array array of module information arrays
+ * The pnModGetAdminMods function gets a list of administration modules.
+ * 
+ * @return array An array of module information arrays.
  */
 function pnModGetAdminMods()
 {
@@ -367,9 +384,11 @@ function pnModGetAdminMods()
 }
 
 /**
- * get list of modules by module type
- * @param 'type' the module type to get (either 'user' or 'admin') (optional) (default='user')
- * @return array array of module information arrays
+ * The pnModGetTypeMods function gets a list of modules by module type.
+ * 
+ * @param string $type The module type to get (either 'user' or 'admin') (optional) (default='user').
+ * 
+ * @return array An array of module information arrays.
  */
 function pnModGetTypeMods($type = 'user')
 {
@@ -394,8 +413,9 @@ function pnModGetTypeMods($type = 'user')
 }
 
 /**
- * get list of all modules
- * @return array array of module information arrays
+ * The pnModGetAllMods function gets a list of all modules.
+ * 
+ * @return array An array of module information arrays.
  */
 function pnModGetAllMods()
 {
@@ -417,16 +437,18 @@ function pnModGetAllMods()
 }
 
 /**
- * load datbase definition for a module
- * @param 'name' the name of the module to load database definition for
- * @param 'directory' directory that module is in (if known)
- * @param 'force' force table information to be reloaded
- * @return bool true if successful, false otherwise
+ * Loads datbase definition for a module.
+ * 
+ * @param string  $modname   The name of the module to load database definition for.
+ * @param string  $directory Directory that module is in (if known).
+ * @param boolean $force     Force table information to be reloaded.
+ * 
+ * @return boolean True if successful, false otherwise.
  */
 function pnModDBInfoLoad($modname, $directory = '', $force = false)
 {
     // define input, all numbers and booleans to strings
-    $modname = (isset($modname) ? strtolower((string) $modname) : '');
+    $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
     // default return value
     $data = false;
@@ -460,7 +482,7 @@ function pnModDBInfoLoad($modname, $directory = '', $force = false)
     $tablefunc = $modname . '_pntables';
     if (function_exists($tablefunc)) {
         $data = $tablefunc();
-        $GLOBALS['pntables'] = array_merge((array) $GLOBALS['pntables'], (array) $data);
+        $GLOBALS['pntables'] = array_merge((array)$GLOBALS['pntables'], (array)$data);
     }
     $loaded[$modname] = true;
 
@@ -469,11 +491,13 @@ function pnModDBInfoLoad($modname, $directory = '', $force = false)
 }
 
 /**
- * load a module
- * @param 'name' the name of the module
- * @param 'type' the type of functions to load
- * @param 'force' determines to load Module even if module isn't active
- * @return string name of module loaded, or false on failure
+ * Loads a module.
+ * 
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of functions to load.
+ * @param boolean $force   Determines to load Module even if module isn't active.
+ * 
+ * @return string|boolean Name of module loaded, or false on failure.
  */
 function pnModLoad($modname, $type = 'user', $force = false)
 {
@@ -484,11 +508,13 @@ function pnModLoad($modname, $type = 'user', $force = false)
 }
 
 /**
- * load an API module
- * @param 'name' the name of the module
- * @param 'type' the type of functions to load
- * @param 'force' determines to load Module even if module isn't active
- * @return string name of module loaded, or false on failure
+ * Load an API module.
+ * 
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of functions to load.
+ * @param boolean $force   Determines to load Module even if module isn't active.
+ * 
+ * @return string|boolean Name of module loaded, or false on failure.
  */
 function pnModAPILoad($modname, $type = 'user', $force = false)
 {
@@ -496,18 +522,20 @@ function pnModAPILoad($modname, $type = 'user', $force = false)
 }
 
 /**
- * load a module
- * @param 'name' the name of the module
- * @param 'type' the type of functions to load
- * @param 'force' determines to load Module even if module isn't active
- * @param 'api' whether or not to load an API (or regular) module
- * @return string name of module loaded, or false on failure
+ * Load a module.
+ * 
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of functions to load.
+ * @param boolean $force   Determines to load Module even if module isn't active.
+ * @param boolean $api     Whether or not to load an API (or regular) module.
+ * 
+ * @return string|boolean Name of module loaded, or false on failure.
  */
 function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false)
 {
     // define input, all numbers and booleans to strings
     $osapi = ($api ? 'api' : '');
-    $modname = isset($modname) ? ((string) $modname) : '';
+    $modname = isset($modname) ? ((string)$modname) : '';
     $modtype = strtolower("$modname{$type}{$osapi}");
 
     static $loaded = array();
@@ -523,7 +551,8 @@ function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false
 
     // get the module info
     $modinfo = pnModGetInfo(pnModGetIDFromName($modname));
-    if (!$modinfo) { // check for bad pnVarValidate($modname)
+    // check for bad pnVarValidate($modname)
+    if (!$modinfo) {
         return false;
     }
 
@@ -574,12 +603,14 @@ function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false
 }
 
 /**
- * run a module function
- * @param 'modname' the name of the module
- * @param 'type' the type of function to run
- * @param 'func' the specific function to run
- * @param 'args' the arguments to pass to the function
- * @returns mixed
+ * Run a module function.
+ * 
+ * @param string $modname The name of the module.
+ * @param string $type    The type of function to run.
+ * @param string $func    The specific function to run.
+ * @param array  $args    The arguments to pass to the function.
+ * 
+ * @return mixed.
  */
 function pnModFunc($modname, $type = 'user', $func = 'main', $args = array())
 {
@@ -587,12 +618,14 @@ function pnModFunc($modname, $type = 'user', $func = 'main', $args = array())
 }
 
 /**
- * run a module API function
- * @param 'modname' the name of the module
- * @param 'type' the type of function to run
- * @param 'func' the specific function to run
- * @param 'args' the arguments to pass to the function
- * @returns mixed
+ * Run an module API function.
+ * 
+ * @param string $modname The name of the module.
+ * @param string $type    The type of function to run.
+ * @param string $func    The specific function to run.
+ * @param array  $args    The arguments to pass to the function.
+ * 
+ * @return mixed.
  */
 function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
 {
@@ -610,18 +643,20 @@ function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
 }
 
 /**
- * run a module function
- * @param 'modname' the name of the module
- * @param 'type' the type of function to run
- * @param 'func' the specific function to run
- * @param 'args' the arguments to pass to the function
- * @param 'api' whether or not to execute an API (or regular) function
- * @returns mixed
+ * Run a module function.
+ * 
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of function to run.
+ * @param string  $func    The specific function to run.
+ * @param array   $args    The arguments to pass to the function.
+ * @param boolean $api     Whether or not to execute an API (or regular) function.
+ * 
+ * @return mixed.
  */
 function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
 {
     // define input, all numbers and booleans to strings
-    $modname = isset($modname) ? ((string) $modname) : '';
+    $modname = isset($modname) ? ((string)$modname) : '';
     $ftype = ($api ? 'api' : '');
     $loadfunc = ($api ? 'pnModAPILoad' : 'pnModLoad');
 
@@ -665,26 +700,29 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
 }
 
 /**
- * generate a module function URL
+ * Generate a module function URL.
  *
- * if the module is non-API compliant (type 1) then
+ * If the module is non-API compliant (type 1) then
  * a) $func is ignored.
  * b) $type=admin will generate admin.php?module=... and $type=user will generate index.php?name=...
  *
- * @param 'modname' the name of the module
- * @param 'type' the type of function to run
- * @param 'func' the specific function to run
- * @param 'args' the array of arguments to put on the URL
- * @param 'ssl'  set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched, true - create a ssl url, false - create a non-ssl url
- * @param 'fragment' the framgment to target within the URL
- * @param 'fqurl' Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL
- * @param 'forcelongurl' force pnModURL to not create a short url even if the system is configured to do so
- * @return sting absolute URL for call
+ * @param string       $modname      The name of the module.
+ * @param string       $type         The type of function to run.
+ * @param string       $func         The specific function to run.
+ * @param array        $args         The array of arguments to put on the URL.
+ * @param boolean|null $ssl          Set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched,
+ *                                   true - create a ssl url, false - create a non-ssl url.
+ * @param string       $fragment     The framgment to target within the URL.
+ * @param boolean|null $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL.
+ * @param boolean      $forcelongurl Force pnModURL to not create a short url even if the system is configured to do so.
+ * @param boolean      $forcelang    Forcelang.
+ * 
+ * @return sting Absolute URL for call
  */
 function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
 {
     // define input, all numbers and booleans to strings
-    $modname = isset($modname) ? ((string) $modname) : '';
+    $modname = isset($modname) ? ((string)$modname) : '';
 
     // validate
     if (!pnVarValidate($modname, 'mod')) {
@@ -763,11 +801,13 @@ function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ss
             foreach ($args as $k => $v) {
                 if (is_array($v)) {
                     foreach ($v as $k2 => $w) {
-                        if (is_numeric($w) || !empty($w)) { // we suppress '', but allow 0 as value (see #193)
+                        if (is_numeric($w) || !empty($w)) {
+                            // we suppress '', but allow 0 as value (see #193)
                             $vars .= '/' . $k . '[' . $k2 . ']/' . $w; // &$k[$k2]=$w
                         }
                     }
-                } elseif (is_numeric($v) || !empty($v)) { // we suppress '', but allow 0 as value (see #193)
+                } elseif (is_numeric($v) || !empty($v)) {
+                    // we suppress '', but allow 0 as value (see #193)
                     $vars .= "/$k/$v"; // &$k=$v
                 }
             }
@@ -834,11 +874,13 @@ function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ss
             foreach ($args as $k => $v) {
                 if (is_array($v)) {
                     foreach ($v as $l => $w) {
-                        if (is_numeric($w) || !empty($w)) { // we suppress '', but allow 0 as value (see #193)
+                        if (is_numeric($w) || !empty($w)) {
+                            // we suppress '', but allow 0 as value (see #193)
                             $url .= "&$k" . "[$l]=$w";
                         }
                     }
-                } elseif (is_numeric($v) || !empty($v)) { // we suppress '', but allow 0 as value (see #193)
+                } elseif (is_numeric($v) || !empty($v)) { 
+                    // we suppress '', but allow 0 as value (see #193)
                     $url .= "&$k=$v";
                 }
             }
@@ -853,14 +895,17 @@ function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ss
 }
 
 /**
- * see if a module is available
- * @param 'modname' the name of the module
- * @return bool true if the module is available, false if not
+ * Check if a module is available.
+ * 
+ * @param string  $modname The name of the module.
+ * @param boolean $force   Force.
+ * 
+ * @return boolean True if the module is available, false if not.
  */
 function pnModAvailable($modname = null, $force = false)
 {
     // define input, all numbers and booleans to strings
-    $modname = (isset($modname) ? strtolower((string) $modname) : '');
+    $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
     // validate
     if (!pnVarValidate($modname, 'mod')) {
@@ -874,7 +919,9 @@ function pnModAvailable($modname = null, $force = false)
         $modstate[$modname] = $modinfo['state'];
     }
 
-    if ((isset($modstate[$modname]) && $modstate[$modname] == PNMODULE_STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) && (isset($modstate[$modname]) && ($modstate[$modname] == PNMODULE_STATE_UPGRADED || $modstate[$modname] == PNMODULE_STATE_INACTIVE)))) {
+    if ((isset($modstate[$modname]) && 
+    $modstate[$modname] == PNMODULE_STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) && 
+    (isset($modstate[$modname]) && ($modstate[$modname] == PNMODULE_STATE_UPGRADED || $modstate[$modname] == PNMODULE_STATE_INACTIVE)))) {
         return true;
     }
 
@@ -882,8 +929,9 @@ function pnModAvailable($modname = null, $force = false)
 }
 
 /**
- * get name of current top-level module
- * @return string the name of the current top-level module, false if not in a module
+ * Get name of current top-level module.
+ * 
+ * @return string The name of the current top-level module, false if not in a module.
  */
 function pnModGetName()
 {
@@ -923,19 +971,21 @@ function pnModGetName()
 }
 
 /**
- * register a hook function
- * @param 'hookobject' the hook object
- * @param 'hookaction' the hook action
- * @param 'hookarea' the area of the hook (either 'GUI' or 'API')
- * @param 'hookmodule' name of the hook module
- * @param 'hooktype' name of the hook type
- * @param 'hookfunc' name of the hook function
- * @return bool true if successful, false otherwise
+ * Register a hook function.
+ * 
+ * @param object $hookobject The hook object.
+ * @param string $hookaction The hook action.
+ * @param string $hookarea   The area of the hook (either 'GUI' or 'API').
+ * @param string $hookmodule Name of the hook module.
+ * @param string $hooktype   Name of the hook type.
+ * @param string $hookfunc   Name of the hook function.
+ * 
+ * @return boolean True if successful, false otherwise.
  */
 function pnModRegisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
 {
     // define input, all numbers and booleans to strings
-    $hookmodule = isset($hookmodule) ? ((string) $hookmodule) : '';
+    $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
 
     // validate
     if (!pnVarValidate($hookmodule, 'mod')) {
@@ -944,23 +994,25 @@ function pnModRegisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $ho
 
     // Insert hook
     $obj = array('object' => $hookobject, 'action' => $hookaction, 'tarea' => $hookarea, 'tmodule' => $hookmodule, 'ttype' => $hooktype, 'tfunc' => $hookfunc);
-    return (bool) DBUtil::insertObject($obj, 'hooks', 'id');
+    return (bool)DBUtil::insertObject($obj, 'hooks', 'id');
 }
 
 /**
- * unregister a hook function
- * @param 'hookobject' the hook object
- * @param 'hookaction' the hook action
- * @param 'hookarea' the area of the hook (either 'GUI' or 'API')
- * @param 'hookmodule' name of the hook module
- * @param 'hooktype' name of the hook type
- * @param 'hookfunc' name of the hook function
- * @return bool true if successful, false otherwise
+ * Unregister a hook function.
+ * 
+ * @param string $hookobject The hook object.
+ * @param string $hookaction The hook action.
+ * @param string $hookarea   The area of the hook (either 'GUI' or 'API').
+ * @param string $hookmodule Name of the hook module.
+ * @param string $hooktype   Name of the hook type.
+ * @param string $hookfunc   Name of the hook function.
+ * 
+ * @return boolean True if successful, false otherwise.
  */
 function pnModUnregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
 {
     // define input, all numbers and booleans to strings
-    $hookmodule = isset($hookmodule) ? ((string) $hookmodule) : '';
+    $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
 
     // validate
     if (!pnVarValidate($hookmodule, 'mod')) {
@@ -978,17 +1030,19 @@ function pnModUnregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $
               AND $hookscolumn[ttype] = '" . DataUtil::formatForStore($hooktype) . "'
               AND $hookscolumn[tfunc] = '" . DataUtil::formatForStore($hookfunc) . "'";
 
-    return (bool) DBUtil::deleteWhere('hooks', $where);
+    return (bool)DBUtil::deleteWhere('hooks', $where);
 }
 
 /**
- * carry out hook operations for module
- * @param 'hookobject' the object the hook is called for - one of 'item', 'category' or 'module'
- * @param 'hookaction' the action the hook is called for - one of 'new', 'create', 'modify', 'update', 'delete', 'transform', 'display', 'modifyconfig', 'updateconfig'
- * @param 'hookid' the id of the object the hook is called for (module-specific)
- * @param 'extrainfo' extra information for the hook, dependent on hookaction
- * @param 'implode' implode collapses all display hooks into a single string - default to true for compatability with .7x
- * @return mixed string output from GUI hooks, extrainfo array for API hooks
+ * Carry out hook operations for module.
+ * 
+ * @param string  $hookobject The object the hook is called for - one of 'item', 'category' or 'module'.
+ * @param string  $hookaction The action the hook is called for - one of 'new', 'create', 'modify', 'update', 'delete', 'transform', 'display', 'modifyconfig', 'updateconfig'.
+ * @param integer $hookid     The id of the object the hook is called for (module-specific).
+ * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
+ * @param boolean $implode    Implode collapses all display hooks into a single string - default to true for compatability with .7x.
+ * 
+ * @return string|array String output from GUI hooks, extrainfo array for API hooks.
  */
 function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
 {
@@ -1024,10 +1078,15 @@ function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(),
                 if (isset($modulehook['tarea']) && $modulehook['tarea'] == 'GUI') {
                     $gui = true;
                     if (pnModAvailable($modulehook['tmodule'], $modulehook['ttype']) && pnModLoad($modulehook['tmodule'], $modulehook['ttype'])) {
-                        $output[$modulehook['tmodule']] = pnModFunc($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], array('objectid' => $hookid, 'extrainfo' => $extrainfo));
+                        $output[$modulehook['tmodule']] = pnModFunc($modulehook['tmodule'],
+                         $modulehook['ttype'],
+                         $modulehook['tfunc'],
+                         array('objectid' => $hookid, 'extrainfo' => $extrainfo));
                     }
                 } else {
-                    if (isset($modulehook['tmodule']) && pnModAvailable($modulehook['tmodule'], $modulehook['ttype']) && pnModAPILoad($modulehook['tmodule'], $modulehook['ttype'])) {
+                    if (isset($modulehook['tmodule']) &&
+                     pnModAvailable($modulehook['tmodule'], $modulehook['ttype']) &&
+                     pnModAPILoad($modulehook['tmodule'], $modulehook['ttype'])) {
                         $extrainfo = pnModAPIFunc($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], array('objectid' => $hookid, 'extrainfo' => $extrainfo));
                     }
                 }
@@ -1048,10 +1107,12 @@ function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(),
 }
 
 /**
- * Determine if a module is hooked by another module
- * @param 'tmodule' the target module
- * @param 'smodule' the source module - default the current top most module
- * @return bool true if the current module is hooked by the target module, false otherwise
+ * Determine if a module is hooked by another module.
+ * 
+ * @param string $tmodule The target module.
+ * @param string $smodule The source module - default the current top most module.
+ * 
+ * @return boolean True if the current module is hooked by the target module, false otherwise.
  */
 function pnModIsHooked($tmodule, $smodule)
 {
@@ -1062,8 +1123,8 @@ function pnModIsHooked($tmodule, $smodule)
     }
 
     // define input, all numbers and booleans to strings
-    $tmodule = isset($tmodule) ? ((string) $tmodule) : '';
-    $smodule = isset($smodule) ? ((string) $smodule) : '';
+    $tmodule = isset($tmodule) ? ((string)$tmodule) : '';
+    $smodule = isset($smodule) ? ((string)$smodule) : '';
 
     // validate
     if (!pnVarValidate($tmodule, 'mod') || !pnVarValidate($smodule, 'mod')) {
@@ -1085,14 +1146,15 @@ function pnModIsHooked($tmodule, $smodule)
 }
 
 /**
- * pnModLangLoad
- * loads the language files for a module
+ * The pnModLangLoad function loads the language files for a module.
  *
+ * @param string  $modname Name of the module.
+ * @param string  $type    Type of the language file to load e.g. user, admin.
+ * @param boolean $api     Load api lang file or gui lang file.
+ * 
+ * @return boolean False as this function is depreciated.
+ * 
  * @deprecated define based language system support stopped with Zikula 1.3.0
- *
- * @param modname - name of the module
- * @param type - type of the language file to load e.g. user, admin
- * @param api - load api lang file or gui lang file
  */
 function pnModLangLoad($modname, $type = 'user', $api = false)
 {
@@ -1101,7 +1163,7 @@ function pnModLangLoad($modname, $type = 'user', $api = false)
 }
 
 /**
- * Get the base directory for a module
+ * Get the base directory for a module.
  *
  * Example: If the webroot is located at
  * /var/www/html
@@ -1114,12 +1176,11 @@ function pnModLangLoad($modname, $type = 'user', $api = false)
  * /var/www/html/system/Template
  *
  * This allows you to say:
- * include(pnModGetBaseDir() . '/includes/private_functions.php');
+ * include(pnModGetBaseDir() . '/includes/private_functions.php');.
  *
- * @param   $modname - name of module to that you want the
- *                     base directory of.
- * @return  string - the path from the root directory to the
- *                   specified module.
+ * @param string $modname Name of module to that you want the base directory of.
+ * 
+ * @return string The path from the root directory to the specified module.
  */
 function pnModGetBaseDir($modname = '')
 {
@@ -1143,10 +1204,11 @@ function pnModGetBaseDir($modname = '')
 }
 
 /**
- * gets the modules table
+ * Gets the modules table.
  *
- * small wrapper function to avoid duplicate sql
- * @return array modules table
+ * Small wrapper function to avoid duplicate sql.
+ * 
+ * @return array An array modules table.
  */
 function pnModGetModsTable()
 {
@@ -1154,12 +1216,11 @@ function pnModGetModsTable()
 
     if (!isset($modstable) || defined('_ZINSTALLVER')) {
         $modstable = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
-        foreach ($modstable as $mid => $module)
-        {
-           $modstable[$mid]['i18n'] = ($module['type'] == 2 ? true : false);
-           if (!isset($module['url']) || empty($module['url'])) {
-               $modstable[$mid]['url'] = $module['displayname'];
-           }
+        foreach ($modstable as $mid => $module) {
+            $modstable[$mid]['i18n'] = ($module['type'] == 2 ? true : false);
+            if (!isset($module['url']) || empty($module['url'])) {
+                $modstable[$mid]['url'] = $module['displayname'];
+            }
         }
     }
 
