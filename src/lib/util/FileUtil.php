@@ -13,7 +13,7 @@
  */
 
 /**
- * FileUtil
+ * FileUtil class.
  *
  * @package Zikula_Core
  * @subpackage FileUtil
@@ -21,12 +21,12 @@
 class FileUtil
 {
     /**
-     * Given a filename (complete with path) get the file basename
+     * Given a filename (complete with path) get the file basename.
      *
-     * @param  filename   The filename to process
-     * @param  keepDot    whether or not to return the dot with the basename
+     * @param string  $filename The filename to process.
+     * @param boolean $keepDot  Whether or not to return the dot with the basename.
      *
-     * @return string     The file's filename
+     * @return string The file's filename.
      */
     public static function getFilebase($filename, $keepDot = false)
     {
@@ -48,11 +48,11 @@ class FileUtil
     }
 
     /**
-     * Get the basename of a filename
+     * Get the basename of a filename.
      *
-     * @param  filename     The filename to process
+     * @param string $filename The filename to process.
      *
-     * @return string       The file's basename
+     * @return string The file's basename.
      */
     public static function getBasename($filename)
     {
@@ -64,12 +64,12 @@ class FileUtil
     }
 
     /**
-     * Get the file's extension
+     * Get the file's extension.
      *
-     * @param  filename    The filename to process
-     * @param  keepDot     whether or not to return the '.' with the extension
+     * @param string  $filename The filename to process.
+     * @param boolean $keepDot  Whether or not to return the '.' with the extension.
      *
-     * @return string      The file's extension
+     * @return string The file's extension.
      */
     public static function getExtension($filename, $keepDot = false)
     {
@@ -90,12 +90,12 @@ class FileUtil
     }
 
     /**
-     * Strip the file's extension
+     * Strip the file's extension.
      *
-     * @param  filename   The filename to process
-     * @param  keepDot    whether or not to return the '.' with the extension
+     * @param string  $filename The filename to process.
+     * @param boolean $keepDot  Whether or not to return the '.' with the extension.
      *
-     * @return string     The filename without the extension
+     * @return string The filename without the extension.
      */
     public static function stripExtension($filename, $keepDot = false)
     {
@@ -116,15 +116,15 @@ class FileUtil
     }
 
     /**
-     * Generate a random filename
+     * Generate a random filename.
      *
-     * @param min           Minimum number of characters
-     * @param max           Maximum number of characters
-     * @param useupper      whether to use uppercase characters
-     * @param usenumbers    whether to use numeric characters
-     * @param usespecial    whether to use special characters
+     * @param integer $min        Minimum number of characters.
+     * @param integer $max        Maximum number of characters.
+     * @param boolean $useupper   Whether to use uppercase characters.
+     * @param boolean $usenumbers Whether to use numeric characters.
+     * @param boolean $usespecial Whether to use special characters.
      *
-     * @return string       The generated filename extension
+     * @return string The generated filename extension.
      */
     public static function generateRandomFilename($min, $max, $useupper = false, $usenumbers = true, $usespecial = false)
     {
@@ -154,16 +154,16 @@ class FileUtil
     }
 
     /**
-     * Generate a file/directory listing (can be recusive)
+     * Generate a file/directory listing (can be recusive).
      *
-     * @param rootPath      The root-path we wish to start at
-     * @param recurse       whether or not to recurse directories (optional) (default=true)
-     * @param relativePath  whether or not to list relative (vs abolute) paths (optional) (default=true)
-     * @param extension     The file extension or array of extensions to scan for (optional) (default=null)
-     * @param type          The type of object (file or directory or both) to return (optional) (default=null)
-     * @param nestedData    Whether or not to return a nested data set (optional) (default=false)
+     * @param string  $rootPath     The root-path we wish to start at.
+     * @param boolean $recurse      Whether or not to recurse directories (optional) (default=true).
+     * @param boolean $relativePath Whether or not to list relative (vs abolute) paths (optional) (default=true).
+     * @param string  $extension    The file extension or array of extensions to scan for (optional) (default=null).
+     * @param string  $type         The type of object (file or directory or both) to return (optional) (default=null).
+     * @param boolean $nestedData   Whether or not to return a nested data set (optional) (default=false).
      *
-     * @return array        the array of files in the given path
+     * @return array The array of files in the given path.
      */
     public static function getFiles($rootPath, $recurse=true, $relativePath=true, $extensions=null, $type=null, $nestedData=false)
     {
@@ -182,8 +182,7 @@ class FileUtil
 
         $el = (is_string($extensions) ? strlen($extensions) : 0);
         $dh = opendir($rootPath);
-        while (($file = readdir($dh)) !== false)
-        {
+        while (($file = readdir($dh)) !== false) {
             $relativepath = $relativePath;
             if (!in_array($file, $skiplist)) {
                 $path = "$rootPath/$file";
@@ -239,13 +238,13 @@ class FileUtil
     }
 
     /**
-     * Recursiveley create a directory path
+     * Recursiveley create a directory path.
      *
-     * @param  path       The path we wish to generate
-     * @param  mode       The (UNIX) mode we wish to create the files with
-     * @param  absolute   Allow absolute paths (default=false) (optional)
+     * @param string  $path     The path we wish to generate.
+     * @param string  $mode     The (UNIX) mode we wish to create the files with.
+     * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
-     * @return boolean    TRUE on success, FALSE on failure
+     * @return boolean TRUE on success, FALSE on failure.
      */
     public static function mkdirs($path, $mode = null, $absolute = false)
     {
@@ -266,12 +265,12 @@ class FileUtil
     }
 
     /**
-     * Recursiveley delete given directory path
+     * Recursiveley delete given directory path.
      *
-     * @param  path       The path/folder we wish to delete
-     * @param  absolute   Allow absolute paths (default=false) (optional)
+     * @param string  $path     The path/folder we wish to delete.
+     * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
-     * @return boolean    TRUE on success, FALSE on failure
+     * @return boolean TRUE on success, FALSE on failure.
      */
     public static function deldir($path, $absolute = false)
     {
@@ -292,13 +291,12 @@ class FileUtil
     }
 
     /**
-     * Read a file's contents and return them as a string. This method also
-     * opens and closes the file.
+     * Read a file's contents and return them as a string. This method also opens and closes the file.
      *
-     * @param  filename   The file to read
-     * @param  absolute   Allow absolute paths (default=false) (optional)
+     * @param string  $filename The file to read.
+     * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
-     * @return mixed      The file's contents or FALSE on failure
+     * @return mixed The file's contents or FALSE on failure.
      */
     public static function readFile($filename, $absolute = false)
     {
@@ -310,13 +308,12 @@ class FileUtil
     }
 
     /**
-     * Read a file's contents and return them as an array of lines.
-     * This method also opens and closes the file.
+     * Read a file's contents and return them as an array of lines. This method also opens and closes the file.
      *
-     * @param filename    The file to read
-     * @param absolute    Allow absolute paths (default=false) (optional)
+     * @param string  $filename The file to read.
+     * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
-     * @return mixed      The file's contents as array or FALSE on failure
+     * @return mixed The file's contents as array or FALSE on failure.
      */
     public static function readFileLines($filename, $absolute = false)
     {
@@ -328,13 +325,12 @@ class FileUtil
     }
 
     /**
-     * Read a serialized's file's contents and return them as a string
-     * This method also opens and closes the file.
+     * Read a serialized's file's contents and return them as a string. This method also opens and closes the file.
      *
-     * @param  filename    The file to read
-     * @param  absolute    Allow absolute paths (default=false) (optional)
+     * @param string  $filename The file to read.
+     * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
-     * @return mixed       The file's contents or FALSE on failure
+     * @return mixed The file's contents or FALSE on failure.
      */
     public static function readSerializedFile($filename, $absolute = false)
     {
@@ -342,12 +338,12 @@ class FileUtil
     }
 
     /**
-     * Take an existing filename and 'randomize' it
+     * Take an existing filename and 'randomize' it.
      *
-     * @param  filename   The filename to randomize
-     * @param  dir        The directory the file should be in
+     * @param string $filename The filename to randomize.
+     * @param string $dir      The directory the file should be in.
      *
-     * @return string     The 'randomized' filename
+     * @return string The 'randomized' filename.
      */
     public static function randomizeFilename($filename, $dir)
     {
@@ -375,15 +371,15 @@ class FileUtil
     }
 
     /**
-     * Write a string to a file
-     * This method also opens and closes the file.
-     * On versions >= PHP5 this method will use the file_put_contents API
+     * Write a string to a file. This method also opens and closes the file.
      *
-     * @param  filename   The file to write
-     * @param  data       The data to write to the file
-     * @param  absolute   Allow absolute paths (default=false) (optional)
+     * On versions >= PHP5 this method will use the file_put_contents API.
      *
-     * @return bool       TRUE on success, FALSE on failure
+     * @param string $filename The file to write.
+     * @param string $data     The data to write to the file.
+     * @param string $absolute Allow absolute paths (default=false) (optional).
+     *
+     * @return boolean TRUE on success, FALSE on failure.
      */
     public static function writeFile($filename, $data = '', $absolute = false)
     {
@@ -405,14 +401,13 @@ class FileUtil
     }
 
     /**
-     * Write a serialized string to a file
-     * This method also opens and closes the file.
+     * Write a serialized string to a file. This method also opens and closes the file.
      *
-     * @param filename   The file to write
-     * @param data       The data to write to the file
-     * @param absolute   Allow absolute paths (default=false) (optional)
+     * @param string  $filename The file to write.
+     * @param string  $data     The data to write to the file.
+     * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
-     * @return bool      TRUE on success, FALSE on failure
+     * @return boolean TRUE on success, FALSE on failure.
      */
     public static function writeSerializedFile($filename, $data, $absolute = false)
     {
@@ -420,14 +415,14 @@ class FileUtil
     }
 
     /**
-     * Upload a file
+     * Upload a file.
      *
-     * @param key           The filename key to use in accessing the file data
-     * @param destination   The destination where the file should end up
-     * @param newName       The new name to give the file (optional) (default='')
-     * @param absolute      Allow absolute paths (default=false) (optional)
+     * @param string  $key         The filename key to use in accessing the file data.
+     * @param string  $destination The destination where the file should end up.
+     * @param string  $newName     The new name to give the file (optional) (default='').
+     * @param boolean $absolute    Allow absolute paths (default=false) (optional).
      *
-     * @return mixed        TRUE if success, a string with the error message on failure
+     * @return mixed TRUE if success, a string with the error message on failure.
      */
     public static function uploadFile($key, $destination, $newName = '', $absolute = false)
     {
