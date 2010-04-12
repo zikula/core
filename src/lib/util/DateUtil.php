@@ -19,7 +19,7 @@ define('DATEFORMAT_FIXED', '%Y-%m-%d %H:%M:%S');
 define('DATEONLYFORMAT_FIXED', '%Y-%m-%d');
 
 /**
- * DateUtil
+ * DateUtil.
  *
  * @package Zikula_Core
  * @subpackage DateUtil
@@ -27,12 +27,12 @@ define('DATEONLYFORMAT_FIXED', '%Y-%m-%d');
 class DateUtil
 {
     /**
-     * Return a formatted datetime for the given timestamp (or for now)
+     * Return a formatted datetime for the given timestamp (or for now).
      *
-     * @param time      The timestamp (string) which we wish to format (default==now)
-     * @param format    The format to use when formatting the date (optional)
+     * @param string $time   The timestamp (string) which we wish to format (default==now).
+     * @param string $format The format to use when formatting the date (optional).
      *
-     * @return datetime The datetime formatted according to the specified format
+     * @return datetime The datetime formatted according to the specified format.
      */
     public static function getDatetime($time=null, $format=null)
     {
@@ -87,9 +87,11 @@ class DateUtil
     }
 
     /**
-     * Transform a timestamp to internal datetime format
+     * Transform a timestamp to internal datetime format.
      *
-     * @param int $timestamp
+     * @param int $timestamp The timestamp.
+     *
+     * @return string The datetime into internal format.
      */
     public function transformInternalDateTime($timestamp)
     {
@@ -97,9 +99,11 @@ class DateUtil
     }
 
     /**
-     * Transform a timestamp to internal date only format
+     * Transform a timestamp to internal date only format.
      *
-     * @param int $timestamp
+     * @param int $timestamp The timestamp.
+     *
+     * @return string The date into internal format.
      */
     public function transformInternalDate($timestamp)
     {
@@ -108,13 +112,13 @@ class DateUtil
 
 
     /**
-     * Reformat a given datetime according to the specified format
+     * Reformat a given datetime according to the specified format.
      *
-     * @param datetime    The (string) datetime to reformat
-     * @param format      The format to use when formatting the date (optional)
-     * @param TZAdjust    Adjust the output according to Timezone, default true
+     * @param string  $datetime The (string) datetime to reformat.
+     * @param string  $format   The format to use when formatting the date (optional).
+     * @param boolean $TZAdjust Adjust the output according to Timezone, default true.
      *
-     * @return datetime The datetime formatted according to the specified format
+     * @return string The datetime formatted according to the specified format.
      */
     public function formatDatetime($datetime=null, $format=DATEFORMAT_FIXED, $TZadjust=true)
     {
@@ -149,15 +153,15 @@ class DateUtil
      * between 13 Decemnber 1901 at 20:45:52 UTC and 19 January 2038 at
      * 03:14:07 UTC.
      *
-     * @param year      The year
-     * @param month     The month
-     * @param day       The day
-     * @param hour      The hour (optional) (default==0)
-     * @param minute    The minute (optional) (default==0)
-     * @param second    The second (optional) (default==0)
-     * @param format    The format to use when formatting the date (optional) (default==DATEFORMAT_FIXED)
+     * @param integer $year   The year.
+     * @param integer $month  The month.
+     * @param integer $day    The day.
+     * @param integer $hour   The hour (optional) (default==0).
+     * @param integer $minute The minute (optional) (default==0).
+     * @param integer $second The second (optional) (default==0).
+     * @param string  $format The format to use when formatting the date (optional) (default==DATEFORMAT_FIXED).
      *
-     * @return datetime The datetime formatted according to the specified format
+     * @return string The datetime formatted according to the specified format.
      */
     public static function buildDatetime($year, $month, $day, $hour=0, $minute=0, $second=0, $format=DATEFORMAT_FIXED)
     {
@@ -168,15 +172,15 @@ class DateUtil
 
 
     /**
-     * Return a formatted datetime at the end of the business day n days from now
+     * Return a formatted datetime at the end of the business day n days from now.
      *
-     * @param days      The number of days to advance (optional) (detault==1)
-     * @param format    The format to use when formatting the date (optional)
-     * @param hour      The hour of the target time to set (optional) (default=null, means params is taken from now)
-     * @param minute    The minute of the target time to set (optional) (default=null, means params is taken from now)
-     * @param second    The second of the target time to set (optional) (default=null, means params is taken from now)
+     * @param integer $days   The number of days to advance (optional) (default=1).
+     * @param string  $format The format to use when formatting the date (optional).
+     * @param integer $hour   The hour of the target time to set (optional) (default=null, means params is taken from now).
+     * @param integer $minute The minute of the target time to set (optional) (default=null, means params is taken from now).
+     * @param integer $second The second of the target time to set (optional) (default=null, means params is taken from now).
      *
-     * @return datetime The datetime formatted according to the specified format
+     * @return string The datetime formatted according to the specified format.
      */
     public static function getDatetime_NextDay($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
@@ -192,18 +196,18 @@ class DateUtil
 
 
     /**
-     * Return a formatted datetime at the end of the business day n week from now
+     * Return a formatted datetime at the end of the business day n week from now.
      *
-     * @param num       The number of weeks to advance (optional) (detault==1)
-     * @param format    The format to use when formatting the date (optional)
-     * @param year      The year of the target time to set (optional) (default=null, means param is taken from now)
-     * @param month     The month of the target time to set (optional) (default=null, means param is taken from now)
-     * @param day       The day of the target time to set (optional) (default=null, means param is taken from now)
-     * @param hour      The hour of the target time to set (optional) (default=null, means param is taken from now)
-     * @param minute    The minute of the target time to set (optional) (default=null, means param is taken from now)
-     * @param second    The second of the target time to set (optional) (default=null, means param is taken from now)
+     * @param integer $num    The number of weeks to advance (optional) (default=1).
+     * @param string  $format The format to use when formatting the date (optional).
+     * @param integer $year   The year of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $month  The month of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $day    The day of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $hour   The hour of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $minute The minute of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $second The second of the target time to set (optional) (default=null, means param is taken from now).
      *
-     * @return datetime The datetime formatted according to the specified format
+     * @return string The datetime formatted according to the specified format.
      */
     public static function getDatetime_NextWeek($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
@@ -220,18 +224,18 @@ class DateUtil
 
 
     /**
-     * Return a formatted datetime at the end of the business day n months from now
+     * Return a formatted datetime at the end of the business day n months from now.
      *
-     * @param num       The number of months to advance (optional) (default=1)
-     * @param format    The format to use when formatting the date (optional)
-     * @param year      The year of the target time to set (optional) (default=null, means param is taken from now)
-     * @param month     The month of the target time to set (optional) (default=null, means param is taken from now)
-     * @param day       The day of the target time to set (optional) (default=null, means param is taken from now)
-     * @param hour      The hour of the target time to set (optional) (default=null, means params is taken from now)
-     * @param minute    The minute of the target time to set (optional) (default=null, means params is taken from now)
-     * @param second    The second of the target time to set (optional) (default=null, means params is taken from now)
+     * @param integer $num    The number of months to advance (optional) (default=1).
+     * @param string  $format The format to use when formatting the date (optional).
+     * @param integer $year   The year of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $month  The month of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $day    The day of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $hour   The hour of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $minute The minute of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $second The second of the target time to set (optional) (default=null, means param is taken from now).
      *
-     * @return datetime The datetime formatted according to the specified format
+     * @return string The datetime formatted according to the specified format.
      */
     public static function getDatetime_NextMonth($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
@@ -249,16 +253,16 @@ class DateUtil
     /**
      * Return a formatted datetime at the end of the business day n years from now
      *
-     * @param num       The number of years to advance (optional) (default=1)
-     * @param format    The format to use when formatting the date (optional)
-     * @param year      The year of the target time to set (optional) (default=null, means param is taken from now)
-     * @param month     The month of the target time to set (optional) (default=null, means param is taken from now)
-     * @param day       The day of the target time to set (optional) (default=null, means param is taken from now)
-     * @param hour      The hour of the target time to set (optional) (default=null, means params is taken from now)
-     * @param minute    The minute of the target time to set (optional) (default=null, means params is taken from now)
-     * @param second    The second of the target time to set (optional) (default=null, means params is taken from now)
+     * @param integer $num    The number of years to advance (optional) (default=1).
+     * @param string  $format The format to use when formatting the date (optional).
+     * @param integer $year   The year of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $month  The month of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $day    The day of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $hour   The hour of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $minute The minute of the target time to set (optional) (default=null, means param is taken from now).
+     * @param integer $second The second of the target time to set (optional) (default=null, means param is taken from now).
      *
-     * @return datetime The datetime formatted according to the specified format
+     * @return string The datetime formatted according to the specified format.
      */
     public static function getDatetime_NextYear($num=1, $format=DATEFORMAT_FIXED, $year=null, $month=null, $day=null, $hour=null, $minute=null, $second=null)
     {
@@ -274,12 +278,12 @@ class DateUtil
 
 
     /**
-     * Return the date portion of a datetime timestamp
+     * Return the date portion of a datetime timestamp.
      *
-     * @param datetime  The date to parse (optional) (default=='', reverts to now)
-     * @param format    The format to use when formatting the date (optional)
+     * @param string $datetime The date to parse (optional) (default=='', reverts to now).
+     * @param string $format   The format to use when formatting the date (optional).
 
-     * @return string   The Date portion of the specified datetime
+     * @return string The Date portion of the specified datetime.
      */
     public static function getDatetime_Date($datetime='', $format=DATEFORMAT_FIXED)
     {
@@ -301,12 +305,12 @@ class DateUtil
 
 
     /**
-     * Return the time portion of a datetime timestamp
+     * Return the time portion of a datetime timestamp.
      *
-     * @param datetime  The date to parse (optional) (default=='', reverts to now)
-     * @param format    The format to use when formatting the date (optional)
+     * @param string $datetime The date to parse (optional) (default=='', reverts to now).
+     * @param string $format   The format to use when formatting the date (optional).
      *
-     * @return string   The Time portion of the specified datetime
+     * @return string The Time portion of the specified datetime.
      */
     public static function getDatetime_Time($datetime='', $format=DATEFORMAT_FIXED)
     {
@@ -328,7 +332,7 @@ class DateUtil
 
 
     /**
-     * Return the requested field from the supplied date
+     * Return the requested field from the supplied date.
      *
      * Since the date fields can change depending on the date format,
      * the following convention is used when referring to date fields:<br />
@@ -339,9 +343,8 @@ class DateUtil
      *   Field 5    ->     Minute<br />
      *   Field 6    ->     Second<br />
      *
-     *
-     * @param datetime  The field number to return
-     * @param field     The date to parse (default=='', reverts to now)
+     * @param string $datetime The field number to return.
+     * @param string $field    The date to parse (default=='', reverts to now).
      *
      * @return string   The requested datetime field
      */
@@ -382,10 +385,10 @@ class DateUtil
      *          [m] => _numeric_minute_value_<br />
      *          [s] => _numeric_second_value_ )<br />
      *
-     * @param date1     The first date
-     * @param date2     The second date
+     * @param string $date1 The first date.
+     * @param string $date2 The second date.
      *
-     * @return array    The structured array containing the datetime difference
+     * @return array The structured array containing the datetime difference.
      */
     public static function getDatetimeDiff($date1, $date2)
     {
@@ -410,8 +413,7 @@ class DateUtil
 
 
     /**
-     * Return an field holding the differences between 2 dates expressed
-     * in units of the field requested
+     * Return an field holding the differences between 2 dates expressed in units of the field requested.
      *
      * Since the date fields can change depending on the date format,
      * the following convention is used when referring to date fields:<br />
@@ -422,11 +424,11 @@ class DateUtil
      *   Field 5    ->     Minute<br />
      *   Field 6    ->     Second<br />
      *
-     * @param date1     The first date
-     * @param date2     The second date
-     * @param field     The field (unit) in which we want the different (optional) (default=5)
+     * @param string $date1  The first date.
+     * @param string $date2  The second date.
+     * @param integer $field The field (unit) in which we want the different (optional) (default=5).
      *
-     * @return float The difference in units of the specified field
+     * @return float The difference in units of the specified field.
      */
     public static function getDatetimeDiff_AsField($date1, $date2, $field=5)
     {
@@ -465,13 +467,13 @@ class DateUtil
 
 
     /**
-     * Calculate day-x of KW in a YEAR
-     * @param day       0 for monday, 6 for sunday,....
-     * @param kw        week of the year
-     * @param year      year
-     * @param flag      u or s (unixtimestamp or MySQLDate)
+     * Calculate day-x of KW in a YEAR.
+     * @param integer $day  Values :0 for monday, 6 for sunday,....
+     * @param integer $kw   Week of the year.
+     * @param integer $year Year.
+     * @param string  $flag The u or s (unixtimestamp or MySQLDate).
      *
-     * @return unixtimestamp or sqlDate
+     * @return unixtimestamp or sqlDate.
      */
     public static function getDateofKW($day, $kw, $year, $flag='s')
     {
@@ -500,10 +502,10 @@ class DateUtil
 
 
     /**
-     * Return a the number of days in the given month/year
+     * Return a the number of days in the given month/year.
      *
-     * @param month     The (human) month number to check
-     * @param year      The year number to check
+     * @param integer $month The (human) month number to check.
+     * @param integer $year  The year number to check.
      *
      * @return integer  The number of days in the given month/year
      */
@@ -535,12 +537,12 @@ class DateUtil
 
 
     /**
-     * Return an array of weekdays for the given month
+     * Return an array of weekdays for the given month.
      *
-     * @param month     The (human) month number to check
-     * @param year      The year number to check
+     * @param integer $month The (human) month number to check.
+     * @param integer $year  The year number to check.
      *
-     * @return integer  The number of days in the given month/year
+     * @return integer The number of days in the given month/year.
      */
     public static function getWeekdaysInMonth($month, $year)
     {
@@ -558,12 +560,12 @@ class DateUtil
 
 
     /**
-     * Return an array of dates for the given month
+     * Return an array of dates for the given month.
      *
-     * @param month     The (human) month number to check
-     * @param year      The year number to check
+     * @param integer $month The (human) month number to check.
+     * @param integer $year  The year number to check.
      *
-     * @return integer  The number of days in the given month/year
+     * @return integer The number of days in the given month/year.
      */
     public static function getMonthDates($month, $year)
     {
@@ -579,10 +581,12 @@ class DateUtil
 
 
     /**
-     * Parses a user interface date string (excluding time) into a timestamp
+     * Parses a user interface date string (excluding time) into a timestamp.
      *
-     * @param text      The UI date string
-     * @return date     The timestamp or null in case of errors
+     * @param string $text   The UI date string
+     * @param string $format The format date string
+     *
+     * @return string The timestamp or null in case of errors.
      */
     public function parseUIDate($text, $format=null)
     {
@@ -591,10 +595,12 @@ class DateUtil
 
 
     /**
-     * Parses a user interface date+time string into a timestamp
+     * Parses a user interface date+time string into a timestamp.
      *
-     * @param text      The UI date+time string
-     * @return date     The timestamp or null in case of errors
+     * @param string $text       The UI date+time string.
+     * @param string $dateformat The format of the date.
+     *
+     * @return string The timestamp or null in case of errors.
      */
     public function parseUIDateTime($text, $dateformat=null)
     {
@@ -633,7 +639,7 @@ class DateUtil
                 return null;
             }
         } else {
-          return null;
+            return null;
         }
 
         return mktime($hour, $min, $sec, $month, $day, $year, 0);
@@ -641,15 +647,14 @@ class DateUtil
 
 
     /**
-     * Create a unix timestamp from either a unix timestamp (sic!), a MySQL timestamp
-     * or a string. This code is taken from smarty_make_timestamp.php,
-     * credits go to Monte Ohrt <monte at ohrt dot com>
+     * Create a unix timestamp from either a unix timestamp (sic!), a MySQL timestamp or a string.
+     * This code is taken from smarty_make_timestamp.php, credits go to Monte Ohrt <monte at ohrt dot com>.
      *
      * We use a copy of the code here due to performance reasons.
      *
-     * @param int or text       a timestamp in one of the formats mentioned
+     * @param mixed $string A timestamp in one of the formats mentioned.
      *
-     * @return int              a unix timestamp
+     * @return integer A unix timestamp.
      */
     public static function makeTimestamp($string='')
     {
@@ -680,10 +685,10 @@ class DateUtil
 
 
     /**
-     * Identify timezone using the date PHP function
-     * does not use the strftime because it varies depending of the operative system
+     * Identify timezone using the date PHP function.
+     * Does not use the strftime because it varies depending of the operative system.
      *
-     * @return  string   timezone integer (hour value)
+     * @return string timezone integer (hour value).
      */
     public static function getTimezone()
     {
@@ -702,9 +707,9 @@ class DateUtil
 
 
     /**
-     * Return the translated name of a specific timezone if exists
+     * Return the translated name of a specific timezone if exists.
      *
-     * @return  string   timezone translation (hour value)
+     * @return string Timezone translation (hour value).
      */
     public static function getTimezoneText($tz=null)
     {
@@ -723,9 +728,9 @@ class DateUtil
 
 
     /**
-     * Return the translated list of timezones
+     * Return the translated list of timezones.
      *
-     * @return  array  timezones values and gettext strings
+     * @return array Timezones values and gettext strings.
      */
     public static function getTimezones()
     {
@@ -771,10 +776,10 @@ class DateUtil
 
 
     /**
-     * Identify timezone abbreviation using the date PHP function
-     * does not use the strftime because it varies depending of the operative system
+     * Identify timezone abbreviation using the date PHP function.
+     * Does not use the strftime because it varies depending of the operative system.
      *
-     * @return  string   timezone abbreviation
+     * @return string Timezone abbreviation.
      */
     public static function getTimezoneAbbr()
     {
@@ -785,7 +790,9 @@ class DateUtil
 
 
     /**
-     * Return the time difference between the server and user timezone in seconds
+     * Return the time difference between the server and user timezone in seconds.
+     *
+     * @return integer The time difference between the server and user timezone in seconds.
      */
     public static function getTimezoneUserDiff()
     {
@@ -797,8 +804,13 @@ class DateUtil
 
 
     /**
-     * Multilingual format time method
+     * Multilingual format time method.
      * @author Fred B (fredb86)
+     *
+     * @param string $format    Format date.
+     * @param string $timestamp Timestamp.
+     *
+     * @return string The formatted time.
      */
     public static function strftime($format, $timestamp=null)
     {
@@ -835,10 +847,10 @@ class DateUtil
             }
         }
 
-        $trformat = preg_replace('/%a/', $day_of_week_short[(int) strftime('%w', $timestamp)], $format);
-        $trformat = preg_replace('/%A/', $day_of_week_long[(int) strftime('%w', $timestamp)], $trformat);
-        $trformat = preg_replace('/%b/', $month_short[(int) strftime('%m', $timestamp) - 1], $trformat);
-        $trformat = preg_replace('/%B/', $month_long[(int) strftime('%m', $timestamp) - 1], $trformat);
+        $trformat = preg_replace('/%a/', $day_of_week_short[(int)strftime('%w', $timestamp)], $format);
+        $trformat = preg_replace('/%A/', $day_of_week_long[(int)strftime('%w', $timestamp)], $trformat);
+        $trformat = preg_replace('/%b/', $month_short[(int)strftime('%m', $timestamp) - 1], $trformat);
+        $trformat = preg_replace('/%B/', $month_long[(int)strftime('%m', $timestamp) - 1], $trformat);
         $trformat = preg_replace('/%Z/', $timezone, $trformat);
 
         return strftime($trformat, $timestamp);
@@ -846,12 +858,13 @@ class DateUtil
 
 
     /**
-     * Parses strftime formatted __('%Y-%m-%d),  __('%Y-%m-%d %H:%M') or __('%Y-%m-%d %H:%M:%S')
+     * Parses strftime formatted __('%Y-%m-%d),  __('%Y-%m-%d %H:%M') or __('%Y-%m-%d %H:%M:%S').
      * into meaning data that can be used to process a date string
      *
-     * format strings can contain %d, %e, %y, %Y, %g, %G, %H, %I, %l, %M and %S
+     * format strings can contain %d, %e, %y, %Y, %g, %G, %H, %I, %l, %M and %S.
      *
-     * @param string dateformat (strftime formatted) default current language default
+     * @param string $dateformat (strftime formatted) default current language default.
+     *
      * @return array of the meaning of each match
      */
     public function getDateFormatData($dateformat=null)

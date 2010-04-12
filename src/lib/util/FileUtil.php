@@ -159,7 +159,7 @@ class FileUtil
      * @param string  $rootPath     The root-path we wish to start at.
      * @param boolean $recurse      Whether or not to recurse directories (optional) (default=true).
      * @param boolean $relativePath Whether or not to list relative (vs abolute) paths (optional) (default=true).
-     * @param string  $extension    The file extension or array of extensions to scan for (optional) (default=null).
+     * @param string  $extensions   The file extension or array of extensions to scan for (optional) (default=null).
      * @param string  $type         The type of object (file or directory or both) to return (optional) (default=null).
      * @param boolean $nestedData   Whether or not to return a nested data set (optional) (default=false).
      *
