@@ -12,6 +12,7 @@
 
 /**
  * This function is called internally by the core whenever the module is loaded. 
+ *
  * @return array.
  */
 

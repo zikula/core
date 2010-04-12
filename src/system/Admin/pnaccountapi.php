@@ -13,6 +13,8 @@
 /**
  * Return an array of items to show in the your account panel.
  *
+ * @param array $array The arguments to pass to the function.
+ *
  * @return   array   indexed array of items.
  */
 function admin_accountapi_getall($args)

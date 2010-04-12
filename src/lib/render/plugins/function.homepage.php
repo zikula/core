@@ -20,9 +20,9 @@
  *
  * Example
  *   <!--[homepage]-->
- * *
- * @param  array  $params  All attributes passed to this function from the template.
- * @param  object &$smarty Reference to the Smarty object.
+ *
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
  *
  * @return string The base URL of the site.
  */

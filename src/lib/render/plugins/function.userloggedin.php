@@ -22,7 +22,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.
-
+ *
  * @return   bool   the logged in status
  */
 function smarty_function_userloggedin($params, &$smarty)

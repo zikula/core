@@ -23,6 +23,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.
+ *
  * @return   string   the user ID
  */
 function smarty_function_usergetidfromname($params, &$smarty)
