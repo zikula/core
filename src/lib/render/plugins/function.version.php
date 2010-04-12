@@ -13,15 +13,16 @@
  */
 
 /**
- * Smarty function to get the site's charset
+ * Smarty function to get the site's charset.
  *
  * This function will return the Zikula version number
  *
  * available parameters:
  *  - assign      if set, the language will be assigned to this variable
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
+
  * @return   string   the version string
  */
 function smarty_function_version($params, &$smarty)

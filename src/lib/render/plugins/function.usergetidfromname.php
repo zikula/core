@@ -13,16 +13,16 @@
  */
 
 /**
- * Smarty function to get the user id for a given user
+ * Smarty function to get the user id for a given user.
  *
- * This function will return the user ID for a given username
+ * This function will return the user ID for a given username.
  *
  * available parameters:
  *  - uname       the username return the id for
  *  - assign      if set, the language will be assigned to this variable
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
  * @return   string   the user ID
  */
 function smarty_function_usergetidfromname($params, &$smarty)

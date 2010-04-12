@@ -14,7 +14,8 @@
  * Internal Admin module function.
  * This function is called internally by the core whenever the module is loaded.  It adds in the information.
  * @author Mark West
- * @return array pntables array
+ *
+ * @return array Return pntables array.
  */
 function Admin_pntables()
 {

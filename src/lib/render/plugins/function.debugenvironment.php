@@ -13,7 +13,7 @@
  */
 
 /**
- * Smarty function to get all session variables
+ * Smarty function to get all session variables.
  *
  * This function gets all session vars from the Zikula system assigns the names and
  * values to two array. This is being used in pndebug to show them.
@@ -21,9 +21,10 @@
  * Example
  *   <!--[pndebugenvironment]-->
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       nothing
+ * @param array $params   All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
+ *
+ * @return void.
  */
 function smarty_function_debugenvironment($params, &$smarty)
 {

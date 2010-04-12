@@ -13,7 +13,7 @@
  */
 
 /**
- * Smarty function to get a country name from a given country name
+ * Smarty function to get a country name from a given country name.
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
@@ -22,9 +22,9 @@
  * Example
  *   <!--[get_country_name_for_country_code  code=ZZ]-->
  *
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
  *
- * @param       array       $params      All attributes passed to this function from the template
- * @param       object      &$smarty     Reference to the Smarty object
  * @return      string      the value of the last status message posted, or void if no status message exists
  */
 function smarty_function_get_country_name_for_country_code ($params, &$smarty)

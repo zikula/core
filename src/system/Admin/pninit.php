@@ -11,11 +11,12 @@
  */
 
 /**
- * initialise the Admin module
+ * Initialise the Admin module.
  * This function is only ever called once during the lifetime of a particular
  * module instance
  * @author Mark West
- * @return bool true if initialisation succcesful, false otherwise
+ *
+ * @return boolean True if initialisation succcesful, false otherwise.
  */
 function Admin_init()
 {

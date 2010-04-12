@@ -13,14 +13,15 @@
  */
 
 /**
- * Smarty function to display a drop down list of languages
+ * Smarty function to display a drop down list of languages.
  *
- * This plugin as been superceded by html_select_languages
+ * This plugin as been superceded by html_select_languages.
  *
  * @deprecated
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the value of the last status message posted, or void if no status message exists
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
+ *
+ * @return string The value of the last status message posted, or void if no status message exists.
  */
 function smarty_function_languagelist($params, &$smarty)
 {

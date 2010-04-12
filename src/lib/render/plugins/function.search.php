@@ -13,7 +13,7 @@
  */
 
 /**
- * Smarty function to display a search form
+ * Smarty function to display a search form.
  *
  * Available parameters:
  *  - active            a comma-separated list of modules to be searched.
@@ -45,8 +45,8 @@
  *   display: inline;
  * to this class in your style sheet.
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
  * @return       string      the search box
  */
 function smarty_function_search($params, &$smarty)

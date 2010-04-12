@@ -13,7 +13,7 @@
  */
 
 /**
- * Smarty function to provide easy access to a stylesheet
+ * Smarty function to provide easy access to a stylesheet.
  *
  * This function provides an easy way to include a stylesheet. The function will add the stylesheet
  * file to the 'stylesheet' pagevar by default
@@ -21,9 +21,10 @@
  * This plugin is obsolete since Zikula 1.1.0. The stylesheets are loaded automatically whenever a module
  * or block is loaded. We keep this file for the sake of backwards compatibility so that themes do not break.
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The tag
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
+ *
+ * @return string The tag.
  */
 function smarty_function_modulestylesheet($params, &$smarty)
 {

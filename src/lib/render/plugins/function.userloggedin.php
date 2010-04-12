@@ -13,15 +13,16 @@
  */
 
 /**
- * Smarty function to determine whether the current user is logged in
+ * Smarty function to determine whether the current user is logged in.
  *
  * This function will return true if that is true and false otherwise
  *
  * available parameters:
  *  - assign      if set, the loggedin status will be assigned to this variable
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
+
  * @return   bool   the logged in status
  */
 function smarty_function_userloggedin($params, &$smarty)

@@ -13,9 +13,9 @@
  */
 
 /**
- * Smarty function to obtain form variable
+ * Smarty function to obtain form variable.
  *
- * this plugin obtains the variable from the input namespace. It removes any preparsing
+ * This plugin obtains the variable from the input namespace. It removes any preparsing
  * done by PHP to ensure that the string is exactly as expected, without any escaped characters.
  * it also removes any HTML tags that could be considered dangerous to the Zikula system's security.
  *
@@ -23,8 +23,8 @@
  *   - name: the name of the parameter
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param object &$smarty Reference to the Smarty object.
  * @return       string      the variables content
  */
 function smarty_function_varcleanfrominput($params, &$smarty)
