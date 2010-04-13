@@ -9,7 +9,7 @@
             <th style="text-align:left">{gt text="Value"}</th>
             <th style="text-align:center">{gt text="Active"}</th>
             <th style="text-align:right">{gt text="Sort value"}</th>
-            {if ($rootCat.__ATTRIBUTES__)}
+            {if (isset($rootCat.__ATTRIBUTES__) && $rootCat.__ATTRIBUTES__)}
             <th style="text-align:right">{gt text="Attributes"}</th>
             {/if}
             <th style="text-align:center">{gt text="Down"}</th>
@@ -30,7 +30,7 @@
             <td style="text-align:left">{$cat.value|varprepfordisplay}</td>
             <td style="text-align:center">{$cat.status|varprepfordisplay}</td>
             <td style="text-align:right">{$cat.sort_value|varprepfordisplay}</td>
-            {if ($rootCat.__ATTRIBUTES__)}
+            {if (isset($rootCat.__ATTRIBUTES__) && $rootCat.__ATTRIBUTES__)}
             <td style="text-align:right">{$cat__ATTRIBUTES__|@count}</td>
             {/if}
             <td style="text-align:center">
