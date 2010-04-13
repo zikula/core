@@ -23,6 +23,68 @@ class CategoryUtil
     /**
      * Return a category object by ID
      *
+     * @param rootPath     The path of the parent category
+     * @param name         The name of the category
+     * @param value        The value of the category (optional) (default=null)
+     * @param displayname  The displayname of the category (optional) (default=null, uses $name)
+     * @param description  The description of the category (optional) (default=null, uses $name)
+     * @param attributes   The attributes array to bind to the category (optional) (default=null)
+     *
+     * @return The resulting folder object
+     */
+    public static function createCategory ($rootPath, $name, $value=null, $displayname=null, $description=null, $attributes=null)
+    {
+        if (!isset($rootPath) || !$rootpath) {
+            return LogUtil (__("Error! Received invalid parameter '%s'", 'rootpath'));
+        } 
+        if (!isset($name) || !$name) {
+            return LogUtil (__("Error! Received invalid parameter '%s'", 'name'));
+        } 
+
+        if (!$displayname) {
+            $displayname = $name;
+        } 
+        if (!$description) {
+            $description = $name;
+        } 
+
+        $lang = ZLanguage::getLanguageCode();
+
+        Loader::loadClassFromModule('Categories', 'Category');
+        $rootCat = CategoryUtil::getCategoryByPath ($rootPath);
+        if (!$rootCat) {
+            return LogUtil (__("Error! Non-existing root category '%s' received", $rootPath));
+        } 
+
+        $checkCat = CategoryUtil::getCategoryByPath ("$rootPath/$name");
+        if (!$checkCat) {
+            $cat  = new PNCategory();
+            $data = array();
+            $data['parent_id']    = $rootCat['id'];
+            $data['name']         = $name;
+            $data['display_name'] = array($lang => $displayname);
+            $data['display_desc'] = array($lang => $description);
+            if ($value) {
+                $data['value'] = $value;
+            }
+            if ($attributes && is_array($attributes)) {
+                $data['__ATTRIBUTES__'] = $attributes;
+            }
+            $cat->setData($data);
+            if (!$cat->validate('admin')) {
+                return false;
+            }
+            $cat->insert();
+            $cat->update();
+            return $cat->getDataField('id');
+        }
+
+        return false;
+    }
+
+    /**
+     * Return a category object by ID
+     *
      * @param cid      The category-ID to retrieve
      *
      * @return The resulting folder object
