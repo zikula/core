@@ -298,6 +298,12 @@ class HtmlUtil
         if (is_array($tables) && $tables) {
             foreach ($tables as $k => $v) {
                 if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
+                    $checkColumns = $k . '_column';
+                    if (!isset($tables[$checkColumns])) {
+                        continue;
+                    } 
+                } 
+                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
                     if (strpos($k, 'pn_') === 0) {
                         $k = substr($k, 4);
                     }

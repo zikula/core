@@ -16,12 +16,16 @@
  * selector_module_tables: generate a PN Module table selector
  *
  * @author  Robert Gasch
- * @param   name        The name of the selector tag
- * @param   selectedValue   The currently selected value
- * @param   defaultValue    The default value (only used if no selectedValue is supplied)
- * @param   defaultText Text to go with the default value
- * @param   includeAll  Wether or not to include an 'All' selector
- * @param   allText     Text to go with the 'All' select value
+ * @param   modname        The module name we wish to get tables for
+ * @param   name           The name of the selector tag
+ * @param   selectedValue  The currently selected value
+ * @param   defaultValue   The default value (only used if no selectedValue is supplied)
+ * @param   defaultText    Text to go with the default value
+ * @param   remove         Text to go with the default value
+ * @param   nStripChars    Number of characters to remove (to remove pn database table prefix)
+ * @param   submit         Wether or not to auto-submit after selection
+ * @param   disabled       Wether or not disable the selector
+ * @param   multipleSize   The size of the selector to create (default=1)
  *
  */
 function smarty_function_selector_module_tables ($params, &$smarty)
@@ -33,9 +37,9 @@ function smarty_function_selector_module_tables ($params, &$smarty)
     $defaultText   = isset($params['defaultText'])   ? $params['defaultText']    : '';
     $remove        = isset($params['remove'])        ? $params['remove']         : false;
     $nStripChars   = isset($params['nStripChars'])   ? $params['nStripChars']    : 0;
-    $submit        = isset($params['submit'])         ? $params['submit']       : false;
-    $disabled      = isset($params['disabled'])       ? $params['disabled']     : false;
-    $multipleSize  = isset($params['multipleSize'])   ? $params['multipleSize'] : 1;
+    $submit        = isset($params['submit'])        ? $params['submit']         : false;
+    $disabled      = isset($params['disabled'])      ? $params['disabled']       : false;
+    $multipleSize  = isset($params['multipleSize'])  ? $params['multipleSize']   : 1;
 
     return HtmlUtil::getSelector_ModuleTables ($modname, $name, $selectedValue, $defaultValue, $defaultText,
                                                $submit, $remove, $disabled, $nStripChars, $multipleSize);
