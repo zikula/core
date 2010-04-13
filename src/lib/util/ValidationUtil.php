@@ -71,35 +71,25 @@ class ValidationUtil
 
             //print "$postval $cmp_op $testval";
 
-            if ($cmp_op == 'eq') {
-                $rc = ($postval === $testval);
-            } else if ($cmp_op == 'neq') {
-                $rc = ($postval != $testval);
-            } else if ($cmp_op == 'gt') {
-                $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
-            } else if ($cmp_op == 'gte') {
-                $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
-            } else if ($cmp_op == 'lt') {
-                $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
-            } else if ($cmp_op == 'lte') {
-                $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
-            } else if ($cmp_op == 'url') {
-                $rc = pnVarValidate($postval, 'url');
-            } else if ($cmp_op == 'email') {
-                $rc = pnVarValidate($postval, 'email');
-            } else if ($cmp_op == 'valuearray') {
-                if (!is_array($testval)) {
-                    return pn_exit(__f('%s: testval for test valuearray is not an array.', 'ValidationUtil::validateField'));
-                }
-                $rc = in_array($postval, $testval);
-            } else if ($cmp_op == 'noop' || !$cmp_op) {
-                if (!$required) {
-                    return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
-                }
-                $rc = true;
-            } else {
-                return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
-            }
+            switch ($cmp_op) {
+                case 'eq '   : $rc = ($postval === $testval);
+                case 'neq'   : $rc = ($postval != $testval);
+                case 'gt'    : $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
+                case 'gte'   : $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
+                case 'lt'    : $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
+                case 'lte'   : $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
+                case 'in'    : $rc = ($postval !== '' && is_array($testval)   && in_array($postval, $testval));
+                case 'notin' : $rc = ($postval !== '' && is_array($testval)   && !in_array($postval, $testval));
+                case 'regexp': $rc = ($postval !== '' && preg_match($testval, $postval));
+                case 'url'   : $rc = pnVarValidate($postval, 'url');
+                case 'email' : $rc = pnVarValidate($postval, 'email');
+                case 'noop'  : 
+                case ''      : if (!$required) {
+                                  return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+                               }
+                               $rc = true;
+                default      : return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+            } 
         }
 
         if ($rc === false) {
