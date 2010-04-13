@@ -44,8 +44,13 @@ function Categories_admin_view ()
         return LogUtil::registerPermissionError();
     }
 
-    $cats    = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true);
-    $menuTxt = CategoryUtil::getCategoryTreeJS ($cats);
+    // disable attribution for performance
+    $GLOBALS['pntables']['categories_category_db_extra_enable_attribution'] = false;
+    $pntables    = pnDBGetTables ();
+    $columnArray = array ('id', 'name', 'display_name', 'path');
+    $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true, '', '', null, $columnArray);
+    $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats);
+    $GLOBALS['pntables']['categories_category_db_extra_enable_attribution'] = true;
 
     $pnRender = Renderer::getInstance('Categories', false);
     $pnRender->assign('menuTxt', $menuTxt);

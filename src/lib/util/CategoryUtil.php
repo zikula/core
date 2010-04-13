@@ -130,7 +130,7 @@ class CategoryUtil
      *
      * @return The resulting folder object array
      */
-    public static function getCategories($where = '', $sort = '', $assocKey = '', $enablePermissionFilter = true)
+    public static function getCategories($where = '', $sort = '', $assocKey = '', $enablePermissionFilter = true, $columnArray = null)
     {
         pnModDBInfoLoad('Categories');
         if (!$sort) {
@@ -152,7 +152,7 @@ class CategoryUtil
                 'level' => ACCESS_OVERVIEW);
         }
 
-        $cats = DBUtil::selectObjectArray('categories_category', $where, $sort, -1, -1, $assocKey, $permFilter);
+        $cats = DBUtil::selectObjectArray('categories_category', $where, $sort, -1, -1, $assocKey, $permFilter, null, $columnArray);
 
         $arraykeys = array_keys($cats);
         foreach ($arraykeys as $arraykey) {
@@ -333,10 +333,11 @@ class CategoryUtil
      * @param exclPath     The path to exclude from the retrieved categories (optional) (default='')
      * @param assocKey     The field to use to build an associative key (optional) (default='')
      * @param attributes   The associative array of attribute field names to filter by (optional) (default=null)
+     * @param columnArray  The list of columns to fetch (optional) (default=null)
      *
      * @return The resulting folder object array
      */
-    public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null)
+    public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
         pnModDBInfoLoad('Categories');
         $pntables = pnDBGetTables();
@@ -366,7 +367,7 @@ class CategoryUtil
             $sort = "ORDER BY $category_column[sort_value], $category_column[path]";
         }
 
-        $cats = self::getCategories($where, $sort, $assocKey);
+        $cats = self::getCategories($where, $sort, $assocKey, null, $columnArray);
         return $cats;
     }
 
@@ -382,10 +383,11 @@ class CategoryUtil
      * @param excludeCid   CategoryID (root folder) to exclude from the result set (optional) (default='')
      * @param assocKey     The field to use as the associated array key (optional) (default='')
      * @param attributes   The associative array of attribute field names to filter by (optional) (default=null)
+     * @param columnArray  The list of columns to fetch (optional) (default=null)
      *
      * @return The resulting folder object array
      */
-    public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null)
+    public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
         if (!$cid) {
             return false;
@@ -407,7 +409,7 @@ class CategoryUtil
             $exclCat = self::getCategoryByID($excludeCid);
         }
 
-        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes);
+        $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, '', $columnArray);
         $catPathCache[$cacheKey] = $cats;
         return $cats;
     }
@@ -468,10 +470,11 @@ class CategoryUtil
      * @param assocKey     The field to use as the associated array key (optional) (default='')
      * @param attributes   The associative array of attribute field names to filter by (optional) (default=null)
      * @param sortField    The field to sort the resulting category array by (optional) (default=null)
+     * @param columnArray  The list of columns to fetch (optional) (default=null)
      *
      * @return The resulting folder object array
      */
-    public static function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = 'sort_value')
+    public static function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
         if (!$category) {
             return false;
@@ -481,7 +484,7 @@ class CategoryUtil
         if ($recurse) {
             $ipath = $category['ipath'];
             $ipathExcl = ($excludeCat ? $excludeCat['ipath'] : '');
-            $cats = self::getCategoriesByPath($ipath, '', 'ipath', $includeLeaf, $all, $ipathExcl, $assocKey, $attributes);
+            $cats = self::getCategoriesByPath($ipath, '', 'ipath', $includeLeaf, $all, $ipathExcl, $assocKey, $attributes, $columnArray);
         } else {
             $cats = self::getCategoriesByParentID($category['id'], '', $relative, $all, $assocKey, $attributes);
             array_unshift($cats, $category);
@@ -965,7 +968,7 @@ class CategoryUtil
 
         Loader::loadClass('StringUtil');
 
-        $cats = self::sortCategories($cats, 'sort_value');
+        //$cats = self::sortCategories($cats, 'sort_value');
         $lang = ZLanguage::getLanguageCode();
 
         foreach ($cats as $c) {
@@ -1248,16 +1251,20 @@ class CategoryUtil
         $ipos = strrpos($rootCategory['ipath'], '/') + 1;
 
         $cat['path_relative'] = substr($normalizedPath, $ppos);
-        $cat['ipath_relative'] = substr($cat['ipath'], $ipos);
+        if (isset($cat['ipath'])) {
+            $cat['ipath_relative'] = substr($cat['ipath'], $ipos);
+        } 
 
         if (!$includeRoot) {
             $offSlashPath = strpos($cat['path_relative'], '/');
-            $offSlashIPath = strpos($cat['ipath_relative'], '/');
+            if (isset($cat['ipath'])) {
+                $offSlashIPath = strpos($cat['ipath_relative'], '/');
+            } 
 
             if ($offSlashPath !== false) {
                 $cat['path_relative'] = substr($cat['path_relative'], $offSlashPath + 1);
             }
-            if ($offSlashIPath !== false) {
+            if (isset($cat['ipath']) && $offSlashIPath !== false) {
                 $cat['ipath_relative'] = substr($cat['ipath_relative'], $offSlashIPath + 1);
             }
         }
