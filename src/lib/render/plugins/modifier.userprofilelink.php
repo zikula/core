@@ -75,6 +75,8 @@ function smarty_modifier_userprofilelink($string, $class = '', $image = '', $max
         } else {
             $string = '<a' . $class . ' title="' . DataUtil::formatForDisplay(__('Personal information')) . ': ' . $uname . '" href="' . DataUtil::formatForDisplay(pnModURL($profileModule, 'user', 'view', array('uid' => $uid), null, null, true)) . '">' . $show . '</a>';
         }
+    } elseif (!empty($image)) {
+        $string = ''; //image for anonymous user should be "empty"
     }
 
     return $string;
