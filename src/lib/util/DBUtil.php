@@ -519,7 +519,7 @@ class DBUtil
             $connection = Doctrine_Manager::connection();
             foreach ($fields as $field) {
                 $options = self::getTableOptions($table);
-                $connection->export->alterTable($tableName, array('add' => array($field => $options)), true);
+                $connection->export->alterTable($tableName, array('add' => array($field => $options)));
             }
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column creation failed.') . ' ' . $e->getMessage());
@@ -553,7 +553,7 @@ class DBUtil
         try {
             $connection = Doctrine_Manager::connection();
             foreach ($fields as $field) {
-                $connection->export->alterTable($tableName, array('remove' => array($field => array())), true);
+                $connection->export->alterTable($tableName, array('remove' => array($field => array())));
             }
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column deletion failed.') . ' ' . $e->getMessage());
@@ -1693,7 +1693,7 @@ class DBUtil
         }
 
         $max = false;
-        if ($data = $res->fetchColumn(0)) {
+        if ($data == $res->fetchColumn(0)) {
             $max = $data;
         }
 
@@ -2113,7 +2113,7 @@ class DBUtil
         }
 
         $sum = false;
-        if ($data = $res->fetchColumn(0)) {
+        if ($data == $res->fetchColumn(0)) {
             $sum = $data;
         }
 
@@ -2419,7 +2419,7 @@ class DBUtil
         }
 
         $count = false;
-        if ($data = $res->fetchColumn(0)) {
+        if ($data == $res->fetchColumn(0)) {
             $count = $data;
         }
 
@@ -3077,7 +3077,7 @@ class DBUtil
         foreach ($definition as $key => $columnDefinition) {
             $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
             try {
-                Doctrine_Manager::connection()->export->alterTable($tableName, $alterTableDefinition, false);
+                Doctrine_Manager::connection()->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
                 return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
             }
@@ -3160,8 +3160,7 @@ class DBUtil
         }
 
         try {
-            Doctrine_Manager::connection()->export->alterTable($tableName, array(
-                            'name' => $newTableName), true);
+            Doctrine_Manager::connection()->export->alterTable($tableName, array('name' => $newTableName));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Table rename failed.') . ' ' . $e->getMessage());
         }
