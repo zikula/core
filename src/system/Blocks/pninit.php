@@ -121,7 +121,7 @@ function blocks_defaultdata()
     {
         ZLanguage::setLocale($lang);
         ZLanguage::bindCoreDomain();
-        $menucontent['displaymodules'] = '1';
+        $menucontent['displaymodules'] = '0';
         $menucontent['stylesheet'] = 'extmenu.css';
         $menucontent['template'] = 'blocks_block_extmenu.htm';
         $menucontent['blocktitles'][$lang] = __('Main menu');
