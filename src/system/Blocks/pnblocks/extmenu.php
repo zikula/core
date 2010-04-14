@@ -132,13 +132,22 @@ function Blocks_extmenublock_display($blockinfo)
 
         // Separate from current content, if any
         if (count($menuitems) > 0) {
-           $menuitems[] = array('name'   => '&nbsp;',
+            $menuitems[] = array('name'   => '&nbsp;',
                                 'url'    => '',
                                 'title'  => '',
                                 'level'  => 0,
                                 'parent' => 0,
                                 'image'  => ''
                                 );
+            if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
+                $menuitems[] = array('name'   => __('--Installed modules--'),
+                                    'url'    => pnModURL('Blocks', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
+                                    'title'  => '',
+                                    'level'  => 0,
+                                    'parent' => 0,
+                                    'image'  => ''
+                                    );
+            }
         }
 
         foreach($mods as $mod) {
