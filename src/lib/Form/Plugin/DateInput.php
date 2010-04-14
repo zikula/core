@@ -66,7 +66,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         $this->defaultValue = (array_key_exists('defaultValue', $params) ? $params['defaultValue'] : null);
         $this->initDate = (array_key_exists('initDate', $params) ? $params['initDate'] : 0);
         $this->useSelectionMode = (array_key_exists('useSelectionMode', $params) ? $params['useSelectionMode'] : 0);
-        $this->maxLength = ($this->includeTime ? 18 : 12);
+        $this->maxLength = ($this->includeTime ? 19 : 12);
         $params['width'] = ($this->includeTime ? '10em' : '8em');
 
         parent::create($render, $params);
