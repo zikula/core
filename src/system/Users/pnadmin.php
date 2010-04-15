@@ -1058,6 +1058,197 @@ function users_admin_import($args)
 }
 
 /**
+ * Show the form to export a CSV file of users.
+ *
+ * Available Post Parameters:
+ * - confirmed       (int|bool) True if the user has confirmed the export.
+ * - exportFile      (array)    Filename of the file to export (optional) (default=users.csv)
+ * - delimiter       (int)      A code indicating the type of delimiter found in the export file. 1 = comma, 2 = semicolon, 3 = colon, 4 = tab.
+ * - exportEmail     (int)      Flag to export email addresses, 1 for yes.
+ * - exportTitles    (int)      Flag to export a title row, 1 for yes.
+ * - exportLastLogin (int)      Flag to export the last login date/time, 1 for yes.
+ * - exportRegDate   (int)      Flag to export the registration date/time, 1 for yes.
+ * 
+ * @param array $args All arguments passed to the function.
+ *
+ * @return redirect user to the form if confirmed not 1, else export the csv file.
+ */
+function users_admin_export($args)
+{
+    // security check
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    // get input values
+    $confirmed     = FormUtil::getPassedValue('confirmed', (isset($args['confirmed']) ? $args['confirmed'] : null), 'POST');
+
+    if ($confirmed == 1) {
+        // get other import values
+        $exportFile = FormUtil::getPassedValue('exportFile', (isset($args['exportFile']) ? $args['exportFile'] : null), 'POST');
+        $delimiter = FormUtil::getPassedValue('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null), 'POST');
+        $email = FormUtil::getPassedValue('exportEmail', (isset($args['exportEmail']) ? $args['exportEmail'] : null), 'POST');
+        $titles = FormUtil::getPassedValue('exportTitles', (isset($args['exportTitles']) ? $args['exportTitles'] : null), 'POST');
+        $lastLogin = FormUtil::getPassedValue('exportLastLogin', (isset($args['exportLastLogin']) ? $args['exportLastLogin'] : null), 'POST');
+        $regDate = FormUtil::getPassedValue('exportRegDate', (isset($args['exportRegDate']) ? $args['exportRegDate'] : null), 'POST');
+        $groups = FormUtil::getPassedValue('exportGroups', (isset($args['exportGroups']) ? $args['exportGroups'] : null), 'POST');
+        
+        $email = (!isset($email) || $email !=='1') ? false : true;
+        $titles = (!isset($titles) || $titles !== '1') ? false : true;
+        $lastLogin = (!isset($lastLogin) || $lastLogin !=='1') ? false : true;
+        $regDate = (!isset($regDate) || $regDate !== '1') ? false : true;
+        $groups = (!isset($groups) || $groups !== '1') ? false : true;
+   
+        if (!isset($delimiter) || $delimiter == '') {
+            $delimiter = 1;
+        }
+        switch ($delimiter) {
+        case 1:
+            $delimiter = ",";
+            break;
+        case 2:
+            $delimiter = ";";
+            break;
+        case 3:
+            $delimiter = ":";
+            break;
+        case 4:
+            $delimiter = chr(9);
+        }
+        if (!isset($exportFile) || $exportFile == '') {
+            $exportFile = 'users.csv';
+        }
+        if (!strrpos($exportFile, '.csv')) {
+        	$exportFile .= '.csv';
+        }
+        
+        //export the csv file
+        pnModFunc('Users', 'admin', 'exportCSV',
+                               array(   'exportFile'=> $exportFile,
+                                        'delimiter' => $delimiter,
+                                        'email'     => $email,
+                                        'titles'    => $titles,
+                                        'lastLogin' => $lastLogin,
+                                        'regDate'   => $regDate,
+                                        'groups'    => $groups));
+    }
+
+    $pnRender = Renderer::getInstance('Users', false);
+    if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
+        $pnRender->assign('groups', '1');
+    }
+    return $pnRender->fetch('users_admin_export.htm');
+}
+
+/**
+ * This function does the actual export of the csv file.
+ * the args array contains all information needed to export the csv file.
+ * the options for the args array are:
+ *  - exportFile (string)  Filename for the new csv file.
+ *  - delimiter  (string)  The delimiter to use in the csv file.
+ *  - email      (boolean) Flag, true to export emails.
+ *  - titles     (boolean) Flag true to export a title row.
+ *  - LastLogin  (boolean) Flag to export the users last login.
+ *  - regDate    (boolean) Flag to export the users registration date.
+ *  
+ * @param array $args all arguments sent to this function.
+ * 
+ * @return displays download to user then exits.
+ */
+function users_admin_exportCSV($args)
+{
+    //make sure we have a delimiter
+    if (!isset($args['delimiter']) || $args['delimiter'] == '') {
+        $args['delimiter'] = ',';
+    }
+    //Security check
+    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)){
+        return LogUtil::registerPermissionError();
+    }
+    
+    //disable compression and set headers
+    ob_end_clean();
+    ini_set('zlib.output_compression', 0);
+    header('Cache-Control: no-store, no-cache');
+    header("Content-type: text/csv");
+    header('Content-Disposition: attachment; filename="'.$args['exportFile'].'"');
+    header("Content-Transfer-Encoding: binary");
+    
+    //get all user fields
+    $userfields = pnModAPIFunc('Profile', 'user', 'getallactive');
+    
+    $colnames=array();
+    foreach ($userfields as $item) {
+      $colnames[] = $item['prop_attribute_name'];
+    }
+    
+    //get all users
+    $users = pnModAPIFunc('Users', 'user', 'getall');
+    
+    //open a file for csv writing
+    $out = fopen("php://output", 'w');
+    
+    //write out title row if asked for
+    if ($args['titles']) {
+    	$titles = array('id','uname');
+    	//titles for optional data
+    	if ($args['email']) {
+    		array_push($titles, 'email');
+    	}
+    	if ($args['regDate']) {
+    		array_push($titles, 'user_regdate');
+    	}
+    	if ($args['lastLogin']) {
+    		array_push($titles, 'lastlogin');
+    	}
+    	if ($args['groups']) {
+    		array_push($titles, 'groups');
+    	}
+    	array_merge($titles, $colnames);
+        fputcsv($out, $titles, $args['delimiter']);
+    }
+    
+    //loop every user gettin user id and username and all user fields and push onto result array.
+    foreach ($users as $user) {
+        $uservars = pnUserGetVars($user['uid']);
+        $result = array();
+        array_push($result,$uservars['uid'],$uservars['uname']);
+        //checks for optional data
+        if ($args['email']) {
+        	array_push($result,$uservars['email']);
+        }
+        if ($args['regDate']) {
+            array_push($result, $uservars['user_regdate']);
+        }
+        if ($args['lastLogin']) {
+            array_push($result, $uservars['lastlogin']);
+        }
+        if ($args['groups']) {
+        	$groups = pnModAPIFunc('Groups', 'user', 'getusergroups', 
+        	   array(  'uid'   => $uservars['uid'],
+        	           'clean' => true));
+        	$groupstring = "";
+        	foreach ($groups as $group) {
+        		$groupstring .= $group . chr(124);
+        	}
+        	$groupstring = rtrim($groupstring, chr(124));
+        	array_push($result,$groupstring);
+        }
+        foreach ($colnames as $colname) {
+            array_push($result,$uservars['__ATTRIBUTES__'][$colname]);
+        }
+      //csv write the result array to the out file
+      fputcsv($out, $result, $args['delimiter']);
+    }
+    //close the out file
+    $length = filesize($out);
+    fclose($out);
+    // the users have been exported successfully
+    LogUtil::registerStatus(__('Done! Users exported successfully.'));
+    exit;
+}
+
+/**
  * Import several users from a CSV file. Checks needed values and format.
  *
  * Available Parameters:
