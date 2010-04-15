@@ -200,8 +200,7 @@ function modules_admin_view()
 
     // Create output object
     $pnRender = Renderer::getInstance('Modules', false);
-
-    if (!($GLOBALS['ZConfig']['Multisites']['multi'] == 1 && $GLOBALS['ZConfig']['Multisites']['mainSiteURL'] != FormUtil::getPassedValue('siteDNS', null, 'GET'))) {
+    if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) {
         // always regenerate modules list
         $filemodules = pnModAPIFunc('Modules', 'admin', 'getfilemodules');
         $inconsistencies = pnModAPIFunc('Modules', 'admin', 'checkconsistency', array(
@@ -338,7 +337,7 @@ function modules_admin_view()
                                     'state' => $state)),
                                 'image' => 'agt_update_misc.gif',
                                 'title' => __('Install'));
-                            if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || $GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')) {
+                            if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) {
                                 $actions[] = array(
                                     'url' => pnModURL('Modules', 'admin', 'remove', array(
                                         'id' => $mod['id'],
