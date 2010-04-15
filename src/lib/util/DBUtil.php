@@ -1693,7 +1693,7 @@ class DBUtil
         }
 
         $max = false;
-        if ($data == $res->fetchColumn(0)) {
+        if ($data = $res->fetchColumn(0)) {
             $max = $data;
         }
 
@@ -2113,7 +2113,7 @@ class DBUtil
         }
 
         $sum = false;
-        if ($data == $res->fetchColumn(0)) {
+        if ($data = $res->fetchColumn(0)) {
             $sum = $data;
         }
 
@@ -2419,7 +2419,7 @@ class DBUtil
         }
 
         $count = false;
-        if ($data == $res->fetchColumn(0)) {
+        if ($data = $res->fetchColumn(0)) {
             $count = $data;
         }
 
