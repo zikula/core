@@ -39,7 +39,7 @@ class ZLanguage
     {
         $this->langSession = SessionUtil::getVar('language', null);
         $this->langSystemDefault = pnConfigGetVar('language_i18n', 'en');
-        $this->langFixSession = FormUtil::getPassedValue('setsessionlanguage', null, 'POST');
+        $this->langFixSession = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('setsessionlanguage', null, 'POST'));
         $this->multiLingualCapable = pnConfigGetVar('multilingual');
         $this->langUrlRule = pnConfigGetVar('languageurl', 0);
         $this->langDetect = pnConfigGetVar('language_detect', 0);
@@ -49,7 +49,7 @@ class ZLanguage
 
     public function setup()
     {
-        $this->langRequested = FormUtil::getPassedValue('lang', null, 'GET'); // language for this request
+        $this->langRequested = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('lang', null, 'GET')); // language for this request
         $this->detectLanguage();
         $this->validate();
         $this->fixLanguageToSession();
