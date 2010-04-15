@@ -160,7 +160,7 @@ class DataUtil
 
         $str = '';
         foreach ($nvps as $k => $v) {
-            $str .= WebstoreUtil::encodeNVP ($k, $v, $separator, $includeEmpty);
+            $str .= self::encodeNVP ($k, $v, $separator, $includeEmpty);
         }
 
         return $str;
