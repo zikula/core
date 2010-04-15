@@ -321,6 +321,8 @@ class DBUtil
         if (!$columns) {
             throw new Exception(__f('Invalid table-key [%s] retrieved', $table));
         }
+
+        $$queriesResult = array();
         foreach ($columns as $key => $val) {
             if (!$columnArray || in_array($key, $columnArray)) {
                 $queriesResult[] = $val . ' AS "' . $key . '"';
