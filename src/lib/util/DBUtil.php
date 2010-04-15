@@ -1039,7 +1039,7 @@ class DBUtil
             $tableName != 'objectdata_log' &&
             pnModAvailable('Categories'))
         {
-            ObjectUtil::deleteObjectCategories ($object, $tableName, $idcolumn);
+            ObjectUtil::deleteObjectCategories ($object, $tableName, $idfield);
         }
 
         if (((isset($tables["{$tableName}_db_extra_enable_all"]) && $tables["{$tableName}_db_extra_enable_all"]) ||
@@ -1049,7 +1049,7 @@ class DBUtil
             $tableName != 'objectdata_log' &&
             pnModAvailable('ObjectData'))
         {
-            ObjectUtil::deleteObjectAttributes ($object, $tableName, $idcolumn);
+            ObjectUtil::deleteObjectAttributes ($object, $tableName, $idfield);
         }
 
         if (($enableAllServices ||
@@ -1060,7 +1060,7 @@ class DBUtil
             $tableName != 'objectdata_log' &&
             pnModAvailable('ObjectData'))
         {
-            ObjectUtil::deleteObjectMetaData ($object, $tableName, $idcolumn);
+            ObjectUtil::deleteObjectMetaData ($object, $tableName, $idfield);
         }
 
         if (($enableAllServices ||
@@ -1393,7 +1393,7 @@ class DBUtil
      *
      * @return array The marshalled array of objects.
      */
-    public static function marshallObjects($result, $objectColumns, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null)
+    public static function marshallObjects($result, $objectColumns, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null, $tablename = null)
     {
         if (!$result) {
             throw new Exception(__f('The parameter %s must not be empty', 'result'));
@@ -1405,7 +1405,7 @@ class DBUtil
 
         if ($assocKey && !in_array($assocKey, $objectColumns)) {
             throw new Exception(__f('Unable to find assocKey [%s] in objectColumns for table [%s]', array(
-                $assocKey, $table)));
+                $assocKey, $tablename)));
         }
 
         // since the single-object selects don't need to init
@@ -1623,7 +1623,7 @@ class DBUtil
             $assocColumn = $columns[$assocKey];
         }
 
-        $assoc = ($assocKey ? ", $assocColumn" : '');
+        $assoc = ($assocKey ? ", $columns[$assocKey]" : '');
         $where = self::_checkWhereClause($where);
 
         if ($orderby) {
