@@ -83,5 +83,10 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
         
         return $text;
     }
+
+    function formatValue(&$render, $value)
+    {
+        return DataUtil::formatNumber($value);
+    }
 }
 
