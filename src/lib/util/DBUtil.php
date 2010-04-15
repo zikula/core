@@ -907,7 +907,7 @@ class DBUtil
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
             pnConfigGetVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-            strcmp($table, 'objectdata_log') !== 0 && !$where)
+            strcmp($table, 'objectdata_log') !== 0) 
         {
             $oldObj = self::selectObjectByID($table, $object[$idfield], $idfield);
 
