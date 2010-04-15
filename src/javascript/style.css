@@ -134,6 +134,8 @@ ul.z-menulinks {
     line-height:25px !important;
     list-style:none outside none;
     margin-bottom:1em;
+    margin-left:0 !important;
+    margin-right:0 !important;
     min-height:25px !important;
     padding:0 5px !important;
 }
