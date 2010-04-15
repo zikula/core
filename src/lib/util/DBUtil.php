@@ -191,6 +191,7 @@ class DBUtil
             }
         }
 
+        $tableoptions= array();
         $dbType = DBConnectionStack::getConnectionDBType();
         if ($dbType == 'mysql' || $dbType == 'mysqli') {
             $tableoptions['type'] = DBConnectionStack::getConnectionDBTableType();
@@ -1191,7 +1192,7 @@ class DBUtil
             $t = str_replace('order by ', '', $t); // remove "order by" for easier parsing
 
 
-            $columns = $tables["{$tableName}_column"];
+            $columns = $tables["{$table}_column"];
 
             // anything which doesn't look like a basic ORDER BY clause (with possibly an ASC/DESC modifier)
             // we don't touch. To use such stuff with Oracle, you'll have to apply the quotes yourself.
