@@ -209,13 +209,14 @@ class DBObjectArray
 
     /**
      * Ensure that a filter has all used fields set in order to to ensure that there are no E_ALL
-     * issues when accessing filter fields which may not be set
+     * issues when accessing filter fields which may not be set + do additional processing as necessary.
+     * Default implementation which can be overridden by subclasses.
      *
      * @param filter    An array containing the set filter values (optional) (default=array())
      *
-     * @return The filter with all used fields set
+     * @return The processed filter array
      */
-    public function cleanFilter($filter = array())
+    public function genFilterPreProcess ($filter = array())
     {
         return $filter;
     }
@@ -231,6 +232,7 @@ class DBObjectArray
      */
     public function genFilter($filter = array())
     {
+        $filter = $this->genFilterPreProcess ($filter);
         return '';
     }
 
