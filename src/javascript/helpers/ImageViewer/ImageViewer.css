@@ -1,17 +1,17 @@
 #ImageViewer {
-    position:absolute;
-    background:#000000;
-    padding:0px;
+    position: absolute;
+    background: #000000;
+    padding: 0px;
     margin: 0px;
-    border:1px solid #FFFFFF;
+    border: 1px solid #FFFFFF;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    text-align:center;
-    color:#FFFFFF;
-    line-height:0;
+    text-align: center;
+    color: #FFFFFF;
+    line-height: 0;
     z-index: 1001;
- }
+}
 #ImageViewer * {
     padding: 0;
     margin: 0;
@@ -19,26 +19,34 @@
     background: transparent;
 }
 #ImageViewerCapition {
-    margin:10px 5px 5px 5px;
-    line-height:16px;
-    text-align:left;
+    margin: 10px 5px 5px 5px;
+    line-height: 16px;
+    text-align: left;
     cursor: pointer;
+    color: #FFFFFF;
+}
+#ImageViewerPager {
+    font-size: 0.8em;
+    font-style: italic;
+    text-align: left;
+    margin: 5px;
+    color: #FFFFFF;
 }
 #ImageViewerClose {
-    position:absolute;
-    right:5px;
+    position: absolute;
+    right: 5px;
     top: 10px;
-    width:16px;
-    height:16px;
-    background:url(close.png) no-repeat;
-    cursor:pointer;
+    width: 16px;
+    height: 16px;
+    background: url(close.png) no-repeat;
+    cursor: pointer;
     z-index: 1003;
 }
 #ImageViewerImgContainer {
     position: relative;
 }
 #ImageViewerImg {
-    margin:5px;
+    margin: 5px;
     display: block;
 }
 #ImageViewerNext, #ImageViewerPrev {
@@ -58,10 +66,11 @@
 #ImageViewerNext {
     right: -32px;
     background: url(next.png) right center no-repeat;
-    padding-right:32px;
+    padding-right: 32px;
 }
 .loading#ImageViewer #ImageViewerImgContainer,
 .loading#ImageViewer #ImageViewerCapition,
+.loading#ImageViewer #ImageViewerPager,
 .loading#ImageViewer #ImageViewerImg,
 .loading#ImageViewer a {
     visibility: hidden;

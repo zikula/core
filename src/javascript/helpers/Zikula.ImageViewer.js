@@ -1,6 +1,6 @@
 /**
  * Zikula Application Framework
- * @version $Id$
+ * @version $Id: Zikula.ImageViewer.js 28169 2010-01-30 10:09:37Z jusuff $
  *
  * Licensed to the Zikula Foundation under one or more contributor license
  * agreements. This work is licensed to You under the following license:
@@ -36,8 +36,9 @@ Zikula._ImageViewer = Class.create({
     setup:function () {
         this.config = Object.extend({
             speed: 1,
-            draggable:true,
-            caption:true,
+            draggable: true,
+            caption: true,
+            pager: true,
             modal: true,
             enablekeys: true,
             langLabels: {}
@@ -46,8 +47,10 @@ Zikula._ImageViewer = Class.create({
         this.config.langLabels = Object.extend({
             close: 'Close',
             next: 'Next',
-            prev: 'Prev'
+            prev: 'Prev',
+            pager: 'Image #{index} of #{total}'
         },this.config.langLabels);
+        this.config.langLabels.pager = new Template(this.config.langLabels.pager);
     },
     initViewer: function(event) {
         event.stop();
@@ -59,7 +62,7 @@ Zikula._ImageViewer = Class.create({
         this.isGallery = false;
         if(this.element.rel != 'lightbox' && this.element.rel != 'imageviewer') {
             if(!this.galleries.get(this.element.rel)) {
-                this.galleries.set(this.element.rel,$$('a[rel^='+this.element.rel+']').collect(function(s) {return s.identify();}));
+                this.galleries.set(this.element.rel,$$('a[rel="'+this.element.rel+'"]').collect(function(s) {return s.identify();}));
             }
             this.gallerySize = this.galleries.get(this.element.rel).length;
             this.isGallery = this.gallerySize > 1;
@@ -68,7 +71,6 @@ Zikula._ImageViewer = Class.create({
     },
     prepareBox: function() {
         this.updateBox();
-        this.element.focus();
         this.imgPreloader = new Image();
         this.imgPreloader.onload = this.showBox.bindAsEventListener(this);
         this.imgPreloader.src =  this.element.readAttribute('href');
@@ -83,6 +85,9 @@ Zikula._ImageViewer = Class.create({
         if(this.config.caption){
             this.ImageViewerTitle.update(this.element.readAttribute('title') || '&nbsp;');
             this.ImageViewerCapition.setStyle({width: this.imgPreloader.width+'px'});
+        }
+        if(this.config.pager && this.isGallery){
+            this.ImageViewerPager.update(this.pagerInfo()).show();
         }
         this.imageBox.setStyle({width: 'auto', height: 'auto'});
 
@@ -153,7 +158,7 @@ Zikula._ImageViewer = Class.create({
         }
     },
     hideBox: function(event) {
-        if(!event.isRightClick()) {
+        if(!event || !event.isRightClick()) {
             this.imageBox.fade({duration:this.config.speed/4});
             if(this.config.modal) {
                 this.ImageViewerOverlay.fade({duration: this.config.speed/2});
@@ -174,6 +179,9 @@ Zikula._ImageViewer = Class.create({
             this.isnew = false;
             this.prepareBox();
         }
+    },
+    pagerInfo: function() {
+        return this.config.langLabels.pager.evaluate({index: this.index+1,total: this.gallerySize});
     },
     buildBox: function() {
         this.endBind = this.hideBox.bindAsEventListener(this);
@@ -203,6 +211,10 @@ Zikula._ImageViewer = Class.create({
             .insert(this.ImageViewerPrev)
             .insert(this.ImageViewerNext)
         );
+        if(this.config.pager) {
+            this.ImageViewerPager = new Element('p',{id: 'ImageViewerPager'});
+            this.imageBox.insert(this.ImageViewerPager);
+        }
         this.imageBox.absolutize().clonePosition(this.referer).setStyle({overflow: 'hidden', opacity: 0.5});
         this.imageBox.observe('click',this.clickBox.bindAsEventListener(this));
         document.observe('click', this.endBind);
@@ -219,6 +231,7 @@ Zikula._ImageViewer = Class.create({
         }
         this.imageBox.className = '';
         this.imageBox.addClassName('loading');
+        this.ImageViewerPager.hide();
         this.ImageViewerPrev.hide();
         this.ImageViewerNext.hide();
         if(this.isGallery) {
@@ -264,4 +277,3 @@ Element.addMethods({
     return $(document.body);
   }
 });
-
