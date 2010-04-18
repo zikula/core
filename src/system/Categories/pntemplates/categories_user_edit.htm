@@ -64,7 +64,7 @@
             <div class="z-formrow">
                 <label for="category_value">{gt text="Value"}</label>
                 {array_field_isset assign="catValue" array=$category field="value" returnValue=1}
-                <input id="category_value" name="category[value]" value="{$catValue|varprepfordisplay}" type="text" size="16" maxlength="64" />
+                <input id="category_value" name="category[value]" value="{$catValue|varprepfordisplay}" type="text" size="16" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="category_sort_value">{gt text="Sort value"}</label>
