@@ -550,14 +550,22 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'fields'));
         }
 
+        if (!is_string($fields) && !is_array($fields)) {
+            throw new Exception(__f('The parameter %s must be an array.', 'fields'));
+        }
+        if (is_string($fields)) {
+            $fields = array($fields);
+        }
+        $arrayFields = array();
+        foreach ($fields as $field) {
+            $arrayFields[$field] = array();
+        }
+
         $tables = pnDBGetTables();
         $tableName = $tables[$table];
 
         try {
-            $connection = Doctrine_Manager::connection();
-            foreach ($fields as $field) {
-                $connection->export->alterTable($tableName, array('remove' => array($field => array())));
-            }
+            Doctrine_Manager::connection()->export->alterTable($tableName, array('remove' => $arrayFields));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column deletion failed.') . ' ' . $e->getMessage());
         }
