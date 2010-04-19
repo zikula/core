@@ -21,7 +21,7 @@
     <h2>{gt text="Additional information"}</h2>
     <ul>
         {foreach from=$messages item=message}
-        <li>{$message|varprepfordisplay}</li>
+        <li>{$message|varprephtmldisplay}</li>
         {/foreach}
     </ul>
 
