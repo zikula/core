@@ -115,6 +115,9 @@
         
         <!-- assemble patch -->
         <exec escape="false" command="cd ${packagepath};for FILE in `cat ${tmpdir}/FILES`;do cp --parents $FILE ${patchdir};done" />
+
+        <!-- install folder is always required -->
+        <exec escape="false" command="svn export --force https://code.zikula.org/svn/core/branches/zikula-1.3/src/install@${svn_revision} ${patchdir}/install" />
         
         <!-- zip's don't play nicely in Phing - using direct command -->
         <exec escape="false" command="cd ${patchdir}; zip -D -r ${archivedir}/${package}.patch.zip ." />
