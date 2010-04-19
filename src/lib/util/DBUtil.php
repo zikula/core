@@ -457,14 +457,14 @@ class DBUtil
     /**
      * Rename column(s) in a table.
      *
-     * @param string $table     The treated table reference.
-     * @param string $oldcolumn The existing name of the column (full database name of column).
-     * @param string $newcolumn The new name of the column from the pntables array.
-     * @param string $fields    Field specific options (optional) (default=null).
+     * @param string $table      The treated table reference.
+     * @param string $oldcolumn  The existing name of the column (full database name of column).
+     * @param string $newcolumn  The new name of the column from the pntables array.
+     * @param string $definition Field specific options (optional) (default=null).
      *
      * @return boolean
      */
-    public static function renameColumn($table, $oldcolumn, $newcolumn, $fields = null)
+    public static function renameColumn($table, $oldcolumn, $newcolumn, $definition = null)
     {
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
@@ -478,14 +478,23 @@ class DBUtil
 
         $tables = pnDBGetTables();
         $tableName = $tables[$table];
-        if (!isset($fields) || empty($fields)) {
-            $fields = $tables["{$table}_column"][$newcolumn] . ' ' . $tables["{$table}_column_def"][$newcolumn];
-        }
+
         $oldcolumn = isset($tables["{$table}_column"][$oldcolumn]) ? $tables["{$table}_column"][$oldcolumn] : $oldcolumn;
         $newcolumn = $tables["{$table}_column"][$newcolumn];
 
+        if (empty($definition) || !is_array($definition)) {
+            $definition = self::getTableDefinition($table);
+            $definition = $definition[$newcolumn];
+            if (!$definition) {
+                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', array($table)));
+            }
+        }
+
+        $renameColumnArray = array($oldcolumn => array(
+                                       'name' => $newcolumn,
+                                       'definition' => $definition));
         try {
-            Doctrine_Manager::connection()->export->alterTable($tableName, array('rename' => array($oldcolumn => array('name' => $newcolumn))));
+            Doctrine_Manager::connection()->export->alterTable($tableName, array('rename' => $renameColumnArray));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column rename failed.') . ' ' . $e->getMessage());
         }
