@@ -268,7 +268,7 @@ class ZLanguage
     private function searchOverrides($domain, $path)
     {
         $lang = self::transformFS($this->languageCode);
-        $prefix = $_SERVER['DOCUMENT_ROOT'] . pnGetBaseURI();
+        $prefix = realpath(realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..');
         $override = "$prefix/config/locale/$lang/LC_MESSAGES/$domain.mo";
         return (is_readable($override) ? "$prefix/config/locale" : "$prefix/$path");
     }
