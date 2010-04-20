@@ -181,6 +181,10 @@ function users_user_lostpassword()
         return pnRedirect(pnModURL('Users', 'user', 'main'));
     }
 
+    if (isset($_POST['submit']) && !SecurityUtil::confirmAuthKey('Users')) {
+        return LogUtil::registerAuthidError(pnModURL('Users', 'user', 'lostpassword'));
+    }
+
     // create output object
     $pnRender = Renderer::getInstance('Users');
     $pnRender->assign('allowregistration', pnModGetVar('Users', 'reg_allowreg'));
@@ -536,6 +540,10 @@ function users_user_finishnewuser()
  */
 function users_user_mailpasswd()
 {
+    if (!SecurityUtil::confirmAuthKey('Users')) {
+        return LogUtil::registerAuthidError(pnModURL('Users', 'user', 'lostpassword'));
+    }
+    
     $uname = FormUtil::getPassedValue ('uname', null, 'POST');
     $email = FormUtil::getPassedValue ('email', null, 'POST');
     $code  = FormUtil::getPassedValue ('code',  null, 'POST');
