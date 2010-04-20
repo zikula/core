@@ -5,10 +5,10 @@ Deprecated module type 1.
 Deprecated language define based support.
 Removed all legacy support (old-old stuff) in the Core.
 Added database caching capabilities to DBUtil.
-Migrated to using { } in templates with backward compatability for old delimiters.
-When using template logic inside <script> use the delimiters {{ and }}.
+Migrated to using  { } in templates with backward compatability for old delimiters.
+When using template logic inside <script> or <style> tag contents use the delimiters {{ and }}.
 Removed requirement to delete install* and upgrade.php to access administration.
-pnUserGetVars & pnUserGetIDFromName functions can retrieve by all-numeric username.
+Fixed pnUserGetVars & pnUserGetIDFromName functions can retrieve by all-numeric username.
 Outsourced AuthPN, Admin_Messages and Ephemerids.
 Replacement HTML center block to replace Admin_Messages which was outsourced to VA.
 Remove the writable bits from config.php after install is possible.
@@ -16,12 +16,12 @@ Removed autocreate of 'thelang' and 'online' blocks from new install.
 Set installer script memory limit to 64M.
 Fixed JS/CSS minifying.
 Removed on-the-fly JS minifier.
-Removed ADODB and replaced with Doctrine 1.2.1.
+Removed ADODB and replaced with Doctrine 1.2.2.
 DBUtil updated to use Doctrine for backward compatibility.
 Upgraded to PHPMailer 5.1.
 Deprecated all but type 3 themes.
 Added password complexity meter to User's module.
-Removed the need to 'regenerate' module list, this is now done automatically each time the module list is viewed. It will also automatically remove invalid modules that have been removed from the file system.
+Removed the need to 'regenerate' module list, this is now done automatically each time the module list is viewed.  It will also automatically remove invalid modules that have been removed from the file system.
 Merged pnRender module to Theme module.
 Refactored $PNConfig, $PNRuntime and $PNDebug -> Z*.
 Renamed pnTemp to ztemp.
@@ -68,7 +68,78 @@ Fix max length of userprofilelink (modifier of pnRender).
 Ability for an administrator to set user status when creating a new account.
 Corrected link for undefined blocks positions in theme configuration.
 Store the hash_method of users who are pending registrations.
-Users can be deleted from edit screen. 
+Users can be deleted from edit screen.
+Update hooks is called on user activation.
+Fixed problem in function selectExpandedObjectArray from DBUtil object when categoryFilter argument was null.
+Refactored pnForm removing the pnForm from all methods and properties and refactoring all the classes to Form_*.  The template plugins have also been separated out from the classes.
+Clear the Renderer cached/compiled files and Themes cached/compiled/cssjs combination files after a module upgrade.
+Removal of unnecessary security check and redirects on some _admin_main functions.
+Functions theme_userapi_clear_compiled(), theme_userapi_clear_cache(), pnredner_userapi_clear_compiled(), pnrender_userapi_clear_cache() are deprecated.
+Added new methods: Renderer->clear_compiled(), Renderer->clear_cache() and Theme->clear_compiled(), Theme->clear_cache().
+Fix a php error that occur if there is a parameter with the scriptaculous.js file for combination of js/css.
+Changed permission check for viewtempuserinfo in Users from ACCESS_ADD to ACCESS_EDIT to match viewapplications.
+Removed voodoodolly.
+Removed unneeded permission check in users_user_view, issue #1850.
+Clear and fix functions called when we try to delete/edit an user.
+Users module use DBUtil object in searchapi.
+Prevent a rare Smarty exception when viewing pending registrations. Issue #1854.
+Removed unused instance permission checks on pending registrations. Issue #1848.
+Removed bannerdisplay plugin from core, which is specific to the Banners module.
+Fixed problem with deleting group via ajax with insufficient permissions (issue #1568).
+Allow module to specify core version requirements.
+Added missing icons for blocks collapsible function (issue #1847).
+Moved search procedure to api function (issue #1859).
+Respect searchtype for searching in user names (issue #1892).
+Corrected Greek and Dutch lang files for jscalendar (issue #1808).
+Admin panel icons are shown to a user if that user has edit access for at least one instance. (issue #1026).
+When accessing the site through the admin.php entry point with no module specified, if the user is not logged in then he is redirected to a login screen. (issue #1729).
+The category_path plugin now uses the idcolumn attribute. (issue #1884).
+Improved prefilter for script tags to (properly) match a wider set of cases. (Issue #1899).
+Corrected minor defects that generated notices. (issues #1901, #1902).
+The old pndebug plugin is now zdebug (cannot be named simply debug), and updated template and related plugins for Zikula.  (issues #1897, #1898, #1900).
+The Mailer module can now send multipart/alternative e-mails with the specification of a plain-text altbody. (Issue #1768).
+Fix a problem with the encodeurl function of the Search module. (issue #1866).
+New modulelinks navigation plugin (Issue #1238).
+Searchbox toggle (issue #1810).
+link to help page for each security alert (issue #1692).
+Missing language domain in themeswitcher block (issue #1896).
+HTML Settings: check all radios (issue #1551).
+The generic stylesheet (javascript/style.css) is now loaded before all other stylesheets that are loaded through pagevars. (Issue #1911).
+Add requirement/warning messsage into the admin panel for the blocks. (issue #757).
+Installer will chmod 0444 the config.php file after installation.
+Permission checks in the Users module were made more consistent throughout. (issue #1872).
+New APIs DataUtil::decodeNVP(), DataUtil::encodeNVP(), DataUtil::encodeNVPArray().
+Changed old opassword checker js sytem to a new one called "passwordchecker" under a compatible licence (#1841).
+Adapted the module Modules for a Zikula multisites system with multiple domains (issue #1968).
+Modify html maxlength of block title to reflect the database structure. (issue #1980).
+
+CHANGELOG - ZIKULA 1.2.3
+------------------------
+Fixed pnUserGetVars / pnUserGetIDFromName can't retrieve by all-numeric username.
+Fixed <!--[online]--> non working plugin, issue #1799.
+Updated permission check for registration applications, issue #1849.
+Add new parameter to DataUtil::is_serialized to avoid DataUtil::mb_unserialize.
+Fix display name of block language in admin view of Blocks manager.
+Fix javascript order with scriptaculous and combining scripts enabled. (issue #1736)
+Changed default sortField in selector_category pnRender Plugin. (issue #1817)
+Fixed validation for pnformdateinput to allow input of YYYY-DD-MM MM:HH:SS style datetime. (issue #1956).
+Added output filtering to Errors module templates (issue #1958).
+Add more clarity about the option 'show installed modules' in extmenu (issue #1945).
+Image return for an anonymous user should be 'empty' with the renderer plugin userprofilelink  (issue #1895).
+Missing language domain in themeswitcher block (issue #1896).
+Added validation to language parameter (issue #1963).
+Fixed output formatting in pnformfloatinput plugin (issue #1965).
+Standardize PNObjectArray::cleanFilter() into a PreProcess method (issue #1967).
+Category main admin screen now uses less memory and should be significantly faster (issue #216).
+ValidationUtil now supports the in, notin and regexp comparison operators (issue #966).
+Added insert/update/delete convenience methods to CategoryUtil (issue #1723).
+New DataUtil methods: encodeNVP(), encodeNVPArray(), decodeNVP().
+ImageViewer improvements: better gallery selector, pager info, new loading image, better css styles (issues #1920 and #1923).
+Extended Menu item images not saving (issue #1940).
+Fixed validation() method in PNObjectArray, unassigned variable.
+Fixed translation files not loading when Zikula is not in the DOCUMENT_ROOT path (issue #1977).
+Added authid tokens to User lost password templates (issue #1979).
+Fixed extended menu (extmenu) item images not saving (issue #1940).
 
 CHANGELOG - ZIKULA 1.2.2
 ------------------------
