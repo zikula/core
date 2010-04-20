@@ -384,7 +384,7 @@ class FormUtil
      */
     public static function newPNForm($name)
     {
-        return self::Form($name);
+        return self::newForm($name);
     }
     
 /**
