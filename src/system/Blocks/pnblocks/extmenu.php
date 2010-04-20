@@ -458,7 +458,7 @@ function extmenu_check_image(&$link)
             $link['image'] = $osimg;
             $link['imagedata'] = @getimagesize($osimg);
         } else {
-            $link['error'][] = DataUtil::formatForDisplay($link['image']) . ': invalid image data';
+            $link['errors'][] = DataUtil::formatForDisplay($link['image']) . ': invalid image data';
             $link['image'] = '';
             $link['imagedata'] = false;
         }
