@@ -130,7 +130,7 @@ class Form extends Renderer
     {
         // Construct and make normal Smarty use possible
         parent::__construct($module, false);
-        array_push($this->plugins_dir, "lib/form/renderplugins");
+        array_push($this->plugins_dir, "lib/Form/renderplugins");
 
         // Setup
         $this->IdCount = 1;
