@@ -23,7 +23,7 @@
                     <input id="mailer_toname" name="toname" type="text" size="30" maxlength="50" />
                 </div>
                 <div class="z-formrow">
-                    <label for="mailer_toname">{gt text="Recipient's e-mail address"}</label>
+                    <label for="mailer_toaddress">{gt text="Recipient's e-mail address"}</label>
                     <input id="mailer_toaddress" name="toaddress" type="text" size="30" maxlength="50" />
                 </div>
                 <div class="z-formrow">
@@ -31,11 +31,14 @@
                     <input id="mailer_subject" name="subject" type="text" size="30" maxlength="50" />
                 </div>
                 <div class="z-formrow">
-                    <label>{gt text="Message Type:"}</label>
+                    <label>{gt text="Message Type"}</label>
                     <div>
-                        <input id="mailer_msgtype_text" type="radio" name="msgtype" value="text" checked="checked">&nbsp;{gt text="Plain-text message" assign="radioLabel"}{$radioLabel|replace:' ':'&nbsp;'}&nbsp;
-                        <input id="mailer_msgtype_html" type="radio" name="msgtype" value="html">&nbsp;{gt text="HTML-formatted message" assign="radioLabel"}{$radioLabel|replace:' ':'&nbsp;'}&nbsp;
-                        <input id="mailer_msgtype_multipart" type="radio" name="msgtype" value="multipart">&nbsp;{gt text="Multi-part message" assign="radioLabel"}{$radioLabel|replace:' ':'&nbsp;'}
+                        <input id="mailer_msgtype_text" type="radio" name="msgtype" value="text" checked="checked" />
+                        <label for="mailer_msgtype_text">{gt text="Plain-text message"}</label>
+                        <input id="mailer_msgtype_html" type="radio" name="msgtype" value="html" />
+                        <label for="mailer_msgtype_html">{gt text="HTML-formatted message"}</label>
+                        <input id="mailer_msgtype_multipart" type="radio" name="msgtype" value="multipart" />
+                        <label for="mailer_msgtype_multipart">{gt text="Multi-part message"}</label>
                     </div>
                 </div>
                 <div class="z-formrow">

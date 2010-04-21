@@ -5,7 +5,7 @@
 {include file='users_admin_menu.htm'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$templatetitle}</div>
+    <div class="z-adminpageicon">{img modname=core src=db_update.gif set=icons/large alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
     <form class="z-form" action="{modurl modname='Users' type='admin' func='export'}" method="post" enctype="multipart/form-data">
@@ -15,19 +15,19 @@
                 <legend>Export Options</legend>
                 <div class="z-formrow">
                     <label for="users_export_titles">{gt text="Export Title Row"}</label>
-                    <input id="users_export_titles" type="checkbox" name="exportTitles" value="1" checked/>
+                    <input id="users_export_titles" type="checkbox" name="exportTitles" value="1" checked="checked" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_export_email">{gt text="Export Email Address"}</label>
-                    <input id="users_export_email" type="checkbox" name="exportEmail" value="1" checked/>
+                    <input id="users_export_email" type="checkbox" name="exportEmail" value="1" checked="checked" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_export_regdate">{gt text="Export Registration Date"}</label>
-                    <input id="users_export_regdate" type="checkbox" name="exportRegDate" value="1" checked/>
+                    <input id="users_export_regdate" type="checkbox" name="exportRegDate" value="1" checked="checked" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_export_lastlogin">{gt text="Export Last Login Date"}</label>
-                    <input id="users_export_lastlogin" type="checkbox" name="exportLastLogin" value="1" checked/>
+                    <input id="users_export_lastlogin" type="checkbox" name="exportLastLogin" value="1" checked="checked" />
                 </div>
                 {if isset($groups) && $groups == '1'}
                 <div class="z-formrow">

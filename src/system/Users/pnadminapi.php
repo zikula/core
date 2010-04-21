@@ -500,10 +500,10 @@ function Users_adminapi_getlinks()
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
         $links[] = array('url' => pnModURL('Users', 'admin', 'new'), 'text' => __('Create new user'), 'class' => 'z-icon-es-new');
-        $links[] = array('url' => pnModURL('Users', 'admin', 'import'), 'text' => __('Import users'), 'class' => 'z-icon-es-save');
+        $links[] = array('url' => pnModURL('Users', 'admin', 'import'), 'text' => __('Import users'), 'class' => 'z-icon-es-import');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'export'), 'text' => __('Export users'), 'class' => 'z-icon-es-save');
+        $links[] = array('url' => pnModURL('Users', 'admin', 'export'), 'text' => __('Export users'), 'class' => 'z-icon-es-export');
     }
     if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
         $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find and e-mail users'), 'class' => 'z-icon-es-mail');

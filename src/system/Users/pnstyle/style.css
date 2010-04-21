@@ -68,3 +68,12 @@ div.z-accountlink {
     color: green;
     float: left;
 }
+
+.z-icon-es-import {
+    background:url("../../../images/icons/extrasmall/db_comit.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+.z-icon-es-export {
+    background:url("../../../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
