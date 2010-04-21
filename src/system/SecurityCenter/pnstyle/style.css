@@ -1,30 +1,3 @@
 form#securitycenter_logfilter {
     margin-bottom: 5px;
 }
-
-.htmlpure div.z-formrow .z-label,
-.htmlpure div.z-formrow label {
-    width: 33%;
-}
-.htmlpure .z-formlist {
-    margin-left: 35%;
-}
-.htmlpure div.z-formrow .z-formlist input[type=text],
-.htmlpure div.z-formrow .z-formlist textarea {
-    padding: 0.3em 0.3em;
-    width: 98%;
-    display: block;
-    position: relative;
-}
-.htmlpure div.z-formrow .z-formlist input[type=text].z-mandatoryinput,
-.htmlpure div.z-formrow .z-formlist select.z-mandatoryinput,
-.htmlpure div.z-formrow .z-formlist textarea.z-mandatoryinput {
-    width: 96%;
-}
-.htmlpure div.z-formrow .z-formlist select {
-    padding: 0.3em 2px 0.3em 1px;
-    cursor: pointer;
-    width: 99%;
-    display: block;
-    position: relative;
-}

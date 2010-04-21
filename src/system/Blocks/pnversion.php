@@ -11,7 +11,7 @@
 
 $modversion['name']           = 'Blocks';
 $modversion['displayname']    = __('Blocks manager');
-$modversion['description']    = __("Provides an interface for adding, removing and administering the site's side and centre blocks.");
+$modversion['description']    = __("Provides an interface for adding, removing and administering the site's side and center blocks.");
 //! module name that appears in URL
 $modversion['url']            = __('blocks');
 $modversion['version']        = '3.6';

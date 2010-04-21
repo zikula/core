@@ -110,7 +110,7 @@ function blocks_defaultdata()
 
     $left = pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => 'left', 'description' => __('Left blocks')));
     $right = pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => 'right', 'description' => __('Right blocks')));
-    $center = pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => 'center', 'description' => __('Centre blocks')));
+    $center = pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => 'center', 'description' => __('Center blocks')));
 
     // define an array of the default blocks
     $blocks = array();
