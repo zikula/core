@@ -51,7 +51,12 @@ function smarty_function_useravatar($params, &$smarty)
         return false;
     }
 
-    $html = '<img src="'.DataUtil::formatForDisplay($avatarURL).'" title="'.DataUtil::formatForDisplay($uname).'" alt="'.DataUtil::formatForDisplay($uname).'" />';
+    $classString = '';
+    if (isset($params['class'])) {
+        $classString = "class=\"$params[class]\" ";
+    }
+
+    $html = '<img ' . $classString . ' src="' . DataUtil::formatForDisplay($avatarURL) . '" title="' . DataUtil::formatForDisplay($uname) . '" alt="' . DataUtil::formatForDisplay($uname) . '" />';
 
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $avatarURL);
