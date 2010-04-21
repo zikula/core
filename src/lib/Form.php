@@ -266,7 +266,7 @@ class Form extends Renderer
             $plugin->load($this, $params);
 
             // Remember which file this plugin came from in order to be able to restore it.
-            $pluginPath = str_replace($_SERVER['DOCUMENT_ROOT'] . pnGetBaseURI() . DIRECTORY_SEPARATOR, '', $plugin->getFilename());
+            $pluginPath = str_replace(realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'), '', $plugin->getFilename());
             $this->Includes[$pluginPath] = 1;
 
         } else {
