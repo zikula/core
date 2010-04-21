@@ -25,8 +25,7 @@ all other classes
 Note 2: we only specify individual styles for the pseudo classes
 e.g. (a:link, a:hover etc.) if styling these differently
 */
-a,
-a.z-normal {
+a {
     color: #0000FF;
     font-size: 13px;
     text-decoration: underline;
@@ -72,11 +71,6 @@ a.z-logo {
     font-size: 14px;
     font-weight: bold;
     text-align:center;
-}
-.z-normal {
-    color: #000000;
-    font-size: 13px;
-    text-decoration: none;
 }
 .z-statusmsg {
     color: red;

@@ -98,21 +98,17 @@ body {
 }
 
 select,
-select.z-normal,
 select.z-text {
     background-color: #f3f3f3;
     color: #999999;
 }
 
-select:focus,
-select.z-normal:focus
-{
+select:focus {
     background: #f3f3f3;
     border-color: #53B021;
 }
 
-textarea,
-textarea.z-normal {
+textarea {
     background: #ffffff url(../images/input.png) repeat-x top;
     color: #000000;
     border: 0;
@@ -132,23 +128,13 @@ input
 }
 
 input,
-input.z-normal,
 input.z-text,
 input.z-button,
 textarea,
-textarea.z-normal,
 textarea.z-text {
     margin: 5px 0;
     padding: 1px 6px;
 }
-
-textarea.z-normal {
-    width: 100%;
-    margin: 5px 0;
-}
-
-* html textarea.z-normal { padding: 1px 0px;} /* IE fix */
-
 
 input.z-button {
     border-collapse: collapse;
@@ -163,15 +149,12 @@ input.r-button {
 
 
 input:hover,
-input.z-normal:hover,
 select:hover,
-select.z-normal:hover,
 textarea:hover {
     border-color: #cccccc;
 }
 
 input:focus,
-input.z-normal:focus,
 textarea:focus {
     background: #ffffff url(../images/input.png) repeat-x top;
     border-color: #8DC741;
@@ -397,15 +380,6 @@ div#CenterBlocks {
     margin-bottom: 15px;
 }
 
-.z-normal,
-td.z-normal {
-    font: 8pt Verdana, Tahoma, Arial, Helvetica, sans-serif;
-    line-height: 1.3em;
-    text-align: left;
-    color: #666666;
-    background: none;
-    text-decoration: none;
-}
 a img, img {border: 0px; }
 
 /* Anchor styles */
@@ -416,22 +390,6 @@ a:link, a:visited {
 a:hover,
 a:active {
     color: #8CC63F;
-}
-a.z-normal:link,
-a.z-normal:visited {
-    color: #4C5EA8;
-    text-decoration: underline;
-    background: none;
-}
-a.z-normal:hover {
-    color: #CC6600;
-    text-decoration: underline;
-    background: none;
-}
-a.z-normal:active {
-    color: #FF9900;
-    text-decoration: underline;
-    background: none;
 }
 
 /* ----------  side bar rollovers ------- */
@@ -602,20 +560,6 @@ a.pnsub:hover {
 color: #CC6600; }
 a.pnsub:active {
 color: #FF9900; }
-
-div.pnsub a.z-normal {
-    font: 8pt Verdana, Helvetica, Arial, sans-serif;
-    color: #666666;
-}
-div.pnsub a.z-normal:visited {
-    color: #4C5EA8;
-}
-div.pnsub a.z-normal:hover {
-    color: #CC6600;
-}
-div.pnsub a.z-normal:active {
-    color: #FF9900;
-}
 
 /* News articles */
 .ArticleBlock {
