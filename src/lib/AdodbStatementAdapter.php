@@ -30,11 +30,30 @@
  */
 class AdodbStatementAdapter implements Doctrine_Adapter_Statement_Interface
 {
+    /**
+     * Adapter for this object.
+     *
+     * @var object
+     */
     protected $statement;
-    protected $result;
+
+    // adodb adapter interface
+    
+    /**
+     * EOF.
+     * 
+     * @var boolean
+     */
     public $EOF = false;
 
-    public function __construct($statement)
+    /**
+     * Row result.
+     *
+     * @var array
+     */
+    public $fields;
+
+    public function __construct(Doctrine_Connection_Statement $statement)
     {
         $this->statement = $statement;
     }
@@ -394,20 +413,13 @@ class AdodbStatementAdapter implements Doctrine_Adapter_Statement_Interface
     }
 
     /**
-     * ADODB method adapter.
+     * ADODB method adapter for MoveNext().
+     *
+     * @return void
      */
     public function MoveNext()
     {
-        if (is_null($this->result)) {
-            $this->result = new ArrayIterator($this->fetchAll(Doctrine::FETCH_ASSOC));
-        }
-        if ($this->result->valid()) {
-            $this->result->next();
-        }
-        if ($this->result->valid()) {
-            return $this->result->current();
-        } else {
-            $this->EOF = true;
-        }
+        $this->fields = $this->fetch(PDO::FETCH_NUM);
+        $this->EOF = !(bool)$this->fields;
     }
 }
