@@ -98,7 +98,7 @@ class DBUtil
      */
     public static function serverInfo()
     {
-        $connection = Doctrine_Manager::connection();
+        $connection = DBConnectionStack::getConnection();
 
         // we will form an array to keep formally compatible to the old ado-db style for now
         return array('description' => $connection->getAttribute(PDO::ATTR_SERVER_INFO),
@@ -119,7 +119,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'dbname'));
         }
 
-        $connection = Doctrine_Manager::connection();
+        $connection = DBConnectionStack::getConnection();
 
         try {
             // create the new database
@@ -139,7 +139,7 @@ class DBUtil
      */
     public static function metaDatabases()
     {
-        return Doctrine_Manager::connection()->import->listDatabases();
+        return DBConnectionStack::getConnection()->import->listDatabases();
     }
 
     /**
@@ -153,7 +153,7 @@ class DBUtil
      */
     public static function metaTables($ttype = false, $showSchema = false, $mask = false)
     {
-        return Doctrine_Manager::connection()->import->listTables();
+        return DBConnectionStack::getConnection()->import->listTables();
         //return $dbconn->MetaTables($ttype, $showSchema, $mask);
     }
 
@@ -221,7 +221,7 @@ class DBUtil
             throw new Exception(__('No SQL statement to execute'));
         }
 
-        $connection = Doctrine_Manager::connection();
+        $connection = DBConnectionStack::getConnection();
 
         if (!$connection && defined('_ZINSTALLVER')) {
             return false;
@@ -288,8 +288,7 @@ class DBUtil
                         }
                     }
                 }
-
-                return $result;
+                return new AdodbStatementAdapter($result);
             }
         } catch (Exception $e) {
             die('Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />' . nl2br($e->getTraceAsString()));
@@ -494,7 +493,7 @@ class DBUtil
                                        'name' => $newcolumn,
                                        'definition' => $definition));
         try {
-            Doctrine_Manager::connection()->export->alterTable($tableName, array('rename' => $renameColumnArray));
+            DBConnectionStack::getConnection()->export->alterTable($tableName, array('rename' => $renameColumnArray));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column rename failed.') . ' ' . $e->getMessage());
         }
@@ -528,7 +527,7 @@ class DBUtil
         $tableName = $tables[$table];
 
         try {
-            $connection = Doctrine_Manager::connection();
+            $connection = DBConnectionStack::getConnection();
             foreach ($fields as $field) {
                 $options = self::getTableOptions($table);
                 $connection->export->alterTable($tableName, array('add' => array($field => $options)));
@@ -574,7 +573,7 @@ class DBUtil
         $tableName = $tables[$table];
 
         try {
-            Doctrine_Manager::connection()->export->alterTable($tableName, array('remove' => $arrayFields));
+            DBConnectionStack::getConnection()->export->alterTable($tableName, array('remove' => $arrayFields));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column deletion failed.') . ' ' . $e->getMessage());
         }
@@ -2653,7 +2652,7 @@ class DBUtil
 
         $resultID = 0;
         try {
-            if (!$resultID = Doctrine_Manager::connection()->lastInsertId($tableName, $fieldName)) {
+            if (!$resultID = DBConnectionStack::getConnection()->lastInsertId($tableName, $fieldName)) {
                 if ($verbose) {
                     print '<br />' . $dbconn->ErrorMsg() . '<br />'; //TODO A this isnt right (drak)
                 }
@@ -2881,7 +2880,7 @@ class DBUtil
 
         /*
         try {
-            return Doctrine_Manager::connection()->import->listTableConstraints($tableName);
+            return DBConnectionStack::getConnection()->import->listTableConstraints($tableName);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Table constraints determination failed.') . ' ' . $e->getMessage());
         }
@@ -3015,7 +3014,7 @@ class DBUtil
             return false;
         }
 
-        $connection = Doctrine_Manager::connection();
+        $connection = DBConnectionStack::getConnection();
 
         if (empty($definition) || !is_array($definition)) {
             $definition = self::getTableDefinition($table);
@@ -3073,7 +3072,7 @@ class DBUtil
             return false;
         }
 
-        $connection = Doctrine_Manager::connection();
+        $connection = DBConnectionStack::getConnection();
 
         if (empty($definition) || !is_array($definition)) {
             $definition = self::getTableDefinition($table);
@@ -3097,7 +3096,7 @@ class DBUtil
         foreach ($definition as $key => $columnDefinition) {
             $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
             try {
-                Doctrine_Manager::connection()->export->alterTable($tableName, $alterTableDefinition);
+                $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
                 return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
             }
@@ -3180,7 +3179,7 @@ class DBUtil
         }
 
         try {
-            Doctrine_Manager::connection()->export->alterTable($tableName, array('name' => $newTableName));
+            DBConnectionStack::getConnection()->export->alterTable($tableName, array('name' => $newTableName));
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Table rename failed.') . ' ' . $e->getMessage());
         }
@@ -3211,7 +3210,7 @@ class DBUtil
         }
 
         try {
-            Doctrine_Manager::connection()->export->dropTable($tableName);
+            DBConnectionStack::getConnection()->export->dropTable($tableName);
             ObjectUtil::deleteAllObjectTypeAttributes($table);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Table drop failed.') . ' ' . $e->getMessage());
@@ -3283,7 +3282,7 @@ class DBUtil
         }
 
         try {
-            Doctrine_Manager::connection()->export->createIndex($tableName, $idxname, array(
+            DBConnectionStack::getConnection()->export->createIndex($tableName, $idxname, array(
                             'fields' => $idxDef));
             return true;
         } catch (Exception $e) {
@@ -3317,7 +3316,7 @@ class DBUtil
         }
 
         try {
-            Doctrine_Manager::connection()->export->dropIndex($tableName, $idxname);
+            DBConnectionStack::getConnection()->export->dropIndex($tableName, $idxname);
             return true;
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Index deletion failed.') . ' ' . $e->getMessage());
@@ -3358,7 +3357,7 @@ class DBUtil
 
 
         try {
-            return Doctrine_Manager::connection()->import->listTableColumns($tableName);
+            return DBConnectionStack::getConnection()->import->listTableColumns($tableName);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Fetching table column list failed.') . ' ' . $e->getMessage());
         }
@@ -3390,7 +3389,7 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
-        return Doctrine_Manager::connection()->MetaColumnNames($tableName, $numericIndex);
+        return DBConnectionStack::getConnection()->MetaColumnNames($tableName, $numericIndex);
     }
 
     /**
@@ -3413,7 +3412,7 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
-        return Doctrine_Manager::connection()->MetaPrimaryKeys($tableName);
+        return DBConnectionStack::getConnection()->MetaPrimaryKeys($tableName);
     }
 
     /**
@@ -3438,7 +3437,7 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
-        return Doctrine_Manager::connection()->MetaForeignKeys($tableName, $owner, $upper);
+        return DBConnectionStack::getConnection()->MetaForeignKeys($tableName, $owner, $upper);
     }
 
     /**
@@ -3463,7 +3462,7 @@ class DBUtil
         }
 
         try {
-            return Doctrine_Manager::connection()->import->listTableIndexes($tableName);
+            return DBConnectionStack::getConnection()->import->listTableIndexes($tableName);
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Fetching table index list failed.') . ' ' . $e->getMessage());
         }
