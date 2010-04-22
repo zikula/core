@@ -288,7 +288,11 @@ class DBUtil
                         }
                     }
                 }
-                return new AdodbStatementAdapter($result);
+                if ($GLOBALS['ZConfig']['System']['compat_layer']) {
+                    return new AdodbStatementAdapter($result);
+                } else {
+                    return $result;
+                }
             }
         } catch (Exception $e) {
             die('Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />' . nl2br($e->getTraceAsString()));

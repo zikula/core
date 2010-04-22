@@ -259,7 +259,7 @@ function pnInit($stages = PN_CORE_ALL)
     $GLOBALS['additional_header'] = array();
 
     if ($GLOBALS['ZConfig']['System']['compat_layer']) {
-        include 'lib/legacy/Compat.php';
+        include_once 'lib/legacy/Compat.php';
     }
 
     /**
