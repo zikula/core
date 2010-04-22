@@ -384,7 +384,8 @@ function Admin_admin_adminpanel($args)
                                       'menutext' => $menutext,
                                       'menutexttitle' => $menutexttitle,
                                       'modname' => $modinfo['name'],
-                                      'adminicon' => $adminicon);
+                                      'adminicon' => $adminicon,
+                                      'id' => $modinfo['id']);
             }
         }
     }

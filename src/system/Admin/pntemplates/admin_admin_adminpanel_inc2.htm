@@ -4,7 +4,7 @@
     {assign var="count" value="0"}
     {foreach from=$adminlinks item=adminlink}
     {math equation="$count+1" assign="count"}
-    <dl class="z-adminiconcontainer z-admincenter" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
+    <dl id="A{$adminlink.id}" class="z-adminiconcontainer z-admincenter draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
         {if $modvars.admingraphic eq 1}
         <dd class="z-adminimg">
             <a class="admininfo" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
@@ -16,6 +16,11 @@
             <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
         </dt>
     </dl>
+    <script type="text/javascript">
+        new Draggable("A{/literal}{$adminlink.id}{literal}", { 
+            revert: true 
+            });
+    </script>
     {if $count eq $modvars.modulesperrow}
     {assign var="count" value="0"}
     <br class="z-clearer" />

@@ -1,5 +1,4 @@
 {* $Id$ *}
-
 {math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
 <div id="z-adminiconlist">
     {assign var="count" value="0"}
@@ -7,9 +6,9 @@
     {foreach from=$adminlinks name=adminlink item=adminlink}
     {math equation="$count+1" assign="count"}
 
-    {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
+    {if $count eq 1}<div class="z-adminiconrow z-clearfix" id="admin-row">{/if}
 
-        <dl class="z-adminiconcontainer" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
+        <dl id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
             {if $modvars.admingraphic eq 1}
             <dd class="z-adminimg z-adminfloat">
                 <a class="admininfo" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
@@ -48,6 +47,11 @@
             $('infoModuleFunctions{{$moduleid}}').observe('mouseover', function() { clearTimeout(clearTimer{{$moduleid}}); }, false);
             $('infoModuleFunctions{{$moduleid}}').observe('mouseout', function() { clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 500); }, false);
         </script>
+        <script type="text/javascript">
+        new Draggable("A{/literal}{$adminlink.id}{literal}", { 
+            revert: true 
+            });
+        </script>
 
         {if $count eq $modvars.modulesperrow}
             {assign var="count" value="0"}
@@ -57,5 +61,6 @@
         {/if}
 
     {math equation="$moduleid+1" assign="moduleid"}
+    
     {/foreach}
 </div>
