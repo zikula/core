@@ -90,6 +90,11 @@ ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
 
+include 'lib/legacy/debug.php';
+include 'lib/legacy/User.php';
+include 'lib/legacy/Module.php';
+include 'lib/legacy/Blocks.php';
+
 /**
  * Functions
  */
@@ -252,6 +257,10 @@ function pnInit($stages = PN_CORE_ALL)
 
     // Initialize the (ugly) additional header array
     $GLOBALS['additional_header'] = array();
+
+    if ($GLOBALS['ZConfig']['System']['compat_layer']) {
+        include 'lib/legacy/Compat.php';
+    }
 
     /**
      * schemas - holds all component/instance schemas

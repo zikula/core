@@ -6,12 +6,6 @@
  * @copyright see NOTICE
  */
 
-include 'lib/legacy/Legacy.php';
-include 'lib/legacy/debug.php';
-include 'lib/legacy/User.php';
-include 'lib/legacy/Module.php';
-include 'lib/legacy/Blocks.php';
-
 // backwards compatibility references
 $GLOBALS['PNConfig'] = & $GLOBALS['ZConfig'];
 $GLOBALS['PNRuntime'] = & $GLOBALS['ZRuntime'];

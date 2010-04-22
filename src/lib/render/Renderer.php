@@ -150,8 +150,12 @@ class Renderer extends Smarty
         }
 
         // register prefilters
-        $this->register_prefilter('z_prefilter_add_literal'); // TODO B [not required for Smarty 3] (drak)
-        $this->register_prefilter('z_prefilter_legacy');
+        $this->register_prefilter('z_prefilter_add_literal');
+
+        if ($GLOBALS['ZConfig']['System']['legacy_prefilters']) {
+            $this->register_prefilter('z_prefilter_legacy');
+        }
+
         $this->register_prefilter('z_prefilter_gettext_params');
 
         // Assign some useful theme settings
