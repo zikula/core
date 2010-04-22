@@ -384,7 +384,8 @@ class FormUtil
      */
     public static function newPNForm($name)
     {
-        return self::newForm($name);
+        // This MUST call new pnForm and cannot be chained to self::newForm()
+        return new pnForm($name);
     }
     
 /**
