@@ -69,27 +69,37 @@ class ValidationUtil
                 $testval = $object[$v2];
             }
 
-            //print "$postval $cmp_op $testval";
-
             switch ($cmp_op) {
                 case 'eq '   : $rc = ($postval === $testval);
+                               break;
                 case 'neq'   : $rc = ($postval != $testval);
+                               break;
                 case 'gt'    : $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
+                               break;
                 case 'gte'   : $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
+                               break;
                 case 'lt'    : $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
+                               break;
                 case 'lte'   : $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
+                               break;
                 case 'in'    : $rc = ($postval !== '' && is_array($testval)   && in_array($postval, $testval));
+                               break;
                 case 'notin' : $rc = ($postval !== '' && is_array($testval)   && !in_array($postval, $testval));
+                               break;
                 case 'regexp': $rc = ($postval !== '' && preg_match($testval, $postval));
+                               break;
                 case 'url'   : $rc = pnVarValidate($postval, 'url');
+                               break;
                 case 'email' : $rc = pnVarValidate($postval, 'email');
-                case 'noop'  : 
+                               break;
+                case 'noop'  :
                 case ''      : if (!$required) {
                                   return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
                                }
                                $rc = true;
+                               break;
                 default      : return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
-            } 
+            }
         }
 
         if ($rc === false) {
