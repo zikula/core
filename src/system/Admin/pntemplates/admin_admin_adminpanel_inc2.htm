@@ -16,14 +16,17 @@
             <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
         </dt>
     </dl>
+
     <script type="text/javascript">
-        new Draggable("A{/literal}{$adminlink.id}{literal}", { 
-            revert: true 
-            });
+        new Draggable("A{/literal}{$adminlink.id}{literal}", {
+            revert: true
+        });
     </script>
+
     {if $count eq $modvars.modulesperrow}
     {assign var="count" value="0"}
     <br class="z-clearer" />
     {/if}
+
     {/foreach}
 </div>

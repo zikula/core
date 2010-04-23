@@ -6,7 +6,7 @@
     {foreach from=$adminlinks name=adminlink item=adminlink}
     {math equation="$count+1" assign="count"}
 
-    {if $count eq 1}<div class="z-adminiconrow z-clearfix" id="admin-row">{/if}
+    {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
 
         <dl id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
             {if $modvars.admingraphic eq 1}
@@ -41,25 +41,26 @@
             function hidePIPr{{$moduleid}}() {
                 $('infoModuleFunctions{{$moduleid}}').hide();
             }
-
+    
             $('switchModuleFunctions{{$moduleid}}').observe('click', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
             $('switchModuleFunctions{{$moduleid}}').observe('keypress', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
             $('infoModuleFunctions{{$moduleid}}').observe('mouseover', function() { clearTimeout(clearTimer{{$moduleid}}); }, false);
             $('infoModuleFunctions{{$moduleid}}').observe('mouseout', function() { clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 500); }, false);
         </script>
+    
         <script type="text/javascript">
-        new Draggable("A{/literal}{$adminlink.id}{literal}", { 
-            revert: true 
+            new Draggable("A{/literal}{$adminlink.id}{literal}", {
+                revert: true
             });
         </script>
-
+    
         {if $count eq $modvars.modulesperrow}
-            {assign var="count" value="0"}
-            </div>
-        {else}
-            {if $smarty.foreach.adminlink.last}</div>{/if}
-        {/if}
-
+        {assign var="count" value="0"}
+    </div>
+    {else}
+    {if $smarty.foreach.adminlink.last}</div>{/if}
+    {/if}
+    
     {math equation="$moduleid+1" assign="moduleid"}
     
     {/foreach}

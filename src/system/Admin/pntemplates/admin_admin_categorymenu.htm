@@ -1,33 +1,32 @@
 {* $Id$ *} {pnajaxheader modname=Admin filename=admin_admin_ajax.js}
 <h1>{gt text="Site admin panel" domain="zikula"} ({version})</h1>
 
-<div class="minitabs-container" id="minitabs-container">{include
-file=admin_admin_securityanalyzer.htm} {nocache}{include
-file=admin_admin_updatechecker.htm}{/nocache} {insert
-name="getstatusmsg"}
-<ul id="minitabs">
-	{section name=menuoption loop=$menuoptions}
-	<li style="position: relative;border:1px solid;">
-	{if $currentcat eq $menuoptions[menuoption].cid} <a class="active"
-		href="{$menuoptions[menuoption].url|varprepfordisplay}"
-		title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
-	{else} <a id="C{$menuoptions[menuoption].cid}"
-		href="{$menuoptions[menuoption].url|varprepfordisplay}"
-		title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
-	{/if}
-	</li>
-	<script type="text/javascript">
-        Droppables.add('C{/literal}{$menuoptions[menuoption].cid}{literal}', { 
-            accept: 'draggable',
-            hoverclass: 'ajaxhover',
-            onDrop: function(drag, drop) {moveModule(drag.id, drop.id);}
-        });
-    </script>
-	{/section}
-	<li id="addcat"><a
-		href="{modurl modname=Admin type=admin func=new}" title="new"
-		onclick='return newCategory(this);'>{img modname=core
-	src=edit_add.gif set=icons/extrasmall __alt="New" __title="New"
-	height="10px"}</a></li>
-</ul>
-{adminonlinemanual} {include file=admin_admin_ajaxAddCategory.htm}</div>
+<div class="minitabs-container" id="minitabs-container">
+    {include file=admin_admin_securityanalyzer.htm}
+    {nocache}{include file=admin_admin_updatechecker.htm}{/nocache}
+    {insert name="getstatusmsg"}
+    <ul id="minitabs">
+        {section name=menuoption loop=$menuoptions}
+        <li>
+            {if $currentcat eq $menuoptions[menuoption].cid} <a class="active" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
+            {else}
+            <a id="C{$menuoptions[menuoption].cid}" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
+            {/if}
+            <script type="text/javascript">
+                Droppables.add('C{/literal}{$menuoptions[menuoption].cid}{literal}', {
+                    accept: 'draggable',
+                    hoverclass: 'ajaxhover',
+                    onDrop: function(drag, drop) {moveModule(drag.id, drop.id);}
+                });
+            </script>
+        </li>
+        {/section}
+        <li id="addcat">
+            <a href="{modurl modname=Admin type=admin func=new}" title="new" onclick='return newCategory(this);'>
+                {img modname=core src=edit_add.gif set=icons/extrasmall __alt="New" __title="New" height="10px"}
+            </a>
+        </li>
+    </ul>
+    {adminonlinemanual}
+    {include file=admin_admin_ajaxAddCategory.htm}
+</div>

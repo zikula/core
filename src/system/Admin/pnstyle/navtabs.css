@@ -40,9 +40,9 @@ ul#minitabs ul a:link,
 ul#minitabs ul a:visited,
 ul.minitabs ul a:link,
 ul.minitabs ul a:visited {
-	width:100%;
-	padding:0 10px 2px 10px;
-	margin:0;
+    width:100%;
+    padding:0 10px 2px 10px;
+    margin:0;
 }
 
 
@@ -83,30 +83,30 @@ ul.minitabs a.ajaxhover {
 }
 
 .ajaxNewCat {
-	float:left;
-	width:60px;
-	height:14px;
-	background-color:transparent;
-	border:none;
-	padding: 2px 4px 2px 10px;
-	margin:0 0 0 0;
-	font-weight: bold;
-	color: #666;
+    float:left;
+    width:60px;
+    height:14px;
+    background-color:transparent;
+    border:none;
+    padding: 2px 4px 2px 10px;
+    margin:0;
+    font-weight: bold;
+    color: #666;
 }
 
 .ajaxNewCatHidden {
-	visibility:hidden;
-	display:none;
+    visibility:hidden;
+    display:none;
 }
 
 ul#minitabs a:link.ajaxCatImage,
 ul#minitabs a:visited.ajaxCatImage,
 ul.minitabs a:link.ajaxCatImage,
 ul.minitabs a:visited.ajaxCatImage {
-	display:block;
-	float:left;
-    padding: 0 0 0 0;
-    margin: 0 0 0 0;
+    display:block;
+    float:left;
+    padding: 0;
+    margin: 0;
     border: none;
     text-decoration: none;
     border-color:none;
@@ -120,8 +120,8 @@ ul.minitabs a:visited.ajaxCatImage img{
     position:relative;
     display:block;
     float:left;
-    padding: 0 0 0 0;
-    margin: 0 0 0 0;
+    padding: 0;
+    margin: 0;
     border: none;
     text-decoration: none;
     border-color:none;
