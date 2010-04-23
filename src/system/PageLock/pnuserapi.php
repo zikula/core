@@ -152,22 +152,20 @@ function PageLock_userapi_getLocks($args)
 
     PageLockRequireAccess();
 
-    $dbconn = DBConnectionStack::getConnection();
     $pntable = pnDBGetTables();
-    $pageLockTable = &$pntable['PageLock'];
     $pageLockColumn = &$pntable['PageLock_column'];
+    $now = time();
 
-    $sql = "DELETE FROM $pageLockTable WHERE $pageLockColumn[expiresDate] < " . $dbconn->sysTimeStamp;
-    DBUtil::executeSql($sql);
+    $where = "{$pageLockColumn['expiresDate']} < '" . DateUtil::getDatetime($now) . "'";
+    DBUtil::deleteWhere('PageLock', $where);
 
-    $where = "$pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] != '" . DataUtil::formatForStore($sessionId) . "'";
+    $where = "{$pageLockColumn['name']} = '" . DataUtil::formatForStore($lockName) . "' AND {$pageLockColumn['lockedBySessionId']} != '" . DataUtil::formatForStore($sessionId) . "'";
     $locks = DBUtil::selectObjectArray('PageLock', $where);
 
     PageLockReleaseAccess();
 
     return $locks;
 }
-
 
 function PageLock_userapi_releaseLock($args)
 {
