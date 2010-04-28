@@ -1,9 +1,7 @@
 <div id="ajaxNewCatHidden" class="ajaxNewCatHidden">
-    <form id="ajaxNewCatForm" onsubmit="return addCategory();" action="javascript:cancelCategory(this)">
-        <div>
+    <form id="ajaxNewCatForm" onsubmit="return addCategory(this);" action="javascript:cancelCategory(this)">
             <input type="text" class="ajaxNewCat" name="catName" id="ajaxNewCat" />
             <a href="javascript:addCategory(this)" id="ajaxCatImage" onclick="return addCategory(this);" class="ajaxCatImage">{img modname=core src=button_ok.gif set=icons/extrasmall __alt="Save" height="13px"}</a>
             <a href="javascript:cancelCategory(this)" onclick="return cancelCategory(this);" class="ajaxCatImage">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Save" height="13px"}</a>
-        </div>
     </form>
 </div>
