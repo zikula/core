@@ -1,6 +1,7 @@
 {* $Id$ *} {pnajaxheader modname=Admin filename=admin_admin_ajax.js}
 {pageaddvar name="javascript" value="javascript/livepipe/livepipe.js"}
 {pageaddvar name="javascript" value="javascript/livepipe/contextmenu.js"}
+{pageaddvar name="javascript" value="javascript/ajax/controls.js"}
 <h1>{gt text="Site admin panel" domain="zikula"} ({version})</h1>
 <div class="minitabs-container" id="minitabs-container">
     {include file=admin_admin_securityanalyzer.htm}
@@ -9,13 +10,9 @@
     <ul id="minitabs">{section name=menuoption loop=$menuoptions}
         <li>
             {if $currentcat eq $menuoptions[menuoption].cid}
-            <a id="C{$menuoptions[menuoption].cid}" class="active" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">
-                {$menuoptions[menuoption].title|varprepfordisplay}
-            </a>
+            <a id="C{$menuoptions[menuoption].cid}" class="active" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
             {else}
-            <a id="C{$menuoptions[menuoption].cid}" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">
-                {$menuoptions[menuoption].title|varprepfordisplay}
-            </a>
+            <a id="C{$menuoptions[menuoption].cid}" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
             {/if}
         </li>
         {/section}
@@ -27,3 +24,4 @@
     </ul>
     {adminonlinemanual} {include file=admin_admin_ajaxAddCategory.htm}
 </div>
+<div id="none" style="display:none;"></div>

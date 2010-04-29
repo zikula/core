@@ -4,6 +4,7 @@
  */
 window.onload = function() {
    context_menu = Array();
+   editors = Array();
    droppables = Array();
    var list = document.getElementById('minitabs');
    if (list.hasChildNodes) {
@@ -12,6 +13,7 @@ window.onload = function() {
          var nid = nodes[i].getAttribute('id');
          if (nid != null) {
             addContext(nid);
+            addEditor(nid);
             if (nodes[i].className == 'active')
                continue;
             var droppable = Droppables.add(nid, {
@@ -37,12 +39,11 @@ function addContext(nid)
          if (match instanceof Array) {
             if (match.length == 2) {
                cid = match[match.length - 1];
+               getEditor("C" + cid).enterEditMode('click');
             }
          }
-         alert(cid);
          return;
-      },
-       enabled : false
+      }
    });
    context_menu[context_menu.length - 1].addItem( {
       label : 'Delete',
@@ -57,6 +58,14 @@ function addContext(nid)
          return;
       }
    });
+}
+
+function getEditor(nid) {
+	for (var row = 0; row < editors.length; row++) {
+		if (editors[row][0] == nid) {
+			return editors[row][1];
+		}
+	}
 }
 
 function deleteTab(id) {
@@ -173,6 +182,7 @@ function addCategoryResponse(req) {
         newelement.setAttribute('id', 'addcat');
         document.getElementById('minitabs').appendChild(newelement);
         addContext('C'+json.response);
+        addEditor('C'+json.response);
         Droppables.add('C'+json.response, { 
             accept: 'draggable',
             hoverclass: 'ajaxhover',
@@ -182,39 +192,23 @@ function addCategoryResponse(req) {
     return false;    
 }
 
-function editmode() {
-   if (typeof editors == 'undefined') {
-      editors = new Array();
-   }
-   if (editors.length != 0) {
-      while (editors.length > 0) {
-         editors.pop().dispose();
-      }
-      document.getElementById('editcat').setAttribute("class", "");
-      document.getElementById('editcat').setAttribute("className", "");
-      return false;
-   }
-   var list = document.getElementById('minitabs');
-   if (list.hasChildNodes) {
-      var nodes = list.getElementsByTagName("a");
-      for ( var i = 0; i < nodes.length; i++) {
-         var nid = nodes[i].getAttribute('id');
-         if (nid != null) {
-            if (nid == 'editcat') {
-               nodes[i].setAttribute("class", "editmode");
-               nodes[i].setAttribute("className", "editmode");
-               continue;
-            }
-            editors.push(new Ajax.InPlaceEditor(nid, 'ajaxedit', {
-               submitOnBlur : true,
-               okButton : false,
-               cols : 10,
-               formClassName : "tabedit tabeditHeight",
-               cancelControl : false
-            }));
-            continue;
-         }
-      }
-   }
-   return false;
+function addEditor(nid) {
+	var nelement = document.getElementById(nid);
+	//alert(nelement.style.backgroundColor);
+	var tLength = nelement.innerHTML.length;
+	var editor = new Ajax.InPlaceEditor(nid,"index.php?module=Admin&type=ajax&func=editCategory",{
+		externalControl:"none",
+		externalControlOnly:true,
+		rows:1,cols:tLength,
+		submitOnBlur:true,
+		okControl:false,
+		cancelControl:false,
+		callback: function(form, value) { 
+			var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
+			return 'catname='+encodeURIComponent(value)+'&cid='+cid;
+			},
+		//onComplete: function() {}
+		//onFailure: function(transport) {alert("Error communicating with the server: " + transport.responseText.stripTags());}
+	});
+	editors.push(Array(nid, editor));
 }

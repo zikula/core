@@ -98,3 +98,27 @@ function Admin_Ajax_deleteCategory() {
         return AjaxUtil::output($output);
     }
 }
+
+function Admin_Ajax_editCategory() {
+    $cid = trim(FormUtil::getPassedValue('cid'));
+    $cat = trim(FormUtil::getPassedValue('catname'));
+    
+    $category = pnModAPIFunc('Admin', 'admin', 'get', array('cid' => $cid));
+    if ($category == false) {
+        //header("HTTP/1.0 400 Could not find category:".$cid);
+        echo "Error";
+        exit;
+    }
+
+    if (!SecurityUtil::checkPermission('Admin::Category', "$category[catname]::$cid", ACCESS_EDIT)) {
+        //header("HTTP/1.0 400 You do not have permission to delete category:".$cid);
+        echo "Error";
+        exit;
+    }
+    if (pnModAPIFunc('Admin', 'admin', 'update', array('cid' => $cid, 'catname' => $cat, 'description' => $category['description']))) {
+    	echo $cat;
+    	exit;
+    }
+    echo "Error";
+    exit;
+}
