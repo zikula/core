@@ -69,6 +69,9 @@ function securitycenter_init()
     pnConfigSetVar('filtercookievars', 1);
     pnConfigSetVar('outputfilter', 1);
 
+    // Location of HTML Purifier
+    pnConfigSetVar('htmlpurifierlocation', 'system/SecurityCenter/pnincludes/htmlpurifier/');
+
     // HTML Purifier cache dir
     $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
     if (!file_exists($purifierCacheDir)) {
@@ -243,6 +246,12 @@ function securitycenter_upgrade($oldversion)
             pnConfigSetVar('idsimpactthresholdthree', 25);    // block request
             pnConfigSetVar('idsimpactthresholdfour', 75);     // kick user, destroy session
             pnConfigSetVar('idsimpactmode', 1);               // per request per default
+            // fall through
+
+        case '1.4':
+            // Location of HTML Purifier
+            pnConfigSetVar('htmlpurifierlocation', 'system/SecurityCenter/pnincludes/htmlpurifier/');
+            // fall through
 
         case '1.6':
             // future upgrade routines
