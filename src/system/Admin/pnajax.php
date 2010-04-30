@@ -99,9 +99,18 @@ function Admin_Ajax_deleteCategory() {
     }
 }
 
+/**
+ * Edit an admin category by ajax.
+ * 
+ * @return AjaxUtil::output Output to the calling ajax request is returned. 
+ */
 function Admin_Ajax_editCategory() {
     $cid = trim(FormUtil::getPassedValue('cid'));
     $cat = trim(FormUtil::getPassedValue('catname'));
+    if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
+    	echo "Error";
+    	exit;
+    }
     
     $category = pnModAPIFunc('Admin', 'admin', 'get', array('cid' => $cid));
     if ($category == false) {
