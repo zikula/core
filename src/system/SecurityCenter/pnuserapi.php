@@ -478,7 +478,7 @@ function &securitycenter_userapi_getpurifier($args = null)
         // use autoloader only for catching additional classes that are missing
         Loader::requireOnce('HTMLPurifier.autoload.php');
 
-        $config = pnModGetVar('SecurityCenter', 'purifierConfig', null);
+        $config = pnConfigGetVar('htmlpurifierConfig', null);
         if (!is_null($config)) {
             $config = unserialize($config);
         } else {
@@ -520,7 +520,7 @@ function &securitycenter_userapi_getpurifier($args = null)
             // define where our cache directory lives
             $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
 
-            pnModSetVar('SecurityCenter', 'purifierConfig', serialize($config));
+            pnConfigSetVar('htmlpurifierConfig', serialize($config));
         }
 
         $purifier = new HTMLPurifier($config);
