@@ -643,7 +643,7 @@ function _securitycenter_userapi_checkinputvalue($secValue)
                (preg_match('/<[^>]*embed.*\"?[^>]*>/i', $secValue)) ||
                (preg_match('/<[^>]*form.*\"?[^>]*>/i', $secValue)));
 
-    // TODO - Missing return value!
+    return $result;
 }
 
 /**
