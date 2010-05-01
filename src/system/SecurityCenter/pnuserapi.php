@@ -1,23 +1,24 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage SecurityCenter
- * @author larsneo & neo
- * @author Cafe CounterIntelligence PHP Website Security Script 1.7
- * @author Mike Parniak www.cafecounterintelligence.com
-*/
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv2 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
+
 
 /**
  * Get all hack attempts in db.
  *
- * @param   int         $args['startnum']   The start number for the record set.
- * @param   int         $args['numitems']   Number of items to get.
+ * @param array $args All parameters for the function.
+ *                    int $args['startnum'] The start number for the record set.
+ *                    int $args['numitems'] Number of items to get.
  *
  * @return  array|bool  Array of items, or false on failure.
  */
@@ -64,7 +65,8 @@ function securitycenter_userapi_getall($args)
 /**
  * Get a specific hack attempt.
  *
- * @param   int         $args['hid']    Id of hack item to get.
+ * @param array $args All parameters for the function.
+ *                    int $args['hid'] Id of hack item to get.
  *
  * @return  array|bool  Item array, or false on failure.
  */
@@ -88,7 +90,7 @@ function securitycenter_userapi_get($args)
 /**
  * Utility function to count the number of items held by this module.
  *
- * @return  int     Number of items held by this module.
+ * @return int Number of items held by this module.
  */
 function securitycenter_userapi_countitems()
 {
@@ -96,10 +98,11 @@ function securitycenter_userapi_countitems()
 }
 
 /**
- * Secure input. Protects against basic attempts of Cross-Site Scripting
- * see http://technicalinfo.net/papers/CSS.html.
+ * Protects against basic attempts of Cross-Site Scripting (XSS).
  *
- * @return  bool    True on success, false otherwise.
+ * @see    http://technicalinfo.net/papers/CSS.html
+ *
+ * @return void
  */
 function securitycenter_userapi_secureinput()
 {
@@ -210,8 +213,6 @@ function securitycenter_userapi_secureinput()
                 // @todo: handle together with own exceptions (Guite)
                 pn_exit(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
             }
-
-
         }
     }
 }
@@ -219,11 +220,13 @@ function securitycenter_userapi_secureinput()
 /**
  * Log hack attempt.
  *
- * @param   array   $args                   Full set of http post, get etc. arguments.
- * @param   string  $args['detecting_file'] File the hack attempt comes from.
- * @param   int     $args['detecting_line'] Line in detecting_file.
- * @param   string  $args['hacktype']       Type of the hack.
- * @param   string  $args['message']        Info/message about the hack.
+ * @param array $args All parameters for the function.
+ *                    string  $args['detecting_file'] File the hack attempt comes from.
+ *                    int     $args['detecting_line'] Line in detecting_file.
+ *                    string  $args['hacktype']       Type of the hack.
+ *                    string  $args['message']        Info/message about the hack.
+ *
+ * @return void
  */
 function securitycenter_userapi_loghackattempt($args)
 {
@@ -240,13 +243,14 @@ function securitycenter_userapi_loghackattempt($args)
 /**
  * Logs hack attempt in the database.
  *
- * @param   array   $args                   Full set of http post, get etc. arguments.
- * @param   string  $args['detecting_file'] File the hack attempt comes from.
- * @param   int     $args['detecting_line'] Line in detecting_file.
- * @param   string  $args['hacktype']       Type of the hack.
- * @param   string  $args['message']        Info/message about the hack.
+ * @param array $args All parameters for the function.
+ *                    array   $args                   Full set of http post, get etc. arguments.
+ *                    string  $args['detecting_file'] File the hack attempt comes from.
+ *                    int     $args['detecting_line'] Line in detecting_file.
+ *                    string  $args['hacktype']       Type of the hack.
+ *                    string  $args['message']        Info/message about the hack.
  *
- * @return  bool    True if successful, false otherwise
+ * @return bool True if successful, false otherwise
  */
 function securitycenter_userapi_loghackattempttodb($args)
 {
@@ -266,7 +270,7 @@ function securitycenter_userapi_loghackattempttodb($args)
         $userid = 0;
     }
 
-    $browser = (array) @get_browser();
+    $browser = (array)@get_browser();
     // browser_name_regex might break serialization and is not usefull anyway
     unset($browser['browser_name_regex']);
     // add at least some information for enviroments without browscap.ini
@@ -319,13 +323,13 @@ function securitycenter_userapi_loghackattempttodb($args)
 /**
  * E-mail hack attempt.
  *
- * @param   array   $args                   Full set of http post, get etc. arguments.
- * @param   string  $args['detecting_file'] File the hack attempt comes from.
- * @param   int     $args['detecting_line'] Line in detecting_file.
- * @param   string  $args['hacktype']       Type of the hack.
- * @param   string  $args['message']        Info/message about the hack.
+ * @param array $args All parameters for the function.
+ *                    string  $args['detecting_file'] File the hack attempt comes from.
+ *                    int     $args['detecting_line'] Line in detecting_file.
+ *                    string  $args['hacktype']       Type of the hack.
+ *                    string  $args['message']        Info/message about the hack.
  *
- * @return  bool    True if successful, otherwise false.
+ * @return void
  */
 function securitycenter_userapi_mailhackattempt($args)
 {
@@ -392,7 +396,7 @@ function securitycenter_userapi_mailhackattempt($args)
         $output = '';
         // build output
         $output .= "HTTP_USER_AGENT: ".$_SERVER['HTTP_USER_AGENT']."\n";
-        $browser = (array) get_browser();
+        $browser = (array)get_browser();
         while (list($key, $value) = each($browser)) {
             $output .= "BROWSER * $key : $value\n";
         }
@@ -420,7 +424,7 @@ function securitycenter_userapi_mailhackattempt($args)
         //initalise output string
         $output = '';
         // build output
-        while (list($key, $value) = each($_COOKIE))  {
+        while (list($key, $value) = each($_COOKIE)) {
             $output .= "COOKIE * $key : $value\n";
         }
         // replace placeholder with output array
@@ -457,6 +461,20 @@ function securitycenter_userapi_mailhackattempt($args)
     return;
 }
 
+/**
+ * Retrieves an instance of HTMLPurifier.
+ *
+ * The instance returned is either a newly created instance, or previously created instance
+ * that has been cached in a static variable.
+ *
+ * @param array $args All arguments for the function.
+ *                    bool $args['force'] If true, the HTMLPurifier instance will be generated anew, rather than using an
+ *                                          existing instance from the static variable.
+ *
+ * @staticvar array $purifier The HTMLPurifier instance.
+ *
+ * @return HTMLPurifier The HTMLPurifier instance, returned by reference.
+ */
 function &securitycenter_userapi_getpurifier($args = null)
 {
     $force = (isset($args['force']) ? $args['force'] : false);
@@ -530,12 +548,15 @@ function &securitycenter_userapi_getpurifier($args = null)
 }
 
 /**
- * secureoutput
- * loads all necessary files for a selected outputfilter and calls it
+ * Loads all necessary files for a selected outputfilter and calls it.
  *
- * @param string $args['var'] the string that should be filtered
- * @param int $args['filter'] the filter to use, if not set, we use the configured outputfilter)
- * @returns string the sanitized string if filter is used
+ * @param array $args All arguments for the function.
+ *                    string $args['var']    The string that should be filtered.
+ *                    int    $args['filter'] The filter to use, if not set, we use the configured outputfilter).
+ *
+ * @throws InvalidArgumentException Thrown if the filter argument is not recognized.
+ *
+ * @return string The sanitized string if filter is used.
  */
 function securitycenter_userapi_secureoutput($args)
 {
@@ -565,7 +586,7 @@ function securitycenter_userapi_secureoutput($args)
             switch($args['filter']) {
                 case 1:
                     // prepare htmlpurifier class
-//                    static $purifier, $safecache, $dummy;
+                    //static $purifier, $safecache, $dummy;
                     static $safecache, $dummy;
                     $purifier = &securitycenter_userapi_getpurifier();
 
@@ -608,11 +629,11 @@ function securitycenter_userapi_secureoutput($args)
 }
 
 /**
- * check a single value for malicious input
+ * Check a single value for malicious input.
  *
- * @author Mark West
- * @param int $secValue the input value to check
- * @return bool true if suspicious content was found, false otherwise
+ * @param int $secValue The input value to check.
+ * 
+ * @return bool True if suspicious content was found, false otherwise.
  */
 function _securitycenter_userapi_checkinputvalue($secValue)
 {
@@ -621,13 +642,14 @@ function _securitycenter_userapi_checkinputvalue($secValue)
                (preg_match('/<[^>]*applet.*\"?[^>]*>/i', $secValue)) ||
                (preg_match('/<[^>]*embed.*\"?[^>]*>/i', $secValue)) ||
                (preg_match('/<[^>]*form.*\"?[^>]*>/i', $secValue)));
+
+    // TODO - Missing return value!
 }
 
 /**
- * retrieves configuration array for PHPIDS
+ * Retrieves configuration array for PHPIDS.
  *
- * @author Axel Guckelsberger
- * @return array IDS configuration settings
+ * @return array IDS configuration settings.
  */
 function _securitycenter_userapi_getidsconfig()
 {
@@ -682,36 +704,34 @@ function _securitycenter_userapi_getidsconfig()
     $config['Caching']['path'] = $config['General']['tmp_path'] . '/default_filter.cache';
 
     // database cache
-/*    $config['Caching']['wrapper'] = 'mysql:host=localhost;port=3306;dbname=phpids';
-    $config['Caching']['user'] = 'phpids_user';
-    $config['Caching']['password'] = '123456';
-    $config['Caching']['table'] = 'cache';
-*/
+    //$config['Caching']['wrapper'] = 'mysql:host=localhost;port=3306;dbname=phpids';
+    //$config['Caching']['user'] = 'phpids_user';
+    //$config['Caching']['password'] = '123456';
+    //$config['Caching']['table'] = 'cache';
+
     // memcached
-/*    $config['Caching']['host'] = 'localhost';
-    $config['Caching']['port'] = 11211;
-    $config['Caching']['key_prefix'] = 'PHPIDS';
-    $config['Caching']['tmp_path'] = $config['General']['tmp_path'] . '/memcache.timestamp';
-*/
+    //$config['Caching']['host'] = 'localhost';
+    //$config['Caching']['port'] = 11211;
+    //$config['Caching']['key_prefix'] = 'PHPIDS';
+    //$config['Caching']['tmp_path'] = $config['General']['tmp_path'] . '/memcache.timestamp';
 
     return $config;
 }
 
 /**
- * process results from IDS scan
+ * Process results from IDS scan.
  *
- * @author Axel Guckelsberger
- * @param IDS_Init $init PHPIDS init object reference
- * @param IDS_Report $result the result object from PHPIDS
+ * @param IDS_Init   $init   PHPIDS init object reference.
+ * @param IDS_Report $result The result object from PHPIDS.
+ *
+ * @return void
  */
 function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $result)
 {
-    /**
-     * $result contains any suspicious fields enriched with additional info
-     *
-     * Note: it is moreover possible to dump this information by simply doing
-     * "echo $result", calling the IDS_Report::__toString() method implicitely.
-     */
+    // $result contains any suspicious fields enriched with additional info
+
+    // Note: it is moreover possible to dump this information by simply doing
+    //"echo $result", calling the IDS_Report::__toString() method implicitely.
 
     $requestImpact = $result->getImpact();
     if ($requestImpact < 1) {
@@ -728,11 +748,9 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
     $idsImpactFactor = 1;
     if ($idsImpactMode == 1) {
         $idsImpactFactor = 1;
-    }
-    elseif ($idsImpactMode == 2) {
+    } elseif ($idsImpactMode == 2) {
         $idsImpactFactor = 10;
-    }
-    elseif ($idsImpactMode == 3) {
+    } elseif ($idsImpactMode == 3) {
         $idsImpactFactor = 5;
     }
 
@@ -779,17 +797,16 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
 
             //$eventType = substr($eventName, 1, 0);
 
-            /**
-             * debug stuff
-             * /
-            $eventFilters = '';
-            foreach($event as $filter) {
-                $eventFilters .= __fGT(_('Rule: %s'), array($filter->getRule())) . "\n<br />";
-                $eventFilters .= __fGT(_('Description: %s'), array($filter->getDescription())) . "\n<br />";
-                $eventFilters .= __fGT(_('Impact: %s'), array($filter->getImpact())) . "\n<br />\n<br />";
-            }
-            LogUtil::registerStatus($eventName . ' (' . DataUtil::formatForDisplay($event->getValue()) . "\n<br />\n<br />" . $eventFilters);
-            */
+            // **
+            // debug stuff
+            // **
+            //$eventFilters = '';
+            //foreach($event as $filter) {
+            //    $eventFilters .= __fGT(_('Rule: %s'), array($filter->getRule())) . "\n<br />";
+            //    $eventFilters .= __fGT(_('Description: %s'), array($filter->getDescription())) . "\n<br />";
+            //    $eventFilters .= __fGT(_('Impact: %s'), array($filter->getImpact())) . "\n<br />\n<br />";
+            //}
+            //LogUtil::registerStatus($eventName . ' (' . DataUtil::formatForDisplay($event->getValue()) . "\n<br />\n<br />" . $eventFilters);
 
             // create new ZIntrusion instance
             $obj = new $class();
@@ -810,8 +827,7 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
         $mailBody .= __f('Date: %s', DateUtil::strftime( __('%b %d, %Y'), (time()))) . "\n";
         if ($idsImpactMode == 1) {
             $mailBody .= __f('Request Impact: %d', $requestImpact) . "\n";
-        }
-        else {
+        } else {
             $mailBody .= __f('Session Impact: %d', $sessionImpact) . "\n";
         }
         $mailBody .= __f('Affected tags: %s', join(' ', $result->getTags())) . "\n";
@@ -839,8 +855,7 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
             $args['body']        = $mailBody;
 
             $rc = pnModAPIFunc('Mailer', 'user', 'sendmessage', $args);
-        }
-        else {
+        } else {
             $headers = "From: $siteName <$adminmail>\n"
                       ."X-Priority: 1 (Highest)";
             pnMail($adminmail, $mailTitle, $mailBody, $headers);
@@ -851,7 +866,7 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
         // block request
 
         // unset mailicous values
-        foreach($result as $event) {
+        foreach ($result as $event) {
             $eventName = $event->getName();
             $malVarName = substr($eventName, 2);
             $eventType = substr($eventName, 1, 0);
