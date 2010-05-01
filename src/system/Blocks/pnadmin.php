@@ -332,7 +332,12 @@ function blocks_admin_modify()
     $pnRender->assign($GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]);
 
     // Refresh
-    $refreshtimes = array( 1800 => __('Half an hour'),
+    $refreshtimes = array(   60 => __('One minute'),
+                            120 => __('Two minutes'),
+                            300 => __('Five minutes'),
+                            600 => __('Ten minutes'),
+                            900 => __('Fifteen minutes'),
+                           1800 => __('Half an hour'),
                            3600 => __('One hour'),
                            7200 => __('Two hours'),
                           14400 => __('Four hours'),
