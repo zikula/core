@@ -8,6 +8,22 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View" }</div>
     <h2>{gt text="Blocks list"}</h2>
     <p class="z-informationmsg">{gt text="This is the list of blocks present in your system. It shows either all blocks, both active and inactive (click on 'Show all blocks' to get this view), or active blocks only (click on 'Show active blocks' in the menu). The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
+    <form action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
+        {gt text="All" assign="lblAll"}
+        {gt text="Filter" assign="lblFilter"} 
+        <fieldset>
+            <legend>{$lblFilter}</legend>
+            <table width=90%>
+                <tr>
+                    <td align="center">{gt text="Block Position"}&nbsp;{selector_field_array name="filter[blockposition_id]" modname="Blocks" table="block_positions" field="name" assocKey="pid" sort="pn_name" allText=$lblAll allValue=0 selectedValue=$filter.blockposition_id|default:0} </td>
+                    <td align="center">{gt text="Module"}&nbsp;{selector_module name="filter[modid]" field="id" allText=$lblAll allValue=0 selectedValue=$filter.modid|default:0} </td>
+                    <td align="center">{gt text="Language"}&nbsp;{html_select_languages name="filter[language]" installed=1 all=1 selected=$filter.language|default:''} </td>
+                    <td align="center"><input name="submit" type="submit" value="{gt text='Filter'}" />&nbsp;&nbsp;<input name="clear" type="submit" value="{gt text='Clear'}" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+    <br />
     <table class="z-admintable">
         <thead>
             <tr>

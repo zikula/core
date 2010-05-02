@@ -25,6 +25,7 @@
 function smarty_function_selector_module ($params, &$smarty)
 {
     $name          = isset($params['name'])          ? $params['name']          : 'defaultselectorname';
+    $field         = isset($params['field'])         ? $params['field']         : 'name';
     $selectedValue = isset($params['selectedValue']) ? $params['selectedValue'] : 0;
     $defaultValue  = isset($params['defaultValue'])  ? $params['defaultValue']  : 0;
     $defaultText   = isset($params['defaultText'])   ? $params['defaultText']   : null;
@@ -35,5 +36,5 @@ function smarty_function_selector_module ($params, &$smarty)
     $multipleSize  = isset($params['multipleSize'])  ? $params['multipleSize']  : 1;
 
     return HtmlUtil::getSelector_PNModule ($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
-                                           $submit, $disabled, $multipleSize);
+                                           $submit, $disabled, $multipleSize, $field);
 }

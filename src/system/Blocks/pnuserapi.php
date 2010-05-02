@@ -37,8 +37,21 @@ function Blocks_userapi_getall($args)
     $blockstable  = $pntable['blocks'];
     $blockscolumn = $pntable['blocks_column'];
 
+    // backwards parameter compatability
+    if (isset($args['modid']) && is_numeric($args['modid'])) {
+        $args['module_id'] = $args['modid']; 
+    }
+
     // initialise the where arguments array
     $whereargs = array();
+
+    // filter by block position
+    if (isset($args['blockposition_id']) && is_numeric($args['blockposition_id']) && $args['blockposition_id']) {
+        $where       = "pn_pid = $args[blockposition_id]";
+        $bids        = DBUtil::selectFieldArray ('block_placements', 'bid', $where);
+        $bidList     = $bids ? implode (',', $bids) : -1;
+        $whereargs[] = "$blockscolumn[bid] IN ($bidList)";
+    }
 
     // Work out if we're showing all blocks or just active ones
     if (!SessionUtil::getVar('blocks_show_all') && !$args['inactive']) {
@@ -46,8 +59,13 @@ function Blocks_userapi_getall($args)
     }
 
     // check for a filter by module id
-    if (isset($args['modid']) && is_numeric($args['modid'])) {
-        $whereargs[] = "$blockscolumn[mid] = '".DataUtil::formatForStore($args['modid'])."'";
+    if (isset($args['module_id']) && is_numeric($args['module_id'])) {
+        $whereargs[] = "$blockscolumn[mid] = '".DataUtil::formatForStore($args['module_id'])."'";
+    }
+
+    // filter by language
+    if (isset($args['language']) && $args['language']) {
+        $whereargs[] = "$blockscolumn[language] = '".DataUtil::formatForStore($args['language'])."'";
     }
 
     // construct the where clause

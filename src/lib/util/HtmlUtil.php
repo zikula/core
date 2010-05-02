@@ -583,16 +583,16 @@ class HtmlUtil
      *
      * @return The string for the user group selector.
      */
-     public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1)
+     public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
      {
          Loader::loadClass ('ModuleUtil');
 
          $data = array();
          $modules = ModuleUtil::getModulesByState(3, 'displayname');
          foreach ($modules as $module) {
-             $modname        = $module['name'];
-             $displayname    = $module['displayname'];
-             $data[$modname] = $displayname;
+             $value        = $module[$field];
+             $displayname  = $module['displayname'];
+             $data[$value] = $displayname;
          }
 
          return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
