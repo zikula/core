@@ -496,8 +496,8 @@ function &securitycenter_userapi_getpurifier($args = null)
         // use autoloader only for catching additional classes that are missing
         Loader::requireOnce('HTMLPurifier.autoload.php');
 
-        $config = pnConfigGetVar('htmlpurifierConfig', null);
-        if (!is_null($config)) {
+        $config = pnConfigGetVar('htmlpurifierConfig');
+        if (!is_null($config) && ($config !== false)) {
             $config = unserialize($config);
         } else {
             // Nothing, so set defaults
