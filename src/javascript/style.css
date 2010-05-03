@@ -119,7 +119,7 @@ button.z-imagebutton {
 /*******************************************************************************/
 
 ul.z-menulinks {
-    background:url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
+    background: url("../images/menubg_grey.gif") repeat-x scroll 0 0 #E6E6E6;
     border:1px solid #ccc;
     color:#aaa;
     height:auto !important;
@@ -419,7 +419,7 @@ div.z-formbuttons button {
 }
 .z-form .z-formnote {
     display: block;
-    margin-left: 30% ! important;
+    margin-left: 30% !important;
 }
 .z-form div.z-formrow input,
 .z-form div.z-formrow textarea {
@@ -515,7 +515,7 @@ div.z-formbuttons button {
 }
 .z-linear .z-formnote,
 .z-linear .z-formlist {
-    margin: 0 ! important;
+    margin: 0 !important;
 }
 .z-linear .z-formbuttons {
     padding: 0;
