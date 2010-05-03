@@ -31,7 +31,7 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
      * The URL pointing to the image for the button.
      * @var string
      */
-    protected $imageUrl;
+    public $imageUrl;
 
     function getFilename()
     {

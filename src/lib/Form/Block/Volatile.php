@@ -49,7 +49,7 @@
  */
 class Form_Block_Volatile extends Form_Plugin
 {
-    protected $volatile = 1;
+    public $volatile = 1;
 
     function getFilename()
     {

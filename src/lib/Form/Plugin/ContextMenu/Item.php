@@ -28,16 +28,16 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      *
      * @var string
      */
-    protected $title;
+    public $title;
 
-    protected $imageURL;
+    public $imageURL;
 
     /**
      * Command name passed to the event handler
      *
      * @var string
      */
-    protected $commandName;
+    public $commandName;
 
     /**
      * JavaScript code to execute when menu item is selected
@@ -58,7 +58,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      *
      * @var string
      */
-    protected $commandScript;
+    public $commandScript;
 
     /**
      * URL to redirect to when menu item is selected
@@ -68,7 +68,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      * depending on data.
      * @var string
      */
-    protected $commandRedirect;
+    public $commandRedirect;
 
     /**
      * Confirmation message
@@ -79,7 +79,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      * translation.
      * @var string
      */
-    protected $confirmMessage;
+    public $confirmMessage;
 
     function getFilename()
     {

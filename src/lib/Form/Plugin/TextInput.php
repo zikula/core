@@ -37,7 +37,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * @var string
      */
-    protected $text = '';
+    public $text = '';
 
     /**
      * Text input mode
@@ -49,7 +49,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * @var string
      */
-    protected $textMode = 'singleline';
+    public $textMode = 'singleline';
 
     /**
      * Enable or disable read only mode
@@ -58,31 +58,31 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * enter anything in the read only input.
      * @var bool
      */
-    protected $readOnly;
+    public $readOnly;
 
     /**
      * Text to show as tool tip for the input
      * @var string
      */
-    protected $toolTip;
+    public $toolTip;
 
     /**
      * CSS class to use
      * @var string
      */
-    protected $cssClass;
+    public $cssClass;
 
     /**
      * Number of columns for multiline input
      * @var int
      */
-    protected $cols;
+    public $cols;
 
     /**
      * Number of rows for multiline input
      * @var int
      */
-    protected $rows;
+    public $rows;
 
     /**
      * Data field name for looking up initial data
@@ -91,13 +91,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
      * @var string
      */
-    protected $dataField;
+    public $dataField;
 
     /**
      * Enable or disable use of $dataField
      * @var bool
      */
-    protected $dataBased;
+    public $dataBased;
 
     /**
      * Group name for this input
@@ -108,7 +108,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * @see pnFormRender::pnFormIsValid()
      * @var string
      */
-    protected $group;
+    public $group;
 
     /**
      * Validation indicator used by the framework.
@@ -119,7 +119,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * to change the value.
      * @var bool
      */
-    protected $isValid = true;
+    public $isValid = true;
 
     /**
      * Enable or disable mandatory check
@@ -127,13 +127,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * By enabling mandatory checking you force the user to enter something in the text input.
      * @var bool
      */
-    protected $mandatory;
+    public $mandatory;
 
     /**
      * Enable or disable mandatory asterisk
      * @var bool
      */
-    protected $mandatorysym;
+    public $mandatorysym;
 
     /**
      * Error message to display when input does not validate
@@ -142,7 +142,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * to change the value.
      * @var string
      */
-    protected $errorMessage;
+    public $errorMessage;
 
     /**
      * Text label for this plugin
@@ -151,19 +151,19 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * this text automatically when it is a label for this input.
      * @var string
      */
-    protected $myLabel;
+    public $myLabel;
 
     /**
      * Size of HTML input (number of characters)
      * @var int
      */
-    protected $size;
+    public $size;
 
     /**
      * Maximum number of characters allowed in the text input
      * @var int
      */
-    protected $maxLength;
+    public $maxLength;
 
     /**
      * Regular expression to match input against
@@ -171,7 +171,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * User input must match this pattern. Uses PHP preg_match() to match the input and pattern.
      * @var string
      */
-    protected $regexValidationPattern;
+    public $regexValidationPattern;
 
     /**
      * Regular expression error message
@@ -179,13 +179,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Error message to display when the regex validation pattern does not match input.
      * @var string
      */
-    protected $regexValidationMessage;
+    public $regexValidationMessage;
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
      * @var string
      */
-    protected $inputName;
+    public $inputName;
 
     /**
      * Get filename for this plugin

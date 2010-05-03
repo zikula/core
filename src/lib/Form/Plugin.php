@@ -199,14 +199,14 @@ class Form_Plugin
      * Temporary storage of the output from renderBegin in blocks
      * @internal
      */
-    protected $blockBeginOutput;
+    public $blockBeginOutput;
 
     /**
      * Volatile indicator (disables state management in sub-plugins)
      * @internal
      * @var bool
      */
-    protected $volatile;
+    public $volatile;
 
     /**
      * Constructor

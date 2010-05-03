@@ -34,7 +34,7 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
      * This is the "commandName" parameter to pass in the event args of the command handler.
      * @var string
      */
-    protected $commandName;
+    public $commandName;
 
     /**
      * JavaScript function name to generate
@@ -44,13 +44,13 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
      * {@link pnFormPostBackFunction::$onCommand} event handler and pass
      * {@link pnFormPostBackFunction::$commandName} to it.
      */
-    protected $function;
+    public $function;
 
     /**
      * Name of command event handler method
      * @var string Default is "handleCommand"
      */
-    protected $onCommand = 'handleCommand';
+    public $onCommand = 'handleCommand';
 
     /**
      * Get filename for this plugin

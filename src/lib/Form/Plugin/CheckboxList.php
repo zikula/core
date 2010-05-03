@@ -81,7 +81,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * and {@link pnFormCheckboxList::getSelectedValue()}.
      * @var array
      */
-    protected $selectedValue;
+    public $selectedValue;
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
@@ -93,13 +93,13 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Number of columns to display checkboxes in
      * @var int
      */
-    protected $repeatColumns;
+    public $repeatColumns;
 
     /**
      * Width of each checkbox list item (combination of checkbox and label).
      * @var string Width including CSS unit (for instance "200px")
      */
-    protected $repeatWidth;
+    public $repeatWidth;
 
     /**
      * Enable saving of selected values as a colon delimited string
@@ -109,7 +109,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * like ":10:20:30".
      * @var bool
      */
-    protected $saveAsString;
+    public $saveAsString;
 
     function getFilename()
     {

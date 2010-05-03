@@ -17,15 +17,15 @@
  */
 class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 {
-    protected $module;
-    protected $objecttype;
-    protected $prefix = 'PN'; // TODO B review this prefix.
-    protected $where = '';
-    protected $orderby = '';
-    protected $pos = -1;
-    protected $num = -1;
-    protected $idField = '';
-    protected $displayField = '';
+    public $module;
+    public $objecttype;
+    public $prefix = 'PN'; // TODO B review this prefix.
+    public $where = '';
+    public $orderby = '';
+    public $pos = -1;
+    public $num = -1;
+    public $idField = '';
+    public $displayField = '';
     
     function getFilename()
     {

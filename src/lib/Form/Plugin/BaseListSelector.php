@@ -21,12 +21,12 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Enable or disable read only mode
      * @var bool
      */
-    protected $readOnly;
+    public $readOnly;
 
     /**
      * CSS class for styling
      */
-    protected $cssClass;
+    public $cssClass;
 
     /**
      * Data field name for looking up initial data
@@ -36,13 +36,13 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
      * @var string
      */
-    protected $dataField;
+    public $dataField;
 
     /**
      * Enable or disable use of $dataField
      * @var bool
      */
-    protected $dataBased;
+    public $dataBased;
 
     /**
      * Group name for this input
@@ -53,7 +53,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * @see pnFormRender::pnFormIsValid()
      * @var string
      */
-    protected $group;
+    public $group;
 
     /**
      * Data field name for looking up initial item list
@@ -63,7 +63,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Defaults to the data field name concatenated with "Items". See also tutorials on the Zikula site.
      * @var string
      */
-    protected $itemsDataField;
+    public $itemsDataField;
 
     /**
      * Validation indicator used by the framework.
@@ -71,21 +71,21 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * The true/false value of this variable indicates whether or not the list selection is valid.
      * @var bool
      */
-    protected $isValid = true;
+    public $isValid = true;
 
     /**
      * Enable or disable mandatory check
      *
      * @var bool
      */
-    protected $mandatory;
+    public $mandatory;
 
     /**
      * Error message to display when selection does not validate
      *
      * @var string
      */
-    protected $errorMessage;
+    public $errorMessage;
 
     /**
      * Text label for this plugin
@@ -94,7 +94,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * this text automatically when it is a label for this list.
      * @var string
      */
-    protected $myLabel;
+    public $myLabel;
 
     /**
      * The list of selectable items
@@ -104,13 +104,13 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * array('text' => 'B', 'value' => '2'),
      * array('text' => 'C', 'value' => '3') )
      */
-    protected $items = array();
+    public $items = array();
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
      * @var string
      */
-    protected $inputName;
+    public $inputName;
 
     function getFilename()
     {

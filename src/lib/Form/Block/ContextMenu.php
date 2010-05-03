@@ -58,7 +58,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
      *
      * @var string
      */
-    protected $cssClass;
+    public $cssClass;
     
     /**
      * Name of command event handler method
@@ -67,7 +67,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
      *
      * @var string
      */
-    protected $onCommand;
+    public $onCommand;
     
     /**
      * Z-index for absolute positioning
@@ -76,7 +76,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
      *
      * @var int
      */
-    protected $zIndex;
+    public $zIndex;
     
     function getFilename()
     {

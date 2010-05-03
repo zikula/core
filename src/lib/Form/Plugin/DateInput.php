@@ -28,9 +28,9 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
      * Enable or disable input of time in addition to the date
      * @var bool
      */
-    protected $includeTime;
-    protected $initDate;
-    protected $ifFormat;
+    public $includeTime;
+    public $initDate;
+    public $ifFormat;
 
     /**
      * Default date value
@@ -46,13 +46,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
      * - yearend: last day in the year
      * - custom: inital Date
      */
-    protected $defaultValue;
+    public $defaultValue;
 
     /**
      * Enable or disable selection only mode (with hidden input field), defaults to false
      * @var bool
      */
-    protected $useSelectionMode;
+    public $useSelectionMode;
 
     function getFilename()
     {

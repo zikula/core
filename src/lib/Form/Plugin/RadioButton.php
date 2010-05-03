@@ -53,7 +53,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * The value returned in pnFormGetValues() when this radio button is checked.
      * @var string
      */
-    protected $value;
+    public $value;
 
     /**
      * Checked
@@ -61,18 +61,18 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * The current state of the radio button
      * @var bool
      */
-    protected $checked;
+    public $checked;
 
     /**
      * Enable or disable read only mode
      */
-    protected $readOnly;
+    public $readOnly;
 
     /**
      * CSS class to use
      * @var string
      */
-    protected $cssClass;
+    public $cssClass;
 
     /**
      * Data field name for looking up initial data
@@ -81,13 +81,13 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
      * @var string
      */
-    protected $dataField;
+    public $dataField;
 
     /**
      * Enable or disable use of $dataField
      * @var bool
      */
-    protected $dataBased;
+    public $dataBased;
 
     /**
      * Group name for this input
@@ -98,13 +98,13 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * @see pnFormRender::pnFormIsValid()
      * @var string
      */
-    protected $group;
+    public $group;
 
     /**
      * Radiobutton selection group name
      * @var string
      */
-    protected $groupName;
+    public $groupName;
 
     /**
      * Validation indicator used by the framework.
@@ -115,7 +115,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * to change the value.
      * @var bool
      */
-    protected $isValid = true;
+    public $isValid = true;
 
     /**
      * Enable or disable mandatory check
@@ -124,13 +124,13 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * that shares the same groupName.
      * @var bool
      */
-    protected $mandatory;
+    public $mandatory;
 
     /**
      * Enable or disable mandatory asterisk
      * @var bool
      */
-    protected $mandatorysym;
+    public $mandatorysym;
 
     /**
      * Enable or disable auto postback
@@ -140,14 +140,14 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * in the main form event handler.
      * @var bool
      */
-    protected $autoPostBack;
+    public $autoPostBack;
 
     /**
      * Name of checked changed method
      *
      * @var string Default is "handleCheckedChanged"
      */
-    protected $onCheckedChanged = 'handleCheckedChanged';
+    public $onCheckedChanged = 'handleCheckedChanged';
 
     /**
      * Error message to display when input does not validate
@@ -156,7 +156,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * to change the value.
      * @var string
      */
-    protected $errorMessage;
+    public $errorMessage;
 
     /**
      * Text label for this plugin
@@ -165,9 +165,9 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * this text automatically when it is a label for this input.
      * @var string
      */
-    protected $myLabel;
+    public $myLabel;
 
-    protected $validationChecked = false;
+    public $validationChecked = false;
 
     function getFilename()
     {

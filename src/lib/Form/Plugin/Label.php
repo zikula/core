@@ -33,31 +33,31 @@ class Form_Plugin_Label extends Form_StyledPlugin
      * Text to show as label
      * @var string
      */
-    protected $text;
+    public $text;
 
     /**
      * Allow HTML in label? 1=yes, otherwise no
      * @var int
      */
-    protected $html;
+    public $html;
 
     /**
      * Labelled plugin's ID
      * @var string
      */
-    protected $for;
+    public $for;
 
     /**
      * CSS class to use
      * @var string
      */
-    protected $cssClass;
+    public $cssClass;
 
     /**
      * Enable or disable the mandatory asterisk
      * @var bool
      */
-    protected $mandatorysym;
+    public $mandatorysym;
 
     function getFilename()
     {

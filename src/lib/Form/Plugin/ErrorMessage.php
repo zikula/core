@@ -48,13 +48,13 @@ class Form_Plugin_ErrorMessage extends Form_Plugin
      * Displayed error message
      * @var string
      */
-    protected $message;
+    public $message;
 
     /**
      * CSS class for styling
      * @var string
      */
-    protected $cssClass;
+    public $cssClass;
 
     function getFilename()
     {

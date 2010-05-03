@@ -20,14 +20,14 @@
  */
 class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
 {
-    protected $editLink;
-    protected $category;
+    public $editLink;
+    public $category;
     
     /**
      * Enable inclusion of an empty null value element
      * @var bool (default false)
      */
-    protected $includeEmptyElement;
+    public $includeEmptyElement;
     
     /**
      * Enable save/load of values in separate __CATEGORIES_ field for use in DBUtil.
@@ -44,7 +44,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      * </code>
      * @var bool (default false)
      */
-    protected $enableDBUtil;
+    public $enableDBUtil;
     
     function getFilename()
     {

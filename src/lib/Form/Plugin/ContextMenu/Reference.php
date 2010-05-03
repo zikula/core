@@ -24,9 +24,9 @@
  */
 class Form_Plugin_ContextMenu_Reference extends Form_Plugin
 {
-    protected $imageURL;
-    protected $menuId;
-    protected $commandArgument;
+    public $imageURL;
+    public $menuId;
+    public $commandArgument;
 
     function getFilename()
     {

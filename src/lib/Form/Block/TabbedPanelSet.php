@@ -42,26 +42,26 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
      * CSS class name for styling
      * @var string
      */
-    protected $cssClass = 'linktabs';
+    public $cssClass = 'linktabs';
 
     /**
      * Currently selected tab
      * @var int
      */
-    protected $selectedIndex = 1;
+    public $selectedIndex = 1;
 
     /**
      * Registered tab titles
      * @var string-array
      * @internal
      */
-    protected $titles = array();
+    public $titles = array();
 
     /**
      * Internal tab index counter
      * @var int
      */
-    protected $registeredTabIndex = 1;
+    public $registeredTabIndex = 1;
 
     function getFilename()
     {

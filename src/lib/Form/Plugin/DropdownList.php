@@ -113,7 +113,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * Selected value is an array of values if you have set selectionMode=multiple.
      * @var mixed
      */
-    protected $selectedValue;
+    public $selectedValue;
 
     /**
      * Selected item index
@@ -128,7 +128,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * Select index is not valid when selectionMode=multiple.
      * @var int Zero based index
      */
-    protected $selectedIndex;
+    public $selectedIndex;
 
     /**
      * Enable or disable auto postback
@@ -138,13 +138,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * in the main form event handler.
      * @var bool
      */
-    protected $autoPostBack;
+    public $autoPostBack;
 
     /**
      * Enable or disable mandatory asterisk
      * @var bool
      */
-    protected $mandatorysym;
+    public $mandatorysym;
 
     /**
      * Selection mode
@@ -153,7 +153,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * multiple item selection.
      * @var string Possible values are 'single' and 'multiple'
      */
-    protected $selectionMode = 'single';
+    public $selectionMode = 'single';
 
     /**
      * Size of dropdown
@@ -161,7 +161,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * This corresponds to the "size" attribute of the HTML <select> element.
      * @var int
      */
-    protected $size = null;
+    public $size = null;
 
     /**
      * Enable saving of multiple selected values as a colon delimited string
@@ -171,14 +171,14 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * like ":10:20:30".
      * @var bool
      */
-    protected $saveAsString;
+    public $saveAsString;
 
     /**
      * Name of selected index changed method
      *
      * @var string Default is "handleSelectedIndexChanged"
      */
-    protected $onSelectedIndexChanged = 'handleSelectedIndexChanged';
+    public $onSelectedIndexChanged = 'handleSelectedIndexChanged';
 
     function getFilename()
     {

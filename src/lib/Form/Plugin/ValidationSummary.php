@@ -20,7 +20,7 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
     /**
      * CSS class of the summary
      */
-    protected $cssClass = 'validationSummary z-errormsg';
+    public $cssClass = 'validationSummary z-errormsg';
 
     function getFilename()
     {

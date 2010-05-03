@@ -50,13 +50,13 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
      *
      * @var string
      */
-    protected $text;
+    public $text;
 
     /**
      * Name of command event handler method
      * @var string Default is "handleCommand"
      */
-    protected $onCommand = 'handleCommand';
+    public $onCommand = 'handleCommand';
 
     /**
      * Command name
@@ -64,7 +64,7 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
      * This is the "commandName" parameter to pass in the event args of the command handler.
      * @var string
      */
-    protected $commandName;
+    public $commandName;
 
     /**
      * Command argument
@@ -72,7 +72,7 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
      * This value is passed in the event arguments to the form event handler as the commandArgument value.
      * @var string
      */
-    protected $commandArgument;
+    public $commandArgument;
 
     /**
      * Confirmation message
@@ -83,7 +83,7 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
      * translation.
      * @var string
      */
-    protected $confirmMessage;
+    public $confirmMessage;
 
     /**
      * CSS styling
@@ -91,7 +91,7 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
      * Please ignore - to be changed.
      * @internal
      */
-    protected $styleHtml;
+    public $styleHtml;
 
     function getFilename()
     {

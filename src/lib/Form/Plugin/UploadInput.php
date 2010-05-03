@@ -17,19 +17,19 @@
  */
 class Form_Plugin_UploadInput extends Form_StyledPlugin
 {
-    protected $inputName;
-    protected $readOnly;
+    public $inputName;
+    public $readOnly;
 
-    protected $dataField;
-    protected $dataBased;
-    protected $group;
+    public $dataField;
+    public $dataBased;
+    public $group;
 
-    protected $isValid;
-    protected $mandatory;
-    protected $errorMessage;
-    protected $myLabel;
+    public $isValid;
+    public $mandatory;
+    public $errorMessage;
+    public $myLabel;
 
-    protected $result;
+    public $result;
 
     function getFilename()
     {

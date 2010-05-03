@@ -25,12 +25,12 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * Set to true when checkbox is checked, false otherwise.
      * @var bool
      */
-    protected $checked;
+    public $checked;
     
     /**
      * Enable or disable read only mode
      */
-    protected $readOnly;
+    public $readOnly;
     
     /**
      * Data field name for looking up initial data
@@ -39,13 +39,13 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
      * @var string
      */
-    protected $dataField;
+    public $dataField;
     
     /**
      * Enable or disable use of $dataField
      * @var bool
      */
-    protected $dataBased;
+    public $dataBased;
     
     /**
      * Group name for this input
@@ -56,13 +56,13 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * @see pnFormRender::pnFormIsValid()
      * @var string
      */
-    protected $group;
+    public $group;
     
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
      * @var string
      */
-    protected $inputName;
+    public $inputName;
     
     function getFilename()
     {

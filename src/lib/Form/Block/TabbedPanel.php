@@ -23,26 +23,26 @@ class Form_Block_TabbedPanel extends Form_Plugin
      * Panel title
      * @var string
      */
-    protected $title;
+    public $title;
     
     /**
      * Panel selected status
      * @internal
      * @var bool
      */
-    protected $selected;
+    public $selected;
     
     /**
      * ID of parent panel set (don't touch)
      * @internal
      */
-    protected $panelSetId;
+    public $panelSetId;
     
     /**
      * Panel index (don't touch)
      * @internal
      */
-    protected $index;
+    public $index;
     
     function getFilename()
     {

@@ -24,13 +24,13 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
      * Minimum value for validation
      * @var float
      */
-    protected $minValue;
+    public $minValue;
     
     /**
      * Maximum value for validation
      * @var float
      */
-    protected $maxValue;
+    public $maxValue;
     
     function getFilename()
     {

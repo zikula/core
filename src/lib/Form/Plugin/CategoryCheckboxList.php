@@ -22,8 +22,8 @@
  */
 class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
 {
-    protected $editLink;
-    protected $category;
+    public $editLink;
+    public $category;
 
     function getFilename()
     {
