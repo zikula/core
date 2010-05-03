@@ -1,5 +1,3 @@
-# $Id$
-#
 # Security options, if they work in your environment. If you get a 500 error, then they won't.
 # These settings are best turned off in php.ini and will be on modern hosting environments.
 
