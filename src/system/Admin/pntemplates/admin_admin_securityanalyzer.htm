@@ -7,7 +7,7 @@
     <ul>
         {if $notices.security.config_php}
         <li>
-            <a href="{$adminhelpurl|varprepfordisplay}#admin_configphpwarning">{gt text="Configuration file 'config/config.php' is writeable, but should be read-only (chmod 444)." domain="zikula"}</a>
+            <a href="{$adminhelpurl|varprepfordisplay}#admin_configphpwarning">{gt text="Configuration file 'config/config.php' is writeable, but should be read-only (probably chmod 440)." domain="zikula"}</a>
         </li>
         {/if}
         {if $notices.security.magic_quotes_gpc}
