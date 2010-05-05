@@ -34,14 +34,14 @@ function blocks_admin_view()
         return LogUtil::registerPermissionError();
     }
 
-    $sFilter = SessionUtil::getVar ('filter', array(), '/Blocks');
+    $sFilter = SessionUtil::getVar('filter', array(), '/Blocks');
     $filter  = FormUtil::getPassedValue('filter', $sFilter);
     $clear   = FormUtil::getPassedValue('clear', 0);
     if ($clear) {
         $filter  = array();
-        SessionUtil::setVar ('filter', $filter, '/Blocks');
+        SessionUtil::setVar('filter', $filter, '/Blocks');
     } else {
-        SessionUtil::setVar ('filter', $filter, '/Blocks');
+        SessionUtil::setVar('filter', $filter, '/Blocks');
     } 
 
     // Create output object
