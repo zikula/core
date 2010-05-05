@@ -14,6 +14,7 @@
  *
  * This function gets all block entries from the database
  *
+ * @param 'active_status'   filter by active status (0=all, 1=active, 2=inactive)
  * @param 'blockposition'   block position id to filter block selection for
  * @param 'inactive'        force inclusion of inactive blocks
  * @param 'language'        language to filter block selection for
