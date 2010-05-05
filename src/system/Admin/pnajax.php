@@ -28,7 +28,7 @@ function Admin_Ajax_changeModuleCategory() {
     }
     if (!SecurityUtil::confirmAuthKey()) {
         $output['alerttext'] = "Invalid AuthKey.";
-        return AjaxUtil::output($output, true);
+        return AjaxUtil::output($output, false);
     }
     $moduleID = FormUtil::getPassedValue("modid");
     $newParentCat = FormUtil::getPassedValue("cat");
@@ -61,7 +61,7 @@ function Admin_Ajax_addCategory() {
     }
     if (!SecurityUtil::confirmAuthKey()) {
         $output['alerttext'] = "Invalid AuthKey.";
-        return AjaxUtil::output($output, true);
+        return AjaxUtil::output($output, false);
     }
     $catName = trim(FormUtil::getPassedValue('catname'));
     $cats = pnModAPIFunc('Admin', 'admin', 'getall');
@@ -91,7 +91,7 @@ function Admin_Ajax_deleteCategory() {
     if (!SecurityUtil::confirmAuthKey()) {
         $output['alerttext'] = "Invalid AuthKey.";
         $output['response'] = '-1';
-        return AjaxUtil::output($output, true);
+        return AjaxUtil::output($output, false);
     }
     $cid = trim(FormUtil::getPassedValue('cid'));
     if (!SecurityUtil::checkPermission('Admin::Category', "$category[catname]::$cid", ACCESS_DELETE)) {
@@ -130,7 +130,7 @@ function Admin_Ajax_editCategory() {
     if (!SecurityUtil::confirmAuthKey()) {
         $output['alerttext'] = 'Invalid AuthKey';
         $output['response'] = '-1';
-        return AjaxUtil::output($output, true);
+        return AjaxUtil::output($output, false);
     }
 
     if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
