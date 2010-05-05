@@ -14,8 +14,10 @@
  *
  * This function gets all block entries from the database
  *
- * @param 'modid'  module id to filter block selection for
- * @param 'inactive' force inclusion of inactive blocks
+ * @param 'blockposition'   block position id to filter block selection for
+ * @param 'inactive'        force inclusion of inactive blocks
+ * @param 'language'        language to filter block selection for
+ * @param 'module_id'       module id to filter block selection for
  * @author Mark West
  * @return   array   array of items, or false on failure
  */
@@ -53,13 +55,16 @@ function Blocks_userapi_getall($args)
         $whereargs[] = "$blockscolumn[bid] IN ($bidList)";
     }
 
-    // Work out if we're showing all blocks or just active ones
-    if (!SessionUtil::getVar('blocks_show_all') && !$args['inactive']) {
+    prayer ($args);
+    // filter by active block status
+    if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) { // new logic
+        $whereargs[] = "$blockscolumn[active] = " . ($args['active_status'] == 1 ? '1' : '0');
+    } elseif (!SessionUtil::getVar('blocks_show_all') && !$args['inactive']) { // old logic
         $whereargs[] = "$blockscolumn[active] = 1";
     }
 
-    // check for a filter by module id
-    if (isset($args['module_id']) && is_numeric($args['module_id'])) {
+    // filter by module 
+    if (isset($args['module_id']) && is_numeric($args['module_id']) && $args['module_id']) {
         $whereargs[] = "$blockscolumn[mid] = '".DataUtil::formatForStore($args['module_id'])."'";
     }
 
@@ -74,6 +79,7 @@ function Blocks_userapi_getall($args)
         $where = 'WHERE ' . implode(' AND ', $whereargs);
     }
 
+    prayer ($whereargs);
     $permFilter   = array();
     $permFilter[] = array ('realm'            =>  '0',
                            'component_left'   =>  'Blocks',
