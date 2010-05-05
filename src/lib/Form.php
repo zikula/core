@@ -248,7 +248,7 @@ class Form extends Renderer
 
         if (!$this->IsPostBack() || $stackCount > 0 && $this->BlockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
-
+            
             // Make sure to store ID and render reference in plugin
             $plugin->id = $id;
 
@@ -266,7 +266,7 @@ class Form extends Renderer
             $plugin->load($this, $params);
 
             // Remember which file this plugin came from in order to be able to restore it.
-            $pluginPath = str_replace(realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..'), '', $plugin->getFilename());
+            $pluginPath = str_replace(realpath(dirname(__FILE__) . '/..') . DIRECTORY_SEPARATOR, '', $plugin->getFilename());
             $this->Includes[$pluginPath] = 1;
 
         } else {
