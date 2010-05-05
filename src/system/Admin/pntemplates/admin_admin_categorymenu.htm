@@ -24,4 +24,8 @@
     </ul>
     {adminonlinemanual} {include file=admin_admin_ajaxAddCategory.htm}
 </div>
-<div id="none" style="display:none;"></div>
+<div id="none" style="display:none;">
+        <form id="auth">
+        <input type="hidden" name="authid" id="authid" value="{insert name="generateauthkey" module="Admin"}" />
+        </form>
+</div>

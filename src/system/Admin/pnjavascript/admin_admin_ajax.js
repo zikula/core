@@ -5,30 +5,30 @@
  * menus and inplace editors.
  */
 window.onload = function() {
-   context_menu = Array();
-   editors = Array();
-   droppables = Array();
-   var list = document.getElementById('minitabs');
-   if (list.hasChildNodes) {
-      var nodes = list.getElementsByTagName("a");
-      for ( var i = 0; i < nodes.length; i++) {
-         var nid = nodes[i].getAttribute('id');
-         if (nid != null) {
-            addContext(nid);
-            addEditor(nid);
-            if (nodes[i].className == 'active')
-               continue;
-            var droppable = Droppables.add(nid, {
-               accept : 'draggable',
-               hoverclass : 'ajaxhover',
-               onDrop : function(drag, drop) {
-                  moveModule(drag.id, drop.id);
-               }
-            });
-            droppables.push(droppable);
-         }
-      }
-   }
+    context_menu = Array();
+    editors = Array();
+    droppables = Array();
+    var list = document.getElementById('minitabs');
+    if (list.hasChildNodes) {
+        var nodes = list.getElementsByTagName("a");
+        for ( var i = 0; i < nodes.length; i++) {
+            var nid = nodes[i].getAttribute('id');
+            if (nid != null) {
+                addContext(nid);
+                addEditor(nid);
+                if (nodes[i].className == 'active')
+                    continue;
+                var droppable = Droppables.add(nid, {
+                    accept : 'draggable',
+                    hoverclass : 'ajaxhover',
+                    onDrop : function(drag, drop) {
+                    moveModule(drag.id, drop.id);
+                }
+                });
+                droppables.push(droppable);
+            }
+        }
+    }
 }
 
 /**
@@ -38,33 +38,33 @@ window.onload = function() {
  */
 function addContext(nid)
 {
-   context_menu.push(new Control.ContextMenu(nid));
-   context_menu[context_menu.length - 1].addItem( {
-      label : 'Edit',
-      callback : function(nid) {
-         var match = /acid=([0-9]*){1,}/.exec(nid);
-         if (match instanceof Array) {
+    context_menu.push(new Control.ContextMenu(nid));
+    context_menu[context_menu.length - 1].addItem( {
+        label : 'Edit',
+        callback : function(nid) {
+        var match = /acid=([0-9]*){1,}/.exec(nid);
+        if (match instanceof Array) {
             if (match.length == 2) {
-               cid = match[match.length - 1];
-               getEditor("C" + cid).enterEditMode('click');
+                cid = match[match.length - 1];
+                getEditor("C" + cid).enterEditMode('click');
             }
-         }
-         return;
-      }
-   });
-   context_menu[context_menu.length - 1].addItem( {
-      label : 'Delete',
-      callback : function(nid) {
-         var match = /acid=([0-9]*){1,}/.exec(nid);
-         if (match instanceof Array) {
+        }
+        return;
+    }
+    });
+    context_menu[context_menu.length - 1].addItem( {
+        label : 'Delete',
+        callback : function(nid) {
+        var match = /acid=([0-9]*){1,}/.exec(nid);
+        if (match instanceof Array) {
             if (match.length == 2) {
-               var cid = match[match.length - 1];
-               deleteTab(cid);
+                var cid = match[match.length - 1];
+                deleteTab(cid);
             }
-         }
-         return;
-      }
-   });
+        }
+        return;
+    }
+    });
 }
 
 /**
@@ -73,22 +73,40 @@ function addContext(nid)
  * @return void
  */
 function addEditor(nid) {
-	var nelement = document.getElementById(nid);
-	var tLength = nelement.innerHTML.length;
-	var editor = new Ajax.InPlaceEditor(nid,"index.php?module=Admin&type=ajax&func=editCategory",{
-		externalControl:"none",
-		externalControlOnly:true,
-		rows:1,cols:tLength,
-		submitOnBlur:true,
-		okControl:false,
-		cancelControl:false,
-		callback: function(form, value) { 
-			var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
-			return 'catname='+encodeURIComponent(value)+'&cid='+cid;
-			}
-		//onFailure: function(transport) {alert("Error communicating with the server: " + transport.responseText.stripTags());}
-	});
-	editors.push(Array(nid, editor));
+    var nelement = document.getElementById(nid);
+    var tLength = nelement.innerHTML.length;
+    var editor = new Ajax.InPlaceEditor(nid,"index.php?module=Admin&type=ajax&func=editCategory",{
+        externalControl:"none",
+        externalControlOnly:true,
+        rows:1,cols:tLength,
+        submitOnBlur:true,
+        okControl:false,
+        cancelControl:false,
+        callback: function(form, value) { 
+        var authid = document.getElementById('authid').value;
+        var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
+        //this check should stop the form from submitting if the catname is the same, it doesnt work
+        //if (getOrig("C" + cid) == value) {
+        //    alert ("cat name the same!");
+        //    return false;
+        //}
+        return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
+    },
+    onComplete: function(transport, element) {
+        var json = pndejsonize(transport.responseText);
+        if (json.alerttext !== '' || json.response == '-1') {
+            this.element.innerHTML = getOrig(element.id);
+            pnshowajaxerror("Oops something went wrong: " + json.alerttext);
+        } else {
+            this.element.innerHTML = json.response;
+        }
+        var aid = json.authid;
+        if (aid !== '') {
+            pnupdateauthids(aid);
+        }
+    }
+    });
+    editors.push(Array(nid, editor, nelement.innerHTML));
 }
 
 /**
@@ -97,11 +115,24 @@ function addEditor(nid) {
  * @return editor
  */
 function getEditor(nid) {
-	for (var row = 0; row < editors.length; row++) {
-		if (editors[row][0] == nid) {
-			return editors[row][1];
-		}
-	}
+    for (var row = 0; row < editors.length; row++) {
+        if (editors[row][0] == nid) {
+            return editors[row][1];
+        }
+    }
+}
+
+/**
+ * Gets original content of tab nid.
+ * @param nid element to get original content for.
+ * @return content
+ */
+function getOrig(nid) {
+    for (var row = 0; row < editors.length; row++) {
+        if (editors[row][0] == nid) {
+            return editors[row][2];
+        }
+    }
 }
 
 //-----------------------Deleting Tabs----------------------------------------
@@ -112,12 +143,13 @@ function getEditor(nid) {
  * @return void
  */
 function deleteTab(id) {
-   var pars = "module=Admin&type=ajax&func=deleteCategory&cid=" + id;
-   var myAjax = new Ajax.Request("ajax.php", {
-      method : 'get',
-      parameters : pars,
-      onComplete : deleteTabResponse
-   });
+    var authid = document.getElementById('authid').value;
+    var pars = "module=Admin&type=ajax&func=deleteCategory&cid=" + id + '&authid=' + authid;
+    var myAjax = new Ajax.Request("ajax.php", {
+        method : 'get',
+        parameters : pars,
+        onComplete : deleteTabResponse
+    });
 }
 
 /**
@@ -127,19 +159,23 @@ function deleteTab(id) {
  * @return Boolean False always, removes tab from dom on success.
  */
 function deleteTabResponse(req) {
-   if (req.status != 200) {
-      pnshowajaxerror(req.responseText);
-      return false;
-   }
-   var json = pndejsonize(req.responseText);
-   if (json.alerttext !== '' || json.response == '-1') {
-      alert("Oops something went wrong! " + json.alerttext + "response: "
-            + json.respnse);
-   } else {
-      var element = document.getElementById("C" + json.response);
-      element.parentNode.removeChild(element);
-   }
-   return false;
+    if (req.status != 200) {
+        pnshowajaxerror(req.responseText);
+        return false;
+    }
+    var json = pndejsonize(req.responseText);
+    if (json.alerttext !== '' || json.response == '-1') {
+        pnshowajaxerror("Oops something went wrong! " + json.alerttext + "response: "
+                + json.response);
+    } else {
+        var element = document.getElementById("C" + json.response);
+        element.parentNode.removeChild(element);
+    }
+    var aid = json.authid;
+    if (aid !== '') {
+        pnupdateauthids(aid);
+    }
+    return false;
 }
 
 //----------------------Moving Modules----------------------------------------
@@ -150,15 +186,16 @@ function deleteTabResponse(req) {
  * @param cid Integer The cid of the category to move to.
  */
 function moveModule(id, cid) {
-   var id = id.substr(1);
-   var cid = cid.substr(1);
-   var pars = "module=Admin&type=ajax&func=changeModuleCategory&modid=" + id
-         + "&cat=" + cid;
-   var myAjax = new Ajax.Request("ajax.php", {
-      method : 'get',
-      parameters : pars,
-      onComplete : changeModuleCategoryResponse
-   });
+    var id = id.substr(1);
+    var cid = cid.substr(1);
+    var authid = document.getElementById('authid').value;
+    var pars = "module=Admin&type=ajax&func=changeModuleCategory&modid=" + id
+    + "&cat=" + cid + '&authid=' + authid;
+    var myAjax = new Ajax.Request("ajax.php", {
+        method : 'get',
+        parameters : pars,
+        onComplete : changeModuleCategoryResponse
+    });
 }
 
 /**
@@ -168,21 +205,25 @@ function moveModule(id, cid) {
  * @return void, module is removed from dom on success.
  */
 function changeModuleCategoryResponse(req) {
-   if (req.status != 200) {
-      pnshowajaxerror(req.responseText);
-      return;
-   }
-   var json = pndejsonize(req.responseText);
-   if (json.alerttext !== '') {
-      alert(json.alerttext);
-   }
-   if (json.response == '-1') {
-      alert("Oops something went wrong!");
-      return;
-   }
-   var element = document.getElementById('A' + json.response);
-   element.parentNode.removeChild(element);
-   return;
+    if (req.status != 200) {
+        pnshowajaxerror(req.responseText);
+        return;
+    }
+    var json = pndejsonize(req.responseText);
+    if (json.alerttext !== '') {
+        pnshowajaxerror(json.alerttext);
+    }
+    if (json.response == '-1') {
+        pnshowajaxerror("Oops something went wrong!");
+        var aid = json.authid;
+        pnupdateauthids(aid);
+        return;
+    }
+    var aid = json.authid;
+    pnupdateauthids(aid);
+    var element = document.getElementById('A' + json.response);
+    element.parentNode.removeChild(element);
+    return;
 }
 //--------------------Creating Categories-------------------------------------
 /**
@@ -192,13 +233,13 @@ function changeModuleCategoryResponse(req) {
  * @return Boolean False.
  */
 function newCategory(cat) {
-   var parent = cat.parentNode;
-   old = parent.innerHTML;
-   var innerhtml = document.getElementById('ajaxNewCatHidden').innerHTML;
-   parent.innerHTML = innerhtml;
-   parent.setAttribute("class", "newCat");
-   parent.setAttribute("className", "newCat");
-   return false;
+    var parent = cat.parentNode;
+    old = parent.innerHTML;
+    var innerhtml = document.getElementById('ajaxNewCatHidden').innerHTML;
+    parent.innerHTML = innerhtml;
+    parent.setAttribute("class", "newCat");
+    parent.setAttribute("className", "newCat");
+    return false;
 }
 
 /**
@@ -208,20 +249,21 @@ function newCategory(cat) {
  * @return Boolean false.
  */
 function addCategory(cat) {
-   oldcat = cat;
-   catname = document.getElementById('ajaxNewCatForm').elements['catName'].value;
-   if (catname == '') {
-      pnshowajaxerror('You must enter a name for the new category');
-      cancelCategory(oldcat);
-      return false;
-   }
-   var pars = "module=Admin&type=ajax&func=addCategory&catname=" + catname;
-   var myAjax = new Ajax.Request("ajax.php", {
-      method : 'get',
-      parameters : pars,
-      onComplete : addCategoryResponse
-   });
-   return false;
+    var oldcat = document.getElementById('ajaxCatImage');
+    catname = document.getElementById('ajaxNewCatForm').elements['catName'].value;
+    if (catname == '') {
+        pnshowajaxerror('You must enter a name for the new category');
+        cancelCategory(oldcat);
+        return false;
+    }
+    var authid = document.getElementById('authid').value;
+    var pars = "module=Admin&type=ajax&func=addCategory&catname=" + catname + "&authid=" + authid;
+    var myAjax = new Ajax.Request("ajax.php", {
+        method : 'get',
+        parameters : pars,
+        onComplete : addCategoryResponse
+    });
+    return false;
 }
 
 /**
@@ -232,11 +274,11 @@ function addCategory(cat) {
  * @return Boolean False.
  */
 function cancelCategory(cat) {
-   var parent = cat.parentNode.parentNode;
-   parent.innerHTML = old;
-   parent.setAttribute("class", "");
-   parent.setAttribute("className", "");
-   return false;
+    var parent = cat.parentNode.parentNode;
+    parent.innerHTML = old;
+    parent.setAttribute("class", "");
+    parent.setAttribute("className", "");
+    return false;
 }
 
 /**
@@ -253,8 +295,9 @@ function addCategoryResponse(req) {
         return false;
     }
     var json = pndejsonize(req.responseText);
+    var aid = json.authid;
     if (json.alerttext !== '' || json.response == '0') {
-        alert("Oops something went wrong! " + json.alerttext);
+        pnshowajaxerror("Oops something went wrong! " + json.alerttext);
         cancelCategory(oldcat);
     } else {
         newcat = oldcat.parentNode.parentNode;
@@ -262,13 +305,14 @@ function addCategoryResponse(req) {
         newcat.setAttribute("class","");
         newcat.setAttribute("className","");
         newcat.setAttribute("id", "");
-    
+
         var newelement = document.createElement('li');
         newelement.innerHTML = old;
         newelement.setAttribute('id', 'addcat');
         document.getElementById('minitabs').appendChild(newelement);
         addContext('C'+json.response);
         addEditor('C'+json.response);
+        pnupdateauthids(aid);
         Droppables.add('C'+json.response, { 
             accept: 'draggable',
             hoverclass: 'ajaxhover',
