@@ -102,6 +102,7 @@ function addEditor(nid) {
         }
         var aid = json.authid;
         if (aid !== '') {
+        	document.getElementById('authid').value = aid;
             pnupdateauthids(aid);
         }
     }
@@ -173,6 +174,7 @@ function deleteTabResponse(req) {
     }
     var aid = json.authid;
     if (aid !== '') {
+        document.getElementById('authid').value = aid;
         pnupdateauthids(aid);
     }
     return false;
@@ -216,10 +218,12 @@ function changeModuleCategoryResponse(req) {
     if (json.response == '-1') {
         pnshowajaxerror("Oops something went wrong!");
         var aid = json.authid;
+        document.getElementById('authid').value = aid;
         pnupdateauthids(aid);
         return;
     }
     var aid = json.authid;
+    document.getElementById('authid').value = aid;
     pnupdateauthids(aid);
     var element = document.getElementById('A' + json.response);
     element.parentNode.removeChild(element);
@@ -274,7 +278,7 @@ function addCategory(cat) {
  * @return Boolean False.
  */
 function cancelCategory(cat) {
-    var parent = cat.parentNode.parentNode;
+	parent = document.getElementById('addcat');
     parent.innerHTML = old;
     parent.setAttribute("class", "");
     parent.setAttribute("className", "");
@@ -288,9 +292,8 @@ function cancelCategory(cat) {
  * @return False, new tab is added on success.
  */
 function addCategoryResponse(req) {
-    var oldcat = document.getElementById('ajaxCatImage');
     if (req.status != 200) {
-        cancelCategory(oldcat);
+        cancelCategory();
         pnshowajaxerror(req.responseText);
         return false;
     }
@@ -298,9 +301,10 @@ function addCategoryResponse(req) {
     var aid = json.authid;
     if (json.alerttext !== '' || json.response == '0') {
         pnshowajaxerror("Oops something went wrong! " + json.alerttext);
-        cancelCategory(oldcat);
+        document.getElementById('authid').value = aid;
+        pnupdateauthids(aid);
     } else {
-        newcat = oldcat.parentNode.parentNode;
+        newcat = document.getElementById('addcat');
         newcat.innerHTML = '<a id="C'+json.response+'" href="'+json.url+'">'+catname+'</a>';
         newcat.setAttribute("class","");
         newcat.setAttribute("className","");
@@ -312,6 +316,7 @@ function addCategoryResponse(req) {
         document.getElementById('minitabs').appendChild(newelement);
         addContext('C'+json.response);
         addEditor('C'+json.response);
+        document.getElementById('authid').value = aid;
         pnupdateauthids(aid);
         Droppables.add('C'+json.response, { 
             accept: 'draggable',

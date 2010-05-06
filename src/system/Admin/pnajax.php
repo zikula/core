@@ -132,7 +132,14 @@ function Admin_Ajax_editCategory() {
         $output['response'] = '-1';
         return AjaxUtil::output($output, false);
     }
-
+    $cats = pnModAPIFunc('Admin', 'admin', 'getall');
+    foreach ($cats as $catName) {
+        if (in_array($cat, $catName)) {
+            $output['alerttext'] = 'A category by this name already exists.';
+            $outpur['response'] = '-1';
+            return AjaxUtil::output($output, true);
+        }
+    }
     if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
         $output['alerttext'] = 'ID or Cateogry name not set.';
         $output['response'] = '-1';
