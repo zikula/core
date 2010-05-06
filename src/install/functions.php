@@ -268,7 +268,13 @@ function install()
                 pnConfigSetVar('adminmail', $email);
 
                 update_installed_status();
-                @chmod('config/config.php', 0444);
+                @chmod('config/config.php', 0400);
+                if (!is_readable('config/config.php')) {
+                	@chmod('config/config.php', 0440);
+                	if (!is_readable('config/config.php')) {
+                	   @chmod('config/config.php', 0444);	
+                	}
+                }
                 if($installbySQL){
                     $action = 'gotosite';
                 }
