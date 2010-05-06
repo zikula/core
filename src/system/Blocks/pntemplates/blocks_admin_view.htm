@@ -8,29 +8,38 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View" }</div>
     <h2>{gt text="Blocks list"}</h2>
     <p class="z-informationmsg">{gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
-    <form action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
         {gt text="All" assign="lblAll"}
-        {gt text="Filter" assign="lblFilter"} 
+        {gt text="Filter" assign="lblFilter"}
         <fieldset>
             <legend>{$lblFilter}</legend>
-            <table width=90%>
-                <tr>
-                    <td align="center">{gt text="Block Position"}&nbsp;{selector_field_array name="filter[blockposition_id]" modname="Blocks" table="block_positions" field="name" assocKey="pid" sort="pn_name" allText=$lblAll allValue=0 selectedValue=$filter.blockposition_id|default:0} </td>
-                    <td align="center">{gt text="Module"}&nbsp;{selector_module name="filter[modid]" field="id" allText=$lblAll allValue=0 selectedValue=$filter.modid|default:0} </td>
-                    <td align="center">{gt text="Language"}&nbsp;{html_select_languages name="filter[language]" installed=1 all=1 selected=$filter.language|default:''} </td>
-		    <td align="center">{gt text="Active Status"}&nbsp;
-			    <select id="show_all" name="filter[active_status]"> 
-				    <option value="0" {if (isset($filter.active_status) && $filter.active_status == 0)}selected="selected"{/if}>{gt text="All"}</option>
-				    <option value="1" {if (isset($filter.active_status) && $filter.active_status == 1)}selected="selected"{/if}>{gt text="Active"}</option>
-				    <option value="2" {if (isset($filter.active_status) && $filter.active_status == 2)}selected="selected"{/if}>{gt text="Inactive"}</option>
-			    </select>
-		    </td>
-                    <td align="center"><input name="submit" type="submit" value="{gt text='Filter'}" />&nbsp;&nbsp;<input name="clear" type="submit" value="{gt text='Clear'}" /></td>
-                </tr>
-            </table>
+            <span class="z-nowrap">
+                <label for="filter_blockposition_id_">{gt text="Block Position"}</label>
+                {selector_field_array name="filter[blockposition_id]" modname="Blocks" table="block_positions" field="name" assocKey="pid" sort="pn_name" allText=$lblAll allValue=0 selectedValue=$filter.blockposition_id|default:0}
+            </span>
+            <span class="z-nowrap">
+                <label for="filter_modid_">{gt text="Module"}</label>
+                {selector_module name="filter[modid]" field="id" allText=$lblAll allValue=0 selectedValue=$filter.modid|default:0}
+            </span>
+            <span class="z-nowrap">
+                <label for="filter_language">{gt text="Language"}</label>
+                {html_select_languages id="filter_language" name="filter[language]" installed=1 all=1 selected=$filter.language|default:''}
+            </span>
+            <span class="z-nowrap">
+                <label for="filter_status">{gt text="Active Status"}</label>
+                <select id="filter_status" name="filter[active_status]">
+                    <option value="0" {if (isset($filter.active_status) && $filter.active_status == 0)}selected="selected"{/if}>{gt text="All"}</option>
+                    <option value="1" {if (isset($filter.active_status) && $filter.active_status == 1)}selected="selected"{/if}>{gt text="Active"}</option>
+                    <option value="2" {if (isset($filter.active_status) && $filter.active_status == 2)}selected="selected"{/if}>{gt text="Inactive"}</option>
+                </select>
+            </span>
+            <span class="z-nowrap">
+                <input name="submit" type="submit" value="{gt text='Filter'}" />
+                <input name="clear" type="submit" value="{gt text='Clear'}" />
+            </span>
         </fieldset>
     </form>
-    <br />
+
     <table class="z-admintable">
         <thead>
             <tr>
