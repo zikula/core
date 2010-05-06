@@ -32,10 +32,6 @@ function Blocks_userapi_getall($args)
         return $items;
     }
 
-    if (!isset($args['inactive']) || !is_bool($args['inactive'])) {
-        $args['inactive'] = false;
-    }
-
     $pntable      = pnDBGetTables();
     $blockstable  = $pntable['blocks'];
     $blockscolumn = $pntable['blocks_column'];
@@ -55,13 +51,19 @@ function Blocks_userapi_getall($args)
         $bidList     = $bids ? implode (',', $bids) : -1;
         $whereargs[] = "$blockscolumn[bid] IN ($bidList)";
     }
-
     // filter by active block status
-    if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) { // new logic
-        $whereargs[] = "$blockscolumn[active] = " . ($args['active_status'] == 1 ? '1' : '0');
-    } elseif (!SessionUtil::getVar('blocks_show_all') && !$args['inactive']) { // old logic
-        $whereargs[] = "$blockscolumn[active] = 1";
-    }
+    if (isset($args['active_status']) && is_numeric($args['active_status'])) { // new logic
+        switch ($args['active_status']) {
+            case 1:
+                $whereargs[] = "$blockscolumn[active] = 1";
+                break;
+            case 2:
+                $whereargs[] = "$blockscolumn[active] = 0";
+                break;        
+            default:
+                break;
+        }
+    } 
 
     // filter by module 
     if (isset($args['module_id']) && is_numeric($args['module_id']) && $args['module_id']) {

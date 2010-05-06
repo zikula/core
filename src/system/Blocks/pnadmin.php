@@ -683,7 +683,7 @@ function blocks_admin_modifyposition()
     $block_placements = pnModAPIFunc('blocks', 'user', 'getblocksinposition', array('pid' => $pid));
 
     // get all defined blocks
-    $allblocks = pnModAPIFunc('Blocks', 'user', 'getall', array('inactive' => true));
+    $allblocks = pnModAPIFunc('Blocks', 'user', 'getall', array('active_status' => 0));
     foreach($allblocks as $key => $allblock) {
         // set the module that holds the block
         $modinfo = pnModGetInfo($allblock['mid']);
