@@ -56,7 +56,6 @@ function Blocks_userapi_getall($args)
         $whereargs[] = "$blockscolumn[bid] IN ($bidList)";
     }
 
-    prayer ($args);
     // filter by active block status
     if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) { // new logic
         $whereargs[] = "$blockscolumn[active] = " . ($args['active_status'] == 1 ? '1' : '0');
@@ -80,7 +79,6 @@ function Blocks_userapi_getall($args)
         $where = 'WHERE ' . implode(' AND ', $whereargs);
     }
 
-    prayer ($whereargs);
     $permFilter   = array();
     $permFilter[] = array ('realm'            =>  '0',
                            'component_left'   =>  'Blocks',

@@ -20,9 +20,9 @@
                     <td align="center">{gt text="Language"}&nbsp;{html_select_languages name="filter[language]" installed=1 all=1 selected=$filter.language|default:''} </td>
 		    <td align="center">{gt text="Active Status"}&nbsp;
 			    <select id="show_all" name="filter[active_status]"> 
-				    <option value="0" {if ($filter.active_status == 0)}selected="selected"{/if}>{gt text="All"}</option>
-				    <option value="1" {if ($filter.active_status == 1)}selected="selected"{/if}>{gt text="Active"}</option>
-				    <option value="2" {if ($filter.active_status == 2)}selected="selected"{/if}>{gt text="Inactive"}</option>
+				    <option value="0" {if (isset($filter.active_status) && $filter.active_status == 0)}selected="selected"{/if}>{gt text="All"}</option>
+				    <option value="1" {if (isset($filter.active_status) && $filter.active_status == 1)}selected="selected"{/if}>{gt text="Active"}</option>
+				    <option value="2" {if (isset($filter.active_status) && $filter.active_status == 2)}selected="selected"{/if}>{gt text="Inactive"}</option>
 			    </select>
 		    </td>
                     <td align="center"><input name="submit" type="submit" value="{gt text='Filter'}" />&nbsp;&nbsp;<input name="clear" type="submit" value="{gt text='Clear'}" /></td>
