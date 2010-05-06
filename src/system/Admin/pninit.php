@@ -126,9 +126,7 @@ function Admin_defaultdata()
                     array('catname'     => __('3rd-party'),
                           'description' => __('3rd-party add-on modules and newly-installed modules.')),
                     array('catname'     => __('Security'),
-                          'description' => __('Modules for managing the site\'s security.')),
-                    array('catname'     => __('Hooked'),
-                          'description' => __('Auxiliary modules designed to be hooked to other modules, to give them added functionality.')));
+                          'description' => __('Modules for managing the site\'s security.')));
 
     DBUtil::insertObjectArray($record, 'admin_category', 'cid');
 }
