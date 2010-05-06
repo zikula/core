@@ -8,12 +8,16 @@
 /* classes to show/hide elements */
 .z-hide { display: none !important; }
 .z-show { display: inherit !important; }
+
+/* classes for generic styles */
 .z-center { text-align: center !important; }
 .z-left { text-align: left !important; }
 .z-right { text-align: right !important; }
 .z-nowrap { white-space: nowrap !important; }
 .z-italic { font-style: italic !important; }
 .z-bold { font-weight: bold !important; }
+.z-underline { text-decoration: underline !important; }
+.z-line-through { text-decoration: line-through !important; }
 .z-normal { font-weight: normal !important; font-style: normal !important; }
 
 .z-floatleft {
