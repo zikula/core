@@ -248,7 +248,7 @@ class Form extends Renderer
 
         if (!$this->IsPostBack() || $stackCount > 0 && $this->BlockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
-
+            
             // Make sure to store ID and render reference in plugin
             $plugin->id = $id;
 
@@ -679,16 +679,12 @@ class Form extends Renderer
     {
         $base64 = $this->GetIncludesText();
 
-        // TODO - this is a quick hack to move __pnFormINCLUDES into a session variable.
-        // A better way needs to be found rather than relying on a call to GetIncludesHTML.
-        SessionUtil::setVar('__pnFormINCLUDES', $base64);
-        return '';
+        return "<input type=\"hidden\" name=\"__pnFormINCLUDES\" value=\"$base64\"/>";
     }
 
     public function DecodeIncludes()
     {
-        // TODO - See GetIncludesHTML()
-        $base64 = SessionUtil::getVar('__pnFormINCLUDES');
+        $base64 = $_POST['__pnFormINCLUDES'];
         $bytes = base64_decode($base64);
         $bytes = SecurityUtil::checkSignedData($bytes);
         if (!$bytes) {
@@ -771,18 +767,12 @@ class Form extends Renderer
     {
         $base64 = $this->GetStateText();
 
-        // TODO - this is a quick hack to move __pnFormSTATE into a session variable.
-        // This is meant to solve issue #2013
-        // A better way needs to be found rather than relying on a call to GetStateHTML.
-        SessionUtil::setVar('__pnFormSTATE', $base64);
-        // TODO - __pnFormSTATE still needs to be on the form, to ensure that IsPostBack() returns properly
-        return '<input type="hidden" name="__pnFormSTATE" value="true"/>';
+        return "<input type=\"hidden\" name=\"__pnFormSTATE\" value=\"$base64\"/>";
     }
 
     public function DecodeState()
     {
-        // TODO - see GetStateHTML()
-        $base64 = SessionUtil::getVar('__pnFormSTATE');
+        $base64 = $_POST['__pnFormSTATE'];
         $bytes = base64_decode($base64);
         $bytes = SecurityUtil::checkSignedData($bytes);
         if (!$bytes) {
