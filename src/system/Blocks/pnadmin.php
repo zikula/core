@@ -155,28 +155,6 @@ function blocks_admin_view()
 }
 
 /**
- * show all blocks
- * @author Jim McDonald
- * @return string HTML output string
- */
-function blocks_admin_showall()
-{
-    SessionUtil::setVar('blocks_show_all', 1);
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
-}
-
-/**
- * show active blocks
- * @author Jim McDonald
- * @return string HTML output string
- */
-function blocks_admin_showactive()
-{
-    SessionUtil::delVar('blocks_show_all');
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
-}
-
-/**
  * deactivate a block
  * @author Jim McDonald
  * @param int $bid block id
