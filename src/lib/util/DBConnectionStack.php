@@ -396,7 +396,7 @@ class DBConnectionStack
 
 
             // Index names (default: [name]_idx)
-            // $object->setAttribute(Doctrine::ATTR_IDXNAME_FORMAT, '%s_index');
+            $object->setAttribute(Doctrine::ATTR_IDXNAME_FORMAT, '%s');
 
 
             // Sequence names (default: [name]_seq)
