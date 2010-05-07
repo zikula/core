@@ -35,6 +35,13 @@ function Blocks_userapi_getall($args)
     $pntable      = pnDBGetTables();
     $blockstable  = $pntable['blocks'];
     $blockscolumn = $pntable['blocks_column'];
+    $sort         = isset($args['sort']) && $args['sort'] ? $args['sort'] : '';
+    $sortdir      = isset($args['sortdir']) && $args['sortdir'] ? $args['sortdir'] : 'ASC';
+    if ($sort) {
+        $sort     .= " $sortdir";
+    } else {
+        $sort     = 'title';
+    }
 
     // backwards parameter compatability
     if (isset($args['modid']) && is_numeric($args['modid'])) {
@@ -54,7 +61,7 @@ function Blocks_userapi_getall($args)
     
     // filter by active block status
     if (isset($args['inactive']) && $args['inactive']) {
-    	$args['active_status'] = 0;
+            $args['active_status'] = 0;
     }
     if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) { // new logic
         $whereargs[] = "$blockscolumn[active] = " . ($args['active_status'] == 1 ? '1' : '0');
@@ -86,7 +93,14 @@ function Blocks_userapi_getall($args)
                            'instance_right'   =>  'bid',
                            'level'            =>  ACCESS_OVERVIEW);
 
-    return DBUtil::selectObjectArray ('blocks', $where, 'title', -1, -1, '', $permFilter);
+    $joinInfo = array();
+    $joinInfo[] = array ('join_table'          =>  'modules',
+                         'join_field'          =>  'name',
+                         'object_field_name'   =>  'module_name',
+                         'compare_field_table' =>  'mid',
+                         'compare_field_join'  =>  'id');
+
+    return DBUtil::selectExpandedObjectArray ('blocks', $joinInfo, $where, $sort, -1, -1, '', $permFilter);
 }
 
 /**

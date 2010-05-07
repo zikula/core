@@ -41,6 +41,17 @@ function blocks_admin_view()
         $filter  = array();
         SessionUtil::setVar('filter', $filter, '/Blocks');
     } else {
+        if (isset($filter['sort']) && $filter['sort']) {
+             $oldSort    = SessionUtil::getVar('sort', '', '/Blocks/filter');
+             $oldSortDir = SessionUtil::getVar('sortdir', '', '/Blocks/filter');
+             if ($oldSort == $filter['sort']) {
+                 if ($oldSortDir == 'ASC' || !$oldSortDir) {
+                     $filter['sortdir'] = 'DESC';
+                 } elseif ($oldSortDir == 'DESC') {
+                     $filter['sortdir'] = 'ASC';
+                 } 
+             } 
+        }
         SessionUtil::setVar('filter', $filter, '/Blocks');
     } 
 
