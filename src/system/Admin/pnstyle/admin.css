@@ -216,14 +216,20 @@ table.z-admintable ul {
 /*******************************************************************************/
 
 div#z-securityanalyzer {
-    border: 1px solid red;
-    background: #ffffea url(../../../images/icons/large/error.gif) no-repeat 2% 50%;
-    margin: 0 auto;
-    font-weight: bold;
-    padding: 1.2em 1em 0.5em 8em;
-    width: 80%;
+    background: #fff6bf url(../../../images/icons/large/error.gif) center no-repeat;
+    background-position: 15px 50%; /* x-pos y-pos */
+    text-align: left;
+    padding: 1em 20px 1em 90px !important;
+    border-top: 2px solid #ffd324;
+    border-bottom: 2px solid #ffd324;
     min-height: 2.5em;
     margin-bottom: 1em;
+}
+
+div#z-securityanalyzer ul {
+    list-style-position: outside;
+    list-style-type: disc;
+    margin: 0.5em 1em 0;
 }
 
 /* styling for status update checker */

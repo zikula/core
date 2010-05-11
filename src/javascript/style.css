@@ -169,37 +169,35 @@ ul.z-menulinks li.z-ml-disabled a {
 
 /**************************************************
 * CSS Based Messages
-* http://www.edg3.co.uk/resources/css-based-messages/
-* http://creativecommons.org/licenses/by/2.5/
 **************************************************/
 
 .z-errormsg {
-    background: #ffeae5 url('../images/icons/extrasmall/error.gif') 13px 50% no-repeat;
-    border: 2px solid #f34f4f;
-    color: #a40000;
+    background: #F7CBCA url("../images/icons/extrasmall/error.gif") 13px 50% no-repeat;
+    border: 1px solid #CC0000;
+    color: #880000;
+    margin: 5px 0;
     padding: 5px 5px 5px 36px;
-    margin: 5px;
 }
 .z-informationmsg {
     background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat;
-    border: 2px solid #9bb8d9;
-    color: #37527d;
+    border: 1px solid #9bb8d9;
+    color: #27427D;
     padding: 5px 5px 5px 36px;
-    margin: 5px;
+    margin: 5px 0;
 }
 .z-statusmsg {
-    background: #edfdee url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
-    border: 2px solid #9c9;
-    color: #005a00;
+    background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
+    border: 1px solid #99CC99;
+    color: #005000;
     padding: 5px 5px 5px 36px;
-    margin: 5px;
+    margin: 5px 0;
 }
 .z-warningmsg {
-    background: #fffdcd url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
-    border: 2px solid #ffd324;
-    color: #7f2e02;
+    background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
+    border: 1px solid #EED324;
+    color: #702E02;
     padding: 5px 5px 5px 36px;
-    margin: 5px;
+    margin: 5px 0;
 }
 
 /*******************************************************************************/
