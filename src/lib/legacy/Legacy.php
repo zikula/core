@@ -284,6 +284,11 @@ function pnInit($stages = PN_CORE_ALL)
         pnShutDown();
     }
 
+    // initialise time to render
+    if ($GLOBALS['ZConfig']['Debug']['pagerendertime']) {
+        $GLOBALS['ZRuntime']['dbg_starttime'] = microtime(true);
+    }
+
     if ($stages & PN_CORE_OBJECTLAYER) {
         // nothing to do here
     }
