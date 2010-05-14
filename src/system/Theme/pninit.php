@@ -47,7 +47,7 @@ function theme_init()
 
     // Renderer
     pnModSetVar('Theme', 'render_compile_check',  true);
-    pnModSetVar('Theme', 'render_force_compile',  false);
+    pnModSetVar('Theme', 'render_force_compile',  true);
     pnModSetVar('Theme', 'render_cache',          false);
     pnModSetVar('Theme', 'render_expose_template',false);
     pnModSetVar('Theme', 'render_lifetime',       3600);
