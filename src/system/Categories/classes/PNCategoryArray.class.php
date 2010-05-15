@@ -47,7 +47,7 @@ class PNCategoryArray extends DBObjectArray
     function getDataFromInputPostProcess ($objArray=null)
     {
         if (!$objArray) {
-            $objArray = $this->_objData;
+            $objArray =& $this->_objData;
         }
 
         if (!$objArray) {
@@ -69,7 +69,7 @@ class PNCategoryArray extends DBObjectArray
     function selectPostProcess ($objArray=null)
     {
         if (!$objArray) {
-            $objArray = $this->_objData;
+            $objArray =& $this->_objData;
         }
 
         if (!$objArray) {
@@ -88,7 +88,7 @@ class PNCategoryArray extends DBObjectArray
     function insertPreProcess ($objArray=null)
     {
         if (!$objArray) {
-            $objArray = $this->_objData;
+            $objArray =& $this->_objData;
         }
 
         if (!$objArray) {
@@ -109,7 +109,7 @@ class PNCategoryArray extends DBObjectArray
     function insertPostProcess($objArray=null)
     {
         if (!$objArray) {
-            $objArray = $this->_objData;
+            $objArray =& $this->_objData;
         }
 
         if (!$objArray) {
@@ -129,7 +129,7 @@ class PNCategoryArray extends DBObjectArray
     function updatePreProcess ($objArray=null)
     {
         if (!$objArray) {
-            $objArray = $this->_objData;
+            $objArray =& $this->_objData;
         }
 
         if (!$objArray) {

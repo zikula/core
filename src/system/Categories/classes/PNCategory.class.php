@@ -42,7 +42,7 @@ class PNCategory extends DBObject
     function getDataFromInputPostProcess ($data=null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data =& $this->_objData;
         }
         if (!$data) {
             return $data;
@@ -77,7 +77,7 @@ class PNCategory extends DBObject
     function selectPostProcess ($data=null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data =& $this->_objData;
         }
         if (!$data) {
             return $data;
@@ -93,7 +93,7 @@ class PNCategory extends DBObject
     function insertPreProcess ($data=null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data =& $this->_objData;
         }
 
         if (!$data) {
@@ -115,7 +115,7 @@ class PNCategory extends DBObject
     function insertPostProcess($data=null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data =& $this->_objData;
         }
 
         if (!$data) {
@@ -137,7 +137,7 @@ class PNCategory extends DBObject
     function updatePreProcess ($data=null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data =& $this->_objData;
         }
 
         if (!$data) {
@@ -164,7 +164,7 @@ class PNCategory extends DBObject
     function updatePostProcess ($data=null)
     {
         if (!$data) {
-            $data = $this->_objData;
+            $data =& $this->_objData;
         }
 
         if (!$data) {
