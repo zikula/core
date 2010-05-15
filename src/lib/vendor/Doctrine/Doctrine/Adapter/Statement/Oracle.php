@@ -398,7 +398,7 @@ class Doctrine_Adapter_Statement_Oracle implements Doctrine_Adapter_Statement_In
             return false;
         }
         $row = $this->fetch(Doctrine_Core::FETCH_NUM);
-        return $row[$columnIndex];
+        return isset($row[$columnIndex]) ? $row[$columnIndex] : false;
     }
 
     /**

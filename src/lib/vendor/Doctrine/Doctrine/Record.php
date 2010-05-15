@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Record.php 7491 2010-03-29 21:01:59Z jwage $
+ *  $Id: Record.php 7496 2010-03-30 20:20:37Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7491 $
+ * @version     $Revision: 7496 $
  */
 abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Countable, IteratorAggregate, Serializable
 {
@@ -1148,11 +1148,12 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
                 return false;
             }
 
-            $data = empty($data) ? $this->getTable()->find($id, Doctrine_Core::HYDRATE_ARRAY) : $data;
+            $table = $this->getTable();
+            $data = empty($data) ? $table->find($id, Doctrine_Core::HYDRATE_ARRAY) : $data;
             
             if (is_array($data)) {
                 foreach ($data as $field => $value) {
-                    if ( ! array_key_exists($field, $this->_data) || $this->_data[$field] === self::$_null) {
+                    if ($table->hasField($field) && ( ! array_key_exists($field, $this->_data) || $this->_data[$field] === self::$_null)) {
                        $this->_data[$field] = $value;
                    }
                 }

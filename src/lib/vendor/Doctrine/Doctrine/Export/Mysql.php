@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Mysql.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Mysql.php 7544 2010-04-07 11:57:41Z kriswallsmith $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7544 $
  */
 class Doctrine_Export_Mysql extends Doctrine_Export
 {
@@ -715,6 +715,30 @@ class Doctrine_Export_Mysql extends Doctrine_Export
             $declFields[] = $fieldString;
         }
         return implode(', ', $declFields);
+    }
+
+    /**
+     * Returns a character set declaration.
+     *
+     * @param string $charset A character set
+     *
+     * @return string A character set declaration
+     */
+    public function getCharsetFieldDeclaration($charset)
+    {
+        return $this->conn->dataDict->getCharsetFieldDeclaration($charset);
+    }
+
+    /**
+     * Returns a collation declaration.
+     *
+     * @param string $collation A collation
+     *
+     * @return string A collation declaration
+     */
+    public function getCollationFieldDeclaration($collation)
+    {
+        return $this->conn->dataDict->getCollationFieldDeclaration($collation);
     }
 
     /**
