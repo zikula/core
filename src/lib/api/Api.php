@@ -248,6 +248,10 @@ function pnInit($stages = PN_CORE_ALL)
     // Initialise and load configuration
     if ($stages & PN_CORE_CONFIG) {
         require 'config/config.php';
+
+        // initialise custom event listeners from config.php settings
+        EventManagerUtil::notify(new Event('core.preinit', null, array('listeners' => $GLOBALS['System']['EVENT_LISTENERS'])));
+
         if (defined('_ZINSTALLVER')) {
             $GLOBALS['ZConfig']['System']['PN_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
             $GLOBALS['ZConfig']['System']['PN_CONFIG_USE_OBJECT_LOGGING'] = false;
@@ -314,6 +318,8 @@ function pnInit($stages = PN_CORE_ALL)
                 return false;
             }
         }
+
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     if ($stages & PN_CORE_TABLES) {
@@ -351,18 +357,14 @@ function pnInit($stages = PN_CORE_ALL)
             }
         }
 
-        // If enabled and logged in, save login name of user in Apache session variable for Apache logs
-        if (isset($GLOBALS['ZConfig']['Log']['log_apache_uname']) && pnUserLoggedIn()) {
-            if (function_exists('apache_setenv')) {
-                apache_setenv('Zikula-Username', pnUserGetVar('uname'));
-            }
-        }
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
     // start block
     if ($stages & PN_CORE_LANGS) {
         $lang = ZLanguage::getInstance();
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     if ($stages & PN_CORE_DECODEURLS) {
@@ -387,6 +389,8 @@ function pnInit($stages = PN_CORE_ALL)
         if (pnModAvailable('SecurityCenter') && pnConfigGetVar('enableanticracker') == 1 && pnModAPILoad('SecurityCenter', 'user')) {
             pnModAPIFunc('SecurityCenter', 'user', 'secureinput');
         }
+
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     if ($stages & PN_CORE_THEME) {
@@ -401,6 +405,7 @@ function pnInit($stages = PN_CORE_ALL)
         PageUtil::registerVar('footer', true);
         // Load the theme
         Theme::getInstance();
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     // check the users status, if not 1 then log him out
@@ -414,19 +419,7 @@ function pnInit($stages = PN_CORE_ALL)
         }
     }
 
-    if (!defined('_ZINSTALLVER')) {
-        // call system init hooks
-        $systeminithooks = FormUtil::getPassedValue('systeminithooks', 'yes', 'GETPOST');
-        if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN) && (isset($systeminithooks) && $systeminithooks == 'no')) {
-            // omit system hooks if requested by an administrator
-        } else {
-            pnModCallHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
-
-            // reset the render domain - system init hooks mess the translation domain for the core
-            $render = Renderer::getInstance();
-            $render->renderDomain = null;
-        }
-    }
+    EventManagerUtil::notify(new Event('core.postinit'));
 
     // remove log files being too old
     LogUtil::_cleanLogFiles();

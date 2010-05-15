@@ -39,6 +39,11 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         spl_autoload_register(array('Doctrine', 'autoload'));
         include ZLOADER_PATH. 'api/Api.php';
+
+        // setup core events.
+        EventManagerUtil::attach('core.preinit', array('SystemListenersUtil', 'loadCustomListeners'));
+        EventManagerUtil::attach('core.init', array('SystemListenersUtil', 'init'));
+        EventManagerUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
     }
 
     /**
@@ -128,6 +133,7 @@ class ZLoader
             'UserUtil' => 'util',
             'ValidationUtil' => 'util',
             'WorkflowUtil' => 'util',
+            'SystemListenersUtil' => 'util',
             'Loader' => 'legacy',
             'ZLanguageBrowser' => 'i18n',
             'EventManager' => 'EventManager',
