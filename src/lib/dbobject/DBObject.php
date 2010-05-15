@@ -542,6 +542,7 @@ class DBObject
      */
     public function insertPreProcess($data = null)
     {
+        EventManagerUtil::notify(new Event('dbobject.insertpreprocess', $this));
         return $this->_objData;
     }
 
@@ -550,6 +551,7 @@ class DBObject
      */
     public function insertPostProcess($data = null)
     {
+        EventManagerUtil::notify(new Event('dbobject.insertpostprocess', $this));
         return $this->_objData;
     }
 
@@ -578,6 +580,7 @@ class DBObject
      */
     public function updatePreProcess($data = null)
     {
+        EventManagerUtil::notify(new Event('dbobject.updatepreprocess', $this));
         return $this->_objData;
     }
 
@@ -586,6 +589,7 @@ class DBObject
      */
     public function updatePostProcess($data = null)
     {
+        EventManagerUtil::notify(new Event('dbobject.updatepostprocess', $this));
         return $this->_objData;
     }
 
@@ -615,6 +619,7 @@ class DBObject
      */
     public function deletePreProcess($data = null)
     {
+        EventManagerUtil::notify(new Event('dbobject.deletepreprocess', $this));
         return $this->_objData;
     }
 
@@ -623,6 +628,7 @@ class DBObject
      */
     public function deletePostProcess($data = null)
     {
+        EventManagerUtil::notify(new Event('dbobject.deletepostprocess', $this));
         return $this->_objData;
     }
 
