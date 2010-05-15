@@ -113,27 +113,27 @@ class pnForm extends Form
 
     public function pnFormExecute($template, &$eventHandler)
     {
-        return $this->Execute($template, &$eventHandler);
+        return $this->Execute($template, $eventHandler);
     }
     public function pnFormRegisterPlugin($pluginName, &$params, $isBlock = false)
     {
-        return $this->RegisterPlugin($pluginName, &$params, $isBlock = false);
+        return $this->RegisterPlugin($pluginName, $params, $isBlock = false);
     }
     public function pnFormRegisterBlock($pluginName, &$params, &$content)
     {
-        $this->RegisterBlock($pluginName, &$params, &$content);
+        $this->RegisterBlock($pluginName, $params, $content);
     }
     public function pnFormRegisterBlockBegin($pluginName, &$params)
     {
-        $this->RegisterBlockBegin($pluginName, &$params);
+        $this->RegisterBlockBegin($pluginName, $params);
     }
     public function pnFormRegisterBlockEnd($pluginName, &$params, $content)
     {
-        return $this->RegisterBlockEnd($pluginName, &$params, $content);
+        return $this->RegisterBlockEnd($pluginName, $params, $content);
     }
     public function pnFormGetPluginId(&$params)
     {
-        return $this->GetPluginId(&$params);
+        return $this->GetPluginId($params);
     }
     public function pnFormIsPostBack()
     {
@@ -149,7 +149,7 @@ class pnForm extends Form
     }
     public function pnFormAddValidator(&$validator)
     {
-        $this->AddValidator(&$validator);
+        $this->AddValidator($validator);
     }
     public function pnFormIsValid()
     {
@@ -165,7 +165,7 @@ class pnForm extends Form
     }
     public function pnFormSetState($region, $varName, &$varValue)
     {
-        $this->SetState($region, $varName, &$varValue);
+        $this->SetState($region, $varName, $varValue);
     }
     public function pnFormSetErrorMsg($msg)
     {
@@ -281,19 +281,19 @@ class pnForm extends Form
     }
     public function pnFormGetValues_rec($plugins, &$result)
     {
-        $this->GetValues_rec($plugins, &$result);
+        $this->GetValues_rec($plugins, $result);
     }
     public function pnFormSetValues(&$values, $group = null)
     {
-        return $this->SetValues(&$values, $group);
+        return $this->SetValues($values, $group);
     }
     public function pnFormSetValues2(&$values, $group = null, $plugins)
     {
-        return $this->SetValues2(&$values, $group, $plugins);
+        return $this->SetValues2($values, $group, $plugins);
     }
     public function pnFormSetValues_rec(&$values, $group, $plugins)
     {
-        $this->SetValues_rec(&$values, $group, $plugins);
+        $this->SetValues_rec($values, $group, $plugins);
     }
 
 }
