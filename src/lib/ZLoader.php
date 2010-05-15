@@ -38,7 +38,7 @@ class ZLoader
         spl_autoload_extensions('.php');
         spl_autoload_register(array('ZLoader', 'autoload'));
         spl_autoload_register(array('Doctrine', 'autoload'));
-        include ZLOADER_PATH. 'legacy/Legacy.php';
+        include ZLOADER_PATH. 'api/Api.php';
     }
 
     /**
