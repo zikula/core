@@ -34,67 +34,67 @@ class PNObjectArray extends DBObjectArray
 class pnForm extends Form
 {
     public $pnFormState;
-    
+
     /**
      * List of included files required to recreate plugins (Smarty function.xxx.php files)
      * @internal
      */
     public $pnFormIncludes;
-    
+
     /**
      * List of instantiated plugins
      * @internal
      */
     public $pnFormPlugins;
-    
+
     /**
      * Stack with all instantiated blocks (push when starting block, pop when ending block)
      * @internal
      */
     public $pnFormBlockStack;
-    
+
     /**
      * List of validators on page
      * @internal
      */
     public $pnFormValidators;
-    
+
     /**
      * Flag indicating if validation has been done or not
      * @internal
      */
     public $pnFormValidationChecked;
-    
+
     /**
      * Indicates whether page is valid or not
      * @internal
      */
     public $_pnFormIsValid;
-    
+
     /**
      * Current ID count - used to assign automatic ID's to all items
      * @internal
      */
     public $pnFormIdCount;
-    
+
     /**
      * Reference to the main user code event handler
      * @internal
      */
     public $pnFormEventHandler;
-    
+
     /**
      * Error message has been set
      * @internal
      */
     public $pnFormErrorMsgSet;
-    
+
     /**
      * Set to true if pnFormRedirect was called. Means no HTML output should be returned.
      * @internal
      */
     public $pnFormRedirected;
-    
+
     public function __construct()
     {
         parent::__construct();
@@ -110,7 +110,7 @@ class pnForm extends Form
         $this->pnFormErrorMsgSet = &$this->ErrorMsgSet;
         $this->pnFormRedirected = &$this->Redirected;
     }
-    
+
     public function pnFormExecute($template, &$eventHandler)
     {
         return $this->Execute($template, &$eventHandler);
@@ -187,9 +187,9 @@ class pnForm extends Form
     {
         $this->Redirect($url);
     }
-    public function pnFormGetPostBackEventReference(&$plugin, $commandName)
+    public function pnFormGetPostBackEventReference($plugin, $commandName)
     {
-        return $this->GetPostBackEventReference(&$plugin, $commandName);
+        return $this->GetPostBackEventReference($plugin, $commandName);
     }
     public function pnFormRaiseEvent($eventHandlerName, $args)
     {
@@ -227,9 +227,9 @@ class pnForm extends Form
     {
         return $this->GetPluginState();
     }
-    public function pnFormGetPluginState_rec(&$plugins)
+    public function pnFormGetPluginState_rec($plugins)
     {
-        return $this->GetPluginState_rec(&$plugins);
+        return $this->GetPluginState_rec($plugins);
     }
     public function pnFormGetStateHTML()
     {
@@ -247,53 +247,53 @@ class pnForm extends Form
     {
         return $this->InitializePlugins();
     }
-    public function pnFormInitializePlugins_rec(&$plugins)
+    public function pnFormInitializePlugins_rec($plugins)
     {
-        $this->InitializePlugins_rec(&$plugins);
+        $this->InitializePlugins_rec($plugins);
     }
     public function pnFormDecodePlugins()
     {
         return $this->DecodePlugins();
     }
-    public function pnFormDecodePlugins_rec(&$plugins)
+    public function pnFormDecodePlugins_rec($plugins)
     {
-        $this->DecodePlugins_rec(&$plugins);
+        $this->DecodePlugins_rec($plugins);
     }
     public function pnFormDecodePostBackEvent()
     {
         $this->DecodePostBackEvent();
     }
-    public function pnFormDecodePostBackEvent_rec(&$plugins)
+    public function pnFormDecodePostBackEvent_rec($plugins)
     {
-        return $this->DecodePostBackEvent_rec(&$plugins);
+        return $this->DecodePostBackEvent_rec($plugins);
     }
     public function pnFormPostRender()
     {
         return $this->PostRender();
     }
-    public function pnFormPostRender_rec(&$plugins)
+    public function pnFormPostRender_rec($plugins)
     {
-        $this->PostRender_rec(&$plugins);
+        $this->PostRender_rec($plugins);
     }
     public function pnFormGetValues()
     {
         return $this->GetValues();
     }
-    public function pnFormGetValues_rec(&$plugins, &$result)
+    public function pnFormGetValues_rec($plugins, &$result)
     {
-        $this->GetValues_rec(&$plugins, &$result);
+        $this->GetValues_rec($plugins, &$result);
     }
     public function pnFormSetValues(&$values, $group = null)
     {
         return $this->SetValues(&$values, $group);
     }
-    public function pnFormSetValues2(&$values, $group = null, &$plugins)
+    public function pnFormSetValues2(&$values, $group = null, $plugins)
     {
-        return $this->SetValues2(&$values, $group, &$plugins);
+        return $this->SetValues2(&$values, $group, $plugins);
     }
-    public function pnFormSetValues_rec(&$values, $group, &$plugins)
+    public function pnFormSetValues_rec(&$values, $group, $plugins)
     {
-        $this->SetValues_rec(&$values, $group, &$plugins);
+        $this->SetValues_rec(&$values, $group, $plugins);
     }
 
 }
@@ -528,7 +528,7 @@ function cnvlanguagelist()
     $cnvlang['uk'] = 'ukr';
     $cnvlang['zh-cn'] = 'zho';
     $cnvlang['zh-tw'] = 'zho';
-    
+
     return $cnvlang;
 }
 
@@ -549,19 +549,19 @@ function cnvlanguagelist()
 function pnVarCleanFromInput()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnVarCleanFromInput()', 
+        'pnVarCleanFromInput()',
         'FormUtil::getPassedValue()')), 'STRICT');
-    
+
     $vars = func_get_args();
     $resarray = array();
     foreach ($vars as $var) {
         $resarray[] = FormUtil::getPassedValue($var);
     }
-    
+
     if (func_num_args() == 1) {
         return $resarray[0];
     }
-    
+
     return $resarray;
 }
 
@@ -576,11 +576,11 @@ function pnVarCleanFromInput()
 function pnPhpVersionCheck($vercheck = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnPhpVersionCheck()', 
+        'pnPhpVersionCheck()',
         'version_compare()')), 'STRICT');
     $minver = str_replace(".", "", $vercheck);
     $curver = str_replace(".", "", phpversion());
-    
+
     if ($curver >= $minver) {
         return true;
     } else {
@@ -602,9 +602,9 @@ function pnPhpVersionCheck($vercheck = '')
 function pnSecAuthAction($testrealm, $testcomponent, $testinstance, $testlevel, $testuser = null)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecAuthAction()', 
+        'pnSecAuthAction()',
         'SecurityUtil::checkPermission()')), 'STRICT');
-    
+
     return SecurityUtil::checkPermission($testcomponent, $testinstance, $testlevel, $testuser);
 }
 
@@ -618,9 +618,9 @@ function pnSecAuthAction($testrealm, $testcomponent, $testinstance, $testlevel, 
 function pnSecGetAuthInfo($testuser = null)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecGetAuthInfo()', 
+        'pnSecGetAuthInfo()',
         'SecurityUtil::getAuthInfo()')), 'STRICT');
-    
+
     return SecurityUtil::getAuthInfo($testuser);
 }
 
@@ -638,9 +638,9 @@ function pnSecGetAuthInfo($testuser = null)
 function pnSecGetLevel($perms, $testrealm, $testcomponent, $testinstance)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecGetLevel()', 
+        'pnSecGetLevel()',
         'SecurityUtil::getSecurityLevel()')), 'STRICT');
-    
+
     return SecurityUtil::getSecurityLevel($perms, $testcomponent, $testinstance);
 }
 
@@ -663,9 +663,9 @@ function pnSecGetLevel($perms, $testrealm, $testcomponent, $testinstance)
 function pnSecGenAuthKey($modname = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecGenAuthKey()', 
+        'pnSecGenAuthKey()',
         'SecurityUtil::generateAuthKey()')), 'STRICT');
-    
+
     return SecurityUtil::generateAuthKey($modname);
 }
 
@@ -682,9 +682,9 @@ function pnSecGenAuthKey($modname = '')
 function pnSecConfirmAuthKey()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecConfirmAuthKey()', 
+        'pnSecConfirmAuthKey()',
         'SecurityUtil::confirmAuthKey()')), 'STRICT');
-    
+
     return SecurityUtil::confirmAuthKey();
 }
 
@@ -710,9 +710,9 @@ function authorised($testrealm, $testcomponent, $testinstance, $testlevel)
 function pnSecAddSchema($component, $schema)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecAddSchema()', 
+        'pnSecAddSchema()',
         'SecurityUtil::registerPermissionSchema()')), 'STRICT');
-    
+
     return SecurityUtil::registerPermissionSchema($component, $schema);
 }
 
@@ -727,7 +727,7 @@ function pnSecAddSchema($component, $schema)
 function addinstanceschemainfo($component, $schema)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecAddSchema()', 
+        'pnSecAddSchema()',
         'SecurityUtil::registerPermissionSchema()')), 'STRICT');
     pnSecAddSchema($component, $schema);
 }
@@ -739,7 +739,7 @@ function addinstanceschemainfo($component, $schema)
 function accesslevelname($level)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'accesslevelname()', 
+        'accesslevelname()',
         'SecurityUtil::accesslevelname()')), 'STRICT');
     return SecurityUtil::accesslevelname($level);
 }
@@ -753,7 +753,7 @@ function accesslevelname($level)
 function accesslevelnames()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'accesslevelnames()', 
+        'accesslevelnames()',
         'SecurityUtil::accesslevelnames()')), 'STRICT');
     return SecurityUtil::accesslevelnames();
 }
@@ -771,13 +771,13 @@ function GetUserTime($time)
     if (empty($time)) {
         return;
     }
-    
+
     if (pnUserLoggedIn()) {
         $time += (pnUserGetVar('tzoffset') - pnConfigGetVar('timezone_server')) * 3600;
     } else {
         $time += (pnConfigGetVar('timezone_offset') - pnConfigGetVar('timezone_server')) * 3600;
     }
-    
+
     return ($time);
 }
 
@@ -795,7 +795,7 @@ function GetUserTime($time)
 function pnGetStatusMsg()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnGetStatusMsg()', 
+        'pnGetStatusMsg()',
         'LogUtil::getStatusMessages()')), 'STRICT');
     $msgStatus = SessionUtil::getVar('_ZStatusMsg');
     SessionUtil::delVar('_ZStatusMsg');
@@ -805,7 +805,7 @@ function pnGetStatusMsg()
     if (!empty($msgError)) {
         $msgStatus = $msgError;
     }
-    
+
     return $msgStatus;
 }
 
@@ -826,21 +826,21 @@ function pnGetStatusMsg()
 function pnVarPrepForOS()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnVarPrepForOS()', 
+        'pnVarPrepForOS()',
         'DataUtil::formatForOS()')), 'STRICT');
-    
+
     $resarray = array();
-    
+
     $ourvars = func_get_args();
     foreach ($ourvars as $ourvar) {
         $resarray[] = DataUtil::formatForOS($ourvar);
     }
-    
+
     // Return vars
     if (func_num_args() == 1) {
         return $resarray[0];
     }
-    
+
     return $resarray;
 }
 
@@ -860,15 +860,15 @@ function pnVarPrepForOS()
 function pnVarPrepForDisplay()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnVarPrepForDisplay()', 
+        'pnVarPrepForDisplay()',
         'DataUtil::formatForDisplay()')), 'STRICT');
-    
+
     $resarray = array();
     $ourvars = func_get_args();
     foreach ($ourvars as $ourvar) {
         $resarray[] = DataUtil::formatForDisplay($ourvar);
     }
-    
+
     // Return vars
     if (func_num_args() == 1) {
         return $resarray[0];
@@ -894,20 +894,20 @@ function pnVarPrepForDisplay()
 function pnVarPrepHTMLDisplay()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnVarPrepHTMLDisplay()', 
+        'pnVarPrepHTMLDisplay()',
         'DataUtil::formatForDisplayHTML()')), 'STRICT');
-    
+
     $resarray = array();
     $ourvars = func_get_args();
     foreach ($ourvars as $ourvar) {
         $resarray[] = DataUtil::formatForDisplayHTML($ourvar);
     }
-    
+
     // Return vars
     if (func_num_args() == 1) {
         return $resarray[0];
     }
-    
+
     return $resarray;
 }
 
@@ -927,20 +927,20 @@ function pnVarPrepHTMLDisplay()
 function pnVarPrepForStore()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnVarPrepForStore()', 
+        'pnVarPrepForStore()',
         'DataUtil::formatForStore()')), 'STRICT');
-    
+
     $resarray = array();
     $ourvars = func_get_args();
     foreach ($ourvars as $ourvar) {
         $resarray[] = DataUtil::formatForStore($ourvar);
     }
-    
+
     // Return vars
     if (func_num_args() == 1) {
         return $resarray[0];
     }
-    
+
     return $resarray;
 }
 
@@ -955,7 +955,7 @@ if (!function_exists('pn_exit')) {
     function pn_exit($msg, $html = true)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-            'pn_exit()', 
+            'pn_exit()',
             'z_exit()')), 'STRICT');
         z_exit($msg, $html);
     }
@@ -991,7 +991,7 @@ if (!function_exists('pn_assert_callback_function')) {
 function pnSessionGetVar($name, $default = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSessionGetVar()', 
+        'pnSessionGetVar()',
         'SessionUtil::getVar()')), 'STRICT');
     return SessionUtil::getVar($name, $default);
 }
@@ -1008,7 +1008,7 @@ function pnSessionGetVar($name, $default = false)
 function pnSessionSetVar($name, $value)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSessionsetVar()', 
+        'pnSessionsetVar()',
         'SessionUtil::setVar()')), 'STRICT');
     return SessionUtil::setVar($name, $value);
 }
@@ -1024,7 +1024,7 @@ function pnSessionSetVar($name, $value)
 function pnSessionDelVar($name)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSessionDelVar()', 
+        'pnSessionDelVar()',
         'SessionUtil::delVar()')), 'STRICT');
     return SessionUtil::delVar($name);
 }
@@ -1036,18 +1036,18 @@ function pnSessionDelVar($name)
 function pnVarCensor()
 {
     LogUtil::log(__f('Error! The \'pnVarCensor\' function used in \'%s\' is deprecated. Instead, please activate the \'MultiHook\' for this module.', DataUtil::formatForDisplay(pnModGetName())));
-    
+
     $resarray = array();
     $ourvars = func_get_args();
     foreach ($ourvars as $ourvar) {
         $resarray[] = DataUtil::censor($ourvar);
     }
-    
+
     // Return vars
     if (func_num_args() == 1) {
         return $resarray[0];
     }
-    
+
     return $resarray;
 }
 

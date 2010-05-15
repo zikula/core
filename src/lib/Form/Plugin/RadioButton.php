@@ -295,7 +295,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
         return false;
     }
 
-    function findCheckedRadioButton_rec(&$firstRadioButton, &$plugin)
+    function findCheckedRadioButton_rec(&$firstRadioButton, $plugin)
     {
         if (is_a($plugin, 'pnFormRadioButton') && $plugin->groupName == $this->groupName) {
             $plugin->validationChecked = true;

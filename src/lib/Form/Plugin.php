@@ -158,7 +158,7 @@ class Form_Plugin
      *
      * If you need to notify the form event handler when the plugin has been loaded then
      * specify the name of this handler here. The prototype of the function must be:
-     * function MyOnLoadHandler(&$render, &$plugin, $params) where $render is the form render,
+     * function MyOnLoadHandler(&$render, $plugin, $params) where $render is the form render,
      * $plugin is this plugin, and $params are the Smarty parameters passed to the plugin.
      *
      * The data bound handler is called both on postback and first page render.
@@ -175,7 +175,7 @@ class Form_Plugin
      *
      * class MyFormHandler extends Form_Handler
      * {
-     *   function MyLoadHandler(&$render, &$plugin, $params)
+     *   function MyLoadHandler(&$render, $plugin, $params)
      *   {
      *     // Do stuff here
      *   }
@@ -408,9 +408,9 @@ class Form_Plugin
     {
     }
 
-    public function registerPlugin(&$render, &$plugin)
+    public function registerPlugin(&$render, $plugin)
     {
-        $this->plugins[] = &$plugin;
+        $this->plugins[] = $plugin;
     }
 
     /**

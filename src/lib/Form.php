@@ -33,7 +33,7 @@ class Form extends Renderer
 {
     /**
      * Variable saving all required state information.
-     * 
+     *
      * @var array
      * @internal
      */
@@ -41,7 +41,7 @@ class Form extends Renderer
 
     /**
      * List of included files required to recreate plugins (Smarty function.xxx.php files).
-     * 
+     *
      * @var array
      * @internal
      */
@@ -49,7 +49,7 @@ class Form extends Renderer
 
     /**
      * List of instantiated plugins.
-     * 
+     *
      * @var array
      * @internal
      */
@@ -57,7 +57,7 @@ class Form extends Renderer
 
     /**
      * Stack with all instantiated blocks (push when starting block, pop when ending block).
-     * 
+     *
      * @var array
      * @internal
      */
@@ -65,7 +65,7 @@ class Form extends Renderer
 
     /**
      * List of validators on page.
-     * 
+     *
      * @var array
      * @internal
      */
@@ -73,7 +73,7 @@ class Form extends Renderer
 
     /**
      * Flag indicating if validation has been done or not.
-     * 
+     *
      * @var boolean
      * @internal
      */
@@ -81,7 +81,7 @@ class Form extends Renderer
 
     /**
      * Indicates whether page is valid or not.
-     * 
+     *
      * @var boolean
      * @internal
      */
@@ -89,7 +89,7 @@ class Form extends Renderer
 
     /**
      * Current ID count - used to assign automatic ID's to all items.
-     * 
+     *
      * @var intiger
      * @internal
      */
@@ -97,7 +97,7 @@ class Form extends Renderer
 
     /**
      * Reference to the main user code event handler.
-     * 
+     *
      * @var pnFormHandler
      * @internal
      */
@@ -105,7 +105,7 @@ class Form extends Renderer
 
     /**
      * Error message has been set.
-     * 
+     *
      * @var boolean
      * @internal
      */
@@ -113,7 +113,7 @@ class Form extends Renderer
 
     /**
      * Set to true if pnFormRedirect was called. Means no HTML output should be returned.
-     * 
+     *
      * @var boolean
      * @internal
      */
@@ -121,9 +121,9 @@ class Form extends Renderer
 
     /**
      * Constructor.
-     * 
+     *
      * Use FormUtil::newpnForm() instead of instantiating pnFormRender directly.
-     * 
+     *
      * @internal
      */
     public function __construct($module)
@@ -150,10 +150,10 @@ class Form extends Renderer
     /** Main event loop handler.
      *
      * This is the function to call instead of the normal $render->fetch(...).
-     * 
+     *
      * @param boolean       $template     Name of template file.
      * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler.
-     * 
+     *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
     public function Execute($template, &$eventHandler)
@@ -231,7 +231,7 @@ class Form extends Renderer
      * @param string  $pluginName Full class name of the plugin to register.
      * @param array   &$params    Parameters passed from the Smarty plugin function.
      * @param boolean $isBlock    Indicates whether the plugin is a Smarty block or a Smarty function (internal).
-     * 
+     *
      * @return string Returns what the render() method of the plugin returns.
      */
     public function RegisterPlugin($pluginName, &$params, $isBlock = false)
@@ -248,7 +248,7 @@ class Form extends Renderer
 
         if (!$this->IsPostBack() || $stackCount > 0 && $this->BlockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
-            
+
             // Make sure to store ID and render reference in plugin
             $plugin->id = $id;
 
@@ -257,7 +257,7 @@ class Form extends Renderer
                 $this->BlockStack[$stackCount - 1]->registerPlugin($this, $plugin);
             } else {
                 // Store plugin for later reference
-                $this->Plugins[] = &$plugin;
+                $this->Plugins[] = $plugin;
             }
 
             // Copy parameters to member variables and attribute set
@@ -283,7 +283,7 @@ class Form extends Renderer
         $plugin->dataBound($this, $params);
 
         if ($isBlock) {
-            $this->BlockStack[] = &$plugin;
+            $this->BlockStack[] = $plugin;
         }
 
         // Ask plugin to render itself
@@ -318,7 +318,7 @@ class Form extends Renderer
      *   return return $render->RegisterBlock('MyBlock', $params, $content);
      * }
      * </code>
-     * 
+     *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the Smarty block function.
      * @param string &$content   Content passed from the Smarty block function.
@@ -334,7 +334,7 @@ class Form extends Renderer
 
     /**
      * pnFormRegisterBlockBegin.
-     * 
+     *
      * @internal
      */
     public function RegisterBlockBegin($pluginName, &$params)
@@ -346,7 +346,7 @@ class Form extends Renderer
 
     /**
      * pnFormRegisterBlockEnd.
-     * 
+     *
      * @internal
      */
     public function RegisterBlockEnd($pluginName, &$params, $content)
@@ -365,7 +365,7 @@ class Form extends Renderer
 
     /**
      * pnFormGetPluginId.
-     * 
+     *
      * @internal
      */
     public function GetPluginId(&$params)
@@ -402,7 +402,7 @@ class Form extends Renderer
      * @param plugin? $plugin Plugin
      * @param intiger $id     Plugin ID.
      */
-    public function &GetPluginById_rec(&$plugin, $id)
+    public function &GetPluginById_rec($plugin, $id)
     {
         if ($plugin->id == $id) {
             return $plugin;
@@ -446,7 +446,7 @@ class Form extends Renderer
      *
      * @param string  $txt      Text to translate for display.
      * @param boolean $doEncode True to formatForDisplay.
-     * 
+     *
      * @return string Text.
      */
     public function TranslateForDisplay($txt, $doEncode = true)
@@ -487,7 +487,7 @@ class Form extends Renderer
 
     /**
      * GetValidators.
-     * 
+     *
      * @return array Array of all Validators.
      */
     public function &GetValidators()
@@ -497,7 +497,7 @@ class Form extends Renderer
 
     /**
      * Validate all validators and set ValidationChecked to true.
-     * 
+     *
      */
     public function Validate()
     {
@@ -636,7 +636,7 @@ class Form extends Renderer
      * @param plugin object Reference to the plugin that should receive the postback event
      * @param commandName string Command name to pass to the event handler
      */
-    public function GetPostBackEventReference(&$plugin, $commandName)
+    public function GetPostBackEventReference($plugin, $commandName)
     {
         return "pnFormDoPostBack('$plugin->id', '$commandName');";
     }
@@ -735,7 +735,7 @@ class Form extends Renderer
         return $state;
     }
 
-    public function GetPluginState_rec(&$plugins)
+    public function GetPluginState_rec($plugins)
     {
         $state = array();
 
@@ -798,8 +798,8 @@ class Form extends Renderer
 
         foreach ($state as $pluginInfo) {
             $pluginType = $pluginInfo[0];
-            $pluginState = &$pluginInfo[1];
-            $subState = &$pluginInfo[2];
+            $pluginState = $pluginInfo[1];
+            $subState = $pluginInfo[2];
 
             $dummy = array();
             $plugin = new $pluginType($this, $dummy);
@@ -821,7 +821,7 @@ class Form extends Renderer
 
             $lim = count($plugin->plugins);
             for ($i = 0; $i < $lim; ++$i) {
-                $plugin->plugins[$i]->parentPlugin = &$plugins[count($plugins) - 1];
+                $plugin->plugins[$i]->parentPlugin = $plugins[count($plugins) - 1];
             }
         }
 
@@ -850,7 +850,7 @@ class Form extends Renderer
         return true;
     }
 
-    public function InitializePlugins_rec(&$plugins)
+    public function InitializePlugins_rec($plugins)
     {
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
@@ -866,7 +866,7 @@ class Form extends Renderer
         return true;
     }
 
-    public function DecodePlugins_rec(&$plugins)
+    public function DecodePlugins_rec($plugins)
     {
         for ($i = 0, $lim = count($plugins); $i < $lim; ++$i) {
             $this->DecodePlugins_rec($plugins[$i]->plugins);
@@ -889,7 +889,7 @@ class Form extends Renderer
         $this->DecodePostBackEvent_rec($this->Plugins);
     }
 
-    public function DecodePostBackEvent_rec(&$plugins)
+    public function DecodePostBackEvent_rec($plugins)
     {
         for ($i = 0, $lim = count($plugins); $i < $lim; ++$i) {
             $this->DecodePostBackEvent_rec($plugins[$i]->plugins);
@@ -904,7 +904,7 @@ class Form extends Renderer
         return true;
     }
 
-    public function PostRender_rec(&$plugins)
+    public function PostRender_rec($plugins)
     {
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
@@ -956,11 +956,11 @@ class Form extends Renderer
         return $result;
     }
 
-    public function GetValues_rec(&$plugins, &$result)
+    public function GetValues_rec($plugins, &$result)
     {
         $lim = count($plugins);
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
-            $plugin = &$plugins[$i];
+            $plugin = $plugins[$i];
 
             $this->GetValues_rec($plugin->plugins, $result);
 
@@ -976,7 +976,7 @@ class Form extends Renderer
         return $this->SetValues2($values, $group, $empty);
     }
 
-    public function SetValues2(&$values, $group = null, &$plugins)
+    public function SetValues2(&$values, $group = null, $plugins)
     {
         if ($plugins == null) {
             $this->SetValues_rec($values, $group, $this->Plugins);
@@ -987,11 +987,11 @@ class Form extends Renderer
         return true;
     }
 
-    public function SetValues_rec(&$values, $group, &$plugins)
+    public function SetValues_rec(&$values, $group, $plugins)
     {
         $lim = count($plugins);
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
-            $plugin = &$plugins[$i];
+            $plugin = $plugins[$i];
 
             $this->SetValues_rec($values, $group, $plugin->plugins);
 
@@ -1001,7 +1001,7 @@ class Form extends Renderer
         }
     }
 
-    public function dumpPlugins($msg, &$plugins)
+    public function dumpPlugins($msg, $plugins)
     {
         echo "<pre style=\"background-color: #CFC; text-align: left;\">\n";
         echo "** $msg **\n";
@@ -1009,11 +1009,11 @@ class Form extends Renderer
         echo "</pre>";
     }
 
-    public function dumpPlugins_rec(&$plugins)
+    public function dumpPlugins_rec($plugins)
     {
         $lim = count($plugins);
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
-            $p = &$plugins[$i];
+            $p = $plugins[$i];
             echo "\n(\n{$p->id}: {$p->parentPlugin}";
             $this->dumpPlugins_rec($p->plugins);
             echo "\n)\n";
