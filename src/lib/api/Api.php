@@ -249,9 +249,6 @@ function pnInit($stages = PN_CORE_ALL)
     if ($stages & PN_CORE_CONFIG) {
         require 'config/config.php';
 
-        // initialise custom event listeners from config.php settings
-        EventManagerUtil::notify(new Event('core.preinit', null, array('listeners' => $GLOBALS['System']['EVENT_LISTENERS'])));
-
         if (defined('_ZINSTALLVER')) {
             $GLOBALS['ZConfig']['System']['PN_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
             $GLOBALS['ZConfig']['System']['PN_CONFIG_USE_OBJECT_LOGGING'] = false;
@@ -261,6 +258,9 @@ function pnInit($stages = PN_CORE_ALL)
             $GLOBALS['ZConfig']['Multisites'] = array();
             $GLOBALS['ZConfig']['Multisites']['multi'] = 0;
         }
+
+        // initialise custom event listeners from config.php settings
+        EventManagerUtil::notify(new Event('core.preinit', null, array('listeners' => $GLOBALS['System']['EVENT_LISTENERS'])));
     }
 
     // Initialize the (ugly) additional header array
@@ -294,7 +294,7 @@ function pnInit($stages = PN_CORE_ALL)
     }
 
     if ($stages & PN_CORE_OBJECTLAYER) {
-        // nothing to do here
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     if ($stages & PN_CORE_DB) {
@@ -338,6 +338,8 @@ function pnInit($stages = PN_CORE_ALL)
         if (!defined('_ZINSTALLVER')) {
             //set_error_handler('pnErrorHandler');
         }
+        
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     if ($stages & PN_CORE_SESSIONS) {
@@ -369,10 +371,12 @@ function pnInit($stages = PN_CORE_ALL)
 
     if ($stages & PN_CORE_DECODEURLS) {
         pnQueryStringDecode();
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     if ($stages & PN_CORE_LANGS) {
         $lang->setup();
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
     // end block
 
@@ -443,8 +447,7 @@ function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_
         return $ret;
     }
 
-    $dbconn = array(
-                    $ret);
+    $dbconn = array($ret);
     return $dbconn;
 }
 
