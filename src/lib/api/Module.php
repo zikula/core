@@ -675,7 +675,7 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
     $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
     if ($loadfunc($modname, $type)) {
         if (function_exists($modfunc)) {
-            $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
             EventManagerUtil::notify($event);
             return $modfunc($args);
         }
@@ -685,7 +685,7 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
             if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (function_exists($modfunc)) {
-                    $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+                    $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
                     EventManagerUtil::notify($event);
                     return $modfunc($args);
                 }
@@ -694,7 +694,7 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
         if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
             Loader::loadFile($file);
             if (function_exists($modfunc)) {
-                $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+                $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
                 EventManagerUtil::notify($event);
                 return $modfunc($args);
             }
@@ -702,10 +702,23 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
         if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
             Loader::loadFile($file);
             if (function_exists($modfunc)) {
-                $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+                $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
                 EventManagerUtil::notify($event);
                 return $modfunc($args);
             }
+        }
+
+        // try to load plugin
+        // This kind of eventhandler should
+        // 1. Check $event['modfunc'] to see if it should run else exit silently.
+        // 2. Do something like $result = {$event['modfunc']}({$event['args'});
+        // 3. Save the result $event->setData($result).
+        // 4. $event->setNotify().
+        // return void
+        $event = new Event('module.execute_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+        EventManagerUtil::notifyUntil($event);
+        if ($event->hasNotified()) {
+            return $event->getData();
         }
     }
 }
