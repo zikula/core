@@ -111,6 +111,7 @@ class ZLoader
             'CookieUtil' => 'util',
             'DataUtil' => 'util',
             'DateUtil' => 'util',
+            'EventManagerUtil' => 'util',
             'FileUtil' => 'util',
             'FilterUtil' => 'util',
             'FormUtil' => 'util',
@@ -129,6 +130,7 @@ class ZLoader
             'WorkflowUtil' => 'util',
             'Loader' => 'legacy',
             'ZLanguageBrowser' => 'i18n',
-            'ZDBManipulation' => 'module');
+            'EventManager' => 'EventManager',
+            'Event' => 'EventManager');
     }
 }
