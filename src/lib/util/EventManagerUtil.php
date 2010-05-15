@@ -17,12 +17,25 @@
  */
 class EventManagerUtil
 {
+    /**
+     * Singleton instance of EventManager.
+     *
+     * @var object
+     */
     public static $eventManagerInstance;
 
+    /**
+     * Singleton constructor.
+     */
     private function __construct()
     {
     }
 
+    /**
+     * Get EventManager instance.
+     *
+     * @return object EventManager.
+     */
     static public function getEventManager()
     {
         if (!self::$eventManagerInstance) {
@@ -32,21 +45,43 @@ class EventManagerUtil
         return self::$eventManagerInstance;
     }
 
+    /**
+     * Notify event.
+     *
+     * @param Event $event Event.
+     */
     static public function notify(Event $event)
     {
         self::getEventManager()->notify($event);
     }
 
+    /**
+     * NotifyUntil event.
+     *
+     * @param Event $event Event.
+     */
     static public function notifyUntil(Event $event)
     {
         self::getEventManager()->notify($event);
     }
 
+    /**
+     * Attach listener.
+     *
+     * @param string $name Name of event.
+     * @param array|string $handler PHP Callable.
+     */
     static public function attach($name, $handler)
     {
         self::getEventManager()->attach($name, $handler);
     }
 
+    /**
+     * Detach listener.
+     *
+     * @param string       $name    Name of listener.
+     * @param array|string $handler PHP callable.
+     */
     static public function detach($name, $handler)
     {
         self::getEventManager()->detach($name);
