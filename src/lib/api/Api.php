@@ -250,9 +250,9 @@ function pnInit($stages = PN_CORE_ALL)
         require 'config/config.php';
 
         if (defined('_ZINSTALLVER')) {
-            $GLOBALS['ZConfig']['System']['PN_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
-            $GLOBALS['ZConfig']['System']['PN_CONFIG_USE_OBJECT_LOGGING'] = false;
-            $GLOBALS['ZConfig']['System']['PN_CONFIG_USE_OBJECT_META'] = false;
+            $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
+            $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
+            $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
         }
         if (!isset($GLOBALS['ZConfig']['Multisites'])) {
             $GLOBALS['ZConfig']['Multisites'] = array();

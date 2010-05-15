@@ -53,7 +53,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     }
 
     if (pnModLoad($modinfo['name'], $type)) {
-        if (pnConfigGetVar('PN_CONFIG_USE_TRANSACTIONS')) {
+        if (pnConfigGetVar('Z_CONFIG_USE_TRANSACTIONS')) {
                 $dbConn = pnDBGetConn(true);
                 $dbConn->StartTrans();
         }
@@ -61,7 +61,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
         // Run the function
         $return = pnModFunc($modinfo['name'], $type, $func, $arguments);
 
-        if (pnConfigGetVar('PN_CONFIG_USE_TRANSACTIONS')) {
+        if (pnConfigGetVar('Z_CONFIG_USE_TRANSACTIONS')) {
             if ($dbConn->HasFailedTrans()) {
                 $return = __('Error! The transaction failed. Please perform a rollback.') . "\n" . $return;
                 AjaxUtil::error($return);
