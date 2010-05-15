@@ -817,7 +817,7 @@ class Form extends Renderer
             }
 
             $plugin->plugins = $this->DecodePluginState_rec($subState);
-            $plugins[] = &$plugin;
+            $plugins[] = $plugin;
 
             $lim = count($plugin->plugins);
             for ($i = 0; $i < $lim; ++$i) {
