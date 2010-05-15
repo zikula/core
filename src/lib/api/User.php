@@ -87,7 +87,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 
             $hpass = hash($hashmethodsarray[$pnuser_hash_number], $pass);
             if ($hpass != $upass) {
-                $event = new Event('user.login.failed', null, array('user' => pnUserGetVar('uid')));
+                $event = new Event('user.login.failed', null, array('username' => $uname));
                 EventManagerUtil::notify($event);
                 return false;
             }
@@ -545,8 +545,8 @@ function pnUserGetTheme($force = false)
     if (!empty($pagetheme)) {
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
         if ($themeinfo['state'] == PNTHEME_STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin' || stristr($qstring, 'admin.php')))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-            $theme = $themeinfo['name'];
-            return $themeinfo['name'];
+            $theme = _pnUserGetThemeEvent($themeinfo['name']);
+            return $theme;
         }
     }
 
@@ -556,8 +556,8 @@ function pnUserGetTheme($force = false)
         if (!empty($admintheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
             if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                $theme = $themeinfo['name'];
-                return $themeinfo['name'];
+                $theme = _pnUserGetThemeEvent($themeinfo['name']);
+                return $theme;
             }
         }
     }
@@ -572,8 +572,8 @@ function pnUserGetTheme($force = false)
             } else {
                 SessionUtil::setVar('theme', $newtheme);
             }
-            $theme = $themeinfo['name'];
-            return $themeinfo['name'];
+            $theme = _pnUserGetThemeEvent($themeinfo['name']);
+            return $theme;
         }
     }
 
@@ -586,8 +586,8 @@ function pnUserGetTheme($force = false)
         }
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
         if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-            $theme = $themeinfo['name'];
-            return $themeinfo['name'];
+            $theme = _pnUserGetThemeEvent($themeinfo['name']);
+            return $theme;
         }
     }
 
@@ -595,12 +595,18 @@ function pnUserGetTheme($force = false)
     $defaulttheme = pnConfigGetVar('Default_Theme');
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
     if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-        $theme = $themeinfo['name'];
-        return $themeinfo['name'];
+        $theme = _pnUserGetThemeEvent($themeinfo['name']);
+        return $theme;
     }
 
-    $theme = 'ExtraLite';
-    return $theme;
+    throw new RuntimeException(__('pnUserGetTheme: unable to calculate theme name.'));
+}
+
+function _pnUserGetThemeEvent($themeName)
+{
+    $event = new Event('user.gettheme', null, array('name' => $themeName));
+    EventManagerUtil::notifyUntil($event);
+    return $event['name'];
 }
 
 /**

@@ -599,6 +599,9 @@ function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false
         }
     }
 
+    $event = new Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+    EventManagerUtil::notify($event);
+
     return $modname;
 }
 
