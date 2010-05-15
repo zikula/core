@@ -56,4 +56,18 @@ class SystemListenersUtil
             }
         }
     }
+
+    public static function multiHook(Event $event)
+    {
+        // subject is instance of Theme class.
+        $subject = $event->getSubject();
+        // register output filter to add MultiHook environment if requried
+        if (pnModAvailable('MultiHook')) {
+            $modinfo = pnModGetInfo(pnModGetIDFromName('MultiHook'));
+            if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
+                $subject->load_filter('output', 'multihook');
+                pnModAPIFunc('MultiHook', 'theme', 'preparetheme');
+            }
+        }
+    }
 }

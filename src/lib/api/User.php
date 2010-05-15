@@ -87,6 +87,8 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 
             $hpass = hash($hashmethodsarray[$pnuser_hash_number], $pass);
             if ($hpass != $upass) {
+                $event = new Event('user.login.failed', null, array('user' => pnUserGetVar('uid')));
+                EventManagerUtil::notify($event);
                 return false;
             }
 
@@ -122,6 +124,8 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
             }
         }
         if (!$uid) {
+            $event = new Event('user.login.failed', null, array('user' => pnUserGetVar('uid')));
+            EventManagerUtil::notify($event);
             return false;
         }
     }
@@ -145,6 +149,9 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 
     // now we've logged in the permissions previously calculated are invalid
     $GLOBALS['authinfogathered'][$uid] = 0;
+
+    $event = new Event('user.login', null, array('user' => pnUserGetVar('uid')));
+    EventManagerUtil::notify($event);
 
     return true;
 }
@@ -177,6 +184,8 @@ function pnUserLogInHTTP()
 function pnUserLogOut()
 {
     if (pnUserLoggedIn()) {
+        $event = new Event('user.logout', null, array('user' => pnUserGetVar('uid')));
+        EventManagerUtil::notify($event);
         if (pnModAvailable('AuthPN')) {
             $authmodules = explode(',', pnModGetVar('AuthPN', 'authmodules'));
             foreach ($authmodules as $authmodule)

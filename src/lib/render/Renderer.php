@@ -174,7 +174,12 @@ class Renderer extends Smarty
         }
 
         // make render object available to modifiers
-        $this->assign_by_ref('renderObject', $this);
+        $this->assign_by_ref('renderObject', $this, array('module' => $module, 'modinfo' => $modinfo, 'themeinfo' => $themeinfo));
+
+        // This event sends $this as the subject so you can modify as required:
+        // e.g.  $event->getSubject()->register_prefilter('foo');
+        $event = new Event('render.init', $this);
+        EventManagerUtil::notify($event);
     }
 
     /**

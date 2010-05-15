@@ -672,6 +672,8 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
     $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
     if ($loadfunc($modname, $type)) {
         if (function_exists($modfunc)) {
+            $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            EventManagerUtil::notify($event);
             return $modfunc($args);
         }
         // get the theme
@@ -680,6 +682,8 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
             if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (function_exists($modfunc)) {
+                    $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+                    EventManagerUtil::notify($event);
                     return $modfunc($args);
                 }
             }
@@ -687,12 +691,16 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
         if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
             Loader::loadFile($file);
             if (function_exists($modfunc)) {
+                $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+                EventManagerUtil::notify($event);
                 return $modfunc($args);
             }
         }
         if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
             Loader::loadFile($file);
             if (function_exists($modfunc)) {
+                $event = new Event('module.execute', null, array('args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+                EventManagerUtil::notify($event);
                 return $modfunc($args);
             }
         }
@@ -1100,10 +1108,30 @@ function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(),
         if ($implode || empty($output)) {
             $output = implode("\n", $output);
         }
-        return $output;
+
+        // This event expects that you might modify the $event['output'].  Check array_key_exists('output', $event) in event handler.
+        $event = new Event('module.postcallhooks', null, array(
+            'gui' => $gui,
+            'hookobject' => $hookobject,
+            'hookaction' => $hookaction,
+            'hookid' => $hookid,
+            'extrainfo' => $extrainfo,
+            'implode' => $implode,
+            'output' => $output));
+        EventManagerUtil::notify($event);
+        return $event['output'];
     }
 
-    return $extrainfo;
+    // Check array_key_exists('output', $event) in event handler to distinguish from above hook where you might modify $event['output'].
+    $event = new Event('module.postcallhooks', null, array(
+            'gui' => $gui,
+            'hookobject' => $hookobject,
+            'hookaction' => $hookaction,
+            'hookid' => $hookid,
+            'extrainfo' => $extrainfo,
+            'implode' => $implode));
+    EventManagerUtil::notify($event);
+    return $event['extrainfo'];
 }
 
 /**

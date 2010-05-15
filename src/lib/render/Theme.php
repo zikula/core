@@ -146,16 +146,12 @@ class Theme extends Renderer
             if (pnModGetVar('Theme', 'trimwhitespace')) {
                 $this->load_filter('output', 'trimwhitespace');
             }
-
-            // register output filter to add MultiHook environment if requried
-            if (pnModAvailable('MultiHook')) {
-                $modinfo = pnModGetInfo(pnModGetIDFromName('MultiHook'));
-                if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
-                    $this->load_filter('output', 'multihook');
-                    pnModAPIFunc('MultiHook', 'theme', 'preparetheme');
-                }
-            }
         }
+
+        // This event sends $this as the subject so you can modify as required:
+        // e.g.  $event->getSubject()->load_filter('output', 'multihook');
+        $event = new Event('theme.init', $this, array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo));
+        EventManagerUtil::notify($event);
 
         // Start the output buffering to capture module output
         ob_start();
