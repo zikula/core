@@ -298,9 +298,6 @@ function pnInit($stages = PN_CORE_ALL)
     }
 
     if ($stages & PN_CORE_DB) {
-        // load core include models
-        // Doctrine::loadModels('lib/models'); // NOT REQUIRED IN 1.3
-
         $connection = null;
         try {
             DBConnectionStack::init();
@@ -336,7 +333,7 @@ function pnInit($stages = PN_CORE_ALL)
         // if we've got this far an error handler can come into play
         // (except in the installer)
         if (!defined('_ZINSTALLVER')) {
-            //set_error_handler('pnErrorHandler');
+            set_error_handler('pnErrorHandler');
         }
         
         EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
@@ -1089,7 +1086,7 @@ function pnQueryStringSetVar($name, $value)
 function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
 {
     // check for an @ suppression
-    if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED)) {
+    if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED || $errno == E_STRICT)) {
         return;
     }
 
