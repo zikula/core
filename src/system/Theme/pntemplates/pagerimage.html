@@ -3,12 +3,14 @@
 {assign var="separator" value=" "}
 <div class="{$pagerPluginArray.class}">
     {if $pagerPluginArray.currentPage > 1}
-        <a href="{$pagerPluginArray.firstUrl}" title="{gt text="First page"}">
-            {img modname=core set=icons/extrasmall src="previousend.gif" __title="First Page" __alt="First Page"}
+		{gt text="First Page" assign="firstpage"}
+        <a href="{$pagerPluginArray.firstUrl}" title="{$firstpage}">
+            {img modname=core set=icons/extrasmall src="previousend.gif" __title=$firstpage __alt=$firstpage}
         </a>
-        {$separator} 
-        <a href="{$pagerPluginArray.prevUrl}" title="{gt text="Previous page"}">
-            {img modname=core set=icons/extrasmall src="previous.gif" __title="Previous Page" __alt="Previous Page"}
+        {$separator}
+		{gt text="Previous Page" assign="previouspage"}
+        <a href="{$pagerPluginArray.prevUrl}" title="{$previouspage}">
+            {img modname=core set=icons/extrasmall src="previous.gif" __title=$previouspage __alt=$previouspage}
         </a> {$separator} 
     {/if}
 
@@ -17,13 +19,15 @@
     </span>
 
     {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
-         {$separator} 
-        <a href="{$pagerPluginArray.nextUrl}" title="{gt text="Next page"}">
-            {img modname=core set=icons/extrasmall src="next.gif" __title="Next Page" __alt="Next Page"}
+        {$separator}
+		{gt text="Next Page" assign="nextpage"}
+        <a href="{$pagerPluginArray.nextUrl}" title="{$nextpage}">
+            {img modname=core set=icons/extrasmall src="next.gif" __title=$nextpage __alt=$nextpage}
         </a>
-        {$separator} 
-        <a href="{$pagerPluginArray.lastUrl}" title="{gt text="Last page"}">
-            {img modname=core set=icons/extrasmall src="nextend.gif" __title="Last Page" __alt="Last Page"}
+        {$separator}
+		{gt text="Last Page" assign="lastpage"}
+        <a href="{$pagerPluginArray.lastUrl}" title="{$lastpage}">
+            {img modname=core set=icons/extrasmall src="nextend.gif" __title=$lastpage __alt=$lastpage}
         </a>
     {/if}
 </div>
