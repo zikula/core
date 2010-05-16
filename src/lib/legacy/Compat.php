@@ -31,7 +31,7 @@ class PNObjectArray extends DBObjectArray
 }
 
 // pnForm backward compatibility
-class pnForm extends Form
+class pnFormRender extends Form_Render
 {
     public $pnFormState;
 
@@ -226,6 +226,10 @@ class pnForm extends Form
     public function pnFormGetPluginState()
     {
         return $this->GetPluginState();
+    }
+    function &pnFormGetPluginById($id)
+    {
+        return $this->GetPluginById($id);
     }
     public function pnFormGetPluginState_rec($plugins)
     {

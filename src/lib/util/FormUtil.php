@@ -385,7 +385,7 @@ class FormUtil
     public static function newPNForm($name)
     {
         // This MUST call new pnForm and cannot be chained to self::newForm()
-        return new pnForm($name);
+        return new pnFormRender($name);
     }
     
 /**
@@ -395,7 +395,7 @@ class FormUtil
      */
     public static function newForm($name)
     {
-        return new Form($name);
+        return new Form_Render($name);
     }
 }
 

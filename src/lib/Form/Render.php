@@ -29,7 +29,7 @@
  * </code>
  * See tutorials elsewhere for general introduction to pnForm.
  */
-class Form extends Renderer
+class Form_Render extends Renderer
 {
     /**
      * Variable saving all required state information.
@@ -699,10 +699,11 @@ class Form extends Renderer
         }
 
         $this->Includes = unserialize($bytes);
-
-        foreach ($this->Includes as $includeFilename => $dummy) {
-            require_once $includeFilename;
-        }
+        
+        // not required now because of autoloader
+//        foreach ($this->Includes as $includeFilename => $dummy) {
+//            require_once $includeFilename;
+//        }
     }
 
     /* --- Authentication key --- */
