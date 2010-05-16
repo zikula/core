@@ -104,7 +104,6 @@ function theme_admin_view($args = array())
 
     // call the API to get a list of all themes in the themes dir
     $allthemes = ThemeUtil::getAllThemes(PNTHEME_FILTER_ALL, PNTHEME_STATE_ALL);
-    ksort($allthemes);
 
     // filter by letter if required
     if (isset($startlet) && !empty($startlet)) {
