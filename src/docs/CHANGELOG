@@ -109,9 +109,24 @@ Add requirement/warning messsage into the admin panel for the blocks. (issue #75
 Installer will chmod 0444 the config.php file after installation.
 Permission checks in the Users module were made more consistent throughout. (issue #1872).
 New APIs DataUtil::decodeNVP(), DataUtil::encodeNVP(), DataUtil::encodeNVPArray().
-Changed old opassword checker js sytem to a new one called "passwordchecker" under a compatible licence (#1841).
+Changed old password checker js sytem to a new one called "passwordchecker" under a compatible licence (#1841).
 Adapted the module Modules for a Zikula multisites system with multiple domains (issue #1968).
 Modify html maxlength of block title to reflect the database structure. (issue #1980).
+Addition of FileSystem class libraries to allow easy interaction with file systems via local/ftp(s)/sftp. (issue #1517).
+Ability to export CSV file from users module added (issue #1954).
+escaped illegal char in pagelock template (issue #2004).
+Added html exception to htaccess file (pagelock window was unreadable due an apache message) (issue #2006).
+Added minute based refresh times for blocks (issue #1999).
+Added ability to administrate adminpanel with ajax, move modules to different categories, create/edit/delete admin categories (issue #1919).
+SecurityCenter's version has incremented to 1.4.1, adding a new internal configuration variable. It will be upgraded automatically during the system upgrade. (Issue #170)
+[Issue #2017] Altered ZLanguage::countryMap() for Sweden from sv to se.  Note the language code should be so, but the country code should be se.
+Blocks module admin section now has filtering options for block-position, module, language and active-status. The allows remove of the old showall/showinactive link in the admin section. (Issue #2012 & Issue #2020)
+Blocks module now has sorting options for the main columns in the admin view (Issue #2012).
+Added $ZConfig['System']['legacy_prefilters'] to the config.php to enable/disable legacy template prefilters.
+Added $ZConfig['System']['compat_layer'] to config.php to enable/disable the compatibility layer.
+Introduced EventManager and the following events: core.preinit, core.init, core.postinit, user.login, user.logout, user.login.failed, module.execute, module.postcallhooks, theme.init, render.init, user.gettheme, module.postloadgeneric, dbobject.pre/post*.
+Fixed Form_Render::registerPlugin() in environments where the installation is not in the server document root.
+Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects(). 
 
 CHANGELOG - ZIKULA 1.2.3
 ------------------------

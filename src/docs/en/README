@@ -1,6 +1,6 @@
 ZIKULA INSTALLATION INSTRUCTIONS
 More detailed installation documentation is available in the Documentation Wiki
-at http://community.zikula.org.
+at http://community.zikula.org/
 
 ========
 CONTENTS
@@ -34,9 +34,9 @@ There are two installation methods for Zikula:
     a. Graphical Browser Install
        -------------------------
        To use the installer, simply visit install.php in the Zikula directory
-       with your browser, e.g. http://www.example.com/install.php. If you
-       installed Zikula into a subdirectory 'foo' the URL would be
-       http://www.example.com/foo/install.php.
+       with your browser, e.g. http://www.example.com/install.php
+       If you installed Zikula into a subdirectory 'foo' the URL would be
+       http://www.example.com/foo/install.php
 
        The installer provides you with instructions on the way. Zikula require
        a database to be created at some point and it can save problems later if
@@ -49,9 +49,9 @@ There are two installation methods for Zikula:
        use in the installation.
 
        Once the installation process is complete, you can visit your Zikula
-       website by navigating to index.php, e.g. http://www.example.com/index.php.
+       website by navigating to index.php, e.g. http://www.example.com/index.php
        In the vast majority of cases, this will open automatically when typing
-       http://www.example.com into your browser.
+       http://www.example.com/ into your browser.
 
     b. Manual SQL Dump Install (Not recommended)
        -----------------------------------------
@@ -60,11 +60,9 @@ There are two installation methods for Zikula:
        MySQL 5.x database, and may not work with other databases, or MySQL
        versions. Once you have imported the SQL dump, you should manually edit
        config/config.php and add the appropriate database connection details in
-       the area reserved for the 'default' connection. The values for username
-       and password should be base64 encoded for added security (encoders are
-       freely available on the Internet). Should you install in this manner,
-       the administration login username is "admin" with password "Password"
-       (without the quotes).
+       the area reserved for the 'default' connection. Should you install in 
+       this manner, the administration login username is "admin" with password
+       "Password" (without the quotes).
 
 4. Final Note
 =============

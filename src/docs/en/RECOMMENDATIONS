@@ -1,6 +1,6 @@
 SOFTWARE RECOMMENDATIONS
 More detailed documentation is available in the Documentation Wiki at
-http://community.zikula.org. Support and help with installing and upgrade
+http://community.zikula.org/ - Support and help with installing and upgrade
 instructions can be obtained from the forums. These are just some standard
 guidelines, which will apply to many, but not all hosting environments.
 
@@ -45,11 +45,11 @@ extensive testing is run on Apache.
 PHP
 ---
 PHP, or Hypertext Pre-processor is a server-side scripting language. For this
-release of Zikula a minimum of version 5.3.0 or greater is required.
+release of Zikula a minimum of version 5.2.6 or greater is required.
 
 DATABASE
 --------
-Zikula also requires a database to be installed and currently supports MySQL 5.1
+Zikula also requires a database to be installed and currently supports MySQL 5.0
 as a minimum requirement, Microsoft SQL Server (MSSQL), PostgreSQL, and Oracle.
 This version of Zikula is the first that extends its support past that of MySQL.
 Support for databases other than MySQL is provided through the API, however

@@ -1,7 +1,7 @@
 ZIKULA UPGRADE INSTRUCTIONS
 
 More detailed documentation is available in the Documentation Wiki at
-http://community.zikula.org. Support and help with upgrading to this version can
+http://community.zikula.org/ - Support and help with upgrading to this version can
 be obtained from the forums.
 
 ========
@@ -15,7 +15,7 @@ CONTENTS
 
 1. Server Consideration
 =======================
-Zikula can be upgraded to this version from any of the following versions: 1.1.x
+Zikula can be upgraded to this version from any of the following versions: 1.2.x
 or greater. If your installation is less than that, please upgrade to one of these
 versions before proceeding with these instructions.
 
@@ -41,26 +41,20 @@ no problems.
   tool such as mysqldumper, phpMyAdmin or alternately use SSH or your hosting
   control panel. Full instructions and tutorials on database backups can be found
   by searching the web and the documentation of your tool set.
-
-  --->>> You will need your original config/config.php later, so do NOT <<<---
-  --->>> overwrite it or delete it, and keep it in a safe place.        <<<---
-
+ 
   2.2 Prepare your existing installation
   ---------------------------------------------
   i.   Login to your Zikula site with an administrator account. If you want, you can
        disable your site during the upgrade by changing the configuration in
        index.php?module=Settings&type=admin.
 
-  ii.  Move the module system/legal to modules/legal. If you have not customised the
-       legal module you can just delete it from the system/ folder.
+  ii. Before unpacking any files:
+    - Delete entire system/ folder.
+    - Delete includes/.
+    - Delete pnTemp.
 
-  iii. If you have the Profile in the system/ directory, move the system/Profile to
-       modules/Profile. If you have not customised the Profile module you can just
-       delete it from the system/ folder. If Profile is already in modules/ then ignore
-       this step.
-
-  iv. Upload all files from the package you downloaded, copying over your files.
-      Replace config/config.php with the backup you made in step 2.1.
+  ii.  Upload all files from the package you downloaded, copying over your files.
+       Manually edit the config/config.php with your database credentials.
 
   2.3 Run the upgrade
   -------------------
