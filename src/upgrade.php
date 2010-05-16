@@ -19,7 +19,7 @@ ini_set('max_execution_time', 86400);
 
 // load zikula core
 define('_ZINSTALLVER', '1.3.0');
-define('_Z_MINUPGVER', '1.1.0');
+define('_Z_MINUPGVER', '1.2.0');
 
 // include config file for retrieving name of temporary directory
 require_once 'install/modify_config.php';
@@ -52,14 +52,12 @@ switch ($action) {
     case 'sanitycheck':
         _upg_sanity_check($username, $password);
         break;
-    case 'convertdb':
-        _upg_convertdb($username, $password);
-        break;
     case 'upgrademodules':
         _upg_upgrademodules($username, $password);
         break;
     default:
         _upg_selectlanguage();
+        break;
 }
 
 /**
@@ -192,137 +190,6 @@ function _upg_login($showheader = true)
 }
 
 /**
- * Generate the convertdb page.
- *
- * This function generate the page to change the db caracter set.
- *
- * @param string $username Username of the admin user.
- * @param string $password Password of the admin user.
- *
- * @return void
- */
-function _upg_convertdb($username, $password)
-{
-    _upg_header();
-
-    echo '<h2>' . __('Check the database character set: UTF8') . '</h2>' . "\n";
-
-    // Some vars needed here.
-    $converted = $error = false;
-    $charset = 'utf8';
-    $collation = 'utf8_general_ci';
-    $feedback = '';
-
-    // Database info
-    global $ZConfig;
-    $dbtype = $ZConfig['DBInfo']['default']['dbtype'];
-    $dbchar = $ZConfig['DBInfo']['default']['dbcharset'];
-    $dbhost = $ZConfig['DBInfo']['default']['dbhost'];
-    $dbuser = $ZConfig['DBInfo']['default']['dbuname'];
-    $dbpass = $ZConfig['DBInfo']['default']['dbpass'];
-    $dbname = $ZConfig['DBInfo']['default']['dbname'];
-    $prefix = $ZConfig['System']['prefix'];
-
-    // sanity checks
-    if ($dbchar == $charset) {
-        $feedback .= '<p class="z-informationmsg">' . __("Your config.php reports your database is already in utf8 format.") . "</p>\n";
-        $converted = true;
-    } elseif (!strstr($dbtype, 'mysql')) {
-        $feedback .= '<p class="z-errormsg">' . __f('This script is only for MySQL databases, you are using %s.', $dbtype) . "<br />\n";
-        $feedback .= '<strong>' . __('You have to convert your database to utf8 yourself manually, before you can use this version of Zikula.') . "</strong></p>\n";
-        $error = true;
-    }
-
-    if ($error) {
-        echo $feedback;
-    } elseif (!$converted) {
-        // decode if necessary
-        if ($ZConfig['DBInfo']['default']['encoded']) {
-            $dbuser = base64_decode($dbuser);
-            $dbpass = base64_decode($dbpass);
-        }
-
-        $feedback .= '<ul id="convertlist" class="check">' . "\n";
-
-        // connect to DB
-        $dbconn = mysql_connect($dbhost, $dbuser, $dbpass);
-        $db = mysql_select_db($dbname);
-        if ($db) {
-            // alter database characterset and collation
-            doSQL("ALTER DATABASE $dbname DEFAULT CHARACTER SET = $charset", $dbconn, $feedback);
-            doSQL("ALTER DATABASE $dbname DEFAULT COLLATE = $collation", $dbconn, $feedback);
-
-            $result = doSQL('SHOW TABLES', $dbconn, $feedback);
-            if ($result) {
-                // alter tables
-                while ($row = mysql_fetch_row($result)) {
-                    $table = mysql_real_escape_string($row[0]);
-                    if (preg_match('/^' . $prefix . '_/', $table)) {
-                        doSQL("ANALYZE TABLE $table", $dbconn, $feedback);
-                        doSQL("REPAIR TABLE $table", $dbconn, $feedback);
-                        doSQL("OPTIMIZE TABLE $table", $dbconn, $feedback);
-                        doSQL("ALTER TABLE $table DEFAULT CHARACTER SET $charset COLLATE $collation", $dbconn, $feedback);
-                        // hack for locations module - TODO remove after release.
-                        if ($table == "{$prefix}_locations_location") {
-                            // delete index
-                            doSQL("ALTER TABLE {$prefix}_locations_location DROP INDEX locindex", $dbconn, $feedback);
-                        }
-                        doSQL("ALTER TABLE $table CONVERT TO CHARACTER SET $charset COLLATE $collation", $dbconn, $feedback);
-                        if ($table == "{$prefix}_locations_location") {
-                            // recreate index
-                            doSQL("ALTER TABLE `{$prefix}_locations_location` ADD INDEX `locindex` (`pn_name`(50),`pn_city`(50),`pn_state`(50),`pn_country`(50))", $dbconn, $feedback);
-                        }
-                    } else {
-                        $feedback .= '<li class="passed">' . __f("SKIPPED %s", $table) . "</li>\n";
-                    }
-                }
-
-                mysql_close($dbconn);
-                $feedback .= '</ul>' . "\n";
-
-                // commit changes to config
-                global $reg_src, $reg_rep;
-                add_src_rep('dbcharset', $charset);
-                $feedback .= "<div>";
-                if (modify_file($reg_src, $reg_rep)) {
-                    $feedback .= '<p class="z-statusmsg">' . __f('Updated %s.', 'config/config.php $ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
-                    if (file_exists('config/personal_config.php')) {
-                        if (modify_file($reg_src, $reg_rep, 'config/personal_config.php')) {
-                            $feedback .= '<p class="z-statusmsg">' . __f('Updated %s.', 'config/personal_config.php $ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
-                        } else {
-                            $feedback .= '<p class="z-errormsg">' . __f('Failed to update %s.', '$ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
-                        }
-                    }
-                } else {
-                    $feedback .= '<p class="z-errormsg">' . __f('Failed to update %s.', '$ZConfig[\'DBInfo\'][\'default\'][\'dbcharset\']  = \'' . $charset . "'; </p>\n");
-                }
-                $feedback .= "</div>";
-            } else {
-                $feedback .= mysql_error() . "<br />\n";
-            }
-
-            $feedback .= '<p class="z-statusmsg">' . __('Conversion to UTF8 completed - now move to next step.') . "</p>\n";
-            $converted = true;
-        } else {
-            $feedback .= '<p class="z-errormsg">' . __("Unable to connect to the database. Please check the details in config/config.php.") . "</p>\n";
-            $feedback .= mysql_error() . "<br />\n";
-        }
-    }
-
-    // clear errors
-    unset($_SESSION['ZSV_ZErrorMsg']);
-    unset($_SESSION['ZSV_ZErrorMsgType']);
-    unset($_SESSION['ZSV_ZStatusMsg']);
-
-    if ($converted) {
-        echo '<div>' . $feedback . "\n";
-        _upg_continue('upgrademodules', __('Upgrade modules'), $username, $password);
-        echo "</div>\n";
-    }
-    _upg_footer();
-}
-
-/**
  * Generate the upgrade module page.
  *
  * This function upgrade available module to an upgrade
@@ -343,20 +210,6 @@ function _upg_upgrademodules($username, $password)
     echo '<ul id="upgradelist" class="check">' . "\n";
     $upgradeCount = 0;
     // regenerate modules list
-    $filemodules = pnModAPIFunc('Modules', 'admin', 'getfilemodules');
-    pnModAPIFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
-    $modinfo = pnModGetInfo(pnModGetIDFromName('ObjectData'));
-    if ($modinfo['state'] == PNMODULE_STATE_UPGRADED) {
-        if (pnModAPIFunc('Modules', 'admin', 'upgrade', array('id' => pnModGetIDFromName('ObjectData')))) {
-            echo '<li class="passed">' . ' ObjectData ' . ' ' . __('upgraded') . '</li>' . "\n";
-            $upgradeCount++;
-        } else {
-            echo '<li class="failed">' . ' ObjectData ' . ' ' . __('not upgraded') . '</li>' . "\n";
-        }
-    }
-    if (pnModDBInfoLoad('Profile') && !DBUtil::changeTable('user_property')) {
-        return false;
-    }
     $filemodules = pnModAPIFunc('Modules', 'admin', 'getfilemodules');
     pnModAPIFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
     // get a list of modules needing upgrading
@@ -397,7 +250,6 @@ function _upg_upgrademodules($username, $password)
     if ($upgradeCount == 0) {
         echo '<ul class="check"><li class="passed">' . __('No modules required upgrading') . '</li></ul>';
     }
-
 
     // regenerate the modules list to pick up any final changes
     // suppress warnings because we did some upgrade black magic which will harmless generate an E_NOTICE
@@ -476,26 +328,6 @@ function _upg_sanity_check($username, $password)
         $validupgrade = false;
         echo '<h2>' . __('Already up to date') . "</h2>\n";
         echo '<p class="z-errormsg">' . __f("It seems that you have already installed version %s. Please remove this upgrade script, you do not need it anymore.", _ZINSTALLEDVERSION) . "</p>\n";
-    } elseif (is_dir('system/Profile')) {
-        $validupgrade = false;
-        echo '<h2>' . __f('Duplicate %1$s module found in %2$s.', array('Profile', 'system/Profile')) . "</h2>\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('Profile', '<strong>system/</strong>')) . "</p>\n";
-        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
-    } elseif (is_dir('system/legal')) {
-        $validupgrade = false;
-        echo '<h2>' . __f('Duplicate %1$s module found in %2$s.', array('legal', 'system/legal')) . "</h2>\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('legal', '<strong>system/</strong>')) . "</p>\n";
-        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
-    } elseif (!is_dir('modules/Profile')) {
-        $validupgrade = false;
-        echo '<h2>' . __f('Missing %s module.', 'Profile') . "</h2>\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('Profile', '<strong>modules/</strong>')) . "</p>\n";
-        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
-    } elseif (!is_dir('modules/legal')) {
-        $validupgrade = false;
-        echo '<h2>' . __f('Missing %s module.', 'legal') . "</h2>\n";
-        echo '<p class="z-errormsg">' . __f('In order to proceed with this upgrade the duplicated %1$s module in %2$s should be removed. Please delete %1$s from the %2$s directory and re-run this script.', array('legal', '<strong>modules/</strong>')) . "</p>\n";
-        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
     } elseif (version_compare(_ZINSTALLEDVERSION, _Z_MINUPGVER, '<')) {
         // Not on version _Z_MINUPGVER yet
         $validupgrade = false;
@@ -522,31 +354,8 @@ function _upg_sanity_check($username, $password)
         pnShutDown();
     }
 
-    _upg_continue('convertdb', __('Proceed to convert the database to UTF8'), $username, $password);
+    _upg_continue('upgrademodules', __('Proceed to upgrade modules.'), $username, $password);
     _upg_footer();
-}
-
-/**
- * Do a SQL query.
- *
- * This function do a sql query.
- *
- * @param string   $sql       Sql query.
- * @param mixed    $resource  Ressource.
- * @param callback &$feedback Return HTML code with sql request and if error, the mysql error.
- *
- * @return boolean|resource Result of mysql_query.
- */
-function doSQL($sql, $resource, &$feedback)
-{
-    $result = mysql_query($sql, $resource);
-    if (!$result) {
-        $feedback .= '<li class="failed">' . $sql . "</li>\n";
-        $feedback .= '<li class="failed">' . mysql_error($resource) . "</li>\n";
-    } else {
-        $feedback .= '<li class="passed">' . $sql . "</li>\n";
-    }
-    return $result;
 }
 
 /**
