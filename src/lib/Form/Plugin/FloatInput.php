@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -25,43 +25,43 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
      * @var float
      */
     public $minValue;
-    
+
     /**
      * Maximum value for validation
      * @var float
      */
     public $maxValue;
-    
+
     function getFilename()
     {
         return __FILE__;
     }
-    
+
     function create(&$render, &$params)
     {
         $this->maxLength = 30;
         $params['width'] = '6em';
         parent::create($render, $params);
     }
-    
+
     function validate(&$render)
     {
         parent::validate($render);
         if (!$this->isValid) {
             return;
         }
-        
+
         if ($this->text != '') {
             $this->text = DataUtil::transformNumberInternal($this->text);
             if (!is_numeric($this->text)) {
                 $this->setError(__('Error! Invalid number.'));
             }
-            
+
             $i = $this->text;
             if ($this->minValue != null && $i < $this->minValue || $this->maxValue != null && $i > $this->maxValue) {
                 if ($this->minValue != null && $this->maxValue != null) {
                     $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.', array(
-                        $this->minValue, 
+                        $this->minValue,
                         $this->maxValue)));
                 } else if ($this->minValue != null) {
                     $this->setError(__f('Error! The value must be %s or more.', $this->minValue));
@@ -71,16 +71,16 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
             }
         }
     }
-    
+
     function parseValue(&$render, $text)
     {
         if ($text == '') {
             return null;
         }
-        
+
         // process float value
         $text = floatval($text);
-        
+
         return $text;
     }
 

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -632,7 +632,7 @@ function securitycenter_userapi_secureoutput($args)
  * Check a single value for malicious input.
  *
  * @param int $secValue The input value to check.
- * 
+ *
  * @return bool True if suspicious content was found, false otherwise.
  */
 function _securitycenter_userapi_checkinputvalue($secValue)

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -37,12 +37,12 @@
  * @author messju mohr <messju@lammfellpuschen.de>
  * @author slightly modified and expanded by dasher <dasher@inspiredthinking.co.uk>
  * @see    smarty_block_switch
- * 
+ *
  * @param array   $params  All attributes passed to this function from the template.
  * @param string  $content The content between the block tags.
  * @param Smarty  &$smarty Reference to the {@link Renderer} object.
  * @param boolean &$repeat Controls block repetition. See {@link http://www.smarty.net/manual/en/plugins.block.functions.php Smarty - Block Functions}.
- * 
+ *
  * @return void|string The content of the matching case.
  */
 function smarty_block_case($params, $content, &$smarty, &$repeat)
@@ -98,7 +98,7 @@ function smarty_block_case($params, $content, &$smarty, &$repeat)
  * capturing an output buffer.
  *
  * @param string|numeric $expression The case expression to evaluate.
- * 
+ *
  * @return string The result of capturing the trimmed and echoed expression from the output buffer.
  */
 function smarty_block_case_eval($expression = '')

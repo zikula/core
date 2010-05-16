@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -14,7 +14,7 @@
 
 /**
  * Display a calendar input control.
- * 
+ *
  * Display a calendar input control consisting of a calendar image, an optional
  * hidden input field, and associated javascript to render a pop-up calendar.
  * This function displays a javascript (jscalendar) calendar control.
@@ -37,7 +37,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the {@link Renderer} object.
- * 
+ *
  * @return string The HTML and Javascript code to display a calendar control.
  */
 function smarty_function_calendarinput($params, &$smarty)
@@ -72,12 +72,12 @@ function smarty_function_calendarinput($params, &$smarty)
         // map of the jscalendar supported languages
         $map = array('ca' => 'ca_ES', 'cz' => 'cs_CZ', 'da' => 'da_DK',
                      'de' => 'de_DE', 'el' => 'el_GR', 'en-us' => 'en_US',
-                     'es' => 'es_ES', 'fi' => 'fi_FI', 'fr' => 'fr_FR', 
-                     'he' => 'he_IL', 'hr' => 'hr_HR', 'hu' => 'hu_HU', 
-                     'it' => 'it_IT', 'ja' => 'ja_JP', 'ko' => 'ko_KR', 
-                     'lt' => 'lt_LT', 'lv' => 'lv_LV', 'nl' => 'nl_NL', 
-                     'no' => 'no_NO', 'pl' => 'pl_PL', 'pt' => 'pt_BR', 
-                     'ro' => 'ro_RO', 'ru' => 'ru_RU', 'si' => 'si_SL', 
+                     'es' => 'es_ES', 'fi' => 'fi_FI', 'fr' => 'fr_FR',
+                     'he' => 'he_IL', 'hr' => 'hr_HR', 'hu' => 'hu_HU',
+                     'it' => 'it_IT', 'ja' => 'ja_JP', 'ko' => 'ko_KR',
+                     'lt' => 'lt_LT', 'lv' => 'lv_LV', 'nl' => 'nl_NL',
+                     'no' => 'no_NO', 'pl' => 'pl_PL', 'pt' => 'pt_BR',
+                     'ro' => 'ro_RO', 'ru' => 'ru_RU', 'si' => 'si_SL',
                      'sk' => 'sk_SK', 'sv' => 'sv_SE', 'tr' => 'tr_TR');
 
         if (isset($map[$lang])) {

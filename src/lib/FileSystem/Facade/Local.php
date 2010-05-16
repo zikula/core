@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -25,7 +25,7 @@ class FileSystem_Facade_Local
      * @param string   $source  Source file to copy.
      * @param string   $dest    Target path.
      * @param resource $context Local filesystem context.
-     * 
+     *
      * @return boolean True on success.
      */
     public function copy($source, $dest, $context)
@@ -34,7 +34,7 @@ class FileSystem_Facade_Local
         return copy($source, $dest, $context);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for the file_put_contents function.
      *
@@ -42,7 +42,7 @@ class FileSystem_Facade_Local
      * @param string|array|resource $data     Data to write.
      * @param intiger               $flags    Flags.
      * @param resource              $context  Local filesystem context.
-     * 
+     *
      * @return intiger|boolean Number of bytes written on success, false on fail.
      */
     public function putContents($filename, $data, $flags = 0, $context)
@@ -51,15 +51,15 @@ class FileSystem_Facade_Local
         return file_put_contents($filename, $data, $flags, $context);
         //@codeCoverageIgnoreEnd
     }
-      
+
     /**
      * Facade for the fopen function.
      *
      * @param string   $filename         Source file to open.
      * @param string   $mode             Fopen mode.
      * @param boolean  $use_include_path True to use include path.
-     * @param resource $context          Local filesystem context. 
-     * 
+     * @param resource $context          Local filesystem context.
+     *
      * @return resource|boolean Resource handle on success, false on fail.
      */
     public function fileOpen($filename, $mode, $use_include_path = false, $context)
@@ -68,13 +68,13 @@ class FileSystem_Facade_Local
         return fopen($filename, $mode, $use_include_path, $context);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for the chmod function.
      *
      * @param string  $filename Source file to chmod.
      * @param intiger $mode     Perm to chmod to.
-     * 
+     *
      * @return boolean True on success.
      */
     public function chmod($filename, $mode)
@@ -83,14 +83,14 @@ class FileSystem_Facade_Local
         return chmod($filename, $mode);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for the scandir function.
      *
      * @param string   $directory     Directory to scan.
      * @param intiger  $sorting_order Sort the contents?.
-     * @param resource $context       Local filesystem context. 
-     * 
+     * @param resource $context       Local filesystem context.
+     *
      * @return array|boolean Array of contents on success, false on failure.
      */
     public function scandir($directory, $sorting_order = 0, $context)
@@ -99,12 +99,12 @@ class FileSystem_Facade_Local
         return scandir($directory, $sorting_order, $context);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for the chdir function.
      *
-     * @param string $dir Directory to change into. 
-     * 
+     * @param string $dir Directory to change into.
+     *
      * @return boolean True on success.
      */
     public function chdir($dir)
@@ -113,14 +113,14 @@ class FileSystem_Facade_Local
         return chdir($dir);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for the rename function.
      *
      * @param string   $oldname Old path to rename.
      * @param string   $newname New path.
-     * @param resource $context Local filesystem context. 
-     * 
+     * @param resource $context Local filesystem context.
+     *
      * @return boolean True on success.
      */
     public function rename($oldname, $newname, $context)
@@ -129,13 +129,13 @@ class FileSystem_Facade_Local
         return rename($oldname, $newname, $context);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for the unlink function.
      *
      * @param string   $filename Path to delete.
-     * @param resource $context  Local filesystem context. 
-     * 
+     * @param resource $context  Local filesystem context.
+     *
      * @return boolean True on success.
      */
     public function delete($filename, $context)
@@ -144,5 +144,5 @@ class FileSystem_Facade_Local
         return unlink($filename, $context);
         //@codeCoverageIgnoreEnd
     }
-    
+
 }

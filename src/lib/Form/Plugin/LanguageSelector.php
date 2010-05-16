@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -29,42 +29,42 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
      * @var bool
      */
     protected $onlyInstalledLanguages = true;
-    
+
     /**
      * Add an option 'All' on top of the language list
      *
      * @var bool
      */
     protected $addAllOption = true;
-    
+
     function getFilename()
     {
         return __FILE__;
     }
-    
+
     function load(&$render, $params)
     {
         if ($this->mandatory)
             $this->addItem('---', null);
-        
+
         if ($this->addAllOption) {
             $this->addItem(DataUtil::formatForDisplay(__('All')), '');
         }
-        
+
         if ($this->onlyInstalledLanguages) {
             $langList = ZLanguage::getInstalledLanguageNames();
-            
+
             foreach ($langList as $code => $name) {
                 $this->addItem($name, $code);
             }
         } else {
             $langList = ZLanguage::languageMap();
-            
+
             foreach ($langList as $code => $name) {
                 $this->addItem($name, $code);
             }
         }
-        
+
         parent::load($render, $params);
     }
 }

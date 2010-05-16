@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -387,7 +387,7 @@ class FormUtil
         // This MUST call new pnForm and cannot be chained to self::newForm()
         return new pnFormRender($name);
     }
-    
+
 /**
      * Return a newly created pormRender instance with the given name
      *

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -14,7 +14,7 @@
 
 /**
  * Display an existing Zikula block.
- * 
+ *
  *  The block is choosen by its id.
  *  The block state is ignored, so even deactivated blocks can be shown.
  *  The parameters specific to the block can be overridden.
@@ -45,10 +45,10 @@
  * variable $myBlockContents.
  *
  * <samp>{block id=6 assign='myBlockContents'}</samp>
- * 
+ *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the {@link Renderer} object.
- * 
+ *
  * @return string The block.
  *
  * @todo the attribute 'name' is not used.

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -36,17 +36,17 @@ class CategoryUtil
     {
         if (!isset($rootPath) || !$rootpath) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'rootpath'));
-        } 
+        }
         if (!isset($name) || !$name) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'name'));
-        } 
+        }
 
         if (!$displayname) {
             $displayname = $name;
-        } 
+        }
         if (!$description) {
             $description = $name;
-        } 
+        }
 
         $lang = ZLanguage::getLanguageCode();
 
@@ -54,7 +54,7 @@ class CategoryUtil
         $rootCat = CategoryUtil::getCategoryByPath ($rootPath);
         if (!$rootCat) {
             return LogUtil (__("Error! Non-existing root category '%s' received", $rootPath));
-        } 
+        }
 
         $checkCat = CategoryUtil::getCategoryByPath ("$rootPath/$name");
         if (!$checkCat) {
@@ -1253,13 +1253,13 @@ class CategoryUtil
         $cat['path_relative'] = substr($normalizedPath, $ppos);
         if (isset($cat['ipath'])) {
             $cat['ipath_relative'] = substr($cat['ipath'], $ipos);
-        } 
+        }
 
         if (!$includeRoot) {
             $offSlashPath = strpos($cat['path_relative'], '/');
             if (isset($cat['ipath'])) {
                 $offSlashIPath = strpos($cat['ipath_relative'], '/');
-            } 
+            }
 
             if ($offSlashPath !== false) {
                 $cat['path_relative'] = substr($cat['path_relative'], $offSlashPath + 1);

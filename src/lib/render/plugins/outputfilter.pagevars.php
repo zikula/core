@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -98,7 +98,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
                                         'javascript/ajax/scriptaculous.js?load=slider',
                                         'javascript/ajax/scriptaculous.js?load=sound',
                                         'javascript/ajax/pnajax.js');
- 
+
         $javascriptNewLinks     = array('javascript/ajax/prototype.js',
                                         'javascript/ajax/scriptaculous.js',
                                         'javascript/ajax/builder.js',

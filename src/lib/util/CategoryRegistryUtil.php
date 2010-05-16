@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -30,11 +30,11 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean
      */
-    public static function deleteEntry ($modname, $entryID=null) 
+    public static function deleteEntry ($modname, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'modname'));
-        } 
+        }
 
         if (!pnModDBInfoLoad('Categories')) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
@@ -43,10 +43,10 @@ class CategoryRegistryUtil
         $where = "crg_modname='$modname'";
         if ($entryID) {
             $where .= " AND crg_id=$entryID";
-        } 
+        }
 
         return (boolean) DBUtil::deleteWhere ('categories_registry', $where);
-    } 
+    }
 
     /**
      * Create a category registry entry
@@ -58,10 +58,10 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean
      */
-    public static function insertEntry ($modname, $table, $property, $categoryID) 
+    public static function insertEntry ($modname, $table, $property, $categoryID)
     {
         return self::_processEntry ($modname, $table, $property, $categoryID);
-    } 
+    }
 
     /**
      * Update a category registry entry
@@ -74,14 +74,14 @@ class CategoryRegistryUtil
      *
      * @return boolean The DB insert operation result code cast to a boolean
      */
-    public static function updateEntry ($entryID, $modname, $table, $property, $categoryID) 
+    public static function updateEntry ($entryID, $modname, $table, $property, $categoryID)
     {
         if (!isset($entryID) || !$entryID) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'entryID'));
-        } 
+        }
 
         return self::_processEntry ($modname, $table, $property, $categoryID, $entryID);
-    } 
+    }
 
     /**
      * Create or update a category registry entry
@@ -98,16 +98,16 @@ class CategoryRegistryUtil
     {
         if (!isset($modname) || !$modname) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'modname'));
-        } 
+        }
         if (!isset($table) || !$table) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'table'));
-        } 
+        }
         if (!isset($property) || !$property) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'property'));
-        } 
+        }
         if (!isset($categoryID) || !$categoryID) {
             return LogUtil (__("Error! Received invalid parameter '%s'", 'categoryID'));
-        } 
+        }
 
         if (!pnModDBInfoLoad($modname)) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", $modname));
@@ -120,7 +120,7 @@ class CategoryRegistryUtil
         $data['category_id'] = $categoryID;
         if ($entryID) {
             $data['id']      = $entryID;
-        } 
+        }
         return self::registerModuleCategory ($data);
     }
 

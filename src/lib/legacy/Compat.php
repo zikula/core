@@ -10,7 +10,7 @@
 $GLOBALS['PNConfig'] = & $GLOBALS['ZConfig'];
 $GLOBALS['PNRuntime'] = & $GLOBALS['ZRuntime'];
 
-// start BC classes licensed as LGPLv2
+// start BC classes licensed as LGPv2.1
 class pnRender extends Renderer
 {
 }

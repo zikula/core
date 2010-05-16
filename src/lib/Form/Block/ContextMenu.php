@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -59,7 +59,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
      * @var string
      */
     public $cssClass;
-    
+
     /**
      * Name of command event handler method
      *
@@ -68,7 +68,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
      * @var string
      */
     public $onCommand;
-    
+
     /**
      * Z-index for absolute positioning
      *
@@ -77,25 +77,25 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
      * @var int
      */
     public $zIndex;
-    
+
     function getFilename()
     {
         return __FILE__;
     }
-    
+
     function create(&$render)
     {
         $this->styleAttributes['display'] = 'none';
         $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);
     }
-    
+
     function dataBound(&$render)
     {
         PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('pnForm'));
         PageUtil::AddVar('javascript', 'system/Theme/pnjavascript/form/pnform.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
     }
-    
+
     function renderBegin(&$render)
     {
         if ($this->firstTime(false)) {
@@ -108,7 +108,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
             return '';
         }
     }
-    
+
     function renderEnd(&$render)
     {
         if ($this->firstTime(true)) {
@@ -117,7 +117,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
         } else
             return '';
     }
-    
+
     function firstTime($doSet = false)
     {
         static $createdMenus = array();

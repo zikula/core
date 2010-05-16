@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -611,15 +611,15 @@ class DBUtil
     /**
      * Generate and execute an insert SQL statement for the given object.
      *
-     * @param array     $object	  The object we wish to insert.
-     * @param string    $table	  The treated table reference.
+     * @param array     $object   The object we wish to insert.
+     * @param string    $table    The treated table reference.
      * @param string    $idfield  The column which stores the primary key (optional) (default='id').
      * @param boolean   $preserve Whether or not to preserve existing/set standard fields (optional) (default=false).
-     * @param boolean   $force	  Whether or not to insert empty values as NULL (optional) (default=false).
-	 *
+     * @param boolean   $force    Whether or not to insert empty values as NULL (optional) (default=false).
+     *
      * @return The result set from the update operation. The object is updated with the newly generated ID.
      * @deprecated
-	 * @see Doctrine_Record::save()
+     * @see Doctrine_Record::save()
      * @deprecated
      * @see Doctrine_Table
      */
@@ -867,7 +867,7 @@ class DBUtil
     }
 
     /**
-     * Post-processing after this object has beens saved. 
+     * Post-processing after this object has beens saved.
      * This routine is responsible for writing the 'extra' data (attributes, categories,
      * and meta data) to the database and the optionally creating an
      * entry in the object-log table.
@@ -927,7 +927,7 @@ class DBUtil
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
             pnConfigGetVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-            strcmp($table, 'objectdata_log') !== 0) 
+            strcmp($table, 'objectdata_log') !== 0)
         {
             $oldObj = self::selectObjectByID($table, $object[$idfield], $idfield);
 
@@ -2529,7 +2529,7 @@ class DBUtil
     }
 
     /**
-     * Post-processing for selected objects. 
+     * Post-processing for selected objects.
      * This routine is responsible for reading the 'extra' data
      * (attributes, categories, and meta data) from the database and inserting the relevant sub-objects into the object.
      *

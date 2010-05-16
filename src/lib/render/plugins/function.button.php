@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -13,8 +13,8 @@
  */
 
 /**
- * Display an core image form submission button using either the <button> or the <input> HTML element. 
- * 
+ * Display an core image form submission button using either the <button> or the <input> HTML element.
+ *
  * This tag calls the img tag to determine the full path of the image
  * for the src attribute of the img element within the button element, or
  * for the src attribute of the input element.
@@ -71,7 +71,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the {@link Renderer} object.
- * 
+ *
  * @return string The rendered <button ...><img ...></button> or <input ...>
  *                element for the form button.
  */

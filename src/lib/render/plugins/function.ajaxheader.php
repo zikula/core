@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -14,7 +14,7 @@
 
 /**
  * Inserts the common ajax javascript files in page header.
- * 
+ *
  * Insert the common ajax javascript files (prototype, scriptaculous) in the
  * page header using page vars.  <i>All other javascript files have to be added
  * manually on-demand using the {@link smarty_function_pageaddvar() pageaddvar} plugin.</i>
@@ -32,19 +32,19 @@
  *  - slider            (mixed)     (optional) includes slider.js if set. Only effective if noscriptaculous is set
  *  - lightbox          (mixed)     (optional) includes lightbox.js if set (loads scriptaculous effects if noscriptaculous is set)
  *  - imageviewer       (mixed)     (optional) includes Zikula.ImageViewer.js if set (loads scriptaculous effects and dragdrop if noscriptaculous is set)
- *  - assign            (string)    (optional) the name of the template variable to which the script tag string is assigned, <i>instead of</i> 
+ *  - assign            (string)    (optional) the name of the template variable to which the script tag string is assigned, <i>instead of</i>
  *                                             adding them to the page variables through PageUtil::addVar
  *
  *
  * Examples:
  *
  * <samp>{ajaxheader modname='Example' filename='example.js'}</samp>
- * 
+ *
  * <samp>{ajaxheader modname='Example' noscriptaculous=1}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the {@link Renderer} object.
- * 
+ *
  * @return void
  */
 function smarty_function_ajaxheader($params, &$smarty)

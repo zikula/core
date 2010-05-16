@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -301,8 +301,8 @@ class HtmlUtil
                     $checkColumns = $k . '_column';
                     if (!isset($tables[$checkColumns])) {
                         continue;
-                    } 
-                } 
+                    }
+                }
                 if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
                     if (strpos($k, 'pn_') === 0) {
                         $k = substr($k, 4);

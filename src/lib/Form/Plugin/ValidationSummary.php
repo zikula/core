@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -34,7 +34,7 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
         foreach ($validators as $validator) {
             if (!$validator->isValid) {
                 $html .= "<li><label for=\"$validator->id\">" . DataUtil::formatForDisplay($validator->myLabel) . ': ';
-		$html .=  DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
+        $html .=  DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
             }
         }
 

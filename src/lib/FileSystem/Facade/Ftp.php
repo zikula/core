@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -25,7 +25,7 @@ class FileSystem_Facade_Ftp
      * @param string $host    Hostname to connect to.
      * @param int    $port    Port to connect on.
      * @param int    $timeout Timeout in seconds.
-     * 
+     *
      * @return boolean True on success
      */
     public function connect($host, $port = 21, $timeout = 10)
@@ -34,14 +34,14 @@ class FileSystem_Facade_Ftp
         return ftp_connect($host, $port, $timeout);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_ssl_connect.
      *
      * @param string $host    Hostname to connect to.
      * @param int    $port    Port to connect on.
      * @param int    $timeout Timeout in seconds.
-     * 
+     *
      * @return boolean True on success
      */
     public function sslConnect($host, $port = 21, $timeout = 10)
@@ -50,14 +50,14 @@ class FileSystem_Facade_Ftp
         return ftp_ssl_connect($host, $port, $timeout);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_login.
      *
      * @param resource $ftp_stream Ftp Resource to login to.
      * @param string   $username   Username to login with.
      * @param string   $password   Password to login with.
-     * 
+     *
      * @return boolean True on success.
      */
     public function login($ftp_stream, $username, $password)
@@ -66,13 +66,13 @@ class FileSystem_Facade_Ftp
         return ftp_login($ftp_stream, $username, $password);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_pasv.
-     * 
+     *
      * @param resource $ftp_stream Ftp resource to set pasv for.
      * @param boolean  $pasv       True for passive, false for not.
-     * 
+     *
      * @return boolean True on success.
      */
     public function pasv($ftp_stream, $pasv)
@@ -98,7 +98,7 @@ class FileSystem_Facade_Ftp
         return ftp_put($ftp_stream, $remote_file, $local_file, $mode, $startpos);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_fput().
      *
@@ -115,7 +115,7 @@ class FileSystem_Facade_Ftp
         return fput($ftp_stream, $remote_file, $handle, $mode);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_get().
      *
@@ -133,7 +133,7 @@ class FileSystem_Facade_Ftp
         return fget($ftp_stream, $local_file, $remote_file, $mode, $resumepos);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_fget().
      *
@@ -151,7 +151,7 @@ class FileSystem_Facade_Ftp
         return ftp_fget($ftp_stream, $handle, $remote_file, $mode, $resumepos = 0);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_chmod().
      *
@@ -167,7 +167,7 @@ class FileSystem_Facade_Ftp
         return ftp_chmod($ftp_stream, $mode, $filename);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_put().
      *
@@ -182,7 +182,7 @@ class FileSystem_Facade_Ftp
         return ftp_nlist($ftp_stream, $directory);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_chdir().
      *
@@ -197,7 +197,7 @@ class FileSystem_Facade_Ftp
         return ftp_chdir($ftp_stream, $directory);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_rename().
      *
@@ -213,7 +213,7 @@ class FileSystem_Facade_Ftp
         return ftp_rename($ftp_stream, $oldname, $newname);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_delete().
      *
@@ -228,7 +228,7 @@ class FileSystem_Facade_Ftp
         return delete($ftp_stream, $path);
         //@codeCoverageIgnoreEnd
     }
-    
+
     /**
      * Facade for ftp_systype().
      *

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -77,7 +77,7 @@ exit;
  * @param string $string String to check.
  *
  * @return boolean True if it's serialized, false if it's not.
- */ 
+ */
 function is_serialized($string)
 {
     return ($string == 'b:0;' ? true : (bool)@unserialize($string));

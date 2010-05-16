@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -22,13 +22,13 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
 {
     public $editLink;
     public $category;
-    
+
     /**
      * Enable inclusion of an empty null value element
      * @var bool (default false)
      */
     public $includeEmptyElement;
-    
+
     /**
      * Enable save/load of values in separate __CATEGORIES_ field for use in DBUtil.
      *
@@ -45,12 +45,12 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      * @var bool (default false)
      */
     public $enableDBUtil;
-    
+
     function getFilename()
     {
         return __FILE__;
     }
-    
+
     /* Shared by other category plugins */ /* static */    function loadParameters(&$list, $includeEmptyElement, $params)
     {
         $list->category = isset($params['category']) ? $params['category'] : 0;
@@ -63,52 +63,52 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         $includeLeaf = isset($params['includeLeaf']) ? $params['includeLeaf'] : true;
         $all = isset($params['all']) ? $params['all'] : false;
         $list->editLink = isset($params['editLink']) ? $params['editLink'] : true;
-        
+
         Loader::loadClass('CategoryUtil');
-        
+
         $allCats = array();
-        
+
         // if we don't have a category-id we see if we can get a category by path
         if (!$list->category && $path) {
             $list->category = CategoryUtil::getCategoryByPath($path, $pathfield);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
-            
+
         // check if we have an actual category object with a numeric ID set
         } elseif (is_array($list->category) && isset($list->category['id']) && is_integer($list->category['id'])) {
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
-            
+
         // check if we have a numeric category
         } elseif (is_numeric($list->category)) {
             $list->category = CategoryUtil::getCategoryByID($list->category);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
-            
+
         // check if we have a string/path category
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
             $list->category = CategoryUtil::getCategoryByPath($list->category, $pathfield);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
         }
-        
+
         if ($list->mandatory)
             $list->addItem('- - -', null);
-        
+
         $line = '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -';
-        
+
         if ($includeEmptyElement)
             $list->addItem('', null);
-        
+
         foreach ($allCats as $cat) {
             $cslash = StringUtil::countInstances(isset($cat['ipath_relative']) ? $cat['ipath_relative'] : $cat['ipath'], '/');
             $indent = '';
             if ($cslash > 0) {
                 $indent = '| ' . substr($line, 0, $cslash * 2);
             }
-            
+
             $catName = html_entity_decode((isset($cat['display_name'][$lang]) ? $cat['display_name'][$lang] : $cat['name']));
             $list->addItem($indent . ' ' . $catName, $cat['id']);
         }
-    
+
     }
-    
+
     function load(&$render, $params)
     {
         $this->includeEmptyElement = (isset($params['includeEmptyElement']) ? $params['includeEmptyElement'] : false);
@@ -116,20 +116,20 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         pnFormCategorySelector::loadParameters($this, $this->includeEmptyElement, $params);
         parent::load($render, $params);
     }
-    
+
     function render(&$render)
     {
         $result = parent::render($render);
-        
+
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "$this->category[id]::", ACCESS_EDIT)) {
             $url = DataUtil::formatForDisplay(pnModURL('Categories', 'user', 'edit', array(
                 'dr' => $this->category['id'])));
             $result .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"images/icons/extrasmall/xedit.gif\" title=\"" . _EDIT . '" alt="' . _EDIT . '" /></a>';
         }
-        
+
         return $result;
     }
-    
+
     function saveValue(&$render, &$data)
     {
         if ($this->enableDBUtil && $this->dataBased) {
@@ -145,13 +145,13 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
             parent::saveValue($render, $data);
         }
     }
-    
+
     function loadValue(&$render, &$values)
     {
         if ($this->enableDBUtil && $this->dataBased) {
             $items = null;
             $value = null;
-            
+
             if ($this->group == null) {
                 if ($this->dataField != null && isset($values['__CATEGORIES__'][$this->dataField])) {
                     $value = $values['__CATEGORIES__'][$this->dataField];
@@ -170,13 +170,13 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
                     }
                 }
             }
-            
+
             if ($items != null) {
                 $this->setItems($items);
             }
-            
+
             $this->setSelectedValue($value);
-        
+
         } else {
             parent::loadValue($render, $values);
         }

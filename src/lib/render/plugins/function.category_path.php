@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -46,14 +46,14 @@
  * <samp>{category_path id='/__SYSTEM__/General/ActiveStatus/Active' field='parent_id' assign='parentid'}</samp>
  * <samp>{category_path id=$parentid}</samp>
  *
- * Example from a Content module template: get the sort value of the current 
+ * Example from a Content module template: get the sort value of the current
  * page's category and assign it to the template variable $catsortvalue:
  *
  * <samp>{category_path id=$page.categoryId field='sort_value' assign='catsortvalue'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the {@link Renderer} object.
- * 
+ *
  * @return string The value of the specified category field.
  */
 function smarty_function_category_path($params, &$smarty)

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -13,7 +13,7 @@
  */
 
 /**
- * DataUtil is the class used to manage datas and variables. 
+ * DataUtil is the class used to manage datas and variables.
  *
  * @package Zikula_Core
  * @subpackage DataUtil
@@ -56,31 +56,31 @@ class DataUtil
         return base64_decode($value);
     }
 
-    /** 
-     * Take a name-value-pair string and convert it to an associative array, optionally urldecoding the response. 
-     * 
+    /**
+     * Take a name-value-pair string and convert it to an associative array, optionally urldecoding the response.
+     *
      * @param string  $nvpstr    Name-value-pair String.
      * @param string  $separator Separator used in the NVP string.
      * @param boolean $urldecode Whether to urldecode the NVP fields.
      *
      * @return array Assoc is associative array.
     */
-    public static function decodeNVP ($nvpstr, $separator='&', $urldecode=true)                                                                                   
-    {                                                                                                                                               
-        $assoc = array();                                                                                                                           
-        $items = explode ($separator, $nvpstr);                                                                                                     
-        foreach ($items as $item) {                                                                                                                 
-            $fields = explode ('=', $item);                                                                                                         
-            $key    = $urldecode ? urldecode($fields[0]) : $fields[0];                                                                              
-            $value  = $urldecode ? urldecode($fields[1]) : $fields[1];                                                                              
-            $assoc[$key] = $value;                                                                                                                  
-        } 
+    public static function decodeNVP ($nvpstr, $separator='&', $urldecode=true)
+    {
+        $assoc = array();
+        $items = explode ($separator, $nvpstr);
+        foreach ($items as $item) {
+            $fields = explode ('=', $item);
+            $key    = $urldecode ? urldecode($fields[0]) : $fields[0];
+            $value  = $urldecode ? urldecode($fields[1]) : $fields[1];
+            $assoc[$key] = $value;
+        }
 
         return $assoc;
-    }         
+    }
 
     /**
-     * Decrypt the given value using the mcrypt library function. 
+     * Decrypt the given value using the mcrypt library function.
      * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
@@ -120,9 +120,9 @@ class DataUtil
         return base64_encode($value);
     }
 
-    /** 
+    /**
      * Take a key and value and encode them into an NVP-string entity.
-     * 
+     *
      * @param string  $key          The key to encode.
      * @param string  $value        The value to encode.
      * @param string  $separator    The Separator to use in the NVP string.
@@ -130,22 +130,22 @@ class DataUtil
      *
      * @return string String-encoded NVP or an empty string.
     */
-    public static function encodeNVP ($key, $value, $separator='&', $includeEmpty=true) 
-    {                                                                                                                                                           
-        if (!$key) {                                                                                                                                           
-            return LogUtil::registerError ('Invalid NVP key received');                                                                                        
-        }                                                                                                                                                       
+    public static function encodeNVP ($key, $value, $separator='&', $includeEmpty=true)
+    {
+        if (!$key) {
+            return LogUtil::registerError ('Invalid NVP key received');
+        }
 
-        if ($includeEmpty || ($value != null && strlen($value) > 1)) {                                                                                          
-            return ("&".urlencode($key) ."=" .urlencode($value));                                                                                              
-        }                                                                                                                                                       
+        if ($includeEmpty || ($value != null && strlen($value) > 1)) {
+            return ("&".urlencode($key) ."=" .urlencode($value));
+        }
 
         return '';
     }
 
-    /** 
+    /**
      * Take an array and encode it as a NVP string.
-     * 
+     *
      * @param string  $nvps         The array of name-value paris.
      * @param string  $separator    The Separator to use in the NVP string.
      * @param boolean $includeEmpty Whether to also include empty values.
@@ -167,7 +167,7 @@ class DataUtil
     }
 
     /**
-     * Encrypt the given value using the mcrypt library function. 
+     * Encrypt the given value using the mcrypt library function.
      * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
@@ -552,7 +552,7 @@ class DataUtil
      * @param string $ini_key The ini_key you need the value of.
      *
      * @author Ed Finkler
-     * 
+     *
      * @return boolean|mixed
      */
     public static function getBooleanIniValue($ini_key)

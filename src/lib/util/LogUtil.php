@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -189,9 +189,9 @@ class LogUtil
         self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
         $code = 403;
         if (!pnUserLoggedIn()) {
-        	if (is_null($url)) {
+            if (is_null($url)) {
                 $url = pnModURL('Users', 'user', 'loginscreen', array('returnpage' => urlencode(pnGetCurrentURI())));
-        	}
+            }
             $code = null;
         }
         return self::registerError(__('Sorry! You have not been granted access to this page.'), $code, $url);

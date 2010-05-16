@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2 (or at your option, any later version).
+ * @license GNU/LGPv2.1 (or at your option, any later version).
  * @package Zikula
  * @link http://www.zikula.org
  * @version $Id$
@@ -22,8 +22,8 @@
  *                          response is a string -1 on failure moduleid on sucess.
  */
 function Admin_Ajax_changeModuleCategory() {
-	
-	//security checks
+
+    //security checks
     if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
         $output['alerttext'] = 'You do not have permission to do this.';
         return AjaxUtil::output($output, true);
@@ -32,11 +32,11 @@ function Admin_Ajax_changeModuleCategory() {
         $output['alerttext'] = "Invalid AuthKey.";
         return AjaxUtil::output($output, false);
     }
-    
+
     //get passed information
     $moduleID = FormUtil::getPassedValue("modid");
     $newParentCat = FormUtil::getPassedValue("cat");
-    
+
     //get info on the module
     $module = pnModGetInfo($moduleID);
     if (!$module) {
@@ -63,8 +63,8 @@ function Admin_Ajax_changeModuleCategory() {
  *                          url is a formatted url to the new category on success.
  */
 function Admin_Ajax_addCategory() {
-	
-	//security checks
+
+    //security checks
     if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
         $output['alerttext'] = 'You do not have permission to do this.';
         return AjaxUtil::output($output, true);
@@ -73,11 +73,11 @@ function Admin_Ajax_addCategory() {
         $output['alerttext'] = "Invalid AuthKey.";
         return AjaxUtil::output($output, false);
     }
-    
+
     //get form information
     $catName = trim(FormUtil::getPassedValue('catname'));
     //TODO make sure catName is set.
-    
+
     //check if there exists a cat with this name.
     $cats = pnModAPIFunc('Admin', 'admin', 'getall');
     foreach ($cats as $cat) {
@@ -104,7 +104,7 @@ function Admin_Ajax_addCategory() {
  *                          response is a string -1 on failure deleted cid on sucess.
  */
 function Admin_Ajax_deleteCategory() {
-	//security checks
+    //security checks
     if (!SecurityUtil::confirmAuthKey()) {
         $output['alerttext'] = "Invalid AuthKey.";
         $output['response'] = '-1';
@@ -125,7 +125,7 @@ function Admin_Ajax_deleteCategory() {
         $output['response'] = '-1';
         return AjaxUtil::output($output, true);
     }
-    
+
     //delete the category
     if (pnModAPIFunc('Admin', 'admin', 'delete', array('cid' => $cid))) {
         // Success
@@ -145,10 +145,10 @@ function Admin_Ajax_deleteCategory() {
  * @return AjaxUtil::output Output to the calling ajax request is returned.
  */
 function Admin_Ajax_editCategory() {
-	//get form values
+    //get form values
     $cid = trim(FormUtil::getPassedValue('cid'));
     $cat = trim(FormUtil::getPassedValue('catname'));
-    
+
     //security checks
     if (!SecurityUtil::checkPermission('Admin::Category', "$category[catname]::$cid", ACCESS_EDIT)) {
         $output['alerttext'] = 'You do not have permission to edit this category.';
@@ -160,19 +160,19 @@ function Admin_Ajax_editCategory() {
         $output['response'] = '-1';
         return AjaxUtil::output($output, false);
     }
-    
+
     //make sure cid and category name (cat) are both set
     if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
         $output['alerttext'] = 'ID or Cateogry name not set.';
         $output['response'] = '-1';
         return AjaxUtil::output($output, true);
     }
-    
+
     //check if category with same name exists
     $cats = pnModAPIFunc('Admin', 'admin', 'getall');
     foreach ($cats as $catName) {
         if (in_array($cat, $catName)) {
-        	//check to see if the category with same name is the same category.
+            //check to see if the category with same name is the same category.
             if ($catName['cid'] == $cid) {
                 $output['alerttext'] = '';
                 $output['response'] = $cat;
@@ -184,8 +184,8 @@ function Admin_Ajax_editCategory() {
             return AjaxUtil::output($output, true);
         }
     }
-    
-    //get the category from the database 
+
+    //get the category from the database
     $category = pnModAPIFunc('Admin', 'admin', 'get', array('cid' => $cid));
     if ($category == false) {
         $output['alerttext'] = "Category $cid does not exist.";
