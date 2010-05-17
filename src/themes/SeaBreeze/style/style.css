@@ -1,7 +1,5 @@
-/* $Id$ */
-
 body {
-    font: 12px/140% Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font: 12px/ 140% Verdana, Tahoma, Arial, Helvetica, sans-serif;
     color: #333333;
     background: #FFFFFF;
     margin: 0px;
@@ -9,7 +7,6 @@ body {
 }
 
 /* *** Page Layout *** */
-
 #pagewidth {
     width: 100%;
     text-align: left;
@@ -23,71 +20,75 @@ body {
     background-image: url(../images/fc_right.png);
     background-position: 80% 0;
     background-repeat: repeat-y;
-    padding-bottom:2em;
+    padding-bottom: 2em;
 }
 
 #leftcol {
-    float:left;
-    overflow:hidden;
-    position:relative;
-    width:20%;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 20%;
 }
 
 #rightcol {
-    float:right;
-    position:relative;
-    width:20%;
+    float: right;
+    position: relative;
+    width: 20%;
 }
 
 #maincol {
-    display:inline;
-    float:left;
-    margin-bottom:20px;
-    margin-left:1%;
-    position:relative;
-    width:58%;
+    display: inline;
+    float: left;
+    margin-bottom: 20px;
+    margin-left: 1%;
+    position: relative;
+    width: 58%;
 }
 
 .onecol #pagewidth,
 .onecol #wrapper,
 .noleftcol #pagewidth,
-.norightcol #wrapper {
-    background-image:none;
+.norightcol #wrapper
+    {
+    background-image: none;
 }
 
 .noleftcol #maincol,
 .norightcol #maincol {
-    width:78%;
+    width: 78%;
 }
 
 .onecol #maincol {
-    float:none;
-    width:auto;
+    float: none;
+    width: auto;
 }
 
 #footer {
     background: #ffffff url(../images/bottombg.png) repeat-x top;
-    color:#000000;
+    color: #000000;
     padding: 5px;
-    margin:0 auto;
-    position:relative;
+    margin: 0 auto;
+    position: relative;
     text-align: center;
 }
 
 /*printer styles*/
-@media print{
-    /*hide the left column when printing*/
-    #leftcol{display:none;}
-
+@media print { /*hide the left column when printing*/
+    #leftcol {
+        display: none;
+    }
     /*hide the right column when printing*/
-    #rightcol{display:none;}
-    #twocols, #maincol{width:100%; float:none;}
+    #rightcol {
+        display: none;
+    }
+    #twocols,
+    #maincol {
+        width: 100%;
+        float: none;
+    }
 }
 
-
 /*STYLING THE FORMS AND INPUT */
-
-
 .button {
     font: 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
     background-color: #D7E5F2;
@@ -117,8 +118,7 @@ textarea {
     max-width: 700px;
 }
 
-input
-{
+input {
     background: #FFFFFF url(../images/input.png) repeat-x top;
     color: #000000;
     border: 0;
@@ -146,8 +146,6 @@ input.r-button {
     background: none;
 }
 
-
-
 input:hover,
 select:hover,
 textarea:hover {
@@ -160,12 +158,9 @@ textarea:focus {
     border-color: #8DC741;
 }
 
-
-.pnRightBlock input:focus {
+.sbRightBlock input:focus {
     background-color: #FFF;
 }
-
-
 
 /* Temporary fix for old modules in standards browsers */
 table[border="1"],
@@ -181,7 +176,8 @@ table[border="1"] th,
 table[border="2"] td,
 table[border="2"] th,
 table[border="3"] td,
-table[border="3"] th {
+table[border="3"] th
+    {
     text-align: left;
     border: 2px solid #4C5EA8;
     margin: 0px;
@@ -197,13 +193,14 @@ table[border="3"] th {
 }
 
 /*  IE hacks, "* html" style only read by IE, as it selects nothing */
-/*
+    /*
 IE6 only uses the standard W3C Boxmodel in CSS1Compat mode, which requires a full Doctype declaration with Label and URL to the Dtd.
 It defaults to BackCompat mode, which works like previous versions of IE.
 */
 * html #LeftCol {
     width: 155px; /* IE 5.x uses non-standard Box Model */
-    wid\th: 140px;  /* IE 6 can uses W3C Standard box model (in CSS1Compat mode), IE 5.x chokes on escape character */
+    wid\th: 140px;
+    /* IE 6 can uses W3C Standard box model (in CSS1Compat mode), IE 5.x chokes on escape character */
 }
 
 #CenterCol {
@@ -213,10 +210,10 @@ It defaults to BackCompat mode, which works like previous versions of IE.
 }
 
 #box_content {
-    display:block;
-    background:#fff;
-    border:0 solid #fff;
-    padding:0 10px;
+    display: block;
+    background: #fff;
+    border: 0 solid #fff;
+    padding: 0 10px;
 }
 
 #header {
@@ -228,10 +225,9 @@ It defaults to BackCompat mode, which works like previous versions of IE.
 }
 
 #header .logotop {
-    padding-top:7px;
-    padding-left:20px;
+    padding-top: 7px;
+    padding-left: 20px;
 }
-
 
 #topmenu {
     margin: 0px;
@@ -241,11 +237,12 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     text-align: center;
     vertical-align: middle;
     clear: both;
-
 }
+
 #topmenu a {
     text-decoration: none;
 }
+
 #bottomMenu {
     font-size: 10px;
     text-align: center;
@@ -255,58 +252,56 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     clear: both;
 }
 
-
-
 /* STANDARD */
 .z-formbuttons {
-    color:#336699;
+    color: #336699;
 }
 
-.z-formbuttons a:hover{
-    color:#336699;
-}
-.z-formbuttons a:active{
-    color:#999999;
+.z-formbuttons a:hover {
+    color: #336699;
 }
 
+.z-formbuttons a:active {
+    color: #999999;
+}
 
-
-/* navigation top */
-
-/*Tab Start */
+/* navigation top */ /*Tab Start */
 #navi {
-    height:25px;
-    left:20px;
-    line-height:normal;
-    position:absolute;
-    text-align:center;
-    top:100px;
+    height: 25px;
+    left: 20px;
+    line-height: normal;
+    position: absolute;
+    text-align: center;
+    top: 100px;
 }
+
 #nav {
-    clear:both;
-    float:left;
-    height:30px;
-    list-style-image:none;
-    list-style-position:outside;
-    list-style-type:none;
-    margin:0;
-    overflow:hidden;
-    padding:0;
+    clear: both;
+    float: left;
+    height: 30px;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
 }
+
 #nav li {
     float: left;
     background: url(../images/navtabr.png) top right repeat-x;
     margin: 0;
-    line-height:30px;
-    margin-left:2px;
+    line-height: 30px;
+    margin-left: 2px;
 }
+
 #nav .page_item a {
-    color:#FFFFFF;
-    display:block;
-    font-size:12px;
-    font-weight:bold;
-    line-height:normal;
-    padding:8px;
+    color: #FFFFFF;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: normal;
+    padding: 8px;
 }
 
 #nav .page_item a:hover {
@@ -314,18 +309,22 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     border: none;
     color: #F8981D;
 }
+
 * html #nav .page_item a:hover {
     background-position: 0 0;
     border: none;
     color: #F8981D;
 }
+
 #nav li.current_page_item {
     color: #fff;
     text-decoration: none;
     background: url(../images/navtabr.png) no-repeat right;
     background-position: 100% -34px;
 }
-#nav .current_page_item a, #nav .current_page_item a:visited {
+
+#nav .current_page_item a,
+#nav .current_page_item a:visited {
     color: #fff;
     text-decoration: none;
     background: url(../images/navtabl.png) no-repeat;
@@ -333,67 +332,60 @@ It defaults to BackCompat mode, which works like previous versions of IE.
 }
 
 /* footer area */
-
-
 #footer a,
 #footer a:visited {
-    color:#000000;
-    font:11px Tahoma, Verdana, Arial, Helvetica, sans-serif;
-    text-decoration:none;
+    color: #000000;
+    font: 11px Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    text-decoration: none;
     clear: both;
 }
 
-#footer a:hover { color:#333; }
+#footer a:hover {
+    color: #333;
+}
+
 /* alignments */
 .center {
     text-align: center;
 }
 
-
-/* Main menu in PN 0.76+ */
-#pnMainMenu {
-    padding-left: 1em;
-    margin-left: 0em;
-}
-/* Stories block menu */
-.storiesmenu {
-    padding-left: 1em;
-    margin-left: 0em;
-}
-
-
 /* Center blocks and admin messages */
 div#CenterBlocks {
-    font-family:Verdana,Tahoma,Arial,Helvetica,sans-serif;
-    font-size:11px;
-    font-size-adjust:none;
-    font-style:normal;
-    font-variant:normal;
-    font-weight:normal;
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-size-adjust: none;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
 }
+
 #CenterBlocks .z-title {
     font: bold 14px Verdana, Tahoma, Arial, Helvetica, sans-serif;
     color: #CC6600; /*#4C5EA8; #006699 #003366;*/
 }
-#CenterBlocks td,
-#CenterBlocks div {
+
+#CenterBlocks td,#CenterBlocks div {
     margin-bottom: 15px;
 }
 
-a img, img {border: 0px; }
+a img,
+img {
+    border: 0px;
+}
 
 /* Anchor styles */
-a:link, a:visited {
+a:link,
+a:visited {
     color: #4C5EA8;
     text-decoration: none;
 }
+
 a:hover,
 a:active {
     color: #8CC63F;
 }
 
 /* ----------  side bar rollovers ------- */
-
 #sidebar {
     color: #999999;
     padding-left: 10px;
@@ -406,7 +398,7 @@ a:active {
     letter-spacing: 0.1em;
     border: 0;
     text-align: left;
-    padding-left:0;
+    padding-left: 0;
     margin-left: 0;
     text-decoration: none;
 }
@@ -450,7 +442,7 @@ a:active {
 
 /* Titles */
 .z-title {
-    font: bold 14px/150% Verdana, Helvetica, Arial, sans-serif;
+    font: bold 14px/ 150% Verdana, Helvetica, Arial, sans-serif;
     color: #CC6600;
     text-align: center;
     text-decoration: none;
@@ -461,7 +453,7 @@ a:active {
 
 h1,
 h1.z-pagetitle {
-    font: bold 22px/160% Verdana, Helvetica, Arial, sans-serif;
+    font: bold 22px/ 160% Verdana, Helvetica, Arial, sans-serif;
     color: #F8981D;
     text-decoration: none;
     letter-spacing: 1pt;
@@ -471,7 +463,7 @@ h1.z-pagetitle {
 }
 
 h1.title {
-    font: bold 30px/190% Verdana, Helvetica, Arial, sans-serif;
+    font: bold 30px/ 190% Verdana, Helvetica, Arial, sans-serif;
     color: #990000;
     text-decoration: none;
     letter-spacing: 1pt;
@@ -497,7 +489,7 @@ h3.z-title {
 }
 
 h4,
-h4.z-title{
+h4.z-title {
     font-size: 14px;
     line-height: 130%;
     font-weight: bold;
@@ -508,7 +500,7 @@ h4.z-title{
 }
 
 td.z-title {
-    font: bold 14px/150% Verdana,Helvetica,sans-serif;
+    font: bold 14px/ 150% Verdana, Helvetica, sans-serif;
     color: #4C5EA8;
     text-decoration: none;
     background: none;
@@ -527,10 +519,12 @@ a.z-title:visited {
     color: #4C5EA8;
     text-decoration: underline;
 }
+
 a.z-title:hover {
     color: #CC6600;
     text-decoration: underline;
 }
+
 a.z-title:active {
     color: #FF9900;
     text-decoration: underline;
@@ -538,41 +532,52 @@ a.z-title:active {
 
 /* used in /templates/modules/News/newsuserdisplay.htm */
 .z-art {
-    font: 10pt/1.5em Verdana, Helvetica, Arial, sans-serif;
+    font: 10pt/ 1.5em Verdana, Helvetica, Arial, sans-serif;
     color: #191919;
     background: none;
     text-decoration: none;
 }
 
 /* "More" and "Posted by" text */
-.pnsub {
+.sb-sub {
     font: 10px Verdana, Helvetica, Arial, sans-serif;
     color: #999999;
 }
-a.pnsub:link {
+
+a.sb-sub:link {
     color: #666666;
     text-decoration: underline;
     background: none;
 }
-a.pnsub:visited {
-color: #4C5EA8; }
-a.pnsub:hover {
-color: #CC6600; }
-a.pnsub:active {
-color: #FF9900; }
+
+a.sb-sub:visited {
+    color: #4C5EA8;
+}
+
+a.sb-sub:hover {
+    color: #CC6600;
+}
+
+a.sb-sub:active {
+    color: #FF9900;
+}
 
 /* News articles */
 .ArticleBlock {
     margin-bottom: 0.8em;
 }
+
 .ArticleHead {
     margin-bottom: 6px;
 }
+
 .Article {
     background: white;
     line-height: 1.3em;
 }
-.storytitle, z-storytitle {
+
+.storytitle,
+z-storytitle {
     font-size: 12px;
     line-height: 130%;
     font-weight: bold;
@@ -581,14 +586,18 @@ color: #FF9900; }
     margin-bottom: 3px;
     text-decoration: none;
 }
+
 h4.storytitle img { /* align Article image */
     margin-bottom: -5px;
 }
 
-div.pnsub img { /* Print this and Email this images */
+div.sb-sub img { /* Print this and Email this images */
     margin-bottom: -3px;
 }
-.note { margin-bottom: 1.2em; }
+
+.note {
+    margin-bottom: 1.2em;
+}
 
 /* News title links */
 h4.storytitle {
@@ -596,12 +605,14 @@ h4.storytitle {
     font-weight: bold;
     text-decoration: underline;
 }
+
 h4.storytitle a:link,
 h4.storytitle a:visited {
     color: #4C5EA8;
 }
+
 h4.storytitle a:hover,
-h4.storytitle a:active  {
+h4.storytitle a:active {
     color: #CC6600;
 }
 
@@ -616,19 +627,19 @@ h4.BlockTitleRight,
 }
 
 /* Block styles */
-.pnLeftBlock {
+.sbLeftBlock {
     width: 100%; /* 150-6px */
     padding: 3px;
 }
 
-.pnRightBlock {
+.sbRightBlock {
     width: 95%; /* 150-6px */
     padding: 10px 0px 5px 10px; /*top right bottom left */
     margin-bottom: 5px;
     margin-right: 0px;
 }
 
-.pnRightBlock ul li {
+.sbRightBlock ul li {
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: normal;
@@ -639,11 +650,11 @@ h4.BlockTitleRight,
     text-decoration: none;
 }
 
-.pnRightBlock ul ul ul.children {
+.sbRightBlock ul ul ul.children {
     padding-left: 4px;
 }
 
-.pnRightBlock ul {
+.sbRightBlock ul {
     margin-left: 0;
     padding-left: 0;
     list-style-type: none;
@@ -651,38 +662,29 @@ h4.BlockTitleRight,
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
 }
 
-.pnRightBlock a {
+.sbRightBlock a {
     color: #000000;
     text-decoration: none;
 }
 
-.pnRightBlock a:link, .pnRightBlock a:visited {
+.sbRightBlock a:link,
+.sbRightBlock a:visited {
     text-decoration: none;
 }
 
-.pnRightBlock a:hover {
+.sbRightBlock a:hover {
     color: #C45915;
     text-decoration: none;
 }
 
-/* menu styles */
-.z-menu {
-    text-align: left;
-}
-.z-menuitem-title {
-    text-align: left;
-}
-
 /* General*/
-.clear  { clear: both; }
-.nobreak   { white-space: nowrap; }
-.pnleft {
+.sbleft {
     vertical-align: middle;
     float: left;
     text-align: left;
 }
 
-.pnright {
+.sbright {
     float: right;
     /*    clear: right; */
     text-align: right;
@@ -698,6 +700,7 @@ h4.BlockTitleRight,
     margin-top: 3px;
     margin-bottom: 4px;
 }
+
 .TopicImageRight {
     float: right;
     vertical-align: top;
@@ -708,15 +711,14 @@ h4.BlockTitleRight,
 }
 
 /* Other Stuff */
-
 .feeds-image {
     float: left;
     padding: 10px;
 }
 
 #z-maincontent p {
-    font-size:12px;
-    line-height:1.5em;
+    font-size: 12px;
+    line-height: 1.5em;
 }
 
 #z-maincontent {
@@ -733,9 +735,9 @@ h4.BlockTitleRight,
 }
 
 div#z-maincontent a#news_notes_collapse {
-    padding-bottom:0em;
+    padding-bottom: 0em;
 }
 
 .admin_messages_block {
-    margin-top:1em;
+    margin-top: 1em;
 }
