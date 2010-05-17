@@ -462,7 +462,7 @@ function modules_adminapi_remove($args)
     // remove the entry from the modules table
     if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
         // who can access to the mainSite can delete the modules in any other site
-        $canDelete = ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')) ? 1 : 0;
+        $canDelete = (($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) ? 1 : 0;
         //delete the module infomation only if it is not allowed, missign or invalid
         if ($canDelete == 1 || $modinfo['state'] == PNMODULE_STATE_NOTALLOWED || $modinfo['state'] == PNMODULE_STATE_MISSING || $modinfo['state'] == PNMODULE_STATE_INVALID) {
             // remove the entry from the modules table
@@ -829,7 +829,7 @@ function modules_adminapi_regenerate($args)
             }
             if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
                 // only the main site can regenerate the modules list
-                if ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')) {
+                if (($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) {
                     DBUtil::insertObject($modinfo, 'modules');
                 }
             } else {
