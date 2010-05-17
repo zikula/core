@@ -1103,7 +1103,7 @@ function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
     // What do we want to log?
     // 1 - Log real errors only.  2 - Log everything
     $logError = ($errorlog == 2 || ($errorlog == 1 && ($errno != E_WARNING && $errno != E_NOTICE && $errno != E_USER_WARNING && $errno != E_USER_NOTICE)));
-    if ($logerror == true) {
+    if ($logError == true) {
         // log the error
         $msg = "Zikula Error: $errstr";
         if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
