@@ -563,8 +563,16 @@ function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false
     $cosfile = "config/functions/$osdirectory/pn{$ostype}{$osapi}.php";
     $mosfile = "$modpath/$osdirectory/pn{$ostype}{$osapi}.php";
     $mosdir  = "$modpath/$osdirectory/pn{$ostype}{$osapi}";
+    $oopcontroller = "$modpath/$osdirectory/{$modname}_{$ostype}{$osapi}.php";
+    $coopcontroller = "config/classes/$osdirectory/{$modname}_{$ostype}{$osapi}.php";
 
-    if (file_exists($cosfile)) {
+    if (file_exists($coopcontroller)) {
+        // Load the file from modules
+        Loader::includeOnce($coopcontroller);
+    } elseif (file_exists($oopcontroller)) {
+        // Load the file from modules
+        Loader::includeOnce($oopcontroller);
+    } elseif (file_exists($cosfile)) {
         // Load the file from config
         Loader::includeOnce($cosfile);
     } elseif (file_exists($mosfile)) {
@@ -673,38 +681,57 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
 
     // Build function name and call function
     $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
-    if ($loadfunc($modname, $type)) {
-        if (function_exists($modfunc)) {
-            $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            EventManagerUtil::notify($event);
-            return $modfunc($args);
+    $loaded = call_user_func_array($loadfunc, array($modname, $type));
+
+    $className = "{$modname}_{$type}{$ftype}";
+    $controller = null;
+
+    if (class_exists($className)) {
+        $r = new ReflectionClass($className);
+        $controller = $r->newInstance();
+        if (is_callable(array($controller, $func))) {
+            $modfunc = array($controller, $func);
         }
+    }
+
+    $preExecuteEvent = new Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+    $postExecuteEvent = new Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+    if ($loaded) {
+        if (is_callable($modfunc)) {
+            EventManagerUtil::notify($preExecuteEvent);
+            $postExecuteEvent->setData(call_user_func($modfunc, $args));
+            return EventManagerUtil::notify($postExecuteEvent)->getData();
+        }
+
         // get the theme
         if ($GLOBALS['loadstages'] & PN_CORE_THEME) {
             $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
             if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (function_exists($modfunc)) {
-                    $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-                    EventManagerUtil::notify($event);
-                    return $modfunc($args);
+                    EventManagerUtil::notify($preExecuteEvent)->getData();
+                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                    return EventManagerUtil::notify($postExecuteEvent)->getData();
                 }
             }
         }
+
         if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
             Loader::loadFile($file);
-            if (function_exists($modfunc)) {
-                $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-                EventManagerUtil::notify($event);
-                return $modfunc($args);
+            if (is_callable($modfunc)) {
+                EventManagerUtil::notify($preExecuteEvent)->getData();
+                $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                return EventManagerUtil::notify($postExecuteEvent)->getData();
             }
         }
+
         if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
             Loader::loadFile($file);
-            if (function_exists($modfunc)) {
-                $event = new Event('module.execute', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-                EventManagerUtil::notify($event);
+            if (is_callable($modfunc)) {
                 return $modfunc($args);
+                EventManagerUtil::notify($preExecuteEvent)->getData();
+                $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                return EventManagerUtil::notify($postExecuteEvent)->getData();
             }
         }
 
@@ -717,8 +744,8 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
         // return void
         $event = new Event('module.execute_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
         EventManagerUtil::notifyUntil($event);
-        if ($event->hasNotified()) {
-            return $event->getData();
+        if ($preExecuteEvent->hasNotified()) {
+            return $preExecuteEvent->getData();
         }
     }
 }

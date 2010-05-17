@@ -124,37 +124,14 @@ Blocks module admin section now has filtering options for block-position, module
 Blocks module now has sorting options for the main columns in the admin view (Issue #2012).
 Added $ZConfig['System']['legacy_prefilters'] to the config.php to enable/disable legacy template prefilters.
 Added $ZConfig['System']['compat_layer'] to config.php to enable/disable the compatibility layer.
-Introduced EventManager and the following events: core.preinit, core.init, core.postinit, user.login, user.logout, user.login.failed, module.execute, module.postcallhooks, theme.init, render.init, user.gettheme, module.postloadgeneric, dbobject.pre/post*.
+Introduced EventManager and the following events: core.preinit, core.init, core.postinit, user.login, user.logout, user.login.failed, module.execute, module.postcallhooks, theme.init, render.init, user.gettheme, module.postloadgeneric, dbobject.pre/post*, systemerror.
 Fixed Form_Render::registerPlugin() in environments where the installation is not in the server document root.
-Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects(). 
-
-CHANGELOG - ZIKULA 1.2.3
-------------------------
-Fixed pnUserGetVars / pnUserGetIDFromName can't retrieve by all-numeric username.
-Fixed <!--[online]--> non working plugin, issue #1799.
-Updated permission check for registration applications, issue #1849.
-Add new parameter to DataUtil::is_serialized to avoid DataUtil::mb_unserialize.
-Fix display name of block language in admin view of Blocks manager.
-Fix javascript order with scriptaculous and combining scripts enabled. (issue #1736)
-Changed default sortField in selector_category pnRender Plugin. (issue #1817)
-Fixed validation for pnformdateinput to allow input of YYYY-DD-MM MM:HH:SS style datetime. (issue #1956).
-Added output filtering to Errors module templates (issue #1958).
-Add more clarity about the option 'show installed modules' in extmenu (issue #1945).
-Image return for an anonymous user should be 'empty' with the renderer plugin userprofilelink  (issue #1895).
-Missing language domain in themeswitcher block (issue #1896).
-Added validation to language parameter (issue #1963).
-Fixed output formatting in pnformfloatinput plugin (issue #1965).
-Standardize PNObjectArray::cleanFilter() into a PreProcess method (issue #1967).
-Category main admin screen now uses less memory and should be significantly faster (issue #216).
-ValidationUtil now supports the in, notin and regexp comparison operators (issue #966).
-Added insert/update/delete convenience methods to CategoryUtil (issue #1723).
-New DataUtil methods: encodeNVP(), encodeNVPArray(), decodeNVP().
-ImageViewer improvements: better gallery selector, pager info, new loading image, better css styles (issues #1920 and #1923).
-Extended Menu item images not saving (issue #1940).
-Fixed validation() method in PNObjectArray, unassigned variable.
-Fixed translation files not loading when Zikula is not in the DOCUMENT_ROOT path (issue #1977).
-Added authid tokens to User lost password templates (issue #1979).
-Fixed extended menu (extmenu) item images not saving (issue #1940).
+Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects().
+Fixed theme list not sorted correctly on Theme view (Issue #1974).
+Fixed pager plugin images always in english (Issue #1883).
+Fixed wrong contents in modvar 'permareplace' (Issue #2044).
+Updated css messages (Issue #2043 & Issue #2030).
+Added ability to have OO controllers in modules. 
 
 CHANGELOG - ZIKULA 1.2.2
 ------------------------

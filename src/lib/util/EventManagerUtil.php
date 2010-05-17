@@ -94,16 +94,23 @@ class EventManagerUtil
      */
     static public function attachCustomHandlers($dir = null)
     {
+        static $loaded;
         $dir = (is_null($dir) ? 'config' . DIRECTORY_SEPARATOR . 'EventHandlers' : $dir);
+        if (isset($loaded[$dir])) {
+            return;
+        }
+
         $it = FileUtil::getFiles($dir);
         foreach ($it as $file) {
             if (!strrpos($file, '.php')) {
                 continue;
             }
-            include $dir . DIRECTORY_SEPARATOR . $file;
+            include realpath($dir . DIRECTORY_SEPARATOR . $file);
             $class = substr($file, 0, strrpos($file, '.php'));
             $handler = new $class;
             $handler->attach();
         }
+
+        $loaded[$dir] = true;
     }
 }

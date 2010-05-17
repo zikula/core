@@ -53,3 +53,7 @@
        $foo->bar = array($foo, 'bar')
        myfunction() = 'myfunction'
 
+- Added ability to have OO controllers in modules.  Look at SysInfo module for
+  example.  Also see the EventHandlers folder which shows how a method can be
+  added to the controller via a notifyUntil() events of name
+  'modulecontroller.method_not_founc'.
