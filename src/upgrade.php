@@ -86,7 +86,7 @@ function _upg_header()
     echo '<div id="headertopright"><img src="install/pnimages/top2.jpg" alt="" /></div>' . "\n";
     echo '</div>' . "\n";
     echo '<div class="menu">' . "\n";
-    echo '<p id="notice">' . __('For more information about the upgrade process, please read the <a href="docs/upgrade.html">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.') . '</p>';
+    echo '<p id="notice">' . __('For more information about the upgrade process, please read the <a href="docs/' . $lang . 'UPGRADING">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.') . '</p>';
     echo '</div>';
     echo '<div id="content">';
     if (pnUserLoggedIn()) {
