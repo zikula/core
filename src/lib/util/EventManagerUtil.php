@@ -52,7 +52,7 @@ class EventManagerUtil
      */
     static public function notify(Event $event)
     {
-        self::getEventManager()->notify($event);
+        return self::getEventManager()->notify($event);
     }
 
     /**
@@ -62,7 +62,7 @@ class EventManagerUtil
      */
     static public function notifyUntil(Event $event)
     {
-        self::getEventManager()->notify($event);
+        return self::getEventManager()->notify($event);
     }
 
     /**
@@ -95,17 +95,15 @@ class EventManagerUtil
     static public function attachCustomHandlers($dir = null)
     {
         $dir = (is_null($dir) ? 'config' . DIRECTORY_SEPARATOR . 'EventHandlers' : $dir);
-        $it = new FilesystemIterator($dir);
-        while ($it->valid()) {
-            if (!$it->isFile() || !strrpos($it->getFilename(), '.php')) {
-                $it->next();
+        $it = FileUtil::getFiles($dir);
+        foreach ($it as $file) {
+            if (!strrpos($file, '.php')) {
                 continue;
             }
-            include $it->getPath() . DIRECTORY_SEPARATOR . $it->getFilename();
-            $class = $it->getBasename('.php');
+            include $dir . DIRECTORY_SEPARATOR . $file;
+            $class = substr($file, 0, strrpos($file, '.php'));
             $handler = new $class;
             $handler->attach();
-            $it->next();
         }
     }
 }
