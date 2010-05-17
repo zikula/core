@@ -37,3 +37,12 @@
   requirement message was aded to inform the admin that this block will not be
   visible until he enables the multilanguage system.
 
+- You may now customise the core with Event Handler, these can be loaded in
+  config/EventHandlers.  The classes should be the same as the filename and
+  extend from CustomEventHandler.
+
+- In modules you can autoload event handlers by calling
+  EventManagerUtil::attachCustomHandlers($path) which should be a folder with
+  just event handlers, or if you have static method handler just load them
+  directly with EventManagerUtil::attach($name, array($classname, $staticmethod));
+
