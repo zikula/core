@@ -97,7 +97,7 @@ class EventManagerUtil
         $dir = (is_null($dir) ? 'config' . DIRECTORY_SEPARATOR . 'EventHandlers' : $dir);
         $it = new FilesystemIterator($dir);
         while ($it->valid()) {
-            if (!$it->isFile() || !strrpos($is->getFilename(), '.php')) {
+            if (!$it->isFile() || !strrpos($it->getFilename(), '.php')) {
                 $it->next();
                 continue;
             }
