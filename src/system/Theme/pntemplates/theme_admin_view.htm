@@ -19,7 +19,7 @@
             {foreach from=$themes item=theme}
             <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
                 <td>
-                    <strong>{$theme.displayname|varprepfordisplay}</strong>
+                    {$theme.displayname|varprepfordisplay}
                     {if $theme.name|strtolower eq $currenttheme|strtolower} (*) {/if}
                 </td>
                 <td>{$theme.type|themetype}</td>

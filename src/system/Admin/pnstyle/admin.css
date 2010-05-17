@@ -216,64 +216,81 @@ table.z-admintable ul {
 /*******************************************************************************/
 
 div#z-securityanalyzer {
-    background: #fff6bf url(../../../images/icons/large/error.gif) center no-repeat;
+    background: #fff6bf url(../../../images/icons/large/bell.gif) center no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
-    border-top: 2px solid #ffd324;
-    border-bottom: 2px solid #ffd324;
+    border: 2px solid #ffd324;
     min-height: 2.5em;
-    margin-bottom: 1em;
-}
-
-div#z-securityanalyzer ul {
-    list-style-position: outside;
-    list-style-type: disc;
-    margin: 0.5em 1em 0;
+    margin: 1em auto 2em auto;
+    width:75%;
+    -webkit-box-shadow: #999 4px 4px 10px;
+    -moz-box-shadow: #999 4px 4px 10px;
+    box-shadow: #999 4px 4px 10px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    color: #444;
 }
 
 /* styling for status update checker */
 div#z-updatechecker {
-    border: 1px solid green;
-    background: #ffffea url(../../../images/icons/large/agt_update_recommended.gif) no-repeat 2% 50%;
-    margin: 0 auto;
-    font-weight: bold;
-    padding: 2em 2em 1em 6em;
-    width: 90%;
+    background: #ffffea url(../../../images/icons/large/agt_update-product.gif) center no-repeat;
+    background-position: 15px 50%; /* x-pos y-pos */
+    text-align: left;
+    padding: 1em 20px 1em 90px !important;
+    border: 2px solid #32CD32;
     min-height: 1em;
-    margin-bottom: 1em;
+    margin: 1em auto 2em auto;
+    width:75%;
+    -webkit-box-shadow: #999 4px 4px 10px;
+    -moz-box-shadow: #999 4px 4px 10px;
+    box-shadow: #999 4px 4px 10px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    color: #444;
 }
 
-/* styles for the warning message shown if any of the install directory, install.php or psak.php are found */
-div.warning-container {
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    background-color: #ffffea;
-    color: inherit;
-    text-align: center;
-    border: 1px solid red;
-    padding: 10px;
+/* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
+div#z-adminwarning {
+    background: #FFCBCA url(../../../images/icons/large/error.gif) center no-repeat;
+    background-position: 15px 50%; /* x-pos y-pos */
+    text-align: left;
+    padding: 1em 20px 1em 90px !important;
+    border: 2px solid red;
+    min-height: 1em;
+    margin: 1em auto 2em auto;
+    width:75%;
+    -webkit-box-shadow: #999 4px 4px 10px;
+    -moz-box-shadow: #999 4px 4px 10px;
+    box-shadow: #999 4px 4px 10px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    color: #444;
 }
-div.warning-container ul {
-    list-style-type: none;
+
+div#z-adminwarning a,
+div#z-adminwarning h3,
+div#z-updatechecker a,
+div#z-updatechecker h3,
+div#z-securityanalyzer a,
+div#z-securityanalyzer h3 {
+    color: #444;
 }
-div.warning-container ul li {
-    line-height: 2.5em;
-    padding: 0.5em 0;
+div#z-adminwarning a:hover,
+div#z-updatechecker a:hover,
+div#z-securityanalyzer a:hover {
+    color: #000;
+    text-decoration: underline;
 }
-div.warning-container ul li strong {
-    color: red;
-    background-color: inherit;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-div.warning-container h2 {
-    color: red;
-    background-color: inherit;
-    display: block;
-}
-div.warning-container img {
-    float: left;
+div#z-adminwarning ul,
+div#z-updatechecker ul,
+div#z-securityanalyzer ul {
+    list-style-position: outside;
+    list-style-type: disc;
+    margin: 0.5em 1em 0;
 }
 
 /* Used to style the cancel delete button when asking for a confirmation */
