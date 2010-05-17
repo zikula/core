@@ -304,7 +304,8 @@ class FileUtil
             return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::readFile', 'filename')));
         }
 
-        return file_get_contents(DataUtil::formatForOS($filename, $absolute));
+        $fName = DataUtil::formatForOS($filename, $absolute);
+        return file_get_contents($fName);
     }
 
     /**
@@ -391,13 +392,8 @@ class FileUtil
             return (bool)file_put_contents(DataUtil::formatForOS($filename, $absolute), $data);
         }
 
-        // for PHP4 versions which don't have file_put_contents
-        if ($fd = fopen(DataUtil::formatForOS($filename, $absolute), 'w')) {
-            fwrite($fd, $data);
-            return fclose($fd);
-        }
-
-        return false;
+        $fName = DataUtil::formatForOS($filename, $absolute);
+	return file_put_contents($fName, $data);
     }
 
     /**
