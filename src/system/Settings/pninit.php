@@ -69,7 +69,7 @@ function settings_init()
     //! this is a comma-separated list of special characters to search for in permalinks
     pnConfigSetVar('permasearch',  __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
     //! this is a comma-separated list of special characters to replace in permalinks
-    pnConfigSetVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+    pnConfigSetVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
 
     pnConfigSetVar('language',ZLanguage::getLanguageCodeLegacy());
     pnConfigSetVar('locale', ZLanguage::getLocale());
@@ -121,7 +121,7 @@ function settings_upgrade($oldversion)
             //! this is a comma-separated list of special characters to search for in permalinks
             pnConfigSetVar('permasearch',  __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
             //! this is a comma-separated list of special characters to replace in permalinks
-            pnConfigSetVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+            pnConfigSetVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
 
         case '2.8':
             pnConfigDelVar('dyn_keywords');
