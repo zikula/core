@@ -213,7 +213,7 @@ Added translation functions:
   __f() translate with sprintf().
   _fn() translate plural with sprintf().
 
-<!--[pndate_format]--> no longer takes defines (but is backwards comapatible). Please use the following strings instead: datelong, datebrief, datestring, datestring2, datetimebrief, datetimelong, timebrief, timelong.
+<!--[date_format]--> no longer takes defines (but is backwards comapatible). Please use the following strings instead: datelong, datebrief, datestring, datestring2, datetimebrief, datetimelong, timebrief, timelong.
 
 New Plugins:
   <!--[homepage]--> will return the actual homepage of the site (supported by pnGetHomePageURL()).

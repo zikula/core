@@ -17,10 +17,10 @@
  * Include the shared.make_timestamp.php plugin
  *
  * Example:
- * <!--[$timestamp|pndate_format:'%a, %d %b %Y']-->
+ * <!--[$timestamp|date_format:'%a, %d %b %Y']-->
  * Saturday, 12 Dec 2009
  *
- * <!--[$timestamp|pndate_format:'%a, %d %b %Y':$defaultimestamp]-->
+ * <!--[$timestamp|date_format:'%a, %d %b %Y':$defaultimestamp]-->
  * If $timestamp is empty the $defaultimestamp will be used
  */
 require_once $smarty->_get_plugin_filepath('shared', 'make_timestamp');
