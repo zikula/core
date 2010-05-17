@@ -1,0 +1,92 @@
+You may register event listeners with EventManagerUtil::attach($name, $handler);
+
+You may issue events with
+
+    [php]
+    $event = new Event($name, $subject, $args);
+    EventManagerUtil::notify($event);
+
+Any changes made to the $event object or $subject in the handlers will be carry over (standard PHP5 behaviour).
+
+List of event names you can take advantage of in the core.
+core.preinit
+    Occurs after the config.php is loaded.
+
+core.init
+    Occurs after each pnInit stage, $event['stages'] contains the stage.
+
+core.postinit
+    Occurs just before pnInit exists from normal execution.
+
+user.login
+    Occurs right after login, $event['user'] is the UID of the logged in user.
+
+user.logout
+    Occurs right after logout, $event['user'] is the UID of the user who logged out.
+
+user.login.failed
+    Occurs on login failure. $event['username'] with the username attempted.
+
+user.gettheme
+    This is invoked with notifyUntil so you should execute $event->setNotified() in the event handler.
+    receives $event['name'] the chosen theme name, it can modify the name.
+
+module.postloadgeneric
+    receives the args array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api).
+
+module.preexecute
+    Occurs in pnModFuncExec() after function call with the following args:
+    array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
+
+module.postexecute
+    Occurs in pnModFuncExec() after function call with the following args:
+    array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
+    receives the modules output with $event->getData();
+    can modify this output with $event->serData($data);
+
+module.execute_not_found if no methods are found in pnModFuncExec()
+    array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
+    This kind of eventhandler should
+        1. Check $event['modfunc'] to see if it should run else exit silently.
+        2. Do something like $result = {$event['modfunc']}({$event['args'});
+        3. Save the result $event->setData($result).
+        4. $event->setNotify().
+        5. return void
+
+module.postcallhooks
+    Occurs in pnModCallHooks() in one of two places, before return of $output, or before return of $extrainfo.
+    Check for presence of 'output' to know.  You can modify $event['output'].
+    args are either: array(
+            'gui' => $gui,
+            'hookobject' => $hookobject,
+            'hookaction' => $hookaction,
+            'hookid' => $hookid,
+            'extrainfo' => $extrainfo,
+            'implode' => $implode,
+            'output' => $output)
+
+    or array(
+            'gui' => $gui,
+            'hookobject' => $hookobject,
+            'hookaction' => $hookaction,
+            'hookid' => $hookid,
+            'extrainfo' => $extrainfo,
+            'implode' => $implode)
+
+theme.init
+    Occurs just before Theme#__construct() exits.  Subject is $this, args are array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)
+
+render.init
+    Occurs just before Renderer#__construct() exists. Subject is $this, args are array('module' => $module, 'modinfo' => $modinfo, 'themeinfo' => $themeinfo)
+
+dbobject.pre/post*
+    takes subject of $this.
+
+systemerror
+    args gets array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
+
+modulecontroller.method_not_found
+    args are method (method name), 'args' = $args
+
+modulecontrollerapi.method_not_found
+    args are method (method name). 'args' = $args
