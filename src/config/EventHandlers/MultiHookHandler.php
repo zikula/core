@@ -31,8 +31,12 @@ class MultiHookHandler extends CustomEventHandler
      */
     public function handler(Event $event)
     {
-        // subject is instance of Theme class.
+        // subject must be an instance of Theme class.
         $subject = $event->getSubject();
+        if (!$subject instanceof Theme) {
+            return;
+        }
+
         // register output filter to add MultiHook environment if requried
         if (pnModAvailable('MultiHook')) {
             $modinfo = pnModGetInfo(pnModGetIDFromName('MultiHook'));
