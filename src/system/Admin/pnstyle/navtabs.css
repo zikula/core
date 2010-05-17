@@ -61,7 +61,10 @@ ul.minitabs a:hover {
 
 ul#minitabs a.ajaxhover,
 ul.minitabs a.ajaxhover {
-    border:1px dashed #49E20E;
+    background: #FFFFEA;
+    border-color: green green;
+    border-style: solid solid none;
+    border-width: 1px 1px medium;
 }
 
 .ajaxNewCat {
@@ -171,16 +174,17 @@ form.inplaceeditor-form {
     border: 1px solid #ccc;
     text-decoration: none;
     color: #666;
-    display:block;
+    display: block;
 }
 
 form.inplaceeditor-form input[type="text"] {
-    float:left;
-    height:14px;
-    margin:0;
-    background-color:transparent;
-    border:none;
+    font-size: 10px;
+    float: left;
+    height: 14px;
+    margin: 0;
+    background-color: transparent;
+    border: none;
     font-weight: bold;
     color: #666;
-    outline:none;
+    outline: none;
 }
