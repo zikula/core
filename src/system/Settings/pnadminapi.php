@@ -38,9 +38,9 @@ function Settings_adminapi_getlinks()
  */
 function settings_adminapi_clearallcompiledcaches()
 {
-    pnModAPIFunc('pnRender', 'user', 'clear_compiled');
-    pnModAPIFunc('pnRender', 'user', 'clear_cache');
-    pnModAPIFunc('Theme', 'user', 'clear_compiled');
-    pnModAPIFunc('Theme', 'user', 'clear_cache');
+    Theme::getInstance()->clear_all_cache();
+    Theme::getInstance()->clear_compiled();
+    Renderer::getInstance()->clear_all_cache();
+    Renderer::getInstance()->clear_compiled();
     return true;
 }
