@@ -125,12 +125,6 @@ $ZConfig['System']['OBJECT_CACHE_TYPE'] = 'Memcache';   // Memcache, Apc, Array,
 $ZConfig['System']['OBJECT_CACHE_SERVERS'][] = array('host' => 'localhost', 'port' => '11211', 'weight' => 1); // APC required no servers
 
 // ----------------------------------------------------------------------
-// Add event listeners here
-// ----------------------------------------------------------------------
-//$ZConfig['System']['EVENT_LISTENERS'][] = array('name' => 'eventname', 'handler' => array('Foo', 'Bar'));
-//$ZConfig['System']['EVENT_LISTENERS'][] = array('name' => 'another.eventname', 'handler' => array('Foo', 'NotBar'));
-
-// ----------------------------------------------------------------------
 // Initialize runtime variables to sane defaults
 // ----------------------------------------------------------------------
 global $ZRuntime;

@@ -1,0 +1,39 @@
+- Change all module templates plugin delimiters to { and }.  For any template
+  plugins inside a <script></script> block or a <style></style> block please
+  use {{  and }}.  Please note the old delimiters will be supported until
+  Zikula 1.5.0.
+
+- All plugins with pn have been renamed without the pn prefix.  The pndebug
+  plugin has been renamed to zdebug. Please adjust your templates accordingly.
+
+- Change all instance is $pnRender = & pnRender::getInstance() to
+  $renderer = Renderer::getInstance().
+
+- All use of pnML is now deprecated.  Upgrade themes and modules.
+
+- Rename all PNObject* to DBObject*.
+
+- The use of DBUtil::executeSQL to return an ADODB object is now deprecated.
+  DBUtil::executeSQL no longer returns an ADODB object but a Doctrine PDO object.
+  Please use use of DBUtil::marshallObjects() after any manual SELECT through
+  DBUtil::execute().
+
+- The format of config.php has changed, please manually complete the values in
+  the supplied config.php - note that base64 encoding is not supposed any more
+  and everything must be in plain text (this is because base64 encoding is not
+  actually an encryption).
+
+- Theme module APIs theme_userapi_clear_compiled(), theme_userapi_clear_cache(),
+  and pnrender_userapi_clear_compiled(), pnrender_userapi_clear_cache() are
+  deprecated.  Please use Renderer->clear_compiled(), Renderer->clear_cache() and
+  Theme->clear_compiled(), Theme->clear_cache().
+
+- If you are using PHP 5.3.0 or greater please make sure the php.ini file has
+  date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.
+
+- Now you can add a requirement check for your blocks which will display a
+  message if it's necessary into the admin panel. eg: the language block will be
+  visible only if the multilanguage system is enabled, so for this block a
+  requirement message was aded to inform the admin that this block will not be
+  visible until he enables the multilanguage system.
+

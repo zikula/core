@@ -86,4 +86,19 @@ class EventManagerUtil
     {
         self::getEventManager()->detach($name);
     }
+
+    static public function attachCustomHandlers($dir = null)
+    {
+        $dir = (is_null($dir) ? 'config' . DIRECTORY_SEPARATOR . 'EventHandlers' : $dir);
+        $it = new FilesystemIterator($dir);
+        while ($it->valid()) {
+            include $it->getPath() . DIRECTORY_SEPARATOR . $it->getFilename();
+            $class = $it->getBasename('.php');
+            $handler = new $class;
+            $handler->attach();
+            $it->next();
+        }
+
+        $loaded = true;
+    }
 }

@@ -14,29 +14,15 @@
 
 class SystemListenersUtil
 {
-    public static function init(Event $event)
+    public static function sessionLogging(Event $event)
     {
-        if ($event['stages'] && PN_CORE_SESSIONS) {
+        if ($event['stages'] & PN_CORE_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
             if (isset($GLOBALS['ZConfig']['Log']['log_apache_uname']) && pnUserLoggedIn()) {
                 if (function_exists('apache_setenv')) {
                     apache_setenv('Zikula-Username', pnUserGetVar('uname'));
                 }
             }
-        }
-    }
-
-    public static function loadCustomListeners(Event $event)
-    {
-        if (!$event->hasArg('listeners')) {
-            throw new InvalidArgumentException(sprintf('Invalid event call, must have argument "listeners", array of $name => $handler in %s', $event->getName));
-        }
-
-        foreach ($event['listeners'] as $listener) {
-            if (!array_key_exists('name', $listener) || !array_key_exists('handler', $listener)) {
-                throw new InvalidArgumentException('Listener definition array must have key name and handler.');
-            }
-            EventManagerUtil::attach($listener['name'], $listener['handler']);
         }
     }
 
@@ -57,17 +43,5 @@ class SystemListenersUtil
         }
     }
 
-    public static function multiHook(Event $event)
-    {
-        // subject is instance of Theme class.
-        $subject = $event->getSubject();
-        // register output filter to add MultiHook environment if requried
-        if (pnModAvailable('MultiHook')) {
-            $modinfo = pnModGetInfo(pnModGetIDFromName('MultiHook'));
-            if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
-                $subject->load_filter('output', 'multihook');
-                pnModAPIFunc('MultiHook', 'theme', 'preparetheme');
-            }
-        }
-    }
+    
 }

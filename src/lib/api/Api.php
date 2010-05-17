@@ -245,6 +245,8 @@ function pnInit($stages = PN_CORE_ALL)
     // store the load stages in a global so other API's can check whats loaded
     $GLOBALS['loadstages'] = $stages;
 
+    EventManagerUtil::notify(new Event('core.preinit'));
+
     // Initialise and load configuration
     if ($stages & PN_CORE_CONFIG) {
         require 'config/config.php';
@@ -260,7 +262,7 @@ function pnInit($stages = PN_CORE_ALL)
         }
 
         // initialise custom event listeners from config.php settings
-        EventManagerUtil::notify(new Event('core.preinit', null, array('listeners' => $GLOBALS['System']['EVENT_LISTENERS'])));
+        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
     }
 
     // Initialize the (ugly) additional header array
