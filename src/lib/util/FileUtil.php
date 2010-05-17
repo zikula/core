@@ -388,10 +388,6 @@ class FileUtil
             return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::writeFile', 'filename')));
         }
 
-        if (version_compare(phpversion(), '5.0.0', '>=')) {
-            return (bool)file_put_contents(DataUtil::formatForOS($filename, $absolute), $data);
-        }
-
         $fName = DataUtil::formatForOS($filename, $absolute);
 	return file_put_contents($fName, $data);
     }
