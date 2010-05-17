@@ -197,6 +197,7 @@ function pnConfigDelVar($name)
  */
 function pnInit($stages = PN_CORE_ALL)
 {
+    $coreInitEvent = new Event('core.init', null, array('stages' => $stages));
     static $globalscleansed = false;
 
     // force register_globals = off
@@ -262,7 +263,7 @@ function pnInit($stages = PN_CORE_ALL)
         }
 
         // initialise custom event listeners from config.php settings
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     // Initialize the (ugly) additional header array
@@ -296,7 +297,7 @@ function pnInit($stages = PN_CORE_ALL)
     }
 
     if ($stages & PN_CORE_OBJECTLAYER) {
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     if ($stages & PN_CORE_DB) {
@@ -318,7 +319,7 @@ function pnInit($stages = PN_CORE_ALL)
             }
         }
 
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     if ($stages & PN_CORE_TABLES) {
@@ -338,7 +339,7 @@ function pnInit($stages = PN_CORE_ALL)
             set_error_handler('pnErrorHandler');
         }
         
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     if ($stages & PN_CORE_SESSIONS) {
@@ -358,24 +359,24 @@ function pnInit($stages = PN_CORE_ALL)
             }
         }
 
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
     // start block
     if ($stages & PN_CORE_LANGS) {
         $lang = ZLanguage::getInstance();
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     if ($stages & PN_CORE_DECODEURLS) {
         pnQueryStringDecode();
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     if ($stages & PN_CORE_LANGS) {
         $lang->setup();
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
     // end block
 
@@ -393,7 +394,7 @@ function pnInit($stages = PN_CORE_ALL)
             pnModAPIFunc('SecurityCenter', 'user', 'secureinput');
         }
 
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     if ($stages & PN_CORE_THEME) {
@@ -408,7 +409,7 @@ function pnInit($stages = PN_CORE_ALL)
         PageUtil::registerVar('footer', true);
         // Load the theme
         Theme::getInstance();
-        EventManagerUtil::notify(new Event('core.init', null, array('stages' => $stages)));
+        EventManagerUtil::notify($coreInitEvent);
     }
 
     // check the users status, if not 1 then log him out
@@ -422,7 +423,7 @@ function pnInit($stages = PN_CORE_ALL)
         }
     }
 
-    EventManagerUtil::notify(new Event('core.postinit'));
+    EventManagerUtil::notify(new Event('core.postinit', null, array('stages' => $stages)));
 
     // remove log files being too old
     LogUtil::_cleanLogFiles();
@@ -1087,6 +1088,9 @@ function pnQueryStringSetVar($name, $value)
  */
 function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
 {
+    $event = new Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
+    EventManagerUtil::notify($event);
+    
     // check for an @ suppression
     if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED || $errno == E_STRICT)) {
         return;
