@@ -15,11 +15,12 @@
 /**
  * Abstract controller for modules.
  */
-abstract class AbstractController
+abstract class AbstractApi
 {
+    protected $options;
     protected $baseDir;
 
-    public function __construct(array $options = array())
+    public function __construct(array $options =array())
     {
         $this->_setup();
         $this->options = $options;
@@ -34,7 +35,7 @@ abstract class AbstractController
 
     public function __call($method, $args)
     {
-        $event = new Event('modulecontroller.method_not_found', $this, array('method' => $method, 'args' => $args));
+        $event = new Event('module.api_method_not_found', $this, array('method' => $method, 'args' => $args));
         EventManagerUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             return $event->getData();

@@ -666,6 +666,11 @@ function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
  */
 function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
 {
+    static $controllers;
+    if (is_null($controllers)) {
+        $controllers = array();       
+    }
+
     // define input, all numbers and booleans to strings
     $modname = isset($modname) ? ((string)$modname) : '';
     $ftype = ($api ? 'api' : '');
@@ -688,7 +693,14 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
 
     if (class_exists($className)) {
         $r = new ReflectionClass($className);
-        $controller = $r->newInstance();
+        if (array_key_exists($className, $controllers)) {
+            $controller = $controllers[$className];
+            ZLoader::addAutoloader($modname, realpath(ZLOADER_PATH . "/$path"));
+        } else {
+            $controller = $r->newInstance();
+            $controllers[$className] = $controller;
+        }
+
         if (is_callable(array($controller, $func))) {
             $modfunc = array($controller, $func);
         }

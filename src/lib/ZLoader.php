@@ -19,9 +19,6 @@ define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 // setup vendors in include path
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
-// load Doctrine so we may register autoloader
-include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor/Doctrine/Doctrine.php';
-
 include 'Smarty/Smarty.class.php';
 
 /**
@@ -31,13 +28,17 @@ class ZLoader
 {
     private static $map;
 
+    private static $autoloader;
+
     public static function register()
     {
         self::$map = self::map();
         spl_autoload_register(); // we really do need this because of Smarty 3's autoloader // TODO D
         spl_autoload_extensions('.php');
         spl_autoload_register(array('ZLoader', 'autoload'));
-        spl_autoload_register(array('Doctrine', 'autoload'));
+        self::$autoloader = new KernelClassLoader();
+        self::$autoloader->spl_autoload_register();
+        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         include ZLOADER_PATH. 'api/Api.php';
 
         // load eventhandlers from config/EventHandlers directory if any.
@@ -46,6 +47,11 @@ class ZLoader
         // setup core events.
         EventManagerUtil::attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
         EventManagerUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
+    }
+
+    public function addAutoloader($namespace, $path = '', $separator = '_')
+    {
+        self::$autoloader->register($namespace, realpath($path), $separator);
     }
 
     /**
