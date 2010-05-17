@@ -54,6 +54,19 @@
        myfunction() = 'myfunction'
 
 - Added ability to have OO controllers in modules.  Look at SysInfo module for
-  example.  Also see the EventHandlers folder which shows how a method can be
+  example. The name of the classes are Modulename_$type (case sensitive).
+  The $func argument would be the public methods contained therein.
+  Also see the EventHandlers folder which shows how a method can be
   added to the controller via a notifyUntil() events of name
-  'modulecontroller.method_not_founc'.
+  'modulecontroller.method_not_found' and modulecontrollerapi.method_not_found
+  for Apis.
+
+- OO module controllers will initialise an autoloader for the class so that
+  a call to a class Example_DBObject_Users would load
+  module/Example/DBObject/Users.php - the class contained should be
+  Example_DBObject_Users.
+
+- You may additionally register autoloaders with
+  ZLoader::addAutoloader($namespace, $path) where
+  $namespace is the first part of the PEAR classname, and $path is
+  the path to the containing folder.

@@ -33,8 +33,6 @@ class ZLoader
     public static function register()
     {
         self::$map = self::map();
-        spl_autoload_register(); // we really do need this because of Smarty 3's autoloader // TODO D
-        spl_autoload_extensions('.php');
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloader = new KernelClassLoader();
         self::$autoloader->spl_autoload_register();
