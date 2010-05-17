@@ -39,3 +39,6 @@ div#mthemes-alphafilter {
 img.theme_colorpicker_image {
     margin-left: 5px;
 }
+.z-indented { 
+    margin-left: 2.5em;
+}

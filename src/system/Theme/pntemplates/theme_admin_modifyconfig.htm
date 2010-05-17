@@ -13,9 +13,6 @@
                     <label for="themeswitcher_itemsperpage">{gt text="Items per page"}</label>
                     <input id="themeswitcher_itemsperpage" type="text" name="itemsperpage" value="{$itemsperpage|varprepfordisplay}" size="4" maxlength="4" tabindex="2" />
                 </div>
-            </fieldset>
-            <fieldset>
-                <legend>{gt text="Theme selection"}</legend>
                 <div class="z-formrow">
                     <label for="theme_change">{gt text="Allow users to change themes"}</label>
                     <input id="theme_change" name="theme_change" type="checkbox" value="1" {if $theme_change}checked="checked"{/if} />
@@ -23,21 +20,17 @@
             </fieldset>
             <fieldset>
                 <legend>{gt text="Compilation"}</legend>
-                <h3>{gt text="Theme"}</h3>
                 <div class="z-formrow">
                     <label for="theme_compile_check">{gt text="Check for updated version of theme templates"}</label>
                     <input id="theme_compile_check" name="compile_check" type="checkbox" value="1" {if $compile_check eq 1}checked="checked"{/if} />
                 </div>
                 <div class="z-formrow">
-                    <label for="theme_force_compile">{gt text="Force templates re-compilation"}</label>
+                    <label for="theme_force_compile">{gt text="Force re-compilation of theme templates"}</label>
                     <input id="theme_force_compile" name="force_compile" type="checkbox" value="1" {if $force_compile eq 1}checked="checked"{/if} />
+                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_compiled authid=$authid}">{gt text="Delete compiled theme templates"}</a>
                 </div>
                 <div class="z-formrow">
-                    <a class="z-formnote" href="{modurl modname=Theme type=admin func=clear_compiled authid=$authid}">{gt text="Delete compiled templates"}</a>
-                </div>
-                <h3>{gt text="Render"}</h3>
-                <div class="z-formrow">
-                    <label for="render_compile_dir">{gt text="Compiled templates directory"}</label>
+                    <label for="render_compile_dir">{gt text="Compiled render templates directory"}</label>
                     <span id="render_compile_dir">{render->compile_dir}</span>
                 </div>
                 <div class="z-formrow">
@@ -45,23 +38,21 @@
                     <input id="render_compile_check" type="checkbox" name="render_compile_check" value="1"{if $render_compile_check}checked="checked"{/if} />
                 </div>
                 <div class="z-formrow">
-                    <label for="render_force_compile">{gt text="Force templates re-compilation"}</label>
+                    <label for="render_force_compile">{gt text="Force re-compilation of render templates"}</label>
                     <input id="render_force_compile" type="checkbox" name="render_force_compile" value="1"{if $render_force_compile}checked="checked"{/if} />
-                </div>
-                <div class="z-formrow">
-                    <a class="z-formnote" href="{modurl modname="Theme" type="admin" func="render_clear_compiled"}&amp;authid={insert name="generateauthkey" module="Theme"}">{gt text="Delete compiled templates"}</a>
+                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled"}&amp;authid={insert name="generateauthkey" module="Theme"}">{gt text="Delete compiled render templates"}</a>
                 </div>
             </fieldset>
             <fieldset>
                 <legend>{gt text="Caching"}</legend>
-                <h3>{gt text="Theme"}</h3>
                 <div class="z-formrow">
-                    <label for="enablecache">{gt text="Enable caching"}</label>
+                    <label for="enablecache">{gt text="Enable theme caching"}</label>
                     <input id="enablecache" name="enablecache" type="checkbox" value="1" {if $enablecache eq 1}checked="checked"{/if} />
+                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache authid=$authid}">{gt text="Delete cached theme pages"}</a>
                 </div>
                 <div id="theme_caching">
                     <div class="z-formrow">
-                        <label for="cache_lifetime">{gt text="Length of time to cache pages"}</label>
+                        <label for="cache_lifetime">{gt text="Length of time to keep cached theme pages"}</label>
                         <span>
                             <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|varprepfordisplay}" size="6" tabindex="2" />
                             {gt text="seconds"}
@@ -81,29 +72,23 @@
                     </div>
                 </div>
                 <div class="z-formrow">
-                    <a class="z-formnote" href="{modurl modname=Theme type=admin func=clear_cache authid=$authid}">{gt text="Delete cached templates"}</a>
-                </div>
-                <h3>{gt text="Render"}</h3>
-                <div class="z-formrow">
                     <label for="render_cache_dir">{gt text="Cached templates directory"}</label>
                     <span id="render_cache_dir">{render->cache_dir}</span>
                 </div>
                 <div class="z-formrow">
-                    <label for="render_cache">{gt text="Enable caching"}</label>
+                    <label for="render_cache">{gt text="Enable render caching"}</label>
                     <input id="render_cache" type="checkbox" name="render_cache" value="1"{if $render_cache}checked="checked"{/if} />
+                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"}&amp;authid={insert name="generateauthkey" module="Theme"}">{gt text="Delete cached render pages"}</a>
                 </div>
                 <div id="render_lifetime_container">
                     <div class="z-formrow">
-                        <label for="render_lifetime">{gt text="Lifetime for cached pages"}</label>
+                        <label for="render_lifetime">{gt text="Length of time to keep cached render pages"}</label>
                         <span>
                             <input id="render_lifetime" type="text" name="render_lifetime" value="{$render_lifetime|varprepfordisplay}" size="6" />
                             {gt text="seconds"}
                         </span>
                         <p class="z-formnote z-informationmsg">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="Notice: A cache lifetime of -1 will set the cache output to never expire."}</p>
                     </div>
-                </div>
-                <div class="z-formrow">
-                    <a class="z-formnote" href="{modurl modname="Theme" type="admin" func="render_clear_cache"}&amp;authid={insert name="generateauthkey" module="Theme"}">{gt text="Delete cached pages"}</a>
                 </div>
             </fieldset>
             <fieldset>
@@ -112,6 +97,7 @@
                 <div class="z-formrow">
                     <label for="cssjscombine">{gt text="Enable CSS/JS combination"}</label>
                     <input id="cssjscombine" name="cssjscombine" type="checkbox" value="1" {if $cssjscombine eq 1}checked="checked"{ /if } />
+                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache authid=$authid}">{gt text="Delete combination cache"}</a>
                 </div>
                 <div id="theme_cssjscombine">
                     <div class="z-formrow">
@@ -132,9 +118,6 @@
                             {gt text="seconds"}
                         </span>
                     </div>
-                </div>
-                <div class="z-formrow">
-                    <a class="z-formnote" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache authid=$authid}">{gt text="Delete combination cache"}</a>
                 </div>
             </fieldset>
             <fieldset>
