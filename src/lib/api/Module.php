@@ -585,6 +585,12 @@ function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false
     }
     $loaded[$modtype] = 1;
 
+    // Load optional bootstrap
+    $bootstrap = "$modpath/$osdirectory/bootstrap.php";
+    if (file_exists($bootstrap)) {
+        include $bootstrap;
+    }
+
     if ($modinfo['i18n']) {
         ZLanguage::bindModuleDomain($modname);
     }
