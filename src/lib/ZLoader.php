@@ -49,6 +49,10 @@ class ZLoader
 
     public function addAutoloader($namespace, $path = '', $separator = '_')
     {
+        if (self::$autoloader->hasAutoloader($namespace)) {
+            return;
+        }
+        
         self::$autoloader->register($namespace, realpath($path), $separator);
     }
 

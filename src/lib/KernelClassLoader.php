@@ -32,7 +32,7 @@ class KernelClassLoader
      *
      * @var array
      */
-    protected $namespaces;
+    protected $namespaces = array();
 
     /**
      * Register namespace on stack.
@@ -62,6 +62,11 @@ class KernelClassLoader
         }
 
         unset($this->namespaces[$namespace]);
+    }
+
+    public function hasAutoloader($namespace)
+    {
+        return (bool)array_key_exists($namespace, $this->namespaces);
     }
 
     /**
