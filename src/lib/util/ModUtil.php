@@ -590,7 +590,7 @@ class ModUtil
         // Load optional bootstrap
         $bootstrap = "$modpath/$osdirectory/bootstrap.php";
         if (file_exists($bootstrap)) {
-            include $bootstrap;
+            include_once $bootstrap;
         }
 
         if ($modinfo['i18n']) {
