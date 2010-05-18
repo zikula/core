@@ -90,6 +90,7 @@ class AjaxUtil
         $output = json_encode($data);
 
         header('HTTP/1.0 200 OK');
+        header('Content-type: application/json');
         if ($xjsonheader == true) {
             header('X-JSON:(' . $output . ')');
         }
