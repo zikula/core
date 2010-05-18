@@ -132,7 +132,7 @@ class ZLoader
             'FormUtil' => 'util',
             'HtmlUtil' => 'util',
             'LogUtil' => 'util',
-            'ModuleUtil' => 'util',
+            'ModUtil' => 'util',
             'ObjectUtil' => 'util',
             'PageUtil' => 'util',
             'RandomUtil' => 'util',

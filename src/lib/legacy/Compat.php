@@ -1142,3 +1142,479 @@ function theme_userapi_render_clear_cache($args)
 
     return $res;
 }
+
+function pnModInitCoreVars()
+{
+    return ModUtil::initCoreVars();
+}
+
+/**
+ * Checks to see if a module variable is set.
+ *
+ * @param string $modname The name of the module.
+ * @param string $name    The name of the variable.
+ *
+ * @return boolean True if the variable exists in the database, false if not.
+ */
+function pnModVarExists($modname, $name)
+{
+    return ModUtil::hasVar($modname, $name);
+}
+
+/**
+ * The pnModGetVar function gets a module variable.
+ *
+ * If the name parameter is included then function returns the
+ * module variable value.
+ * if the name parameter is ommitted then function returns a multi
+ * dimentional array of the keys and values for the module vars.
+ *
+ * @param string  $modname The name of the module.
+ * @param string  $name    The name of the variable.
+ * @param boolean $default The value to return if the requested modvar is not set.
+ *
+ * @return string|array If the name parameter is included then function returns
+ *          string - module variable value
+ *          if the name parameter is ommitted then function returns
+ *          array - multi dimentional array of the keys
+ *                  and values for the module vars.
+ */
+function pnModGetVar($modname, $name = '', $default = false)
+{
+    return ModUtil::getVar($modname, $name, $default);
+}
+
+
+/**
+ * The pnModSetVar Function sets a module variable.
+ *
+ * @param string $modname The name of the module.
+ * @param string $name    The name of the variable.
+ * @param string $value   The value of the variable.
+ *
+ * @return boolean True if successful, false otherwise.
+ */
+function pnModSetVar($modname, $name, $value = '')
+{
+    return ModUtil::setVar($modname, $name, $value);
+}
+
+/**
+ * The pnModSetVars function sets multiple module variables.
+ *
+ * @param string $modname The name of the module.
+ * @param array  $vars    An associative array of varnames/varvalues.
+ *
+ * @return boolean True if successful, false otherwise.
+ */
+function pnModSetVars($modname, $vars)
+{
+    return ModUtil::setVars($modname, $vars);
+}
+
+/**
+ * The pnModDelVar function deletes a module variable.
+ *
+ * Delete a module variables. If the optional name parameter is not supplied all variables
+ * for the module 'modname' are deleted.
+ *
+ * @param string $modname The name of the module.
+ * @param string $name    The name of the variable (optional).
+ *
+ * @return boolean True if successful, false otherwise.
+ */
+function pnModDelVar($modname, $name = '')
+{
+    return ModUtil::delVar($modname, $name);
+}
+
+/**
+ * The pnModGetIDFromName function gets module ID given its name.
+ *
+ * @param string $module The name of the module.
+ *
+ * @return integer module ID.
+ */
+function pnModGetIDFromName($module)
+{
+    return ModUtil::getIdFromName($module);
+}
+
+/**
+ * The pnModGetInfo function gets information on module.
+ *
+ * Return array of module information or false if core ( id = 0 ).
+ *
+ * @param integer $modid The module ID.
+ *
+ * @return array|boolean Module information array or false.
+ */
+function pnModGetInfo($modid = 0)
+{
+    return ModUtil::getInfo($modid);
+}
+
+/**
+ * The pnModGetUserMods function gets a list of user modules.
+ *
+ * @return array An array of module information arrays.
+ */
+function pnModGetUserMods()
+{
+    return ModUtil::getUserMods();
+}
+
+/**
+ * The pnModGetProfilesMods function gets a list of profile modules.
+ *
+ * @return array An array of module information arrays.
+ */
+function pnModGetProfileMods()
+{
+    return ModUtil::getProfileMods();
+}
+
+/**
+ * The pnModGetMessageMods function gets a list of message modules.
+ *
+ * @return array An array of module information arrays.
+ */
+function pnModGetMessageMods()
+{
+    return ModUtil::getMessageMods();
+}
+
+/**
+ * The pnModGetAdminMods function gets a list of administration modules.
+ *
+ * @return array An array of module information arrays.
+ */
+function pnModGetAdminMods()
+{
+    return ModUtil::getAdminMods();
+}
+
+/**
+ * The pnModGetTypeMods function gets a list of modules by module type.
+ *
+ * @param string $type The module type to get (either 'user' or 'admin') (optional) (default='user').
+ *
+ * @return array An array of module information arrays.
+ */
+function pnModGetTypeMods($type = 'user')
+{
+    return ModUtil::getTypeMods($type);
+}
+
+/**
+ * The pnModGetAllMods function gets a list of all modules.
+ *
+ * @return array An array of module information arrays.
+ */
+function pnModGetAllMods()
+{
+    return ModUtil::getAllMods();
+}
+
+/**
+ * Loads datbase definition for a module.
+ *
+ * @param string  $modname   The name of the module to load database definition for.
+ * @param string  $directory Directory that module is in (if known).
+ * @param boolean $force     Force table information to be reloaded.
+ *
+ * @return boolean True if successful, false otherwise.
+ */
+function pnModDBInfoLoad($modname, $directory = '', $force = false)
+{
+    return ModUtil::dbInfoLoad($modname, $directory, $force);
+}
+
+/**
+ * Loads a module.
+ *
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of functions to load.
+ * @param boolean $force   Determines to load Module even if module isn't active.
+ *
+ * @return string|boolean Name of module loaded, or false on failure.
+ */
+function pnModLoad($modname, $type = 'user', $force = false)
+{
+    return ModUtil::load($modname, $type, $force);
+}
+
+/**
+ * Load an API module.
+ *
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of functions to load.
+ * @param boolean $force   Determines to load Module even if module isn't active.
+ *
+ * @return string|boolean Name of module loaded, or false on failure.
+ */
+function pnModAPILoad($modname, $type = 'user', $force = false)
+{
+    return ModUtil::loadApi($modname, $type, $force);
+}
+
+/**
+ * Load a module.
+ *
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of functions to load.
+ * @param boolean $force   Determines to load Module even if module isn't active.
+ * @param boolean $api     Whether or not to load an API (or regular) module.
+ *
+ * @return string|boolean Name of module loaded, or false on failure.
+ */
+function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false)
+{
+    return ModUtil::loadGeneric($modname, $type, $force, $api);
+}
+
+/**
+ * Run a module function.
+ *
+ * @param string $modname The name of the module.
+ * @param string $type    The type of function to run.
+ * @param string $func    The specific function to run.
+ * @param array  $args    The arguments to pass to the function.
+ *
+ * @return mixed.
+ */
+function pnModFunc($modname, $type = 'user', $func = 'main', $args = array())
+{
+    return ModUtil::func($modname, $type, $func, $args);
+}
+
+/**
+ * Run an module API function.
+ *
+ * @param string $modname The name of the module.
+ * @param string $type    The type of function to run.
+ * @param string $func    The specific function to run.
+ * @param array  $args    The arguments to pass to the function.
+ *
+ * @return mixed.
+ */
+function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
+{
+    return ModUtil::apiFunc($modname, $type, $func, $args);
+}
+
+/**
+ * Run a module function.
+ *
+ * @param string  $modname The name of the module.
+ * @param string  $type    The type of function to run.
+ * @param string  $func    The specific function to run.
+ * @param array   $args    The arguments to pass to the function.
+ * @param boolean $api     Whether or not to execute an API (or regular) function.
+ *
+ * @return mixed.
+ */
+function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
+{
+    return ModUtil::exec($modname, $type, $func, $args);
+}
+
+/**
+ * Generate a module function URL.
+ *
+ * If the module is non-API compliant (type 1) then
+ * a) $func is ignored.
+ * b) $type=admin will generate admin.php?module=... and $type=user will generate index.php?name=...
+ *
+ * @param string       $modname      The name of the module.
+ * @param string       $type         The type of function to run.
+ * @param string       $func         The specific function to run.
+ * @param array        $args         The array of arguments to put on the URL.
+ * @param boolean|null $ssl          Set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched,
+ *                                   true - create a ssl url, false - create a non-ssl url.
+ * @param string       $fragment     The framgment to target within the URL.
+ * @param boolean|null $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL.
+ * @param boolean      $forcelongurl Force pnModURL to not create a short url even if the system is configured to do so.
+ * @param boolean      $forcelang    Forcelang.
+ *
+ * @return sting Absolute URL for call
+ */
+function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
+{
+    return ModUtil::url($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang, $forcelang);
+}
+
+/**
+ * Check if a module is available.
+ *
+ * @param string  $modname The name of the module.
+ * @param boolean $force   Force.
+ *
+ * @return boolean True if the module is available, false if not.
+ */
+function pnModAvailable($modname = null, $force = false)
+{
+    return ModUtil::available($modname, $force);
+}
+
+/**
+ * Get name of current top-level module.
+ *
+ * @return string The name of the current top-level module, false if not in a module.
+ */
+function pnModGetName()
+{
+    return ModUtil::getName();
+}
+
+/**
+ * Register a hook function.
+ *
+ * @param object $hookobject The hook object.
+ * @param string $hookaction The hook action.
+ * @param string $hookarea   The area of the hook (either 'GUI' or 'API').
+ * @param string $hookmodule Name of the hook module.
+ * @param string $hooktype   Name of the hook type.
+ * @param string $hookfunc   Name of the hook function.
+ *
+ * @return boolean True if successful, false otherwise.
+ */
+function pnModRegisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
+{
+    return ModUtil::registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc);
+}
+
+
+/**
+ * Unregister a hook function.
+ *
+ * @param string $hookobject The hook object.
+ * @param string $hookaction The hook action.
+ * @param string $hookarea   The area of the hook (either 'GUI' or 'API').
+ * @param string $hookmodule Name of the hook module.
+ * @param string $hooktype   Name of the hook type.
+ * @param string $hookfunc   Name of the hook function.
+ *
+ * @return boolean True if successful, false otherwise.
+ */
+function pnModUnregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
+{
+    return ModUtil::unregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc);
+}
+
+/**
+ * Carry out hook operations for module.
+ *
+ * @param string  $hookobject The object the hook is called for - one of 'item', 'category' or 'module'.
+ * @param string  $hookaction The action the hook is called for - one of 'new', 'create', 'modify', 'update', 'delete', 'transform', 'display', 'modifyconfig', 'updateconfig'.
+ * @param integer $hookid     The id of the object the hook is called for (module-specific).
+ * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
+ * @param boolean $implode    Implode collapses all display hooks into a single string - default to true for compatability with .7x.
+ *
+ * @return string|array String output from GUI hooks, extrainfo array for API hooks.
+ */
+function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
+{
+    return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode);
+}
+
+/**
+ * Determine if a module is hooked by another module.
+ *
+ * @param string $tmodule The target module.
+ * @param string $smodule The source module - default the current top most module.
+ *
+ * @return boolean True if the current module is hooked by the target module, false otherwise.
+ */
+function pnModIsHooked($tmodule, $smodule)
+{
+    return ModUtil::isHooked($tmodule, $smodule);
+}
+
+/**
+ * The pnModLangLoad function loads the language files for a module.
+ *
+ * @param string  $modname Name of the module.
+ * @param string  $type    Type of the language file to load e.g. user, admin.
+ * @param boolean $api     Load api lang file or gui lang file.
+ *
+ * @return boolean False as this function is depreciated.
+ *
+ * @deprecated define based language system support stopped with Zikula 1.3.0
+ */
+function pnModLangLoad($modname, $type = 'user', $api = false)
+{
+    LogUtil::registerError(__('pnModLangLoad is deprecated.', 404));
+    return false;
+}
+
+/**
+ * Get the base directory for a module.
+ *
+ * Example: If the webroot is located at
+ * /var/www/html
+ * and the module name is Template and is found
+ * in the modules directory then this function
+ * would return /var/www/html/modules/Template
+ *
+ * If the Template module was located in the system
+ * directory then this function would return
+ * /var/www/html/system/Template
+ *
+ * This allows you to say:
+ * include(pnModGetBaseDir() . '/includes/private_functions.php');.
+ *
+ * @param string $modname Name of module to that you want the base directory of.
+ *
+ * @return string The path from the root directory to the specified module.
+ */
+function pnModGetBaseDir($modname = '')
+{
+    return ModUtil::getBaseDir($modname);
+}
+
+/**
+ * Gets the modules table.
+ *
+ * Small wrapper function to avoid duplicate sql.
+ *
+ * @return array An array modules table.
+ */
+function pnModGetModsTable()
+{
+    return ModUtil::getModsTable();
+}
+
+class ModuleUtil
+{
+    /**
+     * Generic modules select function. Only modules in the module
+     * table are returned which means that new/unscanned modules
+     * will not be returned
+     *
+     * @param where The where clause to use for the select
+     * @param sort  The sort to use
+     *
+     * @return The resulting module object array
+     */
+    public static function getModules ($where='', $sort='displayname')
+    {
+        return ModUtil::getModules($where, $sort);
+    }
+
+
+    /**
+     * Return an array of modules in the specified state, only modules in
+     * the module table are returned which means that new/unscanned modules
+     * will not be returned
+     *
+     * @param state    The module state (optional) (defaults = active state)
+     * @param sort  The sort to use
+     *
+     * @return The resulting module object array
+     */
+    public static function getModulesByState($state=3, $sort='displayname')
+    {
+        return ModUtil::getModulesByState($state, $sort);
+    }
+}

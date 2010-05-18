@@ -92,7 +92,6 @@ mb_regex_encoding('UTF-8');
 
 include 'lib/api/debug.php';
 include 'lib/api/User.php';
-include 'lib/api/Module.php';
 include 'lib/api/Blocks.php';
 
 /**
