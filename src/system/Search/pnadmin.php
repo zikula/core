@@ -118,7 +118,7 @@ function Search_admin_updateconfig()
     }
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module','updateconfig','Search', array('module' => 'Search'));
+    ModUtil::callHooks('module','updateconfig','Search', array('module' => 'Search'));
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

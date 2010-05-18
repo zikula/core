@@ -53,7 +53,7 @@ function theme_renderblock_display($row)
     }
 
     // Break out options from our content field
-    $vars = pnBlockVarsFromContent($row['content']);
+    $vars = BlockUtil::varsFromContent($row['content']);
 
     // Parameter check
     if (!isset($vars['template']) || !isset($vars['module'])) {
@@ -119,7 +119,7 @@ function theme_renderblock_modify($row)
         return false;
     }
     // Break out options from our content field
-    $vars = pnBlockVarsFromContent($row['content']);
+    $vars = BlockUtil::varsFromContent($row['content']);
 
     // set some defaults
     !isset($vars['module']) ? $vars['module'] = '' : null;

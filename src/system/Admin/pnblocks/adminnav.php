@@ -46,7 +46,7 @@ function Admin_adminnavblock_display($blockinfo)
     }
 
     // Get variables from content block
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Call the modules API to get the items
     if (!pnModAvailable('Admin')) {
@@ -73,10 +73,10 @@ function Admin_adminnavblock_display($blockinfo)
             foreach ($adminmodules as $adminmodule) {
                 // Get all modules in the category
                 $catid = pnModAPIFunc('Admin', 'admin', 'getmodcategory',
-                                      array('mid' => pnModGetIDFromName($adminmodule['name'])));
+                                      array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
                 if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == ModUtil::getVar('Admin', 'defaultcategory')))) {
-                    $modinfo = pnModGetInfo(pnModGetIDFromName($adminmodule['name']));
+                    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
                     if ($modinfo['type'] != 1) {
                         $menutexturl = ModUtil::url($modinfo['name'], 'admin');
                         $menutexttitle = $modinfo['displayname'];

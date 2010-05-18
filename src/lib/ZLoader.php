@@ -118,6 +118,7 @@ class ZLoader
             'DBObject' => 'dbobject',
             'DBObjectArray' => 'dbobject',
             'DBUtil' => 'util',
+            'BlockUtil' => 'util',
             'DBConnectionStack' => 'util',
             'AjaxUtil' => 'util',
             'CacheUtil' => 'util',

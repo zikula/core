@@ -31,7 +31,7 @@ function smarty_function_debugenvironment($params, &$smarty)
     $smarty->assign('_ZSession_vals', array_values($_SESSION) );
 
     $smarty->assign('_smartyversion', $smarty->_version);
-    $_theme = pnModGetInfo(pnModGetIDFromName('Theme'));
+    $_theme = ModUtil::getInfo(ModUtil::getIdFromName('Theme'));
     $smarty->assign('_themeversion', $_theme['version']);
 
     $smarty->assign('_force_compile', (ModUtil::getVar('Theme', 'force_compile')) ? __('On') : __('Off'));

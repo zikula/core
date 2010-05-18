@@ -1618,3 +1618,139 @@ class ModuleUtil
         return ModUtil::getModulesByState($state, $sort);
     }
 }
+
+// blocks
+
+/**
+ * display all blocks in a block position
+ * @param $side block position to render
+ */
+function pnBlockDisplayPosition($side, $echo = true, $implode = true)
+{
+    return BlockUtil::displayPosition($side, $echo, $implode);
+}
+
+/**
+ * show a block
+ *
+ * @param string $modname module name
+ * @param string $block name of the block
+ * @param array $blockinfo information parameters
+ * @return mixed blockinfo array or null
+ */
+function pnBlockShow($modname, $block, $blockinfo = array())
+{
+    return BlockUtil::show($modname, $block, $blockinfo);
+}
+
+/**
+ * Display a block based on the current theme
+ */
+function pnBlockThemeBlock($row)
+{
+    return BlockUtil::themeBlock($row);
+}
+
+/**
+ * load a block
+ *
+ * @param string $modname module name
+ * @param string $block name of the block
+ * @return bool true on successful load, false otherwise
+ */
+function pnBlockLoad($modname, $block)
+{
+    return BlockUtil::load($modname, $block);
+}
+
+/**
+ * load all blocks
+ * @return array array of blocks
+ */
+function pnBlockLoadAll()
+{
+    return BlockUtil::loadAll();
+}
+
+/**
+ * extract an array of config variables out of the content field of a
+ * block
+ *
+ * @param the $ content from the db
+ */
+function pnBlockVarsFromContent($content)
+{
+    return BlockUtil::varsFromContent($content);
+}
+
+/**
+ * put an array of config variables in the content field of a block
+ *
+ * @param the $ config vars array, in key->value form
+ */
+function pnBlockVarsToContent($vars)
+{
+    return BlockUtil::varsToContent($vars);
+}
+
+/**
+ * Checks if user controlled block state
+ *
+ * Checks if the user has a state set for a current block
+ * Sets the default state for that block if not present
+ *
+ * @access private
+ */
+function pnCheckUserBlock($row)
+{
+    return BlockUtil::checkUserBlock($row);
+}
+
+/**
+ * get block information
+ * @param value the value to search for
+ * @param assocKey the field in which we look for the value (optional) (default='bid')
+ * @return array array of block information
+ */
+function pnBlocksGetInfo()
+{
+    return BlockUtil::getBlocksInfo();
+}
+
+/**
+ * get block information
+ * @param value the value to search for
+ * @param assocKey the field in which we look for the value (optional) (default='bid')
+ * @return array array of block information
+ */
+function pnBlockGetInfo($value, $assocKey = 'bid')
+{
+    return BlockUtil::getBlockInfo($value, $assocKey);
+}
+
+/**
+ * get block information
+ * @param title the block title
+ * @return array array of block information
+ */
+function pnBlockGetInfoByTitle($title)
+{
+    return BlockUtil::getInfoByTitle($title);
+}
+
+/**
+ * alias to pnBlockDisplayPosition
+ */
+function blocks($side)
+{
+    return BlockUtil::displayPosition($side);
+}
+
+/**
+ * alias to pnBlockDisplayPosition
+ */
+function themesideblock($row)
+{
+    return BlockUtil::themesideblock($row);
+}
+

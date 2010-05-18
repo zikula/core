@@ -118,7 +118,7 @@ function smarty_function_ajaxheader($params, &$smarty)
         }
     }
 
-    $modinfo = pnModGetInfo(pnModGetIDFromName($modname));
+    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
     if ($modinfo !== false) {
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
         $osfilename  = DataUtil::formatForOS($filename);

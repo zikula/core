@@ -38,7 +38,7 @@ function Admin_Ajax_changeModuleCategory() {
     $newParentCat = FormUtil::getPassedValue("cat");
 
     //get info on the module
-    $module = pnModGetInfo($moduleID);
+    $module = ModUtil::getInfo($moduleID);
     if (!$module) {
         //deal with couldnt get module info
         $output['alerttext'] = "Could not get module name for id:$moduleID";

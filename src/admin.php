@@ -49,7 +49,7 @@ if (empty($module)) {
 }
 
 // get the module information
-$modinfo = pnModGetInfo(pnModGetIDFromName($module));
+$modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 
 if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     // Redirect to new style admin panel

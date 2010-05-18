@@ -135,7 +135,7 @@ function search_userapi_search($args)
     // add displayname of modules found
     $cnt = count($sqlResult);
     for ($i=0; $i<$cnt; $i++) {
-        $modinfo = pnModGetInfo(pnModGetIDFromName($sqlResult[$i]['module']));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($sqlResult[$i]['module']));
         $sqlResult[$i]['displayname'] = $modinfo['displayname'];
     }
 
@@ -253,7 +253,7 @@ function search_userapi_log($args)
     }
 
     // Let any hooks know that we have created a new item.
-    pnModCallHooks('item', 'create', $args['q'], array('module' => 'Search'));
+    ModUtil::callHooks('item', 'create', $args['q'], array('module' => 'Search'));
 
     return true;
 }

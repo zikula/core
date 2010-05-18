@@ -60,7 +60,7 @@ function Blocks_extmenublock_display($blockinfo)
     $pnRender->cache_id = $blockinfo['bid'].':'.pnUserGetVar('uid');
 
     // Break out options from our content field
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // template to use
     if (empty($vars['template'])) {
@@ -291,7 +291,7 @@ function extmenu_buildURL($url)
 function Blocks_extmenublock_modify($blockinfo)
 {
     // Break out options from our content field
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
     $blockinfo['content'] = '';
 
 

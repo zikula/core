@@ -710,7 +710,7 @@ function permissions_admin_updateconfig()
     ModUtil::setVar('Permissions', 'adminid', $adminid);
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module','updateconfig', 'Permissions', array('module' => 'Permissions'));
+    ModUtil::callHooks('module','updateconfig', 'Permissions', array('module' => 'Permissions'));
 
     // the module configuration has been updated successfuly
     if ($error==true) {

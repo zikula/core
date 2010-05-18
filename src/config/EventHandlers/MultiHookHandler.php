@@ -19,7 +19,7 @@ class MultiHookHandler extends CustomEventHandler
 {
     /**
      * Array of event names for this handler (usually just one).
-     * 
+     *
      * @var array
      */
     protected $names = array('theme.init');
@@ -39,7 +39,7 @@ class MultiHookHandler extends CustomEventHandler
 
         // register output filter to add MultiHook environment if requried
         if (pnModAvailable('MultiHook')) {
-            $modinfo = pnModGetInfo(pnModGetIDFromName('MultiHook'));
+            $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('MultiHook'));
             if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
                 $subject->load_filter('output', 'multihook');
                 pnModAPIFunc('MultiHook', 'theme', 'preparetheme');

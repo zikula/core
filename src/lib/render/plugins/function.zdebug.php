@@ -45,7 +45,7 @@ function smarty_function_zdebug($params, &$smarty)
             $smarty->assign('_smarty_debug_output', $params['output']);
         }
 
-        $modinfo = pnModGetInfo(pnModGetIDFromName('Theme'));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Theme'));
         $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
 

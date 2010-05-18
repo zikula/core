@@ -308,7 +308,7 @@ function securitycenter_userapi_loghackattempttodb($args)
     }
 
     // Let any hooks know that we have created a new item.
-    pnModCallHooks('item', 'create', $obj, array('module' => 'SecurityCenter'));
+    ModUtil::callHooks('item', 'create', $obj, array('module' => 'SecurityCenter'));
 
     // Return the id of the newly created item to the calling process
     return true;

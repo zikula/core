@@ -37,7 +37,7 @@ if (empty($func)) {
 }
 
 // get module information
-$modinfo = pnModGetInfo(pnModGetIDFromName($module));
+$modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 if ($modinfo == false) {
     AjaxUtil::error(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
 }

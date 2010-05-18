@@ -31,7 +31,7 @@ function smarty_function_admincategorymenu($params, &$smarty)
 
     // check version number
     // fix for bug #2121
-    $modinfo = pnModGetInfo(pnModGetIDFromName('Admin'));
+    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Admin'));
     if (version_compare($modinfo['version'], '1.0') == -1) {
         return;
     }

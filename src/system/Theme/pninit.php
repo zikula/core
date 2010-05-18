@@ -89,12 +89,12 @@ function theme_upgrade($oldversion)
             // delete pnRender modvars
             pnModDelVar('pnRender');
 
-            $modid = pnModGetIDFromName('pnRender');
+            $modid = ModUtil::getIdFromName('pnRender');
 
             // check and update blocks
             $blocks = pnModAPIFunc('Blocks', 'user', 'getall', array('modid' => $modid));
             if (!empty($blocks)) {
-                $thememodid = pnModGetIDFromName('Theme');
+                $thememodid = ModUtil::getIdFromName('Theme');
                 foreach ($blocks as $block) {
                     $block['bkey'] = 'render';
                     $block['mid'] = $thememodid;

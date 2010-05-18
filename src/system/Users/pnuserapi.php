@@ -543,7 +543,7 @@ function users_userapi_finishnewuser($args)
         }
     }
     // Let other modules know we have created an item
-    pnModCallHooks('item', 'create', $uid, array('module' => 'Users'));
+    ModUtil::callHooks('item', 'create', $uid, array('module' => 'Users'));
 
     return $uid;
 }
@@ -642,7 +642,7 @@ function users_userapi_activateuser($args)
                  'activated'    => '1',
                  'user_regdate' => DataUtil::formatForStore($newregdate));
 
-    pnModCallHooks('item', 'update', $args['uid'], array('module' => 'Users'));
+    ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
 
     return (boolean)DBUtil::updateObject($obj, 'users', '', 'uid');
 }

@@ -130,7 +130,7 @@ function settings_admin_updateconfig() {
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module','updateconfig','Settings', array('module' => 'Settings'));
+    ModUtil::callHooks('module','updateconfig','Settings', array('module' => 'Settings'));
 
     return pnRedirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
 }

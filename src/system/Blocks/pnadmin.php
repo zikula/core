@@ -86,7 +86,7 @@ function blocks_admin_view()
     foreach ($blocks as $key => $block) {
 
         // set the module that holds the block
-        $modinfo = pnModGetInfo($block['mid']);
+        $modinfo = ModUtil::getInfo($block['mid']);
         $block['modname'] = $modinfo['displayname'];
 
         // set the blocks language
@@ -250,7 +250,7 @@ function blocks_admin_modify()
     }
 
     // Load block
-    $modinfo = pnModGetInfo($blockinfo['mid']);
+    $modinfo = ModUtil::getInfo($blockinfo['mid']);
     if (!pnBlockLoad($modinfo['name'], $blockinfo['bkey'])) {
         return LogUtil::registerError(__('Sorry! No such block found.'), 404);
     }
@@ -416,7 +416,7 @@ function blocks_admin_update()
     $blockinfo['filter'] = $filter;
 
     // Load block
-    $modinfo = pnModGetInfo($blockinfo['mid']);
+    $modinfo = ModUtil::getInfo($blockinfo['mid']);
     if (!pnBlockLoad($modinfo['name'], $blockinfo['bkey'])) {
         return LogUtil::registerError(__('Sorry! No such block found.'), 404);
     }
@@ -483,7 +483,7 @@ function blocks_admin_new()
     $blockinfo = array();
     foreach ($blocks as $moduleblocks) {
         foreach ($moduleblocks as $block) {
-            $modinfo = pnModGetInfo(pnModGetIDFromName($block['module']));
+            $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($block['module']));
             $blockinfo[$block['mid'] . ':' . $block['bkey']] =   $modinfo['displayname'] . '/' . $block['text_type_long'];
         }
     }
@@ -583,7 +583,7 @@ function blocks_admin_delete()
         $pnRender = Renderer::getInstance('Blocks', false);
 
         // get the module info
-        $modinfo = pnModGetInfo($blockinfo['mid']);
+        $modinfo = ModUtil::getInfo($blockinfo['mid']);
 
         if (!empty($modinfo['name'])) {
             $pnRender->assign('blockname', "$modinfo[name]/$blockinfo[bkey]");
@@ -697,7 +697,7 @@ function blocks_admin_modifyposition()
     $allblocks = pnModAPIFunc('Blocks', 'user', 'getall', array('active_status' => 0));
     foreach($allblocks as $key => $allblock) {
         // set the module that holds the block
-        $modinfo = pnModGetInfo($allblock['mid']);
+        $modinfo = ModUtil::getInfo($allblock['mid']);
         $allblocks[$key]['modname'] = $modinfo['name'];
     }
 
@@ -849,7 +849,7 @@ function blocks_admin_updateconfig()
     ModUtil::setVar('Blocks', 'collapseable', $collapseable);
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module','updateconfig','Blocks', array('module' => 'Blocks'));
+    ModUtil::callHooks('module','updateconfig','Blocks', array('module' => 'Blocks'));
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

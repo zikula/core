@@ -102,7 +102,7 @@ function blocks_adminapi_update($args)
     }
 
     // call update hooks
-    pnModCallHooks('item', 'update', $args['bid'], array('module' => 'Blocks'));
+    ModUtil::callHooks('item', 'update', $args['bid'], array('module' => 'Blocks'));
 
     return true;
 }
@@ -169,7 +169,7 @@ function blocks_adminapi_create($args)
     }
 
     // Let other modules know we have created an item
-    pnModCallHooks('item', 'create', $block['bid'], array('module' => 'Blocks'));
+    ModUtil::callHooks('item', 'create', $block['bid'], array('module' => 'Blocks'));
 
     return $block['bid'];
 }
@@ -273,7 +273,7 @@ function blocks_adminapi_delete($args)
     }
 
     // Let other modules know we have deleted an item
-    pnModCallHooks('item', 'delete', $args['bid'], array('module' => 'Blocks'));
+    ModUtil::callHooks('item', 'delete', $args['bid'], array('module' => 'Blocks'));
 
     return true;
 }

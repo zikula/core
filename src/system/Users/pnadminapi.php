@@ -270,7 +270,7 @@ function users_adminapi_saveuser($args)
     }
 
     // Let other modules know we have updated an item
-    pnModCallHooks('item', 'update', $args['uid'], array('module' => 'Users'));
+    ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
 
     return true;
 }
@@ -308,7 +308,7 @@ function users_adminapi_deleteuser($args)
         }
 
         // Let other modules know we have deleted an item
-        pnModCallHooks('item', 'delete', $id, array('module' => 'Users'));
+        ModUtil::callHooks('item', 'delete', $id, array('module' => 'Users'));
     }
 
     return $args['uid'];
@@ -666,7 +666,7 @@ function Users_adminapi_createImport($args)
     }
 
     // check if module Mailer is active
-    $modinfo = pnModGetInfo(pnModGetIDFromName('Mailer'));
+    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Mailer'));
     if ($modinfo['state'] == 3) {
         $sitename  = pnConfigGetVar('sitename');
         $siteurl   = pnGetBaseURL();

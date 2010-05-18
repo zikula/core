@@ -35,6 +35,6 @@ function smarty_modifier_modcallhooks($string, $modname = '')
         $extrainfo['module'] = $modname;
     }
 
-    list($string) = pnModCallHooks('item', 'transform', '', $extrainfo);
+    list($string) = ModUtil::callHooks('item', 'transform', '', $extrainfo);
     return $string;
 }

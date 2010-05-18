@@ -65,7 +65,7 @@ function Blocks_thelangblock_display($blockinfo)
     }
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
     $vars['bid'] = $blockinfo['bid'];
     // Defaults
     if (empty($vars['format'])) {
@@ -165,7 +165,7 @@ function Blocks_thelangblock_display($blockinfo)
 function blocks_thelangblock_modify($blockinfo)
 {
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (empty($vars['format'])) {
@@ -198,7 +198,7 @@ function blocks_thelangblock_modify($blockinfo)
 function Blocks_thelangblock_update($blockinfo)
 {
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Read inputs
     $vars['format'] = FormUtil::getPassedValue('format');

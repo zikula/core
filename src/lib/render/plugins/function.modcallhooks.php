@@ -74,7 +74,7 @@ function smarty_function_modcallhooks($params, &$smarty)
         $assign = 'hooks';
     }
 
-    $result = pnModCallHooks($hookobject, $hookaction, $hookid, $params, $implode);
+    $result = ModUtil::callHooks($hookobject, $hookaction, $hookid, $params, $implode);
 
     if ($assign) {
         $smarty->assign($assign, $result);

@@ -39,7 +39,7 @@ function securitycenter_adminapi_delete($args)
     }
 
     // Let any hooks know that we have deleted an item.
-    pnModCallHooks('item', 'delete', $args['hid'], array('module' => 'SecurityCenter'));
+    ModUtil::callHooks('item', 'delete', $args['hid'], array('module' => 'SecurityCenter'));
 
     // Let the calling process know that we have finished successfully
     return true;

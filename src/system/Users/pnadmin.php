@@ -983,7 +983,7 @@ function users_admin_updateconfig()
         ModUtil::setVar('Legal', 'privacypolicy', $config['privacypolicy']);
     }
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module', 'updateconfig', 'Users', array('module' => 'Users'));
+    ModUtil::callHooks('module', 'updateconfig', 'Users', array('module' => 'Users'));
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

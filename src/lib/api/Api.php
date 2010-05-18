@@ -92,7 +92,6 @@ mb_regex_encoding('UTF-8');
 
 include 'lib/api/debug.php';
 include 'lib/api/User.php';
-include 'lib/api/Blocks.php';
 
 /**
  * Functions
@@ -1011,7 +1010,7 @@ function pnQueryStringDecode()
             }
 
             // first try the first argument as a module
-            $modinfo = pnModGetInfo(pnModGetIDFromName($args[1]));
+            $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args[1]));
             // if that fails it's a theme
             if (!$modinfo) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[1]));
@@ -1019,10 +1018,10 @@ function pnQueryStringDecode()
                     pnQueryStringSetVar('theme', $themeinfo['name']);
                     // now shift the vars and continue as before
                     array_shift($args);
-                    $modinfo = pnModGetInfo(pnModGetIDFromName($args[1]));
+                    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args[1]));
                 } else {
                     // add the default module handler into the code
-                    $modinfo = pnModGetInfo(pnModGetIDFromName(pnConfigGetVar('shorturlsdefaultmodule')));
+                    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName(pnConfigGetVar('shorturlsdefaultmodule')));
                     array_unshift($args, $modinfo['url']);
                 }
             }

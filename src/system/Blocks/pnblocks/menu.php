@@ -61,7 +61,7 @@ function Blocks_menublock_display($blockinfo)
     $pnRender->cache_id = $blockinfo['bid'].':'.pnUserGetVar('uid');
 
     // Break out options from our content field
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // check out if the contents are cached.
     if ($pnRender->is_cached('blocks_block_menu.htm')) {
@@ -229,7 +229,7 @@ function blocks_menu_addMenuItem($title, $url, $comment)
 function Blocks_menublock_modify($blockinfo)
 {
     // Break out options from our content field
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
     $blockinfo['content'] = '';
 
     // Defaults

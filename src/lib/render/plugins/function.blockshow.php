@@ -53,7 +53,7 @@ function smarty_function_blockshow($params, &$smarty)
     if (!is_array($block)) {
         $output = pnBlockShow($module, $blockname, pnBlockGetInfo($block));
     } else {
-        $vars   = pnBlockVarsFromContent($block['content']);
+        $vars   = BlockUtil::varsFromContent($block['content']);
         $output = pnBlockShow($module, $blockname, $vars['content']);
     }
 

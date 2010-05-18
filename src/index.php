@@ -62,7 +62,7 @@ if (empty($module)) {
 }
 
 // get module information
-$modinfo = pnModGetInfo(pnModGetIDFromName($module));
+$modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 
 if ($type <> 'init' && !empty($module) && !pnModAvailable($modinfo['name'])) {
     LogUtil::registerError(__f("The '%s' module is not currently accessible.", DataUtil::formatForDisplay(strip_tags($module))));

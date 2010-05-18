@@ -45,9 +45,9 @@ function modules_adminapi_update($args)
 
     // check for duplicate display names
     // get the module info for the module being updated
-    $moduleinforeal = pnModGetInfo($args['id']);
+    $moduleinforeal = ModUtil::getInfo($args['id']);
     // validate URL
-    $moduleinfourl = pnModGetInfo(pnModGetIDFromName($args['url']));
+    $moduleinfourl = ModUtil::getInfo(ModUtil::getIdFromName($args['url']));
     // If the two real module name don't match then the new display name can't be used
     if ($moduleinfourl && $moduleinfourl['name'] != $moduleinforeal['name']) {
         return LogUtil::registerError(__('Error! Could not save the module URL information. A duplicate module URL was detected.'));
@@ -96,7 +96,7 @@ function modules_adminapi_updatehooks($args)
 
     // Hooks
     // Get module name
-    $modinfo = pnModGetInfo($args['id']);
+    $modinfo = ModUtil::getInfo($args['id']);
 
     // Delete hook regardless
     $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
@@ -151,7 +151,7 @@ function modules_adminapi_extendedupdatehooks($args)
 
     // Hooks
     // Get module information
-    $modinfo = pnModGetInfo($args['id']);
+    $modinfo = ModUtil::getInfo($args['id']);
 
     // Delete hook regardless
     $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
@@ -321,7 +321,7 @@ function modules_adminapi_setstate($args)
                                                $result['directory'],
                                                $result['state']);
 
-    $modinfo = pnModGetInfo($args['id']);
+    $modinfo = ModUtil::getInfo($args['id']);
     // Check valid state transition
     switch ($args['state']) {
         case PNMODULE_STATE_UNINITIALISED:
@@ -392,7 +392,7 @@ function modules_adminapi_remove($args)
     }
 
     // Get module information
-    $modinfo = pnModGetInfo($args['id']);
+    $modinfo = ModUtil::getInfo($args['id']);
     if (empty($modinfo)) {
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
@@ -406,7 +406,7 @@ function modules_adminapi_remove($args)
     }
 
     // call any module delete hooks
-    pnModCallHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
+    ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
 
     // Get module database info
     pnModDBInfoLoad($modinfo['name'], $modinfo['directory']);
@@ -858,7 +858,7 @@ function modules_adminapi_regenerate($args)
     // earlier since we won't have the id's for new modules at that stage
     $dependencies = array();
     foreach ($moddependencies as $modname => $moddependency) {
-        $modid = pnModGetIDFromName($modname);
+        $modid = ModUtil::getIdFromName($modname);
         // each module may have multiple dependencies
         foreach ($moddependency as $dependency) {
             $dependency['modid'] = $modid;
@@ -885,7 +885,7 @@ function modules_adminapi_initialise($args)
     }
 
     // Get module information
-    $modinfo = pnModGetInfo($args['id']);
+    $modinfo = ModUtil::getInfo($args['id']);
     if (empty($modinfo)) {
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
@@ -944,7 +944,7 @@ function modules_adminapi_initialise($args)
     }
 
     // call any module initialisation hooks
-    pnModCallHooks('module', 'initialise', $modinfo['name'], array('module' => $modinfo['name']));
+    ModUtil::callHooks('module', 'initialise', $modinfo['name'], array('module' => $modinfo['name']));
 
     // Success
     return true;
@@ -965,7 +965,7 @@ function modules_adminapi_upgrade($args)
     }
 
     // Get module information
-    $modinfo = pnModGetInfo($args['id']);
+    $modinfo = ModUtil::getInfo($args['id']);
     if (empty($modinfo)) {
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
@@ -1061,7 +1061,7 @@ function modules_adminapi_upgrade($args)
     DBUtil::updateObject($obj, 'modules');
 
     // call any module upgrade hooks
-    pnModCallHooks('module', 'upgrade', $modinfo['name'], array('module' => $modinfo['name']));
+    ModUtil::callHooks('module', 'upgrade', $modinfo['name'], array('module' => $modinfo['name']));
 
     // Success
     return true;
@@ -1263,7 +1263,7 @@ function modules_adminapi_getmoduleshooks($args)
     }
 
     // check if module id is valid
-    $modinfo = pnModGetInfo($args['modid']);
+    $modinfo = ModUtil::getInfo($args['modid']);
     if ($modinfo == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
@@ -1316,7 +1316,7 @@ function modules_adminapi_getextendedmoduleshooks($args)
     }
 
     // check if module id is valid
-    $modinfo = pnModGetInfo($args['modid']);
+    $modinfo = ModUtil::getInfo($args['modid']);
     if ($modinfo == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
@@ -1423,7 +1423,7 @@ function modules_adminapi_getdependents($args)
     if (!isset($args['modid']) || empty($args['modid']) || !is_numeric($args['modid'])) {
         return LogUtil::registerArgsError();
     }
-    $modinfo = pnModGetInfo($args['modid']);
+    $modinfo = ModUtil::getInfo($args['modid']);
     $where = "pn_modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
     return DBUtil::selectObjectArray('module_deps', $where, 'modid');
 }

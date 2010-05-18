@@ -322,7 +322,7 @@ function Theme_adminapi_delete($args)
         pnModAPIFunc('Theme', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
     }
     // Let any hooks know that we have deleted an item.
-    pnModCallHooks('item', 'delete', $themeid, array('module' => 'Theme'));
+    ModUtil::callHooks('item', 'delete', $themeid, array('module' => 'Theme'));
 
     // Let the calling process know that we have finished successfully
     return true;

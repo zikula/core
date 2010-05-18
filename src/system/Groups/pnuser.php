@@ -317,7 +317,7 @@ function Groups_user_memberslist()
     $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
                                      'itemsperpage' => $itemsperpage));
 
-    $pnRender->assign('hooks', pnModCallHooks('item',
+    $pnRender->assign('hooks', ModUtil::callHooks('item',
                                               'display',
                                               $gid,
                                               ModUtil::url('Groups',

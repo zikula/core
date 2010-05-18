@@ -252,7 +252,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetIDFromName function gets module ID given its name.
+     * The ModUtil::getIdFromName function gets module ID given its name.
      *
      * @param string $module The name of the module.
      *
@@ -300,7 +300,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetInfo function gets information on module.
+     * The ModUtil::getInfo function gets information on module.
      *
      * Return array of module information or false if core ( id = 0 ).
      *

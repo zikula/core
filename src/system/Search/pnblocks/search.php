@@ -50,7 +50,7 @@ function Search_searchblock_display($blockinfo)
     }
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Create output object
     $pnRender = & pnRender::getInstance('Search');
@@ -85,7 +85,7 @@ function Search_searchblock_display($blockinfo)
 function Search_searchblock_modify($blockinfo)
 {
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // get all the search plugins
     $search_modules = pnModAPIFunc('Search', 'user', 'getallplugins');
@@ -125,7 +125,7 @@ function Search_searchblock_update($blockinfo)
                                   'refresh', 'filter', 'type', 'functions', 'customargs');
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     foreach($_POST as $key => $value) {
         if (in_array($key, $search_reserved_vars)) {

@@ -38,7 +38,7 @@ function Admin_adminapi_create($args)
     }
 
     // Let other modules know an item has been created
-    pnModCallHooks('item', 'create', $category['cid'], array('module' => 'Admin'));
+    ModUtil::callHooks('item', 'create', $category['cid'], array('module' => 'Admin'));
 
     // Return the id of the newly created item to the calling process
     return $category['cid'];
@@ -98,7 +98,7 @@ function Admin_adminapi_delete($args)
     }
 
     // Let any hooks know that we have deleted an item.
-    pnModCallHooks('item', 'delete', $category['cid'], array('module' => 'Admin'));
+    ModUtil::callHooks('item', 'delete', $category['cid'], array('module' => 'Admin'));
 
     // Let the calling process know that we have finished successfully
     return true;
@@ -145,7 +145,7 @@ function Admin_adminapi_update($args)
     }
 
     // New hook functions
-    pnModCallHooks('item', 'update', $args['cid'], array('module' => 'Admin'));
+    ModUtil::callHooks('item', 'update', $args['cid'], array('module' => 'Admin'));
 
     // Let the calling process know that we have finished successfully
     return true;
@@ -259,7 +259,7 @@ function Admin_adminapi_addmodtocategory($args)
     }
 
     // get module id
-    $mid = pnModGetIDFromName($args['module']);
+    $mid = ModUtil::getIdFromName($args['module']);
     if (!DBUtil::deleteObjectByID ('admin_module', $mid, 'mid')) {
         return false;
     }
@@ -351,7 +351,7 @@ function Admin_adminapi_getmodstyles($args)
     // check our input and get the module information
     if (!isset($args['modname']) ||
         !is_string($args['modname']) ||
-        !is_array($modinfo = pnModGetInfo(pnModGetIDFromName($args['modname'])))) {
+        !is_array($modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args['modname'])))) {
         return LogUtil::registerArgsError();
     }
 

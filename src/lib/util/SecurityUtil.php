@@ -111,7 +111,7 @@ class SecurityUtil
         }
 
         // get the module info
-        $modinfo = pnModGetInfo(pnModGetIDFromName($modname));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modname = strtolower($modinfo['name']);
 
         // get the array of randomed values per module and check if exists
@@ -170,7 +170,7 @@ class SecurityUtil
         }
 
         // get the module info
-        $modinfo = pnModGetInfo(pnModGetIDFromName($modname));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modname = strtolower($modinfo['name']);
 
         // get the array of randomed values per module

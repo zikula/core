@@ -263,7 +263,7 @@ class ThemeUtil
         $themepath = "themes/$theme/style/$osmodname";
 
         // module directory
-        $modinfo = pnModGetInfo(pnModGetIDFromName($modname));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = "modules/$osmoddir/pnstyle";
         $syspath = "system/$osmoddir/pnstyle";

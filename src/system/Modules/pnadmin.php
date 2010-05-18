@@ -33,7 +33,7 @@ function modules_admin_modify()
         return LogUtil::registerArgsError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
-    $obj = pnModGetInfo($id);
+    $obj = ModUtil::getInfo($id);
     if (!isset($id) || $obj == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'),
                                       404,
@@ -487,7 +487,7 @@ function modules_admin_initialise()
         if (empty($confirmation) && $dependencies) {
             foreach ($dependencies as $key => $dependency) {
                 $dependencies[$key]['insystem'] = true;
-                $modinfo = pnModGetInfo(pnModGetIDFromName($dependency['modname']));
+                $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($dependency['modname']));
                 if (pnModAvailable($dependency['modname'])) {
                     unset($dependencies[$key]);
                 } elseif (!empty($modinfo)) {
@@ -608,7 +608,7 @@ function modules_admin_activate()
         return LogUtil::registerError(__('Error! No module ID provided.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
-    $moduleinfo = pnModGetInfo($id);
+    $moduleinfo = ModUtil::getInfo($id);
     if ($moduleinfo['state'] == 6) {
         LogUtil::registerError(__('Error! Module not allowed.'));
         return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
@@ -733,7 +733,7 @@ function modules_admin_deactivate()
     }
 
     // check if the modules is the systems start module
-    $modinfo = pnModGetInfo($id);
+    $modinfo = ModUtil::getInfo($id);
     if ($modinfo == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
@@ -807,7 +807,7 @@ function modules_admin_remove()
         $confirmation = 1;
     }
 
-    if (empty($id) || !is_numeric($id) || !pnModGetInfo($id)) {
+    if (empty($id) || !is_numeric($id) || !ModUtil::getInfo($id)) {
         return LogUtil::registerError(__('Error! No module ID provided.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
@@ -824,7 +824,7 @@ function modules_admin_remove()
         $dependents = pnModAPIFunc('Modules', 'admin', 'getdependents', array(
             'modid' => $id));
         foreach ($dependents as $key => $dependent) {
-            $modinfo = pnModGetInfo($dependent['modid']);
+            $modinfo = ModUtil::getInfo($dependent['modid']);
             if (!pnModAvailable($modinfo['name'])) {
                 unset($dependents[$key]);
             } else {
@@ -922,7 +922,7 @@ function modules_admin_hooks()
     }
 
     // get the modules information
-    $modinfo = pnModGetInfo($id);
+    $modinfo = ModUtil::getInfo($id);
     if ($modinfo == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
@@ -969,7 +969,7 @@ function modules_admin_extendedhooks()
     }
 
     // get the modules information
-    $modinfo = pnModGetInfo($id);
+    $modinfo = ModUtil::getInfo($id);
     if ($modinfo == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
@@ -1055,7 +1055,7 @@ function modules_admin_updateconfig()
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module', 'updateconfig', 'Modules', array('module' => 'Modules'));
+    ModUtil::callHooks('module', 'updateconfig', 'Modules', array('module' => 'Modules'));
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
@@ -1082,7 +1082,7 @@ function modules_admin_compinfo()
     }
 
     // get the modules information from the data base
-    $modinfo = pnModGetInfo($id);
+    $modinfo = ModUtil::getInfo($id);
     if ($modinfo == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }

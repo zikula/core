@@ -418,7 +418,7 @@ function securitycenter_admin_updateconfig()
     pnConfigSetVar('fullcontent', $fullcontent);
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module','updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
+    ModUtil::callHooks('module','updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
 
     // clear all cache and compile directories
     pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');

@@ -306,7 +306,7 @@ function users_user_login()
     if (pnUserLogIn((($loginoption==1) ? $email : $uname), $pass, $rememberme)) {
         // start login hook
         $uid = pnUserGetVar('uid');
-        pnModCallHooks('zikula', 'login', $uid, array('module' => 'zikula'));
+        ModUtil::callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
         if ($login_redirect == 1) {
             // WCAG compliant login
             return pnRedirect($url);
@@ -339,7 +339,7 @@ function users_user_logout()
 
     // start logout hook
     $uid = pnUserGetVar('uid');
-    pnModCallHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
+    ModUtil::callHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
     if (pnUserLogOut()) {
         if ($login_redirect == 1) {
             // WCAG compliant logout - we redirect to index.php because
@@ -748,7 +748,7 @@ function users_user_siteofflogin()
 function users_user_usersblock()
 {
     $blocks = pnModAPIFunc('Blocks', 'user', 'getall');
-    $mid = pnModGetIDFromName('Users');
+    $mid = ModUtil::getIdFromName('Users');
     $found = false;
     foreach ($blocks as $block) {
         if ($block['mid'] == $mid && $block['bkey'] == 'user') {
@@ -782,7 +782,7 @@ function users_user_updateusersblock()
     }
 
     $blocks = pnModAPIFunc('Blocks', 'user', 'getall');
-    $mid = pnModGetIDFromName('Users');
+    $mid = ModUtil::getIdFromName('Users');
     $found = false;
     foreach ($blocks as $block) {
         if ($block['mid'] == $mid && $block['bkey'] == 'user') {

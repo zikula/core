@@ -28,7 +28,7 @@
 function smarty_function_adminonlinemanual($params, &$smarty)
 {
     $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
-    $modinfo = pnModGetInfo(pnModGetIDFromName(pnModGetName()));
+    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName(pnModGetName()));
     $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
     $file = DataUtil::formatForOS("$modpath/$modinfo[directory]/lang/$lang/manual.html");
     $man_link = '';

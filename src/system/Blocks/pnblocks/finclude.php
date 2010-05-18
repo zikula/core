@@ -53,7 +53,7 @@ function Blocks_fincludeblock_display($blockinfo)
     }
 
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (empty($vars['filo'])) {
@@ -101,7 +101,7 @@ function Blocks_fincludeblock_display($blockinfo)
 function Blocks_fincludeblock_modify($blockinfo)
 {
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (empty($vars['filo'])) {
@@ -132,7 +132,7 @@ function Blocks_fincludeblock_modify($blockinfo)
 function Blocks_fincludeblock_update($blockinfo)
 {
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // alter the corresponding variable
     $vars['filo'] = FormUtil::getPassedValue('filo');

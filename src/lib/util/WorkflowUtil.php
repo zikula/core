@@ -49,7 +49,7 @@ class WorkflowUtil
         }
 
         // Get module info
-        $modinfo = pnModGetInfo(pnModGetIDFromName($module));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
         if (!$modinfo) {
             return pn_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }
@@ -93,7 +93,7 @@ class WorkflowUtil
         }
 
         // Get module info
-        $modinfo = pnModGetInfo(pnModGetIDFromName($module));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
         if (!$modinfo) {
             return pn_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }

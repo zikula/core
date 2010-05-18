@@ -345,10 +345,10 @@ function Admin_admin_adminpanel($args)
     foreach ($adminmodules as $adminmodule) {
         if (SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
             $catid = pnModAPIFunc('Admin', 'admin', 'getmodcategory',
-                                  array('mid' => pnModGetIDFromName($adminmodule['name'])));
+                                  array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
             if (($catid == $acid) || (($catid == false) && ($acid == ModUtil::getVar('Admin', 'defaultcategory')))) {
-                $modinfo = pnModGetInfo(pnModGetIDFromName($adminmodule['name']));
+                $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
                 if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
                     $menutexturl = ModUtil::url($modinfo['name'], 'admin');
                     $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
@@ -433,7 +433,7 @@ function Admin_admin_modifyconfig()
     {
         // Get the category assigned to this module
         $category = pnModAPIFunc('Admin', 'admin', 'getmodcategory',
-                                 array('mid' => pnModGetIDFromName($adminmodule['name'])));
+                                 array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
         if ($category === false) {
             // it's not set, so we use the default category
@@ -516,7 +516,7 @@ function Admin_admin_updateconfig()
     }
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module','updateconfig','Admin', array('module' => 'Admin'));
+    ModUtil::callHooks('module','updateconfig','Admin', array('module' => 'Admin'));
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

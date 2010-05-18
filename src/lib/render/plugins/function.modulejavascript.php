@@ -87,7 +87,7 @@ function smarty_function_modulejavascript($params, &$smarty)
         $themepath     = "themes/$theme/javascript/$osmodname";
 
         // module directory
-        $modinfo       = pnModGetInfo(pnModGetIDFromName($params['modname']));
+        $modinfo       = ModUtil::getInfo(ModUtil::getIdFromName($params['modname']));
         $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
         $modpath       = "modules/$osmoddir/pnjavascript";
         $syspath       = "system/$osmoddir/pnjavascript";

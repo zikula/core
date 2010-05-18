@@ -246,7 +246,7 @@ class ZLanguage
     public static function bindModuleDomain($name)
     {
         // system modules are in the zikula domain
-        $module = pnModGetInfo(pnModGetIDFromName($name));
+        $module = ModUtil::getInfo(ModUtil::getIdFromName($name));
         if ($module['type'] == '3') {
             return 'zikula';
         }

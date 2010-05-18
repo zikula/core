@@ -42,7 +42,7 @@ function Users_accountapi_getall($args)
 
     // check if the users block exists
     $blocks = pnModAPIFunc('Blocks', 'user', 'getall');
-    $mid = pnModGetIDFromName('Users');
+    $mid = ModUtil::getIdFromName('Users');
     $found = false;
     foreach ($blocks as $block) {
         if ($block['mid'] == $mid && $block['bkey'] == 'user') {

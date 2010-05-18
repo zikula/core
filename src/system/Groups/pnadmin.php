@@ -816,7 +816,7 @@ function Groups_admin_updateconfig()
     ModUtil::setVar('Groups', 'hideclosed', $hideclosed);
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module','updateconfig','Groups', array('module' => 'Groups'));
+    ModUtil::callHooks('module','updateconfig','Groups', array('module' => 'Groups'));
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

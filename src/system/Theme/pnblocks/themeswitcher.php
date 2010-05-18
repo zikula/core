@@ -69,7 +69,7 @@ function theme_themeswitcherblock_display($blockinfo)
     }
 
     // Get variables from content block
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     if (empty($vars['format'])) {
@@ -118,7 +118,7 @@ function theme_themeswitcherblock_display($blockinfo)
 function theme_themeswitcherblock_modify($blockinfo)
 {
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Defaults
     // format: 1 = drop down with preview, 2 = simple list
@@ -139,7 +139,7 @@ function theme_themeswitcherblock_modify($blockinfo)
 function theme_themeswitcherblock_update($blockinfo)
 {
     // Get current content
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // alter the corresponding variable
     $vars['format'] = FormUtil::getPassedValue('format', 1, 'POST');

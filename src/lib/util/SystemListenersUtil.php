@@ -34,7 +34,7 @@ class SystemListenersUtil
             if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN) && (isset($systeminithooks) && $systeminithooks == 'no')) {
                 // omit system hooks if requested by an administrator
             } else {
-                pnModCallHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
+                ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
 
                 // reset the render domain - system init hooks mess the translation domain for the core
                 $render = Renderer::getInstance();
@@ -43,5 +43,5 @@ class SystemListenersUtil
         }
     }
 
-    
+
 }

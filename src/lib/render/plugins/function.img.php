@@ -118,7 +118,7 @@ function smarty_function_img($params, &$smarty)
     $corethemepath = "themes/$theme/images";
 
     // module directory
-    $modinfo       = pnModGetInfo(pnModGetIDFromName($modname));
+    $modinfo       = ModUtil::getInfo(ModUtil::getIdFromName($modname));
     $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
     $moduleDir     = ($modinfo['type'] == 3 ? 'system' : 'modules');
     if ($modname == 'core') {

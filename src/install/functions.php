@@ -465,7 +465,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
         // set each of the core modules to active
         reset($coremodules);
         foreach ($coremodules as $coremodule) {
-            $mid = pnModGetIDFromName($coremodule, true);
+            $mid = ModUtil::getIdFromName($coremodule, true);
             pnModAPIFunc('Modules', 'admin', 'setstate', array(
                             'id' => $mid,
                             'state' => PNMODULE_STATE_INACTIVE));
@@ -515,7 +515,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
         foreach ($modules as $module) {
             ZLanguage::bindModuleDomain($module);
 
-            $mid = pnModGetIDFromName($module);
+            $mid = ModUtil::getIdFromName($module);
             // No need to specify 'interactive_init' => false here because defined('_ZINSTALLVER') evals to true in modules_pnadminapi_initialise
             $initialise = pnModAPIFunc('Modules', 'admin', 'initialise', array(
                             'id' => $mid));
@@ -547,7 +547,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                 continue;
             }
 
-            $mid = pnModGetIDFromName($module['module']);
+            $mid = ModUtil::getIdFromName($module['module']);
 
             // init it
             if (pnModAPIFunc('Modules', 'admin', 'initialise', array(

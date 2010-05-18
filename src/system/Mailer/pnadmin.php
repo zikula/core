@@ -128,7 +128,7 @@ function Mailer_admin_updateconfig()
     ModUtil::setVar('Mailer', 'smtppassword', $smtppassword);
 
     // Let any other modules know that the modules configuration has been updated
-    pnModCallHooks('module', 'updateconfig', 'Mailer', array('module' => 'Mailer'));
+    ModUtil::callHooks('module', 'updateconfig', 'Mailer', array('module' => 'Mailer'));
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

@@ -91,13 +91,13 @@ function smarty_function_block($params, &$smarty)
     // Overwrite block specific config vars.
     // Only the new style is supported.
     if (count($params) > 0) {
-        $_vars = pnBlockVarsFromContent($blockinfo['content']);
+        $_vars = BlockUtil::varsFromContent($blockinfo['content']);
         $_vars = array_merge($_vars, $params);
         $blockinfo['content'] = pnBlockVarsToContent($_vars);
     }
 
     // We need the module name.
-    $modinfo = pnModGetInfo($blockinfo['mid']);
+    $modinfo = ModUtil::getInfo($blockinfo['mid']);
     if (!is_array($modinfo) || !isset($modinfo['name'])) {
         $modinfo = array('name' => 'core');
     }

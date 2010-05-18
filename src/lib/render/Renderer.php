@@ -58,7 +58,7 @@ class Renderer extends Smarty
         if (!$module) {
             $module = $this->toplevelmodule;
         }
-        $this->module = array($module => pnModGetInfo(pnModGetIDFromName($module)));
+        $this->module = array($module => ModUtil::getInfo(ModUtil::getIdFromName($module)));
 
         // initialise environment vars
         $this->language = ZLanguage::getLanguageCode();
@@ -70,7 +70,7 @@ class Renderer extends Smarty
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
         $this->theme = $theme = $this->themeinfo['directory'];
 
-        $this->modinfo = $modinfo = pnModGetInfo(pnModGetIDFromName($module));
+        $this->modinfo = $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
         $modpath = ($this->module[$module]['type'] == 3) ? 'system' : 'modules';
         switch ($this->module[$module]['type'])
         {
@@ -206,8 +206,8 @@ class Renderer extends Smarty
         }
 
         if (!array_key_exists($module, self::$instance->module)) {
-            self::$instance->module[$module] = pnModGetInfo(pnModGetIDFromName($module));
-            //$instance->modinfo = pnModGetInfo(pnModGetIDFromName($module));
+            self::$instance->module[$module] = ModUtil::getInfo(ModUtil::getIdFromName($module));
+            //$instance->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
             self::$instance->_add_plugins_dir($module);
         }
 
@@ -538,7 +538,7 @@ class Renderer extends Smarty
             return;
         }
 
-        $modinfo = pnModGetInfo(pnModGetIDFromName($module));
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
         if (!$modinfo) {
             return;
         }

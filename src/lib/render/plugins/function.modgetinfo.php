@@ -28,9 +28,9 @@
  *   - modid       (optional) module id, if not set, the recent module is used
  *
  * Example
- *   <!--[pnmodgetinfo info='displayname']-->
- *   <!--[pnmodgetinfo info='all' assign='gimmeeverything']-->
- *   <!--[pnmodgetinfo modname='anyymodname' info='all' assign='gimmeeverything']-->
+ *   <!--[ModUtil::getInfo info='displayname']-->
+ *   <!--[ModUtil::getInfo info='all' assign='gimmeeverything']-->
+ *   <!--[ModUtil::getInfo modname='anyymodname' info='all' assign='gimmeeverything']-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -54,13 +54,13 @@ function smarty_function_modgetinfo($params, &$smarty)
             $smarty->assign($assign, $default);
             return;
         }
-        $modid = pnModGetIDFromName($modname);
+        $modid = ModUtil::getIdFromName($modname);
     }
-    $modinfo = pnModGetInfo($modid);
+    $modinfo = ModUtil::getInfo($modid);
 
     $info = strtolower($info);
     if ($info != 'all' && !isset($modinfo[$info])) {
-        $smarty->trigger_error(__f('Invalid %1$s [%2$s] passed to %3$s.', array('info', $info, 'pnmodgetinfo')));
+        $smarty->trigger_error(__f('Invalid %1$s [%2$s] passed to %3$s.', array('info', $info, 'ModUtil::getInfo')));
         return false;
     }
 

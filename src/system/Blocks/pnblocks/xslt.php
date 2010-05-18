@@ -53,7 +53,7 @@ function Blocks_xsltblock_display($blockinfo)
     }
 
     // Get our block vars
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
     if ( (!isset($vars['docurl']) || !isset($vars['styleurl'])) &&
          (!isset($vars['doccontents']) || !isset($vars['stylecontents']))) {
         return;
@@ -93,7 +93,7 @@ function Blocks_xsltblock_display($blockinfo)
 function Blocks_xsltblock_modify($blockinfo)
 {
     // Get our block vars
-    $vars = pnBlockVarsFromContent($blockinfo['content']);
+    $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Create output object
     $pnRender = Renderer::getInstance('Blocks', false);
