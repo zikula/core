@@ -421,8 +421,8 @@ function installmodules($installtype = 'basic', $lang = 'en')
     // load our installation configuration
     $installtype = DataUtil::formatForOS($installtype);
     if ($installtype == 'complete') {
-    } elseif (file_exists("install/pninstalltypes/$installtype.php")) {
-        include "install/pninstalltypes/$installtype.php";
+    } elseif (file_exists("install/installtypes/$installtype.php")) {
+        include "install/installtypes/$installtype.php";
         $func = "installer_{$installtype}_modules";
         $modules = $func();
     } else {
