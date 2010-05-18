@@ -1,0 +1,363 @@
+<?php
+/**
+ * Core version informations - should be upgraded on each release for
+ * better control on config settings
+ */
+define('PN_VERSION_NUM', '1.3.0-dev');
+define('PN_VERSION_ID', 'Zikula');
+define('PN_VERSION_SUB', 'cinco');
+
+/**
+ * Yes/no integer
+ */
+define('PNYES', 1);
+define('PNNO', 0);
+
+/**
+ * State of modules
+ */
+define('PNMODULE_STATE_UNINITIALISED', 1);
+define('PNMODULE_STATE_INACTIVE', 2);
+define('PNMODULE_STATE_ACTIVE', 3);
+define('PNMODULE_STATE_MISSING', 4);
+define('PNMODULE_STATE_UPGRADED', 5);
+define('PNMODULE_STATE_NOTALLOWED', 6);
+define('PNMODULE_STATE_INVALID', -1);
+define('MODULE_TYPE_MODULE', 2);
+define('MODULE_TYPE_SYSTEM', 3);
+
+/**
+ * Module dependency states
+ */
+define('PNMODULE_DEPENDENCY_REQUIRED', 1);
+define('PNMODULE_DEPENDENCY_RECOMMENDED', 2);
+define('PNMODULE_DEPENDENCY_CONFLICTS', 3);
+
+/**
+ * 'All' and 'unregistered' for user and group permissions
+ */
+define('PNPERMS_ALL', '-1');
+define('PNPERMS_UNREGISTERED', '0');
+
+/**
+ * Fake module for config vars
+ */
+define('PN_CONFIG_MODULE', '/PNConfig');
+
+/**
+ * Core initialisation stages
+ */
+define('PN_CORE_NONE', 0);
+define('PN_CORE_CONFIG', 1);
+define('PN_CORE_ADODB', 2); // deprecated
+define('PN_CORE_DB', 4);
+define('PN_CORE_OBJECTLAYER', 8);
+define('PN_CORE_TABLES', 16);
+define('PN_CORE_SESSIONS', 32);
+define('PN_CORE_LANGS', 64);
+define('PN_CORE_MODS', 128);
+define('PN_CORE_TOOLS', 256); // deprecated
+define('PN_CORE_AJAX', 512); // deprecated
+define('PN_CORE_DECODEURLS', 1024);
+define('PN_CORE_THEME', 2048);
+define('PN_CORE_ALL', 4095);
+
+/**
+ * get a configuration variable
+ *
+ * @param name $ the name of the variable
+ * @param default the default value to return if the requested param is not set
+ * @return mixed value of the variable, or false on failure
+ */
+function pnConfigGetVar($name, $default = null)
+{
+    return System::getVar($name, $default);
+}
+
+/**
+ * set a configuration variable
+ *
+ * @param name $ the name of the variable
+ * @param value $ the value of the variable
+ * @return bool true on success, false on failure
+ */
+function pnConfigSetVar($name, $value = '')
+{
+    return System::setVar($name, $value);
+}
+
+/**
+ * delete a configuration variable
+ *
+ * @param name $ the name of the variable
+ * @returns mixed value of deleted config var or false on failure
+ */
+function pnConfigDelVar($name)
+{
+    return System::delVar($name);
+}
+
+/**
+ * Initialise Zikula
+ * Carries out a number of initialisation tasks to get Zikula up and
+ * running.
+ *
+ * @returns bool true initialisation successful false otherwise
+ */
+function pnInit($stages = PN_CORE_ALL)
+{
+    return System::init($stages);
+}
+
+/**
+ * get a list of database connections
+ *
+ * @param bool $pass_by_reference default = false
+ * @param string $fetchmode set ADODB fetchmode ADODB_FETCH_NUM, ADODB_FETCH_ASSOC, ADODB_FETCH_DEFAULT, ADODB_FETCH_BOTH
+ * @return array array of database connections
+ */
+function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE) // TODO A map ADODB fetch modes to Doctrine HYDRATES, e.g. Doctrine::HYDRATE_NONE
+{
+    return System::dbGetConn($pass_by_reference, $fetchmode);
+}
+
+/**
+ * get a list of database tables
+ *
+ * @return array array of database tables
+ */
+function pnDBGetTables()
+{
+    return System::dbGetTables();
+}
+
+/**
+ * get table prefix
+ *
+ * get's the database prefix for the current site
+ *
+ * In a non multisite scenario this will be the 'prefix' config var
+ * from config/config.php. For a multisite configuration the multistes
+ * module will manage the prefixes for a given table
+ *
+ * The table name parameter is the table name to get the prefix for
+ * minus the prefix and seperating _
+ * e.g. pnDBGetPrefix returns pn_modules for pnDBGetPrefix('modules');
+ *
+ * @param table - table name
+ */
+function pnDBGetTablePrefix($table)
+{
+    return System::dbGetTablePrefix($table);
+}
+
+/**
+ * strip slashes
+ *
+ * stripslashes on multidimensional arrays.
+ * Used in conjunction with pnVarCleanFromInput
+ *
+ * @param any $ variables or arrays to be stripslashed
+ */
+function pnStripslashes(&$value)
+{
+    System::stripslashes($value);
+}
+
+/**
+ * validate a zikula variable
+ *
+ * @param $var   the variable to validate
+ * @param $type  the type of the validation to perform (email, url etc.)
+ * @param $args  optional array with validation-specific settings (never used...)
+ * @return bool true if the validation was successful, false otherwise
+ */
+function pnVarValidate($var, $type, $args = 0)
+{
+    return System::varValidate($var, $type, $args);
+}
+
+/**
+ * get base URI for Zikula
+ *
+ * @return string base URI for Zikula
+ */
+function pnGetBaseURI()
+{
+    return System::getBaseUri();
+}
+
+/**
+ * get base URL for Zikula
+ *
+ * @return string base URL for Zikula
+ */
+function pnGetBaseURL()
+{
+    return System::getBaseUrl();
+}
+
+/**
+ * get homepage URL for Zikula
+ *
+ * @return string homepage URL for Zikula
+ */
+function pnGetHomepageURL()
+{
+    return System::getHomepageUrl();
+}
+
+/**
+ * Carry out a redirect
+ *
+ * @param string $redirecturl URL to redirect to
+ * @param array $addtionalheaders array of header strings to send with redirect
+ * @returns bool true if redirect successful, false otherwise
+ */
+function pnRedirect($redirecturl, $additionalheaders = array())
+{
+    return System::redirect($redirecturl, $additionalheaders);
+}
+
+/**
+ * check to see if this is a local referral
+ *
+ * @param bool strict - strict checking ensures that a referer must be set as well as local
+ * @return bool true if locally referred, false if not
+ */
+function pnLocalReferer($strict = false)
+{
+    return System::localReferer($strict);
+}
+
+/**
+ * send an email
+ *
+ * e-mail messages should now be send with a ModUtil::apiFunc call to the mailer module
+ *
+ * @deprecated
+ * @param to $ - recipient of the email
+ * @param subject $ - title of the email
+ * @param message $ - body of the email
+ * @param headers $ - extra headers for the email
+ * @param html $ - message is html formatted
+ * @param debug $ - if 1, echo mail content
+ * @return bool true if the email was sent, false if not
+ */
+function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
+{
+    return System::mail($to, $subject, $message, $headers, $html, $debug, $altbody);
+}
+
+/**
+ * Gets a server variable
+ *
+ * Returns the value of $name from $_SERVER array.
+ * Accepted values for $name are exactly the ones described by the
+ * {@link http://www.php.net/manual/en/reserved.variables.html#reserved.variables.server PHP manual}.
+ * If the server variable doesn't exist void is returned.
+ *
+ * @param name string the name of the variable
+ * @param default the default value to return if the requested param is not set
+ * @return mixed value of the variable
+ */
+function pnServerGetVar($name, $default = null)
+{
+    return System::serverGetVar($name, $default);
+}
+
+/**
+ * Gets the host name
+ *
+ * Returns the server host name fetched from HTTP headers when possible.
+ * The host name is in the canonical form (host + : + port) when the port is different than 80.
+ *
+ * @return string HTTP host name
+ */
+function pnGetHost()
+{
+    return System::getHost();
+}
+
+/**
+ * Get current URI (and optionally add/replace some parameters)
+ *
+ * @access public
+ * @param args array additional parameters to be added to/replaced in the URI (e.g. theme, ...)
+ * @return string current URI
+ */
+function pnGetCurrentURI($args = array())
+{
+    return System::getCurrentUri($args);
+}
+
+/**
+ * Gets the current protocol
+ *
+ * Returns the HTTP protocol used by current connection, it could be 'http' or 'https'.
+ *
+ * @return string current HTTP protocol
+ */
+function pnServerGetProtocol()
+{
+    return System::serverGetProtocol();
+}
+
+/**
+ * Get current URL
+ *
+ * @access public
+ * @param args array additional parameters to be added to/replaced in the URL (e.g. theme, ...)
+ * @return string current URL
+ * @todo cfr. BaseURI() for other possible ways, or try PHP_SELF
+ */
+function pnGetCurrentURL($args = array())
+{
+    return System::getCurrentUrl($args);
+}
+
+/**
+ * Decode the path string into a set of variable/value pairs
+ *
+ * This API works in conjunction with the new short urls
+ * system to extract a path based variable set into the Get, Post
+ * and request superglobals.
+ * A sample path is /modname/function/var1:value1
+ *
+ */
+function pnQueryStringDecode()
+{
+    return System::queryStringDecode();
+}
+
+/**
+ * add a variable/value pair into the query string
+ * (really the _GET superglobal
+ * This API also adds the variable to the _REQUEST superglobal for consistentcy
+ *
+ * @return bool true if successful, false otherwise
+ */
+function pnQueryStringSetVar($name, $value)
+{
+    return System::queryStringSetVar($name, $value);
+}
+
+/**
+ *
+ */
+function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
+{
+    return System::errorHandler($errno, $errstr, $errfile, $errline, $errcontext);
+}
+
+/**
+ * Gracefully shut down the framework (traps all exit and die calls)
+ *
+ * @param $exit_param params to pass to the exit function
+ * @return none - function halts execution
+ *
+ */
+function pnShutDown($exit_param = '')
+{
+    return System::shutDown($exit_param);
+}

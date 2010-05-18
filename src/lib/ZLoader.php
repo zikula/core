@@ -38,7 +38,7 @@ class ZLoader
         self::$autoloader = new KernelClassLoader();
         self::$autoloader->spl_autoload_register();
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
-        include ZLOADER_PATH. 'api/Api.php';
+        include ZLOADER_PATH. 'legacy/Api.php';
 
         // load eventhandlers from config/EventHandlers directory if any.
         EventManagerUtil::attachCustomHandlers('config/EventHandlers');
