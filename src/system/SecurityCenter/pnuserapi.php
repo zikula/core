@@ -635,7 +635,7 @@ function _securitycenter_userapi_checkinputvalue($secValue)
 function _securitycenter_userapi_getidsconfig()
 {
     $config = array();
-    $idsDir = dirname(__FILE__) . '/pnincludes/IDS/';
+    $idsDir = dirname(__FILE__) . '/vendor/IDS/';
 
     // General configuration settings
     $config['General'] = array();
