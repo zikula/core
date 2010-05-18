@@ -66,7 +66,7 @@ $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 
 if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name'])) {
     LogUtil::registerError(__f("The '%s' module is not currently accessible.", DataUtil::formatForDisplay(strip_tags($module))));
-    echo pnModFunc('Errors', 'user', 'main', array('type' => 404));
+    echo ModUtil::func('Errors', 'user', 'main', array('type' => 404));
     Theme::getInstance()->themefooter();
     System::shutdown();
 }
@@ -88,7 +88,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
             $dbConn->StartTrans();
         }
 
-        $return = pnModFunc($modinfo['name'], $type, $func, $arguments);
+        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
 
         if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
             if ($dbConn->HasFailedTrans()) {
@@ -110,7 +110,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
             if (!LogUtil::hasErrors()) {
                  LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function).", array($modinfo['url'], $func)), 404);
             }
-            echo pnModFunc('Errors', 'user', 'main');
+            echo ModUtil::func('Errors', 'user', 'main');
         } elseif (is_string($return) && strlen($return) > 1) {
             // Text
             echo $return;
@@ -127,7 +127,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
             }
         } else {
             LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function.', array($modinfo['url'], $func)), 404);
-            echo pnModFunc('Errors', 'user', 'main');
+            echo ModUtil::func('Errors', 'user', 'main');
         }
         Theme::getInstance()->themefooter();
     }

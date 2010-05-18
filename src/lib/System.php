@@ -1087,7 +1087,7 @@ class System
 // e-mail the error
                 case 1:
                     $toaddress = self::getVar('errormailto');
-                    $body = pnModFunc('Errors', 'user', 'system', array(
+                    $body = ModUtil::func('Errors', 'user', 'system', array(
                             'type' => $errno,
                             'message' => $errstr,
                             'file' => $errfile,
@@ -1127,7 +1127,7 @@ class System
 
 // display the new output and halt the script
         header('HTTP/1.0 500 System Error');
-        echo pnModFunc('Errors', 'user', 'system', array(
+        echo ModUtil::func('Errors', 'user', 'system', array(
         'type' => $errno,
         'message' => $errstr,
         'file' => $errfile,

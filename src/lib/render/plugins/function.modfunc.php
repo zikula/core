@@ -62,7 +62,7 @@ function smarty_function_modfunc($params, &$smarty)
         unset($params['modnamefunc']);
     }
 
-    $result = pnModFunc($modname, $type, $func, $params);
+    $result = ModUtil::func($modname, $type, $func, $params);
     if (is_array($result)) {
         $pnRender = Renderer::getInstance($modname);
         $pnRender->assign($result);

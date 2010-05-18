@@ -422,7 +422,7 @@ class LogUtil
             $args['subject'] = "Log Message: level=$level, uid=$uid";
             $args['body'] = $logline;
 
-            $rc = pnModFunc('Mailer', 'userapi', 'sendmessage', $args);
+            $rc = ModUtil::func('Mailer', 'userapi', 'sendmessage', $args);
         } elseif ($logDest == 'DB') {
             $obj = array();
             $obj['date'] = date($logDateFmt);

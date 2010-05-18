@@ -633,7 +633,7 @@ class ModUtil
      */
     public static function func($modname, $type = 'user', $func = 'main', $args = array())
     {
-        return pnModFuncExec($modname, $type, $func, $args);
+        return self::exec($modname, $type, $func, $args);
     }
 
     /**
@@ -1144,7 +1144,7 @@ class ModUtil
                     if (isset($modulehook['tarea']) && $modulehook['tarea'] == 'GUI') {
                         $gui = true;
                         if (self::available($modulehook['tmodule'], $modulehook['ttype']) && self::load($modulehook['tmodule'], $modulehook['ttype'])) {
-                            $output[$modulehook['tmodule']] = pnModFunc($modulehook['tmodule'],
+                            $output[$modulehook['tmodule']] = self::func($modulehook['tmodule'],
                                     $modulehook['ttype'],
                                     $modulehook['tfunc'],
                                     array('objectid' => $hookid, 'extrainfo' => $extrainfo));

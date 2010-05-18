@@ -1031,7 +1031,7 @@ function users_admin_import($args)
         // get other import values
         $importFile = FormUtil::getPassedValue('importFile', (isset($args['importFile']) ? $args['importFile'] : null), 'FILES');
         $delimiter = FormUtil::getPassedValue('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null), 'POST');
-        $importResults = pnModFunc('Users', 'admin', 'uploadImport',
+        $importResults = ModUtil::func('Users', 'admin', 'uploadImport',
                                    array('importFile' => $importFile,
                                          'delimiter' => $delimiter));
         if ($importResults == '') {
@@ -1123,7 +1123,7 @@ function users_admin_export($args)
         }
 
         //export the csv file
-        pnModFunc('Users', 'admin', 'exportCSV',
+        ModUtil::func('Users', 'admin', 'exportCSV',
                                array(   'exportFile'=> $exportFile,
                                         'delimiter' => $delimiter,
                                         'email'     => $email,

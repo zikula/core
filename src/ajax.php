@@ -59,7 +59,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
         }
 
         // Run the function
-        $return = pnModFunc($modinfo['name'], $type, $func, $arguments);
+        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
 
         if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
             if ($dbConn->HasFailedTrans()) {

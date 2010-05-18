@@ -37,7 +37,7 @@ function smarty_function_admincategorymenu($params, &$smarty)
     }
 
     $acid = SessionUtil::getVar('lastacid', ModUtil::getVar('Admin', 'startcategory'));
-    $result = pnModFunc('Admin', 'admin', 'categorymenu', array('cid' => $acid));
+    $result = ModUtil::func('Admin', 'admin', 'categorymenu', array('cid' => $acid));
 
     return $result;
 }
