@@ -98,10 +98,6 @@ class Renderer extends Smarty
             if (file_exists($pluginpath)) {
                 array_push($this->plugins_dir, $pluginpath);
             }
-            if (file_exists($pluginpath)) {
-                array_push($this->plugins_dir, $pluginpath);
-            }
-
         }
 
         // check if the recent 'type' parameter in the URL is admin and if yes,
