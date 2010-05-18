@@ -93,7 +93,7 @@ function Users_ajax_checkuser()
     $vpass        = DataUtil::convertFromUTF8(FormUtil::getPassedValue('vpass', null,      'POST'));
     $reg_answer   = DataUtil::convertFromUTF8(FormUtil::getPassedValue('reg_answer', null, 'POST'));
 
-    if ((!$uname) || !(!preg_match("/[[:space:]]/", $uname)) || !pnVarValidate($uname, 'uname')) {
+    if ((!$uname) || !(!preg_match("/[[:space:]]/", $uname)) || !System::varValidate($uname, 'uname')) {
         return array('result' => __('Sorry! The user name you entered is not acceptable. Please correct your entry and try again.'), 'errorcode' => 4);
     }
 
@@ -134,7 +134,7 @@ function Users_ajax_checkuser()
         return array('result' => __('Sorry! The user name you entered has already been registered.'), 'errorcode' => 8);
     }
 
-    if (!pnVarValidate($email, 'email')) {
+    if (!System::varValidate($email, 'email')) {
         return array('result' => __('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. '
             . 'Please correct your entry and try again.'), 'errorcode' => 2);
     }

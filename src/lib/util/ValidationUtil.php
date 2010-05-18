@@ -88,9 +88,9 @@ class ValidationUtil
                                break;
                 case 'regexp': $rc = ($postval !== '' && preg_match($testval, $postval));
                                break;
-                case 'url'   : $rc = pnVarValidate($postval, 'url');
+                case 'url'   : $rc = System::varValidate($postval, 'url');
                                break;
-                case 'email' : $rc = pnVarValidate($postval, 'email');
+                case 'email' : $rc = System::varValidate($postval, 'email');
                                break;
                 case 'noop'  :
                 case ''      : if (!$required) {

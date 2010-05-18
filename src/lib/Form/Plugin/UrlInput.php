@@ -46,7 +46,7 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
         }
 
         if (!empty($this->text)) {
-            if (!pnVarValidate($this->text, 'url')) {
+            if (!System::varValidate($this->text, 'url')) {
                 $this->setError(__('Error! Invalid URL.'));
             }
         }

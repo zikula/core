@@ -34,7 +34,7 @@ function blocks_user_changestatus()
     if (!SecurityUtil::confirmAuthKey()) {
         echo __("Sorry! Invalid authorization key ('authkey'). This is probably either because you pressed the \'Back\' button to return to a page which does not allow that, or else because the page\'s authorization key expired due to prolonged inactivity. Please try again.");
         Theme::getInstance()->themefooter();
-        pnShutDown();
+        System::shutdown();
     }
     */
     $bid = FormUtil::getPassedValue('bid');

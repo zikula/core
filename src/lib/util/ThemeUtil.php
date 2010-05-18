@@ -139,7 +139,7 @@ class ThemeUtil
         $theme = (isset($theme) ? strtolower((string) $theme) : '');
 
         // validate
-        if (!pnVarValidate($theme, 'theme')) {
+        if (!System::varValidate($theme, 'theme')) {
             return false;
         }
 

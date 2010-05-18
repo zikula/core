@@ -23,7 +23,7 @@ if (SessionUtil::hasExpired()) {
     header('HTTP/1.0 403 Access Denied');
     echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
     Theme::getInstance()->themefooter();
-    pnShutDown();
+    System::shutdown();
 }
 
 // Get module
@@ -38,13 +38,13 @@ if (empty($module)) {
     } else {
         pnRedirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
     }
-    pnShutDown();
+    System::shutdown();
 } else if (!ModUtil::available($module) || !SecurityUtil::checkPermission("$module::", '::', ACCESS_EDIT)) {
     // call for an unavailable module - either not available or not authorized
     header('HTTP/1.0 403 Access Denied');
     echo 'Module <strong>' . DataUtil::formatForDisplay($module) . '</strong> not available';
     Theme::getInstance()->themefooter();
-    pnShutDown();
+    System::shutdown();
 }
 
 // get the module information
@@ -53,7 +53,7 @@ $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     // Redirect to new style admin panel
     pnRedirect(ModUtil::url($module, 'admin'));
-    pnShutDown();
+    System::shutdown();
 }
 
 

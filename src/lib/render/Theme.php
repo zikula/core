@@ -129,7 +129,7 @@ class Theme extends Renderer
         // to prevent blocks from being cached
         if ($this->caching && $this->is_cached($this->themeconfig['page'], $this->pageid)) {
             $this->display($this->themeconfig['page'], $this->pageid);
-            pnShutDown();
+            System::shutdown();
         }
 
         if ($usefilters) {

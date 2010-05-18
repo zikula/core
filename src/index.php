@@ -23,7 +23,7 @@ if (SessionUtil::hasExpired()) {
     header('HTTP/1.0 403 Access Denied');
     echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
     Theme::getInstance()->themefooter();
-    pnShutDown();
+    System::shutdown();
 }
 
 // Get variables
@@ -42,7 +42,7 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
     } else {
         require_once 'system/Theme/pntemplates/siteoff.htm';
     }
-    pnShutDown();
+    System::shutdown();
 }
 
 // check requested module and set to start module if not present
@@ -56,7 +56,7 @@ if (empty($module)) {
         if (!empty($arg)) {
             $argument = explode('=', $arg);
             $arguments[$argument[0]] = $argument[1];
-            pnQueryStringSetVar($argument[0], $argument[1]);
+            System::queryStringSetVar($argument[0], $argument[1]);
         }
     }
 }
@@ -68,7 +68,7 @@ if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name']))
     LogUtil::registerError(__f("The '%s' module is not currently accessible.", DataUtil::formatForDisplay(strip_tags($module))));
     echo pnModFunc('Errors', 'user', 'main', array('type' => 404));
     Theme::getInstance()->themefooter();
-    pnShutDown();
+    System::shutdown();
 }
 
 if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
@@ -135,4 +135,4 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     Theme::getInstance()->themefooter();
 }
 
-pnShutDown();
+System::shutdown();

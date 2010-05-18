@@ -441,7 +441,7 @@ class Form_Render extends Renderer
     public function FormDie($msg)
     {
         echo ($msg);
-        pnShutDown(0);
+        System::shutdown(0);
     }
 
     /**

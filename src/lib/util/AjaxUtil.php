@@ -33,7 +33,7 @@ class AjaxUtil
         if (!empty($error)) {
             header('HTTP/1.0 ' . $code);
             echo DataUtil::convertToUTF8($error);
-            pnShutDown();
+            System::shutdown();
         }
     }
 
@@ -66,11 +66,11 @@ class AjaxUtil
         } else {
             $data = $args;
         }
-        
+
         if ($statusmsg === true) {
             // now check if a status message is set
-        	$msgs = LogUtil::getStatusMessagesText('<br />');
-        	$data['statusmsg'] = $msgs;
+            $msgs = LogUtil::getStatusMessagesText('<br />');
+            $data['statusmsg'] = $msgs;
         }
 
         if ($createauthid === true) {
@@ -98,7 +98,7 @@ class AjaxUtil
             header('X-JSON:(' . $output . ')');
         }
         echo $output;
-        pnShutDown();
+        System::shutdown();
     }
 
 }

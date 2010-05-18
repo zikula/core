@@ -1383,7 +1383,7 @@ function users_admin_uploadImport($args)
         }
 
         // check if the user name is valid because spaces or invalid characters
-        if (preg_match("/[[:space:]]/", $uname) || !pnVarValidate($uname, 'uname')) {
+        if (preg_match("/[[:space:]]/", $uname) || !System::varValidate($uname, 'uname')) {
             return __f('Sorry! The user name %s cannot contain spaces in line %s. Please check your import file.', array($uname, $counter));
         }
 
@@ -1412,7 +1412,7 @@ function users_admin_uploadImport($args)
         }
 
         // check email format
-        if (!pnVarValidate($email, 'email')) {
+        if (!System::varValidate($email, 'email')) {
             return __f('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons in line %s. Please check your import file.', $counter);
         }
 

@@ -195,7 +195,7 @@ function users_userapi_checkuser($args)
         return -1;
     }
 
-    if (!pnVarValidate($args['email'], 'email')) {
+    if (!System::varValidate($args['email'], 'email')) {
         return 2;
     }
 
@@ -205,7 +205,7 @@ function users_userapi_checkuser($args)
         }
     }
 
-    if ((!$args['uname']) || !(!preg_match("/[[:space:]]/", $args['uname'])) || !pnVarValidate($args['uname'], 'uname')) {
+    if ((!$args['uname']) || !(!preg_match("/[[:space:]]/", $args['uname'])) || !System::varValidate($args['uname'], 'uname')) {
         return 4;
     }
 

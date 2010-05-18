@@ -364,7 +364,7 @@ class UserUtil
 
         $uservars = ModUtil::getVar('Users');
 
-        if (!pnVarValidate($uname, (($uservars['loginviaoption'] == 1) ? 'email' : 'uname'))) {
+        if (!System::varValidate($uname, (($uservars['loginviaoption'] == 1) ? 'email' : 'uname'))) {
             return false;
         }
 

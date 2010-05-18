@@ -34,7 +34,7 @@ function z_exit($msg, $html = true)
     global $ZConfig;
     if ($ZConfig['System']['development']) {
         print($msg2 . $debug);
-        pnShutDown();
+        System::shutdown();
     }
 
     return LogUtil::registerError($msg2);
@@ -132,7 +132,7 @@ function z_prayer($data, $die = true)
     echo _prayer($data);
 
     if ($die) {
-        pnShutDown();
+        System::shutdown();
     }
 }
 

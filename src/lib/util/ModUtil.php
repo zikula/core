@@ -60,7 +60,7 @@ class ModUtil
         $name = isset($name) ? ((string)$name) : '';
 
         // make sure we have the necessary parameters
-        if (!pnVarValidate($modname, 'mod') || !pnVarValidate($name, 'modvar')) {
+        if (!System::varValidate($modname, 'mod') || !System::varValidate($name, 'modvar')) {
             return false;
         }
 
@@ -151,7 +151,7 @@ class ModUtil
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // validate
-        if (!pnVarValidate($modname, 'mod') || !isset($name)) {
+        if (!System::varValidate($modname, 'mod') || !isset($name)) {
             return false;
         }
 
@@ -218,7 +218,7 @@ class ModUtil
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // validate
-        if (!pnVarValidate($modname, 'modvar')) {
+        if (!System::varValidate($modname, 'modvar')) {
             return false;
         }
 
@@ -264,7 +264,7 @@ class ModUtil
         $module = (isset($module) ? strtolower((string)$module) : '');
 
         // validate
-        if (!pnVarValidate($module, 'mod')) {
+        if (!System::varValidate($module, 'mod')) {
             return false;
         }
 
@@ -456,7 +456,7 @@ class ModUtil
         $data = false;
 
         // validate
-        if (!pnVarValidate($modname, 'mod')) {
+        if (!System::varValidate($modname, 'mod')) {
             return $data;
         }
 
@@ -553,7 +553,7 @@ class ModUtil
 
         // get the module info
         $modinfo = self::getInfo(self::getIdFromName($modname));
-        // check for bad pnVarValidate($modname)
+        // check for bad System::varValidate($modname)
         if (!$modinfo) {
             return false;
         }
@@ -650,7 +650,7 @@ class ModUtil
     {
         if (empty($type)) {
             $type = 'user';
-        } elseif (!pnVarValidate($type, 'api')) {
+        } elseif (!System::varValidate($type, 'api')) {
             return null;
         }
 
@@ -685,7 +685,7 @@ class ModUtil
         $loadfunc = ($api ? 'ModUtil::loadApi' : 'pnModLoad');
 
         // validate
-        if (!pnVarValidate($modname, 'mod')) {
+        if (!System::varValidate($modname, 'mod')) {
             return null;
         }
 
@@ -796,7 +796,7 @@ class ModUtil
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // validate
-        if (!pnVarValidate($modname, 'mod')) {
+        if (!System::varValidate($modname, 'mod')) {
             return null;
         }
 
@@ -979,7 +979,7 @@ class ModUtil
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
         // validate
-        if (!pnVarValidate($modname, 'mod')) {
+        if (!System::varValidate($modname, 'mod')) {
             return false;
         }
 
@@ -1054,7 +1054,7 @@ class ModUtil
         $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
 
         // validate
-        if (!pnVarValidate($hookmodule, 'mod')) {
+        if (!System::varValidate($hookmodule, 'mod')) {
             return false;
         }
 
@@ -1081,7 +1081,7 @@ class ModUtil
         $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
 
         // validate
-        if (!pnVarValidate($hookmodule, 'mod')) {
+        if (!System::varValidate($hookmodule, 'mod')) {
             return false;
         }
 
@@ -1213,7 +1213,7 @@ class ModUtil
         $smodule = isset($smodule) ? ((string)$smodule) : '';
 
         // validate
-        if (!pnVarValidate($tmodule, 'mod') || !pnVarValidate($smodule, 'mod')) {
+        if (!System::varValidate($tmodule, 'mod') || !System::varValidate($smodule, 'mod')) {
             return false;
         }
 

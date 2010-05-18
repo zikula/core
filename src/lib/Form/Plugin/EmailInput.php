@@ -44,7 +44,7 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
         }
 
         if (!empty($this->text)) {
-            if (!pnVarValidate($this->text, 'email')) {
+            if (!System::varValidate($this->text, 'email')) {
                 $this->setError(__('Error! Invalid e-mail address.'));
             }
         }

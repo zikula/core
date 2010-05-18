@@ -351,7 +351,7 @@ function _upg_sanity_check($username, $password)
 
     if (!$validupgrade) {
         _upg_footer();
-        pnShutDown();
+        System::shutdown();
     }
 
     _upg_continue('upgrademodules', __('Proceed to upgrade modules.'), $username, $password);

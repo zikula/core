@@ -240,7 +240,7 @@ function install()
                                 'password' => $password,
                                 'repeatpassword' => $repeatpassword,
                                 'email' => $email));
-            } elseif (!pnVarValidate($email, 'email')) {
+            } elseif (!System::varValidate($email, 'email')) {
                 $action = 'createadmin';
                 $smarty->assign('emailvalidatefailed', true);
                 $smarty->assign(array(
@@ -248,7 +248,7 @@ function install()
                                 'password' => $password,
                                 'repeatpassword' => $repeatpassword,
                                 'email' => $email));
-            } elseif ((!$username) || !(!preg_match("/[[:space:]]/", $username)) || !pnVarValidate($username, 'uname')) {
+            } elseif ((!$username) || !(!preg_match("/[[:space:]]/", $username)) || !System::varValidate($username, 'uname')) {
                 $action = 'createadmin';
                 $smarty->assign('uservalidatefailed', true);
                 $smarty->assign(array(

@@ -438,7 +438,7 @@ class SessionUtil
                     Loader::requireOnce('lib/templates/sessionfailed.htm');
                 }
                 // terminate execution
-                pnShutDown();
+                System::shutdown();
             }
         }
     }

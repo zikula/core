@@ -90,4 +90,4 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     AjaxUtil::error(__('Error! Ajax support is not implemented for old-style modules.'));
 }
 
-pnShutDown();
+System::shutdown();

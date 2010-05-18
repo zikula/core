@@ -322,25 +322,25 @@ function search_userapi_decodeurl($args)
     $funcs = array('main', 'search', 'recent');
     // set the correct function name based on our input
     if (empty($args['vars'][2])) {
-        pnQueryStringSetVar('func', 'main');
+        System::queryStringSetVar('func', 'main');
     } elseif (!in_array($args['vars'][2], $funcs)) {
-        pnQueryStringSetVar('func', 'main');
+        System::queryStringSetVar('func', 'main');
         $nextvar = 2;
     } else {
-        pnQueryStringSetVar('func', $args['vars'][2]);
+        System::queryStringSetVar('func', $args['vars'][2]);
         $nextvar = 3;
     }
 
     if (FormUtil::getPassedValue('func') == 'recent'){
-       pnQueryStringSetVar('startnum', $args['vars'][$nextvar]);
+       System::queryStringSetVar('startnum', $args['vars'][$nextvar]);
     }
 
     // identify the correct parameter to identify the page
     if (FormUtil::getPassedValue('func') == 'search' && isset($args['vars'][$nextvar]) && !empty($args['vars'][$nextvar])) {
-        pnQueryStringSetVar('q', $args['vars'][$nextvar]);
+        System::queryStringSetVar('q', $args['vars'][$nextvar]);
         $nextvar++;
         if (isset($args['vars'][$nextvar]) && $args['vars'][$nextvar] == 'page') {
-            pnQueryStringSetVar('page', (int)$args['vars'][$nextvar+1]);
+            System::queryStringSetVar('page', (int)$args['vars'][$nextvar+1]);
         }
     }
 
