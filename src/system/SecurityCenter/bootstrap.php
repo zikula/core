@@ -12,5 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+if (!defined('HTMLPURIFIER_PREFIX')) {
+    define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/pnincludes/htmlpurifier'));
+}
+
 ZLoader::addAutoloader('HTMLPurifier', dirname(__FILE__) . '/pnincludes/htmlpurifier');
 ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/pnincludes'));
