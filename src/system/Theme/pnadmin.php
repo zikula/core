@@ -51,7 +51,7 @@ function theme_admin_create($args)
 
     // check our input
     if (!isset($themeinfo) || !isset($themeinfo['name']) || empty($themeinfo) || empty($themeinfo['name'])) {
-        $url = pnModURL('Theme', 'admin', 'new');
+        $url = ModUtil::url('Theme', 'admin', 'new');
         return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
     }
 
@@ -69,7 +69,7 @@ function theme_admin_create($args)
     pnModAPIFunc('Theme', 'admin', 'regenerate');
 
     // redirect back to the variables page
-    return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -97,7 +97,7 @@ function theme_admin_view($args = array())
     $startlet = FormUtil::getPassedValue('startlet', isset($args['startlet']) ? $args['startlet'] : null, 'GET');
 
     // we need this value multiple times, so we keep it
-    $itemsperpage = pnModGetVar('Theme', 'itemsperpage');
+    $itemsperpage = ModUtil::getVar('Theme', 'itemsperpage');
 
     // Create output object
     $pnRender = Renderer::getInstance('Theme', false);
@@ -154,7 +154,7 @@ function theme_admin_modify($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -196,7 +196,7 @@ function theme_admin_updatesettings($args)
     // check our input
     if (!isset($themename) || empty($themename)) {
         LogUtil::registerArgsError();
-        return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -206,7 +206,7 @@ function theme_admin_updatesettings($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     // get the existing theme info
@@ -226,7 +226,7 @@ function theme_admin_updatesettings($args)
     }
 
     // redirect back to the variables page
-    return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -240,12 +240,12 @@ function theme_admin_variables($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -287,12 +287,12 @@ function theme_admin_updatevariables($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -302,7 +302,7 @@ function theme_admin_updatevariables($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     // get the original file source
@@ -328,7 +328,7 @@ function theme_admin_updatevariables($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // redirect back to the variables page
-    return pnRedirect(pnModURL('Theme', 'admin', 'variables', array('themename' => $themename)));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename)));
 }
 
 /**
@@ -342,12 +342,12 @@ function theme_admin_palettes($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -398,7 +398,7 @@ function theme_admin_updatepalettes($args)
     // check if this is a valid theme
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -408,7 +408,7 @@ function theme_admin_updatepalettes($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     // check if we've got a new palette being created
@@ -433,7 +433,7 @@ function theme_admin_updatepalettes($args)
                                         'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover) ;
     } else {
         LogUtil::registerError(__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
-        return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // rewrite the settings to the running config
@@ -443,7 +443,7 @@ function theme_admin_updatepalettes($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // redirect back to the settings page
-    return pnRedirect(pnModURL('Theme', 'admin', 'palettes', array('themename' => $themename)));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'palettes', array('themename' => $themename)));
 }
 
 /**
@@ -457,12 +457,12 @@ function theme_admin_pageconfigurations($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -515,12 +515,12 @@ function theme_admin_modifypageconfigtemplates($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -531,7 +531,7 @@ function theme_admin_modifypageconfigtemplates($args)
     // read our configuration file
     $pageconfiguration = pnModAPIFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
     if (!isset($pageconfiguration) || empty($pageconfiguration)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Create output object
@@ -637,12 +637,12 @@ function theme_admin_updatepageconfigtemplates($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -652,7 +652,7 @@ function theme_admin_updatepageconfigtemplates($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     // form the new page configuration
@@ -677,7 +677,7 @@ function theme_admin_updatepageconfigtemplates($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // return the user to the correct place
-    return pnRedirect(pnModURL('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
 }
 
 /**
@@ -723,12 +723,12 @@ function theme_admin_modifypageconfigurationassignment($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -758,7 +758,7 @@ function theme_admin_modifypageconfigurationassignment($args)
     $pageconfigurations = pnModAPIFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
     if (!isset($pageconfigurations[$pcname])) {
         LogUtil::registerError(__('Error! No such page configuration assignment found.'));
-        return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
     }
     $pageconfigparts = explode('/', $pcname);
 
@@ -800,12 +800,12 @@ function theme_admin_updatepageconfigurationassignment($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -815,7 +815,7 @@ function theme_admin_updatepageconfigurationassignment($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     // read the list of existing page config assignments
@@ -856,7 +856,7 @@ function theme_admin_updatepageconfigurationassignment($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // return the user to the correct place
-    return pnRedirect(pnModURL('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
 }
 
 /**
@@ -900,7 +900,7 @@ function theme_admin_deletepageconfigurationassignment($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        LogUtil::registerAuthidError(pnModURL('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        LogUtil::registerAuthidError(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
     }
 
     // Delete the admin message
@@ -911,7 +911,7 @@ function theme_admin_deletepageconfigurationassignment($args)
     }
 
     // return the user to the correct place
-    return pnRedirect(pnModURL('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
 }
 
 /**
@@ -926,12 +926,12 @@ function theme_admin_credits($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
     if (!SecurityUtil::checkPermission('Theme::', "$themename::credits", ACCESS_EDIT)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Create output object
@@ -958,7 +958,7 @@ function theme_admin_setasdefault($args)
 
     // check our input
     if (!isset($themename) || empty($themename)) {
-        return LogUtil::registerArgsError(pnModURL('Theme', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -985,7 +985,7 @@ function theme_admin_setasdefault($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     // Set the default theme
@@ -994,7 +994,7 @@ function theme_admin_setasdefault($args)
         LogUtil::registerStatus(__('Done! Changed default theme.'));
     }
 
-    return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
 
 }
 
@@ -1013,18 +1013,18 @@ function theme_admin_upgrade($args)
     // check the permissions required to upgrade the theme
     if (!is_writable("themes/$themeinfo[directory]") || !is_writable("themes/$themeinfo[directory]/templates")) {
         LogUtil::registerError(__('Notice: Permissions for the theme directory must be set so that it can be written to.'));
-        return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     if (!file_exists("themes/$themeinfo[directory]/xaninit.php") || $themeinfo['type'] != 2) {
         LogUtil::registerError(__("Error! This theme cannot be upgraded because it is not a Xanthia 2 theme."));
-        return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // make the config directory
     if (!is_dir("themes/$themeinfo[directory]/templates/config") && !mkdir("themes/$themeinfo[directory]/templates/config")) {
         LogUtil::registerError(__('Error! Could not create theme configuration directory.'));
-        return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // initialise the globals used in the upgrade
@@ -1073,7 +1073,7 @@ function theme_admin_upgrade($args)
     pnModAPIFunc('Theme', 'admin', 'regenerate');
 
     LogUtil::registerStatus(__('Done! Upgraded theme.'));
-    return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -1118,7 +1118,7 @@ function theme_admin_delete($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
     $deletefiles = FormUtil::getPassedValue('deletefiles', 0, 'POST');
 
@@ -1131,7 +1131,7 @@ function theme_admin_delete($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(pnModURL('Theme', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -1149,7 +1149,7 @@ function theme_admin_modifyconfig()
     $pnRender = Renderer::getInstance('Theme', false);
 
     // assign all module vars
-    $pnRender->assign(pnModGetVar('Theme'));
+    $pnRender->assign(ModUtil::getVar('Theme'));
 
     // assign an authid for the clear cache/compile links
     $pnRender->assign('authid', SecurityUtil::generateAuthKey('Theme'));
@@ -1166,7 +1166,7 @@ function theme_admin_modifyconfig()
     $pnRender->assign('mods', $mods);
 
     // assign an extracted list of non-cached mods
-    $pnRender->assign('modulesnocache', array_flip(explode(',', pnModGetVar('Theme', 'modulesnocache'))));
+    $pnRender->assign('modulesnocache', array_flip(explode(',', ModUtil::getVar('Theme', 'modulesnocache'))));
 
     // check for a .htaccess file
     if (file_exists('.htaccess')){
@@ -1195,63 +1195,63 @@ function theme_admin_updateconfig($args)
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     // set our module variables
     $modulesnocache = FormUtil::getPassedValue('modulesnocache', isset($args['modulesnocache']) ? $args['modulesnocache'] : array(), 'POST');
     $modulesnocache = implode(',', $modulesnocache);
-    pnModSetVar('Theme', 'modulesnocache', $modulesnocache);
+    ModUtil::setVar('Theme', 'modulesnocache', $modulesnocache);
 
     $enablecache = (bool)FormUtil::getPassedValue('enablecache', isset($args['enablecache']) ? $args['enablecache'] : false, 'POST');
-    pnModSetVar('Theme', 'enablecache', $enablecache);
+    ModUtil::setVar('Theme', 'enablecache', $enablecache);
 
     $compile_check = (bool)FormUtil::getPassedValue('compile_check', isset($args['compile_check']) ? $args['compile_check'] : false, 'POST');
-    pnModSetVar('Theme', 'compile_check', $compile_check);
+    ModUtil::setVar('Theme', 'compile_check', $compile_check);
 
     $cache_lifetime = (int)FormUtil::getPassedValue('cache_lifetime', isset($args['cache_lifetime']) ? $args['cache_lifetime'] : 3600, 'POST');
     if ($cache_lifetime < -1) $cache_lifetime = 3600;
-    pnModSetVar('Theme', 'cache_lifetime', $cache_lifetime);
+    ModUtil::setVar('Theme', 'cache_lifetime', $cache_lifetime);
 
     $force_compile = (bool)FormUtil::getPassedValue('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false, 'POST');
-    pnModSetVar('Theme', 'force_compile', $force_compile);
+    ModUtil::setVar('Theme', 'force_compile', $force_compile);
 
     $trimwhitespace = (bool)FormUtil::getPassedValue('trimwhitespace', isset($args['trimwhitespace']) ? $args['trimwhitespace'] : false, 'POST');
-    pnModSetVar('Theme', 'trimwhitespace', $trimwhitespace);
+    ModUtil::setVar('Theme', 'trimwhitespace', $trimwhitespace);
 
     $maxsizeforlinks = (int)FormUtil::getPassedValue('maxsizeforlinks', isset($args['maxsizeforlinks']) ? $args['maxsizeforlinks'] : 30, 'POST');
-    pnModSetVar('Theme', 'maxsizeforlinks', $maxsizeforlinks);
+    ModUtil::setVar('Theme', 'maxsizeforlinks', $maxsizeforlinks);
 
     $theme_change = (bool)FormUtil::getPassedValue('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false, 'POST');
     pnConfigSetVar('theme_change', $theme_change);
 
     $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25, 'POST');
     if ($itemsperpage < 1) $itemsperpage = 25;
-    pnModSetVar('Theme', 'itemsperpage', $itemsperpage);
+    ModUtil::setVar('Theme', 'itemsperpage', $itemsperpage);
 
     $cssjscombine = (bool)FormUtil::getPassedValue('cssjscombine', isset($args['cssjscombine']) ? $args['cssjscombine'] : false, 'POST');
-    pnModSetVar('Theme', 'cssjscombine', $cssjscombine);
+    ModUtil::setVar('Theme', 'cssjscombine', $cssjscombine);
 
     $cssjsminify = (bool)FormUtil::getPassedValue('cssjsminify', isset($args['cssjsminify']) ? $args['cssjsminify'] : false, 'POST');
-    pnModSetVar('Theme', 'cssjsminify', $cssjsminify);
+    ModUtil::setVar('Theme', 'cssjsminify', $cssjsminify);
 
     $cssjscompress = (bool)FormUtil::getPassedValue('cssjscompress', isset($args['cssjscompress']) ? $args['cssjscompress'] : false, 'POST');
-    pnModSetVar('Theme', 'cssjscompress', $cssjscompress);
+    ModUtil::setVar('Theme', 'cssjscompress', $cssjscompress);
 
     $cssjscombine_lifetime = (int)FormUtil::getPassedValue('cssjscombine_lifetime', isset($args['cssjscombine_lifetime']) ? $args['cssjscombine_lifetime'] : 3600, 'POST');
     if ($cssjscombine_lifetime < -1) $cssjscombine_lifetime = 3600;
-    pnModSetVar('Theme', 'cssjscombine_lifetime', $cssjscombine_lifetime);
+    ModUtil::setVar('Theme', 'cssjscombine_lifetime', $cssjscombine_lifetime);
 
 
     // render
     $render_compile_check = (bool)FormUtil::getPassedValue('render_compile_check', isset($args['render_compile_check']) ? $args['render_compile_check'] : false, 'POST');
-    pnModSetVar('Theme', 'render_compile_check', $render_compile_check);
+    ModUtil::setVar('Theme', 'render_compile_check', $render_compile_check);
 
     $render_force_compile = (bool)FormUtil::getPassedValue('render_force_compile', isset($args['render_force_compile']) ? $args['render_force_compile'] : false, 'POST');
-    pnModSetVar('Theme', 'render_force_compile', $render_force_compile);
+    ModUtil::setVar('Theme', 'render_force_compile', $render_force_compile);
 
     $render_cache = (bool)FormUtil::getPassedValue('render_cache', isset($args['render_cache']) ? $args['render_cache'] : false, 'POST');
-    pnModSetVar('Theme', 'render_cache', $render_cache);
+    ModUtil::setVar('Theme', 'render_cache', $render_cache);
 
     $render_lifetime = (int)FormUtil::getPassedValue('render_lifetime', isset($args['render_lifetime']) ? $args['render_lifetime'] : 3600, 'POST');
     if ($render_lifetime < -1) $render_lifetime = 3600;
@@ -1264,7 +1264,7 @@ function theme_admin_updateconfig($args)
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(pnModURL('Theme', 'admin', 'modifyconfig'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1282,7 +1282,7 @@ function theme_admin_clear_compiled()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     $Theme = Theme::getInstance('Theme');
@@ -1294,7 +1294,7 @@ function theme_admin_clear_compiled()
         LogUtil::registerError(__('Error: Failed to clear theme engine compiled templates.'));
     }
 
-    return pnRedirect(pnModURL('Theme', 'admin', 'modifyconfig'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1312,7 +1312,7 @@ function theme_admin_clear_cache()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','main'));
     }
 
     $Theme = Theme::getInstance('Theme');
@@ -1324,7 +1324,7 @@ function theme_admin_clear_cache()
         LogUtil::registerError(__('Error: Failed to clear theme engine cached templates.'));
     }
 
-    return pnRedirect(pnModURL('Theme', 'admin', 'modifyconfig'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1342,14 +1342,14 @@ function theme_admin_clear_cssjscombinecache()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     $Theme = Theme::getInstance('Theme');
     $Theme->clear_cssjscombinecache();
 
     LogUtil::registerStatus(__('Done! Deleted CSS/JS combination cached files.'));
-    return pnRedirect(pnModURL('Theme', 'admin', 'modifyconfig'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1367,7 +1367,7 @@ function theme_admin_render_clear_compiled()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     $Renderer = Renderer::getInstance();
@@ -1379,7 +1379,7 @@ function theme_admin_render_clear_compiled()
         LogUtil::registerError(__('Error: Failed to clear rendering engine compiled templates.'));
     }
 
-    return pnRedirect(pnModURL('Theme', 'admin', 'modifyconfig'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1397,7 +1397,7 @@ function theme_admin_render_clear_cache()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Theme','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
     }
 
     $Renderer = Renderer::getInstance();
@@ -1409,5 +1409,5 @@ function theme_admin_render_clear_cache()
         LogUtil::registerError(__('Error: Failed to clear rendering engine cached pages.'));
     }
 
-    return pnRedirect(pnModURL('Theme', 'admin', 'modifyconfig'));
+    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }

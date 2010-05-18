@@ -245,7 +245,7 @@ class ThemeUtil
 
         // default for the style sheet
         if (empty($stylesheet)) {
-            $stylesheet = pnModGetVar($modname, 'modulestylesheet');
+            $stylesheet = ModUtil::getVar($modname, 'modulestylesheet');
             if (empty($stylesheet)) {
                 $stylesheet = 'style.css';
             }

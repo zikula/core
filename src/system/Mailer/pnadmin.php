@@ -50,7 +50,7 @@ function Mailer_admin_modifyconfig()
                                      4 => DataUtil::formatForDisplay(__('SMTP mail transfer protocol'))));
 
     // assign all module vars
-    $pnRender->assign(pnModGetVar('Mailer'));
+    $pnRender->assign(ModUtil::getVar('Mailer'));
 
     return $pnRender->fetch('mailer_admin_modifyconfig.htm');
 }
@@ -84,48 +84,48 @@ function Mailer_admin_updateconfig()
 
     // confirm our forms authorisation key
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Mailer','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Mailer','admin','main'));
     }
 
     // set our new module variable values
     $mailertype = (int)FormUtil::getPassedValue('mailertype', 1, 'POST');
-    pnModSetVar('Mailer', 'mailertype', $mailertype);
+    ModUtil::setVar('Mailer', 'mailertype', $mailertype);
 
     $charset = (string)FormUtil::getPassedValue('charset', ZLanguage::getEncoding(), 'POST');
-    pnModSetVar('Mailer', 'charset', $charset);
+    ModUtil::setVar('Mailer', 'charset', $charset);
 
     $encoding = (string)FormUtil::getPassedValue('encoding', '8bit', 'POST');
-    pnModSetVar('Mailer', 'encoding', $encoding);
+    ModUtil::setVar('Mailer', 'encoding', $encoding);
 
     $html = (bool)FormUtil::getPassedValue('html', false, 'POST');
-    pnModSetVar('Mailer', 'html', $html);
+    ModUtil::setVar('Mailer', 'html', $html);
 
     $wordwrap = (int)FormUtil::getPassedValue('wordwrap', 50, 'POST');
-    pnModSetVar('Mailer', 'wordwrap', $wordwrap);
+    ModUtil::setVar('Mailer', 'wordwrap', $wordwrap);
 
     $msmailheaders = (bool)FormUtil::getPassedValue('msmailheaders', false, 'POST');
-    pnModSetVar('Mailer', 'msmailheaders', $msmailheaders);
+    ModUtil::setVar('Mailer', 'msmailheaders', $msmailheaders);
 
     $sendmailpath = (string)FormUtil::getPassedValue('sendmailpath', '/usr/sbin/sendmail', 'POST');
-    pnModSetVar('Mailer', 'sendmailpath', $sendmailpath);
+    ModUtil::setVar('Mailer', 'sendmailpath', $sendmailpath);
 
     $smtpauth = (bool)FormUtil::getPassedValue('smtpauth', false, 'POST');
-    pnModSetVar('Mailer', 'smtpauth', $smtpauth);
+    ModUtil::setVar('Mailer', 'smtpauth', $smtpauth);
 
     $smtpserver = (string)FormUtil::getPassedValue('smtpserver', 'localhost', 'POST');
-    pnModSetVar('Mailer', 'smtpserver', $smtpserver);
+    ModUtil::setVar('Mailer', 'smtpserver', $smtpserver);
 
     $smtpport = (int)FormUtil::getPassedValue('smtpport', 25, 'POST');
-    pnModSetVar('Mailer', 'smtpport', $smtpport);
+    ModUtil::setVar('Mailer', 'smtpport', $smtpport);
 
     $smtptimeout = (int)FormUtil::getPassedValue('smtptimeout', 10, 'POST');
-    pnModSetVar('Mailer', 'smtptimeout', $smtptimeout);
+    ModUtil::setVar('Mailer', 'smtptimeout', $smtptimeout);
 
     $smtpusername = (string)FormUtil::getPassedValue('smtpusername', '', 'POST');
-    pnModSetVar('Mailer', 'smtpusername', $smtpusername);
+    ModUtil::setVar('Mailer', 'smtpusername', $smtpusername);
 
     $smtppassword = (string)FormUtil::getPassedValue('smtppassword', '', 'POST');
-    pnModSetVar('Mailer', 'smtppassword', $smtppassword);
+    ModUtil::setVar('Mailer', 'smtppassword', $smtppassword);
 
     // Let any other modules know that the modules configuration has been updated
     pnModCallHooks('module', 'updateconfig', 'Mailer', array('module' => 'Mailer'));
@@ -135,7 +135,7 @@ function Mailer_admin_updateconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(pnModURL('Mailer', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Mailer', 'admin', 'main'));
 }
 
 /**
@@ -184,7 +184,7 @@ function Mailer_admin_sendmessage($args)
 
     // confirm our forms authorisation key
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Mailer','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Mailer','admin','main'));
     }
 
     // set the email
@@ -215,5 +215,5 @@ function Mailer_admin_sendmessage($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(pnModURL('Mailer', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Mailer', 'admin', 'main'));
 }

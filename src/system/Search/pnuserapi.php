@@ -36,7 +36,7 @@ function search_userapi_search($args)
     $vars['q'] = $args['q'];
     $vars['searchtype'] = isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND';
     $vars['searchorder'] = isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest';
-    $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : pnModGetVar('Search', 'itemsperpage', 25);
+    $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : ModUtil::getVar('Search', 'itemsperpage', 25);
     $vars['page'] = isset($args['page']) && !empty($args['page']) ? (int)$args['page'] : 1;
 
     $firstPage = isset($args['firstPage']) ? $args['firstPage'] : false;
@@ -91,7 +91,7 @@ function search_userapi_search($args)
                     $ok = pnModAPIFunc($mod['title'], 'search', $function, $param);
                     if (!$ok) {
                         LogUtil::registerError(__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
-                        return pnRedirect(pnModUrl('Search', 'user', 'main'));
+                        return pnRedirect(ModUtil::url('Search', 'user', 'main'));
                     }
                 }
             }
@@ -213,7 +213,7 @@ function Search_userapi_getallplugins($args)
     foreach ($usermods as $usermod) {
         if (pnModAPILoad($usermod['name'], 'search')  &&
              ($args['loadall'] ||
-                (!pnModGetVar('Search', "disable_$usermod[name]") &&
+                (!ModUtil::getVar('Search', "disable_$usermod[name]") &&
                  SecurityUtil::checkPermission('Search::Item', "$usermod[name]::", ACCESS_READ)
                 )
              )
@@ -483,8 +483,8 @@ function search_userapi_getlinks($args)
     $links = array();
 
     if (SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Search', 'user', 'main', array()), 'text' => __('New search'), 'class' => 'z-icon-es-search');
-        $links[] = array('url' => pnModURL('Search', 'user', 'recent', array()), 'text' => __('Recent searches list'), 'class' => 'z-icon-es-view');
+        $links[] = array('url' => ModUtil::url('Search', 'user', 'main', array()), 'text' => __('New search'), 'class' => 'z-icon-es-search');
+        $links[] = array('url' => ModUtil::url('Search', 'user', 'recent', array()), 'text' => __('Recent searches list'), 'class' => 'z-icon-es-view');
     }
 
     return $links;

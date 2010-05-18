@@ -21,7 +21,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
         return true;
     }
 
-    $uservars = pnModGetVar('Users');
+    $uservars = ModUtil::getVar('Users');
 
     if (!pnVarValidate($uname, (($uservars['loginviaoption'] == 1) ? 'email' : 'uname'))) {
         return false;
@@ -61,7 +61,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
                     // continue if legal module is active and and configured to
                     // use the terms of use
                     if (pnModAvailable('legal')) {
-                        $tou = pnModGetVar('legal', 'termsofuse');
+                        $tou = ModUtil::getVar('legal', 'termsofuse');
                         if ($tou == 1) {
                             // users must confirm terms of use before before he can continue
                             // we redirect him to the login screen
@@ -113,7 +113,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
             LogUtil::registerError(__('Error! Could not save the log-in date.'));
         }
     } else {
-        $authmodules = explode(',', pnModGetVar('AuthPN', 'authmodules'));
+        $authmodules = explode(',', ModUtil::getVar('AuthPN', 'authmodules'));
         foreach ($authmodules as $authmodule) {
             $authmodule = trim($authmodule);
             if (pnModAvailable($authmodule) && pnModAPILoad($authmodule, 'user')) {
@@ -187,7 +187,7 @@ function pnUserLogOut()
         $event = new Event('user.logout', null, array('user' => pnUserGetVar('uid')));
         EventManagerUtil::notify($event);
         if (pnModAvailable('AuthPN')) {
-            $authmodules = explode(',', pnModGetVar('AuthPN', 'authmodules'));
+            $authmodules = explode(',', ModUtil::getVar('AuthPN', 'authmodules'));
             foreach ($authmodules as $authmodule)
             {
                 $authmodule = trim($authmodule);
@@ -431,7 +431,7 @@ function pnUserSetVar($name, $value, $uid = -1)
 
 function pnUserSetPassword($pass)
 {
-    $method = pnModGetVar('Users', 'hash_method');
+    $method = ModUtil::getVar('Users', 'hash_method');
     $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
     pnUserSetVar('pass', hash($method, $pass));
     pnUserSetVar('hash_method', $hashmethodsarray[$method]);
@@ -552,7 +552,7 @@ function pnUserGetTheme($force = false)
 
     // check for an admin theme
     if (($type == 'admin' || stristr($qstring, 'admin.php')) && SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
-        $admintheme = pnModGetVar('Admin', 'admintheme');
+        $admintheme = ModUtil::getVar('Admin', 'admintheme');
         if (!empty($admintheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
             if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {

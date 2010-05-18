@@ -48,11 +48,11 @@ function Categories_init()
 
     Categories_createTables_101();
 
-    pnModSetVar('Categories', 'userrootcat', '/__SYSTEM__/Users');
-    pnModSetVar('Categories', 'allowusercatedit', 0);
-    pnModSetVar('Categories', 'autocreateusercat', 0);
-    pnModSetVar('Categories', 'autocreateuserdefaultcat', 0);
-    pnModSetVar('Categories', 'userdefaultcatname', 'Default');
+    ModUtil::setVar('Categories', 'userrootcat', '/__SYSTEM__/Users');
+    ModUtil::setVar('Categories', 'allowusercatedit', 0);
+    ModUtil::setVar('Categories', 'autocreateusercat', 0);
+    ModUtil::setVar('Categories', 'autocreateuserdefaultcat', 0);
+    ModUtil::setVar('Categories', 'userdefaultcatname', 'Default');
 
     // Initialisation successful
     return true;

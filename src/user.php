@@ -16,6 +16,6 @@ include 'lib/ZLoader.php';
 ZLoader::register();
 
 pnInit();
-pnRedirect(pnModURL('Users'));
+pnRedirect(ModUtil::url('Users'));
 
 

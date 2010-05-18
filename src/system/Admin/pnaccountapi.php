@@ -22,7 +22,7 @@ function admin_accountapi_getall($args)
     $items = array();
 
     if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
-        $items['0'] = array('url' => pnModURL('Admin', 'admin', 'adminpanel'),
+        $items['0'] = array('url' => ModUtil::url('Admin', 'admin', 'adminpanel'),
                              'module' => 'core',
                              'set' => 'icons/large',
                              'title' => __('Site admin panel'),

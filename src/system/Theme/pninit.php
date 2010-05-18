@@ -31,26 +31,26 @@ function theme_init()
     pnModAPIFunc('Theme', 'admin', 'regenerate');
 
     // define defaults for module vars
-    pnModSetVar('Theme', 'modulesnocache', '');
-    pnModSetVar('Theme', 'enablecache', false);
-    pnModSetVar('Theme', 'compile_check', true);
-    pnModSetVar('Theme', 'cache_lifetime', 3600);
-    pnModSetVar('Theme', 'force_compile', false);
-    pnModSetVar('Theme', 'trimwhitespace', false);
-    pnModSetVar('Theme', 'maxsizeforlinks', 30);
-    pnModSetVar('Theme', 'itemsperpage', 25);
+    ModUtil::setVar('Theme', 'modulesnocache', '');
+    ModUtil::setVar('Theme', 'enablecache', false);
+    ModUtil::setVar('Theme', 'compile_check', true);
+    ModUtil::setVar('Theme', 'cache_lifetime', 3600);
+    ModUtil::setVar('Theme', 'force_compile', false);
+    ModUtil::setVar('Theme', 'trimwhitespace', false);
+    ModUtil::setVar('Theme', 'maxsizeforlinks', 30);
+    ModUtil::setVar('Theme', 'itemsperpage', 25);
 
-    pnModSetVar('Theme', 'cssjscombine', false);
-    pnModSetVar('Theme', 'cssjscompress', false);
-    pnModSetVar('Theme', 'cssjsminify', false);
-    pnModSetVar('Theme', 'cssjscombine_lifetime', 3600);
+    ModUtil::setVar('Theme', 'cssjscombine', false);
+    ModUtil::setVar('Theme', 'cssjscompress', false);
+    ModUtil::setVar('Theme', 'cssjsminify', false);
+    ModUtil::setVar('Theme', 'cssjscombine_lifetime', 3600);
 
     // Renderer
-    pnModSetVar('Theme', 'render_compile_check',  true);
-    pnModSetVar('Theme', 'render_force_compile',  true);
-    pnModSetVar('Theme', 'render_cache',          false);
-    pnModSetVar('Theme', 'render_expose_template',false);
-    pnModSetVar('Theme', 'render_lifetime',       3600);
+    ModUtil::setVar('Theme', 'render_compile_check',  true);
+    ModUtil::setVar('Theme', 'render_force_compile',  true);
+    ModUtil::setVar('Theme', 'render_cache',          false);
+    ModUtil::setVar('Theme', 'render_expose_template',false);
+    ModUtil::setVar('Theme', 'render_lifetime',       3600);
 
     // Initialisation successful
     return true;
@@ -75,16 +75,16 @@ function theme_upgrade($oldversion)
     switch ($oldversion)
     {
         case '3.1':
-            pnModSetVar('Theme', 'cssjscombine', false);
-            pnModSetVar('Theme', 'cssjscompress', false);
-            pnModSetVar('Theme', 'cssjsminify', false);
-            pnModSetVar('Theme', 'cssjscombine_lifetime', 3600);
+            ModUtil::setVar('Theme', 'cssjscombine', false);
+            ModUtil::setVar('Theme', 'cssjscompress', false);
+            ModUtil::setVar('Theme', 'cssjsminify', false);
+            ModUtil::setVar('Theme', 'cssjscombine_lifetime', 3600);
 
         case '3.3':
             // convert pnRender modvars
-            $pnrendervars = pnModGetVar('pnRender');
+            $pnrendervars = ModUtil::getVar('pnRender');
             foreach ($pnrendervars as $k => $v) {
-                pnModSetVar('Theme', 'render_' . $k, $v);
+                ModUtil::setVar('Theme', 'render_' . $k, $v);
             }
             // delete pnRender modvars
             pnModDelVar('pnRender');

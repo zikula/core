@@ -150,17 +150,17 @@ function Theme_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Theme', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-es-list');
+        $links[] = array('url' => ModUtil::url('Theme', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
         if (is_writable('themes')) {
-            $links[] = array('url' => pnModURL('Theme', 'admin', 'new'), 'text' => __('Create new theme'), 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('Theme', 'admin', 'new'), 'text' => __('Create new theme'), 'class' => 'z-icon-es-new');
        } else {
-            $links[] = array('url' => pnModURL('Theme', 'admin', 'new'), 'text' => __('Create new theme'), 'class' => 'z-icon-es-new', 'title' => __("Notice: Theme creation from within the themes manager is disabled because Zikula does not have write permissions for the theme directory."), 'disabled' => true);
+            $links[] = array('url' => ModUtil::url('Theme', 'admin', 'new'), 'text' => __('Create new theme'), 'class' => 'z-icon-es-new', 'title' => __("Notice: Theme creation from within the themes manager is disabled because Zikula does not have write permissions for the theme directory."), 'disabled' => true);
        }
     }
     if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Theme', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
+        $links[] = array('url' => ModUtil::url('Theme', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;
@@ -476,7 +476,7 @@ function theme_adminapi_create($args)
 {
     // Argument check
     if (!isset($args['themeinfo']) || !isset($args['themeinfo']['name']) || empty($args['themeinfo']) || empty($args['themeinfo']['name'])) {
-        $url = pnModURL('Theme', 'admin', 'new');
+        $url = ModUtil::url('Theme', 'admin', 'new');
         return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
     }
 

@@ -147,7 +147,7 @@ function Blocks_extmenublock_display($blockinfo)
                                 );
             if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
                 $menuitems[] = array('name'   => __('--Installed modules--'),
-                                    'url'    => pnModURL('Blocks', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
+                                    'url'    => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
                                     'title'  => '',
                                     'level'  => 0,
                                     'parent' => 0,
@@ -173,7 +173,7 @@ function Blocks_extmenublock_display($blockinfo)
                     case 2:
                     case 3:
                         $menuitems[] = array('name'   => $mod['displayname'],
-                                             'url'    => pnModURL($mod['name'], 'user', 'main'),
+                                             'url'    => ModUtil::url($mod['name'], 'user', 'main'),
                                              'title'  => $mod['description'],
                                              'level'  => 0,
                                              'parent' => 0,
@@ -269,7 +269,7 @@ function extmenu_buildURL($url)
                     // addon: url[2] can be the type parameter, default 'user'
                     $type = (isset($url[2]) &&!empty($url[2])) ? $url[2] : 'user';
                     //  build the url
-                    $url = pnModURL($modname, $type, $func, $params);
+                    $url = ModUtil::url($modname, $type, $func, $params);
                 } else {
                     $url = pnConfigGetVar('entrypoint', 'index.php');
                 }

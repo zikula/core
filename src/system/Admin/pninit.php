@@ -28,18 +28,18 @@ function Admin_init()
         return false;
     }
 
-    pnModSetVar('Admin', 'modulesperrow', 3);
-    pnModSetVar('Admin', 'itemsperpage', 15);
-    pnModSetVar('Admin', 'defaultcategory', 5);
-    pnModSetVar('Admin', 'modulestylesheet', 'navtabs.css');
-    pnModSetVar('Admin', 'admingraphic', 1);
-    pnModSetVar('Admin', 'startcategory', 1);
+    ModUtil::setVar('Admin', 'modulesperrow', 3);
+    ModUtil::setVar('Admin', 'itemsperpage', 15);
+    ModUtil::setVar('Admin', 'defaultcategory', 5);
+    ModUtil::setVar('Admin', 'modulestylesheet', 'navtabs.css');
+    ModUtil::setVar('Admin', 'admingraphic', 1);
+    ModUtil::setVar('Admin', 'startcategory', 1);
     // change below to 0 before release - just makes it easier doing development meantime - drak
     // we can now leave this at 0 since the code also checks the development flag (config.php) - markwest
-    pnModSetVar('Admin', 'ignoreinstallercheck', 0);
-    pnModSetVar('Admin', 'admintheme', '');
-    pnModSetVar('Admin', 'displaynametype', 1);
-    pnModSetVar('Admin', 'moduledescription', 1);
+    ModUtil::setVar('Admin', 'ignoreinstallercheck', 0);
+    ModUtil::setVar('Admin', 'admintheme', '');
+    ModUtil::setVar('Admin', 'displaynametype', 1);
+    ModUtil::setVar('Admin', 'moduledescription', 1);
 
     Admin_defaultdata();
 
@@ -68,9 +68,9 @@ function Admin_upgrade($oldversion)
             }
 
         case '1.6':
-            pnModSetVar('Admin', 'modulesperrow', 3);
-            pnModSetVar('Admin', 'itemsperpage', 15);
-            pnModSetVar('Admin', 'moduledescription', 1);
+            ModUtil::setVar('Admin', 'modulesperrow', 3);
+            ModUtil::setVar('Admin', 'itemsperpage', 15);
+            ModUtil::setVar('Admin', 'moduledescription', 1);
 
         case '1.7':
         case '1.8':

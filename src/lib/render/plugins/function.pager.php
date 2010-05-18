@@ -235,7 +235,7 @@ function smarty_function_pager($params, &$smarty)
             }
 
             $pager['pages'][$currItem]['pagenr'] = $currItem;
-            $pager['pages'][$currItem]['url'] = DataUtil::formatForDisplay(pnModURL($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+            $pager['pages'][$currItem]['url'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
             $pager['pages'][$currItem]['isCurrentPage'] = ($pager['pages'][$currItem]['pagenr'] == $pager['currentPage']);
 
             if (!isset($pager['isVisible'])) {
@@ -254,14 +254,14 @@ function smarty_function_pager($params, &$smarty)
     // link to first & prev page
     $pager['first'] = DataUtil::formatForDisplay('1');
     $pager['args'][$pager['posvar']] = $pager['first'];
-    $pager['firstUrl'] = DataUtil::formatForDisplay(pnModURL($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+    $pager['firstUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
     if ($params['display'] == 'page') {
          $pager['prev'] = ($pager['currentPage'] - 1);
     } else {
          $pager['prev'] = ($pager['currentPage'] - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
     }
     $pager['args'][$pager['posvar']] = $pager['prev'];
-    $pager['prevUrl'] = DataUtil::formatForDisplay(pnModURL($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+    $pager['prevUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
 
     // link to next & last page
     if ($params['display'] == 'page') {
@@ -270,14 +270,14 @@ function smarty_function_pager($params, &$smarty)
          $pager['next'] = $pager['currentPage'] * $pager['perpage'] + 1;
     }
     $pager['args'][$pager['posvar']] = $pager['next'];
-    $pager['nextUrl'] = DataUtil::formatForDisplay(pnModURL($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+    $pager['nextUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
     if ($params['display'] == 'page') {
          $pager['last'] = $pager['countPages'];
     } else {
          $pager['last'] = $pager['countPages'] * $pager['perpage'] - $pager['perpage'] + 1;
     }
     $pager['args'][$pager['posvar']] = $pager['last'];
-    $pager['lastUrl'] = DataUtil::formatForDisplay(pnModURL($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
+    $pager['lastUrl'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
 
     $pager['itemStart'] = ($pager['currentPage'] * $pager['perpage']) - $pager['perpage'] + 1;
     $pager['itemEnd'] = $pager['itemStart'] + $pager['perpage'] - 1;

@@ -12,7 +12,7 @@
 
 /**
  * Performs a user search based on the user name fragment entered so far.
- * 
+ *
  * Sends output directly via echo.
  *
  * Available Request Parameters:
@@ -78,7 +78,7 @@ function Users_ajax_checkuser()
             . "or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
     }
 
-    $modvars = pnModGetVar('Users');
+    $modvars = ModUtil::getVar('Users');
 
     if (!$modvars['reg_allowreg']) {
         AjaxUtil::error(__('Sorry! New user registration is currently disabled.'));
@@ -153,7 +153,7 @@ function Users_ajax_checkuser()
         }
 
         $ucount = DBUtil::selectObjectCountByID ('users_temp', $email, 'email');
-        if (pnModGetVar('Users', 'reg_uniemail')) {
+        if (ModUtil::getVar('Users', 'reg_uniemail')) {
             if ($ucount) {
                 return array('result' => __('Sorry! The e-mail address you entered has already been registered.'), 'errorcode' => 9);
             }
@@ -178,8 +178,8 @@ function Users_ajax_checkuser()
     }
 
     if (pnModAvailable('legal')) {
-        $tou_active = pnModGetVar('legal', 'termsofuse', true);
-        $pp_active  = pnModGetVar('legal', 'privacypolicy', true);
+        $tou_active = ModUtil::getVar('legal', 'termsofuse', true);
+        $pp_active  = ModUtil::getVar('legal', 'privacypolicy', true);
         if ($tou_active == true && $pp_active == true && $agreetoterms == 0) {
             return array('result' => __('Error! Please click on the checkbox to accept the site\'s \'Terms of use\' and \'Privacy policy\'.'), 'errorcode' => 3);
         }

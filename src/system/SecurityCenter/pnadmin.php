@@ -75,7 +75,7 @@ function securitycenter_admin_delete($args)
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('SecurityCenter','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('SecurityCenter','admin','view'));
     }
 
     // Call the API to delete the item
@@ -84,7 +84,7 @@ function securitycenter_admin_delete($args)
         LogUtil::registerStatus(__('Done! Deleted it.'));
     }
 
-    return pnRedirect(pnModURL('SecurityCenter', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('SecurityCenter', 'admin', 'view'));
 }
 
 /**
@@ -107,7 +107,7 @@ function securitycenter_admin_view($args = array())
     // Get all items
     $items = pnModAPIFunc('SecurityCenter', 'user', 'getall',
                           array('startnum' => $startnum,
-                                'numitems' => pnModGetVar('SecurityCenter', 'itemsperpage')));
+                                'numitems' => ModUtil::getVar('SecurityCenter', 'itemsperpage')));
 
     $hackattempts = array();
     if ($items) {
@@ -126,26 +126,26 @@ function securitycenter_admin_view($args = array())
             // Add users options for the item.
             $options = array();
             if (SecurityUtil::checkPermission('SecurityCenter::', "$item[hid]::$item[hacktime]", ACCESS_EDIT)) {
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'browserinfo')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'browserinfo')),
                                    'title' => __('Browser information list'));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'requestarray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'requestarray')),
                                    'title' => __("View 'request' array"));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'getarray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'getarray')),
                                    'title' => __("View 'get' array"));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'postarray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'postarray')),
                                    'title' => __("View 'post' array"));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'serverarray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'serverarray')),
                                    'title' => __("View 'server' array"));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'envarray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'envarray')),
                                    'title' => __("View 'env' array"));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'cookiearray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'cookiearray')),
                                    'title' => __("View 'cookie' array"));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'filesarray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'filesarray')),
                                    'title' => __("View 'files' array"));
-                $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'sessionarray')),
+                $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'sessionarray')),
                                    'title' => __("View 'session' array"));
                 if (SecurityUtil::checkPermission('SecurityCenter::', "$item[hid]::$item[hacktime]", ACCESS_DELETE)) {
-                    $options[] = array('url' => pnModURL('SecurityCenter', 'admin', 'delete', array('hid' => $item['hid'])),
+                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'delete', array('hid' => $item['hid'])),
                                        'title' => __('Delete'));
                 }
                 $fullitem['options'] = $options;
@@ -157,7 +157,7 @@ function securitycenter_admin_view($args = array())
 
     // Assign the values for the smarty plugin to produce a pager.
     $pnRender->assign('pager', array('numitems' => pnModAPIFunc('SecurityCenter', 'user', 'countitems'),
-                                     'itemsperpage' => pnModGetVar('SecurityCenter', 'itemsperpage')));
+                                     'itemsperpage' => ModUtil::getVar('SecurityCenter', 'itemsperpage')));
 
     return $pnRender->fetch('securitycenter_admin_view.htm');
 }
@@ -177,10 +177,10 @@ function securitycenter_admin_modifyconfig()
     // Create output object
     $pnRender = Renderer::getInstance('SecurityCenter', false);
 
-    $pnRender->assign('itemsperpage', pnModGetVar('SecurityCenter', 'itemsperpage'));
+    $pnRender->assign('itemsperpage', ModUtil::getVar('SecurityCenter', 'itemsperpage'));
 
     // assign all of our vars
-    $vars = pnModGetVar(PN_CONFIG_MODULE);
+    $vars = ModUtil::getVar(PN_CONFIG_MODULE);
     $pnRender->assign($vars);
 
     // Return the output that has been generated by this function
@@ -233,7 +233,7 @@ function securitycenter_admin_updateconfig()
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('SecurityCenter','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('SecurityCenter','admin','view'));
     }
 
     // Update module variables.
@@ -241,7 +241,7 @@ function securitycenter_admin_updateconfig()
     pnConfigSetVar('enableanticracker', $enableanticracker);
 
     $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
-    pnModSetVar('SecurityCenter', 'itemsperpage', $itemsperpage);
+    ModUtil::setVar('SecurityCenter', 'itemsperpage', $itemsperpage);
 
     $emailhackattempt = (int)FormUtil::getPassedValue('emailhackattempt', 0, 'POST');
     pnConfigSetVar('emailhackattempt', $emailhackattempt);
@@ -429,12 +429,12 @@ function securitycenter_admin_updateconfig()
     // we need to auto logout the user if they changed from DB to FILE
     if ($cause_logout == true) {
         pnUserLogOut();
-        return pnRedirect(pnModURL('Users', 'user', 'loginscreen'));
+        return pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
     }
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(pnModURL('SecurityCenter','admin', 'main'));
+    return pnRedirect(ModUtil::url('SecurityCenter','admin', 'main'));
 }
 
 /**
@@ -451,7 +451,7 @@ function securitycenter_admin_purifierconfig()
     // Create output object
     $renderer = Renderer::getInstance('SecurityCenter', false);
 
-    $renderer->assign('itemsperpage', pnModGetVar('SecurityCenter', 'itemsperpage'));
+    $renderer->assign('itemsperpage', ModUtil::getVar('SecurityCenter', 'itemsperpage'));
 
     $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier');
 
@@ -558,7 +558,7 @@ function securitycenter_admin_updatepurifierconfig()
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('SecurityCenter','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('SecurityCenter','admin','view'));
     }
 
     // Load HTMLPurifier Classes
@@ -605,7 +605,7 @@ function securitycenter_admin_updatepurifierconfig()
                         }
                     }
                     if (empty($config[$namespace][$directive])) {
-                        unset($config[$namespace][$directive]); 
+                        unset($config[$namespace][$directive]);
                     }
                     break;
                 case HTMLPurifier_VarParser::ALIST:
@@ -651,7 +651,7 @@ function securitycenter_admin_updatepurifierconfig()
         }
     }
 //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
-    pnModSetVar('SecurityCenter', 'purifierConfig', serialize($config));
+    ModUtil::setVar('SecurityCenter', 'purifierConfig', serialize($config));
 
     $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
 
@@ -663,7 +663,7 @@ function securitycenter_admin_updatepurifierconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(pnModURL('SecurityCenter','admin', 'main'));
+    return pnRedirect(ModUtil::url('SecurityCenter','admin', 'main'));
 }
 
 /**
@@ -730,7 +730,7 @@ function securitycenter_admin_viewobj()
     }
     $filter   = FormUtil::getPassedValue('filter', $filterdefault, 'GETPOST');
     $startnum = (int)FormUtil::getPassedValue('startnum', 0, 'GET');
-    $pagesize = (int)pnModGetVar('SecurityCenter', 'pagesize', 25);
+    $pagesize = (int)ModUtil::getVar('SecurityCenter', 'pagesize', 25);
 
 
     // load array class
@@ -782,7 +782,7 @@ function securitycenter_admin_allowedhtml($args)
     // check for HTML Purifier outputfilter
     $htmlpurifier = (bool) (pnConfigGetVar('outputfilter') == 1);
     $pnRender->assign('htmlpurifier', $htmlpurifier);
-    $pnRender->assign('configurl', pnModURL('SecurityCenter', 'admin', 'modifyconfig'));
+    $pnRender->assign('configurl', ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
 
     return $pnRender->fetch('securitycenter_admin_allowedhtml.htm');
 }
@@ -827,7 +827,7 @@ function securitycenter_admin_updateallowedhtml($args)
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(pnModURL('SecurityCenter', 'admin', 'allowedhtml'));
+    return pnRedirect(ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
 }
 
 /**

@@ -47,7 +47,7 @@ function Groups_user_view()
     $showgid = FormUtil::getPassedValue('showgid', null, 'GET');
 
     // we need this value multiple times, so we keep it
-    $itemsperpage = pnModGetVar('Groups', 'itemsperpage');
+    $itemsperpage = ModUtil::getVar('Groups', 'itemsperpage');
 
     if (pnUserLoggedIn()) {
         $islogged = true;
@@ -198,7 +198,7 @@ function Groups_user_userupdate()
     }
 
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'user', 'main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'user', 'main'));
     }
 
     if (empty($tag)) return DataUtil::formatForDisplay(__('Error! You must click on the checkbox to confirm your action.'));
@@ -221,7 +221,7 @@ function Groups_user_userupdate()
     $pnRender = Renderer::getInstance('Groups');
     $pnRender->clear_cache('groups_user_memberslist.htm');
 
-    return pnRedirect(pnModURL('Groups', 'user', 'main'));
+    return pnRedirect(ModUtil::url('Groups', 'user', 'main'));
 }
 
 /**
@@ -237,7 +237,7 @@ function Groups_user_memberslist()
         return LogUtil::registerArgsError();
     }
 
-    $itemsperpage = pnModGetVar('Groups', 'itemsperpage');
+    $itemsperpage = ModUtil::getVar('Groups', 'itemsperpage');
 
     if (!SecurityUtil::checkPermission('Groups::memberslist', '::', ACCESS_OVERVIEW)) {
         return LogUtil::registerPermissionError();
@@ -320,7 +320,7 @@ function Groups_user_memberslist()
     $pnRender->assign('hooks', pnModCallHooks('item',
                                               'display',
                                               $gid,
-                                              pnModURL('Groups',
+                                              ModUtil::url('Groups',
                                                        'user',
                                                        'memberslist',
                                                        array('gid' => $gid))));

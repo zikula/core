@@ -197,15 +197,15 @@ function pnBlockThemeBlock($row)
         }
     }
 
-    if (pnUserLoggedIn() && pnModGetVar('Blocks', 'collapseable') == 1 && isset($row['collapsable']) && ($row['collapsable'] == '1')) {
+    if (pnUserLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($row['collapsable']) && ($row['collapsable'] == '1')) {
         if (pnCheckUserBlock($row) == '1') {
             if (!empty($row['title'])) {
-                $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(pnModURL('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => pnSecGenAuthKey()))) . '">' . $upb . '</a>';
+                $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => pnSecGenAuthKey()))) . '">' . $upb . '</a>';
             }
         } else {
             $row['content'] = '';
             if (!empty($row['title'])) {
-                $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(pnModURL('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => pnSecGenAuthKey()))) . '">' . $downb . '</a>';
+                $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => pnSecGenAuthKey()))) . '">' . $downb . '</a>';
             }
         }
     } else {

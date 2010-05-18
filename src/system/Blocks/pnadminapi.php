@@ -400,16 +400,16 @@ function blocks_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
-        $links[] = array('url' => pnModURL('Blocks', 'admin', 'view'), 'text' => __('Blocks list'), 'class' => 'z-icon-es-list');
+        $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'view'), 'text' => __('Blocks list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Blocks', 'admin', 'new'), 'text' => __('Create new block'), 'class' => 'z-icon-es-new');
+        $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'new'), 'text' => __('Create new block'), 'class' => 'z-icon-es-new');
     }
     if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Blocks', 'admin', 'newposition'), 'text' => __('Create new block position'), 'class' => 'z-icon-es-new');
+        $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'newposition'), 'text' => __('Create new block position'), 'class' => 'z-icon-es-new');
     }
     if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Blocks', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
+        $links[] = array('url' => ModUtil::url('Blocks', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;

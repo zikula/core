@@ -64,7 +64,7 @@ function users_loginblock_display($row)
         }
 
         $pnr->assign('seclevel', pnConfigGetVar('seclevel'));
-        $pnr->assign('allowregistration', pnModGetVar('Users', 'reg_allowreg'));
+        $pnr->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
         $pnr->assign('returnurl', pnGetCurrentURI());
         // determine whether to show the rememberme option
         $pnr->assign('rememberme', pnConfigGetVar('seclevel'));

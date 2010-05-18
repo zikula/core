@@ -29,8 +29,8 @@ function search_init()
     }
 
     // create module vars
-    pnModSetVar('Search', 'itemsperpage', 10);
-    pnModSetVar('Search', 'limitsummary', 255);
+    ModUtil::setVar('Search', 'itemsperpage', 10);
+    ModUtil::setVar('Search', 'limitsummary', 255);
 
     // Initialisation successful
     return true;

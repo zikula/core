@@ -270,10 +270,10 @@ function install()
                 update_installed_status();
                 @chmod('config/config.php', 0400);
                 if (!is_readable('config/config.php')) {
-                	@chmod('config/config.php', 0440);
-                	if (!is_readable('config/config.php')) {
-                	   @chmod('config/config.php', 0444);	
-                	}
+                    @chmod('config/config.php', 0440);
+                    if (!is_readable('config/config.php')) {
+                       @chmod('config/config.php', 0444);
+                    }
                 }
                 if($installbySQL){
                     $action = 'gotosite';
@@ -294,7 +294,7 @@ function install()
             if (!pnUserLoggedIn()) {
                 return pnRedirect();
             } else {
-                return pnRedirect(pnModURL('Admin', 'admin', 'adminpanel'));
+                return pnRedirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
             }
     }
 
@@ -385,7 +385,7 @@ function createuser($username, $password, $email)
     $pntable = pnDBGetTables();
 
     // create the password hash
-    $password = hash(pnModGetVar('Users', 'hash_method'), $password);
+    $password = hash(ModUtil::getVar('Users', 'hash_method'), $password);
 
     // prepare the data
     $username = DataUtil::formatForStore($username);

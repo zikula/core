@@ -75,10 +75,10 @@ function Admin_adminnavblock_display($blockinfo)
                 $catid = pnModAPIFunc('Admin', 'admin', 'getmodcategory',
                                       array('mid' => pnModGetIDFromName($adminmodule['name'])));
 
-                if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == pnModGetVar('Admin', 'defaultcategory')))) {
+                if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == ModUtil::getVar('Admin', 'defaultcategory')))) {
                     $modinfo = pnModGetInfo(pnModGetIDFromName($adminmodule['name']));
                     if ($modinfo['type'] != 1) {
-                        $menutexturl = pnModURL($modinfo['name'], 'admin');
+                        $menutexturl = ModUtil::url($modinfo['name'], 'admin');
                         $menutexttitle = $modinfo['displayname'];
                     } else {
                         $menutexturl = 'admin.php?module=' . DataUtil::formatForDisplay($modinfo['name']);
@@ -88,7 +88,7 @@ function Admin_adminnavblock_display($blockinfo)
                                           'menutexttitle' => $menutexttitle);
                 }
             }
-            $admincategories[] = array('url' => pnModURL('Admin', 'admin', 'adminpanel', array('cid' => $item['cid'])),
+            $admincategories[] = array('url' => ModUtil::url('Admin', 'admin', 'adminpanel', array('cid' => $item['cid'])),
                                        'title' => DataUtil::formatForDisplay($item['catname']),
                                        'modules' => $adminlinks);
         }

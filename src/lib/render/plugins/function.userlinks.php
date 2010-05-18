@@ -37,13 +37,13 @@ function smarty_function_userlinks($params, &$smarty)
         $links = "$start ";
         $profileModule = pnConfigGetVar('profilemodule', '');
         if (!empty($profileModule) && pnModAvailable($profileModule)) {
-            $links .= "<a href=\"" . DataUtil::formatForDisplay(pnModURL($profileModule)) . '">' . __('Your Account') . "</a> $seperator ";
+            $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url($profileModule)) . '">' . __('Your Account') . "</a> $seperator ";
         }
-        $links .= "<a href=\"" . DataUtil::formatForDisplay(pnModURL('Users', 'user', 'logout')) . '">'  . __('Log out') . "</a> $end";
+        $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'logout')) . '">'  . __('Log out') . "</a> $end";
 
     } else {
-        $links = "$start <a href=\"" . DataUtil::formatForDisplay(pnModURL('Users', 'user', 'register')) . '">' . __('Register new account') . "</a> $seperator "
-               . "<a href=\"" . DataUtil::formatForDisplay(pnModURL('Users', 'user', 'loginscreen')) . '">' . __('Login') . "</a> $end";
+        $links = "$start <a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'register')) . '">' . __('Register new account') . "</a> $seperator "
+               . "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'loginscreen')) . '">' . __('Login') . "</a> $end";
     }
 
     return DataUtil::formatForDisplayHTML($links);

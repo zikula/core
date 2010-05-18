@@ -142,7 +142,7 @@ function Groups_ajax_creategroup()
 
     $obj['statelbl']   = $statelabel[$obj['state']];
     $obj['gtypelbl']   = $typelabel[$obj['gtype']];
-    $obj['membersurl'] = pnModURL('Groups', 'admin', 'groupmembership', array('gid' => $newgroup));
+    $obj['membersurl'] = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $newgroup));
 
     return $obj;
 }
@@ -168,7 +168,7 @@ function Groups_ajax_deletegroup()
     }
 
     // Check if it is the default group...
-    $defaultgroup = pnModGetVar('Groups', 'defaultgroup');
+    $defaultgroup = ModUtil::getVar('Groups', 'defaultgroup');
 
     if ($group['gid'] == $defaultgroup) {
         AjaxUtil::error(__('Error! You cannot delete the default user group.'));

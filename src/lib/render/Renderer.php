@@ -115,7 +115,7 @@ class Renderer extends Smarty
         if (isset($caching) && is_bool($caching)) {
             $this->caching = $caching;
         } else {
-            $this->caching = pnModGetVar('Theme', 'render_cache');
+            $this->caching = ModUtil::getVar('Theme', 'render_cache');
         }
 
         if (isset($_POST) && count($_POST) != 0) {
@@ -123,15 +123,15 @@ class Renderer extends Smarty
             $this->caching = false;
         }
 
-        $this->cache_lifetime = pnModGetVar('Theme', 'render_lifetime');
+        $this->cache_lifetime = ModUtil::getVar('Theme', 'render_lifetime');
         $this->cache_dir = CacheUtil::getLocalDir() . '/Renderer_cache';
-        $this->compile_check = pnModGetVar('Theme', 'render_compile_check');
-        $this->force_compile = pnModGetVar('Theme', 'render_force_compile');
+        $this->compile_check = ModUtil::getVar('Theme', 'render_compile_check');
+        $this->force_compile = ModUtil::getVar('Theme', 'render_force_compile');
 
         $this->compile_dir = CacheUtil::getLocalDir() . '/Renderer_compiled';
         $this->compile_id = $this->toplevelmodule . '_' . $theme . '_' . Zlanguage::getLanguageCode();
         $this->cache_id = '';
-        $this->expose_template = (pnModGetVar('Theme', 'render_expose_template') == true) ? true : false;
+        $this->expose_template = (ModUtil::getVar('Theme', 'render_expose_template') == true) ? true : false;
         $this->register_block('nocache', 'Renderer_block_nocache', false);
 
         // register resource type 'z' this defines the way templates are searched
@@ -545,14 +545,14 @@ class Renderer extends Smarty
 
         $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
         $mod_plugs = "$modpath/$modinfo[directory]/templates/plugins";
-        $mod_plugsold = "$modpath/$modinfo[directory]/pntemplates/plugins";
+        $mod_plugsOld = "$modpath/$modinfo[directory]/pntemplates/plugins";
 
         if (file_exists($mod_plugs)) {
             array_push($this->plugins_dir, $mod_plugs);
         }
 
         if (file_exists($mod_plugsOld)) {
-            array_push($this->plugins_dir, $mod_plugsold);
+            array_push($this->plugins_dir, $mod_plugsOld);
         }
     }
 
@@ -582,7 +582,7 @@ class Renderer extends Smarty
 
         // add modvars of current modules
         foreach ($this->module as $module => $dummy) {
-            $core[$module] = pnModGetVar($module);
+            $core[$module] = ModUtil::getVar($module);
         }
 
         // add mod vars of all modules supplied as parameter
@@ -592,13 +592,13 @@ class Renderer extends Smarty
             if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
                 // check if user wants to have /PNConfig
                 if ($modulename == PN_CONFIG_MODULE) {
-                    $ZConfig = pnModGetVar(PN_CONFIG_MODULE);
+                    $ZConfig = ModUtil::getVar(PN_CONFIG_MODULE);
                     foreach ($ZConfig as $key => $value) {
                         // gather all config vars
                         $core['ZConfig'][$key] = $value;
                     }
                 } else {
-                    $core[$modulename] = pnModGetVar($modulename);
+                    $core[$modulename] = ModUtil::getVar($modulename);
                 }
             }
         }

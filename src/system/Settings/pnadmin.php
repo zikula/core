@@ -37,7 +37,7 @@ function settings_admin_modifyconfig()
     $pnRender = Renderer::getInstance('Settings', false);
 
     // get all config vars and assign them to the template
-    $configvars = pnModGetVar(PN_CONFIG_MODULE);
+    $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     // since config vars are serialised and module vars aren't we
     // need to unserialise each config var in turn before assigning
     // them to the template
@@ -67,7 +67,7 @@ function settings_admin_updateconfig() {
 
     // if this form wasnt posted to redirect back
     if ($settings === null) {
-        return pnRedirect(pnModURL('Settings', 'admin', 'modifyconfig'));
+        return pnRedirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }
 
     // confirm the forms auth key
@@ -116,7 +116,7 @@ function settings_admin_updateconfig() {
     }
 
     // Write the vars
-    $configvars = pnModGetVar(PN_CONFIG_MODULE);
+    $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     foreach($settings as $key => $value) {
         $oldvalue = pnConfigGetVar($key);
         if ($value != $oldvalue) {
@@ -132,7 +132,7 @@ function settings_admin_updateconfig() {
     // Let any other modules know that the modules configuration has been updated
     pnModCallHooks('module','updateconfig','Settings', array('module' => 'Settings'));
 
-    return pnRedirect(pnModURL('Settings', 'admin', 'modifyconfig'));
+    return pnRedirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -151,7 +151,7 @@ function settings_admin_multilingual()
     $pnRender = Renderer::getInstance('Settings', false);
 
     // get all config vars and assign them to the template
-    $configvars = pnModGetVar(PN_CONFIG_MODULE);
+    $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     foreach ($configvars as $key => $configvar) {
         $configvars[$key] = $configvar;
     }
@@ -176,7 +176,7 @@ function settings_admin_updatemultilingual()
         return LogUtil::registerPermissionError();
     }
 
-    $url = pnModURL('Settings', 'admin', 'multilingual');
+    $url = ModUtil::url('Settings', 'admin', 'multilingual');
 
     // confirm the forms auth key
     if (!SecurityUtil::confirmAuthKey()) {
@@ -221,7 +221,7 @@ function settings_admin_updatemultilingual()
     }
 
     // Write the vars
-    $configvars = pnModGetVar(PN_CONFIG_MODULE);
+    $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     foreach($settings as $formname => $varname) {
         $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
         $oldvalue = pnConfigGetVar($varname);
@@ -255,7 +255,7 @@ function settings_admin_errorhandling()
     $pnRender = Renderer::getInstance('Settings');
 
     // get all config vars and assign them to the template
-    $configvars = pnModGetVar(PN_CONFIG_MODULE);
+    $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     // since config vars are serialised and module vars aren't we
     // need to unserialise each config var in turn before assigning
     // them to the template
@@ -291,7 +291,7 @@ function settings_admin_updateerrorhandling() {
                       'errorsettings_errormailto'  => 'errormailto',
                       'errorsettings_errorlogtype' => 'errorlogtype');
     // Write the vars
-    $configvars = pnModGetVar(PN_CONFIG_MODULE);
+    $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     foreach($settings as $formname => $varname) {
         $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
         $oldvalue = pnConfigGetVar($varname);
@@ -306,5 +306,5 @@ function settings_admin_updateerrorhandling() {
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(pnModURL('Settings', 'admin', 'errorhandling'));
+    return pnRedirect(ModUtil::url('Settings', 'admin', 'errorhandling'));
 }

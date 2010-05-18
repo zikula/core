@@ -216,7 +216,7 @@ function users_userapi_checkuser($args)
     // admins are allowed to add any usernames, even those defined as being illegal
     if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
         // check for illegal usernames
-        $reg_illegalusername = pnModGetVar('Users', 'reg_Illegalusername');
+        $reg_illegalusername = ModUtil::getVar('Users', 'reg_Illegalusername');
         if (!empty($reg_illegalusername)) {
             $usernames = explode(" ", $reg_illegalusername);
             $count = count($usernames);
@@ -250,21 +250,21 @@ function users_userapi_checkuser($args)
         return 8;
     }
 
-    if (pnModGetVar('Users', 'reg_uniemail')) {
+    if (ModUtil::getVar('Users', 'reg_uniemail')) {
         $ucount = DBUtil::selectObjectCountByID('users', $args['email'], 'email');
         if ($ucount) {
             return 9;
         }
     }
 
-    if (pnModGetVar('Users', 'moderation')) {
+    if (ModUtil::getVar('Users', 'moderation')) {
         $ucount = DBUtil::selectObjectCountByID('users_temp', $args['uname'], 'uname');
         if ($ucount) {
             return 8;
         }
 
         $ucount = DBUtil::selectObjectCountByID('users_temp', $args['email'], 'email');
-        if (pnModGetVar('Users', 'reg_uniemail')) {
+        if (ModUtil::getVar('Users', 'reg_uniemail')) {
             if ($ucount) {
                 return 9;
             }
@@ -272,7 +272,7 @@ function users_userapi_checkuser($args)
     }
 
     $useragent = strtolower(pnServerGetVar('HTTP_USER_AGENT'));
-    $illegaluseragents = pnModGetVar('Users', 'reg_Illegaluseragents');
+    $illegaluseragents = ModUtil::getVar('Users', 'reg_Illegaluseragents');
     if (!empty($illegaluseragents)) {
         $disallowed_useragents = str_replace(', ', ',', $illegaluseragents);
         $checkdisallowed_useragents = explode(',', $disallowed_useragents);
@@ -290,7 +290,7 @@ function users_userapi_checkuser($args)
         }
     }
 
-    $illegaldomains = pnModGetVar('Users', 'reg_Illegaldomains');
+    $illegaldomains = ModUtil::getVar('Users', 'reg_Illegaldomains');
     if (!empty($illegaldomains)) {
         list($foo, $maildomain) = explode('@', $args['email']);
         $maildomain = strtolower($maildomain);
@@ -362,7 +362,7 @@ function users_userapi_finishnewuser($args)
     $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
 
     // make password
-    $hash_method = pnModGetVar('Users', 'hash_method');
+    $hash_method = ModUtil::getVar('Users', 'hash_method');
     $hashmethod = $hashmethodsarray[$hash_method];
 
     if (isset($args['moderated']) && $args['moderated'] == true) {
@@ -371,11 +371,11 @@ function users_userapi_finishnewuser($args)
         $hashmethod = $args['hash_method'];
         $activated = 1;
     } else {
-        if (pnModGetVar('Users', 'reg_verifyemail') == 1 && !$args['isadmin']) {
+        if (ModUtil::getVar('Users', 'reg_verifyemail') == 1 && !$args['isadmin']) {
             $makepass = _users_userapi_makePass();
             $cryptpass = hash($hash_method, $makepass);
             $activated = 1;
-        } elseif (pnModGetVar('Users', 'reg_verifyemail') == 2) {
+        } elseif (ModUtil::getVar('Users', 'reg_verifyemail') == 2) {
             $makepass = $args['pass'];
             $cryptpass = hash($hash_method, $args['pass']);
             $activated = ($args['isadmin'] && isset($args['usermustconfirm']) && $args['usermustconfirm'] != 1) ? 1 : 0;
@@ -389,7 +389,7 @@ function users_userapi_finishnewuser($args)
     if (isset($args['moderated']) && $args['moderated']) {
         $moderation = false;
     } elseif (!$args['isadmin']) {
-        $moderation = pnModGetVar('Users', 'moderation');
+        $moderation = ModUtil::getVar('Users', 'moderation');
         $args['moderated'] = false;
     } else {
         $moderation = false;
@@ -448,8 +448,8 @@ function users_userapi_finishnewuser($args)
             pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
             // mail notify email to inform admin about registration
-            if (pnModGetVar('Users', 'reg_notifyemail') != '' && $moderation == 1) {
-                $email2 = pnModGetVar('Users', 'reg_notifyemail');
+            if (ModUtil::getVar('Users', 'reg_notifyemail') != '' && $moderation == 1) {
+                $email2 = ModUtil::getVar('Users', 'reg_notifyemail');
                 $subject2 = __('New user account registered');
                 $message2 = $pnRender->fetch('users_userapi_adminnotificationmail.htm');
                 pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
@@ -493,7 +493,7 @@ function users_userapi_finishnewuser($args)
 
     // Add user to group
     // TODO - move this to a groups API calls
-    $gid = pnModGetVar('Groups', 'defaultgroup');
+    $gid = ModUtil::getVar('Groups', 'defaultgroup');
     $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
     if (!$group) {
         return false;
@@ -535,8 +535,8 @@ function users_userapi_finishnewuser($args)
         }
 
         // mail notify email to inform admin about activation
-        if (pnModGetVar('Users', 'reg_notifyemail') != '') {
-            $email2 = pnModGetVar('Users', 'reg_notifyemail');
+        if (ModUtil::getVar('Users', 'reg_notifyemail') != '') {
+            $email2 = ModUtil::getVar('Users', 'reg_notifyemail');
             $subject2 = __('New user account activated');
             $message2 = $pnRender->fetch('users_userapi_adminnotificationemail.htm');
             pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
@@ -584,7 +584,7 @@ function users_userapi_mailpasswd($args)
 
     if (!$args['code']) {
         $pnRender->assign('code', $areyou);
-        $pnRender->assign('url',  pnModURL('Users', 'user', 'lostpassword', array(), null, null, true));
+        $pnRender->assign('url',  ModUtil::url('Users', 'user', 'lostpassword', array(), null, null, true));
         $message = $pnRender->fetch('users_userapi_lostpasscodemail.htm');
         $subject = __f('Confirmation code for %s', $user['uname']);
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
@@ -597,7 +597,7 @@ function users_userapi_mailpasswd($args)
 
     if ($areyou == $args['code']) {
         $pnRender->assign('password', $newpass = _users_userapi_makePass());
-        $pnRender->assign('url',      pnModURL('Users', 'user', 'loginscreen', array(), null, null, true));
+        $pnRender->assign('url',      ModUtil::url('Users', 'user', 'loginscreen', array(), null, null, true));
         $message = $pnRender->fetch('users_userapi_passwordmail.htm');
         $subject = __f('Password for %s', $user['uname']);
         pnModAPIFunc('Mailer', 'user', 'sendmessage',
@@ -607,7 +607,7 @@ function users_userapi_mailpasswd($args)
                            'html'      => true));
 
         // Next step: add the new password to the database
-        $hash_method = pnModGetVar('Users', 'hash_method');
+        $hash_method = ModUtil::getVar('Users', 'hash_method');
         $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
         $cryptpass = hash($hash_method, $newpass);
         $obj = array();
@@ -665,7 +665,7 @@ function users_userapi_expiredsession()
  */
 function _users_userapi_makePass()
 {
-    $minpass = (int)pnModGetVar('Users', 'minpass', 5);
+    $minpass = (int)ModUtil::getVar('Users', 'minpass', 5);
     return RandomUtil::getString($minpass, 8, false, false, true, false, true, false, true, array('0', 'o', 'l', '1'));
 }
 
@@ -799,7 +799,7 @@ function Users_userapi_savepreemail($args)
     $pnRender->assign('email', pnUserGetVar('email'));
     $pnRender->assign('newemail', $args['newemail']);
     $pnRender->assign('sitename', pnConfigGetVar('sitename'));
-    $pnRender->assign('url',  pnModURL('Users', 'user', 'confirmchemail', array('confirmcode' => $confirmValue), null, null, true));
+    $pnRender->assign('url',  ModUtil::url('Users', 'user', 'confirmchemail', array('confirmcode' => $confirmValue), null, null, true));
 
     $message = $pnRender->fetch('users_userapi_confirmchemail.htm');
     $sent = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['newemail'], 'subject' => $subject, 'body' => $message, 'html' => true));
@@ -836,17 +836,17 @@ function users_userapi_getuserpreemail()
 function Users_userapi_getlinks()
 {
 
-    $allowregistration = pnModGetVar('Users', 'reg_allowreg');
+    $allowregistration = ModUtil::getVar('Users', 'reg_allowreg');
 
     $links = array();
 
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Users', 'user', 'loginscreen'), 'text' => __('Log in'), 'class' => 'z-icon-es-user');
-        $links[] = array('url' => pnModURL('Users', 'user', 'lostpassword'), 'text' => __('Lost password'), 'class' => 'z-icon-es-password');
+        $links[] = array('url' => ModUtil::url('Users', 'user', 'loginscreen'), 'text' => __('Log in'), 'class' => 'z-icon-es-user');
+        $links[] = array('url' => ModUtil::url('Users', 'user', 'lostpassword'), 'text' => __('Lost password'), 'class' => 'z-icon-es-password');
     }
 
     if ($allowregistration) {
-        $links[] = array('url' => pnModURL('Users', 'user', 'register'), 'text' => __('New account'), 'class' => 'z-icon-es-adduser');
+        $links[] = array('url' => ModUtil::url('Users', 'user', 'register'), 'text' => __('New account'), 'class' => 'z-icon-es-adduser');
     }
 
     return $links;

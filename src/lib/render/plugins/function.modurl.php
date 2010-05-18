@@ -74,7 +74,7 @@ function smarty_function_modurl($params, &$smarty)
         return false;
     }
 
-    $result = pnModURL($modname, $type, $func, $params, $ssl, $fragment, $fqurl, $forcelongurl, $forcelang);
+    $result = ModUtil::url($modname, $type, $func, $params, $ssl, $fragment, $fqurl, $forcelongurl, $forcelang);
 
     if ($append && is_string($append)) {
         $result .= $append;

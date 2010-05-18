@@ -37,7 +37,7 @@ function smarty_function_userlogin($params, &$smarty)
         $maxlength     = isset($params['maxlength'])     ? $params['maxlength']    : 25;
         $maxlengthpass = isset($params['maxlenthpass'])  ? $params['maxlenthpass'] : 20;
         $class         = isset($params['class'])         ? ' class="'.$params['class'].'"' : '';
-        if(pnModGetVar('Users','loginviaoption') == 0) {
+        if(ModUtil::getVar('Users','loginviaoption') == 0) {
             $value = isset($params['value']) ? DataUtil::formatForDisplay($params['value']) : __('User name');
             $userNameLabel = __('User name');
             $inputName = 'uname';
@@ -58,7 +58,7 @@ function smarty_function_userlogin($params, &$smarty)
         // b.plagge 20070821 - authkey is required
         $authkey = SecurityUtil::generateAuthKey('Users');
 
-        $loginbox = '<form'.$class.' style="display:inline" action="'.DataUtil::formatForDisplay(pnModURL('Users', 'user', 'login')).'" method="post"><div>'."\n"
+        $loginbox = '<form'.$class.' style="display:inline" action="'.DataUtil::formatForDisplay(ModUtil::url('Users', 'user', 'login')).'" method="post"><div>'."\n"
                    .'<input type="hidden" name="authid" value="' . DataUtil::formatForDisplay($authkey) .'" />'."\n"
                    .'<label for="userlogin_plugin_uname">' . $userNameLabel . '</label>&nbsp;'."\n"
                    .'<input type="text" name="' . $inputName . '" id="userlogin_plugin_uname" size="'.$size.'" maxlength="'.$maxlength.'" value="'.$value.'"'.$js.' />'."\n"

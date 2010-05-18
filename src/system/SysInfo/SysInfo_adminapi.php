@@ -24,28 +24,28 @@ class SysInfo_adminapi extends AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'main'), 'text' => __('System summary'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'main'), 'text' => __('System summary'));
         }
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'phpinfo', array('info' => 4)), 'text' => __('PHP configuration'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'phpinfo', array('info' => 4)), 'text' => __('PHP configuration'));
         }
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'phpinfo', array('info' => 8)), 'text' => __('PHP modules'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'phpinfo', array('info' => 8)), 'text' => __('PHP modules'));
         }
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'phpinfo', array('info' => 16)), 'text' => __('Server environment'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'phpinfo', array('info' => 16)), 'text' => __('Server environment'));
         }
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'phpinfo', array('info' => 32)), 'text' => __('PHP variables'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'phpinfo', array('info' => 32)), 'text' => __('PHP variables'));
         }
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'extensions'), 'text' => __('Zikula extensions'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'extensions'), 'text' => __('Zikula extensions'));
         }
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'filesystem'), 'text' => __('Zikula file system'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'filesystem'), 'text' => __('Zikula file system'));
         }
         if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => pnModURL('SysInfo', 'admin', 'ztemp'), 'text' => __('Zikula ztemp directory'));
+            $links[] = array('url' => ModUtil::url('SysInfo', 'admin', 'ztemp'), 'text' => __('Zikula ztemp directory'));
         }
 
         return $links;

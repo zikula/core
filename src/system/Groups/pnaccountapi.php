@@ -25,7 +25,7 @@ function Groups_accountapi_getall($args)
 
     if ($result <> false) {
         // create an array of links to return
-        $items['0'] = array('url'    => pnModURL('Groups', 'user'),
+        $items['0'] = array('url'    => ModUtil::url('Groups', 'user'),
                             'module' => 'Groups',
                             'title'  => __('Groups manager'),
                             'icon'   => 'admin.gif');

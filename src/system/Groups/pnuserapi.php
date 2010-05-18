@@ -135,7 +135,7 @@ function Groups_userapi_countitems()
     $grpcol = $pntable['groups_column'];
 
     $where = "WHERE $grpcol[gtype] >= '1'";
-    if (pnModGetVar('Groups', 'hideclosed')) {
+    if (ModUtil::getVar('Groups', 'hideclosed')) {
         $where .= " AND $grpcol[state] > '0'";
     }
     return DBUtil::selectObjectCount('groups', $where);
@@ -239,7 +239,7 @@ function Groups_userapi_getallgroups($args)
     $grpcol = $pntable['groups_column'];
 
     $where = "WHERE $grpcol[gtype] >= '1'";
-    if (pnModGetVar('Groups', 'hideclosed')) {
+    if (ModUtil::getVar('Groups', 'hideclosed')) {
         $where .= " AND $grpcol[state] > '0'";
     }
     $orderBy = "ORDER BY $grpcol[name]";
@@ -472,7 +472,7 @@ function Groups_userapi_userupdate($args)
                 return false;
             }
 
-            if (pnModGetVar('Groups', 'mailwarning')) {
+            if (ModUtil::getVar('Groups', 'mailwarning')) {
                 $uname = pnUserGetVar('uname', $userid);
                 $send = pnModAPIFunc('Mailer', 'user', 'sendmessage',
                                      array('toname'    => __('Administrator'),

@@ -109,7 +109,7 @@ function Blocks_menublock_display($blockinfo)
                     case 2:
                     case 3:
                         $menuitems[] = blocks_menu_addMenuItem($mod['displayname'],
-                                               pnModURL($mod['name'], 'user', 'main'),
+                                               ModUtil::url($mod['name'], 'user', 'main'),
                                                $mod['description']);
                        $content = true;
                         break;
@@ -202,7 +202,7 @@ function blocks_menu_addMenuItem($title, $url, $comment)
                     // addon: url[2] can be the type parameter, default 'user'
                     $type = (isset($url[2]) &&!empty($url[2])) ? $url[2] : 'user';
                     //  build the url
-                    $url = pnModURL($modname, $type, $func, $params);
+                    $url = ModUtil::url($modname, $type, $func, $params);
                 } else {
                     $url = pnConfigGetVar('entrypoint', 'index.php');
                 }

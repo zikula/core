@@ -21,12 +21,12 @@ function categories_accountapi_getall($args)
     $items = array();
 
     // Create an array of links to return
-    if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT) && pnModGetVar('Categories', 'allowusercatedit')) {
+    if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT) && ModUtil::getVar('Categories', 'allowusercatedit')) {
         $referer = pnServerGetVar('HTTP_REFERER');
         if (strpos($referer, 'module=Categories') === false) {
             SessionUtil::setVar('categories_referer', $referer);
         }
-        $items['0'] = array('url'     => pnModURL('Categories', 'user', 'edituser'),
+        $items['0'] = array('url'     => ModUtil::url('Categories', 'user', 'edituser'),
                             'module'  => 'core',
                             'set'     => 'icons/large',
                             'title'   => __('Categories manager'),

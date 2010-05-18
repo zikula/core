@@ -19,7 +19,7 @@ function users_user_main()
 {
     // Security check
     if (!pnUserLoggedIn()) {
-        pnRedirect(pnModURL('Users', 'user', 'loginscreen'));
+        pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
     } elseif (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
         return LogUtil::registerPermissionError();
     }
@@ -57,7 +57,7 @@ function users_user_view()
     $pnRender = Renderer::getInstance('Users');
 
     // other vars
-    $pnRender->assign(pnModGetVar('Users'));
+    $pnRender->assign(ModUtil::getVar('Users'));
 
     return $pnRender->fetch('users_user_view.htm');
 }
@@ -83,7 +83,7 @@ function users_user_loginscreen($args)
 
     // we shouldn't get here if logged in already....
     if (pnUserLoggedIn()) {
-        return pnRedirect(pnModURL('Users', 'user', 'main'));
+        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     // TODO C Appears to be unused If confirmed, it can be removed. ph
@@ -104,23 +104,23 @@ function users_user_loginscreen($args)
     $passwordtext = ($changepassword == 1) ? __('Current password') : __('Password');
 
     // assign variables for the template
-    $pnRender->assign('loginviaoption', pnModGetVar('Users', 'loginviaoption'));
+    $pnRender->assign('loginviaoption', ModUtil::getVar('Users', 'loginviaoption'));
     $pnRender->assign('seclevel', pnConfigGetVar('seclevel'));
-    $pnRender->assign('allowregistration', pnModGetVar('Users', 'reg_allowreg'));
+    $pnRender->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
     $pnRender->assign('returnurl', $returnurl);
     // do we have to show a note about reconfirming the terms of use?
-    if (pnModAvailable('legal') && (pnModGetVar('legal', 'termsofuse') || pnModGetVar('legal', 'privacypolicy'))) {
-        $pnRender->assign('tou_active', pnModGetVar('legal', 'termsofuse', true));
-        $pnRender->assign('pp_active',  pnModGetVar('legal', 'privacypolicy', true));
+    if (pnModAvailable('legal') && (ModUtil::getVar('legal', 'termsofuse') || ModUtil::getVar('legal', 'privacypolicy'))) {
+        $pnRender->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
+        $pnRender->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
     } else {
         $confirmtou = 0;
     }
- 
+
     // do we have to force the change of password?
     $pnRender->assign('changepassword', $changepassword);
     $pnRender->assign('confirmtou', $confirmtou);
     $pnRender->assign('passwordtext', $passwordtext);
-    $pnRender->assign('use_password_strength_meter', pnModGetVar('Users', 'use_password_strength_meter'));
+    $pnRender->assign('use_password_strength_meter', ModUtil::getVar('Users', 'use_password_strength_meter'));
 
     return $pnRender->fetch('users_user_loginscreen.htm');
 }
@@ -132,8 +132,8 @@ function users_user_loginscreen($args)
  */
 function users_user_underage()
 {
-    LogUtil::registerError(__f('Sorry! You must be %s or over to register for a user account here.', pnModGetVar('Users', 'minage')));
-    return pnRedirect(pnModURL('Users', 'user', 'view'));
+    LogUtil::registerError(__f('Sorry! You must be %s or over to register for a user account here.', ModUtil::getVar('Users', 'minage')));
+    return pnRedirect(ModUtil::url('Users', 'user', 'view'));
 }
 
 /**
@@ -150,7 +150,7 @@ function users_user_register()
 
     $template = 'users_user_register.htm';
     // check if we've agreed to the age limit
-    if (pnModGetVar('Users', 'minage') != 0 && !stristr(pnServerGetVar('HTTP_REFERER'), 'register')) {
+    if (ModUtil::getVar('Users', 'minage') != 0 && !stristr(pnServerGetVar('HTTP_REFERER'), 'register')) {
         $template = 'users_user_checkage.htm';
     }
 
@@ -158,13 +158,13 @@ function users_user_register()
     $pnRender = Renderer::getInstance('Users', false);
 
     // other vars
-    $modvars = pnModGetVar('Users');
+    $modvars = ModUtil::getVar('Users');
 
     $pnRender->assign($modvars);
     $pnRender->assign('sitename', pnConfigGetVar('sitename'));
     $pnRender->assign('legal',    pnModAvailable('legal'));
-    $pnRender->assign('tou_active', pnModGetVar('legal', 'termsofuse', true));
-    $pnRender->assign('pp_active',  pnModGetVar('legal', 'privacypolicy', true));
+    $pnRender->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
+    $pnRender->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
 
     return $pnRender->fetch($template);
 }
@@ -178,25 +178,25 @@ function users_user_lostpassword()
 {
     // we shouldn't get here if logged in already....
     if (pnUserLoggedIn()) {
-        return pnRedirect(pnModURL('Users', 'user', 'main'));
+        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     if (isset($_POST['submit']) && !SecurityUtil::confirmAuthKey('Users')) {
-        return LogUtil::registerAuthidError(pnModURL('Users', 'user', 'lostpassword'));
+        return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 
     // create output object
     $pnRender = Renderer::getInstance('Users');
-    $pnRender->assign('allowregistration', pnModGetVar('Users', 'reg_allowreg'));
+    $pnRender->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
 
     return $pnRender->fetch('users_user_lostpassword.htm');
 }
 
 /**
  * Login a user.
- * 
+ *
  * If the user is already logged in, then he is redirected to the main user function.
- * If a redirect URL is specified, then the user is redirected to that page upon 
+ * If a redirect URL is specified, then the user is redirected to that page upon
  * successful login.
  *
  * @return bool True on successful login, otherwise false.
@@ -205,11 +205,11 @@ function users_user_login()
 {
     // we shouldn't get here if logged in already....
     if (pnUserLoggedIn()) {
-        return pnRedirect(pnModURL('Users', 'user', 'main'));
+        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     if (!SecurityUtil::confirmAuthKey('Users')) {
-        return LogUtil::registerAuthidError(pnModURL('Users','user','loginscreen'));
+        return LogUtil::registerAuthidError(ModUtil::url('Users','user','loginscreen'));
     }
 
     $uname      = FormUtil::getPassedValue ('uname');
@@ -224,7 +224,7 @@ function users_user_login()
     $tryagain = false;
     $confirmtou = 0;
     $changepassword = 0;
-    if (($userstatus == 2 || $userstatus == 6) && pnModAvailable('legal') && (pnModGetVar('legal', 'termsofuse', true) || pnModGetVar('legal', 'privacypolicy', true))) {
+    if (($userstatus == 2 || $userstatus == 6) && pnModAvailable('legal') && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
         $confirmtou = 1;
         $touaccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
         if ($touaccepted<>1) {
@@ -236,7 +236,7 @@ function users_user_login()
     // the current password must be valid
     $pnuser_current_pass = pnUserGetVar('pass', $userid);
     $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
-    $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));           
+    $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
     $passhash = hash($hashmethodsarray[$pnuser_hash_number], $pass);
     if ($passhash != $pnuser_current_pass) {
         $errormsg = __('Sorry! The current password you entered is not correct. Please correct your entry and try again.');
@@ -256,7 +256,7 @@ function users_user_login()
         }
 
         // check if the new password satisfy the requirements
-        $minpass = pnModGetVar('Users', 'minpass');
+        $minpass = ModUtil::getVar('Users', 'minpass');
         if (!empty($newpass) && strlen($newpass) < $minpass && $validnewpass) {
             $errormsg = _fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minpass, $minpass);
             $validnewpass = false;
@@ -284,15 +284,15 @@ function users_user_login()
         if ($errormsg == '') {
             $errormsg = __('Error! Log-in was not completed. Please read the information below.');
         }
-        return LogUtil::registerError($errormsg , 403, pnModURL('Users','user','loginscreen',
+        return LogUtil::registerError($errormsg , 403, ModUtil::url('Users','user','loginscreen',
                                                                 array('confirmtou' => $confirmtou,
                                                                       'changepassword' => $changepassword,
-                                                                      'returnpage' => $url)));        
+                                                                      'returnpage' => $url)));
     } else {
         if ($userstatus == 4 || $userstatus == 6) {
             // change the user's password
             $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
-            $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));           
+            $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
             $newpasshash = hash($hashmethodsarray[$pnuser_hash_number], $newpass);
             pnUserSetVar('pass', $newpasshash, $userid);
             $pass = $newpass;
@@ -300,8 +300,8 @@ function users_user_login()
         pnUserSetVar('activated', 1, $userid);
     }
 
-    $loginoption    = pnModGetVar('Users', 'loginviaoption');
-    $login_redirect = pnModGetVar('Users', 'login_redirect');
+    $loginoption    = ModUtil::getVar('Users', 'loginviaoption');
+    $login_redirect = ModUtil::getVar('Users', 'login_redirect');
 
     if (pnUserLogIn((($loginoption==1) ? $email : $uname), $pass, $rememberme)) {
         // start login hook
@@ -317,17 +317,17 @@ function users_user_login()
         return true;
     } else {
         LogUtil::registerError(__('Sorry! Unrecognised user name or password. Please try again.'));
-        $reg_verifyemail = pnModGetVar('Users', 'reg_verifyemail');
+        $reg_verifyemail = ModUtil::getVar('Users', 'reg_verifyemail');
         if ($reg_verifyemail == 2) {
             LogUtil::registerError(__('Notice: If you have just registered a new account then please check your e-mail and activate your account before trying to log in.'));
         }
-        return pnRedirect(pnModURL('Users','user','loginscreen', array('returnpage' => urlencode($url))));
+        return pnRedirect(ModUtil::url('Users','user','loginscreen', array('returnpage' => urlencode($url))));
     }
 }
 
 /**
  * Log a user out.
- * 
+ *
  * The user is redirected to the entry point of the site, or to a redirect
  * page if specified in the site configuration.
  *
@@ -335,7 +335,7 @@ function users_user_login()
  */
 function users_user_logout()
 {
-    $login_redirect = pnModGetVar('Users', 'login_redirect');
+    $login_redirect = ModUtil::getVar('Users', 'login_redirect');
 
     // start logout hook
     $uid = pnUserGetVar('uid');
@@ -375,7 +375,7 @@ function users_user_logout()
 function users_user_finishnewuser()
 {
     if (!SecurityUtil::confirmAuthKey('Users')) {
-        return LogUtil::registerAuthidError(pnModURL('Users','user','register'));
+        return LogUtil::registerAuthidError(ModUtil::url('Users','user','register'));
     }
 
     $uname          = FormUtil::getPassedValue ('uname', null, 'POST');
@@ -388,7 +388,7 @@ function users_user_finishnewuser()
     $user_viewemail = FormUtil::getPassedValue ('user_viewmail', null, 'POST');
     $reg_answer     = FormUtil::getPassedValue ('reg_answer', null, 'POST');
 
-    if (pnModGetVar('Users', 'lowercaseuname', false)) {
+    if (ModUtil::getVar('Users', 'lowercaseuname', false)) {
         $uname = strtolower($uname);
     }
 
@@ -397,7 +397,7 @@ function users_user_finishnewuser()
     $redirectfunc = 'loginscreen';
 
     // Verify dynamic user data
-    if (pnModGetVar('Users', 'reg_optitems') == 1) {
+    if (ModUtil::getVar('Users', 'reg_optitems') == 1) {
         $profileModule = pnConfigGetVar('profilemodule', '');
         if (!empty($profileModule) && pnModAvailable($profileModule)) {
 
@@ -408,16 +408,16 @@ function users_user_finishnewuser()
                 // ! %s is a comma separated list of fields that were left blank
                 $message = __f('Error! One or more required fields were left blank or incomplete (%s).', $checkrequired['translatedFieldsStr']);
 
-                return LogUtil::registerError($message, null, pnModURL('Users', 'user', 'register'));
+                return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'register'));
             }
         }
     }
 
     // because index.php use $name var $name can not get correct value. [class007]
     $name         = $uname;
-    $commentlimit = (int)pnModGetVar('Users', 'commentlimit', 0);
-    $storynum     = (int)pnModGetVar('Users', 'storyhome', 10);
-    $minpass      = (int)pnModGetVar('Users', 'minpass', 5);
+    $commentlimit = (int)ModUtil::getVar('Users', 'commentlimit', 0);
+    $storynum     = (int)ModUtil::getVar('Users', 'storyhome', 10);
+    $minpass      = (int)ModUtil::getVar('Users', 'minpass', 5);
     $user_regdate = DateUtil::getDatetime();
 
     // TODO: add require check for dynamics.
@@ -467,14 +467,14 @@ function users_user_finishnewuser()
                 $message =  __('Sorry! You have not been granted access to this module.');
         } // switch
 
-        return LogUtil::registerError($message, null, pnModURL('Users', 'user', 'register'));
+        return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'register'));
     }
 
     if ($email !== $vemail) {
         $message = __('Sorry! You did not enter the same e-mail address in each box. Please correct your entry and try again.');
     }
 
-    $modvars = pnModGetVar('Users');
+    $modvars = ModUtil::getVar('Users');
 
     if (!$modvars['reg_verifyemail'] || $modvars['reg_verifyemail'] == 2) {
         if ((isset($pass)) && ("$pass" != "$vpass")) {
@@ -484,7 +484,7 @@ function users_user_finishnewuser()
         } elseif (isset($pass) && (strlen($pass) < $minpass)) {
             $message =  _fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass);
 
-        } elseif (empty($pass) && !pnModGetVar('Users', 'reg_verifyemail')) {
+        } elseif (empty($pass) && !ModUtil::getVar('Users', 'reg_verifyemail')) {
             $message =  __('Error! Please enter a password.');
         }
     }
@@ -496,7 +496,7 @@ function users_user_finishnewuser()
     }
 
     if (isset($message)) {
-        return LogUtil::registerError($message, null, pnModURL('Users', 'user', 'register'));
+        return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'register'));
     }
 
     // TODO: Clean up
@@ -511,17 +511,17 @@ function users_user_finishnewuser()
     if (!$registered) {
         LogUtil::registerError(__('Error! The registration process failed. Please contact the site administrator.'));
     } else {
-        if ((int)pnModGetVar('Users', 'moderation') == 1) {
+        if ((int)ModUtil::getVar('Users', 'moderation') == 1) {
             LogUtil::registerStatus(__('Done! Thanks for registering! Your application has been submitted for approval.'));
             $pnr = Renderer::getInstance('Users');
             return $pnr->fetch('users_user_registrationfinished.htm');
         } else {
             LogUtil::registerStatus(__('Done! You are now a registered user. You should receive your user '
                 . 'account details (including your password) at the e-mail address you entered.'));
-            if (pnModGetVar('Users', 'reg_verifyemail') == 2) {
+            if (ModUtil::getVar('Users', 'reg_verifyemail') == 2) {
                 LogUtil::registerStatus(__('Please use the link in the e-mail message to activate your account.'));
             }
-            return pnRedirect(pnModURL('Users', 'user', $redirectfunc));
+            return pnRedirect(ModUtil::url('Users', 'user', $redirectfunc));
         }
     }
 
@@ -541,9 +541,9 @@ function users_user_finishnewuser()
 function users_user_mailpasswd()
 {
     if (!SecurityUtil::confirmAuthKey('Users')) {
-        return LogUtil::registerAuthidError(pnModURL('Users', 'user', 'lostpassword'));
+        return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'lostpassword'));
     }
-    
+
     $uname = FormUtil::getPassedValue ('uname', null, 'POST');
     $email = FormUtil::getPassedValue ('email', null, 'POST');
     $code  = FormUtil::getPassedValue ('code',  null, 'POST');
@@ -556,7 +556,7 @@ function users_user_mailpasswd()
     }
     if (!$email && !$uname) {
         LogUtil::registerError(__('Error! User name and e-mail address fields are empty.'));
-        return pnRedirect(pnModURL('Users', 'user', 'lostpassword'));
+        return pnRedirect(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 
     // save username and password for redisplay
@@ -565,7 +565,7 @@ function users_user_mailpasswd()
 
     if (!empty($email) && !empty($uname)) {
         LogUtil::registerError(__('Error! Please enter a user name OR e-mail address, no both of them.'));
-        return pnRedirect(pnModURL('Users', 'user', 'lostpassword'));
+        return pnRedirect(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 
     //0=DatabaseError 1=WrongCode 2=NoSuchUsernameOrEmailAddress 3=PasswordMailed 4=ConfirmationCodeMailed
@@ -614,10 +614,10 @@ function users_user_mailpasswd()
     switch ($returncode)
     {
         case 3:
-            return pnRedirect(pnModURL('Users', 'user', 'loginscreen'));
+            return pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
             break;
         default:
-            return pnRedirect(pnModURL('Users', 'user', 'lostpassword'));
+            return pnRedirect(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 }
 
@@ -662,7 +662,7 @@ function users_user_activation($args)
             return LogUtil::registerError(__('Error! Could not activate your account. Please contact the site administrator.'));
         }
         LogUtil::registerStatus(__('Done! Account activated.'));
-        return pnRedirect(pnModURL('Users', 'user', 'loginscreen'));
+        return pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
     } else {
         return LogUtil::registerError(__('Sorry! You entered an invalid confirmation code. Please correct your entry and try again.'));
     }
@@ -803,7 +803,7 @@ function users_user_updateusersblock()
     pnUserSetVar('ublock', $ublock);
 
     LogUtil::registerStatus(__('Done! Saved custom block.'));
-    return pnRedirect(pnModURL('Users'));
+    return pnRedirect(ModUtil::url('Users'));
 }
 
 /**
@@ -817,7 +817,7 @@ function Users_user_changepassword()
         return LogUtil::registerPermissionError();
     }
 
-    $changepassword = pnModGetVar('Users', 'changepassword', 1);
+    $changepassword = ModUtil::getVar('Users', 'changepassword', 1);
     if ($changepassword <> 1) {
         return pnRedirect('Users', 'user', 'main');
     }
@@ -826,7 +826,7 @@ function Users_user_changepassword()
     $pnRender = Renderer::getInstance('Users', false, null, true);
 
     // assign vars
-    $pnRender->assign('use_password_strength_meter', pnModGetVar('Users', 'use_password_strength_meter'));
+    $pnRender->assign('use_password_strength_meter', ModUtil::getVar('Users', 'use_password_strength_meter'));
 
     // Return the output that has been generated by this function
     return $pnRender->fetch('users_user_changepassword.htm');
@@ -848,7 +848,7 @@ function Users_user_updatepassword()
         return LogUtil::registerPermissionError();
     }
 
-    $uservars = pnModGetVar('Users');
+    $uservars = ModUtil::getVar('Users');
     if ($uservars['changepassword'] <> 1) {
         return pnRedirect('Users', 'user', 'main');
     }
@@ -873,26 +873,26 @@ function Users_user_updatepassword()
 
     if (empty($oldpassword) || $opass != $upass) {
         return LogUtil::registerError(__('Sorry! The password you entered is not correct. Please correct your entry and try again.'),
-            null, pnModURL('Users', 'user', 'changepassword'));
+            null, ModUtil::url('Users', 'user', 'changepassword'));
     }
 
-    $minpass = pnModGetVar('Users', 'minpass');
+    $minpass = ModUtil::getVar('Users', 'minpass');
     if (strlen($newpassword) < $minpass) {
         return LogUtil::registerError(_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minpass, $minpass),
-            null, pnModURL('Users', 'user', 'changepassword'));
+            null, ModUtil::url('Users', 'user', 'changepassword'));
     }
 
     // check if the new password and the confirmation are identical
     if ($newpassword != $newpasswordconfirm) {
         return LogUtil::registerError(__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.'),
-            null, pnModURL('Users', 'user', 'changepassword'));
+            null, ModUtil::url('Users', 'user', 'changepassword'));
     }
 
     // set the new password
     pnUserSetPassword($newpassword);
 
     LogUtil::registerStatus(__('Done! Saved your new password.'));
-    return pnRedirect(pnModURL('Users', 'user', 'main'));
+    return pnRedirect(ModUtil::url('Users', 'user', 'main'));
 }
 
 /**
@@ -906,7 +906,7 @@ function Users_user_changeemail()
         return LogUtil::registerPermissionError();
     }
 
-    $changeemail = pnModGetVar('Users', 'changeemail', 1);
+    $changeemail = ModUtil::getVar('Users', 'changeemail', 1);
     if ($changeemail <> 1) {
         return pnRedirect('Users', 'user', 'main');
     }
@@ -932,7 +932,7 @@ function Users_user_updateemail()
         return LogUtil::registerPermissionError();
     }
 
-    $uservars = pnModGetVar('Users');
+    $uservars = ModUtil::getVar('Users');
     if ($uservars['changeemail'] <> 1) {
         return pnRedirect('Users', 'user', 'main');
     }
@@ -966,17 +966,17 @@ function Users_user_updateemail()
             default:
                 $message =  __('Sorry! You have not been granted access to this module.');
         } // switch
-        return LogUtil::registerError($message, null, pnModURL('Users', 'user', 'changeemail'));
+        return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'changeemail'));
     }
 
     // save the provisional email until confimation
     if (!pnModAPIFunc('Users', 'user', 'savepreemail',
                     array('newemail' => $newemail))) {
-        return LogUtil::registerError(__('Error! It has not been possible to change the e-mail address.'), null, pnModURL('Users', 'user', 'changeemail'));
+        return LogUtil::registerError(__('Error! It has not been possible to change the e-mail address.'), null, ModUtil::url('Users', 'user', 'changeemail'));
     }
 
     LogUtil::registerStatus(__('Done! You will receive an e-mail to your new e-mail address to confirm the change.'));
-    return pnRedirect(pnModURL('Users', 'user', 'main'));
+    return pnRedirect(ModUtil::url('Users', 'user', 'main'));
 }
 
 /**
@@ -1027,7 +1027,7 @@ function Users_user_confirmchemail($args)
 
     if (!$preemail || $confirmcode != $preemail['comment'] || $preemail['dynamics'] < $fiveDaysAgo) {
         LogUtil::registerError(__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'));
-        return pnRedirect(pnModURL('Users', 'user', 'main'));        
+        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     // user and confirmation code are correct. set the new email
@@ -1036,7 +1036,7 @@ function Users_user_confirmchemail($args)
     // the preemail record is deleted
     pnModAPIFunc('Users', 'admin', 'deny',
                 array('userid' => $preemail['tid']));
-    
+
     LogUtil::registerStatus(__('Done! Changed your e-mail address.'));
-    return pnRedirect(pnModURL('Users', 'user', 'main'));    
+    return pnRedirect(ModUtil::url('Users', 'user', 'main'));
 }

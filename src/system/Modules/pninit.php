@@ -44,7 +44,7 @@ function modules_init()
 
     // populate default data
     modules_defaultdata();
-    pnModSetVar('Modules', 'itemsperpage', 25);
+    ModUtil::setVar('Modules', 'itemsperpage', 25);
 
     // Initialisation successful
     return true;

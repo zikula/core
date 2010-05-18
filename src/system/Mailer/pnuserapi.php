@@ -65,41 +65,41 @@ function Mailer_userapi_sendmessage($args)
     // set default message parameters
     $mail->PluginDir = "system/Mailer/pnincludes/";
     $mail->ClearAllRecipients();
-    $mail->ContentType = isset($args['contenttype']) ? $args['contenttype'] : pnModGetVar('Mailer', 'contenttype');
-    $mail->CharSet     = isset($args['charset'])     ? $args['charset']     : pnModGetVar('Mailer', 'charset');
-    $mail->Encoding    = isset($args['encoding'])    ? $args['encoding']    : pnModGetVar('Mailer', 'encoding');
-    $mail->WordWrap    = pnModGetVar('Mailer', 'wordwrap');
+    $mail->ContentType = isset($args['contenttype']) ? $args['contenttype'] : ModUtil::getVar('Mailer', 'contenttype');
+    $mail->CharSet     = isset($args['charset'])     ? $args['charset']     : ModUtil::getVar('Mailer', 'charset');
+    $mail->Encoding    = isset($args['encoding'])    ? $args['encoding']    : ModUtil::getVar('Mailer', 'encoding');
+    $mail->WordWrap    = ModUtil::getVar('Mailer', 'wordwrap');
 
     // load the language file
     $mail->SetLanguage('en', $mail->PluginDir . 'language/');
 
     // get MTA configuration
-    if (pnModGetVar('Mailer', 'mailertype') == 4) {
+    if (ModUtil::getVar('Mailer', 'mailertype') == 4) {
         $mail->IsSMTP();  // set mailer to use SMTP
-        $mail->Host = pnModGetVar('Mailer', 'smtpserver');  // specify server
-        $mail->Port = pnModGetVar('Mailer', 'smtpport');    // specify port
-    } else if (pnModGetVar('Mailer', 'mailertype') == 3) {
+        $mail->Host = ModUtil::getVar('Mailer', 'smtpserver');  // specify server
+        $mail->Port = ModUtil::getVar('Mailer', 'smtpport');    // specify port
+    } else if (ModUtil::getVar('Mailer', 'mailertype') == 3) {
         $mail->IsQMail();  // set mailer to use QMail
-    } else if (pnModGetVar('Mailer', 'mailertype') == 2) {
+    } else if (ModUtil::getVar('Mailer', 'mailertype') == 2) {
         ini_set("sendmail_from", $args['fromaddress']);
         $mail->IsSendMail();  // set mailer to use SendMail
-        $mail->Sendmail = pnModGetVar('Mailer', 'sendmailpath'); // specify Sendmail path
+        $mail->Sendmail = ModUtil::getVar('Mailer', 'sendmailpath'); // specify Sendmail path
     } else {
         $mail->IsMail();  // set mailer to use php mail
     }
 
     // set authentication paramters if required
-    if (pnModGetVar('Mailer', 'smtpauth') == 1) {
+    if (ModUtil::getVar('Mailer', 'smtpauth') == 1) {
         $mail->SMTPAuth = true; // turn on SMTP authentication
-        $mail->Username = pnModGetVar('Mailer', 'smtpusername');  // SMTP username
-        $mail->Password = pnModGetVar('Mailer', 'smtppassword');  // SMTP password
+        $mail->Username = ModUtil::getVar('Mailer', 'smtpusername');  // SMTP username
+        $mail->Password = ModUtil::getVar('Mailer', 'smtppassword');  // SMTP password
     }
 
     // set HTML mail if required
     if (isset($args['html']) && is_bool($args['html'])) {
         $mail->IsHTML($args['html']); // set email format to HTML
     } else {
-        $mail->IsHTML(pnModGetVar('Mailer', 'html')); // set email format to the default
+        $mail->IsHTML(ModUtil::getVar('Mailer', 'html')); // set email format to the default
     }
 
     // set fromname and fromaddress, default to 'sitename' and 'adminmail' config vars

@@ -982,7 +982,7 @@ class CategoryUtil
             $ds = str_repeat('.', $depth);
 
             $params['cid'] = $c['id'];
-            $url = DataUtil::formatForDisplay(pnModURL('Categories', 'admin', 'edit', $params));
+            $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'admin', 'edit', $params));
 
             if (FormUtil::getPassedValue('type') == 'admin') {
                 $url .= '#top';
@@ -1357,7 +1357,7 @@ class CategoryUtil
         if (count($categories) == 0)
             return true;
 
-        if (pnModGetVar('Categories', 'permissionsall', 0)) {
+        if (ModUtil::getVar('Categories', 'permissionsall', 0)) {
             // Access is required for all categories
             $ok = true;
             foreach ($categories as $propertyName => $cat) {

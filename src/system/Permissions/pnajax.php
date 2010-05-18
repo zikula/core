@@ -169,9 +169,9 @@ function permissions_ajax_deletepermission()
     }
 
     if (pnModAPIFunc('Permissions', 'admin', 'delete', array('pid' => $pid)) == true) {
-        if ($pid == pnModGetVar('Permissions', 'adminid')) {
-            pnModSetVar('Permissions', 'adminid', 0);
-            pnModSetVar('Permissions', 'lockadmin', false);
+        if ($pid == ModUtil::getVar('Permissions', 'adminid')) {
+            ModUtil::setVar('Permissions', 'adminid', 0);
+            ModUtil::setVar('Permissions', 'lockadmin', false);
         }
         return array('pid' => $pid);
     }

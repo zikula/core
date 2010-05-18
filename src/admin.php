@@ -33,11 +33,11 @@ $module = FormUtil::getPassedValue('module', '', 'GETPOST');
 if (empty($module)) {
     // call for admin.php without module parameter
     if (!pnUserLoggedIn()) {
-        pnRedirect(pnModURL('Users', 'user', 'loginscreen', array(
-            'returnpage'    => urlencode(pnModURL('Admin', 'admin', 'adminpanel'))
+        pnRedirect(ModUtil::url('Users', 'user', 'loginscreen', array(
+            'returnpage'    => urlencode(ModUtil::url('Admin', 'admin', 'adminpanel'))
         )));
     } else {
-        pnRedirect(pnModURL('Admin', 'admin', 'adminpanel'));
+        pnRedirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
     }
     pnShutDown();
 } else if (!pnModAvailable($module) || !SecurityUtil::checkPermission("$module::", '::', ACCESS_EDIT)) {
@@ -53,7 +53,7 @@ $modinfo = pnModGetInfo(pnModGetIDFromName($module));
 
 if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     // Redirect to new style admin panel
-    pnRedirect(pnModURL($module, 'admin'));
+    pnRedirect(ModUtil::url($module, 'admin'));
     pnShutDown();
 }
 

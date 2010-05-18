@@ -74,8 +74,8 @@ function permissions_admin_view()
     $pnRender->assign('testresult', $testresult);
 
     // decide the default view
-    $enableFilter = pnModGetVar('Permissions', 'filter', 1);
-    $rowview      = pnModGetVar('Permissions', 'rowview', 25);
+    $enableFilter = ModUtil::getVar('Permissions', 'filter', 1);
+    $rowview      = ModUtil::getVar('Permissions', 'rowview', 25);
 
     // Work out which tables to operate against, and
     // various other bits and pieces
@@ -133,12 +133,12 @@ function permissions_admin_view()
         foreach($ak as $v) {
             $obj = $objArray[$v];
             $id = $obj['gid'];
-            $up = array('url' => pnModURL('Permissions', 'admin', 'inc',
+            $up = array('url' => ModUtil::url('Permissions', 'admin', 'inc',
                                           array('pid'      => $obj['pid'],
                                                 'permgrp'  => $permgrp,
                                                 'authid'   => $authid)),
                          'title' => __('Up'));
-            $down = array('url' => pnModURL('Permissions', 'admin', 'dec',
+            $down = array('url' => ModUtil::url('Permissions', 'admin', 'dec',
                                             array('pid'      => $obj['pid'],
                                                   'permgrp'  => $permgrp,
                                                   'authid'   => $authid)),
@@ -160,15 +160,15 @@ function permissions_admin_view()
             // MMaes, 2003-06-25: Changed URL to new modify-function
             // MMaes, 2003-06-20: Direct Insert Capability
             $options = array();
-            $inserturl = pnModURL('Permissions', 'admin', 'listedit',
+            $inserturl = ModUtil::url('Permissions', 'admin', 'listedit',
                                   array('permgrp'  => $permgrp,
                                         'action'   => 'insert',
                                         'insseq'   => $obj['sequence']));
-            $editurl = pnModURL('Permissions', 'admin', 'listedit',
+            $editurl = ModUtil::url('Permissions', 'admin', 'listedit',
                                 array('chgpid'   => $obj['pid'],
                                       'permgrp'  => $permgrp,
                                       'action'   => 'modify'));
-            $deleteurl = pnModURL('Permissions', 'admin', 'delete',
+            $deleteurl = ModUtil::url('Permissions', 'admin', 'delete',
                                   array('pid'      => $obj['pid'],
                                         'permgrp'  => $permgrp));
 
@@ -203,9 +203,9 @@ function permissions_admin_view()
     $pnRender->assign('groups', permissions_getGroupsInfo());
     $pnRender->assign('permissions', $permissions);
     $pnRender->assign('components', $components);
-    $lockadmin = (pnModGetVar('Permissions', 'lockadmin')) ? 1 : 0;
+    $lockadmin = (ModUtil::getVar('Permissions', 'lockadmin')) ? 1 : 0;
     $pnRender->assign('lockadmin', $lockadmin);
-    $pnRender->assign('adminid', pnModGetVar('Permissions', 'adminid'));
+    $pnRender->assign('adminid', ModUtil::getVar('Permissions', 'adminid'));
 
     // Assign the permission levels
     $pnRender->assign('permissionlevels', SecurityUtil::accesslevelnames());
@@ -229,7 +229,7 @@ function permissions_admin_inc()
     // Confirm authorisation code
     // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Permissions','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Permissions','admin','main'));
     }
 
     // Get parameters
@@ -252,7 +252,7 @@ function permissions_admin_inc()
     }
 
     // Redirect
-    return pnRedirect(pnModURL('Permissions', 'admin', 'view',
+    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view',
                                array('permgrp'  => $permgrp)));
 }
 
@@ -271,7 +271,7 @@ function permissions_admin_dec()
     // Confirm authorisation code
     // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Permissions','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Permissions','admin','main'));
     }
 
     // Get parameters
@@ -295,7 +295,7 @@ function permissions_admin_dec()
 
     // Redirect
     // MMaes,2003-06-23: View permissions applying to single group; added permgrp
-    return pnRedirect(pnModURL('Permissions', 'admin', 'view',
+    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view',
                                array('permgrp'  => $permgrp)));
 }
 
@@ -318,7 +318,7 @@ function permissions_admin_listedit()
     $permgrp = FormUtil::getPassedValue('permgrp', null, 'REQUEST');
 
     // decide default view
-    $rowview = is_null(pnModGetVar('Permissions', 'rowview')) ? '25' : pnModGetVar('Permissions', 'rowview');
+    $rowview = is_null(ModUtil::getVar('Permissions', 'rowview')) ? '25' : ModUtil::getVar('Permissions', 'rowview');
 
     // Create output object
     $pnRender = Renderer::getInstance('Permissions', false);
@@ -338,7 +338,7 @@ function permissions_admin_listedit()
     $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);
     if (!$objArray && $action != 'add') {
         LogUtil::registerError(__('Error! No permission rules of this kind were found. Please add some first.'));
-        return pnRedirect(pnModURL('modules', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('modules', 'admin', 'main'));
     }
 
     $pnRender->assign('title', $viewperms);
@@ -351,7 +351,7 @@ function permissions_admin_listedit()
 
     if ($action == 'modify') {
         // Form-start
-        $pnRender->assign('formurl', pnModURL('Permissions', 'admin', 'update'));
+        $pnRender->assign('formurl', ModUtil::url('Permissions', 'admin', 'update'));
         $pnRender->assign('permgrp', $permgrp);
         $pnRender->assign('chgpid', $chgpid);
         // Realms hard-code4d - jgm
@@ -360,7 +360,7 @@ function permissions_admin_listedit()
         $pnRender->assign('submit', __('Edit permission rule'));
 
     } else if ($action == 'insert') {
-        $pnRender->assign('formurl', pnModURL('Permissions', 'admin', 'create'));
+        $pnRender->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'));
         $pnRender->assign('permgrp', $permgrp);
         $pnRender->assign('insseq', $insseq);
         // Realms hard-coded - jgm
@@ -369,7 +369,7 @@ function permissions_admin_listedit()
 
     } else if ($action == 'add') {
         // Form-start
-        $pnRender->assign('formurl', pnModURL('Permissions', 'admin', 'create'));
+        $pnRender->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'));
         $pnRender->assign('permgrp', $permgrp);
         $pnRender->assign('insseq', -1);
         // Realms hard-coded - jgm
@@ -424,7 +424,7 @@ function permissions_admin_update()
     // Confirm authorisation code
     // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Permissions','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Permissions','admin','main'));
     }
 
     // Get parameters
@@ -468,7 +468,7 @@ function permissions_admin_update()
         }
     }
 
-    return pnRedirect(pnModURL('Permissions', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view'));
 }
 
 
@@ -492,7 +492,7 @@ function permissions_admin_create()
     // Confirm authorisation code
     // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Permissions','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Permissions','admin','main'));
     }
 
     // Get parameters
@@ -532,7 +532,7 @@ function permissions_admin_create()
         }
     }
 
-    return pnRedirect(pnModURL('Permissions',
+    return pnRedirect(ModUtil::url('Permissions',
                                'admin',
                                'view'));
 }
@@ -578,7 +578,7 @@ function permissions_admin_delete()
     // Confirm authorisation code
     // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Permissions','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Permissions','admin','main'));
     }
 
     // Pass to API
@@ -588,7 +588,7 @@ function permissions_admin_delete()
             LogUtil::registerStatus(__('Done! Deleted permission rule.'));
     }
 
-    return pnRedirect(pnModURL('Permissions', 'admin', 'view',
+    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view',
                                array('permgrp'  => $permgrp)));
 }
 
@@ -663,7 +663,7 @@ function permissions_admin_modifyconfig()
     $pnRender = Renderer::getInstance('Permissions', false);
 
     // assign the module vars
-    $pnRender->assign(pnModGetVar('Permissions'));
+    $pnRender->assign(ModUtil::getVar('Permissions'));
 
     // return the output
     return $pnRender->fetch('permissions_admin_modifyconfig.htm');
@@ -683,21 +683,21 @@ function permissions_admin_updateconfig()
     // Confirm authorisation code
     // MMaes,2003-06-23: Redirect to base if the AuthKey doesn't compute.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Permissions','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Permissions','admin','main'));
     }
 
     $error = false;
     $filter = (bool)FormUtil::getPassedValue('filter', false, 'POST');
-    pnModSetVar('Permissions', 'filter', $filter);
+    ModUtil::setVar('Permissions', 'filter', $filter);
 
     $rowview = (int)FormUtil::getPassedValue('rowview', 25, 'POST');
-    pnModSetVar('Permissions', 'rowview', $rowview);
+    ModUtil::setVar('Permissions', 'rowview', $rowview);
 
     $rowedit = (int)FormUtil::getPassedValue('rowedit', 35, 'POST');
-    pnModSetVar('Permissions', 'rowedit', $rowedit);
+    ModUtil::setVar('Permissions', 'rowedit', $rowedit);
 
     $lockadmin = (bool)FormUtil::getPassedValue('lockadmin', false, 'POST');
-    pnModSetVar('Permissions', 'lockadmin', $lockadmin);
+    ModUtil::setVar('Permissions', 'lockadmin', $lockadmin);
 
     $adminid = (int)FormUtil::getPassedValue('adminid', 1, 'POST');
     if ($adminid<>0) {
@@ -707,7 +707,7 @@ function permissions_admin_updateconfig()
             $error = true;
         }
     }
-    pnModSetVar('Permissions', 'adminid', $adminid);
+    ModUtil::setVar('Permissions', 'adminid', $adminid);
 
     // Let any other modules know that the modules configuration has been updated
     pnModCallHooks('module','updateconfig', 'Permissions', array('module' => 'Permissions'));
@@ -715,10 +715,10 @@ function permissions_admin_updateconfig()
     // the module configuration has been updated successfuly
     if ($error==true) {
         LogUtil::registerStatus(__('Error! Could not save configuration: unknown permission rule ID.'));
-        return pnRedirect(pnModURL('Permissions', 'admin', 'modifyconfig'));
+        return pnRedirect(ModUtil::url('Permissions', 'admin', 'modifyconfig'));
     }
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
-    return pnRedirect(pnModURL('Permissions', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Permissions', 'admin', 'main'));
 
 
 }

@@ -35,37 +35,37 @@ function users_init()
     // Set default values for module
     users_defaultdata();
 
-    pnModSetVar('Users', 'itemsperpage', 25);
-    pnModSetVar('Users', 'accountdisplaygraphics', 1);
-    pnModSetVar('Users', 'accountitemsperpage', 25);
-    pnModSetVar('Users', 'accountitemsperrow', 5);
-    pnModSetVar('Users', 'changepassword', 1);
-    pnModSetVar('Users', 'changeemail', 1);
-    pnModSetVar('Users', 'reg_allowreg', 1);
-    pnModSetVar('Users', 'reg_verifyemail', 1);
-    pnModSetVar('Users', 'reg_Illegalusername', 'root adm linux webmaster admin god administrator administrador nobody anonymous anonimo');
-    pnModSetVar('Users', 'reg_Illegaldomains', '');
-    pnModSetVar('Users', 'reg_Illegaluseragents', '');
-    pnModSetVar('Users', 'reg_noregreasons', __('Sorry! New user registration is currently disabled.'));
-    pnModSetVar('Users', 'reg_uniemail', 1);
-    pnModSetVar('Users', 'reg_notifyemail', '');
-    pnModSetVar('Users', 'reg_optitems', 0);
-    pnModSetVar('Users', 'userimg', 'images/menu');
-    pnModSetVar('Users', 'avatarpath', 'images/avatar');
-    pnModSetVar('Users', 'allowgravatars', 1);
-    pnModSetVar('Users', 'gravatarimage', 'gravatar.gif');
-    pnModSetVar('Users', 'minage', 13);
-    pnModSetVar('Users', 'minpass', 5);
-    pnModSetVar('Users', 'anonymous', 'Guest');
-    pnModSetVar('Users', 'loginviaoption', 0);
-    pnModSetVar('Users', 'lowercaseuname', 0);
-    pnModSetVar('Users', 'moderation', 0);
-    pnModSetVar('Users', 'hash_method', 'sha256');
-    pnModSetVar('Users', 'login_redirect', 1);
-    pnModSetvar('Users', 'reg_question', '');
-    pnModSetvar('Users', 'reg_answer', '');
-    pnModSetvar('Users', 'idnnames', 1);
-    pnModSetVar('Users', 'use_password_strength_meter', 0);
+    ModUtil::setVar('Users', 'itemsperpage', 25);
+    ModUtil::setVar('Users', 'accountdisplaygraphics', 1);
+    ModUtil::setVar('Users', 'accountitemsperpage', 25);
+    ModUtil::setVar('Users', 'accountitemsperrow', 5);
+    ModUtil::setVar('Users', 'changepassword', 1);
+    ModUtil::setVar('Users', 'changeemail', 1);
+    ModUtil::setVar('Users', 'reg_allowreg', 1);
+    ModUtil::setVar('Users', 'reg_verifyemail', 1);
+    ModUtil::setVar('Users', 'reg_Illegalusername', 'root adm linux webmaster admin god administrator administrador nobody anonymous anonimo');
+    ModUtil::setVar('Users', 'reg_Illegaldomains', '');
+    ModUtil::setVar('Users', 'reg_Illegaluseragents', '');
+    ModUtil::setVar('Users', 'reg_noregreasons', __('Sorry! New user registration is currently disabled.'));
+    ModUtil::setVar('Users', 'reg_uniemail', 1);
+    ModUtil::setVar('Users', 'reg_notifyemail', '');
+    ModUtil::setVar('Users', 'reg_optitems', 0);
+    ModUtil::setVar('Users', 'userimg', 'images/menu');
+    ModUtil::setVar('Users', 'avatarpath', 'images/avatar');
+    ModUtil::setVar('Users', 'allowgravatars', 1);
+    ModUtil::setVar('Users', 'gravatarimage', 'gravatar.gif');
+    ModUtil::setVar('Users', 'minage', 13);
+    ModUtil::setVar('Users', 'minpass', 5);
+    ModUtil::setVar('Users', 'anonymous', 'Guest');
+    ModUtil::setVar('Users', 'loginviaoption', 0);
+    ModUtil::setVar('Users', 'lowercaseuname', 0);
+    ModUtil::setVar('Users', 'moderation', 0);
+    ModUtil::setVar('Users', 'hash_method', 'sha256');
+    ModUtil::setVar('Users', 'login_redirect', 1);
+    ModUtil::setVar('Users', 'reg_question', '');
+    ModUtil::setVar('Users', 'reg_answer', '');
+    ModUtil::setVar('Users', 'idnnames', 1);
+    ModUtil::setVar('Users', 'use_password_strength_meter', 0);
 
     // Initialisation successful
     return true;
@@ -89,18 +89,18 @@ function users_upgrade($oldversion)
         case '1.11':
             users_upgrade_migrateSerialisedUserTemp();
         case '1.12':
-            pnModSetVar('Users', 'avatarpath', 'images/avatar');
-            pnModSetVar('Users', 'lowercaseuname', 1);
+            ModUtil::setVar('Users', 'avatarpath', 'images/avatar');
+            ModUtil::setVar('Users', 'lowercaseuname', 1);
         case '1.13':
-            pnModSetVar('Users', 'use_password_strength_meter', 0);
+            ModUtil::setVar('Users', 'use_password_strength_meter', 0);
         case '1.14':
-            if (pnModGetVar('Users', 'hash_method') == 'md5') {
-                pnModSetVar('Users', 'hash_method', 'sha256');
+            if (ModUtil::getVar('Users', 'hash_method') == 'md5') {
+                ModUtil::setVar('Users', 'hash_method', 'sha256');
             }
         case '1.15':
             pnModDelVar('Users', 'savelastlogindate');
-            pnModSetVar('Users', 'allowgravatars', 1);
-            pnModSetVar('Users', 'gravatarimage', 'gravatar.gif');
+            ModUtil::setVar('Users', 'allowgravatars', 1);
+            ModUtil::setVar('Users', 'gravatarimage', 'gravatar.gif');
             if (!DBUtil::changeTable('users_temp')) {
                 return '1.15';
             }

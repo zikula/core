@@ -59,14 +59,14 @@ function Search_admin_modifyconfig()
 
     // get the disabled status
     foreach ($plugins as $key => $plugin) {
-        $plugins[$key]['disabled'] = pnModGetVar('Search', "disable_$plugin[title]");
+        $plugins[$key]['disabled'] = ModUtil::getVar('Search', "disable_$plugin[title]");
     }
 
     // Create output object
     $pnRender = & pnRender::getInstance('Search', false);
 
     // assign all module vars
-    $pnRender->assign(pnModGetVar('Search'));
+    $pnRender->assign(ModUtil::getVar('Search'));
 
     // assign the plugins
     $pnRender->assign('plugins', $plugins);
@@ -95,14 +95,14 @@ function Search_admin_updateconfig()
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Search','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Search','admin','main'));
     }
 
     // Update module variables.
     $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
-    pnModSetVar('Search', 'itemsperpage', $itemsperpage);
+    ModUtil::setVar('Search', 'itemsperpage', $itemsperpage);
     $limitsummary = (int)FormUtil::getPassedValue('limitsummary', 255, 'POST');
-    pnModSetVar('Search', 'limitsummary', $limitsummary);
+    ModUtil::setVar('Search', 'limitsummary', $limitsummary);
 
     $disable = FormUtil::getPassedValue('disable', null, 'REQUEST');
     // get the list of available plugins
@@ -111,9 +111,9 @@ function Search_admin_updateconfig()
     foreach ($plugins as $searchplugin) {
         // set the disabled flag
         if (isset($disable[$searchplugin['title']])) {
-            pnModSetVar('Search', "disable_$searchplugin[title]", true);
+            ModUtil::setVar('Search', "disable_$searchplugin[title]", true);
         } else {
-            pnModSetVar('Search', "disable_$searchplugin[title]", false);
+            ModUtil::setVar('Search', "disable_$searchplugin[title]", false);
         }
     }
 
@@ -125,5 +125,5 @@ function Search_admin_updateconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(pnModURL('Search', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Search', 'admin', 'main'));
 }

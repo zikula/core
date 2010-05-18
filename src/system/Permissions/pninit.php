@@ -129,10 +129,10 @@ function permissions_defaultdata()
     $record['bond']      = '0';
     DBUtil::insertObject($record, 'group_perms', 'pid');
 
-    pnModSetVar('Permissions', 'filter', 1);
-    pnModSetVar('Permissions', 'warnbar', 1);
-    pnModSetVar('Permissions', 'rowview', 20);
-    pnModSetVar('Permissions', 'rowedit', 20);
-    pnModSetVar('Permissions', 'lockadmin', 1);
-    pnModSetVar('Permissions', 'adminid', 1);
+    ModUtil::setVar('Permissions', 'filter', 1);
+    ModUtil::setVar('Permissions', 'warnbar', 1);
+    ModUtil::setVar('Permissions', 'rowview', 20);
+    ModUtil::setVar('Permissions', 'rowedit', 20);
+    ModUtil::setVar('Permissions', 'lockadmin', 1);
+    ModUtil::setVar('Permissions', 'adminid', 1);
 }

@@ -35,10 +35,10 @@ function Groups_init()
     }
 
     // set all our module vars
-    pnModSetVar('Groups', 'itemsperpage', 25);
-    pnModSetVar('Groups', 'defaultgroup', 1);
-    pnModSetVar('Groups', 'mailwarning', 0);
-    pnModSetVar('Groups', 'hideclosed', 0);
+    ModUtil::setVar('Groups', 'itemsperpage', 25);
+    ModUtil::setVar('Groups', 'defaultgroup', 1);
+    ModUtil::setVar('Groups', 'mailwarning', 0);
+    ModUtil::setVar('Groups', 'hideclosed', 0);
 
     // create the default data for the modules module
     groups_defaultdata();
@@ -64,8 +64,8 @@ function Groups_upgrade($oldversion)
     {
         case '2.1':
             // change value of defaultgroup from name to gid
-            $gid = DBUtil::selectObjectByID('groups', pnModGetVar('Groups', 'defaultgroup'), 'name');
-            pnModSetVar('Groups', 'defaultgroup', $gid['gid']);
+            $gid = DBUtil::selectObjectByID('groups', ModUtil::getVar('Groups', 'defaultgroup'), 'name');
+            ModUtil::setVar('Groups', 'defaultgroup', $gid['gid']);
 
         case '2.2':
         case '2.3':

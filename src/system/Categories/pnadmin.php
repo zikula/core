@@ -250,12 +250,12 @@ function Categories_admin_preferences()
     }
 
     $pnRender = Renderer::getInstance('Categories', false);
-    $pnRender->assign ('userrootcat', pnModGetVar('Categories', 'userrootcat', '/__SYSTEM__'));
-    $pnRender->assign ('allowusercatedit', pnModGetVar('Categories', 'allowusercatedit', 0));
-    $pnRender->assign ('autocreateusercat', pnModGetVar('Categories', 'autocreateusercat', 0));
-    $pnRender->assign ('autocreateuserdefaultcat', pnModGetVar('Categories', 'autocreateuserdefaultcat', 0));
-    $pnRender->assign ('userdefaultcatname', pnModGetVar('Categories', 'userdefaultcatname', 0));
-    $pnRender->assign ('permissionsall', pnModGetVar('Categories', 'permissionsall', 0));
+    $pnRender->assign ('userrootcat', ModUtil::getVar('Categories', 'userrootcat', '/__SYSTEM__'));
+    $pnRender->assign ('allowusercatedit', ModUtil::getVar('Categories', 'allowusercatedit', 0));
+    $pnRender->assign ('autocreateusercat', ModUtil::getVar('Categories', 'autocreateusercat', 0));
+    $pnRender->assign ('autocreateuserdefaultcat', ModUtil::getVar('Categories', 'autocreateuserdefaultcat', 0));
+    $pnRender->assign ('userdefaultcatname', ModUtil::getVar('Categories', 'userdefaultcatname', 0));
+    $pnRender->assign ('permissionsall', ModUtil::getVar('Categories', 'permissionsall', 0));
 
     return $pnRender->fetch('categories_admin_preferences.htm');
 }

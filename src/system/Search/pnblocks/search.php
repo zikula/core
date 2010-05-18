@@ -61,7 +61,7 @@ function Search_searchblock_display($blockinfo)
     }
 
     // add the module vars
-    $vars['modvar'] = pnModGetVar('Search');
+    $vars['modvar'] = ModUtil::getVar('Search');
 
     // assign the block vars array
     $pnRender->assign('vars',$vars);

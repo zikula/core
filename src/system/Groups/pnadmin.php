@@ -61,10 +61,10 @@ function Groups_admin_view()
     $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
 
     // we need this value multiple times, so we keep it
-    $itemsperpage = pnModGetVar('Groups', 'itemsperpage');
+    $itemsperpage = ModUtil::getVar('Groups', 'itemsperpage');
 
     // get the default user group
-    $defaultgroup = pnModGetVar('Groups', 'defaultgroup');
+    $defaultgroup = ModUtil::getVar('Groups', 'defaultgroup');
 
     // The user API function is called.
     $items = pnModAPIFunc('Groups', 'user', 'getall',
@@ -90,20 +90,20 @@ function Groups_admin_view()
             // Options for the item.
             $options = array();
             if (SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
-                $editurl    = pnModURL('Groups', 'admin', 'modify', array('gid'     => $item['gid']));
-                $deleteurl  = pnModURL('Groups', 'admin', 'view', array());
-                $membersurl = pnModURL('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid']));
-                $options[] = array('url' => pnModURL('Groups', 'admin', 'modify', array('gid'     => $item['gid'])),
+                $editurl    = ModUtil::url('Groups', 'admin', 'modify', array('gid'     => $item['gid']));
+                $deleteurl  = ModUtil::url('Groups', 'admin', 'view', array());
+                $membersurl = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid']));
+                $options[] = array('url' => ModUtil::url('Groups', 'admin', 'modify', array('gid'     => $item['gid'])),
                                                                                         'title'   => __('Edit'),
                                                                                         'imgfile' => 'xedit.gif');
                 if ((SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE))
                     && ($item['gid'] != $defaultgroup) ) {
-                    $deleteurl  = pnModURL('Groups', 'admin', 'delete', array('gid'     => $item['gid']));
-                    $options[] = array('url' => pnModURL('Groups', 'admin', 'delete', array('gid'     => $item['gid'])),
+                    $deleteurl  = ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid']));
+                    $options[] = array('url' => ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid'])),
                                                                                             'title'   => __('Delete'),
                                                                                             'imgfile' => '14_layer_deletelayer.gif');
                 }
-                $options[] = array('url' => pnModURL('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid'])),
+                $options[] = array('url' => ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid'])),
                                                                                                  'title'   => __('Group membership'),
                                                                                                  'imgfile' => 'agt_family.gif');
                 $nbuser = pnModAPIFunc('Groups', 'user', 'countgroupmembers', array('gid' => $item['gid']));
@@ -204,7 +204,7 @@ function Groups_admin_create($args)
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
     }
 
     // The API function is called.
@@ -230,7 +230,7 @@ function Groups_admin_create($args)
     }
 
     // This function generated no output
-    return pnRedirect(pnModURL('Groups', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
 }
 
 /**
@@ -317,7 +317,7 @@ function Groups_admin_update($args)
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
     }
 
     // The API function is called.
@@ -333,7 +333,7 @@ function Groups_admin_update($args)
     }
 
     // This function generated no output
-    return pnRedirect(pnModURL('Groups', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
 }
 
 /**
@@ -370,7 +370,7 @@ function Groups_admin_delete($args)
 
     if ($item == false) {
         LogUtil::registerError(__('Sorry! No such group found.'));
-        return pnRedirect(pnModURL('Groups', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     // Security check
@@ -379,10 +379,10 @@ function Groups_admin_delete($args)
     }
 
     // get the user default group - we do not allow its deletion
-    $defaultgroup = pnModGetVar('Groups', 'defaultgroup');
+    $defaultgroup = ModUtil::getVar('Groups', 'defaultgroup');
     if ($item['gid'] == $defaultgroup) {
         LogUtil::registerError(__('Error! You cannot delete the default user group.'));
-        return pnRedirect(pnModURL('Groups', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     // Check for confirmation.
@@ -405,7 +405,7 @@ function Groups_admin_delete($args)
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
     }
 
     // The API function is called.
@@ -416,7 +416,7 @@ function Groups_admin_delete($args)
     }
 
     // This function generated no output
-    return pnRedirect(pnModURL('Groups', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
 }
 
 /**
@@ -463,7 +463,7 @@ function Groups_admin_groupmembership($args)
     $item = pnModAPIFunc('Groups', 'user', 'get',
                          array('gid'      => $gid,
                                'startnum' => $startnum,
-                               'numitems' => pnModGetVar('Groups', 'itemsperpage')));
+                               'numitems' => ModUtil::getVar('Groups', 'itemsperpage')));
 
     $users = $item['members'];
 
@@ -472,7 +472,7 @@ function Groups_admin_groupmembership($args)
     if (is_array($users) && SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
         foreach ($users as $user) {
             $options = array();
-            $options[] = array('url'   => pnModURL('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
+            $options[] = array('url'   => ModUtil::url('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
                                                                                           'uid'    => $user['uid'],
                                                                                           'authid' => SecurityUtil::generateAuthKey())),
                                'imgfile' => '14_layer_deletelayer.gif',
@@ -519,7 +519,7 @@ function Groups_admin_groupmembership($args)
 
     $allusers = array();
     foreach ($users as $user) {
-        if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'  || $user['uname'] == pnModGetVar('Users', 'anonymous'))  continue;
+        if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'  || $user['uname'] == ModUtil::getVar('Users', 'anonymous'))  continue;
         $alias = '';
         if (!empty($user['name'])) {
             $alias = ' (' . $user['name'] . ')';
@@ -544,7 +544,7 @@ function Groups_admin_groupmembership($args)
 
     // Assign the values for the smarty plugin to produce a pager
     $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
-                                     'itemsperpage' => pnModGetVar('Groups',  'itemsperpage')));
+                                     'itemsperpage' => ModUtil::getVar('Groups',  'itemsperpage')));
 
     // Return the output that has been generated by this function
     return $pnRender->fetch('groups_admin_groupmembership.htm');
@@ -565,7 +565,7 @@ function Groups_admin_adduser($args)
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
     }
 
     // The API function is called.
@@ -588,7 +588,7 @@ function Groups_admin_adduser($args)
     }
 
     // This function generated no output
-    return pnRedirect(pnModURL('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
+    return pnRedirect(ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
 }
 
 /**
@@ -606,7 +606,7 @@ function Groups_admin_removeuser($args)
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
     }
 
     // The API function is called.
@@ -620,7 +620,7 @@ function Groups_admin_removeuser($args)
     }
 
     // This function generated no output
-    return pnRedirect(pnModURL('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
+    return pnRedirect(ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
 }
 
 /**
@@ -634,11 +634,11 @@ function Groups_admin_userpending()
     $action = FormUtil::getPassedValue('action', null, 'GET');
 
     if (empty($gid) || empty($userid)) {
-        return LogUtil::registerArgsError(pnModURL('Groups', 'admin', 'main'));
+        return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     if ($action != 'deny' && $action != 'accept') {
-        return LogUtil::registerArgsError(pnModURL('Groups', 'admin', 'main'));
+        return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     $pnRender = Renderer::getInstance('Groups', false);
@@ -674,11 +674,11 @@ function Groups_admin_userupdate()
     $action = FormUtil::getPassedValue('action', null, 'POST');
 
     if ($action != 'deny' && $action != 'accept') {
-        return LogUtil::registerArgsError(pnModURL('Groups', 'admin', 'main'));
+        return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'admin', 'main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     $tag = FormUtil::getPassedValue('tag', null, 'POST');
@@ -688,7 +688,7 @@ function Groups_admin_userupdate()
     $userid = (int)FormUtil::getPassedValue('userid', null, 'POST');
 
     if (empty($tag) || empty($gid) || empty($userid)) {
-        return LogUtil::registerArgsError(pnModURL('Groups', 'admin', 'main'));
+        return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     $group = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $gid));
@@ -727,7 +727,7 @@ function Groups_admin_userupdate()
         } else {
             LogUtil::registerError(__("Error! Could not execute 'Accept' action."));
         }
-        return pnRedirect(pnModURL('Groups', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     if ($action == 'accept') {
@@ -736,7 +736,7 @@ function Groups_admin_userupdate()
         LogUtil::registerStatus(__("Done! The user's application for group membership has been rejected."));
     }
 
-    return pnRedirect(pnModURL('Groups', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
 }
 
 /**
@@ -757,7 +757,7 @@ function Groups_admin_modifyconfig()
     $pnRender = Renderer::getInstance('Groups', false);
 
     // assign the module vars
-    $modvars = pnModGetVar('Groups');
+    $modvars = ModUtil::getVar('Groups');
     $pnRender->assign($modvars);
     $pnRender->assign('defaultgroupid', $modvars['defaultgroup']);
 
@@ -793,27 +793,27 @@ function Groups_admin_updateconfig()
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Groups', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Groups', 'admin', 'view'));
     }
 
     // Update module variables.
     $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 25, 'POST');
-    pnModSetVar('Groups', 'itemsperpage', $itemsperpage);
+    ModUtil::setVar('Groups', 'itemsperpage', $itemsperpage);
 
     $defaultgroupid = (int)FormUtil::getPassedValue('defaultgroupid', 1, 'POST');
     // convert id to name
     $group = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $defaultgroupid));
     if($group == false) {
         LogUtil::registerError(__('Error! Could not save the module configuration.'));
-        return pnRedirect(pnModURL('Groups', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
     }
-    pnModSetVar('Groups', 'defaultgroup', $group['gid']);
+    ModUtil::setVar('Groups', 'defaultgroup', $group['gid']);
 
     $mailwarning = (bool)FormUtil::getPassedValue('mailwarning', false, 'POST');
-    pnModSetVar('Groups', 'mailwarning', $mailwarning);
+    ModUtil::setVar('Groups', 'mailwarning', $mailwarning);
 
     $hideclosed = (bool)FormUtil::getPassedValue('hideclosed', false, 'POST');
-    pnModSetVar('Groups', 'hideclosed', $hideclosed);
+    ModUtil::setVar('Groups', 'hideclosed', $hideclosed);
 
     // Let any other modules know that the modules configuration has been updated
     pnModCallHooks('module','updateconfig','Groups', array('module' => 'Groups'));
@@ -822,5 +822,5 @@ function Groups_admin_updateconfig()
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
     // This function generated no output
-    return pnRedirect(pnModURL('Groups', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
 }

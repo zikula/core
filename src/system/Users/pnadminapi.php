@@ -188,12 +188,12 @@ function users_adminapi_saveuser($args)
         $pass  = $args['pass'];
         $vpass = $args['vpass'];
 
-        $minpass = pnModGetVar('Users', 'minpass');
+        $minpass = ModUtil::getVar('Users', 'minpass');
         if (empty($pass) || strlen($pass) < $minpass) {
             return LogUtil::registerError(_fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass, $minpass));
         }
         if (!empty($pass) && $pass) {
-            $method = pnModGetVar('Users', 'hash_method', 'sha1');
+            $method = ModUtil::getVar('Users', 'hash_method', 'sha1');
             $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
             $args['pass'] = hash($method, $pass);
             $args['hash_method'] = $hashmethodsarray[$method];
@@ -490,28 +490,28 @@ function Users_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'view'), 'text' => __('Users list'), 'class' => 'z-icon-es-list');
+        $links[] = array('url' => ModUtil::url('Users', 'admin', 'view'), 'text' => __('Users list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
         $pending = pnModAPIFunc('Users', 'admin', 'countpending');
         if ($pending) {
-            $links[] = array('url' => pnModURL('Users', 'admin', 'viewapplications'), 'text' => __('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
+            $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewapplications'), 'text' => __('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
         }
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'new'), 'text' => __('Create new user'), 'class' => 'z-icon-es-new');
-        $links[] = array('url' => pnModURL('Users', 'admin', 'import'), 'text' => __('Import users'), 'class' => 'z-icon-es-import');
+        $links[] = array('url' => ModUtil::url('Users', 'admin', 'new'), 'text' => __('Create new user'), 'class' => 'z-icon-es-new');
+        $links[] = array('url' => ModUtil::url('Users', 'admin', 'import'), 'text' => __('Import users'), 'class' => 'z-icon-es-import');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'export'), 'text' => __('Export users'), 'class' => 'z-icon-es-export');
+        $links[] = array('url' => ModUtil::url('Users', 'admin', 'export'), 'text' => __('Export users'), 'class' => 'z-icon-es-export');
     }
     if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find and e-mail users'), 'class' => 'z-icon-es-mail');
+        $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => __('Find and e-mail users'), 'class' => 'z-icon-es-mail');
     } else if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'search'), 'text' => __('Find users'), 'class' => 'z-icon-es-search');
+        $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => __('Find users'), 'class' => 'z-icon-es-search');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Users', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
+        $links[] = array('url' => ModUtil::url('Users', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     $profileModule = pnConfigGetVar('profilemodule', '');
@@ -527,7 +527,7 @@ function Users_adminapi_getlinks()
             if (pnModGetName() == 'Users') {
                 $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
             } else {
-                $links[] = array('url' => pnModURL($profileModule, 'admin', 'main'), 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
+                $links[] = array('url' => ModUtil::url($profileModule, 'admin', 'main'), 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
             }
         }
     }
@@ -599,7 +599,7 @@ function Users_adminapi_createImport($args)
     $userscolumn = $pntable['users_column'];
 
     // get encrypt method for passwords
-    $method = pnModGetVar('Users', 'hash_method');
+    $method = ModUtil::getVar('Users', 'hash_method');
     $methodNumberArray = pnModAPIFunc('Users','user','gethashmethods', array('reverse' => false));
     $methodNumber = $methodNumberArray[$method];
 

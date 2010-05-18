@@ -28,7 +28,7 @@ function Categories_user_main()
     }
 
     $pnRender = Renderer::getInstance('Categories', false);
-    $pnRender->assign ('allowusercatedit', pnModGetVar('Categories', 'allowusercatedit', 0));
+    $pnRender->assign ('allowusercatedit', ModUtil::getVar('Categories', 'allowusercatedit', 0));
     return $pnRender->fetch('categories_user_editcategories.htm');
 }
 
@@ -39,7 +39,7 @@ function Categories_user_edit ()
 {
     $docroot = FormUtil::getPassedValue('dr', 0);
     $cid     = FormUtil::getPassedValue('cid', 0);
-    $url     = pnModURL('Categories', 'user', 'edit', array('dr' => $docroot));
+    $url     = ModUtil::url('Categories', 'user', 'edit', array('dr' => $docroot));
 
     if (!SecurityUtil::checkPermission('Categories::category', "ID::$docroot", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError($url);
@@ -73,7 +73,7 @@ function Categories_user_edit ()
     }
 
     // now check if someone is trying edit another user's categories
-    $userRoot = pnModGetVar('Categories', 'userrootcat', 0);
+    $userRoot = ModUtil::getVar('Categories', 'userrootcat', 0);
     if ($userRoot) {
         $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
         if ($userRootCat) {
@@ -148,7 +148,7 @@ function Categories_user_edituser ()
         return LogUtil::registerError(__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
     }
 
-    $userRoot = pnModGetVar('Categories', 'userrootcat', 0);
+    $userRoot = ModUtil::getVar('Categories', 'userrootcat', 0);
     if (!$userRoot) {
         return LogUtil::registerError(__('Error! Could not determine the user root node.'));
     }

@@ -39,7 +39,7 @@ function blocks_init()
     }
 
     // Set a default value for a module variable
-    pnModSetVar('Blocks', 'collapseable', 0);
+    ModUtil::setVar('Blocks', 'collapseable', 0);
 
     // Initialisation successful
     return true;
@@ -139,7 +139,7 @@ function blocks_defaultdata()
     $blocks[] = array('bkey' => 'extmenu', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => pnModGetIDFromName('Blocks'), 'title' => __('Main menu'), 'content' => $menucontent, 'positions' => array($left));
     $blocks[] = array('bkey' => 'html', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => pnModGetIDFromName('Blocks'), 'title' => __("This site is powered by Zikula!"), 'content' => $hellomessage, 'positions' => array($center));
     $blocks[] = array('bkey' => 'login', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => pnModGetIDFromName('Users'), 'title' => __('User log-in'), 'positions' => array($right));
-    
+
     // create each block and then update the block
     // the create creates the initiial block record, the update sets the block placments
     foreach ($blocks as $position => $block)

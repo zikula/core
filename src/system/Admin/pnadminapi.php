@@ -67,13 +67,13 @@ function Admin_adminapi_delete($args)
     }
 
     // Avoid deletion of the default category
-    $defaultcategory = pnModGetVar('Admin', 'defaultcategory');
+    $defaultcategory = ModUtil::getVar('Admin', 'defaultcategory');
     if ($category['cid'] == $defaultcategory) {
         return LogUtil::registerError(__('Error! You cannot delete the default module category used in the administration panel.'));
     }
 
     // Avoid deletion of the start category
-    $startcategory = pnModGetVar('Admin', 'startcategory');
+    $startcategory = ModUtil::getVar('Admin', 'startcategory');
     if ($category['cid'] == $startcategory) {
         return LogUtil::registerError(__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
     }
@@ -394,14 +394,14 @@ function admin_adminapi_getlinks()
     $links = array();
 
     if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'view'), 'text' => __('Module categories list'), 'class' => 'z-icon-es-list');
+        $links[] = array('url' => ModUtil::url('Admin', 'admin', 'view'), 'text' => __('Module categories list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'new'), 'text' => __('Create new module category'), 'class' => 'z-icon-es-new');
+        $links[] = array('url' => ModUtil::url('Admin', 'admin', 'new'), 'text' => __('Create new module category'), 'class' => 'z-icon-es-new');
     }
     if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'help'), 'text' => __('Help'), 'class' => 'z-icon-es-help');
-        $links[] = array('url' => pnModURL('Admin', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
+        $links[] = array('url' => ModUtil::url('Admin', 'admin', 'help'), 'text' => __('Help'), 'class' => 'z-icon-es-help');
+        $links[] = array('url' => ModUtil::url('Admin', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
     return $links;

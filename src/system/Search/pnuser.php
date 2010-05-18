@@ -48,7 +48,7 @@ function search_user_form($vars = array())
     $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
     $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
     $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
-    $vars['numlimit'] = pnModGetVar('Search', 'itemsperpage', 25);
+    $vars['numlimit'] = ModUtil::getVar('Search', 'itemsperpage', 25);
     $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
     $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
 
@@ -127,7 +127,7 @@ function search_user_search()
     $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
     $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
     $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
-    $vars['numlimit'] = pnModGetVar('Search', 'itemsperpage', 25);
+    $vars['numlimit'] = ModUtil::getVar('Search', 'itemsperpage', 25);
     $vars['page'] = (int)FormUtil::getPassedValue('page', 1, 'REQUEST');
 
     // $firstpage is used to identify the very first result page
@@ -142,7 +142,7 @@ function search_user_search()
 
     if (empty($vars['q'])) {
         LogUtil::registerError (__('Error! You did not enter any keywords to search for.'));
-        return pnRedirect(pnModUrl('Search', 'user', 'main'));
+        return pnRedirect(ModUtil::url('Search', 'user', 'main'));
     }
 
     // set some defaults
@@ -178,14 +178,14 @@ function search_user_search()
     $result = pnModAPIFunc('Search', 'user', 'search', $vars);
 
     // Get number of chars to display in search summaries
-    $limitsummary = pnModGetVar('Search', 'limitsummary');
+    $limitsummary = ModUtil::getVar('Search', 'limitsummary');
     if (empty($limitsummary)) {
         $limitsummary = 200;
     }
 
     $pnRender->assign('resultcount', $result['resultCount']);
     $pnRender->assign('results', $result['sqlResult']);
-    $pnRender->assign(pnModGetVar('Search'));
+    $pnRender->assign(ModUtil::getVar('Search'));
     $pnRender->assign($vars);
     $pnRender->assign('limitsummary', $limitsummary);
 
@@ -215,7 +215,7 @@ function Search_user_recent()
     $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
 
     // we need this value multiple times, so we keep it
-    $itemsperpage = pnModGetVar('Search', 'itemsperpage');
+    $itemsperpage = ModUtil::getVar('Search', 'itemsperpage');
 
     // get the
     $items = pnModApiFunc('Search', 'user', 'getall', array('startnum' => $startnum, 'numitems' => $itemsperpage, 'sortorder' => 'date'));

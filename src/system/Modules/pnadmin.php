@@ -30,14 +30,14 @@ function modules_admin_modify()
 {
     $id = (int) FormUtil::getPassedValue('id', null, 'GET');
     if (!is_numeric($id)) {
-        return LogUtil::registerArgsError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     $obj = pnModGetInfo($id);
     if (!isset($id) || $obj == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'),
                                       404,
-                                      pnModURL('Modules', 'admin', 'modify', array('id' => $id)));
+                                      ModUtil::url('Modules', 'admin', 'modify', array('id' => $id)));
     }
 
     if (!SecurityUtil::checkPermission('Modules::', "$obj[name]::$id", ACCESS_ADMIN)) {
@@ -51,7 +51,7 @@ function modules_admin_modify()
         if ($obj['type'] == 3) {
             $pnversion = "system/$obj[directory]/pnversion.php";
         } elseif ($obj['type'] == 2 ) {
-            ZLanguage::bindModuleDomain($obj['directory']); 
+            ZLanguage::bindModuleDomain($obj['directory']);
             $pnversion = "modules/$obj[directory]/pnversion.php";
         } elseif ($obj['type'] == 7) {
             $version = "apps/$obj[name]/Module.php";
@@ -64,7 +64,7 @@ function modules_admin_modify()
         } else {
             return LogUtil::registerError(__('Error! Unable to load version file for this module.'),
                                           404,
-                                          pnModURL('Modules', 'admin', 'modify', array('id' => $id)));
+                                          ModUtil::url('Modules', 'admin', 'modify', array('id' => $id)));
         }
 
         // load defaults
@@ -104,7 +104,7 @@ function modules_admin_update()
     $newurl = FormUtil::getPassedValue('newurl', null, 'POST');
 
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Pass to API
@@ -116,10 +116,10 @@ function modules_admin_update()
         // Success
         LogUtil::registerStatus(__('Done! Saved module information.'));
     } else {
-        return pnRedirect(pnModURL('Modules', 'admin', 'modify', array('id' => $id)));
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'modify', array('id' => $id)));
     }
 
-    return pnRedirect(pnModURL('Modules', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**
@@ -135,7 +135,7 @@ function modules_admin_updatehooks()
     $id = (int) FormUtil::getPassedValue('id', null, 'REQUEST');
 
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Pass to API
@@ -145,7 +145,7 @@ function modules_admin_updatehooks()
         LogUtil::registerStatus(__('Done! Saved module information.'));
     }
 
-    return pnRedirect(pnModURL('Modules', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**
@@ -162,7 +162,7 @@ function modules_admin_extendedupdatehooks()
     $id = (int) FormUtil::getPassedValue('id', null, 'REQUEST');
 
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Pass to API
@@ -172,7 +172,7 @@ function modules_admin_extendedupdatehooks()
         LogUtil::registerStatus(__('Done! Saved module information.'));
     }
 
-    return pnRedirect(pnModURL('Modules', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**
@@ -228,7 +228,7 @@ function modules_admin_view()
         'startnum' => $startnum,
         'letter' => $letter,
         'state' => $state,
-        'numitems' => pnModGetVar('Modules', 'itemsperpage'),
+        'numitems' => ModUtil::getVar('Modules', 'itemsperpage'),
         'sort' => $sort));
 
     // generate an auth key to use in urls
@@ -244,7 +244,7 @@ function modules_admin_view()
                 switch ($mod['state']) {
                     case PNMODULE_STATE_ACTIVE:
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'deactivate', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'deactivate', array(
                                 'id' => $mod['id'],
                                 'startnum' => $startnum,
                                 'authid' => $authid,
@@ -253,14 +253,14 @@ function modules_admin_view()
                             'image' => 'folder_grey.gif',
                             'title' => __('Deactivate'));
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'hooks', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'hooks', array(
                                 'id' => $mod['id'])),
                             'image' => 'attach.gif',
                             'title' => __('Hook settings'));
                         break;
                     case PNMODULE_STATE_INACTIVE:
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'activate', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'activate', array(
                                 'id' => $mod['id'],
                                 'startnum' => $startnum,
                                 'authid' => $authid,
@@ -269,7 +269,7 @@ function modules_admin_view()
                             'image' => 'folder_green.gif',
                             'title' => __('Activate'));
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'remove', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                 'id' => $mod['id'],
                                 'startnum' => $startnum,
                                 'authid' => $authid,
@@ -280,7 +280,7 @@ function modules_admin_view()
                         break;
                     case PNMODULE_STATE_MISSING:
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'remove', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                 'id' => $mod['id'],
                                 'startnum' => $startnum,
                                 'authid' => $authid,
@@ -291,7 +291,7 @@ function modules_admin_view()
                         break;
                     case PNMODULE_STATE_UPGRADED:
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'upgrade', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'upgrade', array(
                                 'id' => $mod['id'],
                                 'startnum' => $startnum,
                                 'authid' => $authid,
@@ -305,7 +305,7 @@ function modules_admin_view()
                         // future wish list, allow removal if FS is writable
                         /*
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'remove', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                 'id' => $mod['id'],
                                 'startnum' => $startnum,
                                 'authid' => $authid,
@@ -316,7 +316,7 @@ function modules_admin_view()
                         break;
                     case PNMODULE_STATE_NOTALLOWED:
                         $actions[] = array(
-                            'url' => pnModURL('Modules', 'admin', 'remove', array(
+                            'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                 'id' => $mod['id'],
                                 'startnum' => $startnum,
                                 'authid' => $authid,
@@ -329,7 +329,7 @@ function modules_admin_view()
                     default:
                         if ($mod['state'] < 10) {
                             $actions[] = array(
-                                'url' => pnModURL('Modules', 'admin', 'initialise', array(
+                                'url' => ModUtil::url('Modules', 'admin', 'initialise', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
                                     'authid' => $authid,
@@ -339,7 +339,7 @@ function modules_admin_view()
                                 'title' => __('Install'));
                             if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) {
                                 $actions[] = array(
-                                    'url' => pnModURL('Modules', 'admin', 'remove', array(
+                                    'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                         'id' => $mod['id'],
                                         'startnum' => $startnum,
                                         'authid' => $authid,
@@ -350,21 +350,21 @@ function modules_admin_view()
                             }
                         } else {
                              $actions[] = array(
-                                'url' => pnModURL('Modules', 'admin', 'compinfo', array(
+                                'url' => ModUtil::url('Modules', 'admin', 'compinfo', array(
                                     'id' => $mod['id'],
                                     'startnum' => $startnum,
                                     'authid' => $authid,
                                     'letter' => $letter,
                                     'state' => $state)),
                                 'image' => 'info.gif',
-                                'title' => __('Incompatibility information'));       
+                                'title' => __('Incompatibility information'));
                         }
                         break;
                 }
                 // RNG: can't edit an invalid module
                 if ($mod['state'] != PNMODULE_STATE_INVALID)
                     $actions[] = array(
-                        'url' => pnModURL('Modules', 'admin', 'modify', array(
+                        'url' => ModUtil::url('Modules', 'admin', 'modify', array(
                             'id' => $mod['id'])),
                         'image' => 'xedit.gif',
                         'title' => __('Edit'));
@@ -432,7 +432,7 @@ function modules_admin_view()
         'numitems' => pnModAPIFunc('Modules', 'admin', 'countitems', array(
             'letter' => $letter,
             'state' => $state)),
-        'itemsperpage' => pnModGetVar('Modules', 'itemsperpage')));
+        'itemsperpage' => ModUtil::getVar('Modules', 'itemsperpage')));
 
     // Return the output that has been generated by this function
     return $pnRender->fetch('modules_admin_view.htm');
@@ -463,7 +463,7 @@ function modules_admin_initialise()
 {
     // Security and sanity checks
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Get parameters from whatever input we need
@@ -528,7 +528,7 @@ function modules_admin_initialise()
     }
 
     if (empty($id) || !is_numeric($id)) {
-        return LogUtil::registerError(__('Error! No module ID provided.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No module ID provided.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // initialise and activate any dependencies
@@ -536,7 +536,7 @@ function modules_admin_initialise()
         foreach ($dependencies as $dependency) {
             if (!pnModAPIFunc('Modules', 'admin', 'initialise', array(
                 'id' => $dependency))) {
-                return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+                return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
@@ -544,7 +544,7 @@ function modules_admin_initialise()
             if (!pnModAPIFunc('Modules', 'admin', 'setstate', array(
                 'id' => $dependency,
                 'state' => PNMODULE_STATE_ACTIVE))) {
-                return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+                return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
@@ -573,12 +573,12 @@ function modules_admin_initialise()
                 LogUtil::registerStatus(__('Done! Activated module.'));
             }
         }
-        return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
     } elseif (is_bool($res)) {
-        return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -597,7 +597,7 @@ function modules_admin_activate()
 {
     // Security and sanity checks
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     $id = (int) FormUtil::getPassedValue('id', null, 'GET');
@@ -605,13 +605,13 @@ function modules_admin_activate()
     $letter = FormUtil::getPassedValue('letter', null, 'GET');
     $state = FormUtil::getPassedValue('state', null, 'GET');
     if (empty($id) || !is_numeric($id)) {
-        return LogUtil::registerError(__('Error! No module ID provided.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No module ID provided.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     $moduleinfo = pnModGetInfo($id);
     if ($moduleinfo['state'] == 6) {
         LogUtil::registerError(__('Error! Module not allowed.'));
-        return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -625,7 +625,7 @@ function modules_admin_activate()
         LogUtil::registerStatus(__('Done! Activated module.'));
     }
 
-    return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+    return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
         'startnum' => $startnum,
         'letter' => $letter,
         'state' => $state)));
@@ -641,7 +641,7 @@ function modules_admin_upgrade()
 {
     // Security and sanity checks
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     $interactive_upgrade = SessionUtil::getVar('interactive_upgrade');
@@ -664,7 +664,7 @@ function modules_admin_upgrade()
         $activate = (bool) FormUtil::getPassedValue('activate', null, 'POST');
     }
     if (empty($id) || !is_numeric($id)) {
-        return LogUtil::registerError(__('Error! No module ID provided.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No module ID provided.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Upgrade module
@@ -697,12 +697,12 @@ function modules_admin_upgrade()
         $Renderer->clear_compiled();
         $Renderer->clear_all_cache();
 
-        return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
     } elseif (is_bool($res)) {
-        return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -721,7 +721,7 @@ function modules_admin_deactivate()
 {
     // Security and sanity checks
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     $id = (int) FormUtil::getPassedValue('id', null, 'GET');
@@ -729,17 +729,17 @@ function modules_admin_deactivate()
     $letter = FormUtil::getPassedValue('letter', null, 'GET');
     $state = FormUtil::getPassedValue('state', null, 'GET');
     if (empty($id) || !is_numeric($id)) {
-        return LogUtil::registerError(__('Error! No module ID provided.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No module ID provided.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // check if the modules is the systems start module
     $modinfo = pnModGetInfo($id);
     if ($modinfo == false) {
-        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
     $startmod = pnConfigGetVar('startpage');
     if ($startmod == $modinfo['name']) {
-        return LogUtil::registerError(__('Error! This module is currently set as the site\'s home page. You must choose another module for the home page before you can deactivate this one.'), null, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! This module is currently set as the site\'s home page. You must choose another module for the home page before you can deactivate this one.'), null, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     $coremodules = array(
@@ -754,7 +754,7 @@ function modules_admin_deactivate()
         'Settings',
         'Categories');
     if (in_array($modinfo['name'], $coremodules)) {
-        return LogUtil::registerError(__('Error! You cannot deactivate this module. It is a mandatory core module, and is needed by the system.'), null, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! You cannot deactivate this module. It is a mandatory core module, and is needed by the system.'), null, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Update state
@@ -765,7 +765,7 @@ function modules_admin_deactivate()
         LogUtil::registerStatus(__('Done! Deactivated module.'));
     }
 
-    return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+    return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
         'startnum' => $startnum,
         'letter' => $letter,
         'state' => $state)));
@@ -808,7 +808,7 @@ function modules_admin_remove()
     }
 
     if (empty($id) || !is_numeric($id) || !pnModGetInfo($id)) {
-        return LogUtil::registerError(__('Error! No module ID provided.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No module ID provided.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Check for confirmation.
@@ -850,14 +850,14 @@ function modules_admin_remove()
 
     // Security and sanity checks
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // remove dependent modules
     foreach ($dependents as $dependent) {
         if (!pnModAPIFunc('Modules', 'admin', 'remove', array(
             'id' => $dependent))) {
-            return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+            return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
                 'startnum' => $startnum,
                 'letter' => $letter,
                 'state' => $state)));
@@ -871,7 +871,7 @@ function modules_admin_remove()
         if (!pnModAPIFunc('Blocks', 'admin', 'delete', array(
             'bid' => $block['bid']))) {
             LogUtil::registerError(__f('Error! Deleting the block %s .', $block['title']));
-            return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+            return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
                 'startnum' => $startnum,
                 'letter' => $letter,
                 'state' => $state)));
@@ -890,12 +890,12 @@ function modules_admin_remove()
         SessionUtil::delVar('modules_state');
         SessionUtil::delVar('interactive_remove');
         LogUtil::registerStatus(__('Done! De-installed module.'));
-        return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
     } elseif (is_bool($res)) {
-        return pnRedirect(pnModURL('Modules', 'admin', 'view', array(
+        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -918,13 +918,13 @@ function modules_admin_hooks()
 
     // check the input
     if (!is_numeric($id)) {
-        return LogUtil::registerArgsError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // get the modules information
     $modinfo = pnModGetInfo($id);
     if ($modinfo == false) {
-        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     if (!SecurityUtil::checkPermission('Modules::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
@@ -965,13 +965,13 @@ function modules_admin_extendedhooks()
 
     // check the input
     if (!is_numeric($id)) {
-        return LogUtil::registerArgsError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // get the modules information
     $modinfo = pnModGetInfo($id);
     if ($modinfo == false) {
-        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     if (!SecurityUtil::checkPermission('Modules::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
@@ -1015,7 +1015,7 @@ function modules_admin_modifyconfig()
     $pnRender = Renderer::getInstance('Modules', false);
 
     // assign all the module vars
-    $pnRender->assign(pnModGetVar('Modules'));
+    $pnRender->assign(ModUtil::getVar('Modules'));
 
     // Return the output that has been generated by this function
     return $pnRender->fetch('modules_admin_modifyconfig.htm');
@@ -1037,7 +1037,7 @@ function modules_admin_updateconfig()
 
     // Confirm authorisation code.
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // Update module variables.
@@ -1049,7 +1049,7 @@ function modules_admin_updateconfig()
             $itemsperpage = 25;
         }
     }
-    pnModSetVar('Modules', 'itemsperpage', $itemsperpage);
+    ModUtil::setVar('Modules', 'itemsperpage', $itemsperpage);
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
@@ -1059,7 +1059,7 @@ function modules_admin_updateconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(pnModURL('Modules', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**
@@ -1078,13 +1078,13 @@ function modules_admin_compinfo()
 
     // check the input
     if (!is_numeric($id)) {
-        return LogUtil::registerArgsError(pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Modules', 'admin', 'view'));
     }
 
     // get the modules information from the data base
     $modinfo = pnModGetInfo($id);
     if ($modinfo == false) {
-        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, pnModURL('Modules', 'admin', 'view'));
+        return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
 
     if (!SecurityUtil::checkPermission('Modules::', "$modinfo[name]::$id", ACCESS_ADMIN)) {

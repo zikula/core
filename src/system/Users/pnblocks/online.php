@@ -75,7 +75,7 @@ function users_onlineblock_display($row)
     $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] = '0'";
     $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
 
-    $pnr->assign('registerallowed', pnModGetVar('Users', 'reg_allowreg'));
+    $pnr->assign('registerallowed', ModUtil::getVar('Users', 'reg_allowreg'));
     $pnr->assign('loggedin', pnUserLoggedIn());
     $pnr->assign('userscount', $numusers );
     $pnr->assign('guestcount', $numguests );

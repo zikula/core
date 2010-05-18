@@ -92,15 +92,15 @@ class Theme extends Renderer
         // change some base settings from our parent class
         // template compilation
         $this->compile_dir = CacheUtil::getLocalDir() . '/Theme_compiled';
-        $this->compile_check = pnModGetVar('Theme', 'compile_check');
-        $this->force_compile = pnModGetVar('Theme', 'force_compile');
+        $this->compile_check = ModUtil::getVar('Theme', 'compile_check');
+        $this->force_compile = ModUtil::getVar('Theme', 'force_compile');
         $this->compile_id = $theme;
         // template caching
         $this->cache_dir = CacheUtil::getLocalDir() . '/Theme_cache';
-        $this->caching = pnModGetVar('Theme', 'enablecache');
+        $this->caching = ModUtil::getVar('Theme', 'enablecache');
         $type = FormUtil::getPassedValue('type', null, 'GETPOST');
         if ($this->caching && strtolower($type) != 'admin') {
-            $modulesnocache = explode(',', pnModGetVar('Theme', 'modulesnocache'));
+            $modulesnocache = explode(',', ModUtil::getVar('Theme', 'modulesnocache'));
             if (in_array($this->toplevelmodule, $modulesnocache)) {
                 $this->caching = false;
             }
@@ -113,7 +113,7 @@ class Theme extends Renderer
             $this->caching = false;
         }
 
-        $this->cache_lifetime = pnModGetVar('Theme', 'cache_lifetime');
+        $this->cache_lifetime = ModUtil::getVar('Theme', 'cache_lifetime');
 
         // assign all our base template variables
         $this->_base_vars();
@@ -134,7 +134,7 @@ class Theme extends Renderer
 
         if ($usefilters) {
             // register page vars output filter
-            $pagevarfilter = (pnModGetVar('Theme', 'cssjscombine', false) ? 'pagevars' : 'pagevars_notcombined');
+            $pagevarfilter = (ModUtil::getVar('Theme', 'cssjscombine', false) ? 'pagevars' : 'pagevars_notcombined');
             $this->load_filter('output', $pagevarfilter);
 
             // register short urls output filter
@@ -143,7 +143,7 @@ class Theme extends Renderer
             }
 
             // register trim whitespace output filter if requried
-            if (pnModGetVar('Theme', 'trimwhitespace')) {
+            if (ModUtil::getVar('Theme', 'trimwhitespace')) {
                 $this->load_filter('output', 'trimwhitespace');
             }
         }

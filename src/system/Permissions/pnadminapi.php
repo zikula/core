@@ -502,13 +502,13 @@ function Permissions_adminapi_getlinks($args)
     $links = array();
 
     if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_READ)) {
-        $links[] = array('url' => pnModURL('Permissions', 'admin', 'view', array()), 'text' => __('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-es-list');
+        $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'view', array()), 'text' => __('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADD)) {
-        $links[] = array('url' => pnModURL('Permissions', 'admin', 'listedit', array('action' => 'add')), 'text' => __('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'z-icon-es-new');
+        $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'listedit', array('action' => 'add')), 'text' => __('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'z-icon-es-new');
     }
     if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('Permissions', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-es-config');
+        $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-es-config');
     }
     if (pnModGetName() == 'Permissions') {
         $links[] = array('url' => 'javascript:showinstanceinformation()', 'text' => __('Permission rules information'), 'class' => 'z-icon-es-info');

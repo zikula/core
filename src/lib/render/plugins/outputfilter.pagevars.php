@@ -216,7 +216,7 @@ function _smarty_outputfilter_pagevars_clean_additional_header(&$additional_head
 
 function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
 {
-    $themevars = pnModGetVar('Theme');
+    $themevars = ModUtil::getVar('Theme');
 
     $lifetime = $themevars['cssjscombine_lifetime'];
     $hash = md5(serialize($files).pnUserGetTheme());

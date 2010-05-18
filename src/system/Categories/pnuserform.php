@@ -24,11 +24,11 @@ function Categories_userform_delete ()
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'GETPOST');
     $url = pnServerGetVar('HTTP_REFERER');
 
-    if (!$dr) { 
+    if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
     }
 
-    if (!$cid) { 
+    if (!$cid) {
         return LogUtil::registerError(__('Error! The category ID is invalid.'), null, $url);
     }
 
@@ -74,7 +74,7 @@ function Categories_userform_edit ()
     $returnfunc = strpos ($ref, "useredit") !== false ? 'useredit' :  'edit';
     $url = pnModURL ('Categories', 'user', $returnfunc, array ('dr' => $dr));
 
-    if (!$dr) { 
+    if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
     }
 
@@ -100,7 +100,7 @@ function Categories_userform_edit ()
 
     if (!$obj->validate()) {
         $_POST['cid'] = (int)$_POST['category']['id'];
-        return pnRedirect(pnModURL('Categories', 'user', 'edit', $_POST) . '#top');
+        return pnRedirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
     }
 
     $attributes = array();
@@ -144,15 +144,15 @@ function Categories_userform_moveField ()
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'GET');
     $url = pnServerGetVar('HTTP_REFERER');
 
-    if (!$dr) { 
+    if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
     }
 
-    if (!$cid) { 
+    if (!$cid) {
         return LogUtil::registerError(__('Error! The category ID is invalid.'), null, $url);
     }
 
-    if (!$dir) { 
+    if (!$dir) {
         return LogUtil::registerError(__f('Error! Invalid [%s] received.', 'direction'), null, $url);
     }
 
@@ -193,7 +193,7 @@ function Categories_userform_new ()
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'POST');
     $url = pnServerGetVar('HTTP_REFERER');
 
-    if (!$dr) { 
+    if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
     }
 
@@ -206,7 +206,7 @@ function Categories_userform_new ()
     $data = $cat->getDataFromInput ();
 
     if (!$cat->validate()) {
-        return pnRedirect(pnModURL('Categories', 'user', 'edit', $_POST) . '#top');
+        return pnRedirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
     }
 
     $cat->insert ();
@@ -231,7 +231,7 @@ function Categories_userform_resequence ()
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'GET');
     $url = pnServerGetVar('HTTP_REFERER');
 
-    if (!$dr) { 
+    if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
     }
 

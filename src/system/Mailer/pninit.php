@@ -19,19 +19,19 @@
  */
 function Mailer_init()
 {
-    pnModSetVar('Mailer', 'mailertype', 1);
-    pnModSetVar('Mailer', 'charset', ZLanguage::getEncoding());
-    pnModSetVar('Mailer', 'encoding', '8bit');
-    pnModSetVar('Mailer', 'html', false);
-    pnModSetVar('Mailer', 'wordwrap', 50);
-    pnModSetVar('Mailer', 'msmailheaders', false);
-    pnModSetVar('Mailer', 'sendmailpath', '/usr/sbin/sendmail');
-    pnModSetVar('Mailer', 'smtpauth', false);
-    pnModSetVar('Mailer', 'smtpserver', 'localhost');
-    pnModSetVar('Mailer', 'smtpport', 25);
-    pnModSetVar('Mailer', 'smtptimeout', 10);
-    pnModSetVar('Mailer', 'smtpusername', '');
-    pnModSetVar('Mailer', 'smtppassword', '');
+    ModUtil::setVar('Mailer', 'mailertype', 1);
+    ModUtil::setVar('Mailer', 'charset', ZLanguage::getEncoding());
+    ModUtil::setVar('Mailer', 'encoding', '8bit');
+    ModUtil::setVar('Mailer', 'html', false);
+    ModUtil::setVar('Mailer', 'wordwrap', 50);
+    ModUtil::setVar('Mailer', 'msmailheaders', false);
+    ModUtil::setVar('Mailer', 'sendmailpath', '/usr/sbin/sendmail');
+    ModUtil::setVar('Mailer', 'smtpauth', false);
+    ModUtil::setVar('Mailer', 'smtpserver', 'localhost');
+    ModUtil::setVar('Mailer', 'smtpport', 25);
+    ModUtil::setVar('Mailer', 'smtptimeout', 10);
+    ModUtil::setVar('Mailer', 'smtpusername', '');
+    ModUtil::setVar('Mailer', 'smtppassword', '');
 
     // Initialisation successful
     return true;

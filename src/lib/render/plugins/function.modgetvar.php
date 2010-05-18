@@ -58,9 +58,9 @@ function smarty_function_modgetvar($params, &$smarty)
     }
 
     if (!$name) {
-        $result = pnModGetVar($module);
+        $result = ModUtil::getVar($module);
     } else {
-        $result = pnModGetVar($module, $name, $default);
+        $result = ModUtil::getVar($module, $name, $default);
     }
 
     if ($assign) {

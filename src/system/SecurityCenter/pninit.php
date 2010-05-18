@@ -34,7 +34,7 @@ function securitycenter_init()
     }
 
     // Set up an initial value for a module variable.
-    pnModSetVar('SecurityCenter', 'itemsperpage', 10);
+    ModUtil::setVar('SecurityCenter', 'itemsperpage', 10);
 
     // We use config vars for the rest of the configuration as config vars
     // are available earlier in the PN initialisation process

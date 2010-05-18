@@ -52,5 +52,5 @@ function securitycenter_adminform_delete()
     }
 
     // redirect back to view function
-    return pnRedirect(pnModURL('SecurityCenter', 'admin', 'viewobj', array('ot' => $ot)));
+    return pnRedirect(ModUtil::url('SecurityCenter', 'admin', 'viewobj', array('ot' => $ot)));
 }

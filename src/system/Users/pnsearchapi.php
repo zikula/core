@@ -144,7 +144,7 @@ function users_searchapi_search_check(&$args)
     if (!empty($profileModule) && pnModAvailable($profileModule)) {
         $datarow = &$args['datarow'];
         $userId = $datarow['extra'];
-        $datarow['url'] = pnModUrl($profileModule, 'user', 'view', array('uid' => $userId));
+        $datarow['url'] = ModUtil::url($profileModule, 'user', 'view', array('uid' => $userId));
     }
 
     return true;

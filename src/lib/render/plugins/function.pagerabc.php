@@ -209,7 +209,7 @@ function smarty_function_pagerabc($params, &$smarty)
             $style = 'class="'.$params['class_num'].'"';
         }
         $vars[$pager['posvar']] = '';
-        $urltemp = DataUtil::formatForDisplay(pnModURL($pager['module'], $pager['type'], $pager['func'], $pager['args']));
+        $urltemp = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']));
         $output .= '<a '.$tmp.' href="'.$urltemp.'"> -'."\n</a>".$params['separator'];
     }
 
@@ -225,7 +225,7 @@ function smarty_function_pagerabc($params, &$smarty)
             }
         }
         $pager['args'][$pager['posvar']] = $pager['values'][$i];
-        $urltemp = DataUtil::formatForDisplay(pnModURL($pager['module'], $pager['type'], $pager['func'], $pager['args']));
+        $urltemp = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']));
         if ($i > 0) {
             $output .= $params['separator'];
         }

@@ -34,8 +34,8 @@ function smarty_function_debugenvironment($params, &$smarty)
     $_theme = pnModGetInfo(pnModGetIDFromName('Theme'));
     $smarty->assign('_themeversion', $_theme['version']);
 
-    $smarty->assign('_force_compile', (pnModGetVar('Theme', 'force_compile')) ? __('On') : __('Off'));
-    $smarty->assign('_compile_check', (pnModGetVar('Theme', 'compile_check')) ? __('On') : __('Off'));
+    $smarty->assign('_force_compile', (ModUtil::getVar('Theme', 'force_compile')) ? __('On') : __('Off'));
+    $smarty->assign('_compile_check', (ModUtil::getVar('Theme', 'compile_check')) ? __('On') : __('Off'));
 
     $smarty->assign('_baseurl', pnGetBaseURL());
     $smarty->assign('_baseuri', pnGetBaseURI());

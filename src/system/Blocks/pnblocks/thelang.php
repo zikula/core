@@ -128,7 +128,7 @@ function Blocks_thelangblock_display($blockinfo)
     $languages = ZLanguage::getInstalledLanguages();
     $urls = array();
     foreach ($languages as $code) {
-        $thisurl = pnModURL($module, $type, $func, $get, null, null, null, $forcefqdn, $code);
+        $thisurl = ModUtil::url($module, $type, $func, $get, null, null, null, $forcefqdn, $code);
         if ($thisurl == '') {
             $thisurl = ($shorturls && $dirBased ? $code : "$homepage?lang=$code");
         }

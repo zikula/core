@@ -27,25 +27,25 @@ function Categories_adminform_edit ()
     if (FormUtil::getPassedValue('category_copy_x', null, 'POST')) {
         $args['op']  = 'copy';
         $args['cid'] = $_POST['category']['id'];
-        return pnRedirect(pnModURL('Categories', 'admin', 'op', $args));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'op', $args));
     }
 
     if (FormUtil::getPassedValue('category_move_x', null, 'POST')) {
         $args['op']  = 'move';
         $args['cid'] = $_POST['category']['id'];
-        return pnRedirect(pnModURL('Categories', 'admin', 'op', $args));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'op', $args));
     }
 
     if (FormUtil::getPassedValue('category_delete_x', null, 'POST')) {
         $args['op']  = 'delete';
         $args['cid'] = $_POST['category']['id'];
-        return pnRedirect(pnModURL('Categories', 'admin', 'op', $args));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'op', $args));
     }
 
     if (FormUtil::getPassedValue('category_user_edit_x', null, 'POST')) {
         $_SESSION['category_referer'] = pnServerGetVar('HTTP_REFERER');
         $args['dr'] = $_POST['category']['id'];
-        return pnRedirect(pnModURL('Categories', 'user', 'edit', $args));
+        return pnRedirect(ModUtil::url('Categories', 'user', 'edit', $args));
     }
 
     $cat = new PNCategory ();
@@ -55,7 +55,7 @@ function Categories_adminform_edit ()
         $category = FormUtil::getPassedValue ('category', null, 'POST');
         $args['cid'] = $category['id'];
         $args['mode'] = 'edit';
-        return pnRedirect(pnModURL('Categories', 'admin', 'edit', $args));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'edit', $args));
     }
 
     $attributes = array();
@@ -83,7 +83,7 @@ function Categories_adminform_edit ()
 
     $msg = __f('Done! Saved the %s category.', $oldCat->_objData['name']);
     LogUtil::registerStatus($msg);
-    return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
 }
 
 /**
@@ -115,11 +115,11 @@ function Categories_adminform_new ()
 
         $_SESSION['newCategory'] = $newCat;
 
-        return pnRedirect(pnModURL('Categories', 'admin', 'new') . '#top');
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'new') . '#top');
     }
 
     if (!$cat->validate('admin')) {
-        return pnRedirect(pnModURL('Categories', 'admin', 'new') . '#top');
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'new') . '#top');
     }
 
     $attributes = array();
@@ -142,7 +142,7 @@ function Categories_adminform_new ()
 
     $msg = __f('Done! Inserted the %s category.', $cat->_objData['name']);
     LogUtil::registerStatus($msg);
-    return pnRedirect(pnModURL('Categories', 'admin', 'main') . '#top');
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'main') . '#top');
 }
 
 /**
@@ -155,7 +155,7 @@ function Categories_adminform_delete ()
     }
 
     if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
-        return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
     }
 
     $cid = FormUtil::getPassedValue('cid', null, 'POST');
@@ -172,7 +172,7 @@ function Categories_adminform_delete ()
 
     $msg = __f('Done! Deleted the %s category.', $cat->_objData['name']);
     LogUtil::registerStatus($msg);
-    return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
 }
 
 /**
@@ -185,7 +185,7 @@ function Categories_adminform_copy ()
     }
 
     if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
-        return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
     }
 
     $cid = FormUtil::getPassedValue('cid', null, 'POST');
@@ -196,7 +196,7 @@ function Categories_adminform_copy ()
 
     $msg = __f('Done! Copied the %s category.', $cat->_objData['name']);
     LogUtil::registerStatus($msg);
-    return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
 }
 
 /**
@@ -209,7 +209,7 @@ function Categories_adminform_move ()
     }
 
     if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
-        return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
     }
 
     $cid = FormUtil::getPassedValue('cid', null, 'POST');
@@ -219,7 +219,7 @@ function Categories_adminform_move ()
 
     $msg = __f('Done! Moved the %s category.', $cat->_objData['name']);
     LogUtil::registerStatus($msg);
-    return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
 }
 
 /**
@@ -235,7 +235,7 @@ function Categories_adminform_rebuild_paths ()
     CategoryUtil::rebuildPaths ('ipath', 'id');
 
     LogUtil::registerStatus(__('Done! Rebuilt the category paths.'));
-    return pnRedirect(pnModURL('Categories', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'main'));
 }
 
 function Categories_adminform_editregistry ()
@@ -256,7 +256,7 @@ function Categories_adminform_editregistry ()
         $obj->delete ($id);
 
         LogUtil::registerStatus(__('Done! Deleted the category registry entry.'));
-        return pnRedirect(pnModURL('Categories', 'admin', 'editregistry'));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'editregistry'));
     }
 
     $args = array();
@@ -265,19 +265,19 @@ function Categories_adminform_editregistry ()
         $obj  = new $class();
         $data = $obj->getDataFromInput ($id);
         $args['category_registry'] = $data;
-        return pnRedirect(pnModURL('Categories', 'admin', 'editregistry', $args));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
     }
 
     $obj = new $class();
     $obj->getDataFromInput ();
 
     if (!$obj->validate('admin')) {
-        return pnRedirect(pnModURL('Categories', 'admin', 'editregistry'));
+        return pnRedirect(ModUtil::url('Categories', 'admin', 'editregistry'));
     }
 
     $obj->save();
     LogUtil::registerStatus(__('Done! Saved the category registry entry.'));
-    return pnRedirect(pnModURL('Categories', 'admin', 'editregistry'));
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'editregistry'));
 }
 
 function Categories_adminform_preferences ()
@@ -307,5 +307,5 @@ function Categories_adminform_preferences ()
     pnModSetVar ('Categories', 'permissionsall', $permissionsall);
 
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
-    return pnRedirect(pnModURL('Categories', 'admin', 'preferences'));
+    return pnRedirect(ModUtil::url('Categories', 'admin', 'preferences'));
 }

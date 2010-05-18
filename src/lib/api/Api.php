@@ -114,7 +114,7 @@ function pnConfigGetVar($name, $default = null)
     if (isset($GLOBALS['ZConfig']['System'][$name])) {
         $mod_var = $GLOBALS['ZConfig']['System'][$name];
     } else {
-        $mod_var = pnModGetVar(PN_CONFIG_MODULE, $name);
+        $mod_var = ModUtil::getVar(PN_CONFIG_MODULE, $name);
         // cache
         $GLOBALS['ZConfig']['System'][$name] = $mod_var;
     }
@@ -147,7 +147,7 @@ function pnConfigSetVar($name, $value = '')
     }
 
     // set the variable
-    if (pnModSetVar(PN_CONFIG_MODULE, $name, $value)) {
+    if (ModUtil::setVar(PN_CONFIG_MODULE, $name, $value)) {
         // Update my vars
         $GLOBALS['ZConfig']['System'][$name] = $value;
         return true;
@@ -337,7 +337,7 @@ function pnInit($stages = PN_CORE_ALL)
         if (!defined('_ZINSTALLVER')) {
             set_error_handler('pnErrorHandler');
         }
-        
+
         EventManagerUtil::notify($coreInitEvent);
     }
 
@@ -418,7 +418,7 @@ function pnInit($stages = PN_CORE_ALL)
             pnUserLogOut();
             LogUtil::registerStatus(__('You have been logged out.'));
             $params = ($userstatus == 2) ? array('confirmtou' => 1) : array();
-            pnRedirect(pnModURL('Users', 'user', 'loginscreen', $params));
+            pnRedirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
         }
     }
 
@@ -1089,7 +1089,7 @@ function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
 {
     $event = new Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
     EventManagerUtil::notify($event);
-    
+
     // check for an @ suppression
     if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED || $errno == E_STRICT)) {
         return;

@@ -49,11 +49,11 @@ function blocks_admin_view()
                      $filter['sortdir'] = 'DESC';
                  } elseif ($oldSortDir == 'DESC') {
                      $filter['sortdir'] = 'ASC';
-                 } 
-             } 
+                 }
+             }
         }
         SessionUtil::setVar('filter', $filter, '/Blocks');
-    } 
+    }
 
     // Create output object
     $pnRender = Renderer::getInstance('Blocks', false);
@@ -107,24 +107,24 @@ function blocks_admin_view()
         // calculate what options the user has over this block
         $block['options'] = array();
         if ($block['active']) {
-            $block['options'][] = array('url' => pnModURL('Blocks', 'admin', 'deactivate',
+            $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'deactivate',
                                                  array('bid' => $block['bid'], 'authid' => $authid)),
                                         'image' => 'folder_grey.gif',
                                         'title' => __('Deactivate'),
                                         'noscript' => true);
         } else {
-            $block['options'][] = array ('url' => pnModURL('Blocks', 'admin', 'activate',
+            $block['options'][] = array ('url' => ModUtil::url('Blocks', 'admin', 'activate',
                                                   array('bid' => $block['bid'], 'authid' => $authid)),
                                          'image' => 'folder_green.gif',
                                          'title' => __('Activate'),
                                          'noscript' => true);
         }
 
-        $block['options'][] = array('url' => pnModURL('Blocks', 'admin', 'modify', array('bid' => $block['bid'])),
+        $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $block['bid'])),
                                     'image' => 'xedit.gif',
                                     'title' => __('Edit'),
                                     'noscript' => false);
-        $block['options'][] = array('url' => pnModURL('Blocks', 'admin', 'delete', array('bid' => $block['bid'])),
+        $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'delete', array('bid' => $block['bid'])),
                                     'image' => '14_layer_deletelayer.gif',
                                     'title' => __('Delete'),
                                     'noscript' => false);
@@ -142,11 +142,11 @@ function blocks_admin_view()
         if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_READ)) {
             $options = array();
             if (SecurityUtil::checkPermission('Blocks::', "$item[name]::$", ACCESS_EDIT)) {
-                $options[] = array('url'   => pnModURL('Blocks', 'admin', 'modifyposition', array('pid' => $item['pid'])),
+                $options[] = array('url'   => ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $item['pid'])),
                                    'image' => 'xedit.gif',
                                    'title' => __('Edit'));
                 if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_DELETE)) {
-                    $options[] = array('url'   => pnModURL('Blocks', 'admin', 'deleteposition', array('pid' => $item['pid'])),
+                    $options[] = array('url'   => ModUtil::url('Blocks', 'admin', 'deleteposition', array('pid' => $item['pid'])),
                                        'image' => '14_layer_deletelayer.gif',
                                        'title' => __('Delete'));
                 }
@@ -178,7 +178,7 @@ function blocks_admin_deactivate()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     // Pass to API
@@ -188,7 +188,7 @@ function blocks_admin_deactivate()
     }
 
     // Redirect
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -204,7 +204,7 @@ function blocks_admin_activate()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     // Pass to API
@@ -214,7 +214,7 @@ function blocks_admin_activate()
     }
 
     // Redirect
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -389,7 +389,7 @@ function blocks_admin_update()
         if (isset($redirect) && !empty($redirect)) {
             return pnRedirect(urldecode($redirect));
         }
-        return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+        return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
 
@@ -400,7 +400,7 @@ function blocks_admin_update()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     // Get and update block info
@@ -427,7 +427,7 @@ function blocks_admin_update()
     if (function_exists($updatefunc)) {
         $blockinfo = $updatefunc($blockinfo);
         if (!$blockinfo) {
-            return pnRedirect(pnModURL('Blocks', 'admin', 'modify', array('bid' => $bid)));
+            return pnRedirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
     } else {
         // Old way
@@ -451,10 +451,10 @@ function blocks_admin_update()
 
     if (!empty($returntoblock)) {
         // load the block config again
-        return pnRedirect(pnModURL('Blocks', 'admin', 'modify',
+        return pnRedirect(ModUtil::url('Blocks', 'admin', 'modify',
                                    array('bid' => $returntoblock)));
     }
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -530,7 +530,7 @@ function blocks_admin_create()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     $blockinfo = array('bkey'         => $bkey,
@@ -545,10 +545,10 @@ function blocks_admin_create()
     $bid = pnModAPIFunc('Blocks', 'admin', 'create', $blockinfo);
     if ($bid != false) {
         LogUtil::registerStatus(__('Done! Created block.'));
-        return pnRedirect(pnModURL('Blocks', 'admin', 'modify', array('bid' => $bid)));
+        return pnRedirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
     }
 
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -600,7 +600,7 @@ function blocks_admin_delete()
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     // Pass to API
@@ -610,7 +610,7 @@ function blocks_admin_delete()
         LogUtil::registerStatus(__('Done! Deleted block.'));
     }
 
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -649,12 +649,12 @@ function blocks_admin_createposition()
 
     // check our vars
     if (!isset($position['name']) || !preg_match('/^[a-z0-9_-]*$/i', $position['name']) || !isset($position['description'])) {
-        return LogUtil::registerArgsError(pnModURL('Blocks', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     // add the new block position
@@ -663,7 +663,7 @@ function blocks_admin_createposition()
     }
 
     // all done
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -736,12 +736,12 @@ function blocks_admin_updateposition()
 
     // check our vars
     if (!isset($position['pid']) || !isset($position['name']) || !isset($position['description'])) {
-        return LogUtil::registerArgsError(pnModURL('Blocks', 'admin', 'view'));
+        return LogUtil::registerArgsError(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     // Confirm authorisation code
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     // update the position
@@ -751,7 +751,7 @@ function blocks_admin_updateposition()
         LogUtil::registerStatus(__('Done! Saved block.'));
     }
 
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -791,7 +791,7 @@ function Blocks_admin_deleteposition($args)
     }
 
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','view'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
     if (pnModAPIFunc('Blocks', 'admin', 'deleteposition', array('pid' => $pid))) {
@@ -799,7 +799,7 @@ function Blocks_admin_deleteposition($args)
         LogUtil::registerStatus(__('Done! Deleted block position.'));
     }
 
-    return pnRedirect(pnModURL('Blocks', 'admin', 'view'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -818,7 +818,7 @@ function blocks_admin_modifyconfig()
     $pnRender = Renderer::getInstance('Blocks', false);
 
     // assign all the module vars
-    $pnRender->assign(pnModGetVar('Blocks'));
+    $pnRender->assign(ModUtil::getVar('Blocks'));
 
     // Return the output that has been generated by this function
     return $pnRender->fetch('blocks_admin_modifyconfig.htm');
@@ -839,14 +839,14 @@ function blocks_admin_updateconfig()
     $collapseable = FormUtil::getPassedValue('collapseable');
 
     if (!SecurityUtil::confirmAuthKey()) {
-        return LogUtil::registerAuthidError(pnModURL('Blocks','admin','main'));
+        return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','main'));
     }
 
     if (!isset($collapseable) || !is_numeric($collapseable)) {
         $collapseable = 0;
     }
 
-    pnModSetVar('Blocks', 'collapseable', $collapseable);
+    ModUtil::setVar('Blocks', 'collapseable', $collapseable);
 
     // Let any other modules know that the modules configuration has been updated
     pnModCallHooks('module','updateconfig','Blocks', array('module' => 'Blocks'));
@@ -854,7 +854,7 @@ function blocks_admin_updateconfig()
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(pnModURL('Blocks', 'admin', 'main'));
+    return pnRedirect(ModUtil::url('Blocks', 'admin', 'main'));
 }
 
 
