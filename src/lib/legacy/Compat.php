@@ -1944,7 +1944,7 @@ function pnUserGetIDFromName($uname)
  */
 function pnUserGetIDFromEmail($email)
 {
-    return UserUtil::getIdFromEmail($uname);
+    return UserUtil::getIdFromEmail($email);
 }
 
 /**
