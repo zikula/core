@@ -83,7 +83,7 @@ function users_adminapi_findusers($args)
     $profileModule = System::getVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
-    $pntable     = pnDBGetTables();
+    $pntable     = System::dbGetTables();
     $userstable  = $pntable['users'];
     $userscolumn = $pntable['users_column'];
 
@@ -422,7 +422,7 @@ function users_adminapi_getallpendings($args)
         return $items;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $userscolumn = $pntable['users_temp_column'];
     $where = "$userscolumn[type] = 1";
     $orderby = "ORDER BY $userscolumn[tid]";
@@ -474,7 +474,7 @@ function users_adminapi_countpending()
         return false;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $userscolumn = $pntable['users_temp_column'];
     $where = "$userscolumn[type] = 1";
     return DBUtil::selectObjectCount('users_temp', $where);
@@ -551,7 +551,7 @@ function Users_adminapi_checkMultipleExistence($args)
         return false;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $userscolumn = $pntable['users_column'];
 
     $valuesArray = $args['valuesArray'];
@@ -594,7 +594,7 @@ function Users_adminapi_createImport($args)
         return false;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $userstable = $pntable['users'];
     $userscolumn = $pntable['users_column'];
 

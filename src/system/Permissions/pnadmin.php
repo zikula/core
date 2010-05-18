@@ -79,7 +79,7 @@ function permissions_admin_view()
 
     // Work out which tables to operate against, and
     // various other bits and pieces
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
     $ids = permissions_getGroupsInfo();
 
@@ -328,7 +328,7 @@ function permissions_admin_listedit()
 
     // Work out which tables to operate against, and
     // various other bits and pieces
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
     $mlpermtype = __('Group');
     $viewperms = ($action == 'modify') ? __('Modify permission rule') : __('Create new permission rule');
@@ -601,7 +601,7 @@ function permissions_admin_delete()
  */
 function permissions_getGroupsInfo()
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     $groupcolumn = $pntable['groups_column'];
 

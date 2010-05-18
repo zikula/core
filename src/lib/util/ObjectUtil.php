@@ -92,7 +92,7 @@ class ObjectUtil
      */
     public static function generateCreateDataDictForStandardFields($table)
     {
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $columns = $pntables["{$table}_column"];
         $sql = ",
                 $columns[obj_status] C(1) NOTNULL DEFAULT 'A',
@@ -210,7 +210,7 @@ class ObjectUtil
      */
     public static function createObject($type)
     {
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
         if (!$pntable[$type]) {
             return pn_exit(__f('%s: Unable to reference object type [%s]', array('ObjectUtil::createObject', $type)));
         }
@@ -307,7 +307,7 @@ class ObjectUtil
      */
     public static function resequenceFields($tablename, $field = 'position', $float = false, $idcolumn = 'id')
     {
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables[$tablename];
         $column   = $pntables["{$tablename}_column"];
 
@@ -355,7 +355,7 @@ class ObjectUtil
             return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($idcolumn, 'ObjectUtil::moveField')));
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables[$tablename];
         $column   = $pntables["{$tablename}_column"];
 
@@ -433,7 +433,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
 
@@ -501,7 +501,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
 
@@ -574,7 +574,7 @@ class ObjectUtil
             return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $column   = $pntables['objectdata_attributes_column'];
 
         // select all attributes so that we can check if we have to update or insert
@@ -630,7 +630,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
 
@@ -673,7 +673,7 @@ class ObjectUtil
             return pn_exit(__f('Invalid %1$s passed to %2$s.', array('attributename', __CLASS__.'::'.__FUNCTION__)));
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
 
@@ -702,7 +702,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
 
@@ -725,7 +725,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
 
@@ -751,7 +751,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntables       = pnDBGetTables();
+        $pntables       = System::dbGetTables();
         $column = $pntables['objectdata_attributes_column'];
 
         $where = "$column[attribute_name]='" . DataUtil::formatForStore($atrName) . "'";
@@ -861,7 +861,7 @@ class ObjectUtil
             $rc = DBUtil::deleteObjectByID($obj['__META__'], 'objectdata_meta');
 
         } elseif (isset($obj['__META__']['idcolumn']) && $obj['__META__']['obj_id']) {
-            $pntables = pnDBGetTables();
+            $pntables = System::dbGetTables();
             $meta_column = $pntables['objectdata_meta_column'];
 
             $meta = $obj['__META__'];
@@ -893,7 +893,7 @@ class ObjectUtil
 
         $meta = self::fixObjectMetaData($obj, $tablename, $idcolumn);
         if ($meta['obj_id'] > 0) {
-            $pntables = pnDBGetTables();
+            $pntables = System::dbGetTables();
             $meta_column = $pntables['objectdata_meta_column'];
 
             $where = "WHERE $meta_column[module]='" . DataUtil::formatForStore($meta['module']) . "'
@@ -1052,7 +1052,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntabs = pnDBGetTables();
+        $pntabs = System::dbGetTables();
         $cat    = $pntabs['categories_mapobj_column'];
 
         $where = "WHERE tbl.$cat[table]='" . DataUtil::formatForStore($tablename) . "'
@@ -1121,7 +1121,7 @@ class ObjectUtil
             return false;
         }
 
-        $pntabs = pnDBGetTables();
+        $pntabs = System::dbGetTables();
         $tab    = $pntabs['categories_mapobj'];
         $col    = $pntabs['categories_mapobj_column'];
 

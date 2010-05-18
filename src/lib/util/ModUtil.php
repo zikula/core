@@ -28,7 +28,7 @@ class ModUtil
         // if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar)) {
             $pnmodvar = array();
-            $pntables = pnDBGetTables();
+            $pntables = System::dbGetTables();
             $col = $pntables['module_vars_column'];
 
             $where = "$col[modname]='" . PN_CONFIG_MODULE .
@@ -100,7 +100,7 @@ class ModUtil
 
         // if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar[$modname])) {
-            $pntables = pnDBGetTables();
+            $pntables = System::dbGetTables();
             $col = $pntables['module_vars_column'];
             $where = "WHERE $col[modname]='" . DataUtil::formatForStore($modname) . "'";
             $sort = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
@@ -167,7 +167,7 @@ class ModUtil
         }
 
         if (pnModVarExists($modname, $name)) {
-            $pntable = pnDBGetTables();
+            $pntable = System::dbGetTables();
             $cols = $pntable['module_vars_column'];
             $where = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
                     AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
@@ -235,7 +235,7 @@ class ModUtil
             }
         }
 
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
         $cols = $pntable['module_vars_column'];
 
         // check if we're deleting one module var or all module vars
@@ -424,7 +424,7 @@ class ModUtil
         static $modsarray = array();
 
         if (empty($modsarray)) {
-            $pntable = pnDBGetTables();
+            $pntable = System::dbGetTables();
             $modulescolumn = $pntable['modules_column'];
             $where = "WHERE $modulescolumn[state] = " . PNMODULE_STATE_ACTIVE . "
                   OR $modulescolumn[name] = 'Modules'";
@@ -1086,7 +1086,7 @@ class ModUtil
         }
 
         // Get database info
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
         $hookscolumn = $pntable['hooks_column'];
         // Remove hook
         $where = "WHERE $hookscolumn[object] = '" . DataUtil::formatForStore($hookobject) . "'
@@ -1127,7 +1127,7 @@ class ModUtil
         $lModname = strtolower($modname);
         if (!isset($modulehooks[$lModname])) {
             // Get database info
-            $pntable = pnDBGetTables();
+            $pntable = System::dbGetTables();
             $hookscolumn = $pntable['hooks_column'];
             $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modname) . "'";
             $orderby = "$hookscolumn[sequence] ASC";
@@ -1218,7 +1218,7 @@ class ModUtil
         }
 
         // Get database info
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
         $hookscolumn = $pntable['hooks_column'];
 
         // Get applicable hooks
@@ -1324,7 +1324,7 @@ class ModUtil
      */
     public static function getModulesByState($state=3, $sort='displayname')
     {
-        $pntables     = pnDBGetTables();
+        $pntables     = System::dbGetTables();
         $moduletable  = $pntables['modules'];
         $modulecolumn = $pntables['modules_column'];
 

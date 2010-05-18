@@ -338,7 +338,7 @@ class WorkflowUtil
             return false;
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $workflows_column = $pntables['workflows_column'];
         $where = "WHERE $workflows_column[module]='" . DataUtil::formatForStore($module) . "'
                     AND $workflows_column[obj_table]='" . DataUtil::formatForStore($dbTable) . "'

@@ -247,7 +247,7 @@ function Groups_adminapi_removeuser($args)
     }
 
     // Get datbase setup
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $groupmembershipcolumn = $pntable['group_membership_column'];
 
     // Add item
@@ -282,7 +282,7 @@ function Groups_adminapi_getgidbyname($args)
     }
 
     // Get datbase setup
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $groupcolumn = $pntable['groups_column'];
 
     // Get item
@@ -320,7 +320,7 @@ function Groups_adminapi_getapplications($args)
         $args['numitems'] = -1;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $col = $pntable['group_applications_column'];
 
     $orderBy = "ORDER BY $col[app_id] ASC";
@@ -361,7 +361,7 @@ function Groups_adminapi_getapplicationinfo($args)
         return LogUtil::registerArgsError();
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $col = $pntable['group_applications_column'];
 
     $where = "WHERE  $col[gid] = '".DataUtil::formatForStore($args['gid'])."'
@@ -397,7 +397,7 @@ function Groups_adminapi_pendingaction($args)
         return LogUtil::registerArgsError();
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $col = $pntable['group_applications_column'];
 
     $where = "WHERE $col[gid] = '".(int)DataUtil::formatForStore($args['gid'])."'

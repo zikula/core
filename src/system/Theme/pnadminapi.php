@@ -212,7 +212,7 @@ function theme_adminapi_setasdefault($args)
 
     // if chosen reset all user theme selections
     if ($args['resetuserselected']) {
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $sql ="UPDATE $pntables[users] SET pn_theme = ''";
         if (!DBUtil::executeSQL($sql)) {
             return false;
@@ -295,7 +295,7 @@ function Theme_adminapi_delete($args)
     }
 
     // reset the theme for any users utilising this theme.
-    $pntables = pnDBGetTables();
+    $pntables = System::dbGetTables();
     $sql ="UPDATE $pntables[users] SET pn_theme = '' WHERE pn_theme = '".DataUtil::formatForStore($themeinfo['name']) ."'";
     if (!DBUtil::executeSQL($sql)) {
         return false;

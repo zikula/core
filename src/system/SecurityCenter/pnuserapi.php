@@ -248,7 +248,7 @@ function securitycenter_userapi_loghackattempt($args)
  */
 function securitycenter_userapi_loghackattempttodb($args)
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $anticrackerColumn = $pntable['sc_anticracker_column'];
 
     $hacktime = time();

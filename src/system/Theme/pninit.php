@@ -103,7 +103,7 @@ function theme_upgrade($oldversion)
             }
 
             // check and fix permissions
-            $pntable = pnDBGetTables();
+            $pntable = System::dbGetTables();
             $permscolumn = $pntable['group_perms_column'];
             $permswhere = "WHERE $permscolumn[component] = 'pnRender:pnRenderblock:'";
             $perms = DBUtil::selectObjectArray('group_perms', $permswhere);

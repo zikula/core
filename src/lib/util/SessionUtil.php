@@ -652,7 +652,7 @@ function _SessionUtil__Write($sessid, $vars)
         } else {
             // check for regenerated session and update ID in database
             if (isset($GLOBALS['_ZSession']['regenerated']) && $GLOBALS['_ZSession']['regenerated'] == true) {
-                $sessiontable = pnDBGetTables();
+                $sessiontable = System::dbGetTables();
                 $columns = $sessiontable['session_info_column'];
                 $where = "WHERE $columns[sessid] = '" . DataUtil::formatForStore($GLOBALS['_ZSession']['sessid_old']) . "'";
                 $res = DBUtil::updateObject($obj, 'session_info', $where, 'sessid', true, true);
@@ -789,7 +789,7 @@ function _SessionUtil__GC($maxlifetime)
 
     } else {
         // DB based GC
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
         $sessioninfocolumn = $pntable['session_info_column'];
         $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
         $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));

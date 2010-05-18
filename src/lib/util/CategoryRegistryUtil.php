@@ -201,7 +201,7 @@ class CategoryRegistryUtil
         }
 
         $wheres = array();
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $col = $pntables['categories_registry_column'];
         $wheres[] = "$col[modname]='" . DataUtil::formatForStore($modname) . "'";
         $wheres[] = "$col[table]='" . DataUtil::formatForStore($tablename) . "'";
@@ -269,7 +269,7 @@ class CategoryRegistryUtil
         }
 
         $wheres = array();
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $col = $pntables['categories_registry_column'];
         $wheres[] = "$col[modname]='" . DataUtil::formatForStore($modname) . "'";
         $wheres[] = "$col[table]='" . DataUtil::formatForStore($tablename) . "'";

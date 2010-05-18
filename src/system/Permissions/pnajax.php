@@ -95,7 +95,7 @@ function permissions_ajax_changeorder()
 
     $permorder = FormUtil::getPassedValue('permorder');
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
 
     for($cnt=0; $cnt<count($permorder); $cnt++) {

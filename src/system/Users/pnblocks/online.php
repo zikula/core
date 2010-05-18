@@ -64,7 +64,7 @@ function users_onlineblock_display($row)
         return pnBlockThemeBlock($row);
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     $sessioninfocolumn = $pntable['session_info_column'];
     $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));

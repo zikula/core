@@ -89,7 +89,7 @@ function modules_adminapi_updatehooks($args)
         return LogUtil::registerPermissionError();
     }
     // Rename operation
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     $modulescolumn = $pntable['modules_column'];
     $hookscolumn = $pntable['hooks_column'];
@@ -144,7 +144,7 @@ function modules_adminapi_extendedupdatehooks($args)
         return LogUtil::registerPermissionError();
     }
     // Rename operation
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     $modulescolumn = $pntable['modules_column'];
     $hookscolumn = $pntable['hooks_column'];
@@ -233,7 +233,7 @@ function modules_adminapi_list($args)
     SessionUtil::setVar('sort', $sort);
 
     // Obtain information
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $modulescolumn = $pntable['modules_column'];
 
     // filter my first letter of module
@@ -1075,7 +1075,7 @@ function modules_adminapi_upgrade($args)
  */
 function modules_adminapi_countitems($args)
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $modulescolumn = $pntable['modules_column'];
 
     // filter my first letter of module
@@ -1127,7 +1127,7 @@ function modules_adminapi_gethookedmodules($args)
         return LogUtil::registerArgsError();
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $hookscolumn = $pntable['hooks_column'];
 
     $where = "WHERE $hookscolumn[tmodule]='" . DataUtil::formatForStore($args['hookmodname']) . "'";
@@ -1184,7 +1184,7 @@ function modules_adminapi_enablehooks($args)
         return LogUtil::registerArgsError();
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $hookscolumn = $pntable['hooks_column'];
 
     // Rename operation
@@ -1238,7 +1238,7 @@ function modules_adminapi_disablehooks($args)
     }
 
     // Rename operation
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $hookscolumn = $pntable['hooks_column'];
 
     // Delete hooks regardless
@@ -1268,7 +1268,7 @@ function modules_adminapi_getmoduleshooks($args)
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $hookscolumn = $pntable['hooks_column'];
 
     $where = "WHERE $hookscolumn[smodule] = ''
@@ -1321,7 +1321,7 @@ function modules_adminapi_getextendedmoduleshooks($args)
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $hookscolumn = $pntable['hooks_column'];
 
     $where = "WHERE $hookscolumn[smodule] = ''";

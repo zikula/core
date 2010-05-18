@@ -81,7 +81,7 @@ function Admin_adminapi_delete($args)
     // move all modules from the category to be deleted into the
     // default category. We can't do this via a simple DBUtil call
     // because it's a non-object based mass update of the key field.
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $column  = $pntable['admin_module_column'];
     $where   = "WHERE $column[cid] = '" . (int)DataUtil::formatForStore($category['cid']) . "'";
 
@@ -183,7 +183,7 @@ function Admin_adminapi_getall($args)
 
     // get the necessary db information
     ModUtil::dbInfoLoad('Admin', 'Admin');
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $admincategorycolumn = &$pntable['admin_category_column'];
 
     // get all categories the user has permission to see

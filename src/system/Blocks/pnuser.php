@@ -40,7 +40,7 @@ function blocks_user_changestatus()
     $bid = FormUtil::getPassedValue('bid');
     $uid = UserUtil::getVar('uid');
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $column  = $pntable['userblocks_column'];
 
     $where  = "WHERE $column[bid]='".DataUtil::formatForStore($bid)."' AND $column[uid]='".DataUtil::formatForStore($uid)."'";

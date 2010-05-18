@@ -32,7 +32,7 @@ function Blocks_userapi_getall($args)
         return $items;
     }
 
-    $pntable      = pnDBGetTables();
+    $pntable      = System::dbGetTables();
     $blockstable  = $pntable['blocks'];
     $blockscolumn = $pntable['blocks_column'];
     $sort         = isset($args['sort']) && $args['sort'] ? $args['sort'] : '';
@@ -45,7 +45,7 @@ function Blocks_userapi_getall($args)
 
     // backwards parameter compatability
     if (isset($args['modid']) && is_numeric($args['modid'])) {
-        $args['module_id'] = $args['modid']; 
+        $args['module_id'] = $args['modid'];
     }
 
     // initialise the where arguments array
@@ -58,16 +58,16 @@ function Blocks_userapi_getall($args)
         $bidList     = $bids ? implode (',', $bids) : -1;
         $whereargs[] = "$blockscolumn[bid] IN ($bidList)";
     }
-    
+
     // filter by active block status
     if (isset($args['inactive']) && $args['inactive']) {
             $args['active_status'] = 0;
     }
     if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) { // new logic
         $whereargs[] = "$blockscolumn[active] = " . ($args['active_status'] == 1 ? '1' : '0');
-    } 
+    }
 
-    // filter by module 
+    // filter by module
     if (isset($args['module_id']) && is_numeric($args['module_id']) && $args['module_id']) {
         $whereargs[] = "$blockscolumn[mid] = '".DataUtil::formatForStore($args['module_id'])."'";
     }

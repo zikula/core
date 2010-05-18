@@ -393,7 +393,7 @@ class BlockUtil
         }
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
-            $pntable = pnDBGetTables();
+            $pntable = System::dbGetTables();
             $column = $pntable['userblocks_column'];
             $where = "WHERE $column[bid] = '" . DataUtil::formatForStore($row['bid']) . "'
                   AND $column[uid] = '" . DataUtil::formatForStore($uid) . "'";

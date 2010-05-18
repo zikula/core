@@ -35,7 +35,7 @@ function Groups_userapi_getall($args)
     }
 
     // Get datbase setup
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $groupcolumn = $pntable['groups_column'];
 
     // Get items
@@ -80,7 +80,7 @@ function Groups_userapi_get($args)
     }
 
     // Get datbase setup
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $groupmembershipcolumn = $pntable['group_membership_column'];
 
     // Get item
@@ -131,7 +131,7 @@ function Groups_userapi_get($args)
  */
 function Groups_userapi_countitems()
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $grpcol = $pntable['groups_column'];
 
     $where = "WHERE $grpcol[gtype] >= '1'";
@@ -155,7 +155,7 @@ function Groups_userapi_countgroupmembers($args)
     }
 
     // Get datbase setup
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $groupmembershipcolumn = $pntable['group_membership_column'];
 
     // Get item
@@ -189,7 +189,7 @@ function Groups_userapi_getusergroups($args)
     }
 
     // Get datbase setup
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $groupmembershipcolumn = $pntable['group_membership_column'];
 
     // Get item
@@ -235,7 +235,7 @@ function Groups_userapi_getallgroups($args)
         return $items;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $grpcol = $pntable['groups_column'];
 
     $where = "WHERE $grpcol[gtype] >= '1'";
@@ -388,7 +388,7 @@ function Groups_userapi_cancelapp($args)
                                     'uid' => $args['uid']));
 
     if ($ispending == true) {
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
         $col = $pntable['group_applications_column'];
 
         list($gid, $uid) = DataUtil::formatForStore($gid, $uid);
@@ -416,7 +416,7 @@ function Groups_userapi_isuserpending($args)
         return LogUtil::registerArgsError();
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $col = $pntable['group_applications_column'];
 
     // Check in case the user already applied
@@ -593,7 +593,7 @@ function Groups_userapi_removeuser($args)
     }
 
     // Get datbase setup
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $groupmembershipcolumn = $pntable['group_membership_column'];
 
     // delete item
@@ -618,7 +618,7 @@ function Groups_userapi_removeuser($args)
  */
 function Groups_userapi_whosonline($args)
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $col = $pntable['session_info_column'];
     $activetime = time() - (System::getVar('secinactivemins') * 60);
 

@@ -68,7 +68,7 @@ function users_searchapi_search($args)
     $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // get the db and table info
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $userscolumn = $pntable['users_column'];
 
     $q = DataUtil::formatForStore($args['q']);

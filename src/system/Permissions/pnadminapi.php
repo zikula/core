@@ -34,7 +34,7 @@ function permissions_adminapi_inc($args)
 
     // Work out which tables to operate against, and
     // various other bits and pieces
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
     // MMaes, 2003-06-23; Filter-view
     if (!is_null($args['permgrp']) && ($args['permgrp'] != PNPERMS_ALL)) {
@@ -104,7 +104,7 @@ function permissions_adminapi_dec($args)
     }
 
     // Work out which tables to operate against
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
     // MMaes, 2003-06-23; Filter-view
     if (!is_null($args['permgrp']) && ($args['permgrp'] != PNPERMS_ALL)) {
@@ -185,7 +185,7 @@ function permissions_adminapi_update($args)
     }
 
     // Work out which tables to operate against
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
 
     $obj = array('realm'     => $args['realm'],
@@ -236,7 +236,7 @@ function permissions_adminapi_create($args)
     }
 
     // Work out which tables to operate against
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permtable = $pntable['group_perms'];
     $permcolumn = $pntable['group_perms_column'];
 
@@ -300,7 +300,7 @@ function permissions_adminapi_delete($args)
     }
 
     // Work out which tables to operate against
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
 
     $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($args['pid']) . "'";
@@ -348,7 +348,7 @@ function permissions_adminapi_resequence()
         return LogUtil::registerPermissionError();
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
 
     // Get the information
@@ -400,7 +400,7 @@ function permissions_adminapi_full_resequence($args)
     $oldseq = $args['oldseq'];
     unset ($args);
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $permcolumn = $pntable['group_perms_column'];
 
     //find out the maximum sequence number

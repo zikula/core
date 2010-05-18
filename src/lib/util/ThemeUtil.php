@@ -89,7 +89,7 @@ class ThemeUtil
         $key = md5((string) $filter . (string) $state . (string) $type);
 
         if (empty($themesarray[$key])) {
-            $pntable = pnDBGetTables();
+            $pntable = System::dbGetTables();
             $themescolumn = $pntable['themes_column'];
             $whereargs = array();
             if ($state != PNTHEME_STATE_ALL) {

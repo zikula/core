@@ -77,7 +77,7 @@ function users_userapi_get($args)
         }
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $userscolumn = $pntable['users_column'];
 
     // calculate the where statement
@@ -139,7 +139,7 @@ function users_userapi_optionalitems($args)
         return false;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $propertycolumn = $pntable['user_property_column'];
 
     $extrawhere = '';
@@ -395,7 +395,7 @@ function users_userapi_finishnewuser($args)
         $moderation = false;
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     // We keep dynata as is if moderation is on as all dynadata will go in one field
     if ($moderation) {
@@ -560,7 +560,7 @@ function users_userapi_finishnewuser($args)
  */
 function users_userapi_mailpasswd($args)
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     $column = $pntable['users_column'];
     $where  = '';
@@ -754,7 +754,7 @@ function Users_userapi_savepreemail($args)
         return LogUtil::registerPermissionError();
     }
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $column = $pntable['users_temp_column'];
 
     // delete all the records from e-mail confirmation that have more than five days

@@ -105,7 +105,7 @@ function PageLock_userapi_requireLock(&$args)
 
     $args['lockedBy'] = null;
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $pageLockTable = &$pntable['PageLock'];
     $pageLockColumn = &$pntable['PageLock_column'];
 
@@ -152,7 +152,7 @@ function PageLock_userapi_getLocks($args)
 
     PageLockRequireAccess();
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $pageLockColumn = &$pntable['PageLock_column'];
     $now = time();
 
@@ -174,7 +174,7 @@ function PageLock_userapi_releaseLock($args)
 
     PageLockRequireAccess();
 
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $pageLockTable = &$pntable['PageLock'];
     $pageLockColumn = &$pntable['PageLock_column'];
 

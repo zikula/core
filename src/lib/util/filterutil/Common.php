@@ -95,7 +95,7 @@ class FilterUtil_Common
      */
     protected function setTable($table)
     {
-        $pntable = & pnDBGetTables();
+        $pntable = & System::dbGetTables();
 
         if (!isset($pntable[$table]) || !isset($pntable[$table . '_column'])) {
             return false;
@@ -135,7 +135,7 @@ class FilterUtil_Common
             return;
         }
 
-        $pntable = & pnDBGetTables();
+        $pntable = & System::dbGetTables();
         $c = & $this->column;
         // reset column array...
         $c = $pntable[$this->pntable . '_column'];

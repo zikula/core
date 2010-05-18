@@ -36,7 +36,7 @@ function Categories_init()
     // for postgres, we need to explicitly set the sequence value to reflect the inserted data
     $dbType = DBConnectionStack::getConnectionDBType();
     if ($dbType == 'postgres') {
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $tab = $pntables['categories_category'];
         $col = $pntables['categories_category_column'];
         $seq = $tab . '_cat_id_seq';
@@ -95,7 +95,7 @@ function Categories_delete()
     pnModDelVar('Categories');
 
     // delete other modules use of categories flag
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $cols = $pntable['module_vars_column'];
     $name = DataUtil::formatForStore('enablecategorization');
     $where = "$cols[name]='$name'";
@@ -567,7 +567,7 @@ function Categories_updateValueAddons_104()
     // Array of the modules to update
     $mods = array('News' => array('stories' => 'Main'), 'Pages' => array('pages' => 'Main'), 'FAQ' => array('faqanswer' => 'Main'), 'Feeds' => array('feeds' => 'Main'), 'Reviews' => array('reviews' => 'Main'), 'Content' => array('page' => 'primary'));
 
-    $pntables = pnDBGetTables();
+    $pntables = System::dbGetTables();
     $regcol = $pntables['categories_registry_column'];
     $mapcol = $pntables['categories_mapobj_column'];
 

@@ -189,7 +189,7 @@ function users_migrate_duds_to_attributes()
 {
     ModUtil::dbInfoLoad('Profile');
     ModUtil::dbInfoLoad('ObjectData');
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $udtable   = $pntable['user_data'];
     $udcolumn  = $pntable['user_data_column'];
     $objtable  = $pntable['objectdata_attributes'];

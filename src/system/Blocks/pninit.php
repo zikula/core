@@ -168,7 +168,7 @@ function blocks_upgrade_fixSerializedData()
 
 function blocks_upgrade_migrateExtMenu()
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $blockcolumn = $pntable['blocks_column'];
     $where = "WHERE $blockcolumn[bkey] = 'extmenu'";
     $obj = DBUtil::selectObjectArray('blocks', $where);
@@ -205,7 +205,7 @@ function blocks_upgrade_migrateExtMenu()
 
 function blocks_upgrade_updateThelang()
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $blockcolumn = $pntable['blocks_column'];
     $where = "WHERE $blockcolumn[bkey] = 'thelang'";
     $obj = DBUtil::selectObjectArray('blocks', $where);
@@ -231,7 +231,7 @@ function blocks_upgrade_updateThelang()
 
 function blocks_upgrade_updateBlockLanguages()
 {
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
     $blockcolumn = $pntable['blocks_column'];
     $where = "WHERE $blockcolumn[language] != ''";
     $obj = DBUtil::selectObjectArray('blocks', $where);

@@ -144,7 +144,7 @@ function modules_updatedefaultdata($lang)
 {
     // set the default data for the Modules module
 
-    $pntables = pnDBGetTables();
+    $pntables = System::dbGetTables();
     $modcolumn = $pntables['modules_column'];
 
     $where = 'WHERE '.$modcolumn['name'].'=\'Modules\'';

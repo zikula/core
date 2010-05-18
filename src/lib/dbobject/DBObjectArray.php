@@ -109,7 +109,7 @@ class DBObjectArray
     public function _init($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
         if ($this->_objType != 'DBOBJECTARRAY') {
-            $pntables = pnDBGetTables();
+            $pntables = System::dbGetTables();
             $tkey = $this->_objType;
             $ckey = $tkey . "_column";
             $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : '';
@@ -169,7 +169,7 @@ class DBObjectArray
      */
     public function generateEmptyObjectArray($num = 1)
     {
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $tkey = $this->_objType;
         $ckey = $this->_objType . "_column";
         $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : '';

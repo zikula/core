@@ -701,7 +701,7 @@ class UserUtil
      */
     public static function setVar($name, $value, $uid = -1)
     {
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
 
         if (empty($name)) {
             return false;
@@ -973,7 +973,7 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
     {
-        $pntable = pnDBGetTables();
+        $pntable = System::dbGetTables();
         $userscolumn = $pntable['users_column'];
 
         if (empty($where)) {
@@ -1048,7 +1048,7 @@ class UserUtil
             return false;
         }
 
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         return array_key_exists($label, $pntables['users_column']);
     }
 }

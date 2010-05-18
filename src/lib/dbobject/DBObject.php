@@ -95,7 +95,7 @@ class DBObject
     public function _init($init = null, $key = null, $field = null)
     {
         if ($this->_objType != 'DBOBJECT') {
-            $pntables = pnDBGetTables();
+            $pntables = System::dbGetTables();
             $tkey = $this->_objType;
             $ckey = $this->_objType . "_column";
             $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : null;
@@ -148,7 +148,7 @@ class DBObject
      */
     public function generateEmptyObject()
     {
-        $pntables = pnDBGetTables();
+        $pntables = System::dbGetTables();
         $tkey = $this->_objType;
         $ckey = $this->_objType . "_column";
         $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : '';

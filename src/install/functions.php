@@ -382,7 +382,7 @@ function createuser($username, $password, $email)
     // get the database connection
     ModUtil::dbInfoLoad('Users', 'Users');
     ModUtil::dbInfoLoad('Modules', 'Modules');
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     // create the password hash
     $password = hash(ModUtil::getVar('Users', 'hash_method'), $password);

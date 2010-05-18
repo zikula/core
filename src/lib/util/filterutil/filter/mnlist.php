@@ -116,7 +116,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
     public function setListTable($name, $table)
     {
         $this->mnpntable[$name] = $table;
-        $pntable = & pnDBGetTables();
+        $pntable = & System::dbGetTables();
         $this->mntable[$name] = $pntable[$table];
         $this->mncolumn[$name] = $pntable[$table . '_column'];
     }

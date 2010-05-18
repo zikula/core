@@ -29,7 +29,7 @@ function Users_ajax_getusers()
     $fragment = FormUtil::getpassedValue('fragment');
 
     ModUtil::dbInfoLoad('Users');
-    $pntable = pnDBGetTables();
+    $pntable = System::dbGetTables();
 
     $userscolumn = $pntable['users_column'];
 
