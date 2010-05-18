@@ -83,7 +83,8 @@ class Renderer extends Smarty
                 $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
                 break;
             default:
-                $mpluginPath = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "system/" . $this->module[$module]['directory'] . "/templates/plugins";
+                $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
         }
 
         $pluginpaths = array(
