@@ -301,7 +301,7 @@ class System
 // if we've got this far an error handler can come into play
 // (except in the installer)
             if (!defined('_ZINSTALLVER')) {
-                set_error_handler('pnErrorHandler');
+                set_error_handler('System::errorHandler');
             }
 
             EventManagerUtil::notify($coreInitEvent);
