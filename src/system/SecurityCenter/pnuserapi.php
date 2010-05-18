@@ -162,12 +162,6 @@ function securitycenter_userapi_secureinput()
         // Run IDS if desired
         if (pnConfigGetVar('useids') == 1) {
             try {
-                // include the PHPIDS and get access to the result object
-                set_include_path(get_include_path() . PATH_SEPARATOR . 'system/SecurityCenter/pnincludes');
-
-                // include IDS base file
-                require_once 'IDS/Init.php';
-
                 // build request array defining what to scan
                 // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
                 if (isset($_REQUEST)) {
@@ -483,19 +477,6 @@ function &securitycenter_userapi_getpurifier($args = null)
     static $purifier;
 
     if (!isset($purifier) || $force) {
-        $purifierPath = pnConfigGetVar('htmlpurifierlocation');
-        // setup the HTML Purifier autoloader (commented out at the moment as we use a fallback way to load the classes below)
-        // Loader::requireOnce($htmlPurifierPath . 'HTMLPurifier.auto.php');
-
-        // add HTML Purifier library path to include path
-        Loader::requireOnce($purifierPath . 'HTMLPurifier.path.php');
-
-        // include all important files in an opcode cache friendly manner
-        Loader::requireOnce('HTMLPurifier.includes.php');
-
-        // use autoloader only for catching additional classes that are missing
-        Loader::requireOnce('HTMLPurifier.autoload.php');
-
         $config = pnConfigGetVar('htmlpurifierConfig');
         if (!is_null($config) && ($config !== false)) {
             $config = unserialize($config);
@@ -676,7 +657,7 @@ function _securitycenter_userapi_getidsconfig()
 
     // we use a different HTML Purifier source
     // by default PHPIDS does also contain those files
-    $config['General']['HTML_Purifier_Path'] = pnConfigGetVar('htmlpurifierlocation') . 'HTMLPurifier.auto.php';
+    //$config['General']['HTML_Purifier_Path'] = pnConfigGetVar('htmlpurifierlocation') . 'HTMLPurifier.auto.php';
     $config['General']['HTML_Purifier_Cache'] = CacheUtil::getLocalDir() . '/purifierCache';
 
     // define which fields contain html and need preparation before hitting the PHPIDS rules
