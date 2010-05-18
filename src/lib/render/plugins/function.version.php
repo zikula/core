@@ -29,7 +29,7 @@ function smarty_function_version($params, &$smarty)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $return = PN_VERSION_NUM;
+    $return = Z_VERSION_NUM;
 
     if ($assign) {
         $smarty->assign($assign, $return);

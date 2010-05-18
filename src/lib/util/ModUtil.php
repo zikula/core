@@ -319,7 +319,7 @@ class ModUtil
             // 0 = the core itself, create a basic dummy module
             $modinfo['name'] = 'zikula';
             $modinfo['id'] = 0;
-            $modinfo['displayname'] = 'Zikula Core v' . PN_VERSION_NUM;
+            $modinfo['displayname'] = 'Zikula Core v' . Z_VERSION_NUM;
             return $modinfo;
         }
 

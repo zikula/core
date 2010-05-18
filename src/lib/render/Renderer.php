@@ -570,9 +570,9 @@ class Renderer extends Smarty
     public function add_core_data()
     {
         $core = array();
-        $core['version_num'] = PN_VERSION_NUM;
-        $core['version_id'] = PN_VERSION_ID;
-        $core['version_sub'] = PN_VERSION_SUB;
+        $core['version_num'] = Z_VERSION_NUM;
+        $core['version_id'] = Z_VERSION_ID;
+        $core['version_sub'] = Z_VERSION_SUB;
         $core['logged_in'] = UserUtil::isLoggedIn();
         $core['language'] = $this->language;
         $core['themeinfo'] = $this->themeinfo;

@@ -257,7 +257,7 @@ function securitycenter_admin_updateconfig()
 
     // if update checks are disabled, reset values to force new update check if re-enabled
     if ($updatecheck == 0) {
-        pnConfigSetVar('updateversion', PN_VERSION_NUM);
+        pnConfigSetVar('updateversion', Z_VERSION_NUM);
         pnConfigSetVar('updatelastchecked', 0);
     }
 

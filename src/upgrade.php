@@ -259,7 +259,7 @@ function _upg_upgrademodules($username, $password)
     ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
     // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-    pnConfigSetVar('Version_Num', PN_VERSION_NUM);
+    pnConfigSetVar('Version_Num', Z_VERSION_NUM);
     pnConfigSetVar('language_i18n', ZLanguage::getLanguageCode());
     pnConfigSetVar('language_bc', 0);
 

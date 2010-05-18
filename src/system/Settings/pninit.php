@@ -36,9 +36,9 @@ function settings_init()
     pnConfigSetVar('funtext', '1');
     pnConfigSetVar('reportlevel', '0');
     pnConfigSetVar('startpage', 'blank');
-    pnConfigSetVar('Version_Num', PN_VERSION_NUM);
-    pnConfigSetVar('Version_ID', PN_VERSION_ID);
-    pnConfigSetVar('Version_Sub', PN_VERSION_SUB);
+    pnConfigSetVar('Version_Num', Z_VERSION_NUM);
+    pnConfigSetVar('Version_ID', Z_VERSION_ID);
+    pnConfigSetVar('Version_Sub', Z_VERSION_SUB);
     pnConfigSetVar('debug_sql', '0');
     pnConfigSetVar('multilingual', '1');
     pnConfigSetVar('useflags', '0');
@@ -92,9 +92,9 @@ function settings_init()
 function settings_upgrade($oldversion)
 {
     // always ensure that the version info is upgraded
-    pnConfigSetVar('Version_Num', PN_VERSION_NUM);
-    pnConfigSetVar('Version_ID', PN_VERSION_ID);
-    pnConfigSetVar('Version_Sub', PN_VERSION_SUB);
+    pnConfigSetVar('Version_Num', Z_VERSION_NUM);
+    pnConfigSetVar('Version_ID', Z_VERSION_ID);
+    pnConfigSetVar('Version_Sub', Z_VERSION_SUB);
 
     // Upgrade dependent on old version number
     switch ($oldversion)
@@ -110,7 +110,7 @@ function settings_upgrade($oldversion)
         case '2.6':
             pnConfigSetVar('updatelastchecked', 0);
             pnConfigSetVar('updatefrequency', 7);
-            pnConfigSetVar('updateversion', PN_VERSION_NUM);
+            pnConfigSetVar('updateversion', Z_VERSION_NUM);
             pnConfigSetVar('updatecheck', true);
 
         case '2.7':

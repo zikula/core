@@ -11,26 +11,26 @@
  * Core version informations - should be upgraded on each release for
  * better control on config settings
  */
-define('PN_VERSION_NUM', '1.3.0-dev');
-define('PN_VERSION_ID', 'Zikula');
-define('PN_VERSION_SUB', 'cinco');
+define('Z_VERSION_NUM', '1.3.0-dev');
+define('Z_VERSION_ID', 'Zikula');
+define('Z_VERSION_SUB', 'cinco');
 
 /**
  * Yes/no integer
  */
-define('PNYES', 1);
-define('PNNO', 0);
+define('ZYES', 1);
+define('ZNO', 0);
 
 /**
  * State of modules
  */
-define('PNMODULE_STATE_UNINITIALISED', 1);
-define('PNMODULE_STATE_INACTIVE', 2);
-define('PNMODULE_STATE_ACTIVE', 3);
-define('PNMODULE_STATE_MISSING', 4);
-define('PNMODULE_STATE_UPGRADED', 5);
-define('PNMODULE_STATE_NOTALLOWED', 6);
-define('PNMODULE_STATE_INVALID', -1);
+define('MODULE_STATE_UNINITIALISED', 1);
+define('MODULE_STATE_INACTIVE', 2);
+define('MODULE_STATE_ACTIVE', 3);
+define('MODULE_STATE_MISSING', 4);
+define('MODULE_STATE_UPGRADED', 5);
+define('MODULE_STATE_NOTALLOWED', 6);
+define('MODULE_STATE_INVALID', -1);
 define('MODULE_TYPE_MODULE', 2);
 define('MODULE_TYPE_SYSTEM', 3);
 define('MODULE_TYPE_APP', 7);
@@ -39,38 +39,38 @@ define('MODULE_TYPE_APP', 7);
 /**
  * Module dependency states
  */
-define('PNMODULE_DEPENDENCY_REQUIRED', 1);
-define('PNMODULE_DEPENDENCY_RECOMMENDED', 2);
-define('PNMODULE_DEPENDENCY_CONFLICTS', 3);
+define('MODULE_DEPENDENCY_REQUIRED', 1);
+define('MODULE_DEPENDENCY_RECOMMENDED', 2);
+define('MODULE_DEPENDENCY_CONFLICTS', 3);
 
 /**
  * 'All' and 'unregistered' for user and group permissions
  */
-define('PNPERMS_ALL', '-1');
-define('PNPERMS_UNREGISTERED', '0');
+define('PERMS_ALL', '-1');
+define('PERMS_UNREGISTERED', '0');
 
 /**
  * Fake module for config vars
  */
-define('PN_CONFIG_MODULE', '/PNConfig');
+define('CONFIG_MODULE', '/PNConfig');
 
 /**
  * Core initialisation stages
  */
-define('PN_CORE_NONE', 0);
-define('PN_CORE_CONFIG', 1);
-define('PN_CORE_ADODB', 2); // deprecated
-define('PN_CORE_DB', 4);
-define('PN_CORE_OBJECTLAYER', 8);
-define('PN_CORE_TABLES', 16);
-define('PN_CORE_SESSIONS', 32);
-define('PN_CORE_LANGS', 64);
-define('PN_CORE_MODS', 128);
-define('PN_CORE_TOOLS', 256); // deprecated
-define('PN_CORE_AJAX', 512); // deprecated
-define('PN_CORE_DECODEURLS', 1024);
-define('PN_CORE_THEME', 2048);
-define('PN_CORE_ALL', 4095);
+define('CORE_NONE', 0);
+define('CORE_CONFIG', 1);
+define('CORE_ADODB', 2); // deprecated
+define('CORE_DB', 4);
+define('CORE_OBJECTLAYER', 8);
+define('CORE_TABLES', 16);
+define('CORE_SESSIONS', 32);
+define('CORE_LANGS', 64);
+define('CORE_MODS', 128);
+define('CORE_TOOLS', 256); // deprecated
+define('CORE_AJAX', 512); // deprecated
+define('CORE_DECODEURLS', 1024);
+define('CORE_THEME', 2048);
+define('CORE_ALL', 4095);
 
 /**
  * Defines for access levels
@@ -112,7 +112,7 @@ function pnConfigGetVar($name, $default = null)
     if (isset($GLOBALS['ZConfig']['System'][$name])) {
         $mod_var = $GLOBALS['ZConfig']['System'][$name];
     } else {
-        $mod_var = ModUtil::getVar(PN_CONFIG_MODULE, $name);
+        $mod_var = ModUtil::getVar(CONFIG_MODULE, $name);
         // cache
         $GLOBALS['ZConfig']['System'][$name] = $mod_var;
     }
@@ -145,7 +145,7 @@ function pnConfigSetVar($name, $value = '')
     }
 
     // set the variable
-    if (ModUtil::setVar(PN_CONFIG_MODULE, $name, $value)) {
+    if (ModUtil::setVar(CONFIG_MODULE, $name, $value)) {
         // Update my vars
         $GLOBALS['ZConfig']['System'][$name] = $value;
         return true;
@@ -172,7 +172,7 @@ function pnConfigDelVar($name)
     }
 
     // set the variable
-    pnModDelVar(PN_CONFIG_MODULE, $name);
+    pnModDelVar(CONFIG_MODULE, $name);
 
     // Update my vars
     $val = false;

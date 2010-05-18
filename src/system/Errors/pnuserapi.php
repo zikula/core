@@ -32,7 +32,7 @@ function errors_userapi_send_email()
     $headers .= "From: $sitename Error Tools $adminmail\n";
     $headers .= "X-Sender: <$notify_from>\n";
     $headers .= "X-Mailer: PHP Error Tools by WebMedic\n";
-    $headers .= "X-Mailer-Version: ".PN_VERSION_ID." ".PN_VERSION_NUM."\n";
+    $headers .= "X-Mailer-Version: ".Z_VERSION_ID." ".Z_VERSION_NUM."\n";
     $headers .= "X-Priority: 1\n";
     $headers .= "Get-Script-At: <http://www.zikula.org>\n";
     $body = "Webmaster, the following item was not found on your website:\n\n";
@@ -44,7 +44,7 @@ function errors_userapi_send_email()
     $body .= "REQUEST\n-- Host: ".pnServerGetVar('HTTP_HOST')."\n-- Query String: ".pnServerGetVar('REDIRECT_QUERY_STRING')."\n";
     $body .= "-- Method: ".pnServerGetVar('$REQUEST_METHOD')."\n\n";
     $body .= "USER\n-- Host: ".pnServerGetVar('REMOTE_HOST')."\n-- IP: ".pnServerGetVar('REMOTE_ADDR')."\n-- User: ".pnServerGetVar('REMOTE_USER')."\n-- Agent: ".pnServerGetVar('HTTP_USER_AGENT')."\n-- Cookies: ".pnServerGetVar('HTTP_COOKIE')."\n\n";
-    $body .= "Envolution\n-- version: ".PN_VERSION_NUM;
+    $body .= "Envolution\n-- version: ".Z_VERSION_NUM;
 
     // Send the mail message.
     pnMail($adminmail, $headers, $body);

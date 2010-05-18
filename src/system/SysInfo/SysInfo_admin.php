@@ -26,9 +26,9 @@ class SysInfo_admin extends AbstractController
         // Index page, display general information
         $pnRender = Renderer::getInstance('SysInfo');
 
-        $pnRender->assign('pnversionnum', PN_VERSION_NUM);
-        $pnRender->assign('pnversionid', PN_VERSION_ID);
-        $pnRender->assign('pnversionsub', PN_VERSION_SUB);
+        $pnRender->assign('pnversionnum', Z_VERSION_NUM);
+        $pnRender->assign('pnversionid', Z_VERSION_ID);
+        $pnRender->assign('pnversionsub', Z_VERSION_SUB);
         $serversig = pnServerGetVar('SERVER_SIGNATURE');
         if (!isset($serversig) || empty($serversig)) {
             $serversig = pnServerGetVar('SERVER_SOFTWARE');
