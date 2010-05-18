@@ -83,10 +83,10 @@ function install()
     $smarty->left_delimiter = '{';
     $smarty->right_delimiter = '}';
     $smarty->compile_dir = $tempDir . '/Renderer_compiled';
-    $smarty->template_dir = 'install/pntemplates';
+    $smarty->template_dir = 'install/templates';
     $smarty->plugins_dir = array(
                     'plugins',
-                    'install/pntemplates/plugins',
+                    'install/templates/plugins',
                     'lib/render/plugins');
 
     // load the installer language files
