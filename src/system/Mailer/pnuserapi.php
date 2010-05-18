@@ -60,7 +60,7 @@ function Mailer_userapi_sendmessage($args)
     }
 
     // create new instance of mailer class
-    $mail = new phpmailer();
+    $mail = new PHPMailer();
 
     // set default message parameters
     $mail->PluginDir = "system/Mailer/vendor/";
