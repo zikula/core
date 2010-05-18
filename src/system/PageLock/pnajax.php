@@ -20,7 +20,7 @@ function PageLock_ajax_refreshpagelock($args)
 {
     $lockName = FormUtil::getPassedValue('lockname', null, 'post');
 
-    $uname = pnUserGetVar('uname');
+    $uname = UserUtil::getVar('uname');
 
     $lockInfo = ModUtil::apiFunc('PageLock', 'user', 'requireLock',
                              array('lockName'      => $lockName,
@@ -43,7 +43,7 @@ function PageLock_ajax_checkpagelock($args)
 {
     $lockName = FormUtil::getPassedValue('lockname', null, 'post');
 
-    $uname = pnUserGetVar('uname');
+    $uname = UserUtil::getVar('uname');
 
     $lockInfo = ModUtil::apiFunc('PageLock', 'user', 'requireLock',
                              array('lockName'      => $lockName,

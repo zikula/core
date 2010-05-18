@@ -578,7 +578,7 @@ class Renderer extends Smarty
         $core['themeinfo'] = $this->themeinfo;
 
         // add userdata
-        $core['user'] = pnUserGetVars(SessionUtil::getVar('uid'));
+        $core['user'] = UserUtil::getVars(SessionUtil::getVar('uid'));
 
         // add modvars of current modules
         foreach ($this->module as $module => $dummy) {

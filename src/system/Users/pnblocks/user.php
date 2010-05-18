@@ -51,11 +51,11 @@ function Users_userblock_display($blockinfo)
         return;
     }
 
-    if (UserUtil::isLoggedIn() && pnUserGetVar('ublockon') == 1) {
+    if (UserUtil::isLoggedIn() && UserUtil::getVar('ublockon') == 1) {
         if (!isset($blockinfo['title']) || empty($blockinfo['title'])) {
-            $blockinfo['title'] = __f('Custom block content for %s', pnUserGetVar('name'));
+            $blockinfo['title'] = __f('Custom block content for %s', UserUtil::getVar('name'));
         }
-        $blockinfo['content'] = nl2br(pnUserGetVar('ublock'));
+        $blockinfo['content'] = nl2br(UserUtil::getVar('ublock'));
         return pnBlockThemeBlock($blockinfo);
     }
     return;

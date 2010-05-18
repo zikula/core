@@ -47,7 +47,7 @@ class UserUtil
      */
     public static function getPNUserField($id, $field)
     {
-        return pnUserGetVar($field, $id);
+        return UserUtil::getVar($field, $id);
     }
 
     /**
@@ -187,7 +187,7 @@ class UserUtil
     public static function getGroupListForUser($uid = 0, $separator = ",")
     {
         if (!$uid) {
-            $uid = pnUserGetVar('uid');
+            $uid = UserUtil::getVar('uid');
         }
 
         $gidArray = self::getGroupsForUser($uid);
@@ -465,7 +465,7 @@ class UserUtil
                 }
             }
             if (!$uid) {
-                $event = new Event('user.login.failed', null, array('user' => pnUserGetVar('uid')));
+                $event = new Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
                 EventManagerUtil::notify($event);
                 return false;
             }
@@ -491,7 +491,7 @@ class UserUtil
         // now we've logged in the permissions previously calculated are invalid
         $GLOBALS['authinfogathered'][$uid] = 0;
 
-        $event = new Event('user.login', null, array('user' => pnUserGetVar('uid')));
+        $event = new Event('user.login', null, array('user' => UserUtil::getVar('uid')));
         EventManagerUtil::notify($event);
 
         return true;
@@ -525,7 +525,7 @@ class UserUtil
     public static function logout()
     {
         if (self::isLoggedIn()) {
-            $event = new Event('user.logout', null, array('user' => pnUserGetVar('uid')));
+            $event = new Event('user.logout', null, array('user' => UserUtil::getVar('uid')));
             EventManagerUtil::notify($event);
             if (ModUtil::available('AuthPN')) {
                 $authmodules = explode(',', ModUtil::getVar('AuthPN', 'authmodules'));
@@ -921,7 +921,7 @@ class UserUtil
         // User theme
         if (pnConfigGetVar('theme_change')) {
             if ((self::isLoggedIn())) {
-                $usertheme = pnUserGetVar('theme');
+                $usertheme = UserUtil::getVar('theme');
             } else {
                 $usertheme = SessionUtil::getVar('theme');
             }

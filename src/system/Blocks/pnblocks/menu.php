@@ -58,7 +58,7 @@ function Blocks_menublock_display($blockinfo)
     $pnRender = Renderer::getInstance('Blocks');
 
     // Set the cache id
-    $pnRender->cache_id = $blockinfo['bid'].':'.pnUserGetVar('uid');
+    $pnRender->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
 
     // Break out options from our content field
     $vars = BlockUtil::varsFromContent($blockinfo['content']);

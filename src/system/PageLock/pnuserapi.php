@@ -22,7 +22,7 @@ function PageLock_userapi_pageLock($args)
     $returnUrl = (array_key_exists('returnUrl', $args) ? $args['returnUrl'] : null);
     $ignoreEmptyLock = (array_key_exists('ignoreEmptyLock', $args) ? $args['ignoreEmptyLock'] : false);
 
-    $uname = pnUserGetVar('uname');
+    $uname = UserUtil::getVar('uname');
 
     $lockedHtml = '';
 

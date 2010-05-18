@@ -642,9 +642,9 @@ function users_admin_processusers()
                 if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                  array('fromname'       => $sendmail['from'],
                                        'fromaddress'    => $sendmail['rpemail'],
-                                       'toname'         => pnUserGetVar('uname'),
-                                       'toaddress'      => pnUserGetVar('email'),
-                                       'replytoname'    => pnUserGetVar('uname'),
+                                       'toname'         => UserUtil::getVar('uname'),
+                                       'toaddress'      => UserUtil::getVar('email'),
+                                       'replytoname'    => UserUtil::getVar('uname'),
                                        'replytoaddress' => $sendmail['rpemail'],
                                        'subject'        => $sendmail['subject'],
                                        'body'           => $sendmail['message'],
@@ -663,9 +663,9 @@ function users_admin_processusers()
             if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                              array('fromname'       => $sendmail['from'],
                                    'fromaddress'    => $sendmail['rpemail'],
-                                   'toname'         => pnUserGetVar('uname'),
-                                   'toaddress'      => pnUserGetVar('email'),
-                                   'replytoname'    => pnUserGetVar('uname'),
+                                   'toname'         => UserUtil::getVar('uname'),
+                                   'toaddress'      => UserUtil::getVar('email'),
+                                   'replytoname'    => UserUtil::getVar('uname'),
                                    'replytoaddress' => $sendmail['rpemail'],
                                    'subject'        => $sendmail['subject'],
                                    'body'           => $sendmail['message'],
@@ -779,7 +779,7 @@ function users_admin_modify($args)
     }
 
     // get the user vars
-    $uservars = pnUserGetVars($userid);
+    $uservars = UserUtil::getVars($userid);
     if ($uservars == false) {
         LogUtil::registerError(__('Sorry! No such user found.'));
         return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
@@ -878,7 +878,7 @@ function users_admin_deleteusers($args)
     }
 
     // get the user vars
-    $uname = pnUserGetVar('uname', $userid);
+    $uname = UserUtil::getVar('uname', $userid);
     if ($uname == false) {
         LogUtil::registerError(__('Sorry! No such user found.'));
         return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
@@ -1210,7 +1210,7 @@ function users_admin_exportCSV($args)
 
     //loop every user gettin user id and username and all user fields and push onto result array.
     foreach ($users as $user) {
-        $uservars = pnUserGetVars($user['uid']);
+        $uservars = UserUtil::getVars($user['uid']);
         $result = array();
         array_push($result,$uservars['uid'],$uservars['uname']);
         //checks for optional data

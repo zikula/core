@@ -108,7 +108,7 @@ function Groups_userapi_get($args)
     $result['nbuser'] =  count($uidsArray);
     $result['members'] = $uidsArray;
 
-    $uid = pnUserGetVar('uid');
+    $uid = UserUtil::getVar('uid');
     if ($uid != 0) {
         $result['status'] = ModUtil::apiFunc('Groups',
                             'user',
@@ -175,7 +175,7 @@ function Groups_userapi_getusergroups($args)
 {
     // Optional arguments.
     if (!isset($args['uid'])) {
-        $args['uid'] = pnUserGetVar('uid');
+        $args['uid'] = UserUtil::getVar('uid');
     }
     if (!isset($args['uid'])) {
         return LogUtil::registerArgsError();
@@ -249,7 +249,7 @@ function Groups_userapi_getallgroups($args)
         return LogUtil::registerError(__('Error! Could not load data.'));
     }
 
-    $uid = pnUserGetVar('uid');
+    $uid = UserUtil::getVar('uid');
 
     if ($uid != 0) {
         $memberships = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
@@ -453,7 +453,7 @@ function Groups_userapi_userupdate($args)
         LogUtil::registerError(__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
     }
 
-    $userid = pnUserGetVar('uid');
+    $userid = UserUtil::getVar('uid');
 
     if ($args['action'] == 'subscribe') {
 
@@ -473,7 +473,7 @@ function Groups_userapi_userupdate($args)
             }
 
             if (ModUtil::getVar('Groups', 'mailwarning')) {
-                $uname = pnUserGetVar('uname', $userid);
+                $uname = UserUtil::getVar('uname', $userid);
                 $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                      array('toname'    => __('Administrator'),
                                            'toaddress' => pnConfigGetVar('adminmail'),

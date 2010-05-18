@@ -402,7 +402,7 @@ class WorkflowUtil
         }
 
         // get current user
-        $currentUser = pnUserGetVar('uid');
+        $currentUser = UserUtil::getVar('uid');
         // no user then assume anon
         if (empty($currentUser)) {
             $currentUser = -1;

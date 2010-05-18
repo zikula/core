@@ -49,7 +49,7 @@ class SecurityUtil
         }
 
         if (!$user) {
-            $user = pnUserGetVar('uid');
+            $user = UserUtil::getVar('uid');
         }
 
         if (!isset($GLOBALS['authinfogathered'][$user]) || (int) $GLOBALS['authinfogathered'][$user] == 0) {
@@ -218,8 +218,8 @@ class SecurityUtil
                 $uids[] = 0;
                 $vars['Active User'] = 'unregistered';
             } else {
-                $uids[] = pnUserGetVar('uid');
-                $vars['Active User'] = pnUserGetVar('uid');
+                $uids[] = UserUtil::getVar('uid');
+                $vars['Active User'] = UserUtil::getVar('uid');
             }
         } else {
             $uids[] = $user;

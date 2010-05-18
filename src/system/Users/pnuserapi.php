@@ -762,7 +762,7 @@ function Users_userapi_savepreemail($args)
     $where = "$column[dynamics]<" . $fiveDaysAgo . " AND $column[type]=2";
     DBUtil::deleteWhere ('users_temp', $where);
 
-    $uname = pnUserGetVar('uname');
+    $uname = UserUtil::getVar('uname');
 
     // generate a randomize value of 7 characters needed to confirm the e-mail change
     $confirmValue = substr(md5(time() . rand(0, 30000)),0 ,7);;
@@ -796,7 +796,7 @@ function Users_userapi_savepreemail($args)
 
     $pnRender = Renderer::getInstance('Users', false);
     $pnRender->assign('uname', $uname);
-    $pnRender->assign('email', pnUserGetVar('email'));
+    $pnRender->assign('email', UserUtil::getVar('email'));
     $pnRender->assign('newemail', $args['newemail']);
     $pnRender->assign('sitename', pnConfigGetVar('sitename'));
     $pnRender->assign('url',  ModUtil::url('Users', 'user', 'confirmchemail', array('confirmcode' => $confirmValue), null, null, true));
@@ -821,7 +821,7 @@ function users_userapi_getuserpreemail()
     if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
-    $item = DBUtil::selectObjectById('users_temp', pnUserGetVar('uname'), 'uname');
+    $item = DBUtil::selectObjectById('users_temp', UserUtil::getVar('uname'), 'uname');
     if (!$item) {
         return false;
     }

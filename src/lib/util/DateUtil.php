@@ -797,7 +797,7 @@ class DateUtil
     public static function getTimezoneUserDiff()
     {
         $srv_tz = pnConfigGetVar('timezone_server');
-        $usr_tz = pnUserGetVar('tzoffset') ? pnUserGetVar('tzoffset') : pnConfigGetVar('timezone_offset');
+        $usr_tz = UserUtil::getVar('tzoffset') ? UserUtil::getVar('tzoffset') : pnConfigGetVar('timezone_offset');
 
         return ($srv_tz - $usr_tz)*60*60;
     }
@@ -836,7 +836,7 @@ class DateUtil
 
             $thezone = null;
             if (UserUtil::isLoggedIn()) {
-                $thezone = pnUserGetVar('tzoffset');
+                $thezone = UserUtil::getVar('tzoffset');
             }
             $thezone = $thezone ? $thezone : pnConfigGetVar('timezone_offset');
 

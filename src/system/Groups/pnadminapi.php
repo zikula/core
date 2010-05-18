@@ -336,7 +336,7 @@ function Groups_adminapi_getapplications($args)
         if (SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_EDIT)&& $group<>false){
             $items[] = array('app_id'      => $obj['app_id'],
                              'userid'      => $obj['uid'],
-                             'username'    => pnUserGetVar('uname', $obj['uid']),
+                             'username'    => UserUtil::getVar('uname', $obj['uid']),
                              'appgid'      => $obj['gid'],
                              'gname'       => $group['name'],
                              'application' => nl2br($obj['application']),
@@ -427,12 +427,12 @@ function Groups_adminapi_pendingaction($args)
         case 2:
             if (ModUtil::available('Mailer')) {
                 $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                                     array('toname'    => pnUserGetVar('uname', $args['userid']),
-                                           'toaddress' => pnUserGetVar('email', $args['userid']),
+                                     array('toname'    => UserUtil::getVar('uname', $args['userid']),
+                                           'toaddress' => UserUtil::getVar('email', $args['userid']),
                                            'subject'   => $args['reasontitle'],
                                            'body'      => $args['reason']));
             } else {
-                $send = pnMail(pnUserGetVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: ".pnConfigGetVar('adminmail')."\nX-Mailer: PHP/" . phpversion(), 0);
+                $send = pnMail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: ".pnConfigGetVar('adminmail')."\nX-Mailer: PHP/" . phpversion(), 0);
             }
             break;
     }

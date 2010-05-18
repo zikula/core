@@ -357,7 +357,7 @@ class Theme extends Renderer
 
         // set some basic class variables from the PN environemnt
         $this->isloggedin = UserUtil::isLoggedIn();
-        $this->uid = pnUserGetVar('uid');
+        $this->uid = UserUtil::getVar('uid');
 
         // Assign the query string
         $this->qstring = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';

@@ -65,7 +65,7 @@ function smarty_modifier_userprofilelink($string, $class = '', $image = '', $max
             $show = substr($string, 0, $truncEnd);
 
         } elseif (is_numeric($string)) {
-            $show = $uname = pnUserGetVar('uname', $uid);
+            $show = $uname = UserUtil::getVar('uname', $uid);
         } else {
             $show = $string;
         }

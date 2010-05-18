@@ -124,9 +124,9 @@ class ObjectUtil
 
         $obj[$idcolumn] = (isset($obj[$idcolumn]) && $obj[$idcolumn] && $preserveValues ? $obj[$idcolumn] : null);
         $obj['cr_date'] = (isset($obj['cr_date']) && $obj['cr_date'] && $preserveValues ? $obj['cr_date'] : DateUtil::getDatetime());
-        $obj['cr_uid']  = (isset($obj['cr_uid']) && $obj['cr_uid'] && $preserveValues   ? $obj['cr_uid']  : pnUserGetVar('uid'));
+        $obj['cr_uid']  = (isset($obj['cr_uid']) && $obj['cr_uid'] && $preserveValues   ? $obj['cr_uid']  : UserUtil::getVar('uid'));
         $obj['lu_date'] = (isset($obj['lu_date']) && $obj['lu_date'] && $preserveValues ? $obj['lu_date'] : DateUtil::getDatetime());
-        $obj['lu_uid']  = (isset($obj['lu_uid']) && $obj['lu_uid'] && $preserveValues   ? $obj['lu_uid']  : pnUserGetVar('uid'));
+        $obj['lu_uid']  = (isset($obj['lu_uid']) && $obj['lu_uid'] && $preserveValues   ? $obj['lu_uid']  : UserUtil::getVar('uid'));
 
         if (is_null($obj['cr_uid'])) {
             $obj['cr_uid'] = 0;
@@ -156,7 +156,7 @@ class ObjectUtil
         Loader::loadClass('DateUtil');
 
         $obj['lu_date'] = (isset($obj['lu_date']) && $obj['lu_date'] && $preserveValues ? $obj['lu_date'] : DateUtil::getDatetime());
-        $obj['lu_uid']  = (isset($obj['lu_uid']) && $obj['lu_uid'] && $preserveValues   ? $obj['lu_uid']  : pnUserGetVar('uid'));
+        $obj['lu_uid']  = (isset($obj['lu_uid']) && $obj['lu_uid'] && $preserveValues   ? $obj['lu_uid']  : UserUtil::getVar('uid'));
 
         if (is_null($obj['lu_uid'])) {
             $obj['lu_uid'] = 0;
@@ -219,7 +219,7 @@ class ObjectUtil
         $obj = array();
         $obj['__TYPE__'] = $type;
         $obj['cr_date']  = DateUtil::getDateTime();
-        $obj['cr_uid']   = pnUserGetVar('uid');
+        $obj['cr_uid']   = UserUtil::getVar('uid');
 
         return $obj;
     }

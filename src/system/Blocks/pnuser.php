@@ -38,7 +38,7 @@ function blocks_user_changestatus()
     }
     */
     $bid = FormUtil::getPassedValue('bid');
-    $uid = pnUserGetVar('uid');
+    $uid = UserUtil::getVar('uid');
 
     $pntable = pnDBGetTables();
     $column  = $pntable['userblocks_column'];

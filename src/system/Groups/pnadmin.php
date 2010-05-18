@@ -477,8 +477,8 @@ function Groups_admin_groupmembership($args)
                                                                                           'authid' => SecurityUtil::generateAuthKey())),
                                'imgfile' => '14_layer_deletelayer.gif',
                                'title' => __('Remove user from group'));
-            $groupmembers[] = array('uname'   => pnUserGetVar('uname', $user['uid']),
-                                    'name'    => pnUserGetVar('name', $user['uid']),
+            $groupmembers[] = array('uname'   => UserUtil::getVar('uname', $user['uid']),
+                                    'name'    => UserUtil::getVar('name', $user['uid']),
                                     'uid'     => $user['uid'],
                                     'options' => $options);
         }

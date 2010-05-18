@@ -59,7 +59,7 @@ function Groups_user_view()
     $groups = ModUtil::apiFunc('Groups', 'user', 'getallgroups',
                            array('startnum' => $startnum,
                                  'numitems' => $itemsperpage,
-                                 'uid'      => pnUserGetVar('uid'),
+                                 'uid'      => UserUtil::getVar('uid'),
                                  'islogged' => $islogged));
 
     $pnRender = Renderer::getInstance('Groups', false);
@@ -135,7 +135,7 @@ function Groups_user_membership()
         return LogUtil::registerError(__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
     }
 
-    $uid = pnUserGetVar('uid');
+    $uid = UserUtil::getVar('uid');
 
     // Check if the group exists
     $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
@@ -251,7 +251,7 @@ function Groups_user_memberslist()
         return DataUtil::formatForDisplay(__('Error! Could not load data.'));
     }
 
-    $uid = pnUserGetVar('uid');
+    $uid = UserUtil::getVar('uid');
 
     $typelabel  = array();
     $statelabel = array();
@@ -278,7 +278,7 @@ function Groups_user_memberslist()
         $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline', array());
         $members = array();
         foreach($group['members'] as $userid) {
-            $userinfo = pnUserGetVars($userid['uid']);
+            $userinfo = UserUtil::getVars($userid['uid']);
 
             $isonline = false;
             if (is_array($onlines)) {

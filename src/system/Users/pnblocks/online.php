@@ -55,7 +55,7 @@ function users_onlineblock_display($row)
 
     // Here we use the user id as the cache id since the block shows user based
     // information; username and number of private messages
-    $pnr->cache_id = pnUserGetVar('uid');
+    $pnr->cache_id = UserUtil::getVar('uid');
 
     // check out if the contents are cached.
     // If this is the case, we do not need to make DB queries.
@@ -85,7 +85,7 @@ function users_onlineblock_display($row)
 
     $msgmodule = pnConfigGetVar('messagemodule', '');
     if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
-        $pnr->assign('username', pnUserGetVar('uname'));
+        $pnr->assign('username', UserUtil::getVar('uname'));
         // check if message module is available and add the necessary info
         $pnr->assign('msgmodule', $msgmodule);
         if (ModUtil::available($msgmodule)) {

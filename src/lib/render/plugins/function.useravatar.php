@@ -30,9 +30,9 @@ function smarty_function_useravatar($params, &$smarty)
         return false;
     }
 
-    $email           = pnUserGetVar('email', $params['uid']);
-    $avatar          = pnUserGetVar('avatar', $params['uid']);
-    $uname           = pnUserGetVar('uname', $params['uid']);
+    $email           = UserUtil::getVar('email', $params['uid']);
+    $avatar          = UserUtil::getVar('avatar', $params['uid']);
+    $uname           = UserUtil::getVar('uname', $params['uid']);
     $avatarpath      = ModUtil::getVar('Users', 'avatarpath', 'images/avatar');
     $allowgravatars  = ModUtil::getVar('Users', 'allowgravatars', 1);
     $gravatarimage   = ModUtil::getVar('Users', 'gravatarimage', 'gravatar.gif');

@@ -169,7 +169,7 @@ function search_user_search()
 
     // Create output object and check caching
     $pnRender = & pnRender::getInstance('Search');
-    $pnRender->cache_id = md5($vars['q'] . $vars['searchtype'] . $vars['searchorder'] . pnUserGetVar('uid')) . $vars['page'];
+    $pnRender->cache_id = md5($vars['q'] . $vars['searchtype'] . $vars['searchorder'] . UserUtil::getVar('uid')) . $vars['page'];
     // check if the contents are cached.
     if ($pnRender->is_cached('search_user_results.htm')) {
         return $pnRender->fetch('search_user_results.htm');

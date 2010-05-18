@@ -72,8 +72,8 @@ function Categories_userapi_getusercategories ($args)
  */
 function Categories_userapi_getusercategoryname ($args)
 {
-    $uid   = isset($args['uid']) && $args['uid'] ? $args['uid'] : pnUserGetVar('uid');
-    $uname = pnUserGetVar('uname', $uid);
+    $uid   = isset($args['uid']) && $args['uid'] ? $args['uid'] : UserUtil::getVar('uid');
+    $uname = UserUtil::getVar('uname', $uid);
     $userCatName = "$uname [$uid]";
 
     return $userCatName;

@@ -20,7 +20,7 @@ class SystemListenersUtil
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
             if (isset($GLOBALS['ZConfig']['Log']['log_apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
-                    apache_setenv('Zikula-Username', pnUserGetVar('uname'));
+                    apache_setenv('Zikula-Username', UserUtil::getVar('uname'));
                 }
             }
         }

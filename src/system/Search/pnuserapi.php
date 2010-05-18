@@ -50,7 +50,7 @@ function search_userapi_search($args)
     // Load database stuff
     ModUtil::dbInfoLoad('Search');
     $pntable      = pnDBGetTables();
-    $userId       = (int)pnUserGetVar('uid');
+    $userId       = (int)UserUtil::getVar('uid');
     $searchTable  = $pntable['search_result'];
     $searchColumn = $pntable['search_result_column'];
 

@@ -220,7 +220,7 @@ function users_user_login()
 
     $userid = pnUserGetIDFromName($uname);
 
-    $userstatus = pnUserGetVar('activated', $userid);
+    $userstatus = UserUtil::getVar('activated', $userid);
     $tryagain = false;
     $confirmtou = 0;
     $changepassword = 0;
@@ -234,8 +234,8 @@ function users_user_login()
     }
 
     // the current password must be valid
-    $pnuser_current_pass = pnUserGetVar('pass', $userid);
-    $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
+    $pnuser_current_pass = UserUtil::getVar('pass', $userid);
+    $pnuser_hash_number = UserUtil::getVar('hash_method', $userid);
     $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
     $passhash = hash($hashmethodsarray[$pnuser_hash_number], $pass);
     if ($passhash != $pnuser_current_pass) {
@@ -291,7 +291,7 @@ function users_user_login()
     } else {
         if ($userstatus == 4 || $userstatus == 6) {
             // change the user's password
-            $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
+            $pnuser_hash_number = UserUtil::getVar('hash_method', $userid);
             $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
             $newpasshash = hash($hashmethodsarray[$pnuser_hash_number], $newpass);
             pnUserSetVar('pass', $newpasshash, $userid);
@@ -305,7 +305,7 @@ function users_user_login()
 
     if (pnUserLogIn((($loginoption==1) ? $email : $uname), $pass, $rememberme)) {
         // start login hook
-        $uid = pnUserGetVar('uid');
+        $uid = UserUtil::getVar('uid');
         ModUtil::callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
         if ($login_redirect == 1) {
             // WCAG compliant login
@@ -338,7 +338,7 @@ function users_user_logout()
     $login_redirect = ModUtil::getVar('Users', 'login_redirect');
 
     // start logout hook
-    $uid = pnUserGetVar('uid');
+    $uid = UserUtil::getVar('uid');
     ModUtil::callHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
     if (pnUserLogOut()) {
         if ($login_redirect == 1) {
@@ -644,7 +644,7 @@ function users_user_activation($args)
     $code = $code[1];
 
     // Get user Regdate
-    $regdate = pnUserGetVar('user_regdate', $uid);
+    $regdate = UserUtil::getVar('user_regdate', $uid);
 
     // Checking length in case the date has been stripped from its space in the mail.
     if (strlen($code) == 18) {
@@ -762,7 +762,7 @@ function users_user_usersblock()
     }
 
     $pnRender = Renderer::getInstance('Users');
-    $pnRender->assign(pnUserGetVars(pnUserGetVar('uid')));
+    $pnRender->assign(UserUtil::getVars(UserUtil::getVar('uid')));
     return $pnRender->fetch('users_user_usersblock.htm');
 }
 
@@ -795,7 +795,7 @@ function users_user_updateusersblock()
         return LogUtil::registerPermissionError();
     }
 
-    $uid = pnUserGetVar('uid');
+    $uid = UserUtil::getVar('uid');
     $ublockon = (bool)FormUtil::getPassedValue('ublockon', false, 'POST');
     $ublock = (string)FormUtil::getPassedValue('ublock', '', 'POST');
 
@@ -857,7 +857,7 @@ function Users_user_updatepassword()
     $newpassword        = FormUtil::getPassedValue('newpassword', '', 'POST');
     $newpasswordconfirm = FormUtil::getPassedValue('newpasswordconfirm', '', 'POST');
 
-    $uname = pnUserGetVar('uname');
+    $uname = UserUtil::getVar('uname');
     // password existing check doesn't apply to HTTP(S) based login
     if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
         $user = DBUtil::selectObjectByID('users', $uname, 'uname', null, null, null, false, 'lower');
@@ -940,7 +940,7 @@ function Users_user_updateemail()
     $newemail = FormUtil::getPassedValue('newemail', '', 'POST');
 
     $checkuser = ModUtil::apiFunc('Users', 'user', 'checkuser',
-                              array('uname'        => pnUserGetVar('uname'),
+                              array('uname'        => UserUtil::getVar('uname'),
                                     'email'        => $newemail,
                                     'agreetoterms' => true));
 

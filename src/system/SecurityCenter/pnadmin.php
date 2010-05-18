@@ -120,7 +120,7 @@ function securitycenter_admin_view($args = array())
             if ($fullitem['userid'] == 0) {
                 $fullitem['userid'] = pnConfigGetVar('anonymous');
             } else {
-                $fullitem['userid'] = pnUserGetVar('uname', $fullitem['userid']);
+                $fullitem['userid'] = UserUtil::getVar('uname', $fullitem['userid']);
             }
 
             // Add users options for the item.

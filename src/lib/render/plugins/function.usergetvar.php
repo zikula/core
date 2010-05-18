@@ -48,9 +48,9 @@ function smarty_function_usergetvar($params, &$smarty)
     }
 
     if ($uid) {
-        $result = pnUserGetVar($name, $uid, $default);
+        $result = UserUtil::getVar($name, $uid, $default);
     } else {
-        $result = pnUserGetVar($name, -1, $default);
+        $result = UserUtil::getVar($name, -1, $default);
     }
 
     if ($assign) {

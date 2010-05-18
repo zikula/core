@@ -259,7 +259,7 @@ function securitycenter_userapi_loghackattempttodb($args)
     $hackinfo = isset($args['message'])        ? $args['message']        : '(no message given)';
 
     if (UserUtil::isLoggedIn()) {
-        $userid = pnUserGetVar('uid');
+        $userid = UserUtil::getVar('uid');
     } else {
         $userid = 0;
     }
@@ -341,9 +341,9 @@ function securitycenter_userapi_mailhackattempt($args)
     $summarycontent = preg_replace('/%additionalinfo%/i', $args['message'], $summarycontent);
 
     if (UserUtil::isLoggedIn()) {
-        $summarycontent = preg_replace('/%username%/i', pnUserGetVar('uname'), $summarycontent);
-        $summarycontent = preg_replace('/%useremail%/i', pnUserGetVar('email'), $summarycontent);
-        $summarycontent = preg_replace('/%userrealname%/i', pnUserGetVar('name'), $summarycontent);
+        $summarycontent = preg_replace('/%username%/i', UserUtil::getVar('uname'), $summarycontent);
+        $summarycontent = preg_replace('/%useremail%/i', UserUtil::getVar('email'), $summarycontent);
+        $summarycontent = preg_replace('/%userrealname%/i', UserUtil::getVar('name'), $summarycontent);
     } else {
         $summarycontent = preg_replace('/%username%/i', pnConfigGetVar('anonymous'), $summarycontent);
         $summarycontent = preg_replace('/%useremail%/i', '-', $summarycontent);
@@ -758,7 +758,7 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
         $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
         $currentPage = pnGetCurrentURI();
-        $currentUid = pnUserGetVar('uid');
+        $currentUid = UserUtil::getVar('uid');
 
         // log details to database
         foreach ($result as $event) {
