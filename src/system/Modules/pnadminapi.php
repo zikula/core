@@ -764,7 +764,7 @@ function modules_adminapi_regenerate($args)
     }
 
     // see if we have any module that is not compatible with corrent version of the core. In this case set it as innactive
-    $version = str_replace('-dev', '', Z_VERSION_NUM);
+    $version = str_replace('-dev', '', System::VERSION_NUM);
     foreach ($filemodules as $modinfo) {
         if ($modinfo['core_min'] != '' && $modinfo['core_min'] > $version || $modinfo['core_max'] != '' && $modinfo['core_max'] < $version) {
             if ($dbmodules[$modinfo['name']]['state'] != '' && $dbmodules[$modinfo['name']]['state'] < 10) {

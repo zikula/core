@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-include 'lib/legacy/Defines.php';
 include 'lib/i18n/ZGettextFunctions.php';
 
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);

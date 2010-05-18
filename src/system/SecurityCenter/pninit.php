@@ -45,7 +45,7 @@ function securitycenter_init()
     pnConfigSetVar('updatecheck', 1);
     pnConfigSetVar('updatefrequency', 7);
     pnConfigSetVar('updatelastchecked', 0);
-    pnConfigSetVar('updateversion', Z_VERSION_NUM);
+    pnConfigSetVar('updateversion', System::VERSION_NUM);
     pnConfigSetVar('keyexpiry', 0);
     pnConfigSetVar('sessionauthkeyua', false);
     pnConfigSetVar('secure_domain', '');

@@ -730,7 +730,7 @@ function _Admin_admin_updatecheck($force=false)
     }
 
     // if 1 then there is a later version available
-    if (version_compare($onlineVersion, Z_VERSION_NUM) == 1) {
+    if (version_compare($onlineVersion, System::VERSION_NUM) == 1) {
         return array('update_show' => true,
                      'update_version' => $onlineVersion);
     } else {
@@ -757,7 +757,7 @@ function _Admin_admin_zcurl($url, $timeout=5)
 {
     $urlArray = parse_url($url);
     $data = '';
-    $userAgent = 'Zikula/' . Z_VERSION_NUM;
+    $userAgent = 'Zikula/' . System::VERSION_NUM;
     $ref = pnGetBaseURL();
     $port = (($urlArray['scheme'] == 'https') ? 443 : 80);
     if (ini_get('allow_url_fopen')) {

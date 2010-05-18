@@ -71,9 +71,9 @@ include 'lib/api/debug.php';
  */
 class System
 {
-    const Z_VERSION_NUM = '1.3.0-dev';
-    const Z_VERSION_ID = 'Zikula';
-    const Z_VERSION_SUB =  'cinco';
+    const VERSION_NUM = '1.3.0-dev';
+    const VERSION_ID = 'Zikula';
+    const VERSION_SUB =  'cinco';
 
     const CORE_STAGES_NONE = 0;
     const CORE_STAGES_CONFIG = 1;
@@ -323,7 +323,7 @@ class System
             ModUtil::dbInfoLoad('Groups', 'Groups');
             ModUtil::dbInfoLoad('Permissions', 'Permissions');
 // load core module vars
-            pnModInitCoreVars();
+            ModUtil::initCoreVars();
 // if we've got this far an error handler can come into play
 // (except in the installer)
             if (!defined('_ZINSTALLVER')) {
@@ -346,7 +346,7 @@ class System
 
 // Auto-login via HTTP(S) REMOTE_USER property
                 if (self::getVar('session_http_login') && !UserUtil::isLoggedIn()) {
-                    pnUserLogInHTTP();
+                    UserUtil::loginHttp();
                 }
             }
 
@@ -405,9 +405,9 @@ class System
 
 // check the users status, if not 1 then log him out
         if (UserUtil::isLoggedIn()) {
-            $userstatus = pnUserGetVar('activated');
+            $userstatus = UserUtil::getVar('activated');
             if ($userstatus != 1) {
-                pnUserLogOut();
+                UserUtil::logout();
                 LogUtil::registerStatus(__('You have been logged out.'));
                 $params = ($userstatus == 2) ? array('confirmtou' => 1) : array();
                 pnRedirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
