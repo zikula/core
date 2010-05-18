@@ -3,7 +3,7 @@
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.htm"}
     <h2>{gt text="Colour palettes"}</h2>
-    {pageaddvar name="javascript" value="system/Theme/pnincludes/picker.js"}
+    {pageaddvar name="javascript" value="system/Theme/includes/picker.js"}
     <form class="z-form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />

@@ -233,18 +233,21 @@ class BlockUtil
         }
 
         $moddir = DataUtil::formatForOS($modinfo['directory']);
-        $blockdir = $moddir . '/pnblocks';
+        $blockdir = $moddir . '/blocks';
+        $blockdirOld = $moddir . '/pnblocks';
         $incfile = DataUtil::formatForOS($block . '.php');
 
         $files = array();
         if ($modinfo['type'] == 3) {
             $files[] = 'system/' . $blockdir . '/' . $incfile;
+            $files[] = 'system/' . $blockdirOld . '/' . $incfile;
             $rc = Loader::loadOneFile($files);
             if (!$rc) {
                 return false;
             }
         } elseif ($modinfo['type'] == 2) {
             $files[] = 'modules/' . $blockdir . '/' . $incfile;
+            $files[] = 'modules/' . $blockdirOld . '/' . $incfile;
             $rc = Loader::loadOneFile($files);
             if (!$rc) {
                 return false;
@@ -301,6 +304,8 @@ class BlockUtil
 
             if (!isset($blockdirs[$modname])) {
                 $blockdirs[$modname] = array();
+                $blockdirs[$modname][] = 'system/' . $moddir . '/blocks';
+                $blockdirs[$modname][] = 'modules/' . $moddir . '/blocks';
                 $blockdirs[$modname][] = 'system/' . $moddir . '/pnblocks';
                 $blockdirs[$modname][] = 'modules/' . $moddir . '/pnblocks';
 
