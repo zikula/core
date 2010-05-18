@@ -131,7 +131,8 @@ Fixed theme list not sorted correctly on Theme view (Issue #1974).
 Fixed pager plugin images always in english (Issue #1883).
 Fixed wrong contents in modvar 'permareplace' (Issue #2044).
 Updated css messages (Issue #2043 & Issue #2030).
-Added ability to have OO controllers in modules. 
+Added ability to have OO controllers in modules.
+Modules may have a bootstrap.php which will be included during ModLoad calls.
 
 CHANGELOG - ZIKULA 1.2.2
 ------------------------

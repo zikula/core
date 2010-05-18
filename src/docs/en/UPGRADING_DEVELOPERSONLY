@@ -70,3 +70,6 @@
   ZLoader::addAutoloader($namespace, $path) where
   $namespace is the first part of the PEAR classname, and $path is
   the path to the containing folder.
+
+- You may now optionally include bootstrap.php in your module root directory.
+  This will be loaded during ModLoad/ModLoadGeneric() automatically.
