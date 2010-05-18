@@ -78,3 +78,20 @@
 - pnUser* deprecated, see UserUtil::*
 - pn* deprecated see legacy/Compat.php and legacy/Api.php
 
+THE FOLLOWING FILE SPECIFICATION HAS CHANGED
+    The old ones are still backward compatible but since file scanning is used
+    your modules will be more efficient if you change to this format.
+
+    - Rename pninit.php to init.php
+    - Rename pntables.php to tables.php
+    - Rename pnversion.php to version.php
+    - Rename pndocs to docs
+    - Rename pnincludes to includes or lib, or vendor if specifying 3rd party libs
+    - Rename pnstyle to style
+    - Rename pnjavascript to javascript
+    - Rename pnblocks to blocks
+    - Rename pntemplates to templates
+
+
+
+

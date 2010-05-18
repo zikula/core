@@ -729,6 +729,11 @@ class ModUtil
                 ZLoader::addAutoloader($modname, realpath(ZLOADER_PATH . "/$path"));
             } else {
                 $controller = $r->newInstance();
+                if (strrpos($className, 'api') && !$controller instanceof AbstractApi) {
+                    throw new LogicException(sprintf('Controller %s must inherit from AbstractApi', $className));
+                } elseif (!strrpos($className, 'api') && !$controller instanceof AbstractController) {
+                    throw new LogicException(sprintf('Controller %s must inherit from AbstractController', $className));
+                }
                 $controllers[$className] = $controller;
             }
 

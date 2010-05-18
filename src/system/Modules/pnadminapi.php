@@ -510,7 +510,7 @@ function modules_adminapi_getfilemodules($args)
             foreach ($dirs as $dir) {
                 $name = $dir;
                 // Work out if admin-capable
-                if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin") || file_exists("$rootdir/$dir/{$dir}_admin")) {
+                if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin") || file_exists("$rootdir/$dir/{$dir}_admin.php")) {
                     $adminCapable = ZYES;
                     $modtype = $moduletype;
                 } else {
@@ -518,8 +518,8 @@ function modules_adminapi_getfilemodules($args)
                 }
 
                 // Work out if user-capable
-                if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser") || file_exists("$rootdir/$dir/{$dir}_user")) {
-                    $userCapable = PNYES;
+                if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser") || file_exists("$rootdir/$dir/{$dir}_user.php")) {
+                    $userCapable = ZYES;
                     if (!isset($modtype)) {
                         $modtype = $moduletype;
                     }

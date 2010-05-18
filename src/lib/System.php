@@ -13,8 +13,6 @@
 define('ZYES', 1);
 define('ZNO', 0);
 
-
-
 /**
  * Fake module for config vars
  */
