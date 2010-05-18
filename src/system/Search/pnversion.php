@@ -17,10 +17,10 @@ $modversion['description']    = __('Provides an engine for searching within the 
 $modversion['url']            = __('search');
 $modversion['version']        = '1.5';
 
-$modversion['credits']        = 'docs/credits.txt';
-$modversion['help']           = 'docs/install.txt';
-$modversion['changelog']      = 'docs/changelog.txt';
-$modversion['license']        = 'docs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Patrick Kellum';
 $modversion['contact']        = 'http://www.ctarl-ctarl.com';
