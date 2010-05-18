@@ -129,7 +129,7 @@ function smarty_function_icon($params, &$smarty)
     unset($params['default']);
     unset($params['size']);
 
-    $imgtag = '<img src="'.pnGetBaseURI().'/'.$imgsrc.'" ';
+    $imgtag = '<img src="'.System::getBaseUri().'/'.$imgsrc.'" ';
     foreach ($params as $key => $value) {
         $imgtag .= $key . '="' .$value  . '" ';
     }

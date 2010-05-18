@@ -63,7 +63,7 @@ class Renderer extends Smarty
         // initialise environment vars
         $this->language = ZLanguage::getLanguageCode();
         $this->baseurl = System::getBaseUrl();
-        $this->baseuri = pnGetBaseURI();
+        $this->baseuri = System::getBaseUri();
 
         //---- Plugins handling -----------------------------------------------
         // add plugin paths
@@ -147,7 +147,7 @@ class Renderer extends Smarty
         $this->default_resource_type = 'z';
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if (($GLOBALS['loadstages'] & PN_CORE_AJAX) && pnConfigGetVar('shorturls')) {
+        if (($GLOBALS['loadstages'] & System::CORE_STAGES_AJAX) && pnConfigGetVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
         }
 

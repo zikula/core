@@ -190,7 +190,7 @@ function Blocks_extmenublock_display($blockinfo)
         return;
     }
 
-    $currenturi = urlencode(str_replace(pnGetBaseURI() . '/', '', pnGetCurrentURI()));
+    $currenturi = urlencode(str_replace(System::getBaseUri() . '/', '', pnGetCurrentURI()));
 
     // assign the items
     $pnRender->assign('menuitems', $menuitems);

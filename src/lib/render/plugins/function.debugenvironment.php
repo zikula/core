@@ -38,7 +38,7 @@ function smarty_function_debugenvironment($params, &$smarty)
     $smarty->assign('_compile_check', (ModUtil::getVar('Theme', 'compile_check')) ? __('On') : __('Off'));
 
     $smarty->assign('_baseurl', System::getBaseUrl());
-    $smarty->assign('_baseuri', pnGetBaseURI());
+    $smarty->assign('_baseuri', System::getBaseUri());
 
     $smarty->assign('_template', $smarty->_plugins['function']['zdebug'][1]);
     $smarty->assign('_path',    $smarty->get_template_path($smarty->_plugins['function']['zdebug'][1]));

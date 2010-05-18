@@ -33,7 +33,7 @@ function install()
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     DBConnectionStack::init('default', true);
 
-    pnInit(PN_CORE_ALL & ~PN_CORE_THEME & ~PN_CORE_MODS & ~PN_CORE_LANGS & ~PN_CORE_DECODEURLS & ~PN_CORE_SESSIONS & ~PN_CORE_TOOLS & ~PN_CORE_AJAX);
+    System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_THEME & ~System::CORE_STAGES_MODS & ~System::CORE_STAGES_LANGS & ~System::CORE_STAGES_DECODEURLS & ~System::CORE_STAGES_SESSIONS & ~System::CORE_STAGES_TOOLS & ~System::CORE_STAGES_AJAX);
 
     // get our input
     $vars = array(
@@ -305,10 +305,10 @@ function install()
     $action = DataUtil::formatForOS($action);
     if ($smarty->template_exists("installer_$action.htm")) {
         $smarty->assign('action', $action);
-        $templatename = "install/pntemplates/installer_$action.htm";
+        $templatename = "install/templates/installer_$action.htm";
     } else {
         $smarty->assign('action', 'error');
-        $templatename = 'install/pntemplates/installer_error.htm';
+        $templatename = 'install/templates/installer_error.htm';
     }
 
     // at this point we now have all the information requried to display
@@ -329,7 +329,7 @@ function install()
     $smarty->assign('maincontent', $_includecontents);
 
     // get and evaluate the page template
-    $template = file_get_contents('install/pntemplates/installer_page.htm');
+    $template = file_get_contents('install/templates/installer_page.htm');
     $smarty->_compile_source('evaluated template', $template, $_var_compiled);
     ob_start();
     @$smarty->_eval('?>' . $_var_compiled);
@@ -580,7 +580,7 @@ function _forcelogin($action = '')
 {
     // login to supplied admin credentials
     if ($GLOBALS['ZConfig']['System']['installed']) { // need auth because Zikula is already installed.
-        pnInit(PN_CORE_SESSIONS);
+        pnInit(System::CORE_STAGES_SESSIONS);
         if (UserUtil::isLoggedIn()) {
             if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                 pnUserLogOut(); // not administrator user so boot them.

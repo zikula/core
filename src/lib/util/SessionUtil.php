@@ -28,7 +28,7 @@ class SessionUtil
      */
     public static function _setup()
     {
-        $path = pnGetBaseURI();
+        $path = System::getBaseUri();
         if (empty($path)) {
             $path = '/';
         } elseif (substr($path, -1, 1) != '/') {

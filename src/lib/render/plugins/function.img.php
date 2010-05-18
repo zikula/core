@@ -180,7 +180,7 @@ function smarty_function_img($params, &$smarty)
         $params['height'] = $_image_data[1];
     }
 
-    $basepath = (isset($params['fqurl']) && $params['fqurl']) ? System::getBaseUrl() : pnGetBaseURI();
+    $basepath = (isset($params['fqurl']) && $params['fqurl']) ? System::getBaseUrl() : System::getBaseUri();
     $params['src'] = $basepath . '/' . $imgsrc;
 
     $assign = isset($params['assign']) ? $params['assign'] : null;

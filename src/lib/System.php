@@ -13,33 +13,7 @@
 define('ZYES', 1);
 define('ZNO', 0);
 
-/**
- * State of modules
- */
-define('MODULE_STATE_UNINITIALISED', 1);
-define('MODULE_STATE_INACTIVE', 2);
-define('MODULE_STATE_ACTIVE', 3);
-define('MODULE_STATE_MISSING', 4);
-define('MODULE_STATE_UPGRADED', 5);
-define('MODULE_STATE_NOTALLOWED', 6);
-define('MODULE_STATE_INVALID', -1);
-define('MODULE_TYPE_MODULE', 2);
-define('MODULE_TYPE_SYSTEM', 3);
-define('MODULE_TYPE_APP', 7);
 
-
-/**
- * Module dependency states
- */
-define('MODULE_DEPENDENCY_REQUIRED', 1);
-define('MODULE_DEPENDENCY_RECOMMENDED', 2);
-define('MODULE_DEPENDENCY_CONFLICTS', 3);
-
-/**
- * 'All' and 'unregistered' for user and group permissions
- */
-define('PERMS_ALL', '-1');
-define('PERMS_UNREGISTERED', '0');
 
 /**
  * Fake module for config vars
@@ -645,7 +619,7 @@ class System
             $proto = 'http://';
         }
 
-        $path = pnGetBaseURI();
+        $path = System::getBaseUri();
 
         return "$proto$server$path/";
     }
@@ -980,7 +954,7 @@ class System
                     '/admin.php',
                     '/user.php',
                     '/error.php',
-                    pnGetBaseURI());
+                    System::getBaseUri());
 
 // get base path to work out our current url
             $parsedURL = parse_url(self::getCurrentUri());

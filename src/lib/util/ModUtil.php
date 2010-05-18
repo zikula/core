@@ -724,7 +724,7 @@ class ModUtil
             }
 
             // get the theme
-            if ($GLOBALS['loadstages'] & PN_CORE_THEME) {
+            if ($GLOBALS['loadstages'] & System::CORE_STAGES_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     Loader::loadFile($file);
@@ -823,7 +823,7 @@ class ModUtil
             return false;
         // Base URI
         if (!isset($baseuri)) {
-            $baseuri = pnGetBaseURI();
+            $baseuri = System::getBaseUri();
         }
         // HTTPS Support
         if (!isset($https)) {
@@ -1257,7 +1257,7 @@ class ModUtil
             $modname = self::getName();
         }
 
-        $path = pnGetBaseURI();
+        $path = System::getBaseUri();
         $directory = 'system/' . $modname;
         if ($path != '') {
             $path .= '/';

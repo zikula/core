@@ -35,7 +35,7 @@ function smarty_function_getbaseuri ($params, &$smarty)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $result = htmlspecialchars(pnGetBaseURI());
+    $result = htmlspecialchars(System::getBaseUri());
 
     if ($assign) {
         $smarty->assign($assign, $result);
