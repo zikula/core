@@ -54,9 +54,9 @@
             {if !$reg_verifyemail or ($reg_verifyemail eq 2)}
             <div class="z-formrow">
                 <label for="users_pass">{gt text="Password"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                {if $use_password_strength_meter eq 1}  
-                    {pnpageaddvar name='javascript' value='system/Users/pnjavascript/passwordStrengthMeter/jquery.js'}
-                    {pnpageaddvar name='javascript' value='system/Users/pnjavascript/passwordStrengthMeter/passwordStrengthMeter.js'}
+                {if $use_password_strength_meter eq 1}
+                    {pnpageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter/jquery.js'}
+                    {pnpageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter/passwordStrengthMeter.js'}
 
                     <script type="text/javascript">
 
@@ -67,9 +67,9 @@
                         var sameAsUsername = '{{gt text="Password can not match the username, choose a different password."}}';
 
                     </script>
-                    {pnpageaddvar name='javascript' value='system/Users/pnjavascript/passwordStrengthMeter_register.js'}
+                    {pnpageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter_register.js'}
 
-                <input id="users_pass" class="users_pass" type="password" name="pass" size="25" maxlength="60" />   
+                <input id="users_pass" class="users_pass" type="password" name="pass" size="25" maxlength="60" />
 <div id="colorbar" class="z-formnote"></div>
         <span id="percent" class="z-formnote">0%</span><span id="result">&nbsp;&nbsp;{gt text='Enter your new password'}</span>
                 {else}

@@ -17,10 +17,10 @@ $modversion['description']    = __("Provides an interface for managing the site'
 $modversion['url']            = __('settings');
 $modversion['version']        = '2.9.2';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Simon Wunderlin';
 $modversion['contact']        = '';
