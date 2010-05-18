@@ -18,10 +18,6 @@ $modversion['description']    = __('Provides support for categorisation of conte
 $modversion['url']            = __('categories');
 $modversion['version']        = '1.1';
 
-$modversion['changelog']      = 'docs/changelog.txt';
-$modversion['credits']        = 'docs/credits.txt';
-$modversion['help']           = 'docs/help.txt';
-$modversion['license']        = 'docs/license.txt';
 $modversion['official']       = 1;
 $modversion['author']         = 'Robert Gasch';
 $modversion['contact']        = 'rgasch@gmail.com';
