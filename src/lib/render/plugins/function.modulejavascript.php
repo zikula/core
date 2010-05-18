@@ -89,10 +89,12 @@ function smarty_function_modulejavascript($params, &$smarty)
         // module directory
         $modinfo       = ModUtil::getInfo(ModUtil::getIdFromName($params['modname']));
         $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
-        $modpath       = "modules/$osmoddir/pnjavascript";
-        $syspath       = "system/$osmoddir/pnjavascript";
+        $modpath       = "modules/$osmoddir/javascript";
+        $syspath       = "system/$osmoddir/javascript";
+        $modpathOld       = "modules/$osmoddir/pnjavascript";
+        $syspathOld       = "system/$osmoddir/pnjavascript";
 
-        $searchpaths = array( $themepath, $modpath, $syspath );
+        $searchpaths = array( $themepath, $modpath, $syspath, $modpathOld, $syspathOld);
     }
     $osscript = DataUtil::formatForOS($params['script']);
 

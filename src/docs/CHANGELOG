@@ -135,6 +135,7 @@ Added ability to have OO controllers in modules.
 Modules may have a bootstrap.php which will be included during ModLoad calls.
 Added recursive lists for extmenu blocks.
 Deprecated entire pn* API.
+Allow module javascript to be stored in folder javascript/.
 
 CHANGELOG - ZIKULA 1.2.2
 ------------------------
