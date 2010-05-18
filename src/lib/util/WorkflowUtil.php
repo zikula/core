@@ -40,7 +40,7 @@ class WorkflowUtil
 
         // if no module specified, default to calling module
         if (empty($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         // workflow caching
@@ -89,7 +89,7 @@ class WorkflowUtil
     {
         // if no module specified, default to calling module
         if (empty($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         // Get module info
@@ -158,7 +158,7 @@ class WorkflowUtil
 
         if (is_null($module)) {
             // default to calling module
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         $stateID = self::getWorkflowState($obj, $table, $idcolumn, $module);
@@ -181,7 +181,7 @@ class WorkflowUtil
     public static function deleteWorkflowsForModule($module)
     {
         if (!isset($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         if (!ModUtil::dbInfoLoad('Workflow')) {
@@ -223,7 +223,7 @@ class WorkflowUtil
     public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = array())
     {
         if (!isset($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         // load up schema
@@ -257,7 +257,7 @@ class WorkflowUtil
     public static function getActionsByStateArray($schemaName, $module = null, $state = 'initial', $obj = array())
     {
         if (!isset($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         // load up schema
@@ -298,7 +298,7 @@ class WorkflowUtil
         }
 
         if (empty($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         if (!self::getWorkflowForObject($obj, $dbTable, $idcolumn, $module)) {
@@ -322,7 +322,7 @@ class WorkflowUtil
     public static function getWorkflowForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
         if (empty($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         if (!isset($obj) || !is_array($obj)) {
@@ -368,7 +368,7 @@ class WorkflowUtil
     public static function getWorkflowState(&$obj, $table, $idcolumn = 'id', $module = null)
     {
         if (empty($module)) {
-            $module = pnModGetName();
+            $module = ModUtil::getName();
         }
 
         if (!isset($obj['__WORKFLOW__'])) {

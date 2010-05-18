@@ -1121,7 +1121,7 @@ class ModUtil
         if (isset($extrainfo['module']) && (self::available($extrainfo['module']) || strtolower($hookobject) == 'module' || strtolower($extrainfo['module']) == 'zikula')) {
             $modname = $extrainfo['module'];
         } else {
-            $modname = pnModGetName();
+            $modname = ModUtil::getName();
         }
 
         $lModname = strtolower($modname);

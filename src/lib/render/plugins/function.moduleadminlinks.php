@@ -39,7 +39,7 @@ function smarty_function_moduleadminlinks($params, &$smarty)
     unset ($params['modname']);
 
     if (!isset($modname) || !ModUtil::available($modname)) {
-        $modname = pnModGetName();
+        $modname = ModUtil::getName();
     }
 
     // check our module name

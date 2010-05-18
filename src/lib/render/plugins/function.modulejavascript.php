@@ -69,10 +69,10 @@ function smarty_function_modulejavascript($params, &$smarty)
             return;
         }
         // we use the current module name
-        $params['modname'] = pnModGetName();
+        $params['modname'] = ModUtil::getName();
     }
 
-    if (isset($params['modonly']) && ($params['modname'] <> pnModGetName())) {
+    if (isset($params['modonly']) && ($params['modname'] <> ModUtil::getName())) {
         // current module is not $modname - do nothing and return silently
         return;
     }

@@ -32,7 +32,7 @@ function smarty_insert_generateauthkey($params, &$smarty)
     $module = isset($params['module']) ? $params['module'] : null;
 
     if (!$module) {
-        $module = pnModGetName();
+        $module = ModUtil::getName();
     }
 
     $result = SecurityUtil::generateAuthKey($module);

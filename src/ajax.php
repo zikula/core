@@ -17,7 +17,7 @@ ZLoader::register();
 
 
 // start PN
-pnInit(PN_CORE_ALL & ~PN_CORE_TOOLS & ~PN_CORE_DECODEURLS);
+System::init(System::CORE_STAGES_ALL & ~System::CORE_TOOLS & ~System::CORE_STAGES_DECODEURLS);
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST');

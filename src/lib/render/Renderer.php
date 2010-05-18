@@ -54,7 +54,7 @@ class Renderer extends Smarty
         // Initialize the module property with the name of
         // the topmost module. Foor Hooks, Blocks, API Functions and others
         // you need to set this property to the name of the respective module!
-        $this->toplevelmodule = pnModGetName();
+        $this->toplevelmodule = ModUtil::getName();
         if (!$module) {
             $module = $this->toplevelmodule;
         }
@@ -267,7 +267,7 @@ class Renderer extends Smarty
         }
 
         // the current module
-        $modgetname = pnModGetName();
+        $modgetname = ModUtil::getName();
 
         foreach ($this->module as $module => $modinfo) {
             // prepare the values for OS

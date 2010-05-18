@@ -15,7 +15,7 @@
 include 'lib/ZLoader.php';
 ZLoader::register();
 
-pnInit();
+System::init();
 pnRedirect(ModUtil::url('Users'));
 
 

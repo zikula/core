@@ -44,7 +44,7 @@ function smarty_function_modulelinks($params, &$smarty)
 
     if (empty($menuLinks)) {
         if (!isset($params['modname']) || !ModUtil::available($params['modname'])) {
-            $params['modname'] = pnModGetName();
+            $params['modname'] = ModUtil::getName();
         }
 
         // check our module name

@@ -778,7 +778,7 @@ class ObjectUtil
         $meta['idcolumn'] = $idcolumn;
 
         if (!isset($meta['module']) || !$meta['module']) {
-            $meta['module'] = pnModGetName();
+            $meta['module'] = ModUtil::getName();
         }
 
         if (!isset($meta['obj_id']) || !$meta['obj_id']) {
@@ -980,7 +980,7 @@ class ObjectUtil
         static $modTableCategoryIDs = array();
 
         // Get the ids of the categories properties of the object
-        $modname = isset($obj['__META__']['module']) ? $obj['__META__']['module'] : pnModGetName();
+        $modname = isset($obj['__META__']['module']) ? $obj['__META__']['module'] : ModUtil::getName();
         $reg_key = $modname . '_' . $tablename;
 
         if (!isset($modTableCategoryIDs[$reg_key])) {
@@ -1184,7 +1184,7 @@ class ObjectUtil
         }
 
         // now generate the relative paths
-        //$rootCatID = CategoryRegistryUtil::getRegisteredModuleCategory (pnModGetName(), $tablename, 'main_table', '/__SYSTEM__/Modules/Quotes/Default');
+        //$rootCatID = CategoryRegistryUtil::getRegisteredModuleCategory (ModUtil::getName(), $tablename, 'main_table', '/__SYSTEM__/Modules/Quotes/Default');
         //postProcessExpandedObjectArrayCategories ($objArray, $rootCatID, false);
 
         return $objArray;
@@ -1215,8 +1215,8 @@ class ObjectUtil
         $obj['__CATEGORIES__'] = $cats;
 
         // now generate the relative paths
-        //$module = pnModGetName();
-        //$rootCatID = CategoryRegistryUtil::getRegisteredModuleCategory (pnModGetName(), $tablename, 'main_table', '/__SYSTEM__/Modules/Quotes/Default');
+        //$module = ModUtil::getName();
+        //$rootCatID = CategoryRegistryUtil::getRegisteredModuleCategory (ModUtil::getName(), $tablename, 'main_table', '/__SYSTEM__/Modules/Quotes/Default');
         //postProcessExpandedObjectCategories ($obj, $rootCatID);
 
         return $obj;

@@ -38,7 +38,7 @@
 function smarty_function_zdebug($params, &$smarty)
 {
     $out = '';
-    $thismodule = pnModGetName();
+    $thismodule = ModUtil::getName();
     if (SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN))
     {
         if (isset($params['output']) && !empty($params['output'])) {

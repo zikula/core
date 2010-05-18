@@ -34,7 +34,7 @@ function smarty_function_modgetname ($params, &$smarty)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $result = pnModGetName();
+    $result = ModUtil::getName();
 
     if ($assign) {
         $smarty->assign($assign, $result);

@@ -365,7 +365,7 @@ class LogUtil
         $logDateFmt = $ZConfig['Log']['log_date_format'];
         $logDest = $ZConfig['Log']['log_dest'];
         $uid = SessionUtil::getVar('uid', 1);
-        $module = pnModGetName();
+        $module = ModUtil::getName();
         $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
         $func = FormUtil::getPassedValue('func', 'main', 'GETPOST');
 

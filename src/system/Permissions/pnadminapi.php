@@ -510,7 +510,7 @@ function Permissions_adminapi_getlinks($args)
     if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-es-config');
     }
-    if (pnModGetName() == 'Permissions') {
+    if (ModUtil::getName() == 'Permissions') {
         $links[] = array('url' => 'javascript:showinstanceinformation()', 'text' => __('Permission rules information'), 'class' => 'z-icon-es-info');
     }
 

@@ -74,7 +74,7 @@ class AjaxUtil
         }
 
         if ($createauthid === true) {
-            $data['authid'] = SecurityUtil::generateAuthKey(pnModGetName());
+            $data['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
         }
 
         // set locale to en_US to ensure correct decimal delimiters

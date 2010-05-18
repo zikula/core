@@ -50,7 +50,7 @@
 function smarty_function_ajaxheader($params, &$smarty)
 {
     // use supplied modname or top level module
-    $modname       = (isset($params['modname']))         ? $params['modname']  : pnModGetName();
+    $modname       = (isset($params['modname']))         ? $params['modname']  : ModUtil::getName();
     // define the default filename
     $filename      = (isset($params['filename']))        ? $params['filename'] : 'ajax.js';
     $scriptaculous = (isset($params['noscriptaculous'])) ? false     : true;

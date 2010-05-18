@@ -1126,7 +1126,7 @@ class System
                     break;
 // log a module specific log (based on top level module)
                 case 2:
-                    $modname = DataUtil::formatForOS(pnModGetName());
+                    $modname = DataUtil::formatForOS(ModUtil::getName());
                     error_log($msg . "\r\n", 3, $ztemp . '/error_logs/' . $modname . '.log');
                     break;
 // log to global error log

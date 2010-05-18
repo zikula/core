@@ -107,7 +107,7 @@ class SecurityUtil
         $authid = FormUtil::getPassedValue($varname);
 
         if (empty($modname)) {
-            $modname = pnModGetName();
+            $modname = ModUtil::getName();
         }
 
         // get the module info
@@ -166,7 +166,7 @@ class SecurityUtil
         SessionUtil::requireSession();
 
         if (empty($modname)) {
-            $modname = pnModGetName();
+            $modname = ModUtil::getName();
         }
 
         // get the module info

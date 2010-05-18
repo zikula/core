@@ -15,9 +15,8 @@
 include 'lib/ZLoader.php';
 ZLoader::register();
 
-
 // start PN
-pnInit();
+System::init();
 
 if (SessionUtil::hasExpired()) {
     // Session has expired, display warning

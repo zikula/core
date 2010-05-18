@@ -240,7 +240,7 @@ class ThemeUtil
     {
         // default for the module
         if (empty($modname)) {
-            $modname = pnModGetName();
+            $modname = ModUtil::getName();
         }
 
         // default for the style sheet

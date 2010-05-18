@@ -46,7 +46,7 @@ function smarty_function_manuallink($params, &$smarty)
     $class   = (isset($params['class']))   ? 'class="'.$params['class'].'"' : '';
     $width   = (isset($params['width']))   ? $params['width']               : 600;
     $height  = (isset($params['height']))  ? $params['height']              : 400;
-    $modname = pnModGetName();
+    $modname = ModUtil::getName();
 
     $possibleplaces = array( "modules/$modname/pndocs/lang/$userlang/manual/$manual",
                              "modules/$modname/pndocs/lang/$stdlang/manual/$manual",

@@ -524,7 +524,7 @@ function Users_adminapi_getlinks()
         // at least one function in there (maybe more).
         $profileAdminLinks = ModUtil::apiFunc($profileModule, 'admin', 'getlinks');
         if (!empty($profileAdminLinks)) {
-            if (pnModGetName() == 'Users') {
+            if (ModUtil::getName() == 'Users') {
                 $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
             } else {
                 $links[] = array('url' => ModUtil::url($profileModule, 'admin', 'main'), 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');

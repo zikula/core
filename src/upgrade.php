@@ -26,7 +26,7 @@ require_once 'install/modify_config.php';
 $GLOBALS['ZConfig']['System']['multilingual'] = true;
 $GLOBALS['ZConfig']['System']['language_bc'] = false;
 $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom110'] = true;
-pnInit(PN_CORE_ALL);
+System::init(System::CORE_STAGES_ALL);
 $action = FormUtil::getPassedValue('action', false, 'GETPOST');
 
 // login to supplied admin credentials for action the following actions

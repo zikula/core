@@ -16,7 +16,7 @@ include 'lib/ZLoader.php';
 ZLoader::register();
 
 // start PN
-pnInit(PN_CORE_ALL & ~PN_CORE_AJAX);
+System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_AJAX);
 
 if (SessionUtil::hasExpired()) {
     // Session has expired, display warning

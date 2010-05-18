@@ -1789,7 +1789,7 @@ class DBUtil
             $modname = $categoryFilter['__META__']['module'];
             unset($categoryFilter['__META__']);
         } else {
-            $modname = pnModGetName();
+            $modname = ModUtil::getName();
         }
 
         // get the properties IDs in the category register
