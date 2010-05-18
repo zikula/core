@@ -75,30 +75,32 @@ class Renderer extends Smarty
         switch ($this->module[$module]['type'])
         {
             case 2:
-                $mpluginPath = "modules/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "modules/" . $this->module[$module]['directory'] . "/templates/plugins";
+                $mpluginPathOld = "modules/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
                 break;
             case 3:
-                $mpluginPath = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
-                break;
-            case 7:
-                // TODO A - render plugins dont yet have a place - drak
-                $mpluginPath = "apps/" . $this->module[$module]['directory'] . "/templates/plugins";
+                $mpluginPath = "system/" . $this->module[$module]['directory'] . "/templates/plugins";
+                $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
                 break;
             default:
                 $mpluginPath = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
         }
 
         $pluginpaths = array(
-            'lib/render/plugins',
-            'config/plugins',
-            "themes/$theme/templates/modules/$module/plugins",
-            "themes/$theme/plugins",
-            $mpluginPath);
+                'lib/render/plugins',
+                'config/plugins',
+                "themes/$theme/templates/modules/$module/plugins",
+                "themes/$theme/plugins",
+                $mpluginPath);
 
         foreach ($pluginpaths as $pluginpath) {
             if (file_exists($pluginpath)) {
                 array_push($this->plugins_dir, $pluginpath);
             }
+            if (file_exists($pluginpath)) {
+                array_push($this->plugins_dir, $pluginpathOld);
+            }
+
         }
 
         // check if the recent 'type' parameter in the URL is admin and if yes,
@@ -136,10 +138,10 @@ class Renderer extends Smarty
         // during {include file='my_template.html'} this enables us to store selected module
         // templates in the theme while others can be kept in the module itself.
         $this->register_resource('z', array(
-            'z_get_template',
-            'z_get_timestamp',
-            'z_get_secure',
-            'z_get_trusted'));
+                'z_get_template',
+                'z_get_timestamp',
+                'z_get_secure',
+                'z_get_trusted'));
 
         // set 'z' as default resource type
         $this->default_resource_type = 'z';
@@ -220,9 +222,11 @@ class Renderer extends Smarty
 
         // load the usemodules configuration if exists
         $modpath = (self::$instance->module[$module]['type'] == 3) ? 'system' : 'modules';
-        $usepath = "$modpath/" . self::$instance->module[$module]['directory'] . '/pntemplates/config';
+        $usepath = "$modpath/" . self::$instance->module[$module]['directory'] . '/templates/config';
+        $usepathOld = "$modpath/" . self::$instance->module[$module]['directory'] . '/pntemplates/config';
         $usemod_confs = array();
         $usemod_confs[] = "$usepath/usemodules.txt";
+        $usemod_confs[] = "$usepathOld/usemodules.txt";
         $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
         // load the config file
         foreach ($usemod_confs as $usemod_conf) {
@@ -281,6 +285,20 @@ class Renderer extends Smarty
             //
             // 1. The top level module directory in the requested module folder
             // in the theme directory.
+            $array = array("themes/$os_theme/templates/modules/$os_module/$os_pnmodgetname",
+                    "themes/$os_theme/templates/modules/$os_module",
+                    "config/templates/$os_module/$os_pnmodgetname",
+                    "config/templates/$os_module",
+                    "modules/$os_module/templates/$os_pnmodgetname",
+                    "modules/$os_module/templates",
+                    "system/$os_module/templates/$os_pnmodgetname",
+                    "system/$os_module/templates",
+                    "modules/$os_module/pntemplates/$os_pnmodgetname",
+                    "modules/$os_module/pntemplates",
+                    "system/$os_module/pntemplates/$os_pnmodgetname",
+                    "system/$os_module/pntemplates",
+            );
+
             $themehookpath = "themes/$os_theme/templates/modules/$os_module/$os_pnmodgetname";
             // 2. The module directory in the current theme.
             $themepath = "themes/$os_theme/templates/modules/$os_module";
@@ -299,15 +317,6 @@ class Renderer extends Smarty
             // 8. The module directory in the system sub folder.
             $syspath = "system/$os_module/pntemplates";
 
-            if (isset($_GET['_a'])) {
-                $request = new ZWebRequest();
-                $type = $request->getType();
-                $apppath = "apps/$os_module/templates/actions/$type";
-            } else {
-                // TODO A - change this.... this is a dummy entry before I change the logic - drak
-                $apppath = '';
-            }
-
             $ostemplate = DataUtil::formatForOS($template); //.'.htm';
 
 
@@ -316,22 +325,28 @@ class Renderer extends Smarty
             // templates.
             if ($module == $modgetname) {
                 $search_path = array(
-                    $themepath,
-                    $globalpath,
-                    $modpath,
-                    $syspath,
-                    $apppath);
+
+                        "themes/$os_theme/templates/modules/$os_module", // themepath
+                        "config/templates/$os_module", //global path
+                        "modules/$os_module/templates", // modpath
+                        "system/$os_module/templates", // sysmodpath
+                        "modules/$os_module/pntemplates", // modpath old
+                        "system/$os_module/pntemplates", //sys mod path old
+                );
             } else {
-                $search_path = array(
-                    $themehookpath,
-                    $themepath,
-                    $globalhookpath,
-                    $globalpath,
-                    $modhookpath,
-                    $modpath,
-                    $syshookpath,
-                    $syspath,
-                    $apppath);
+                $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_pnmodgetname", // themehookpath
+                        "themes/$os_theme/templates/modules/$os_module", // themepath
+                        "config/templates/$os_module/$os_pnmodgetname", //globalhookpath
+                        "config/templates/$os_module", //global path
+                        "modules/$os_module/templates/$os_pnmodgetname", //modhookpath
+                        "modules/$os_module/templates", // modpath
+                        "system/$os_module/templates/$os_pnmodgetname", //sysmodhookpath
+                        "system/$os_module/templates", // sysmodpath
+                        "modules/$os_module/pntemplates/$os_pnmodgetname", // modhookpathold
+                        "modules/$os_module/pntemplates", // modpath old
+                        "system/$os_module/pntemplates/$os_pnmodgetname", //sysmodhookpath old
+                        "system/$os_module/pntemplates", //sys mod path old
+                );
             }
 
             foreach ($search_path as $path) {
@@ -529,10 +544,15 @@ class Renderer extends Smarty
         }
 
         $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
-        $mod_plugs = "$modpath/$modinfo[directory]/pntemplates/plugins";
+        $mod_plugs = "$modpath/$modinfo[directory]/templates/plugins";
+        $mod_plugsold = "$modpath/$modinfo[directory]/pntemplates/plugins";
 
         if (file_exists($mod_plugs)) {
             array_push($this->plugins_dir, $mod_plugs);
+        }
+
+        if (file_exists($mod_plugsOld)) {
+            array_push($this->plugins_dir, $mod_plugsold);
         }
     }
 
@@ -628,8 +648,8 @@ function z_get_template($tpl_name, &$tpl_source, &$smarty)
     }
 
     return LogUtil::registerError(__f('Error! The template [%1$s] is not available in the [%2$s] module.', array(
-        $tpl_name,
-        $smarty->toplevelmodule)));
+            $tpl_name,
+            $smarty->toplevelmodule)));
 }
 
 function z_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty)
