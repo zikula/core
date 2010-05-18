@@ -407,7 +407,7 @@ function users_userapi_finishnewuser($args)
     }
 
     $sitename  = pnConfigGetVar('sitename');
-    $siteurl   = pnGetBaseURL();
+    $siteurl   = System::getBaseUrl();
 
     // create output object
     $pnRender = Renderer::getInstance('Users', false);

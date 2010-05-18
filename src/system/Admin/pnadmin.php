@@ -758,7 +758,7 @@ function _Admin_admin_zcurl($url, $timeout=5)
     $urlArray = parse_url($url);
     $data = '';
     $userAgent = 'Zikula/' . System::VERSION_NUM;
-    $ref = pnGetBaseURL();
+    $ref = System::getBaseUrl();
     $port = (($urlArray['scheme'] == 'https') ? 443 : 80);
     if (ini_get('allow_url_fopen')) {
         // handle SSL connections

@@ -27,7 +27,7 @@ function smarty_outputfilter_shorturls($source, &$smarty)
     // from the htaccess file into main configuration file, httpd.conf.
 
     // get the site's base uri, eg /nuke/ for root-relative links
-    $baseurl = pnGetBaseURL();
+    $baseurl = System::getBaseUrl();
     $type    = FormUtil::getPassedValue('type', 'user', 'GETPOST');
 
     if (pnConfigGetVar('shorturlstype') == 0) {

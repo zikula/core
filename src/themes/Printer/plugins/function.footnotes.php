@@ -43,7 +43,7 @@ function smarty_function_footnotes($params, &$smarty)
                 $link = 'mailto:' . $link;
             // append base URL for local links (not web links)
             } elseif (!preg_match("/^http:\/\//i",$link))    {
-                $link = pnGetBaseURL().$link;
+                $link = System::getBaseUrl().$link;
                 $linktext = $link;
             } else {
                 $linktext = $link;

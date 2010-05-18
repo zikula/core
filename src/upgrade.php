@@ -268,11 +268,11 @@ function _upg_upgrademodules($username, $password)
 
     echo '<p class="z-statusmsg">' . __('Finished upgrade') . " - \n";
     if (!pnUserLogin($username, $password)) {
-        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(pnGetBaseURL()), DataUtil::formatForDisplay(pnConfigGetVar('sitename')));
+        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl()), DataUtil::formatForDisplay(pnConfigGetVar('sitename')));
         echo __f('Go to the startpage for %s', $url);
     } else {
         upgrade_clear_caches();
-        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(pnGetBaseURL().'admin.php'), DataUtil::formatForDisplay(pnConfigGetVar('sitename')));
+        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl().'admin.php'), DataUtil::formatForDisplay(pnConfigGetVar('sitename')));
         echo __f('Go to the admin panel for %s', $url);
     }
     echo "</p>\n";

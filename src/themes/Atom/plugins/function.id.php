@@ -22,7 +22,7 @@
  */
 function smarty_function_id($params, &$smarty)
 {
-    $baseurl = pnGetBaseURL();
+    $baseurl = System::getBaseUrl();
 
     $parts = parse_url($baseurl);
 

@@ -662,7 +662,7 @@ class System
         $dirBased = (self::getVar('shorturlstype') == 0 ? true : false);
 
         if ($shorturls && $dirBased) {
-            $result = pnGetBaseURL() . self::getVar('entrypoint', 'index.php');
+            $result = System::getBaseUrl() . self::getVar('entrypoint', 'index.php');
         } else {
             $result = self::getVar('entrypoint', 'index.php');
         }
@@ -714,7 +714,7 @@ class System
 // Removing leading slashes from redirect url
             $redirecturl = preg_replace('!^/*!', '', $redirecturl);
 // Get base URL and append it to our redirect url
-            $baseurl = pnGetBaseURL();
+            $baseurl = System::getBaseUrl();
             $redirecturl = $baseurl . $redirecturl;
         }
         header("Location: $redirecturl");

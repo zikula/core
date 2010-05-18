@@ -38,7 +38,7 @@ function smarty_function_useravatar($params, &$smarty)
     $gravatarimage   = ModUtil::getVar('Users', 'gravatarimage', 'gravatar.gif');
 
     if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && $avatar != 'blank.gif') {
-        $avatarURL = pnGetBaseURL() . $avatarpath . '/' . $avatar;
+        $avatarURL = System::getBaseUrl() . $avatarpath . '/' . $avatar;
     } else if (($avatar == $gravatarimage) && ($allowgravatars == 1)) {
         if (!isset($params['rating'])) $params['rating'] = false;
         if (!isset($params['size'])) $params['size'] = 80;
@@ -46,7 +46,7 @@ function smarty_function_useravatar($params, &$smarty)
         $avatarURL = 'http://www.gravatar.com/avatar.php?gravatar_id=' . md5($email);
         if (isset($params['rating']) && !empty($params['rating'])) $avatarURL .= "&rating=".$params['rating'];
         if (isset($params['size']) && !empty($params['size'])) $avatarURL .="&size=".$params['size'];
-        $avatarURL .= "&default=".urlencode(pnGetBaseURL() . $avatarpath . '/' . $gravatarimage);
+        $avatarURL .= "&default=".urlencode(System::getBaseUrl() . $avatarpath . '/' . $gravatarimage);
     } else { // e.g. blank.gif or empty avatars
         return false;
     }

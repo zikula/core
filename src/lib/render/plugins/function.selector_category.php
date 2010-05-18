@@ -85,7 +85,7 @@ function smarty_function_selector_category ($params, &$smarty)
 
     if ($editLink && !empty($category) && SecurityUtil::checkPermission( 'Categories::', "$category[id]::", ACCESS_EDIT)) {
         $url = DataUtil::formatForDisplay(pnModURL ('Categories', 'user', 'edit', array('dr' => $category['id'])));
-        $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".pnGetBaseURL()."images/icons/extrasmall/xedit.gif\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
+        $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".System::getBaseUrl()."images/icons/extrasmall/xedit.gif\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
     }
 
     // re-enable attribution if we disabled it previously

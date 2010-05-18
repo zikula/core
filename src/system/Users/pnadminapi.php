@@ -669,7 +669,7 @@ function Users_adminapi_createImport($args)
     $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Mailer'));
     if ($modinfo['state'] == 3) {
         $sitename  = pnConfigGetVar('sitename');
-        $siteurl   = pnGetBaseURL();
+        $siteurl   = System::getBaseUrl();
         $pnRender = Renderer::getInstance('Users', false);
         $pnRender->assign('sitename', $sitename);
         $pnRender->assign('siteurl', $siteurl);

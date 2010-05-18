@@ -94,7 +94,7 @@ function users_user_loginscreen($args)
     //        $returnurl = pnGetCurrentURI();
     //    }
     //    if (empty($returnurl)) {
-    //        $returnurl = pnGetBaseURL();
+    //        $returnurl = System::getBaseUrl();
     //    }
 
     $returnurl = FormUtil::getPassedValue('returnpage', null, 'GET');
@@ -691,7 +691,7 @@ function users_print_redirectpage($message, $url)
         // Removing leading slashes from redirect url
         $url = preg_replace('!^/*!', '', $url);
         // Get base URL and append it to our redirect url
-        $baseurl = pnGetBaseURL();
+        $baseurl = System::getBaseUrl();
         $url = $baseurl.$url;
     }
 

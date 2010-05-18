@@ -122,7 +122,7 @@ function smarty_function_calendarinput($params, &$smarty)
         $html .= '<input type="hidden" name="'.$fieldKey.'" id="'.$params['htmlname'].'" value="'.$params['defaultdate'].'" />';
     }
 
-    $html .= '<img class="z-calendarimg" src="'.pnGetBaseURL().'javascript/jscalendar/img.gif" id="'.$triggerName.
+    $html .= '<img class="z-calendarimg" src="'.System::getBaseUrl().'javascript/jscalendar/img.gif" id="'.$triggerName.
     '" style="cursor: pointer;" title="' . DataUtil::formatForDisplay(__('Date selector')) . '"  alt="' . DataUtil::formatForDisplay(__('Date selector')) . '" />';
 
     $i18n = & ZI18n::getInstance();

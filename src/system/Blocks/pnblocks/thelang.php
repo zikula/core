@@ -117,7 +117,7 @@ function Blocks_thelangblock_display($blockinfo)
     $dirBased = ($shorturlstype == 0 ? true : false);
 
     if ($shorturls && $dirBased) {
-        $homepage = pnGetBaseURL().pnConfigGetVar('entrypoint', 'index.php');
+        $homepage = System::getBaseUrl().pnConfigGetVar('entrypoint', 'index.php');
         $forcefqdn = true;
     } else {
         $homepage = pnConfigGetVar('entrypoint', 'index.php');
@@ -139,7 +139,7 @@ function Blocks_thelangblock_display($blockinfo)
             $flag = '';
         }
 
-        $flag = (($flag && $shorturls && $dirBased) ? pnGetBaseURL().$flag : $flag);
+        $flag = (($flag && $shorturls && $dirBased) ? System::getBaseUrl().$flag : $flag);
 
         $urls[] = array('code' => $code, 'name' => ZLanguage::getLanguageName($code), 'url' => $thisurl, 'flag' => $flag);
     }

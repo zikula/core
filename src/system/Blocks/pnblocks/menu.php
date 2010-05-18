@@ -167,7 +167,7 @@ function blocks_menu_addMenuItem($title, $url, $comment)
 
     // allow a simple portable way to link to the home page of the site
     if ($url == '{homepage}') {
-        $url = pnGetBaseURL();
+        $url = System::getBaseUrl();
     } elseif (!empty($url)) {
         switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
         {

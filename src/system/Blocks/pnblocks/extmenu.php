@@ -344,7 +344,7 @@ function Blocks_extmenublock_modify($blockinfo)
         // set a marker for redirection later on
         $newurl = pnServerGetVar('HTTP_REFERER');
         $redirect = urlencode($newurl);
-        $newurl = str_replace(pnGetBaseURL(), '', $newurl);
+        $newurl = str_replace(System::getBaseUrl(), '', $newurl);
         if (empty($newurl)) {
             $newurl = pnConfigGetVar('entrypoint', 'index.php');
         }

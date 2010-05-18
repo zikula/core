@@ -18,7 +18,7 @@
  * This function obtains the base URL for the site. The base url is defined as the
  * full URL for the site minus any file information  i.e. everything before the
  * 'index.php' from your start page.
- * Unlike the API function pnGetBaseURL, the results of this function are already
+ * Unlike the API function System::getBaseUrl, the results of this function are already
  * sanitized to display, so it should not be passed to the pnvarprepfordisplay modifier.
  *
  * Available parameters:
@@ -35,7 +35,7 @@ function smarty_function_getbaseurl ($params, &$smarty)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $result = htmlspecialchars(pnGetBaseURL());
+    $result = htmlspecialchars(System::getBaseUrl());
 
     if ($assign) {
         $smarty->assign($assign, $result);

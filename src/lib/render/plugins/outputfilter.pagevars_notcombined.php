@@ -95,12 +95,12 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
         // enabled. We will now add some inline javascript to extend the DOM:
         //
         // document.location.entrypoint: will be set to what is configured to be the entrypoint
-        // document.location.pnbaseURL: will point to the result of pnGetBaseURL();
+        // document.location.pnbaseURL: will point to the result of System::getBaseUrl();
         //
         // todo: make his more unobtrusive, but how? Dynamic javascript creation might be a performance problem. Any idea here
         // is highly appreciated! [landseer]
         //
-        $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . pnConfigGetVar('entrypoint', 'index.php') . '"; document.location.pnbaseURL="' . pnGetBaseURL() . '"; ';
+        $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . pnConfigGetVar('entrypoint', 'index.php') . '"; document.location.pnbaseURL="' . System::getBaseUrl() . '"; ';
         // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in pnajax.js
         $ajaxtimeout = pnConfigGetVar('ajaxtimeout', 5000);
         if ($ajaxtimeout != 5000) {

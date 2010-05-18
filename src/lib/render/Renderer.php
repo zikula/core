@@ -62,7 +62,7 @@ class Renderer extends Smarty
 
         // initialise environment vars
         $this->language = ZLanguage::getLanguageCode();
-        $this->baseurl = pnGetBaseURL();
+        $this->baseurl = System::getBaseUrl();
         $this->baseuri = pnGetBaseURI();
 
         //---- Plugins handling -----------------------------------------------
