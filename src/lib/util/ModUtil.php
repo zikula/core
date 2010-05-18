@@ -496,6 +496,9 @@ class ModUtil
 
 // Load the database definition if required
         $files = array();
+        $files[] = "config/functions/$directory/tables.php";
+        $files[] = "system/$directory/tables.php";
+        $files[] = "modules/$directory/tables.php";
         $files[] = "config/functions/$directory/pntables.php";
         $files[] = "system/$directory/pntables.php";
         $files[] = "modules/$directory/pntables.php";
