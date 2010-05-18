@@ -411,6 +411,7 @@ class pnFormVolatile extends Form_Block_Volatile
  */
 function cnvlanguagelist()
 {
+    $cnvlang = array();
     $cnvlang['KOI8-R'] = 'rus';
     $cnvlang['af'] = 'eng';
     $cnvlang['ar'] = 'ara';
