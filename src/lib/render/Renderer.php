@@ -107,7 +107,7 @@ class Renderer extends Smarty
         // include (modules|system)/Admin/pntemplates/plugins to the plugins_dir array
         $type = FormUtil::getPassedValue('type', null, 'GETPOST');
         if ($type === 'admin') {
-            array_push($this->plugins_dir, 'system/Admin/pntemplates/plugins');
+            array_push($this->plugins_dir, 'system/Admin/templates/plugins');
             $this->load_filter('output', 'admintitle');
         }
 
