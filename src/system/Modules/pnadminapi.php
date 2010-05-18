@@ -539,10 +539,16 @@ function modules_adminapi_getfilemodules($args)
                     ZLanguage::bindModuleDomain($dir);
                 }
 
-                if (file_exists($file = "$rootdir/$dir/pnversion.php") || (file_exists($file = "$rootdir/$dir/version.php"))) {
-                    if (!include ($file)) {
-                        LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
-                    }
+                $file1 = "$rootdir/$dir/version.php";
+                $file2 = "$rootdir/$dir/pnversion.php";
+                if (file_exists($file1)) {
+                    $file = $file1;
+                } elseif (file_exists($file2)) {
+                    $file = $file2;
+                }
+                
+                if (!include ($file)) {
+                    LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
                 }
 
                 // Get the module version
@@ -550,10 +556,8 @@ function modules_adminapi_getfilemodules($args)
                 $modversion['description'] = '';
                 $modversion['name'] = preg_replace('/_/', ' ', $name);
 
-                if (file_exists($file = "$rootdir/$dir/pnversion.php") || (file_exists($file = "$rootdir/$dir/version.php"))) {
-                    if (!include ($file)) {
-                        LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
-                    }
+                if (!include ($file)) {
+                    LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
                 }
 
                 $version = $modversion['version'];
@@ -896,7 +900,7 @@ function modules_adminapi_initialise($args)
 
     // load module maintainence functions
     $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
-    if (file_exists($file = "$modpath/$osdir/pninit.php")) {
+    if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
         if (!Loader::includeOnce($file)) {
             LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
         }
@@ -1012,31 +1016,17 @@ function modules_adminapi_upgrade($args)
             }
         }
         $modversion['version'] = '0';
-        if (file_exists($file = "$modpath/$osdir/pnversion.php")) {
-            include $file;
-        }
-        $version = $modversion['version'];
-    } elseif ($modinfo['type'] == 7) {
-        // zOO application
-        $upgrader = new ZUpgrader($modinfo['name'], $modinfo['version']);
-        if ($upgrader->test()) {
-            // there are upgrades to do
-            $result = $upgrader->executeUpgrade();
-        } else {
-            $result = true;
+        $file1 = "$modpath/$osdir/version.php";
+        $file2 = "$modpath/$osdir/pnversion.php";
+        if (file_exists($file1)) {
+            $file = $file1;
+        } elseif (file_exists($file2)) {
+            $file = $file2;
         }
 
-        if (is_string($result)) {
-            if ($result != $modinfo['version']) {
-                // update the last successfully updated version
-                $modinfo['version'] = $result;
-                $obj = DBUtil::updateObject($modinfo, 'modules', '', 'id', true);
-            }
-            return false;
-        } elseif ($result != true) {
-            return false;
-        }
-        $version = $upgrader->module['version'];
+        include $file;
+        
+        $version = $modversion['version'];
     }
 
     // Update state of module
