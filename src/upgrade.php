@@ -213,7 +213,7 @@ function _upg_upgrademodules($username, $password)
     $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
     ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
     // get a list of modules needing upgrading
-    $newmods = ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 3));
+    $newmods = ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => ModUtil::STATE_UPGRADED, 'type' => 3));
 
     // Crazy sort to make sure the User's module is upgraded first
     $users_flag = false;
@@ -232,8 +232,8 @@ function _upg_upgrademodules($username, $password)
             $newmods[] = $mod;
         }
     }
-    $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 2)));
-    $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 1)));
+    $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => ModUtil::STATE_UPGRADED, 'type' => 2)));
+    $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => ModUtil::STATE_UPGRADED, 'type' => 1)));
     if (is_array($newmods) && !empty($newmods)) {
         foreach ($newmods as $newmod) {
             ZLanguage::bindModuleDomain($newmod['name']);

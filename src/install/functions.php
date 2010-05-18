@@ -468,10 +468,10 @@ function installmodules($installtype = 'basic', $lang = 'en')
             $mid = ModUtil::getIdFromName($coremodule, true);
             ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                             'id' => $mid,
-                            'state' => PNMODULE_STATE_INACTIVE));
+                            'state' => ModUtil::STATE_INACTIVE));
             ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                             'id' => $mid,
-                            'state' => PNMODULE_STATE_ACTIVE));
+                            'state' => ModUtil::STATE_ACTIVE));
         }
         // Add them to the appropriate category
         reset($coremodules);
@@ -506,7 +506,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
     if ($installtype == 'complete') {
         $modules = array();
         $mods = ModUtil::apiFunc('Modules', 'admin', 'list', array(
-                        'state' => PNMODULE_STATE_UNINITIALISED));
+                        'state' => ModUtil::STATE_UNINITIALISED));
         foreach ($mods as $mod) {
             if (!ModUtil::available($mod['name'])) {
                 $modules[] = $mod['name'];
@@ -523,7 +523,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                 // activate it
                 if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                                 'id' => $mid,
-                                'state' => PNMODULE_STATE_ACTIVE))) {
+                                'state' => ModUtil::STATE_ACTIVE))) {
                     $results[$module] = true;
                 }
             } else if ($initialise === false) {
@@ -555,7 +555,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                 // activate it
                 if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                                 'id' => $mid,
-                                'state' => PNMODULE_STATE_ACTIVE))) {
+                                'state' => ModUtil::STATE_ACTIVE))) {
                     $results[$module['module']] = true;
                 }
                 // Set category

@@ -53,7 +53,7 @@ function Mailer_userapi_sendmessage($args)
     }
 
     // include php mailer class file
-    if (file_exists($file = "system/Mailer/pnincludes/class.phpmailer.php")) {
+    if (file_exists($file = "system/Mailer/vendor/class.phpmailer.php")) {
         Loader::requireOnce($file);
     } else {
         return false;
@@ -63,7 +63,7 @@ function Mailer_userapi_sendmessage($args)
     $mail = new phpmailer();
 
     // set default message parameters
-    $mail->PluginDir = "system/Mailer/pnincludes/";
+    $mail->PluginDir = "system/Mailer/vendor/";
     $mail->ClearAllRecipients();
     $mail->ContentType = isset($args['contenttype']) ? $args['contenttype'] : ModUtil::getVar('Mailer', 'contenttype');
     $mail->CharSet     = isset($args['charset'])     ? $args['charset']     : ModUtil::getVar('Mailer', 'charset');

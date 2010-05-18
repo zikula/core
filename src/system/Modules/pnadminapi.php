@@ -250,13 +250,13 @@ function modules_adminapi_list($args)
 
     // filter by module state
     switch ($state) {
-        case PNMODULE_STATE_UNINITIALISED:
-        case PNMODULE_STATE_INACTIVE:
-        case PNMODULE_STATE_ACTIVE:
-        case PNMODULE_STATE_MISSING:
-        case PNMODULE_STATE_UPGRADED:
-        case PNMODULE_STATE_NOTALLOWED:
-        case PNMODULE_STATE_INVALID:
+        case ModUtil::STATE_UNINITIALISED:
+        case ModUtil::STATE_INACTIVE:
+        case ModUtil::STATE_ACTIVE:
+        case ModUtil::STATE_MISSING:
+        case ModUtil::STATE_UPGRADED:
+        case ModUtil::STATE_NOTALLOWED:
+        case ModUtil::STATE_INVALID:
             $where[] = "$modulescolumn[state] = '" . DataUtil::formatForStore($state) . "'";
             break;
     }
@@ -324,7 +324,7 @@ function modules_adminapi_setstate($args)
     $modinfo = ModUtil::getInfo($args['id']);
     // Check valid state transition
     switch ($args['state']) {
-        case PNMODULE_STATE_UNINITIALISED:
+        case ModUtil::STATE_UNINITIALISED:
             if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
                 if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
                     return LogUtil::registerError(__('Error! Invalid module state transition.'));
@@ -335,20 +335,20 @@ function modules_adminapi_setstate($args)
                 }
             }
             break;
-        case PNMODULE_STATE_INACTIVE:
+        case ModUtil::STATE_INACTIVE:
             break;
-        case PNMODULE_STATE_ACTIVE:
+        case ModUtil::STATE_ACTIVE:
             // allow new style modules to transition ditectly from upgraded to active state
-            if ((($oldstate == PNMODULE_STATE_UNINITIALISED) ||
-                 ($oldstate == PNMODULE_STATE_MISSING) ||
-                 ($oldstate == PNMODULE_STATE_UPGRADED)) && $modinfo['type'] == 1) {
+            if ((($oldstate == ModUtil::STATE_UNINITIALISED) ||
+                 ($oldstate == ModUtil::STATE_MISSING) ||
+                 ($oldstate == ModUtil::STATE_UPGRADED)) && $modinfo['type'] == 1) {
                 return LogUtil::registerError(__('Error! Invalid module state transition.'));
             }
             break;
-        case PNMODULE_STATE_MISSING:
+        case ModUtil::STATE_MISSING:
             break;
-        case PNMODULE_STATE_UPGRADED:
-            if ($oldstate == PNMODULE_STATE_UNINITIALISED) {
+        case ModUtil::STATE_UPGRADED:
+            if ($oldstate == ModUtil::STATE_UNINITIALISED) {
                 return LogUtil::registerError(__('Error! Invalid module state transition.'));
             }
             break;
@@ -412,7 +412,7 @@ function modules_adminapi_remove($args)
     ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
 
     // Module deletion function. Only execute if the module hasn't been initialised.
-    if ($modinfo['state'] != PNMODULE_STATE_UNINITIALISED) {
+    if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
         if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
             $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
             if (file_exists($file = "$modpath/$osdir/pninit.php")) {
@@ -464,12 +464,12 @@ function modules_adminapi_remove($args)
         // who can access to the mainSite can delete the modules in any other site
         $canDelete = (($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) ? 1 : 0;
         //delete the module infomation only if it is not allowed, missign or invalid
-        if ($canDelete == 1 || $modinfo['state'] == PNMODULE_STATE_NOTALLOWED || $modinfo['state'] == PNMODULE_STATE_MISSING || $modinfo['state'] == PNMODULE_STATE_INVALID) {
+        if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
             // remove the entry from the modules table
             DBUtil::deleteObjectByID('modules', $args['id'], 'id');
         } else {
             //set state as uninnitialised
-            ModUtil::apiFunc('modules', 'admin', 'setstate', array('id' => $args['id'], 'state' => PNMODULE_STATE_UNINITIALISED));
+            ModUtil::apiFunc('modules', 'admin', 'setstate', array('id' => $args['id'], 'state' => ModUtil::STATE_UNINITIALISED));
         }
     } else {
         DBUtil::deleteObjectByID('modules', $args['id'], 'id');
@@ -738,8 +738,8 @@ function modules_adminapi_regenerate($args)
                     $dbmodules[$dbmodinfo['name']]['version'] = $dbmodules[$dbname]['version'];
                     // ensure the old module name doesn't get listed as missing and the new name as uninitialised
                     unset($dbmodules[$dbname]);
-                    if ($dbmodules[$dbmodinfo['name']]['state'] != PNMODULE_STATE_UNINITIALISED &&
-                        $dbmodules[$dbmodinfo['name']]['state'] != PNMODULE_STATE_INVALID) {
+                    if ($dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_UNINITIALISED &&
+                        $dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_INVALID) {
                         unset($dbmodinfo['version']);
                     }
                     // update the db with the new module info
@@ -750,8 +750,8 @@ function modules_adminapi_regenerate($args)
 
         if (isset($dbmodules[$name]['id'])) {
             $modinfo['id'] = $dbmodules[$name]['id'];
-            if ($dbmodules[$name]['state'] != PNMODULE_STATE_UNINITIALISED &&
-                $dbmodules[$name]['state'] != PNMODULE_STATE_INVALID) {
+            if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
+                $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
                 unset($modinfo['version']);
             }
             if (!$defaults) {
@@ -798,15 +798,15 @@ function modules_adminapi_regenerate($args)
                 die(__('Error! Could not retrieve module ID.'));
             }
 
-            if ($dbmodules[$name]['state'] == PNMODULE_STATE_INVALID) {
+            if ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID) {
                 // module was invalid and now it was removed, delete it
                 modules_adminapi_remove(array('id'   => $dbmodules[$name]['id']));
-            } elseif ($dbmodules[$name]['state'] == PNMODULE_STATE_UNINITIALISED) {
+            } elseif ($dbmodules[$name]['state'] == ModUtil::STATE_UNINITIALISED) {
                 // module was uninitialised and subsequently removed, delete it
                 modules_adminapi_remove(array('id'   => $dbmodules[$name]['id']));
             } else {
                 // Set state of module to 'missing'
-                modules_adminapi_setstate(array('id' => $result['id'], 'state' => PNMODULE_STATE_MISSING));
+                modules_adminapi_setstate(array('id' => $result['id'], 'state' => ModUtil::STATE_MISSING));
             }
             unset($dbmodules[$name]);
         }
@@ -820,12 +820,12 @@ function modules_adminapi_regenerate($args)
             // New module
             // RNG: set state to invalid if we can't determine an ID
             if ($modinfo['core_min'] != '' && $modinfo['core_min'] > $version || $modinfo['core_max'] != '' && $modinfo['core_max'] < $version) {
-                $modinfo['state'] = PNMODULE_STATE_UNINITIALISED + 10;
+                $modinfo['state'] = ModUtil::STATE_UNINITIALISED + 10;
             } else {
-                $modinfo['state'] = PNMODULE_STATE_UNINITIALISED;
+                $modinfo['state'] = ModUtil::STATE_UNINITIALISED;
             }
             if (!$modinfo['version']) {
-                $modinfo['state'] = PNMODULE_STATE_INVALID;
+                $modinfo['state'] = ModUtil::STATE_INVALID;
             }
             if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
                 // only the main site can regenerate the modules list
@@ -837,16 +837,16 @@ function modules_adminapi_regenerate($args)
             }
         } else {
             // module is in the db already
-            if ($dbmodules[$name]['state'] == PNMODULE_STATE_MISSING) {
+            if ($dbmodules[$name]['state'] == ModUtil::STATE_MISSING) {
                 // module was lost, now it is here again
                 modules_adminapi_setstate(array('id'   => $dbmodules[$name]['id'],
-                                                'state' => PNMODULE_STATE_INACTIVE));
+                                                'state' => ModUtil::STATE_INACTIVE));
             }
             if ($dbmodules[$name]['version'] != $modinfo['version']) {
-                if ($dbmodules[$name]['state'] != PNMODULE_STATE_UNINITIALISED &&
-                    $dbmodules[$name]['state'] != PNMODULE_STATE_INVALID) {
+                if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
+                    $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
                     modules_adminapi_setstate(array('id'   => $dbmodules[$name]['id'],
-                                                    'state' => PNMODULE_STATE_UPGRADED));
+                                                    'state' => ModUtil::STATE_UPGRADED));
                 }
             }
         }
@@ -939,7 +939,7 @@ function modules_adminapi_initialise($args)
 
     // Update state of module
     if (!modules_adminapi_setstate(array('id' => $args['id'],
-                                         'state' => PNMODULE_STATE_ACTIVE))) {
+                                         'state' => ModUtil::STATE_ACTIVE))) {
         return LogUtil::registerError(__('Error! Could not change module state.'));
     }
 
@@ -1045,7 +1045,7 @@ function modules_adminapi_upgrade($args)
     }
 
     // Update state of module
-    $result = modules_adminapi_setstate(array('id' => $args['id'], 'state' => PNMODULE_STATE_ACTIVE));
+    $result = modules_adminapi_setstate(array('id' => $args['id'], 'state' => ModUtil::STATE_ACTIVE));
     if ($result) {
         LogUtil::registerStatus(__("Done! Module has been upgraded. Its status is now 'Active'."));
     } else {
@@ -1086,12 +1086,12 @@ function modules_adminapi_countitems($args)
 
     // filter by module state
     switch ($args['state']) {
-        case PNMODULE_STATE_UNINITIALISED:
-        case PNMODULE_STATE_INACTIVE:
-        case PNMODULE_STATE_ACTIVE:
-        case PNMODULE_STATE_MISSING:
-        case PNMODULE_STATE_UPGRADED:
-        case PNMODULE_STATE_INVALID:
+        case ModUtil::STATE_UNINITIALISED:
+        case ModUtil::STATE_INACTIVE:
+        case ModUtil::STATE_ACTIVE:
+        case ModUtil::STATE_MISSING:
+        case ModUtil::STATE_UPGRADED:
+        case ModUtil::STATE_INVALID:
             $where[] = "$modulescolumn[state] = '" . DataUtil::formatForStore($args['state']) . "'";
             break;
     }

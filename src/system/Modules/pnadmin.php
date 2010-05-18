@@ -242,7 +242,7 @@ function modules_admin_view()
 
             if (SecurityUtil::checkPermission('Modules::', "$mod[name]::$mod[id]", ACCESS_ADMIN)) {
                 switch ($mod['state']) {
-                    case PNMODULE_STATE_ACTIVE:
+                    case ModUtil::STATE_ACTIVE:
                         $actions[] = array(
                             'url' => ModUtil::url('Modules', 'admin', 'deactivate', array(
                                 'id' => $mod['id'],
@@ -258,7 +258,7 @@ function modules_admin_view()
                             'image' => 'attach.gif',
                             'title' => __('Hook settings'));
                         break;
-                    case PNMODULE_STATE_INACTIVE:
+                    case ModUtil::STATE_INACTIVE:
                         $actions[] = array(
                             'url' => ModUtil::url('Modules', 'admin', 'activate', array(
                                 'id' => $mod['id'],
@@ -278,7 +278,7 @@ function modules_admin_view()
                             'image' => '14_layer_deletelayer.gif',
                             'title' => __('Remove module'));
                         break;
-                    case PNMODULE_STATE_MISSING:
+                    case ModUtil::STATE_MISSING:
                         $actions[] = array(
                             'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                 'id' => $mod['id'],
@@ -289,7 +289,7 @@ function modules_admin_view()
                             'image' => '14_layer_deletelayer.gif',
                             'title' => __('Remove module'));
                         break;
-                    case PNMODULE_STATE_UPGRADED:
+                    case ModUtil::STATE_UPGRADED:
                         $actions[] = array(
                             'url' => ModUtil::url('Modules', 'admin', 'upgrade', array(
                                 'id' => $mod['id'],
@@ -300,7 +300,7 @@ function modules_admin_view()
                             'image' => 'agt_update-product.gif',
                             'title' => __('Upgrade'));
                         break;
-                    case PNMODULE_STATE_INVALID:
+                    case ModUtil::STATE_INVALID:
                         // nothing to do, remove manually
                         // future wish list, allow removal if FS is writable
                         /*
@@ -314,7 +314,7 @@ function modules_admin_view()
                             'image' => '14_layer_deletelayer.gif',
                             'title' => __('Remove module')); */
                         break;
-                    case PNMODULE_STATE_NOTALLOWED:
+                    case ModUtil::STATE_NOTALLOWED:
                         $actions[] = array(
                             'url' => ModUtil::url('Modules', 'admin', 'remove', array(
                                 'id' => $mod['id'],
@@ -325,7 +325,7 @@ function modules_admin_view()
                             'image' => '14_layer_deletelayer.gif',
                             'title' => __('Remove module'));
                         break;
-                    case PNMODULE_STATE_UNINITIALISED:
+                    case ModUtil::STATE_UNINITIALISED:
                     default:
                         if ($mod['state'] < 10) {
                             $actions[] = array(
@@ -362,7 +362,7 @@ function modules_admin_view()
                         break;
                 }
                 // RNG: can't edit an invalid module
-                if ($mod['state'] != PNMODULE_STATE_INVALID)
+                if ($mod['state'] != ModUtil::STATE_INVALID)
                     $actions[] = array(
                         'url' => ModUtil::url('Modules', 'admin', 'modify', array(
                             'id' => $mod['id'])),
@@ -372,31 +372,31 @@ function modules_admin_view()
 
             // Translate state
             switch ($mod['state']) {
-                case PNMODULE_STATE_INACTIVE:
+                case ModUtil::STATE_INACTIVE:
                     $status = __('Inactive');
                     $statusimage = 'yellowled.gif';
                     break;
-                case PNMODULE_STATE_ACTIVE:
+                case ModUtil::STATE_ACTIVE:
                     $status = __('Active');
                     $statusimage = 'greenled.gif';
                     break;
-                case PNMODULE_STATE_MISSING:
+                case ModUtil::STATE_MISSING:
                     $status = __('Files missing');
                     $statusimage = 'redled.gif';
                     break;
-                case PNMODULE_STATE_UPGRADED:
+                case ModUtil::STATE_UPGRADED:
                     $status = __('New version');
                     $statusimage = 'redled.gif';
                     break;
-                case PNMODULE_STATE_INVALID:
+                case ModUtil::STATE_INVALID:
                     $status = __('Invalid structure');
                     $statusimage = 'redled.gif';
                     break;
-                case PNMODULE_STATE_NOTALLOWED:
+                case ModUtil::STATE_NOTALLOWED:
                     $status = __('Not allowed');
                     $statusimage = 'redled.gif';
                     break;
-                case PNMODULE_STATE_UNINITIALISED:
+                case ModUtil::STATE_UNINITIALISED:
                 default:
                     if ($mod['state'] < 10) {
                         $status = __('Not installed');
@@ -407,8 +407,8 @@ function modules_admin_view()
                     break;
             }
 
-            // get new version number for PNMODULE_STATE_UPGRADED
-            if($mod['state'] == PNMODULE_STATE_UPGRADED) {
+            // get new version number for ModUtil::STATE_UPGRADED
+            if($mod['state'] == ModUtil::STATE_UPGRADED) {
                 $rootdirs = array(3 => 'system', 2 => 'modules', 7 => 'apps');
                 $modkey = $rootdirs[$mod['type']].'/'.$mod['directory'];
                 $mod['newversion'] = $filemodules[$modkey]['version'];
@@ -543,7 +543,7 @@ function modules_admin_initialise()
             }
             if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $dependency,
-                'state' => PNMODULE_STATE_ACTIVE))) {
+                'state' => ModUtil::STATE_ACTIVE))) {
                 return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
@@ -568,7 +568,7 @@ function modules_admin_initialise()
         if ($activate == true) {
             if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $id,
-                'state' => PNMODULE_STATE_ACTIVE))) {
+                'state' => ModUtil::STATE_ACTIVE))) {
                 // Success
                 LogUtil::registerStatus(__('Done! Activated module.'));
             }
@@ -620,7 +620,7 @@ function modules_admin_activate()
     // Update state
     if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
         'id' => $id,
-        'state' => PNMODULE_STATE_ACTIVE))) {
+        'state' => ModUtil::STATE_ACTIVE))) {
         // Success
         LogUtil::registerStatus(__('Done! Activated module.'));
     }
@@ -682,7 +682,7 @@ function modules_admin_upgrade()
         if ($activate == true) {
             if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $id,
-                'state' => PNMODULE_STATE_ACTIVE))) {
+                'state' => ModUtil::STATE_ACTIVE))) {
                 // Success
                 LogUtil::registerStatus(__('Activated'));
             }
@@ -760,7 +760,7 @@ function modules_admin_deactivate()
     // Update state
     if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
         'id' => $id,
-        'state' => PNMODULE_STATE_INACTIVE))) {
+        'state' => ModUtil::STATE_INACTIVE))) {
         // Success
         LogUtil::registerStatus(__('Done! Deactivated module.'));
     }

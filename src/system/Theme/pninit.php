@@ -118,7 +118,7 @@ function theme_upgrade($oldversion)
             // Set Module pnRender 'Inactive'
             if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $modid,
-                'state' => PNMODULE_STATE_INACTIVE))) {
+                'state' => ModUtil::STATE_INACTIVE))) {
                 return '3.3';
             }
             // Remove Module pnRender from Modulelist

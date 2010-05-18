@@ -30,6 +30,6 @@ $modversion['dependencies']   = array(
                                       array('modname'    => 'ObjectData',
                                             'minversion' => '1.0',
                                             'maxversion' => '',
-                                            'status'     => PNMODULE_DEPENDENCY_REQUIRED
+                                            'status'     => ModUtil::DEPENDENCY_REQUIRED
                                            )
                                      );

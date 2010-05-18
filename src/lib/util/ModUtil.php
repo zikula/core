@@ -9,6 +9,26 @@
 
 class ModUtil
 {
+    // States
+    const STATE_UNINITIALISED = 1;
+    const STATE_INACTIVE = 2;
+    const STATE_ACTIVE = 3;
+    const STATE_MISSING = 4;
+    const STATE_UPGRADED = 5;
+    const STATE_NOTALLOWED = 6;
+    const STATE_INVALID = -1;
+
+    // Types
+    const TYPE_MODULE = 2;
+    const TYPE_SYSTEM = 3;
+
+    /**
+     * Module dependency states
+     */
+    const DEPENDENCY_REQUIRED = 1;
+    const DEPENDENCY_RECOMMENDED = 2;
+    const DEPENDENCY_CONFLICTS = 3;
+
     /**
      * The pnModInitCoreVars preloads some module vars.
      *
@@ -20,12 +40,12 @@ class ModUtil
     {
         global $pnmodvar;
 
-        // don't init vars during the installer
+// don't init vars during the installer
         if (defined('_ZINSTALLVER')) {
             return;
         }
 
-        // if we haven't got vars for this module yet then lets get them
+// if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar)) {
             $pnmodvar = array();
             $pntables = System::dbGetTables();
@@ -55,16 +75,16 @@ class ModUtil
      */
     public static function hasVar($modname, $name)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $name = isset($name) ? ((string)$name) : '';
 
-        // make sure we have the necessary parameters
+// make sure we have the necessary parameters
         if (!System::varValidate($modname, 'mod') || !System::varValidate($name, 'modvar')) {
             return false;
         }
 
-        // get all module vars for this module
+// get all module vars for this module
         $modvars = self::getVar($modname);
 
         return isset($modvars[$name]);
@@ -90,15 +110,15 @@ class ModUtil
      */
     public static function getVar($modname, $name = '', $default = false)
     {
-        // if we don't know the modname then lets assume it is the current
-        // active module
+// if we don't know the modname then lets assume it is the current
+// active module
         if (!isset($modname)) {
             $modname = self::getName();
         }
 
         global $pnmodvar;
 
-        // if we haven't got vars for this module yet then lets get them
+// if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar[$modname])) {
             $pntables = System::dbGetTables();
             $col = $pntables['module_vars_column'];
@@ -108,31 +128,31 @@ class ModUtil
 
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
-                // Be carefull to allow check for unserialize of empty values and boolean false
+// Be carefull to allow check for unserialize of empty values and boolean false
                 $pnmodvar[$modname][$k] = @unserialize($v);
                 if ($pnmodvar[$modname][$k] === false && $v != 'b:0;') {
-                    // backwards compatibility for non-serialized vars
+// backwards compatibility for non-serialized vars
                     $pnmodvar[$modname][$k] = $v;
                 }
             }
         }
 
-        // if they didn't pass a variable name then return every variable
-        // for the specified module as an associative array.
-        // array('var1'=>value1, 'var2'=>value2)
+// if they didn't pass a variable name then return every variable
+// for the specified module as an associative array.
+// array('var1'=>value1, 'var2'=>value2)
         if (empty($name) && isset($pnmodvar[$modname])) {
             return $pnmodvar[$modname];
         }
 
-        // since they passed a variable name then only return the value for
-        // that variable
+// since they passed a variable name then only return the value for
+// that variable
         if (isset($pnmodvar[$modname][$name])) {
             return $pnmodvar[$modname][$name];
         }
 
-        // we don't know the required module var but we established all known
-        // module vars for this module so the requested one can't exist.
-        // we return the default (which itself defaults to false)
+// we don't know the required module var but we established all known
+// module vars for this module so the requested one can't exist.
+// we return the default (which itself defaults to false)
         return $default;
     }
 
@@ -147,10 +167,10 @@ class ModUtil
      */
     public static function setVar($modname, $name, $value = '')
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
 
-        // validate
+// validate
         if (!System::varValidate($modname, 'mod') || !isset($name)) {
             return false;
         }
@@ -159,7 +179,7 @@ class ModUtil
 
         $obj = array();
 
-        // TODO A [remove this check but first update pninit routines] drak
+// TODO A [remove this check but first update pninit routines] drak
         if (defined('_ZINSTALLVER')) {
             $obj['value'] = DataUtil::is_serialized($value) ? $value : serialize($value);
         } else {
@@ -214,10 +234,10 @@ class ModUtil
      */
     public static function delVar($modname, $name = '')
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
 
-        // validate
+// validate
         if (!System::varValidate($modname, 'modvar')) {
             return false;
         }
@@ -238,7 +258,7 @@ class ModUtil
         $pntable = System::dbGetTables();
         $cols = $pntable['module_vars_column'];
 
-        // check if we're deleting one module var or all module vars
+// check if we're deleting one module var or all module vars
         $specificvar = '';
         $name = DataUtil::formatForStore($name);
         $modname = DataUtil::formatForStore($modname);
@@ -260,10 +280,10 @@ class ModUtil
      */
     public static function getIdFromName($module)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $module = (isset($module) ? strtolower((string)$module) : '');
 
-        // validate
+// validate
         if (!System::varValidate($module, 'mod')) {
             return false;
         }
@@ -310,13 +330,13 @@ class ModUtil
      */
     public static function getInfo($modid = 0)
     {
-        // a $modid of 0 is associated with the core ( pn_blocks.mid, ... ).
+// a $modid of 0 is associated with the core ( pn_blocks.mid, ... ).
         if (!is_numeric($modid)) {
             return false;
         }
 
         if ($modid == 0) {
-            // 0 = the core itself, create a basic dummy module
+// 0 = the core itself, create a basic dummy module
             $modinfo['name'] = 'zikula';
             $modinfo['id'] = 0;
             $modinfo['displayname'] = 'Zikula Core v' . System::VERSION_NUM;
@@ -426,7 +446,7 @@ class ModUtil
         if (empty($modsarray)) {
             $pntable = System::dbGetTables();
             $modulescolumn = $pntable['modules_column'];
-            $where = "WHERE $modulescolumn[state] = " . PNMODULE_STATE_ACTIVE . "
+            $where = "WHERE $modulescolumn[state] = " . ModUtil::STATE_ACTIVE . "
                   OR $modulescolumn[name] = 'Modules'";
             $orderBy = "ORDER BY $modulescolumn[displayname]";
             $modsarray = DBUtil::selectObjectArray('modules', $where, $orderBy);
@@ -449,32 +469,32 @@ class ModUtil
      */
     public static function dbInfoLoad($modname, $directory = '', $force = false)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
-        // default return value
+// default return value
         $data = false;
 
-        // validate
+// validate
         if (!System::varValidate($modname, 'mod')) {
             return $data;
         }
 
         static $loaded = array();
-        // Check to ensure we aren't doing this twice
+// Check to ensure we aren't doing this twice
         if (isset($loaded[$modname]) && !$force) {
             $result = true;
             return $result;
         }
 
-        // Get the directory if we don't already have it
+// Get the directory if we don't already have it
         if (empty($directory)) {
-            // get the module info
+// get the module info
             $modinfo = self::getInfo(self::getIdFromName($modname));
             $directory = $modinfo['directory'];
         }
 
-        // Load the database definition if required
+// Load the database definition if required
         $files = array();
         $files[] = "config/functions/$directory/pntables.php";
         $files[] = "system/$directory/pntables.php";
@@ -488,7 +508,7 @@ class ModUtil
         }
         $loaded[$modname] = true;
 
-        // V4B RNG: return data so we know which tables were loaded by this module
+// V4B RNG: return data so we know which tables were loaded by this module
         return $data;
     }
 
@@ -535,30 +555,30 @@ class ModUtil
      */
     public static function loadGeneric($modname, $type = 'user', $force = false, $api = false)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $osapi = ($api ? 'api' : '');
         $modname = isset($modname) ? ((string)$modname) : '';
         $modtype = strtolower("$modname{$type}{$osapi}");
 
         static $loaded = array();
         if (!empty($loaded[$modtype])) {
-            // Already loaded from somewhere else
+// Already loaded from somewhere else
             return true;
         }
 
-        // check the modules state
+// check the modules state
         if (!$force && !self::available($modname) && $modname != 'Modules') {
             return false;
         }
 
-        // get the module info
+// get the module info
         $modinfo = self::getInfo(self::getIdFromName($modname));
-        // check for bad System::varValidate($modname)
+// check for bad System::varValidate($modname)
         if (!$modinfo) {
             return false;
         }
 
-        // create variables for the OS preped version of the directory
+// create variables for the OS preped version of the directory
         $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
         $ostype  = DataUtil::formatForOS($type);
@@ -569,25 +589,25 @@ class ModUtil
         $coopcontroller = "config/classes/$osdirectory/{$modname}_{$ostype}{$osapi}.php";
 
         if (file_exists($coopcontroller)) {
-            // Load the file from modules
+// Load the file from modules
             Loader::includeOnce($coopcontroller);
         } elseif (file_exists($oopcontroller)) {
-            // Load the file from modules
+// Load the file from modules
             Loader::includeOnce($oopcontroller);
         } elseif (file_exists($cosfile)) {
-            // Load the file from config
+// Load the file from config
             Loader::includeOnce($cosfile);
         } elseif (file_exists($mosfile)) {
-            // Load the file from modules
+// Load the file from modules
             Loader::includeOnce($mosfile);
         } elseif (is_dir($mosdir)) {
         } else {
-            // File does not exist
+// File does not exist
             return false;
         }
         $loaded[$modtype] = 1;
 
-        // Load optional bootstrap
+// Load optional bootstrap
         $bootstrap = "$modpath/$osdirectory/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
@@ -597,19 +617,19 @@ class ModUtil
             ZLanguage::bindModuleDomain($modname);
         }
 
-        // Load database info
+// Load database info
         self::dbInfoLoad($modname, $modinfo['directory']);
 
-        // add stylesheet to the page vars, this makes the modulestylesheet plugin obsolete,
-        // but only for non-api loads as we would pollute the stylesheets
-        // not during installation as the Theme engine may not be available yet and not for system themes
-        // TO-DO: figure out how to determine if a userapi belongs to a hook module and load the
-        //        corresponding css, perhaps with a new entry in modules table?
+// add stylesheet to the page vars, this makes the modulestylesheet plugin obsolete,
+// but only for non-api loads as we would pollute the stylesheets
+// not during installation as the Theme engine may not be available yet and not for system themes
+// TO-DO: figure out how to determine if a userapi belongs to a hook module and load the
+//        corresponding css, perhaps with a new entry in modules table?
         if (!defined('_ZINSTALLVER')) {
             if ($api == false) {
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
                 if ($type == 'admin') {
-                    // load special admin.css for administrator backend
+// load special admin.css for administrator backend
                     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
                 }
             }
@@ -679,12 +699,12 @@ class ModUtil
             $controllers = array();
         }
 
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $ftype = ($api ? 'api' : '');
         $loadfunc = ($api ? 'ModUtil::loadApi' : 'pnModLoad');
 
-        // validate
+// validate
         if (!System::varValidate($modname, 'mod')) {
             return null;
         }
@@ -692,7 +712,7 @@ class ModUtil
         $modinfo = self::getInfo(self::getIDFromName($modname));
         $path = ($modinfo['type'] == '3' ? 'system' : 'modules');
 
-        // Build function name and call function
+// Build function name and call function
         $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
 
@@ -723,7 +743,7 @@ class ModUtil
                 return EventManagerUtil::notify($postExecuteEvent)->getData();
             }
 
-            // get the theme
+// get the theme
             if ($GLOBALS['loadstages'] & System::CORE_STAGES_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
@@ -755,13 +775,13 @@ class ModUtil
                 }
             }
 
-            // try to load plugin
-            // This kind of eventhandler should
-            // 1. Check $event['modfunc'] to see if it should run else exit silently.
-            // 2. Do something like $result = {$event['modfunc']}({$event['args'});
-            // 3. Save the result $event->setData($result).
-            // 4. $event->setNotify().
-            // return void
+// try to load plugin
+// This kind of eventhandler should
+// 1. Check $event['modfunc'] to see if it should run else exit silently.
+// 2. Do something like $result = {$event['modfunc']}({$event['args'});
+// 3. Save the result $event->setData($result).
+// 4. $event->setNotify().
+// return void
             $event = new Event('module.execute_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
             EventManagerUtil::notifyUntil($event);
             if ($preExecuteEvent->hasNotified()) {
@@ -792,44 +812,44 @@ class ModUtil
      */
     public static function url($modname, $type = 'user', $func = 'main', $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
 
-        // validate
+// validate
         if (!System::varValidate($modname, 'mod')) {
             return null;
         }
 
-        //get the module info
+//get the module info
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        // set the module name to the display name if this is present
+// set the module name to the display name if this is present
         if (isset($modinfo['url']) && !empty($modinfo['url'])) {
             $modname = rawurlencode($modinfo['url']);
         }
 
-        // define some statics as this API is likely to be called many times
+// define some statics as this API is likely to be called many times
         static $entrypoint, $host, $baseuri, $https, $shorturlstype, $shorturlsstripentrypoint, $shorturlsdefaultmodule;
 
-        // entry point
+// entry point
         if (!isset($entrypoint)) {
             $entrypoint = System::getVar('entrypoint');
         }
-        // Hostname
+// Hostname
         if (!isset($host)) {
             $host = pnServerGetVar('HTTP_HOST');
         }
         if (empty($host))
             return false;
-        // Base URI
+// Base URI
         if (!isset($baseuri)) {
             $baseuri = System::getBaseUri();
         }
-        // HTTPS Support
+// HTTPS Support
         if (!isset($https)) {
             $https = pnServerGetVar('HTTPS');
         }
-        // use friendly url setup
+// use friendly url setup
         if (!isset($shorturls)) {
             $shorturls = System::getVar('shorturls');
         }
@@ -848,7 +868,7 @@ class ModUtil
 
         $language = ($forcelang ? $forcelang : ZLanguage::getLanguageCode());
 
-        // Only produce full URL when HTTPS is on or $ssl is set
+// Only produce full URL when HTTPS is on or $ssl is set
         $siteRoot = '';
         if ((isset($https) && $https == 'on') || $ssl != null || $fqurl == true) {
             $protocol = 'http' . (($https == 'on' && $ssl !== false) || $ssl === true ? 's' : '');
@@ -856,29 +876,29 @@ class ModUtil
             $siteRoot = $protocol . '://' . (($secureDomain != '') ? $secureDomain : ($host . $baseuri)) . '/';
         }
 
-        // Only convert User URLs. Exclude links that append a theme parameter
+// Only convert User URLs. Exclude links that append a theme parameter
         if ($shorturls && $shorturlstype == 0 && $type == 'user' && $forcelongurl == false) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
                 unset($args['theme']);
             }
-            // Module-specific Short URLs
+// Module-specific Short URLs
             $url = ModUtil::apiFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
             if (empty($url)) {
-                // depending on the settings, we have generic directory based short URLs:
-                // [language]/[module]/[function]/[param1]/[value1]/[param2]/[value2]
-                // [module]/[function]/[param1]/[value1]/[param2]/[value2]
+// depending on the settings, we have generic directory based short URLs:
+// [language]/[module]/[function]/[param1]/[value1]/[param2]/[value2]
+// [module]/[function]/[param1]/[value1]/[param2]/[value2]
                 $vars = '';
                 foreach ($args as $k => $v) {
                     if (is_array($v)) {
                         foreach ($v as $k2 => $w) {
                             if (is_numeric($w) || !empty($w)) {
-                                // we suppress '', but allow 0 as value (see #193)
+// we suppress '', but allow 0 as value (see #193)
                                 $vars .= '/' . $k . '[' . $k2 . ']/' . $w; // &$k[$k2]=$w
                             }
                         }
                     } elseif (is_numeric($v) || !empty($v)) {
-                        // we suppress '', but allow 0 as value (see #193)
+// we suppress '', but allow 0 as value (see #193)
                         $vars .= "/$k/$v"; // &$k=$v
                     }
                 }
@@ -898,7 +918,7 @@ class ModUtil
                 $url = rawurlencode($theme) . '/' . $url;
             }
 
-            // add language param to short url
+// add language param to short url
             if (ZLanguage::isRequiredLangParam() || $forcelang) {
                 $url = "$language/" . $url;
             }
@@ -909,9 +929,9 @@ class ModUtil
             }
 
         } else {
-            // Regular URLs
+// Regular URLs
 
-            // The arguments
+// The arguments
             if ($modinfo['type'] == 1) {
                 if ($type == 'admin') {
                     $urlargs[] = "name=$modname";
@@ -930,15 +950,15 @@ class ModUtil
                 }
             }
 
-            // add lang param to URL
+// add lang param to URL
             if (ZLanguage::isRequiredLangParam() || $forcelang) {
                 $urlargs .= "&lang=$language";
             }
 
             $url = "$entrypoint?$urlargs";
 
-            // <rabbitt> added array check on args
-            // April 11, 2003
+// <rabbitt> added array check on args
+// April 11, 2003
             if (!is_array($args)) {
                 return false;
             } else {
@@ -946,12 +966,12 @@ class ModUtil
                     if (is_array($v)) {
                         foreach ($v as $l => $w) {
                             if (is_numeric($w) || !empty($w)) {
-                                // we suppress '', but allow 0 as value (see #193)
+// we suppress '', but allow 0 as value (see #193)
                                 $url .= "&$k" . "[$l]=$w";
                             }
                         }
                     } elseif (is_numeric($v) || !empty($v)) {
-                        // we suppress '', but allow 0 as value (see #193)
+// we suppress '', but allow 0 as value (see #193)
                         $url .= "&$k=$v";
                     }
                 }
@@ -975,10 +995,10 @@ class ModUtil
      */
     public static function available($modname = null, $force = false)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
-        // validate
+// validate
         if (!System::varValidate($modname, 'mod')) {
             return false;
         }
@@ -991,8 +1011,8 @@ class ModUtil
         }
 
         if ((isset($modstate[$modname]) &&
-                        $modstate[$modname] == PNMODULE_STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
-                        (isset($modstate[$modname]) && ($modstate[$modname] == PNMODULE_STATE_UPGRADED || $modstate[$modname] == PNMODULE_STATE_INACTIVE)))) {
+                        $modstate[$modname] == ModUtil::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
+                        (isset($modstate[$modname]) && ($modstate[$modname] == ModUtil::STATE_UPGRADED || $modstate[$modname] == ModUtil::STATE_INACTIVE)))) {
             return true;
         }
 
@@ -1016,14 +1036,14 @@ class ModUtil
                 $module = System::getVar('startpage');
             }
 
-            // the parameters may provide the module alias so lets get
-            // the real name from the db
+// the parameters may provide the module alias so lets get
+// the real name from the db
             $modinfo = self::getInfo(self::getIdFromName($module));
             if (isset($modinfo['name'])) {
                 $module = $modinfo['name'];
                 if ($type != 'init' && !ModUtil::available($module)) {
-                    // anything from user.php is the user module
-                    // not really - of course but it'll do..... [markwest]
+// anything from user.php is the user module
+// not really - of course but it'll do..... [markwest]
                     if (stristr($_SERVER['PHP_SELF'], 'user.php')) {
                         $module = 'Users';
                     } else {
@@ -1050,15 +1070,15 @@ class ModUtil
      */
     public static function registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
 
-        // validate
+// validate
         if (!System::varValidate($hookmodule, 'mod')) {
             return false;
         }
 
-        // Insert hook
+// Insert hook
         $obj = array('object' => $hookobject, 'action' => $hookaction, 'tarea' => $hookarea, 'tmodule' => $hookmodule, 'ttype' => $hooktype, 'tfunc' => $hookfunc);
         return (bool)DBUtil::insertObject($obj, 'hooks', 'id');
     }
@@ -1077,18 +1097,18 @@ class ModUtil
      */
     public static function unregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
     {
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $hookmodule = isset($hookmodule) ? ((string)$hookmodule) : '';
 
-        // validate
+// validate
         if (!System::varValidate($hookmodule, 'mod')) {
             return false;
         }
 
-        // Get database info
+// Get database info
         $pntable = System::dbGetTables();
         $hookscolumn = $pntable['hooks_column'];
-        // Remove hook
+// Remove hook
         $where = "WHERE $hookscolumn[object] = '" . DataUtil::formatForStore($hookobject) . "'
               AND $hookscolumn[action] = '" . DataUtil::formatForStore($hookaction) . "'
               AND $hookscolumn[tarea] = '" . DataUtil::formatForStore($hookarea) . "'
@@ -1126,7 +1146,7 @@ class ModUtil
 
         $lModname = strtolower($modname);
         if (!isset($modulehooks[$lModname])) {
-            // Get database info
+// Get database info
             $pntable = System::dbGetTables();
             $hookscolumn = $pntable['hooks_column'];
             $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modname) . "'";
@@ -1137,7 +1157,7 @@ class ModUtil
 
         $gui = false;
         $output = array();
-        // Call each hook
+// Call each hook
         foreach ($modulehooks[$lModname] as $modulehook) {
             if (!isset($extrainfo['tmodule']) || (isset($extrainfo['tmodule']) && $extrainfo['tmodule'] == $modulehook['tmodule'])) {
                 if (($modulehook['action'] == $hookaction) && ($modulehook['object'] == $hookobject)) {
@@ -1160,14 +1180,14 @@ class ModUtil
             }
         }
 
-        // check what type of information we need to return
+// check what type of information we need to return
         $hookaction = strtolower($hookaction);
         if ($gui || $hookaction == 'display' || $hookaction == 'new' || $hookaction == 'modify' || $hookaction == 'modifyconfig') {
             if ($implode || empty($output)) {
                 $output = implode("\n", $output);
             }
 
-            // This event expects that you might modify the $event['output'].  Check array_key_exists('output', $event) in event handler.
+// This event expects that you might modify the $event['output'].  Check array_key_exists('output', $event) in event handler.
             $event = new Event('module.postcallhooks', null, array(
                             'gui' => $gui,
                             'hookobject' => $hookobject,
@@ -1180,7 +1200,7 @@ class ModUtil
             return $event['output'];
         }
 
-        // Check array_key_exists('output', $event) in event handler to distinguish from above hook where you might modify $event['output'].
+// Check array_key_exists('output', $event) in event handler to distinguish from above hook where you might modify $event['output'].
         $event = new Event('module.postcallhooks', null, array(
                         'gui' => $gui,
                         'hookobject' => $hookobject,
@@ -1208,20 +1228,20 @@ class ModUtil
             return $hooked[$tmodule][$smodule];
         }
 
-        // define input, all numbers and booleans to strings
+// define input, all numbers and booleans to strings
         $tmodule = isset($tmodule) ? ((string)$tmodule) : '';
         $smodule = isset($smodule) ? ((string)$smodule) : '';
 
-        // validate
+// validate
         if (!System::varValidate($tmodule, 'mod') || !System::varValidate($smodule, 'mod')) {
             return false;
         }
 
-        // Get database info
+// Get database info
         $pntable = System::dbGetTables();
         $hookscolumn = $pntable['hooks_column'];
 
-        // Get applicable hooks
+// Get applicable hooks
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($smodule) . "'
               AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($tmodule) . "'";
 
