@@ -49,28 +49,31 @@ class AjaxUtil
      * @param args - string or array of data
      * @param createauthid - create a new authid and send it back to the calling javascript
      * @param xjsonheader - send result in X-JSON: header for prototype.js
+     * @param statusmsg - include statusmsg in output
      * @author Frank Schummertz
      *
      */
-    public static function output($args, $createauthid = false, $xjsonheader = false)
+    public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true)
     {
         // check if an error message is set
-        $msgs = LogUtil::getErrorMessagesText ('<br />');
+        $msgs = LogUtil::getErrorMessagesText('<br />');
         if ($msgs != false && !empty($msgs)) {
             self::error($msgs);
         }
-
-        // now check if a status message is set
-        $msgs = LogUtil::getStatusMessagesText ('<br />');
 
         if (!is_array($args)) {
             $data = array('data' => $args);
         } else {
             $data = $args;
         }
-        $data['statusmsg'] = $msgs;
+        
+        if ($statusmsg === true) {
+            // now check if a status message is set
+        	$msgs = LogUtil::getStatusMessagesText('<br />');
+        	$data['statusmsg'] = $msgs;
+        }
 
-        if ($createauthid == true) {
+        if ($createauthid === true) {
             $data['authid'] = SecurityUtil::generateAuthKey(pnModGetName());
         }
 
