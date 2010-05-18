@@ -501,7 +501,7 @@ function modules_adminapi_getfilemodules($args)
     $filemodules = array();
 
     // set the paths to search
-    $rootdirs = array('system' => 3, 'modules' => 2, 'apps' => 7);
+    $rootdirs = array('system' => 3, 'modules' => 2);
 
     foreach ($rootdirs as $rootdir => $moduletype) {
         if (is_dir($rootdir)) {
@@ -510,21 +510,21 @@ function modules_adminapi_getfilemodules($args)
             foreach ($dirs as $dir) {
                 $name = $dir;
                 // Work out if admin-capable
-                if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
-                    $adminCapable = PNYES;
+                if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin") || file_exists("$rootdir/$dir/{$dir}_admin")) {
+                    $adminCapable = ZYES;
                     $modtype = $moduletype;
                 } else {
-                    $adminCapable = PNNO;
+                    $adminCapable = ZNO;
                 }
 
                 // Work out if user-capable
-                if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
+                if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser") || file_exists("$rootdir/$dir/{$dir}_user")) {
                     $userCapable = PNYES;
                     if (!isset($modtype)) {
                         $modtype = $moduletype;
                     }
                 } else {
-                    $userCapable = PNNO;
+                    $userCapable = ZNO;
                 }
 
                 if (empty($modtype)) {
@@ -539,7 +539,7 @@ function modules_adminapi_getfilemodules($args)
                     ZLanguage::bindModuleDomain($dir);
                 }
 
-                if (file_exists($file = "$rootdir/$dir/pnversion.php") || (file_exists($file = "$rootdir/$dir/Module.php"))) {
+                if (file_exists($file = "$rootdir/$dir/pnversion.php") || (file_exists($file = "$rootdir/$dir/version.php"))) {
                     if (!include ($file)) {
                         LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
                     }
@@ -550,15 +550,10 @@ function modules_adminapi_getfilemodules($args)
                 $modversion['description'] = '';
                 $modversion['name'] = preg_replace('/_/', ' ', $name);
 
-                if (file_exists($file = "$rootdir/$dir/pnversion.php")) {
+                if (file_exists($file = "$rootdir/$dir/pnversion.php") || (file_exists($file = "$rootdir/$dir/version.php"))) {
                     if (!include ($file)) {
                         LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
                     }
-                }
-
-                if ($moduletype == 7) {
-                    $class = "{$name}_Module";
-                    $modversion = new $class();
                 }
 
                 $version = $modversion['version'];
