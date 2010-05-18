@@ -2,8 +2,13 @@
 
 <div id="navcontainer_{$blockinfo.bid}" class="navcontainer">
     <ul class="navlist">
+    {assign var="opened" value=0}
     {foreach item='item' from=$menuitems}
         {if $item.name != '' && $item.url != ''}
+            {if $opened > 0 && !isset($item.parent)}
+                </ul></li>
+                {assign var="opened" value=$opened-1}
+            {/if}
             <li{if $item.url|replace:$baseurl:'' eq $currenturi|urldecode} class="selected"{/if}>
                 <a href="{$item.url|varprepfordisplay}" title="{$item.title}">
                     {if $item.image != ''}
@@ -11,7 +16,17 @@
                     {/if}
                     {$item.name}
                 </a>
+            {if $item.haschildren}
+                <ul>
+                {assign var="opened" value=$open+1}
+            {else}
             </li>
+            {/if}
+            {if isset($item.parent) && isset($prevparent) && $item.parent != $prevparent}
+                </ul></li>
+                {assign var="opened" value=$opened-1}
+            {/if}
+            {assign var="prevparent" value=$item.parent}
         {else}
             <li style="list-style: none; background: none;">&nbsp;</li>
         {/if}

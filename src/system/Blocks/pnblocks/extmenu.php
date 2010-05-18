@@ -106,8 +106,14 @@ function Blocks_extmenublock_display($blockinfo)
     // Content
     $menuitems =array();
     if (!empty($vars['links'][$thislang])) {
+        $blocked = array();
         foreach ($vars['links'][$thislang] as $linkid => $link) {
-            if (($link['active']==1) && SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . ':' . $linkid . ':', ACCESS_READ)) {
+            $denied = !SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . ':' . $linkid . ':', ACCESS_READ);
+            if($denied || in_array($link['parent'], $blocked)) {
+                $blocked[] = $linkid;
+            } elseif ($link['active'] != 1) {
+                $blocked[] = $linkid;
+            } else {
                 // pre zk1.2 check
                 if (!isset($link['id'])) {
                     $link['id'] = $linkid;
@@ -440,6 +446,18 @@ function Blocks_extmenublock_update($blockinfo)
 
     $vars['links'] = FormUtil::getPassedValue('links');
     $vars['blockversion'] = 1;
+
+    // Save links hierarchy
+    $linksorder = FormUtil::getPassedValue('linksorder');
+    $linksorder = json_decode($linksorder, true);
+    if(is_array($linksorder) && !empty($linksorder)) {
+        foreach ($vars['links'] as $lang => $langlinks) {
+            foreach ($langlinks as $linkid => $link) {
+                $vars['links'][$lang][$linkid]['parent'] = $linksorder[$linkid]['parent'];
+                $vars['links'][$lang][$linkid]['haschildren'] = $linksorder[$linkid]['haschildren'];
+            }
+        }
+    }
 
     $blockinfo['content'] = pnBlockVarsToContent($vars);
 

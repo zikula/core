@@ -25,7 +25,9 @@ Zikula.itemlist = Class.create({
             headerpresent: false,
             firstidiszero: false,
             sortable: true,
+            recursive: false,
             quotekeys: false,
+            inputName: '',
             afterInitialize: Prototype.emptyFunction,
             beforeAppend: Prototype.emptyFunction,
             afterAppend: Prototype.emptyFunction
@@ -53,12 +55,23 @@ Zikula.itemlist = Class.create({
         $$(buttondeleteselector).invoke('observe','click',this.deleteitem.bindAsEventListener(this));
 
         if (this.options.sortable) {
+            if(this.options.recursive) {
+                var sortableConfig = {
+                    id:         this.id,
+                    only:       'z-sortable',
+                    listTag:    'ol',
+                    inputName:  this.options.inputName,
+                    onUpdate:   this.itemlistrecolor.bind(this)
+                };
+                this.sortable = new Zikula.recursiveSortable(sortableConfig);
+            } else {
             Sortable.create(this.id,
                             { 
                               only: 'z-sortable',
                               constraint: false,
                               onUpdate: this.itemlistrecolor.bind(this)
                             });
+            }
             $A($(this.id).getElementsByClassName('z-sortable')).each(
                 function(node) 
                 {
@@ -145,12 +158,16 @@ Zikula.itemlist = Class.create({
         newitem.down('.buttondelete').observe('click',this.deleteitem.bindAsEventListener(this));
 
         if (this.options.sortable) {
-            Sortable.create(this.id,
-                            { 
-                              only: 'z-sortable',
-                              constraint: false,
-                              onUpdate: this.itemlistrecolor.bind(this)
-                            });
+            if(this.options.recursive) {
+                this.sortable.initNode(newitem);
+            } else {
+                Sortable.create(this.id,
+                                {
+                                  only: 'z-sortable',
+                                  constraint: false,
+                                  onUpdate: this.itemlistrecolor.bind(this)
+                                });
+            }
             $A(document.getElementsByClassName('z-sortable')).each(
                 function(node) 
                 {
