@@ -384,7 +384,7 @@ class System
                 UserUtil::logout();
                 LogUtil::registerStatus(__('You have been logged out.'));
                 $params = ($userstatus == 2) ? array('confirmtou' => 1) : array();
-                pnRedirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
+                System::redirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
             }
         }
 

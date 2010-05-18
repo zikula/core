@@ -292,9 +292,9 @@ function install()
             }
             SessionUtil::requireSession();
             if (!UserUtil::isLoggedIn()) {
-                return pnRedirect();
+                return System::redirect();
             } else {
-                return pnRedirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
+                return System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
             }
     }
 

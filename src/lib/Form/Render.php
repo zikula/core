@@ -195,7 +195,7 @@ class Form_Render extends Renderer
         }
 
         // Check redirection at this point, ignore any generated HTML if redirected is required.
-        // We cannot skip HTML generation entirely in case of pnRedirect since there might be
+        // We cannot skip HTML generation entirely in case of System::redirect since there might be
         // some relevant code to execute in the plugins.
         if ($this->Redirected) {
             return true;
@@ -604,7 +604,7 @@ class Form_Render extends Renderer
 
     public function Redirect($url)
     {
-        pnRedirect($url);
+        System::redirect($url);
         $this->Redirected = true;
     }
 

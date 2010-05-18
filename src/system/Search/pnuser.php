@@ -142,7 +142,7 @@ function search_user_search()
 
     if (empty($vars['q'])) {
         LogUtil::registerError (__('Error! You did not enter any keywords to search for.'));
-        return pnRedirect(ModUtil::url('Search', 'user', 'main'));
+        return System::redirect(ModUtil::url('Search', 'user', 'main'));
     }
 
     // set some defaults

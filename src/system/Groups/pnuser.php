@@ -221,7 +221,7 @@ function Groups_user_userupdate()
     $pnRender = Renderer::getInstance('Groups');
     $pnRender->clear_cache('groups_user_memberslist.htm');
 
-    return pnRedirect(ModUtil::url('Groups', 'user', 'main'));
+    return System::redirect(ModUtil::url('Groups', 'user', 'main'));
 }
 
 /**

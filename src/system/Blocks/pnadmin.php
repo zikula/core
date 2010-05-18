@@ -188,7 +188,7 @@ function blocks_admin_deactivate()
     }
 
     // Redirect
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -214,7 +214,7 @@ function blocks_admin_activate()
     }
 
     // Redirect
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -387,9 +387,9 @@ function blocks_admin_update()
     $cancel        = FormUtil::getPassedValue('cancel', null);
     if (isset($cancel)) {
         if (isset($redirect) && !empty($redirect)) {
-            return pnRedirect(urldecode($redirect));
+            return System::redirect(urldecode($redirect));
         }
-        return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
 
@@ -427,7 +427,7 @@ function blocks_admin_update()
     if (function_exists($updatefunc)) {
         $blockinfo = $updatefunc($blockinfo);
         if (!$blockinfo) {
-            return pnRedirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
+            return System::redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
     } else {
         // Old way
@@ -446,15 +446,15 @@ function blocks_admin_update()
     }
 
     if (isset($redirect) && !empty($redirect)) {
-        return pnRedirect(urldecode($redirect));
+        return System::redirect(urldecode($redirect));
     }
 
     if (!empty($returntoblock)) {
         // load the block config again
-        return pnRedirect(ModUtil::url('Blocks', 'admin', 'modify',
+        return System::redirect(ModUtil::url('Blocks', 'admin', 'modify',
                                    array('bid' => $returntoblock)));
     }
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -545,10 +545,10 @@ function blocks_admin_create()
     $bid = ModUtil::apiFunc('Blocks', 'admin', 'create', $blockinfo);
     if ($bid != false) {
         LogUtil::registerStatus(__('Done! Created block.'));
-        return pnRedirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
+        return System::redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
     }
 
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -610,7 +610,7 @@ function blocks_admin_delete()
         LogUtil::registerStatus(__('Done! Deleted block.'));
     }
 
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -663,7 +663,7 @@ function blocks_admin_createposition()
     }
 
     // all done
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -751,7 +751,7 @@ function blocks_admin_updateposition()
         LogUtil::registerStatus(__('Done! Saved block.'));
     }
 
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -799,7 +799,7 @@ function Blocks_admin_deleteposition($args)
         LogUtil::registerStatus(__('Done! Deleted block position.'));
     }
 
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'view'));
 }
 
 /**
@@ -854,7 +854,7 @@ function blocks_admin_updateconfig()
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(ModUtil::url('Blocks', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Blocks', 'admin', 'main'));
 }
 
 

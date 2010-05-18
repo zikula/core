@@ -172,7 +172,7 @@ function users_admin_create()
         LogUtil::registerError(__('Error! Could not create the new user account.'));
     }
 
-    return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Users', 'admin', 'main'));
 }
 
 /**
@@ -578,7 +578,7 @@ function users_admin_processusers()
 
     if ($op == 'edit' && !empty($userid)) {
         if ($do != 'yes') {
-            return pnRedirect(ModUtil::url('Users', 'admin', 'modify', array('userid' => $userid)));
+            return System::redirect(ModUtil::url('Users', 'admin', 'modify', array('userid' => $userid)));
         } else {
             $uname              = FormUtil::getPassedValue('uname', null, 'POST');
             $email              = FormUtil::getPassedValue('email', null, 'POST');
@@ -602,7 +602,7 @@ function users_admin_processusers()
 
             if ($return == true) {
                 LogUtil::registerStatus(__("Done! Saved user's account information."));
-                return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+                return System::redirect(ModUtil::url('Users', 'admin', 'main'));
             } else {
                 return false;
             }
@@ -611,7 +611,7 @@ function users_admin_processusers()
     } elseif ($op == 'delete' && !empty($userid)) {
         $userid = FormUtil::getPassedValue('userid', null, 'POST');
         if ($do != 'yes') {
-            return pnRedirect(ModUtil::url('Users', 'admin', 'deleteusers', array('userid' => $userid)));
+            return System::redirect(ModUtil::url('Users', 'admin', 'deleteusers', array('userid' => $userid)));
         } else {
             $return = ModUtil::apiFunc('Users', 'admin', 'deleteuser', array('uid' => $userid));
 
@@ -685,7 +685,7 @@ function users_admin_processusers()
                 $mailssent,
                 array($mailssent, $recipientscount)));
         }
-        return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
 
     } elseif ($op == 'approve' || $op == 'deny') {
         $tag = FormUtil::getPassedValue('tag');
@@ -725,14 +725,14 @@ function users_admin_processusers()
             } else {
                 LogUtil::registerError(__('Error! Could not create the new user account.'));
             }
-            return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+            return System::redirect(ModUtil::url('Users', 'admin', 'main'));
         }
 
     } else {
         return LogUtil::registerError(__('Error! No users were selected.'));
     }
 
-    return pnRedirect(ModUtil::url('Users', 'admin', 'search'));
+    return System::redirect(ModUtil::url('Users', 'admin', 'search'));
 }
 
 /**
@@ -764,7 +764,7 @@ function users_admin_modify($args)
     // check arguments
     if (is_null($userid) && is_null($uname)) {
         LogUtil::registerError(__('Sorry! No such user found.'));
-        return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
     }
 
     // retreive userid from uname
@@ -775,14 +775,14 @@ function users_admin_modify($args)
     // warning for guest account
     if ($userid == 1) {
         LogUtil::registerError(__("Error! You can't edit the guest account."));
-        return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
     }
 
     // get the user vars
     $uservars = UserUtil::getVars($userid);
     if ($uservars == false) {
         LogUtil::registerError(__('Sorry! No such user found.'));
-        return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
     }
 
     // if module Legal is not available show the equivalent states for user activation value
@@ -863,7 +863,7 @@ function users_admin_deleteusers($args)
     // check arguments
     if (is_null($userid) && is_null($uname)) {
         LogUtil::registerError(__('Sorry! No such user found.'));
-        return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
     }
 
     // retreive userid from uname
@@ -874,14 +874,14 @@ function users_admin_deleteusers($args)
     // warning for guest account
     if ($userid == 1) {
         LogUtil::registerError(__("Error! You can't delete the guest account."));
-        return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
     }
 
     // get the user vars
     $uname = UserUtil::getVar('uname', $userid);
     if ($uname == false) {
         LogUtil::registerError(__('Sorry! No such user found.'));
-        return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
     }
 
     // create the output object
@@ -988,7 +988,7 @@ function users_admin_updateconfig()
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(ModUtil::url('Users', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Users', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1037,7 +1037,7 @@ function users_admin_import($args)
         if ($importResults == '') {
             // the users have been imported successfully
             LogUtil::registerStatus(__('Done! Users imported successfully.'));
-            return pnRedirect(ModUtil::url('Users', 'admin', 'main'));
+            return System::redirect(ModUtil::url('Users', 'admin', 'main'));
         }
     }
 

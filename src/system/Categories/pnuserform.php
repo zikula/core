@@ -56,7 +56,7 @@ function Categories_userform_delete ()
     }
 
     CategoryUtil::deleteCategoryByID ($cid);
-    return pnRedirect($url);
+    return System::redirect($url);
 }
 
 /**
@@ -100,7 +100,7 @@ function Categories_userform_edit ()
 
     if (!$obj->validate()) {
         $_POST['cid'] = (int)$_POST['category']['id'];
-        return pnRedirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
+        return System::redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
     }
 
     $attributes = array();
@@ -127,7 +127,7 @@ function Categories_userform_edit ()
 
     $msg = __f('Done! Saved the %s category.', $oldData['name']);
     LogUtil::registerStatus($msg);
-    return pnRedirect($url);
+    return System::redirect($url);
 }
 
 /**
@@ -178,7 +178,7 @@ function Categories_userform_moveField ()
     $val    = ObjectUtil::moveField ($data, 'categories_category', $dir, 'sort_value');
 
     $url = pnServerGetVar('HTTP_REFERER');
-    return pnRedirect($url);
+    return System::redirect($url);
 }
 
 /**
@@ -206,7 +206,7 @@ function Categories_userform_new ()
     $data = $cat->getDataFromInput ();
 
     if (!$cat->validate()) {
-        return pnRedirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
+        return System::redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
     }
 
     $cat->insert ();
@@ -216,7 +216,7 @@ function Categories_userform_new ()
 
     $msg = __f('Done! Inserted the %s category.', $data['name']);
     LogUtil::registerStatus($msg);
-    return pnRedirect($url);
+    return System::redirect($url);
 }
 
 /**
@@ -254,6 +254,6 @@ function Categories_userform_resequence ()
         $obj->update ();
     }
 
-    return pnRedirect(pnServerGetVar('HTTP_REFERER'));
+    return System::redirect(pnServerGetVar('HTTP_REFERER'));
 }
 

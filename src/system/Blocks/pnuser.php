@@ -56,5 +56,5 @@ function blocks_user_changestatus()
     }
 
     // now lets get back to where we came from
-    return pnRedirect(pnServerGetVar('HTTP_REFERER'));
+    return System::redirect(pnServerGetVar('HTTP_REFERER'));
 }

@@ -135,7 +135,7 @@ function Mailer_admin_updateconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('Mailer', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Mailer', 'admin', 'main'));
 }
 
 /**
@@ -215,5 +215,5 @@ function Mailer_admin_sendmessage($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('Mailer', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Mailer', 'admin', 'main'));
 }

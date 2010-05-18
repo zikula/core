@@ -67,7 +67,7 @@ function settings_admin_updateconfig() {
 
     // if this form wasnt posted to redirect back
     if ($settings === null) {
-        return pnRedirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+        return System::redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }
 
     // confirm the forms auth key
@@ -132,7 +132,7 @@ function settings_admin_updateconfig() {
     // Let any other modules know that the modules configuration has been updated
     ModUtil::callHooks('module','updateconfig','Settings', array('module' => 'Settings'));
 
-    return pnRedirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -181,7 +181,7 @@ function settings_admin_updatemultilingual()
     // confirm the forms auth key
     if (!SecurityUtil::confirmAuthKey()) {
         LogUtil::registerAuthidError();
-        return pnRedirect($url);
+        return System::redirect($url);
     }
 
     $settings = array('mlsettings_language_i18n'   => 'language_i18n',
@@ -236,7 +236,7 @@ function settings_admin_updatemultilingual()
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved localisation settings.'));
 
-    return pnRedirect($url);
+    return System::redirect($url);
 }
 
 /**
@@ -306,5 +306,5 @@ function settings_admin_updateerrorhandling() {
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(ModUtil::url('Settings', 'admin', 'errorhandling'));
+    return System::redirect(ModUtil::url('Settings', 'admin', 'errorhandling'));
 }

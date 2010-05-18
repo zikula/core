@@ -69,7 +69,7 @@ function theme_admin_create($args)
     ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
     // redirect back to the variables page
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -196,7 +196,7 @@ function theme_admin_updatesettings($args)
     // check our input
     if (!isset($themename) || empty($themename)) {
         LogUtil::registerArgsError();
-        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // Security check
@@ -226,7 +226,7 @@ function theme_admin_updatesettings($args)
     }
 
     // redirect back to the variables page
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -328,7 +328,7 @@ function theme_admin_updatevariables($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // redirect back to the variables page
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename)));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename)));
 }
 
 /**
@@ -433,7 +433,7 @@ function theme_admin_updatepalettes($args)
                                         'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover) ;
     } else {
         LogUtil::registerError(__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
-        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // rewrite the settings to the running config
@@ -443,7 +443,7 @@ function theme_admin_updatepalettes($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // redirect back to the settings page
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'palettes', array('themename' => $themename)));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'palettes', array('themename' => $themename)));
 }
 
 /**
@@ -677,7 +677,7 @@ function theme_admin_updatepageconfigtemplates($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // return the user to the correct place
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
 }
 
 /**
@@ -758,7 +758,7 @@ function theme_admin_modifypageconfigurationassignment($args)
     $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
     if (!isset($pageconfigurations[$pcname])) {
         LogUtil::registerError(__('Error! No such page configuration assignment found.'));
-        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
     $pageconfigparts = explode('/', $pcname);
 
@@ -856,7 +856,7 @@ function theme_admin_updatepageconfigurationassignment($args)
     LogUtil::registerStatus(__('Done! Saved your changes.'));
 
     // return the user to the correct place
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
 }
 
 /**
@@ -911,7 +911,7 @@ function theme_admin_deletepageconfigurationassignment($args)
     }
 
     // return the user to the correct place
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'pageconfigurations', array('themename' => $themename)));
 }
 
 /**
@@ -994,7 +994,7 @@ function theme_admin_setasdefault($args)
         LogUtil::registerStatus(__('Done! Changed default theme.'));
     }
 
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
 
 }
 
@@ -1013,18 +1013,18 @@ function theme_admin_upgrade($args)
     // check the permissions required to upgrade the theme
     if (!is_writable("themes/$themeinfo[directory]") || !is_writable("themes/$themeinfo[directory]/templates")) {
         LogUtil::registerError(__('Notice: Permissions for the theme directory must be set so that it can be written to.'));
-        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     if (!file_exists("themes/$themeinfo[directory]/xaninit.php") || $themeinfo['type'] != 2) {
         LogUtil::registerError(__("Error! This theme cannot be upgraded because it is not a Xanthia 2 theme."));
-        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // make the config directory
     if (!is_dir("themes/$themeinfo[directory]/templates/config") && !mkdir("themes/$themeinfo[directory]/templates/config")) {
         LogUtil::registerError(__('Error! Could not create theme configuration directory.'));
-        return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
 
     // initialise the globals used in the upgrade
@@ -1073,7 +1073,7 @@ function theme_admin_upgrade($args)
     ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
     LogUtil::registerStatus(__('Done! Upgraded theme.'));
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -1131,7 +1131,7 @@ function theme_admin_delete($args)
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
 }
 
 /**
@@ -1264,7 +1264,7 @@ function theme_admin_updateconfig($args)
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1294,7 +1294,7 @@ function theme_admin_clear_compiled()
         LogUtil::registerError(__('Error: Failed to clear theme engine compiled templates.'));
     }
 
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1324,7 +1324,7 @@ function theme_admin_clear_cache()
         LogUtil::registerError(__('Error: Failed to clear theme engine cached templates.'));
     }
 
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1349,7 +1349,7 @@ function theme_admin_clear_cssjscombinecache()
     $Theme->clear_cssjscombinecache();
 
     LogUtil::registerStatus(__('Done! Deleted CSS/JS combination cached files.'));
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1379,7 +1379,7 @@ function theme_admin_render_clear_compiled()
         LogUtil::registerError(__('Error: Failed to clear rendering engine compiled templates.'));
     }
 
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
 
 /**
@@ -1409,5 +1409,5 @@ function theme_admin_render_clear_cache()
         LogUtil::registerError(__('Error: Failed to clear rendering engine cached pages.'));
     }
 
-    return pnRedirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }

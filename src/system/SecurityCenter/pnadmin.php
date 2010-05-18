@@ -84,7 +84,7 @@ function securitycenter_admin_delete($args)
         LogUtil::registerStatus(__('Done! Deleted it.'));
     }
 
-    return pnRedirect(ModUtil::url('SecurityCenter', 'admin', 'view'));
+    return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'view'));
 }
 
 /**
@@ -429,12 +429,12 @@ function securitycenter_admin_updateconfig()
     // we need to auto logout the user if they changed from DB to FILE
     if ($cause_logout == true) {
         pnUserLogOut();
-        return pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
+        return System::redirect(ModUtil::url('Users', 'user', 'loginscreen'));
     }
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('SecurityCenter','admin', 'main'));
+    return System::redirect(ModUtil::url('SecurityCenter','admin', 'main'));
 }
 
 /**
@@ -663,7 +663,7 @@ function securitycenter_admin_updatepurifierconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('SecurityCenter','admin', 'main'));
+    return System::redirect(ModUtil::url('SecurityCenter','admin', 'main'));
 }
 
 /**
@@ -827,7 +827,7 @@ function securitycenter_admin_updateallowedhtml($args)
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
-    return pnRedirect(ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
+    return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'));
 }
 
 /**

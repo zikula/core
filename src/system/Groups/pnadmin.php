@@ -230,7 +230,7 @@ function Groups_admin_create($args)
     }
 
     // This function generated no output
-    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
 }
 
 /**
@@ -333,7 +333,7 @@ function Groups_admin_update($args)
     }
 
     // This function generated no output
-    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
 }
 
 /**
@@ -370,7 +370,7 @@ function Groups_admin_delete($args)
 
     if ($item == false) {
         LogUtil::registerError(__('Sorry! No such group found.'));
-        return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     // Security check
@@ -382,7 +382,7 @@ function Groups_admin_delete($args)
     $defaultgroup = ModUtil::getVar('Groups', 'defaultgroup');
     if ($item['gid'] == $defaultgroup) {
         LogUtil::registerError(__('Error! You cannot delete the default user group.'));
-        return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     // Check for confirmation.
@@ -416,7 +416,7 @@ function Groups_admin_delete($args)
     }
 
     // This function generated no output
-    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
 }
 
 /**
@@ -588,7 +588,7 @@ function Groups_admin_adduser($args)
     }
 
     // This function generated no output
-    return pnRedirect(ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
+    return System::redirect(ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
 }
 
 /**
@@ -620,7 +620,7 @@ function Groups_admin_removeuser($args)
     }
 
     // This function generated no output
-    return pnRedirect(ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
+    return System::redirect(ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $gid)));
 }
 
 /**
@@ -727,7 +727,7 @@ function Groups_admin_userupdate()
         } else {
             LogUtil::registerError(__("Error! Could not execute 'Accept' action."));
         }
-        return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
+        return System::redirect(ModUtil::url('Groups', 'admin', 'main'));
     }
 
     if ($action == 'accept') {
@@ -736,7 +736,7 @@ function Groups_admin_userupdate()
         LogUtil::registerStatus(__("Done! The user's application for group membership has been rejected."));
     }
 
-    return pnRedirect(ModUtil::url('Groups', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Groups', 'admin', 'main'));
 }
 
 /**
@@ -805,7 +805,7 @@ function Groups_admin_updateconfig()
     $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $defaultgroupid));
     if($group == false) {
         LogUtil::registerError(__('Error! Could not save the module configuration.'));
-        return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
+        return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
     }
     ModUtil::setVar('Groups', 'defaultgroup', $group['gid']);
 
@@ -822,5 +822,5 @@ function Groups_admin_updateconfig()
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
     // This function generated no output
-    return pnRedirect(ModUtil::url('Groups', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
 }

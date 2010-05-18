@@ -91,7 +91,7 @@ function search_userapi_search($args)
                     $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
                     if (!$ok) {
                         LogUtil::registerError(__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
-                        return pnRedirect(ModUtil::url('Search', 'user', 'main'));
+                        return System::redirect(ModUtil::url('Search', 'user', 'main'));
                     }
                 }
             }

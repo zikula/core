@@ -19,7 +19,7 @@ function users_user_main()
 {
     // Security check
     if (!UserUtil::isLoggedIn()) {
-        pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
+        System::redirect(ModUtil::url('Users', 'user', 'loginscreen'));
     } elseif (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
         return LogUtil::registerPermissionError();
     }
@@ -50,7 +50,7 @@ function users_user_view()
 {
     // If has logged in, header to index.php
     if (UserUtil::isLoggedIn()) {
-        return pnRedirect(System::getVar('entrypoint', 'index.php'));
+        return System::redirect(System::getVar('entrypoint', 'index.php'));
     }
 
     // create output object
@@ -83,7 +83,7 @@ function users_user_loginscreen($args)
 
     // we shouldn't get here if logged in already....
     if (UserUtil::isLoggedIn()) {
-        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
+        return System::redirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     // TODO C Appears to be unused If confirmed, it can be removed. ph
@@ -133,7 +133,7 @@ function users_user_loginscreen($args)
 function users_user_underage()
 {
     LogUtil::registerError(__f('Sorry! You must be %s or over to register for a user account here.', ModUtil::getVar('Users', 'minage')));
-    return pnRedirect(ModUtil::url('Users', 'user', 'view'));
+    return System::redirect(ModUtil::url('Users', 'user', 'view'));
 }
 
 /**
@@ -145,7 +145,7 @@ function users_user_register()
 {
     // If has logged in, header to index.php
     if (UserUtil::isLoggedIn()) {
-        return pnRedirect(System::getVar('entrypoint', 'index.php'));
+        return System::redirect(System::getVar('entrypoint', 'index.php'));
     }
 
     $template = 'users_user_register.htm';
@@ -178,7 +178,7 @@ function users_user_lostpassword()
 {
     // we shouldn't get here if logged in already....
     if (UserUtil::isLoggedIn()) {
-        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
+        return System::redirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     if (isset($_POST['submit']) && !SecurityUtil::confirmAuthKey('Users')) {
@@ -205,7 +205,7 @@ function users_user_login()
 {
     // we shouldn't get here if logged in already....
     if (UserUtil::isLoggedIn()) {
-        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
+        return System::redirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     if (!SecurityUtil::confirmAuthKey('Users')) {
@@ -309,7 +309,7 @@ function users_user_login()
         ModUtil::callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
         if ($login_redirect == 1) {
             // WCAG compliant login
-            return pnRedirect($url);
+            return System::redirect($url);
         } else {
             // meta refresh
             users_print_redirectpage(__('You are being logged-in. Please wait...'), $url);
@@ -321,7 +321,7 @@ function users_user_login()
         if ($reg_verifyemail == 2) {
             LogUtil::registerError(__('Notice: If you have just registered a new account then please check your e-mail and activate your account before trying to log in.'));
         }
-        return pnRedirect(ModUtil::url('Users','user','loginscreen', array('returnpage' => urlencode($url))));
+        return System::redirect(ModUtil::url('Users','user','loginscreen', array('returnpage' => urlencode($url))));
     }
 }
 
@@ -344,14 +344,14 @@ function users_user_logout()
         if ($login_redirect == 1) {
             // WCAG compliant logout - we redirect to index.php because
             // we might no have the permission for the recent site any longer
-            return pnRedirect(System::getVar('entrypoint', 'index.php'));
+            return System::redirect(System::getVar('entrypoint', 'index.php'));
         } else {
             // meta refresh
             users_print_redirectpage(__('Done! You have been logged out.'));
         }
     } else {
         LogUtil::registerError(__('Error! You have not been logged out.'));
-        return pnRedirect(System::getVar('entrypoint', 'index.php'));
+        return System::redirect(System::getVar('entrypoint', 'index.php'));
     }
 
     return true;
@@ -521,11 +521,11 @@ function users_user_finishnewuser()
             if (ModUtil::getVar('Users', 'reg_verifyemail') == 2) {
                 LogUtil::registerStatus(__('Please use the link in the e-mail message to activate your account.'));
             }
-            return pnRedirect(ModUtil::url('Users', 'user', $redirectfunc));
+            return System::redirect(ModUtil::url('Users', 'user', $redirectfunc));
         }
     }
 
-    return pnRedirect(pnGetHomepageURL());
+    return System::redirect(pnGetHomepageURL());
 }
 
 /**
@@ -556,7 +556,7 @@ function users_user_mailpasswd()
     }
     if (!$email && !$uname) {
         LogUtil::registerError(__('Error! User name and e-mail address fields are empty.'));
-        return pnRedirect(ModUtil::url('Users', 'user', 'lostpassword'));
+        return System::redirect(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 
     // save username and password for redisplay
@@ -565,7 +565,7 @@ function users_user_mailpasswd()
 
     if (!empty($email) && !empty($uname)) {
         LogUtil::registerError(__('Error! Please enter a user name OR e-mail address, no both of them.'));
-        return pnRedirect(ModUtil::url('Users', 'user', 'lostpassword'));
+        return System::redirect(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 
     //0=DatabaseError 1=WrongCode 2=NoSuchUsernameOrEmailAddress 3=PasswordMailed 4=ConfirmationCodeMailed
@@ -614,10 +614,10 @@ function users_user_mailpasswd()
     switch ($returncode)
     {
         case 3:
-            return pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
+            return System::redirect(ModUtil::url('Users', 'user', 'loginscreen'));
             break;
         default:
-            return pnRedirect(ModUtil::url('Users', 'user', 'lostpassword'));
+            return System::redirect(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 }
 
@@ -662,7 +662,7 @@ function users_user_activation($args)
             return LogUtil::registerError(__('Error! Could not activate your account. Please contact the site administrator.'));
         }
         LogUtil::registerStatus(__('Done! Account activated.'));
-        return pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
+        return System::redirect(ModUtil::url('Users', 'user', 'loginscreen'));
     } else {
         return LogUtil::registerError(__('Sorry! You entered an invalid confirmation code. Please correct your entry and try again.'));
     }
@@ -722,7 +722,7 @@ function users_user_siteofflogin()
     if (!System::getVar('siteoff', false)) {
         $path = dirname(pnServerGetVar('PHP_SELF'));
         $path = str_replace('\\', '/', $path);
-        return pnRedirect($path . '/' . System::getVar('entrypoint', 'index.php'));
+        return System::redirect($path . '/' . System::getVar('entrypoint', 'index.php'));
     }
 
     $user = FormUtil::getPassedValue('user', null, 'POST');
@@ -737,7 +737,7 @@ function users_user_siteofflogin()
 
     $path = dirname(pnServerGetVar('PHP_SELF'));
     $path = str_replace('\\', '/', $path);
-    return pnRedirect($path . '/' . System::getVar('entrypoint', 'index.php'));
+    return System::redirect($path . '/' . System::getVar('entrypoint', 'index.php'));
 }
 
 /**
@@ -803,7 +803,7 @@ function users_user_updateusersblock()
     pnUserSetVar('ublock', $ublock);
 
     LogUtil::registerStatus(__('Done! Saved custom block.'));
-    return pnRedirect(ModUtil::url('Users'));
+    return System::redirect(ModUtil::url('Users'));
 }
 
 /**
@@ -819,7 +819,7 @@ function Users_user_changepassword()
 
     $changepassword = ModUtil::getVar('Users', 'changepassword', 1);
     if ($changepassword <> 1) {
-        return pnRedirect('Users', 'user', 'main');
+        return System::redirect('Users', 'user', 'main');
     }
 
     // Create output object
@@ -850,7 +850,7 @@ function Users_user_updatepassword()
 
     $uservars = ModUtil::getVar('Users');
     if ($uservars['changepassword'] <> 1) {
-        return pnRedirect('Users', 'user', 'main');
+        return System::redirect('Users', 'user', 'main');
     }
 
     $oldpassword        = FormUtil::getPassedValue('oldpassword', '', 'POST');
@@ -892,7 +892,7 @@ function Users_user_updatepassword()
     pnUserSetPassword($newpassword);
 
     LogUtil::registerStatus(__('Done! Saved your new password.'));
-    return pnRedirect(ModUtil::url('Users', 'user', 'main'));
+    return System::redirect(ModUtil::url('Users', 'user', 'main'));
 }
 
 /**
@@ -908,7 +908,7 @@ function Users_user_changeemail()
 
     $changeemail = ModUtil::getVar('Users', 'changeemail', 1);
     if ($changeemail <> 1) {
-        return pnRedirect('Users', 'user', 'main');
+        return System::redirect('Users', 'user', 'main');
     }
 
     // Create output object
@@ -934,7 +934,7 @@ function Users_user_updateemail()
 
     $uservars = ModUtil::getVar('Users');
     if ($uservars['changeemail'] <> 1) {
-        return pnRedirect('Users', 'user', 'main');
+        return System::redirect('Users', 'user', 'main');
     }
 
     $newemail = FormUtil::getPassedValue('newemail', '', 'POST');
@@ -976,7 +976,7 @@ function Users_user_updateemail()
     }
 
     LogUtil::registerStatus(__('Done! You will receive an e-mail to your new e-mail address to confirm the change.'));
-    return pnRedirect(ModUtil::url('Users', 'user', 'main'));
+    return System::redirect(ModUtil::url('Users', 'user', 'main'));
 }
 
 /**
@@ -1027,7 +1027,7 @@ function Users_user_confirmchemail($args)
 
     if (!$preemail || $confirmcode != $preemail['comment'] || $preemail['dynamics'] < $fiveDaysAgo) {
         LogUtil::registerError(__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'));
-        return pnRedirect(ModUtil::url('Users', 'user', 'main'));
+        return System::redirect(ModUtil::url('Users', 'user', 'main'));
     }
 
     // user and confirmation code are correct. set the new email
@@ -1038,5 +1038,5 @@ function Users_user_confirmchemail($args)
                 array('userid' => $preemail['tid']));
 
     LogUtil::registerStatus(__('Done! Changed your e-mail address.'));
-    return pnRedirect(ModUtil::url('Users', 'user', 'main'));
+    return System::redirect(ModUtil::url('Users', 'user', 'main'));
 }

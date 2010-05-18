@@ -252,7 +252,7 @@ function permissions_admin_inc()
     }
 
     // Redirect
-    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view',
+    return System::redirect(ModUtil::url('Permissions', 'admin', 'view',
                                array('permgrp'  => $permgrp)));
 }
 
@@ -295,7 +295,7 @@ function permissions_admin_dec()
 
     // Redirect
     // MMaes,2003-06-23: View permissions applying to single group; added permgrp
-    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view',
+    return System::redirect(ModUtil::url('Permissions', 'admin', 'view',
                                array('permgrp'  => $permgrp)));
 }
 
@@ -338,7 +338,7 @@ function permissions_admin_listedit()
     $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);
     if (!$objArray && $action != 'add') {
         LogUtil::registerError(__('Error! No permission rules of this kind were found. Please add some first.'));
-        return pnRedirect(ModUtil::url('modules', 'admin', 'main'));
+        return System::redirect(ModUtil::url('modules', 'admin', 'main'));
     }
 
     $pnRender->assign('title', $viewperms);
@@ -468,7 +468,7 @@ function permissions_admin_update()
         }
     }
 
-    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Permissions', 'admin', 'view'));
 }
 
 
@@ -532,7 +532,7 @@ function permissions_admin_create()
         }
     }
 
-    return pnRedirect(ModUtil::url('Permissions',
+    return System::redirect(ModUtil::url('Permissions',
                                'admin',
                                'view'));
 }
@@ -588,7 +588,7 @@ function permissions_admin_delete()
             LogUtil::registerStatus(__('Done! Deleted permission rule.'));
     }
 
-    return pnRedirect(ModUtil::url('Permissions', 'admin', 'view',
+    return System::redirect(ModUtil::url('Permissions', 'admin', 'view',
                                array('permgrp'  => $permgrp)));
 }
 
@@ -715,10 +715,10 @@ function permissions_admin_updateconfig()
     // the module configuration has been updated successfuly
     if ($error==true) {
         LogUtil::registerStatus(__('Error! Could not save configuration: unknown permission rule ID.'));
-        return pnRedirect(ModUtil::url('Permissions', 'admin', 'modifyconfig'));
+        return System::redirect(ModUtil::url('Permissions', 'admin', 'modifyconfig'));
     }
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
-    return pnRedirect(ModUtil::url('Permissions', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Permissions', 'admin', 'main'));
 
 
 }
@@ -732,6 +732,6 @@ function permissions_admin_checkpermissions()
 {
     $username = FormUtil::getPassedValue('username', null, 'POST');
     $returnto = FormUtil::getPassedValue('returnto', pnGetCurrentURI(), 'POST');
-    return pnRedirect($returnto);
+    return System::redirect($returnto);
 }
 

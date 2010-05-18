@@ -116,10 +116,10 @@ function modules_admin_update()
         // Success
         LogUtil::registerStatus(__('Done! Saved module information.'));
     } else {
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'modify', array('id' => $id)));
+        return System::redirect(ModUtil::url('Modules', 'admin', 'modify', array('id' => $id)));
     }
 
-    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**
@@ -145,7 +145,7 @@ function modules_admin_updatehooks()
         LogUtil::registerStatus(__('Done! Saved module information.'));
     }
 
-    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**
@@ -172,7 +172,7 @@ function modules_admin_extendedupdatehooks()
         LogUtil::registerStatus(__('Done! Saved module information.'));
     }
 
-    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**
@@ -536,7 +536,7 @@ function modules_admin_initialise()
         foreach ($dependencies as $dependency) {
             if (!ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
                 'id' => $dependency))) {
-                return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+                return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
@@ -544,7 +544,7 @@ function modules_admin_initialise()
             if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $dependency,
                 'state' => PNMODULE_STATE_ACTIVE))) {
-                return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+                return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
@@ -573,12 +573,12 @@ function modules_admin_initialise()
                 LogUtil::registerStatus(__('Done! Activated module.'));
             }
         }
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
     } elseif (is_bool($res)) {
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -611,7 +611,7 @@ function modules_admin_activate()
     $moduleinfo = ModUtil::getInfo($id);
     if ($moduleinfo['state'] == 6) {
         LogUtil::registerError(__('Error! Module not allowed.'));
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -625,7 +625,7 @@ function modules_admin_activate()
         LogUtil::registerStatus(__('Done! Activated module.'));
     }
 
-    return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+    return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
         'startnum' => $startnum,
         'letter' => $letter,
         'state' => $state)));
@@ -697,12 +697,12 @@ function modules_admin_upgrade()
         $Renderer->clear_compiled();
         $Renderer->clear_all_cache();
 
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
     } elseif (is_bool($res)) {
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -765,7 +765,7 @@ function modules_admin_deactivate()
         LogUtil::registerStatus(__('Done! Deactivated module.'));
     }
 
-    return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+    return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
         'startnum' => $startnum,
         'letter' => $letter,
         'state' => $state)));
@@ -857,7 +857,7 @@ function modules_admin_remove()
     foreach ($dependents as $dependent) {
         if (!ModUtil::apiFunc('Modules', 'admin', 'remove', array(
             'id' => $dependent))) {
-            return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+            return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                 'startnum' => $startnum,
                 'letter' => $letter,
                 'state' => $state)));
@@ -871,7 +871,7 @@ function modules_admin_remove()
         if (!ModUtil::apiFunc('Blocks', 'admin', 'delete', array(
             'bid' => $block['bid']))) {
             LogUtil::registerError(__f('Error! Deleting the block %s .', $block['title']));
-            return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+            return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                 'startnum' => $startnum,
                 'letter' => $letter,
                 'state' => $state)));
@@ -890,12 +890,12 @@ function modules_admin_remove()
         SessionUtil::delVar('modules_state');
         SessionUtil::delVar('interactive_remove');
         LogUtil::registerStatus(__('Done! De-installed module.'));
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
     } elseif (is_bool($res)) {
-        return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
             'startnum' => $startnum,
             'letter' => $letter,
             'state' => $state)));
@@ -1059,7 +1059,7 @@ function modules_admin_updateconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('Modules', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Modules', 'admin', 'view'));
 }
 
 /**

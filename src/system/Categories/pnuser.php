@@ -222,7 +222,7 @@ function Categories_user_edituser ()
     }
 
     $url = pnModURL ('Categories', 'user', 'edit', array('dr' => $dr));
-    return pnRedirect($url);
+    return System::redirect($url);
 }
 
 /**
@@ -232,7 +232,7 @@ function Categories_user_referBack()
 {
     $referer = SessionUtil::getVar ('categories_referer');
     SessionUtil::DelVar ('categories_referer');
-    return pnRedirect ($referer);
+    return System::redirect ($referer);
 }
 
 /**

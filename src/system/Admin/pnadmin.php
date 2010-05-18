@@ -72,7 +72,7 @@ function Admin_admin_create($args)
         LogUtil::registerStatus(__('Done! Created new category.'));
     }
 
-    return pnRedirect(ModUtil::url('Admin', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
 }
 
 /**
@@ -139,7 +139,7 @@ function Admin_admin_update($args)
         LogUtil::registerStatus(__('Done! Saved category.'));
     }
 
-    return pnRedirect(ModUtil::url('Admin', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
 }
 
 /**
@@ -196,7 +196,7 @@ function Admin_admin_delete($args)
         LogUtil::registerStatus(__('Done! Category deleted.'));
     }
 
-    return pnRedirect(ModUtil::url('Admin', 'admin', 'view'));
+    return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
 }
 
 /**
@@ -260,7 +260,7 @@ function Admin_admin_adminpanel($args)
 {
     if (!SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
         // suppress admin display - return to index.
-        return pnRedirect(pnGetHomepageURL());
+        return System::redirect(pnGetHomepageURL());
     }
 
     // Create output object
@@ -510,7 +510,7 @@ function Admin_admin_updateconfig()
                                          'category' => $category));
             if ($result == false) {
                 LogUtil::registerError(__('Error! Could not add module to module category.'));
-                return pnRedirect(ModUtil::url('Admin', 'admin', 'view'));
+                return System::redirect(ModUtil::url('Admin', 'admin', 'view'));
             }
         }
     }
@@ -523,7 +523,7 @@ function Admin_admin_updateconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('Admin', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Admin', 'admin', 'main'));
 }
 
 /**

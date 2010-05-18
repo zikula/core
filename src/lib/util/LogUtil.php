@@ -138,7 +138,7 @@ class LogUtil
 
         // check if we want to redirect
         if ($url) {
-            return pnRedirect($url);
+            return System::redirect($url);
         }
 
         return true;
@@ -261,7 +261,7 @@ class LogUtil
 
         // check if we want to redirect
         if ($url) {
-            return pnRedirect($url);
+            return System::redirect($url);
         }
 
         // since we're registering an error, it makes sense to return false here.

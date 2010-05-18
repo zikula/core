@@ -125,5 +125,5 @@ function Search_admin_updateconfig()
 
     // This function generated no output, and so now it is complete we redirect
     // the user to an appropriate page for them to carry on their work
-    return pnRedirect(ModUtil::url('Search', 'admin', 'main'));
+    return System::redirect(ModUtil::url('Search', 'admin', 'main'));
 }
