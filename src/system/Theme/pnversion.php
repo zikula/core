@@ -18,10 +18,10 @@ $modversion['description']    = __("Provides the site's theming system, and an i
 $modversion['url']            = __('theme');
 $modversion['version']        = '3.4';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Mark West';
 $modversion['contact']        = 'http://www.markwest.me.uk/';

@@ -17,10 +17,10 @@ $modversion['description']    = __('Provides a workflow engine, and an interface
 $modversion['url']            = __('workflow');
 $modversion['version']        = '1.1';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/manual.html';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/copying.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Drak';
 $modversion['contact']        = 'drak@hostnuke.com';

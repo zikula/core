@@ -17,10 +17,10 @@ $modversion['description']    = __("Provides the site's administration panel, an
 $modversion['url']            = __('adminpanel');
 $modversion['version']        = '1.8';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Mark West';
 $modversion['contact']        = 'http://www.markwest.me.uk/';

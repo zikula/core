@@ -17,10 +17,10 @@ $modversion['description']    = __('Provides the core system of the site with er
 $modversion['url']            = __('errors');
 $modversion['version']        = '1.1';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Brian Lindner <Furbo>';
 $modversion['contact']        = 'furbo@sigtauonline.com';

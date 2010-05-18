@@ -17,10 +17,10 @@ $modversion['description']    = __('Provides support for user groups, and incorp
 $modversion['url']            = __('groups');
 $modversion['version']        = '2.3';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = 'docs/credits.txt';
+$modversion['help']           = 'docs/help.txt';
+$modversion['changelog']      = 'docs/changelog.txt';
+$modversion['license']        = 'docs/license.txt';
 $modversion['official']       = 1;
 $modversion['author']         = 'Mark West, Franky Chestnut, Michael Halbook';
 $modversion['contact']        = 'http://www.markwest.me.uk/, http://dev.pnconcept.com, http://www.halbrooktech.com';

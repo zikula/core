@@ -16,10 +16,10 @@ $modversion['description']    = __("Provides an interface for fine-grained manag
 $modversion['url']            = __('permissions');
 $modversion['version']        = '1.1';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/install.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Jim McDonald, M.Maes';
 $modversion['contact']        = 'http://www.mcdee.net/, http://www.mmaes.com';

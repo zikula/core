@@ -17,10 +17,10 @@ $modversion['description']    = __('Provides detailed information reports about 
 $modversion['url']            = __('sysinfo');
 $modversion['version']        = '1.1';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Simon Birtwistle';
 $modversion['contact']        = 'hammerhead@zikula.org';

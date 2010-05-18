@@ -18,10 +18,10 @@ $modversion['description']    = __('Provides a framework for implementing and ma
 $modversion['url']            = __('objectdata');
 $modversion['version']        = '1.03';
 
-$modversion['credits']        = 'docs/credits.txt';
-$modversion['help']           = 'docs/help.txt';
-$modversion['changelog']      = 'docs/changelog.txt';
-$modversion['license']        = 'docs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 0;
 $modversion['author']         = 'Robert Gasch';
 $modversion['contact']        = 'rgasch@gmail.com';

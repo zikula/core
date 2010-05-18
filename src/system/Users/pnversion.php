@@ -18,10 +18,10 @@ $modversion['description']    = __('Provides an interface for configuring and ad
 $modversion['url']            = __('users');
 $modversion['version']        = '1.16';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Xiaoyu Huang, Drak';
 $modversion['contact']        = 'class007@sina.com, drak@zikula.org';

@@ -16,10 +16,10 @@ $modversion['description']    = __('Provides the ability to lock pages when they
 $modversion['url']            = __('pagelock');
 $modversion['version']        = '1.1';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/install.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = '';
+$modversion['help']           = '';
+$modversion['changelog']      = '';
+$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Jorn Wildt';
 $modversion['contact']        = 'http://www.elfisk.dk';

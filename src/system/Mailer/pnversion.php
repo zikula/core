@@ -17,10 +17,10 @@ $modversion['description']    = __("Provides mail-sending functionality for comm
 $modversion['url']            = __('mailer');
 $modversion['version']        = '1.3';
 
-$modversion['credits']        = 'pndocs/credits.txt';
-$modversion['help']           = 'pndocs/help.txt';
-$modversion['changelog']      = 'pndocs/changelog.txt';
-$modversion['license']        = 'pndocs/license.txt';
+$modversion['credits']        = 'docs/credits.txt';
+$modversion['help']           = 'docs/help.txt';
+$modversion['changelog']      = 'docs/changelog.txt';
+$modversion['license']        = 'docs/license.txt';
 $modversion['official']       = 1;
 $modversion['author']         = 'Mark West';
 $modversion['contact']        = 'http://www.markwest.me.uk/';
