@@ -74,6 +74,7 @@
 - You may now optionally include bootstrap.php in your module root directory.
   This will be loaded during ModLoad/ModLoadGeneric() automatically.
 
-- pnMod* now all deprecated.  Please use ModUtil::*
-
+- pnMod* now all deprecated see ModUtil::*
+- pnUser* deprecated, see UserUtil::*
+- pn* deprecated see legacy/Compat.php and legacy/Api.php
 

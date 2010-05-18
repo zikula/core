@@ -134,6 +134,7 @@ Updated css messages (Issue #2043 & Issue #2030).
 Added ability to have OO controllers in modules.
 Modules may have a bootstrap.php which will be included during ModLoad calls.
 Added recursive lists for extmenu blocks.
+Deprecated entire pn* API.
 
 CHANGELOG - ZIKULA 1.2.2
 ------------------------
