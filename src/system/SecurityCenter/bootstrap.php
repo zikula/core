@@ -16,5 +16,7 @@ if (!defined('HTMLPURIFIER_PREFIX')) {
     define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/pnincludes/htmlpurifier'));
 }
 
+// include the PHPIDS and get access to the result object
+set_include_path(get_include_path() . PATH_SEPARATOR . 'system/SecurityCenter/pnincludes');
 ZLoader::addAutoloader('HTMLPurifier', dirname(__FILE__) . '/pnincludes/htmlpurifier');
 ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/pnincludes'));
