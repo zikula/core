@@ -192,7 +192,7 @@ function Mailer_admin_sendmessage($args)
         $from = pnConfigGetVar('adminmail');
         $result = pnMail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html, $altBody);
     } else {
-        $result = pnModAPIFunc('Mailer', 'user', 'sendmessage',
+        $result = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                array('toname' => $toname,
                                      'toaddress' => $toaddress,
                                      'subject' => $subject,

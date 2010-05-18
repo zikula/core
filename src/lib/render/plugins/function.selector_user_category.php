@@ -48,7 +48,7 @@ function smarty_function_selector_user_category($params, &$smarty)
     $doReplaceRootCat = false;
 
 
-    $userCats= pnModAPIFunc ('Categories', 'user', 'getusercategories', array('returnCategory'=>1, 'relative'=>$relative));
+    $userCats= ModUtil::apiFunc ('Categories', 'user', 'getusercategories', array('returnCategory'=>1, 'relative'=>$relative));
     $html = CategoryUtil::getSelector_Categories ($userCats, $field, $selectedValue, $name, $defaultValue, $defaultText,
                                                   $submit, $displayPath, $doReplaceRootCat, $multipleSize);
 

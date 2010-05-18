@@ -244,7 +244,7 @@ function permissions_admin_inc()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Permissions', 'admin', 'inc',
+    if (ModUtil::apiFunc('Permissions', 'admin', 'inc',
                      array('pid'     => $pid,
                            'permgrp' => $permgrp))) {
         // Success
@@ -286,7 +286,7 @@ function permissions_admin_dec()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Permissions', 'admin', 'dec',
+    if (ModUtil::apiFunc('Permissions', 'admin', 'dec',
                      array('pid'     => $pid,
                            'permgrp' => $permgrp))) {
         // Success
@@ -451,7 +451,7 @@ function permissions_admin_update()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Permissions', 'admin', 'update',
+    if (ModUtil::apiFunc('Permissions', 'admin', 'update',
                      array('pid'       => $pid,
                            'seq'       => $seq,
                            'oldseq'    => $oldseq,
@@ -517,7 +517,7 @@ function permissions_admin_create()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Permissions', 'admin', 'create',
+    if (ModUtil::apiFunc('Permissions', 'admin', 'create',
                      array('realm'     => $realm,
                            'id'        => $id,
                            'component' => $component,
@@ -582,7 +582,7 @@ function permissions_admin_delete()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Permissions',  'admin', 'delete',
+    if (ModUtil::apiFunc('Permissions',  'admin', 'delete',
                      array('pid'  => $pid))) {
         // Success
             LogUtil::registerStatus(__('Done! Deleted permission rule.'));
@@ -637,7 +637,7 @@ function permissions_admin_viewinstanceinfo()
     $pnRender = Renderer::getInstance('Permissions', false);
 
     // Get all permissions schemas, sort and assign to the template
-    $pnRender->assign('schemas', pnModAPIFunc('Permissions', 'admin', 'getallschemas'));
+    $pnRender->assign('schemas', ModUtil::apiFunc('Permissions', 'admin', 'getallschemas'));
 
     // we don't return the output back to the core here since this template is a full page
   // template i.e. we don't want this output wrapped in the theme.

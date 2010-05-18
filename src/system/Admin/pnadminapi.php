@@ -56,7 +56,7 @@ function Admin_adminapi_delete($args)
         return LogUtil::registerArgsError();
     }
 
-    $category = pnModAPIFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+    $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
 
     if ($category == false) {
         return LogUtil::registerError(__('Sorry! No such item found.'));
@@ -124,7 +124,7 @@ function Admin_adminapi_update($args)
     }
 
     // Get the existing item
-    $category = pnModAPIFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+    $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
 
     if ($category == false) {
         return LogUtil::registerError(__('Sorry! No such item found.'));
@@ -182,7 +182,7 @@ function Admin_adminapi_getall($args)
     }
 
     // get the necessary db information
-    pnModDBInfoLoad('Admin', 'Admin');
+    ModUtil::dbInfoLoad('Admin', 'Admin');
     $pntable = pnDBGetTables();
     $admincategorycolumn = &$pntable['admin_category_column'];
 

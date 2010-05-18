@@ -110,7 +110,7 @@ function Groups_userapi_get($args)
 
     $uid = pnUserGetVar('uid');
     if ($uid != 0) {
-        $result['status'] = pnModAPIFunc('Groups',
+        $result['status'] = ModUtil::apiFunc('Groups',
                             'user',
                             'isuserpending',
                             array('gid' => $args['gid'],
@@ -252,7 +252,7 @@ function Groups_userapi_getallgroups($args)
     $uid = pnUserGetVar('uid');
 
     if ($uid != 0) {
-        $memberships = pnModAPIFunc('Groups', 'user', 'getusergroups',
+        $memberships = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
                                     array('uid' => $uid,
                                           'clean' => true));
     } else {
@@ -284,14 +284,14 @@ function Groups_userapi_getallgroups($args)
             }
 
             if ($uid != 0) {
-                $status = pnModAPIFunc('Groups', 'user', 'isuserpending',
+                $status = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
                                        array('gid' => $gid,
                                              'uid' => $uid));
             } else {
                 $status = false;
             }
 
-            $nbuser = pnModAPIFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid));
+            $nbuser = ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid));
 
             if (SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_READ)) {
                 $canview = true;
@@ -339,7 +339,7 @@ function Groups_userapi_saveapplication($args)
         return LogUtil::registerArgsError();
     }
 
-    $item = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+    $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
     if ($item == false) {
         return LogUtil::registerError(__('Sorry! No such item found.'));
@@ -350,7 +350,7 @@ function Groups_userapi_saveapplication($args)
     }
 
     // Check in case the user already applied
-    $pending = pnModAPIFunc('Groups', 'user', 'isuserpending',
+    $pending = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
                             array('gid' => $args['gid'],
                                   'uid' => $args['uid']));
 
@@ -383,7 +383,7 @@ function Groups_userapi_cancelapp($args)
     }
 
     // Checking first if this user is really pending.
-    $ispending = pnModAPIFunc('Groups', 'user', 'isuserpending',
+    $ispending = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
                               array('gid' => $args['gid'],
                                     'uid' => $args['uid']));
 
@@ -463,7 +463,7 @@ function Groups_userapi_userupdate($args)
             }
 
             // We save the user in the application table
-            $save = pnModAPIFunc('Groups', 'user', 'saveapplication',
+            $save = ModUtil::apiFunc('Groups', 'user', 'saveapplication',
                                  array('gid'       => $args['gid'],
                                        'uid'       => $userid,
                                        'applytext' => $args['applytext']));
@@ -474,7 +474,7 @@ function Groups_userapi_userupdate($args)
 
             if (ModUtil::getVar('Groups', 'mailwarning')) {
                 $uname = pnUserGetVar('uname', $userid);
-                $send = pnModAPIFunc('Mailer', 'user', 'sendmessage',
+                $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                      array('toname'    => __('Administrator'),
                                            'toaddress' => pnConfigGetVar('adminmail'),
                                            'subject'   => __('Group membership application registered'),
@@ -483,7 +483,7 @@ function Groups_userapi_userupdate($args)
 
         } else {
             // We save the user into the groups
-            $save = pnModAPIFunc('Groups', 'user', 'adduser',
+            $save = ModUtil::apiFunc('Groups', 'user', 'adduser',
                                  array('gid' => $args['gid'],
                                        'uid' => $userid));
 
@@ -494,7 +494,7 @@ function Groups_userapi_userupdate($args)
 
     } elseif ($args['action'] == 'cancel') {
 
-        $save = pnModAPIFunc('Groups', 'user', 'cancelapp',
+        $save = ModUtil::apiFunc('Groups', 'user', 'cancelapp',
                              array('gid' => $args['gid'],
                                    'uid' => $userid));
 
@@ -504,7 +504,7 @@ function Groups_userapi_userupdate($args)
 
     } else {
 
-        $save = pnModAPIFunc('Groups', 'user', 'removeuser',
+        $save = ModUtil::apiFunc('Groups', 'user', 'removeuser',
                              array('gid' => $args['gid'],
                                    'uid' => $userid));
 
@@ -531,7 +531,7 @@ function Groups_userapi_adduser($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+    $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
     if ($item == false) {
         return LogUtil::registerError(__('Sorry! No such item found.'));
@@ -543,7 +543,7 @@ function Groups_userapi_adduser($args)
     }
 
     //verify if the user is alredy a member of this group
-    $is_member = pnModAPIFunc('Groups', 'user', 'isgroupmember', array('gid' => $args['gid'], 'uid' => $args['uid']));
+    $is_member = ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $args['gid'], 'uid' => $args['uid']));
 
     // Add item
     if(!$is_member) {
@@ -580,7 +580,7 @@ function Groups_userapi_removeuser($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('Groups', 'user', 'get',
+    $item = ModUtil::apiFunc('Groups', 'user', 'get',
                          array('gid' => $args['gid']));
 
     if ($item == false) {
@@ -652,7 +652,7 @@ function groups_userapi_isgroupmember($args)
     }
 
     // Get the group
-    $group = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+    $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
     // check if group exists
     if (!$group) {

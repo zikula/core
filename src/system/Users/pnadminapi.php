@@ -81,7 +81,7 @@ function users_adminapi_findusers($args)
     }
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfileMod = (!empty($profileModule) && pnModAvailable($profileModule));
+    $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
     $pntable     = pnDBGetTables();
     $userstable  = $pntable['users'];
@@ -120,7 +120,7 @@ function users_adminapi_findusers($args)
         if ($useProfileMod) {
             // Check for attributes
             if (isset($args['dynadata']) && is_array($args['dynadata'])) {
-                $uids = pnModAPIFunc($profileModule, 'user', 'searchdynadata', array('dynadata' => $args['dynadata']));
+                $uids = ModUtil::apiFunc($profileModule, 'user', 'searchdynadata', array('dynadata' => $args['dynadata']));
                 if (is_array($uids) && !empty($uids)) {
                     $args['condition'] .= " AND $userscolumn[uid] IN (";
                     foreach ($uids as $uid) {
@@ -194,7 +194,7 @@ function users_adminapi_saveuser($args)
         }
         if (!empty($pass) && $pass) {
             $method = ModUtil::getVar('Users', 'hash_method', 'sha1');
-            $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
+            $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
             $args['pass'] = hash($method, $pass);
             $args['hash_method'] = $hashmethodsarray[$method];
         }
@@ -206,10 +206,10 @@ function users_adminapi_saveuser($args)
     $dynadata = isset($args['dynadata']) ? $args['dynadata'] : array();
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfileMod = (!empty($profileModule) && pnModAvailable($profileModule));
+    $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
     if ($useProfileMod && $dynadata) {
 
-        $checkrequired = pnModAPIFunc($profileModule, 'user', 'checkrequired',
+        $checkrequired = ModUtil::apiFunc($profileModule, 'user', 'checkrequired',
                                       array('dynadata' => $dynadata));
 
         if ($checkrequired['result'] == true) {
@@ -232,7 +232,7 @@ function users_adminapi_saveuser($args)
 
     // call the profile manager to handle dynadata if needed
     if ($useProfileMod) {
-        $adddata = pnModAPIFunc($profileModule, 'user', 'insertdyndata', $args);
+        $adddata = ModUtil::apiFunc($profileModule, 'user', 'insertdyndata', $args);
         if (is_array($adddata)) {
             $args = array_merge($adddata, $args);
         }
@@ -241,13 +241,13 @@ function users_adminapi_saveuser($args)
     DBUtil::updateObject($args, 'users', '', 'uid');
 
     // Fixing a high numitems to be sure to get all groups
-    $groups = pnModAPIFunc('Groups', 'user', 'getall', array('numitems' => 1000));
+    $groups = ModUtil::apiFunc('Groups', 'user', 'getall', array('numitems' => 1000));
 
     foreach ($groups as $group) {
         if (in_array($group['gid'], $args['access_permissions'])) {
             // Check if the user is already in the group
             $useringroup = false;
-            $usergroups  = pnModAPIFunc('Groups', 'user', 'getusergroups', array('uid' => $args['uid']));
+            $usergroups  = ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $args['uid']));
             if ($usergroups) {
                 foreach ($usergroups as $usergroup) {
                     if ($group['gid'] == $usergroup['gid']) {
@@ -258,13 +258,13 @@ function users_adminapi_saveuser($args)
             }
             // User is not in this group
             if ($useringroup == false) {
-                pnModAPIFunc('Groups', 'admin', 'adduser', array('gid' => $group['gid'], 'uid' => $args['uid']));
+                ModUtil::apiFunc('Groups', 'admin', 'adduser', array('gid' => $group['gid'], 'uid' => $args['uid']));
             }
         } else {
             // We don't need to do a complex check, if the user is not in the group, the SQL will not return
             // an error anyway.
             if (SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
-                pnModAPIFunc('Groups', 'admin', 'removeuser', array('gid' => $group['gid'], 'uid' => $args['uid']));
+                ModUtil::apiFunc('Groups', 'admin', 'removeuser', array('gid' => $group['gid'], 'uid' => $args['uid']));
             }
         }
     }
@@ -383,7 +383,7 @@ function users_adminapi_approve($args)
     $user['dynadata']  = unserialize($user['dynamics']);
     $user['moderated'] = true;
 
-    $insert = pnModAPIFunc('Users', 'user', 'finishnewuser', $user);
+    $insert = ModUtil::apiFunc('Users', 'user', 'finishnewuser', $user);
 
     if ($insert) {
         // $insert has uid, we remove it from the temp
@@ -493,7 +493,7 @@ function Users_adminapi_getlinks()
         $links[] = array('url' => ModUtil::url('Users', 'admin', 'view'), 'text' => __('Users list'), 'class' => 'z-icon-es-list');
     }
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-        $pending = pnModAPIFunc('Users', 'admin', 'countpending');
+        $pending = ModUtil::apiFunc('Users', 'admin', 'countpending');
         if ($pending) {
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewapplications'), 'text' => __('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
         }
@@ -515,14 +515,14 @@ function Users_adminapi_getlinks()
     }
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfileMod = (!empty($profileModule) && pnModAvailable($profileModule));
+    $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
     if ($useProfileMod) {
         // Make sure there are links for the user to see in the submenu. Don't try
         // to guess at what permission level the profule module might have for its
         // links in its getlinks function. Just try to get the links and see if
         // it is not empty. If it is not empty, then the user has permissions for
         // at least one function in there (maybe more).
-        $profileAdminLinks = pnModAPIFunc($profileModule, 'admin', 'getlinks');
+        $profileAdminLinks = ModUtil::apiFunc($profileModule, 'admin', 'getlinks');
         if (!empty($profileAdminLinks)) {
             if (pnModGetName() == 'Users') {
                 $links[] = array('url' => 'javascript:showdynamicsmenu()', 'text' => __('Account panel manager'), 'class' => 'z-icon-es-profile');
@@ -600,7 +600,7 @@ function Users_adminapi_createImport($args)
 
     // get encrypt method for passwords
     $method = ModUtil::getVar('Users', 'hash_method');
-    $methodNumberArray = pnModAPIFunc('Users','user','gethashmethods', array('reverse' => false));
+    $methodNumberArray = ModUtil::apiFunc('Users','user','gethashmethods', array('reverse' => false));
     $methodNumber = $methodNumberArray[$method];
 
     $createUsersSQL = "INSERT INTO " . $userstable . "($userscolumn[uname],$userscolumn[email],$userscolumn[activated],$userscolumn[pass],$userscolumn[hash_method]) VALUES ";
@@ -622,7 +622,7 @@ function Users_adminapi_createImport($args)
     }
 
     // get users. We need the users identities set them into their groups
-    $usersInDB = pnModAPIFunc('Users', 'admin', 'checkMultipleExistence',
+    $usersInDB = ModUtil::apiFunc('Users', 'admin', 'checkMultipleExistence',
                                   array('valuesArray' => $usersArray,
                                         'key' => 'uname'));
     if (!$usersInDB) {
@@ -631,7 +631,7 @@ function Users_adminapi_createImport($args)
     }
 
     // get available groups
-    $allGroups = pnModAPIFunc('Groups','user','getall');
+    $allGroups = ModUtil::apiFunc('Groups','user','getall');
 
     // create an array with the groups identities where the user can add other users
     $allGroupsArray = array();
@@ -680,7 +680,7 @@ function Users_adminapi_createImport($args)
                 $pnRender->assign('pass', $value['pass']);
                 $message = $pnRender->fetch('users_adminapi_notifyemail.htm');
                 $subject = __f('Password for %1$s from %2$s', array($value['uname'], $sitename));
-                if (!pnModAPIFunc('Mailer', 'user', 'sendmessage',
+                if (!ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                     array('toaddress' => $value['email'],
                                           'subject' => $subject,
                                           'body' => $message,

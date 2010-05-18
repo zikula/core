@@ -22,7 +22,7 @@ function PageLock_ajax_refreshpagelock($args)
 
     $uname = pnUserGetVar('uname');
 
-    $lockInfo = pnModAPIFunc('PageLock', 'user', 'requireLock',
+    $lockInfo = ModUtil::apiFunc('PageLock', 'user', 'requireLock',
                              array('lockName'      => $lockName,
                                    'sessionId'     => session_id(),
                                    'lockedByTitle' => $uname,
@@ -45,7 +45,7 @@ function PageLock_ajax_checkpagelock($args)
 
     $uname = pnUserGetVar('uname');
 
-    $lockInfo = pnModAPIFunc('PageLock', 'user', 'requireLock',
+    $lockInfo = ModUtil::apiFunc('PageLock', 'user', 'requireLock',
                              array('lockName'      => $lockName,
                                    'sessionId'     => session_id(),
                                    'lockedByTitle' => $uname,

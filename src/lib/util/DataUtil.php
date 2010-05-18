@@ -286,7 +286,7 @@ class DataUtil
         }
 
         if (!isset($outputfilter)) {
-            if (pnModAvailable('SecurityCenter') && !defined('_ZINSTALLVER')) {
+            if (ModUtil::available('SecurityCenter') && !defined('_ZINSTALLVER')) {
                 $outputfilter = pnConfigGetVar('outputfilter');
             } else {
                 $outputfilter = 0;
@@ -300,7 +300,7 @@ class DataUtil
         } else {
             // Run additional filters
             if ($outputfilter > 0) {
-                $var = pnModAPIFunc('SecurityCenter', 'user', 'secureoutput', array('var' => $var, 'filter' => $outputfilter));
+                $var = ModUtil::apiFunc('SecurityCenter', 'user', 'secureoutput', array('var' => $var, 'filter' => $outputfilter));
             }
 
             // Preparse var to mark the HTML that we want
@@ -504,7 +504,7 @@ class DataUtil
     {
         static $doCensor;
         if (!isset($doCensor)) {
-            $doCensor = pnModAvailable('MultiHook');
+            $doCensor = ModUtil::available('MultiHook');
         }
 
         if (!$doCensor) {
@@ -516,7 +516,7 @@ class DataUtil
                 $var[$k] = self::censor($v);
             }
         } else {
-            $var = pnModAPIFunc('MultiHook', 'user', 'censor', array('word' => $var)); // preg_replace($search, $replace, $var);
+            $var = ModUtil::apiFunc('MultiHook', 'user', 'censor', array('word' => $var)); // preg_replace($search, $replace, $var);
         }
 
         return $var;

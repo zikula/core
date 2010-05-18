@@ -78,9 +78,9 @@ function Blocks_ajax_toggleblock()
     }
 
     if ($blockinfo['active'] == 1) {
-        pnModAPIFunc('Blocks', 'admin', 'deactivate', array('bid' => $bid));
+        ModUtil::apiFunc('Blocks', 'admin', 'deactivate', array('bid' => $bid));
     } else {
-        pnModAPIFunc('Blocks', 'admin', 'activate', array('bid' => $bid));
+        ModUtil::apiFunc('Blocks', 'admin', 'activate', array('bid' => $bid));
     }
 
     AjaxUtil::output(array('bid' => $bid));

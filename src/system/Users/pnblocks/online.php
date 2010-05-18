@@ -88,8 +88,8 @@ function users_onlineblock_display($row)
         $pnr->assign('username', pnUserGetVar('uname'));
         // check if message module is available and add the necessary info
         $pnr->assign('msgmodule', $msgmodule);
-        if (pnModAvailable($msgmodule)) {
-            $pnr->assign('messages', pnModAPIFunc($msgmodule, 'user', 'getmessagecount'));
+        if (ModUtil::available($msgmodule)) {
+            $pnr->assign('messages', ModUtil::apiFunc($msgmodule, 'user', 'getmessagecount'));
         } else {
             $pnr->assign('messages', array());
         }

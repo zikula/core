@@ -169,7 +169,7 @@ function theme_userapi_writeinifile($args)
     // get the theme info
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
 
-    $content = pnModAPIFunc('theme', 'user', 'createinifile', array('has_sections' => $args['has_sections'], 'assoc_arr' => $args['assoc_arr']));
+    $content = ModUtil::apiFunc('theme', 'user', 'createinifile', array('has_sections' => $args['has_sections'], 'assoc_arr' => $args['assoc_arr']));
 
     $ostheme = DataUtil::formatForOS($themeinfo['directory']);
     $ospntemp = CacheUtil::getLocalDir();
@@ -241,7 +241,7 @@ function theme_userapi_getpalettenames($args)
         return LogUtil::registerArgsError();
     }
 
-    $allpalettes = pnModAPIFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
+    $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
     $palettes = array();
     foreach ($allpalettes as $name => $colors) {
         $palettes[$name] = $name;

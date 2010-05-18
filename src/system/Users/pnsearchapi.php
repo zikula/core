@@ -65,7 +65,7 @@ function users_searchapi_search($args)
 
     // decide if we have to load the DUDs from the Profile module
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfileMod = (!empty($profileModule) && pnModAvailable($profileModule));
+    $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // get the db and table info
     $pntable = pnDBGetTables();
@@ -81,7 +81,7 @@ function users_searchapi_search($args)
     $unameClause = search_construct_where($args,array($userscolumn['uname']));
     // invoke the current profilemodule search query
     if ($useProfileMod) {
-        $uids = pnModAPIFunc($profileModule, 'user', 'searchdynadata',
+        $uids = ModUtil::apiFunc($profileModule, 'user', 'searchdynadata',
                              array('dynadata' => array('all' => $q)));
 
         if (is_array($uids) && !empty($uids)) {
@@ -141,7 +141,7 @@ function users_searchapi_search($args)
 function users_searchapi_search_check(&$args)
 {
     $profileModule = pnConfigGetVar('profilemodule', '');
-    if (!empty($profileModule) && pnModAvailable($profileModule)) {
+    if (!empty($profileModule) && ModUtil::available($profileModule)) {
         $datarow = &$args['datarow'];
         $userId = $datarow['extra'];
         $datarow['url'] = ModUtil::url($profileModule, 'user', 'view', array('uid' => $userId));

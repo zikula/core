@@ -53,7 +53,7 @@ function Groups_ajax_updategroup($args)
     }
 
     // Pass to API
-    $res = pnModAPIFunc('Groups',
+    $res = ModUtil::apiFunc('Groups',
                         'admin',
                         'update',
                         array('gid'         => $gid,
@@ -86,7 +86,7 @@ function Groups_ajax_updategroup($args)
     $group = DBUtil::selectObjectByID('groups', $gid, 'gid', null, null, null, false);
 
     // get group member count
-    $group['nbuser'] = pnModAPIFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid));
+    $group['nbuser'] = ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid));
 
     $group['statelbl'] = $statelabel[$group['state']];
     $group['gtypelbl'] = $typelabel[$group['gtype']];
@@ -125,7 +125,7 @@ function Groups_ajax_creategroup()
                  'nbumax'      => 0,
                  'description' => '');
 
-    $newgroup = pnModAPIFunc('Groups', 'admin', 'create', $obj);
+    $newgroup = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
 
     if ($newgroup == false) {
         AjaxUtil::error(__('Error! Could not create the new group.'));
@@ -174,7 +174,7 @@ function Groups_ajax_deletegroup()
         AjaxUtil::error(__('Error! You cannot delete the default user group.'));
     }
 
-    if (pnModAPIFunc('Groups', 'admin', 'delete', array('gid' => $gid)) == true) {
+    if (ModUtil::apiFunc('Groups', 'admin', 'delete', array('gid' => $gid)) == true) {
         return array('gid' => $gid);
     }
 

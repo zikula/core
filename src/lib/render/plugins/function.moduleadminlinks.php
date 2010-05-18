@@ -38,18 +38,18 @@ function smarty_function_moduleadminlinks($params, &$smarty)
     $modname = $params['modname'];
     unset ($params['modname']);
 
-    if (!isset($modname) || !pnModAvailable($modname)) {
+    if (!isset($modname) || !ModUtil::available($modname)) {
         $modname = pnModGetName();
     }
 
     // check our module name
-    if (!pnModAvailable($modname)) {
+    if (!ModUtil::available($modname)) {
         $smarty->trigger_error('moduleadminlinks: '.__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($modname)));
         return false;
     }
 
     // get the links from the module API
-    $links = pnModAPIFunc($modname, 'admin', 'getlinks', $params);
+    $links = ModUtil::apiFunc($modname, 'admin', 'getlinks', $params);
 
     // establish some useful count vars
     $linkcount = count($links);

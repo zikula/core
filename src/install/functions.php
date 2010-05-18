@@ -259,7 +259,7 @@ function install()
             } else {
                 // create our new site admin
                 // TODO test the call the users module api to create the user
-                //pnModAPIFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
+                //ModUtil::apiFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
                 createuser($username, $password, $email);
                 SessionUtil::requireSession();
                 pnUserLogin($username, $password);
@@ -288,7 +288,7 @@ function install()
                 define('PNTHEME_STATE_ACTIVE', 1);
                 define('PNTHEME_STATE_INACTIVE', 2);
                 pnConfigSetVar('Default_Theme', $defaulttheme);
-                pnModAPIFunc('Theme', 'admin', 'regenerate');
+                ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
             SessionUtil::requireSession();
             if (!pnUserLoggedIn()) {
@@ -380,8 +380,8 @@ function createuser($username, $password, $email)
     $connection->setCollate(DBConnectionStack::getConnectionDBCollate());
 
     // get the database connection
-    pnModDBInfoLoad('Users', 'Users');
-    pnModDBInfoLoad('Modules', 'Modules');
+    ModUtil::dbInfoLoad('Users', 'Users');
+    ModUtil::dbInfoLoad('Modules', 'Modules');
     $pntable = pnDBGetTables();
 
     // create the password hash
@@ -446,10 +446,10 @@ function installmodules($installtype = 'basic', $lang = 'en')
         // manually install the modules module
         foreach ($coremodules as $coremodule) {
             // sanity check - check if module is already installed
-            if ($coremodule != 'Modules' && pnModAvailable($coremodule)) {
+            if ($coremodule != 'Modules' && ModUtil::available($coremodule)) {
                 continue;
             }
-            pnModDBInfoLoad($coremodule, $coremodule);
+            ModUtil::dbInfoLoad($coremodule, $coremodule);
             Loader::requireOnce("system/$coremodule/pninit.php");
             $modfunc = "{$coremodule}_init";
             if ($modfunc()) {
@@ -458,18 +458,18 @@ function installmodules($installtype = 'basic', $lang = 'en')
         }
 
         // regenerate modules list
-        $filemodules = pnModAPIFunc('Modules', 'admin', 'getfilemodules');
-        pnModAPIFunc('Modules', 'admin', 'regenerate', array(
+        $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+        ModUtil::apiFunc('Modules', 'admin', 'regenerate', array(
                         'filemodules' => $filemodules));
 
         // set each of the core modules to active
         reset($coremodules);
         foreach ($coremodules as $coremodule) {
             $mid = ModUtil::getIdFromName($coremodule, true);
-            pnModAPIFunc('Modules', 'admin', 'setstate', array(
+            ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                             'id' => $mid,
                             'state' => PNMODULE_STATE_INACTIVE));
-            pnModAPIFunc('Modules', 'admin', 'setstate', array(
+            ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                             'id' => $mid,
                             'state' => PNMODULE_STATE_ACTIVE));
         }
@@ -487,14 +487,14 @@ function installmodules($installtype = 'basic', $lang = 'en')
                         'Admin' => __('System'),
                         'Settings' => __('System'));
 
-        $categories = pnModAPIFunc('Admin', 'admin', 'getall');
+        $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
         $modscat = array();
         foreach ($categories as $category) {
             $modscat[$category['catname']] = $category['cid'];
         }
         foreach ($coremodules as $coremodule) {
             $category = $coremodscat[$coremodule];
-            pnModAPIFunc('Admin', 'admin', 'addmodtocategory', array(
+            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array(
                             'module' => $coremodule,
                             'category' => $modscat[$category]));
         }
@@ -505,10 +505,10 @@ function installmodules($installtype = 'basic', $lang = 'en')
 
     if ($installtype == 'complete') {
         $modules = array();
-        $mods = pnModAPIFunc('Modules', 'admin', 'list', array(
+        $mods = ModUtil::apiFunc('Modules', 'admin', 'list', array(
                         'state' => PNMODULE_STATE_UNINITIALISED));
         foreach ($mods as $mod) {
-            if (!pnModAvailable($mod['name'])) {
+            if (!ModUtil::available($mod['name'])) {
                 $modules[] = $mod['name'];
             }
         }
@@ -517,11 +517,11 @@ function installmodules($installtype = 'basic', $lang = 'en')
 
             $mid = ModUtil::getIdFromName($module);
             // No need to specify 'interactive_init' => false here because defined('_ZINSTALLVER') evals to true in modules_pnadminapi_initialise
-            $initialise = pnModAPIFunc('Modules', 'admin', 'initialise', array(
+            $initialise = ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
                             'id' => $mid));
             if ($initialise === true) {
                 // activate it
-                if (pnModAPIFunc('Modules', 'admin', 'setstate', array(
+                if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                                 'id' => $mid,
                                 'state' => PNMODULE_STATE_ACTIVE))) {
                     $results[$module] = true;
@@ -536,7 +536,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
         foreach ($modules as $module) {
             ZLanguage::bindModuleDomain($module);
             // sanity check - check if module is already installed
-            if (pnModAvailable($module['module'])) {
+            if (ModUtil::available($module['module'])) {
                 continue;
             }
 
@@ -550,16 +550,16 @@ function installmodules($installtype = 'basic', $lang = 'en')
             $mid = ModUtil::getIdFromName($module['module']);
 
             // init it
-            if (pnModAPIFunc('Modules', 'admin', 'initialise', array(
+            if (ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
                             'id' => $mid)) == true) {
                 // activate it
-                if (pnModAPIFunc('Modules', 'admin', 'setstate', array(
+                if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                                 'id' => $mid,
                                 'state' => PNMODULE_STATE_ACTIVE))) {
                     $results[$module['module']] = true;
                 }
                 // Set category
-                pnModAPIFunc('Admin', 'admin', 'addmodtocategory', array(
+                ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array(
                                 'module' => $module['module'],
                                 'category' => $modscat[$module['category']]));
             }

@@ -15,8 +15,8 @@
  *
  * This function calls a calls a specific module API function. It returns whatever the return
  * value of the resultant function is if it succeeds.
- * Note that in contrast to the API function pnModAPIFunc you need not to load the
- * module API with pnModAPILoad.
+ * Note that in contrast to the API function ModUtil::apiFunc you need not to load the
+ * module API with ModUtil::loadApi.
  *
  *
  * Available parameters:
@@ -27,9 +27,9 @@
  *   - all remaining parameters are passed to the module API function
  *
  * Examples
- *   <!--[pnmodapifunc modname='News' type='user' func='get' sid='3']-->
+ *   <!--[ModUtil::apiFunc modname='News' type='user' func='get' sid='3']-->
  *
- *   <!--[pnmodapifunc modname='foobar' type='user' func='getfoo' id='1' assign='myfoo']-->
+ *   <!--[ModUtil::apiFunc modname='foobar' type='user' func='getfoo' id='1' assign='myfoo']-->
  *   <!--[$myfoo.title]-->
  *
  *
@@ -49,14 +49,14 @@ function smarty_function_modapifunc($params, &$smarty)
     $modname = isset($params['modname'])                 ? $params['modname'] : null;
     $type    = isset($params['type']) && $params['type'] ? $params['type']    : 'user';
 
-    // avoid passing these to pnModAPIFunc
+    // avoid passing these to ModUtil::apiFunc
     unset($params['modname']);
     unset($params['type']);
     unset($params['func']);
     unset($params['assign']);
 
     if (!$modname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodapifunc', 'modname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::apiFunc', 'modname')));
         return false;
     }
 
@@ -65,7 +65,7 @@ function smarty_function_modapifunc($params, &$smarty)
         unset($params['modnamefunc']);
     }
 
-    $result = pnModAPIFunc($modname, $type, $func, $params);
+    $result = ModUtil::apiFunc($modname, $type, $func, $params);
 
     // ensure the renderDomain wasnt overwritten
     $smarty->renderDomain = $saveDomain;

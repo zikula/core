@@ -33,7 +33,7 @@ function PageLock_userapi_pageLock($args)
         PageUtil::AddVar('javascript', 'system/PageLock/pnjavascript/pagelock.js');
         PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('PageLock'));
 
-        $lockInfo = pnModAPIFunc('PageLock', 'user', 'requireLock',
+        $lockInfo = ModUtil::apiFunc('PageLock', 'user', 'requireLock',
                                  array('lockName'      => $lockName,
                                        'lockedByTitle' => $uname,
                                        'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']));
@@ -89,7 +89,7 @@ function PageLock_userapi_requireLock(&$args)
 
     PageLockRequireAccess();
 
-    $locks = pnModAPIFunc('PageLock', 'user', 'getLocks',
+    $locks = ModUtil::apiFunc('PageLock', 'user', 'getLocks',
                           $args);
     if (count($locks) > 0) {
         $lockedBy = '';

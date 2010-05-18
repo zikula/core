@@ -83,10 +83,10 @@ function users_admin_create()
     $usermustconfirm = FormUtil::getPassedValue('usermustconfirm');
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfileMod = (!empty($profileModule) && pnModAvailable($profileModule));
+    $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // call the API
-    $checkuser = pnModAPIFunc('Users', 'user', 'checkuser',
+    $checkuser = ModUtil::apiFunc('Users', 'user', 'checkuser',
                               array('uname'        => $userinfo['add_uname'],
                                     'email'        => $userinfo['add_email'],
                                     'agreetoterms' => 1));
@@ -132,7 +132,7 @@ function users_admin_create()
 
     if (!empty($dynadata) && $useProfileMod) {
         // Check for required fields - The API function is called.
-        $checkrequired = pnModAPIFunc($profileModule, 'user', 'checkrequired',
+        $checkrequired = ModUtil::apiFunc($profileModule, 'user', 'checkrequired',
                                       array('dynadata' => $dynadata));
 
         if ($checkrequired['result'] == true) {
@@ -157,7 +157,7 @@ function users_admin_create()
         return LogUtil::registerError($errormsg, null, ModUtil::url('Users', 'admin', 'new', array('userinfo' => $userinfo, 'dynadata' => $dynadata)));
     }
 
-    $registered = pnModAPIFunc('Users', 'user', 'finishnewuser',
+    $registered = ModUtil::apiFunc('Users', 'user', 'finishnewuser',
                                array('isadmin'       => 1,
                                      'uname'         => $userinfo['add_uname'],
                                      'pass'          => $pass,
@@ -207,13 +207,13 @@ function users_admin_view($args = array())
     $itemsperpage = ModUtil::getVar('Users', 'itemsperpage');
 
     // Get all users
-    $items = pnModAPIFunc('Users', 'user', 'getall',
+    $items = ModUtil::apiFunc('Users', 'user', 'getall',
                           array('startnum' => $startnum,
                                 'numitems' => $itemsperpage,
                                 'letter' => $letter));
 
     // Get all groups
-    $groups = pnModAPIFunc('Groups', 'user', 'getall');
+    $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
 
     // check what groups can access the user
     $userGroupsAccess = array();
@@ -227,10 +227,10 @@ function users_admin_view($args = array())
     }
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfileModule = (!empty($profileModule) && pnModAvailable($profileModule));
+    $useProfileModule = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // if module Legal is not available show the equivalent states for user activation value
-    $adaptState = (!pnModAvailable('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) ? 1 : 0;
+    $adaptState = (!ModUtil::available('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) ? 1 : 0;
 
     // Loop through each returned item adding in the options that the user has over
     // each item based on the permissions the user has.
@@ -256,7 +256,7 @@ function users_admin_view($args = array())
                 }
             }
             // get user groups
-            $userGroups = pnModAPIFunc('Groups', 'user', 'getusergroups',
+            $userGroups = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
                                         array('uid' => $item['uid'],
                                               'clean' => 1));
             // we need an associative array by the key to compare with the groups that the user can see
@@ -316,7 +316,7 @@ function users_admin_view($args = array())
 
     // assign the values for the smarty plugin to produce a pager in case of there
     // being many items to display.
-    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('Users', 'user', 'countitems', array('letter' => $letter)),
+    $pnRender->assign('pager', array('numitems'     => ModUtil::apiFunc('Users', 'user', 'countitems', array('letter' => $letter)),
                                      'itemsperpage' => $itemsperpage));
 
     // Assign the groups to the template
@@ -354,7 +354,7 @@ function users_admin_viewapplications()
     $itemsperpage = ModUtil::getVar('Users', 'itemsperpage');
 
     // The user API function is called.
-    $items = pnModAPIFunc('Users', 'admin', 'getallpendings',
+    $items = ModUtil::apiFunc('Users', 'admin', 'getallpendings',
                           array('startnum' => $startnum,
                                 'numitems' => $itemsperpage));
 
@@ -396,7 +396,7 @@ function users_admin_viewapplications()
 
     // assign the values for the smarty plugin to produce a pager in case of there
     // being many items to display.
-    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('Users', 'admin', 'countpending'),
+    $pnRender->assign('pager', array('numitems'     => ModUtil::apiFunc('Users', 'admin', 'countpending'),
                                      'itemsperpage' => $itemsperpage));
 
     // Return the output that has been generated by this function
@@ -427,7 +427,7 @@ function users_admin_viewtempuserinfo()
         return LogUtil::registerArgsError();
     }
 
-    $regApplication = pnModAPIFunc('Users', 'admin', 'getapplication', array('userid' => $regid));
+    $regApplication = ModUtil::apiFunc('Users', 'admin', 'getapplication', array('userid' => $regid));
     if (!$regApplication) {
         // getapplication could fail (return false) because of a nonexistant
         // record, no permission to read an existing record, or a database error
@@ -486,7 +486,7 @@ function users_admin_search()
 
     // get group items
     // TODO: move to a call to the groups module
-    $groups = pnModAPIFunc('Users', 'admin', 'getusergroups');
+    $groups = ModUtil::apiFunc('Users', 'admin', 'getusergroups');
     $pnRender->assign('groups', $groups);
 
     return $pnRender->fetch('users_admin_search.htm');
@@ -517,7 +517,7 @@ function users_admin_listusers()
     $dynadata      = FormUtil::getPassedValue('dynadata', null, 'POST');
 
     // call the api
-    $items = pnModAPIFunc('Users', 'admin', 'findusers',
+    $items = ModUtil::apiFunc('Users', 'admin', 'findusers',
                           array('uname'         => $uname,
                                 'email'         => $email,
                                 'ugroup'        => $ugroup,
@@ -589,7 +589,7 @@ function users_admin_processusers()
             $access_permissions = FormUtil::getPassedValue('access_permissions', null, 'POST');
             $dynadata           = FormUtil::getPassedValue('dynadata', null, 'POST');
 
-            $return = pnModAPIFunc('Users', 'admin', 'saveuser',
+            $return = ModUtil::apiFunc('Users', 'admin', 'saveuser',
                                    array('uid'                => $userid,
                                          'uname'              => $uname,
                                          'email'              => $email,
@@ -613,7 +613,7 @@ function users_admin_processusers()
         if ($do != 'yes') {
             return pnRedirect(ModUtil::url('Users', 'admin', 'deleteusers', array('userid' => $userid)));
         } else {
-            $return = pnModAPIFunc('Users', 'admin', 'deleteuser', array('uid' => $userid));
+            $return = ModUtil::apiFunc('Users', 'admin', 'deleteuser', array('uid' => $userid));
 
             if ($return == true) {
                 return LogUtil::registerStatus(__('Done! Deleted user account.'), ModUtil::url('Users', 'admin', 'main'));
@@ -639,7 +639,7 @@ function users_admin_processusers()
                                    'address' => $recipient);
             }
             if (count($bcclist) == $sendmail['batchsize']) {
-                if (pnModAPIFunc('Mailer', 'user', 'sendmessage',
+                if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                  array('fromname'       => $sendmail['from'],
                                        'fromaddress'    => $sendmail['rpemail'],
                                        'toname'         => pnUserGetVar('uname'),
@@ -660,7 +660,7 @@ function users_admin_processusers()
             }
         }
         if (count($bcclist) <> 0) {
-            if (pnModAPIFunc('Mailer', 'user', 'sendmessage',
+            if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                              array('fromname'       => $sendmail['from'],
                                    'fromaddress'    => $sendmail['rpemail'],
                                    'toname'         => pnUserGetVar('uname'),
@@ -693,7 +693,7 @@ function users_admin_processusers()
         if (empty($tag)) {
             $userid = FormUtil::getPassedValue('userid', null, 'GET');
 
-            $item = pnModAPIFunc('Users', 'admin', 'getapplication', array('userid' => $userid));
+            $item = ModUtil::apiFunc('Users', 'admin', 'getapplication', array('userid' => $userid));
 
             if (!$item) {
                 return LogUtil::registerError(__('Sorry! Could not find any matching user account.'),
@@ -714,7 +714,7 @@ function users_admin_processusers()
             $userid = FormUtil::getPassedValue('userid');
             $action = FormUtil::getPassedValue('action');
 
-            $return = pnModAPIFunc('Users', 'admin', $action, array('userid' => $userid));
+            $return = ModUtil::apiFunc('Users', 'admin', $action, array('userid' => $userid));
 
             if ($return == true) {
                 if ($op == 'approve') {
@@ -786,7 +786,7 @@ function users_admin_modify($args)
     }
 
     // if module Legal is not available show the equivalent states for user activation value
-    if (!pnModAvailable('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) {
+    if (!ModUtil::available('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) {
         if ($uservars['activated'] == 2) {
             $uservars['activated'] = 1;
         } else if ($uservars['activated'] == 6) {
@@ -806,8 +806,8 @@ function users_admin_modify($args)
     // groups
     $groups_infos = array();
     $user_groups_register = array();
-    $user_groups = pnModAPIFunc('Groups', 'user', 'getusergroups', array('uid' => $userid));
-    $all_groups = pnModAPIFunc('Groups', 'user', 'getall');
+    $user_groups = ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $userid));
+    $all_groups = ModUtil::apiFunc('Groups', 'user', 'getall');
 
     foreach ($user_groups as $user_group) {
         $user_groups_register[] = $user_group['gid'];
@@ -827,7 +827,7 @@ function users_admin_modify($args)
     }
 
     $Renderer->assign('groups_infos', $groups_infos);
-    $Renderer->assign('legal', pnModAvailable('legal'));
+    $Renderer->assign('legal', ModUtil::available('legal'));
     $Renderer->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
     $Renderer->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
 
@@ -914,7 +914,7 @@ function users_admin_modifyconfig()
     // assign the module vars
     $pnRender->assign('config', ModUtil::getVar('Users'));
 
-    $pnRender->assign('legal', pnModAvailable('legal'));
+    $pnRender->assign('legal', ModUtil::available('legal'));
     $pnRender->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
     $pnRender->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
 
@@ -978,7 +978,7 @@ function users_admin_updateconfig()
     ModUtil::setVar('Users', 'gravatarimage', $config['gravatarimage']);
     ModUtil::setVar('Users', 'lowercaseuname', $config['lowercaseuname']);
 
-    if (pnModAvailable('legal')) {
+    if (ModUtil::available('legal')) {
         ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);
         ModUtil::setVar('Legal', 'privacypolicy', $config['privacypolicy']);
     }
@@ -1044,7 +1044,7 @@ function users_admin_import($args)
     // shows the form
     $post_max_size = ini_get('post_max_size');
     // get default group
-    $group = pnModAPIFunc('Groups','user','get',
+    $group = ModUtil::apiFunc('Groups','user','get',
                         array('gid' => $defaultGroup));
     $defaultGroup = $defaultGroup . ' (' . $group['name'] . ')';
     // Create output object
@@ -1175,7 +1175,7 @@ function users_admin_exportCSV($args)
     header("Content-Transfer-Encoding: binary");
 
     //get all user fields
-    $userfields = pnModAPIFunc('Profile', 'user', 'getallactive');
+    $userfields = ModUtil::apiFunc('Profile', 'user', 'getallactive');
 
     $colnames=array();
     foreach ($userfields as $item) {
@@ -1183,7 +1183,7 @@ function users_admin_exportCSV($args)
     }
 
     //get all users
-    $users = pnModAPIFunc('Users', 'user', 'getall');
+    $users = ModUtil::apiFunc('Users', 'user', 'getall');
 
     //open a file for csv writing
     $out = fopen("php://output", 'w');
@@ -1224,7 +1224,7 @@ function users_admin_exportCSV($args)
             array_push($result, $uservars['lastlogin']);
         }
         if ($args['groups']) {
-            $groups = pnModAPIFunc('Groups', 'user', 'getusergroups',
+            $groups = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
                array(  'uid'   => $uservars['uid'],
                        'clean' => true));
             $groupstring = "";
@@ -1298,7 +1298,7 @@ function users_admin_uploadImport($args)
     }
 
     // get available groups
-    $allGroups = pnModAPIFunc('Groups','user','getall');
+    $allGroups = ModUtil::apiFunc('Groups','user','getall');
 
     // create an array with the groups identities where the user can add other users
     $allGroupsArray = array();
@@ -1459,7 +1459,7 @@ function users_admin_uploadImport($args)
     }
 
     // check if users exists in database
-    $usersInDB = pnModAPIFunc('Users', 'admin', 'checkMultipleExistence',
+    $usersInDB = ModUtil::apiFunc('Users', 'admin', 'checkMultipleExistence',
                                   array('valuesArray' => $usersArray,
                                         'key' => 'uname'));
     if ($usersInDB === false) {
@@ -1472,7 +1472,7 @@ function users_admin_uploadImport($args)
 
     // check if emails exists in data base in case the email have to be unique
     if ($reg_uniemail == 1) {
-        $emailsInDB = pnModAPIFunc('Users', 'admin', 'checkMultipleExistence',
+        $emailsInDB = ModUtil::apiFunc('Users', 'admin', 'checkMultipleExistence',
                                       array('valuesArray' => $emailsArray,
                                             'key' => 'email'));
         if ($emailsInDB === false) {
@@ -1485,7 +1485,7 @@ function users_admin_uploadImport($args)
     }
 
     // seems that the values in import file are ready. Procceed creating users
-    if (!pnModAPIFunc('Users', 'admin', 'createImport', array('importValues' => $importValues))) {
+    if (!ModUtil::apiFunc('Users', 'admin', 'createImport', array('importValues' => $importValues))) {
         return __("Error! The creation of users has failed.");
     }
 

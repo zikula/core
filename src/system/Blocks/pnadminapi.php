@@ -299,7 +299,7 @@ function Blocks_adminapi_createposition($args)
         return LogUtil::registerPermissionError();
     }
 
-    $positions = pnModAPIFunc('Blocks', 'user', 'getallpositions');
+    $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
     if (isset($positions) && is_array($positions)) {
         foreach ($positions as $position) {
             if ($position['name'] == $args['name']) {
@@ -336,7 +336,7 @@ function Blocks_adminapi_updateposition($args)
     }
 
     // Get the existing admin message
-    $item = pnModAPIFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
+    $item = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
 
     if ($item == false) {
         return LogUtil::registerError(__('Sorry! No such item found.'));
@@ -370,7 +370,7 @@ function blocks_adminapi_deleteposition($args)
         return LogUtil::registerArgsError();
     }
 
-    $item = pnModAPIFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
+    $item = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
 
     if ($item == false) {
         return LogUtil::registerError(__('Sorry! No such item found.'));

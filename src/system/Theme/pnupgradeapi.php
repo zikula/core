@@ -82,7 +82,7 @@ function CreateThemeTemplate($skinid, $label, $file, $type)
         $GLOBALS['templates'][$type][$label] = $file;
     }
 
-    pnModAPIFunc('Theme', 'upgrade', 'rewritepagetemplate',
+    ModUtil::apiFunc('Theme', 'upgrade', 'rewritepagetemplate',
                  array('themename' => $GLOBALS['upgradethemename'], 'filename' => $file, 'type' => $type));
 }
 

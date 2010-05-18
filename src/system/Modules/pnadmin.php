@@ -108,7 +108,7 @@ function modules_admin_update()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Modules', 'admin', 'update', array(
+    if (ModUtil::apiFunc('Modules', 'admin', 'update', array(
         'id' => $id,
         'displayname' => $newdisplayname,
         'description' => $newdescription,
@@ -139,7 +139,7 @@ function modules_admin_updatehooks()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Modules', 'admin', 'updatehooks', array(
+    if (ModUtil::apiFunc('Modules', 'admin', 'updatehooks', array(
         'id' => $id))) {
         // Success
         LogUtil::registerStatus(__('Done! Saved module information.'));
@@ -166,7 +166,7 @@ function modules_admin_extendedupdatehooks()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Modules', 'admin', 'extendedupdatehooks', array(
+    if (ModUtil::apiFunc('Modules', 'admin', 'extendedupdatehooks', array(
         'id' => $id))) {
         // Success
         LogUtil::registerStatus(__('Done! Saved module information.'));
@@ -202,8 +202,8 @@ function modules_admin_view()
     $pnRender = Renderer::getInstance('Modules', false);
     if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) {
         // always regenerate modules list
-        $filemodules = pnModAPIFunc('Modules', 'admin', 'getfilemodules');
-        $inconsistencies = pnModAPIFunc('Modules', 'admin', 'checkconsistency', array(
+        $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+        $inconsistencies = ModUtil::apiFunc('Modules', 'admin', 'checkconsistency', array(
             'filemodules' => $filemodules));
 
         if (!(empty($inconsistencies['errors_modulenames']) && empty($inconsistencies['errors_displaynames']))) {
@@ -215,7 +215,7 @@ function modules_admin_view()
 
         // No inconsistencies, so we can regenerate modules
         $defaults = (int) FormUtil::getPassedValue('defaults', false, 'GET');
-        if (!pnModAPIFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules, 'defaults' => $defaults))) {
+        if (!ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules, 'defaults' => $defaults))) {
             LogUtil::registerError(__('Errors were detected regenerating the modules list from file system.'));
         }
     }
@@ -224,7 +224,7 @@ function modules_admin_view()
     $pnRender->assign('state', $state);
 
     // Get list of modules
-    $mods = pnModAPIFunc('Modules', 'admin', 'list', array(
+    $mods = ModUtil::apiFunc('Modules', 'admin', 'list', array(
         'startnum' => $startnum,
         'letter' => $letter,
         'state' => $state,
@@ -429,7 +429,7 @@ function modules_admin_view()
 
     // Assign the values for the smarty plugin to produce a pager.
     $pnRender->assign('pager', array(
-        'numitems' => pnModAPIFunc('Modules', 'admin', 'countitems', array(
+        'numitems' => ModUtil::apiFunc('Modules', 'admin', 'countitems', array(
             'letter' => $letter,
             'state' => $state)),
         'itemsperpage' => ModUtil::getVar('Modules', 'itemsperpage')));
@@ -481,14 +481,14 @@ function modules_admin_initialise()
     // when getting here without a valid id we are in interactive init mode and then
     // the dependencies checks have been done before already
     if ($id != 0) {
-        $dependencies = pnModAPIFunc('Modules', 'admin', 'getdependencies', array(
+        $dependencies = ModUtil::apiFunc('Modules', 'admin', 'getdependencies', array(
             'modid' => $id));
         $modulenotfound = false;
         if (empty($confirmation) && $dependencies) {
             foreach ($dependencies as $key => $dependency) {
                 $dependencies[$key]['insystem'] = true;
                 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($dependency['modname']));
-                if (pnModAvailable($dependency['modname'])) {
+                if (ModUtil::available($dependency['modname'])) {
                     unset($dependencies[$key]);
                 } elseif (!empty($modinfo)) {
                     $dependencies[$key] = array_merge($dependencies[$key], $modinfo);
@@ -534,14 +534,14 @@ function modules_admin_initialise()
     // initialise and activate any dependencies
     if (isset($dependencies) && is_array($dependencies)) {
         foreach ($dependencies as $dependency) {
-            if (!pnModAPIFunc('Modules', 'admin', 'initialise', array(
+            if (!ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
                 'id' => $dependency))) {
                 return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
                     'startnum' => $startnum,
                     'letter' => $letter,
                     'state' => $state)));
             }
-            if (!pnModAPIFunc('Modules', 'admin', 'setstate', array(
+            if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $dependency,
                 'state' => PNMODULE_STATE_ACTIVE))) {
                 return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
@@ -553,7 +553,7 @@ function modules_admin_initialise()
     }
 
     // Now we've initialised the dependencies initialise the main module
-    $res = pnModAPIFunc('Modules', 'admin', 'initialise', array(
+    $res = ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
         'id' => $id,
         'interactive_init' => $interactive_init));
     if (is_bool($res) && $res == true) {
@@ -566,7 +566,7 @@ function modules_admin_initialise()
         LogUtil::registerStatus(__('Done! Installed module.'));
 
         if ($activate == true) {
-            if (pnModAPIFunc('Modules', 'admin', 'setstate', array(
+            if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $id,
                 'state' => PNMODULE_STATE_ACTIVE))) {
                 // Success
@@ -618,7 +618,7 @@ function modules_admin_activate()
     }
 
     // Update state
-    if (pnModAPIFunc('Modules', 'admin', 'setstate', array(
+    if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
         'id' => $id,
         'state' => PNMODULE_STATE_ACTIVE))) {
         // Success
@@ -668,7 +668,7 @@ function modules_admin_upgrade()
     }
 
     // Upgrade module
-    $res = pnModAPIFunc('Modules', 'admin', 'upgrade', array(
+    $res = ModUtil::apiFunc('Modules', 'admin', 'upgrade', array(
         'id' => $id,
         'interactive_upgrade' => $interactive_upgrade));
     if (is_bool($res) && $res == true) {
@@ -680,7 +680,7 @@ function modules_admin_upgrade()
         SessionUtil::setVar('interactive_upgrade', false);
         LogUtil::registerStatus(__('New version'));
         if ($activate == true) {
-            if (pnModAPIFunc('Modules', 'admin', 'setstate', array(
+            if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $id,
                 'state' => PNMODULE_STATE_ACTIVE))) {
                 // Success
@@ -758,7 +758,7 @@ function modules_admin_deactivate()
     }
 
     // Update state
-    if (pnModAPIFunc('Modules', 'admin', 'setstate', array(
+    if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
         'id' => $id,
         'state' => PNMODULE_STATE_INACTIVE))) {
         // Success
@@ -821,18 +821,18 @@ function modules_admin_remove()
         $pnRender->assign('id', $id);
 
         // assign any dependencies - filtering out non-active module dependents
-        $dependents = pnModAPIFunc('Modules', 'admin', 'getdependents', array(
+        $dependents = ModUtil::apiFunc('Modules', 'admin', 'getdependents', array(
             'modid' => $id));
         foreach ($dependents as $key => $dependent) {
             $modinfo = ModUtil::getInfo($dependent['modid']);
-            if (!pnModAvailable($modinfo['name'])) {
+            if (!ModUtil::available($modinfo['name'])) {
                 unset($dependents[$key]);
             } else {
                 $dependents[$key] = array_merge($dependents[$key], $modinfo);
             }
         }
         // check the blocks module for existing blocks
-        $blocks = pnModAPIFunc('Blocks', 'user', 'getall', array(
+        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array(
             'modid' => $id));
         $pnRender->assign('hasBlocks', count($blocks));
 
@@ -855,7 +855,7 @@ function modules_admin_remove()
 
     // remove dependent modules
     foreach ($dependents as $dependent) {
-        if (!pnModAPIFunc('Modules', 'admin', 'remove', array(
+        if (!ModUtil::apiFunc('Modules', 'admin', 'remove', array(
             'id' => $dependent))) {
             return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
                 'startnum' => $startnum,
@@ -865,10 +865,10 @@ function modules_admin_remove()
     }
 
     // remove the module blocks
-    $blocks = pnModAPIFunc('Blocks', 'user', 'getall', array(
+    $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array(
         'modid' => $id));
      foreach ($blocks as $block) {
-        if (!pnModAPIFunc('Blocks', 'admin', 'delete', array(
+        if (!ModUtil::apiFunc('Blocks', 'admin', 'delete', array(
             'bid' => $block['bid']))) {
             LogUtil::registerError(__f('Error! Deleting the block %s .', $block['title']));
             return pnRedirect(ModUtil::url('Modules', 'admin', 'view', array(
@@ -879,7 +879,7 @@ function modules_admin_remove()
     }
 
     // Now we've removed dependents and associated blocks remove the main module
-    $res = pnModAPIFunc('Modules', 'admin', 'remove', array(
+    $res = ModUtil::apiFunc('Modules', 'admin', 'remove', array(
         'id' => $id,
         'interactive_remove' => $interactive_remove));
     if (is_bool($res) && $res == true) {
@@ -941,7 +941,7 @@ function modules_admin_hooks()
     // add module id to form
     $pnRender->assign('id', $id);
 
-    $hooks = pnModAPIFunc('Modules', 'admin', 'getmoduleshooks', array(
+    $hooks = ModUtil::apiFunc('Modules', 'admin', 'getmoduleshooks', array(
         'modid' => $id));
 
     $pnRender->assign('hooks', $hooks);
@@ -988,7 +988,7 @@ function modules_admin_extendedhooks()
     // add module id to form
     $pnRender->assign('id', $id);
 
-    $grouped_hooks = pnModAPIFunc('Modules', 'admin', 'getextendedmoduleshooks', array(
+    $grouped_hooks = ModUtil::apiFunc('Modules', 'admin', 'getextendedmoduleshooks', array(
         'modid' => $id));
     $pnRender->assign('grouped_hooks', $grouped_hooks);
 
@@ -1092,7 +1092,7 @@ function modules_admin_compinfo()
     }
 
     // get the module information from the files system
-    $moduleInfo = pnModAPIFunc('Modules', 'admin', 'getfilemodules',
+    $moduleInfo = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules',
                                 array('name' => $modinfo['name']));
 
     // Create output object

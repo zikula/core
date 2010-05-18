@@ -36,7 +36,7 @@ class CategoryRegistryUtil
             return LogUtil (__("Error! Received invalid parameter '%s'", 'modname'));
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
@@ -109,7 +109,7 @@ class CategoryRegistryUtil
             return LogUtil (__("Error! Received invalid parameter '%s'", 'categoryID'));
         }
 
-        if (!pnModDBInfoLoad($modname)) {
+        if (!ModUtil::dbInfoLoad($modname)) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", $modname));
         }
 
@@ -136,7 +136,7 @@ class CategoryRegistryUtil
         if (!$catreg)
             return false;
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
@@ -162,7 +162,7 @@ class CategoryRegistryUtil
             return false;
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
@@ -191,7 +191,7 @@ class CategoryRegistryUtil
             return LogUtil (__("Error! Received invalid specifications '%s', '%s'.", array($modname, $tablename)));
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
@@ -264,7 +264,7 @@ class CategoryRegistryUtil
             return pn_exit(__f("Error! Received invalid specifications '%s', '%s'.", array($modname, $tablename)));
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
         }
 

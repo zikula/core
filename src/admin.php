@@ -22,7 +22,7 @@ pnInit();
 if (SessionUtil::hasExpired()) {
     // Session has expired, display warning
     header('HTTP/1.0 403 Access Denied');
-    echo pnModAPIFunc('Users', 'user', 'expiredsession');
+    echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
     Theme::getInstance()->themefooter();
     pnShutDown();
 }
@@ -40,7 +40,7 @@ if (empty($module)) {
         pnRedirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
     }
     pnShutDown();
-} else if (!pnModAvailable($module) || !SecurityUtil::checkPermission("$module::", '::', ACCESS_EDIT)) {
+} else if (!ModUtil::available($module) || !SecurityUtil::checkPermission("$module::", '::', ACCESS_EDIT)) {
     // call for an unavailable module - either not available or not authorized
     header('HTTP/1.0 403 Access Denied');
     echo 'Module <strong>' . DataUtil::formatForDisplay($module) . '</strong> not available';

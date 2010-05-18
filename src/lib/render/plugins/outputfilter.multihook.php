@@ -21,7 +21,7 @@
  */
 function smarty_outputfilter_multihook($text, &$smarty)
 {
-    $mhhelper = pnModAPIFunc('MultiHook', 'theme', 'helper');
+    $mhhelper = ModUtil::apiFunc('MultiHook', 'theme', 'helper');
     $mhhelper = $mhhelper . '</body>';
     $text = str_replace('</body>', $mhhelper, $text);
 

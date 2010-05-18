@@ -38,11 +38,11 @@ class MultiHookHandler extends CustomEventHandler
         }
 
         // register output filter to add MultiHook environment if requried
-        if (pnModAvailable('MultiHook')) {
+        if (ModUtil::available('MultiHook')) {
             $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('MultiHook'));
             if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
                 $subject->load_filter('output', 'multihook');
-                pnModAPIFunc('MultiHook', 'theme', 'preparetheme');
+                ModUtil::apiFunc('MultiHook', 'theme', 'preparetheme');
             }
         }
     }

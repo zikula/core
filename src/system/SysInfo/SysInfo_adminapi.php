@@ -111,7 +111,7 @@ class SysInfo_adminapi extends AbstractApi
                             $directorylist[$startdir . $file]['writable'] = (bool)is_writable($startdir . $file);
                             if ($searchSubdirs) {
                                 if ((($maxlevel) == 'all') or ($maxlevel > $level)) {
-                                    pnModApiFunc('SysInfo', 'admin', 'filelist',
+                                    ModUtil::apiFunc('SysInfo', 'admin', 'filelist',
                                             array ('startdir' => $startdir . $file . '/',
                                             'searchSubdirs' => $searchSubdirs,
                                             'directoriesonly' => $directoriesonly,

@@ -41,7 +41,7 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
         }
         $this->module = $params['module'];
         unset($params['module']);
-        if (!pnModAvailable($this->module)) {
+        if (!ModUtil::available($this->module)) {
             $render->trigger_error(__('Error! in %1$s: an invalid %2$s parameter was received.', array(
                 'pnformdropdownrelationlist',
                 'module')));
@@ -103,7 +103,7 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 
     function load(&$render, $params)
     {
-        pnModDBInfoLoad($this->module);
+        ModUtil::dbInfoLoad($this->module);
 
         // load the object class corresponding to $this->objecttype
         if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {

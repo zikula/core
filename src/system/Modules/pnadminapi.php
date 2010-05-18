@@ -359,8 +359,8 @@ function modules_adminapi_setstate($args)
         return false;
     }
 
-    // State change, so update the pnModAvailable-info for this module.
-    pnModAvailable($modinfo['name'], true);
+    // State change, so update the ModUtil::available-info for this module.
+    ModUtil::available($modinfo['name'], true);
 
     return true;
 }
@@ -409,7 +409,7 @@ function modules_adminapi_remove($args)
     ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
 
     // Get module database info
-    pnModDBInfoLoad($modinfo['name'], $modinfo['directory']);
+    ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
 
     // Module deletion function. Only execute if the module hasn't been initialised.
     if ($modinfo['state'] != PNMODULE_STATE_UNINITIALISED) {
@@ -469,7 +469,7 @@ function modules_adminapi_remove($args)
             DBUtil::deleteObjectByID('modules', $args['id'], 'id');
         } else {
             //set state as uninnitialised
-            pnModAPIFunc('modules', 'admin', 'setstate', array('id' => $args['id'], 'state' => PNMODULE_STATE_UNINITIALISED));
+            ModUtil::apiFunc('modules', 'admin', 'setstate', array('id' => $args['id'], 'state' => PNMODULE_STATE_UNINITIALISED));
         }
     } else {
         DBUtil::deleteObjectByID('modules', $args['id'], 'id');
@@ -891,7 +891,7 @@ function modules_adminapi_initialise($args)
     }
 
     // Get module database info
-    pnModDBInfoLoad($modinfo['name'], $modinfo['directory']);
+    ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
     $osdir = DataUtil::formatForOS($modinfo['directory']);
     if ($modinfo['type'] == 2) {
         if (is_dir("modules/$osdir/locale")) {
@@ -972,7 +972,7 @@ function modules_adminapi_upgrade($args)
 
     if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
         // Get module database info
-        pnModDBInfoLoad($modinfo['name'], $modinfo['directory']);
+        ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         if ($modinfo['type'] == 2) {
             $dir = "modules/$osdir/locale";
@@ -1054,7 +1054,7 @@ function modules_adminapi_upgrade($args)
 
     // Note the changes in the database...
     // Get module database info
-    pnModDBInfoLoad('Modules');
+    ModUtil::dbInfoLoad('Modules');
 
     $obj = array('id'            => $args['id'],
                  'version'       => $version);

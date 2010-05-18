@@ -42,11 +42,11 @@ function smarty_function_selectmodobjectarray($params, &$smarty)
     if (!isset($params['assign'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'assign')));
     }
-    if (!pnModAvailable($params['module'])) {
+    if (!ModUtil::available($params['module'])) {
         $smarty->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobjectarray')));
     }
 
-    pnModDBInfoLoad($params['module']);
+    ModUtil::dbInfoLoad($params['module']);
 
     // load the object class corresponding to $params['objecttype']
     if (!($class = Loader::loadArrayClassFromModule($params['module'], $params['objecttype'], false, $params['prefix']))) {

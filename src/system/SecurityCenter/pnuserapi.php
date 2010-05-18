@@ -826,7 +826,7 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
         $adminmail = pnConfigGetVar('adminmail');
         $mailTitle = __('Intrusion attempt detected by PHPIDS');
 
-        if (pnModAvailable('Mailer')) {
+        if (ModUtil::available('Mailer')) {
             $args = array();
             $args['fromname']    = $siteName;
             $args['fromaddress'] = $adminmail;
@@ -835,7 +835,7 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
             $args['subject']     = $mailTitle;
             $args['body']        = $mailBody;
 
-            $rc = pnModAPIFunc('Mailer', 'user', 'sendmessage', $args);
+            $rc = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $args);
         } else {
             $headers = "From: $siteName <$adminmail>\n"
                       ."X-Priority: 1 (Highest)";

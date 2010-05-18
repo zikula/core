@@ -184,7 +184,7 @@ class WorkflowUtil
             $module = pnModGetName();
         }
 
-        if (!pnModDBInfoLoad('Workflow')) {
+        if (!ModUtil::dbInfoLoad('Workflow')) {
             return false;
         }
 
@@ -334,7 +334,7 @@ class WorkflowUtil
         }
 
         // get workflow data from DB
-        if (!pnModDBInfoLoad('Workflow')) {
+        if (!ModUtil::dbInfoLoad('Workflow')) {
             return false;
         }
 

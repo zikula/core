@@ -51,7 +51,7 @@ function securitycenter_admin_delete($args)
     }
 
     // Get the current item
-    $item = pnModAPIFunc('SecurityCenter', 'user', 'get', array('hid' => $hid));
+    $item = ModUtil::apiFunc('SecurityCenter', 'user', 'get', array('hid' => $hid));
 
     if ($item == false) {
         return LogUtil::registerError(__('Sorry! No such item found.'), 404);
@@ -79,7 +79,7 @@ function securitycenter_admin_delete($args)
     }
 
     // Call the API to delete the item
-    if (pnModAPIFunc('SecurityCenter', 'admin', 'delete', array('hid' => $hid))) {
+    if (ModUtil::apiFunc('SecurityCenter', 'admin', 'delete', array('hid' => $hid))) {
         // Success
         LogUtil::registerStatus(__('Done! Deleted it.'));
     }
@@ -105,7 +105,7 @@ function securitycenter_admin_view($args = array())
     $pnRender = Renderer::getInstance('SecurityCenter', false);
 
     // Get all items
-    $items = pnModAPIFunc('SecurityCenter', 'user', 'getall',
+    $items = ModUtil::apiFunc('SecurityCenter', 'user', 'getall',
                           array('startnum' => $startnum,
                                 'numitems' => ModUtil::getVar('SecurityCenter', 'itemsperpage')));
 
@@ -114,7 +114,7 @@ function securitycenter_admin_view($args = array())
         foreach ($items as $item) {
 
             // Get the full item
-            $fullitem = pnModAPIFunc('SecurityCenter', 'user', 'get', array('hid' => $item['hid']));
+            $fullitem = ModUtil::apiFunc('SecurityCenter', 'user', 'get', array('hid' => $item['hid']));
 
             $fullitem['hacktime'] = DateUtil::strftime(__('%b %d, %Y - %I:%M %p'), $fullitem['hacktime']);
             if ($fullitem['userid'] == 0) {
@@ -156,7 +156,7 @@ function securitycenter_admin_view($args = array())
     $pnRender->assign('hackattempts', $hackattempts);
 
     // Assign the values for the smarty plugin to produce a pager.
-    $pnRender->assign('pager', array('numitems' => pnModAPIFunc('SecurityCenter', 'user', 'countitems'),
+    $pnRender->assign('pager', array('numitems' => ModUtil::apiFunc('SecurityCenter', 'user', 'countitems'),
                                      'itemsperpage' => ModUtil::getVar('SecurityCenter', 'itemsperpage')));
 
     return $pnRender->fetch('securitycenter_admin_view.htm');
@@ -421,7 +421,7 @@ function securitycenter_admin_updateconfig()
     ModUtil::callHooks('module','updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
 
     // clear all cache and compile directories
-    pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');
+    ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
@@ -453,7 +453,7 @@ function securitycenter_admin_purifierconfig()
 
     $renderer->assign('itemsperpage', ModUtil::getVar('SecurityCenter', 'itemsperpage'));
 
-    $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier');
+    $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier');
 
     if (!$reset) {
         $config = $purifier->config;
@@ -562,7 +562,7 @@ function securitycenter_admin_updatepurifierconfig()
     }
 
     // Load HTMLPurifier Classes
-    $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier');
+    $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier');
 
     // Update module variables.
     $config = FormUtil::getPassedValue('purifierConfig', null, 'POST');
@@ -653,10 +653,10 @@ function securitycenter_admin_updatepurifierconfig()
 //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
     ModUtil::setVar('SecurityCenter', 'purifierConfig', serialize($config));
 
-    $purifier = pnModAPIFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
+    $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
 
     // clear all cache and compile directories
-    pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');
+    ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
     // the module configuration has been updated successfuly
     LogUtil::registerStatus(__('Done! Saved HTMLPurifier configuration.'));
@@ -694,7 +694,7 @@ function securitycenter_admin_display($args)
     $pnRender->assign('title', strtoupper($arraytype));
 
     // Get the item from our API
-    $item = pnModAPIFunc('SecurityCenter', 'user', 'get', array('hid' => $hid));
+    $item = ModUtil::apiFunc('SecurityCenter', 'user', 'get', array('hid' => $hid));
     // extract the data we serialised in the db
     $variablearray = unserialize($item[$arraytype]);
 
@@ -822,7 +822,7 @@ function securitycenter_admin_updateallowedhtml($args)
     pnConfigSetVar('htmlentities', $htmlentities);
 
     // clear all cache and compile directories
-    pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');
+    ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

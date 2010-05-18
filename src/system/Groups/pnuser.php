@@ -56,7 +56,7 @@ function Groups_user_view()
     }
 
     // The user API function is called.
-    $groups = pnModAPIFunc('Groups', 'user', 'getallgroups',
+    $groups = ModUtil::apiFunc('Groups', 'user', 'getallgroups',
                            array('startnum' => $startnum,
                                  'numitems' => $itemsperpage,
                                  'uid'      => pnUserGetVar('uid'),
@@ -108,7 +108,7 @@ function Groups_user_view()
     $pnRender->assign('nogroups', false);
     $pnRender->assign('items', $groupitems);
 
-    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('Groups', 'user', 'countitems'),
+    $pnRender->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
                                      'itemsperpage' => $itemsperpage));
 
     return $pnRender->fetch('groups_user_view.htm');
@@ -138,7 +138,7 @@ function Groups_user_membership()
     $uid = pnUserGetVar('uid');
 
     // Check if the group exists
-    $group = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $gid));
+    $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
     if (!$group) {
         return DataUtil::formatForDisplay(__("Error! That group does not exist."));
@@ -146,9 +146,9 @@ function Groups_user_membership()
 
     // And lastly, we must check if he didn't rewrote the url,
     // that is he applying to an open group and that the group is open
-    // $isopen = pnModAPIFunc('Groups', 'user', 'getginfo', array('gid' => $gid));
+    // $isopen = ModUtil::apiFunc('Groups', 'user', 'getginfo', array('gid' => $gid));
     if ($action == 'subscribe') {
-        if (pnModAPIFunc('Groups', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
+        if (ModUtil::apiFunc('Groups', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
             return DataUtil::formatForDisplay(__('Error! You are already a member of this group.'));
         }
 
@@ -208,7 +208,7 @@ function Groups_user_userupdate()
         $applytext = FormUtil::getPassedValue('applytext', null, 'POST');
     }
 
-    $result = pnModAPIFunc('Groups', 'user', 'userupdate',
+    $result = ModUtil::apiFunc('Groups', 'user', 'userupdate',
                            array('gid'       => $gid,
                                  'action'    => $action,
                                  'gtype'     => $gtype,
@@ -243,7 +243,7 @@ function Groups_user_memberslist()
         return LogUtil::registerPermissionError();
     }
 
-    $group = pnModAPIFunc('Groups', 'user', 'get', array('gid'      => $gid,
+    $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid'      => $gid,
                                                          'numitems' => $itemsperpage,
                                                          'startnum' => $startnum));
 
@@ -275,7 +275,7 @@ function Groups_user_memberslist()
     $pnRender->assign('group', $group);
 
     if ($group['members']) {
-        $onlines = pnModAPIFunc('Groups', 'user', 'whosonline', array());
+        $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline', array());
         $members = array();
         foreach($group['members'] as $userid) {
             $userinfo = pnUserGetVars($userid['uid']);
@@ -312,9 +312,9 @@ function Groups_user_memberslist()
         $pnRender->assign('members', false);
     }
 
-    $pnRender->assign('ismember', pnModAPIFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+    $pnRender->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
 
-    $pnRender->assign('pager', array('numitems'     => pnModAPIFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
+    $pnRender->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
                                      'itemsperpage' => $itemsperpage));
 
     $pnRender->assign('hooks', ModUtil::callHooks('item',
@@ -326,7 +326,7 @@ function Groups_user_memberslist()
                                                        array('gid' => $gid))));
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $pnRender->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && pnModAvailable($profileModule)));
+    $pnRender->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 
     return $pnRender->fetch('groups_user_memberslist.htm');
 }

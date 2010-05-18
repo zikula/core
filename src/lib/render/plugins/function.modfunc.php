@@ -32,7 +32,7 @@
  * <!--[pnmodfunc modname='News' type='user' func='view']-->
  *
  * @author       Andreas Stratmann
- * @see          function.pnmodapifunc.php::smarty_function_modapifunc()
+ * @see          function.ModUtil::apiFunc.php::smarty_function_modapifunc()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       string      the results of the module function

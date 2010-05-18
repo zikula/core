@@ -135,7 +135,7 @@ function users_userapi_optionalitems($args)
         return $items;
     }
 
-    if (!pnModAvailable('Profile') || !pnModDBInfoLoad('Profile')) {
+    if (!ModUtil::available('Profile') || !ModUtil::dbInfoLoad('Profile')) {
         return false;
     }
 
@@ -199,7 +199,7 @@ function users_userapi_checkuser($args)
         return 2;
     }
 
-    if (pnModAvailable('legal')) {
+    if (ModUtil::available('legal')) {
         if ($args['agreetoterms'] == 0) {
             return 3;
         }
@@ -359,7 +359,7 @@ function users_userapi_finishnewuser($args)
     }
 
     // hash methods array
-    $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
+    $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
 
     // make password
     $hash_method = ModUtil::getVar('Users', 'hash_method');
@@ -445,14 +445,14 @@ function users_userapi_finishnewuser($args)
             $message = $pnRender->fetch('users_userapi_welcomeemail.htm');
 
             $subject = __f('Password for %1$s from %2$s', array($args['uname'], $sitename));
-            pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
+            ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
             // mail notify email to inform admin about registration
             if (ModUtil::getVar('Users', 'reg_notifyemail') != '' && $moderation == 1) {
                 $email2 = ModUtil::getVar('Users', 'reg_notifyemail');
                 $subject2 = __('New user account registered');
                 $message2 = $pnRender->fetch('users_userapi_adminnotificationmail.htm');
-                pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
+                ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
             }
         }
         return $obj['tid'];
@@ -473,11 +473,11 @@ function users_userapi_finishnewuser($args)
     $obj['hash_method']     = $hashmethod;
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    $useProfileModule = (!empty($profileModule) && pnModAvailable($profileModule));
+    $useProfileModule = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // call the profile manager to handle dyndata if needed
     if ($useProfileModule) {
-        $adddata = pnModAPIFunc($profileModule, 'user', 'insertdyndata', $args);
+        $adddata = ModUtil::apiFunc($profileModule, 'user', 'insertdyndata', $args);
         if (is_array($adddata)) {
             $obj = array_merge($adddata, $obj);
         }
@@ -523,7 +523,7 @@ function users_userapi_finishnewuser($args)
             // Password Email & Welcome Email
             $message = $pnRender->fetch('users_userapi_welcomeemail.htm');
             $subject = __f('Password for %1$s from %2$s', array($args['uname'], $sitename));
-            pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
+            ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
         } else {
             // Activation Email
@@ -531,7 +531,7 @@ function users_userapi_finishnewuser($args)
             // add en encoded activation code. The string is split with a hash (this character isn't used by base 64 encoding)
             $pnRender->assign('code', base64_encode($uid . '#' . $args['user_regdate']));
             $message = $pnRender->fetch('users_userapi_activationemail.htm');
-            pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
+            ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
         }
 
         // mail notify email to inform admin about activation
@@ -539,7 +539,7 @@ function users_userapi_finishnewuser($args)
             $email2 = ModUtil::getVar('Users', 'reg_notifyemail');
             $subject2 = __('New user account activated');
             $message2 = $pnRender->fetch('users_userapi_adminnotificationemail.htm');
-            pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
+            ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
         }
     }
     // Let other modules know we have created an item
@@ -587,7 +587,7 @@ function users_userapi_mailpasswd($args)
         $pnRender->assign('url',  ModUtil::url('Users', 'user', 'lostpassword', array(), null, null, true));
         $message = $pnRender->fetch('users_userapi_lostpasscodemail.htm');
         $subject = __f('Confirmation code for %s', $user['uname']);
-        pnModAPIFunc('Mailer', 'user', 'sendmessage',
+        ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                      array('toaddress' => $user['email'],
                            'subject'   => $subject,
                            'body'      => $message,
@@ -600,7 +600,7 @@ function users_userapi_mailpasswd($args)
         $pnRender->assign('url',      ModUtil::url('Users', 'user', 'loginscreen', array(), null, null, true));
         $message = $pnRender->fetch('users_userapi_passwordmail.htm');
         $subject = __f('Password for %s', $user['uname']);
-        pnModAPIFunc('Mailer', 'user', 'sendmessage',
+        ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                      array('toaddress' => $user['email'],
                            'subject'   => $subject,
                            'body'      => $message,
@@ -608,7 +608,7 @@ function users_userapi_mailpasswd($args)
 
         // Next step: add the new password to the database
         $hash_method = ModUtil::getVar('Users', 'hash_method');
-        $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
+        $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
         $cryptpass = hash($hash_method, $newpass);
         $obj = array();
         $obj['uname'] = $user['uname'];
@@ -719,7 +719,7 @@ function Users_userapi_accountlinks()
         $modpath = ($mod['type'] == 3) ? 'system' : 'modules';
 
         if (file_exists("$modpath/".DataUtil::formatForOS($mod['directory']).'/pnaccountapi.php')) {
-            $items = pnModAPIFunc($mod['name'], 'account', 'getall');
+            $items = ModUtil::apiFunc($mod['name'], 'account', 'getall');
             if ($items) {
                 foreach ($items as $k => $item) {
                     // check every retured link for permissions
@@ -802,7 +802,7 @@ function Users_userapi_savepreemail($args)
     $pnRender->assign('url',  ModUtil::url('Users', 'user', 'confirmchemail', array('confirmcode' => $confirmValue), null, null, true));
 
     $message = $pnRender->fetch('users_userapi_confirmchemail.htm');
-    $sent = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['newemail'], 'subject' => $subject, 'body' => $message, 'html' => true));
+    $sent = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $args['newemail'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
     if (!$sent) {
         return false;

@@ -65,7 +65,7 @@ function theme_renderblock_display($row)
     // defines are present for use inside of the block. If we do not do this, the user
     // will see _THEDEFINES only
     // If the module is not available we show an error messages.
-    if ( (!pnModAvailable($vars['module'])) || (!pnModAPILoad($vars['module'], 'user')) ) {
+    if ( (!ModUtil::available($vars['module'])) || (!ModUtil::loadApi($vars['module'], 'user')) ) {
         $row['content'] = DataUtil::formatForDisplayHTML(__('Misconfigured block').' - '.__('No module.')) . $vars['module'];
         return pnBlockThemeBlock($row);
     }

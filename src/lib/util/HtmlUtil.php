@@ -140,7 +140,7 @@ class HtmlUtil
             return pn_exit(__f('Invalid %1$s passed to %2$s.', array('objectType', 'HtmlUtil::getSelector_ObjectArray')));
         }
 
-        if (!pnModDBInfoLoad($modname)) {
+        if (!ModUtil::dbInfoLoad($modname)) {
             return __f('Unavailable/Invalid %1$s [%2$s] passed to %3$s.', array('modulename', $modname, 'HtmlUtil::getSelector_ObjectArray'));
         }
 
@@ -189,7 +189,7 @@ class HtmlUtil
         }
 
         if ($modname) {
-            pnModDBInfoLoad($modname, '', true);
+            ModUtil::dbInfoLoad($modname, '', true);
         }
 
         if ($truncate > 0) {
@@ -293,7 +293,7 @@ class HtmlUtil
             return pn_exit(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
         }
 
-        $tables = pnModDBInfoLoad($modname, '', true);
+        $tables = ModUtil::dbInfoLoad($modname, '', true);
         $data = array();
         if (is_array($tables) && $tables) {
             foreach ($tables as $k => $v) {
@@ -342,7 +342,7 @@ class HtmlUtil
             return pn_exit(__f('Invalid %1$s passed to %2$s.', array('name', 'HtmlUtil::getSelector_TableFields')));
         }
 
-        $tables = pnModDBInfoLoad($modname, '', true);
+        $tables = ModUtil::dbInfoLoad($modname, '', true);
         $colkey = $tablename . '_column';
         $cols = $tables[$colkey];
 

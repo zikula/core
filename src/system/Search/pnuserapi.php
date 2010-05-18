@@ -48,7 +48,7 @@ function search_userapi_search($args)
     $vars['startnum'] =  $vars['numlimit'] > 0 ? (($vars['page'] - 1) * $vars['numlimit']) + 1 : 1;
 
     // Load database stuff
-    pnModDBInfoLoad('Search');
+    ModUtil::dbInfoLoad('Search');
     $pntable      = pnDBGetTables();
     $userId       = (int)pnUserGetVar('uid');
     $searchTable  = $pntable['search_result'];
@@ -72,7 +72,7 @@ function search_userapi_search($args)
         DBUtil::deleteWhere ('search_result', $where);
 
         // get all the search plugins
-        $search_modules = pnModAPIFunc('Search', 'user', 'getallplugins');
+        $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
 
         // Ask active modules to find their items and put them into $searchTable for the current user
         // At the same time convert modules list from numeric index to modname index
@@ -88,7 +88,7 @@ function search_userapi_search($args)
                         $param = $vars;
                     }
                     $searchModulesByName[$mod['name']] = $mod;
-                    $ok = pnModAPIFunc($mod['title'], 'search', $function, $param);
+                    $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
                     if (!$ok) {
                         LogUtil::registerError(__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
                         return pnRedirect(ModUtil::url('Search', 'user', 'main'));
@@ -211,14 +211,14 @@ function Search_userapi_getallplugins($args)
     // The modules should be determined by a select of the modules table or something like that in the future
     $usermods = pnModGetAllMods();
     foreach ($usermods as $usermod) {
-        if (pnModAPILoad($usermod['name'], 'search')  &&
+        if (ModUtil::loadApi($usermod['name'], 'search')  &&
              ($args['loadall'] ||
                 (!ModUtil::getVar('Search', "disable_$usermod[name]") &&
                  SecurityUtil::checkPermission('Search::Item', "$usermod[name]::", ACCESS_READ)
                 )
              )
            ) {
-            $info = pnModAPIFunc($usermod['name'], 'search', 'info');
+            $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
             $info['name'] = $usermod['name'];
             $search_modules[] = $info;
             $plugins_found = 'yes';
@@ -462,7 +462,7 @@ class search_result_checker
             foreach ($mod['functions'] as $contenttype => $function) {
                 // Delegate check to search plugin
                 // (also allow plugin to write 'url' => ... into $datarow by passing it by reference)
-                $ok = $ok && pnModAPIFunc($mod['title'], 'search', $function.'_check',
+                $ok = $ok && ModUtil::apiFunc($mod['title'], 'search', $function.'_check',
                                           array('datarow'     => &$datarow,
                                                 'contenttype' => $contenttype));
             }

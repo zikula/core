@@ -54,7 +54,7 @@ function theme_themeswitcherblock_info()
 function theme_themeswitcherblock_display($blockinfo)
 {
     // check if the module is available
-    if (!pnModAvailable('Theme')) {
+    if (!ModUtil::available('Theme')) {
         return;
     }
 

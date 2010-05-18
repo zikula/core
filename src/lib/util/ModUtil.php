@@ -682,7 +682,7 @@ class ModUtil
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $ftype = ($api ? 'api' : '');
-        $loadfunc = ($api ? 'pnModAPILoad' : 'pnModLoad');
+        $loadfunc = ($api ? 'ModUtil::loadApi' : 'pnModLoad');
 
         // validate
         if (!pnVarValidate($modname, 'mod')) {
@@ -863,7 +863,7 @@ class ModUtil
                 unset($args['theme']);
             }
             // Module-specific Short URLs
-            $url = pnModAPIFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
+            $url = ModUtil::apiFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
             if (empty($url)) {
                 // depending on the settings, we have generic directory based short URLs:
                 // [language]/[module]/[function]/[param1]/[value1]/[param2]/[value2]
@@ -1021,7 +1021,7 @@ class ModUtil
             $modinfo = self::getInfo(self::getIdFromName($module));
             if (isset($modinfo['name'])) {
                 $module = $modinfo['name'];
-                if ($type != 'init' && !pnModAvailable($module)) {
+                if ($type != 'init' && !ModUtil::available($module)) {
                     // anything from user.php is the user module
                     // not really - of course but it'll do..... [markwest]
                     if (stristr($_SERVER['PHP_SELF'], 'user.php')) {
@@ -1153,7 +1153,7 @@ class ModUtil
                         if (isset($modulehook['tmodule']) &&
                                 self::available($modulehook['tmodule'], $modulehook['ttype']) &&
                                 self::loadApi($modulehook['tmodule'], $modulehook['ttype'])) {
-                            $extrainfo = pnModAPIFunc($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], array('objectid' => $hookid, 'extrainfo' => $extrainfo));
+                            $extrainfo = ModUtil::apiFunc($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], array('objectid' => $hookid, 'extrainfo' => $extrainfo));
                         }
                     }
                 }

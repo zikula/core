@@ -95,7 +95,7 @@ class CategoryUtil
             return false;
         }
 
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
 
         static $cache = array();
         if (isset($cache[$cid])) {
@@ -132,7 +132,7 @@ class CategoryUtil
      */
     public static function getCategories($where = '', $sort = '', $assocKey = '', $enablePermissionFilter = true, $columnArray = null)
     {
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         if (!$sort) {
             $pntables = pnDBGetTables();
             $category_column = $pntables['categories_category_column'];
@@ -182,7 +182,7 @@ class CategoryUtil
      */
     public static function getCategoryByPath($apath, $field = 'path')
     {
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_column = $pntables['categories_category_column'];
         if (!is_array($apath)) {
@@ -215,7 +215,7 @@ class CategoryUtil
         if (!$registry || !is_array($registry))
             return false;
 
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_column = $pntables['categories_category_column'];
 
@@ -256,7 +256,7 @@ class CategoryUtil
             return false;
         }
 
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_column = $pntables['categories_category_column'];
 
@@ -301,7 +301,7 @@ class CategoryUtil
             return false;
         }
 
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_column = $pntables['categories_category_column'];
 
@@ -339,7 +339,7 @@ class CategoryUtil
      */
     public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_column = $pntables['categories_category_column'];
 
@@ -521,7 +521,7 @@ class CategoryUtil
      */
     public static function deleteCategoryByID($cid)
     {
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_table = $pntables['categories_category'];
         $category_column = $pntables['categories_category_column'];
@@ -547,7 +547,7 @@ class CategoryUtil
             return false;
         }
 
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_table = $pntables['categories_category'];
         $category_column = $pntables['categories_category_column'];
@@ -633,7 +633,7 @@ class CategoryUtil
         $oldParentIPath = $oldParent['ipath'] . '/';
         $oldParentPath = $oldParent['path'] . '/';
 
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
         $pntables = pnDBGetTables();
         $category_table = $pntables['categories_category'];
         $category_column = $pntables['categories_category_column'];
@@ -1318,7 +1318,7 @@ class CategoryUtil
      */
     public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
     {
-        pnModDBInfoLoad('Categories');
+        ModUtil::dbInfoLoad('Categories');
 
         //if ($leaf_id)
         //$cats  = self::getParentCategories ($leaf_id, 'id');

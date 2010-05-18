@@ -28,11 +28,11 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
     }
 
     // get the database connection
-    pnModDBInfoLoad('Users', 'Users');
-    pnModAPILoad('Users', 'user', true);
+    ModUtil::dbInfoLoad('Users', 'Users');
+    ModUtil::loadApi('Users', 'user', true);
 
     $uname = strtolower($uname);
-    if (!pnModAvailable('AuthPN')) {
+    if (!ModUtil::available('AuthPN')) {
         if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
             $user = DBUtil::selectObjectByID('users', $uname, 'uname', null, null, null, false, 'lower');
         } else {
@@ -60,7 +60,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
                 case 0 :
                     // continue if legal module is active and and configured to
                     // use the terms of use
-                    if (pnModAvailable('legal')) {
+                    if (ModUtil::available('legal')) {
                         $tou = ModUtil::getVar('legal', 'termsofuse');
                         if ($tou == 1) {
                             // users must confirm terms of use before before he can continue
@@ -83,7 +83,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
         if ($checkPassword) {
             $upass = $user['pass'];
             $pnuser_hash_number = $user['hash_method'];
-            $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
+            $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
 
             $hpass = hash($hashmethodsarray[$pnuser_hash_number], $pass);
             if ($hpass != $upass) {
@@ -96,7 +96,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
             $system_hash_method = $uservars['hash_method'];
             if ($system_hash_method != $hashmethodsarray[$pnuser_hash_number]) {
                 $newhash = hash($system_hash_method, $pass);
-                $hashtonumberarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
+                $hashtonumberarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
 
                 $obj = array('uid' => $uid, 'pass' => $newhash, 'hash_method' => $hashtonumberarray[$system_hash_method]);
                 $result = DBUtil::updateObject($obj, 'users', '', 'uid');
@@ -116,8 +116,8 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
         $authmodules = explode(',', ModUtil::getVar('AuthPN', 'authmodules'));
         foreach ($authmodules as $authmodule) {
             $authmodule = trim($authmodule);
-            if (pnModAvailable($authmodule) && pnModAPILoad($authmodule, 'user')) {
-                $uid = pnModAPIFunc($authmodule, 'user', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
+            if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
+                $uid = ModUtil::apiFunc($authmodule, 'user', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
                 if ($uid) {
                     break;
                 }
@@ -186,13 +186,13 @@ function pnUserLogOut()
     if (pnUserLoggedIn()) {
         $event = new Event('user.logout', null, array('user' => pnUserGetVar('uid')));
         EventManagerUtil::notify($event);
-        if (pnModAvailable('AuthPN')) {
+        if (ModUtil::available('AuthPN')) {
             $authmodules = explode(',', ModUtil::getVar('AuthPN', 'authmodules'));
             foreach ($authmodules as $authmodule)
             {
                 $authmodule = trim($authmodule);
-                if (pnModAvailable($authmodule) && pnModAPILoad($authmodule, 'user')) {
-                    if (!$result = pnModAPIFunc($authmodule, 'user', 'logout')) {
+                if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
+                    if (!$result = ModUtil::apiFunc($authmodule, 'user', 'logout')) {
                         return false;
                     }
                 }
@@ -264,7 +264,7 @@ function pnUserGetVars($id, $force = false, $idfield = '')
     }
 
     // load the Users database information
-    pnModDBInfoLoad('Users', 'Users');
+    ModUtil::dbInfoLoad('Users', 'Users');
 
     // get user info, don't cache as this information must be up-to-date
     $user = DBUtil::selectObjectByID('users', $id, $idfield, null, null, null, false);
@@ -432,7 +432,7 @@ function pnUserSetVar($name, $value, $uid = -1)
 function pnUserSetPassword($pass)
 {
     $method = ModUtil::getVar('Users', 'hash_method');
-    $hashmethodsarray = pnModAPIFunc('Users', 'user', 'gethashmethods');
+    $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
     pnUserSetVar('pass', hash($method, $pass));
     pnUserSetVar('hash_method', $hashmethodsarray[$method]);
 }

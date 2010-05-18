@@ -48,7 +48,7 @@ class Form_Handler
      *
      *   $id = FormUtil::getPassedValue('id');
      *
-     *  $data = pnModAPIFunc('MyModule', 'user', 'get',
+     *  $data = ModUtil::apiFunc('MyModule', 'user', 'get',
      *                       array('id' => $id));
      *   if (count($data) == 0)
      *     return $render->SetErrorMsg('Unknown data');

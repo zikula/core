@@ -21,7 +21,7 @@ pnInit(PN_CORE_ALL & ~PN_CORE_AJAX);
 if (SessionUtil::hasExpired()) {
     // Session has expired, display warning
     header('HTTP/1.0 403 Access Denied');
-    echo pnModAPIFunc('Users', 'user', 'expiredsession');
+    echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
     Theme::getInstance()->themefooter();
     pnShutDown();
 }
@@ -64,7 +64,7 @@ if (empty($module)) {
 // get module information
 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 
-if ($type <> 'init' && !empty($module) && !pnModAvailable($modinfo['name'])) {
+if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name'])) {
     LogUtil::registerError(__f("The '%s' module is not currently accessible.", DataUtil::formatForDisplay(strip_tags($module))));
     echo pnModFunc('Errors', 'user', 'main', array('type' => 404));
     Theme::getInstance()->themefooter();

@@ -41,7 +41,7 @@ function Users_accountapi_getall($args)
     }
 
     // check if the users block exists
-    $blocks = pnModAPIFunc('Blocks', 'user', 'getall');
+    $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
     $mid = ModUtil::getIdFromName('Users');
     $found = false;
     foreach ($blocks as $block) {

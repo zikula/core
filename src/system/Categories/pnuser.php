@@ -81,7 +81,7 @@ function Categories_user_edit ()
             $rootCatIPath     = $rootCat['ipath'];
             if (strpos($rootCatIPath, $userRootCatIPath) !== false) {
                 if (!SecurityUtil::checkPermission('Categories::category', "ID::$docroot", ACCESS_ADMIN)) {
-                    $thisUserRootCategoryName = pnModAPIFunc ('Categories', 'user', 'getusercategoryname');
+                    $thisUserRootCategoryName = ModUtil::apiFunc ('Categories', 'user', 'getusercategoryname');
                     $thisUserRootCatPath      = $userRootCat['path'] . '/' . $thisUserRootCategoryName;
                     $userRootCatPath          = $userRootCat['path'];
                     $rootCatPath              = $rootCat['path'];
@@ -240,7 +240,7 @@ function Categories_user_referBack()
  */
 function Categories_user_getusercategories ()
 {
-    return pnModAPIFunc ('Categories', 'user', 'getusercategories');
+    return ModUtil::apiFunc ('Categories', 'user', 'getusercategories');
 }
 
 /**
@@ -248,6 +248,6 @@ function Categories_user_getusercategories ()
  */
 function Categories_user_getusercategoryname ()
 {
-    return pnModAPIFunc ('Categories', 'user', 'getusercategoryname');
+    return ModUtil::apiFunc ('Categories', 'user', 'getusercategoryname');
 }
 

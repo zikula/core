@@ -98,7 +98,7 @@ function theme_adminapi_regenerate()
     foreach ($dbthemes as $name => $themeinfo) {
         if (empty($filethemes[$name])) {
             // delete a running configuration
-            pnModAPIFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $name));
+            ModUtil::apiFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $name));
             $result = DBUtil::deleteObjectByID('themes', $name, 'name');
             unset($dbthemes[$name]);
         }
@@ -250,20 +250,20 @@ function theme_adminapi_createrunningconfig($args)
     }
 
     // get the theme settings and write them back to the running config directory
-    $variables = pnModAPIFunc('Theme', 'user', 'getvariables', array('theme' => $themename));
+    $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename));
     $variables = array('variables' => $variables);
-    pnModAPIFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables['variables'], 'has_sections' => true, 'file' => 'themevariables.ini'));
+    ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables['variables'], 'has_sections' => true, 'file' => 'themevariables.ini'));
 
     // get the theme palettes and write them back to the running config directory
-    $palettes = pnModAPIFunc('Theme', 'user', 'getpalettes', array('theme' => $themename));
-    pnModAPIFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
+    $palettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename));
+    ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
 
     // get the theme page configurations and write them back to the running config directory
-    $pageconfigurations = pnModAPIFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
-    pnModAPIFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+    $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
+    ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
     foreach ($pageconfigurations as $pageconfiguration) {
-        $fullpageconfiguration = pnModAPIFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $pageconfiguration['file']));
-        pnModAPIFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $fullpageconfiguration, 'has_sections' => true, 'file' => $pageconfiguration['file']));
+        $fullpageconfiguration = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $pageconfiguration['file']));
+        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $fullpageconfiguration, 'has_sections' => true, 'file' => $pageconfiguration['file']));
     }
 
     return true;
@@ -306,7 +306,7 @@ function Theme_adminapi_delete($args)
     }
 
     // delete the running config
-    pnModAPIFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $themeinfo['name']));
+    ModUtil::apiFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $themeinfo['name']));
 
     // clear the compiled and cached templates
     // Note: This actually clears ALL compiled and cached templates but there doesn't seem to be
@@ -314,12 +314,12 @@ function Theme_adminapi_delete($args)
     // names used by that theme.
     // see http://smarty.php.net/manual/en/api.clear.cache.php
     // and http://smarty.php.net/manual/en/api.clear.compiled.tpl.php
-    pnModAPIFunc('Theme', 'user', 'clear_compiled');
-    pnModAPIFunc('Theme', 'user', 'clear_cached');
+    ModUtil::apiFunc('Theme', 'user', 'clear_compiled');
+    ModUtil::apiFunc('Theme', 'user', 'clear_cached');
 
     // try to delete the files
     if($args['deletefiles'] == 1) {
-        pnModAPIFunc('Theme', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
+        ModUtil::apiFunc('Theme', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
     }
     // Let any hooks know that we have deleted an item.
     ModUtil::callHooks('item', 'delete', $themeid, array('module' => 'Theme'));
@@ -389,7 +389,7 @@ function theme_adminapi_deleterunningconfig($args)
     // get the theme info to identify further files to delete
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
     if ($themeinfo) {
-        $pageconfigurations = pnModAPIFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
+        $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
         if (is_array($pageconfigurations)) {
             foreach ($pageconfigurations as $pageconfiguration) {
                 $files[] = $pageconfiguration['file'];
@@ -399,7 +399,7 @@ function theme_adminapi_deleterunningconfig($args)
 
     // delete each file
     foreach ($files as $file) {
-        pnModAPIFunc('Theme', 'admin', 'deleteinifile', array('file' => $file, 'themename' => $themename));
+        ModUtil::apiFunc('Theme', 'admin', 'deleteinifile', array('file' => $file, 'themename' => $themename));
     }
 
     return true;
@@ -457,13 +457,13 @@ function theme_adminapi_deletepageconfigurationassignment($args)
     }
 
     // read the list of existing page config assignments
-    $pageconfigurations = pnModAPIFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $args['themename']));
+    $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $args['themename']));
 
     // remove the requested page configuration
     unset($pageconfigurations[$args['pcname']]);
 
     // write the page configurations back to the running config
-    pnModAPIFunc('Theme', 'user', 'writeinifile', array('theme' => $args['themename'], 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+    ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $args['themename'], 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
     return true;
 }

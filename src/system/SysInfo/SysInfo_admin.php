@@ -197,7 +197,7 @@ class SysInfo_admin extends AbstractController
         $pnRender = Renderer::getInstance('SysInfo');
 
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
-        $filelist = pnModAPIFunc('SysInfo', 'admin', 'filelist');
+        $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist');
 
         $pnRender->assign('filelist', $filelist);
         $pnRender->assign('ztemp', $ztemp);
@@ -219,7 +219,7 @@ class SysInfo_admin extends AbstractController
         $pnRender = Renderer::getInstance('SysInfo');
 
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
-        $filelist = pnModApiFunc('SysInfo', 'admin', 'filelist',
+        $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist',
                 array ('startdir' => $ztemp . '/',
                 'ztemp' => 1));
         $pnRender->assign('filelist', $filelist);

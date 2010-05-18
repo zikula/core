@@ -25,7 +25,7 @@ function users_user_main()
     }
 
     // The API function is called.
-    $accountlinks = pnModAPIFunc('Users', 'user', 'accountlinks');
+    $accountlinks = ModUtil::apiFunc('Users', 'user', 'accountlinks');
 
     if ($accountlinks == false) {
         return LogUtil::registerError(__('Error! No results found.'), 404);
@@ -109,7 +109,7 @@ function users_user_loginscreen($args)
     $pnRender->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
     $pnRender->assign('returnurl', $returnurl);
     // do we have to show a note about reconfirming the terms of use?
-    if (pnModAvailable('legal') && (ModUtil::getVar('legal', 'termsofuse') || ModUtil::getVar('legal', 'privacypolicy'))) {
+    if (ModUtil::available('legal') && (ModUtil::getVar('legal', 'termsofuse') || ModUtil::getVar('legal', 'privacypolicy'))) {
         $pnRender->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
         $pnRender->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
     } else {
@@ -162,7 +162,7 @@ function users_user_register()
 
     $pnRender->assign($modvars);
     $pnRender->assign('sitename', pnConfigGetVar('sitename'));
-    $pnRender->assign('legal',    pnModAvailable('legal'));
+    $pnRender->assign('legal',    ModUtil::available('legal'));
     $pnRender->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
     $pnRender->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
 
@@ -224,7 +224,7 @@ function users_user_login()
     $tryagain = false;
     $confirmtou = 0;
     $changepassword = 0;
-    if (($userstatus == 2 || $userstatus == 6) && pnModAvailable('legal') && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
+    if (($userstatus == 2 || $userstatus == 6) && ModUtil::available('legal') && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
         $confirmtou = 1;
         $touaccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
         if ($touaccepted<>1) {
@@ -236,7 +236,7 @@ function users_user_login()
     // the current password must be valid
     $pnuser_current_pass = pnUserGetVar('pass', $userid);
     $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
-    $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
+    $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
     $passhash = hash($hashmethodsarray[$pnuser_hash_number], $pass);
     if ($passhash != $pnuser_current_pass) {
         $errormsg = __('Sorry! The current password you entered is not correct. Please correct your entry and try again.');
@@ -292,7 +292,7 @@ function users_user_login()
         if ($userstatus == 4 || $userstatus == 6) {
             // change the user's password
             $pnuser_hash_number = pnUserGetVar('hash_method', $userid);
-            $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
+            $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
             $newpasshash = hash($hashmethodsarray[$pnuser_hash_number], $newpass);
             pnUserSetVar('pass', $newpasshash, $userid);
             $pass = $newpass;
@@ -399,10 +399,10 @@ function users_user_finishnewuser()
     // Verify dynamic user data
     if (ModUtil::getVar('Users', 'reg_optitems') == 1) {
         $profileModule = pnConfigGetVar('profilemodule', '');
-        if (!empty($profileModule) && pnModAvailable($profileModule)) {
+        if (!empty($profileModule) && ModUtil::available($profileModule)) {
 
             // any Profile module needs this function
-            $checkrequired = pnModAPIFunc($profileModule, 'user', 'checkrequired');
+            $checkrequired = ModUtil::apiFunc($profileModule, 'user', 'checkrequired');
 
             if ($checkrequired) {
                 // ! %s is a comma separated list of fields that were left blank
@@ -421,7 +421,7 @@ function users_user_finishnewuser()
     $user_regdate = DateUtil::getDatetime();
 
     // TODO: add require check for dynamics.
-    $checkuser = pnModAPIFunc('Users', 'user', 'checkuser',
+    $checkuser = ModUtil::apiFunc('Users', 'user', 'checkuser',
                               array('uname'        => $uname,
                                     'email'        => $email,
                                     'agreetoterms' => $agreetoterms));
@@ -500,7 +500,7 @@ function users_user_finishnewuser()
     }
 
     // TODO: Clean up
-    $registered = pnModAPIFunc('Users', 'user', 'finishnewuser',
+    $registered = ModUtil::apiFunc('Users', 'user', 'finishnewuser',
                                array('uname'         => $uname,
                                      'pass'          => $pass,
                                      'email'         => $email,
@@ -569,7 +569,7 @@ function users_user_mailpasswd()
     }
 
     //0=DatabaseError 1=WrongCode 2=NoSuchUsernameOrEmailAddress 3=PasswordMailed 4=ConfirmationCodeMailed
-    $returncode = pnModAPIFunc('Users', 'user', 'mailpasswd',
+    $returncode = ModUtil::apiFunc('Users', 'user', 'mailpasswd',
                                array('uname' => $uname,
                                      'email' => $email,
                                      'code'  => $code));
@@ -654,7 +654,7 @@ function users_user_activation($args)
     }
 
     if (hash('md5', $regdate) == hash('md5', $code)) {
-        $returncode = pnModAPIFunc('Users', 'user', 'activateuser',
+        $returncode = ModUtil::apiFunc('Users', 'user', 'activateuser',
                                    array('uid'     => $uid,
                                          'regdate' => $regdate));
 
@@ -747,7 +747,7 @@ function users_user_siteofflogin()
  */
 function users_user_usersblock()
 {
-    $blocks = pnModAPIFunc('Blocks', 'user', 'getall');
+    $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
     $mid = ModUtil::getIdFromName('Users');
     $found = false;
     foreach ($blocks as $block) {
@@ -781,7 +781,7 @@ function users_user_updateusersblock()
         return LogUtil::registerPermissionError();
     }
 
-    $blocks = pnModAPIFunc('Blocks', 'user', 'getall');
+    $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
     $mid = ModUtil::getIdFromName('Users');
     $found = false;
     foreach ($blocks as $block) {
@@ -867,7 +867,7 @@ function Users_user_updatepassword()
 
     $upass = $user['pass'];
     $pnuser_hash_number = $user['hash_method'];
-    $hashmethodsarray   = pnModAPIFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
+    $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
 
     $opass = hash($hashmethodsarray[$pnuser_hash_number], $oldpassword);
 
@@ -939,7 +939,7 @@ function Users_user_updateemail()
 
     $newemail = FormUtil::getPassedValue('newemail', '', 'POST');
 
-    $checkuser = pnModAPIFunc('Users', 'user', 'checkuser',
+    $checkuser = ModUtil::apiFunc('Users', 'user', 'checkuser',
                               array('uname'        => pnUserGetVar('uname'),
                                     'email'        => $newemail,
                                     'agreetoterms' => true));
@@ -970,7 +970,7 @@ function Users_user_updateemail()
     }
 
     // save the provisional email until confimation
-    if (!pnModAPIFunc('Users', 'user', 'savepreemail',
+    if (!ModUtil::apiFunc('Users', 'user', 'savepreemail',
                     array('newemail' => $newemail))) {
         return LogUtil::registerError(__('Error! It has not been possible to change the e-mail address.'), null, ModUtil::url('Users', 'user', 'changeemail'));
     }
@@ -1020,7 +1020,7 @@ function Users_user_confirmchemail($args)
     }
 
     // get user new email that is waiting for confirmation
-    $preemail = pnModAPIFunc('Users', 'user', 'getuserpreemail');
+    $preemail = ModUtil::apiFunc('Users', 'user', 'getuserpreemail');
 
     // the e-mail change is valid during 5 days
     $fiveDaysAgo =  time() - 5*24*60*60;
@@ -1034,7 +1034,7 @@ function Users_user_confirmchemail($args)
     pnUserSetVar('email', $preemail['email']);
 
     // the preemail record is deleted
-    pnModAPIFunc('Users', 'admin', 'deny',
+    ModUtil::apiFunc('Users', 'admin', 'deny',
                 array('userid' => $preemail['tid']));
 
     LogUtil::registerStatus(__('Done! Changed your e-mail address.'));

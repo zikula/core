@@ -49,7 +49,7 @@ function permissions_ajax_updatepermission()
 
     // Pass to API
 
-    pnModAPIFunc('Permissions', 'admin', 'update',
+    ModUtil::apiFunc('Permissions', 'admin', 'update',
                  array('pid'       => $pid,
                        'seq'       => $seq,
                        'oldseq'    => $seq,
@@ -129,7 +129,7 @@ function permissions_ajax_createpermission()
                        'level'     => ACCESS_NONE,
                        'insseq'    => -1);
 
-    $newperm = pnModAPIFunc('Permissions', 'admin', 'create', $dummyperm);
+    $newperm = ModUtil::apiFunc('Permissions', 'admin', 'create', $dummyperm);
     if ($newperm == false) {
         AjaxUtil::error(__('Error! Could not create new permission rule.'));
     }
@@ -168,7 +168,7 @@ function permissions_ajax_deletepermission()
         AjaxUtil::error(__('Notice: You cannot delete the main administration permission rule.'));
     }
 
-    if (pnModAPIFunc('Permissions', 'admin', 'delete', array('pid' => $pid)) == true) {
+    if (ModUtil::apiFunc('Permissions', 'admin', 'delete', array('pid' => $pid)) == true) {
         if ($pid == ModUtil::getVar('Permissions', 'adminid')) {
             ModUtil::setVar('Permissions', 'adminid', 0);
             ModUtil::setVar('Permissions', 'lockadmin', false);

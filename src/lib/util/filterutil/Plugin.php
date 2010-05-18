@@ -86,7 +86,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
         $file = 'filter.' . $name . '.class.php';
         //Load hierarchy
         $dests = array();
-        if ($module != 'core' && pnModAvailable($module)) {
+        if ($module != 'core' && ModUtil::available($module)) {
             $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
             $directory = $modinfo['directory'];
             $dest[] = "config/filter/$directory/$file";

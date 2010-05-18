@@ -27,8 +27,8 @@ function theme_init()
     }
 
     // detect all themes on install
-    pnModAPILoad('Theme', 'admin', true);
-    pnModAPIFunc('Theme', 'admin', 'regenerate');
+    ModUtil::loadApi('Theme', 'admin', true);
+    ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
     // define defaults for module vars
     ModUtil::setVar('Theme', 'modulesnocache', '');
@@ -92,7 +92,7 @@ function theme_upgrade($oldversion)
             $modid = ModUtil::getIdFromName('pnRender');
 
             // check and update blocks
-            $blocks = pnModAPIFunc('Blocks', 'user', 'getall', array('modid' => $modid));
+            $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('modid' => $modid));
             if (!empty($blocks)) {
                 $thememodid = ModUtil::getIdFromName('Theme');
                 foreach ($blocks as $block) {
@@ -116,13 +116,13 @@ function theme_upgrade($oldversion)
             }
 
             // Set Module pnRender 'Inactive'
-            if (!pnModAPIFunc('Modules', 'admin', 'setstate', array(
+            if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $modid,
                 'state' => PNMODULE_STATE_INACTIVE))) {
                 return '3.3';
             }
             // Remove Module pnRender from Modulelist
-            if (!pnModAPIFunc('Modules', 'admin', 'remove', array(
+            if (!ModUtil::apiFunc('Modules', 'admin', 'remove', array(
                 'id' => $modid))) {
                 return '3.3';
             }

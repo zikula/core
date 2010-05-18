@@ -101,16 +101,16 @@ function blocks_delete()
 function blocks_defaultdata()
 {
     // create the default block positions - left, right and center for the traditional 3 column layout
-    pnModAPILoad('Blocks', 'admin', true);
+    ModUtil::loadApi('Blocks', 'admin', true);
 
     // sanity check - truncate existing tables to ensure a clean blocks setup
     DBUtil::truncateTable('blocks');
     DBUtil::truncateTable('block_positions');
     DBUtil::truncateTable('block_placements');
 
-    $left = pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => 'left', 'description' => __('Left blocks')));
-    $right = pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => 'right', 'description' => __('Right blocks')));
-    $center = pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => 'center', 'description' => __('Center blocks')));
+    $left = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'left', 'description' => __('Left blocks')));
+    $right = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'right', 'description' => __('Right blocks')));
+    $center = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'center', 'description' => __('Center blocks')));
 
     // define an array of the default blocks
     $blocks = array();
@@ -144,8 +144,8 @@ function blocks_defaultdata()
     // the create creates the initiial block record, the update sets the block placments
     foreach ($blocks as $position => $block)
     {
-        $block['bid'] = pnModAPIFunc('Blocks', 'admin', 'create', $block);
-        pnModAPIFunc('Blocks', 'admin', 'update', $block);
+        $block['bid'] = ModUtil::apiFunc('Blocks', 'admin', 'create', $block);
+        ModUtil::apiFunc('Blocks', 'admin', 'update', $block);
     }
 
     return;

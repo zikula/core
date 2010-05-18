@@ -66,7 +66,7 @@ function blocks_admin_view()
     $lastpos = '';
 
     // Get all blocks
-    $blocks = pnModAPIFunc('Blocks', 'user', 'getall', $filter);
+    $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', $filter);
 
     // we can easily count the number of blocks using count() rather than
     // calling the api function
@@ -76,7 +76,7 @@ function blocks_admin_view()
     $blockitems = array();
 
     // get all possible block positions
-    $blockspositions = pnModAPIFunc('Blocks', 'user', 'getallpositions');
+    $blockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
     // build assoc array for easier usage later on
     foreach($blockspositions as $blocksposition) {
         $allbposarray[$blocksposition['pid']] = $blocksposition['name'];
@@ -96,7 +96,7 @@ function blocks_admin_view()
             $block['language'] = ZLanguage::getLanguageName($block['language']);
         }
 
-        $thisblockspositions = pnModAPIFunc('Blocks', 'user', 'getallblockspositions', array('bid' => $block['bid']));
+        $thisblockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallblockspositions', array('bid' => $block['bid']));
         $bposarray = array();
         foreach($thisblockspositions as $singleblockposition){
             $bposarray[] = $allbposarray[$singleblockposition['pid']];
@@ -135,7 +135,7 @@ function blocks_admin_view()
     $pnRender->assign('blocks', $blocksitems);
 
     // get the block positions
-    $items = pnModAPIFunc('Blocks', 'user', 'getallpositions');
+    $items = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
 
     // Loop through each returned item adding in the options that the user has over the item
     foreach ($items as $key => $item) {
@@ -182,7 +182,7 @@ function blocks_admin_deactivate()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Blocks', 'admin', 'deactivate', array('bid' => $bid))) {
+    if (ModUtil::apiFunc('Blocks', 'admin', 'deactivate', array('bid' => $bid))) {
         // Success
         LogUtil::registerStatus(__('Done! Block now inactive.'));
     }
@@ -208,7 +208,7 @@ function blocks_admin_activate()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Blocks', 'admin', 'activate', array('bid' => $bid))) {
+    if (ModUtil::apiFunc('Blocks', 'admin', 'activate', array('bid' => $bid))) {
         // Success
         LogUtil::registerStatus(__('Done! Block now active.'));
     }
@@ -288,7 +288,7 @@ function blocks_admin_modify()
     $pnRender->assign('mods', pnModGetAllMods());
 
     // assign block positions
-    $positions = pnModAPIFunc('Blocks', 'user', 'getallpositions');
+    $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
     $block_positions = array();
     foreach ($positions as $position) {
         $block_positions[$position['pid']] = $position['name'];
@@ -440,7 +440,7 @@ function blocks_admin_update()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Blocks', 'admin', 'update', $blockinfo)) {
+    if (ModUtil::apiFunc('Blocks', 'admin', 'update', $blockinfo)) {
         // Success
         LogUtil::registerStatus(__('Done! Saved blocks.'));
     }
@@ -490,7 +490,7 @@ function blocks_admin_new()
     $pnRender->assign('blockids', $blockinfo);
 
     // assign block positions
-    $positions = pnModAPIFunc('Blocks', 'user', 'getallpositions');
+    $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
     $block_positions = array();
     foreach ($positions as $position) {
         $block_positions[$position['pid']] = $position['name'];
@@ -542,7 +542,7 @@ function blocks_admin_create()
                        'defaultstate' => $defaultstate);
 
     // Pass to API
-    $bid = pnModAPIFunc('Blocks', 'admin', 'create', $blockinfo);
+    $bid = ModUtil::apiFunc('Blocks', 'admin', 'create', $blockinfo);
     if ($bid != false) {
         LogUtil::registerStatus(__('Done! Created block.'));
         return pnRedirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
@@ -604,7 +604,7 @@ function blocks_admin_delete()
     }
 
     // Pass to API
-    if (pnModAPIFunc('Blocks', 'admin', 'delete',
+    if (ModUtil::apiFunc('Blocks', 'admin', 'delete',
                      array('bid' => $bid))) {
         // Success
         LogUtil::registerStatus(__('Done! Deleted block.'));
@@ -658,7 +658,7 @@ function blocks_admin_createposition()
     }
 
     // add the new block position
-    if (pnModAPIFunc('Blocks', 'admin', 'createposition', array('name' => $position['name'], 'description' => $position['description']))) {
+    if (ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => $position['name'], 'description' => $position['description']))) {
         LogUtil::registerStatus(__('Done! Created block.'));
     }
 
@@ -677,7 +677,7 @@ function blocks_admin_modifyposition()
     $pid = FormUtil::getPassedValue('pid');
 
     // get the block position
-    $position = pnModAPIFunc('Blocks', 'user', 'getposition', array('pid' => $pid));
+    $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $pid));
 
     // Security check
     if (!SecurityUtil::checkPermission("Blocks::$position[name]", '::', ACCESS_ADMIN)) {
@@ -691,10 +691,10 @@ function blocks_admin_modifyposition()
     $pnRender->assign($position);
 
     // get all blocks in the position
-    $block_placements = pnModAPIFunc('blocks', 'user', 'getblocksinposition', array('pid' => $pid));
+    $block_placements = ModUtil::apiFunc('blocks', 'user', 'getblocksinposition', array('pid' => $pid));
 
     // get all defined blocks
-    $allblocks = pnModAPIFunc('Blocks', 'user', 'getall', array('active_status' => 0));
+    $allblocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('active_status' => 0));
     foreach($allblocks as $key => $allblock) {
         // set the module that holds the block
         $modinfo = ModUtil::getInfo($allblock['mid']);
@@ -745,7 +745,7 @@ function blocks_admin_updateposition()
     }
 
     // update the position
-    if (pnModAPIFunc('Blocks', 'admin', 'updateposition',
+    if (ModUtil::apiFunc('Blocks', 'admin', 'updateposition',
                      array('pid' => $position['pid'], 'name' => $position['name'], 'description' => $position['description']))) {
         // all done
         LogUtil::registerStatus(__('Done! Saved block.'));
@@ -772,7 +772,7 @@ function Blocks_admin_deleteposition($args)
         $pid = $objectid;
     }
 
-    $item = pnModAPIFunc('Blocks', 'user', 'getposition', array('pid' => $pid));
+    $item = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $pid));
 
     if ($item == false) {
         return LogUtil::registerError(__('Error! No such block position found.'), 404);
@@ -794,7 +794,7 @@ function Blocks_admin_deleteposition($args)
         return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
     }
 
-    if (pnModAPIFunc('Blocks', 'admin', 'deleteposition', array('pid' => $pid))) {
+    if (ModUtil::apiFunc('Blocks', 'admin', 'deleteposition', array('pid' => $pid))) {
         // Success
         LogUtil::registerStatus(__('Done! Deleted block position.'));
     }

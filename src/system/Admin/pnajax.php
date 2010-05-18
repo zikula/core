@@ -47,7 +47,7 @@ function Admin_Ajax_changeModuleCategory() {
     //get the module name
     $module = $module['name'];
     //move the module
-    $result = pnModAPIFunc('Admin', 'admin', 'addmodtocategory', array('category' => $newParentCat,
+    $result = ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('category' => $newParentCat,
         'module' => $module));
     $output['alerttext'] = '';
     $output['response'] = ($result) ? $moduleID : "-1";
@@ -79,7 +79,7 @@ function Admin_Ajax_addCategory() {
     //TODO make sure catName is set.
 
     //check if there exists a cat with this name.
-    $cats = pnModAPIFunc('Admin', 'admin', 'getall');
+    $cats = ModUtil::apiFunc('Admin', 'admin', 'getall');
     foreach ($cats as $cat) {
         if (in_array($catName, $cat)) {
             $output['alerttext'] = 'A category by this name already exists.';
@@ -87,7 +87,7 @@ function Admin_Ajax_addCategory() {
         }
     }
     //create the category
-    $result = pnModAPIFunc('Admin', 'admin', 'create', array('catname' => $catName,
+    $result = ModUtil::apiFunc('Admin', 'admin', 'create', array('catname' => $catName,
         'description' => ''));
     $output['alerttext'] = '';
     $output['response'] = (!$result) ? "0" : $result;
@@ -119,7 +119,7 @@ function Admin_Ajax_deleteCategory() {
         return AjaxUtil::output($output, true);
     }
     //find the category corrisponding to the cid.
-    $category = pnModAPIFunc('Admin', 'admin', 'get', array('cid' => $cid));
+    $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
     if ($category == false) {
         $output['alerttext'] = 'Could not find category:'.$cid;
         $output['response'] = '-1';
@@ -127,7 +127,7 @@ function Admin_Ajax_deleteCategory() {
     }
 
     //delete the category
-    if (pnModAPIFunc('Admin', 'admin', 'delete', array('cid' => $cid))) {
+    if (ModUtil::apiFunc('Admin', 'admin', 'delete', array('cid' => $cid))) {
         // Success
         $output['alerttext'] = '';
         $output['response'] = $cid;
@@ -169,7 +169,7 @@ function Admin_Ajax_editCategory() {
     }
 
     //check if category with same name exists
-    $cats = pnModAPIFunc('Admin', 'admin', 'getall');
+    $cats = ModUtil::apiFunc('Admin', 'admin', 'getall');
     foreach ($cats as $catName) {
         if (in_array($cat, $catName)) {
             //check to see if the category with same name is the same category.
@@ -186,7 +186,7 @@ function Admin_Ajax_editCategory() {
     }
 
     //get the category from the database
-    $category = pnModAPIFunc('Admin', 'admin', 'get', array('cid' => $cid));
+    $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
     if ($category == false) {
         $output['alerttext'] = "Category $cid does not exist.";
         $output['response'] = '-1';
@@ -194,7 +194,7 @@ function Admin_Ajax_editCategory() {
     }
 
     //update the category using the info from the database and from the form.
-    if (pnModAPIFunc('Admin', 'admin', 'update', array('cid' => $cid, 'catname' => $cat, 'description' => $category['description']))) {
+    if (ModUtil::apiFunc('Admin', 'admin', 'update', array('cid' => $cid, 'catname' => $cat, 'description' => $category['description']))) {
         $output['alerttext'] = '';
         $output['response'] = $cat;
         return AjaxUtil::output($output, true);

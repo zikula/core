@@ -63,7 +63,7 @@ function theme_user_main()
  */
 function theme_user_resettodefault()
 {
-    pnModAPIFunc('Theme', 'user', 'resettodefault');
+    ModUtil::apiFunc('Theme', 'user', 'resettodefault');
     LogUtil::registerStatus(__('Done! Theme has been reset to the default site theme.'));
     return pnRedirect(ModUtil::url('Theme'));
 }

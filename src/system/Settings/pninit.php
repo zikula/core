@@ -158,15 +158,15 @@ function _settings_getDefaultGroupModules()
     $groupModules = array();
 
     $groupModules['profile'] = '';
-    if (pnModAvailable('Profile')) {
+    if (ModUtil::available('Profile')) {
         $groupModules['profile'] = 'Profile';
 
-    } elseif (pnModAvailable('MyProfile')) {
+    } elseif (ModUtil::available('MyProfile')) {
         $groupModules['profile'] = 'MyProfile';
     }
 
     $groupModules['message'] = '';
-    if (pnModAvailable('InterCom')) {
+    if (ModUtil::available('InterCom')) {
         $groupModules['message'] = 'InterCom';
     }
 

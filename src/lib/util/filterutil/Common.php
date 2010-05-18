@@ -75,8 +75,8 @@ class FilterUtil_Common
      */
     protected function setModule($module)
     {
-        if (pnModAvailable($module)) {
-            pnModDBInfoLoad($module);
+        if (ModUtil::available($module)) {
+            ModUtil::dbInfoLoad($module);
             $this->module = $module;
             return true;
         } elseif (strtolower($module) == 'core') {

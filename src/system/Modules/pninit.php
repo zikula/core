@@ -222,7 +222,7 @@ function modules_init_changestructure120()
     $GLOBALS['pntables']['modules_column']['url'] = 'pn_url';
     unset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom120']);
 
-    pnModDBInfoLoad('Modules', true);
+    ModUtil::dbInfoLoad('Modules', true);
     $modulesArray = DBUtil::selectObjectArray('modules');
     foreach ($modulesArray as $module)
     {

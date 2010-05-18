@@ -429,7 +429,7 @@ class ObjectUtil
             return false;
         }
 
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -497,7 +497,7 @@ class ObjectUtil
             return false;
         }
 
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -565,7 +565,7 @@ class ObjectUtil
             return false;
         }
 
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -626,7 +626,7 @@ class ObjectUtil
             return pn_exit(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__.'::'.__FUNCTION__)));
         }
 
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -698,7 +698,7 @@ class ObjectUtil
      */
     public static function deleteAllObjectTypeAttributes($type)
     {
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -721,7 +721,7 @@ class ObjectUtil
      */
     public static function getSystemAttributes($sort = 'attribute_name')
     {
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -747,7 +747,7 @@ class ObjectUtil
      */
     public static function getAttributeCount($atrName)
     {
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -799,7 +799,7 @@ class ObjectUtil
      */
     public static function insertObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -824,7 +824,7 @@ class ObjectUtil
      */
     public static function updateObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -851,7 +851,7 @@ class ObjectUtil
      */
     public static function deleteObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -887,7 +887,7 @@ class ObjectUtil
      */
     public static function retrieveObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!pnModAvailable('ObjectData') || !pnModDBInfoLoad('ObjectData')) {
+        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -954,7 +954,7 @@ class ObjectUtil
             return pn_exit(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__.'::'.__FUNCTION__)));
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return false;
         }
 
@@ -1022,7 +1022,7 @@ class ObjectUtil
      */
     public static function deleteObjectCategories($obj, $tablename, $idcolumn = 'obj_id')
     {
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return false;
         }
 
@@ -1048,7 +1048,7 @@ class ObjectUtil
             return $cache[$key];
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return false;
         }
 
@@ -1113,7 +1113,7 @@ class ObjectUtil
      */
     public static function expandObjectArrayWithCategories(&$objArray, $tablename, $idcolumn = 'id', $field = 'id', $locale = 'eng')
     {
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return false;
         }
 
@@ -1207,7 +1207,7 @@ class ObjectUtil
             return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return false;
         }
 

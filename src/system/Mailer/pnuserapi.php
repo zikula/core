@@ -48,8 +48,8 @@ function Mailer_userapi_sendmessage($args)
 {
     // Check for installed advanced Mailer module
     $processed = (isset($args['processed']) ? (int) $args['processed'] : 0);
-    if (pnModAvailable('advMailer') && ($processed != 1)) {
-        return pnModApiFunc('advMailer', 'user', 'sendmessage', $args);
+    if (ModUtil::available('advMailer') && ($processed != 1)) {
+        return ModUtil::apiFunc('advMailer', 'user', 'sendmessage', $args);
     }
 
     // include php mailer class file

@@ -40,7 +40,7 @@ function smarty_function_html_select_modulestylesheets($params, &$smarty)
         $exclude = array();
     }
 
-    $modstyleslist = pnModAPIFunc('Admin', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
+    $modstyleslist = ModUtil::apiFunc('Admin', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
 
     require_once $smarty->_get_plugin_filepath('function','html_options');
     $output = smarty_function_html_options(array('values'  => $modstyleslist,

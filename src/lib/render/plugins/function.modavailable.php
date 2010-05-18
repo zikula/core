@@ -15,7 +15,7 @@
 /**
  * Smarty function to check for the availability of a module
  *
- * This function calls pnModAvailable to determine if a Zikula module is
+ * This function calls ModUtil::available to determine if a Zikula module is
  * is available. True is returned if the module is available, false otherwise.
  * The result can also be assigned to a template variable.
  *
@@ -24,14 +24,14 @@
  *   - assign:   The name of a variable to which the results are assigned
  *
  * Examples
- *   <!--[pnmodavailable modname="News"]-->
+ *   <!--[ModUtil::available modname="News"]-->
  *
- *   <!--[pnmodavailable modname="foobar" assign="myfoo"]-->
+ *   <!--[ModUtil::available modname="foobar" assign="myfoo"]-->
  *   <!--[if $myfoo]-->.....<!--[/if]-->
  *
  *
  * @author       Michael Nagy
- * @see          function.pnmodavailable.php::smarty_function_modavailable()
+ * @see          function.ModUtil::available.php::smarty_function_modavailable()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       bool        true if the module is available; false otherwise
@@ -47,7 +47,7 @@ function smarty_function_modavailable ($params, &$smarty)
         $modname = $mod;
     }
 
-    $result = pnModAvailable($modname);
+    $result = ModUtil::available($modname);
 
     if ($assign)  {
          $smarty->assign($assign, $result);

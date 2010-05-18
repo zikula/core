@@ -43,12 +43,12 @@ function smarty_function_modulelinks($params, &$smarty)
     $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
 
     if (empty($menuLinks)) {
-        if (!isset($params['modname']) || !pnModAvailable($params['modname'])) {
+        if (!isset($params['modname']) || !ModUtil::available($params['modname'])) {
             $params['modname'] = pnModGetName();
         }
 
         // check our module name
-        if (!pnModAvailable($params['modname'])) {
+        if (!ModUtil::available($params['modname'])) {
             $smarty->trigger_error('modulelinks: '.__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($params['modname'])));
             return false;
         }
@@ -56,7 +56,7 @@ function smarty_function_modulelinks($params, &$smarty)
         $params['type'] = isset($params['type']) ? $params['type'] : 'admin';
 
         // get the links from the module API
-        $menuLinks = pnModAPIFunc($params['modname'], $params['type'], 'getlinks', $params);
+        $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getlinks', $params);
     }
 
     $html = '<ul';

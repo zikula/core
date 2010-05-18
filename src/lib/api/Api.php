@@ -324,11 +324,11 @@ function pnInit($stages = PN_CORE_ALL)
         // Initialise pntables
         $GLOBALS['pntables'] = isset($pntable) ? $pntable : null;
         // ensure that the base modules info is available
-        pnModDBInfoLoad('Modules', 'Modules');
-        pnModDBInfoLoad('Theme', 'Theme');
-        pnModDBInfoLoad('Users', 'Users');
-        pnModDBInfoLoad('Groups', 'Groups');
-        pnModDBInfoLoad('Permissions', 'Permissions');
+        ModUtil::dbInfoLoad('Modules', 'Modules');
+        ModUtil::dbInfoLoad('Theme', 'Theme');
+        ModUtil::dbInfoLoad('Users', 'Users');
+        ModUtil::dbInfoLoad('Groups', 'Groups');
+        ModUtil::dbInfoLoad('Permissions', 'Permissions');
         // load core module vars
         pnModInitCoreVars();
         // if we've got this far an error handler can come into play
@@ -343,7 +343,7 @@ function pnInit($stages = PN_CORE_ALL)
     if ($stages & PN_CORE_SESSIONS) {
         // Other includes
         // ensure that the sesssions table info is available
-        pnModDBInfoLoad('Users', 'Users');
+        ModUtil::dbInfoLoad('Users', 'Users');
         $anonymoussessions = pnConfigGetVar('anonymoussessions');
         if ($anonymoussessions == '1' || !empty($_COOKIE[SessionUtil::getCookieName()])) {
             // we need to create a session for guests as configured or
@@ -388,8 +388,8 @@ function pnInit($stages = PN_CORE_ALL)
             ob_start("ob_gzhandler");
         }
 
-        if (pnModAvailable('SecurityCenter') && pnConfigGetVar('enableanticracker') == 1 && pnModAPILoad('SecurityCenter', 'user')) {
-            pnModAPIFunc('SecurityCenter', 'user', 'secureinput');
+        if (ModUtil::available('SecurityCenter') && pnConfigGetVar('enableanticracker') == 1 && ModUtil::loadApi('SecurityCenter', 'user')) {
+            ModUtil::apiFunc('SecurityCenter', 'user', 'secureinput');
         }
 
         EventManagerUtil::notify($coreInitEvent);
@@ -754,7 +754,7 @@ function pnLocalReferer($strict = false)
 /**
  * send an email
  *
- * e-mail messages should now be send with a pnModAPIFunc call to the mailer module
+ * e-mail messages should now be send with a ModUtil::apiFunc call to the mailer module
  *
  * @deprecated
  * @param to $ - recipient of the email
@@ -775,8 +775,8 @@ function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug =
     $return = false;
 
     // check if the mailer module is availble and if so call the API
-    if ((pnModAvailable('Mailer')) && (pnModAPILoad('Mailer', 'user'))) {
-        $return = pnModAPIFunc('Mailer', 'user', 'sendmessage', array(
+    if ((ModUtil::available('Mailer')) && (ModUtil::loadApi('Mailer', 'user'))) {
+        $return = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array(
                         'toaddress' => $to,
                         'subject' => $subject,
                         'headers' => $headers,
@@ -1039,7 +1039,7 @@ function pnQueryStringDecode()
 
         // check if there is a custom url handler for this module
         // if not decode the url using the default handler
-        if (isset($modinfo) && $modinfo['type'] != 0 && !pnModAPIFunc($modname, 'user', 'decodeurl', array(
+        if (isset($modinfo) && $modinfo['type'] != 0 && !ModUtil::apiFunc($modname, 'user', 'decodeurl', array(
                         'vars' => $args))) {
             // any remaining arguments are specific to the module
             $argscount = count($args);
@@ -1125,7 +1125,7 @@ function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
                                 'message' => $errstr,
                                 'file' => $errfile,
                                 'line' => $errline));
-                pnModAPIFunc('Mailer', 'user', 'sendmessage', array(
+                ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array(
                                 'toaddress' => $toaddress,
                                 'toname' => $toaddress,
                                 'subject' => __('Error! Oh! Wow! An \'unidentified system error\' has occurred.'),
@@ -1224,7 +1224,7 @@ function _development_checks()
         }
 
         // Mailer needs fsockopen()
-        if (pnModAvailable('Mailer') && !function_exists('fsockopen')) {
+        if (ModUtil::available('Mailer') && !function_exists('fsockopen')) {
             echo __("Error! The PHP function 'fsockopen()' is needed within the Zikula mailer module, but is not available.");
             $die = true;
         }
@@ -1237,7 +1237,7 @@ function _development_checks()
                         $temp . 'Renderer_cache',
                         $temp . 'Theme_compiled',
                         $temp . 'Theme_cache');
-        if (pnModAvailable('Feeds')) {
+        if (ModUtil::available('Feeds')) {
             $folders[] = $temp . 'feeds';
         }
 

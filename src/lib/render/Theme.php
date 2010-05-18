@@ -422,7 +422,7 @@ class Theme extends Renderer
         $this->_set_configdir();
 
         // load the page configurations
-        $pageconfigurations = pnModAPIFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $this->name));
+        $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $this->name));
 
         // parse the query string into individual arguments discarding common arguments
         // common arguments are ones that we don't want affecting our url matching or ones that are
@@ -497,11 +497,11 @@ class Theme extends Renderer
         }
 
         // load the page configuration
-        $this->themeconfig = pnModAPIFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+        $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
 
         // check if we've not got a valid theme configation
         if (!$this->themeconfig) {
-            $this->themeconfig = pnModAPIFunc('Theme', 'user', 'getpageconfiguration', array( 'theme' => $this->name, 'filename' => 'master.ini'));
+            $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array( 'theme' => $this->name, 'filename' => 'master.ini'));
         }
 
         // register any filters

@@ -49,11 +49,11 @@ function Admin_adminnavblock_display($blockinfo)
     $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // Call the modules API to get the items
-    if (!pnModAvailable('Admin')) {
+    if (!ModUtil::available('Admin')) {
         return;
     }
 
-    $items = pnModAPIFunc('Admin', 'admin', 'getall');
+    $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
 
     // Check for no items returned
     if (empty($items)) {
@@ -72,7 +72,7 @@ function Admin_adminnavblock_display($blockinfo)
             $adminlinks = array();
             foreach ($adminmodules as $adminmodule) {
                 // Get all modules in the category
-                $catid = pnModAPIFunc('Admin', 'admin', 'getmodcategory',
+                $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
                                       array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
                 if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == ModUtil::getVar('Admin', 'defaultcategory')))) {

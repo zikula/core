@@ -896,12 +896,12 @@ class DBUtil
             strcmp($table, 'categories_') !== 0 &&
             strcmp($table, 'objectdata_attributes') !== 0 &&
             strcmp($table, 'objectdata_log') !== 0 &&
-            pnModAvailable('Categories'))
+            ModUtil::available('Categories'))
         {
             ObjectUtil::storeObjectCategories($object, $table, $idfield, $update);
         }
 
-        if (!pnModAvailable('ObjectData')) {
+        if (!ModUtil::available('ObjectData')) {
             return $object;
         }
 
@@ -1059,7 +1059,7 @@ class DBUtil
             $tableName != 'categories_' &&
             $tableName != 'objectdata_attributes' &&
             $tableName != 'objectdata_log' &&
-            pnModAvailable('Categories'))
+            ModUtil::available('Categories'))
         {
             ObjectUtil::deleteObjectCategories ($object, $tableName, $idfield);
         }
@@ -1069,7 +1069,7 @@ class DBUtil
             pnConfigGetVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
             $tableName != 'objectdata_attributes' &&
             $tableName != 'objectdata_log' &&
-            pnModAvailable('ObjectData'))
+            ModUtil::available('ObjectData'))
         {
             ObjectUtil::deleteObjectAttributes ($object, $tableName, $idfield);
         }
@@ -1080,7 +1080,7 @@ class DBUtil
             $tableName != 'objectdata_attributes' &&
             $tableName != 'objectdata_meta' &&
             $tableName != 'objectdata_log' &&
-            pnModAvailable('ObjectData'))
+            ModUtil::available('ObjectData'))
         {
             ObjectUtil::deleteObjectMetaData ($object, $tableName, $idfield);
         }
@@ -1779,7 +1779,7 @@ class DBUtil
             return '';
         }
 
-        if (!pnModDBInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('Categories')) {
             return '';
         }
 
@@ -2552,7 +2552,7 @@ class DBUtil
         $tables = pnDBGetTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && pnConfigGetVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && pnModAvailable('Categories')) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && pnConfigGetVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && ModUtil::available('Categories')) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
@@ -2564,7 +2564,7 @@ class DBUtil
         }
 
         // temporary hack to prevent recursive loop because available() calls selectObjectArray again (Guite)
-        if ($table == 'modules' || !pnModAvailable('ObjectData')) {
+        if ($table == 'modules' || !ModUtil::available('ObjectData')) {
             return $objects;
         }
 

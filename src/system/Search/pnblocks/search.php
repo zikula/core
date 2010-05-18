@@ -88,7 +88,7 @@ function Search_searchblock_modify($blockinfo)
     $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
     // get all the search plugins
-    $search_modules = pnModAPIFunc('Search', 'user', 'getallplugins');
+    $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
 
     // set some defaults
     if (!isset($vars['displaySearchBtn'])) {
@@ -98,7 +98,7 @@ function Search_searchblock_modify($blockinfo)
     $searchmodules = array();
     if (is_array($search_modules)) {
         foreach($search_modules as $mods) {
-            $searchmodules[] = array('module' => pnModAPIFunc($mods['title'], 'Search', 'options', $vars));
+            $searchmodules[] = array('module' => ModUtil::apiFunc($mods['title'], 'Search', 'options', $vars));
         }
     }
 

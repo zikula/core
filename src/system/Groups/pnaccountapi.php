@@ -21,7 +21,7 @@ function Groups_accountapi_getall($args)
     $items = array();
 
     // Check if there is at least one group to show
-    $result = pnModAPIFunc('Groups', 'user', 'getallgroups', array());
+    $result = ModUtil::apiFunc('Groups', 'user', 'getallgroups', array());
 
     if ($result <> false) {
         // create an array of links to return

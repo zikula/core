@@ -28,7 +28,7 @@ function Users_ajax_getusers()
 
     $fragment = FormUtil::getpassedValue('fragment');
 
-    pnModDBInfoLoad('Users');
+    ModUtil::dbInfoLoad('Users');
     $pntable = pnDBGetTables();
 
     $userscolumn = $pntable['users_column'];
@@ -177,7 +177,7 @@ function Users_ajax_checkuser()
         }
     }
 
-    if (pnModAvailable('legal')) {
+    if (ModUtil::available('legal')) {
         $tou_active = ModUtil::getVar('legal', 'termsofuse', true);
         $pp_active  = ModUtil::getVar('legal', 'privacypolicy', true);
         if ($tou_active == true && $pp_active == true && $agreetoterms == 0) {
@@ -256,12 +256,12 @@ function Users_ajax_checkrequired($dynadata = array())
     }
 
     $profileModule = pnConfigGetVar('profilemodule', '');
-    if (empty($profileModule) || !pnModAvailable($profileModule)) {
+    if (empty($profileModule) || !ModUtil::available($profileModule)) {
         return false;
     }
 
     // Delegate check to the right module
-    $result = pnModAPIFunc($profileModule, 'user', 'checkrequired');
+    $result = ModUtil::apiFunc($profileModule, 'user', 'checkrequired');
 
     // False: no errors
     if ($result === false) {

@@ -74,7 +74,7 @@ function Groups_adminapi_delete($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('Groups', 'user', 'get',
+    $item = ModUtil::apiFunc('Groups', 'user', 'get',
             array('gid' => $args['gid']));
 
     if ($item == false) {
@@ -124,7 +124,7 @@ function Groups_adminapi_update($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('Groups', 'user', 'get',
+    $item = ModUtil::apiFunc('Groups', 'user', 'get',
                          array('gid' => $args['gid']));
 
     if ($item == false) {
@@ -137,7 +137,7 @@ function Groups_adminapi_update($args)
     }
 
     // Other check
-    $checkname = pnModAPIFunc('Groups', 'admin', 'getgidbyname',
+    $checkname = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
                               array('name'      => $args['name'],
                                     'checkgid'  => $args['gid']));
     if ($checkname != false) {
@@ -189,7 +189,7 @@ function Groups_adminapi_adduser($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('Groups', 'user', 'get',
+    $item = ModUtil::apiFunc('Groups', 'user', 'get',
                          array('gid' => $args['gid']));
 
     if ($item == false) {
@@ -234,7 +234,7 @@ function Groups_adminapi_removeuser($args)
     }
 
     // The user API function is called.
-    $item = pnModAPIFunc('Groups', 'user', 'get',
+    $item = ModUtil::apiFunc('Groups', 'user', 'get',
             array('gid' => $args['gid']));
 
     if ($item == false) {
@@ -332,7 +332,7 @@ function Groups_adminapi_getapplications($args)
 
     $items = array();
     foreach($objArray as $obj) {
-        $group       = pnModAPIFunc('Groups', 'user', 'get', array('gid' => $obj['gid']));
+        $group       = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $obj['gid']));
         if (SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_EDIT)&& $group<>false){
             $items[] = array('app_id'      => $obj['app_id'],
                              'userid'      => $obj['uid'],
@@ -407,13 +407,13 @@ function Groups_adminapi_pendingaction($args)
     }
 
     if ($args['action'] == 'accept') {
-        $adduser = pnModAPIFunc('Groups', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $adduser = ModUtil::apiFunc('Groups', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
     }
 
     // Send message part
     switch($args['sendtag']) {
         case 1:
-            $send = pnModAPIFunc('Messages', 'user', 'create',
+            $send = ModUtil::apiFunc('Messages', 'user', 'create',
                                  array('to_userid' => $args['userid'],
                                        'subject'   => $args['reasontitle'],
                                        'message'   => $args['reason']));
@@ -425,8 +425,8 @@ function Groups_adminapi_pendingaction($args)
             break;
 
         case 2:
-            if (pnModAvailable('Mailer')) {
-                $send = pnModAPIFunc('Mailer', 'user', 'sendmessage',
+            if (ModUtil::available('Mailer')) {
+                $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                      array('toname'    => pnUserGetVar('uname', $args['userid']),
                                            'toaddress' => pnUserGetVar('email', $args['userid']),
                                            'subject'   => $args['reasontitle'],

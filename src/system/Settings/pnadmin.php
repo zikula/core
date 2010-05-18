@@ -125,7 +125,7 @@ function settings_admin_updateconfig() {
     }
 
     // clear all cache and compile directories
-    pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');
+    ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
     LogUtil::registerStatus(__('Done! Saved module configuration.'));
 
@@ -231,7 +231,7 @@ function settings_admin_updatemultilingual()
     }
 
     // clear all cache and compile directories
-    pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');
+    ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved localisation settings.'));
@@ -301,7 +301,7 @@ function settings_admin_updateerrorhandling() {
     }
 
     // clear all cache and compile directories
-    pnModAPIFunc('Settings', 'admin', 'clearallcompiledcaches');
+    ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
     // all done successfully
     LogUtil::registerStatus(__('Done! Saved module configuration.'));

@@ -23,7 +23,7 @@ function securitycenter_adminapi_delete($args)
     }
 
     // get the existing item
-    $item = pnModAPIFunc('SecurityCenter', 'user', 'get', array('hid' => $args['hid']));
+    $item = ModUtil::apiFunc('SecurityCenter', 'user', 'get', array('hid' => $args['hid']));
 
     if (!$item) {
         return LogUtil::registerError(__('Sorry! No such item found.'));

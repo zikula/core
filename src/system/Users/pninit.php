@@ -187,8 +187,8 @@ function users_defaultdata()
  */
 function users_migrate_duds_to_attributes()
 {
-    pnModDBInfoLoad('Profile');
-    pnModDBInfoLoad('ObjectData');
+    ModUtil::dbInfoLoad('Profile');
+    ModUtil::dbInfoLoad('ObjectData');
     $pntable = pnDBGetTables();
     $udtable   = $pntable['user_data'];
     $udcolumn  = $pntable['user_data_column'];

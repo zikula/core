@@ -437,7 +437,7 @@ class LogUtil
                 $obj = array_merge($obj, $securityInfo);
             }
 
-            if (pnModDBInfoLoad('SecurityCenter')) {
+            if (ModUtil::dbInfoLoad('SecurityCenter')) {
                 if (!DBUtil::insertObject($obj, 'sc_logevent')) {
                     print '<div class="z-sub" style="text-align:left;">';
                     print __('Failed to insert log record into log_event table').'<br />';

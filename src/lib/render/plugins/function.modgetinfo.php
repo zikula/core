@@ -46,7 +46,7 @@ function smarty_function_modgetinfo($params, &$smarty)
 
     if (!$modid) {
         $modname = $modname ? $modname : pnModGetName();
-        if (!pnModAvailable($modname)) {
+        if (!ModUtil::available($modname)) {
             if ($assign) {
                 $smarty->assign($assign, $default);
                 return false;

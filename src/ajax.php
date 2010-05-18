@@ -42,7 +42,7 @@ if ($modinfo == false) {
     AjaxUtil::error(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
 }
 
-if (!pnModAvailable($modinfo['name'])) {
+if (!ModUtil::available($modinfo['name'])) {
     AjaxUtil::error(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
 }
 

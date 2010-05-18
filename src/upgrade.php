@@ -204,16 +204,16 @@ function _upg_upgrademodules($username, $password)
     _upg_header();
 
     // force load the modules admin API
-    pnModAPILoad('Modules', 'admin', true);
+    ModUtil::loadApi('Modules', 'admin', true);
 
     echo '<h2>' . __('Starting upgrade') . '</h2>' . "\n";
     echo '<ul id="upgradelist" class="check">' . "\n";
     $upgradeCount = 0;
     // regenerate modules list
-    $filemodules = pnModAPIFunc('Modules', 'admin', 'getfilemodules');
-    pnModAPIFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+    $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+    ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
     // get a list of modules needing upgrading
-    $newmods = pnModAPIFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 3));
+    $newmods = ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 3));
 
     // Crazy sort to make sure the User's module is upgraded first
     $users_flag = false;
@@ -232,12 +232,12 @@ function _upg_upgrademodules($username, $password)
             $newmods[] = $mod;
         }
     }
-    $newmods = array_merge($newmods, pnModAPIFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 2)));
-    $newmods = array_merge($newmods, pnModAPIFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 1)));
+    $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 2)));
+    $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'list', array('state' => PNMODULE_STATE_UPGRADED, 'type' => 1)));
     if (is_array($newmods) && !empty($newmods)) {
         foreach ($newmods as $newmod) {
             ZLanguage::bindModuleDomain($newmod['name']);
-            if (pnModAPIFunc('Modules', 'admin', 'upgrade', array('id' => $newmod['id']))) {
+            if (ModUtil::apiFunc('Modules', 'admin', 'upgrade', array('id' => $newmod['id']))) {
                 echo '<li class="passed">' . DataUtil::formatForDisplay($newmod['name']) . ' ' . __('upgraded') . '</li>' . "\n";
                 $upgradeCount++;
             } else {
@@ -253,10 +253,10 @@ function _upg_upgrademodules($username, $password)
 
     // regenerate the modules list to pick up any final changes
     // suppress warnings because we did some upgrade black magic which will harmless generate an E_NOTICE
-    @pnModAPIFunc('Modules', 'admin', 'regenerate');
+    @ModUtil::apiFunc('Modules', 'admin', 'regenerate');
 
     // regenerate the themes list
-    pnModAPIFunc('Theme', 'admin', 'regenerate');
+    ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
     // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
     pnConfigSetVar('Version_Num', PN_VERSION_NUM);
@@ -367,8 +367,8 @@ function _upg_sanity_check($username, $password)
  */
 function upgrade_clear_caches()
 {
-    pnModAPIFunc('Theme', 'user', 'render_clear_compiled');
-    pnModAPIFunc('Theme', 'user', 'render_clear_cache');
-    pnModAPIFunc('Theme', 'user', 'clear_compiled');
-    pnModAPIFunc('Theme', 'user', 'clear_cache');
+    ModUtil::apiFunc('Theme', 'user', 'render_clear_compiled');
+    ModUtil::apiFunc('Theme', 'user', 'render_clear_cache');
+    ModUtil::apiFunc('Theme', 'user', 'clear_compiled');
+    ModUtil::apiFunc('Theme', 'user', 'clear_cache');
 }

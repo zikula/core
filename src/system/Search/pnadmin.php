@@ -55,7 +55,7 @@ function Search_admin_modifyconfig()
     }
 
     // get the list of available plugins
-    $plugins = pnModAPIFunc('Search', 'user', 'getallplugins', array('loadall' => true));
+    $plugins = ModUtil::apiFunc('Search', 'user', 'getallplugins', array('loadall' => true));
 
     // get the disabled status
     foreach ($plugins as $key => $plugin) {
@@ -106,7 +106,7 @@ function Search_admin_updateconfig()
 
     $disable = FormUtil::getPassedValue('disable', null, 'REQUEST');
     // get the list of available plugins
-    $plugins = pnModAPIFunc('Search', 'user', 'getallplugins', array('loadall' => true));
+    $plugins = ModUtil::apiFunc('Search', 'user', 'getallplugins', array('loadall' => true));
     // loop round the plugins
     foreach ($plugins as $searchplugin) {
         // set the disabled flag
