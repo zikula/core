@@ -34,13 +34,13 @@
  *   - fqurl          If set the image path is absolute, if not relative
  *   - all remaining parameters are passed to the image tag
  *
- * Example: <!--[pnimg src="heading.gif" ]-->
+ * Example: <!--[img src="heading.gif" ]-->
  * Output:  <img src="modules/Example/pnimages/eng/heading.gif" alt="" width="261" height="69"  />
  *
- * Example: <!--[pnimg src="heading.gif" width="100" border="1" alt="foobar" ]-->
+ * Example: <!--[img src="heading.gif" width="100" border="1" alt="foobar" ]-->
  * Output:  <img src="modules/Example/pnimages/eng/heading.gif" width="100" border="1" alt="foobar"  />
  *
- * Example <!--[pnimg src=xhtml11.png modname=core set=powered]-->
+ * Example <!--[img src=xhtml11.png modname=core set=powered]-->
  * <img src="/Theme/images/powered/xhtml11.png" alt="" width="88" height="31"  />
  *
  * If the parameter assign is set, the results are assigned as an array. The components of
@@ -48,7 +48,7 @@
  * set to the complete image tag.
  *
  * Example:
- * <!--[pnimg src="heading.gif" assign="myvar"]-->
+ * <!--[img src="heading.gif" assign="myvar"]-->
  * <!--[$myvar.src]-->
  * <!--[$myvar.width]-->
  * <!--[$myvar.imgtag]-->
@@ -124,8 +124,10 @@ function smarty_function_img($params, &$smarty)
     if ($modname == 'core') {
         $modpath        = "images/$osset";
     } elseif ($modinfo['type'] != 1) {
-        $modlangpath    = "$moduleDir/$osmoddir/pnimages/$lang";
-        $modpath        = "$moduleDir/$osmoddir/pnimages";
+        $modlangpath    = "$moduleDir/$osmoddir/images/$lang";
+        $modpath        = "$moduleDir/$osmoddir/images";
+        $modlangpathOld = "$moduleDir/$osmoddir/pnimages/$lang";
+        $modpathOld     = "$moduleDir/$osmoddir/pnimages";
     } else {
         $modlangpath    = "$moduleDir/$osmoddir/images/$lang";
         $modpath        = "$moduleDir/$osmoddir/images";
@@ -136,7 +138,7 @@ function smarty_function_img($params, &$smarty)
     if ($modname == 'core') {
         $paths = array($themepath, $corethemepath, $modpath);
     } else {
-        $paths = array($themelangpath, $themepath, $corethemepath, $modlangpath, $modpath);
+        $paths = array($themelangpath, $themepath, $corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld);
     }
 
     // search for the image
