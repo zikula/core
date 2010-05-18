@@ -266,7 +266,7 @@ function theme_userapi_resettodefault($args)
     }
 
     // update the users record to an empty string - if this user var is empty then the site default is used.
-    pnUserSetVar('theme', '');
+    UserUtil::setVar('theme', '');
 
     return true;
 }

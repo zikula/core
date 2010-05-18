@@ -294,10 +294,10 @@ function users_user_login()
             $pnuser_hash_number = UserUtil::getVar('hash_method', $userid);
             $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
             $newpasshash = hash($hashmethodsarray[$pnuser_hash_number], $newpass);
-            pnUserSetVar('pass', $newpasshash, $userid);
+            UserUtil::setVar('pass', $newpasshash, $userid);
             $pass = $newpass;
         }
-        pnUserSetVar('activated', 1, $userid);
+        UserUtil::setVar('activated', 1, $userid);
     }
 
     $loginoption    = ModUtil::getVar('Users', 'loginviaoption');
@@ -799,8 +799,8 @@ function users_user_updateusersblock()
     $ublockon = (bool)FormUtil::getPassedValue('ublockon', false, 'POST');
     $ublock = (string)FormUtil::getPassedValue('ublock', '', 'POST');
 
-    pnUserSetVar('ublockon', $ublockon);
-    pnUserSetVar('ublock', $ublock);
+    UserUtil::setVar('ublockon', $ublockon);
+    UserUtil::setVar('ublock', $ublock);
 
     LogUtil::registerStatus(__('Done! Saved custom block.'));
     return System::redirect(ModUtil::url('Users'));
@@ -1031,7 +1031,7 @@ function Users_user_confirmchemail($args)
     }
 
     // user and confirmation code are correct. set the new email
-    pnUserSetVar('email', $preemail['email']);
+    UserUtil::setVar('email', $preemail['email']);
 
     // the preemail record is deleted
     ModUtil::apiFunc('Users', 'admin', 'deny',
