@@ -91,14 +91,15 @@ class Renderer extends Smarty
                 'config/plugins',
                 "themes/$theme/templates/modules/$module/plugins",
                 "themes/$theme/plugins",
-                $mpluginPath);
+                $mpluginPath,
+                $mpluginPathOld);
 
         foreach ($pluginpaths as $pluginpath) {
             if (file_exists($pluginpath)) {
                 array_push($this->plugins_dir, $pluginpath);
             }
             if (file_exists($pluginpath)) {
-                array_push($this->plugins_dir, $pluginpathOld);
+                array_push($this->plugins_dir, $pluginpath);
             }
 
         }
