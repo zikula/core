@@ -67,7 +67,7 @@ function Blocks_menublock_display($blockinfo)
     if ($pnRender->is_cached('blocks_block_menu.htm')) {
         // Populate block info and pass to theme
         $blockinfo['content'] = $pnRender->fetch('blocks_block_menu.htm');
-        return pnBlockThemeBlock($blockinfo);
+        return BlockUtil::themeBlock($blockinfo);
     }
 
     // Styling - this is deprecated and is only to support old menu for now
@@ -135,7 +135,7 @@ function Blocks_menublock_display($blockinfo)
     }
 
     // pass the block array back to the theme for display
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 /**
@@ -327,7 +327,7 @@ function Blocks_menublock_update($blockinfo)
     }
     $vars['content'] = implode('LINESPLIT', $content);
 
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     // clear the block cache
     $pnRender = Renderer::getInstance('Blocks');

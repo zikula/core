@@ -58,7 +58,7 @@ function theme_renderblock_display($row)
     // Parameter check
     if (!isset($vars['template']) || !isset($vars['module'])) {
         $row['content'] = DataUtil::formatForDisplayHTML(__('Misconfigured block')) ;
-        return pnBlockThemeBlock($row);
+        return BlockUtil::themeBlock($row);
     }
 
     // If the module is available we load the user api to ensure that the language
@@ -67,7 +67,7 @@ function theme_renderblock_display($row)
     // If the module is not available we show an error messages.
     if ( (!ModUtil::available($vars['module'])) || (!ModUtil::loadApi($vars['module'], 'user')) ) {
         $row['content'] = DataUtil::formatForDisplayHTML(__('Misconfigured block').' - '.__('No module.')) . $vars['module'];
-        return pnBlockThemeBlock($row);
+        return BlockUtil::themeBlock($row);
     }
 
     $pnRender = Renderer::getInstance($vars['module'], false);
@@ -85,7 +85,7 @@ function theme_renderblock_display($row)
 
     $row['content'] = $pnRender->fetch($vars['template']);
 
-    return pnBlockThemeBlock($row);
+    return BlockUtil::themeBlock($row);
 }
 
 /**
@@ -103,7 +103,7 @@ function theme_renderblock_update($row)
     $template = FormUtil::getPassedValue('rtemplate', null, 'POST');
     $parameters = FormUtil::getPassedValue('rparameters', null, 'POST');
 
-    $row['content'] = pnBlockVarsToContent(compact('module', 'template', 'parameters' ));
+    $row['content'] = BlockUtil::varsToContent(compact('module', 'template', 'parameters' ));
     return($row);
 }
 

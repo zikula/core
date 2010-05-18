@@ -51,5 +51,5 @@ function Blocks_htmlblock_display($blockinfo)
         return;
     }
 
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }

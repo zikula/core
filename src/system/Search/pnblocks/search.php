@@ -73,7 +73,7 @@ function Search_searchblock_display($blockinfo)
 
     // return the rendered block
     $blockinfo['content'] = $pnRender->fetch('search_block_search.htm');
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 /**
@@ -135,7 +135,7 @@ function Search_searchblock_update($blockinfo)
     }
 
     // write back the new contents
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     // clear the block cache
     $pnRender = & pnRender::getInstance('Search');

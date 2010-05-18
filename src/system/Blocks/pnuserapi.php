@@ -117,7 +117,7 @@ function Blocks_userapi_get($args)
     }
 
     // Return the item array
-    return pnBlockGetInfo($args['bid']);
+    return BlockUtil::getBlockInfo($args['bid']);
 }
 
 /**

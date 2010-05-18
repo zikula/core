@@ -188,7 +188,7 @@ function blocks_adminapi_setActiveState($block)
     if (!isset($block['active']) || !is_numeric($block['active'])) {
         return LogUtil::registerArgsError();
     }
-    $blockinfo = pnBlockGetInfo($block['bid']);
+    $blockinfo = BlockUtil::getBlockInfo($block['bid']);
     if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$block[bid]", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     }

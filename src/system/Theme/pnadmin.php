@@ -564,7 +564,7 @@ function theme_admin_modifypageconfigtemplates($args)
     $pnRender->assign('blockpositions', $positions);
 
     // call the block API to get a list of all available blocks
-    $pnRender->assign('allblocks', $allblocks = pnBlockLoadAll());
+    $pnRender->assign('allblocks', $allblocks = BlockUtil::loadAll());
     foreach ($allblocks as $key => $blocks) {
         foreach ($blocks as $block) {
             // check the page configuration

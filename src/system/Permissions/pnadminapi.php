@@ -478,7 +478,7 @@ function permissions_adminapi_getallschemas()
     }
 
     global $schemas;
-    pnBlockLoadAll();
+    BlockUtil::loadAll();
     $modinfos = pnModGetAllMods();
     foreach($modinfos as $modinfo) {
         if (!empty($modinfo['securityschema'])) {

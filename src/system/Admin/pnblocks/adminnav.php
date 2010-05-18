@@ -102,5 +102,5 @@ function Admin_adminnavblock_display($blockinfo)
     // Populate block info and pass to theme
     $blockinfo['content'] = $pnRender->fetch('admin_block_adminnav.htm');
 
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }

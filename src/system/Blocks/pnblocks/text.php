@@ -55,5 +55,5 @@ function Blocks_textblock_display($blockinfo)
     $blockinfo['content'] = nl2br($blockinfo['content']);
     // /itevo
 
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }

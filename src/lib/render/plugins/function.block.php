@@ -75,7 +75,7 @@ function smarty_function_block($params, &$smarty)
     }
 
     //  render the block
-    $blockinfo = pnBlockGetInfo($bid);
+    $blockinfo = BlockUtil::getBlockInfo($bid);
 
     // overwrite block title
     if ($title) {
@@ -93,7 +93,7 @@ function smarty_function_block($params, &$smarty)
     if (count($params) > 0) {
         $_vars = BlockUtil::varsFromContent($blockinfo['content']);
         $_vars = array_merge($_vars, $params);
-        $blockinfo['content'] = pnBlockVarsToContent($_vars);
+        $blockinfo['content'] = BlockUtil::varsToContent($_vars);
     }
 
     // We need the module name.
@@ -103,7 +103,7 @@ function smarty_function_block($params, &$smarty)
     }
 
     // show the block and capture its contents
-    $content = pnBlockShow($modinfo['name'], $blockinfo['bkey'], $blockinfo);
+    $content = BlockUtil::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
 
     if ($assign) {
         $smarty->assign($assign, $content);

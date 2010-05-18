@@ -75,7 +75,7 @@ function Blocks_extmenublock_display($blockinfo)
     if ($pnRender->is_cached($vars['template'])) {
         // Populate block info and pass to theme
         $blockinfo['content'] = $pnRender->fetch($vars['template']);
-        return pnBlockThemeBlock($blockinfo);
+        return BlockUtil::themeBlock($blockinfo);
     }
 
     // create default block variables
@@ -205,7 +205,7 @@ function Blocks_extmenublock_display($blockinfo)
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Blocks', $vars['stylesheet']));
 
     // pass the block array back to the theme for display
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 /**
@@ -459,7 +459,7 @@ function Blocks_extmenublock_update($blockinfo)
         }
     }
 
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     // clear the block cache
     $pnRender = Renderer::getInstance('Blocks', false);

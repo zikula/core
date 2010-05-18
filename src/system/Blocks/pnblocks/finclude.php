@@ -66,7 +66,7 @@ function Blocks_fincludeblock_display($blockinfo)
     if (!file_exists($vars['filo'])) {
         if (SecurityUtil::checkPermission('fincludeblock::', "$blockinfo[title]::", ACCESS_EDIT)) {
             $blockinfo['content'] = __f("Error! The file '%s' was not found.", $vars['filo']);
-            return pnBlockThemeBlock($blockinfo);
+            return BlockUtil::themeBlock($blockinfo);
         } else {
             return;
         }
@@ -88,7 +88,7 @@ function Blocks_fincludeblock_display($blockinfo)
         default:
             return;
     }
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 /**
@@ -139,7 +139,7 @@ function Blocks_fincludeblock_update($blockinfo)
     $vars['typo'] = FormUtil::getPassedValue('typo');
 
     // write back the new contents
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     return $blockinfo;
 }

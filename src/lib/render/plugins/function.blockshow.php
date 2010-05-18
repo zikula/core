@@ -51,10 +51,10 @@ function smarty_function_blockshow($params, &$smarty)
     }
 
     if (!is_array($block)) {
-        $output = pnBlockShow($module, $blockname, pnBlockGetInfo($block));
+        $output = BlockUtil::show($module, $blockname, BlockUtil::getBlockInfo($block));
     } else {
         $vars   = BlockUtil::varsFromContent($block['content']);
-        $output = pnBlockShow($module, $blockname, $vars['content']);
+        $output = BlockUtil::show($module, $blockname, $vars['content']);
     }
 
     if ($assign) {

@@ -71,7 +71,7 @@ function Blocks_ajax_toggleblock()
     }
 
     // read the block information
-    $blockinfo = pnBlockGetInfo($bid);
+    $blockinfo = BlockUtil::getBlockInfo($bid);
     if ($blockinfo == false) {
         LogUtil::registerError(__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
         AjaxUtil::output();

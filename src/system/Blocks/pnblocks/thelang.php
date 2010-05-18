@@ -151,7 +151,7 @@ function Blocks_thelangblock_display($blockinfo)
     $blockinfo['content'] = $pnRender->fetch('blocks_block_thelang.htm');
 
     // return the block to the theme
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 
@@ -207,7 +207,7 @@ function Blocks_thelangblock_update($blockinfo)
     $vars['languages'] = Blocks_thelangblock_getAvailableLanguages();
 
     // write back the new contents
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     // clear the block cache
     $pnRender = Renderer::getInstance('Blocks');

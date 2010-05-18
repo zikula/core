@@ -80,7 +80,7 @@ function Blocks_xsltblock_display($blockinfo)
 
     // apply stylesheet and return output
     $blockinfo['content'] = $xsl->transformToXML($doc);
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 /**
@@ -119,7 +119,7 @@ function Blocks_xsltblock_update($blockinfo)
     $vars['doccontents'] = FormUtil::getPassedValue('doccontents', '', 'POST');
     $vars['stylecontents'] = FormUtil::getPassedValue('stylecontents', '', 'POST');
 
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     return($blockinfo);
 }

@@ -112,7 +112,7 @@ function theme_themeswitcherblock_display($blockinfo)
     $pnRender->assign('themes', $previewthemes);
     $blockinfo['content'] = $pnRender->fetch('theme_block_themeswitcher.htm');
 
-    return pnBlockThemeBlock($blockinfo);
+    return BlockUtil::themeBlock($blockinfo);
 }
 
 function theme_themeswitcherblock_modify($blockinfo)
@@ -145,7 +145,7 @@ function theme_themeswitcherblock_update($blockinfo)
     $vars['format'] = FormUtil::getPassedValue('format', 1, 'POST');
 
     // write back the new contents
-    $blockinfo['content'] = pnBlockVarsToContent($vars);
+    $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
     // clear the block cache
     $pnRender = Renderer::getInstance('Theme');

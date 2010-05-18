@@ -215,7 +215,7 @@ function blocks_upgrade_updateThelang()
         return;
     }
 
-    pnBlockLoad('Blocks', 'thelang');
+    BlockUtil::load('Blocks', 'thelang');
     foreach ($obj as $block)
     {
         // translate display_name l3 -> l2

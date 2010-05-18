@@ -229,7 +229,7 @@ function blocks_admin_modify()
     $bid = FormUtil::getPassedValue('bid');
 
     // Get details on current block
-    $blockinfo = pnBlockGetInfo($bid);
+    $blockinfo = BlockUtil::getBlockInfo($bid);
 
     // Security check
     if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT)) {
@@ -251,7 +251,7 @@ function blocks_admin_modify()
 
     // Load block
     $modinfo = ModUtil::getInfo($blockinfo['mid']);
-    if (!pnBlockLoad($modinfo['name'], $blockinfo['bkey'])) {
+    if (!BlockUtil::load($modinfo['name'], $blockinfo['bkey'])) {
         return LogUtil::registerError(__('Sorry! No such block found.'), 404);
     }
 
@@ -404,7 +404,7 @@ function blocks_admin_update()
     }
 
     // Get and update block info
-    $blockinfo = pnBlockGetInfo($bid);
+    $blockinfo = BlockUtil::getBlockInfo($bid);
     $blockinfo['title'] = $title;
     $blockinfo['bid'] = $bid;
     $blockinfo['language'] = $language;
@@ -417,7 +417,7 @@ function blocks_admin_update()
 
     // Load block
     $modinfo = ModUtil::getInfo($blockinfo['mid']);
-    if (!pnBlockLoad($modinfo['name'], $blockinfo['bkey'])) {
+    if (!BlockUtil::load($modinfo['name'], $blockinfo['bkey'])) {
         return LogUtil::registerError(__('Sorry! No such block found.'), 404);
     }
 
@@ -475,7 +475,7 @@ function blocks_admin_new()
 
     // Block
     // Load all blocks (trickier than it sounds)
-    $blocks = pnBlockLoadAll();
+    $blocks = BlockUtil::loadAll();
     if (!$blocks) {
         return LogUtil::registerError(__('Error! Could not load blocks.'));
     }
@@ -565,7 +565,7 @@ function blocks_admin_delete()
     $confirmation = FormUtil::getPassedValue('confirmation');
 
     // Get details on current block
-    $blockinfo = pnBlockGetInfo($bid);
+    $blockinfo = BlockUtil::getBlockInfo($bid);
 
     // Security check
     if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_DELETE)) {
@@ -706,7 +706,7 @@ function blocks_admin_modifyposition()
     // full details on those that are
     $blocks = array();
     foreach ($block_placements as $blockplacement) {
-        $block = pnBlockGetInfo($blockplacement['bid']);
+        $block = BlockUtil::getBlockInfo($blockplacement['bid']);
         $block['order'] = $blockplacement['order'];
         foreach($allblocks as $key => $allblock) {
             if ($allblock['bid'] == $blockplacement['bid']) {

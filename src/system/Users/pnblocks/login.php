@@ -56,7 +56,7 @@ function users_loginblock_display($row)
         // If this is the case, we do not need to make DB queries.
         if ($pnr->is_cached('users_block_login.htm')) {
             $row['content'] = $pnr->fetch('users_block_login.htm');
-            return pnBlockThemeBlock($row);
+            return BlockUtil::themeBlock($row);
         }
 
         if (empty($row['title'])) {
@@ -69,7 +69,7 @@ function users_loginblock_display($row)
         // determine whether to show the rememberme option
         $pnr->assign('rememberme', System::getVar('seclevel'));
         $row['content'] = $pnr->fetch('users_block_login.htm');
-        return pnBlockThemeBlock($row);
+        return BlockUtil::themeBlock($row);
     }
 
     return;

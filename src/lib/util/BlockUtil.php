@@ -193,7 +193,7 @@ class BlockUtil
         }
 
         if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($row['collapsable']) && ($row['collapsable'] == '1')) {
-            if (pnCheckUserBlock($row) == '1') {
+            if (BlockUtil::checkUserBlock($row) == '1') {
                 if (!empty($row['title'])) {
                     $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => pnSecGenAuthKey()))) . '">' . $upb . '</a>';
                 }
@@ -310,7 +310,7 @@ class BlockUtil
                         while (($f = readdir($dh)) !== false) {
                             if (substr($f, -4) == '.php') {
                                 $block = substr($f, 0, -4);
-                                pnBlockLoad($modname, $block);
+                                BlockUtil::load($modname, $block);
                             }
                         }
                         closedir($dh);
@@ -326,7 +326,7 @@ class BlockUtil
         while (($f = readdir($dh)) !== false) {
             if (substr($f, -4) == '.php') {
                 $block = substr($f, 0, -4);
-                pnBlockLoad('Legacy', $block);
+                BlockUtil::load('Legacy', $block);
             }
         }
         closedir($dh);

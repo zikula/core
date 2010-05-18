@@ -46,7 +46,7 @@ function smarty_function_blockgetinfo($params, &$smarty)
     }
 
     // get the block info array
-    $blockinfo = pnBlockGetInfo($bid);
+    $blockinfo = BlockUtil::getBlockInfo($bid);
 
     if ($name) {
         if ($assign) {

@@ -47,7 +47,7 @@ function smarty_function_blockposition($params, &$smarty)
 
     $implode = (isset($params['implode']) && isset($params['assign'])) ? (bool)$params['implode'] : true;
 
-    $return = pnBlockDisplayPosition($params['name'], false, $implode);
+    $return = BlockUtil::displayPosition($params['name'], false, $implode);
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $return);
     } else {

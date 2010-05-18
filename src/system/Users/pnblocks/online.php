@@ -61,7 +61,7 @@ function users_onlineblock_display($row)
     // If this is the case, we do not need to make DB queries.
     if ($pnr->is_cached('users_block_online.htm')) {
         $row['content'] = $pnr->fetch('users_block_online.htm');
-        return pnBlockThemeBlock($row);
+        return BlockUtil::themeBlock($row);
     }
 
     $pntable = System::dbGetTables();
@@ -96,5 +96,5 @@ function users_onlineblock_display($row)
     }
 
     $row['content'] = $pnr->fetch('users_block_online.htm');
-    return pnBlockThemeBlock($row);
+    return BlockUtil::themeBlock($row);
 }

@@ -56,7 +56,7 @@ function Users_userblock_display($blockinfo)
             $blockinfo['title'] = __f('Custom block content for %s', UserUtil::getVar('name'));
         }
         $blockinfo['content'] = nl2br(UserUtil::getVar('ublock'));
-        return pnBlockThemeBlock($blockinfo);
+        return BlockUtil::themeBlock($blockinfo);
     }
     return;
 }
