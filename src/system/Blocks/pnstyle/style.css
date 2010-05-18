@@ -26,13 +26,6 @@ div.z-formrow ul.blocks-modulefilter-splitlist li {
     float: left;
 }
 
-#appendmenuitem {
-    background:transparent url(../../../images/icons/extrasmall/insert_table_row.gif) no-repeat scroll 0 50%;
-    display:block;
-    margin:1em 5px;
-    padding-left:19px;
-}
-
 button {
     cursor: pointer;
 }

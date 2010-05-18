@@ -6,6 +6,7 @@
     {foreach item='item' from=$menuitems}
         {if $item.name != '' && $item.url != ''}
             {if $opened > 0 && !isset($item.parent)}
+            <!--[*test1*]-->
                 </ul></li>
                 {assign var="opened" value=$opened-1}
             {/if}
@@ -23,6 +24,7 @@
             </li>
             {/if}
             {if isset($item.parent) && isset($prevparent) && $item.parent != $prevparent}
+             <!--[*test2*]-->
                 </ul></li>
                 {assign var="opened" value=$opened-1}
             {/if}
