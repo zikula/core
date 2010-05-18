@@ -30,7 +30,7 @@ function smarty_outputfilter_shorturls($source, &$smarty)
     $baseurl = System::getBaseUrl();
     $type    = FormUtil::getPassedValue('type', 'user', 'GETPOST');
 
-    if (pnConfigGetVar('shorturlstype') == 0) {
+    if (System::getVar('shorturlstype') == 0) {
         $prefix = '[(<[^>]*?)[\'"](?:'.$baseurl.'|'.$baseurl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
         // '|"(?:'.$baseurl.')?'; <[^>]*?[\'"]
 
@@ -64,9 +64,9 @@ function smarty_outputfilter_shorturls($source, &$smarty)
         // If you control the server, it is preferable for better performance to put rewrite rules
         // from the .htaccess file into main configuration file, httpd.conf.
 
-        $extension = pnConfigGetVar('shorturlsext');
+        $extension = System::getVar('shorturlsext');
         $prefix = '|"(?:'.$baseurl.')?';
-        $entrypoint = pnConfigGetVar('entrypoint', 'index.php');
+        $entrypoint = System::getVar('entrypoint', 'index.php');
 
         // (?i) means case insensitive; \w='word' character; \d=digit; (amp;)? means optional; (?:catid=)? means optional and won't capture string for backreferences
         $in = array(

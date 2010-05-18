@@ -38,7 +38,7 @@
 function smarty_function_manuallink($params, &$smarty)
 {
     $userlang= ZLanguage::transformFS(ZLanguage::getLanguageCode());
-    $stdlang = pnConfigGetVar( 'language' );
+    $stdlang = System::getVar( 'language' );
 
     $title   = (isset($params['title']))   ? $params['title']               : 'Manual';
     $manual  = (isset($params['manual']))  ? $params['manual']              : 'manual.html';

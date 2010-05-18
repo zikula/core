@@ -23,58 +23,58 @@ function settings_init()
     // than just left blank, this helps the user-side code and means that
     // there doesn't need to be a check to see if the variable is set in
     // the rest of the code as it always will be
-    pnConfigSetVar('debug', '0');
-    pnConfigSetVar('sitename', __('Site name'));
-    pnConfigSetVar('slogan', __('Site description'));
-    pnConfigSetVar('metakeywords', __('zikula, community, portal, portal web, open source, gpl, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
-    pnConfigSetVar('startdate', date('m/Y', time()));
-    pnConfigSetVar('adminmail', 'me@example.com');
-    pnConfigSetVar('Default_Theme', 'andreas08');
-    pnConfigSetVar('anonymous', __('Guest'));
-    pnConfigSetVar('timezone_offset', '0');
-    pnConfigSetVar('timezone_server', '0');
-    pnConfigSetVar('funtext', '1');
-    pnConfigSetVar('reportlevel', '0');
-    pnConfigSetVar('startpage', 'blank');
-    pnConfigSetVar('Version_Num', System::VERSION_NUM);
-    pnConfigSetVar('Version_ID', System::VERSION_ID);
-    pnConfigSetVar('Version_Sub', System::VERSION_SUB);
-    pnConfigSetVar('debug_sql', '0');
-    pnConfigSetVar('multilingual', '1');
-    pnConfigSetVar('useflags', '0');
-    pnConfigSetVar('theme_change', '0');
-    pnConfigSetVar('UseCompression', '0');
-    pnConfigSetVar('errordisplay', 1);
-    pnConfigSetVar('errorlog', 0);
-    pnConfigSetVar('errorlogtype', 0);
-    pnConfigSetVar('errormailto', 'me@example.com');
-    pnConfigSetVar('siteoff', 0);
-    pnConfigSetVar('siteoffreason', '');
-    pnConfigSetVar('starttype', '');
-    pnConfigSetVar('startfunc', '');
-    pnConfigSetVar('startargs', '');
-    pnConfigSetVar('entrypoint', 'index.php');
+    System::setVar('debug', '0');
+    System::setVar('sitename', __('Site name'));
+    System::setVar('slogan', __('Site description'));
+    System::setVar('metakeywords', __('zikula, community, portal, portal web, open source, gpl, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
+    System::setVar('startdate', date('m/Y', time()));
+    System::setVar('adminmail', 'me@example.com');
+    System::setVar('Default_Theme', 'andreas08');
+    System::setVar('anonymous', __('Guest'));
+    System::setVar('timezone_offset', '0');
+    System::setVar('timezone_server', '0');
+    System::setVar('funtext', '1');
+    System::setVar('reportlevel', '0');
+    System::setVar('startpage', 'blank');
+    System::setVar('Version_Num', System::VERSION_NUM);
+    System::setVar('Version_ID', System::VERSION_ID);
+    System::setVar('Version_Sub', System::VERSION_SUB);
+    System::setVar('debug_sql', '0');
+    System::setVar('multilingual', '1');
+    System::setVar('useflags', '0');
+    System::setVar('theme_change', '0');
+    System::setVar('UseCompression', '0');
+    System::setVar('errordisplay', 1);
+    System::setVar('errorlog', 0);
+    System::setVar('errorlogtype', 0);
+    System::setVar('errormailto', 'me@example.com');
+    System::setVar('siteoff', 0);
+    System::setVar('siteoffreason', '');
+    System::setVar('starttype', '');
+    System::setVar('startfunc', '');
+    System::setVar('startargs', '');
+    System::setVar('entrypoint', 'index.php');
     pnConfigsetVar('language_detect', 0);
-    pnConfigSetVar('shorturls', false);
-    pnConfigSetVar('shorturlstype', '0');
-    pnConfigSetVar('shorturlsext', 'html');
-    pnConfigSetVar('shorturlsseparator', '-');
-    pnConfigSetVar('shorturlsstripentrypoint', false);
-    pnConfigSetVar('shorturlsdefaultmodule', '');
+    System::setVar('shorturls', false);
+    System::setVar('shorturlstype', '0');
+    System::setVar('shorturlsext', 'html');
+    System::setVar('shorturlsseparator', '-');
+    System::setVar('shorturlsstripentrypoint', false);
+    System::setVar('shorturlsdefaultmodule', '');
     $groupModules = _settings_getDefaultGroupModules();
-    pnConfigSetVar('profilemodule', $groupModules['profile']);
-    pnConfigSetVar('messagemodule', $groupModules['message']);
-    pnConfigSetVar('languageurl', 0);
-    pnConfigSetVar('ajaxtimeout', 5000);
+    System::setVar('profilemodule', $groupModules['profile']);
+    System::setVar('messagemodule', $groupModules['message']);
+    System::setVar('languageurl', 0);
+    System::setVar('ajaxtimeout', 5000);
     //! this is a comma-separated list of special characters to search for in permalinks
-    pnConfigSetVar('permasearch',  __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+    System::setVar('permasearch',  __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
     //! this is a comma-separated list of special characters to replace in permalinks
-    pnConfigSetVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
+    System::setVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
 
-    pnConfigSetVar('language',ZLanguage::getLanguageCodeLegacy());
-    pnConfigSetVar('locale', ZLanguage::getLocale());
-    pnConfigSetVar('language_i18n', ZLanguage::getlanguageCode());
-    pnConfigSetVar('language_bc', 1);
+    System::setVar('language',ZLanguage::getLanguageCodeLegacy());
+    System::setVar('locale', ZLanguage::getLocale());
+    System::setVar('language_i18n', ZLanguage::getlanguageCode());
+    System::setVar('language_bc', 1);
 
     // Initialisation successful
     return true;
@@ -92,9 +92,9 @@ function settings_init()
 function settings_upgrade($oldversion)
 {
     // always ensure that the version info is upgraded
-    pnConfigSetVar('Version_Num', System::VERSION_NUM);
-    pnConfigSetVar('Version_ID', System::VERSION_ID);
-    pnConfigSetVar('Version_Sub', System::VERSION_SUB);
+    System::setVar('Version_Num', System::VERSION_NUM);
+    System::setVar('Version_ID', System::VERSION_ID);
+    System::setVar('Version_Sub', System::VERSION_SUB);
 
     // Upgrade dependent on old version number
     switch ($oldversion)
@@ -108,20 +108,20 @@ function settings_upgrade($oldversion)
             pnConfigDelVar('site_logo');
 
         case '2.6':
-            pnConfigSetVar('updatelastchecked', 0);
-            pnConfigSetVar('updatefrequency', 7);
-            pnConfigSetVar('updateversion', System::VERSION_NUM);
-            pnConfigSetVar('updatecheck', true);
+            System::setVar('updatelastchecked', 0);
+            System::setVar('updatefrequency', 7);
+            System::setVar('updateversion', System::VERSION_NUM);
+            System::setVar('updatecheck', true);
 
         case '2.7':
-            pnConfigSetVar('language_i18n', 'en');
-            pnConfigSetVar('language_bc', 1);
-            pnConfigSetVar('languageurl', 0);
-            pnConfigSetVar('ajaxtimeout', 5000);
+            System::setVar('language_i18n', 'en');
+            System::setVar('language_bc', 1);
+            System::setVar('languageurl', 0);
+            System::setVar('ajaxtimeout', 5000);
             //! this is a comma-separated list of special characters to search for in permalinks
-            pnConfigSetVar('permasearch',  __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+            System::setVar('permasearch',  __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
             //! this is a comma-separated list of special characters to replace in permalinks
-            pnConfigSetVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
+            System::setVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
 
         case '2.8':
             pnConfigDelVar('dyn_keywords');

@@ -27,7 +27,7 @@ class CacheUtil
      */
     public static function getLocalDir()
     {
-        return DataUtil::formatForOS(pnConfigGetVar('temp'), true);
+        return DataUtil::formatForOS(System::getVar('temp'), true);
     }
 
     /**
@@ -41,7 +41,7 @@ class CacheUtil
     public static function createLocalDir($dir, $mode = null)
     {
         Loader::loadClass('FileUtil');
-        $path = DataUtil::formatForOS(pnConfigGetVar('temp'), true) . '/' . $dir;
+        $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
         if (!FileUtil::mkdirs($path, $mode)) {
             return false;
         }
@@ -59,7 +59,7 @@ class CacheUtil
     public static function removeLocalDir($dir)
     {
         Loader::loadClass('FileUtil');
-        $path = DataUtil::formatForOS(pnConfigGetVar('temp'), true) . '/' . $dir;
+        $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
         return FileUtil::deldir($path);
     }
 

@@ -59,7 +59,7 @@ function Users_accountapi_getall($args)
                             'icon' => 'folder_home.gif');
     }
 
-    if (pnConfigGetVar('multilingual')) {
+    if (System::getVar('multilingual')) {
         $items['4'] = array('url' => ModUtil::url('Users', 'user', 'changelang'),
                             'module' => 'core',
                             'set' => 'icons/large',

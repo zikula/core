@@ -118,7 +118,7 @@ function securitycenter_admin_view($args = array())
 
             $fullitem['hacktime'] = DateUtil::strftime(__('%b %d, %Y - %I:%M %p'), $fullitem['hacktime']);
             if ($fullitem['userid'] == 0) {
-                $fullitem['userid'] = pnConfigGetVar('anonymous');
+                $fullitem['userid'] = System::getVar('anonymous');
             } else {
                 $fullitem['userid'] = UserUtil::getVar('uname', $fullitem['userid']);
             }
@@ -238,64 +238,64 @@ function securitycenter_admin_updateconfig()
 
     // Update module variables.
     $enableanticracker = (int)FormUtil::getPassedValue('enableanticracker', 0, 'POST');
-    pnConfigSetVar('enableanticracker', $enableanticracker);
+    System::setVar('enableanticracker', $enableanticracker);
 
     $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
     ModUtil::setVar('SecurityCenter', 'itemsperpage', $itemsperpage);
 
     $emailhackattempt = (int)FormUtil::getPassedValue('emailhackattempt', 0, 'POST');
-    pnConfigSetVar('emailhackattempt', $emailhackattempt);
+    System::setVar('emailhackattempt', $emailhackattempt);
 
     $loghackattempttodb = (int)FormUtil::getPassedValue('loghackattempttodb', 0, 'POST');
-    pnConfigSetVar('loghackattempttodb', $loghackattempttodb);
+    System::setVar('loghackattempttodb', $loghackattempttodb);
 
     $onlysendsummarybyemail = (int)FormUtil::getPassedValue('onlysendsummarybyemail', 0, 'POST');
-    pnConfigSetVar('onlysendsummarybyemail', $onlysendsummarybyemail);
+    System::setVar('onlysendsummarybyemail', $onlysendsummarybyemail);
 
     $updatecheck = (int)FormUtil::getPassedValue('updatecheck', 0, 'POST');
-    pnConfigSetVar('updatecheck', $updatecheck);
+    System::setVar('updatecheck', $updatecheck);
 
     // if update checks are disabled, reset values to force new update check if re-enabled
     if ($updatecheck == 0) {
-        pnConfigSetVar('updateversion', System::VERSION_NUM);
-        pnConfigSetVar('updatelastchecked', 0);
+        System::setVar('updateversion', System::VERSION_NUM);
+        System::setVar('updatelastchecked', 0);
     }
 
     $updatefrequency = (int)FormUtil::getPassedValue('updatefrequency', 30, 'POST');
-    pnConfigSetVar('updatefrequency', $updatefrequency);
+    System::setVar('updatefrequency', $updatefrequency);
 
     $keyexpiry = (int)FormUtil::getPassedValue('keyexpiry', 0, 'POST');
     if ($keyexpiry < 0 || $keyexpiry > 3600) {
         $keyexpiry = 0;
     }
-    pnConfigSetVar('keyexpiry', $keyexpiry);
+    System::setVar('keyexpiry', $keyexpiry);
 
     $sessionauthkeyua = (int)FormUtil::getPassedValue('sessionauthkeyua', 0, 'POST');
-    pnConfigSetVar('sessionauthkeyua', $sessionauthkeyua);
+    System::setVar('sessionauthkeyua', $sessionauthkeyua);
 
     $secure_domain = FormUtil::getPassedValue('secure_domain', '', 'POST');
-    pnConfigSetVar('secure_domain', $secure_domain);
+    System::setVar('secure_domain', $secure_domain);
 
     $signcookies = (int)FormUtil::getPassedValue('signcookies', 1, 'POST');
-    pnConfigSetVar('signcookies', $signcookies);
+    System::setVar('signcookies', $signcookies);
 
     $signingkey = FormUtil::getPassedValue('signingkey', '', 'POST');
-    pnConfigSetVar('signingkey', $signingkey);
+    System::setVar('signingkey', $signingkey);
 
     $seclevel = FormUtil::getPassedValue('seclevel', 'High', 'POST');
-    pnConfigSetVar('seclevel', $seclevel);
+    System::setVar('seclevel', $seclevel);
 
     $secmeddays = (int)FormUtil::getPassedValue('secmeddays', 7, 'POST');
     if ($secmeddays < 1 || $secmeddays > 365) {
         $secmeddays = 7;
     }
-    pnConfigSetVar('secmeddays', $secmeddays);
+    System::setVar('secmeddays', $secmeddays);
 
     $secinactivemins = (int)FormUtil::getPassedValue('secinactivemins', 20, 'POST');
     if ($secinactivemins < 1 || $secinactivemins > 1440) {
         $secinactivemins = 7;
     }
-    pnConfigSetVar('secinactivemins', $secinactivemins);
+    System::setVar('secinactivemins', $secinactivemins);
 
     $sessionstoretofile = (int)FormUtil::getPassedValue('sessionstoretofile', 0, 'POST');
     $sessionsavepath = FormUtil::getPassedValue('sessionsavepath', '', 'POST');
@@ -320,11 +320,11 @@ function securitycenter_admin_updateconfig()
         }
     }
     if ($storeTypeCanBeWritten == true) {
-        pnConfigSetVar('sessionstoretofile', $sessionstoretofile);
-        pnConfigSetVar('sessionsavepath', $sessionsavepath);
+        System::setVar('sessionstoretofile', $sessionstoretofile);
+        System::setVar('sessionsavepath', $sessionsavepath);
     }
 
-    if ((bool)$sessionstoretofile != (bool)pnConfigGetVar('sessionstoretofile')) {
+    if ((bool)$sessionstoretofile != (bool)System::getVar('sessionstoretofile')) {
         // logout if going from one storage to another one
         $cause_logout = true;
     }
@@ -333,25 +333,25 @@ function securitycenter_admin_updateconfig()
     if ($gc_probability < 1 || $gc_probability > 10000) {
         $gc_probability = 7;
     }
-    pnConfigSetVar('gc_probability', $gc_probability);
+    System::setVar('gc_probability', $gc_probability);
 
     $anonymoussessions = (int)FormUtil::getPassedValue('anonymoussessions', 1, 'POST');
-    pnConfigSetVar('anonymoussessions', $anonymoussessions);
+    System::setVar('anonymoussessions', $anonymoussessions);
 
     $sessionrandregenerate = (int)FormUtil::getPassedValue('sessionrandregenerate', 1, 'POST');
-    pnConfigSetVar('sessionrandregenerate', $sessionrandregenerate);
+    System::setVar('sessionrandregenerate', $sessionrandregenerate);
 
     $sessionregenerate = (int)FormUtil::getPassedValue('sessionregenerate', 1, 'POST');
-    pnConfigSetVar('sessionregenerate', $sessionregenerate);
+    System::setVar('sessionregenerate', $sessionregenerate);
 
     $sessionregeneratefreq = (int)FormUtil::getPassedValue('sessionregeneratefreq', 10, 'POST');
     if ($sessionregeneratefreq < 1 || $sessionregeneratefreq > 100) {
         $sessionregeneratefreq = 10;
     }
-    pnConfigSetVar('sessionregeneratefreq', $sessionregeneratefreq);
+    System::setVar('sessionregeneratefreq', $sessionregeneratefreq);
 
     $sessionipcheck = (int)FormUtil::getPassedValue('sessionipcheck', 0, 'POST');
-    pnConfigSetVar('sessionipcheck', $sessionipcheck);
+    System::setVar('sessionipcheck', $sessionipcheck);
 
     $sessionname = FormUtil::getPassedValue('sessionname', 'ZSID', 'POST');
     if (strlen($sessionname) < 3) {
@@ -359,28 +359,28 @@ function securitycenter_admin_updateconfig()
     }
 
     // cause logout if we changed session name
-    if ($sessionname != pnConfigGetVar('sessionname')) {
+    if ($sessionname != System::getVar('sessionname')) {
         $cause_logout = true;
     }
 
-    pnConfigSetVar('sessionname', $sessionname);
-    pnConfigSetVar('sessionstoretofile', $sessionstoretofile);
+    System::setVar('sessionname', $sessionname);
+    System::setVar('sessionstoretofile', $sessionstoretofile);
 
 
     $filtergetvars = FormUtil::getPassedValue('filtergetvars', 1, 'POST');
-    pnConfigSetVar('filtergetvars', $filtergetvars);
+    System::setVar('filtergetvars', $filtergetvars);
 
     $filterpostvars = FormUtil::getPassedValue('filterpostvars', 0, 'POST');
-    pnConfigSetVar('filterpostvars', $filterpostvars);
+    System::setVar('filterpostvars', $filterpostvars);
 
     $filtercookievars = FormUtil::getPassedValue('filtercookievars', 1, 'POST');
-    pnConfigSetVar('filtercookievars', $filtercookievars);
+    System::setVar('filtercookievars', $filtercookievars);
 
     $outputfilter = FormUtil::getPassedValue('outputfilter', 0, 'POST');
-    pnConfigSetVar('outputfilter', $outputfilter);
+    System::setVar('outputfilter', $outputfilter);
 
     $useids = (bool)FormUtil::getPassedValue('useids', 0, 'POST');
-    pnConfigSetVar('useids', $useids);
+    System::setVar('useids', $useids);
 
     // create tmp directory for PHPIDS
     if ($useids == 1) {
@@ -391,31 +391,31 @@ function securitycenter_admin_updateconfig()
     }
 
     $idsfilter = FormUtil::getPassedValue('idsfilter', 'xml', 'POST');
-    pnConfigSetVar('idsfilter', $idsfilter);
+    System::setVar('idsfilter', $idsfilter);
 
     $idsimpactthresholdone = (int)FormUtil::getPassedValue('idsimpactthresholdone', 1, 'POST');
-    pnConfigSetVar('idsimpactthresholdone', $idsimpactthresholdone);
+    System::setVar('idsimpactthresholdone', $idsimpactthresholdone);
 
     $idsimpactthresholdtwo = (int)FormUtil::getPassedValue('idsimpactthresholdtwo', 10, 'POST');
-    pnConfigSetVar('idsimpactthresholdtwo', $idsimpactthresholdtwo);
+    System::setVar('idsimpactthresholdtwo', $idsimpactthresholdtwo);
 
     $idsimpactthresholdthree = (int)FormUtil::getPassedValue('idsimpactthresholdthree', 25, 'POST');
-    pnConfigSetVar('idsimpactthresholdthree', $idsimpactthresholdthree);
+    System::setVar('idsimpactthresholdthree', $idsimpactthresholdthree);
 
     $idsimpactthresholdfour = (int)FormUtil::getPassedValue('idsimpactthresholdfour', 75, 'POST');
-    pnConfigSetVar('idsimpactthresholdfour', $idsimpactthresholdfour);
+    System::setVar('idsimpactthresholdfour', $idsimpactthresholdfour);
 
     $idsimpactmode = (int) FormUtil::getPassedValue('idsimpactmode', 1, 'POST');
-    pnConfigSetVar('idsimpactmode', $idsimpactmode);
+    System::setVar('idsimpactmode', $idsimpactmode);
 
 
 
     // to do set some defaults here possibly read default content from file
     // so it's not repeated in code - markwest
     $summarycontent = FormUtil::getPassedValue('summarycontent', '', 'POST');
-    pnConfigSetVar('summarycontent', $summarycontent);
+    System::setVar('summarycontent', $summarycontent);
     $fullcontent = FormUtil::getPassedValue('fullcontent', '', 'POST');
-    pnConfigSetVar('fullcontent', $fullcontent);
+    System::setVar('fullcontent', $fullcontent);
 
     // Let any other modules know that the modules configuration has been updated
     ModUtil::callHooks('module','updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
@@ -776,11 +776,11 @@ function securitycenter_admin_allowedhtml($args)
     $pnRender = Renderer::getInstance('SecurityCenter', false);
 
     $pnRender->assign('htmltags', _securitycenter_admin_gethtmltags());
-    $pnRender->assign('currenthtmltags', pnConfigGetVar('AllowableHTML'));
-    $pnRender->assign('htmlentities', pnConfigGetVar('htmlentities'));
+    $pnRender->assign('currenthtmltags', System::getVar('AllowableHTML'));
+    $pnRender->assign('htmlentities', System::getVar('htmlentities'));
 
     // check for HTML Purifier outputfilter
-    $htmlpurifier = (bool) (pnConfigGetVar('outputfilter') == 1);
+    $htmlpurifier = (bool) (System::getVar('outputfilter') == 1);
     $pnRender->assign('htmlpurifier', $htmlpurifier);
     $pnRender->assign('configurl', ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
 
@@ -815,11 +815,11 @@ function securitycenter_admin_updateallowedhtml($args)
         }
         $allowedhtml[$htmltag] = $tagval;
     }
-    pnConfigSetVar('AllowableHTML', $allowedhtml);
+    System::setVar('AllowableHTML', $allowedhtml);
 
     // one additonal config var is set on this page
     $htmlentities = FormUtil::getPassedValue('xhtmlentities', 0, 'POST');
-    pnConfigSetVar('htmlentities', $htmlentities);
+    System::setVar('htmlentities', $htmlentities);
 
     // clear all cache and compile directories
     ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');

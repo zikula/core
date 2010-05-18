@@ -153,13 +153,13 @@ function smarty_function_pagerabc($params, &$smarty)
 
     $pager['args'] = array();
     if (empty($pager['module'])) {
-        $pager['module'] = pnConfigGetVar('startpage');
-        $starttype = pnConfigGetVar('starttype');
+        $pager['module'] = System::getVar('startpage');
+        $starttype = System::getVar('starttype');
         $pager['type'] = !empty($starttype) ? $starttype : 'user';
-        $startfunc = pnConfigGetVar('startfunc');
+        $startfunc = System::getVar('startfunc');
         $pager['func'] = !empty($startfunc) ? $startfunc : 'main';
 
-        $startargs = explode(',', pnConfigGetVar('startargs'));
+        $startargs = explode(',', System::getVar('startargs'));
         foreach ($startargs as $arg) {
             if (!empty($arg)) {
                 $argument = explode('=', $arg);

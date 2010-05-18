@@ -35,7 +35,7 @@ function smarty_function_userlinks($params, &$smarty)
 
     if (UserUtil::isLoggedIn()) {
         $links = "$start ";
-        $profileModule = pnConfigGetVar('profilemodule', '');
+        $profileModule = System::getVar('profilemodule', '');
         if (!empty($profileModule) && ModUtil::available($profileModule)) {
             $links .= "<a href=\"" . DataUtil::formatForDisplay(ModUtil::url($profileModule)) . '">' . __('Your Account') . "</a> $seperator ";
         }

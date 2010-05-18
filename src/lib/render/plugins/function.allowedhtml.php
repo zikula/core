@@ -30,7 +30,7 @@
  */
 function smarty_function_allowedhtml($params, &$smarty)
 {
-    $AllowableHTML = pnConfigGetVar('AllowableHTML');
+    $AllowableHTML = System::getVar('AllowableHTML');
     $allowedhtml = '';
     foreach ($AllowableHTML as $key => $access) {
         if ($access > 0) {

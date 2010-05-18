@@ -57,7 +57,7 @@ function smarty_function_keywords($params, &$smarty)
     if (!empty($keywordsarray)) {
         $keywords = implode(',', $keywordsarray);
     } else {
-        $keywords = pnConfigGetVar('metakeywords');
+        $keywords = System::getVar('metakeywords');
     }
 
     if (isset($params['assign'])) {

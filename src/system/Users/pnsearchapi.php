@@ -64,7 +64,7 @@ function users_searchapi_search($args)
     }
 
     // decide if we have to load the DUDs from the Profile module
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // get the db and table info
@@ -140,7 +140,7 @@ function users_searchapi_search($args)
  */
 function users_searchapi_search_check(&$args)
 {
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     if (!empty($profileModule) && ModUtil::available($profileModule)) {
         $datarow = &$args['datarow'];
         $userId = $datarow['extra'];

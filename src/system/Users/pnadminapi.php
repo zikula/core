@@ -80,7 +80,7 @@ function users_adminapi_findusers($args)
         return false;
     }
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
     $pntable     = pnDBGetTables();
@@ -205,7 +205,7 @@ function users_adminapi_saveuser($args)
     // process the dynamic data
     $dynadata = isset($args['dynadata']) ? $args['dynadata'] : array();
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
     if ($useProfileMod && $dynadata) {
 
@@ -514,7 +514,7 @@ function Users_adminapi_getlinks()
         $links[] = array('url' => ModUtil::url('Users', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
     }
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
     if ($useProfileMod) {
         // Make sure there are links for the user to see in the submenu. Don't try
@@ -668,7 +668,7 @@ function Users_adminapi_createImport($args)
     // check if module Mailer is active
     $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Mailer'));
     if ($modinfo['state'] == 3) {
-        $sitename  = pnConfigGetVar('sitename');
+        $sitename  = System::getVar('sitename');
         $siteurl   = System::getBaseUrl();
         $pnRender = Renderer::getInstance('Users', false);
         $pnRender->assign('sitename', $sitename);

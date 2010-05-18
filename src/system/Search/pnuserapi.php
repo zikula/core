@@ -416,7 +416,7 @@ function search_construct_where($args, $fields, $mlfield = null)
     }
 
     // Check if we're in a multilingual setup
-    if (isset($mlfield) && pnConfigGetVar('multilingual') == 1) {
+    if (isset($mlfield) && System::getVar('multilingual') == 1) {
         $currentlang = ZLanguage::getLanguageCode();
         $where .= "AND ({$mlfield} = '$currentlang' OR {$mlfield} = '')";
     }

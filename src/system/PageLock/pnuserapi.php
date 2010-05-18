@@ -197,7 +197,7 @@ function PageLockRequireAccess()
 
     if ($PageLockAccessCount == 0) {
         global $PageLockFile;
-        $ostemp = DataUtil::formatForOS(pnConfigGetVar('temp'), true);
+        $ostemp = DataUtil::formatForOS(System::getVar('temp'), true);
         $PageLockFile = fopen($ostemp . '/pagelock.lock', "w+");
         flock($PageLockFile, LOCK_EX);
         fwrite($PageLockFile, "This is a locking file for synchronizing access to the PageLock module. Please do not delete.");

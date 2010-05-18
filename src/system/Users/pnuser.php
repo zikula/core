@@ -50,7 +50,7 @@ function users_user_view()
 {
     // If has logged in, header to index.php
     if (UserUtil::isLoggedIn()) {
-        return pnRedirect(pnConfigGetVar('entrypoint', 'index.php'));
+        return pnRedirect(System::getVar('entrypoint', 'index.php'));
     }
 
     // create output object
@@ -105,7 +105,7 @@ function users_user_loginscreen($args)
 
     // assign variables for the template
     $pnRender->assign('loginviaoption', ModUtil::getVar('Users', 'loginviaoption'));
-    $pnRender->assign('seclevel', pnConfigGetVar('seclevel'));
+    $pnRender->assign('seclevel', System::getVar('seclevel'));
     $pnRender->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
     $pnRender->assign('returnurl', $returnurl);
     // do we have to show a note about reconfirming the terms of use?
@@ -145,7 +145,7 @@ function users_user_register()
 {
     // If has logged in, header to index.php
     if (UserUtil::isLoggedIn()) {
-        return pnRedirect(pnConfigGetVar('entrypoint', 'index.php'));
+        return pnRedirect(System::getVar('entrypoint', 'index.php'));
     }
 
     $template = 'users_user_register.htm';
@@ -161,7 +161,7 @@ function users_user_register()
     $modvars = ModUtil::getVar('Users');
 
     $pnRender->assign($modvars);
-    $pnRender->assign('sitename', pnConfigGetVar('sitename'));
+    $pnRender->assign('sitename', System::getVar('sitename'));
     $pnRender->assign('legal',    ModUtil::available('legal'));
     $pnRender->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
     $pnRender->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
@@ -344,14 +344,14 @@ function users_user_logout()
         if ($login_redirect == 1) {
             // WCAG compliant logout - we redirect to index.php because
             // we might no have the permission for the recent site any longer
-            return pnRedirect(pnConfigGetVar('entrypoint', 'index.php'));
+            return pnRedirect(System::getVar('entrypoint', 'index.php'));
         } else {
             // meta refresh
             users_print_redirectpage(__('Done! You have been logged out.'));
         }
     } else {
         LogUtil::registerError(__('Error! You have not been logged out.'));
-        return pnRedirect(pnConfigGetVar('entrypoint', 'index.php'));
+        return pnRedirect(System::getVar('entrypoint', 'index.php'));
     }
 
     return true;
@@ -398,7 +398,7 @@ function users_user_finishnewuser()
 
     // Verify dynamic user data
     if (ModUtil::getVar('Users', 'reg_optitems') == 1) {
-        $profileModule = pnConfigGetVar('profilemodule', '');
+        $profileModule = System::getVar('profilemodule', '');
         if (!empty($profileModule) && ModUtil::available($profileModule)) {
 
             // any Profile module needs this function
@@ -681,7 +681,7 @@ function users_user_activation($args)
 function users_print_redirectpage($message, $url)
 {
     $pnRender = Renderer::getInstance('Users');
-    $url = (!isset($url) || empty($url)) ? pnConfigGetVar('entrypoint', 'index.php') : $url;
+    $url = (!isset($url) || empty($url)) ? System::getVar('entrypoint', 'index.php') : $url;
 
     // check the url
     if (substr($url, 0, 1) == '/') {
@@ -695,7 +695,7 @@ function users_print_redirectpage($message, $url)
         $url = $baseurl.$url;
     }
 
-    $pnRender->assign('ThemeSel', pnConfigGetVar('Default_Theme'));
+    $pnRender->assign('ThemeSel', System::getVar('Default_Theme'));
     $pnRender->assign('url', $url);
     $pnRender->assign('message', $message);
     $pnRender->assign('stylesheet', ThemeUtil::getModuleStylesheet('Users'));
@@ -719,10 +719,10 @@ function users_print_redirectpage($message, $url)
 function users_user_siteofflogin()
 {
     // do not process if the site is enabled
-    if (!pnConfigGetVar('siteoff', false)) {
+    if (!System::getVar('siteoff', false)) {
         $path = dirname(pnServerGetVar('PHP_SELF'));
         $path = str_replace('\\', '/', $path);
-        return pnRedirect($path . '/' . pnConfigGetVar('entrypoint', 'index.php'));
+        return pnRedirect($path . '/' . System::getVar('entrypoint', 'index.php'));
     }
 
     $user = FormUtil::getPassedValue('user', null, 'POST');
@@ -737,7 +737,7 @@ function users_user_siteofflogin()
 
     $path = dirname(pnServerGetVar('PHP_SELF'));
     $path = str_replace('\\', '/', $path);
-    return pnRedirect($path . '/' . pnConfigGetVar('entrypoint', 'index.php'));
+    return pnRedirect($path . '/' . System::getVar('entrypoint', 'index.php'));
 }
 
 /**

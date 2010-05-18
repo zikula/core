@@ -46,7 +46,7 @@ function smarty_function_title($params, &$smarty)
 
     $sitename = '';
     if (!isset($params['nositename'])) {
-        $sitename = pnConfigGetVar('sitename');
+        $sitename = System::getVar('sitename');
     }
 
     // init vars

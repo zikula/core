@@ -32,7 +32,7 @@ $type   = FormUtil::getPassedValue('type', 'user', 'GETPOST');
 $func   = FormUtil::getPassedValue('func', 'main', 'GETPOST');
 
 // Check for site closed
-if (pnConfigGetVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
+if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
         pnUserLogOut();
     }
@@ -47,10 +47,10 @@ if (pnConfigGetVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
 
 // check requested module and set to start module if not present
 if (empty($module)) {
-    $module = pnConfigGetVar('startpage');
-    $type   = pnConfigGetVar('starttype');
-    $func   = pnConfigGetVar('startfunc');
-    $args   = explode(',', pnConfigGetVar('startargs'));
+    $module = System::getVar('startpage');
+    $type   = System::getVar('starttype');
+    $func   = System::getVar('startfunc');
+    $args   = explode(',', System::getVar('startargs'));
     $arguments = array();
     foreach ($args as $arg) {
         if (!empty($arg)) {
@@ -83,14 +83,14 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     if (empty($type)) $type = 'user';
     if (empty($func)) $func = 'main';
     if (pnModLoad($modinfo['name'], $type, $force_modload)) {
-        if (pnConfigGetVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
             $dbConn = pnDBGetConn(true);
             $dbConn->StartTrans();
         }
 
         $return = pnModFunc($modinfo['name'], $type, $func, $arguments);
 
-        if (pnConfigGetVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
             if ($dbConn->HasFailedTrans()) {
                 $return = __('Error! The transaction failed. Please perform a rollback.') . $return;
             }

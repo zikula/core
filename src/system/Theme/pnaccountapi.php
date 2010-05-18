@@ -22,7 +22,7 @@ function Theme_accountapi_getall($args)
     $items = array();
 
     // check if theme switching is allowed
-    if (pnConfigGetVar('theme_change')) {
+    if (System::getVar('theme_change')) {
         // create an array of links to return
         $items['0'] = array('url' => ModUtil::url('Theme', 'user'),
                             'module' => 'core',

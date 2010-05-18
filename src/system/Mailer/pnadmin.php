@@ -189,7 +189,7 @@ function Mailer_admin_sendmessage($args)
 
     // set the email
     if ($pnmail) {
-        $from = pnConfigGetVar('adminmail');
+        $from = System::getVar('adminmail');
         $result = pnMail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html, $altBody);
     } else {
         $result = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',

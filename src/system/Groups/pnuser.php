@@ -325,7 +325,7 @@ function Groups_user_memberslist()
                                                        'memberslist',
                                                        array('gid' => $gid))));
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $pnRender->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 
     return $pnRender->fetch('groups_user_memberslist.htm');

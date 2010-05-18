@@ -32,7 +32,7 @@ function smarty_function_timezoneselect($params, &$smarty)
     $timezones = DateUtil::getTimezones();
 
     if (!isset($params['selected']) || empty($params['selected']) || !isset($timezones[$params['selected']])) {
-        $params['selected'] = pnConfigGetVar('timezone_offset');
+        $params['selected'] = System::getVar('timezone_offset');
     }
 
     // get the formatted list

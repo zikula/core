@@ -737,7 +737,7 @@ function modules_admin_deactivate()
     if ($modinfo == false) {
         return LogUtil::registerError(__('Error! No such module ID exists.'), 404, ModUtil::url('Modules', 'admin', 'view'));
     }
-    $startmod = pnConfigGetVar('startpage');
+    $startmod = System::getVar('startpage');
     if ($startmod == $modinfo['name']) {
         return LogUtil::registerError(__('Error! This module is currently set as the site\'s home page. You must choose another module for the home page before you can deactivate this one.'), null, ModUtil::url('Modules', 'admin', 'view'));
     }

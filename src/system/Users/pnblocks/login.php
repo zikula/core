@@ -63,11 +63,11 @@ function users_loginblock_display($row)
             $row['title'] = DataUtil::formatForDisplay('Login');
         }
 
-        $pnr->assign('seclevel', pnConfigGetVar('seclevel'));
+        $pnr->assign('seclevel', System::getVar('seclevel'));
         $pnr->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
         $pnr->assign('returnurl', pnGetCurrentURI());
         // determine whether to show the rememberme option
-        $pnr->assign('rememberme', pnConfigGetVar('seclevel'));
+        $pnr->assign('rememberme', System::getVar('seclevel'));
         $row['content'] = $pnr->fetch('users_block_login.htm');
         return pnBlockThemeBlock($row);
     }

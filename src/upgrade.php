@@ -38,7 +38,7 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
         // force action to login
         $action = 'login';
     } else {
-        define('_ZINSTALLEDVERSION', $installed = pnConfigGetVar('Version_Num', __('version info not available')));
+        define('_ZINSTALLEDVERSION', $installed = System::getVar('Version_Num', __('version info not available')));
     }
 }
 
@@ -259,20 +259,20 @@ function _upg_upgrademodules($username, $password)
     ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
     // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-    pnConfigSetVar('Version_Num', System::VERSION_NUM);
-    pnConfigSetVar('language_i18n', ZLanguage::getLanguageCode());
-    pnConfigSetVar('language_bc', 0);
+    System::setVar('Version_Num', System::VERSION_NUM);
+    System::setVar('language_i18n', ZLanguage::getLanguageCode());
+    System::setVar('language_bc', 0);
 
     // Relogin the admin user to give a proper admin link
     SessionUtil::requireSession();
 
     echo '<p class="z-statusmsg">' . __('Finished upgrade') . " - \n";
     if (!pnUserLogin($username, $password)) {
-        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl()), DataUtil::formatForDisplay(pnConfigGetVar('sitename')));
+        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl()), DataUtil::formatForDisplay(System::getVar('sitename')));
         echo __f('Go to the startpage for %s', $url);
     } else {
         upgrade_clear_caches();
-        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl().'admin.php'), DataUtil::formatForDisplay(pnConfigGetVar('sitename')));
+        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl().'admin.php'), DataUtil::formatForDisplay(System::getVar('sitename')));
         echo __f('Go to the admin panel for %s', $url);
     }
     echo "</p>\n";

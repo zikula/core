@@ -38,11 +38,11 @@ class ZLanguage
     public function __construct()
     {
         $this->langSession = SessionUtil::getVar('language', null);
-        $this->langSystemDefault = pnConfigGetVar('language_i18n', 'en');
+        $this->langSystemDefault = System::getVar('language_i18n', 'en');
         $this->langFixSession = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('setsessionlanguage', null, 'POST'));
-        $this->multiLingualCapable = pnConfigGetVar('multilingual');
-        $this->langUrlRule = pnConfigGetVar('languageurl', 0);
-        $this->langDetect = pnConfigGetVar('language_detect', 0);
+        $this->multiLingualCapable = System::getVar('multilingual');
+        $this->langUrlRule = System::getVar('languageurl', 0);
+        $this->langDetect = System::getVar('language_detect', 0);
         $this->setDBCharset();
         $this->setEncoding();
     }
@@ -346,7 +346,7 @@ class ZLanguage
         }
 
         Loader::loadClass('FileUtil');
-        $languageVariations = pnConfigGetVar('language_bc');
+        $languageVariations = System::getVar('language_bc');
         // search for locale and config overrides
         $localeArray = array();
         $search = array('config/locale', 'locale');

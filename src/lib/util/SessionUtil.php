@@ -53,7 +53,7 @@ class SessionUtil
 
 
         // Set lifetime of session cookie
-        $seclevel = pnConfigGetVar('seclevel');
+        $seclevel = System::getVar('seclevel');
         switch ($seclevel) {
             case 'High':
                 // Session lasts duration of browser
@@ -64,7 +64,7 @@ class SessionUtil
                 break;
             case 'Medium':
                 // Session lasts set number of days
-                $lifetime = pnConfigGetVar('secmeddays') * 86400;
+                $lifetime = System::getVar('secmeddays') * 86400;
                 break;
             case 'Low':
             default:
@@ -76,21 +76,21 @@ class SessionUtil
         ini_set('session.cookie_lifetime', $lifetime);
 
         // domain and path settings for session cookie
-        // if (pnConfigGetVar('intranet') == false) {
+        // if (System::getVar('intranet') == false) {
         // Cookie path
         ini_set('session.cookie_path', $path);
 
         // Garbage collection
-        ini_set('session.gc_probability', pnConfigGetVar('gc_probability'));
+        ini_set('session.gc_probability', System::getVar('gc_probability'));
         ini_set('session.gc_divisor', 10000);
-        ini_set('session.gc_maxlifetime', pnConfigGetVar('secinactivemins') * 60); // Inactivity timeout for user sessions
+        ini_set('session.gc_maxlifetime', System::getVar('secinactivemins') * 60); // Inactivity timeout for user sessions
 
         ini_set('session.hash_function', 1);
 
         // Set custom session handlers
         ini_set('session.save_handler', 'user');
-        if (pnConfigGetVar('sessionstoretofile')) {
-            ini_set('session.save_path', pnConfigGetVar('sessionsavepath'));
+        if (System::getVar('sessionstoretofile')) {
+            ini_set('session.save_path', System::getVar('sessionsavepath'));
         }
         // PHP 5.2 workaround
         if (version_compare(phpversion(), '5.2.0', '>=')) {
@@ -126,11 +126,11 @@ class SessionUtil
         $_REMOTE_ADDR = pnServerGetVar('REMOTE_ADDR');
         $_HTTP_X_FORWARDED_FOR = pnServerGetVar('HTTP_X_FORWARDED_FOR');
 
-        if (pnConfigGetVar('sessionipcheck')) {
+        if (System::getVar('sessionipcheck')) {
             /* -- feature for after 0.8 release - drak
             // todo - add dropdown option for sessionipcheckmask for /32, /24, /16 CIDR
 
-            $ipmask = pnConfigGetVar('sessionipcheckmask');
+            $ipmask = System::getVar('sessionipcheckmask');
             if ($ipmask <> 32) {
                 // since we're not a /32 we need to handle in case multiple ips returned
                 if ($_HTTP_X_FORWARDED_FOR && strstr($_HTTP_X_FORWARDED_FOR, ', ')) {
@@ -160,22 +160,22 @@ class SessionUtil
         if (session_start() && isset($GLOBALS['_ZSession']['obj']) && $GLOBALS['_ZSession']['obj']) {
             // check if session has expired or not
             $now = time();
-            $inactive = ($now - (int) (pnConfigGetVar('secinactivemins') * 60));
-            $daysold = ($now - (int) (pnConfigGetVar('secmeddays') * 86400));
+            $inactive = ($now - (int) (System::getVar('secinactivemins') * 60));
+            $daysold = ($now - (int) (System::getVar('secmeddays') * 86400));
             $lastused = strtotime($GLOBALS['_ZSession']['obj']['lastused']);
             $rememberme = self::getVar('rememberme');
             $uid = $GLOBALS['_ZSession']['obj']['uid'];
             $ipaddr = $GLOBALS['_ZSession']['obj']['ipaddr'];
 
             // IP check
-            if (pnConfigGetVar('sessionipcheck', false)) {
+            if (System::getVar('sessionipcheck', false)) {
                 if ($ipaddr !== $current_ipaddr) {
                     session_destroy();
                     return false;
                 }
             }
 
-            switch (pnConfigGetVar('seclevel')) {
+            switch (System::getVar('seclevel')) {
                 case 'Low':
                     // Low security - users stay logged in permanently
                     //                no special check necessary
@@ -452,7 +452,7 @@ class SessionUtil
     {
         if (self::getVar('uid') == '0') {
             // no need to do anything for guests without sessions
-            if (pnConfigGetVar('anonymoussessions') == '0')
+            if (System::getVar('anonymoussessions') == '0')
                 return;
 
             // no need to display expiry for anon users with sessions since it's invisible anyway
@@ -495,7 +495,7 @@ class SessionUtil
     {
         // only regenerate if set in admin
         if ($force == false) {
-            if (!pnConfigGetVar('sessionregenerate') || pnConfigGetVar('sessionregenerate') == 0) {
+            if (!System::getVar('sessionregenerate') || System::getVar('sessionregenerate') == 0) {
                 // there is no point changing a newly generated session.
                 if (isset($GLOBALS['_ZSession']['new']) && $GLOBALS['_ZSession']['new'] == true) {
                     return;
@@ -524,11 +524,11 @@ class SessionUtil
      */
     public static function random_regenerate()
     {
-        if (!pnConfigGetVar('sessionrandregenerate')) {
+        if (!System::getVar('sessionrandregenerate')) {
             return;
         }
 
-        $chance = 100 - pnConfigGetVar('sessionregeneratefreq');
+        $chance = 100 - System::getVar('sessionregeneratefreq');
         $a = rand(0, $chance);
         $b = rand(0, $chance);
         if ($a == $b) {
@@ -547,7 +547,7 @@ class SessionUtil
         // www.domain.xx and domain.xx. Otherwise we run into problems with both cookies for
         // www.domain.xx as well as domain.xx being sent to www.domain.xx simultaneously!
         $hostNameDotCount = substr_count(pnGetHost(), '.');
-        return pnConfigGetVar('sessionname') . $hostNameDotCount;
+        return System::getVar('sessionname') . $hostNameDotCount;
     }
 }
 
@@ -586,8 +586,8 @@ function _SessionUtil__Close()
  */
 function _SessionUtil__Read($sessid)
 {
-    // if (pnConfigGetVar('anonymoussessions') == '0') {
-    if (pnConfigGetVar('sessionstoretofile')) {
+    // if (System::getVar('anonymoussessions') == '0') {
+    if (System::getVar('sessionstoretofile')) {
         $path = DataUtil::formatForOS(session_save_path());
         if (file_exists("$path/$sessid")) {
             $result = file_get_contents("$path/$sessid");
@@ -630,7 +630,7 @@ function _SessionUtil__Write($sessid, $vars)
     $obj['uid'] = (SessionUtil::getVar('uid') ? SessionUtil::getVar('uid') : 0);
     $obj['lastused'] = date('Y-m-d H:i:s', time());
 
-    if (pnConfigGetVar('sessionstoretofile')) {
+    if (System::getVar('sessionstoretofile')) {
         $path = DataUtil::formatForOS(session_save_path());
 
         // if session was regenerate, delete it first
@@ -684,7 +684,7 @@ function _SessionUtil__Destroy($sessid)
     setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
 
     // can exit if anon user and anon session disabled
-    if (pnConfigGetVar('anonymoussessions') == '0' && SessionUtil::getVar('uid') == '0') {
+    if (System::getVar('anonymoussessions') == '0' && SessionUtil::getVar('uid') == '0') {
         return true;
     }
 
@@ -695,7 +695,7 @@ function _SessionUtil__Destroy($sessid)
         $sessid = session_id();
     }
 
-    if (pnConfigGetVar('sessionstoretofile')) {
+    if (System::getVar('sessionstoretofile')) {
         $path = DataUtil::formatForOS(session_save_path(), true);
         return unlink("$path/$sessid");
     } else {
@@ -714,8 +714,8 @@ function _SessionUtil__Destroy($sessid)
 function _SessionUtil__GC($maxlifetime)
 {
     $now = time();
-    $inactive = ($now - (int) (pnConfigGetVar('secinactivemins') * 60));
-    $daysold = ($now - (int) (pnConfigGetVar('secmeddays') * 86400));
+    $inactive = ($now - (int) (System::getVar('secinactivemins') * 60));
+    $daysold = ($now - (int) (System::getVar('secmeddays') * 86400));
 
     // find the hash length dynamically
     $hash = ini_get('session.hash_function');
@@ -725,7 +725,7 @@ function _SessionUtil__GC($maxlifetime)
         $sessionlength = 40;
     }
 
-    if (pnConfigGetVar('sessionstoretofile')) {
+    if (System::getVar('sessionstoretofile')) {
         // file based GC
         $path = DataUtil::formatForOS(session_save_path(), true);
         // get files
@@ -746,7 +746,7 @@ function _SessionUtil__GC($maxlifetime)
         }
 
         // do GC
-        switch (pnConfigGetVar('seclevel')) {
+        switch (System::getVar('seclevel')) {
             case 'Low':
                 // Low security - delete session info if user decided not to
                 //                remember themself and session is inactive
@@ -794,7 +794,7 @@ function _SessionUtil__GC($maxlifetime)
         $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
         $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));
 
-        switch (pnConfigGetVar('seclevel')) {
+        switch (System::getVar('seclevel')) {
             case 'Low':
                 // Low security - delete session info if user decided not to
                 //                remember themself and inactivity timeout

@@ -28,7 +28,7 @@
  */
 function smarty_function_sitename($params, &$smarty)
 {
-    $sitename = pnConfigGetVar('sitename');
+    $sitename = System::getVar('sitename');
 
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $sitename);

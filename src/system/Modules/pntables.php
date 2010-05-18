@@ -26,7 +26,7 @@ function Modules_pntables()
 {
     // Initialise table array
     $pntable = array();
-    $prefix = pnConfigGetVar('prefix');
+    $prefix = System::getVar('prefix');
 
     // modules module
     $hooks = $prefix . '_hooks';

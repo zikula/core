@@ -147,7 +147,7 @@ class Renderer extends Smarty
         $this->default_resource_type = 'z';
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if (($GLOBALS['loadstages'] & System::CORE_STAGES_AJAX) && pnConfigGetVar('shorturls')) {
+        if (($GLOBALS['loadstages'] & System::CORE_STAGES_AJAX) && System::getVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
         }
 

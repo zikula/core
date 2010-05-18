@@ -33,7 +33,7 @@ class DBUtil
      */
     public static function hasObjectCache($tablename)
     {
-        return ($tablename != 'session_info' && !defined('_ZINSTALLVER') && DBConnectionStack::isDefaultConnection() && pnConfigGetVar('OBJECT_CACHE_ENABLE'));
+        return ($tablename != 'session_info' && !defined('_ZINSTALLVER') && DBConnectionStack::isDefaultConnection() && System::getVar('OBJECT_CACHE_ENABLE'));
     }
 
     /**
@@ -892,7 +892,7 @@ class DBUtil
 
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])  ) &&
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
+            System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
             strcmp($table, 'categories_') !== 0 &&
             strcmp($table, 'objectdata_attributes') !== 0 &&
             strcmp($table, 'objectdata_log') !== 0 &&
@@ -907,7 +907,7 @@ class DBUtil
 
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
+            System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
             strcmp($table, 'objectdata_attributes') !== 0 &&
             strcmp($table, 'objectdata_log') !== 0)
         {
@@ -916,7 +916,7 @@ class DBUtil
 
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_META')) &&
+            System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
             $table != 'objectdata_attributes' &&
             $table != 'objectdata_meta' &&
             $table != 'objectdata_log')
@@ -926,7 +926,7 @@ class DBUtil
 
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
+            System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
             strcmp($table, 'objectdata_log') !== 0)
         {
             $oldObj = self::selectObjectByID($table, $object[$idfield], $idfield);
@@ -1055,7 +1055,7 @@ class DBUtil
 
         if (($enableAllServices ||
             (isset($tables["{$tableName}_db_extra_enable_categorization"]) && $tables["{$tableName}_db_extra_enable_categorization"])  ) &&
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
+            System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
             $tableName != 'categories_' &&
             $tableName != 'objectdata_attributes' &&
             $tableName != 'objectdata_log' &&
@@ -1066,7 +1066,7 @@ class DBUtil
 
         if (((isset($tables["{$tableName}_db_extra_enable_all"]) && $tables["{$tableName}_db_extra_enable_all"]) ||
              (isset($tables["{$tableName}_db_extra_enable_attribution"]) && $tables["{$tableName}_db_extra_enable_attribution"] ) ||
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
+            System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
             $tableName != 'objectdata_attributes' &&
             $tableName != 'objectdata_log' &&
             ModUtil::available('ObjectData'))
@@ -1076,7 +1076,7 @@ class DBUtil
 
         if (($enableAllServices ||
             (isset($tables["{$tableName}_db_extra_enable_meta"]) && $tables["{$tableName}_db_extra_enable_meta"] ) ||
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_META')) &&
+            System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
             $tableName != 'objectdata_attributes' &&
             $tableName != 'objectdata_meta' &&
             $tableName != 'objectdata_log' &&
@@ -1087,7 +1087,7 @@ class DBUtil
 
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
-            pnConfigGetVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
+            System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
             strcmp($table, 'objectdata_log') !== 0)
         {
             $log = new ObjectData_Log();
@@ -2552,7 +2552,7 @@ class DBUtil
         $tables = pnDBGetTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && pnConfigGetVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && ModUtil::available('Categories')) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && ModUtil::available('Categories')) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
@@ -2568,7 +2568,7 @@ class DBUtil
             return $objects;
         }
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) || pnConfigGetVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) || System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
@@ -2581,7 +2581,7 @@ class DBUtil
             }
         }
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) || pnConfigGetVar('Z_CONFIG_USE_OBJECT_META')) && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_meta') !== 0 && strcmp($table, 'objectdata_log') !== 0) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) || System::getVar('Z_CONFIG_USE_OBJECT_META')) && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_meta') !== 0 && strcmp($table, 'objectdata_log') !== 0) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
@@ -2925,7 +2925,7 @@ class DBUtil
             return false;
         }
 
-        return pnConfigGetVar('prefix');
+        return System::getVar('prefix');
     }
 
     /**

@@ -25,7 +25,7 @@
  */
 function smarty_function_slogan($params, &$smarty)
 {
-    $slogan = pnConfigGetVar('slogan');
+    $slogan = System::getVar('slogan');
 
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $slogan);

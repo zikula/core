@@ -44,7 +44,7 @@ function smarty_modifier_userprofilelink($string, $class = '', $image = '', $max
         $uid = pnUserGetIDFromName($string);
     }
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
 
     if ($uid <> false && $uid > 1 && !empty($profileModule) && ModUtil::available($profileModule) && strtolower($string) <> strtolower(ModUtil::getVar('Users', 'anonymous'))) {
         if (!empty($class)) {

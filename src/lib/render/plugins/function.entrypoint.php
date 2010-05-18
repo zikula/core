@@ -26,5 +26,5 @@
  */
 function smarty_function_entrypoint($params, &$smarty)
 {
-    return pnConfigGetVar('entrypoint', 'index.php');
+    return System::getVar('entrypoint', 'index.php');
 }

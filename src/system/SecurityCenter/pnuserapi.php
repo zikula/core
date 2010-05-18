@@ -106,10 +106,10 @@ function securitycenter_userapi_countitems()
  */
 function securitycenter_userapi_secureinput()
 {
-    if (pnConfigGetVar('enableanticracker')) {
+    if (System::getVar('enableanticracker')) {
 
         // Lets now sanitize the GET vars
-        if (pnConfigGetVar('filtergetvars') == 1) {
+        if (System::getVar('filtergetvars') == 1) {
             if (count($_GET) > 0) {
                 foreach ($_GET as $key => $secvalue) {
                     if (!is_array($secvalue)) {
@@ -118,7 +118,7 @@ function securitycenter_userapi_secureinput()
                                                                         'detecting_line' => __LINE__,
                                                                         'hacktype' => 'pnSecurity Alert',
                                                                         'message' => 'GET: '.$key.'=>'.$secvalue));
-                            Header('Location: ' . pnConfigGetVar('entrypoint', 'index.php'));
+                            Header('Location: ' . System::getVar('entrypoint', 'index.php'));
                         }
                     }
                 }
@@ -126,7 +126,7 @@ function securitycenter_userapi_secureinput()
         }
 
         // Lets now sanitize the POST vars
-        if (pnConfigGetVar('filterpostvars') == 1) {
+        if (System::getVar('filterpostvars') == 1) {
             if (count($_POST) > 0) {
                 foreach ($_POST as $key => $secvalue) {
                     if (!is_array($secvalue)) {
@@ -135,7 +135,7 @@ function securitycenter_userapi_secureinput()
                                                                         'detecting_line' => __LINE__,
                                                                         'hacktype' => 'pnSecurity Alert',
                                                                         'message' => 'POST: '.$key.'=>'.$secvalue));
-                            Header('Location: ' . pnConfigGetVar('entrypoint', 'index.php'));
+                            Header('Location: ' . System::getVar('entrypoint', 'index.php'));
                         }
                     }
                 }
@@ -143,7 +143,7 @@ function securitycenter_userapi_secureinput()
         }
 
         // Lets now sanitize the COOKIE vars
-        if (pnConfigGetVar('filtercookievars') == 1) {
+        if (System::getVar('filtercookievars') == 1) {
             if (count($_COOKIE) > 0) {
                 foreach ($_COOKIE as $secvalue) {
                     if (!is_array($secvalue)) {
@@ -152,7 +152,7 @@ function securitycenter_userapi_secureinput()
                                                                         'detecting_line' => __LINE__,
                                                                         'hacktype' => 'pnSecurity Alert',
                                                                         'message' => 'COOKIE: '.$key.'=>'.$secvalue));
-                            Header('Location: ' . pnConfigGetVar('entrypoint', 'index.php'));
+                            Header('Location: ' . System::getVar('entrypoint', 'index.php'));
                         }
                     }
                 }
@@ -160,7 +160,7 @@ function securitycenter_userapi_secureinput()
         }
 
         // Run IDS if desired
-        if (pnConfigGetVar('useids') == 1) {
+        if (System::getVar('useids') == 1) {
             try {
                 // build request array defining what to scan
                 // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
@@ -224,11 +224,11 @@ function securitycenter_userapi_secureinput()
  */
 function securitycenter_userapi_loghackattempt($args)
 {
-    if (pnConfigGetVar('enableanticracker')) {
-        if (pnConfigGetVar('loghackattempttodb')) {
+    if (System::getVar('enableanticracker')) {
+        if (System::getVar('loghackattempttodb')) {
             SecurityCenter_userapi_loghackattempttodb($args);
         }
-        if (pnConfigGetVar('emailhackattempt')) {
+        if (System::getVar('emailhackattempt')) {
             SecurityCenter_userapi_mailhackattempt($args);
         }
     }
@@ -328,16 +328,16 @@ function securitycenter_userapi_loghackattempttodb($args)
 function securitycenter_userapi_mailhackattempt($args)
 {
     // get contents of mail message
-    $summarycontent = pnConfigGetVar('summarycontent');
-    $fullcontent = pnConfigGetVar('fullcontent');
+    $summarycontent = System::getVar('summarycontent');
+    $fullcontent = System::getVar('fullcontent');
 
     // substitute placeholders in summary content with real values
-    $summarycontent = preg_replace('/%sitename%/i', pnConfigGetVar('sitename'), $summarycontent);
+    $summarycontent = preg_replace('/%sitename%/i', System::getVar('sitename'), $summarycontent);
     $summarycontent = preg_replace('/%date%/i', DateUtil::strftime( __('%b %d, %Y'), (time())), $summarycontent);
     $summarycontent = preg_replace('/%time%/i', DateUtil::strftime( __('%I:%M %p'), (time())), $summarycontent);
     $summarycontent = preg_replace('/%filename%/i', $args['detecting_file'], $summarycontent);
     $summarycontent = preg_replace('/%linenumber%/i', strval($args['detecting_line']), $summarycontent);
-    $summarycontent = preg_replace('/%type%/i', pnConfigGetVar('sitename'), $summarycontent);
+    $summarycontent = preg_replace('/%type%/i', System::getVar('sitename'), $summarycontent);
     $summarycontent = preg_replace('/%additionalinfo%/i', $args['message'], $summarycontent);
 
     if (UserUtil::isLoggedIn()) {
@@ -345,7 +345,7 @@ function securitycenter_userapi_mailhackattempt($args)
         $summarycontent = preg_replace('/%useremail%/i', UserUtil::getVar('email'), $summarycontent);
         $summarycontent = preg_replace('/%userrealname%/i', UserUtil::getVar('name'), $summarycontent);
     } else {
-        $summarycontent = preg_replace('/%username%/i', pnConfigGetVar('anonymous'), $summarycontent);
+        $summarycontent = preg_replace('/%username%/i', System::getVar('anonymous'), $summarycontent);
         $summarycontent = preg_replace('/%useremail%/i', '-', $summarycontent);
         $summarycontent = preg_replace('/%userrealname%/i', '-', $summarycontent);
     }
@@ -357,7 +357,7 @@ function securitycenter_userapi_mailhackattempt($args)
     $bodytext = $summarycontent;
 
     // if full mail is requested then add additional info
-    if (pnConfigGetVar('onlysendsummarybyemail') == 0) {
+    if (System::getVar('onlysendsummarybyemail') == 0) {
         //initalise output string
         $output = '';
         // build output
@@ -446,8 +446,8 @@ function securitycenter_userapi_mailhackattempt($args)
     }
 
     // construct and send email
-    $sitename = pnConfigGetVar('sitename');
-    $adminmail = pnConfigGetVar('adminmail');
+    $sitename = System::getVar('sitename');
+    $adminmail = System::getVar('adminmail');
     $headers = "From: $sitename <$adminmail>\n"
               ."X-Priority: 1 (Highest)";
     pnMail($adminmail, __f('Possible attempt to crack your site (type: %s)', $args['hacktype']), $bodytext, $headers );
@@ -477,7 +477,7 @@ function &securitycenter_userapi_getpurifier($args = null)
     static $purifier;
 
     if (!isset($purifier) || $force) {
-        $config = pnConfigGetVar('htmlpurifierConfig');
+        $config = System::getVar('htmlpurifierConfig');
         if (!is_null($config) && ($config !== false)) {
             $config = unserialize($config);
         } else {
@@ -519,7 +519,7 @@ function &securitycenter_userapi_getpurifier($args = null)
             // define where our cache directory lives
             $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
 
-            pnConfigSetVar('htmlpurifierConfig', serialize($config));
+            System::setVar('htmlpurifierConfig', serialize($config));
         }
 
         $purifier = new HTMLPurifier($config);
@@ -542,7 +542,7 @@ function &securitycenter_userapi_getpurifier($args = null)
 function securitycenter_userapi_secureoutput($args)
 {
     if (!isset($args['filter']) || empty($args['filter']) || !is_numeric($args['filter'])) {
-        $args['filter'] = pnConfigGetVar('outputfilter');
+        $args['filter'] = System::getVar('outputfilter');
     }
 
     // recursive call for arrays and hashs of vars ;)
@@ -640,7 +640,7 @@ function _securitycenter_userapi_getidsconfig()
     // General configuration settings
     $config['General'] = array();
 
-    $config['General']['filter_type'] = pnConfigGetVar('idsfilter', 'xml');
+    $config['General']['filter_type'] = System::getVar('idsfilter', 'xml');
     if (empty($config['General']['filter_type'])) {
         $config['General']['filter_type'] = 'xml';
     }
@@ -657,7 +657,7 @@ function _securitycenter_userapi_getidsconfig()
 
     // we use a different HTML Purifier source
     // by default PHPIDS does also contain those files
-    //$config['General']['HTML_Purifier_Path'] = pnConfigGetVar('htmlpurifierlocation') . 'HTMLPurifier.auto.php';
+    //$config['General']['HTML_Purifier_Path'] = System::getVar('htmlpurifierlocation') . 'HTMLPurifier.auto.php';
     $config['General']['HTML_Purifier_Cache'] = CacheUtil::getLocalDir() . '/purifierCache';
 
     // define which fields contain html and need preparation before hitting the PHPIDS rules
@@ -725,7 +725,7 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
     SessionUtil::setVar('idsImpact', $sessionImpact);
 
     // let's see which impact mode we are using
-    $idsImpactMode = pnConfigGetVar('idsimpactmode', 1);
+    $idsImpactMode = System::getVar('idsimpactmode', 1);
     $idsImpactFactor = 1;
     if ($idsImpactMode == 1) {
         $idsImpactFactor = 1;
@@ -736,10 +736,10 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
     }
 
     // determine our impact threshold values
-    $impactThresholdOne   = pnConfigGetVar('idsimpactthresholdone',    1) * $idsImpactFactor;
-    $impactThresholdTwo   = pnConfigGetVar('idsimpactthresholdtwo',   10) * $idsImpactFactor;
-    $impactThresholdThree = pnConfigGetVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
-    $impactThresholdFour  = pnConfigGetVar('idsimpactthresholdfour',  75) * $idsImpactFactor;
+    $impactThresholdOne   = System::getVar('idsimpactthresholdone',    1) * $idsImpactFactor;
+    $impactThresholdTwo   = System::getVar('idsimpactthresholdtwo',   10) * $idsImpactFactor;
+    $impactThresholdThree = System::getVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
+    $impactThresholdFour  = System::getVar('idsimpactthresholdfour',  75) * $idsImpactFactor;
 
     $usedImpact = ($idsImpactMode == 1) ? $requestImpact : $sessionImpact;
 
@@ -822,8 +822,8 @@ function _securitycenter_userapi_processIdsResult(IDS_Init $init, IDS_Report $re
         $mailBody .= __f('Request URI: %s', urlencode($currentPage));
 
         // prepare other mail arguments
-        $siteName = pnConfigGetVar('sitename');
-        $adminmail = pnConfigGetVar('adminmail');
+        $siteName = System::getVar('sitename');
+        $adminmail = System::getVar('adminmail');
         $mailTitle = __('Intrusion attempt detected by PHPIDS');
 
         if (ModUtil::available('Mailer')) {

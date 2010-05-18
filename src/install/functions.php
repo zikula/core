@@ -229,7 +229,7 @@ function install()
             }
             break;
         case 'selecttheme':
-            pnConfigSetVar('startpage', $defaultmodule);
+            System::setVar('startpage', $defaultmodule);
             break;
         case 'selectmodule':
             if ($password !== $repeatpassword) {
@@ -265,7 +265,7 @@ function install()
                 pnUserLogin($username, $password);
 
                 // add admin email as site email
-                pnConfigSetVar('adminmail', $email);
+                System::setVar('adminmail', $email);
 
                 update_installed_status();
                 @chmod('config/config.php', 0400);
@@ -287,7 +287,7 @@ function install()
                 define('PNTHEME_STATE_ALL', 0);
                 define('PNTHEME_STATE_ACTIVE', 1);
                 define('PNTHEME_STATE_INACTIVE', 2);
-                pnConfigSetVar('Default_Theme', $defaulttheme);
+                System::setVar('Default_Theme', $defaulttheme);
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
             SessionUtil::requireSession();
@@ -565,7 +565,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
             }
         }
     }
-    pnConfigSetVar('language_i18n', $lang);
+    System::setVar('language_i18n', $lang);
 
     // run any post-install routines
     $func = "installer_{$installtype}_post_install";

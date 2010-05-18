@@ -236,7 +236,7 @@ class UserUtil
     public static function getDynamicDataFields()
     {
         // decide if we have to use the (obsolete) DUDs from the Profile module
-        $profileModule = pnConfigGetVar('profilemodule', '');
+        $profileModule = System::getVar('profilemodule', '');
         if (empty($profileModule) || $profileModule != 'Profile' || !ModUtil::available($profileModule)) {
             return array();
         }
@@ -507,10 +507,10 @@ class UserUtil
     public static function loginHttp()
     {
         $uname = pnServerGetVar('REMOTE_USER');
-        $hSec  = pnConfigGetVar('session_http_login_high_security', true);
+        $hSec  = System::getVar('session_http_login_high_security', true);
         $rc    = self::login($uname, null, false, false);
         if ($rc && $hSec) {
-            pnConfigSetVar('seclevel', 'High');
+            System::setVar('seclevel', 'High');
         }
 
         return $rc;
@@ -905,7 +905,7 @@ class UserUtil
 
         // set a new theme for the user
         $newtheme = FormUtil::getPassedValue('newtheme', null, 'GETPOST');
-        if (!empty($newtheme) && pnConfigGetVar('theme_change')) {
+        if (!empty($newtheme) && System::getVar('theme_change')) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($newtheme));
             if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 if (self::isLoggedIn()) {
@@ -919,7 +919,7 @@ class UserUtil
         }
 
         // User theme
-        if (pnConfigGetVar('theme_change')) {
+        if (System::getVar('theme_change')) {
             if ((self::isLoggedIn())) {
                 $usertheme = UserUtil::getVar('theme');
             } else {
@@ -933,7 +933,7 @@ class UserUtil
         }
 
         // default site theme
-        $defaulttheme = pnConfigGetVar('Default_Theme');
+        $defaulttheme = System::getVar('Default_Theme');
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
         if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
             $theme = self::_themeEvent($themeinfo['name']);

@@ -35,7 +35,7 @@ function theme_themeswitcherblock_init()
 function theme_themeswitcherblock_info()
 {
     $requirement_message = '';
-    $switchThemeEnable = pnConfigGetVar('theme_change');
+    $switchThemeEnable = System::getVar('theme_change');
     if (!$switchThemeEnable) {
         $requirement_message .= __("Notice: This theme switcher block will not be display until you allow users to change themes, you can enable/disable this into the settings of the 'Theme' module.");
     }
@@ -59,7 +59,7 @@ function theme_themeswitcherblock_display($blockinfo)
     }
 
     // check if theme switching is allowed
-    if (!pnConfigGetVar('theme_change')) {
+    if (!System::getVar('theme_change')) {
         return;
     }
 

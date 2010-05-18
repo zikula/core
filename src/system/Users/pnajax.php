@@ -255,7 +255,7 @@ function Users_ajax_checkrequired($dynadata = array())
         return false;
     }
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     if (empty($profileModule) || !ModUtil::available($profileModule)) {
         return false;
     }

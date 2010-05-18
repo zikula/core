@@ -476,7 +476,7 @@ function Groups_userapi_userupdate($args)
                 $uname = UserUtil::getVar('uname', $userid);
                 $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                      array('toname'    => __('Administrator'),
-                                           'toaddress' => pnConfigGetVar('adminmail'),
+                                           'toaddress' => System::getVar('adminmail'),
                                            'subject'   => __('Group membership application registered'),
                                            'body'      => __f('The registered user %1$s has applied for membership of a group. The details of the application are as follows: %2$s', array($uname, $args['applytext']))));
             }
@@ -620,7 +620,7 @@ function Groups_userapi_whosonline($args)
 {
     $pntable = pnDBGetTables();
     $col = $pntable['session_info_column'];
-    $activetime = time() - (pnConfigGetVar('secinactivemins') * 60);
+    $activetime = time() - (System::getVar('secinactivemins') * 60);
 
     $where = "WHERE    $col[uid]!=0 AND $col[lastused]>$activetime
               GROUP BY $col[uid]";

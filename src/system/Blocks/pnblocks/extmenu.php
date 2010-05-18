@@ -163,7 +163,7 @@ function Blocks_extmenublock_display($blockinfo)
                 switch($mod['type']) {
                     case 1:
                         $menuitems[] = array('name'   => $mod['displayname'],
-                                             'url'    => pnConfigGetVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
+                                             'url'    => System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
                                              'title'  => $mod['description'],
                                              'level'  => 0,
                                              'parent' => 0,
@@ -241,7 +241,7 @@ function extmenu_buildURL($url)
             case '[': // old style module link
             {
                 $url = explode(':', substr($url, 1,  - 1));
-                $url = pnConfigGetVar('entrypoint', 'index.php') . '?name='.$url[0].(isset($url[1]) ? '&file='.$url[1]:'');
+                $url = System::getVar('entrypoint', 'index.php') . '?name='.$url[0].(isset($url[1]) ? '&file='.$url[1]:'');
                 break;
             }
             case '{': // new module link
@@ -271,7 +271,7 @@ function extmenu_buildURL($url)
                     //  build the url
                     $url = ModUtil::url($modname, $type, $func, $params);
                 } else {
-                    $url = pnConfigGetVar('entrypoint', 'index.php');
+                    $url = System::getVar('entrypoint', 'index.php');
                 }
                 break;
             }
@@ -346,7 +346,7 @@ function Blocks_extmenublock_modify($blockinfo)
         $redirect = urlencode($newurl);
         $newurl = str_replace(System::getBaseUrl(), '', $newurl);
         if (empty($newurl)) {
-            $newurl = pnConfigGetVar('entrypoint', 'index.php');
+            $newurl = System::getVar('entrypoint', 'index.php');
         }
         foreach($languages as $singlelanguage) {
             $vars['links'][$singlelanguage][] = array('name'   => __('--New link--'),

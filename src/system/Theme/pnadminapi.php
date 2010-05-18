@@ -220,7 +220,7 @@ function theme_adminapi_setasdefault($args)
     }
 
     // change default theme
-    if (!pnConfigSetVar('Default_Theme', $args['themename'])) {
+    if (!System::setVar('Default_Theme', $args['themename'])) {
         return false;
     }
 

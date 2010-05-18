@@ -61,7 +61,7 @@ function securitycenter_adminapi_getlinks()
         $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
         $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'), 'text' => __('Allowed HTML settings'), 'class' => 'z-icon-es-config');
 
-        $outputfilter = pnConfigGetVar('outputfilter');
+        $outputfilter = System::getVar('outputfilter');
         if ($outputfilter == 1) {
             $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'purifierconfig'), 'text' => __('HTMLPurifier settings'), 'class' => 'z-icon-es-config');
         }

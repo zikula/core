@@ -19,7 +19,7 @@ function Categories_pntables()
 {
     // Initialise table array
     $pntable = array();
-    $prefix = pnConfigGetVar('prefix');
+    $prefix = System::getVar('prefix');
 
     $table = DBUtil::getLimitedTablename('categories_category');
     $pntable['categories_category'] = $table;
@@ -90,7 +90,7 @@ function Categories_pntables()
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'cmo_');
     $pntable['categories_mapobj_column'] = $columns;
 
-    $tabledef = array('id' 	         => 'I4 PRIMARY AUTO',
+    $tabledef = array('id'           => 'I4 PRIMARY AUTO',
                       'modname'      => "C(60) NOTNULL DEFAULT ''",
                       'table'        => "C(60) NOTNULL DEAULT ''",
                       'obj_id'       => 'I4 NOTNULL DEFAULT 0',

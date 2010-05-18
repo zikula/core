@@ -20,9 +20,9 @@
 function errors_userapi_send_email()
 {
     /* send error reporting email to admin */
-    $adminmail = pnConfigGetVar('adminmail');
-    $notify_from = pnConfigGetVar('notify_from');
-    $sitename = pnConfigGetVar('sitename');
+    $adminmail = System::getVar('adminmail');
+    $notify_from = System::getVar('notify_from');
+    $sitename = System::getVar('sitename');
     $errortime = date("m/j/Y at g:i a");
 
     $doc = pnServerGetVar('REDIRECT_URL');

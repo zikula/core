@@ -53,8 +53,8 @@ class DBConnectionStack
             self::$manager = Doctrine_Manager::getInstance();
             self::configureDoctrine(self::$manager);
             // setup caching
-            if (!defined('_ZINSTALLVER') && pnConfigGetVar('OBJECT_CACHE_ENABLE')) {
-                $type = pnConfigGetVar('OBJECT_CACHE_TYPE');
+            if (!defined('_ZINSTALLVER') && System::getVar('OBJECT_CACHE_ENABLE')) {
+                $type = System::getVar('OBJECT_CACHE_TYPE');
 
                 // Setup Doctrine Caching
                 $type = ucfirst(strtolower($type));
@@ -77,7 +77,7 @@ class DBConnectionStack
         $connInfo['dbtype'] = strtolower($dsnParts['scheme']);
         $connInfo['dbhost'] = $dsnParts['host'];
         $connInfo['dbname'] = $dsnParts['database'];
-        $connInfo['prefix'] = pnConfigGetVar('prefix') . '_';
+        $connInfo['prefix'] = System::getVar('prefix') . '_';
 
         // test the DB connection works or just set lazy
         try {
@@ -105,7 +105,7 @@ class DBConnectionStack
 
         self::configureDoctrine($connection);
 
-        Doctrine::debug(pnConfigGetVar('development'));
+        Doctrine::debug(System::getVar('development'));
 
         if (isset($connInfo['dbcharset']) && !defined('_ZINSTALLVER')) {
             $connection->setCharset($connInfo['dbcharset']);
@@ -409,7 +409,7 @@ class DBConnectionStack
 
 
             // Table name prefixes
-            $tablePrefix = pnConfigGetVar('prefix');
+            $tablePrefix = System::getVar('prefix');
             $object->setAttribute(Doctrine::ATTR_TBLNAME_FORMAT, "{$tablePrefix}_%s");
 
             // Allow overriding of accessors

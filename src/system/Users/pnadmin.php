@@ -82,7 +82,7 @@ function users_admin_create()
     $dynadata = FormUtil::getPassedValue('dynadata');
     $usermustconfirm = FormUtil::getPassedValue('usermustconfirm');
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // call the API
@@ -226,7 +226,7 @@ function users_admin_view($args = array())
         $groupsArray[$group['gid']] = array('name' => DataUtil::formatForDisplayHTML($group['name']));
     }
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $useProfileModule = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // if module Legal is not available show the equivalent states for user activation value

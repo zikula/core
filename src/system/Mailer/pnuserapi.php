@@ -103,8 +103,8 @@ function Mailer_userapi_sendmessage($args)
     }
 
     // set fromname and fromaddress, default to 'sitename' and 'adminmail' config vars
-    $mail->FromName = (isset($args['fromname']) && $args['fromname']) ? $args['fromname'] : pnConfigGetVar('sitename');
-    $mail->From     = (isset($args['fromaddress']) && $args['fromaddress']) ? $args['fromaddress'] : pnConfigGetVar('adminmail');
+    $mail->FromName = (isset($args['fromname']) && $args['fromname']) ? $args['fromname'] : System::getVar('sitename');
+    $mail->From     = (isset($args['fromaddress']) && $args['fromaddress']) ? $args['fromaddress'] : System::getVar('adminmail');
 
     // add any to addresses
     if (is_array($args['toaddress'])) {

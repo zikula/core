@@ -126,7 +126,7 @@ class SecurityUtil
         $key = $rand . $modname;
 
         // validate useragent
-        if (pnConfigGetVar('sessionauthkeyua')) {
+        if (System::getVar('sessionauthkeyua')) {
             $useragent = sha1(pnServerGetVar('HTTP_USER_AGENT'));
             if (SessionUtil::getVar('useragent') != $useragent) {
                 return false;
@@ -136,7 +136,7 @@ class SecurityUtil
         // Test works because timestamp is embedded in authkey and appended
         // at the end of the authkey, so we can test validity of authid as
         // well as the number of seconds elapsed since generation.
-        $keyexpiry = (int) pnConfigGetVar('keyexpiry');
+        $keyexpiry = (int) System::getVar('keyexpiry');
         $timestamp = ($keyexpiry > 0 ? substr($authid, 40, strlen($authid)) : '');
         $key .= $timestamp;
         // check build key against authid
@@ -183,7 +183,7 @@ class SecurityUtil
         }
 
         $key = $rand_arr[$modname] . $modname;
-        if (pnConfigGetVar('keyexpiry') > 0) {
+        if (System::getVar('keyexpiry') > 0) {
             $timestamp = time();
             $authid = sha1($key . $timestamp) . $timestamp;
         } else {
@@ -407,7 +407,7 @@ class SecurityUtil
      */
     public static function signData($data)
     {
-        $key = pnConfigGetVar('signingkey');
+        $key = System::getVar('signingkey');
         $unsignedData = serialize($data);
         $signature = sha1($unsignedData . $key);
         $signedData = serialize(array($unsignedData, $signature));
@@ -423,7 +423,7 @@ class SecurityUtil
      */
     public static function checkSignedData($data)
     {
-        $key = pnConfigGetVar('signingkey');
+        $key = System::getVar('signingkey');
         $signedData = unserialize($data);
         $signature = sha1($signedData[0] . $key);
         if ($signature != $signedData[1]) {

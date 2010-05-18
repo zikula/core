@@ -31,7 +31,7 @@ function Blocks_thelangblock_info()
     // Requirement
     // $requirement_message must contain the error message or be empty
     $requirement_message = '';
-    $multilanguageEnable = pnConfigGetVar('multilingual');
+    $multilanguageEnable = System::getVar('multilingual');
     if (!$multilanguageEnable) {
         $requirement_message .= __('Notice: This language block will not be display until you enable the multilanguage, you can enable/disable this into into the settings of Zikula.');
     }
@@ -60,7 +60,7 @@ function Blocks_thelangblock_display($blockinfo)
     }
 
     // if the site's not an ML site don't display the block
-    if (!pnConfigGetVar('multilingual')) {
+    if (!System::getVar('multilingual')) {
         return;
     }
 
@@ -112,15 +112,15 @@ function Blocks_thelangblock_display($blockinfo)
     }
 
     // make homepage calculations
-    $shorturls = pnConfigGetVar('shorturls', false);
-    $shorturlstype = pnConfigGetVar('shorturlstype');
+    $shorturls = System::getVar('shorturls', false);
+    $shorturlstype = System::getVar('shorturlstype');
     $dirBased = ($shorturlstype == 0 ? true : false);
 
     if ($shorturls && $dirBased) {
-        $homepage = System::getBaseUrl().pnConfigGetVar('entrypoint', 'index.php');
+        $homepage = System::getBaseUrl().System::getVar('entrypoint', 'index.php');
         $forcefqdn = true;
     } else {
-        $homepage = pnConfigGetVar('entrypoint', 'index.php');
+        $homepage = System::getVar('entrypoint', 'index.php');
         $forcefqdn = false;
     }
 

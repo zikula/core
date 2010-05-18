@@ -33,7 +33,7 @@ class ModUtil
 
             $where = "$col[modname]='" . PN_CONFIG_MODULE .
                     "' OR $col[modname]='pnRender' OR $col[modname]='Theme' OR $col[modname]='Blocks' OR $col[modname]='Users' OR $col[modname]='Settings'";
-            $profileModule = pnConfigGetVar('profilemodule', '');
+            $profileModule = System::getVar('profilemodule', '');
             if (!empty($profileModule) && self::available($profileModule)) {
                 $where .= " OR $col[modname] = '" . $profileModule . "'";
             }
@@ -813,7 +813,7 @@ class ModUtil
 
         // entry point
         if (!isset($entrypoint)) {
-            $entrypoint = pnConfigGetVar('entrypoint');
+            $entrypoint = System::getVar('entrypoint');
         }
         // Hostname
         if (!isset($host)) {
@@ -831,16 +831,16 @@ class ModUtil
         }
         // use friendly url setup
         if (!isset($shorturls)) {
-            $shorturls = pnConfigGetVar('shorturls');
+            $shorturls = System::getVar('shorturls');
         }
         if (!isset($shorturlstype)) {
-            $shorturlstype = pnConfigGetVar('shorturlstype');
+            $shorturlstype = System::getVar('shorturlstype');
         }
         if (!isset($shorturlsstripentrypoint)) {
-            $shorturlsstripentrypoint = pnConfigGetVar('shorturlsstripentrypoint');
+            $shorturlsstripentrypoint = System::getVar('shorturlsstripentrypoint');
         }
         if (!isset($shorturlsdefaultmodule)) {
-            $shorturlsdefaultmodule = pnConfigGetVar('shorturlsdefaultmodule');
+            $shorturlsdefaultmodule = System::getVar('shorturlsdefaultmodule');
         }
         if (isset($args['returnpage'])) {
             $shorturls = false;
@@ -852,7 +852,7 @@ class ModUtil
         $siteRoot = '';
         if ((isset($https) && $https == 'on') || $ssl != null || $fqurl == true) {
             $protocol = 'http' . (($https == 'on' && $ssl !== false) || $ssl === true ? 's' : '');
-            $secureDomain = pnConfigGetVar('secure_domain');
+            $secureDomain = System::getVar('secure_domain');
             $siteRoot = $protocol . '://' . (($secureDomain != '') ? $secureDomain : ($host . $baseuri)) . '/';
         }
 
@@ -1013,7 +1013,7 @@ class ModUtil
             $module = FormUtil::getPassedValue('module', null, 'GETPOST');
 
             if (empty($module)) {
-                $module = pnConfigGetVar('startpage');
+                $module = System::getVar('startpage');
             }
 
             // the parameters may provide the module alias so lets get
@@ -1027,7 +1027,7 @@ class ModUtil
                     if (stristr($_SERVER['PHP_SELF'], 'user.php')) {
                         $module = 'Users';
                     } else {
-                        $module = pnConfigGetVar('startpage');
+                        $module = System::getVar('startpage');
                     }
                 }
             }

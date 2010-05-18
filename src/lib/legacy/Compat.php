@@ -777,9 +777,9 @@ function GetUserTime($time)
     }
 
     if (pnUserLoggedIn()) {
-        $time += (pnUserGetVar('tzoffset') - pnConfigGetVar('timezone_server')) * 3600;
+        $time += (pnUserGetVar('tzoffset') - System::getVar('timezone_server')) * 3600;
     } else {
-        $time += (pnConfigGetVar('timezone_offset') - pnConfigGetVar('timezone_server')) * 3600;
+        $time += (System::getVar('timezone_offset') - System::getVar('timezone_server')) * 3600;
     }
 
     return ($time);

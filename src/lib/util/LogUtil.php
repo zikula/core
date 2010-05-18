@@ -412,10 +412,10 @@ class LogUtil
             //print $msg;
         } elseif ($logDest == 'MAIL') {
             $title = date($logDateFmt) . ", level=$level, uid=$uid\n";
-            $adminmail = pnConfigGetVar('adminmail');
+            $adminmail = System::getVar('adminmail');
 
             $args = array();
-            $args['fromname'] = 'Zikula ' . pnConfigGetVar('slogan', 'Site Slogan');
+            $args['fromname'] = 'Zikula ' . System::getVar('slogan', 'Site Slogan');
             $args['fromaddress'] = $adminmail;
             $args['toname'] = 'Site Administrator';
             $args['toaddress'] = $adminmail;
@@ -513,7 +513,7 @@ class LogUtil
 
 
         $log_keep_seconds = $log_keep_days * $oneday;
-        $lastcheck = pnConfigGetVar('log_last_rotate');
+        $lastcheck = System::getVar('log_last_rotate');
         $currenttime = time();
 
         if (time() - $lastcheck > $oneday) {
@@ -526,7 +526,7 @@ class LogUtil
                     unlink($logfile);
                 }
             }
-            pnConfigSetVar('log_last_rotate', $currenttime);
+            System::setVar('log_last_rotate', $currenttime);
         }
     }
 }

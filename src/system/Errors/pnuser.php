@@ -46,12 +46,12 @@ function errors_user_main($args)
     PageUtil::addVar('stylesheet', 'system/Errors/pnstyle/style.css');
 
     // assign the document info
-    $pnRender->assign('reportlevel', pnConfigGetVar('reportlevel'));
+    $pnRender->assign('reportlevel', System::getVar('reportlevel'));
     $pnRender->assign('currenturi', pnGetCurrentURI());
     $pnRender->assign('localreferer', pnLocalReferer());
-    $pnRender->assign('sitename', pnConfigGetVar('sitename'));
-    $pnRender->assign('reportlevel', pnConfigGetVar('reportlevel'));
-    $pnRender->assign('funtext', pnConfigGetVar('funtext'));
+    $pnRender->assign('sitename', System::getVar('sitename'));
+    $pnRender->assign('reportlevel', System::getVar('reportlevel'));
+    $pnRender->assign('funtext', System::getVar('funtext'));
 
     // assign the list of registered errors
     $pnRender->assign('messages', LogUtil::getErrorMessages());

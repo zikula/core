@@ -43,7 +43,7 @@ class CookieUtil
             return pn_exit('setCookie: ' . DataUtil::formatForDisplay($value) . ' must be a string');
         }
 
-        if (pnConfigGetVar('signcookies') && (!$signed==false)){ // sign the cookie
+        if (System::getVar('signcookies') && (!$signed==false)){ // sign the cookie
             $value = SecurityUtil::signData($value);
         }
 
@@ -62,7 +62,7 @@ class CookieUtil
     public static function getCookie($name, $signed=true, $default='')
     {
         $cookie = FormUtil::getPassedValue($name, $default, 'COOKIE');
-        if (pnConfigGetVar('signcookies') && (!$signed==false)){
+        if (System::getVar('signcookies') && (!$signed==false)){
             return SecurityUtil::checkSignedData($cookie);
         }
 

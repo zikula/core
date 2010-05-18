@@ -52,7 +52,7 @@ function smarty_function_configgetvar($params, &$smarty)
         return false;
     }
 
-    $result = pnConfigGetVar($name, $default);
+    $result = System::getVar($name, $default);
 
     if ($assign) {
         $smarty->assign($assign, $result);

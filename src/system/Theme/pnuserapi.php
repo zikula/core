@@ -257,7 +257,7 @@ function theme_userapi_getpalettenames($args)
 function theme_userapi_resettodefault($args)
 {
     // Security check
-    if (!pnConfigGetVar('theme_change')) {
+    if (!System::getVar('theme_change')) {
         return LogUtil::registerError(__('Notice: Theme switching is currently disabled.'));
     }
 

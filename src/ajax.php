@@ -25,7 +25,7 @@ $type   = FormUtil::getPassedValue('type', 'ajax', 'GETPOST');
 $func   = FormUtil::getPassedValue('func', '', 'GETPOST');
 
 // Check for site closed
-if (pnConfigGetVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
+if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
         pnUserLogOut();
     }
@@ -53,7 +53,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
     }
 
     if (pnModLoad($modinfo['name'], $type)) {
-        if (pnConfigGetVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
                 $dbConn = pnDBGetConn(true);
                 $dbConn->StartTrans();
         }
@@ -61,7 +61,7 @@ if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
         // Run the function
         $return = pnModFunc($modinfo['name'], $type, $func, $arguments);
 
-        if (pnConfigGetVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
             if ($dbConn->HasFailedTrans()) {
                 $return = __('Error! The transaction failed. Please perform a rollback.') . "\n" . $return;
                 AjaxUtil::error($return);

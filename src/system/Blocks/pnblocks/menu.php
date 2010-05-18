@@ -102,7 +102,7 @@ function Blocks_menublock_display($blockinfo)
                 switch($mod['type']) {
                     case 1:
                         $menuitems[] = blocks_menu_addMenuItem($mod['displayname'],
-                                               pnConfigGetVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
+                                               System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
                                                $mod['description']);
                         $content = true;
                         break;
@@ -174,7 +174,7 @@ function blocks_menu_addMenuItem($title, $url, $comment)
             case '[': // old style module link
             {
                 $url = explode(':', substr($url, 1,  - 1));
-                $url = pnConfigGetVar('entrypoint', 'index.php') . '?name='.$url[0].(isset($url[1]) ? '&file='.$url[1]:'');
+                $url = System::getVar('entrypoint', 'index.php') . '?name='.$url[0].(isset($url[1]) ? '&file='.$url[1]:'');
                 break;
             }
             case '{': // new module link
@@ -204,7 +204,7 @@ function blocks_menu_addMenuItem($title, $url, $comment)
                     //  build the url
                     $url = ModUtil::url($modname, $type, $func, $params);
                 } else {
-                    $url = pnConfigGetVar('entrypoint', 'index.php');
+                    $url = System::getVar('entrypoint', 'index.php');
                 }
                 break;
             }

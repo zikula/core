@@ -25,7 +25,7 @@ function theme_pntables()
     // Initialise table array
     $pntable = array();
 
-    $prefix = pnConfigGetVar('prefix');
+    $prefix = System::getVar('prefix');
 
     // note: we can't share the themes table since a module function can be overriden in the theme
     // so pnModFuncExec gets the current active theme. This needs the theme table info so we've a

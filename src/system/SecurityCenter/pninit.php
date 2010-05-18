@@ -38,39 +38,39 @@ function securitycenter_init()
 
     // We use config vars for the rest of the configuration as config vars
     // are available earlier in the PN initialisation process
-    pnConfigSetVar('enableanticracker', 1);
-    pnConfigSetVar('emailhackattempt', 1);
-    pnConfigSetVar('loghackattempttodb', 1);
-    pnConfigSetVar('onlysendsummarybyemail', 1);
-    pnConfigSetVar('updatecheck', 1);
-    pnConfigSetVar('updatefrequency', 7);
-    pnConfigSetVar('updatelastchecked', 0);
-    pnConfigSetVar('updateversion', System::VERSION_NUM);
-    pnConfigSetVar('keyexpiry', 0);
-    pnConfigSetVar('sessionauthkeyua', false);
-    pnConfigSetVar('secure_domain', '');
-    pnConfigSetVar('signcookies', 1);
-    pnConfigSetVar('signingkey', sha1(rand(0, time())));
-    pnConfigSetVar('seclevel', 'Medium');
-    pnConfigSetVar('secmeddays', 7);
-    pnConfigSetVar('secinactivemins', 20);
-    pnConfigSetVar('sessionstoretofile', 0);
-    pnConfigSetVar('sessionsavepath', '');
-    pnConfigSetVar('gc_probability', 100);
-    pnConfigSetVar('anonymoussessions', 1);
-    pnConfigSetVar('sessionrandregenerate', true);
-    pnConfigSetVar('sessionregenerate', true);
-    pnConfigSetVar('sessionregeneratefreq', 10);
-    pnConfigSetVar('sessionipcheck', 0);
-    pnConfigSetVar('sessionname', 'ZSID');
+    System::setVar('enableanticracker', 1);
+    System::setVar('emailhackattempt', 1);
+    System::setVar('loghackattempttodb', 1);
+    System::setVar('onlysendsummarybyemail', 1);
+    System::setVar('updatecheck', 1);
+    System::setVar('updatefrequency', 7);
+    System::setVar('updatelastchecked', 0);
+    System::setVar('updateversion', System::VERSION_NUM);
+    System::setVar('keyexpiry', 0);
+    System::setVar('sessionauthkeyua', false);
+    System::setVar('secure_domain', '');
+    System::setVar('signcookies', 1);
+    System::setVar('signingkey', sha1(rand(0, time())));
+    System::setVar('seclevel', 'Medium');
+    System::setVar('secmeddays', 7);
+    System::setVar('secinactivemins', 20);
+    System::setVar('sessionstoretofile', 0);
+    System::setVar('sessionsavepath', '');
+    System::setVar('gc_probability', 100);
+    System::setVar('anonymoussessions', 1);
+    System::setVar('sessionrandregenerate', true);
+    System::setVar('sessionregenerate', true);
+    System::setVar('sessionregeneratefreq', 10);
+    System::setVar('sessionipcheck', 0);
+    System::setVar('sessionname', 'ZSID');
 
-    pnConfigSetVar('filtergetvars', 1);
-    pnConfigSetVar('filterpostvars', 1);
-    pnConfigSetVar('filtercookievars', 1);
-    pnConfigSetVar('outputfilter', 1);
+    System::setVar('filtergetvars', 1);
+    System::setVar('filterpostvars', 1);
+    System::setVar('filtercookievars', 1);
+    System::setVar('outputfilter', 1);
 
     // Location of HTML Purifier
-    pnConfigSetVar('htmlpurifierlocation', 'system/SecurityCenter/pnincludes/htmlpurifier/');
+    System::setVar('htmlpurifierlocation', 'system/SecurityCenter/pnincludes/htmlpurifier/');
 
     // HTML Purifier cache dir
     $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
@@ -79,40 +79,40 @@ function securitycenter_init()
     }
 
     // create vars for phpids usage
-    pnConfigSetVar('useids', 0);
-    pnConfigSetVar('idsfilter', 'xml');               // filter type
-    pnConfigSetVar('idsimpactthresholdone', 1);       // db logging
-    pnConfigSetVar('idsimpactthresholdtwo', 10);      // mail admin
-    pnConfigSetVar('idsimpactthresholdthree', 25);    // block request
-    pnConfigSetVar('idsimpactthresholdfour', 75);     // kick user, destroy session
-    pnConfigSetVar('idsimpactmode', 1);               // per request per default
+    System::setVar('useids', 0);
+    System::setVar('idsfilter', 'xml');               // filter type
+    System::setVar('idsimpactthresholdone', 1);       // db logging
+    System::setVar('idsimpactthresholdtwo', 10);      // mail admin
+    System::setVar('idsimpactthresholdthree', 25);    // block request
+    System::setVar('idsimpactthresholdfour', 75);     // kick user, destroy session
+    System::setVar('idsimpactmode', 1);               // per request per default
 
     // now lets set the default mail message contents
     // file is read from pnincludes directory
     $summarycontent = implode('', file(getcwd() . '/system/SecurityCenter/pnincludes/summary.txt'));
-    pnConfigSetVar('summarycontent', $summarycontent);
+    System::setVar('summarycontent', $summarycontent);
     $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/pnincludes/full.txt'));
-    pnConfigSetVar('fullcontent', $fullcontent);
+    System::setVar('fullcontent', $fullcontent);
 
     // cci vars, see pndocs/ccisecuritystrings.txt
-    pnConfigSetVar('usehtaccessbans', 0);
-    pnConfigSetVar('extrapostprotection', 0);
-    pnConfigSetVar('extragetprotection', 0);
-    pnConfigSetVar('checkmultipost', 0);
-    pnConfigSetVar('maxmultipost', 4);
-    pnConfigSetVar('cpuloadmonitor', 0);
-    pnConfigSetVar('cpumaxload', 10.0);
-    pnConfigSetVar('ccisessionpath', '');
-    pnConfigSetVar('htaccessfilelocation', '.htaccess');
-    pnConfigSetVar('nocookiebanthreshold', 10);
-    pnConfigSetVar('nocookiewarningthreshold', 2);
-    pnConfigSetVar('fastaccessbanthreshold', 40);
-    pnConfigSetVar('fastaccesswarnthreshold', 10);
-    pnConfigSetVar('javababble', 0);
-    pnConfigSetVar('javaencrypt', 0);
-    pnConfigSetVar('preservehead', 0);
-    pnConfigSetVar('filterarrays', 1);
-    pnConfigSetVar('htmlentities', '1');
+    System::setVar('usehtaccessbans', 0);
+    System::setVar('extrapostprotection', 0);
+    System::setVar('extragetprotection', 0);
+    System::setVar('checkmultipost', 0);
+    System::setVar('maxmultipost', 4);
+    System::setVar('cpuloadmonitor', 0);
+    System::setVar('cpumaxload', 10.0);
+    System::setVar('ccisessionpath', '');
+    System::setVar('htaccessfilelocation', '.htaccess');
+    System::setVar('nocookiebanthreshold', 10);
+    System::setVar('nocookiewarningthreshold', 2);
+    System::setVar('fastaccessbanthreshold', 40);
+    System::setVar('fastaccesswarnthreshold', 10);
+    System::setVar('javababble', 0);
+    System::setVar('javaencrypt', 0);
+    System::setVar('preservehead', 0);
+    System::setVar('filterarrays', 1);
+    System::setVar('htmlentities', '1');
 
     // default values for AllowableHTML
     $defhtml = array('!--' => 2,
@@ -198,7 +198,7 @@ function securitycenter_init()
                      'u' => 0,
                      'ul' => 2,
                      'var' => 0);
-    pnConfigSetVar('AllowableHTML', $defhtml);
+    System::setVar('AllowableHTML', $defhtml);
 
     // Initialisation successful
     return true;
@@ -239,18 +239,18 @@ function securitycenter_upgrade($oldversion)
             }
 
             // create vars for phpids usage
-            pnConfigSetVar('useids', 0);
-            pnConfigSetVar('idsfilter', 'xml');               // filter type
-            pnConfigSetVar('idsimpactthresholdone', 1);       // db logging
-            pnConfigSetVar('idsimpactthresholdtwo', 10);      // mail admin
-            pnConfigSetVar('idsimpactthresholdthree', 25);    // block request
-            pnConfigSetVar('idsimpactthresholdfour', 75);     // kick user, destroy session
-            pnConfigSetVar('idsimpactmode', 1);               // per request per default
+            System::setVar('useids', 0);
+            System::setVar('idsfilter', 'xml');               // filter type
+            System::setVar('idsimpactthresholdone', 1);       // db logging
+            System::setVar('idsimpactthresholdtwo', 10);      // mail admin
+            System::setVar('idsimpactthresholdthree', 25);    // block request
+            System::setVar('idsimpactthresholdfour', 75);     // kick user, destroy session
+            System::setVar('idsimpactmode', 1);               // per request per default
             // fall through
 
         case '1.4':
             // Location of HTML Purifier
-            pnConfigSetVar('htmlpurifierlocation', 'system/SecurityCenter/pnincludes/htmlpurifier/');
+            System::setVar('htmlpurifierlocation', 'system/SecurityCenter/pnincludes/htmlpurifier/');
             // fall through
 
         case '1.6':

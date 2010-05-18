@@ -138,7 +138,7 @@ class Theme extends Renderer
             $this->load_filter('output', $pagevarfilter);
 
             // register short urls output filter
-            if (pnConfigGetVar('shorturls')) {
+            if (System::getVar('shorturls')) {
                 $this->load_filter('output', 'shorturls');
             }
 
@@ -427,15 +427,15 @@ class Theme extends Renderer
         // parse the query string into individual arguments discarding common arguments
         // common arguments are ones that we don't want affecting our url matching or ones that are
         // already considered; These are same args defined as reserved by the MDG.
-        if (pnConfigGetVar('shorturls')) {
-            if (pnConfigGetVar('shorturlstype') == 0) {
+        if (System::getVar('shorturls')) {
+            if (System::getVar('shorturlstype') == 0) {
                 // remove the base URI and the entrypoint from the request URI
                 $customargs = str_replace(System::getBaseUri(), '', $this->requesturi);
-                $entrypoint = pnConfigGetVar('entrypoint');
+                $entrypoint = System::getVar('entrypoint');
                 $customargs = str_replace("/{$entrypoint}/", '/', $customargs);
             } else {
                 // remove the base URI, extension, entrypoint, module name and, if it exists, the function name from the request URI
-                $extension = pnConfigGetVar('shorturlsext');
+                $extension = System::getVar('shorturlsext');
                 $qstring = str_replace(array(
                     System::getBaseUri() . '/',
                     ".{$extension}",

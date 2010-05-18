@@ -432,7 +432,7 @@ function Groups_adminapi_pendingaction($args)
                                            'subject'   => $args['reasontitle'],
                                            'body'      => $args['reason']));
             } else {
-                $send = pnMail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: ".pnConfigGetVar('adminmail')."\nX-Mailer: PHP/" . phpversion(), 0);
+                $send = pnMail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: ".System::getVar('adminmail')."\nX-Mailer: PHP/" . phpversion(), 0);
             }
             break;
     }

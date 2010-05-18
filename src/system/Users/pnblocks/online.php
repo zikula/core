@@ -67,7 +67,7 @@ function users_onlineblock_display($row)
     $pntable = pnDBGetTables();
 
     $sessioninfocolumn = $pntable['session_info_column'];
-    $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (pnConfigGetVar('secinactivemins') * 60));
+    $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));
 
     $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] > 0";
     $numusers = DBUtil::selectObjectCount('session_info', $where, 'uid', true);
@@ -83,7 +83,7 @@ function users_onlineblock_display($row)
     $numrows = 0;
     $unreadrows = 0;
 
-    $msgmodule = pnConfigGetVar('messagemodule', '');
+    $msgmodule = System::getVar('messagemodule', '');
     if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
         $pnr->assign('username', UserUtil::getVar('uname'));
         // check if message module is available and add the necessary info

@@ -100,9 +100,9 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
         // todo: make his more unobtrusive, but how? Dynamic javascript creation might be a performance problem. Any idea here
         // is highly appreciated! [landseer]
         //
-        $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . pnConfigGetVar('entrypoint', 'index.php') . '"; document.location.pnbaseURL="' . System::getBaseUrl() . '"; ';
+        $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . System::getVar('entrypoint', 'index.php') . '"; document.location.pnbaseURL="' . System::getBaseUrl() . '"; ';
         // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in pnajax.js
-        $ajaxtimeout = pnConfigGetVar('ajaxtimeout', 5000);
+        $ajaxtimeout = System::getVar('ajaxtimeout', 5000);
         if ($ajaxtimeout != 5000) {
             $return .= 'document.location.ajaxtimeout=' . (int) DataUtil::formatForDisplay($ajaxtimeout) . ';';
         }
@@ -130,7 +130,7 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     // if we've got some page vars to add the header wrap the output in
     // suitable identifiying comments when in development mode
     $return = trim($return);
-    if (!empty($return) && pnConfigGetVar('development') != 0) {
+    if (!empty($return) && System::getVar('development') != 0) {
         $return = "<!-- zikula pagevars -->\n" . $return . "\n<!-- /zikula pagevars -->";
     }
 

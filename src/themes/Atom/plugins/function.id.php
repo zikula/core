@@ -26,10 +26,10 @@ function smarty_function_id($params, &$smarty)
 
     $parts = parse_url($baseurl);
 
-    $starttimestamp = strtotime(pnConfigGetVar('startdate'));
+    $starttimestamp = strtotime(System::getVar('startdate'));
     $startdate = strftime('%Y-%m-%d', $starttimestamp);
 
-    $sitename = pnConfigGetVar('sitename');
+    $sitename = System::getVar('sitename');
     $sitename = preg_replace('/[^a-zA-Z0-9-\s]/', '', $sitename);
     $sitename = DataUtil::formatForURL($sitename);
 

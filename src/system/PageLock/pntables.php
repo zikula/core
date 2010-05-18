@@ -18,7 +18,7 @@
 function & PageLock_pntables()
 {
   $pntable = array();
-  $prefix = pnConfigGetVar('prefix');
+  $prefix = System::getVar('prefix');
 
     // Lock table setup
 

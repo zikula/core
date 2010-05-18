@@ -348,7 +348,7 @@ function users_userapi_finishnewuser($args)
         $args['commentlimit'] = '4096';
     }
     if (!isset($args['timezoneoffset'])) {
-        $args['timezoneoffset'] = pnConfigGetVar('timezone_offset');
+        $args['timezoneoffset'] = System::getVar('timezone_offset');
     }
     if (!isset($args['usermustconfirm'])) {
         $args['usermustconfirm'] = 0;
@@ -406,7 +406,7 @@ function users_userapi_finishnewuser($args)
         $columnid   = $column['uid'];
     }
 
-    $sitename  = pnConfigGetVar('sitename');
+    $sitename  = System::getVar('sitename');
     $siteurl   = System::getBaseUrl();
 
     // create output object
@@ -472,7 +472,7 @@ function users_userapi_finishnewuser($args)
     $obj['activated']       = $activated;
     $obj['hash_method']     = $hashmethod;
 
-    $profileModule = pnConfigGetVar('profilemodule', '');
+    $profileModule = System::getVar('profilemodule', '');
     $useProfileModule = (!empty($profileModule) && ModUtil::available($profileModule));
 
     // call the profile manager to handle dyndata if needed
@@ -508,7 +508,7 @@ function users_userapi_finishnewuser($args)
     }
 
     if (!$args['skipnotifications']) {
-        $from = pnConfigGetVar('adminmail');
+        $from = System::getVar('adminmail');
 
         // begin mail user
         $pnRender->assign('email', $args['email']);
@@ -798,7 +798,7 @@ function Users_userapi_savepreemail($args)
     $pnRender->assign('uname', $uname);
     $pnRender->assign('email', UserUtil::getVar('email'));
     $pnRender->assign('newemail', $args['newemail']);
-    $pnRender->assign('sitename', pnConfigGetVar('sitename'));
+    $pnRender->assign('sitename', System::getVar('sitename'));
     $pnRender->assign('url',  ModUtil::url('Users', 'user', 'confirmchemail', array('confirmcode' => $confirmValue), null, null, true));
 
     $message = $pnRender->fetch('users_userapi_confirmchemail.htm');

@@ -266,7 +266,7 @@ function Admin_admin_adminpanel($args)
     // Create output object
     $pnRender = Renderer::getInstance('Admin', false);
 
-    if (!ModUtil::getVar('Admin', 'ignoreinstallercheck') && pnConfigGetVar('development') == 0) {
+    if (!ModUtil::getVar('Admin', 'ignoreinstallercheck') && System::getVar('development') == 0) {
         // check if the Zikula Recovery Console exists
         $zrcexists = file_exists('zrc.php');
         // check if upgrade scripts exist
@@ -693,7 +693,7 @@ function _Admin_admin_securityanalyzer()
     $data['scactive']  = (bool)ModUtil::available('SecurityCenter');
 
     // check for outputfilter
-    $data['useids'] = (bool)(ModUtil::available('SecurityCenter') && pnConfigGetVar('useids') == 1);
+    $data['useids'] = (bool)(ModUtil::available('SecurityCenter') && System::getVar('useids') == 1);
 
     return $data;
 }
@@ -707,14 +707,14 @@ function _Admin_admin_securityanalyzer()
  */
 function _Admin_admin_updatecheck($force=false)
 {
-    if (!pnConfigGetVar('updatecheck')) {
+    if (!System::getVar('updatecheck')) {
         return array('update_show' => false);
     }
 
     $now = time();
-    $lastChecked = (int)pnConfigGetVar('updatelastchecked');
-    $checkInterval = (int)pnConfigGetVar('updatefrequency') * 86400;
-    $updateversion = pnConfigGetVar('updateversion');
+    $lastChecked = (int)System::getVar('updatelastchecked');
+    $checkInterval = (int)System::getVar('updatefrequency') * 86400;
+    $updateversion = System::getVar('updateversion');
 
     if ($force == false && (($now - $lastChecked) < $checkInterval)) {
         // dont get an update because TTL not expired yet
@@ -725,8 +725,8 @@ function _Admin_admin_updatecheck($force=false)
         if ($onlineVersion === false) {
             return array('update_show' => false);
         }
-        pnConfigSetVar('updateversion', $onlineVersion);
-        pnConfigSetVar('updatelastchecked', (int)time());
+        System::setVar('updateversion', $onlineVersion);
+        System::setVar('updatelastchecked', (int)time());
     }
 
     // if 1 then there is a later version available

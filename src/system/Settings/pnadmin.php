@@ -82,7 +82,7 @@ function settings_admin_updateconfig() {
     if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint'])
         || strtolower($entryPointExt) != 'php') {
         LogUtil::registerError(__("Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory."));
-        $settings['entrypoint'] = pnConfigGetVar('entrypoint');
+        $settings['entrypoint'] = System::getVar('entrypoint');
     }
 
     $permachecks = true;
@@ -118,9 +118,9 @@ function settings_admin_updateconfig() {
     // Write the vars
     $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     foreach($settings as $key => $value) {
-        $oldvalue = pnConfigGetVar($key);
+        $oldvalue = System::getVar($key);
         if ($value != $oldvalue) {
-            pnConfigSetVar($key, $value);
+            System::setVar($key, $value);
         }
     }
 
@@ -194,8 +194,8 @@ function settings_admin_updatemultilingual()
 
     // we can't detect language if multilingual feature is off so reset this to false
     if (FormUtil::getPassedValue('mlsettings_multilingual', null, 'POST') == 0) {
-        if (pnConfigGetVar('language_detect')) {
-            pnConfigSetVar('language_detect', 0);
+        if (System::getVar('language_detect')) {
+            System::setVar('language_detect', 0);
             unset($settings['mlsettings_language_detect']);
             LogUtil::registerStatus(__('Notice: Language detection is automatically disabled when multi-lingual features are disabled.'));
         }
@@ -204,10 +204,10 @@ function settings_admin_updatemultilingual()
     }
 
     if (FormUtil::getPassedValue('mlsettings_language_bc', null, 'POST') == 0) {
-        $lang = pnConfigGetVar('language_i18n');
+        $lang = System::getVar('language_i18n');
         $newvalue = substr($lang, 0, (strpos($lang, '-') ? strpos($lang, '-') : strlen($lang)));
         if ($lang != $newvalue) {
-            pnConfigSetVar('language_i18n', $newvalue);
+            System::setVar('language_i18n', $newvalue);
             unset($settings['mlsettings_language_i18n']);
             LogUtil::registerStatus(__('Warning! The system language has been changed because language variations have been disabled.'));
             $deleteLangUrl = true;
@@ -224,9 +224,9 @@ function settings_admin_updatemultilingual()
     $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     foreach($settings as $formname => $varname) {
         $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
-        $oldvalue = pnConfigGetVar($varname);
+        $oldvalue = System::getVar($varname);
         if ($newvalue != $oldvalue) {
-            pnConfigSetVar($varname, $newvalue);
+            System::setVar($varname, $newvalue);
         }
     }
 
@@ -263,7 +263,7 @@ function settings_admin_errorhandling()
         $configvars[$key] = $configvar;
     }
     // add the development flag
-    $configvars['development'] = pnConfigGetVar('development');
+    $configvars['development'] = System::getVar('development');
     $pnRender->assign($configvars);
 
     return $pnRender->fetch('settings_admin_errorhandling.htm');
@@ -294,9 +294,9 @@ function settings_admin_updateerrorhandling() {
     $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
     foreach($settings as $formname => $varname) {
         $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
-        $oldvalue = pnConfigGetVar($varname);
+        $oldvalue = System::getVar($varname);
         if ($newvalue != $oldvalue) {
-            pnConfigSetVar($varname, $newvalue);
+            System::setVar($varname, $newvalue);
         }
     }
 

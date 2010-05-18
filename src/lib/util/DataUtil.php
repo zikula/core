@@ -254,7 +254,7 @@ class DataUtil
 
         if (!isset($allowedtags)) {
             $allowedHTML = array();
-            $allowableHTML = pnConfigGetVar('AllowableHTML');
+            $allowableHTML = System::getVar('AllowableHTML');
             if (is_array($allowableHTML)) {
                 foreach ($allowableHTML as $k => $v) {
                     if ($k == '!--') {
@@ -287,7 +287,7 @@ class DataUtil
 
         if (!isset($outputfilter)) {
             if (ModUtil::available('SecurityCenter') && !defined('_ZINSTALLVER')) {
-                $outputfilter = pnConfigGetVar('outputfilter');
+                $outputfilter = System::getVar('outputfilter');
             } else {
                 $outputfilter = 0;
             }
@@ -318,7 +318,7 @@ class DataUtil
             $var = preg_replace_callback('#\022([^\024]*)\024#', create_function('$m', 'return DataUtil::formatForDisplayHTML_callback($m);'), $var);
 
             // Fix entities if required
-            if (pnConfigGetVar('htmlentities')) {
+            if (System::getVar('htmlentities')) {
                 $var = preg_replace('/&amp;([a-z#0-9]+);/i', "&\\1;", $var);
             }
         }
@@ -459,7 +459,7 @@ class DataUtil
     {
         static $permalinksseparator;
         if (!isset($permalinksseparator)) {
-            $permalinksseparator = pnConfigGetVar('shorturlsseparator');
+            $permalinksseparator = System::getVar('shorturlsseparator');
         }
         $var = strip_tags($var);
         $var = preg_replace("/&[#a-zA-Z0-9]+;|\?/", '', $var); // remove &....; and ?
@@ -468,8 +468,8 @@ class DataUtil
 
         if (strpos(strtolower(ZLanguage::getEncoding()), 'utf') === false) {
             // accents deletion
-            $permasearch = explode(',', pnConfigGetVar('permasearch'));
-            $permareplace = explode(',', pnConfigGetVar('permareplace'));
+            $permasearch = explode(',', System::getVar('permasearch'));
+            $permareplace = explode(',', System::getVar('permareplace'));
             $var = str_replace($var, $permasearch, $permareplace);
             // repeated separator
             $var = str_replace($permalinksseparator . $permalinksseparator . $permalinksseparator, $permalinksseparator, $var);
@@ -483,7 +483,7 @@ class DataUtil
                 // add: PHP_VALUE mbstring.func_overload 6
                 // to your .htaccess or php.ini file
                 // sure, a hack - needs to be replaced with a more generic check
-                if (pnConfigGetVar('shorturls') && ZLanguage::getLanguageCode() == 'ja') {
+                if (System::getVar('shorturls') && ZLanguage::getLanguageCode() == 'ja') {
                     $msg = __("Error! Place 'PHP_VALUE mbstring.func_overload 4' in your server's '.htaccess' server configuration file or 'php.ini' PHP configuration file. Short URLs will not work unless you do so.");
                     LogUtil::registerError($msg);
                 }
