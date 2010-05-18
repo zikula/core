@@ -91,7 +91,6 @@ ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
 
 include 'lib/api/debug.php';
-include 'lib/api/User.php';
 
 /**
  * Functions
@@ -352,7 +351,7 @@ function pnInit($stages = PN_CORE_ALL)
             SessionUtil::requireSession();
 
             // Auto-login via HTTP(S) REMOTE_USER property
-            if (pnConfigGetVar('session_http_login') && !pnUserLoggedIn()) {
+            if (pnConfigGetVar('session_http_login') && !UserUtil::isLoggedIn()) {
                 pnUserLogInHTTP();
             }
         }
@@ -411,7 +410,7 @@ function pnInit($stages = PN_CORE_ALL)
     }
 
     // check the users status, if not 1 then log him out
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         $userstatus = pnUserGetVar('activated');
         if ($userstatus != 1) {
             pnUserLogOut();

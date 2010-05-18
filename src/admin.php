@@ -32,7 +32,7 @@ $module = FormUtil::getPassedValue('module', '', 'GETPOST');
 
 if (empty($module)) {
     // call for admin.php without module parameter
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         pnRedirect(ModUtil::url('Users', 'user', 'loginscreen', array(
             'returnpage'    => urlencode(ModUtil::url('Admin', 'admin', 'adminpanel'))
         )));

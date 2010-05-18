@@ -188,7 +188,7 @@ class LogUtil
 
         self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
         $code = 403;
-        if (!pnUserLoggedIn()) {
+        if (!UserUtil::isLoggedIn()) {
             if (is_null($url)) {
                 $url = ModUtil::url('Users', 'user', 'loginscreen', array('returnpage' => urlencode(pnGetCurrentURI())));
             }

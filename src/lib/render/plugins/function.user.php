@@ -25,7 +25,7 @@
  */
 function smarty_function_user($params, &$smarty)
 {
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         $username = pnUserGetVar('uname');
     } else {
         $username = __('anonymous guest');

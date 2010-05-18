@@ -1754,3 +1754,208 @@ function themesideblock($row)
     return BlockUtil::themesideblock($row);
 }
 
+// user
+
+/**
+ * Log the user in
+ *
+ * @param uname $ the name of the user logging in
+ * @param pass $ the password of the user logging in
+ * @param rememberme whether $ or not to remember this login
+ * @param checkPassword bool true whether or not to check the password
+ * @return bool true if the user successfully logged in, false otherwise
+ */
+function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
+{
+    return UserUtil::login($uname, $pass, $rememberme, $checkPassword);
+}
+
+/**
+ * Log the user in via the REMOTE_USER SERVER property. This routine simply
+ * checks if the REMOTE_USER exists in the PN environment: if he does a
+ * session is created for him, regardless of the password being used.
+ *
+ * @return bool true if the user successfully logged in, false otherwise
+ */
+function pnUserLogInHTTP()
+{
+    return UserUtil::loginHttp();
+}
+
+/**
+ * Log the user out
+ *
+ * @public
+ * @return bool true if the user successfully logged out, false otherwise
+ */
+function pnUserLogOut()
+{
+    return UserUtil::logout();
+}
+
+/**
+ * is the user logged in?
+ *
+ * @public
+ * @returns bool true if the user is logged in, false if they are not
+ */
+function pnUserLoggedIn()
+{
+    return UserUtil::isLoggedIn();
+}
+
+/**
+ * Get all user variables, maps new style attributes to old style user data.
+ *
+ * @param uid $ the user id of the user
+ * @return array an associative array with all variables for a user
+ */
+function pnUserGetVars($id, $force = false, $idfield = '')
+{
+    return UserUtil::getVars($id, $force, $idfield);
+}
+
+/**
+ * get a user variable
+ *
+ * @param name $ the name of the variable
+ * @param uid $ the user to get the variable for
+ * @param default $ the default value to return if the specified variable doesn't exist
+ * @return string the value of the user variable if successful, null otherwise
+ */
+function pnUserGetVar($name, $uid = -1, $default = false)
+{
+    return UserUtil::getVar($name, $uid, $default);
+}
+
+/**
+ * Set a user variable. This can be
+ * - a field in the users table
+ * - or an attribute and in this case either a new style attribute or an old style user information.
+ *
+ * Examples:
+ * pnUserSetVar('pass', 'mysecretpassword'); // store a password (should be hashed of course)
+ * pnUserSetVar('avatar', 'mypicture.gif');  // stores an users avatar, new style
+ * (internally both the new and the old style write the same attribute)
+ *
+ * If the user variable does not exist it will be created automatically. This means with
+ * pnUserSetVar('somename', 'somevalue');
+ * you can easily create brand new users variables onthefly.
+ *
+ * This function does not allow you to set uid or uname.
+ *
+ * @param name $ the name of the variable
+ * @param value $ the value of the variable
+ * @param uid $ the user to set the variable for
+ * @return bool true if the set was successful, false otherwise
+ */
+function pnUserSetVar($name, $value, $uid = -1)
+{
+    return UserUtil::setVar($name, $value, $uid);
+}
+
+function pnUserSetPassword($pass)
+{
+    return UserUtil::setVar($name, $value, $uid);
+}
+
+/**
+ * Delete the contents of a user variable. This can either be
+ * - a variable stored in the users table or
+ * - an attribute to the users table, either a new style sttribute or the old style user information
+ *
+ * Examples:
+ * pnUserDelVar('ublock');  // clears the recent users table entry for 'ublock'
+ * pnUserDelVar('_YOURAVATAR', 123), // removes a users avatar, old style (uid = 123)
+ * pnUserDelVar('avatar', 123);  // removes a users avatar, new style (uid=123)
+ * (internally both the new style and the old style clear the same attribute)
+ *
+ * It does not allow the deletion of uid, email, uname and pass (word) as these are mandatory
+ * fields in the users table.
+ *
+ * @param name $ the name of the variable
+ * @param uid $ the user to delete the variable for
+ * @return boolen true on success, false on failure
+ */
+function pnUserDelVar($name, $uid = -1)
+{
+    return UserUtil::delVar($name, $uid);
+}
+
+/**
+ * get the user's theme
+ * This function will return the current theme for the user.
+ * Order of theme priority:
+ *  - page-specific
+ *  - category
+ *  - user
+ *  - system
+ *
+ * @public
+ * @return string the name of the user's theme
+ **/
+function pnUserGetTheme($force = false)
+{
+    return UserUtil::getTheme($force);
+}
+
+/**
+ * get the user's language
+ *
+ * @deprecated
+ * @see ZLanaguage::getLanguageCode()
+ *
+ * This function returns the deprecated 3 digit language codes, you need to switch APIs
+ *
+ * @return string the name of the user's language
+ */
+function pnUserGetLang()
+{
+    return UserUtil::getLang();
+}
+
+/**
+ * get a list of user information
+ *
+ * @public
+ * @return array array of user arrays
+ */
+function pnUserGetAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
+{
+    return UserUtil::getAll($sortbyfield, $sortorder, $limit, $startnum, $activated, $regexpfield, $regexpression, $where);
+}
+
+/**
+ * Get the uid of a user from the username
+ *
+ * @param uname $ the username
+ * @return mixed userid if found, false if not
+ */
+function pnUserGetIDFromName($uname)
+{
+    return UserUtil::getIdFromName($uname);
+}
+
+/**
+ * Get the uid of a user from the email (case for unique emails)
+ *
+ * @param email $ the user email
+ * @return mixed userid if found, false if not
+ */
+function pnUserGetIDFromEmail($email)
+{
+    return UserUtil::getIdFromEmail($uname);
+}
+
+/**
+ * Checks the alias and returns if we save the data in the
+ * Profile module's user_data table or the users table.
+ * This should be removed if we ever go fully dynamic
+ *
+ * @param label $ the alias of the field to check
+ * @return true if found, false if not, void upon error
+ */
+function pnUserFieldAlias($label)
+{
+    return UserUtil::fieldAlias($label);
+}

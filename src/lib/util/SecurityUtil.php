@@ -213,7 +213,7 @@ class SecurityUtil
         $uids[] = -1;
         // Get user ID
         if (!isset($user)) {
-            if (!pnUserLoggedIn()) {
+            if (!UserUtil::isLoggedIn()) {
                 // Unregistered UID
                 $uids[] = 0;
                 $vars['Active User'] = 'unregistered';
@@ -237,7 +237,7 @@ class SecurityUtil
         static $usergroups = array();
         if (!$usergroups) {
             $usergroups[] = -1;
-            if (!pnUserLoggedIn()) {
+            if (!UserUtil::isLoggedIn()) {
                 $usergroups[] = 0; // Unregistered GID
             }
         }

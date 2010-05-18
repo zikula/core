@@ -18,7 +18,7 @@
 function users_user_main()
 {
     // Security check
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         pnRedirect(ModUtil::url('Users', 'user', 'loginscreen'));
     } elseif (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
         return LogUtil::registerPermissionError();
@@ -49,7 +49,7 @@ function users_user_main()
 function users_user_view()
 {
     // If has logged in, header to index.php
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         return pnRedirect(pnConfigGetVar('entrypoint', 'index.php'));
     }
 
@@ -82,7 +82,7 @@ function users_user_loginscreen($args)
     $pnRender = Renderer::getInstance('Users');
 
     // we shouldn't get here if logged in already....
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         return pnRedirect(ModUtil::url('Users', 'user', 'main'));
     }
 
@@ -144,7 +144,7 @@ function users_user_underage()
 function users_user_register()
 {
     // If has logged in, header to index.php
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         return pnRedirect(pnConfigGetVar('entrypoint', 'index.php'));
     }
 
@@ -177,7 +177,7 @@ function users_user_register()
 function users_user_lostpassword()
 {
     // we shouldn't get here if logged in already....
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         return pnRedirect(ModUtil::url('Users', 'user', 'main'));
     }
 
@@ -204,7 +204,7 @@ function users_user_lostpassword()
 function users_user_login()
 {
     // we shouldn't get here if logged in already....
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         return pnRedirect(ModUtil::url('Users', 'user', 'main'));
     }
 
@@ -777,7 +777,7 @@ function users_user_usersblock()
  */
 function users_user_updateusersblock()
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 
@@ -813,7 +813,7 @@ function users_user_updateusersblock()
  */
 function Users_user_changepassword()
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 
@@ -844,7 +844,7 @@ function Users_user_changepassword()
  */
 function Users_user_updatepassword()
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 
@@ -902,7 +902,7 @@ function Users_user_updatepassword()
  */
 function Users_user_changeemail()
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 
@@ -928,7 +928,7 @@ function Users_user_changeemail()
  */
 function Users_user_updateemail()
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 
@@ -986,7 +986,7 @@ function Users_user_updateemail()
  */
 function Users_user_changelang()
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 
@@ -1015,7 +1015,7 @@ function Users_user_changelang()
 function Users_user_confirmchemail($args)
 {
     $confirmcode = FormUtil::getPassedValue('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null, 'GET');
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 

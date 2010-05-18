@@ -750,7 +750,7 @@ function Users_userapi_accountlinks()
  */
 function Users_userapi_savepreemail($args)
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
 
@@ -818,7 +818,7 @@ function Users_userapi_savepreemail($args)
  */
 function users_userapi_getuserpreemail()
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
     }
     $item = DBUtil::selectObjectById('users_temp', pnUserGetVar('uname'), 'uname');

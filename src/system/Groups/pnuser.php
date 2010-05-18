@@ -49,7 +49,7 @@ function Groups_user_view()
     // we need this value multiple times, so we keep it
     $itemsperpage = ModUtil::getVar('Groups', 'itemsperpage');
 
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         $islogged = true;
     } else {
         $islogged = false;
@@ -131,7 +131,7 @@ function Groups_user_membership()
         return LogUtil::registerArgsError();
     }
 
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerError(__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
     }
 

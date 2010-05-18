@@ -139,7 +139,7 @@ function Categories_user_edituser ()
         return LogUtil::registerPermissionError();
     }
 
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerError(__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
     }
 

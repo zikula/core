@@ -24,7 +24,7 @@ class UserUtil
      * Return a user object
      *
      * @deprecated        to be removed in 2.0.0
-     * @see               pnUserGetVars()
+     * @see               self::getVars()
      * @param uid         The userID of the user to retrieve
      * @param getVars     obsolete, we also return the attributes
      *
@@ -32,14 +32,14 @@ class UserUtil
      */
     public static function getPNUser($uid, $getVars = false)
     {
-        return pnUserGetVars($uid);
+        return self::getVars($uid);
     }
 
     /**
      * Return a field from a user object
      *
      * @deprecated       to be removed in 2.0.0?
-     * @see               pnUserGetVars()
+     * @see               self::getVars()
      * @param id         The userID of the user to retrieve
      * @param field      The field from the user object to get
      *
@@ -265,7 +265,7 @@ class UserUtil
             return array();
         }
 
-        return pnUserGetVars($uid, '__ATTRIBUTES__');
+        return self::getVars($uid, '__ATTRIBUTES__');
     }
 
     /**
@@ -358,7 +358,7 @@ class UserUtil
 
     public static function login($uname, $pass, $rememberme = false, $checkPassword = true)
     {
-        if (pnUserLoggedIn()) {
+        if (self::isLoggedIn()) {
             return true;
         }
 
@@ -449,7 +449,7 @@ class UserUtil
             }
 
             // Storing Last Login date
-            if (!pnUserSetVar('lastlogin', date("Y-m-d H:i:s", time()), $uid)) {
+            if (!self::setVar('lastlogin', date("Y-m-d H:i:s", time()), $uid)) {
                 // show messages but continue
                 LogUtil::registerError(__('Error! Could not save the log-in date.'));
             }
@@ -484,7 +484,7 @@ class UserUtil
         if (isset($confirmtou) && $confirmtou == 1) {
             // if we get here, the user did accept the terms of use
             // now update the status
-            pnUserSetVar('activated', 1, (int) $uid);
+            self::setVar('activated', 1, (int) $uid);
             SessionUtil::delVar('confirmtou');
         }
 
@@ -508,7 +508,7 @@ class UserUtil
     {
         $uname = pnServerGetVar('REMOTE_USER');
         $hSec  = pnConfigGetVar('session_http_login_high_security', true);
-        $rc    = pnUserLogIn($uname, null, false, false);
+        $rc    = self::login($uname, null, false, false);
         if ($rc && $hSec) {
             pnConfigSetVar('seclevel', 'High');
         }
@@ -524,7 +524,7 @@ class UserUtil
      */
     public static function logout()
     {
-        if (pnUserLoggedIn()) {
+        if (self::isLoggedIn()) {
             $event = new Event('user.logout', null, array('user' => pnUserGetVar('uid')));
             EventManagerUtil::notify($event);
             if (ModUtil::available('AuthPN')) {
@@ -663,7 +663,7 @@ class UserUtil
         }
 
         // get this user's variables
-        $vars = pnUserGetVars($uid);
+        $vars = self::getVars($uid);
 
         // Return the variable
         if (isset($vars[$name])) {
@@ -684,12 +684,12 @@ class UserUtil
      * - or an attribute and in this case either a new style attribute or an old style user information.
      *
      * Examples:
-     * pnUserSetVar('pass', 'mysecretpassword'); // store a password (should be hashed of course)
-     * pnUserSetVar('avatar', 'mypicture.gif');  // stores an users avatar, new style
+     * self::setVar('pass', 'mysecretpassword'); // store a password (should be hashed of course)
+     * self::setVar('avatar', 'mypicture.gif');  // stores an users avatar, new style
      * (internally both the new and the old style write the same attribute)
      *
      * If the user variable does not exist it will be created automatically. This means with
-     * pnUserSetVar('somename', 'somevalue');
+     * self::setVar('somename', 'somevalue');
      * you can easily create brand new users variables onthefly.
      *
      * This function does not allow you to set uid or uname.
@@ -748,7 +748,7 @@ class UserUtil
                 'bio' => 'extrainfo');
 
         $res = false;
-        if (pnUserFieldAlias($name)) {
+        if (self::fieldAlias($name)) {
             // this value comes from the users table
             $obj = array('uid' => $uid, $name => $value);
             $res = (bool) DBUtil::updateObject($obj, 'users', '', 'uid');
@@ -766,7 +766,7 @@ class UserUtil
         }
 
         // force loading of attributes from db
-        pnUserGetVars($uid, true);
+        self::getVars($uid, true);
         return $res;
     }
 
@@ -774,8 +774,8 @@ class UserUtil
     {
         $method = ModUtil::getVar('Users', 'hash_method');
         $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
-        pnUserSetVar('pass', hash($method, $pass));
-        pnUserSetVar('hash_method', $hashmethodsarray[$method]);
+        self::setVar('pass', hash($method, $pass));
+        self::setVar('hash_method', $hashmethodsarray[$method]);
     }
 
     /**
@@ -840,7 +840,7 @@ class UserUtil
                 'user_sig' => 'signature',
                 'bio' => 'extrainfo');
 
-        if (pnUserFieldAlias($name)) {
+        if (self::fieldAlias($name)) {
             // this value comes from the users table
             $obj = array('uid' => $uid, $name => '');
             return (bool) DBUtil::updateObject($obj, 'users', '', 'uid');
@@ -856,7 +856,7 @@ class UserUtil
         }
 
         // force loading of attributes from db
-        pnUserGetVars($uid, true);
+        self::getVars($uid, true);
         return (bool) $res;
     }
 
@@ -886,7 +886,7 @@ class UserUtil
         if (!empty($pagetheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
             if ($themeinfo['state'] == PNTHEME_STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin' || stristr($qstring, 'admin.php')))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                $theme = _pnUserGetThemeEvent($themeinfo['name']);
+                $theme = self::_themeEvent($themeinfo['name']);
                 return $theme;
             }
         }
@@ -897,7 +897,7 @@ class UserUtil
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
                 if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                    $theme = _pnUserGetThemeEvent($themeinfo['name']);
+                    $theme = self::_themeEvent($themeinfo['name']);
                     return $theme;
                 }
             }
@@ -908,26 +908,26 @@ class UserUtil
         if (!empty($newtheme) && pnConfigGetVar('theme_change')) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($newtheme));
             if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                if (pnUserLoggedIn()) {
-                    pnUserSetVar('theme', $newtheme);
+                if (self::isLoggedIn()) {
+                    self::setVar('theme', $newtheme);
                 } else {
                     SessionUtil::setVar('theme', $newtheme);
                 }
-                $theme = _pnUserGetThemeEvent($themeinfo['name']);
+                $theme = self::_themeEvent($themeinfo['name']);
                 return $theme;
             }
         }
 
         // User theme
         if (pnConfigGetVar('theme_change')) {
-            if ((pnUserLoggedIn())) {
+            if ((self::isLoggedIn())) {
                 $usertheme = pnUserGetVar('theme');
             } else {
                 $usertheme = SessionUtil::getVar('theme');
             }
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
             if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                $theme = _pnUserGetThemeEvent($themeinfo['name']);
+                $theme = self::_themeEvent($themeinfo['name']);
                 return $theme;
             }
         }
@@ -936,14 +936,14 @@ class UserUtil
         $defaulttheme = pnConfigGetVar('Default_Theme');
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
         if ($themeinfo && $themeinfo['state'] == PNTHEME_STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-            $theme = _pnUserGetThemeEvent($themeinfo['name']);
+            $theme = self::_themeEvent($themeinfo['name']);
             return $theme;
         }
 
         throw new RuntimeException(__('pnUserGetTheme: unable to calculate theme name.'));
     }
 
-    public static function _getThemeEvent($themeName)
+    private static function _themeEvent($themeName)
     {
         $event = new Event('user.gettheme', null, array('name' => $themeName));
         EventManagerUtil::notifyUntil($event);
@@ -1013,7 +1013,7 @@ class UserUtil
      */
     public static function getIdFromName($uname)
     {
-        $result = pnUserGetVars($uname, false, 'uname');
+        $result = self::getVars($uname, false, 'uname');
         return ($result && isset($result['uid']) ? $result['uid'] : false);
     }
 
@@ -1025,7 +1025,7 @@ class UserUtil
      */
     public static function getIdFromEmail($email)
     {
-        $result = pnUserGetVars($email);
+        $result = self::getVars($email);
         return ($result && isset($result['uid']) ? $result['uid'] : false);
     }
 

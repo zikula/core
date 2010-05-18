@@ -89,7 +89,7 @@ function _upg_header()
     echo '<p id="notice">' . __('For more information about the upgrade process, please read the <a href="docs/' . $lang . '/UPGRADING">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.') . '</p>';
     echo '</div>';
     echo '<div id="content">';
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         echo '<h1>' . __f('Zikula version %1$s Upgrade script (for Zikula version %2$s and up)', array(_ZINSTALLVER, _Z_MINUPGVER)) . '</h1>' . "\n";
         echo '<p>' . __f('This script will upgrade any Zikula v%1$s+ installation to v%2$s. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER, _ZINSTALLVER)) . "</p>\n";
     }

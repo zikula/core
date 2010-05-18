@@ -312,7 +312,7 @@ function Groups_userapi_getallgroups($args)
                              'status'      => $status,
                              'canview'     => $canview,
                              'canapply'    => $canapply,
-                             'islogged'    => pnUserLoggedIn(),
+                             'islogged'    => UserUtil::isLoggedIn(),
                              'row'         => $row);
 
             if ($row == 1) {
@@ -449,7 +449,7 @@ function Groups_userapi_userupdate($args)
         return LogUtil::registerArgsError();
     }
 
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         LogUtil::registerError(__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
     }
 

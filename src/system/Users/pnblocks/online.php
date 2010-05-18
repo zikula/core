@@ -76,7 +76,7 @@ function users_onlineblock_display($row)
     $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
 
     $pnr->assign('registerallowed', ModUtil::getVar('Users', 'reg_allowreg'));
-    $pnr->assign('loggedin', pnUserLoggedIn());
+    $pnr->assign('loggedin', UserUtil::isLoggedIn());
     $pnr->assign('userscount', $numusers );
     $pnr->assign('guestcount', $numguests );
 
@@ -84,7 +84,7 @@ function users_onlineblock_display($row)
     $unreadrows = 0;
 
     $msgmodule = pnConfigGetVar('messagemodule', '');
-    if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && pnUserLoggedIn()) {
+    if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
         $pnr->assign('username', pnUserGetVar('uname'));
         // check if message module is available and add the necessary info
         $pnr->assign('msgmodule', $msgmodule);

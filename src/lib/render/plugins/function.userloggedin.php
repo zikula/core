@@ -29,7 +29,7 @@ function smarty_function_userloggedin($params, &$smarty)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $return = pnUserLoggedIn();
+    $return = UserUtil::isLoggedIn();
 
     if ($assign) {
         $smarty->assign($assign, $return);

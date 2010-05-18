@@ -51,7 +51,7 @@ function Users_userblock_display($blockinfo)
         return;
     }
 
-    if (pnUserLoggedIn() && pnUserGetVar('ublockon') == 1) {
+    if (UserUtil::isLoggedIn() && pnUserGetVar('ublockon') == 1) {
         if (!isset($blockinfo['title']) || empty($blockinfo['title'])) {
             $blockinfo['title'] = __f('Custom block content for %s', pnUserGetVar('name'));
         }

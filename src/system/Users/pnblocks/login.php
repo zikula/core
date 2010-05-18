@@ -47,7 +47,7 @@ function users_loginblock_display($row)
         return;
     }
 
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         // create the output object
         $pnr = Renderer::getInstance('Users');
         // we don't need a cached id since the content of this block will always

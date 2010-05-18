@@ -291,7 +291,7 @@ function install()
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
             SessionUtil::requireSession();
-            if (!pnUserLoggedIn()) {
+            if (!UserUtil::isLoggedIn()) {
                 return pnRedirect();
             } else {
                 return pnRedirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
@@ -581,7 +581,7 @@ function _forcelogin($action = '')
     // login to supplied admin credentials
     if ($GLOBALS['ZConfig']['System']['installed']) { // need auth because Zikula is already installed.
         pnInit(PN_CORE_SESSIONS);
-        if (pnUserLoggedIn()) {
+        if (UserUtil::isLoggedIn()) {
             if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                 pnUserLogOut(); // not administrator user so boot them.
                 $action = 'login';

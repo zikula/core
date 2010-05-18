@@ -258,7 +258,7 @@ function securitycenter_userapi_loghackattempttodb($args)
     $hacktype = isset($args['hacktype'])       ? $args['hacktype']       : '(no type given)';
     $hackinfo = isset($args['message'])        ? $args['message']        : '(no message given)';
 
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         $userid = pnUserGetVar('uid');
     } else {
         $userid = 0;
@@ -340,7 +340,7 @@ function securitycenter_userapi_mailhackattempt($args)
     $summarycontent = preg_replace('/%type%/i', pnConfigGetVar('sitename'), $summarycontent);
     $summarycontent = preg_replace('/%additionalinfo%/i', $args['message'], $summarycontent);
 
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         $summarycontent = preg_replace('/%username%/i', pnUserGetVar('uname'), $summarycontent);
         $summarycontent = preg_replace('/%useremail%/i', pnUserGetVar('email'), $summarycontent);
         $summarycontent = preg_replace('/%userrealname%/i', pnUserGetVar('name'), $summarycontent);

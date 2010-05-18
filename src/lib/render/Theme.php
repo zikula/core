@@ -356,7 +356,7 @@ class Theme extends Renderer
         $func = FormUtil::getPassedValue('func', null, 'GETPOST');
 
         // set some basic class variables from the PN environemnt
-        $this->isloggedin = pnUserLoggedIn();
+        $this->isloggedin = UserUtil::isLoggedIn();
         $this->uid = pnUserGetVar('uid');
 
         // Assign the query string

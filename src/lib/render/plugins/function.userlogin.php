@@ -31,7 +31,7 @@
  */
 function smarty_function_userlogin($params, &$smarty)
 {
-    if (!pnUserLoggedIn()) {
+    if (!UserUtil::isLoggedIn()) {
         // set some defaults
         $size          = isset($params['size'])          ? $params['size']         : 14;
         $maxlength     = isset($params['maxlength'])     ? $params['maxlength']    : 25;

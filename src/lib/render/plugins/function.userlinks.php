@@ -33,7 +33,7 @@ function smarty_function_userlinks($params, &$smarty)
     $end       = isset($params['end'])       ? $params['end']      : ']';
     $seperator = isset($params['seperator']) ? $params['seperator']: '|';
 
-    if (pnUserLoggedIn()) {
+    if (UserUtil::isLoggedIn()) {
         $links = "$start ";
         $profileModule = pnConfigGetVar('profilemodule', '');
         if (!empty($profileModule) && ModUtil::available($profileModule)) {
