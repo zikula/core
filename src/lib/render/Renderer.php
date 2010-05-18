@@ -484,7 +484,7 @@ class Renderer extends Smarty
      */
     public function clear_compiled($exp_time = null)
     {
-        unset($this->compile_id);
+        //unset($this->compile_id); // commented out because this causes an E_NOTICE in Smarty.class.php:1156
         $res = parent::clear_compiled_tpl(null, null, $exp_time);
         // recreate index.html file
         fclose(fopen($this->compile_dir . '/index.html', 'w'));
