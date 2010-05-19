@@ -123,8 +123,8 @@ function smarty_function_ajaxheader($params, &$smarty)
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
         $osfilename  = DataUtil::formatForOS($filename);
 
-        if (($modinfo['type'] == 3 && file_exists($file = "system/$osdirectory/pnjavascript/$osfilename")) ||
-           ($modinfo['type'] == 2 && file_exists($file = "modules/$osdirectory/pnjavascript/$osfilename"))) {
+        $base = $modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'module';
+        if (file_exists($file = "$base/$osdirectory/javascript/$osfilename") || file_exists($file = "$base/$osdirectory/pnjavascript/$osfilename")) {
             $scripts[] = DataUtil::formatForDisplay($file);
         }
     }

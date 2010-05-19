@@ -52,10 +52,10 @@ class SysInfo_admin extends AbstractController
         }
 
         // Extensions checking
-        $mysql = array('name' => 'mysql', 'reason' => __('Zikula can operate with a database of the associated type if this extension is loaded.'));
-        $mysqli = array('name' => 'mysqli', 'reason' => __('Zikula can operate with a database of the associated type if this extension is loaded.'));
-        $suhosin_extension = array('name' => 'suhosin', 'reason' => __('The <a href="http://www.suhosin.org">Suhosin extension</a> is an advanced protection system for PHP installations. It can be used separately from the Suhosin patch or used in association with it.'));
-        $suhosin_patch = array('name' => 'SUHOSIN_PATCH', 'text' => __('Suhosin'), 'reason' => __('The <a href="http://www.suhosin.org">Suhosin patch</a> is an advanced protection system for PHP installations. It can be used separately from the Suhosin extension or used in association with it.'));
+        $mysql = array('name' => 'mysql', 'reason' => $this->__('Zikula can operate with a database of the associated type if this extension is loaded.'));
+        $mysqli = array('name' => 'mysqli', 'reason' => $this->__('Zikula can operate with a database of the associated type if this extension is loaded.'));
+        $suhosin_extension = array('name' => 'suhosin', 'reason' => $this->__('The <a href="http://www.suhosin.org">Suhosin extension</a> is an advanced protection system for PHP installations. It can be used separately from the Suhosin patch or used in association with it.'));
+        $suhosin_patch = array('name' => 'SUHOSIN_PATCH', 'text' => $this->__('Suhosin'), 'reason' => $this->__('The <a href="http://www.suhosin.org">Suhosin patch</a> is an advanced protection system for PHP installations. It can be used separately from the Suhosin extension or used in association with it.'));
         $required_extensions = array();
         $optional_extensions = array($mysql, $mysqli, $suhosin_extension);
         $optional_patches = array($suhosin_patch);

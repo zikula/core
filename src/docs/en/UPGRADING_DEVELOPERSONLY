@@ -92,6 +92,10 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
     - Rename pnblocks to blocks
     - Rename pntemplates to templates
 
-
-
-
+- OO module controllers now have access to convenience where the domain is calculated
+  automatically.
+    $this->__($msgid)
+    $this->__f($msgid, $params)
+    $this->_n($singular, $plural, $count)
+    $this->_fn($sin, $plu, $n, $params)
+    
