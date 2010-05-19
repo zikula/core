@@ -1,4 +1,3 @@
-{* $Id$ *}
 {math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
 <div id="z-adminiconlist">
     {assign var="count" value="0"}
@@ -8,19 +7,16 @@
 
     {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
 
-        <dl id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
+        <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
             {if $modvars.admingraphic eq 1}
-            <dd class="z-adminimg z-adminfloat">
-                <a class="admininfo" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
-                    <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
-                </a>
-            </dd>
+            <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
+                <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
+            </a>
             {/if}
-            <dt>
-                <a id="switchModuleFunctions{$moduleid}" class="z-admininfo"><img src="images/icons/extrasmall/utilities.gif" width="16" height="16" alt="{gt text='Functions'}" /></a>
+            <div class="z-adminlinkheader">
+                {img modname='Admin' src='mouse.png' set='icons/extrasmall' __alt='Move icon' __title='Move module' id="dragicon`$adminlink.id`" class='z-dragicon'}
                 <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
-            </dt>
-            <dd>
+                <a id="switchModuleFunctions{$moduleid}" class="z-pointericon">{img modname=core src=14_layer_lowerlayer.gif set=icons/extrasmall __alt='Functions'}</a>
                 <ul id="infoModuleFunctions{$moduleid}" class="infoModuleFunctions" style="display: none">
                     {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
                     {if $modlinks}
@@ -32,28 +28,27 @@
                     {/if}
                     {assign var="modlinks" value=false}
                 </ul>
-            </dd>
-            <dd>{$adminlink.menutexttitle|varprepfordisplay|truncate:$trunLen:"&hellip;":false}</dd>
-        </dl>
+            </div>
+            <div class="z-menutexttitle">{$adminlink.menutexttitle|varprepfordisplay|truncate:$trunLen:"&hellip;":false}</div>
 
-        <script type="text/javascript">
-            var clearTimer{{$moduleid}} = null;
-            function hidePIPr{{$moduleid}}() {
-                $('infoModuleFunctions{{$moduleid}}').hide();
-            }
+            <script type="text/javascript">
+                var clearTimer{{$moduleid}} = null;
+                function hidePIPr{{$moduleid}}() {
+                    $('infoModuleFunctions{{$moduleid}}').hide();
+                }
+
+                $('switchModuleFunctions{{$moduleid}}').observe('click', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
+                $('switchModuleFunctions{{$moduleid}}').observe('keypress', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
+                $('infoModuleFunctions{{$moduleid}}').observe('mouseover', function() { clearTimeout(clearTimer{{$moduleid}}); }, false);
+                $('infoModuleFunctions{{$moduleid}}').observe('mouseout', function() { clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 500); }, false);
     
-            $('switchModuleFunctions{{$moduleid}}').observe('click', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
-            $('switchModuleFunctions{{$moduleid}}').observe('keypress', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
-            $('infoModuleFunctions{{$moduleid}}').observe('mouseover', function() { clearTimeout(clearTimer{{$moduleid}}); }, false);
-            $('infoModuleFunctions{{$moduleid}}').observe('mouseout', function() { clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 500); }, false);
-        </script>
-    
-        <script type="text/javascript">
-            new Draggable("A{/literal}{$adminlink.id}{literal}", {
-                revert: true,
-                zindex:2100
-            });
-        </script>
+                new Draggable("A{/literal}{$adminlink.id}{literal}", {
+                    revert: true,
+                    handle: "dragicon{/literal}{$adminlink.id}{literal}",
+                    zindex: 2100 // must be higher than the active minitab
+                });
+            </script>
+        </div>
     
         {if $count eq $modvars.modulesperrow}
         {assign var="count" value="0"}
@@ -61,8 +56,6 @@
     {else}
     {if $smarty.foreach.adminlink.last}</div>{/if}
     {/if}
-    
     {math equation="$moduleid+1" assign="moduleid"}
-    
     {/foreach}
 </div>

@@ -222,6 +222,7 @@ function changeModuleCategoryResponse(req) {
         pnupdateauthids(aid);
         return;
     }
+    $('z-admincontainer').highlight();
     var aid = json.authid;
     document.getElementById('authid').value = aid;
     pnupdateauthids(aid);

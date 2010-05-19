@@ -1,18 +1,17 @@
-{*  $Id$  *}
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js"}
 {pageaddvar name="javascript" value="javascript/ajax/scriptaculous.js"}
 {$menu}
-<div class="z-admincontainer">
+<div id="z-admincontainer" class="z-admincontainer">
     <h2>{$category.catname|varprepfordisplay}</h2>
     <div class="z-admincategorydescription">{$category.description|varprepfordisplay}</div>
 
     {if empty($adminlinks)}
-    {gt text="There are currently no modules in this category."}
-    {/if}
-
-    {if $modvars.moduledescription eq 1}
-    {include file="admin_admin_adminpanel_inc1.htm"}
+        <p class="z-bold z-center">{gt text="There are currently no modules in this category."}</p>
     {else}
-    {include file="admin_admin_adminpanel_inc2.htm"}
+        {if $modvars.moduledescription eq 1}
+        {include file="admin_admin_adminpanel_inc1.htm"}
+        {else}
+        {include file="admin_admin_adminpanel_inc2.htm"}
+        {/if}
     {/if}
 </div>

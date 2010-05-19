@@ -152,63 +152,66 @@ table.z-admintable ul {
 #z-adminiconlist {
     margin:5px;
 }
-#z-adminiconlist dl.z-adminiconcontainer {
-    float:left;
-    margin:0 0 0.5em;
-    min-height:6.5em;
-    overflow:hidden;
-    padding:0.5em 0;
-}
-#z-adminiconlist .z-admincenter {
-    text-align:center;
-}
 #z-adminiconlist .z-adminfloat {
     float:left;
 }
-#z-adminiconlist dl.z-adminiconcontainer dt,
-#z-adminiconlist dl.z-adminiconcontainer dd {
-    line-height:1.3em;
-    margin:2px;
-    padding:0;
-    overflow:hidden;
+#z-adminiconlist .z-adminiconcontainer {
+    float:left;
+    padding:0.75em 0;
 }
-#z-adminiconlist dl.z-adminiconcontainer dt {
-    font-size:1.1em;
+#z-adminiconlist .z-adminmodtitle {
     font-weight:bold;
     overflow:hidden;
-    /*    white-space:nowrap;*/
 }
-#z-adminiconlist dl.z-adminiconcontainer dd.z-adminimg {
+#z-adminiconlist .z-adminiconrow .z-adminiconcontainer .z-adminicon { /* only for admin_admin_adminpanel_inc1.html */
     margin-right:5px;
 }
-#z-adminiconlist dl.z-adminiconcontainer dd.z-adminimg img {
+#z-adminiconlist .z-adminiconcontainer .z-adminicon img {
     background:#fff;
     border-color:#D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
     border-style:solid;
     border-width:1px;
     padding:4px;
 }
-#z-adminiconlist dl.z-adminiconcontainer dd.z-adminimg img:hover {
+#z-adminiconlist .z-adminiconcontainer .z-adminicon img:hover {
     border:1px solid #aaa;
 }
-#z-adminiconlist dl.z-adminiconcontainer ul.infoModuleFunctions {
-    background-color:#fff;
-    border:1px solid #aaa;
+#z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions {
+    background-color:#FFFFFF;
+    border:1px solid #AAAAAA;
     display:block;
-    list-style:none;
+    left:64px;
+    list-style:none outside none;
     margin:0;
     padding:6px;
     position:absolute;
-    z-index:100;
+    top:2.5em;
+    z-index:2200; /* must be higher than the return value after dragging */
 }
-#z-adminiconlist dl.z-adminiconcontainer ul.infoModuleFunctions li {
+#z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions li {
     font-size:0.9em;
+    font-weight:normal;
     line-height:1.1em;
     margin:0;
     padding:2px;
 }
-#z-adminiconlist .z-adminmodtitle {
-    /* text-transform:capitalize; */
+
+#z-adminiconlist .z-adminlinkheader img {
+    vertical-align: middle;
+}
+
+#z-adminiconlist .z-dragicon {
+    cursor: move;
+}
+
+#z-adminiconlist .z-pointericon {
+    border: 1px solid transparent;
+}
+#z-adminiconlist .z-pointericon:hover {
+    border: 1px solid #999;
+    -webkit-box-shadow: #999 1px 1px 2px;
+    -moz-box-shadow: #999 1px 1px 2px;
+    box-shadow: #999 1px 1px 2px;
 }
 
 /*******************************************************************************/

@@ -1,28 +1,27 @@
-{* $Id$ *}
-
 <div id="z-adminiconlist" class="z-clearfix">
     {assign var="count" value="0"}
     {foreach from=$adminlinks item=adminlink}
     {math equation="$count+1" assign="count"}
-    <dl id="A{$adminlink.id}" class="z-adminiconcontainer z-admincenter draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
+    <div id="A{$adminlink.id}" class="z-adminiconcontainer z-center draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
         {if $modvars.admingraphic eq 1}
-        <dd class="z-adminimg">
-            <a class="admininfo" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
-                <img src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
-            </a>
-        </dd>
+        <a class="z-adminicon" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
+            <img src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
+        </a>
+        <br />
         {/if}
-        <dt>
+        <span class="z-adminlinkheader">
+            {img modname='Admin' src='mouse.png' set='icons/extrasmall' __alt='Move module' __title='Move module' id="dragicon`$adminlink.id`" class='z-dragicon'}
             <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
-        </dt>
-    </dl>
+        </span>
 
-    <script type="text/javascript">
-        new Draggable("A{/literal}{$adminlink.id}{literal}", {
-            revert: true,
-            zindex:2100
-        });
-    </script>
+        <script type="text/javascript">
+            new Draggable("A{/literal}{$adminlink.id}{literal}", {
+                revert: true,
+                handle: "dragicon{/literal}{$adminlink.id}{literal}",
+                zindex: 2100 // must be higher than the active minitab
+            });
+        </script>
+    </div>
 
     {if $count eq $modvars.modulesperrow}
     {assign var="count" value="0"}

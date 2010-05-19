@@ -65,10 +65,10 @@ ul.minitabs a:hover {
 
 ul#minitabs a.ajaxhover,
 ul.minitabs a.ajaxhover {
-    background: #FFFFEA;
-    border-color: green green;
-    border-style: solid solid none;
-    border-width: 1px 1px medium;
+    background:none repeat scroll 0 0 #FFFFB2;
+    border-color:#666;
+    border-style:solid solid none;
+    border-width:1px 1px medium;
 }
 
 .ajaxNewCat {
