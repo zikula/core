@@ -367,12 +367,14 @@ function Admin_admin_adminpanel($args)
                 $menutexttitle = $modinfo['description'];
 
                 $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-                $adminicons = array($modpath . '/' . $osmoddir . '/pnimages/admin.gif',
+                $adminicons = array($modpath . '/' . $osmoddir . '/images/admin.png',
+                                    $modpath . '/' . $osmoddir . '/images/admin.jpg',
+                                    $modpath . '/' . $osmoddir . '/images/admin.gif',
+                                    $modpath . '/' . $osmoddir . '/pnimages/admin.gif',
                                     $modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
                                     $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
                                     $modpath . '/' . $osmoddir . '/pnimages/admin.png',
-                                    $modpath . '/' . $osmoddir . '/images/admin.gif',
-                                    'system/Admin/pnimages/default.gif');
+                                    'system/Admin/images/default.gif');
 
                 foreach ($adminicons as $adminicon) {
                     if (is_readable($adminicon)) {
