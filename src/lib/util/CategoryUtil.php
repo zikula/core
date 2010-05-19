@@ -917,7 +917,12 @@ class CategoryUtil
             if ($k == '_/_') {
                 $cats[] = $v;
             } else {
-                $sorted[$k] = $v['_/_'][$_catSortField];
+                if (isset($v['_/_'][$_catSortField])) {
+					$sorted[$k] = $v['_/_'][$_catSortField];
+				}
+				else {
+					$sorted[$k] = null;
+				}
             }
         }
         asort($sorted);
