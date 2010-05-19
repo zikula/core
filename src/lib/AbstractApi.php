@@ -15,24 +15,8 @@
 /**
  * Abstract controller for modules.
  */
-abstract class AbstractApi
+abstract class AbstractApi extends AbstractBase
 {
-    protected $options;
-    protected $baseDir;
-
-    public function __construct(array $options =array())
-    {
-        $this->_setup();
-        $this->options = $options;
-        EventManagerUtil::attachCustomHandlers(realpath($this->baseDir. '/EventHandlers'));
-    }
-
-    private function _setup()
-    {
-        $r = new ReflectionObject($this);
-        $this->baseDir = substr($r->getFileName(), 0, strrpos($r->getFileName(), $r->getName().'.php')-1);
-    }
-
     public function __call($method, $args)
     {
         $event = new Event('module.api_method_not_found', $this, array('method' => $method, 'args' => $args));

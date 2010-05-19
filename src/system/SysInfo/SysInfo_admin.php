@@ -66,10 +66,10 @@ class SysInfo_admin extends AbstractController
         foreach ($required_extensions as $ext) {
             if (extension_loaded($ext['name'])) {
                 $ext['loaded'] = 'greenled.gif';
-                $ext['status'] = __('Loaded');
+                $ext['status'] = $this->__('Loaded');
             } else {
                 $ext['loaded'] = 'redled.gif';
-                $ext['status'] = __('Not loaded');
+                $ext['status'] = $this->__('Not loaded');
             }
             $extensions[] = $ext;
         }
@@ -77,10 +77,10 @@ class SysInfo_admin extends AbstractController
         foreach ($optional_extensions as $ext) {
             if (extension_loaded($ext['name'])) {
                 $ext['loaded'] = 'greenled.gif';
-                $ext['status'] = __('Loaded');
+                $ext['status'] = $this->__('Loaded');
             } else {
                 $ext['loaded'] = 'redled.gif';
-                $ext['status'] = __('Not loaded');
+                $ext['status'] = $this->__('Not loaded');
             }
             $opt_extensions[] = $ext;
         }
@@ -88,10 +88,10 @@ class SysInfo_admin extends AbstractController
         foreach ($optional_patches as $ext) {
             if (defined($ext['name'])) {
                 $ext['loaded'] = 'greenled.gif';
-                $ext['status'] = __('Loaded');
+                $ext['status'] = $this->__('Loaded');
             } else {
                 $ext['loaded'] = 'redled.gif';
-                $ext['status'] = __('Not loaded');
+                $ext['status'] = $this->__('Not loaded');
             }
             $opt_patches[] = $ext;
         }

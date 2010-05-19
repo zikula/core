@@ -589,12 +589,8 @@ class ModUtil
         $mosfile = "$modpath/$osdirectory/pn{$ostype}{$osapi}.php";
         $mosdir  = "$modpath/$osdirectory/pn{$ostype}{$osapi}";
         $oopcontroller = "$modpath/$osdirectory/{$modname}_{$ostype}{$osapi}.php";
-        $coopcontroller = "config/classes/$osdirectory/{$modname}_{$ostype}{$osapi}.php";
 
-        if (file_exists($coopcontroller)) {
-// Load the file from modules
-            Loader::includeOnce($coopcontroller);
-        } elseif (file_exists($oopcontroller)) {
+        if (file_exists($oopcontroller)) {
 // Load the file from modules
             Loader::includeOnce($oopcontroller);
         } elseif (file_exists($cosfile)) {
