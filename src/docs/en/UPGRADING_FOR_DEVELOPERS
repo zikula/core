@@ -28,9 +28,6 @@
   deprecated.  Please use Renderer->clear_compiled(), Renderer->clear_cache() and
   Theme->clear_compiled(), Theme->clear_cache().
 
-- If you are using PHP 5.3.0 or greater please make sure the php.ini file has
-  date.timezone set to a valid timezone like UTC, GMT+5, Europe/Berlin.
-
 - Now you can add a requirement check for your blocks which will display a
   message if it's necessary into the admin panel. eg: the language block will be
   visible only if the multilanguage system is enabled, so for this block a
@@ -58,8 +55,8 @@
   The $func argument would be the public methods contained therein.
   Also see the EventHandlers folder which shows how a method can be
   added to the controller via a notifyUntil() events of name
-  'modulecontroller.method_not_found' and modulecontrollerapi.method_not_found
-  for Apis.
+  'controller.method_not_found' and 'controllerapi.method_not_found'
+  for APIs.
 
 - OO module controllers will initialise an autoloader for the class so that
   a call to a class Example_DBObject_Users would load
@@ -72,11 +69,13 @@
   the path to the containing folder.
 
 - You may now optionally include bootstrap.php in your module root directory.
-  This will be loaded during ModLoad/ModLoadGeneric() automatically.
+  This will be loaded during ModUtil::load/ModUtil::loadGeneric() automatically.
 
 - pnMod* now all deprecated see ModUtil::*
 - pnUser* deprecated, see UserUtil::*
-- pn* deprecated see legacy/Compat.php and legacy/Api.php
+- pnBlock deprecated, see BlockUtil::*
+- pn* deprecated see System::*
+- Legacy APIs for BC are stored in legacy/Compat.php and legacy/Api.php
 
 THE FOLLOWING FILE SPECIFICATION HAS CHANGED
     The old ones are still backward compatible but since file scanning is used
@@ -101,5 +100,4 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 
 - The prefixes are NOT gone for the class function based controllers like pnadmin etc.
   This is deliberate to encourage you to move to OO module controllers.
-
-    
+   
