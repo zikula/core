@@ -22,7 +22,7 @@ abstract class AbstractBase
     {
         $r = new ReflectionObject($this);
         //$this->baseDir = substr($r->getFileName(), 0, strrpos($r->getFileName(), $r->getName().'.php')-1);
-        $parts = explode('_', $r->getShortName());
+        $parts = explode('_', $r->getName());
         $this->name = $parts[0];
         $this->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($this->name));
         $base = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'module' : 'system';
