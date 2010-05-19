@@ -186,7 +186,7 @@ table.z-admintable ul {
     padding:6px;
     position:absolute;
     top:2.5em;
-    z-index:2200; /* must be higher than the return value after dragging */
+    z-index:2300; /* must be higher than the return value after dragging */
 }
 #z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions li {
     font-size:0.9em;

@@ -4,10 +4,10 @@
     {assign var="moduleid" value="0"}
     {foreach from=$adminlinks name=adminlink item=adminlink}
     {math equation="$count+1" assign="count"}
+    {math equation="$zindexcount+1" assign="zindexcount"}
 
     {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
-
-        <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;">
+        <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$zindexcount"};">
             {if $modvars.admingraphic eq 1}
             <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
                 <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
