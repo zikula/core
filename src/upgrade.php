@@ -76,7 +76,7 @@ function _upg_header()
     echo '<head>' . "\n";
     echo '<meta http-equiv="Content-Type" content="text/html; charset=' . $charset . '" />' . "\n";
     echo '<title>' . __f('Zikula Upgrade script') . "</title>\n";
-    echo '<link rel="stylesheet" href="install/pnstyle/upgrade.css" type="text/css" />' . "\n";
+    echo '<link rel="stylesheet" href="install/style/upgrade.css" type="text/css" />' . "\n";
     echo '<link rel="stylesheet" href="javascript/style.css" type="text/css" />' . "\n";
     echo '</head>' . "\n";
     echo '<body>' . "\n";

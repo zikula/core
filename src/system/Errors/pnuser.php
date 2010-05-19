@@ -43,7 +43,7 @@ function errors_user_main($args)
     }
 
     // load the stylesheet
-    PageUtil::addVar('stylesheet', 'system/Errors/pnstyle/style.css');
+    PageUtil::addVar('stylesheet', 'system/Errors/style/style.css');
 
     // assign the document info
     $pnRender->assign('reportlevel', System::getVar('reportlevel'));
