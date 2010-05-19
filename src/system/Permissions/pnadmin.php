@@ -56,7 +56,7 @@ function permissions_admin_view()
        // && !empty($testlevel)
        ) {
         // we have everything we need for an effective permission check
-        $testuid    = pnUserGetIDFromName($testuser);
+        $testuid    = UserUtil::getIdFromName($testuser);
         if ($testuid <> false) {
             if (SecurityUtil::checkPermission($testcomponent, $testinstance, $testlevel, $testuid)) {
                 $testresult = '<span id="permissiontestinfogreen">' . __('permission granted.') . '</span>';

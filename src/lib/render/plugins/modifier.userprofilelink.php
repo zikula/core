@@ -41,7 +41,7 @@ function smarty_modifier_userprofilelink($string, $class = '', $image = '', $max
     $uname = $uid = $string = DataUtil::formatForDisplay($string);
 
     if (!is_numeric($string)) {
-        $uid = pnUserGetIDFromName($string);
+        $uid = UserUtil::getIdFromName($string);
     }
 
     $profileModule = System::getVar('profilemodule', '');

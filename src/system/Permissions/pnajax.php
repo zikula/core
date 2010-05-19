@@ -200,7 +200,7 @@ function permissions_ajax_testpermission()
     $level = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_level', ACCESS_READ, 'get'));
 
     $result = __('Permission check result:') . ' ';
-    $uid = pnUserGetIDFromName($uname);
+    $uid = UserUtil::getIdFromName($uname);
 
     if ($uid==false) {
         $result .= '<span id="permissiontestinfored">' . __('unknown user.') . '</span>';

@@ -36,7 +36,7 @@ function smarty_function_usergetidfromname($params, &$smarty)
         return false;
     }
 
-    $return = pnUserGetIDFromName($uname);
+    $return = UserUtil::getIdFromName($uname);
 
     if ($assign) {
         $smarty->assign($assign, $return);

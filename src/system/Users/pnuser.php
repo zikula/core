@@ -218,7 +218,7 @@ function users_user_login()
     $url        = FormUtil::getPassedValue ('url');
     $rememberme = FormUtil::getPassedValue ('rememberme', '');
 
-    $userid = pnUserGetIDFromName($uname);
+    $userid = UserUtil::getIdFromName($uname);
 
     $userstatus = UserUtil::getVar('activated', $userid);
     $tryagain = false;

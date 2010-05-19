@@ -769,7 +769,7 @@ function users_admin_modify($args)
 
     // retreive userid from uname
     if (is_null($userid) && !empty($uname)) {
-        $userid = pnUserGetIDFromName($uname);
+        $userid = UserUtil::getIdFromName($uname);
     }
 
     // warning for guest account
@@ -868,7 +868,7 @@ function users_admin_deleteusers($args)
 
     // retreive userid from uname
     if (is_null($userid) && !empty($uname)) {
-        $userid = pnUserGetIDFromName($uname);
+        $userid = UserUtil::getIdFromName($uname);
     }
 
     // warning for guest account
