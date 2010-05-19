@@ -40,11 +40,11 @@ class HtmlUtil
         $html = '';
 
         if (!$htmlname) {
-            return pn_exit(__('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'htmlname')));
+            return pn_exit(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'htmlname')));
         }
 
         if (!$dateFormat) {
-            return pn_exit(__('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'dateFormat')));
+            return pn_exit(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'dateFormat')));
         }
 
         $fieldKey = $htmlname;
@@ -154,7 +154,7 @@ class HtmlUtil
         } else {
             $classname = Loader::loadClassFromModule($modname, $objectType, true);
             if (!$classname) {
-                return __f('Unable to load class [%s] for module [%s].', array($objectType, $modname));
+                return __f('Unable to load class [%1$s] for module [%2$s].', array($objectType, $modname));
             }
 
             $class = new $classname();

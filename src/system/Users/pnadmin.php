@@ -150,7 +150,7 @@ function users_admin_create()
             . 'Please enter the same password once in each password field (this is required for verification).');
 
     } elseif (($pass != '') && (strlen($pass) < $minpass)) {
-        $errormsg[] = _fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass);
+        $errormsg[] = _fn('Your password must be at least %1$s character long', 'Your password must be at least %2$s characters long', $minpass);
     }
 
     if (!empty($errormsg)) {
@@ -1378,18 +1378,18 @@ function users_admin_uploadImport($args)
         if (!$is_admin && $pregcondition != '') {
             // check for illegal usernames
             if (preg_match($pregcondition, $uname)) {
-                return __f('Sorry! The user name %s is reserved and cannot be registered in line %s. Please check your import file.', array($uname, $counter));
+                return __f('Sorry! The user name %1$s is reserved and cannot be registered in line %2$s. Please check your import file.', array($uname, $counter));
             }
         }
 
         // check if the user name is valid because spaces or invalid characters
         if (preg_match("/[[:space:]]/", $uname) || !System::varValidate($uname, 'uname')) {
-            return __f('Sorry! The user name %s cannot contain spaces in line %s. Please check your import file.', array($uname, $counter));
+            return __f('Sorry! The user name %1$s cannot contain spaces in line %2$s. Please check your import file.', array($uname, $counter));
         }
 
         // check if the user name is repeated
         if (in_array($uname, $usersArray)) {
-            return __f('Sorry! The user name %s is repeated in line %s, and it cannot be used twice for creating accounts. Please check your import file.',
+            return __f('Sorry! The user name %1$s is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
                 array($uname, $counter));
         }
         $usersArray[] = $uname;
@@ -1402,7 +1402,7 @@ function users_admin_uploadImport($args)
 
         // check password lenght
         if (strlen($pass) <  $minpass) {
-            return __f('Sorry! The password must be at least %s characters long in line %s. Please check your import file.', array($minpass, $counter));
+            return __f('Sorry! The password must be at least %1$s characters long in line %2$s. Please check your import file.', array($minpass, $counter));
         }
 
         // check email
@@ -1419,7 +1419,7 @@ function users_admin_uploadImport($args)
         // check if email is unique only if it is necessary
         if ($reg_uniemail == 1) {
             if (in_array($email, $emailsArray)) {
-                return __f('Sorry! The %s e-mail address is repeated in line %s, and it cannot be used twice for creating accounts. Please check your import file.',
+                return __f('Sorry! The %1$s e-mail address is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
                     array($email, $counter));
             }
             $emailsArray[] = $email;
@@ -1446,7 +1446,7 @@ function users_admin_uploadImport($args)
             $groupsArray = explode('|', $groups);
             foreach ($groupsArray as $group) {
                 if (!in_array($group, $allGroupsArray)) {
-                    return __f('Sorry! The identity of the group %s is not not valid in line %s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
+                    return __f('Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
                 }
             }
         }

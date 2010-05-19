@@ -1426,7 +1426,7 @@ class DBUtil
         }
 
         if ($assocKey && !in_array($assocKey, $objectColumns)) {
-            throw new Exception(__f('Unable to find assocKey [%s] in objectColumns for table [%s]', array(
+            throw new Exception(__f('Unable to find assocKey [%1$s] in objectColumns for table [%2$s]', array(
                 $assocKey, $tablename)));
         }
 
@@ -2766,7 +2766,7 @@ class DBUtil
                     if (($pos = strpos($fLen, ')')) !== false) {
                         $fLen = substr($fLen, 0, $pos);
                     } else {
-                        throw new Exception(__f('Missing closing bracket in field datadict specification for %s.%s', $table, $id));
+                        throw new Exception(__f('Missing closing bracket in field datadict specification for %1$s.%2$s', $table, $id));
                     }
                 }
                 unset($fields[0]);
@@ -2786,7 +2786,7 @@ class DBUtil
                         $fUSign = true;
                     } elseif ($fields[$i] == 'DEFAULT') {
                         if (!isset($fields[$i + 1])) {
-                            throw new Exception(__f('Missing default value in field datadict specification for %s.%s', $table, $id));
+                            throw new Exception(__f('Missing default value in field datadict specification for %1$s.%2$s', $table, $id));
                         }
                         for ($j = $i + 1; $j <= count($fields); $j++) {
                             if ($j > $i + 1) {
@@ -2976,19 +2976,19 @@ class DBUtil
             $hasMath = (bool)(strcmp($v, str_replace($search, $replace, $v)));
             if (!$hasMath) {
                 if (!isset($columnDefs[$k])) {
-                    throw new Exception(__f('Inconsistent table definition detected for table [%s]: column [%s] has no counterpart in column_def structure', array(
+                    throw new Exception(__f('Inconsistent table definition detected for table [%1$s]: column [%2$s] has no counterpart in column_def structure', array(
                                     $table,
                                     $k)));
-                    //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%s]: column [%s] has no counterpart in column_def structure', array($table, $k)));
+                    //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%1$s]: column [%2$s] has no counterpart in column_def structure', array($table, $k)));
                 }
             }
         }
         foreach ($columnDefs as $k => $v) {
             if (!isset($columns[$k])) {
-                throw new Exception(__f('Inconsistent table definition detected for table [%s]: column_def [%s] has no counterpart in column structure', array(
+                throw new Exception(__f('Inconsistent table definition detected for table [%1$s]: column_def [%2$s] has no counterpart in column structure', array(
                                 $table,
                                 $k)));
-                //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%s]: column_def [%s] has no counterpart in column structure', array($table, $k)));
+                //$success = LogUtil::registerError(__f('Inconsistent table definition detected for table [%1$s]: column_def [%2$s] has no counterpart in column structure', array($table, $k)));
             }
         }
 
