@@ -129,7 +129,7 @@ class Event implements ArrayAccess
             return $this->args[$key];
         }
 
-        throw new InvalidArgumentException(sprintf('%s not found in %s', $key, $this->name));
+        throw new InvalidArgumentException(sprintf('%1$s not found in %2$s', $key, $this->name));
     }
 
     /**
