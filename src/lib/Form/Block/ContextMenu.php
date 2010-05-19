@@ -92,7 +92,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     function dataBound(&$render)
     {
         PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('pnForm'));
-        PageUtil::AddVar('javascript', 'system/Theme/pnjavascript/form/pnform.js');
+        PageUtil::AddVar('javascript', 'system/Theme/javascript/form/pnform.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
     }
 

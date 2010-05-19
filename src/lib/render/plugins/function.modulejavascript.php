@@ -24,12 +24,12 @@
  *  - assign      if set, the tag and the script filename are returned
  *
  * Example: <!--[modulejavascript modname=foobar script=openwindow.js modonly=1 ]-->
- * Output:  <script type="text/javascript" src="modules/foobar/pnjavascript/openwindow.js">
+ * Output:  <script type="text/javascript" src="modules/foobar/javascript/openwindow.js">
  *
  * Example: <!--[modulejavascript modname=foobar script=openwindow.js modonly=1 onload="dosomething()" assign=myjs ]-->
  * Output: nothing, but assigns a variable containing several values:
- *      $myjs.scriptfile = "modules/foobar/pnjavascript/openwindow.js"
- *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/foobar/pnjavascript/openwindow.js\"></script>"
+ *      $myjs.scriptfile = "modules/foobar/javascript/openwindow.js"
+ *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/foobar/javascript/openwindow.js\"></script>"
  *      $myjs.onload = "onLoad=\"dosomething()\"";
  *      Possible code in master.htm would be:
  *
@@ -42,7 +42,7 @@
  *      which results in
  *
  *      ...
- *      <script type="text/javascript" src="modules/foobar/pnjavascript/openwindow.js"></script>
+ *      <script type="text/javascript" src="modules/foobar/javascript/openwindow.js"></script>
  *      </head>
  *      <body onLoad="dosomething()" >
  *      ...

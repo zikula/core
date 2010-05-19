@@ -41,7 +41,7 @@ function theme_user_main()
             $themeinfo['previewImage'] = $themepic;
         }
         else {
-            $themeinfo['previewImage'] = 'system/Theme/pnimages/preview_medium.png';
+            $themeinfo['previewImage'] = 'system/Theme/images/preview_medium.png';
         }
         $previewthemes[$themename] = $themeinfo;
         if ($themename == $currenttheme['name']) {

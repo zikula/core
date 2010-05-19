@@ -96,7 +96,7 @@ function theme_themeswitcherblock_display($blockinfo)
             $themeinfo['previewImage'] = $themepic;
         }
         else {
-            $themeinfo['previewImage'] = 'system/Theme/pnimages/preview_small.png';
+            $themeinfo['previewImage'] = 'system/Theme/images/preview_small.png';
         }
         $previewthemes[$themename] = $themeinfo;
         if ($themename == $currenttheme['name']) {

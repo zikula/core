@@ -30,7 +30,7 @@ function PageLock_userapi_pageLock($args)
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/scriptaculous.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/pnajax.js');
-        PageUtil::AddVar('javascript', 'system/PageLock/pnjavascript/pagelock.js');
+        PageUtil::AddVar('javascript', 'system/PageLock/javascript/pagelock.js');
         PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('PageLock'));
 
         $lockInfo = ModUtil::apiFunc('PageLock', 'user', 'requireLock',

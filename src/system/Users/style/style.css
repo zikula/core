@@ -55,7 +55,7 @@ div.z-accountlink {
 #colorbar {
     margin-top: -6px;
     width: 1px;
-    background-image: url(../pnjavascript/passwordStrengthMeter/passwordstrength.jpg);
+    background-image: url(../javascript/passwordStrengthMeter/passwordstrength.jpg);
     height: 3px;
 }
 

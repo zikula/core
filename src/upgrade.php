@@ -82,8 +82,8 @@ function _upg_header()
     echo '<body>' . "\n";
     echo '<div id="container"><div id="wrapper" class="z-clearfix">' . "\n";
     echo '<div id="header" class="z-clearfix">' . "\n";
-    echo '<div id="headertopleft"><img src="install/pnimages/top1.jpg" alt="" /></div>' . "\n";
-    echo '<div id="headertopright"><img src="install/pnimages/top2.jpg" alt="" /></div>' . "\n";
+    echo '<div id="headertopleft"><img src="install/images/top1.jpg" alt="" /></div>' . "\n";
+    echo '<div id="headertopright"><img src="install/images/top2.jpg" alt="" /></div>' . "\n";
     echo '</div>' . "\n";
     echo '<div class="menu">' . "\n";
     echo '<p id="notice">' . __('For more information about the upgrade process, please read the <a href="docs/' . $lang . '/UPGRADING">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.') . '</p>';

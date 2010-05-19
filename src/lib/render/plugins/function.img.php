@@ -35,10 +35,10 @@
  *   - all remaining parameters are passed to the image tag
  *
  * Example: <!--[img src="heading.gif" ]-->
- * Output:  <img src="modules/Example/pnimages/eng/heading.gif" alt="" width="261" height="69"  />
+ * Output:  <img src="modules/Example/images/eng/heading.gif" alt="" width="261" height="69"  />
  *
  * Example: <!--[img src="heading.gif" width="100" border="1" alt="foobar" ]-->
- * Output:  <img src="modules/Example/pnimages/eng/heading.gif" width="100" border="1" alt="foobar"  />
+ * Output:  <img src="modules/Example/images/eng/heading.gif" width="100" border="1" alt="foobar"  />
  *
  * Example <!--[img src=xhtml11.png modname=core set=powered]-->
  * <img src="/Theme/images/powered/xhtml11.png" alt="" width="88" height="31"  />
@@ -54,9 +54,9 @@
  * <!--[$myvar.imgtag]-->
  *
  * Output:
- * modules/Example/pnimages/eng/heading.gif
+ * modules/Example/images/eng/heading.gif
  * 261
- * <img src="modules/Example/pnimages/eng/heading.gif" alt="" width="261" height="69"  />
+ * <img src="modules/Example/images/en/heading.gif" alt="" width="261" height="69"  />
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
