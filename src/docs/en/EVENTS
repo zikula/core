@@ -44,7 +44,7 @@ module.postexecute
     receives the modules output with $event->getData();
     can modify this output with $event->serData($data);
 
-module.execute_not_found if no methods are found in pnModFuncExec()
+module.execute_not_found if no methods are found to execute in ModUtil::exec()
     array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
     This kind of eventhandler should
         1. Check $event['modfunc'] to see if it should run else exit silently.
@@ -85,8 +85,8 @@ dbobject.pre/post*
 systemerror
     args gets array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
 
-modulecontroller.method_not_found
+controller.method_not_found
     args are method (method name), 'args' = $args
 
-modulecontrollerapi.method_not_found
+controller_api.method_not_found
     args are method (method name). 'args' = $args

@@ -19,7 +19,7 @@ abstract class AbstractController extends AbstractBase
 {
     public function __call($method, $args)
     {
-        $event = new Event('modulecontroller.method_not_found', $this, array('method' => $method, 'args' => $args));
+        $event = new Event('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
         EventManagerUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             return $event->getData();

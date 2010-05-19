@@ -19,7 +19,7 @@ abstract class AbstractApi extends AbstractBase
 {
     public function __call($method, $args)
     {
-        $event = new Event('module.api_method_not_found', $this, array('method' => $method, 'args' => $args));
+        $event = new Event('controller_api.method_not_found', $this, array('method' => $method, 'args' => $args));
         EventManagerUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             return $event->getData();
