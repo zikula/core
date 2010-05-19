@@ -363,14 +363,8 @@ function Admin_adminapi_getmodstyles($args)
     $styles = array();
 
     $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-    if (is_dir($dir = "modules/$osmoddir/pnstyle")) {
-        $handle = opendir($dir);
-        while (false !== ($file = readdir($handle))) {
-            if (stristr($file, '.css') && !in_array($file, $args['exclude'])) {
-                $styles[] = $file;
-            }
-        }
-    } else if (is_dir($dir = "system/$osmoddir/pnstyle")) {
+    $base = ($modinfo['directory'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'module';
+    if (is_dir($dir = "$base/$osmoddir/style") || is_dir($dir = "$base/$osmoddir/pnstyle")) {
         $handle = opendir($dir);
         while (false !== ($file = readdir($handle))) {
             if (stristr($file, '.css') && !in_array($file, $args['exclude'])) {
