@@ -156,7 +156,7 @@ function smarty_function_img($params, &$smarty)
 
     if ($imgsrc == '') {
         if ($optional) {
-            $smarty->trigger_error(__f("%s: Image '%s' not found", array('pnimg', DataUtil::formatForDisplay($params['src']))));
+            $smarty->trigger_error(__f("%s: Image '%s' not found", array('img', DataUtil::formatForDisplay($params['src']))));
             if ($nostoponerror == true) {
                 return;
             } else {
