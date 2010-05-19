@@ -918,11 +918,11 @@ class CategoryUtil
                 $cats[] = $v;
             } else {
                 if (isset($v['_/_'][$_catSortField])) {
-					$sorted[$k] = $v['_/_'][$_catSortField];
-				}
-				else {
-					$sorted[$k] = null;
-				}
+                    $sorted[$k] = $v['_/_'][$_catSortField];
+                }
+                else {
+                    $sorted[$k] = null;
+                }
             }
         }
         asort($sorted);
