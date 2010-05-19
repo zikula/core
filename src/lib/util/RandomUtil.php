@@ -162,11 +162,11 @@ class RandomUtil
     public static function getSentence($nWords, $dictArray, $seed = false)
     {
         if (!$nWords) {
-            return pn_exit(__('Invalid %1$s passed to %2$s.', array('nWords', 'RandomUtil::getSentence')));
+            return pn_exit(__f('Invalid %1$s passed to %2$s.', array('nWords', 'RandomUtil::getSentence')));
         }
 
         if (!$dictArray) {
-            return pn_exit(__('Invalid %1$s passed to %2$s.', array('dictArray', 'RandomUtil::getSentence')));
+            return pn_exit(__f('Invalid %1$s passed to %2$s.', array('dictArray', 'RandomUtil::getSentence')));
         }
 
         if ($seed) {
@@ -218,11 +218,11 @@ class RandomUtil
     public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false, $seed = false)
     {
         if (!$nParas) {
-            return pn_exit(__('Invalid %1$s passed to %2$s.', array('nParas', 'RandomUtil::getParagraphs')));
+            return pn_exit(__f('Invalid %1$s passed to %2$s.', array('nParas', 'RandomUtil::getParagraphs')));
         }
 
         if (!$dict) {
-            return pn_exit(__('Invalid %1$s passed to %2$s.', array('dictionary', 'RandomUtil::getParagraphs')));
+            return pn_exit(__f('Invalid %1$s passed to %2$s.', array('dictionary', 'RandomUtil::getParagraphs')));
         }
 
         if ($seed) {

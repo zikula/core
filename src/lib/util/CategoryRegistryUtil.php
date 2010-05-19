@@ -33,11 +33,11 @@ class CategoryRegistryUtil
     public static function deleteEntry ($modname, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            return LogUtil (__("Error! Received invalid parameter '%s'", 'modname'));
+            return LogUtil (__f("Error! Received invalid parameter '%s'", 'modname'));
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
+            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
         $where = "crg_modname='$modname'";
@@ -77,7 +77,7 @@ class CategoryRegistryUtil
     public static function updateEntry ($entryID, $modname, $table, $property, $categoryID)
     {
         if (!isset($entryID) || !$entryID) {
-            return LogUtil (__("Error! Received invalid parameter '%s'", 'entryID'));
+            return LogUtil (__f("Error! Received invalid parameter '%s'", 'entryID'));
         }
 
         return self::_processEntry ($modname, $table, $property, $categoryID, $entryID);
@@ -97,20 +97,20 @@ class CategoryRegistryUtil
     private static function _processEntry ($modname, $table, $property, $categoryID, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            return LogUtil (__("Error! Received invalid parameter '%s'", 'modname'));
+            return LogUtil (__f("Error! Received invalid parameter '%s'", 'modname'));
         }
         if (!isset($table) || !$table) {
-            return LogUtil (__("Error! Received invalid parameter '%s'", 'table'));
+            return LogUtil (__f("Error! Received invalid parameter '%s'", 'table'));
         }
         if (!isset($property) || !$property) {
-            return LogUtil (__("Error! Received invalid parameter '%s'", 'property'));
+            return LogUtil (__f("Error! Received invalid parameter '%s'", 'property'));
         }
         if (!isset($categoryID) || !$categoryID) {
-            return LogUtil (__("Error! Received invalid parameter '%s'", 'categoryID'));
+            return LogUtil (__f("Error! Received invalid parameter '%s'", 'categoryID'));
         }
 
         if (!ModUtil::dbInfoLoad($modname)) {
-            return LogUtil (__("Error! Unable to load table information for module '%s'", $modname));
+            return LogUtil (__f("Error! Unable to load table information for module '%s'", $modname));
         }
 
         $data = array ();
@@ -137,7 +137,7 @@ class CategoryRegistryUtil
             return false;
 
         if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
+            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
         if ($catreg['id']) {
@@ -163,7 +163,7 @@ class CategoryRegistryUtil
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
+            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
         foreach ($catregs as $catreg) {
@@ -188,11 +188,11 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategories($modname, $tablename)
     {
         if (!$modname || !$tablename) {
-            return LogUtil (__("Error! Received invalid specifications '%s', '%s'.", array($modname, $tablename)));
+            return LogUtil (__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
+            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
         static $cache = array();
@@ -261,11 +261,11 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategoriesIds($modname, $tablename)
     {
         if (!$modname || !$tablename) {
-            return pn_exit(__f("Error! Received invalid specifications '%s', '%s'.", array($modname, $tablename)));
+            return pn_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {
-            return LogUtil (__("Error! Unable to load table information for module '%s'", 'categories'));
+            return LogUtil (__f("Error! Unable to load table information for module '%s'", 'categories'));
         }
 
         $wheres = array();

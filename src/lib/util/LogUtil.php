@@ -488,7 +488,7 @@ class LogUtil
                 $reason = 'NOWRITE';
             }
         } elseif ($logSize && $size > $logSize) {
-            SessionUtil::setVar('_ZStatusMsg', __f('Logfile [%s] size [%s] exceeds [%s].', array($logfile, $size, $logSize)));
+            SessionUtil::setVar('_ZStatusMsg', __f('Logfile [%1$s] size [%2$s] exceeds [%3$s].', array($logfile, $size, $logSize)));
             $reason = 'TOOBIG';
         }
 

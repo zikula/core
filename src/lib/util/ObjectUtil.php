@@ -212,7 +212,7 @@ class ObjectUtil
     {
         $pntable = System::dbGetTables();
         if (!$pntable[$type]) {
-            return pn_exit(__f('%s: Unable to reference object type [%s]', array('ObjectUtil::createObject', $type)));
+            return pn_exit(__f('%1$s: Unable to reference object type [%2$s]', array('ObjectUtil::createObject', $type)));
         }
 
         Loader::loadClass('DateUtil');
@@ -235,10 +235,10 @@ class ObjectUtil
     public static function diff($obj1, $obj2)
     {
         if (!is_array($obj1)) {
-            return pn_exit(__f('%s: %s is not an object.', array('ObjectUtil::diff', 'object1')));
+            return pn_exit(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object1')));
         }
         if (!is_array($obj2)) {
-            return pn_exit(__f('%s: %s is not an object.', array('ObjectUtil::diff', 'object2')));
+            return pn_exit(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object2')));
         }
 
         return array_diff($obj1, $obj2);
@@ -312,7 +312,7 @@ class ObjectUtil
         $column   = $pntables["{$tablename}_column"];
 
         if (!$column[$field]) {
-            return pn_exit(__f('%s: there is no [%s] field in the [%s] table.', array('ObjectUtil::resequenceFields', $field, $tablename)));
+            return pn_exit(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::resequenceFields', $field, $tablename)));
         }
 
         $sql = "SELECT $column[$idcolumn], $column[$field]
@@ -348,11 +348,11 @@ class ObjectUtil
     public static function moveField($obj, $tablename, $direction = 'up', $field = 'position', $idcolumn = 'id', $field2 = '', $value2 = '')
     {
         if (!is_array($obj)) {
-            return pn_exit(__f('%s: %s is not an array.', array('ObjectUtil::moveField', 'object')));
+            return pn_exit(__f('%1$s: %2$s is not an array.', array('ObjectUtil::moveField', 'object')));
         }
 
         if (!isset($obj[$idcolumn])) {
-            return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($idcolumn, 'ObjectUtil::moveField')));
+            return pn_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($idcolumn, 'ObjectUtil::moveField')));
         }
 
         $pntables = System::dbGetTables();
@@ -360,7 +360,7 @@ class ObjectUtil
         $column   = $pntables["{$tablename}_column"];
 
         if (!$column[$field]) {
-            return pn_exit(__f('%s: there is no [%s] field in the [%s] table.', array('ObjectUtil::moveField', $field, $tablename)));
+            return pn_exit(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::moveField', $field, $tablename)));
         }
 
         // Get info on current position of field
@@ -385,7 +385,7 @@ class ObjectUtil
                     WHERE $column[$field] > '" . DataUtil::formatForStore($seq) . "' $where2
                     ORDER BY $column[$field] ASC LIMIT 0,1";
         } else {
-            return pn_exit(__f('%s: invalid direction [%s] supplied.', array('ObjectUtil::moveField', $direction)));
+            return pn_exit(__f('%1$s: invalid direction [%2$s] supplied.', array('ObjectUtil::moveField', $direction)));
         }
 
         $res = DBUtil::executeSQL($sql);
@@ -455,7 +455,7 @@ class ObjectUtil
     public static function expandObjectWithAttributes(&$obj, $type, $idcolumn = 'id')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
+            return pn_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $atrs = self::retrieveObjectAttributes($obj, $type, $idcolumn);
@@ -507,7 +507,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
+            return pn_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         if ($wasUpdateQuery) {
@@ -571,7 +571,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
+            return pn_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $pntables = System::dbGetTables();
@@ -641,7 +641,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
+            return pn_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "' AND
@@ -919,7 +919,7 @@ class ObjectUtil
     public static function expandObjectWithMeta(&$obj, $tablename, $idcolumn = 'id')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
+            return pn_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $meta = self::retrieveObjectMetaData($obj, $tablename, $idcolumn);
@@ -1169,7 +1169,7 @@ class ObjectUtil
 
         //$cats  = DBUtil::selectObjectArray ('categories_category', $where, '', -1, -1, 'id');
         if (!($catClass = Loader::loadClassFromModule('Categories', 'category', true))) {
-            return pn_exit(__f('Unable to load class [%s] for module [%s]', array('category', 'Categories')));
+            return pn_exit(__f('Unable to load class [%1$s] for module [%2$s]', array('category', 'Categories')));
         }
 
         $catArray = new $catClass();
@@ -1204,7 +1204,7 @@ class ObjectUtil
     public static function expandObjectWithCategories(&$obj, $tablename, $idcolumn = 'id', $assocKey = '')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            return pn_exit(__f('Unable to determine a valid ID in object [%s, %s]', array($type, $idcolumn)));
+            return pn_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {
