@@ -40,7 +40,7 @@ function smarty_function_installtypes($params, &$smarty)
 
     $installtypesdropdown = '<select name="'.DataUtil::formatforDisplay($params['name']).'">'."\n";
 
-    $handle = opendir('install/pninstalltypes/');
+    $handle = opendir('install/installtypes/');
     $installtypes = array();
     while ($f = readdir($handle)) {
         if ($f != '.' && $f != '..' && $f != 'CVS' & $f != '.svn' && $f != 'index.html') {
