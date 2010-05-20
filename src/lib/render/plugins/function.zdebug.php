@@ -52,7 +52,7 @@ function smarty_function_zdebug($params, &$smarty)
         $_template_dir_orig = $smarty->template_dir;
         $_default_resource_type_orig = $smarty->default_resource_type;
 
-        $smarty->template_dir = "$modpath/$osmoddir/pntemplates";
+        $smarty->template_dir = "$modpath/$osmoddir/templates";
         $smarty->default_resource_type = 'file';
         $smarty->_plugins['outputfilter'] = null;
 
