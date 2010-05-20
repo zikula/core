@@ -235,13 +235,10 @@
             <div class="z-formrow">
                 <label for="users_use_password_strength_meter">{gt text="Show passwort strength meter during registration"}</label>
                 <div id="users_use_password_strength_meter">
-                    {if $config.use_password_strength_meter eq 1}
-                    <input type="radio" name="config[use_password_strength_meter]" value="1" checked="checked" /> {gt text="Yes"}
-                    <input type="radio" name="config[use_password_strength_meter]" value="0" /> {gt text="No" }
-                    {else}
-                    <input type="radio" name="config[use_password_strength_meter]" value="1" /> {gt text="Yes"}
-                    <input type="radio" name="config[use_password_strength_meter]" value="0" checked="checked" /> {gt text="No"}
-                    {/if}
+                    <input id="use_password_strength_meter_yes" type="radio" name="config[use_password_strength_meter]" value="1" {if $config.use_password_strength_meter eq 1}checked="checked" {/if} /> 
+                    <label for="use_password_strength_meter_yes">{gt text="Yes"}</label>
+                    <input id="use_password_strength_meter_no" type="radio" name="config[use_password_strength_meter]" value="0" {if $config.use_password_strength_meter neq 1}checked="checked" {/if} />
+                    <label for="use_password_strength_meter_no">{gt text="No"}</label>
                 </div>
             </div>
         </fieldset>

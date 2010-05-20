@@ -1,13 +1,15 @@
-{*  $Id$  *}
 {pnajaxheader modname=Admin filename=admin_admin_ajax.js}
 {pageaddvar name="javascript" value="javascript/livepipe/livepipe.js"}
 {pageaddvar name="javascript" value="javascript/livepipe/contextmenu.js"}
 {pageaddvar name="javascript" value="javascript/ajax/controls.js"}
+
 <h1>{gt text="Site admin panel" domain="zikula"} ({version})</h1>
+
+{include file=admin_admin_securityanalyzer.htm}
+{nocache}{include file=admin_admin_updatechecker.htm}{/nocache}
+{insert name="getstatusmsg"}
+
 <div class="minitabs-container" id="minitabs-container">
-    {include file=admin_admin_securityanalyzer.htm}
-    {nocache}{include file=admin_admin_updatechecker.htm}{/nocache}
-    {insert name="getstatusmsg"}
     <ul id="minitabs">
         {section name=menuoption loop=$menuoptions}
         <li>

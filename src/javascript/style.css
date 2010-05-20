@@ -127,12 +127,12 @@ ul.z-menulinks {
     border:1px solid #ccc;
     color:#aaa;
     height:auto !important;
-    line-height:25px !important;
+    line-height:23px !important;
     list-style:none outside none;
     margin-bottom:1em;
     margin-left:0 !important;
     margin-right:0 !important;
-    min-height:25px !important;
+    min-height:23px !important;
     padding:0 5px !important;
 }
 ul.z-menulinks li {
