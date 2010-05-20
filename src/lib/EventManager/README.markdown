@@ -1,7 +1,7 @@
 EventManager Documentation
 --------------------------
 
-EventManager is a fully unit tested library that connects events to event handlers through the observer pattern.  It's purpose is to connect two end points together in such a way that neither need to have any knowledge of eachother.  There are some fascinating possibilities with this library.  Although this library was written specifically as part of the zOO toolkit, it's completely decoupled so it can be used in anything.
+EventManager is a fully unit tested library that connects events to event handlers through the observer pattern.  It's purpose is to connect two end points together in such a way that neither need to have any knowledge of each other.  There are some fascinating possibilities with this library.  Although this library was written specifically as part of the zOO toolkit, it's completely decoupled so it can be used in anything.
 
 In order to understand how this library functions we need to break it down into three parts: EventManager, the Handler and the Event.
 
