@@ -290,10 +290,15 @@ table.z-datatable ul {
 .z-form fieldset,
 .z-form .z-fieldset {
     border: 1px #ddd solid;
-    background: #fafafa;
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
     overflow: hidden;
+    background: #fafafa;
+    -o-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background: -moz-linear-gradient(top,#fafafa,#f2f2f2);
+    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2));
 }
 .z-form legend {
     font-size: 1.25em;
