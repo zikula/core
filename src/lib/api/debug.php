@@ -80,13 +80,13 @@ if (!function_exists('_prayer')) {
                         $type = gettype($value);
 
                         if ($type == 'array' || ($type == 'object' && get_object_vars($value))) {
-                            $text .= sprintf("<li>(%1$s) <strong>%2$s</strong>:\n", $type, $key);
+                            $text .= sprintf("<li>(%s) <strong>%s</strong>:\n", $type, $key);
                             $text .= _prayer($value, $sf, $recursionLevel + 1);
                             $text .= '</li>';
 
                         } elseif (preg_match('/function/i', $type)) {
                             if ($sf) {
-                                $text .= sprintf("<li>(%1$s) <strong>%2$s</strong> </li>\n", $type, $key, $value);
+                                $text .= sprintf("<li>(%s) <strong>%s</strong> </li>\n", $type, $key, $value);
                                 // There doesn't seem to be anything traversable inside functions.
                             }
                         } else {
@@ -104,10 +104,10 @@ if (!function_exists('_prayer')) {
 
                             // parse th eoutput
                             if ($datatype == 'array') {
-                                $text .= sprintf("<li>(%1$s) <strong>%2$s</strong> = %3$s</li>\n", $type, $key, DataUtil::formatForDisplay($value));
+                                $text .= sprintf("<li>(%s) <strong>%s</strong> = %s</li>\n", $type, $key, DataUtil::formatForDisplay($value));
 
                             } elseif ($datatype == 'object') {
-                                $text .= sprintf("<li>(%1$s) <strong>%2$s</strong> -> %3$s</li>\n", $type, $key, DataUtil::formatForDisplay($value));
+                                $text .= sprintf("<li>(%s) <strong>%s</strong> -> %s</li>\n", $type, $key, DataUtil::formatForDisplay($value));
                             }
                         }
                     }
