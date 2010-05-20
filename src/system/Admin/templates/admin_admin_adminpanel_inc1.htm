@@ -1,6 +1,7 @@
 {math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
 <div id="z-adminiconlist">
     {assign var="count" value="0"}
+    {assign var="zindexcount" value="0"}
     {assign var="moduleid" value="0"}
     {foreach from=$adminlinks name=adminlink item=adminlink}
     {math equation="$count+1" assign="count"}
