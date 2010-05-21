@@ -47,7 +47,7 @@ class ZMO
      * @param object Reader the StreamReader object
      * @param boolean enable_cache Enable or disable caching of strings (default on)
      */
-    public function __construct(StreamReader $Reader, $enable_cache = true)
+    public function __construct(StreamReader_Abstract $Reader, $enable_cache = true)
     {
         // If there isn't a StreamReader, turn on short circuit mode.
         if ($Reader->getError()) {
