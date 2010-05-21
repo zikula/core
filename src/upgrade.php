@@ -341,14 +341,14 @@ function _upg_sanity_check($username, $password)
         $validupgrade = false;
         echo '<h2>' . __('Possible incompatible version found.') . "</h2>\n";
         echo '<p class="z-warningmsg">' . __f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER)) . "</p>\n";
-    } elseif (!is_writeable('config/config.php')) {
-        echo '<p class="z-errormsg"><strong>' . __('config/config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
-        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
-        $validupgrade = false;
-    } elseif (file_exists('config/personal_config.php') && !is_writeable('config/config.php')) {
-        echo '<p class="z-errormsg"><strong>' . __('config/personal_config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
-        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
-        $validupgrade = false;
+//    } elseif (!is_writeable('config/config.php')) {
+//        echo '<p class="z-errormsg"><strong>' . __('config/config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
+//        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
+//        $validupgrade = false;
+//    } elseif (file_exists('config/personal_config.php') && !is_writeable('config/config.php')) {
+//        echo '<p class="z-errormsg"><strong>' . __('config/personal_config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
+//        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
+//        $validupgrade = false;
     } elseif (version_compare(PHP_VERSION, '5.3.0', '>=')) {
         if (ini_get('date.timezone') == '') {
             echo '<p class="z-errormsg"><strong>' . __('date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.') . "</strong></p>\n";
@@ -362,7 +362,7 @@ function _upg_sanity_check($username, $password)
         System::shutdown();
     }
 
-    _upg_continue('upgrademodules', __('Proceed to upgrade modules.'), $username, $password);
+    _upg_continue('upgrademodules', __('Proceed to upgrade.'), $username, $password);
     _upg_footer();
 }
 
