@@ -1212,6 +1212,11 @@ class System
             }
         }
     }
+
+    public function isInstalling()
+    {
+        return (bool)defined('_ZINSTALLVER');
+    }
 }
 
 /**
