@@ -46,13 +46,14 @@ function smarty_function_zdebug($params, &$smarty)
         }
 
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Theme'));
-        $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
+        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
 
         $_template_dir_orig = $smarty->template_dir;
         $_default_resource_type_orig = $smarty->default_resource_type;
 
-        $smarty->template_dir = "$modpath/$osmoddir/templates";
+        $path = (is_dir("$modpath/$osmoddir/templates") ? "$modpath/$osmoddir/templates" : "$modpath/$osmoddir/pntemplates");
+        $smarty->template_dir = $path;
         $smarty->default_resource_type = 'file';
         $smarty->_plugins['outputfilter'] = null;
 
