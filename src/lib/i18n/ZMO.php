@@ -5,7 +5,6 @@
  * @copyright (c) 2005 Nico Kaiser <nico@siriux.net>
  * @copyright (c) 2009 Zikula Development Team
  * @link       http://www.zikula.org
- * @version    $Id$
  * @license GNU/GPL version 2 (or at your option, any later version).
  */
 

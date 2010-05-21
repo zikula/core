@@ -5,7 +5,6 @@
  * @Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
  * @copyright (c) 2009, Zikula Development Team
  * @link http://www.zikula.org
- * @version $Id$
  * @license GNU/GPL version 2 (or at your option, any later version).
  */
 
@@ -14,7 +13,7 @@
  * reads buffer as stream
  *
  */
-class StringReader extends StreamReader
+class StreamReader_String extends StreamReader_Abstract
 {
     private $_pos;
     private $_stream;

@@ -5,14 +5,13 @@
  * @Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
  * @copyright (c) 2009, Zikula Development Team
  * @link http://www.zikula.org
- * @version $Id$
  * @license GNU/GPL version 2 (or at your option, any later version).
  */
 
  /**
  * StreamReader Base
  */
-abstract class StreamReader
+abstract class StreamReader_Abstract
 {
     private $error;
 

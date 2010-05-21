@@ -5,7 +5,6 @@
  * @copyright (c) 2005 Steven Armstrong <sa at c-area dot ch>
  * @copyright (c) 2009, Zikula Development Team
  * @link http://www.zikula.org
- * @version $Id$
  * @license GNU/GPL version 2 (or at your option, any later version).
  */
 
@@ -149,7 +148,7 @@ class ZGettext
 
         if(!$textDomain['reader']) {
             $path = $textDomain['path']."$locale/$category/$domain.mo";
-            $reader = new CachedFileReader($path);
+            $reader = new StreamReader_CachedFile($path);
             $textDomain['reader'] = new ZMO($reader, $cache);
             $codeset = (isset($textDomain['codeset']) ? $textDomain['codeset'] : ini_get('mbstring.internal_encoding'));
             $textDomain['reader']->setEncoding($codeset);
