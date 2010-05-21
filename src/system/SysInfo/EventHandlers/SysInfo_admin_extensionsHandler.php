@@ -52,7 +52,6 @@ class SysInfo_admin_extensionsHandler extends CustomEventHandler
         $pnRender->assign('mods', ModuleUtil::getModules());
         $pnRender->assign('themes', ThemeUtil::getAllThemes());
 
-
         $event->setData($pnRender->fetch('sysinfo_admin_extensions.htm'));
         $event->setNotified();
     }

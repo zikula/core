@@ -35,11 +35,11 @@ module.postloadgeneric
     receives the args array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api).
 
 module.preexecute
-    Occurs in pnModFuncExec() after function call with the following args:
+    Occurs in ModUtil::exec() after function call with the following args:
     array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
 
 module.postexecute
-    Occurs in pnModFuncExec() after function call with the following args:
+    Occurs in ModUtil::exec() after function call with the following args:
     array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
     receives the modules output with $event->getData();
     can modify this output with $event->serData($data);
@@ -54,7 +54,7 @@ module.execute_not_found if no methods are found to execute in ModUtil::exec()
         5. return void
 
 module.postcallhooks
-    Occurs in pnModCallHooks() in one of two places, before return of $output, or before return of $extrainfo.
+    Occurs in ModUtil::callHooks() in one of two places, before return of $output, or before return of $extrainfo.
     Check for presence of 'output' to know.  You can modify $event['output'].
     args are either: array(
             'gui' => $gui,

@@ -32,8 +32,8 @@ class MultiHookHandler extends CustomEventHandler
     public function handler(Event $event)
     {
         // subject must be an instance of Theme class.
-        $subject = $event->getSubject();
-        if (!$subject instanceof Theme) {
+        $theme = $event->getSubject();
+        if (!$theme instanceof Theme) {
             return;
         }
 
@@ -41,7 +41,7 @@ class MultiHookHandler extends CustomEventHandler
         if (ModUtil::available('MultiHook')) {
             $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('MultiHook'));
             if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
-                $subject->load_filter('output', 'multihook');
+                $theme->load_filter('output', 'multihook');
                 ModUtil::apiFunc('MultiHook', 'theme', 'preparetheme');
             }
         }

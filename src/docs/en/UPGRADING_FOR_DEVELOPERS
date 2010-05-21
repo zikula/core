@@ -46,7 +46,7 @@
   containing array('name' => $name, 'callable' => $callable);
 
   ** Note that a callable is in the following format:-
-       Foo::bar() = array('Foo', 'bar)
+       Foo::bar() = array('Foo', 'bar')
        $foo->bar = array($foo, 'bar')
        myfunction() = 'myfunction'
 

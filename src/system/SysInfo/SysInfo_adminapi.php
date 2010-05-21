@@ -19,7 +19,7 @@ class SysInfo_adminapi extends AbstractApi
      *
      * @return array array of admin links
      */
-    function getlinks()
+    public function getlinks()
     {
         $links = array();
 
@@ -55,7 +55,7 @@ class SysInfo_adminapi extends AbstractApi
      * Get a list of all files and folders within the filesystem
      * @return string HTML output string
      */
-    function filelist ($args)
+    public function filelist ($args)
     {
         if (!isset($args['startdir'])) {
             $args['startdir'] = './';
