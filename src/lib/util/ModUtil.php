@@ -110,15 +110,15 @@ class ModUtil
      */
     public static function getVar($modname, $name = '', $default = false)
     {
-// if we don't know the modname then lets assume it is the current
-// active module
+        // if we don't know the modname then lets assume it is the current
+        // active module
         if (!isset($modname)) {
             $modname = self::getName();
         }
 
         global $pnmodvar;
 
-// if we haven't got vars for this module yet then lets get them
+        // if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar[$modname])) {
             $pntables = System::dbGetTables();
             $col = $pntables['module_vars_column'];
@@ -128,31 +128,26 @@ class ModUtil
 
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
-// Be carefull to allow check for unserialize of empty values and boolean false
-                $pnmodvar[$modname][$k] = @unserialize($v);
-                if ($pnmodvar[$modname][$k] === false && $v != 'b:0;') {
-// backwards compatibility for non-serialized vars
-                    $pnmodvar[$modname][$k] = $v;
-                }
+                $pnmodvar[$modname][$k] = unserialize($v);
             }
         }
 
-// if they didn't pass a variable name then return every variable
-// for the specified module as an associative array.
-// array('var1'=>value1, 'var2'=>value2)
+        // if they didn't pass a variable name then return every variable
+        // for the specified module as an associative array.
+        // array('var1'=>value1, 'var2'=>value2)
         if (empty($name) && isset($pnmodvar[$modname])) {
             return $pnmodvar[$modname];
         }
 
-// since they passed a variable name then only return the value for
-// that variable
+        // since they passed a variable name then only return the value for
+        // that variable
         if (isset($pnmodvar[$modname][$name])) {
             return $pnmodvar[$modname][$name];
         }
 
-// we don't know the required module var but we established all known
-// module vars for this module so the requested one can't exist.
-// we return the default (which itself defaults to false)
+        // we don't know the required module var but we established all known
+        // module vars for this module so the requested one can't exist.
+        // we return the default (which itself defaults to false)
         return $default;
     }
 
