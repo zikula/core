@@ -367,8 +367,9 @@ function _upg_sanity_check($username, $password)
  */
 function upgrade_clear_caches()
 {
-    ModUtil::apiFunc('Theme', 'user', 'render_clear_compiled');
-    ModUtil::apiFunc('Theme', 'user', 'render_clear_cache');
-    ModUtil::apiFunc('Theme', 'user', 'clear_compiled');
-    ModUtil::apiFunc('Theme', 'user', 'clear_cache');
+    Theme::getInstance()->clear_all_cache();
+    Theme::getInstance()->clear_compiled();
+    Theme::getInstance()->clear_cssjscombinecache();
+    Renderer::getInstance()->clear_all_cache();
+    Renderer::getInstance()->clear_compiled();
 }

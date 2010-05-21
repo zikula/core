@@ -1411,3 +1411,22 @@ function theme_admin_render_clear_cache()
 
     return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }
+
+/**
+ * Clear all cache and compile directories
+ *
+ * Using this function, the admin can clear all theme and render cached,
+ * compiled and combined files for the system.
+ */
+function theme_admin_clearallcompiledcaches()
+{
+    // Security check
+    if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
+    
+    LogUtil::registerStatus(__('Done! Cleared all cache and compile directories.'));
+    return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
+}

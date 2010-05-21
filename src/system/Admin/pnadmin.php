@@ -616,6 +616,7 @@ function Admin_admin_categorymenu($args)
     $notices = array();
     $notices['security'] = _Admin_admin_securityanalyzer();
     $notices['update'] = _Admin_admin_updatecheck();
+    $notices['developer'] = _Admin_admin_developernotices();
     $pnRender->assign('notices', $notices);
 
     // work out what stylesheet is being used to render to the admin panel
@@ -740,6 +741,54 @@ function _Admin_admin_updatecheck($force=false)
     }
 }
 
+
+/**
+ * Developer notices
+ *
+ * @author Carsten Volmer
+ * @return data or false
+ */
+function _Admin_admin_developernotices()
+{
+    global $ZConfig;
+
+    $modvars = ModUtil::getVar('Theme');
+
+    $data = array();
+    $data['devmode']                     = (bool) $ZConfig['System']['development'];
+
+    if ($data['devmode'] == true) {
+        $data['cssjscombine']                = $modvars['cssjscombine'];
+    
+        if ($modvars['render_compile_check']) {
+            $data['render']['compile_check'] = array('state' => $modvars['render_compile_check'],
+                                                     'title' => __('Compile check'));
+        }
+        if ($modvars['render_force_compile']) {
+            $data['render']['force_compile'] = array('state' => $modvars['render_force_compile'],
+                                                     'title' => __('Force compile'));
+        }
+        if ($modvars['render_cache']) {
+            $data['render']['cache']         = array('state' => $modvars['render_cache'],
+                                                     'title' => __('Caching'));
+        }
+        if ($modvars['compile_check']) {
+            $data['theme']['compile_check']  = array('state' => $modvars['compile_check'],
+                                                     'title' => __('Compile check'));
+        }
+        if ($modvars['force_compile']) {
+            $data['theme']['force_compile']  = array('state' => $modvars['force_compile'],
+                                                     'title' => __('Force compile'));
+        }
+        if ($modvars['enablecache']) {
+            $data['theme']['cache']          = array('state' => $modvars['enablecache'],
+                                                     'title' => __('Caching'));
+        }
+    }
+
+    return $data;
+
+}
 
 /**
  * Zikula curl
