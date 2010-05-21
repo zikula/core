@@ -125,11 +125,10 @@ class ModUtil
             $where = "WHERE $col[modname]='" . DataUtil::formatForStore($modname) . "'";
             $sort = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
 
-
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
                 // ref #2045 vars are being stored with 0/1 unserialised.
-                if ($v === 0 || $v === 1) {
+                if ($v == '0' || $v == '1') {
                     $pnmodvar[$modname][$k] = $v;
                 } else {
                     $pnmodvar[$modname][$k] = unserialize($v);

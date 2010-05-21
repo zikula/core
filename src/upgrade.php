@@ -203,6 +203,14 @@ function _upg_upgrademodules($username, $password)
 {
     _upg_header();
 
+    $modvars = DBUtil::selectObjectArray('module_vars');
+    foreach ($modvars as $modvar) {
+        if ($modvar['value'] == '0' || $modvar['value'] == '1') {
+            $modvar['value'] = serialize($modvar['value']);
+            DBUtil::updateObject($modvar, 'module_vars');
+        }
+    }
+
     // force load the modules admin API
     ModUtil::loadApi('Modules', 'admin', true);
 
