@@ -128,7 +128,12 @@ class ModUtil
 
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
-                $pnmodvar[$modname][$k] = unserialize($v);
+                // ref #2045 vars are being stored with 0/1 unserialised.
+                if ($v === 0 || $v === 1) {
+                    $pnmodvar[$modname][$k] = $v;
+                } else {
+                    $pnmodvar[$modname][$k] = unserialize($v);
+                }
             }
         }
 
@@ -162,10 +167,10 @@ class ModUtil
      */
     public static function setVar($modname, $name, $value = '')
     {
-// define input, all numbers and booleans to strings
+        // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
 
-// validate
+        // validate
         if (!System::varValidate($modname, 'mod') || !isset($name)) {
             return false;
         }
@@ -173,13 +178,7 @@ class ModUtil
         global $pnmodvar;
 
         $obj = array();
-
-// TODO A [remove this check but first update pninit routines] drak
-        if (defined('_ZINSTALLVER')) {
-            $obj['value'] = DataUtil::is_serialized($value) ? $value : serialize($value);
-        } else {
-            $obj['value'] = serialize($value);
-        }
+        $obj['value'] = serialize($value);
 
         if (pnModVarExists($modname, $name)) {
             $pntable = System::dbGetTables();
