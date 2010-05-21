@@ -848,6 +848,10 @@ function Users_user_updatepassword()
         return LogUtil::registerPermissionError();
     }
 
+    if (!SecurityUtil::confirmAuthKey('Users')) {
+        return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'changepassword'));
+    }
+
     $uservars = ModUtil::getVar('Users');
     if ($uservars['changepassword'] <> 1) {
         return System::redirect('Users', 'user', 'main');
@@ -930,6 +934,10 @@ function Users_user_updateemail()
 {
     if (!UserUtil::isLoggedIn()) {
         return LogUtil::registerPermissionError();
+    }
+
+    if (!SecurityUtil::confirmAuthKey('Users')) {
+        return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'changeemail'));
     }
 
     $uservars = ModUtil::getVar('Users');
