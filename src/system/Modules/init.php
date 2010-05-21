@@ -114,7 +114,7 @@ function modules_delete()
 function modules_defaultdata()
 {
     $modversion = array();
-    include(dirname(__FILE__) . '/pnversion.php');
+    include(dirname(__FILE__) . '/version.php');
     // modules module
     $modversion['name']          = 'Modules';
     $modversion['type']          = 3;
