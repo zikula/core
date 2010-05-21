@@ -144,8 +144,9 @@ ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
     margin-left:5px;
 }
-ul.z-menulinks li.z-ml-disabled a {
-    text-decoration:line-through;
+ul.z-menulinks li.z-ml-disabled a,
+ul.z-menulinks li.z-ml-disabled a:hover {
+    text-decoration:line-through !important;
 }
 /* styles for span-based module menus */
 .z-menu {
