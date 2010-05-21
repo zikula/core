@@ -79,14 +79,14 @@ class System
             $mod_var = $GLOBALS['ZConfig']['System'][$name];
         } else {
             $mod_var = ModUtil::getVar(CONFIG_MODULE, $name);
-// cache
+            // cache
             $GLOBALS['ZConfig']['System'][$name] = $mod_var;
         }
 
-// Known Issue: the $default value will never be used because $mod_var returned from pnModGetVar will
-// be false if the value does not exist in the database. This function will always return false in this
-// case. Unfortunately legacy code relies on the behavior, so it cannot be fixed. See issues #1025, #2011
-// and possibly others.
+        // Known Issue: the $default value will never be used because $mod_var returned from pnModGetVar will
+        // be false if the value does not exist in the database. This function will always return false in this
+        // case. Unfortunately legacy code relies on the behavior, so it cannot be fixed. See issues #1025, #2011
+        // and possibly others.
         if (isset($mod_var)) {
             return $mod_var;
         }
@@ -105,14 +105,14 @@ class System
     {
         $name = isset($name) ? (string) $name : '';
 
-// The database parameter are not allowed to change
+        // The database parameter are not allowed to change
         if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
             return false;
         }
 
-// set the variable
+        // set the variable
         if (ModUtil::setVar(CONFIG_MODULE, $name, $value)) {
-// Update my vars
+            // Update my vars
             $GLOBALS['ZConfig']['System'][$name] = $value;
             return true;
         }
@@ -132,22 +132,22 @@ class System
             return false;
         }
 
-// The database parameter are not allowed to be deleted
+        // The database parameter are not allowed to be deleted
         if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
             return false;
         }
 
-// set the variable
+        // set the variable
         self::delVar(CONFIG_MODULE, $name);
 
-// Update my vars
+        // Update my vars
         $val = false;
         if (isset($GLOBALS['ZConfig']['System'][$name])) {
             $val = $GLOBALS['ZConfig']['System'][$name];
             unset($GLOBALS['ZConfig']['System'][$name]);
         }
 
-// success
+        // success
         return $val;
     }
 
@@ -163,7 +163,7 @@ class System
         $coreInitEvent = new Event('core.init', null, array('stages' => $stages));
         static $globalscleansed = false;
 
-// force register_globals = off
+        // force register_globals = off
         if ($globalscleansed == false && ini_get('register_globals') && !defined('_ZINSTALLVER')) {
             foreach ($GLOBALS as $s_variable_name => $m_variable_value) {
                 if (!in_array($s_variable_name, array(
@@ -189,7 +189,7 @@ class System
             $globalscleansed = true;
         }
 
-// Neither Smarty nor Zikula itself works with magic_quotes_runtime (not to be confused with magic_quotes_gpc!)
+        // Neither Smarty nor Zikula itself works with magic_quotes_runtime (not to be confused with magic_quotes_gpc!)
         if (get_magic_quotes_runtime()) {
             die('Sorry, but Zikula does not support PHP magic_quotes_runtime - please disable this feature in your php.ini file.');
         }
@@ -198,7 +198,7 @@ class System
             $stages = self::CORE_STAGES_ALL;
         }
 
-// initialise environment
+        // initialise environment
         if ($stages & self::CORE_STAGES_CONFIG) {
             if (!defined('_ZINSTALLVER')) {
                 $GLOBALS['ZConfig'] = array();
@@ -206,12 +206,12 @@ class System
             }
         }
 
-// store the load stages in a global so other API's can check whats loaded
+        // store the load stages in a global so other API's can check whats loaded
         $GLOBALS['loadstages'] = $stages;
 
         EventManagerUtil::notify(new Event('core.preinit'));
 
-// Initialise and load configuration
+        // Initialise and load configuration
         if ($stages & self::CORE_STAGES_CONFIG) {
             require 'config/config.php';
 
@@ -225,11 +225,11 @@ class System
                 $GLOBALS['ZConfig']['Multisites']['multi'] = 0;
             }
 
-// initialise custom event listeners from config.php settings
+        // initialise custom event listeners from config.php settings
             EventManagerUtil::notify($coreInitEvent);
         }
 
-// Initialize the (ugly) additional header array
+        // Initialize the (ugly) additional header array
         $GLOBALS['additional_header'] = array();
 
         if ($GLOBALS['ZConfig']['System']['compat_layer']) {
@@ -243,8 +243,8 @@ class System
          */
         $GLOBALS['schemas'] = array();
 
-// Check that Zikula is installed before continuing
-        if (self::getVar('installed') == 0 && !defined('_ZINSTALLVER')) {
+        // Check that Zikula is installed before continuing
+        if (self::getVar('installed') == 0 && !self::isInstalling()) {
             header('HTTP/1.1 503 Service Unavailable');
             if (file_exists('config/templates/notinstalled.htm')) {
                 require_once 'config/templates/notinstalled.htm';
@@ -254,7 +254,7 @@ class System
             self::shutdown();
         }
 
-// initialise time to render
+        // initialise time to render
         if ($GLOBALS['ZConfig']['Debug']['pagerendertime']) {
             $GLOBALS['ZRuntime']['dbg_starttime'] = microtime(true);
         }
@@ -286,19 +286,19 @@ class System
         }
 
         if ($stages & self::CORE_STAGES_TABLES) {
-// Initialise pntables
+            // Initialise pntables
             $GLOBALS['pntables'] = isset($pntable) ? $pntable : null;
-// ensure that the base modules info is available
+            // ensure that the base modules info is available
             ModUtil::dbInfoLoad('Modules', 'Modules');
             ModUtil::dbInfoLoad('Theme', 'Theme');
             ModUtil::dbInfoLoad('Users', 'Users');
             ModUtil::dbInfoLoad('Groups', 'Groups');
             ModUtil::dbInfoLoad('Permissions', 'Permissions');
-// load core module vars
+            // load core module vars
             ModUtil::initCoreVars();
-// if we've got this far an error handler can come into play
-// (except in the installer)
-            if (!defined('_ZINSTALLVER')) {
+            // if we've got this far an error handler can come into play
+            // (except in the installer)
+            if (!self::isInstalling()) {
                 set_error_handler('System::errorHandler');
             }
 
@@ -306,17 +306,17 @@ class System
         }
 
         if ($stages & self::CORE_STAGES_SESSIONS) {
-// Other includes
-// ensure that the sesssions table info is available
+            // Other includes
+            // ensure that the sesssions table info is available
             ModUtil::dbInfoLoad('Users', 'Users');
             $anonymoussessions = self::getVar('anonymoussessions');
             if ($anonymoussessions == '1' || !empty($_COOKIE[SessionUtil::getCookieName()])) {
-// we need to create a session for guests as configured or
-// a cookie exists which means we have been here before
-// Start session
+                // we need to create a session for guests as configured or
+                // a cookie exists which means we have been here before
+                // Start session
                 SessionUtil::requireSession();
 
-// Auto-login via HTTP(S) REMOTE_USER property
+                // Auto-login via HTTP(S) REMOTE_USER property
                 if (self::getVar('session_http_login') && !UserUtil::isLoggedIn()) {
                     UserUtil::loginHttp();
                 }
@@ -325,8 +325,8 @@ class System
             EventManagerUtil::notify($coreInitEvent);
         }
 
-// Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
-// start block
+        // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
+        // start block
         if ($stages & self::CORE_STAGES_LANGS) {
             $lang = ZLanguage::getInstance();
             EventManagerUtil::notify($coreInitEvent);
@@ -341,14 +341,13 @@ class System
             $lang->setup();
             EventManagerUtil::notify($coreInitEvent);
         }
-// end block
+        // end block
 
-
-// perform some checks that might result in a die() upon failure when we are in development mode
+        // perform some checks that might result in a die() upon failure when we are in development mode
         self::_development_checks();
 
         if ($stages & self::CORE_STAGES_MODS) {
-// Set compression on if desired
+            // Set compression on if desired
             if (self::getVar('UseCompression') == 1) {
                 ob_start("ob_gzhandler");
             }
@@ -361,7 +360,7 @@ class System
         }
 
         if ($stages & self::CORE_STAGES_THEME) {
-// register default page vars
+            // register default page vars
             PageUtil::registerVar('title');
             PageUtil::registerVar('description', false, self::getVar('slogan'));
             PageUtil::registerVar('keywords', true);
@@ -370,12 +369,12 @@ class System
             PageUtil::registerVar('body', true);
             PageUtil::registerVar('rawtext', true);
             PageUtil::registerVar('footer', true);
-// Load the theme
+            // Load the theme
             Theme::getInstance();
             EventManagerUtil::notify($coreInitEvent);
         }
 
-// check the users status, if not 1 then log him out
+        // check the users status, if not 1 then log him out
         if (UserUtil::isLoggedIn()) {
             $userstatus = UserUtil::getVar('activated');
             if ($userstatus != 1) {
@@ -388,7 +387,7 @@ class System
 
         EventManagerUtil::notify(new Event('core.postinit', null, array('stages' => $stages)));
 
-// remove log files being too old
+        // remove log files being too old
         LogUtil::_cleanLogFiles();
 
         return true;
@@ -405,7 +404,7 @@ class System
     {
         $ret = DBConnectionStack::getConnection($fetchmode);
 
-// If $pass_by_reference is true, return a reference to the dbconn object
+        // If $pass_by_reference is true, return a reference to the dbconn object
         if ($pass_by_reference == true) {
             return $ret;
         }
@@ -483,7 +482,7 @@ class System
             return false;
         }
 
-// typecasting (might be useless in this function)
+        // typecasting (might be useless in this function)
         $var = (string) $var;
         $type = (string) $type;
 
@@ -501,26 +500,26 @@ class System
         'uname' => 1,
         'config' => 1);
 
-// commented out some regexps until some useful and working ones are found
+        // commented out some regexps until some useful and working ones are found
         static $regexp = array( // 'mod'    => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
-// 'func'   => '/[^0-9a-zA-Z_]/',
-// 'api'    => '/[^0-9a-zA-Z_]/',
-// 'theme'  => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
+        // 'func'   => '/[^0-9a-zA-Z_]/',
+        // 'api'    => '/[^0-9a-zA-Z_]/',
+        // 'theme'  => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
         'email' => '/^(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}$/Ui',
         'url' => '/^([!#\$\046-\073=\077-\132_\141-\172~]|(?:%[a-f0-9]{2}))+$/i');
 
-// special cases
+        // special cases
         if ($type == 'mod' && $var == '/PNConfig') {
             return true;
         }
 
         if ($type == 'config' && ($var == 'dbtype') || ($var == 'dbhost') || ($var == 'dbuname') || ($var == 'dbpass') || ($var == 'dbname') || ($var == 'system') || ($var == 'prefix') || ($var == 'encoded')) {
-// The database parameter are not allowed to change
+            // The database parameter are not allowed to change
             return false;
         }
 
         if ($type == 'email' || $type == 'url') {
-// CSRF protection for email and url
+            // CSRF protection for email and url
             $var = str_replace(array(
                     '\r',
                     '\n',
@@ -528,12 +527,12 @@ class System
                     '%0a'), '', $var);
 
             if (self::getVar('idnnames') == 1) {
-// transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
+            // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
                 Loader::requireOnce('lib/vendor/SimplePie/idn/idna_convert.class.php');
                 $IDN = new idna_convert();
                 $var = $IDN->encode(DataUtil::convertToUTF8($var));
             }
-// all characters must be 7 bit ascii
+            // all characters must be 7 bit ascii
             $length = strlen($var);
             $idx = 0;
             while ($length--) {
@@ -545,7 +544,7 @@ class System
         }
 
         if ($type == 'url') {
-// check for url
+            // check for url
             $url_array = @parse_url($var);
             if (!empty($url_array) && empty($url_array['scheme'])) {
                 return false;
@@ -553,31 +552,30 @@ class System
         }
 
         if ($type == 'uname') {
-// check for invalid characters
+            // check for invalid characters
             if (strstr($var, chr(160)) || strstr($var, chr(173))) {
                 return false;
             }
         }
 
-// variable passed special checks. We now to generic checkings.
+        // variable passed special checks. We now to generic checkings.
 
-
-// check for maximal length
+        // check for maximal length
         if (isset($maxlength[$type]) && strlen($var) > $maxlength[$type]) {
             return false;
         }
 
-// check for minimal length
+        // check for minimal length
         if (isset($minlength[$type]) && strlen($var) < $minlength[$type]) {
             return false;
         }
 
-// check for regular expression
+        // check for regular expression
         if (isset($regexp[$type]) && !preg_match($regexp[$type], $var)) {
             return false;
         }
 
-// all tests for illegal entries failed, so we assume the var is ok ;-)
+        // all tests for illegal entries failed, so we assume the var is ok ;-)
         return true;
     }
 
@@ -609,7 +607,7 @@ class System
     {
         $server = self::serverGetVar('HTTP_HOST');
 
-// IIS sets HTTPS=off
+        // IIS sets HTTPS=off
         $https = self::serverGetVar('HTTPS', 'off');
         if ($https != 'off') {
             $proto = 'https://';
@@ -629,7 +627,7 @@ class System
      */
     public static function getHomepageUrl()
     {
-// check the use of friendly url setup
+        // check the use of friendly url setup
         $shorturls = self::getVar('shorturls', false);
         $dirBased = (self::getVar('shorturlstype') == 0 ? true : false);
 
@@ -654,22 +652,22 @@ class System
      */
     public static function redirect($redirecturl, $additionalheaders = array())
     {
-// very basic input validation against HTTP response splitting
+        // very basic input validation against HTTP response splitting
         $redirecturl = str_replace(array(
                 '\r',
                 '\n',
                 '%0d',
                 '%0a'), '', $redirecturl);
 
-// check if the headers have already been sent
+        // check if the headers have already been sent
         if (headers_sent()) {
             return false;
         }
 
-// Always close session before redirect
+        // Always close session before redirect
         session_write_close();
 
-// add any additional headers supplied
+        // add any additional headers supplied
         if (!empty($additionalheaders)) {
             foreach ($additionalheaders as $additionalheader) {
                 header($additionalheader);
@@ -677,15 +675,15 @@ class System
         }
 
         if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $redirecturl)) {
-// Absolute URL - simple redirect
+            // Absolute URL - simple redirect
         } elseif (substr($redirecturl, 0, 1) == '/') {
-// Root-relative links
+            // Root-relative links
             $redirecturl = 'http' . (self::serverGetVar('HTTPS') == 'on' ? 's' : '') . '://' . self::serverGetVar('HTTP_HOST') . $redirecturl;
         } else {
-// Relative URL
-// Removing leading slashes from redirect url
+            // Relative URL
+            // Removing leading slashes from redirect url
             $redirecturl = preg_replace('!^/*!', '', $redirecturl);
-// Get base URL and append it to our redirect url
+            // Get base URL and append it to our redirect url
             $baseurl = System::getBaseUrl();
             $redirecturl = $baseurl . $redirecturl;
         }
@@ -704,11 +702,11 @@ class System
         $server = self::serverGetVar('HTTP_HOST');
         $referer = self::serverGetVar('HTTP_REFERER');
 
-// an empty referer returns true unless strict checking is enabled
+        // an empty referer returns true unless strict checking is enabled
         if (!$strict && empty($referer)) {
             return true;
         }
-// check the http referer
+        // check the http referer
         if (preg_match("!^https?://$server/!", $referer)) {
             return true;
         }
@@ -736,10 +734,10 @@ class System
             return false;
         }
 
-// set initial return value until we know we have a valid return
+        // set initial return value until we know we have a valid return
         $return = false;
 
-// check if the mailer module is availble and if so call the API
+        // check if the mailer module is availble and if so call the API
         if ((ModUtil::available('Mailer')) && (ModUtil::loadApi('Mailer', 'user'))) {
             $return = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array(
                     'toaddress' => $to,
@@ -768,7 +766,7 @@ class System
      */
     public static function serverGetVar($name, $default = null)
     {
-// Check the relevant superglobals
+        // Check the relevant superglobals
         if (!empty($name) && isset($_SERVER[$name])) {
             return $_SERVER[$name];
         }
@@ -787,7 +785,7 @@ class System
     {
         $server = self::serverGetVar('HTTP_HOST');
         if (empty($server)) {
-// HTTP_HOST is reliable only for HTTP 1.1
+            // HTTP_HOST is reliable only for HTTP 1.1
             $server = self::serverGetVar('SERVER_NAME');
             $port = self::serverGetVar('SERVER_PORT');
             if ($port != '80')
@@ -805,12 +803,10 @@ class System
      */
     public static function getCurrentUri($args = array())
     {
-// get current URI
+        // get current URI
         $request = self::serverGetVar('REQUEST_URI');
 
         if (empty($request)) {
-// adapted patch from Chris van de Steeg for IIS
-// TODO: please test this :)
             $scriptname = self::serverGetVar('SCRIPT_NAME');
             $pathinfo = self::serverGetVar('PATH_INFO');
             if ($pathinfo == $scriptname) {
@@ -827,7 +823,7 @@ class System
             }
         }
 
-// add optional parameters
+        // add optional parameters
         if (count($args) > 0) {
             if (strpos($request, '?') === false) {
                 $request .= '?';
@@ -838,20 +834,19 @@ class System
             foreach ($args as $k => $v) {
                 if (is_array($v)) {
                     foreach ($v as $l => $w) {
-// TODO: replace in-line here too ?
+                        // TODO: replace in-line here too ?
                         if (!empty($w)) {
                             $request .= $k . "[$l]=$w&";
                         }
                     }
                 } else {
-// if this parameter is already in the query string...
+                    // if this parameter is already in the query string...
                     if (preg_match("/(&|\?)($k=[^&]*)/", $request, $matches)) {
                         $find = $matches[2];
-// ... replace it in-line if it's not empty
+                        // ... replace it in-line if it's not empty
                         if (!empty($v)) {
                             $request = preg_replace("/(&|\?)$find/", "$1$k=$v", $request);
-
-// ... or remove it otherwise
+                            // ... or remove it otherwise
                         } elseif ($matches[1] == '?') {
                             $request = preg_replace("/\?$find(&|)/", '?', $request);
                         } else {
@@ -882,7 +877,7 @@ class System
             return 'http';
         }
         $HTTPS = self::serverGetVar('HTTPS');
-// IIS seems to set HTTPS = off for some reason
+        // IIS seems to set HTTPS = off for some reason
         return (!empty($HTTPS) && $HTTPS != 'off') ? 'https' : 'http';
     }
 
@@ -902,7 +897,6 @@ class System
         $request = self::getCurrentUri($args);
 
         if (empty($request)) {
-// adapted patch from Chris van de Steeg for IIS
             $scriptname = self::serverGetVar('SCRIPT_NAME');
             $pathinfo = self::serverGetVar('PATH_INFO');
             if ($pathinfo == $scriptname) {
@@ -937,14 +931,14 @@ class System
             return;
         }
 
-// get our base parameters to work out if we need to decode the url
+        // get our base parameters to work out if we need to decode the url
         $module = FormUtil::getPassedValue('module', null, 'GETPOST');
         $func = FormUtil::getPassedValue('func', null, 'GETPOST');
         $type = FormUtil::getPassedValue('type', null, 'GETPOST');
 
-// check if we need to decode the url
+        // check if we need to decode the url
         if ((self::getVar('shorturls') && self::getVar('shorturlstype') == 0 && (empty($module) && empty($type) && empty($func)))) {
-// define our site entry points
+            // define our site entry points
             $customentrypoint = self::getVar('entrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
             $tobestripped = array(
@@ -954,38 +948,38 @@ class System
                     '/error.php',
                     System::getBaseUri());
 
-// get base path to work out our current url
+            // get base path to work out our current url
             $parsedURL = parse_url(self::getCurrentUri());
 
-// strip any unwanted content from the provided URL
+            // strip any unwanted content from the provided URL
             $path = str_replace($tobestripped, '', $parsedURL['path']);
 
-// split the path into a set of argument strings
+            // split the path into a set of argument strings
             $args = explode('/', rtrim($path, '/'));
 
-// ensure that each argument is properly decoded
+            // ensure that each argument is properly decoded
             foreach ($args as $k => $v) {
                 $args[$k] = urldecode($v);
             }
-// the module is the first argument string
+            // the module is the first argument string
             if (isset($args[1]) && !empty($args[1])) {
                 if (ZLanguage::isLangParam($args[1])) {
                     self::queryStringSetVar('lang', $args[1]);
                     array_shift($args);
                 }
 
-// first try the first argument as a module
+                // first try the first argument as a module
                 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args[1]));
-// if that fails it's a theme
+                // if that fails it's a theme
                 if (!$modinfo) {
                     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[1]));
                     if ($themeinfo) {
                         self::queryStringSetVar('theme', $themeinfo['name']);
-// now shift the vars and continue as before
+                        // now shift the vars and continue as before
                         array_shift($args);
                         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args[1]));
                     } else {
-// add the default module handler into the code
+                        // add the default module handler into the code
                         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName(self::getVar('shorturlsdefaultmodule')));
                         array_unshift($args, $modinfo['url']);
                     }
@@ -996,11 +990,11 @@ class System
                 $modname = FormUtil::getPassedValue('module', null, 'GETPOST');
             }
 
-// check if there is a custom url handler for this module
-// if not decode the url using the default handler
+            // check if there is a custom url handler for this module
+            // if not decode the url using the default handler
             if (isset($modinfo) && $modinfo['type'] != 0 && !ModUtil::apiFunc($modname, 'user', 'decodeurl', array(
                     'vars' => $args))) {
-// any remaining arguments are specific to the module
+                // any remaining arguments are specific to the module
                 $argscount = count($args);
                 for ($i = 3; $i < $argscount; $i = $i + 2) {
                     if (isset($args[$i]))
@@ -1022,14 +1016,14 @@ class System
         if (!isset($name)) {
             return;
         }
-// add the variable into the get superglobal
+        // add the variable into the get superglobal
         $res = preg_match('/(.*)\[(.*)\]/i', $name, $match);
         if ($res != 0) {
-// possibly an array entry in the form a[0] or b[c]
-// $match[0] = a[0]
-// $match[1] = a
-// $match[2] = 0
-// this is everything we need to continue to build an array
+            // possibly an array entry in the form a[0] or b[c]
+            // $match[0] = a[0]
+            // $match[1] = a
+            // $match[2] = 0
+            // this is everything we need to continue to build an array
             if (!isset($_REQUEST[$match[1]])) {
                 $_REQUEST[$match[1]] = $_GET[$match[1]] = array();
             }
@@ -1048,7 +1042,7 @@ class System
         $event = new Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
         EventManagerUtil::notify($event);
 
-// check for an @ suppression
+        // check for an @ suppression
         if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED || $errno == E_STRICT)) {
             return;
         }
@@ -1061,22 +1055,22 @@ class System
             $ztemp = DataUtil::formatForOS(self::getVar('temp'), true);
         }
 
-// What do we want to log?
-// 1 - Log real errors only.  2 - Log everything
+        // What do we want to log?
+        // 1 - Log real errors only.  2 - Log everything
         $logError = ($errorlog == 2 || ($errorlog == 1 && ($errno != E_WARNING && $errno != E_NOTICE && $errno != E_USER_WARNING && $errno != E_USER_NOTICE)));
         if ($logError == true) {
-// log the error
+            // log the error
             $msg = "Zikula Error: $errstr";
             if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
                 $request = self::getCurrentUri();
                 $msg .= " in $errfile on line $errline for page $request";
             }
             switch ($errorlogtype) {
-// log to the system log (default php handling....)
+                // log to the system log (default php handling....)
                 case 0:
                     error_log($msg);
                     break;
-// e-mail the error
+                // e-mail the error
                 case 1:
                     $toaddress = self::getVar('errormailto');
                     $body = ModUtil::func('Errors', 'user', 'system', array(
@@ -1090,34 +1084,34 @@ class System
                             'subject' => __('Error! Oh! Wow! An \'unidentified system error\' has occurred.'),
                             'body' => $body));
                     break;
-// log a module specific log (based on top level module)
+                // log a module specific log (based on top level module)
                 case 2:
                     $modname = DataUtil::formatForOS(ModUtil::getName());
                     error_log($msg . "\r\n", 3, $ztemp . '/error_logs/' . $modname . '.log');
                     break;
-// log to global error log
+                // log to global error log
                 case 3:
                     error_log($msg . "\r\n", 3, $ztemp . '/error_logs/error.log');
                     break;
             }
         }
 
-// should we display the error to the user
+        // should we display the error to the user
         if ($errordisplay == 0) {
             return;
         }
 
-// check if we want to flag up warnings and notices
+        // check if we want to flag up warnings and notices
         if ($errordisplay == 1 && ($errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
             return;
         }
 
-// clear the output buffer
+        // clear the output buffer
         while (ob_get_level()) {
             ob_end_clean();
         }
 
-// display the new output and halt the script
+        // display the new output and halt the script
         header('HTTP/1.0 500 System Error');
         echo ModUtil::func('Errors', 'user', 'system', array(
         'type' => $errno,
@@ -1137,12 +1131,12 @@ class System
      */
     public static function shutDown($exit_param = '')
     {
-// we must deliberately cause the session to close down because if we
-// rely on PHP to do so after an exit is called, the framework gets shutdown
-// by PHP and no longer functions correctly.
+        // we must deliberately cause the session to close down because if we
+        // rely on PHP to do so after an exit is called, the framework gets shutdown
+        // by PHP and no longer functions correctly.
         session_write_close();
 
-// do the exit
+        // do the exit
         if (empty($exit_param)) {
             exit();
         } else {
@@ -1164,25 +1158,25 @@ class System
         if ($GLOBALS['ZConfig']['System']['development'] == 1 && !defined('_ZINSTALLVER')) {
             $die = false;
 
-// check PHP version, shouldn't be necessary, but....
+            // check PHP version, shouldn't be necessary, but....
             if (version_compare(PHP_VERSION, '5.2.6', '>=') == false) {
                 echo __f('Error! Stop, please! PHP version 5.2.6 or a newer version is needed. The latest version of PHP 5 is what is actually recommended. Your server seems to be using version %s.', PHP_VERSION);
                 $die = true;
             }
 
-// token_get_all needed for Smarty
+            // token_get_all needed for Smarty
             if (!function_exists('token_get_all')) {
                 echo __("Error! Stop, please! The PHP function 'token_get_all()' is needed, but is not available.");
                 $die = true;
             }
 
-// mb_string is needed too
+            // mb_string is needed too
             if (!function_exists('mb_get_info')) {
                 echo __("Error! Stop, please! The 'mbstring' extension for PHP is needed, but is not available.");
                 $die = true;
             }
 
-// Mailer needs fsockopen()
+            // Mailer needs fsockopen()
             if (ModUtil::available('Mailer') && !function_exists('fsockopen')) {
                 echo __("Error! The PHP function 'fsockopen()' is needed within the Zikula mailer module, but is not available.");
                 $die = true;
