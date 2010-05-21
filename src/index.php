@@ -71,7 +71,7 @@ if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name']))
     System::shutdown();
 }
 
-if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
+if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
     // New-new style of loading modules
     if (!isset($arguments)) {
         $arguments = array();

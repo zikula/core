@@ -120,17 +120,14 @@ function smarty_function_img($params, &$smarty)
     // module directory
     $modinfo       = ModUtil::getInfo(ModUtil::getIdFromName($modname));
     $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
-    $moduleDir     = ($modinfo['type'] == 3 ? 'system' : 'modules');
+    $moduleDir     = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
     if ($modname == 'core') {
         $modpath        = "images/$osset";
-    } elseif ($modinfo['type'] != 1) {
+    } else {
         $modlangpath    = "$moduleDir/$osmoddir/images/$lang";
         $modpath        = "$moduleDir/$osmoddir/images";
         $modlangpathOld = "$moduleDir/$osmoddir/pnimages/$lang";
         $modpathOld     = "$moduleDir/$osmoddir/pnimages";
-    } else {
-        $modlangpath    = "$moduleDir/$osmoddir/images/$lang";
-        $modpath        = "$moduleDir/$osmoddir/images";
     }
     $ossrc = DataUtil::formatForOS($params['src']);
 

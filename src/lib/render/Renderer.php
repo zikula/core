@@ -541,7 +541,7 @@ class Renderer extends Smarty
             return;
         }
 
-        $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
+        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $mod_plugs = "$modpath/$modinfo[directory]/templates/plugins";
         $mod_plugsOld = "$modpath/$modinfo[directory]/pntemplates/plugins";
 

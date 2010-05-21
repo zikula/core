@@ -77,13 +77,8 @@ function Admin_adminnavblock_display($blockinfo)
 
                 if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == ModUtil::getVar('Admin', 'defaultcategory')))) {
                     $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
-                    if ($modinfo['type'] != 1) {
-                        $menutexturl = ModUtil::url($modinfo['name'], 'admin');
-                        $menutexttitle = $modinfo['displayname'];
-                    } else {
-                        $menutexturl = 'admin.php?module=' . DataUtil::formatForDisplay($modinfo['name']);
-                        $menutexttitle =  $modinfo['displayname'];
-                    }
+                    $menutexturl = ModUtil::url($modinfo['name'], 'admin');
+                    $menutexttitle = $modinfo['displayname'];
                     $adminlinks[] = array('menutexturl' => $menutexturl,
                                           'menutexttitle' => $menutexttitle);
                 }

@@ -50,7 +50,7 @@ if (empty($module)) {
 // get the module information
 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 
-if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
+if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
     // Redirect to new style admin panel
     System::redirect(ModUtil::url($module, 'admin'));
     System::shutdown();

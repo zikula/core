@@ -101,9 +101,9 @@ class WorkflowUtil
         $moduledir = $modinfo['directory'];
 
         // determine which folder to look in (system or modules)
-        if ($modinfo['type'] == 3) { // system module
+        if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) { // system module
             $modulepath = "system/$moduledir";
-        } else if ($modinfo['type'] == 2) { // non system module
+        } else if ($modinfo['type'] == ModUtil::TYPE_MODULE) { // non system module
             $modulepath = "modules/$moduledir";
         } else {
             return pn_exit(__f('%s: Unsupported module type.', 'WorkflowUtil'));

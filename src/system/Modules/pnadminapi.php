@@ -398,7 +398,7 @@ function modules_adminapi_remove($args)
     }
 
     $osdir = DataUtil::formatForOS($modinfo['directory']);
-    if ($modinfo['type'] == 2) {
+    if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
         $dir = "modules/$osdir/locale";
         if (is_dir($dir)) {
             ZLanguage::bindModuleDomain($modinfo['name']);
@@ -413,8 +413,8 @@ function modules_adminapi_remove($args)
 
     // Module deletion function. Only execute if the module hasn't been initialised.
     if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-        if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
-            $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
+        if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
             if (file_exists($file = "$modpath/$osdir/pninit.php")) {
                 if (!Loader::includeOnce($file)) {
                     LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
@@ -439,13 +439,6 @@ function modules_adminapi_remove($args)
                 if ($func() != true) {
                     return false;
                 }
-            }
-        } elseif ($modinfo['type'] == 7) {
-            // zOO application
-            $class = "$modinfo[name]_Installer";
-            $installer = new $class();
-            if (!$installer->executeUninstall()) {
-                return false;
             }
         }
     }
@@ -546,7 +539,7 @@ function modules_adminapi_getfilemodules($args)
                 } elseif (file_exists($file2)) {
                     $file = $file2;
                 }
-                
+
                 if (!include ($file)) {
                     LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
                 }
@@ -892,14 +885,14 @@ function modules_adminapi_initialise($args)
     // Get module database info
     ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
     $osdir = DataUtil::formatForOS($modinfo['directory']);
-    if ($modinfo['type'] == 2) {
+    if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
         if (is_dir("modules/$osdir/locale")) {
             ZLanguage::bindModuleDomain($modinfo['name']);
         }
     }
 
     // load module maintainence functions
-    $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
+    $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
     if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
         if (!Loader::includeOnce($file)) {
             LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
@@ -907,7 +900,7 @@ function modules_adminapi_initialise($args)
     }
 
     // perform the actual install of the module
-    if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
+    if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
         // system or module
         $func = $modinfo['name'] . '_init';
         $interactive_func = $modinfo['name'] . '_init_interactiveinit';
@@ -926,13 +919,6 @@ function modules_adminapi_initialise($args)
             if ($func() != true) {
                 return false;
             }
-        }
-    } elseif ($modinfo['type'] == 7) {
-        // zOO application
-        $class = "$modinfo[name]_Installer";
-        $installer = new $class();
-        if (!$installer->executeInstall()) {
-            return false;
         }
     }
 
@@ -969,11 +955,11 @@ function modules_adminapi_upgrade($args)
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
 
-    if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
+    if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
-        if ($modinfo['type'] == 2) {
+        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             $dir = "modules/$osdir/locale";
             if (is_dir($dir)) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
@@ -981,7 +967,7 @@ function modules_adminapi_upgrade($args)
         }
 
         // load module maintainence functions
-        $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
+        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         if (file_exists($file = "$modpath/$osdir/pninit.php")) {
             if (!Loader::includeOnce($file)) {
                 LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
@@ -1025,7 +1011,7 @@ function modules_adminapi_upgrade($args)
         }
 
         include $file;
-        
+
         $version = $modversion['version'];
     }
 

@@ -990,16 +990,10 @@ class System
                         array_unshift($args, $modinfo['url']);
                     }
                 }
-                if ($modinfo['type'] == 1) {
-                    self::queryStringSetVar('name', $modinfo['name']);
-                    isset($args[2]) ? self::queryStringSetVar('req', $args[2]) : null;
-                    $modname = FormUtil::getPassedValue('name', null, 'GETPOST');
-                } else {
-                    self::queryStringSetVar('module', $modinfo['name']);
-// the function name is the second argument string
-                    isset($args[2]) ? self::queryStringSetVar('func', $args[2]) : null;
-                    $modname = FormUtil::getPassedValue('module', null, 'GETPOST');
-                }
+                self::queryStringSetVar('module', $modinfo['name']);
+                // the function name is the second argument string
+                isset($args[2]) ? self::queryStringSetVar('func', $args[2]) : null;
+                $modname = FormUtil::getPassedValue('module', null, 'GETPOST');
             }
 
 // check if there is a custom url handler for this module

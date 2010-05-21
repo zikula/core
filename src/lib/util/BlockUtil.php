@@ -238,14 +238,14 @@ class BlockUtil
         $incfile = DataUtil::formatForOS($block . '.php');
 
         $files = array();
-        if ($modinfo['type'] == 3) {
+        if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
             $files[] = 'system/' . $blockdir . '/' . $incfile;
             $files[] = 'system/' . $blockdirOld . '/' . $incfile;
             $rc = Loader::loadOneFile($files);
             if (!$rc) {
                 return false;
             }
-        } elseif ($modinfo['type'] == 2) {
+        } elseif ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             $files[] = 'modules/' . $blockdir . '/' . $incfile;
             $files[] = 'modules/' . $blockdirOld . '/' . $incfile;
             $rc = Loader::loadOneFile($files);

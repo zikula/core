@@ -29,7 +29,7 @@ function smarty_function_adminonlinemanual($params, &$smarty)
 {
     $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $modinfo = ModUtil::getInfo(ModUtil::getIdFromName(ModUtil::getName()));
-    $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
+    $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
     $file = DataUtil::formatForOS("$modpath/$modinfo[directory]/lang/$lang/manual.html");
     $man_link = '';
     if (is_readable($file)) {

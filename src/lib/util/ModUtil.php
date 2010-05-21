@@ -582,7 +582,7 @@ class ModUtil
         }
 
 // create variables for the OS preped version of the directory
-        $modpath = ($modinfo['type'] == 3) ? 'system' : 'modules';
+        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
         $ostype  = DataUtil::formatForOS($type);
         $cosfile = "config/functions/$osdirectory/pn{$ostype}{$osapi}.php";
@@ -709,7 +709,7 @@ class ModUtil
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
-        $path = ($modinfo['type'] == '3' ? 'system' : 'modules');
+        $path = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
 
 // Build function name and call function
         $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
@@ -936,22 +936,12 @@ class ModUtil
 // Regular URLs
 
 // The arguments
-            if ($modinfo['type'] == 1) {
-                if ($type == 'admin') {
-                    $urlargs[] = "name=$modname";
-                    $entrypoint = 'admin.php';
-                } else {
-                    $urlargs[] = "name=$modname";
-                }
-            } else {
-                $urlargs = "module=$modname";
-                if ((!empty($type)) && ($type != 'user')) {
-                    $urlargs .= "&type=$type";
-                }
-
-                if ((!empty($func)) && ($func != 'main')) {
-                    $urlargs .= "&func=$func";
-                }
+            $urlargs = "module=$modname";
+            if ((!empty($type)) && ($type != 'user')) {
+                $urlargs .= "&type=$type";
+            }
+            if ((!empty($func)) && ($func != 'main')) {
+                $urlargs .= "&func=$func";
             }
 
 // add lang param to URL

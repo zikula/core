@@ -46,7 +46,7 @@ if (!ModUtil::available($modinfo['name'])) {
     AjaxUtil::error(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
 }
 
-if ($modinfo['type'] == 2 || $modinfo['type'] == 3) {
+if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
     // New-new style of loading modules
     if (!isset($arguments)) {
         $arguments = array();
