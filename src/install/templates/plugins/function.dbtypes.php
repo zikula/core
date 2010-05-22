@@ -51,10 +51,11 @@ function smarty_function_dbtypes($params, &$smarty)
         $sel = $sv=='mysql' ? 'selected' : '';
         $dbtypesdropdown .= "<option value=\"mysql\" $sel>" . __('MySQL') . "</option>\n";
     }
-    if (function_exists('mysqli_connect')) {
-        $sel = $sv=='mysqli' ? 'selected' : '';
-        $dbtypesdropdown .= "<option value=\"mysqli\" $sel>" . __('MySQL Improved') . "</option>\n";
-    }
+    // disabled ref #2068
+//    if (function_exists('mysqli_connect')) {
+//        $sel = $sv=='mysqli' ? 'selected' : '';
+//        $dbtypesdropdown .= "<option value=\"mysqli\" $sel>" . __('MySQL Improved') . "</option>\n";
+//    }
     if (function_exists('mssql_connect')) {
         $sel = $sv=='mssql' ? 'selected' : '';
         $dbtypesdropdown .= "<option value=\"mssql\" $sel>" . __('MSSQL (alpha)') . "</option>\n";
