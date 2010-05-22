@@ -52,9 +52,11 @@ no problems.
        index.php?module=Settings&type=admin.
 
   ii. Before unpacking any files:
-    - Delete entire system/ folder.
-    - Delete includes/.
-    - Delete pnTemp.
+      - Delete entire system/ folder.
+      - Delete includes/.
+      - Delete pnTemp.
+      - If you use Admin_Messages, please copy the block to a new HTML block and delete
+        the Admin_Message block.
 
   ii.  Upload all files from the package you downloaded, copying over your files.
        Manually edit the config/config.php with your database credentials.
