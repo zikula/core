@@ -86,7 +86,7 @@ function theme_themeswitcherblock_display($blockinfo)
     $currenttheme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
 
     // get all themes in our environment
-    $themes = ThemeUtil::getAllThemes(PNTHEME_FILTER_USER);
+    $themes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
 
     $previewthemes = array();
     $currentthemepic = null;

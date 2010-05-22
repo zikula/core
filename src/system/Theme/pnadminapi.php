@@ -73,7 +73,7 @@ function theme_adminapi_regenerate()
                                                        'admin' => (isset($themeversion['admin']) ? (int)$themeversion['admin'] : '0'),
                                                        'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
                                                        'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
-                                                       'state' => (isset($themeversion['state']) ? $themeversion['state'] : PNTHEME_STATE_ACTIVE),
+                                                       'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeUtil::STATE_ACTIVE),
                                                        'official' => (isset($themeversion['offical']) ? (int)$themeversion['offical'] : '0'),
                                                        'author' => (isset($themeversion['author']) ? $themeversion['author'] : ''),
                                                        'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
@@ -109,7 +109,7 @@ function theme_adminapi_regenerate()
     foreach ($filethemes as $name => $themeinfo) {
         if (empty($dbthemes[$name])) {
             // New theme
-            $themeinfo['state'] = PNTHEME_STATE_ACTIVE;
+            $themeinfo['state'] = ThemeUtil::STATE_ACTIVE;
             DBUtil::insertObject($themeinfo, 'themes', 'id');
         }
     }

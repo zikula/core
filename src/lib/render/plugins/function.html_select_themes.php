@@ -19,9 +19,9 @@
  *   - name:     Name for the control (optional) if not present then only the option tags are output
  *   - id:       ID for the control
  *   - selected: Selected value
- *   - filter:   Filter themes use (possible values: PNTHEME_FILTER_ALL (default) PNTHEME_FILTER_USER, PNTHEME_FILTER_SYSTEM, PNTHEME_FILTER_ADMIN
- *   - state:    Filter themes by state (possible values: PNTHEME_STATE_ALL (default), PNTHEME_STATE_ACTIVE, PNTHEME_STATE_INACTIVE
- *   - type:     Filter themes by type (possible values: PNTHEME_TYPE_ALL (default), PNTHEME_TYPE_XANTHIA3
+ *   - filter:   Filter themes use (possible values: ThemeUtil::FILTER_ALL (default) ThemeUtil::FILTER_USER, ThemeUtil::FILTER_SYSTEM, ThemeUtil::FILTER_ADMIN
+ *   - state:    Filter themes by state (possible values: ThemeUtil::STATE_ALL (default), ThemeUtil::STATE_ACTIVE, ThemeUtil::STATE_INACTIVE
+ *   - type:     Filter themes by type (possible values: ThemeUtil::TYPE_ALL (default), ThemeUtil::TYPE_XANTHIA3
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Examples
@@ -40,17 +40,17 @@
 function smarty_function_html_select_themes($params, &$smarty)
 {
     if (!isset($params['filter']) || !defined($params['filter'])) {
-        $filter = PNTHEME_FILTER_ALL;
+        $filter = ThemeUtil::FILTER_ALL;
     } else {
         $filter = constant($params['filter']);
     }
     if (!isset($params['state']) || !defined($params['state'])) {
-        $state = PNTHEME_STATE_ALL;
+        $state = ThemeUtil::STATE_ALL;
     } else {
         $state = constant($params['state']);
     }
     if (!isset($params['type']) || !defined($params['type'])) {
-        $type = PNTHEME_TYPE_ALL;
+        $type = ThemeUtil::TYPE_ALL;
     } else {
         $type = constant($params['type']);
     }

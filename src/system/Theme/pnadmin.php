@@ -103,7 +103,7 @@ function theme_admin_view($args = array())
     $pnRender = Renderer::getInstance('Theme', false);
 
     // call the API to get a list of all themes in the themes dir
-    $allthemes = ThemeUtil::getAllThemes(PNTHEME_FILTER_ALL, PNTHEME_STATE_ALL);
+    $allthemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ALL, ThemeUtil::STATE_ALL);
 
     // filter by letter if required
     if (isset($startlet) && !empty($startlet)) {
@@ -166,7 +166,7 @@ function theme_admin_modify($args)
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
     // check if we can edit the theme and, if not, create the running config
-    if (!is_writable('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/templates/config') && $themeinfo['type'] == PNTHEME_TYPE_XANTHIA3) {
+    if (!is_writable('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/templates/config') && $themeinfo['type'] == ThemeUtil::TYPE_XANTHIA3) {
         ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themename));
     }
 
@@ -1426,7 +1426,7 @@ function theme_admin_clearallcompiledcaches()
     }
 
     ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
-    
+
     LogUtil::registerStatus(__('Done! Cleared all cache and compile directories.'));
     return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
 }

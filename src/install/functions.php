@@ -284,9 +284,9 @@ function install()
             }
         case 'gotosite':
             if(!$installbySQL){
-                define('PNTHEME_STATE_ALL', 0);
-                define('PNTHEME_STATE_ACTIVE', 1);
-                define('PNTHEME_STATE_INACTIVE', 2);
+                define('ThemeUtil::STATE_ALL', 0);
+                define('ThemeUtil::STATE_ACTIVE', 1);
+                define('ThemeUtil::STATE_INACTIVE', 2);
                 System::setVar('Default_Theme', $defaulttheme);
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
