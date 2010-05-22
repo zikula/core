@@ -160,7 +160,7 @@ class CategoryUtil
                 $cats[$arraykey]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($cats[$arraykey]['display_name']));
             }
 
-            if ($cats[$arraykey]['display_desc']) {
+            if (isset($cats[$arraykey]['display_desc']) && $cats[$arraykey]['display_desc']) {
                 $cats[$arraykey]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($cats[$arraykey]['display_desc']));
             }
 
