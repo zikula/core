@@ -2,7 +2,6 @@ User-agent: *
 Disallow: /config
 Disallow: /docs
 Disallow: /images
-Disallow: /includes
 Disallow: /install
 Disallow: /javascript
 Disallow: /lib
