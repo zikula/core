@@ -16,7 +16,7 @@ $modversion['displayname']    = __('Categories manager');
 $modversion['description']    = __('Provides support for categorisation of content in other modules, and an interface for adding, removing and administering categories.');
 //! module name that appears in URL
 $modversion['url']            = __('categories');
-$modversion['version']        = '1.1';
+$modversion['version']        = '1.2';
 
 $modversion['official']       = 1;
 $modversion['author']         = 'Robert Gasch';

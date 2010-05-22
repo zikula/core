@@ -76,6 +76,8 @@ function Categories_upgrade($oldversion)
             categories_upgrade_MigrateLanguageCodes();
 
         case '1.1':
+            categories_upgrade_MigrateLanguageCodes();
+        case '1.2':
             // future upgrade routines
     }
 
@@ -595,7 +597,7 @@ function Categories_makeDisplayName($name)
 
 function Categories_makeDisplayDesc()
 {
-    return serialize(array('eng' => ''));
+    return serialize(array('en' => ''));
 }
 
 function categories_upgrade_fixSerializedData()
