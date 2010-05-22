@@ -82,7 +82,7 @@ function smarty_function_modulejavascript($params, &$smarty)
         $searchpaths = array('javascript', 'javascript/ajax');
     } else {
         // theme directory
-        $theme         = DataUtil::formatForOS(pnUserGetTheme());
+        $theme         = DataUtil::formatForOS(UserUtil::getTheme());
         $osmodname     = DataUtil::formatForOS($params['modname']);
         $themepath     = "themes/$theme/javascript/$osmodname";
 

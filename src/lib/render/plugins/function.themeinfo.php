@@ -25,7 +25,7 @@
  */
 function smarty_function_themeinfo($params, &$smarty)
 {
-    $thistheme = pnUserGetTheme();
+    $thistheme = UserUtil::getTheme();
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($thistheme));
 
     $themecredits = '<!-- ' . __f('Theme: %1$s by %2$s - %3$s', array(DataUtil::formatForDisplay($themeinfo['display']), DataUtil::formatForDisplay($themeinfo['author']), DataUtil::formatForDisplay($themeinfo['contact']))).' -->';

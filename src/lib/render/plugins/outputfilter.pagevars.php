@@ -37,7 +37,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     // This will be done for stylesheet and javascript pagevars only right now. We can extend this if necessary.
     global $additional_header;
 
-    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
 
     // get any javascript page vars
     $javascripts = PageUtil::getVar('javascript');
@@ -219,7 +219,7 @@ function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
     $themevars = ModUtil::getVar('Theme');
 
     $lifetime = $themevars['cssjscombine_lifetime'];
-    $hash = md5(serialize($files).pnUserGetTheme());
+    $hash = md5(serialize($files).UserUtil::getTheme());
 
     $cachedFile    = "{$cache_dir}/{$hash}_{$ext}.php";
     $cachedFileUri = "{$hash}_{$ext}.php";

@@ -26,7 +26,7 @@ function smarty_function_usergettheme($params, &$smarty)
 {
     $assign = isset($params['assign'])  ? $params['assign']  : null;
 
-    $result = pnUserGetTheme();
+    $result = UserUtil::getTheme();
 
     if ($assign) {
         $smarty->assign($assign, $result);

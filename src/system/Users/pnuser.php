@@ -303,7 +303,7 @@ function users_user_login()
     $loginoption    = ModUtil::getVar('Users', 'loginviaoption');
     $login_redirect = ModUtil::getVar('Users', 'login_redirect');
 
-    if (pnUserLogIn((($loginoption==1) ? $email : $uname), $pass, $rememberme)) {
+    if (UserUtil::login((($loginoption==1) ? $email : $uname), $pass, $rememberme)) {
         // start login hook
         $uid = UserUtil::getVar('uid');
         ModUtil::callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
@@ -340,7 +340,7 @@ function users_user_logout()
     // start logout hook
     $uid = UserUtil::getVar('uid');
     ModUtil::callHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
-    if (pnUserLogOut()) {
+    if (UserUtil::logout()) {
         if ($login_redirect == 1) {
             // WCAG compliant logout - we redirect to index.php because
             // we might no have the permission for the recent site any longer
@@ -729,10 +729,10 @@ function users_user_siteofflogin()
     $pass = FormUtil::getPassedValue('pass', null, 'POST');
     $rememberme = FormUtil::getPassedValue('rememberme', false, 'POST');
 
-    pnUserLogIn($user, $pass, $rememberme);
+    UserUtil::login($user, $pass, $rememberme);
 
     if (!SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN)) {
-        pnUserLogOut();
+        UserUtil::logout();
     }
 
     $path = dirname(pnServerGetVar('PHP_SELF'));

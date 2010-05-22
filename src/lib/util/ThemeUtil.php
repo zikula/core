@@ -250,7 +250,7 @@ class ThemeUtil
         $configpath = "$configstyledir/$osmodname";
 
         // theme directory
-        $theme = DataUtil::formatForOS(pnUserGetTheme());
+        $theme = DataUtil::formatForOS(UserUtil::getTheme());
         $themepath = "themes/$theme/style/$osmodname";
 
         // module directory

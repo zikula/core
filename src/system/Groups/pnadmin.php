@@ -515,7 +515,7 @@ function Groups_admin_groupmembership($args)
             $regexpfield = 'uname';
             $regexpression = '^' . $letter;
     }
-    $users = pnUserGetAll('uname', 'ASC', -1, -1, '', $regexpfield, $regexpression);
+    $users = UserUtil::getAll('uname', 'ASC', -1, -1, '', $regexpfield, $regexpression);
 
     $allusers = array();
     foreach ($users as $user) {

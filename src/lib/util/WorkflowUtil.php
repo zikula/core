@@ -114,7 +114,7 @@ class WorkflowUtil
             return pn_exit(__f('%1$s: The module [%2$s] is not active.', array('WorkflowUtil', $module)));
         }
 
-        $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+        $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
         $themepath = DataUtil::formatForOS("themes/$themedir/workflows/$moduledir/$file");
         $configpath = DataUtil::formatForOS("config/workflows/$moduledir/$file");
         $modulepath = DataUtil::formatForOS("$modulepath/workflows/$file");

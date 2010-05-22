@@ -67,7 +67,7 @@ class Renderer extends Smarty
 
         //---- Plugins handling -----------------------------------------------
         // add plugin paths
-        $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+        $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
         $this->theme = $theme = $this->themeinfo['directory'];
 
         $this->modinfo = $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));

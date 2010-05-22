@@ -428,7 +428,7 @@ function securitycenter_admin_updateconfig()
 
     // we need to auto logout the user if they changed from DB to FILE
     if ($cause_logout == true) {
-        pnUserLogOut();
+        UserUtil::logout();
         return System::redirect(ModUtil::url('Users', 'user', 'loginscreen'));
     }
 

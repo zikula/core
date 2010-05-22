@@ -507,7 +507,7 @@ function &securitycenter_userapi_getpurifier($args = null)
             //
             // TODO - we need a new theme field for doctype declaration
             // for now we will use non-strict modes
-            $currentThemeID = ThemeUtil::getIDFromName(pnUserGetTheme());
+            $currentThemeID = ThemeUtil::getIDFromName(UserUtil::getTheme());
             $themeInfo = ThemeUtil::getInfo($currentThemeID);
             $useXHTML = (isset($themeInfo['xhtml']) && $themeInfo['xhtml']) ? true : false;
 

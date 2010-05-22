@@ -111,7 +111,7 @@ function smarty_function_img($params, &$smarty)
     $lang =  ZLanguage::transformFS(ZLanguage::getLanguageCode());
 
     // theme directory
-    $theme         = DataUtil::formatForOS(pnUserGetTheme());
+    $theme         = DataUtil::formatForOS(UserUtil::getTheme());
     $osmodname     = DataUtil::formatForOS($modname);
     $themelangpath = "themes/$theme/templates/modules/$osmodname/images/$lang";
     $themepath     = "themes/$theme/templates/modules/$osmodname/images";

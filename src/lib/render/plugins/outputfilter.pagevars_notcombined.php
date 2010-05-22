@@ -37,7 +37,7 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     // This will be done for stylesheet and javascript pagevars only right now. We can extend this if necessary.
     global $additional_header;
 
-    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
 
     // get any javascript page vars
     $javascripts = PageUtil::getVar('javascript');

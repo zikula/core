@@ -27,7 +27,7 @@
  *   - assign:  If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[pnusergetvar name='user_icq' uid=1|pnvarprepfordisplay]-->
+ *   <!--[usergetvar name='user_icq' uid=1|varprepfordisplay]-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -43,7 +43,7 @@ function smarty_function_usergetvar($params, &$smarty)
     $uid     = isset($params['uid'])     ? (int)$params['uid'] : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnusergetvar', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('usergetvar', 'name')));
         return false;
     }
 

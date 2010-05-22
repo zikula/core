@@ -27,7 +27,7 @@ $func   = FormUtil::getPassedValue('func', '', 'GETPOST');
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
     if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
-        pnUserLogOut();
+        UserUtil::logout();
     }
     AjaxUtil::error(__('The site is currently off-line.'));
 }

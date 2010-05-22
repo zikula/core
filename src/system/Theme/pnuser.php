@@ -28,7 +28,7 @@ function theme_user_main()
     $pnRender = Renderer::getInstance('Theme');
 
     // get some use information about our environment
-    $currenttheme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+    $currenttheme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
 
     // get all themes in our environment
     $themes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);

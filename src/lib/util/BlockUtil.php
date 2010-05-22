@@ -168,7 +168,7 @@ class BlockUtil
         }
 
         if (!isset($themeinfo)) {
-            $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+            $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
             $themedir = DataUtil::formatForOS($themeinfo['directory']);
         }
 

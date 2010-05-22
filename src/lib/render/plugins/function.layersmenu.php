@@ -31,7 +31,7 @@ function smarty_function_layersmenu ($params, &$smarty)
     $menuString = isset($params['menuString']) ? $params['menuString'] : '';
     $cssFile    = isset($params['cssFile'])    ? $params['cssFile']    : '';
 
-    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+    $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
     $themedir  = DataUtil::formatForOS($themeinfo['directory']);
 
     PageUtil::addVar('stylesheet', 'javascript/phplayersmenu/layersmenu-demo.css');

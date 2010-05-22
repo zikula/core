@@ -212,10 +212,10 @@ function install()
             break;
         case 'login':
             if (empty($loginuser) && empty($loginpassword)) {
-            } elseif (pnUserLogIn($loginuser, $loginpassword, false)) {
+            } elseif (UserUtil::login($loginuser, $loginpassword, false)) {
                 if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                     // not admin user so boot
-                    pnUserLogOut();
+                    UserUtil::logout();
                     $action = 'login';
                     $smarty->assign(array(
                                     'loginstate' => 'notadmin'));
@@ -262,7 +262,7 @@ function install()
                 //ModUtil::apiFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
                 createuser($username, $password, $email);
                 SessionUtil::requireSession();
-                pnUserLogin($username, $password);
+                UserUtil::login($username, $password);
 
                 // add admin email as site email
                 System::setVar('adminmail', $email);
@@ -583,7 +583,7 @@ function _forcelogin($action = '')
         pnInit(System::CORE_STAGES_SESSIONS);
         if (UserUtil::isLoggedIn()) {
             if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                pnUserLogOut(); // not administrator user so boot them.
+                UserUtil::logout(); // not administrator user so boot them.
                 $action = 'login';
             }
         } else { // login failed

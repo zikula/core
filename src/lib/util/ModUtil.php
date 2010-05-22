@@ -741,7 +741,7 @@ class ModUtil
 
             // get the theme
             if ($GLOBALS['loadstages'] & System::CORE_STAGES_THEME) {
-                $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+                $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     Loader::loadFile($file);
                     if (function_exists($modfunc)) {

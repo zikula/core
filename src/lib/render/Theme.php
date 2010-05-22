@@ -161,7 +161,7 @@ class Theme extends Renderer
     {
         if (!self::$themeInstance) {
             if (!isset($theme)) {
-                $theme = pnUserGetTheme();
+                $theme = UserUtil::getTheme();
             }
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
             self::$themeInstance = new self($themeinfo['name'], $usefilters);

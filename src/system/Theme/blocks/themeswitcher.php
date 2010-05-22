@@ -77,13 +77,13 @@ function theme_themeswitcherblock_display($blockinfo)
     }
 
     // get some use information about our environment
-    $currenttheme = pnUserGetTheme();
+    $currenttheme = UserUtil::getTheme();
 
     // get all themes in our environment
     $themes = ThemeUtil::getAllThemes();
 
     // get some use information about our environment
-    $currenttheme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+    $currenttheme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
 
     // get all themes in our environment
     $themes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
