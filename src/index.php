@@ -40,7 +40,7 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
     if (file_exists('config/templates/siteoff.htm')) {
         require_once 'config/templates/siteoff.htm';
     } else {
-        require_once 'system/Theme/pntemplates/siteoff.htm';
+        require_once 'system/Theme/templates/siteoff.htm';
     }
     System::shutdown();
 }
