@@ -30,6 +30,10 @@ class Form_Plugin_ContextMenu_Separator extends Form_Plugin
     {
         $contextMenu =& $this->getParentContextMenu();
 
+        if (!$contextMenu) {
+            return;
+        }
+        
         // Avoid creating menu multiple times if included in a repeated template
         if (!$contextMenu->firstTime()) {
             return '';
