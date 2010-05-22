@@ -12,26 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-/**
- *  Theme filters
- */
-define('PNTHEME_FILTER_ALL', 0);
-define('PNTHEME_FILTER_USER', 1);
-define('PNTHEME_FILTER_SYSTEM', 2);
-define('PNTHEME_FILTER_ADMIN', 3);
-
-/**
- *  Theme states
- */
-define('PNTHEME_STATE_ALL', 0);
-define('PNTHEME_STATE_ACTIVE', 1);
-define('PNTHEME_STATE_INACTIVE', 2);
-
-/**
- *  Theme types
- */
-define('PNTHEME_TYPE_ALL', 0);
-define('PNTHEME_TYPE_XANTHIA3', 3);
 
 /**
  * ThemeUtil
@@ -41,6 +21,17 @@ define('PNTHEME_TYPE_XANTHIA3', 3);
  */
 class ThemeUtil
 {
+    const STATE_ALL = 0;
+    const STATE_ACTIVE = 1;
+    const STATE_INACTIVE = 2;
+
+    const TYPE_ALL = 0;
+    const TYPE_XANTHIA3 = 3;
+
+    const FILTER_ALL = 0;
+    const FILTER_USER = 1;
+    const FILTER_SYSTEM = 2;
+    const FILTER_ADMIN = 3;
     /**
      * return a theme variable
      *
@@ -74,15 +65,15 @@ class ThemeUtil
      * list all available themes
      *
      * possible values of filter are
-     * PNTHEME_FILTER_ALL - get all themes (default)
-     * PNTHEME_FILTER_USER - get user themes
-     * PNTHEME_FILTER_SYSTEM - get system themes
-     * PNTHEME_FILTER_ADMIN - get admin themes
+     * self::FILTER_ALL - get all themes (default)
+     * self::FILTER_USER - get user themes
+     * self::FILTER_SYSTEM - get system themes
+     * self::FILTER_ADMIN - get admin themes
      *
      * @param filter - filter list of returned themes by type
      * @return array of available themes
      **/
-    public static function getAllThemes($filter = PNTHEME_FILTER_ALL, $state = PNTHEME_STATE_ACTIVE, $type = PNTHEME_TYPE_ALL)
+    public static function getAllThemes($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
     {
         static $themesarray = array();
 
@@ -92,19 +83,19 @@ class ThemeUtil
             $pntable = System::dbGetTables();
             $themescolumn = $pntable['themes_column'];
             $whereargs = array();
-            if ($state != PNTHEME_STATE_ALL) {
+            if ($state != self::STATE_ALL) {
                 $whereargs[] = "$themescolumn[state] = '" . DataUtil::formatForStore($state) . "'";
             }
-            if ($type != PNTHEME_TYPE_ALL) {
+            if ($type != self::TYPE_ALL) {
                 $whereargs[] = "$themescolumn[type] = '" . (int) DataUtil::formatForStore($type) . "'";
             }
-            if ($filter == PNTHEME_FILTER_USER) {
+            if ($filter == self::FILTER_USER) {
                 $whereargs[] = "$themescolumn[user] = '1'";
             }
-            if ($filter == PNTHEME_FILTER_SYSTEM) {
+            if ($filter == self::FILTER_SYSTEM) {
                 $whereargs[] = "$themescolumn[system] = '1'";
             }
-            if ($filter == PNTHEME_FILTER_ADMIN) {
+            if ($filter == self::FILTER_ADMIN) {
                 $whereargs[] = "$themescolumn[admin] = '1'";
             }
 

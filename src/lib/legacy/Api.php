@@ -3,9 +3,9 @@
  * Core version informations - should be upgraded on each release for
  * better control on config settings
  */
-define('PN_VERSION_NUM', '1.3.0-dev');
-define('PN_VERSION_ID', 'Zikula');
-define('PN_VERSION_SUB', 'cinco');
+define('PN_VERSION_NUM', System::VERSION_NUM);
+define('PN_VERSION_ID', System::VERSION_ID);
+define('PN_VERSION_SUB', System::VERSION_SUB);
 
 /**
  * Yes/no integer
@@ -43,6 +43,27 @@ define('PNPERMS_UNREGISTERED', '0');
  * Fake module for config vars
  */
 define('PN_CONFIG_MODULE', '/PNConfig');
+
+/**
+ *  Theme filters
+ */
+define('PNTHEME_FILTER_ALL', 0);
+define('PNTHEME_FILTER_USER', 1);
+define('PNTHEME_FILTER_SYSTEM', 2);
+define('PNTHEME_FILTER_ADMIN', 3);
+
+/**
+ *  Theme states
+ */
+define('PNTHEME_STATE_ALL', 0);
+define('PNTHEME_STATE_ACTIVE', 1);
+define('PNTHEME_STATE_INACTIVE', 2);
+
+/**
+ *  Theme types
+ */
+define('PNTHEME_TYPE_ALL', 0);
+define('PNTHEME_TYPE_XANTHIA3', 3);
 
 /**
  * Core initialisation stages
