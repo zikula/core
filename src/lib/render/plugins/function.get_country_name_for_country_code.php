@@ -32,7 +32,7 @@ function smarty_function_get_country_name_for_country_code ($params, &$smarty)
     $code   = strtolower(isset($params['code']) ? $params['code'] : 'ZZ');
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $countries = countrylist();
+    $countries = ZLanguage::countryMap();
     if (isset($countries[$code])) {
         $result = $countries[$code];
     } else {
