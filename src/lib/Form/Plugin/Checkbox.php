@@ -96,11 +96,21 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
 
             if ($this->group == null) {
                 if (array_key_exists($this->dataField, $values)) {
-                    $value = $values[$this->dataField];
+                    if (isset($values[$this->dataField])) {
+                        $value = $values[$this->dataField];
+                    }
+                    else {
+                        $value = null;
+                    }
                 }
             } else {
                 if (array_key_exists($this->group, $values)) {
-                    $value = $values[$this->group][$this->dataField];
+                    if (isset($values[$this->group][$this->dataField])) {
+                        $value = $values[$this->group][$this->dataField];
+                    }
+                    else {
+                        $value = null;
+                    }
                 }
             }
 
