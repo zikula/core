@@ -14,6 +14,7 @@
 
 include 'lib/ZLoader.php';
 ZLoader::register();
+EventManagerUtil::attach('core.init', 'upgrade_suppressErrors');
 
 ini_set('max_execution_time', 86400);
 
@@ -27,6 +28,7 @@ $GLOBALS['ZConfig']['System']['multilingual'] = true;
 $GLOBALS['ZConfig']['System']['language_bc'] = false;
 $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom110'] = true;
 System::init(System::CORE_STAGES_ALL);
+
 $action = FormUtil::getPassedValue('action', false, 'GETPOST');
 
 // login to supplied admin credentials for action the following actions
@@ -75,7 +77,7 @@ function _upg_header()
     echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $lang . '">' . "\n";
     echo '<head>' . "\n";
     echo '<meta http-equiv="Content-Type" content="text/html; charset=' . $charset . '" />' . "\n";
-    echo '<title>' . __f('Zikula Upgrade script') . "</title>\n";
+    echo '<title>' . __('Zikula Upgrade script') . "</title>\n";
     echo '<link rel="stylesheet" href="install/style/upgrade.css" type="text/css" />' . "\n";
     echo '<link rel="stylesheet" href="javascript/style.css" type="text/css" />' . "\n";
     echo '</head>' . "\n";
@@ -380,4 +382,14 @@ function upgrade_clear_caches()
     Theme::getInstance()->clear_cssjscombinecache();
     Renderer::getInstance()->clear_all_cache();
     Renderer::getInstance()->clear_compiled();
+}
+
+function upgrade_suppressErrors(Event $event)
+{
+    if (!$event['stages'] & System::CORE_STAGES_CONFIG) {
+        return;
+    }
+
+    error_reporting(~E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
+    $GLOBALS['ZConfig']['System']['development'] = 0;
 }
