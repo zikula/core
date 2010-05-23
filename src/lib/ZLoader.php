@@ -48,7 +48,7 @@ class ZLoader
         EventManagerUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
     }
 
-    public function addAutoloader($namespace, $path = '', $separator = '_')
+    public static function addAutoloader($namespace, $path = '', $separator = '_')
     {
         if (self::$autoloader->hasAutoloader($namespace)) {
             return;
