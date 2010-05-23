@@ -6,6 +6,8 @@
 - All plugins with pn have been renamed without the pn prefix.  The pndebug
   plugin has been renamed to zdebug. Please adjust your templates accordingly.
 
+- You must refactor templates using the 'pndate_format' modifier to 'dateformat'.
+
 - Change all instance is $pnRender = & pnRender::getInstance() to
   $renderer = Renderer::getInstance().
 
