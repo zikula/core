@@ -38,7 +38,7 @@ window.onload = function() {
  */
 function addContext(nid)
 {
-    context_menu.push(new Control.ContextMenu(nid));
+    context_menu.push(new Control.ContextMenu(nid, {animation: false}));
     context_menu[context_menu.length - 1].addItem( {
         label : lblEdit,
         callback : function(nid) {
