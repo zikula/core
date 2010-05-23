@@ -122,6 +122,17 @@ function _upg_footer()
 function _upg_selectlanguage()
 {
     _upg_header();
+    $validupgrade = true;
+    if (!$GLOBALS['ZConfig']['System']['installed']) {
+        $validupgrade = false;
+        echo '<h2>' . __('FATAL ERROR!') . "</h2>\n";
+        echo '<p class="z-errormsg">' . __("Zikula does not appear to be installed.") . "</p>\n";
+    }
+
+    if (!$validupgrade) {
+        _upg_footer();
+        System::shutdown();
+    }
 
     $curlang = ZLanguage::getLanguageCode();
     echo '<form class="z-form" action="upgrade.php" method="get" enctype="application/x-www-form-urlencoded">' . "\n";
