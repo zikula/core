@@ -16,9 +16,15 @@
 - DBUtil::executeSQL used to return a ADODB object but now returns a PHP PDO
   object.  This means any code that previously iterated on the ADODB object
   will now break.  Please use use of DBUtil::marshallObjects() after any manual
-  SELECT through DBUtil::executeSQL() or, you can access the PDO object methods.
-  PDO is built into PHP so accessing the PDO object is considered API complaint.
-  PDO documentation is available at http://php.net/PDO
+  SELECT through DBUtil::executeSQL() e.g.:
+
+    [php]
+    $res = DBUtil::executeSql ($sql);
+    $objectArray = DBUtil::marshallObjects ($res, $ca, ...);
+
+  Alternatively you can use the PDO return object.  PDO is built into PHP so
+  accessing the PDO object is considered API complaint.  PDO documentation is
+  available at http://php.net/PDO
 
 - The format of config.php has changed, please manually complete the values in
   the supplied config.php - note that base64 encoding is not supposed any more
