@@ -28,7 +28,7 @@ class SystemListenersUtil
 
     public static function systemHooks(Event $event)
     {
-        if (!defined('_ZINSTALLVER')) {
+        if (!System::isInstalling()) {
             // call system init hooks
             $systeminithooks = FormUtil::getPassedValue('systeminithooks', 'yes', 'GETPOST');
             if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN) && (isset($systeminithooks) && $systeminithooks == 'no')) {

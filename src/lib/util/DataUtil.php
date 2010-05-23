@@ -286,7 +286,7 @@ class DataUtil
         }
 
         if (!isset($outputfilter)) {
-            if (ModUtil::available('SecurityCenter') && !defined('_ZINSTALLVER')) {
+            if (ModUtil::available('SecurityCenter') && !System::isInstalling()) {
                 $outputfilter = System::getVar('outputfilter');
             } else {
                 $outputfilter = 0;

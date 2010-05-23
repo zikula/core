@@ -33,7 +33,7 @@ class DBUtil
      */
     public static function hasObjectCache($tablename)
     {
-        return ($tablename != 'session_info' && !defined('_ZINSTALLVER') && DBConnectionStack::isDefaultConnection() && System::getVar('OBJECT_CACHE_ENABLE'));
+        return ($tablename != 'session_info' && !System::isInstalling() && DBConnectionStack::isDefaultConnection() && System::getVar('OBJECT_CACHE_ENABLE'));
     }
 
     /**
@@ -223,7 +223,7 @@ class DBUtil
 
         $connection = DBConnectionStack::getConnection();
 
-        if (!$connection && defined('_ZINSTALLVER')) {
+        if (!$connection && System::isInstalling()) {
             return false;
         }
 

@@ -516,7 +516,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
             ZLanguage::bindModuleDomain($module);
 
             $mid = ModUtil::getIdFromName($module);
-            // No need to specify 'interactive_init' => false here because defined('_ZINSTALLVER') evals to true in modules_pnadminapi_initialise
+            // No need to specify 'interactive_init' => false here because System::isInstalling() evals to true in modules_pnadminapi_initialise
             $initialise = ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
                             'id' => $mid));
             if ($initialise === true) {

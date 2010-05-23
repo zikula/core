@@ -15,7 +15,7 @@
 function z_exit($msg, $html = true)
 {
     global $ZConfig;
-    if (defined('_ZINSTALLVER') && $ZConfig['System']['development']) {
+    if (System::isInstalling() && $ZConfig['System']['development']) {
         print(__f('Installation error: %s', $msg) . '<br />');
         prayer(debug_backtrace());
         return false;
@@ -58,7 +58,7 @@ if (!function_exists('_prayer')) {
         }
 
         global $ZConfig;
-        if (defined('_ZINSTALLVER') && !$ZConfig['System']['development']) {
+        if (System::isInstalling() && !$ZConfig['System']['development']) {
             return;
         }
 
@@ -150,7 +150,7 @@ if (!function_exists('prayer')) {
     function prayer($data, $functions = false)
     {
         global $ZConfig;
-        if (defined('_ZINSTALLVER') && !$ZConfig['System']['development']) {
+        if (System::isInstalling() && !$ZConfig['System']['development']) {
             return;
         }
 

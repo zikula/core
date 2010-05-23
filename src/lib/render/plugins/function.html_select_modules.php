@@ -73,7 +73,7 @@ function smarty_function_html_select_modules($params, &$smarty)
     $installerArray = array('Blocks', 'Errors', 'Permissions', 'Categories', 'Groups', 'Theme', 'Users', 'Search');
     if (!empty($modules)) {
         foreach ($modules as $module) {
-            if (!(defined('_ZINSTALLVER') && in_array($module['name'], $installerArray))) {
+            if (!(System::isInstalling() && in_array($module['name'], $installerArray))) {
                 $moduleslist[$module['name']] = $module['displayname'];
             }
         }

@@ -209,7 +209,7 @@ function modules_adminapi_extendedupdatehooks($args)
 function modules_adminapi_list($args)
 {
     // Security check
-    if (!defined('_ZINSTALLVER')) {
+    if (!System::isInstalling()) {
         if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
@@ -301,7 +301,7 @@ function modules_adminapi_setstate($args)
     }
 
     // Security check
-    if (!defined('_ZINSTALLVER')) {
+    if (!System::isInstalling()) {
         if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
@@ -426,7 +426,7 @@ function modules_adminapi_remove($args)
             $interactive_func = $modinfo['name'] . '_init_interactivedelete';
 
             // allow bypass of interactive removal during a new installation only.
-            if (defined('_ZINSTALLVER') && function_exists($interactive_func) && !function_exists($func)) {
+            if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
                 return; // return void here
             }
 
@@ -484,7 +484,7 @@ function modules_adminapi_remove($args)
 function modules_adminapi_getfilemodules($args)
 {
     // Security check
-    if (!defined('_ZINSTALLVER')) {
+    if (!System::isInstalling()) {
         if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
@@ -684,7 +684,7 @@ function modules_adminapi_getfilemodules($args)
 function modules_adminapi_regenerate($args)
 {
     // Security check
-    if (!defined('_ZINSTALLVER')) {
+    if (!System::isInstalling()) {
         if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
@@ -906,11 +906,11 @@ function modules_adminapi_initialise($args)
         $interactive_func = $modinfo['name'] . '_init_interactiveinit';
 
         // allow bypass of interactive install during a new installation only.
-        if (defined('_ZINSTALLVER') && function_exists($interactive_func) && !function_exists($func)) {
+        if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
             return; // return void here
         }
 
-        if (!defined('_ZINSTALLVER') && isset($args['interactive_init']) && ($args['interactive_init'] == false) && function_exists($interactive_func)) {
+        if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && function_exists($interactive_func)) {
             SessionUtil::setVar('interactive_init', true);
             return $interactive_func();
         }
@@ -979,7 +979,7 @@ function modules_adminapi_upgrade($args)
         $interactive_func = $modinfo['name'] . '_init_interactiveupgrade';
 
         // allow bypass of interactive upgrade during a new installation only.
-        if (defined('_ZINSTALLVER') && function_exists($interactive_func) && !function_exists($func)) {
+        if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
             return; // return void here
         }
 
@@ -1409,7 +1409,7 @@ function modules_adminapi_getdependents($args)
 function modules_adminapi_checkconsistency($args)
 {
     // Security check
-    if (!defined('_ZINSTALLVER')) {
+    if (!System::isInstalling()) {
         if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }

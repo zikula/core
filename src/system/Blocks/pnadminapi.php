@@ -47,7 +47,7 @@ function blocks_adminapi_update($args)
     // Security check
     // this function is called durung the init process so we have to check in _ZINSTALLVER
     // is set as alternative to the correct permission check
-    if (!defined('_ZINSTALLVER') && !SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_EDIT)) {
+    if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -130,7 +130,7 @@ function blocks_adminapi_create($args)
     }
 
     // Security check
-    if (!defined('_ZINSTALLVER') && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
+    if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -295,7 +295,7 @@ function Blocks_adminapi_createposition($args)
     }
 
     // Security check
-    if (!defined('_ZINSTALLVER') && !SecurityUtil::checkPermission('Blocks::position', "$args[name]::", ACCESS_ADD)) {
+    if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::position', "$args[name]::", ACCESS_ADD)) {
         return LogUtil::registerPermissionError();
     }
 

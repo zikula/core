@@ -254,7 +254,7 @@ function Admin_adminapi_addmodtocategory($args)
 
     // this function is called durung the init process so we have to check in _ZINSTALLVER
     // is set as alternative to the correct permission check
-    if (!defined('_ZINSTALLVER') && !SecurityUtil::checkPermission('Admin::Category', "::", ACCESS_ADD)) {
+    if (!System::isInstalling() && !SecurityUtil::checkPermission('Admin::Category', "::", ACCESS_ADD)) {
         return LogUtil::registerPermissionError ();
     }
 

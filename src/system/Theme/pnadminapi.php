@@ -19,7 +19,7 @@ function theme_adminapi_regenerate()
     // Security check
     // this function is called durung the init process so we have to check in _ZINSTALLVER
     // is set as alternative to the correct permission check
-    if (!defined('_ZINSTALLVER') && !SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+    if (!System::isInstalling() && !SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 

@@ -91,7 +91,7 @@ class FormUtil
                 if (in_array($key, $alwaysclean)) {
                     $doClean = true;
                 }
-                if ($doClean && !defined('_ZINSTALLVER')) {
+                if ($doClean && !System::isInstalling()) {
                     self::cleanValue($value);
                 }
             }

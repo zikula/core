@@ -337,7 +337,7 @@ class ModUtil
 
         static $modinfo;
 
-        if (!is_array($modinfo) || defined('_ZINSTALLVER')) {
+        if (!is_array($modinfo) || System::isInstalling()) {
             $modinfo = self::getModsTable();
 
             if (!$modinfo) {
@@ -616,7 +616,7 @@ class ModUtil
 // not during installation as the Theme engine may not be available yet and not for system themes
 // TO-DO: figure out how to determine if a userapi belongs to a hook module and load the
 //        corresponding css, perhaps with a new entry in modules table?
-        if (!defined('_ZINSTALLVER')) {
+        if (!System::isInstalling()) {
             if ($api == false) {
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
                 if ($type == 'admin') {
@@ -1290,7 +1290,7 @@ class ModUtil
     {
         static $modstable;
 
-        if (!isset($modstable) || defined('_ZINSTALLVER')) {
+        if (!isset($modstable) || System::isInstalling()) {
             $modstable = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
             foreach ($modstable as $mid => $module) {
                 $modstable[$mid]['i18n'] = ($module['type'] == 2 ? true : false);

@@ -213,7 +213,7 @@ class LogUtil
 
         global $ZConfig;
 
-        $showDetailInfo = (defined('_ZINSTALLVER') || ($ZConfig['System']['development'] && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)));
+        $showDetailInfo = (System::isInstalling() || ($ZConfig['System']['development'] && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)));
 
         if ($showDetailInfo) {
             $bt = debug_backtrace();
@@ -500,7 +500,7 @@ class LogUtil
      */
     public static function _cleanLogFiles()
     {
-        if (defined('_ZINSTALLVER')) {
+        if (System::isInstalling()) {
             return;
         }
 

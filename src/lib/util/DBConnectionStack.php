@@ -53,7 +53,7 @@ class DBConnectionStack
             self::$manager = Doctrine_Manager::getInstance();
             self::configureDoctrine(self::$manager);
             // setup caching
-            if (!defined('_ZINSTALLVER') && System::getVar('OBJECT_CACHE_ENABLE')) {
+            if (!System::isInstalling() && System::getVar('OBJECT_CACHE_ENABLE')) {
                 $type = System::getVar('OBJECT_CACHE_TYPE');
 
                 // Setup Doctrine Caching
@@ -107,10 +107,10 @@ class DBConnectionStack
 
         Doctrine::debug(System::getVar('development'));
 
-        if (isset($connInfo['dbcharset']) && !defined('_ZINSTALLVER')) {
+        if (isset($connInfo['dbcharset']) && !System::isInstalling()) {
             $connection->setCharset($connInfo['dbcharset']);
         }
-        if (isset($connInfo['dbcollate']) && !defined('_ZINSTALLVER')) {
+        if (isset($connInfo['dbcollate']) && !System::isInstalling()) {
             $connection->setCollate($connInfo['dbcollate']);
         }
 
@@ -144,7 +144,7 @@ class DBConnectionStack
         }
 
         if (!self::$manager->count()) {
-            if (defined('_ZINSTALLVER')) {
+            if (System::isInstalling()) {
                 return;
             }
             throw new Exception(__('Attempted to get info from empty connection stack'));
@@ -301,7 +301,7 @@ class DBConnectionStack
         }
 
         if (!self::$manager->count()) {
-            if (defined('_ZINSTALLVER')) {
+            if (System::isInstalling()) {
                 return;
             }
             throw new Exception(__('Attempted to get connection from empty connection stack'));

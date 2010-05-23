@@ -208,7 +208,7 @@ class ThemeUtil
     public static function getThemesTable()
     {
         static $themestable;
-        if (!isset($themestable) || defined('_ZINSTALLVER')) {
+        if (!isset($themestable) || System::isInstalling()) {
             $array = DBUtil::selectObjectArray('themes', '', '', -1, -1, 'id');
             foreach ($array as $theme) {
                 $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);

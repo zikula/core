@@ -471,7 +471,7 @@ class UserUtil
             }
         }
 
-        if (!defined('_ZINSTALLVER')) {
+        if (!System::isInstalling()) {
             SessionUtil::requireSession();
         }
 
