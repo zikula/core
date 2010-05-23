@@ -77,7 +77,6 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
         if ($firstTime) {
             PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');
             PageUtil::addVar('javascript', 'system/Theme/javascript/form/pnform_tabbedpanelset.js');
-            PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('pnForm'));
             PageUtil::addVar('footer', "<script type=\"text/javascript\">$$('.tabsToHide').invoke('hide')</script>");
         }
         $firstTime = false;
