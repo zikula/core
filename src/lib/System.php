@@ -164,7 +164,7 @@ class System
         static $globalscleansed = false;
 
         // force register_globals = off
-        if ($globalscleansed == false && ini_get('register_globals') && !defined('_ZINSTALLVER')) {
+        if ($globalscleansed == false && ini_get('register_globals') && !self::isInstalling()) {
             foreach ($GLOBALS as $s_variable_name => $m_variable_value) {
                 if (!in_array($s_variable_name, array(
                 'GLOBALS',
@@ -200,7 +200,7 @@ class System
 
         // initialise environment
         if ($stages & self::CORE_STAGES_CONFIG) {
-            if (!defined('_ZINSTALLVER')) {
+            if (!self::isInstalling()) {
                 $GLOBALS['ZConfig'] = array();
                 $GLOBALS['ZRuntime'] = array();
             }
@@ -215,10 +215,11 @@ class System
         if ($stages & self::CORE_STAGES_CONFIG) {
             require 'config/config.php';
 
-            if (defined('_ZINSTALLVER')) {
+            if (self::isInstalling()) {
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
+                $GLOBALS['ZConfig']['System']['compat_layer'] = true;
             }
             if (!isset($GLOBALS['ZConfig']['Multisites'])) {
                 $GLOBALS['ZConfig']['Multisites'] = array();
@@ -233,7 +234,7 @@ class System
         $GLOBALS['additional_header'] = array();
 
         if ($GLOBALS['ZConfig']['System']['compat_layer']) {
-            include_once 'lib/legacy/Compat.php';
+            require_once 'lib/legacy/Compat.php';
         }
 
         /**
@@ -268,7 +269,7 @@ class System
             try {
                 DBConnectionStack::init();
             } catch (PDOException $e) {
-                if (!defined('_ZINSTALLVER')) {
+                if (!self::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
                     $templateFile = '/templates/dbconnectionerror.htm';
                     if (file_exists('config' . $templateFile)) {
@@ -927,7 +928,7 @@ class System
      */
     public static function queryStringDecode()
     {
-        if (defined('_ZINSTALLVER')) {
+        if (self::isInstalling()) {
             return;
         }
 
@@ -1155,7 +1156,7 @@ class System
      */
     public static function _development_checks()
     {
-        if ($GLOBALS['ZConfig']['System']['development'] == 1 && !defined('_ZINSTALLVER')) {
+        if ($GLOBALS['ZConfig']['System']['development'] == 1 && !self::isInstalling()) {
             $die = false;
 
             // check PHP version, shouldn't be necessary, but....
