@@ -80,7 +80,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 }
 
 
-function PageLock_userapi_requireLock(&$args)
+function PageLock_userapi_requireLock($args)
 {
     $lockName = $args['lockName'];
     $sessionId = (array_key_exists('sessionId', $args) ? $args['sessionId'] : session_id());
