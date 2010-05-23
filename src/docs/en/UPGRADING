@@ -58,8 +58,17 @@ no problems.
       - If you use Admin_Messages, please copy the block to a new HTML block and delete
         the Admin_Message block.
 
-  ii.  Upload all files from the package you downloaded, copying over your files.
-       Manually edit the config/config.php with your database credentials.
+  iii. Upload all files from the package you downloaded, copying over your files.
+       Manually edit the NEW config/config.php with your database credentials. Please
+       be aware the config.php is quite different so please make sure you merge in
+       the differences from the old config.php to the new one. To make this easy
+       pay close attention to lines
+            line 26: $ZConfig['System']['installed']
+            line 28: $ZConfig['System']['prefix']
+            line 46: $ZConfig['DBInfo']['default']['dsn']
+
+       Do not change the following lines.
+            line $ZConfig['System']['temp']
 
   2.3 Run the upgrade
   -------------------
