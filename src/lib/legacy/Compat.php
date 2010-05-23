@@ -2088,6 +2088,7 @@ class Loader
      */
     public static function loadClass($className, $classPath = 'lib', $exitOnError = true)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading')));
         if (!$className) {
             return pn_exit(__f("Error! Invalid class specification '%s'.", $className));
         }
@@ -2119,6 +2120,7 @@ class Loader
      */
     public static function loadClassFromModule($module, $base_obj_type, $array = false, $exitOnError = false, $prefix = 'PN')
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading')));
         if (!$module) {
             return pn_exit(__f("Error! Invalid module specification '%s'.", $module));
         }
@@ -2187,6 +2189,7 @@ class Loader
      */
     public static function loadArrayClassFromModule($module, $base_obj_type, $exitOnError = false, $prefix = 'PN')
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading')));
         return self::loadClassFromModule($module, $base_obj_type, true, $exitOnError, $prefix);
     }
 
@@ -2198,6 +2201,7 @@ class Loader
      */
     public static function includeOnce($file)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'include_once')));
         return include_once ($file);
     }
 
