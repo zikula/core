@@ -2811,7 +2811,9 @@ class DBUtil
                 $fieldDef['primary'] = $fPrim;
                 $fieldDef['unsigned'] = $fUSign;
                 $fieldDef['notnull'] = ($fNull !== null ? ($fNull == 'NOTNULL' ? 1 : 0) : null);
-                $fieldDef['default'] = $fDef;
+                if($fDef != null) {
+                    $fieldDef['default'] = $fDef;
+                }
                 $ddict[$val] = $fieldDef;
             }
             //if ($table == 'zws_coupon') {
