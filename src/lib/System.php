@@ -219,7 +219,6 @@ class System
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
-                $GLOBALS['ZConfig']['System']['compat_layer'] = true;
             }
             if (!isset($GLOBALS['ZConfig']['Multisites'])) {
                 $GLOBALS['ZConfig']['Multisites'] = array();
