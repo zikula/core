@@ -1855,7 +1855,7 @@ function pnUserSetVar($name, $value, $uid = -1)
 
 function pnUserSetPassword($pass)
 {
-    return UserUtil::setVar($name, $value, $uid);
+    return UserUtil::setPassword($pass);
 }
 
 /**
