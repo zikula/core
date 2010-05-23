@@ -18,9 +18,7 @@
   will now break.  Please use use of DBUtil::marshallObjects() after any manual
   SELECT through DBUtil::executeSQL() or, you can access the PDO object methods.
   PDO is built into PHP so accessing the PDO object is considered API complaint.
-  PDO documentation is available at http://php.net/PDO but overall you should
-  really try NOT to use pure DBUtil because this will mean better cross DB
-  compatibility for your code.
+  PDO documentation is available at http://php.net/PDO
 
 - The format of config.php has changed, please manually complete the values in
   the supplied config.php - note that base64 encoding is not supposed any more
