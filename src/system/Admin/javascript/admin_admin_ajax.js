@@ -40,7 +40,7 @@ function addContext(nid)
 {
     context_menu.push(new Control.ContextMenu(nid));
     context_menu[context_menu.length - 1].addItem( {
-        label : 'Edit',
+        label : lblEdit,
         callback : function(nid) {
         var match = /acid=([0-9]*){1,}/.exec(nid);
         if (match instanceof Array) {
@@ -53,7 +53,7 @@ function addContext(nid)
     }
     });
     context_menu[context_menu.length - 1].addItem( {
-        label : 'Delete',
+        label : lblDelete,
         callback : function(nid) {
         var match = /acid=([0-9]*){1,}/.exec(nid);
         if (match instanceof Array) {
@@ -76,12 +76,14 @@ function addEditor(nid) {
     var nelement = document.getElementById(nid);
     var tLength = nelement.innerHTML.length;
     var editor = new Ajax.InPlaceEditor(nid,"index.php?module=Admin&type=ajax&func=editCategory",{
-        externalControl:"none",
-        externalControlOnly:true,
-        rows:1,cols:tLength,
-        submitOnBlur:true,
-        okControl:false,
-        cancelControl:false,
+        clickToEditText: lblclickToEdit,
+        savingText: lblSaving,
+        externalControl: "none",
+        externalControlOnly: true,
+        rows:1,cols: tLength,
+        submitOnBlur: true,
+        okControl: false,
+        cancelControl: false,
         callback: function(form, value) { 
         var authid = document.getElementById('authid').value;
         var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
