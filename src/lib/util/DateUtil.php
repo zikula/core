@@ -75,6 +75,8 @@ class DateUtil
                 $format = __('%T %p');
                 break;
             default:
+                $format = __($format);
+                break;
         } // switch
 
         if ($time) {
