@@ -740,7 +740,7 @@ function z_prefilter_legacy($tpl_source, &$smarty)
 
 function z_prefilter_legacy_callback($m)
 {
-    $m[1] = str_replace('pndate_format', 'dateformat', $m[1]);
+    $m[1] = str_replace('|pndate_format', '|dateformat', $m[1]);
     $m[1] = preg_replace('#^(\s*)(/{0,1})pn([a-zA-Z0-9_]+)(\s*|$)#', '$1$2$3$4', $m[1]);
     $m[1] = preg_replace('#\|pn#', '|', $m[1]);
     return "{{$m[1]}}";
