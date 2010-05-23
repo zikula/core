@@ -464,7 +464,7 @@ class UserUtil
                     }
                 }
             }
-            if (!$uid) {
+            if (!isset($uid) || !$uid) {
                 $event = new Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
                 EventManagerUtil::notify($event);
                 return false;
