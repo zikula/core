@@ -686,9 +686,7 @@ function pnSecGenAuthKey($modname = '')
  */
 function pnSecConfirmAuthKey()
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
-        'pnSecConfirmAuthKey()',
-        'SecurityUtil::confirmAuthKey()')), 'STRICT');
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'SecurityUtil::confirmAuthKey()')), 'STRICT');
 
     return SecurityUtil::confirmAuthKey();
 }
@@ -2212,6 +2210,7 @@ class Loader
      */
     public static function requireOnce($file)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'require_once')));
         return require_once ($file);
     }
 }
