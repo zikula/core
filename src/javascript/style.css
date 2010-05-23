@@ -1,5 +1,3 @@
-/* $Id $ */
-
 /* class to show a sortable li or div */
 .z-sortable {
     /* cursor: move; has to be set in the js code to avoid wrong css in non javascript environments */

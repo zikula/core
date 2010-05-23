@@ -186,27 +186,6 @@ table.z-admintable ul {
     border: 1px solid #aaa;
 }
 
-#z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions {
-    background-color: #FFFFFF;
-    border: 1px solid #AAAAAA;
-    display: block;
-    left: 64px;
-    list-style: none outside none;
-    margin: 0;
-    padding: 6px;
-    position: absolute;
-    top: 2.5em;
-    z-index: 2300; /* must be higher than the return value after dragging */
-}
-
-#z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions li {
-    font-size: 0.9em;
-    font-weight: normal;
-    line-height: 1.1em;
-    margin: 0;
-    padding: 2px;
-}
-
 #z-adminiconlist .z-adminlinkheader img {
     vertical-align: middle;
 }
@@ -217,6 +196,7 @@ table.z-admintable ul {
 
 #z-adminiconlist .z-pointericon {
     border: 1px solid transparent;
+    cursor: pointer;
 }
 
 #z-adminiconlist .z-pointericon:hover {

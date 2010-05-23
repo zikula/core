@@ -1,62 +1,61 @@
-{math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
 <div id="z-adminiconlist">
     {assign var="count" value="0"}
-    {assign var="zindexcount" value="0"}
     {assign var="moduleid" value="0"}
     {foreach from=$adminlinks name=adminlink item=adminlink}
     {math equation="$count+1" assign="count"}
-    {math equation="$zindexcount+1" assign="zindexcount"}
+    {math equation="$moduleid+1" assign="moduleid"}
 
     {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
-        <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$zindexcount"};">
+        <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
             {if $modvars.admingraphic eq 1}
             <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
-                <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutexttitle|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
+                <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutext|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
             </a>
             {/if}
             <div class="z-adminlinkheader">
                 {img modname='Admin' src='mouse.png' set='icons/extrasmall' __alt='Drag and drop into a new module category' __title='Drag and drop into a new module category' id="dragicon`$adminlink.id`" class='z-dragicon'}
                 <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
-                <a id="switchModuleFunctions{$moduleid}" class="z-pointericon">{img modname=core src=14_layer_lowerlayer.gif set=icons/extrasmall __alt='Functions'}</a>
-                <ul id="infoModuleFunctions{$moduleid}" class="infoModuleFunctions" style="display: none">
-                    {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
-                    {if $modlinks}
-                    {foreach from=$modlinks item=modlink}
-                    <li><a title="{$modlink.text|varprepfordisplay}" href="{$modlink.url|varprepfordisplay}">{$modlink.text|varprepfordisplay}</a></li>
-                    {/foreach}
-                    {else}
-                    <li><a title="{gt text='Module administration'}" href="{$adminlink.menutexturl|varprepfordisplay}">{gt text="Module administration"}</a></li>
-                    {/if}
-                    {assign var="modlinks" value=false}
-                </ul>
+
+                {assign var="modlinks" value=false}
+                {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
+                {if $modlinks}
+                {img modname='Admin' id="mcontext`$moduleid`" class="z-pointericon" src='arrow.png' __alt='Functions'}
+
+                <script type="text/javascript">
+                /* <![CDATA[ */
+                    var context_mcontext{{$moduleid}} = new Control.ContextMenu('mcontext{{$moduleid}}',{
+                        leftClick: true
+                    });
+                
+                    {{foreach from=$modlinks item=modlink}}
+                        context_mcontext{{$moduleid}}.addItem({
+                            label: '{{$modlink.text|varprepfordisplay}}',
+                            callback: function(){window.location = document.location.pnbaseURL + '{{$modlink.url}}';}
+                        });
+                    {{/foreach}}
+                
+                    new Draggable("A{/literal}{$adminlink.id}{literal}", {
+                        revert: true,
+                        handle: "dragicon{/literal}{$adminlink.id}{literal}",
+                        zindex: 2200 // must be higher than the active minitab and all other admin icons
+                    });
+                
+                /* ]]> */
+                </script>
+
+                {/if}
+
             </div>
+
+            {math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
             <div class="z-menutexttitle">{$adminlink.menutexttitle|varprepfordisplay|truncate:$trunLen:"&hellip;":false}</div>
 
-            <script type="text/javascript">
-                var clearTimer{{$moduleid}} = null;
-                function hidePIPr{{$moduleid}}() {
-                    $('infoModuleFunctions{{$moduleid}}').hide();
-                }
-
-                $('switchModuleFunctions{{$moduleid}}').observe('click', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
-                $('switchModuleFunctions{{$moduleid}}').observe('keypress', function() { $('infoModuleFunctions{{$moduleid}}').toggle(); clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 3000); }, false);
-                $('infoModuleFunctions{{$moduleid}}').observe('mouseover', function() { clearTimeout(clearTimer{{$moduleid}}); }, false);
-                $('infoModuleFunctions{{$moduleid}}').observe('mouseout', function() { clearTimer{{$moduleid}} = setTimeout('hidePIPr{{$moduleid}}()', 500); }, false);
-    
-                new Draggable("A{/literal}{$adminlink.id}{literal}", {
-                    revert: true,
-                    handle: "dragicon{/literal}{$adminlink.id}{literal}",
-                    zindex: 2200 // must be higher than the active minitab and all other admin icons
-                });
-            </script>
         </div>
-    
-        {if $count eq $modvars.modulesperrow}
-        {assign var="count" value="0"}
-    </div>
+
+    {if $count eq $modvars.modulesperrow}{assign var="count" value="0"}</div>
     {else}
-    {if $smarty.foreach.adminlink.last}</div>{/if}
-    {/if}
-    {math equation="$moduleid+1" assign="moduleid"}
-    {/foreach}
+{if $smarty.foreach.adminlink.last}</div>{/if}
+{/if}
+
+{/foreach}
 </div>
