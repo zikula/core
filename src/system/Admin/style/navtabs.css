@@ -41,21 +41,20 @@ ul.admintabs li>a.active {
 
 ul#admintabs li>a:hover,
 ul.admintabs li>a:hover {
-    background: #fff;
+    background: #fff !important;
     text-decoration: none;
 }
 
 ul#admintabs li>a.ajaxhover,
 ul.admintabs li>a.ajaxhover {
-    background: #FFFFB2;
+    background: #FFFFB2 !important;
 }
 
 ul#admintabs #ajaxNewCatForm,
 ul.admintabs #ajaxNewCatForm {
     display: block;
-    background-color: #F3F3F3;
+    background-color: #FFFFB2;
     border: 1px solid #CCCCCC;
-    color: #666666;
     float: left;
     font-weight: bold;
     padding: 5px 10px;
@@ -66,9 +65,9 @@ ul.admintabs #ajaxNewCatForm {
 
 ul#admintabs #ajaxNewCatForm input.ajaxNewCat,
 ul.admintabs #ajaxNewCatForm input.ajaxNewCat {
-    background-color: transparent;
+    background-color: #FFF;
     border: none;
-    color: #666666;
+    color: #333;
     float: left;
     font-weight: bold;
     margin: 0;
@@ -150,7 +149,7 @@ ul.admintabs #ajaxNewCatForm a.ajaxCatImage img {
 }
 
 form.inplaceeditor-form {
-    background-color: #F3F3F3;
+    background-color: #FFFFB2;
     border: 1px solid #CCCCCC;
     color: #666666;
     display: block;
@@ -162,9 +161,9 @@ form.inplaceeditor-form {
 
 form.inplaceeditor-form input[type="text"] {
     font-weight: bold;
-    background-color: transparent;
-    border: medium none;
-    color: #666666;
+    background-color: #FFF;
+    border: none;
+    color: #333;
     margin: 0 !important;
     padding: 0 !important;
     max-width: 8em;
