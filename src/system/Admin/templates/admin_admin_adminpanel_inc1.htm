@@ -15,7 +15,7 @@
             </a>
             {/if}
             <div class="z-adminlinkheader">
-                {img modname='Admin' src='mouse.png' set='icons/extrasmall' __alt='Move icon' __title='Move module' id="dragicon`$adminlink.id`" class='z-dragicon'}
+                {img modname='Admin' src='mouse.png' set='icons/extrasmall' __alt='Drag and drop into a new module category' __title='Drag and drop into a new module category' id="dragicon`$adminlink.id`" class='z-dragicon'}
                 <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
                 <a id="switchModuleFunctions{$moduleid}" class="z-pointericon">{img modname=core src=14_layer_lowerlayer.gif set=icons/extrasmall __alt='Functions'}</a>
                 <ul id="infoModuleFunctions{$moduleid}" class="infoModuleFunctions" style="display: none">

@@ -1,7 +1,7 @@
 {*  $Id$  *}
 <h2>{gt text="Edit theme"} {$themeinfo.displayname}</h2>
 {if $themeinfo.type eq 3}
-<ul class="minitabs" style="padding-left:0px; margin-left:0px;">
+<ul class="admintabs z-clearfix">
     <li><a href="{modurl modname=Theme type=admin func=modify themename=$themename}">{gt text="Settings"}</a></li>
     <li><a href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}">{gt text="Page configurations"}</a></li>
     <li><a href="{modurl modname=Theme type=admin func=palettes themename=$themename}">{gt text="Colour palettes"}</a></li>

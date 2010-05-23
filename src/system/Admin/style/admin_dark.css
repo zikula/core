@@ -2,9 +2,7 @@
 Admin interface stylesheet
 
 This stylesheet overrides styles defined in admin.css for darker themes
-*/
-
-/* first import the main stylesheet */
+*/ /* first import the main stylesheet */
 @import "admin.css";
 
 /* the following styles then override certain parts of the orginal stylesheet,
@@ -14,9 +12,7 @@ darker
 
 When overriding a style any rules that we want to stay the same are excluded.
 
-*/
-
-/* styles for module admin menus */
+*/ /* styles for module admin menus */
 .z-menuitem-title {
     background: none;
     border-left: none;
@@ -37,6 +33,7 @@ div.z-errormsg {
 div.z-statusmsg {
     background-color: inherit;
 }
+
 div.z-errormsg,
 div#z-securityanalyzer {
     background-color: inherit;
@@ -49,6 +46,7 @@ div.z-admincontainer ol li.z-even {
     background-color: inherit;
     color: inherit;
 }
+
 table.z-admintable tbody tr.z-odd,
 div.z-admincontainer ul li.z-odd,
 div.z-admincontainer ol li.z-odd {

@@ -10,8 +10,8 @@
 {nocache}{include file=admin_admin_updatechecker.htm}{/nocache}
 {insert name="getstatusmsg"}
 
-<div class="minitabs-container" id="minitabs-container">
-    <ul id="minitabs">
+<div class="admintabs-container" id="admintabs-container">
+    <ul id="admintabs" class="z-clearfix">
         {section name=menuoption loop=$menuoptions}
         <li>
             {if $currentcat eq $menuoptions[menuoption].cid}

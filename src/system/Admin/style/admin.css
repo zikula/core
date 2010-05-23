@@ -29,10 +29,11 @@ div.z-adminbox {
     border-bottom: 0px solid #ccc;
     padding: 5px 1% 5px 1%;
 }
-div.z-adminbox .z-menulinks,
-div.z-adminbox .z-menu {
-    margin-bottom:0;
+
+div.z-adminbox .z-menulinks,div.z-adminbox .z-menu {
+    margin-bottom: 0;
 }
+
 /* style for Immediate template under the admin menu */
 div.z-admincontainer {
     width: auto;
@@ -43,7 +44,6 @@ div.z-admincontainer {
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     padding: 0px 1% 5px 1%;
-
 }
 
 /* admin category description */
@@ -56,30 +56,33 @@ div.z-admincategorydescription {
 div.z-adminbox h1 {
     text-align: left;
 }
+
 div.z-admincontainer h2 {
     text-align: left;
     border-bottom: 1px solid #cccccc;
     margin-top: 0px;
-    padding-top:0.5em;
+    padding-top: 0.5em;
 }
 
 /* styling for a page icon */
 div.z-adminpageicon {
     padding: 0;
 }
+
 div.z-adminpageicon img {
     float: right;
     padding-top: 5px;
 }
-div.z-adminpageicon + h2 {
-    margin-bottom:20px !important;
-    padding-top:20px !important;
+
+div.z-adminpageicon+h2 {
+    margin-bottom: 20px !important;
+    padding-top: 20px !important;
 }
 
 /* disabled admin function links */
 div.z-admincontainer a.z-disabledadminlink,
 div.z-adminbox a.z-disabledadminlink {
-    text-decoration:line-through;
+    text-decoration: line-through;
 }
 
 /* styling for noscript category propertly selector label */
@@ -95,9 +98,8 @@ div.z-admincontainer button {
 }
 
 /*******************************************************************************/
-/* style for admin tables
+    /* style for admin tables
 /*******************************************************************************/
-
 table.z-admintable {
     width: 100%;
     color: inherit;
@@ -121,7 +123,7 @@ table.z-admintable caption {
     font-weight: bold;
     border-bottom: 2px solid #CFCFCF;
     text-transform: uppercase;
-    padding:10px;
+    padding: 10px;
 }
 
 table.z-admintable thead tr {
@@ -146,54 +148,63 @@ table.z-admintable ul {
 }
 
 /*******************************************************************************/
-/* Styling for module icon list in the admin panel
+    /* Styling for module icon list in the admin panel
 /*******************************************************************************/
-
 #z-adminiconlist {
-    margin:5px;
+    margin: 5px;
 }
+
 #z-adminiconlist .z-adminfloat {
-    float:left;
+    float: left;
 }
+
 #z-adminiconlist .z-adminiconcontainer {
-    float:left;
-    padding:0.75em 0;
+    float: left;
+    padding: 0.75em 0;
 }
+
 #z-adminiconlist .z-adminmodtitle {
-    font-weight:bold;
-    overflow:hidden;
+    font-weight: bold;
+    overflow: hidden;
 }
-#z-adminiconlist .z-adminiconrow .z-adminiconcontainer .z-adminicon { /* only for admin_admin_adminpanel_inc1.html */
-    margin-right:5px;
+
+#z-adminiconlist .z-adminiconrow .z-adminiconcontainer .z-adminicon {
+    /* only for admin_admin_adminpanel_inc1.html */
+    margin-right: 5px;
 }
+
 #z-adminiconlist .z-adminiconcontainer .z-adminicon img {
-    background:#fff;
-    border-color:#D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
-    border-style:solid;
-    border-width:1px;
-    padding:4px;
+    background: #fff;
+    border-color: #D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
+    border-style: solid;
+    border-width: 1px;
+    padding: 4px;
 }
+
 #z-adminiconlist .z-adminiconcontainer .z-adminicon img:hover {
-    border:1px solid #aaa;
+    border: 1px solid #aaa;
 }
+
 #z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions {
-    background-color:#FFFFFF;
-    border:1px solid #AAAAAA;
-    display:block;
-    left:64px;
-    list-style:none outside none;
-    margin:0;
-    padding:6px;
-    position:absolute;
-    top:2.5em;
-    z-index:2300; /* must be higher than the return value after dragging */
+    background-color: #FFFFFF;
+    border: 1px solid #AAAAAA;
+    display: block;
+    left: 64px;
+    list-style: none outside none;
+    margin: 0;
+    padding: 6px;
+    position: absolute;
+    top: 2.5em;
+    z-index: 2300;
+    /* must be higher than the return value after dragging */
 }
+
 #z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions li {
-    font-size:0.9em;
-    font-weight:normal;
-    line-height:1.1em;
-    margin:0;
-    padding:2px;
+    font-size: 0.9em;
+    font-weight: normal;
+    line-height: 1.1em;
+    margin: 0;
+    padding: 2px;
 }
 
 #z-adminiconlist .z-adminlinkheader img {
@@ -207,6 +218,7 @@ table.z-admintable ul {
 #z-adminiconlist .z-pointericon {
     border: 1px solid transparent;
 }
+
 #z-adminiconlist .z-pointericon:hover {
     border: 1px solid #999;
     -webkit-box-shadow: #999 1px 1px 2px;
@@ -215,18 +227,18 @@ table.z-admintable ul {
 }
 
 /*******************************************************************************/
-/* Styling for status security analyzer, update checker and more
+    /* Styling for status security analyzer, update checker and more
 /*******************************************************************************/
-
 div#z-securityanalyzer {
-    background: #fff6bf url(../../../images/icons/large/bell.gif) center no-repeat;
+    background: #fff6bf url(../../../images/icons/large/bell.gif) center
+        no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
     border: 2px solid #ffd324;
     min-height: 2.5em;
     margin: 1em auto 2em auto;
-    width:75%;
+    width: 75%;
     -webkit-box-shadow: #999 4px 4px 10px;
     -moz-box-shadow: #999 4px 4px 10px;
     box-shadow: #999 4px 4px 10px;
@@ -238,14 +250,16 @@ div#z-securityanalyzer {
 
 /* styling for status update checker */
 div#z-updatechecker {
-    background: #ffffea url(../../../images/icons/large/agt_update-product.gif) center no-repeat;
+    background: #ffffea
+        url(../../../images/icons/large/agt_update-product.gif) center
+        no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
     border: 2px solid #32CD32;
     min-height: 1em;
     margin: 1em auto 2em auto;
-    width:75%;
+    width: 75%;
     -webkit-box-shadow: #999 4px 4px 10px;
     -moz-box-shadow: #999 4px 4px 10px;
     box-shadow: #999 4px 4px 10px;
@@ -257,14 +271,15 @@ div#z-updatechecker {
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 div#z-adminwarning {
-    background: #FFCBCA url(../../../images/icons/large/error.gif) center no-repeat;
+    background: #FFCBCA url(../../../images/icons/large/error.gif) center
+        no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
     border: 2px solid red;
     min-height: 1em;
     margin: 1em auto 2em auto;
-    width:75%;
+    width: 75%;
     -webkit-box-shadow: #999 4px 4px 10px;
     -moz-box-shadow: #999 4px 4px 10px;
     box-shadow: #999 4px 4px 10px;
@@ -273,15 +288,17 @@ div#z-adminwarning {
     border-radius: 7px;
     color: #444;
 }
+
 div#z-developernotices {
-    background: #CFECFF url(../../../images/icons/large/package_system.gif) center no-repeat;
+    background: #CFECFF url(../../../images/icons/large/package_system.gif)
+        center no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
     border: 2px solid #95C9EF;
     min-height: 1em;
     margin: 1em auto 2em auto;
-    width:75%;
+    width: 75%;
     -webkit-box-shadow: #999 4px 4px 10px;
     -moz-box-shadow: #999 4px 4px 10px;
     box-shadow: #999 4px 4px 10px;
@@ -290,6 +307,7 @@ div#z-developernotices {
     border-radius: 7px;
     color: #444;
 }
+
 div#z-developernotices a,
 div#z-developernotices h3,
 div#z-adminwarning a,
@@ -300,6 +318,7 @@ div#z-securityanalyzer a,
 div#z-securityanalyzer h3 {
     color: #444;
 }
+
 div#z-developernotices a:hover,
 div#z-adminwarning a:hover,
 div#z-updatechecker a:hover,
@@ -307,12 +326,13 @@ div#z-securityanalyzer a:hover {
     color: #000;
     text-decoration: underline;
 }
+
 div#z-developernotices ul,
 div#z-adminwarning ul,
 div#z-updatechecker ul,
 div#z-securityanalyzer ul {
     list-style-position: outside;
-    list-style-type: square;
+    list-style-type: disc;
     margin: 0.5em 1em 0;
 }
 
@@ -332,15 +352,17 @@ div.canceldelete-container h2 {
     background-color: inherit;
     display: inline;
 }
+
 div.canceldelete-container img {
     float: left;
 }
 
 /* styles for the buttons on a view table */
-div.z-adminviewbuttons  {
+div.z-adminviewbuttons {
     text-align: right;
     margin-bottom: 1.25em;
 }
+
 div.z-adminviewbuttons img {
     margin: 5px;
     float: right;

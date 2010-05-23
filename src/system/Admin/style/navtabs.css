@@ -1,195 +1,165 @@
-/* CSS navtabs technique from http://www.simplebits.com/bits/css_tabs.html */
-.minitabs-container {
-    width: 100%;
-    padding: 0px;
+.admintabs-container {
     margin-top: 1em;
-    border: 0px solid #ccc;
 }
 
-ul#minitabs,
-ul.minitabs {
+ul#admintabs,
+ul.admintabs {
+    background: url("../images/tab_bottom.gif") repeat-x scroll center bottom transparent;
+    margin: 0 !important;
+    padding: 0 !important;
     width: 100%;
-    height: 20px;
-    margin: 0px;
-    padding: 0px;
-    background: url(../images/tab_bottom.gif) repeat-x bottom;
 }
 
-ul#minitabs li,
-ul.minitabs li {
+ul#admintabs li,ul.admintabs li {
+    float: left;
+    list-style-type: none;
     margin: 0;
     padding: 0;
-    display: inline;
-    list-style-type: none;
 }
 
-ul#minitabs a:link,
-ul#minitabs a:visited,
-ul.minitabs a:link,
-ul.minitabs a:visited,
-ul#minitabs li.newCat {
-    background-color:#F3F3F3;
-    border:1px solid #CCCCCC;
-    color:#666666;
-    float:left;
-    font-size:10px;
-    font-weight:bold;
-    left:0;
-    line-height:14px;
-    margin-right:4px;
-    padding:2px 10px;
-    position:relative;
-    text-decoration:none;
-    top:0;
-    z-index:1000;
+ul#admintabs li>a,
+ul.admintabs li>a {
+    background-color: #F3F3F3;
+    border: 1px solid #CCCCCC;
+    color: #666666;
+    float: left;
+    font-weight: bold;
+    margin-right: 0.5em;
+    padding: 5px 10px;
+    position: relative;
+    text-decoration: none;
+    z-index: 1000;
 }
 
-ul#minitabs li.newCat {
-    padding:0;
-}
-
-ul#minitabs a:link.active,
-ul#minitabs a:visited.active,
-ul.minitabs a:link.active,
-ul.minitabs a:visited.active {
+ul#admintabs li>a.active,
+ul.admintabs li>a.active {
     border-bottom: 1px solid #fff;
     background: #fff;
     color: #000;
-    z-index:2000;
+    z-index: 2000;
 }
 
-ul#minitabs a:hover,
-ul.minitabs a:hover {
+ul#admintabs li>a:hover,
+ul.admintabs li>a:hover {
     background: #fff;
+    text-decoration: none;
 }
 
-ul#minitabs a.ajaxhover,
-ul.minitabs a.ajaxhover {
-    background:none repeat scroll 0 0 #FFFFB2;
-    border-color:#666;
-    border-style:solid solid none;
-    border-width:1px 1px medium;
+ul#admintabs li>a.ajaxhover,
+ul.admintabs li>a.ajaxhover {
+    background: #FFFFB2;
 }
 
-.ajaxNewCat {
-    background-color:transparent;
-    border:medium none;
-    color:#666666;
-    float:left;
-    font-size:10px;
-    font-weight:bold;
-    height:14px;
-    margin:0;
-    padding:2px 4px;
-    width:60px;
+ul#admintabs #ajaxNewCatForm,
+ul.admintabs #ajaxNewCatForm {
+    display: block;
+    background-color: #F3F3F3;
+    border: 1px solid #CCCCCC;
+    color: #666666;
+    float: left;
+    font-weight: bold;
+    padding: 5px 10px;
+    position: relative;
+    text-decoration: none;
+    z-index: 1000;
 }
 
-.ajaxNewCatHidden {
-    visibility:hidden;
-    display:none;
+ul#admintabs #ajaxNewCatForm input.ajaxNewCat,
+ul.admintabs #ajaxNewCatForm input.ajaxNewCat {
+    background-color: transparent;
+    border: none;
+    color: #666666;
+    float: left;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    max-width: 8em;
 }
 
-ul#minitabs a:link.ajaxCatImage,
-ul#minitabs a:visited.ajaxCatImage,
-ul.minitabs a:link.ajaxCatImage,
-ul.minitabs a:visited.ajaxCatImage {
-    display:block;
-    float:left;
+ul#admintabs #ajaxNewCatForm a.ajaxCatImage,
+ul.admintabs #ajaxNewCatForm a.ajaxCatImage {
     padding: 0;
     margin: 0;
     border: none;
     text-decoration: none;
-    background-color:transparent;
+    background-color: transparent;
 }
 
-ul#minitabs a:link.ajaxCatImage img,
-ul#minitabs a:visited.ajaxCatImage img,
-ul.minitabs a:link.ajaxCatImage img,
-ul.minitabs a:visited.ajaxCatImage img {
-    position:relative;
-    display:block;
-    float:left;
+ul#admintabs #ajaxNewCatForm a.ajaxCatImage img,
+ul.admintabs #ajaxNewCatForm a.ajaxCatImage img {
+    background-color: transparent;
+    border: medium none;
+    margin-left: 3px;
     padding: 0;
-    margin: 1px 2px;
-    border: none;
     text-decoration: none;
-    border:none;
-    background-color:transparent;
 }
 
 #control_contextmenu {
-    border:1px solid #666;
-    background-color:#eee;
-    min-width:100px;
+    border: 1px solid #666;
+    background-color: #eee;
+    min-width: 100px;
 }
 
 #control_contextmenu ul {
-    list-style:none;
-    padding:0;
-    margin:0;
-    cursor:pointer;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
 }
 
 #control_contextmenu ul li {
-    text-align:left;
-    height:15px;
-    font-size: 10px;
-    line-height: 14px;
+    font-size: 0.9em;
+    text-align: left;
     font-weight: bold;
     padding: 2px 10px 2px 10px;
-    margin:0;
-    cursor:pointer;
-    text-decoration:none;
-    color:#666;
-    border-top:1px solid #fff;
-    border-left:1px solid #fff;
-    border-bottom:1px solid #999;
-    border-right:1px solid #999;
+    margin: 0;
+    cursor: pointer;
+    text-decoration: none;
+    color: #666;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-bottom: 1px solid #999;
+    border-right: 1px solid #999;
 }
 
 #control_contextmenu ul li.selected,
 #control_contextmenu ul li:hover {
-    color:#fff;
-    background-color:#3875d7;
-    cursor:pointer;
+    color: #fff;
+    background-color: #3875d7;
+    cursor: pointer;
 }
 
 #control_contextmenu ul li.selected:hover {
-    color:#333;
-    background-color:#f3f3f3;
-    cursor:pointer;
+    color: #333;
+    background-color: #f3f3f3;
+    cursor: pointer;
 }
 
 #control_contextmenu ul li.disabled,
 #control_contextmenu ul li:hover.disabled {
     background-color: #eee;
-    color:#999;
-    cursor:pointer;
+    color: #999;
+    cursor: pointer;
 }
 
 form.inplaceeditor-form {
-    background-color:#F3F3F3;
-    border:1px solid #CCCCCC;
-    color:#666666;
-    display:block;
-    float:left;
-    font-size:10px;
-    font-weight:bold;
-    height:14px;
-    line-height:14px;
-    margin-right:4px;
-    padding:2px 4px;
-    text-decoration:none;
+    background-color: #F3F3F3;
+    border: 1px solid #CCCCCC;
+    color: #666666;
+    display: block;
+    float: left;
+    margin-right: 0.5em;
+    padding: 5px 10px;
+    text-decoration: none;
 }
 
 form.inplaceeditor-form input[type="text"] {
-    background-color:transparent;
-    border:medium none;
-    color:#666666;
-    float:left;
-    font-size:10px;
-    font-weight:bold;
-    margin:0;
-    min-width:6em;
-    outline:medium none;
+    font-weight: bold;
+    background-color: transparent;
+    border: medium none;
+    color: #666666;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 8em;
+    outline: medium none;
 }

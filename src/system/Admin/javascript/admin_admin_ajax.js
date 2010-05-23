@@ -8,7 +8,7 @@ window.onload = function() {
     context_menu = Array();
     editors = Array();
     droppables = Array();
-    var list = document.getElementById('minitabs');
+    var list = document.getElementById('admintabs');
     if (list.hasChildNodes) {
         var nodes = list.getElementsByTagName("a");
         for ( var i = 0; i < nodes.length; i++) {
@@ -314,7 +314,7 @@ function addCategoryResponse(req) {
         var newelement = document.createElement('li');
         newelement.innerHTML = old;
         newelement.setAttribute('id', 'addcat');
-        document.getElementById('minitabs').appendChild(newelement);
+        document.getElementById('admintabs').appendChild(newelement);
         addContext('C'+json.response);
         addEditor('C'+json.response);
         document.getElementById('authid').value = aid;
