@@ -9,7 +9,9 @@
 - Change all instance is $pnRender = & pnRender::getInstance() to
   $renderer = Renderer::getInstance().
 
-- All use of pnML is now deprecated.  Upgrade themes and modules.
+- All use of pnML() and {ml} are both completely deprecated and will not work
+  any more because Zikula no longer supports define based language packs.
+  Upgrade themes and modules.
 
 - Rename all PNObject* to DBObject*.
 
