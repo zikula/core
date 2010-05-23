@@ -86,17 +86,24 @@ define('PN_CORE_ALL', 4095);
 /**
  * get a configuration variable
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::getVar()
+ *
  * @param name $ the name of the variable
  * @param default the default value to return if the requested param is not set
  * @return mixed value of the variable, or false on failure
  */
 function pnConfigGetVar($name, $default = null)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getVar')), 'STRICT');
     return System::getVar($name, $default);
 }
 
 /**
  * set a configuration variable
+ *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::setVar()
  *
  * @param name $ the name of the variable
  * @param value $ the value of the variable
@@ -104,17 +111,22 @@ function pnConfigGetVar($name, $default = null)
  */
 function pnConfigSetVar($name, $value = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::setVar')), 'STRICT');
     return System::setVar($name, $value);
 }
 
 /**
  * delete a configuration variable
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::delVar()
+ *
  * @param name $ the name of the variable
  * @returns mixed value of deleted config var or false on failure
  */
 function pnConfigDelVar($name)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::delVar')), 'STRICT');
     return System::delVar($name);
 }
 
@@ -123,15 +135,22 @@ function pnConfigDelVar($name)
  * Carries out a number of initialisation tasks to get Zikula up and
  * running.
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::init()
+ *
  * @returns bool true initialisation successful false otherwise
  */
 function pnInit($stages = PN_CORE_ALL)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::init')), 'STRICT');
     return System::init($stages);
 }
 
 /**
  * get a list of database connections
+ *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::dbGetConn()
  *
  * @param bool $pass_by_reference default = false
  * @param string $fetchmode set ADODB fetchmode ADODB_FETCH_NUM, ADODB_FETCH_ASSOC, ADODB_FETCH_DEFAULT, ADODB_FETCH_BOTH
@@ -139,16 +158,21 @@ function pnInit($stages = PN_CORE_ALL)
  */
 function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE) // TODO A map ADODB fetch modes to Doctrine HYDRATES, e.g. Doctrine::HYDRATE_NONE
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::dbGetConn')), 'STRICT');
     return System::dbGetConn($pass_by_reference, $fetchmode);
 }
 
 /**
  * get a list of database tables
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::dbGetTables()
+ *
  * @return array array of database tables
  */
 function pnDBGetTables()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::dbGetTables')), 'STRICT');
     return System::dbGetTables();
 }
 
@@ -165,10 +189,14 @@ function pnDBGetTables()
  * minus the prefix and seperating _
  * e.g. pnDBGetPrefix returns pn_modules for pnDBGetPrefix('modules');
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::dbGetTablePrefix()
+ *
  * @param table - table name
  */
 function pnDBGetTablePrefix($table)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::dbGetTablePrefix')), 'STRICT');
     return System::dbGetTablePrefix($table);
 }
 
@@ -178,15 +206,22 @@ function pnDBGetTablePrefix($table)
  * stripslashes on multidimensional arrays.
  * Used in conjunction with pnVarCleanFromInput
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::stripslashes()
+ *
  * @param any $ variables or arrays to be stripslashed
  */
 function pnStripslashes(&$value)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::stripslashes')), 'STRICT');
     System::stripslashes($value);
 }
 
 /**
  * validate a zikula variable
+ *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::varValidate()
  *
  * @param $var   the variable to validate
  * @param $type  the type of the validation to perform (email, url etc.)
@@ -195,41 +230,57 @@ function pnStripslashes(&$value)
  */
 function pnVarValidate($var, $type, $args = 0)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::varValidate')), 'STRICT');
     return System::varValidate($var, $type, $args);
 }
 
 /**
  * get base URI for Zikula
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::getBaseUri()
+ *
  * @return string base URI for Zikula
  */
 function pnGetBaseURI()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getBaseUri')), 'STRICT');
     return System::getBaseUri();
 }
 
 /**
  * get base URL for Zikula
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::getBaseUrl()
+ *
  * @return string base URL for Zikula
  */
 function pnGetBaseURL()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getBaseUrl')), 'STRICT');
     return System::getBaseUrl();
 }
 
 /**
  * get homepage URL for Zikula
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::getHomepageUrl()
+ *
  * @return string homepage URL for Zikula
  */
 function pnGetHomepageURL()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getHomepageUrl')), 'STRICT');
     return System::getHomepageUrl();
 }
 
 /**
  * Carry out a redirect
+ *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::redirect()
  *
  * @param string $redirecturl URL to redirect to
  * @param array $addtionalheaders array of header strings to send with redirect
@@ -237,17 +288,22 @@ function pnGetHomepageURL()
  */
 function pnRedirect($redirecturl, $additionalheaders = array())
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::redirect')), 'STRICT');
     return System::redirect($redirecturl, $additionalheaders);
 }
 
 /**
  * check to see if this is a local referral
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::localReferer()
+ *
  * @param bool strict - strict checking ensures that a referer must be set as well as local
  * @return bool true if locally referred, false if not
  */
 function pnLocalReferer($strict = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::localReferer')), 'STRICT');
     return System::localReferer($strict);
 }
 
@@ -256,7 +312,9 @@ function pnLocalReferer($strict = false)
  *
  * e-mail messages should now be send with a ModUtil::apiFunc call to the mailer module
  *
- * @deprecated
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::mail()
+ *
  * @param to $ - recipient of the email
  * @param subject $ - title of the email
  * @param message $ - body of the email
@@ -267,6 +325,7 @@ function pnLocalReferer($strict = false)
  */
 function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::mail')), 'STRICT');
     return System::mail($to, $subject, $message, $headers, $html, $debug, $altbody);
 }
 
@@ -278,12 +337,16 @@ function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug =
  * {@link http://www.php.net/manual/en/reserved.variables.html#reserved.variables.server PHP manual}.
  * If the server variable doesn't exist void is returned.
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::serverGetVar()
+ *
  * @param name string the name of the variable
  * @param default the default value to return if the requested param is not set
  * @return mixed value of the variable
  */
 function pnServerGetVar($name, $default = null)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::serverGetVar')), 'STRICT');
     return System::serverGetVar($name, $default);
 }
 
@@ -293,15 +356,22 @@ function pnServerGetVar($name, $default = null)
  * Returns the server host name fetched from HTTP headers when possible.
  * The host name is in the canonical form (host + : + port) when the port is different than 80.
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::getHost()
+ *
  * @return string HTTP host name
  */
 function pnGetHost()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getHost')), 'STRICT');
     return System::getHost();
 }
 
 /**
  * Get current URI (and optionally add/replace some parameters)
+ *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::getCurrentUri()
  *
  * @access public
  * @param args array additional parameters to be added to/replaced in the URI (e.g. theme, ...)
@@ -309,6 +379,7 @@ function pnGetHost()
  */
 function pnGetCurrentURI($args = array())
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getCurrentUri')), 'STRICT');
     return System::getCurrentUri($args);
 }
 
@@ -317,15 +388,22 @@ function pnGetCurrentURI($args = array())
  *
  * Returns the HTTP protocol used by current connection, it could be 'http' or 'https'.
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::serverGetProtocol()
+ *
  * @return string current HTTP protocol
  */
 function pnServerGetProtocol()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::serverGetProtocol')), 'STRICT');
     return System::serverGetProtocol();
 }
 
 /**
  * Get current URL
+ *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::getCurrentUrl()
  *
  * @access public
  * @param args array additional parameters to be added to/replaced in the URL (e.g. theme, ...)
@@ -334,6 +412,7 @@ function pnServerGetProtocol()
  */
 function pnGetCurrentURL($args = array())
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getCurrentUrl')), 'STRICT');
     return System::getCurrentUrl($args);
 }
 
@@ -345,9 +424,13 @@ function pnGetCurrentURL($args = array())
  * and request superglobals.
  * A sample path is /modname/function/var1:value1
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::queryStringDecode()
+ *
  */
 function pnQueryStringDecode()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::queryStringDecode')), 'STRICT');
     return System::queryStringDecode();
 }
 
@@ -356,23 +439,33 @@ function pnQueryStringDecode()
  * (really the _GET superglobal
  * This API also adds the variable to the _REQUEST superglobal for consistentcy
  *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::queryStringSetVar()
+ *
  * @return bool true if successful, false otherwise
  */
 function pnQueryStringSetVar($name, $value)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::queryStringSetVar')), 'STRICT');
     return System::queryStringSetVar($name, $value);
 }
 
 /**
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::errorHandler()
  *
  */
 function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::errorHandler')), 'STRICT');
     return System::errorHandler($errno, $errstr, $errfile, $errline, $errcontext);
 }
 
 /**
  * Gracefully shut down the framework (traps all exit and die calls)
+ *
+ * @deprecated Deprecated since version 1.3.0.
+ * @see System::shutDown()
  *
  * @param $exit_param params to pass to the exit function
  * @return none - function halts execution
@@ -380,5 +473,6 @@ function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
  */
 function pnShutDown($exit_param = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::shutDown')), 'STRICT');
     return System::shutDown($exit_param);
 }
