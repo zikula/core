@@ -1,9 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
- * @version $Id$
- * @license GNU/GPLv2 (or at your option any later version).
- * @copyright see NOTICE
+ * Copyright 2009 Zikula Foundation - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv2 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 // backwards compatibility references
@@ -11,93 +17,190 @@ $GLOBALS['PNConfig'] = & $GLOBALS['ZConfig'];
 $GLOBALS['PNRuntime'] = & $GLOBALS['ZRuntime'];
 
 // start BC classes licensed as LGPv2.1
+
+/**
+ * Alias to the Renderer class for backward compatibility to Zikula 1.2.x.
+ *
+ * @deprecated
+ * @see Renderer::
+ */
 class pnRender extends Renderer
 {
+    /**
+     * Constructs a new instance of pnRender.
+     *
+     * @param string $module  Name of the module.
+     * @param bool   $caching If true, then caching is enabled.
+     */
+    public function __construct($module = '', $caching = null)
+    {
+        parent::__construct($module, $caching);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Renderer')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the DBObject class for backward compatibility to Zikula 1.2.x.
+ *
+ * @deprecated
+ * @see DBObject::
+ */
 class PNObject extends DBObject
 {
+    /**
+     * Constructor, init everything to sane defaults and handle parameters.
+     *
+     * @param object|string $init   Initialization value (see {@link DBObject::_init()} for details).
+     * @param mixed         $key    The DB key to use to retrieve the object (optional) (default=null)
+     * @param string        $field  The field containing the key value (optional) (default=null)
+     */
     public function PNObject($init = null, $key = null, $field = null)
     {
         $this->DBObject($init, $key, $field);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObject')), 'STRICT');
     }
 }
 
+/**
+ * Alias to the DBObjectArray class for backward compatibility to Zikula 1.2.x.
+ *
+ * @deprecated
+ * @see DBObjectArray::
+ */
 class PNObjectArray extends DBObjectArray
 {
+    /**
+     * Constructor, init everything to sane defaults and handle parameters.
+     *
+     * @param object|string $init   Initialization value (see _init() for details)
+     * @param string        $where  The where clause to apply to the DB get/select (optional) (default='')
+     */
     public function PNObjectArray($init = null, $where = '')
     {
         $this->DBObjectArray($init, $where);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObjectArray')), 'STRICT');
     }
 }
 
-// pnForm backward compatibility
+/**
+ * Alias to the Form_Render class for backward compatibility to Zikula 1.2.x.
+ *
+ * @deprecated
+ * @see Form_Render::
+ */
 class pnFormRender extends Form_Render
 {
+    /**
+     * Alias to Form_Render::State for backward compatibility to Zikula 1.2.x.
+     *
+     * @internal
+     * @deprecated
+     * @see Form_Render::State
+     */
     public $pnFormState;
 
     /**
-     * List of included files required to recreate plugins (Smarty function.xxx.php files)
+     * List of included files required to recreate plugins (Smarty function.xxx.php files).
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::Includes
      */
     public $pnFormIncludes;
 
     /**
-     * List of instantiated plugins
+     * List of instantiated plugins.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::Plugins
      */
     public $pnFormPlugins;
 
     /**
-     * Stack with all instantiated blocks (push when starting block, pop when ending block)
+     * Stack with all instantiated blocks (push when starting block, pop when ending block).
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::BlockStack
      */
     public $pnFormBlockStack;
 
     /**
-     * List of validators on page
+     * List of validators on page.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::Validators
      */
     public $pnFormValidators;
 
     /**
-     * Flag indicating if validation has been done or not
+     * Flag indicating if validation has been done or not.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::ValidationChecked
      */
     public $pnFormValidationChecked;
 
     /**
-     * Indicates whether page is valid or not
+     * Indicates whether page is valid or not.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::_IsValid
      */
     public $_pnFormIsValid;
 
     /**
-     * Current ID count - used to assign automatic ID's to all items
+     * Current ID count - used to assign automatic ID's to all items.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::IdCount
      */
     public $pnFormIdCount;
 
     /**
-     * Reference to the main user code event handler
+     * Reference to the main user code event handler.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::EventHandler
      */
     public $pnFormEventHandler;
 
     /**
-     * Error message has been set
+     * Error message has been set.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::ErrorMsgSet
      */
     public $pnFormErrorMsgSet;
 
     /**
      * Set to true if pnFormRedirect was called. Means no HTML output should be returned.
+     *
      * @internal
+     * @deprecated
+     * @see Form_Render::Redirected
      */
     public $pnFormRedirected;
 
-    public function __construct()
+    /**
+     * Constructs a new instance of pnFormRender.
+     *
+     * @deprecated
+     * @see Form_Render::__construct()
+     */
+    public function __construct($module)
     {
-        parent::__construct();
+        parent::__construct($module);
+
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Form_Render')), 'STRICT');
+
         $this->pnFormState = &$this->State;
         $this->pnFormIncludes = &$this->Includes;
         $this->pnFormPlugins = &$this->Plugins;
@@ -111,294 +214,1306 @@ class pnFormRender extends Form_Render
         $this->pnFormRedirected = &$this->Redirected;
     }
 
+    /**
+     * Alias to Form_Render::Execute for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::Execute
+     *
+     * @param boolean       $template     Name of template file.
+     * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler.
+     *
+     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
+     */
     public function pnFormExecute($template, &$eventHandler)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::Execute')), 'STRICT');
         return $this->Execute($template, $eventHandler);
     }
+
+    /**
+     * Alias to Form_Render::RegisterPlugin for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::RegisterPlugin
+     *
+     * @param string  $pluginName Full class name of the plugin to register.
+     * @param array   &$params    Parameters passed from the Smarty plugin function.
+     * @param boolean $isBlock    Indicates whether the plugin is a Smarty block or a Smarty function (internal).
+     *
+     * @return string Returns what the render() method of the plugin returns.
+     */
     public function pnFormRegisterPlugin($pluginName, &$params, $isBlock = false)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::RegisterPlugin')), 'STRICT');
         return $this->RegisterPlugin($pluginName, $params, $isBlock = false);
     }
+
+    /**
+     * Alias to Form_Render::RegisterBlock for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::RegisterBlock
+     *
+     * @param string $pluginName Full class name of the plugin to register.
+     * @param array  &$params    Parameters passed from the Smarty block function.
+     * @param string &$content   Content passed from the Smarty block function.
+     */
     public function pnFormRegisterBlock($pluginName, &$params, &$content)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::RegisterBlock')), 'STRICT');
         $this->RegisterBlock($pluginName, $params, $content);
     }
+
+    /**
+     * Alias to Form_Render::RegisterBlockBegin for backward compatibility.
+     *
+     * @internal
+     * @deprecated
+     * @see Form_Render::RegisterBlockBegin
+     *
+     * @param string $pluginName Full class name of the plugin to register.
+     * @param array  &$params    Parameters passed from the Smarty block function.
+     */
     public function pnFormRegisterBlockBegin($pluginName, &$params)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::RegisterBlockBegin')), 'STRICT');
         $this->RegisterBlockBegin($pluginName, $params);
     }
+
+    /**
+     * Alias to Form_Render::RegisterBlockEnd for backward compatibility.
+     *
+     * @internal
+     * @deprecated
+     * @see Form_Render::RegisterBlockEnd
+     *
+     * @param string $pluginName Full class name of the plugin to register.
+     * @param array  &$params    Parameters passed from the Smarty block function.
+     * @param string &$content   Content passed from the Smarty block function.
+     *
+     * @return string Rendered output.
+     */
     public function pnFormRegisterBlockEnd($pluginName, &$params, $content)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::RegisterBlockEnd')), 'STRICT');
         return $this->RegisterBlockEnd($pluginName, $params, $content);
     }
+
+    /**
+     * Alias to Form_Render::GetPluginId for backward compatibility.
+     *
+     * @internal
+     * @deprecated
+     * @see Form_Render::GetPluginId
+     *
+     * @param array  &$params    Parameters passed from the Smarty block function.
+     *
+     * @return mixed The contents of $params['id'] if set, else the value 'plg#' where # is the IdCount incremented by one
+     */
     public function pnFormGetPluginId(&$params)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetPluginId')), 'STRICT');
         return $this->GetPluginId($params);
     }
+
+    /**
+     * Alias to Form_Render::IsPostBack for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::IsPostBack
+     *
+     * @return bool True if $_POST['__pnFormSTATE'] is set; otherwise false.
+     */
     public function pnFormIsPostBack()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::IsPostBack')), 'STRICT');
         return $this->IsPostBack();
     }
+
+    /**
+     * Alias to Form_Render::FormDie for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::FormDie
+     *
+     * @param string $msg The message to display.
+     */
     public function pnFormDie($msg)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::FormDie')), 'STRICT');
         $this->FormDie($msg);
     }
+
+    /**
+     * Alias to Form_Render::TranslateForDisplay for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::TranslateForDisplay
+     *
+     * @param string  $txt      Text to translate for display.
+     * @param boolean $doEncode True to formatForDisplay.
+     *
+     * @return string Text.
+     */
     public function pnFormTranslateForDisplay($txt, $doEncode = true)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::TranslateForDisplay')), 'STRICT');
         return $this->TranslateForDisplay($txt, $doEncode = true);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::AddValidator
+     *
+     * @param validator $validator Validator to add.
+     */
     public function pnFormAddValidator(&$validator)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::AddValidator')), 'STRICT');
         $this->AddValidator($validator);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::IsValid
+     *
+     * @return boolean True if all validators are valid.
+     */
     public function pnFormIsValid()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::IsValid')), 'STRICT');
         return $this->IsValid();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::Validate
+     */
     public function pnFormValidate()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::Validate')), 'STRICT');
         $this->Validate();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::ClearValidation
+     */
     public function pnFormClearValidation()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::ClearValidation')), 'STRICT');
         $this->ClearValidation();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::SetState
+     */
     public function pnFormSetState($region, $varName, &$varValue)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::SetState')), 'STRICT');
         $this->SetState($region, $varName, $varValue);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::SetErrorMsg
+     */
     public function pnFormSetErrorMsg($msg)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::SetErrorMsg')), 'STRICT');
         return $this->SetErrorMsg($msg);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetErrorMsg
+     */
     public function pnFormGetErrorMsg()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetErrorMsg')), 'STRICT');
         return $this->GetErrorMsg();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::HasError
+     */
     public function pnFormHasError()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::HasError')), 'STRICT');
         return $this->HasError();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::RegisterError
+     */
     public function pnFormRegisterError($dummy)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::RegisterError')), 'STRICT');
         return $this->RegisterError($dummy);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::Redirect
+     */
     public function pnFormRedirect($url)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::Redirect')), 'STRICT');
         $this->Redirect($url);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetPostBackEventReference
+     */
     public function pnFormGetPostBackEventReference($plugin, $commandName)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetPostBackEventReference')), 'STRICT');
         return $this->GetPostBackEventReference($plugin, $commandName);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::RaiseEvent
+     */
     public function pnFormRaiseEvent($eventHandlerName, $args)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::RaiseEvent')), 'STRICT');
         return $this->RaiseEvent($eventHandlerName, $args);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::InitializeIncludes
+     */
     public function pnFormInitializeIncludes()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::InitializeIncludes')), 'STRICT');
         $this->InitializeIncludes();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetIncludesText
+     */
     public function pnFormGetIncludesText()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetIncludesText')), 'STRICT');
         return $this->GetIncludesText();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetIncludesHTML
+     */
     public function pnFormGetIncludesHTML()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetIncludesHTML')), 'STRICT');
         return $this->GetIncludesHTML();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::DecodeIncludes
+     */
     public function pnFormDecodeIncludes()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::DecodeIncludes')), 'STRICT');
         return $this->DecodeIncludes();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetAuthKeyHTML
+     */
     public function pnFormGetAuthKeyHTML()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetAuthKeyHTML')), 'STRICT');
         return $this->GetAuthKeyHTML();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::InitializeState
+     */
     public function pnFormInitializeState()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::InitializeState')), 'STRICT');
         $this->InitializeState();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetStateText
+     */
     public function pnFormGetStateText()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetStateText')), 'STRICT');
         $this->GetStateText();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetPluginState
+     */
     public function pnFormGetPluginState()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetPluginState')), 'STRICT');
         return $this->GetPluginState();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetPluginById
+     */
     function &pnFormGetPluginById($id)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetPluginById')), 'STRICT');
         return $this->GetPluginById($id);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetPluginState_rec
+     */
     public function pnFormGetPluginState_rec($plugins)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetPluginState_rec')), 'STRICT');
         return $this->GetPluginState_rec($plugins);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetStateHTML
+     */
     public function pnFormGetStateHTML()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetStateHTML')), 'STRICT');
         return $this->GetStateHTML();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::DecodeState
+     */
     public function pnFormDecodeState()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::DecodeState')), 'STRICT');
         $this->DecodeState();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::DecodeEventHandler
+     */
     public function pnFormDecodeEventHandler()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::DecodeEventHandler')), 'STRICT');
         $this->DecodeEventHandler();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::InitializePlugins
+     */
     public function pnFormInitializePlugins()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::InitializePlugins')), 'STRICT');
         return $this->InitializePlugins();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::InitializePlugins_rec
+     */
     public function pnFormInitializePlugins_rec($plugins)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::InitializePlugins_rec')), 'STRICT');
         $this->InitializePlugins_rec($plugins);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::DecodePlugins
+     */
     public function pnFormDecodePlugins()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::DecodePlugins')), 'STRICT');
         return $this->DecodePlugins();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::DecodePlugins_rec
+     */
     public function pnFormDecodePlugins_rec($plugins)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::DecodePlugins_rec')), 'STRICT');
         $this->DecodePlugins_rec($plugins);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::DecodePostBackEvent
+     */
     public function pnFormDecodePostBackEvent()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::DecodePostBackEvent')), 'STRICT');
         $this->DecodePostBackEvent();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::DecodePostBackEvent_rec
+     */
     public function pnFormDecodePostBackEvent_rec($plugins)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::DecodePostBackEvent_rec')), 'STRICT');
         return $this->DecodePostBackEvent_rec($plugins);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::PostRender
+     */
     public function pnFormPostRender()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::PostRender')), 'STRICT');
         return $this->PostRender();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::PostRender_rec
+     */
     public function pnFormPostRender_rec($plugins)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::PostRender_rec')), 'STRICT');
         $this->PostRender_rec($plugins);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetValues
+     */
     public function pnFormGetValues()
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetValues')), 'STRICT');
         return $this->GetValues();
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::GetValues_rec
+     */
     public function pnFormGetValues_rec($plugins, &$result)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetValues_rec')), 'STRICT');
         $this->GetValues_rec($plugins, $result);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::SetValues
+     */
     public function pnFormSetValues(&$values, $group = null)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::SetValues')), 'STRICT');
         return $this->SetValues($values, $group);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::SetValues2
+     */
     public function pnFormSetValues2(&$values, $group = null, $plugins)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::SetValues2')), 'STRICT');
         return $this->SetValues2($values, $group, $plugins);
     }
+
+    /**
+     * Alias to equivalent function in Form_Render for backward compatibility.
+     *
+     * @deprecated
+     * @see Form_Render::SetValues_rec
+     */
     public function pnFormSetValues_rec(&$values, $group, $plugins)
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::SetValues_rec')), 'STRICT');
         $this->SetValues_rec($values, $group, $plugins);
     }
-
 }
+
+/**
+ * Alias to the Form_Plugin class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin::
+ */
 class pnFormPlugin extends Form_Plugin
 {
+    /**
+     * Alias to Form_Plugin constructor.
+     * 
+     * @deprecated
+     * @see Form_Plugin::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_StyledPlugin class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_StyledPlugin::
+ */
 class pnFormStyledPlugin extends Form_StyledPlugin
 {
+    /**
+     * Alias to Form_StyledPlugin constructor.
+     *
+     * @deprecated
+     * @see Form_StyledPlugin::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_StyledPlugin')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Handler class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Handler::
+ */
 class pnFormHandler extends Form_Handler
 {
+    /**
+     * Alias to Form_Handler constructor.
+     *
+     * @deprecated
+     * @see Form_Handler::__construct()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Handler')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_BaseListSelector class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_BaseListSelector::
+ */
 class pnFormBaseListSelector extends Form_Plugin_BaseListSelector
 {
+    /**
+     * Alias to Form_Plugin_BaseListSelector constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_BaseListSelector::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_BaseListSelector')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_Button class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_Button::
+ */
 class pnFormButton extends Form_Plugin_Button
 {
+    /**
+     * Alias to Form_Plugin_Button constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_Button::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_Button')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_CategoryCheckboxList class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_CategoryCheckboxList::
+ */
 class pnFormCategoryCheckboxList extends Form_Plugin_CategoryCheckboxList
 {
+    /**
+     * Alias to Form_Plugin_CategoryCheckboxList constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_CategoryCheckboxList::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_CategoryCheckboxList')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_CategorySelector class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_CategorySelector::
+ */
 class pnFormCategorySelector extends Form_Plugin_CategorySelector
 {
+    /**
+     * Alias to Form_Plugin_CategorySelector constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_CategorySelector::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_CategorySelector')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_Checkbox class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_Checkbox::
+ */
 class pnFormCheckbox extends Form_Plugin_Checkbox
 {
+    /**
+     * Alias to Form_Plugin_Checkbox constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_Checkbox::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_Checkbox')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_CheckboxList class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_CheckboxList::
+ */
 class pnFormCheckboxList extends Form_Plugin_CheckboxList
 {
+    /**
+     * Alias to Form_Plugin_CheckboxList constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_CheckboxList::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_CheckboxList')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Block_ContextMenu class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Block_ContextMenu::
+ */
 class pnFormContextMenu extends Form_Block_ContextMenu
 {
+    /**
+     * Alias to Form_Block_ContextMenu constructor.
+     *
+     * @deprecated
+     * @see Form_Block_ContextMenu::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_ContextMenu')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_ContextMenu_Item class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_ContextMenu_Item::
+ */
 class pnFormContextMenuItem extends Form_Plugin_ContextMenu_Item
 {
+    /**
+     * Alias to Form_Plugin_ContextMenu_Item constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_ContextMenu_Item::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ContextMenu_Item')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_ContextMenu_Reference class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_ContextMenu_Reference::
+ */
 class pnFormContextMenuReference extends Form_Plugin_ContextMenu_Reference
 {
+    /**
+     * Alias to Form_Plugin_ContextMenu_Reference constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_ContextMenu_Reference::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ContextMenu_Reference')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_ContextMenu_Separator class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_ContextMenu_Separator::
+ */
 class pnFormContextMenuSeparator extends Form_Plugin_ContextMenu_Separator
 {
+    /**
+     * Alias to Form_Plugin_ContextMenu_Separator constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_ContextMenu_Separator::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ContextMenu_Separator')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_DateInput class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_DateInput::
+ */
 class pnFormDateInput extends Form_Plugin_DateInput
 {
+    /**
+     * Alias to Form_Plugin_DateInput constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_DateInput::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_DateInput')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_DropdownRelationList class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_DropdownRelationList::
+ */
 class pnFormDropDownRelationlist extends Form_Plugin_DropdownRelationList
 {
+    /**
+     * Alias to Form_Plugin_DropdownRelationList constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_DropdownRelationList::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_DropdownRelationList')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_DropdownList class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_DropdownList::
+ */
 class pnFormDropdownList extends Form_Plugin_DropdownList
 {
+    /**
+     * Alias to Form_Plugin_DropdownList constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_DropdownList::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_DropdownList')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_EmailInput class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_EmailInput::
+ */
 class pnFormEMailInput extends Form_Plugin_EmailInput
 {
+    /**
+     * Alias to Form_Plugin_EmailInput constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_EmailInput::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_EmailInput')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_ErrorMessage class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_ErrorMessage::
+ */
 class pnFormErrorMessage extends Form_Plugin_ErrorMessage
 {
+    /**
+     * Alias to Form_Plugin constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_ErrorMessage::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ErrorMessage')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_FloatInput class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_FloatInput::
+ */
 class pnFormFloatInput extends Form_Plugin_FloatInput
 {
+    /**
+     * Alias to Form_Plugin_FloatInput constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_FloatInput::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_FloatInput')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_ImageButton class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_ImageButton::
+ */
 class pnFormImageButton extends Form_Plugin_ImageButton
 {
+    /**
+     * Alias to Form_Plugin_ImageButton constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_ImageButton::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ImageButton')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_IntInput class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_IntInput::
+ */
 class pnFormIntInput extends Form_Plugin_IntInput
 {
+    /**
+     * Alias to Form_Plugin_IntInput constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_IntInput::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_IntInput')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_Label class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_Label::
+ */
 class pnFormLabel extends Form_Plugin_Label
 {
+    /**
+     * Alias to Form_Plugin_Label constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_Label::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_Label')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_LanguageSelector class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_LanguageSelector::
+ */
 class pnFormLanguageSelector extends Form_Plugin_LanguageSelector
 {
+    /**
+     * Alias to Form_Plugin_LanguageSelector constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_LanguageSelector::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_LanguageSelector')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_LinkButton class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_LinkButton::
+ */
 class pnFormLinkButton extends Form_Plugin_LinkButton
 {
+    /**
+     * Alias to Form_Plugin_LinkButton constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_LinkButton::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_LinkButton')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_PostbackFunction class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_PostbackFunction::
+ */
 class pnFormPostBackFunction extends Form_Plugin_PostbackFunction
 {
+    /**
+     * Alias to Form_Plugin_PostbackFunction constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_PostbackFunction::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_PostbackFunction')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_RadioButton class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_RadioButton::
+ */
 class pnFormRadioButton extends Form_Plugin_RadioButton
 {
+    /**
+     * Alias to Form_Plugin_RadioButton constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_RadioButton::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_RadioButton')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Block_TabbedPanel class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Block_TabbedPanel::
+ */
 class pnFormTabbedPanel extends Form_Block_TabbedPanel
 {
+    /**
+     * Alias to Form_Block_TabbedPanel constructor.
+     *
+     * @deprecated
+     * @see Form_Block_TabbedPanel::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_TabbedPanel')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Block_TabbedPanelSet class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Block_TabbedPanelSet::
+ */
 class pnFormTabbedPanelSet extends Form_Block_TabbedPanelSet
 {
+    /**
+     * Alias to Form_Block_TabbedPanelSet constructor.
+     *
+     * @deprecated
+     * @see Form_Block_TabbedPanelSet::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_TabbedPanelSet')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_TextInput class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_TextInput::
+ */
 class pnFormTextInput extends Form_Plugin_TextInput
 {
+    /**
+     * Alias to Form_Plugin_TextInput constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_TextInput::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_TextInput')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_UrlInput class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_UrlInput::
+ */
 class pnFormURLInput extends Form_Plugin_UrlInput
 {
+    /**
+     * Alias to Form_Plugin_UrlInput constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_UrlInput::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_UrlInput')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_UploadInput class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_UploadInput::
+ */
 class pnFormUploadInput extends Form_Plugin_UploadInput
 {
+    /**
+     * Alias to Form_Plugin_UploadInput constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_UploadInput::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_UploadInput')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Plugin_ValidationSummary class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Plugin_ValidationSummary::
+ */
 class pnFormValidationSummary extends Form_Plugin_ValidationSummary
 {
+    /**
+     * Alias to Form_Plugin_ValidationSummary constructor.
+     *
+     * @deprecated
+     * @see Form_Plugin_ValidationSummary::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Plugin_ValidationSummary')), 'STRICT');
+    }
 }
+
+/**
+ * Alias to the Form_Block_Volatile class for backward compatibility.
+ *
+ * @deprecated
+ * @see Form_Block_Volatile::
+ */
 class pnFormVolatile extends Form_Block_Volatile
 {
+    /**
+     * Alias to Form_Block_Volatile constructor.
+     *
+     * @deprecated
+     * @see Form_Block_Volatile::__construct()
+     */
+    public function __construct(&$render, &$params)
+    {
+        parent::__construct($render, $params);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_Volatile')), 'STRICT');
+    }
 }
 
 // end BC classes
@@ -411,6 +1526,8 @@ class pnFormVolatile extends Form_Block_Volatile
  */
 function cnvlanguagelist()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated.', array(__FUNCTION__)), 'STRICT');
+
     $cnvlang = array();
     $cnvlang['KOI8-R'] = 'rus';
     $cnvlang['af'] = 'eng';
@@ -699,6 +1816,9 @@ function pnSecConfirmAuthKey()
  */
 function authorised($testrealm, $testcomponent, $testinstance, $testlevel)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
+        'pnSecAuthAction()',
+        'SecurityUtil::checkPermission()')), 'STRICT');
     return pnSecAuthAction($testrealm, $testcomponent, $testinstance, $testlevel);
 }
 
@@ -706,6 +1826,7 @@ function authorised($testrealm, $testcomponent, $testinstance, $testlevel)
  * add security schema
  *
  * @deprecated
+ * @see SecurityUtil::registerPermissionSchema()
  * @param unknown_type $component
  * @param unknown_type $schema
  * @return bool
@@ -724,6 +1845,7 @@ function pnSecAddSchema($component, $schema)
  * Will fail if an attempt is made to overwrite an existing schema
  *
  * @deprecated
+ * @see SecurityUtil::registerPermissionSchema()
  * @param unknown_type $component
  * @param unknown_type $schema
  */
@@ -737,8 +1859,11 @@ function addinstanceschemainfo($component, $schema)
 
 /**
  * Translation functions - avoids globals in external code
+ * Translate level -> name
+ *
+ * @deprecated
+ * @see SecurityUtil::accesslevelname()
  */
-// Translate level -> name
 function accesslevelname($level)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
@@ -751,6 +1876,7 @@ function accesslevelname($level)
  * get access level names
  *
  * @deprecated
+ * @see SecurityUtil::accesslevelnames()
  * @return array of access names
  */
 function accesslevelnames()
@@ -764,6 +1890,7 @@ function accesslevelnames()
 /**
  * get a Time String in the right format
  *
+ * @deprecated
  *
  * @param time $ - prefix string
  * @return mixed string if successfull, false if not
@@ -951,6 +2078,7 @@ function pnVarPrepForStore()
  * Exit the program after displaying the appropriate messages
  *
  * @deprecated
+ * @see z_exit()
  * @param msg         The messgage to show
  * @param html        whether or not to generate HTML (can be turned off for command line execution)
  */
@@ -986,7 +2114,7 @@ if (!function_exists('pn_assert_callback_function')) {
  * Get a session variable
  *
  * @deprecated
- * @see SessionUtil::getVar
+ * @see SessionUtil::getVar()
  * @param sring $name of the session variable to get
  * @param string $default the default value to return if the requested session variable is not set
  * @return string session variable requested
@@ -1003,7 +2131,7 @@ function pnSessionGetVar($name, $default = false)
  * Set a session variable
  *
  * @deprecated
- * @see SessionUtil::setVar
+ * @see SessionUtil::setVar()
  * @param string $name of the session variable to set
  * @param value $value to set the named session variable
  * @return bool true
@@ -1020,7 +2148,7 @@ function pnSessionSetVar($name, $value)
  * Delete a session variable
  *
  * @deprecated
- * @see SessionUtil::delVar
+ * @see SessionUtil::delVar()
  * @param string $name of the session variable to delete
  * @return bool true
  */
@@ -1059,7 +2187,7 @@ function pnVarCensor()
  *
  * removed since version 1.3.0 of Zikula
  * @deprecated
- * @see $Theme->clear_compiled()
+ * @see Theme::clear_compiled()
  */
 function theme_userapi_clear_compiled()
 {
@@ -1068,7 +2196,7 @@ function theme_userapi_clear_compiled()
         return LogUtil::registerPermissionError();
     }
 
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_compiled', '$Theme->clear_compiled()')), 'STRICT');
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_compiled', 'Theme::clear_compiled()')), 'STRICT');
     $Theme = Theme::getInstance('Theme');
     $res   = $Theme->clear_compiled();
     return $res;
@@ -1079,7 +2207,7 @@ function theme_userapi_clear_compiled()
  *
  * removed since version 1.3.0 of Zikula
  * @deprecated
- * @see $Theme->clear_all_cache()
+ * @see Theme::clear_all_cache()
  */
 function theme_userapi_clear_cache()
 {
@@ -1088,7 +2216,7 @@ function theme_userapi_clear_cache()
         return LogUtil::registerPermissionError();
     }
 
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_cache', '$Theme->clear_all_cache()')), 'STRICT');
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_cache', 'Theme::clear_all_cache()')), 'STRICT');
     $Theme = Theme::getInstance('Theme');
     $res   = $Theme->clear_all_cache();
     return $res;
@@ -1099,7 +2227,7 @@ function theme_userapi_clear_cache()
  *
  * removed since version 1.3.0 of Zikula
  * @deprecated
- * @see $Renderer->clear_compiled()
+ * @see Renderer::clear_compiled()
  */
 function theme_userapi_render_clear_compiled()
 {
@@ -1108,7 +2236,7 @@ function theme_userapi_render_clear_compiled()
         return LogUtil::registerPermissionError();
     }
 
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_compiled', '$Renderer->clear_compiled()')), 'STRICT');
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_compiled', 'Renderer::clear_compiled()')), 'STRICT');
     $Renderer = Renderer::getInstance();
     $res      = $Renderer->clear_compiled();
     return $res;
@@ -1130,7 +2258,7 @@ function theme_userapi_render_clear_cache($args)
         return LogUtil::registerPermissionError();
     }
 
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_cache', '$Renderer->clear_cache()')), 'STRICT');
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_cache', 'Renderer::clear_cache()')), 'STRICT');
     if(isset($args['module']) && !empty($args['module']) && pnModAvailable($args['module'])) {
         $Renderer = Renderer::getInstance($args['module']);
         $res      = $Renderer->clear_cache();
@@ -1150,6 +2278,9 @@ function pnModInitCoreVars()
 /**
  * Checks to see if a module variable is set.
  *
+ * @deprecated
+ * @see ModUtil::hasVar()
+ *
  * @param string $modname The name of the module.
  * @param string $name    The name of the variable.
  *
@@ -1157,6 +2288,7 @@ function pnModInitCoreVars()
  */
 function pnModVarExists($modname, $name)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::hasVar()')), 'STRICT');
     return ModUtil::hasVar($modname, $name);
 }
 
@@ -1167,6 +2299,9 @@ function pnModVarExists($modname, $name)
  * module variable value.
  * if the name parameter is ommitted then function returns a multi
  * dimentional array of the keys and values for the module vars.
+ *
+ * @deprecated
+ * @see ModUtil::getVar()
  *
  * @param string  $modname The name of the module.
  * @param string  $name    The name of the variable.
@@ -1180,12 +2315,16 @@ function pnModVarExists($modname, $name)
  */
 function pnModGetVar($modname, $name = '', $default = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getVar()')), 'STRICT');
     return ModUtil::getVar($modname, $name, $default);
 }
 
 
 /**
  * The pnModSetVar Function sets a module variable.
+ *
+ * @deprecated
+ * @see ModUtil::setVar()
  *
  * @param string $modname The name of the module.
  * @param string $name    The name of the variable.
@@ -1195,11 +2334,15 @@ function pnModGetVar($modname, $name = '', $default = false)
  */
 function pnModSetVar($modname, $name, $value = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::setVar()')), 'STRICT');
     return ModUtil::setVar($modname, $name, $value);
 }
 
 /**
  * The pnModSetVars function sets multiple module variables.
+ *
+ * @deprecated
+ * @see ModUtil::setVars()
  *
  * @param string $modname The name of the module.
  * @param array  $vars    An associative array of varnames/varvalues.
@@ -1208,6 +2351,7 @@ function pnModSetVar($modname, $name, $value = '')
  */
 function pnModSetVars($modname, $vars)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::setVars()')), 'STRICT');
     return ModUtil::setVars($modname, $vars);
 }
 
@@ -1217,6 +2361,9 @@ function pnModSetVars($modname, $vars)
  * Delete a module variables. If the optional name parameter is not supplied all variables
  * for the module 'modname' are deleted.
  *
+ * @deprecated
+ * @see ModUtil::delVar()
+ *
  * @param string $modname The name of the module.
  * @param string $name    The name of the variable (optional).
  *
@@ -1224,11 +2371,15 @@ function pnModSetVars($modname, $vars)
  */
 function pnModDelVar($modname, $name = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::delVar()')), 'STRICT');
     return ModUtil::delVar($modname, $name);
 }
 
 /**
  * The pnModGetIDFromName function gets module ID given its name.
+ *
+ * @deprecated
+ * @see ModUtil::getIdFromName()
  *
  * @param string $module The name of the module.
  *
@@ -1236,6 +2387,7 @@ function pnModDelVar($modname, $name = '')
  */
 function pnModGetIDFromName($module)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getIdFromName()')), 'STRICT');
     return ModUtil::getIdFromName($module);
 }
 
@@ -1244,57 +2396,80 @@ function pnModGetIDFromName($module)
  *
  * Return array of module information or false if core ( id = 0 ).
  *
+ * @deprecated
+ * @see ModUtil::getInfo()
+ *
  * @param integer $modid The module ID.
  *
  * @return array|boolean Module information array or false.
  */
 function pnModGetInfo($modid = 0)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getInfo()')), 'STRICT');
     return ModUtil::getInfo($modid);
 }
 
 /**
  * The pnModGetUserMods function gets a list of user modules.
  *
+ * @deprecated
+ * @see ModUtil::getUserMods()
+ *
  * @return array An array of module information arrays.
  */
 function pnModGetUserMods()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getUserMods()')), 'STRICT');
     return ModUtil::getUserMods();
 }
 
 /**
  * The pnModGetProfilesMods function gets a list of profile modules.
  *
+ * @deprecated
+ * @see ModUtil::getProfileMods()
+ *
  * @return array An array of module information arrays.
  */
 function pnModGetProfileMods()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getProfileMods()')), 'STRICT');
     return ModUtil::getProfileMods();
 }
 
 /**
  * The pnModGetMessageMods function gets a list of message modules.
  *
+ * @deprecated
+ * @see ModUtil::getMessageMods()
+ *
  * @return array An array of module information arrays.
  */
 function pnModGetMessageMods()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getMessageMods()')), 'STRICT');
     return ModUtil::getMessageMods();
 }
 
 /**
  * The pnModGetAdminMods function gets a list of administration modules.
  *
+ * @deprecated
+ * @see ModUtil::getAdminMods()
+ *
  * @return array An array of module information arrays.
  */
 function pnModGetAdminMods()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getAdminMods()')), 'STRICT');
     return ModUtil::getAdminMods();
 }
 
 /**
  * The pnModGetTypeMods function gets a list of modules by module type.
+ *
+ * @deprecated
+ * @see ModUtil::getTypeMods()
  *
  * @param string $type The module type to get (either 'user' or 'admin') (optional) (default='user').
  *
@@ -1302,21 +2477,29 @@ function pnModGetAdminMods()
  */
 function pnModGetTypeMods($type = 'user')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getTypeMods()')), 'STRICT');
     return ModUtil::getTypeMods($type);
 }
 
 /**
  * The pnModGetAllMods function gets a list of all modules.
  *
+ * @deprecated
+ * @see ModUtil::getAllMods()
+ *
  * @return array An array of module information arrays.
  */
 function pnModGetAllMods()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getAllMods()')), 'STRICT');
     return ModUtil::getAllMods();
 }
 
 /**
  * Loads datbase definition for a module.
+ *
+ * @deprecated
+ * @see ModUtil::dbInfoLoad()
  *
  * @param string  $modname   The name of the module to load database definition for.
  * @param string  $directory Directory that module is in (if known).
@@ -1326,11 +2509,15 @@ function pnModGetAllMods()
  */
 function pnModDBInfoLoad($modname, $directory = '', $force = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::dbInfoLoad()')), 'STRICT');
     return ModUtil::dbInfoLoad($modname, $directory, $force);
 }
 
 /**
  * Loads a module.
+ *
+ * @deprecated
+ * @see ModUtil::load()
  *
  * @param string  $modname The name of the module.
  * @param string  $type    The type of functions to load.
@@ -1340,11 +2527,15 @@ function pnModDBInfoLoad($modname, $directory = '', $force = false)
  */
 function pnModLoad($modname, $type = 'user', $force = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::load()')), 'STRICT');
     return ModUtil::load($modname, $type, $force);
 }
 
 /**
  * Load an API module.
+ *
+ * @deprecated
+ * @see ModUtil::loadApi()
  *
  * @param string  $modname The name of the module.
  * @param string  $type    The type of functions to load.
@@ -1354,11 +2545,15 @@ function pnModLoad($modname, $type = 'user', $force = false)
  */
 function pnModAPILoad($modname, $type = 'user', $force = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::loadApi()')), 'STRICT');
     return ModUtil::loadApi($modname, $type, $force);
 }
 
 /**
  * Load a module.
+ *
+ * @deprecated
+ * @see ModUtil::loadGeneric()
  *
  * @param string  $modname The name of the module.
  * @param string  $type    The type of functions to load.
@@ -1369,11 +2564,15 @@ function pnModAPILoad($modname, $type = 'user', $force = false)
  */
 function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::loadGeneric()')), 'STRICT');
     return ModUtil::loadGeneric($modname, $type, $force, $api);
 }
 
 /**
  * Run a module function.
+ *
+ * @deprecated
+ * @see ModUtil::func()
  *
  * @param string $modname The name of the module.
  * @param string $type    The type of function to run.
@@ -1384,11 +2583,15 @@ function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false
  */
 function pnModFunc($modname, $type = 'user', $func = 'main', $args = array())
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::func()')), 'STRICT');
     return ModUtil::func($modname, $type, $func, $args);
 }
 
 /**
  * Run an module API function.
+ *
+ * @deprecated
+ * @see ModUtil::apiFunc()
  *
  * @param string $modname The name of the module.
  * @param string $type    The type of function to run.
@@ -1399,11 +2602,15 @@ function pnModFunc($modname, $type = 'user', $func = 'main', $args = array())
  */
 function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::apiFunc()')), 'STRICT');
     return ModUtil::apiFunc($modname, $type, $func, $args);
 }
 
 /**
  * Run a module function.
+ *
+ * @deprecated
+ * @see ModUtil::exec()
  *
  * @param string  $modname The name of the module.
  * @param string  $type    The type of function to run.
@@ -1415,6 +2622,7 @@ function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
  */
 function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::exec()')), 'STRICT');
     return ModUtil::exec($modname, $type, $func, $args);
 }
 
@@ -1424,6 +2632,9 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
  * If the module is non-API compliant (type 1) then
  * a) $func is ignored.
  * b) $type=admin will generate admin.php?module=... and $type=user will generate index.php?name=...
+ *
+ * @deprecated
+ * @see ModUtil::url()
  *
  * @param string       $modname      The name of the module.
  * @param string       $type         The type of function to run.
@@ -1440,11 +2651,15 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
  */
 function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::url()')), 'STRICT');
     return ModUtil::url($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang, $forcelang);
 }
 
 /**
  * Check if a module is available.
+ *
+ * @deprecated
+ * @see ModUtil::available()
  *
  * @param string  $modname The name of the module.
  * @param boolean $force   Force.
@@ -1453,21 +2668,29 @@ function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ss
  */
 function pnModAvailable($modname = null, $force = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::available()')), 'STRICT');
     return ModUtil::available($modname, $force);
 }
 
 /**
  * Get name of current top-level module.
  *
+ * @deprecated
+ * @see ModUtil::getName()
+ *
  * @return string The name of the current top-level module, false if not in a module.
  */
 function pnModGetName()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getName()')), 'STRICT');
     return ModUtil::getName();
 }
 
 /**
  * Register a hook function.
+ *
+ * @deprecated
+ * @see ModUtil::registerHook()
  *
  * @param object $hookobject The hook object.
  * @param string $hookaction The hook action.
@@ -1480,12 +2703,16 @@ function pnModGetName()
  */
 function pnModRegisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::registerHook()')), 'STRICT');
     return ModUtil::registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc);
 }
 
 
 /**
  * Unregister a hook function.
+ *
+ * @deprecated
+ * @see ModUtil::unregisterHook()
  *
  * @param string $hookobject The hook object.
  * @param string $hookaction The hook action.
@@ -1498,11 +2725,15 @@ function pnModRegisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $ho
  */
 function pnModUnregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::unregisterHook()')), 'STRICT');
     return ModUtil::unregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc);
 }
 
 /**
  * Carry out hook operations for module.
+ *
+ * @deprecated
+ * @see ModUtil::callHooks()
  *
  * @param string  $hookobject The object the hook is called for - one of 'item', 'category' or 'module'.
  * @param string  $hookaction The action the hook is called for - one of 'new', 'create', 'modify', 'update', 'delete', 'transform', 'display', 'modifyconfig', 'updateconfig'.
@@ -1514,11 +2745,15 @@ function pnModUnregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $
  */
 function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::callHooks()')), 'STRICT');
     return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode);
 }
 
 /**
  * Determine if a module is hooked by another module.
+ *
+ * @deprecated
+ * @see ModUtil::isHooked()
  *
  * @param string $tmodule The target module.
  * @param string $smodule The source module - default the current top most module.
@@ -1527,24 +2762,24 @@ function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(),
  */
 function pnModIsHooked($tmodule, $smodule)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::isHooked()')), 'STRICT');
     return ModUtil::isHooked($tmodule, $smodule);
 }
 
 /**
  * The pnModLangLoad function loads the language files for a module.
  *
+ * @deprecated define based language system support stopped with Zikula 1.3.0
+ *
  * @param string  $modname Name of the module.
  * @param string  $type    Type of the language file to load e.g. user, admin.
  * @param boolean $api     Load api lang file or gui lang file.
  *
  * @return boolean False as this function is depreciated.
- *
- * @deprecated define based language system support stopped with Zikula 1.3.0
  */
 function pnModLangLoad($modname, $type = 'user', $api = false)
 {
-    LogUtil::registerError(__('pnModLangLoad is deprecated.', 404));
-    return false;
+    return LogUtil::registerError(__('Error! Function pnModLangLoad is deprecated.', 404));
 }
 
 /**
@@ -1563,12 +2798,16 @@ function pnModLangLoad($modname, $type = 'user', $api = false)
  * This allows you to say:
  * include(pnModGetBaseDir() . '/includes/private_functions.php');.
  *
+ * @deprecated
+ * @see ModUtil::getBaseDir()
+ *
  * @param string $modname Name of module to that you want the base directory of.
  *
  * @return string The path from the root directory to the specified module.
  */
 function pnModGetBaseDir($modname = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getBaseDir()')), 'STRICT');
     return ModUtil::getBaseDir($modname);
 }
 
@@ -1577,10 +2816,14 @@ function pnModGetBaseDir($modname = '')
  *
  * Small wrapper function to avoid duplicate sql.
  *
+ * @deprecated
+ * @see ModUtil::getModsTable()
+ *
  * @return array An array modules table.
  */
 function pnModGetModsTable()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getModsTable()')), 'STRICT');
     return ModUtil::getModsTable();
 }
 
@@ -1591,6 +2834,9 @@ class ModuleUtil
      * table are returned which means that new/unscanned modules
      * will not be returned
      *
+     * @deprecated
+     * @see ModUtil::getModules()
+     *
      * @param where The where clause to use for the select
      * @param sort  The sort to use
      *
@@ -1598,6 +2844,7 @@ class ModuleUtil
      */
     public static function getModules ($where='', $sort='displayname')
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'ModUtil::getModules()')), 'STRICT');
         return ModUtil::getModules($where, $sort);
     }
 
@@ -1607,6 +2854,9 @@ class ModuleUtil
      * the module table are returned which means that new/unscanned modules
      * will not be returned
      *
+     * @deprecated
+     * @see ModUtil::getModulesByState()
+     *
      * @param state    The module state (optional) (defaults = active state)
      * @param sort  The sort to use
      *
@@ -1614,6 +2864,7 @@ class ModuleUtil
      */
     public static function getModulesByState($state=3, $sort='displayname')
     {
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'ModUtil::getModulesByState()')), 'STRICT');
         return ModUtil::getModulesByState($state, $sort);
     }
 }
@@ -1622,15 +2873,23 @@ class ModuleUtil
 
 /**
  * display all blocks in a block position
+ *
+ * @deprecated
+ * @see BlockUtil::displayPosition()
+ *
  * @param $side block position to render
  */
 function pnBlockDisplayPosition($side, $echo = true, $implode = true)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::displayPosition()')), 'STRICT');
     return BlockUtil::displayPosition($side, $echo, $implode);
 }
 
 /**
  * show a block
+ *
+ * @deprecated
+ * @see BlockUtil::show()
  *
  * @param string $modname module name
  * @param string $block name of the block
@@ -1639,19 +2898,27 @@ function pnBlockDisplayPosition($side, $echo = true, $implode = true)
  */
 function pnBlockShow($modname, $block, $blockinfo = array())
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::show()')), 'STRICT');
     return BlockUtil::show($modname, $block, $blockinfo);
 }
 
 /**
  * Display a block based on the current theme
+ *
+ * @deprecated
+ * @see BlockUtil::themeBlock()
  */
 function pnBlockThemeBlock($row)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::themeBlock()')), 'STRICT');
     return BlockUtil::themeBlock($row);
 }
 
 /**
  * load a block
+ *
+ * @deprecated
+ * @see BlockUtil::load()
  *
  * @param string $modname module name
  * @param string $block name of the block
@@ -1659,15 +2926,21 @@ function pnBlockThemeBlock($row)
  */
 function pnBlockLoad($modname, $block)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::load()')), 'STRICT');
     return BlockUtil::load($modname, $block);
 }
 
 /**
  * load all blocks
+ *
+ * @deprecated
+ * @see BlockUtil::loadAll()
+ *
  * @return array array of blocks
  */
 function pnBlockLoadAll()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::loadAll()')), 'STRICT');
     return BlockUtil::loadAll();
 }
 
@@ -1675,20 +2948,28 @@ function pnBlockLoadAll()
  * extract an array of config variables out of the content field of a
  * block
  *
+ * @deprecated
+ * @see BlockUtil::varsFromContent()
+ *
  * @param the $ content from the db
  */
 function pnBlockVarsFromContent($content)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::varsFromContent()')), 'STRICT');
     return BlockUtil::varsFromContent($content);
 }
 
 /**
  * put an array of config variables in the content field of a block
  *
+ * @deprecated
+ * @see BlockUtil::varsToContent()
+ *
  * @param the $ config vars array, in key->value form
  */
 function pnBlockVarsToContent($vars)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::varsToContent()')), 'STRICT');
     return BlockUtil::varsToContent($vars);
 }
 
@@ -1698,32 +2979,46 @@ function pnBlockVarsToContent($vars)
  * Checks if the user has a state set for a current block
  * Sets the default state for that block if not present
  *
+ * @deprecated
+ * @see BlockUtil::checkUserBlock()
+ *
  * @access private
  */
 function pnCheckUserBlock($row)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::checkUserBlock()')), 'STRICT');
     return BlockUtil::checkUserBlock($row);
 }
 
 /**
  * get block information
+ *
+ * @deprecated
+ * @see BlockUtil::getBlocksInfo()
+ *
  * @param value the value to search for
  * @param assocKey the field in which we look for the value (optional) (default='bid')
  * @return array array of block information
  */
 function pnBlocksGetInfo()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::getBlocksInfo()')), 'STRICT');
     return BlockUtil::getBlocksInfo();
 }
 
 /**
  * get block information
+ *
+ * @deprecated
+ * @see BlockUtil::getBlockInfo()
+ *
  * @param value the value to search for
  * @param assocKey the field in which we look for the value (optional) (default='bid')
  * @return array array of block information
  */
 function pnBlockGetInfo($value, $assocKey = 'bid')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::getBlockInfo()')), 'STRICT');
     return BlockUtil::getBlockInfo($value, $assocKey);
 }
 
@@ -1738,18 +3033,26 @@ function pnBlockGetInfoByTitle($title)
 }
 
 /**
- * alias to pnBlockDisplayPosition
+ * alias to BlockUtil::displayPosition()
+ *
+ * @deprecated
+ * @see BlockUtil::displayPosition()
  */
 function blocks($side)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::displayPosition()')), 'STRICT');
     return BlockUtil::displayPosition($side);
 }
 
 /**
- * alias to pnBlockDisplayPosition
+ * alias to BlockUtil::themesideblock()
+ *
+ * @deprecated
+ * @see BlockUtil::themesideblock()
  */
 function themesideblock($row)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::themesideblock()')), 'STRICT');
     return BlockUtil::themesideblock($row);
 }
 
@@ -1757,6 +3060,9 @@ function themesideblock($row)
 
 /**
  * Log the user in
+ *
+ * @deprecated
+ * @see UserUtil::login()
  *
  * @param uname $ the name of the user logging in
  * @param pass $ the password of the user logging in
@@ -1766,6 +3072,7 @@ function themesideblock($row)
  */
 function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::login()')), 'STRICT');
     return UserUtil::login($uname, $pass, $rememberme, $checkPassword);
 }
 
@@ -1774,48 +3081,67 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
  * checks if the REMOTE_USER exists in the PN environment: if he does a
  * session is created for him, regardless of the password being used.
  *
+ * @deprecated
+ * @see UserUtil::loginHttp()
+ *
  * @return bool true if the user successfully logged in, false otherwise
  */
 function pnUserLogInHTTP()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::loginHttp()')), 'STRICT');
     return UserUtil::loginHttp();
 }
 
 /**
  * Log the user out
  *
+ * @deprecated
+ * @see UserUtil::logout()
+ *
  * @public
  * @return bool true if the user successfully logged out, false otherwise
  */
 function pnUserLogOut()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::logout()')), 'STRICT');
     return UserUtil::logout();
 }
 
 /**
  * is the user logged in?
  *
+ * @deprecated
+ * @see UserUtil::isLoggedIn()
+ *
  * @public
  * @returns bool true if the user is logged in, false if they are not
  */
 function pnUserLoggedIn()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::isLoggedIn()')), 'STRICT');
     return UserUtil::isLoggedIn();
 }
 
 /**
  * Get all user variables, maps new style attributes to old style user data.
  *
+ * @deprecated
+ * @see UserUtil::getVars()
+ *
  * @param uid $ the user id of the user
  * @return array an associative array with all variables for a user
  */
 function pnUserGetVars($id, $force = false, $idfield = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getVars()')), 'STRICT');
     return UserUtil::getVars($id, $force, $idfield);
 }
 
 /**
  * get a user variable
+ *
+ * @deprecated
+ * @see UserUtil::getVar()
  *
  * @param name $ the name of the variable
  * @param uid $ the user to get the variable for
@@ -1824,6 +3150,7 @@ function pnUserGetVars($id, $force = false, $idfield = '')
  */
 function pnUserGetVar($name, $uid = -1, $default = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getVar()')), 'STRICT');
     return UserUtil::getVar($name, $uid, $default);
 }
 
@@ -1843,6 +3170,9 @@ function pnUserGetVar($name, $uid = -1, $default = false)
  *
  * This function does not allow you to set uid or uname.
  *
+ * @deprecated
+ * @see UserUtil::setVar()
+ *
  * @param name $ the name of the variable
  * @param value $ the value of the variable
  * @param uid $ the user to set the variable for
@@ -1850,11 +3180,22 @@ function pnUserGetVar($name, $uid = -1, $default = false)
  */
 function pnUserSetVar($name, $value, $uid = -1)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::setVar()')), 'STRICT');
     return UserUtil::setVar($name, $value, $uid);
 }
 
+/**
+ * Alias to UserUtil::setVar for setting the password on the account.
+ *
+ * @deprecated
+ * @see UserUtil::setPassword()
+ *
+ * @param string $pass The password.
+ * @return bool True if set; otherwise false.
+ */
 function pnUserSetPassword($pass)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::setPassword()')), 'STRICT');
     return UserUtil::setPassword($pass);
 }
 
@@ -1872,12 +3213,16 @@ function pnUserSetPassword($pass)
  * It does not allow the deletion of uid, email, uname and pass (word) as these are mandatory
  * fields in the users table.
  *
+ * @deprecated
+ * @see UserUtil::delVar()
+ *
  * @param name $ the name of the variable
  * @param uid $ the user to delete the variable for
  * @return boolen true on success, false on failure
  */
 function pnUserDelVar($name, $uid = -1)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::delVar()')), 'STRICT');
     return UserUtil::delVar($name, $uid);
 }
 
@@ -1890,59 +3235,76 @@ function pnUserDelVar($name, $uid = -1)
  *  - user
  *  - system
  *
+ * @deprecated
+ * @see UserUtil::getTheme()
+ *
  * @public
  * @return string the name of the user's theme
  **/
 function pnUserGetTheme($force = false)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getTheme()')), 'STRICT');
     return UserUtil::getTheme($force);
 }
 
 /**
  * get the user's language
  *
- * @deprecated
- * @see ZLanaguage::getLanguageCode()
- *
  * This function returns the deprecated 3 digit language codes, you need to switch APIs
+ *
+ * @deprecated
+ * @see UserUtil::getLang()
  *
  * @return string the name of the user's language
  */
 function pnUserGetLang()
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getLang()')), 'STRICT');
     return UserUtil::getLang();
 }
 
 /**
  * get a list of user information
  *
+ * @deprecated
+ * @see UserUtil::getAll()
+ *
  * @public
  * @return array array of user arrays
  */
 function pnUserGetAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getAll()')), 'STRICT');
     return UserUtil::getAll($sortbyfield, $sortorder, $limit, $startnum, $activated, $regexpfield, $regexpression, $where);
 }
 
 /**
  * Get the uid of a user from the username
  *
+ * @deprecated
+ * @see UserUtil::getIdFromName()
+ *
  * @param uname $ the username
  * @return mixed userid if found, false if not
  */
 function pnUserGetIDFromName($uname)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getIdFromName()')), 'STRICT');
     return UserUtil::getIdFromName($uname);
 }
 
 /**
  * Get the uid of a user from the email (case for unique emails)
  *
+ * @deprecated
+ * @see UserUtil::getIdFromEmail()
+ *
  * @param email $ the user email
  * @return mixed userid if found, false if not
  */
 function pnUserGetIDFromEmail($email)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getIdFromEmail()')), 'STRICT');
     return UserUtil::getIdFromEmail($email);
 }
 
@@ -1951,11 +3313,15 @@ function pnUserGetIDFromEmail($email)
  * Profile module's user_data table or the users table.
  * This should be removed if we ever go fully dynamic
  *
+ * @deprecated
+ * @see UserUtil::fieldAlias()
+ *
  * @param label $ the alias of the field to check
  * @return true if found, false if not, void upon error
  */
 function pnUserFieldAlias($label)
 {
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::fieldAlias()')), 'STRICT');
     return UserUtil::fieldAlias($label);
 }
 
