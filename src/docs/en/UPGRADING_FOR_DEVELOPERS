@@ -15,7 +15,7 @@
 
 - DBUtil::executeSQL used to return a ADODB object but now returns a PHP PDO
   object.  This means any code that previously iterated on the ADODB object
-  will now break.  Please use use of DBUtil::marshallObjects() after any manual
+  will now break.  Please use of DBUtil::marshallObjects() after any manual
   SELECT through DBUtil::executeSQL() e.g.:
 
     [php]
