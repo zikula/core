@@ -45,3 +45,9 @@ RC4Crypt 3.2
     Location in Zikula: lib/vendor/encryption
     Patch details: none
 
+PHPMailer 5.0.0
+    Vendor website: http://phpmailer.codeworxtech.com/).
+    Downloaded from: http://phpmailer.codeworxtech.com/
+    License: LGPL 2.1+
+    Location in Zikula: system/Mailer/vendor
+    Patch details: none
