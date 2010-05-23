@@ -12,7 +12,9 @@ darker
 
 When overriding a style any rules that we want to stay the same are excluded.
 
-*/ /* styles for module admin menus */
+*/
+
+/* styles for module admin menus */
 .z-menuitem-title {
     background: none;
     border-left: none;

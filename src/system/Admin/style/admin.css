@@ -1,23 +1,23 @@
 /*
 Admin interface stylesheet
 
-This stylesheet implements a set of styles used throughout the admin interface of
-Zikula allowing the site administrator to configure via standard css techniques the
-presentation of the admin interface.
+This stylesheet implements a set of styles used throughout the admin interface
+of Zikula allowing the site administrator to configure via standard css 
+techniques the presentation of the admin interface.
 
-Themers can create a theme specific version of this stylesheet by creating a copy of
-the file in themes/<themename>/style/Admin/admin.css. This version of stylesheet is
-kept as generic as possible to avoid many potential theme clashes. Re-styling this
-stylesheet requires a working knowledge of both CSS1 and CSS2.
+Themers can create a theme specific version of this stylesheet by creating a
+copy of the file in themes/<themename>/style/Admin/admin.css. This version of
+stylesheet is kept as generic as possible to avoid many potential theme clashes.
+Re-styling this stylesheet requires a working knowledge of both CSS1 and CSS2.
 
-Legacy themes support the admin stylesheet by virtue of the header of these themes
-being templated in the Header_Footer module.
+Legacy themes support the admin stylesheet by virtue of the header of these
+themes being templated in the Header_Footer module.
 
 */
 
-/*******************************************************************************/
+/******************************************************************************/
 /* Container for admin icons in main admin panel
-/*******************************************************************************/
+/******************************************************************************/
 
 /* style for Immediate template under the tab menu */
 div.z-adminbox {
@@ -30,7 +30,8 @@ div.z-adminbox {
     padding: 5px 1% 5px 1%;
 }
 
-div.z-adminbox .z-menulinks,div.z-adminbox .z-menu {
+div.z-adminbox .z-menulinks,
+div.z-adminbox .z-menu {
     margin-bottom: 0;
 }
 
@@ -97,9 +98,9 @@ div.z-admincontainer button {
     background-color: transparent;
 }
 
-/*******************************************************************************/
-    /* style for admin tables
-/*******************************************************************************/
+/******************************************************************************/
+/* style for admin tables
+/******************************************************************************/
 table.z-admintable {
     width: 100%;
     color: inherit;
@@ -147,9 +148,9 @@ table.z-admintable ul {
     margin: 0;
 }
 
-/*******************************************************************************/
-    /* Styling for module icon list in the admin panel
-/*******************************************************************************/
+/******************************************************************************/
+/* Styling for module icon list in the admin panel
+/******************************************************************************/
 #z-adminiconlist {
     margin: 5px;
 }
@@ -195,8 +196,7 @@ table.z-admintable ul {
     padding: 6px;
     position: absolute;
     top: 2.5em;
-    z-index: 2300;
-    /* must be higher than the return value after dragging */
+    z-index: 2300; /* must be higher than the return value after dragging */
 }
 
 #z-adminiconlist .z-adminiconcontainer ul.infoModuleFunctions li {
@@ -226,12 +226,11 @@ table.z-admintable ul {
     box-shadow: #999 1px 1px 2px;
 }
 
-/*******************************************************************************/
-    /* Styling for status security analyzer, update checker and more
-/*******************************************************************************/
+/*****************************************************************************/
+/* Styling for status security analyzer, update checker and more
+/*****************************************************************************/
 div#z-securityanalyzer {
-    background: #fff6bf url(../../../images/icons/large/bell.gif) center
-        no-repeat;
+    background: #fff6bf url(../../../images/icons/large/bell.gif) center no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
@@ -250,9 +249,7 @@ div#z-securityanalyzer {
 
 /* styling for status update checker */
 div#z-updatechecker {
-    background: #ffffea
-        url(../../../images/icons/large/agt_update-product.gif) center
-        no-repeat;
+    background: #ffffea url(../../../images/icons/large/agt_update-product.gif) center no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
@@ -271,8 +268,7 @@ div#z-updatechecker {
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 div#z-adminwarning {
-    background: #FFCBCA url(../../../images/icons/large/error.gif) center
-        no-repeat;
+    background: #FFCBCA url(../../../images/icons/large/error.gif) center no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
@@ -290,8 +286,7 @@ div#z-adminwarning {
 }
 
 div#z-developernotices {
-    background: #CFECFF url(../../../images/icons/large/package_system.gif)
-        center no-repeat;
+    background: #CFECFF url(../../../images/icons/large/package_system.gif) center no-repeat;
     background-position: 15px 50%; /* x-pos y-pos */
     text-align: left;
     padding: 1em 20px 1em 90px !important;
