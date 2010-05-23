@@ -730,9 +730,10 @@ class ModUtil
             }
         }
 
-        $preExecuteEvent = new Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-        $postExecuteEvent = new Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
         if ($loaded) {
+            $preExecuteEvent = new Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $postExecuteEvent = new Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+
             if (is_callable($modfunc)) {
                 EventManagerUtil::notify($preExecuteEvent);
                 $postExecuteEvent->setData(call_user_func($modfunc, $args));
