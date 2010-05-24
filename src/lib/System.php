@@ -1219,6 +1219,14 @@ class System
         }
         return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
     }
+
+    public function hasLegacyTemplates()
+    {
+        if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
+            return false;
+        }
+        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
+    }
 }
 
 /**

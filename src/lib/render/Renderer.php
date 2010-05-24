@@ -691,12 +691,13 @@ function z_prefilter_add_literal_callback($matches)
     $tagOpen = $matches[1];
     $script = $matches[3];
     $tagClose = $matches[4];
-    $script = str_replace('{{', '{/literal}{', $script);
-    $script = str_replace('}}', '}{literal}', $script);
 
-    $result = $tagOpen . '{literal}' . $script . '{/literal}' . $tagClose;
-
-    return $result;
+    if (System::hasLegacyTemplates()) {
+        $script = str_replace('<!--[', '{{', str_replace(']-->', '}}', $script));
+    }
+    $script = str_replace('{{', '{/literal}{', str_replace('}}', '}{literal}', $script));
+    
+    return $tagOpen . '{literal}' . $script . '{/literal}' . $tagClose;
 }
 
 /**
@@ -735,12 +736,15 @@ function z_prefilter_legacy($source, &$smarty)
 {
     // save browserhacks like <!--[if lte IE 7]>
     $source = str_replace('<!--%91', '<@!@-@-@%@9@1', str_replace('%93-->', '%@9@3@-@-@>', $source));
+
     // rewrite the old delimiters to new
     $source = str_replace('<!--[', '{', str_replace(']-->', '}', $source));
-    // handle delimiters inside <script> blocks.
+
+    // handle old plugin names.
     $source = preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
+
     // restore browser hacks
-   return str_replace('<@!@-@-@%@9@1', '<!--[', str_replace('%@9@3@-@-@>', ']-->', $source));
+    return str_replace('<@!@-@-@%@9@1', '<!--[', str_replace('%@9@3@-@-@>', ']-->', $source));
 }
 
 function z_prefilter_legacy_callback($m)
