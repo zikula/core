@@ -24,7 +24,6 @@ function Categories_userapi_getuserrootcat ($args)
         return LogUtil::registerError(__('Error! Could not determine the user root node.'));
     }
 
-    Loader::loadClass ('CategoryUtil');
     $userRootCat = CategoryUtil::getCategoryByPath ($userRoot);
     if (!$userRoot) {
         return LogUtil::registerError(__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));

@@ -657,7 +657,6 @@ class DBObject
             return false;
         }
 
-        Loader::loadClass('ValidationUtil');
         $res1 = ValidationUtil::validateObjectPlain($this->_objPath, $this->_objData, $this->_objValidation);
         $res2 = $this->validatePostProcess();
 

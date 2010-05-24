@@ -39,7 +39,6 @@ class PNCategoryArray extends DBObjectArray
 
     function buildRelativePaths ($rootCategory, $includeRoot=false)
     {
-        Loader::loadClass ('CategoryUtil');
         CategoryUtil::buildRelativePaths ($rootCategory, $this->_objData, $includeRoot);
     }
 

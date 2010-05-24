@@ -518,7 +518,6 @@ class LogUtil
 
         if (time() - $lastcheck > $oneday) {
             // check once a day
-            Loader::loadClass('FileUtil');
             $logfilepath = $ZConfig['Log']['log_dir'];
             $logfiles = FileUtil::getFiles($logfilepath, false, false);
             foreach ($logfiles as $logfile) {

@@ -48,7 +48,6 @@ class SysInfo_admin_extensionsHandler extends CustomEventHandler
 
         // Zikula Modules and Themes versions
         $pnRender = Renderer::getInstance('SysInfo');
-        Loader::loadClass('ModuleUtil');
         $pnRender->assign('mods', ModuleUtil::getModules());
         $pnRender->assign('themes', ThemeUtil::getAllThemes());
 

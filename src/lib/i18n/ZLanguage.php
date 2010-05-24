@@ -345,7 +345,6 @@ class ZLanguage
             return $localeArray;
         }
 
-        Loader::loadClass('FileUtil');
         $languageVariations = System::getVar('language_bc');
         // search for locale and config overrides
         $localeArray = array();

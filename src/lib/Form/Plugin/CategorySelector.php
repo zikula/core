@@ -64,8 +64,6 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         $all = isset($params['all']) ? $params['all'] : false;
         $list->editLink = isset($params['editLink']) ? $params['editLink'] : true;
 
-        Loader::loadClass('CategoryUtil');
-
         $allCats = array();
 
         // if we don't have a category-id we see if we can get a category by path

@@ -78,8 +78,6 @@ function smarty_function_category_path($params, &$smarty)
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'field')));
     }
 
-    Loader::loadClass('CategoryUtil');
-
     $result = null;
     if ($idcolumn == 'id') {
         $cat = CategoryUtil::getCategoryByID($id);

@@ -10,8 +10,6 @@
  * @package Zikula_Core
  */
 
-Loader::loadClass ('CategoryUtil');
-Loader::loadClass ('HtmlUtil');
 Loader::loadClassFromModule ('Categories', 'category');
 
 /**

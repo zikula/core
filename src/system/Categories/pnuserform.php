@@ -50,11 +50,6 @@ function Categories_userform_delete ()
         return LogUtil::registerError(__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $data['name'])), null, $url);
     }
 
-    if (!Loader::loadClass ('CategoryUtil')) {
-        $msg = __f('Error! Unable to load class [%s]', 'CategoryUtil');
-        return LogUtil::registerError($msg, null, $url);
-    }
-
     CategoryUtil::deleteCategoryByID ($cid);
     return System::redirect($url);
 }
@@ -118,10 +113,6 @@ function Categories_userform_edit ()
 
     // since a name change will change the object path, we must rebuild it here
     if ($oldData['name'] != $data['name']) {
-        if (!Loader::loadClass ('CategoryUtil')) {
-            $msg = __f('Error! Unable to load class [%s]', 'CategoryUtil');
-            return LogUtil::registerError($msg, null, $url);
-        }
         CategoryUtil::rebuildPaths ('path', 'name', $data['id']);
     }
 
@@ -154,11 +145,6 @@ function Categories_userform_moveField ()
 
     if (!$dir) {
         return LogUtil::registerError(__f('Error! Invalid [%s] received.', 'direction'), null, $url);
-    }
-
-    if (!($class = Loader::loadClass ('CategoryUtil'))) {
-        $msg = __f('Error! Unable to load class [%s]', 'CategoryUtil');
-        return LogUtil::registerError($msg, null, $url);
     }
 
     if (!($class = Loader::loadClassFromModule ('Categories', 'category'))) {
@@ -233,11 +219,6 @@ function Categories_userform_resequence ()
 
     if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
-    }
-
-    if (!($class = Loader::loadClass ('CategoryUtil'))) {
-        $msg = __f('Error! Unable to load class [%s]', 'CategoryUtil');
-        return LogUtil::registerError($msg, null, $url);
     }
 
     $cats = CategoryUtil::getSubCategories ($dr, false, false, false, false);

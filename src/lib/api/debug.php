@@ -21,7 +21,6 @@ function z_exit($msg, $html = true)
         return false;
     }
 
-    //Loader::loadClass('LogUtil');
     $msg = __('Exit handler:') . $msg;
     if ($ZConfig['System']['development']) {
         $msg .= "\n" . __('Stack trace:') . "\n";

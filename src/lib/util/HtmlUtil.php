@@ -189,10 +189,6 @@ class HtmlUtil
             ModUtil::dbInfoLoad($modname, '', true);
         }
 
-        if ($truncate > 0) {
-            Loader::loadClass('StringUtil');
-        }
-
         $fa = DBUtil::selectFieldArray($tablekey, $field, $where, $sort, $distinct, $assocKey);
         $data = array();
         foreach ($fa as $k => $v) {
@@ -227,10 +223,6 @@ class HtmlUtil
      */
     public static function getSelector_Categories($cats, $name, $field = 'id', $selectedValue = '0', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1)
     {
-        if (!Loader::loadClass('CategoryUtil')) {
-            return pn_exit(__f('Error! Unable to load class [%s].', 'CategoryUtil'));
-        }
-
         return CategoryUtil::getSelector_Categories($cats, $field, $selectedValue, $name, $defaultValue, $defaultText, $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize);
     }
 
@@ -247,10 +239,6 @@ class HtmlUtil
      */
     public static function getCheckboxes_CategoryField($categoryPath, $values = array(), $namePrefix = '', $excludeList = null, $disabled = false)
     {
-        if (!Loader::loadClass('CategoryUtil')) {
-            return pn_exit(__f('Error! Unable to load class [%s].', 'CategoryUtil'));
-        }
-
         if (!$categoryPath) {
             return pn_exit(__f('Invalid %1$s passed to %2$s.', array('category', 'HtmlUtil::getCheckboxes_CategoryField')));
         }
@@ -507,8 +495,6 @@ class HtmlUtil
      */
     public static function getSelector_PNGroup($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
-        Loader::loadClass('UserUtil');
-
         $data = array();
         $grouplist = UserUtil::getPNGroups('', 'ORDER BY pn_name');
         foreach ($grouplist as $k => $v) {
@@ -541,8 +527,6 @@ class HtmlUtil
      */
     public static function getSelector_PNUser($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
-        Loader::loadClass('UserUtil');
-
         $where = '';
         if ($excludeList) {
             $where = "WHERE pn_uid NOT IN ($excludeList)";
@@ -582,8 +566,6 @@ class HtmlUtil
      */
      public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
      {
-         Loader::loadClass ('ModuleUtil');
-
          $data = array();
          $modules = ModuleUtil::getModulesByState(3, 'displayname');
          foreach ($modules as $module) {

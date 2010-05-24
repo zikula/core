@@ -971,8 +971,6 @@ class CategoryUtil
         $params = array();
         $params['mode'] = 'edit';
 
-        Loader::loadClass('StringUtil');
-
         //$cats = self::sortCategories($cats, 'sort_value');
         $lang = ZLanguage::getLanguageCode();
 
@@ -1056,7 +1054,6 @@ class CategoryUtil
             $html .= "<option value=\"$allValue\"$sel>$allText</option>";
         }
 
-        Loader::loadClass('StringUtil');
         $count = 0;
         if (!isset($cats) || empty($cats)) {
             $cats = array();

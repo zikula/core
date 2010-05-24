@@ -144,8 +144,6 @@ class PNCategory extends DBObject
             return $data;
         }
 
-        Loader::loadClass('CategoryUtil');
-
         $pid    = (int)$data['parent_id'];
         $parent = CategoryUtil::getCategoryByID ($pid);
 
@@ -193,8 +191,6 @@ class PNCategory extends DBObject
             return false;
         }
 
-        Loader::loadClass('CategoryUtil');
-
         // ensure that the name we want to use doesn't exist already on this level
         $name = $data['name'];
         $cats = CategoryUtil::getCategoriesByParentID ($data['parent_id'], '', false, '', '', '', 'name');
@@ -221,8 +217,6 @@ class PNCategory extends DBObject
             return $data;
         }
 
-        Loader::loadClass('CategoryUtil');
-
         if ($deleteSubcats) {
             CategoryUtil::deleteCategoriesByPath ($data['ipath']);
         }
@@ -243,8 +237,6 @@ class PNCategory extends DBObject
             return $data;
         }
 
-        Loader::loadClass('CategoryUtil');
-
         CategoryUtil::moveCategoriesByPath ($data['ipath'], $newParentID);
     }
 
@@ -255,8 +247,6 @@ class PNCategory extends DBObject
         if (!$data) {
             return $data;
         }
-
-        Loader::loadClass('CategoryUtil');
 
         CategoryUtil::copyCategoriesByPath ($data['ipath'], $newParentID);
     }

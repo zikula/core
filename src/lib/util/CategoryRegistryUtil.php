@@ -237,10 +237,6 @@ class CategoryRegistryUtil
 
         // if we have a path default, we get the ID
         if ($default && !is_integer($default)) {
-            if (!Loader::loadClass('CategoryUtil')) {
-                return pn_exit(__f('Error! Unable to load class [%s]', 'CategoryUtil'));
-            }
-
             $cat = CategoryUtil::getCategoryByPath($default);
             if ($cat) {
                 $default = $cat['id'];

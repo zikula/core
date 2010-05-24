@@ -715,8 +715,6 @@ class DBObjectArray
      */
     public function validate()
     {
-        Loader::loadClass('ValidationUtil');
-
         $res1 = ValidationUtil::validateObjectPlain($this->_objPath, $this->_objData, $this->_objValidation); // FIXME!!!, handle array
         $res2 = $this->validatePostProcess();
 

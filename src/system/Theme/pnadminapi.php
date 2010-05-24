@@ -353,7 +353,6 @@ function theme_adminapi_deletefiles($args)
     }
 
     if (is_writable('themes') && is_writable('themes/' . $osthemedirectory)) {
-        Loader::loadClass('FileUtil');
         $res = FileUtil::deldir('themes/' .$osthemedirectory);
         if($res == true) {
             LogUtil::registerStatus(__('Done! Removed theme files from the file system.'));

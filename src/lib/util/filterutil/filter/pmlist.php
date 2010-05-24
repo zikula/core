@@ -132,7 +132,7 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
         if (array_search($op, $this->availableOperators()) === false || array_search($field, $this->fields) === false) {
             return '';
         }
-        Loader::loadClass('CategoryUtil');
+
         switch ($op) {
             case "eq":
                 $where = $this->column[$field] . ' = ' . $value;

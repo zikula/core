@@ -100,7 +100,6 @@ function users_adminapi_findusers($args)
 
         // do the rest manually
         if (isset($args['ugroup']) && $args['ugroup']) {
-            Loader::loadClass('UserUtil');
             $guids = UserUtil::getUsersForGroup($args['ugroup']);
             if (!empty($guids)) {
                 $args['condition'] .= " AND $userscolumn[uid] IN (";

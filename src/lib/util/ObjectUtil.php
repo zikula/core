@@ -120,8 +120,6 @@ class ObjectUtil
             return;
         }
 
-        Loader::loadClass('DateUtil');
-
         $obj[$idcolumn] = (isset($obj[$idcolumn]) && $obj[$idcolumn] && $preserveValues ? $obj[$idcolumn] : null);
         $obj['cr_date'] = (isset($obj['cr_date']) && $obj['cr_date'] && $preserveValues ? $obj['cr_date'] : DateUtil::getDatetime());
         $obj['cr_uid']  = (isset($obj['cr_uid']) && $obj['cr_uid'] && $preserveValues   ? $obj['cr_uid']  : UserUtil::getVar('uid'));
@@ -152,8 +150,6 @@ class ObjectUtil
             pn_exit(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectUpdate'));
             return;
         }
-
-        Loader::loadClass('DateUtil');
 
         $obj['lu_date'] = (isset($obj['lu_date']) && $obj['lu_date'] && $preserveValues ? $obj['lu_date'] : DateUtil::getDatetime());
         $obj['lu_uid']  = (isset($obj['lu_uid']) && $obj['lu_uid'] && $preserveValues   ? $obj['lu_uid']  : UserUtil::getVar('uid'));
@@ -215,7 +211,6 @@ class ObjectUtil
             return pn_exit(__f('%1$s: Unable to reference object type [%2$s]', array('ObjectUtil::createObject', $type)));
         }
 
-        Loader::loadClass('DateUtil');
         $obj = array();
         $obj['__TYPE__'] = $type;
         $obj['cr_date']  = DateUtil::getDateTime();
@@ -984,7 +979,6 @@ class ObjectUtil
         $reg_key = $modname . '_' . $tablename;
 
         if (!isset($modTableCategoryIDs[$reg_key])) {
-            Loader::loadClass('CategoryRegistryUtil');
             $modTableCategoryIDs[$reg_key] = CategoryRegistryUtil::getRegisteredModuleCategoriesIds($modname, $tablename);
         }
         $reg_ids = $modTableCategoryIDs[$reg_key];
@@ -1078,10 +1072,6 @@ class ObjectUtil
      */
     public static function retrieveObjectCategoriesObjects($obj, $tablename, $idcolumn = 'id', $assocKey = '', $enablePermissionCheck = true)
     {
-        if (!Loader::loadClass('CategoryUtil')) {
-            return pn_exit(__f('Error! Unable to load class [%s]', 'CategoryUtil'));
-        }
-
         $catlist = self::retrieveObjectCategoriesList($obj, $tablename, $idcolumn);
         if (!$catlist) {
             return array();
@@ -1260,10 +1250,6 @@ class ObjectUtil
     {
         if (!$obj) {
             return pn_exit(__f('Invalid object in %s', 'postProcessExpandedObjectCategories'));
-        }
-
-        if (!Loader::loadClass('CategoryUtil')) {
-            return pn_exit(__f('Error! Unable to load class [%s]', 'CategoryUtil'));
         }
 
         $rootCats = CategoryUtil::getCategoriesByRegistry($rootCatsIDs);

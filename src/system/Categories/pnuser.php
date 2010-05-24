@@ -10,7 +10,6 @@
  * @package Zikula_Core
  */
 
-Loader::loadClass ('HtmlUtil');
 Loader::loadClassFromModule ('Categories', 'category');
 
 /**
@@ -60,8 +59,6 @@ function Categories_user_edit ()
     if ($docroot == 1) {
         return LogUtil::registerError(__("Error! The root directory cannot be modified in 'user' mode"), null, $url);
     }
-
-    Loader::loadClass('CategoryUtil');
 
     if (is_int((int)$docroot) && $docroot > 0) {
         $rootCat = CategoryUtil::getCategoryByID($docroot);
@@ -153,7 +150,6 @@ function Categories_user_edituser ()
         return LogUtil::registerError(__('Error! Could not determine the user root node.'));
     }
 
-    Loader::loadClass ('CategoryUtil');
     $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
     if (!$userRoot) {
         return LogUtil::registerError(__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));

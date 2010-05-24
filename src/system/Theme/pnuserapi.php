@@ -100,7 +100,6 @@ function theme_userapi_gettemplates($args)
     }
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
-    Loader::loadClass('FileUtil');
 
     if (!isset($args['type']) || $args['type'] == 'modules') {
         $args['type'] = 'modules';

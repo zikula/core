@@ -285,7 +285,6 @@ class RandomUtil
         $inc = self::getInteger(0, $diff);
 
         $tRand = $t1 + $inc;
-        Loader::loadClass('DateUtil');
         return DateUtil::getDatetime($tRand, $format);
     }
 
