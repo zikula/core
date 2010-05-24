@@ -73,20 +73,10 @@ class ZLoader
             }
         }
 
-        // class matches FilterUtil_*
-        if (strpos($class, 'FilterUtil_')) {
-            $array = explode('_', $class);
-            $prefix = (isset($map[$array[0]]) ? $map[$array[0]] : '');
-            $path = ZLOADER_PATH . "util/$prefix" . str_replace('_', '/', $class) . '.php';
-            if (file_exists($path)) {
-                return include $path;
-            }
-        }
-
         // generic PEAR style namespace to path, i.e Foo_Bar -> Foo/Bar.php
         if (strpos($class, '_')) {
             $array = explode('_', $class);
-            $prefix = (isset($map[$array[0]]) ? $map[$array[0]] : '');
+            $prefix = (isset($map[$array[0]]) ? $map[$array[0]] . '/' : '');
             $path = ZLOADER_PATH . $prefix . str_replace('_', '/', $class) . '.php';
             if (file_exists($path)) {
                 return include $path;
