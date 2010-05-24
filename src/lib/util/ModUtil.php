@@ -324,13 +324,13 @@ class ModUtil
      */
     public static function getInfo($modid = 0)
     {
-// a $modid of 0 is associated with the core ( pn_blocks.mid, ... ).
+        // a $modid of 0 is associated with the core ( pn_blocks.mid, ... ).
         if (!is_numeric($modid)) {
             return false;
         }
 
         if ($modid == 0) {
-// 0 = the core itself, create a basic dummy module
+            // 0 = the core itself, create a basic dummy module
             $modinfo['name'] = 'zikula';
             $modinfo['id'] = 0;
             $modinfo['displayname'] = 'Zikula Core v' . System::VERSION_NUM;
@@ -463,32 +463,32 @@ class ModUtil
      */
     public static function dbInfoLoad($modname, $directory = '', $force = false)
     {
-// define input, all numbers and booleans to strings
+        // define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
-// default return value
+        // default return value
         $data = false;
 
-// validate
+        // validate
         if (!System::varValidate($modname, 'mod')) {
             return $data;
         }
 
         static $loaded = array();
-// Check to ensure we aren't doing this twice
+        // Check to ensure we aren't doing this twice
         if (isset($loaded[$modname]) && !$force) {
             $result = true;
             return $result;
         }
 
-// Get the directory if we don't already have it
+        // Get the directory if we don't already have it
         if (empty($directory)) {
-// get the module info
+        // get the module info
             $modinfo = self::getInfo(self::getIdFromName($modname));
             $directory = $modinfo['directory'];
         }
 
-// Load the database definition if required
+        // Load the database definition if required
         $files = array();
         $files[] = "config/functions/$directory/tables.php";
         $files[] = "system/$directory/tables.php";
@@ -505,7 +505,7 @@ class ModUtil
         }
         $loaded[$modname] = true;
 
-// V4B RNG: return data so we know which tables were loaded by this module
+        // V4B RNG: return data so we know which tables were loaded by this module
         return $data;
     }
 
@@ -552,77 +552,84 @@ class ModUtil
      */
     public static function loadGeneric($modname, $type = 'user', $force = false, $api = false)
     {
-// define input, all numbers and booleans to strings
+        // define input, all numbers and booleans to strings
         $osapi = ($api ? 'api' : '');
         $modname = isset($modname) ? ((string)$modname) : '';
         $modtype = strtolower("$modname{$type}{$osapi}");
 
         static $loaded = array();
         if (!empty($loaded[$modtype])) {
-// Already loaded from somewhere else
+            // Already loaded from somewhere else
             return true;
         }
 
-// check the modules state
+        // check the modules state
         if (!$force && !self::available($modname) && $modname != 'Modules') {
             return false;
         }
 
-// get the module info
+        // get the module info
         $modinfo = self::getInfo(self::getIdFromName($modname));
-// check for bad System::varValidate($modname)
+        // check for bad System::varValidate($modname)
         if (!$modinfo) {
             return false;
         }
 
-// create variables for the OS preped version of the directory
+
+        // create variables for the OS preped version of the directory
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
         $ostype  = DataUtil::formatForOS($type);
         $cosfile = "config/functions/$osdirectory/pn{$ostype}{$osapi}.php";
         $mosfile = "$modpath/$osdirectory/pn{$ostype}{$osapi}.php";
         $mosdir  = "$modpath/$osdirectory/pn{$ostype}{$osapi}";
-        $oopcontroller = "$modpath/$osdirectory/{$modname}_{$ostype}{$osapi}.php";
+        $oopcontroller = "$modpath/$osdirectory/{$ostype}{$osapi}.php";
 
-        if (file_exists($oopcontroller)) {
-// Load the file from modules
-            Loader::includeOnce($oopcontroller);
+        // OOP modules will load automatically
+        if (class_exists("{$modname}_{$ostype}{$osapi}")) {
+            return true;
+        }
+
+        if (file_exists($oopcontroller) && !class_exists("{$modname}_{$ostype}{$osapi}")) {
+            ZLoader::addAutoloader($modname, realpath("$modpath"));
+            if (!class_exists("{$modname}_{$ostype}{$osapi}")) {
+                return false;
+            }
+            // Load optional bootstrap
+            $bootstrap = "$modpath/$osdirectory/bootstrap.php";
+            if (file_exists($bootstrap)) {
+                include_once $bootstrap;
+            }
         } elseif (file_exists($cosfile)) {
-// Load the file from config
-            Loader::includeOnce($cosfile);
+            // Load the file from config
+            include_once $cosfile;
         } elseif (file_exists($mosfile)) {
-// Load the file from modules
-            Loader::includeOnce($mosfile);
+            // Load the file from modules
+            include_once $mosfile;
         } elseif (is_dir($mosdir)) {
         } else {
-// File does not exist
+        // File does not exist
             return false;
         }
         $loaded[$modtype] = 1;
-
-// Load optional bootstrap
-        $bootstrap = "$modpath/$osdirectory/bootstrap.php";
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
 
         if ($modinfo['i18n']) {
             ZLanguage::bindModuleDomain($modname);
         }
 
-// Load database info
+        // Load database info
         self::dbInfoLoad($modname, $modinfo['directory']);
 
-// add stylesheet to the page vars, this makes the modulestylesheet plugin obsolete,
-// but only for non-api loads as we would pollute the stylesheets
-// not during installation as the Theme engine may not be available yet and not for system themes
-// TO-DO: figure out how to determine if a userapi belongs to a hook module and load the
-//        corresponding css, perhaps with a new entry in modules table?
+        // add stylesheet to the page vars, this makes the modulestylesheet plugin obsolete,
+        // but only for non-api loads as we would pollute the stylesheets
+        // not during installation as the Theme engine may not be available yet and not for system themes
+        // TO-DO: figure out how to determine if a userapi belongs to a hook module and load the
+        //        corresponding css, perhaps with a new entry in modules table?
         if (!System::isInstalling()) {
             if ($api == false) {
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
                 if ($type == 'admin') {
-// load special admin.css for administrator backend
+                    // load special admin.css for administrator backend
                     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
                 }
             }
@@ -716,7 +723,6 @@ class ModUtil
             $r = new ReflectionClass($className);
             if (array_key_exists($className, $controllers)) {
                 $controller = $controllers[$className];
-                ZLoader::addAutoloader($modname, realpath(ZLOADER_PATH . "/$path"));
             } else {
                 $controller = $r->newInstance();
                 if (strrpos($className, 'api') && !$controller instanceof AbstractApi) {

@@ -13,7 +13,6 @@
 
 class SysInfo_adminapi extends AbstractApi
 {
-
     /**
      * get available admin panel links
      *

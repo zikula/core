@@ -11,7 +11,9 @@ abstract class AbstractBase
     {
         $this->_setup();
         $this->options = $options;
+
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
+            ZLanguage::bindModuleDomain($modname);
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
 

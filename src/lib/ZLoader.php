@@ -28,14 +28,14 @@ class ZLoader
 {
     private static $map;
 
-    private static $autoloader;
+    private static $autoloaders;
 
     public static function register()
     {
         self::$map = self::map();
         spl_autoload_register(array('ZLoader', 'autoload'));
-        self::$autoloader = new KernelClassLoader();
-        self::$autoloader->spl_autoload_register();
+        self::$autoloaders = new KernelClassLoader();
+        self::$autoloaders->spl_autoload_register();
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         include ZLOADER_PATH. 'legacy/Loader.php';
         include ZLOADER_PATH. 'legacy/Api.php';
@@ -50,11 +50,11 @@ class ZLoader
 
     public static function addAutoloader($namespace, $path = '', $separator = '_')
     {
-        if (self::$autoloader->hasAutoloader($namespace)) {
+        if (self::$autoloaders->hasAutoloader($namespace)) {
             return;
         }
         
-        self::$autoloader->register($namespace, realpath($path), $separator);
+        self::$autoloaders->register($namespace, $path, $separator);
     }
 
     /**
