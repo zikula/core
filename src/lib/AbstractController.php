@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2009 Zikula Foundation.
+ * Copyright 2010 Zikula Foundation.
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
