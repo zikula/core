@@ -509,7 +509,7 @@ class Form_Render extends Renderer
         $lim = count($this->Validators);
         for ($i = 0; $i < $lim; ++$i) {
             $this->Validators[$i]->validate($this);
-            $this->_IsValid = $this->_pnFormIsValid && $this->Validators[$i]->isValid;
+            $this->_IsValid = $this->_IsValid && $this->Validators[$i]->isValid;
         }
 
         $this->ValidationChecked = true;
