@@ -416,7 +416,7 @@ function modules_adminapi_remove($args)
         if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
             $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
             if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
-                if (!Loader::includeOnce($file)) {
+                if (!include_once($file)) {
                     LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
                 }
             }
@@ -894,7 +894,7 @@ function modules_adminapi_initialise($args)
     // load module maintainence functions
     $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
     if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
-        if (!Loader::includeOnce($file)) {
+        if (!include_once($file)) {
             LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
         }
     }
@@ -969,7 +969,7 @@ function modules_adminapi_upgrade($args)
         // load module maintainence functions
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!Loader::includeOnce($file)) {
+            if (!include_once($file)) {
                 LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
             }
         }

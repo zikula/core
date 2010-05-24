@@ -182,7 +182,7 @@ class ZWorkflow
         }
 
         // load file and test if function exists
-        Loader::includeOnce($path);
+        include_once $path;
         $function = "{$this->module}_operation_{$operationName}";
         if (!function_exists($function)) {
             return pn_exit(__f('Operation function [%s] is not defined', $function));

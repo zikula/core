@@ -1032,10 +1032,10 @@ function theme_admin_upgrade($args)
 
     // load the xanthia 2.0 init script
     ModUtil::loadApi('Theme', 'upgrade');
-    Loader::requireOnce("themes/$themeinfo[directory]/xaninit.php");
+    require_once themes/$themeinfo[directory]/xaninit.php";
     $currentlang = ZLanguage::getLanguageCodeLegacy();
     if (file_exists($file = "themes/$themeinfo[directory]/lang/$currentlang/xaninit.php")) {
-        Loader::requireOnce($file);
+        require_once $file;
     }
     if (function_exists('xanthia_skins_install')) {
         xanthia_skins_install(array('id' => $themeinfo['name']));

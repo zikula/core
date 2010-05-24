@@ -421,7 +421,7 @@ class WorkflowUtil
         }
 
         // load file and test if function exists
-        Loader::includeOnce($path);
+        include_once $path;
         if (!function_exists($function)) {
             return pn_exit(__f("Permission check function [%s] not defined.", $function));
         }

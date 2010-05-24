@@ -53,11 +53,7 @@ function Mailer_userapi_sendmessage($args)
     }
 
     // include php mailer class file
-    if (file_exists($file = "system/Mailer/vendor/class.phpmailer.php")) {
-        Loader::requireOnce($file);
-    } else {
-        return false;
-    }
+    require_once "system/Mailer/vendor/class.phpmailer.php";
 
     // create new instance of mailer class
     $mail = new PHPMailer();

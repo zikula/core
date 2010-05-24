@@ -433,9 +433,9 @@ class SessionUtil
                 // session initialization failed so display templated error
                 header('HTTP/1.1 503 Service Unavailable');
                 if (file_exists('config/templates/sessionfailed.htm')) {
-                    Loader::requireOnce('config/templates/sessionfailed.htm');
+                    require_once 'config/templates/sessionfailed.htm';
                 } else {
-                    Loader::requireOnce('lib/templates/sessionfailed.htm');
+                    require_once 'lib/templates/sessionfailed.htm';
                 }
                 // terminate execution
                 System::shutdown();

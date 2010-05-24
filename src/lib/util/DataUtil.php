@@ -101,7 +101,7 @@ class DataUtil
             $iv = mcrypt_create_iv(mcrypt_get_iv_size($alg, MCRYPT_MODE_ECB), crc32($key));
             $res = mcrypt_decrypt($alg, $key, $val, MCRYPT_MODE_CBC);
         } else {
-            Loader::requireOnce('lib/vendor/encryption/rc4crypt.class.php');
+            require_once 'lib/vendor/encryption/rc4crypt.class.php';
             $res = rc4crypt::decrypt($key, $val);
         }
 
@@ -187,7 +187,7 @@ class DataUtil
             $iv = mcrypt_create_iv(mcrypt_get_iv_size($alg, MCRYPT_MODE_ECB), crc32($key));
             $res = mcrypt_encrypt($alg, $key, $value, MCRYPT_MODE_CBC);
         } else {
-            Loader::requireOnce('lib/vendor/encryption/rc4crypt.class.php');
+            require_once 'lib/vendor/encryption/rc4crypt.class.php';
             $res = rc4crypt::encrypt($key, $value);
         }
 
