@@ -152,10 +152,7 @@ class HtmlUtil
         if (isset($cache[$cacheKey])) {
             $dataArray = $cache[$cacheKey];
         } else {
-            $classname = Loader::loadClassFromModule($modname, $objectType, true);
-            if (!$classname) {
-                return __f('Unable to load class [%1$s] for module [%2$s].', array($objectType, $modname));
-            }
+            $classname = "{$modname}_DBObject_".StringUtil::camelize($objectType).'Array';
 
             $class = new $classname();
             $dataArray = $class->get($where, $sort, -1, -1, '', false/*, $distinct*/);
