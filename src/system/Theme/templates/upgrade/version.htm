@@ -2,7 +2,7 @@
 /**
  * Zikula Application Framework
  *
- * @copyright (c) 2006, {$author}
+ * @copyright (c) {dateformat format='%Y'}, {$author}
  * @link {$contact}
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
@@ -10,19 +10,19 @@
  * @subpackage {$name}
  */
 
-$themeversion['name'] = __('Name');
-$themeversion['displayname'] = __('Display name');
-$themeversion['description'] = __('Display description');
-$themeversion['regid'] = {$regid|default:0};
+$themeversion['name'] = '{$name}';
+$themeversion['displayname'] = __('{$displayname}');
+$themeversion['description'] = __('{$description}');
+$themeversion['regid'] = '{$regid|default:0}';
 $themeversion['version'] = '{$version|default:'1.0'}';
-$themeversion['official'] = {$official|default:0};
-$themeversion['author'] = '{$author}';
-$themeversion['contact'] = '{$contact}';
+$themeversion['official'] = '{$official|default:0}';
+$themeversion['author'] = '{$author|default:''}';
+$themeversion['contact'] = '{$contact|default:''}';
 $themeversion['admin'] = {$admin|default:0};
 $themeversion['user'] = {$user|default:0};
 $themeversion['system'] = {$system|default:0};
-$themeversion['credits'] = '{$credits}';
-$themeversion['help'] = '{$help}';
-$themeversion['changelog'] = '{$changelog}';
-$themeversion['license'] = '{$license}';
+$themeversion['credits'] = '{$credits|default:''}';
+$themeversion['help'] = '{$help|default:''}';
+$themeversion['changelog'] = '{$changelog|default:''}';
+$themeversion['license'] = '{$license|default:''}';
 $themeversion['xhtml'] = {$xhtml|default:1};

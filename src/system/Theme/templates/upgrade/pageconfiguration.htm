@@ -1,6 +1,6 @@
 page = {$pagetemplate}
-{if $defaultpalette neq ''}
-palette = {$defaultpalette}
+{if isset($defaultpalette) and $defaultpalette neq ''}
+    palette = {$defaultpalette}
 {/if}
 
 [blocktypes]

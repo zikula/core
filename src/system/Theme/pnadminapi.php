@@ -499,11 +499,24 @@ function theme_adminapi_create($args)
     }
 
     // create the directory structure
-    $dirs = array('', '/docs', '/images', '/lang', '/lang/eng', '/style', '/templates',
-                  '/templates/blocks', '/templates/config', '/templates/modules');
+    $dirs = array(
+        '',
+        '/docs',
+        '/images',
+        '/plugins',
+        '/locale',
+        '/locale/en',
+        '/locale/en/LC_MESSAGES',
+        '/style',
+        '/templates',
+        '/templates/blocks',
+        '/templates/config',
+        '/templates/modules'
+    );
+
     foreach ($dirs as $dir) {
         if (!mkdir("themes/{$themeinfo['name']}/{$dir}") || !touch("themes/{$themeinfo['name']}/{$dir}/index.html")) {
-             return LogUtil::registerError(__('Error! Could not create the new item.'));
+            return LogUtil::registerError(__('Error! Could not create the new item.'));
         }
     }
 
@@ -517,7 +530,7 @@ function theme_adminapi_create($args)
     $pnRender->assign($themeinfo);
 
     $versionfile = $pnRender->fetch('upgrade/version.htm');
-    $versionlangfile = $pnRender->fetch('upgrade/version_lang.htm');
+    $potfile = $pnRender->fetch('upgrade/pot.htm');
     $pnRender->assign('palettes', array('palette1' =>  array()));
     $palettesfile = $pnRender->fetch('upgrade/themepalettes.htm');
     $variablesfile = $pnRender->fetch('upgrade/themevariables.htm');
@@ -545,15 +558,17 @@ function theme_adminapi_create($args)
     $cssfile = $pnRender->fetch("upgrade/$pagetemplate.css");
     $blockfile = $pnRender->fetch('upgrade/block.htm');
 
-    $files = array("themes/$themeinfo[name]/version.php" => 'versionfile',
-                   "themes/$themeinfo[name]/lang/eng/version.php" => 'versionlangfile',
-                   "themes/$themeinfo[name]/templates/config/themepalettes.ini" => 'palettesfile',
-                   "themes/$themeinfo[name]/templates/config/themevariables.ini" => 'variablesfile',
-                   "themes/$themeinfo[name]/templates/config/pageconfigurations.ini" => 'pageconfigurationsfile',
-                   "themes/$themeinfo[name]/templates/config/master.ini" => 'pageconfigurationfile',
-                   "themes/$themeinfo[name]/templates/master.htm" => 'pagetemplatefile',
-                   "themes/$themeinfo[name]/templates/blocks/block.htm" => 'blockfile',
-                   "themes/$themeinfo[name]/style/style.css" => 'cssfile');
+    $files = array(
+        "themes/$themeinfo[name]/version.php" => 'versionfile',
+        "themes/$themeinfo[name]/locale/theme_".$themeinfo['name'].".pot" => 'potfile',
+        "themes/$themeinfo[name]/templates/config/themepalettes.ini" => 'palettesfile',
+        "themes/$themeinfo[name]/templates/config/themevariables.ini" => 'variablesfile',
+        "themes/$themeinfo[name]/templates/config/pageconfigurations.ini" => 'pageconfigurationsfile',
+        "themes/$themeinfo[name]/templates/config/master.ini" => 'pageconfigurationfile',
+        "themes/$themeinfo[name]/templates/master.htm" => 'pagetemplatefile',
+        "themes/$themeinfo[name]/templates/blocks/block.htm" => 'blockfile',
+        "themes/$themeinfo[name]/style/style.css" => 'cssfile'
+    );
 
     // write the files
     foreach ($files as $filename => $filevar) {
