@@ -206,7 +206,7 @@ class SecurityCenter_userapi extends AbstractApi
                 } catch (Exception $e) {
                     // sth went wrong - maybe the filter rules weren't found
                     // @todo: handle together with own exceptions (Guite)
-                    pn_exit($this->__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
+                    z_exit($this->__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
                 }
             }
         }
@@ -873,7 +873,7 @@ class SecurityCenter_userapi extends AbstractApi
                 }
             }
 
-            // use pn_exit here?
+            // use z_exit here?
             return LogUtil::registerError($this->__('Malicious request code / a hacking attempt was detected. Thus your request has been blocked.'));
         }
 

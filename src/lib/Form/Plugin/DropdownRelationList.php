@@ -107,7 +107,7 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 
         // load the object class corresponding to $this->objecttype
         if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
-            pn_exit(__f('Unable to load class [%s] for module [%s]', array(
+            z_exit(__f('Unable to load class [%s] for module [%s]', array(
                 DataUtil::formatForDisplay($this->objecttype, $this->module))));
         }
         // instantiate the object-array

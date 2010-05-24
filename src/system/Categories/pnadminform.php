@@ -246,7 +246,7 @@ function Categories_adminform_editregistry ()
     $id = FormUtil::getPassedValue('id', 0);
 
     if (!($class = Loader::loadClassFromModule ('Categories', 'category_registry', false))) {
-        return pn_exit(__f('Unable to load class [%s] for module [%s]', array('category_registry', 'Categories')));
+        return z_exit(__f('Unable to load class [%s] for module [%s]', array('category_registry', 'Categories')));
     }
 
     if (FormUtil::getPassedValue('mode', null, 'GET') == 'delete') {

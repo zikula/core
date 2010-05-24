@@ -54,7 +54,7 @@ class ZWorkflowParser
         // parse XML
         if (!xml_parse($this->parser, $xmldata, true)) {
             xml_parser_free($this->parser);
-            pn_exit(__f('Unable to parse XML workflow (line %1$s, %2$s): %3$s',
+            z_exit(__f('Unable to parse XML workflow (line %1$s, %2$s): %3$s',
                         array(xml_get_current_line_number($this->parser),
                               xml_get_current_column_number($this->parser),
                               xml_error_string($this->parser))));

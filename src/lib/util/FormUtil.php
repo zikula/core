@@ -36,7 +36,7 @@ class FormUtil
     public static function getPassedValue($key, $default = null, $source = null)
     {
         if (!$key) {
-            return pn_exit(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValueSafe')));
+            return z_exit(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValueSafe')));
         }
 
         $source = strtoupper($source);
@@ -77,7 +77,7 @@ class FormUtil
                 if ($source) {
                     static $valid = array('R', 'REQUEST', 'G', 'GET', 'P', 'POST', 'C', 'COOKIE', 'F', 'FILES', 'GP', 'GETPOST');
                     if (!in_array($source, $valid)) {
-                        pn_exit(__f('Invalid input source [%s] received.', DataUtil::formatForDisplay($source)));
+                        z_exit(__f('Invalid input source [%s] received.', DataUtil::formatForDisplay($source)));
                         return $default;
                     }
                 }
@@ -113,7 +113,7 @@ class FormUtil
     public static function cleanArray(&$array)
     {
         if (!is_array($array)) {
-            return pn_exit(__f('Non-array passed to %s.', 'FormUtil::cleanArray'));
+            return z_exit(__f('Non-array passed to %s.', 'FormUtil::cleanArray'));
         }
 
         $ak = array_keys($array);
@@ -175,11 +175,11 @@ class FormUtil
     public static function isRequiredField($validationInfo, $field)
     {
         if (!$validationInfo) {
-            return pn_exit(__f('Empty %1$s passed to %2$s.', array('validationInfo', 'FormUtil::isRequiredField')));
+            return z_exit(__f('Empty %1$s passed to %2$s.', array('validationInfo', 'FormUtil::isRequiredField')));
         }
 
         if (!$field) {
-            return pn_exit(__f('Empty %1$s passed to %2$s.', array('fieldname', 'FormUtil::isRequiredField')));
+            return z_exit(__f('Empty %1$s passed to %2$s.', array('fieldname', 'FormUtil::isRequiredField')));
         }
 
         $rec = isset($validationInfo[$field]) ? $validationInfo[$field] : null;
@@ -300,11 +300,11 @@ class FormUtil
     public static function hasValidationErrors($objectType, $field = null)
     {
         if (!$objectType) {
-            return pn_exit(__f('Empty %1$s passed to %2$s.', array('objectType', 'FormUtil::hasValidationErrors')));
+            return z_exit(__f('Empty %1$s passed to %2$s.', array('objectType', 'FormUtil::hasValidationErrors')));
         }
 
         if (!$field) {
-            return pn_exit(__f('Empty %1$s passed to %2$s.', array('field', 'FormUtil::hasValidationErrors')));
+            return z_exit(__f('Empty %1$s passed to %2$s.', array('field', 'FormUtil::hasValidationErrors')));
         }
 
         $ve = self::getValidationErrors();

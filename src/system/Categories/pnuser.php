@@ -185,7 +185,7 @@ function Categories_user_edituser ()
                      'status'           => 'A');
 
         if (!($class = Loader::loadClassFromModule ('Categories', 'category'))) {
-            return pn_exit (__f('Error! Unable to load class [%s]', 'category'));
+            return z_exit (__f('Error! Unable to load class [%s]', 'category'));
         }
 
         $obj = new $class ();

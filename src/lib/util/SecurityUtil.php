@@ -45,7 +45,7 @@ class SecurityUtil
         static $groupperms = array();
 
         if (!is_numeric($level)) {
-            return pn_exit(__f('Invalid security level [%1$s] received in %2$s', array($level, 'SecurityUtil::checkPermission')));
+            return z_exit(__f('Invalid security level [%1$s] received in %2$s', array($level, 'SecurityUtil::checkPermission')));
         }
 
         if (!$user) {

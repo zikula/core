@@ -114,19 +114,19 @@ class ZWorkflow
     {
         // check if state exists
         if (!isset($this->actionMap[$stateID])) {
-            return pn_exit("STATE: $stateID not found");
+            return z_exit("STATE: $stateID not found");
         }
 
         // check the action exists for given state
         if (!isset($this->actionMap[$stateID][$actionID])) {
-            return pn_exit(__f('Action: %1$s not available in this State: %2$s', array($actionID, $stateID)));
+            return z_exit(__f('Action: %1$s not available in this State: %2$s', array($actionID, $stateID)));
         }
 
         $action = $this->actionMap[$stateID][$actionID];
 
         // permission check
         if (!WorkflowUtil::permissionCheck($this->module, $this->id, $obj, $action['permission'])) {
-            return pn_exit(__f('No permission to execute action: %s [permission]', $action));
+            return z_exit(__f('No permission to execute action: %s [permission]', $action));
         }
 
         // commit workflow to object
@@ -178,14 +178,14 @@ class ZWorkflow
         // test operation file exists
         $path = WorkflowUtil::_findpath("operations/function.{$operationName}.php", $this->module);
         if (!$path) {
-            return pn_exit(__f('Operation file [%s] does not exist', $operationName));
+            return z_exit(__f('Operation file [%s] does not exist', $operationName));
         }
 
         // load file and test if function exists
         include_once $path;
         $function = "{$this->module}_operation_{$operationName}";
         if (!function_exists($function)) {
-            return pn_exit(__f('Operation function [%s] is not defined', $function));
+            return z_exit(__f('Operation function [%s] is not defined', $function));
         }
 
         // execute operation and return result

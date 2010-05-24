@@ -152,7 +152,7 @@ class FilterUtil_Common
                 $a = $join['object_field_name'][$k];
                 if (isset($c[$a])) {
                     //Oh, that won't work! Two fields with the same alias!
-                    return pn_exit('Invalid join information!');
+                    return z_exit('Invalid join information!');
                 }
                 //so, let's add the field to the column array
                 $c[$a] = $alias . '.' . $jc[$f];

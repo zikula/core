@@ -170,10 +170,10 @@ function Categories_admin_editregistry ()
     $ot       = FormUtil::getPassedValue ('ot', 'category_registry');
 
     if (!($class = Loader::loadClassFromModule ('Categories', $ot))) {
-        return pn_exit ("Unable to load class [$ot] ...");
+        return z_exit ("Unable to load class [$ot] ...");
     }
     if (!($arrayClass = Loader::loadArrayClassFromModule ('Categories', $ot))) {
-        return pn_exit ("Unable to load class [$ot] ...");
+        return z_exit ("Unable to load class [$ot] ...");
     }
 
     $obj  = new $class ();

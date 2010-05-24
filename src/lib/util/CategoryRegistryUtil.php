@@ -257,7 +257,7 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategoriesIds($modname, $tablename)
     {
         if (!$modname || !$tablename) {
-            return pn_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
+            return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {

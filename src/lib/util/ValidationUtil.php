@@ -36,15 +36,15 @@ class ValidationUtil
     public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg)
     {
         if (!is_array($object)) {
-            return pn_exit(__f('%1s: %2s is not an array.', array('ValidationUtil::validateField', 'object')));
+            return z_exit(__f('%1s: %2s is not an array.', array('ValidationUtil::validateField', 'object')));
         }
 
         if (!$field) {
-            return pn_exit(__f('%1s: empty %2s supplied.', array('ValidationUtil::validateField', 'field')));
+            return z_exit(__f('%1s: empty %2s supplied.', array('ValidationUtil::validateField', 'field')));
         }
 
         if (!$err_msg) {
-            return pn_exit(__f('%1s: empty %2s supplied.', array('ValidationUtil::validateField', 'error message')));
+            return z_exit(__f('%1s: empty %2s supplied.', array('ValidationUtil::validateField', 'error message')));
         }
 
         $rc = true;
@@ -94,11 +94,11 @@ class ValidationUtil
                                break;
                 case 'noop'  :
                 case ''      : if (!$required) {
-                                  return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+                                  return z_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
                                }
                                $rc = true;
                                break;
-                default      : return pn_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
+                default      : return z_exit(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', array('ValidationUtil::validateField', $cmp_op, $field)));
             }
         }
 
@@ -201,7 +201,7 @@ class ValidationUtil
         {
             $size = count($va);
             if ($size < 5) {
-                return pn_exit(__f('%1$s: invalid validationArray supplied: expected 5 fields but found %2$s.', array('ValidationUtil::validateObjectPlain', $size)));
+                return z_exit(__f('%1$s: invalid validationArray supplied: expected 5 fields but found %2$s.', array('ValidationUtil::validateObjectPlain', $size)));
             }
 
             $vc['objectType'] = $objectType;

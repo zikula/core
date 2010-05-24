@@ -31,7 +31,7 @@ class FileUtil
     public static function getFilebase($filename, $keepDot = false)
     {
         if (!$filename) {
-            return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::getFilename', 'filename')));
+            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::getFilename', 'filename')));
         }
 
         $base = basename($filename);
@@ -57,7 +57,7 @@ class FileUtil
     public static function getBasename($filename)
     {
         if (!$filename) {
-            return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::getBasename', 'filename')));
+            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::getBasename', 'filename')));
         }
 
         return basename($filename);
@@ -74,7 +74,7 @@ class FileUtil
     public static function getExtension($filename, $keepDot = false)
     {
         if (!$filename) {
-            return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::getExtension', 'filename')));
+            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::getExtension', 'filename')));
         }
 
         $p = strrpos($filename, '.');
@@ -100,7 +100,7 @@ class FileUtil
     public static function stripExtension($filename, $keepDot = false)
     {
         if (!$filename) {
-            return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::stripExtension', 'filename')));
+            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::stripExtension', 'filename')));
         }
 
         $p = strrpos($filename, '.');
@@ -171,7 +171,7 @@ class FileUtil
         $type  = strtolower ($type);
 
         if ($type && $type != 'd' && $type != 'f') {
-            pn_exit(__f('Error! Invalid type of object [%s] received.', $type));
+            z_exit(__f('Error! Invalid type of object [%s] received.', $type));
         }
 
         if (!is_dir($rootPath) || !is_readable($rootPath)) {
@@ -301,7 +301,7 @@ class FileUtil
     public static function readFile($filename, $absolute = false)
     {
         if (!strlen($filename)) {
-            return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::readFile', 'filename')));
+            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::readFile', 'filename')));
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
@@ -385,11 +385,11 @@ class FileUtil
     public static function writeFile($filename, $data = '', $absolute = false)
     {
         if (!$filename) {
-            return pn_exit(__f('%1$s: %2$s is empty', array('FileUtil::writeFile', 'filename')));
+            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::writeFile', 'filename')));
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
-	return file_put_contents($fName, $data);
+    return file_put_contents($fName, $data);
     }
 
     /**
@@ -419,11 +419,11 @@ class FileUtil
     public static function uploadFile($key, $destination, $newName = '', $absolute = false)
     {
         if (!$key) {
-            return pn_exit(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'key')));
+            return z_exit(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'key')));
         }
 
         if (!$destination) {
-            return pn_exit(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'destination')));
+            return z_exit(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'destination')));
         }
 
         $msg = '';

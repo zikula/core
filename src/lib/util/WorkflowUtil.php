@@ -51,14 +51,14 @@ class WorkflowUtil
         // Get module info
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
         if (!$modinfo) {
-            return pn_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
+            return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }
 
         $path = self::_findpath("$schema.xml", $module);
         if ($path) {
             $workflowXML = file_get_contents($path);
         } else {
-            return pn_exit(__f('%1$s: Unable to find the workflow file [%2$s].', array('WorkflowUtil', $path)));
+            return z_exit(__f('%1$s: Unable to find the workflow file [%2$s].', array('WorkflowUtil', $path)));
         }
 
         // instanciate Workflow Parser
@@ -95,7 +95,7 @@ class WorkflowUtil
         // Get module info
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
         if (!$modinfo) {
-            return pn_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
+            return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }
 
         $moduledir = $modinfo['directory'];
@@ -106,12 +106,12 @@ class WorkflowUtil
         } else if ($modinfo['type'] == ModUtil::TYPE_MODULE) { // non system module
             $modulepath = "modules/$moduledir";
         } else {
-            return pn_exit(__f('%s: Unsupported module type.', 'WorkflowUtil'));
+            return z_exit(__f('%s: Unsupported module type.', 'WorkflowUtil'));
         }
 
         // ensure module is active
         if (!$modinfo['state'] == 3) {
-            return pn_exit(__f('%1$s: The module [%2$s] is not active.', array('WorkflowUtil', $module)));
+            return z_exit(__f('%1$s: The module [%2$s] is not active.', array('WorkflowUtil', $module)));
         }
 
         $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
@@ -145,15 +145,15 @@ class WorkflowUtil
     public static function executeAction($schema, &$obj, $actionID, $table = null, $module = null, $idcolumn = 'id')
     {
         if (!isset($obj)) {
-            return pn_exit(__f('%s: $obj not set.', 'WorkflowUtil'));
+            return z_exit(__f('%s: $obj not set.', 'WorkflowUtil'));
         }
 
         if (!is_array($obj)) {
-            return pn_exit(__f('%s: $obj must be an array.', 'WorkflowUtil'));
+            return z_exit(__f('%s: $obj must be an array.', 'WorkflowUtil'));
         }
 
         if (empty($schema)) {
-            return pn_exit(__f('%s: $schema needs to be named', 'WorkflowUtil'));
+            return z_exit(__f('%s: $schema needs to be named', 'WorkflowUtil'));
         }
 
         if (is_null($module)) {
@@ -290,11 +290,11 @@ class WorkflowUtil
     public static function getActionsForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
         if (!is_array($obj)) {
-            return pn_exit(__f('%1$s: %2$s is not an array.', array('WorkflowUtil::getActionsForObject', 'object')));
+            return z_exit(__f('%1$s: %2$s is not an array.', array('WorkflowUtil::getActionsForObject', 'object')));
         }
 
         if (!isset($dbTable)) {
-            return pn_exit(__f('%1$s: %2$s is specified.', array('WorkflowUtil::getActionsForObject', 'dbTable')));
+            return z_exit(__f('%1$s: %2$s is specified.', array('WorkflowUtil::getActionsForObject', 'dbTable')));
         }
 
         if (empty($module)) {
@@ -326,11 +326,11 @@ class WorkflowUtil
         }
 
         if (!isset($obj) || !is_array($obj)) {
-            return pn_exit(__f('%1$s: %2$s is not an array.', array('WorkflowUtil::getWorkflowForObject', 'object')));
+            return z_exit(__f('%1$s: %2$s is not an array.', array('WorkflowUtil::getWorkflowForObject', 'object')));
         }
 
         if (!isset($dbTable)) {
-            return pn_exit(__f('%1$s: %2$s is specified.', array('WorkflowUtil::getWorkflowForObject', 'dbTable')));
+            return z_exit(__f('%1$s: %2$s is specified.', array('WorkflowUtil::getWorkflowForObject', 'dbTable')));
         }
 
         // get workflow data from DB
@@ -417,13 +417,13 @@ class WorkflowUtil
         // test operation file exists
         $path = self::_findpath("function.{$schema}_permissioncheck.php", $module);
         if (!$path) {
-            return pn_exit(__f("Permission check file [%s] does not exist.", "function.{$schema}_permissioncheck.php"));
+            return z_exit(__f("Permission check file [%s] does not exist.", "function.{$schema}_permissioncheck.php"));
         }
 
         // load file and test if function exists
         include_once $path;
         if (!function_exists($function)) {
-            return pn_exit(__f("Permission check function [%s] not defined.", $function));
+            return z_exit(__f("Permission check function [%s] not defined.", $function));
         }
 
         // function must be loaded so now we can execute the function

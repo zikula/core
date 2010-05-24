@@ -822,7 +822,7 @@ class Form_Render extends Renderer
 
             $varCount = count($vars);
             if ($varCount != count($pluginState)) {
-                return pn_exit("Cannot restore pnForm plugin of type '$pluginType' since stored and actual number of member vars differ");
+                return z_exit("Cannot restore pnForm plugin of type '$pluginType' since stored and actual number of member vars differ");
             }
 
             for ($i = 0; $i < $varCount; ++$i) {
