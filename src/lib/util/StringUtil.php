@@ -184,4 +184,21 @@ class StringUtil
 
         return mb_substr($completeReplacedText, $startPos, $endPos - $startPos);
     }
+
+    public static function camelize($string, $separator = '_')
+    {
+        if (strpos($string, $separator) !== false) {
+            $c = $string;
+            $result = '';
+            while (($p = strpos($c, '_')) !== false) {
+                $result .= ucwords(substr($c, 0, $p));
+                $c = substr($c, $p + 1);
+            }
+            $result .= ucwords($c);
+        } else {
+            $result = ucwords($string);
+        }
+
+        return $result;
+    }
 }
