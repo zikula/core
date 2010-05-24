@@ -737,10 +737,10 @@ function z_prefilter_legacy($source, &$smarty)
     $source = str_replace('<!--%91', '<@!@-@-@%@9@1', str_replace('%93-->', '%@9@3@-@-@>', $source));
     // rewrite the old delimiters to new
     $source = str_replace('<!--[', '{', str_replace(']-->', '}', $source));
-    // restore browser hacks
-    $source = str_replace('<@!@-@-@%@9@1', '<!--[', str_replace('%@9@3@-@-@>', ']-->', $source));
     // handle delimiters inside <script> blocks.
-    return preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
+    $source = preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
+    // restore browser hacks
+   return str_replace('<@!@-@-@%@9@1', '<!--[', str_replace('%@9@3@-@-@>', ']-->', $source));
 }
 
 function z_prefilter_legacy_callback($m)
