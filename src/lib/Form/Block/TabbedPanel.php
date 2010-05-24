@@ -57,10 +57,10 @@ class Form_Block_TabbedPanel extends Form_Plugin
     function renderBegin(&$render)
     {
         // Locate parent panelset and register with it
-        $panelSet = &$this->parentPlugin;
+        $panelSet = $this->parentPlugin;
 
-        while ($panelSet != null && strcasecmp(get_class($panelSet), 'pnformtabbedpanelset') != 0) {
-            $panelSet = &$panelSet->parentPlugin;
+        while ($panelSet != null && !($panelSet instanceof Form_Block_TabbedPanelSet)) {
+            $panelSet = $panelSet->parentPlugin;
         }
 
         if ($panelSet != null) {

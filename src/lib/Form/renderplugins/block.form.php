@@ -21,6 +21,7 @@ function smarty_block_form($params, $content, &$render)
 {
   if ($content)
   {
+    PageUtil::addVar('stylesheet', 'system/Theme/style/form/style.css');
     $encodingHtml = (array_key_exists('enctype', $params) ? " enctype=\"$params[enctype]\"" : '');
     $action = htmlspecialchars(pnGetCurrentURI());
     $classString = '';
