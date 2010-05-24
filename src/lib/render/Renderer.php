@@ -731,11 +731,16 @@ function z_prefilter_gettext_params_callback($m)
     return '{' . $m[1] . '}';
 }
 
-function z_prefilter_legacy($tpl_source, &$smarty)
+function z_prefilter_legacy($source, &$smarty)
 {
-    $tpl_source = str_replace('<!--[', '{', $tpl_source);
-    $tpl_source = str_replace(']-->', '}', $tpl_source);
-    return preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $tpl_source);
+    // save browserhacks like <!--[if lte IE 7]>
+    $source = str_replace('<!--%91', '<@!@-@-@%@9@1', str_replace('%93-->', '%@9@3@-@-@>', $source));
+    // rewrite the old delimiters to new
+    $source = str_replace('<!--[', '{', str_replace(']-->', '}', $source));
+    // restore browser hacks
+    $source = str_replace('<@!@-@-@%@9@1', '<!--[', str_replace('%@9@3@-@-@>', ']-->', $source));
+    // handle delimiters inside <script> blocks.
+    return preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
 }
 
 function z_prefilter_legacy_callback($m)
