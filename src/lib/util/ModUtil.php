@@ -17,6 +17,8 @@ class ModUtil
     const STATE_NOTALLOWED = 6;
     const STATE_INVALID = -1;
 
+    const CONFIG_MODULE = '/PNConfig';
+
     // Types
     const TYPE_MODULE = 2;
     const TYPE_SYSTEM = 3;
@@ -86,7 +88,7 @@ class ModUtil
         // get all module vars for this module
         $modvars = self::getVar($modname);
 
-        return array_key_exists($name, $modvars);
+        return array_key_exists($name, (array)$modvars);
     }
 
     /**

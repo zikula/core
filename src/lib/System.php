@@ -78,7 +78,7 @@ class System
         if (isset($GLOBALS['ZConfig']['System'][$name])) {
             $mod_var = $GLOBALS['ZConfig']['System'][$name];
         } else {
-            $mod_var = ModUtil::getVar(CONFIG_MODULE, $name);
+            $mod_var = ModUtil::getVar(ModUtil::CONFIG_MODULE, $name);
             // cache
             $GLOBALS['ZConfig']['System'][$name] = $mod_var;
         }
@@ -111,7 +111,7 @@ class System
         }
 
         // set the variable
-        if (ModUtil::setVar(CONFIG_MODULE, $name, $value)) {
+        if (ModUtil::setVar(ModUtil::CONFIG_MODULE, $name, $value)) {
             // Update my vars
             $GLOBALS['ZConfig']['System'][$name] = $value;
             return true;
@@ -138,7 +138,7 @@ class System
         }
 
         // set the variable
-        self::delVar(CONFIG_MODULE, $name);
+        self::delVar(ModUtil::CONFIG_MODULE, $name);
 
         // Update my vars
         $val = false;
