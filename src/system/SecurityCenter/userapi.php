@@ -470,7 +470,7 @@ class SecurityCenter_userapi extends AbstractApi
      *
      * @return HTMLPurifier The HTMLPurifier instance, returned by reference.
      */
-    function &securitycenter_userapi_getpurifier($args = null)
+    function &getpurifier($args = null)
     {
         $force = (isset($args['force']) ? $args['force'] : false);
 
