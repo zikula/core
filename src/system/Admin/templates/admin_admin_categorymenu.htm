@@ -4,12 +4,12 @@
 {pnajaxheader modname=Admin filename=admin_admin_ajax.js}
 
 <script type="text/javascript">
-/* <![CDATA[ */
+    /* <![CDATA[ */
     var lblclickToEdit = "{{gt text='Right-click to edit module category'}}";
     var lblEdit = "{{gt text='Edit category'}}";
     var lblDelete = "{{gt text='Delete category'}}";
     var lblSaving = "{{gt text='Saving'}}";
-/* ]]> */
+    /* ]]> */
 </script>
 
 <h1>{gt text="Site admin panel" domain="zikula"} ({version})</h1>
@@ -21,19 +21,32 @@
 
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="z-clearfix">
-        {section name=menuoption loop=$menuoptions}
-        <li>
-            {if $currentcat eq $menuoptions[menuoption].cid}
-            <a id="C{$menuoptions[menuoption].cid}" class="active" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
-            {else}
-            <a id="C{$menuoptions[menuoption].cid}" href="{$menuoptions[menuoption].url|varprepfordisplay}" title="{$menuoptions[menuoption].description|varprepfordisplay}">{$menuoptions[menuoption].title|varprepfordisplay}</a>
-            {/if}
+        {foreach from=$menuoptions name=menuoption item=menuoption}
+        <li {if $currentcat eq $menuoption.cid} class="active"{/if}>
+            <a id="C{$menuoption.cid}" href="{$menuoption.url|varprepfordisplay}" title="{$menuoption.description|varprepfordisplay}">{$menuoption.title|varprepfordisplay}</a>
+            <span id="catcontext{$smarty.foreach.menuoption.index}" class="z-admindrop">&nbsp;</span>
+
+            <script type="text/javascript">
+            /* <![CDATA[ */
+                var context_catcontext{{$smarty.foreach.menuoption.index}} = new Control.ContextMenu('catcontext{{$smarty.foreach.menuoption.index}}',{
+                    leftClick: true,
+                    animation: false
+                });
+
+                {{foreach from=$menuoption.items item=item}}
+                    context_catcontext{{$smarty.foreach.menuoption.index}}.addItem({
+                        label: '{{$item.menutext|varprepfordisplay}}',
+                        callback: function(){window.location = document.location.pnbaseURL + '{{$item.menutexturl}}';}
+                    });
+                {{/foreach}}
+
+            /* ]]> */
+            </script>
+
         </li>
-        {/section}
+        {/foreach}
         <li id="addcat">
-            <a href="{modurl modname=Admin type=admin func=new}" title="new" onclick='return newCategory(this);'>
-                {img modname=core src=edit_add.gif set=icons/extrasmall __alt="New" __title="New" height="10px"}
-            </a>
+            <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}" onclick='return newCategory(this);'>&nbsp;</a>
         </li>
     </ul>
     {adminonlinemanual}

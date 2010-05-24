@@ -1,96 +1,126 @@
 .admintabs-container {
-    margin-top: 1em;
+    margin-top:1em;
 }
 
-ul#admintabs,
-ul.admintabs {
-    background: url("../images/tab_bottom.gif") repeat-x scroll center bottom transparent;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100%;
+ul#admintabs {
+    background:url("../images/tab_bottom.gif") repeat-x scroll center bottom transparent;
+    margin:0 !important;
+    padding:0 !important;
+    width:100%;
 }
 
-ul#admintabs li,ul.admintabs li {
-    float: left;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+ul#admintabs li {
+    background-color:#F3F3F3;
+    border:1px solid #CCCCCC;
+    float:left;
+    list-style-type:none;
+    margin:0 5px 0 0;
+    padding:0;
+    z-index:1000;
 }
 
-ul#admintabs li>a,
-ul.admintabs li>a {
-    background-color: #F3F3F3;
-    border: 1px solid #CCCCCC;
-    color: #666666;
-    float: left;
-    font-weight: bold;
-    margin-right: 0.5em;
-    padding: 5px 10px;
-    position: relative;
-    text-decoration: none;
-    z-index: 1000;
+ul#admintabs li > a {
+    border-right:1px solid transparent;
+    color:#666666;
+    float:left;
+    font-weight:bold;
+    padding:5px;
+    position:relative;
+    text-decoration:none;
 }
 
-ul#admintabs li>a.active,
-ul.admintabs li>a.active {
-    border-bottom: 1px solid #fff;
-    background: #fff;
-    color: #000;
-    z-index: 2000;
+ul#admintabs li > a:hover {
+    background:#FFFFFF;
+    border-right:1px solid #ccc;
+    color:#000;
+    text-decoration:none;
 }
 
-ul#admintabs li>a:hover,
-ul.admintabs li>a:hover {
-    background: #fff !important;
-    text-decoration: none;
+ul#admintabs li.active {
+    background:none repeat scroll 0 0 #fff;
+    border-bottom:1px solid #fff;
+    z-index:2000;
 }
 
-ul#admintabs li>a.ajaxhover,
-ul.admintabs li>a.ajaxhover {
+ul#admintabs li.active a:hover {
+    border-right:1px solid transparent;
+}
+
+ul#admintabs li#addcat > a:hover {
+    border-right:1px solid transparent;
+}
+
+ul#admintabs li#addcat #addcatlink {
+    background:url("../../../images/icons/extrasmall/edit_add.gif") no-repeat scroll 50% 50% transparent;
+    width:20px;
+}
+
+ul#admintabs li#addcat a#addcatlink:hover {
+    background:url("../../../images/icons/extrasmall/edit_add.gif") no-repeat scroll 50% 50% #FFF;
+}
+
+ul#admintabs li > .z-admindrop {
+    background:url("../images/arrow.png") no-repeat scroll 0 50% transparent;
+    border-left:1px solid transparent;
+    cursor:pointer;
+    float:left;
+    padding:5px;
+    position:relative;
+    width:5px;
+}
+
+ul#admintabs li > .z-admindrop:hover {
+    background:url("../images/arrow_hover.png") no-repeat scroll 0 50% #FFFFFF;
+    border-left:1px solid #CCCCCC;
+}
+
+ul#admintabs li.active > .z-admindrop:hover {
+    background:url("../images/arrow_hover.png") no-repeat scroll 0 50% transparent;
+    border-left:1px solid transparent;
+}
+
+ul#admintabs li a.ajaxhover {
     background: #FFFFB2 !important;
+    border-right:1px solid #ccc;
+    color:#000;
 }
 
-ul#admintabs #ajaxNewCatForm,
-ul.admintabs #ajaxNewCatForm {
-    display: block;
-    background-color: #FFFFB2;
-    border: 1px solid #CCCCCC;
-    float: left;
-    font-weight: bold;
-    padding: 5px 10px;
-    position: relative;
-    text-decoration: none;
-    z-index: 1000;
+ul#admintabs #ajaxNewCatForm {
+    background-color:#FFFFB2;
+    display:block;
+    float:left;
+    font-weight:bold;
+    padding:5px;
+    position:relative;
+    text-decoration:none;
+    z-index:1000;
 }
 
-ul#admintabs #ajaxNewCatForm input.ajaxNewCat,
-ul.admintabs #ajaxNewCatForm input.ajaxNewCat {
-    background-color: #FFF;
-    border: none;
-    color: #333;
-    float: left;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-    max-width: 8em;
+ul#admintabs #ajaxNewCatForm input.ajaxNewCat {
+    background-color:#fff;
+    border:none;
+    color:#333;
+    float:left;
+    font-weight:bold;
+    margin:0;
+    max-width:8em;
+    padding:0;
 }
 
-ul#admintabs #ajaxNewCatForm a.ajaxCatImage,
-ul.admintabs #ajaxNewCatForm a.ajaxCatImage {
-    padding: 0;
-    margin: 0;
-    border: none;
-    text-decoration: none;
-    background-color: transparent;
+ul#admintabs #ajaxNewCatForm a.ajaxCatImage {
+    background-color:transparent;
+    border:medium none;
+    margin:0;
+    padding:0;
+    text-decoration:none;
 }
 
-ul#admintabs #ajaxNewCatForm a.ajaxCatImage img,
-ul.admintabs #ajaxNewCatForm a.ajaxCatImage img {
-    background-color: transparent;
-    border: medium none;
-    margin-left: 3px;
-    padding: 0;
-    text-decoration: none;
+ul#admintabs #ajaxNewCatForm a.ajaxCatImage img {
+    background-color:transparent;
+    border:medium none;
+    margin-left:3px;
+    padding:0;
+    text-decoration:none;
 }
 
 #control_contextmenu {
