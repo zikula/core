@@ -32,9 +32,8 @@
  */
 class SecurityCenter_DBObject_Intrusion extends DBObject
 {
-    function PNIntrusion($init = null, $key = 0, $field = null)
+    function __construct($init = null, $key = 0, $field = null)
     {
-
         $this->_objType       = 'sc_intrusion';
         $this->_objField      = 'id';
         $this->_objPath       = 'intrusion';

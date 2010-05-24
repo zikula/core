@@ -735,14 +735,11 @@ class SecurityCenter_admin extends AbstractController
         $pagesize = (int)ModUtil::getVar('SecurityCenter', 'pagesize', 25);
 
 
-        // load array class
-        if (!($class = Loader::loadArrayClassFromModule('SecurityCenter', $ot, true)))
-            return pn_exit($this->__f('Unable to load class [%s] ...', DataUtil::formatForDisplay($ot)));
-
         // instantiate object, generate where clause and select
-        $objArray = new $class();
-        $where = $objArray->genFilter();
-        $data  = $objArray->get($where, '', $startnum, $pagesize);
+        $class = 'SecurityCenter_DBObject_'.StringUtil::camelize($ot).'Array';
+//        $objArray = new $class();
+//        $where = $objArray->genFilter();
+//        $data  = $objArray->get($where, '', $startnum, $pagesize);
 
         // Create output object
         $pnRender = Renderer::getInstance('SecurityCenter', false);
@@ -752,7 +749,7 @@ class SecurityCenter_admin extends AbstractController
 
         // Assign the values for the smarty plugin to produce a pager.
         $pager = array();
-        $pager['numitems']     = $objArray->getCount($where);
+//        $pager['numitems']     = $objArray->getCount($where);
         $pager['itemsperpage'] = $pagesize;
         $pnRender->assign('startnum', $startnum);
         $pnRender->assign('pager', $pager);
@@ -777,7 +774,7 @@ class SecurityCenter_admin extends AbstractController
         // create a new output object
         $pnRender = Renderer::getInstance('SecurityCenter', false);
 
-        $pnRender->assign('htmltags', _securitycenter_admin_gethtmltags());
+        $pnRender->assign('htmltags', $this->_gethtmltags());
         $pnRender->assign('currenthtmltags', System::getVar('AllowableHTML'));
         $pnRender->assign('htmlentities', System::getVar('htmlentities'));
 
@@ -809,7 +806,7 @@ class SecurityCenter_admin extends AbstractController
 
         // update the allowed html settings
         $allowedhtml = array();
-        $htmltags = _securitycenter_admin_gethtmltags();
+        $htmltags = $this->_gethtmltags();
         foreach ($htmltags as $htmltag) {
             $tagval = (int) FormUtil::getPassedValue('htmlallow' . $htmltag . 'tag', 0, 'POST');
             if (($tagval != 1) && ($tagval != 2)) {
@@ -838,7 +835,7 @@ class SecurityCenter_admin extends AbstractController
      * @access private
      * @return string html output
      */
-    function _securitycenter_admin_gethtmltags()
+    private function _gethtmltags()
     {
         // Possible allowed HTML tags
         return array('!--',

@@ -748,11 +748,6 @@ class SecurityCenter_userapi extends AbstractApi
         if ($usedImpact > $impactThresholdOne) {
             // db logging
 
-            $ot = 'intrusion';
-            if (!($class = Loader::loadClassFromModule('SecurityCenter', $ot))) {
-                return pn_exit($this->__f('Unable to load class [%s] ...', DataUtil::formatForDisplay($ot)));
-            }
-
             // determine IP address of current user
             $_REMOTE_ADDR = pnServerGetVar('REMOTE_ADDR');
             $_HTTP_X_FORWARDED_FOR = pnServerGetVar('HTTP_X_FORWARDED_FOR');
@@ -791,7 +786,7 @@ class SecurityCenter_userapi extends AbstractApi
                 //LogUtil::registerStatus($eventName . ' (' . DataUtil::formatForDisplay($event->getValue()) . "\n<br />\n<br />" . $eventFilters);
 
                 // create new ZIntrusion instance
-                $obj = new $class();
+                $obj = new SecurityCenter_DBObject_Intrusion();
                 // set data
                 $obj->setData($newIntrusionItem);
                 // save object to db

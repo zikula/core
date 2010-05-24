@@ -32,7 +32,7 @@
  */
 class SecurityCenter_DBObject_LogEvent extends DBObject
 {
-    function PNLogEvent($init = null, $key = 0, $field = null)
+    function __construct($init = null, $key = 0, $field = null)
     {
 
         $this->_objType       = 'sc_logevent';

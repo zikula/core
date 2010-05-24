@@ -32,9 +32,9 @@
  */
 class SecurityCenter_DBObject_IntrusionArray extends DBObjectArray
 {
-    function PNIntrusionArray($init = null, $where = '')
+    function __construct($init = null, $where = '')
     {
-        $this->PNObjectArray();
+        parent::__construct();
 
         $this->_objType       = 'sc_intrusion';
         $this->_objField      = 'id';

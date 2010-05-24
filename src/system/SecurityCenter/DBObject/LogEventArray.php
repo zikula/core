@@ -32,9 +32,9 @@
  */
 class SecurityCenter_DBObject_LogEventArray extends DBObjectArray
 {
-    function PNLogEventArray($init = null, $where = '')
+    function __construct($init = null, $where = '')
     {
-        $this->PNObjectArray();
+        parent::__construct();
 
         $this->_objType       = 'sc_logevent';
         $this->_objField      = 'id';
