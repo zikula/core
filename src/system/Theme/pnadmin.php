@@ -1032,7 +1032,7 @@ function theme_admin_upgrade($args)
 
     // load the xanthia 2.0 init script
     ModUtil::loadApi('Theme', 'upgrade');
-    require_once themes/$themeinfo[directory]/xaninit.php";
+    require_once "themes/$themeinfo[directory]/xaninit.php";
     $currentlang = ZLanguage::getLanguageCodeLegacy();
     if (file_exists($file = "themes/$themeinfo[directory]/lang/$currentlang/xaninit.php")) {
         require_once $file;
