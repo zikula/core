@@ -49,7 +49,7 @@ function smarty_function_previewimage($params, &$smarty)
 
     if (!file_exists($filesrc = "themes/{$themeinfo['directory']}/images/preview_{$params['size']}.png")) {
         $filesrc = "system/Theme/images/preview_{$params['size']}.png";
-        if (!file_exits($filesrc)) {
+        if (!file_exists($filesrc)) {
             $filesrc = "system/Theme/pnimages/preview_{$params['size']}.png";
         }
     }
