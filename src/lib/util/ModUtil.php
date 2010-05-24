@@ -744,7 +744,14 @@ class ModUtil
 
             if (is_callable($modfunc)) {
                 EventManagerUtil::notify($preExecuteEvent);
-                $postExecuteEvent->setData(call_user_func($modfunc, $args));
+
+                // Check $modfunc is an object instance (OO) or a function (old)
+                if (is_array($modfunc)) {
+                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                } else {
+                    $postExecuteEvent->setData($modfunc($args));
+                }
+
                 return EventManagerUtil::notify($postExecuteEvent)->getData();
             }
 
@@ -755,7 +762,7 @@ class ModUtil
                     Loader::loadFile($file);
                     if (function_exists($modfunc)) {
                         EventManagerUtil::notify($preExecuteEvent)->getData();
-                        $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                        $postExecuteEvent->setData($modfunc($args));
                         return EventManagerUtil::notify($postExecuteEvent)->getData();
                     }
                 }
@@ -765,7 +772,7 @@ class ModUtil
                 Loader::loadFile($file);
                 if (is_callable($modfunc)) {
                     EventManagerUtil::notify($preExecuteEvent)->getData();
-                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                    $postExecuteEvent->setData($modfunc($args));
                     return EventManagerUtil::notify($postExecuteEvent)->getData();
                 }
             }
@@ -775,7 +782,7 @@ class ModUtil
                 if (is_callable($modfunc)) {
                     return $modfunc($args);
                     EventManagerUtil::notify($preExecuteEvent)->getData();
-                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                    $postExecuteEvent->setData($modfunc($args));
                     return EventManagerUtil::notify($postExecuteEvent)->getData();
                 }
             }
