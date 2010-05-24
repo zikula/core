@@ -4,7 +4,9 @@
  * Onload function adds droppable locations to all the tabs as well as context
  * menus and inplace editors.
  */
-window.onload = function() {
+ 
+
+Event.observe(window, 'load', function() {
     context_menu = Array();
     editors = Array();
     droppables = Array();
@@ -29,7 +31,7 @@ window.onload = function() {
             }
         }
     }
-}
+});
 
 /**
  * Add context menu to element nid.
