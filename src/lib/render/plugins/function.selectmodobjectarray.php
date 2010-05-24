@@ -48,9 +48,13 @@ function smarty_function_selectmodobjectarray($params, &$smarty)
 
     ModUtil::dbInfoLoad($params['module']);
 
-    // load the object class corresponding to $params['objecttype']
-    if (!($class = Loader::loadArrayClassFromModule($params['module'], $params['objecttype'], false, $params['prefix']))) {
-        pn_exit(__f('Error! Cannot load module array class %1$s for module %2$s.', array(DataUtil::formatForDisplay($params['module']), DataUtil::formatForDisplay($params['objecttype']))));
+    $classname = "{$params['module']}_DBObject_".StringUtil::camelize($params['objecttype']).'Array';
+    if (!class_exists($classname) && System::isLegacyMode()) {
+        // BC check for PNObjectArray old style.
+        // load the object class corresponding to $params['objecttype']
+        if (!($class = Loader::loadArrayClassFromModule($params['module'], $params['objecttype'], false, $params['prefix']))) {
+            z_exit(__f('Error! Cannot load module array class %1$s for module %2$s.', array(DataUtil::formatForDisplay($params['module']), DataUtil::formatForDisplay($params['objecttype']))));
+        }
     }
 
     // instantiate the object-array
