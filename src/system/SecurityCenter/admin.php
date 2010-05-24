@@ -737,9 +737,9 @@ class SecurityCenter_admin extends AbstractController
 
         // instantiate object, generate where clause and select
         $class = 'SecurityCenter_DBObject_'.StringUtil::camelize($ot).'Array';
-//        $objArray = new $class();
-//        $where = $objArray->genFilter();
-//        $data  = $objArray->get($where, '', $startnum, $pagesize);
+        $objArray = new $class();
+        $where = $objArray->genFilter();
+        $data  = $objArray->get($where, '', $startnum, $pagesize);
 
         // Create output object
         $pnRender = Renderer::getInstance('SecurityCenter', false);
@@ -749,7 +749,7 @@ class SecurityCenter_admin extends AbstractController
 
         // Assign the values for the smarty plugin to produce a pager.
         $pager = array();
-//        $pager['numitems']     = $objArray->getCount($where);
+        $pager['numitems']     = $objArray->getCount($where);
         $pager['itemsperpage'] = $pagesize;
         $pnRender->assign('startnum', $startnum);
         $pnRender->assign('pager', $pager);
