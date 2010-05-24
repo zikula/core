@@ -127,7 +127,7 @@ class SecurityUtil
 
         // validate useragent
         if (System::getVar('sessionauthkeyua')) {
-            $useragent = sha1(pnServerGetVar('HTTP_USER_AGENT'));
+            $useragent = sha1(System::serverGetVar('HTTP_USER_AGENT'));
             if (SessionUtil::getVar('useragent') != $useragent) {
                 return false;
             }

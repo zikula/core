@@ -21,7 +21,7 @@ function Categories_user_main()
         return LogUtil::registerPermissionError();
     }
 
-    $referer = pnServerGetVar ('HTTP_REFERER');
+    $referer = System::serverGetVar ('HTTP_REFERER');
     if (strpos ($referer, 'module=Categories') === false) {
         SessionUtil::setVar('categories_referer', $referer);
     }
@@ -44,7 +44,7 @@ function Categories_user_edit ()
         return LogUtil::registerPermissionError($url);
     }
 
-    $referer = pnServerGetVar ('HTTP_REFERER');
+    $referer = System::serverGetVar ('HTTP_REFERER');
     if (strpos($referer, 'module=Categories') === false) {
         SessionUtil::setVar('categories_referer', $referer);
     }

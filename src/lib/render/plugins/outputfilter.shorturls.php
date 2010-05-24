@@ -55,7 +55,7 @@ function smarty_outputfilter_shorturls($source, &$smarty)
             '$1"'.$baseurl.'$2/"',
             '<$1 $2=$3'.$baseurl
         );
-    } else if ($type !== 'admin' && !stristr(pnServerGetVar('QUERY_STRING'), 'admin')) {
+    } else if ($type !== 'admin' && !stristr(System::serverGetVar('QUERY_STRING'), 'admin')) {
         // Credits to
         // ColdRolledSteel: for creating this file and the rewrite rules / per aver creato questo file e le regole di riscrittura
         // msandersen: for tweaking this file and the rewrite rules / per aver aggiornato questo file e le regole di riscrittura

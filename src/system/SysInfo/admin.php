@@ -29,9 +29,9 @@ class SysInfo_admin extends AbstractController
         $pnRender->assign('pnversionnum', System::VERSION_NUM);
         $pnRender->assign('pnversionid', System::VERSION_ID);
         $pnRender->assign('pnversionsub', System::VERSION_SUB);
-        $serversig = pnServerGetVar('SERVER_SIGNATURE');
+        $serversig = System::serverGetVar('SERVER_SIGNATURE');
         if (!isset($serversig) || empty($serversig)) {
-            $serversig = pnServerGetVar('SERVER_SOFTWARE');
+            $serversig = System::serverGetVar('SERVER_SOFTWARE');
         }
         $pnRender->assign('serversig', $serversig);
         $pnRender->assign('phpversion', phpversion());

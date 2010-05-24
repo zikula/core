@@ -271,7 +271,7 @@ function users_userapi_checkuser($args)
         }
     }
 
-    $useragent = strtolower(pnServerGetVar('HTTP_USER_AGENT'));
+    $useragent = strtolower(System::serverGetVar('HTTP_USER_AGENT'));
     $illegaluseragents = ModUtil::getVar('Users', 'reg_Illegaluseragents');
     if (!empty($illegaluseragents)) {
         $disallowed_useragents = str_replace(', ', ',', $illegaluseragents);
@@ -578,7 +578,7 @@ function users_userapi_mailpasswd($args)
     $pnRender = Renderer::getInstance('Users', false);
     $pnRender->assign('uname', $user['uname']);
     $pnRender->assign('sitename', $sitename);
-    $pnRender->assign('hostname', pnServerGetVar('REMOTE_ADDR'));
+    $pnRender->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
 
     $areyou = substr($user['pass'], 0, 5);
 

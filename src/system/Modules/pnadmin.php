@@ -190,8 +190,8 @@ function modules_admin_view()
     // Get parameters from whatever input we need.
     $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
     $letter = FormUtil::getPassedValue('letter', null, 'GET');
-    $state = FormUtil::getPassedValue('state', (!strstr(pnServerGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('state', null), 'GETPOST');
-    $sort = FormUtil::getPassedValue('sort', (!strstr(pnServerGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sort', null), 'GET');
+    $state = FormUtil::getPassedValue('state', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('state', null), 'GETPOST');
+    $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sort', null), 'GET');
 
     // do some clean up
     SessionUtil::delVar('interactive_init');

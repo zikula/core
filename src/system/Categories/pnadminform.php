@@ -42,7 +42,7 @@ function Categories_adminform_edit ()
     }
 
     if (FormUtil::getPassedValue('category_user_edit_x', null, 'POST')) {
-        $_SESSION['category_referer'] = pnServerGetVar('HTTP_REFERER');
+        $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
         $args['dr'] = $_POST['category']['id'];
         return System::redirect(ModUtil::url('Categories', 'user', 'edit', $args));
     }

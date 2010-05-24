@@ -849,7 +849,7 @@ class ModUtil
         }
         // Hostname
         if (!isset($host)) {
-            $host = pnServerGetVar('HTTP_HOST');
+            $host = System::serverGetVar('HTTP_HOST');
         }
         if (empty($host)) {
             return false;
@@ -860,7 +860,7 @@ class ModUtil
         }
         // HTTPS Support
         if (!isset($https)) {
-            $https = pnServerGetVar('HTTPS');
+            $https = System::serverGetVar('HTTPS');
         }
         // use friendly url setup
         if (!isset($shorturls)) {

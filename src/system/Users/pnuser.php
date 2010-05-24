@@ -89,7 +89,7 @@ function users_user_loginscreen($args)
     // TODO C Appears to be unused If confirmed, it can be removed. ph
     //    $redirecttype = (int)FormUtil::getPassedValue('redirecttype', isset($args['redirecttype']) ? $args['redirecttype'] : 0, 'GET');
     //    if ($redirecttype == 0) {
-    //        $returnurl = pnServerGetVar('HTTP_REFERER');
+    //        $returnurl = System::serverGetVar('HTTP_REFERER');
     //    } else {
     //        $returnurl = pnGetCurrentURI();
     //    }
@@ -150,7 +150,7 @@ function users_user_register()
 
     $template = 'users_user_register.htm';
     // check if we've agreed to the age limit
-    if (ModUtil::getVar('Users', 'minage') != 0 && !stristr(pnServerGetVar('HTTP_REFERER'), 'register')) {
+    if (ModUtil::getVar('Users', 'minage') != 0 && !stristr(System::serverGetVar('HTTP_REFERER'), 'register')) {
         $template = 'users_user_checkage.htm';
     }
 
@@ -686,7 +686,7 @@ function users_print_redirectpage($message, $url)
     // check the url
     if (substr($url, 0, 1) == '/') {
         // Root-relative links
-        $url = 'http'.(pnServerGetVar('HTTPS')=='on' ? 's' : '').'://'.pnServerGetVar('HTTP_HOST').$url;
+        $url = 'http'.(System::serverGetVar('HTTPS')=='on' ? 's' : '').'://'.System::serverGetVar('HTTP_HOST').$url;
     } elseif (!preg_match('!^(?:http|https):\/\/!', $url)) {
         // Removing leading slashes from redirect url
         $url = preg_replace('!^/*!', '', $url);
@@ -720,7 +720,7 @@ function users_user_siteofflogin()
 {
     // do not process if the site is enabled
     if (!System::getVar('siteoff', false)) {
-        $path = dirname(pnServerGetVar('PHP_SELF'));
+        $path = dirname(System::serverGetVar('PHP_SELF'));
         $path = str_replace('\\', '/', $path);
         return System::redirect($path . '/' . System::getVar('entrypoint', 'index.php'));
     }
@@ -735,7 +735,7 @@ function users_user_siteofflogin()
         UserUtil::logout();
     }
 
-    $path = dirname(pnServerGetVar('PHP_SELF'));
+    $path = dirname(System::serverGetVar('PHP_SELF'));
     $path = str_replace('\\', '/', $path);
     return System::redirect($path . '/' . System::getVar('entrypoint', 'index.php'));
 }

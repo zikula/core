@@ -35,7 +35,7 @@ class SessionUtil
             $path .= '/';
         }
 
-        $host = pnServerGetVar('HTTP_HOST');
+        $host = System::serverGetVar('HTTP_HOST');
 
         if (($pos = strpos($host, ':')) !== false) {
             $host = substr($host, 0, $pos);
@@ -123,8 +123,8 @@ class SessionUtil
 
         // create IP finger print
         $current_ipaddr = '';
-        $_REMOTE_ADDR = pnServerGetVar('REMOTE_ADDR');
-        $_HTTP_X_FORWARDED_FOR = pnServerGetVar('HTTP_X_FORWARDED_FOR');
+        $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
+        $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
 
         if (System::getVar('sessionipcheck')) {
             /* -- feature for after 0.8 release - drak
@@ -231,7 +231,7 @@ class SessionUtil
         // Initialize the array of random values for modules authentication
         self::setVar('rand', array());
         // write hash of useragent into the session for later validation
-        self::setVar('useragent', sha1(pnServerGetVar('HTTP_USER_AGENT')));
+        self::setVar('useragent', sha1(System::serverGetVar('HTTP_USER_AGENT')));
 
         // init status & error message arrays
         self::setVar('_ZErrorMsg', array());

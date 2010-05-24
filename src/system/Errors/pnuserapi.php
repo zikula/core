@@ -25,10 +25,10 @@ function errors_userapi_send_email()
     $sitename = System::getVar('sitename');
     $errortime = date("m/j/Y at g:i a");
 
-    $doc = pnServerGetVar('REDIRECT_URL');
-    $server = pnServerGetVar('HTTP_HOST');
+    $doc = System::serverGetVar('REDIRECT_URL');
+    $server = System::serverGetVar('HTTP_HOST');
     $doc = "http://$server$doc";
-    $headers = "ATTN: Fatal Error at $doc (".pnServerGetVar('REDIRECT_STATUS').")\n";
+    $headers = "ATTN: Fatal Error at $doc (".System::serverGetVar('REDIRECT_STATUS').")\n";
     $headers .= "From: $sitename Error Tools $adminmail\n";
     $headers .= "X-Sender: <$notify_from>\n";
     $headers .= "X-Mailer: PHP Error Tools by WebMedic\n";
@@ -37,13 +37,13 @@ function errors_userapi_send_email()
     $headers .= "Get-Script-At: <http://www.zikula.org>\n";
     $body = "Webmaster, the following item was not found on your website:\n\n";
     $body .= " at ".$errortime;
-    $body .= "WEBSITE\n-- ".pnServerGetVar('SERVER_NAME').':'.pnServerGetVar('SERVER_PORT')."\n\n";
-    $body .= "REASON\n-- ".pnServerGetVar('$REDIRECT_ERRORSOR_NOTES')."\n\n";
+    $body .= "WEBSITE\n-- ".System::serverGetVar('SERVER_NAME').':'.System::serverGetVar('SERVER_PORT')."\n\n";
+    $body .= "REASON\n-- ".System::serverGetVar('$REDIRECT_ERRORSOR_NOTES')."\n\n";
     $body .= "PROBLEM URL\n-- $doc\n\n";
-    $body .= "REFERRER\n-- ".pnServerGetVar('HTTP_REFERER')."\n\n";
-    $body .= "REQUEST\n-- Host: ".pnServerGetVar('HTTP_HOST')."\n-- Query String: ".pnServerGetVar('REDIRECT_QUERY_STRING')."\n";
-    $body .= "-- Method: ".pnServerGetVar('$REQUEST_METHOD')."\n\n";
-    $body .= "USER\n-- Host: ".pnServerGetVar('REMOTE_HOST')."\n-- IP: ".pnServerGetVar('REMOTE_ADDR')."\n-- User: ".pnServerGetVar('REMOTE_USER')."\n-- Agent: ".pnServerGetVar('HTTP_USER_AGENT')."\n-- Cookies: ".pnServerGetVar('HTTP_COOKIE')."\n\n";
+    $body .= "REFERRER\n-- ".System::serverGetVar('HTTP_REFERER')."\n\n";
+    $body .= "REQUEST\n-- Host: ".System::serverGetVar('HTTP_HOST')."\n-- Query String: ".System::serverGetVar('REDIRECT_QUERY_STRING')."\n";
+    $body .= "-- Method: ".System::serverGetVar('$REQUEST_METHOD')."\n\n";
+    $body .= "USER\n-- Host: ".System::serverGetVar('REMOTE_HOST')."\n-- IP: ".System::serverGetVar('REMOTE_ADDR')."\n-- User: ".System::serverGetVar('REMOTE_USER')."\n-- Agent: ".System::serverGetVar('HTTP_USER_AGENT')."\n-- Cookies: ".System::serverGetVar('HTTP_COOKIE')."\n\n";
     $body .= "Envolution\n-- version: ".System::VERSION_NUM;
 
     // Send the mail message.

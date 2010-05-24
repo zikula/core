@@ -22,7 +22,7 @@ function categories_accountapi_getall($args)
 
     // Create an array of links to return
     if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT) && ModUtil::getVar('Categories', 'allowusercatedit')) {
-        $referer = pnServerGetVar('HTTP_REFERER');
+        $referer = System::serverGetVar('HTTP_REFERER');
         if (strpos($referer, 'module=Categories') === false) {
             SessionUtil::setVar('categories_referer', $referer);
         }

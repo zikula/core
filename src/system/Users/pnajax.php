@@ -191,7 +191,7 @@ function Users_ajax_checkuser()
         }
     }
 
-    $useragent = strtolower(pnServerGetVar('HTTP_USER_AGENT'));
+    $useragent = strtolower(System::serverGetVar('HTTP_USER_AGENT'));
     $illegaluseragents = $modvars['reg_Illegaluseragents'];
     if (!empty($illegaluseragents)) {
         $disallowed_useragents = str_replace(', ', ',', $illegaluseragents);

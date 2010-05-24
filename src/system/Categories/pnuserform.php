@@ -22,7 +22,7 @@ function Categories_userform_delete ()
 
     $cid = (int)FormUtil::getPassedValue ('cid', 0, 'GETPOST');
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'GETPOST');
-    $url = pnServerGetVar('HTTP_REFERER');
+    $url = System::serverGetVar('HTTP_REFERER');
 
     if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
@@ -64,7 +64,7 @@ function Categories_userform_edit ()
     }
 
     $dr   = (int)FormUtil::getPassedValue ('dr', 0, 'POST');
-    $ref  = pnServerGetVar('HTTP_REFERER');
+    $ref  = System::serverGetVar('HTTP_REFERER');
 
     $returnfunc = strpos ($ref, "useredit") !== false ? 'useredit' :  'edit';
     $url = pnModURL ('Categories', 'user', $returnfunc, array ('dr' => $dr));
@@ -133,7 +133,7 @@ function Categories_userform_moveField ()
     $cid = (int)FormUtil::getPassedValue ('cid', 0, 'GET');
     $dir = FormUtil::getPassedValue ('direction', null, 'GET');
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'GET');
-    $url = pnServerGetVar('HTTP_REFERER');
+    $url = System::serverGetVar('HTTP_REFERER');
 
     if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
@@ -163,7 +163,7 @@ function Categories_userform_moveField ()
     $data   = array('id' => $cid);
     $val    = ObjectUtil::moveField ($data, 'categories_category', $dir, 'sort_value');
 
-    $url = pnServerGetVar('HTTP_REFERER');
+    $url = System::serverGetVar('HTTP_REFERER');
     return System::redirect($url);
 }
 
@@ -177,7 +177,7 @@ function Categories_userform_new ()
     }
 
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'POST');
-    $url = pnServerGetVar('HTTP_REFERER');
+    $url = System::serverGetVar('HTTP_REFERER');
 
     if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
@@ -215,7 +215,7 @@ function Categories_userform_resequence ()
     }
 
     $dr  = (int)FormUtil::getPassedValue ('dr', 0, 'GET');
-    $url = pnServerGetVar('HTTP_REFERER');
+    $url = System::serverGetVar('HTTP_REFERER');
 
     if (!$dr) {
         return LogUtil::registerError(__('Error! The document root is invalid.'), null, $url);
@@ -235,6 +235,6 @@ function Categories_userform_resequence ()
         $obj->update ();
     }
 
-    return System::redirect(pnServerGetVar('HTTP_REFERER'));
+    return System::redirect(System::serverGetVar('HTTP_REFERER'));
 }
 

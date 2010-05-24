@@ -28,7 +28,7 @@ function errors_user_main($args)
     $pnRender = Renderer::getInstance('Errors', false);
 
     // perform any error specific tasks
-    $protocol = pnServerGetVar('SERVER_PROTOCOL');
+    $protocol = System::serverGetVar('SERVER_PROTOCOL');
     switch ($type) {
         case 301:
             header("{$protocol} 301 Moved Permanently");

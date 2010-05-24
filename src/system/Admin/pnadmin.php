@@ -672,7 +672,7 @@ function _Admin_admin_securityanalyzer()
     $tempDir = $GLOBALS['ZConfig']['System']['temp'];
     if ($tempDir) {
         // check if we have an absolute path which is possibly not within the document root
-        $docRoot = pnServerGetVar('DOCUMENT_ROOT');
+        $docRoot = System::serverGetVar('DOCUMENT_ROOT');
         if (StringUtil::left($tempDir, 1) == '/' && (strpos($tempDir, $docRoot) === false)) {
             // temp dir is outside the webroot, no .htaccess file needed
             $temp_htaccess = true;
@@ -759,7 +759,7 @@ function _Admin_admin_developernotices()
 
     if ($data['devmode'] == true) {
         $data['cssjscombine']                = $modvars['cssjscombine'];
-    
+
         if ($modvars['render_compile_check']) {
             $data['render']['compile_check'] = array('state' => $modvars['render_compile_check'],
                                                      'title' => __('Compile check'));

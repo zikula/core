@@ -25,7 +25,7 @@
  *   - name:     The name of the module variable to obtain
  *
  * Example
- *   <!--[pnservergetvar name='PHP_SELF']-->
+ *   <!--[servergetvar name='PHP_SELF']-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -40,11 +40,11 @@ function smarty_function_servergetvar($params, &$smarty)
     $name    = isset($params['name'])    ? $params['name']    : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnservergetvar', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('System::serverGetVar', 'name')));
         return false;
     }
 
-    $result = pnServerGetVar($name, $default);
+    $result = System::serverGetVar($name, $default);
 
     if ($assign) {
         $smarty->assign($assign, $result);

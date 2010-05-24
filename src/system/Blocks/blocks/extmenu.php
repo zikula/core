@@ -342,7 +342,7 @@ function Blocks_extmenublock_modify($blockinfo)
     $redirect = '';
     if ($addurl == 1) {
         // set a marker for redirection later on
-        $newurl = pnServerGetVar('HTTP_REFERER');
+        $newurl = System::serverGetVar('HTTP_REFERER');
         $redirect = urlencode($newurl);
         $newurl = str_replace(System::getBaseUrl(), '', $newurl);
         if (empty($newurl)) {
@@ -358,7 +358,7 @@ function Blocks_extmenublock_modify($blockinfo)
                                                       'active' => 1);
         }
     } elseif (isset($fromblock)) {
-        $redirect = urlencode(pnServerGetVar('HTTP_REFERER'));
+        $redirect = urlencode(System::serverGetVar('HTTP_REFERER'));
     }
 
     // add new languages to the blocktitles and link arrays

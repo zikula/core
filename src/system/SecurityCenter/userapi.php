@@ -269,10 +269,10 @@ class SecurityCenter_userapi extends AbstractApi
         // browser_name_regex might break serialization and is not usefull anyway
         unset($browser['browser_name_regex']);
         // add at least some information for enviroments without browscap.ini
-        $browser['HTTP_USER_AGENT']=pnServerGetVar('HTTP_USER_AGENT');
-        $browser['HTTP_CLIENT_IP']=pnServerGetVar('HTTP_CLIENT_IP');
-        $browser['REMOTE_ADDR']=pnServerGetVar('REMOTE_ADDR');
-        $browser['GetHostByName']=GetHostByName(pnServerGetVar( 'REMOTE_ADDR' ));
+        $browser['HTTP_USER_AGENT']=System::serverGetVar('HTTP_USER_AGENT');
+        $browser['HTTP_CLIENT_IP']=System::serverGetVar('HTTP_CLIENT_IP');
+        $browser['REMOTE_ADDR']=System::serverGetVar('REMOTE_ADDR');
+        $browser['GetHostByName']=GetHostByName(System::serverGetVar( 'REMOTE_ADDR' ));
         $browserinfo = serialize($browser);
 
         $requestarray = serialize($_REQUEST);
@@ -351,9 +351,9 @@ class SecurityCenter_userapi extends AbstractApi
             $summarycontent = preg_replace('/%userrealname%/i', '-', $summarycontent);
         }
 
-        $summarycontent = preg_replace('/%httpclientip%/i', pnServerGetVar('HTTP_CLIENT_IP'), $summarycontent);
-        $summarycontent = preg_replace('/%remoteaddr%/i', pnServerGetVar('REMOTE_ADDR'), $summarycontent);
-        $summarycontent = preg_replace('/%gethostbyremoteaddr%/i', GetHostByName(pnServerGetVar( 'REMOTE_ADDR' )), $summarycontent);
+        $summarycontent = preg_replace('/%httpclientip%/i', System::serverGetVar('HTTP_CLIENT_IP'), $summarycontent);
+        $summarycontent = preg_replace('/%remoteaddr%/i', System::serverGetVar('REMOTE_ADDR'), $summarycontent);
+        $summarycontent = preg_replace('/%gethostbyremoteaddr%/i', GetHostByName(System::serverGetVar( 'REMOTE_ADDR' )), $summarycontent);
 
         $bodytext = $summarycontent;
 
@@ -749,8 +749,8 @@ class SecurityCenter_userapi extends AbstractApi
             // db logging
 
             // determine IP address of current user
-            $_REMOTE_ADDR = pnServerGetVar('REMOTE_ADDR');
-            $_HTTP_X_FORWARDED_FOR = pnServerGetVar('HTTP_X_FORWARDED_FOR');
+            $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
+            $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
             $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
             $currentPage = pnGetCurrentURI();

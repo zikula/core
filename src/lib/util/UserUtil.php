@@ -506,7 +506,7 @@ class UserUtil
      */
     public static function loginHttp()
     {
-        $uname = pnServerGetVar('REMOTE_USER');
+        $uname = System::serverGetVar('REMOTE_USER');
         $hSec  = System::getVar('session_http_login_high_security', true);
         $rc    = self::login($uname, null, false, false);
         if ($rc && $hSec) {
@@ -882,7 +882,7 @@ class UserUtil
         // Page-specific theme
         $pagetheme = FormUtil::getPassedValue('theme', null, 'GETPOST');
         $type = FormUtil::getPassedValue('type', null, 'GETPOST');
-        $qstring = pnServerGetVar('QUERY_STRING');
+        $qstring = System::serverGetVar('QUERY_STRING');
         if (!empty($pagetheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
             if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin' || stristr($qstring, 'admin.php')))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
