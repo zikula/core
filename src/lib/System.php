@@ -1211,6 +1211,14 @@ class System
     {
         return (bool)defined('_ZINSTALLVER');
     }
+
+    public function isLegacyMode()
+    {
+        if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
+            return false;
+        }
+        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
+    }
 }
 
 /**
