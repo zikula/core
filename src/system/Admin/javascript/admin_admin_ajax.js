@@ -15,10 +15,10 @@ Event.observe(window, 'load', function() {
         var nodes = list.getElementsByTagName("a");
         for ( var i = 0; i < nodes.length; i++) {
             var nid = nodes[i].getAttribute('id');
-            if (nid != null) {
+            if (nid != null && nodes[i].id != 'addcatlink') {
                 addContext(nid);
                 addEditor(nid);
-                if (nodes[i].className == 'active')
+                if (nodes[i].class == 'active')
                     continue;
                 var droppable = Droppables.add(nid, {
                     accept : 'draggable',
@@ -247,7 +247,6 @@ function newCategory(cat) {
     var innerhtml = document.getElementById('ajaxNewCatHidden').innerHTML;
     parent.innerHTML = innerhtml;
     parent.setAttribute("class", "newCat");
-    parent.setAttribute("className", "newCat");
     return false;
 }
 
@@ -286,7 +285,6 @@ function cancelCategory(cat) {
 	parent = document.getElementById('addcat');
     parent.innerHTML = old;
     parent.setAttribute("class", "");
-    parent.setAttribute("className", "");
     return false;
 }
 
@@ -312,7 +310,6 @@ function addCategoryResponse(req) {
         newcat = document.getElementById('addcat');
         newcat.innerHTML = '<a id="C'+json.response+'" href="'+json.url+'">'+catname+'</a>';
         newcat.setAttribute("class","");
-        newcat.setAttribute("className","");
         newcat.setAttribute("id", "");
 
         var newelement = document.createElement('li');
