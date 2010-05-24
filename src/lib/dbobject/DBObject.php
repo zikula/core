@@ -54,8 +54,13 @@ class DBObject
     const GET_FROM_VALIDATION_FAILED = 'VALIDATION'; // get data from failed validation
 
 
+    public function __construct($init = null, $key = null, $field = null)
+    {
+        $this->DBObject($init, $key, $field);
+    }
+
     /**
-     * Constructor, init everything to sane defaults and handle parameters
+     * Old constructor, init everything to sane defaults and handle parameters
      *
      * @param init       Initialization value (see _init() for details)
      * @param key        The DB key to use to retrieve the object (optional) (default=null)
