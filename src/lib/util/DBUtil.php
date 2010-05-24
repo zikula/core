@@ -2061,14 +2061,16 @@ class DBUtil
      * @param integer   $limitNumRows   The upper limit bound (optional) (default=-1)
      * @param string    $assocKey       The key field to use to build the associative index (optional) (default='')
      * @param callback  $filterCallback The filter callback object.
+     * @param array     $categoryFilter The category list to use for filtering
      * @param array     $columnArray    The columns to marshall into the resulting object (optional) (default=null)
      *
      * @return The resulting object array
      */
-    public static function selectObjectArrayFilter($table, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $filterCallback, $columnArray = null)
+    public static function selectObjectArrayFilter($table, $where = '', $orderby = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = '', $filterCallback, $categoryFilter = null, $columnArray = null)
     {
         self::_setFetchedObjectCount(0);
 
+        $where = self::generateCategoryFilterWhere($table, $where, $categoryFilter);
         $where = self::_checkWhereClause($where);
         $orderby = self::_checkOrderByClause($orderby, $table);
 
@@ -2086,7 +2088,7 @@ class DBUtil
                 return $res;
             }
 
-            $objArr = self::marshallObjects($res, $ca, true, $assocKey, true, null);
+            $objArr = self::marshallObjects($res, $ca, true, $assocKey, true, null, $table);
             $fetchedObjectCount = self::_getFetchedObjectCount();
 
             for ($i = 0, $cou = count($objArr); $i < $cou; ++$i) {
