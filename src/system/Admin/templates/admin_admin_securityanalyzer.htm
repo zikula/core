@@ -7,7 +7,7 @@
     <ul>
         {if $notices.security.config_php}
         <li>
-            <a href="{$adminhelpurl|varprepfordisplay}#admin_configphpwarning">{gt text="Configuration file 'config/config.php' is writeable, but should be read-only (probably chmod 440)." domain="zikula"}</a>
+            <a href="{$adminhelpurl|varprepfordisplay}#admin_configphpwarning">{gt text="Configuration file 'config/config.php' is writeable, but should be read-only (please set to chmod 400, or 440 or last resort 444)." domain="zikula"}</a>
         </li>
         {/if}
         {if $notices.security.magic_quotes_gpc}
@@ -30,11 +30,12 @@
             <a href="{$adminhelpurl|varprepfordisplay}#admin_security_center_warning2">{gt text="Security center module is not installed, but preferably should be." domain="zikula"}</a>
         </li>
         {/if}
-        {if !$notices.security.useids && $notices.security.scactive}
+{*        {if !$notices.security.useids && $notices.security.scactive}
         <li>
             <a href="{modurl modname='SecurityCenter' type='admin' func='modifyconfig'}#securitycenter_ids">{gt text="PHPIDS with the Security center is not activated, but preferably should be." domain="zikula"}</a>
         </li>
-        {/if}
+        {/if} *}
+
     </ul>
 </div>
 {/if}
