@@ -1101,7 +1101,7 @@ class ObjectUtil
      *
      * @return The object with the meta data filled in. The object passed in is altered in place
      */
-    public static function expandObjectArrayWithCategories(&$objArray, $tablename, $idcolumn = 'id', $field = 'id', $locale = 'eng')
+    public static function expandObjectArrayWithCategories(&$objArray, $tablename, $idcolumn = 'id', $field = 'id', $locale = 'en')
     {
         if (!ModUtil::dbInfoLoad('Categories')) {
             return false;

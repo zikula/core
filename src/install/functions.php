@@ -450,7 +450,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                 continue;
             }
             ModUtil::dbInfoLoad($coremodule, $coremodule);
-            Loader::requireOnce("system/$coremodule/init.php");
+            require_once "system/$coremodule/init.php";
             $modfunc = "{$coremodule}_init";
             if ($modfunc()) {
                 $results[$coremodule] = true;
@@ -499,7 +499,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                             'category' => $modscat[$category]));
         }
         // create the default blocks.
-        Loader::requireOnce('system/Blocks/init.php');
+        requre_once 'system/Blocks/init.php';
         blocks_defaultdata();
     }
 
