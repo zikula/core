@@ -36,12 +36,7 @@ class SecurityCenter_adminform extends AbstractController
             return LogUtil::registerError($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }
 
-        // load class
-        if (!($class = Loader::loadClassFromModule('SecurityCenter', $ot))) {
-            return pn_exit($this->__f('Unable to load class [%1$s] for module [%2$s]', array($ot, 'SecurityCenter')));
-        }
-
-        // instantiate object, fetch object
+        $class = 'SecurityCenter_DBObject_'.StringUtil::camelize($ot);
         $object = new $class();
         $data = $object->get($id);
 
