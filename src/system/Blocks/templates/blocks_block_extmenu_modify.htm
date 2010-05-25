@@ -43,7 +43,8 @@
 {* return to this block after saving *}
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
 <input type="hidden" id="linksorder" name="linksorder" value="" />
-<ol id="menuitemlist" class="z-itemlist">
+{menu from=$links item='menuitem' key='itemid' name='extmenu' id='menuitemlist' class='z-itemlist' tag='ol' multilang=true}
+    {if $extmenu.first}
     <li class="z-clearfix z-itemheader">
         <span class="z-itemcell z-w05"><strong>&nbsp;</strong></span>
         <span class="z-itemcell z-w20"><strong>{gt text="Image" domain='zikula'}</strong></span>
@@ -52,11 +53,6 @@
         <span class="z-itemcell z-w15"><strong>{gt text="Title" domain='zikula'}&nbsp;<em>({gt text="optional" domain='zikula'})</em></strong></span>
         <span class="z-itemcell z-w10"><strong>{gt text="Active" domain='zikula'}</strong></span>
     </li>
-    {assign var="opened" value=0}
-    {foreach key='itemid' item='menuitem' from=$links}
-    {if $opened > 0 && !isset($menuitem.$userlanguage.parent)}
-        </ul></li>
-        {assign var="opened" value=$opened-1}
     {/if}
     <li id="li_menuitemlist_{$itemid}" class="{cycle values='z-odd,z-even'} z-sortable z-clearfix">
         {foreach key='thislanguage' item='item' from=$menuitem}
@@ -94,19 +90,8 @@
             {/foreach}
         </ul>
         {/if}
-    {if $menuitem.$userlanguage.haschildren}
-        <ul>
-        {assign var="opened" value=$open+1}
-    {else}
     </li>
-    {/if}
-    {if isset($menuitem.$userlanguage.parent) && isset($prevparent) && $menuitem.$userlanguage.parent != $prevparent}
-        </ul></li>
-        {assign var="opened" value=$opened-1}
-    {/if}
-    {assign var="prevparent" value=$menuitem.$userlanguage.parent}
-    {/foreach}
-</ol>
+{/menu}
 
 <script type="text/javascript">
     /* <![CDATA[ */

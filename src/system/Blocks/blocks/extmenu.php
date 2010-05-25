@@ -142,7 +142,7 @@ function Blocks_extmenublock_display($blockinfo)
                                 'url'    => '',
                                 'title'  => '',
                                 'level'  => 0,
-                                'parent' => 0,
+                                'parent' => null,
                                 'image'  => ''
                                 );
             if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
@@ -150,7 +150,7 @@ function Blocks_extmenublock_display($blockinfo)
                                     'url'    => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
                                     'title'  => '',
                                     'level'  => 0,
-                                    'parent' => 0,
+                                    'parent' => null,
                                     'image'  => ''
                                     );
             }
@@ -166,7 +166,7 @@ function Blocks_extmenublock_display($blockinfo)
                                              'url'    => System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
                                              'title'  => $mod['description'],
                                              'level'  => 0,
-                                             'parent' => 0,
+                                             'parent' => null,
                                              'image'  => ''
                                              );
                         break;
@@ -176,7 +176,7 @@ function Blocks_extmenublock_display($blockinfo)
                                              'url'    => ModUtil::url($mod['name'], 'user', 'main'),
                                              'title'  => $mod['description'],
                                              'level'  => 0,
-                                             'parent' => 0,
+                                             'parent' => null,
                                              'image'  => ''
                                              );
                         break;
@@ -353,7 +353,7 @@ function Blocks_extmenublock_modify($blockinfo)
                                                       'url'    => $newurl,
                                                       'title'  => __('--New link--'),
                                                       'level'  => 0,
-                                                      'parent' => 0,
+                                                      'parent' => null,
                                                       'image'  => '',
                                                       'active' => 1);
         }
