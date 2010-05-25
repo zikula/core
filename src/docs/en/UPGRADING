@@ -52,9 +52,6 @@ no problems.
        index.php?module=Settings&type=admin.
 
   ii. Before unpacking any files:
-      - If you use AuthPN, please disable + uninstall this module entirely.  You
-        may need to create a new admin user as you will have to use this login
-        to be able to authenticate during the upgrade process.
       - Delete entire system/ folder.
       - Delete includes/.
       - Delete pnTemp.
@@ -79,11 +76,6 @@ no problems.
   no real interaction needed other than clicking on 'next'. All database changes
   that are necessary will be done automatically. At the end you will be redirected
   to your admin panel.
-
-  2.3.1 Optional AuthPN
-  ---------------------
-  If you were using AuthPN prior to the upgrade, please download AuthPN 1.2 and
-  install to the modules/ folder.
 
   2.4 Clean up and additional configuration
   -----------------------------------------
