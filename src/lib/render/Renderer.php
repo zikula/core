@@ -734,17 +734,11 @@ function z_prefilter_gettext_params_callback($m)
 
 function z_prefilter_legacy($source, &$smarty)
 {
-    // save browserhacks like <!--[if lte IE 7]>
-    $source = str_replace('<!--%91', '<@!@-@-@%@9@1', str_replace('%93-->', '%@9@3@-@-@>', $source));
-
-    // rewrite the old delimiters to new
+    // rewrite the old delimiters to new.
     $source = str_replace('<!--[', '{', str_replace(']-->', '}', $source));
 
-    // handle old plugin names.
-    $source = preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
-
-    // restore browser hacks
-    return str_replace('<@!@-@-@%@9@1', '<!--[', str_replace('%@9@3@-@-@>', ']-->', $source));
+    // handle old plugin names and return.
+    return preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
 }
 
 function z_prefilter_legacy_callback($m)
