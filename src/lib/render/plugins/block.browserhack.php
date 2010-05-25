@@ -21,6 +21,11 @@ function smarty_block_browserhack($params, $content, Renderer &$render)
         }
 
         $condition = $params['condition'];
-        return "<!--[$condition]>$content<![endif]-->";
+        $output = "<!--[$condition]>$content<![endif]-->";
+        if (isset($params['assign'])) {
+            $render->assign($params['assign'], $output);
+        } else {
+            return $output;
+        }
     }
 }
