@@ -1227,6 +1227,14 @@ class System
         }
         return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
     }
+
+    public function isDevelopmentMode()
+    {
+        if (!isset($GLOBALS['ZConfig']['System']['development'])) {
+            return false;
+        }
+        return (bool)$GLOBALS['ZConfig']['System']['development'];
+    }
 }
 
 /**
