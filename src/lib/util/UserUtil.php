@@ -383,6 +383,8 @@ class UserUtil
             return false;
         }
 
+        $uid = $user['uid'];
+
         // check if the account is active
         if (isset($user['activated']) && $user['activated'] == '0') {
             // account inactive, deny login
@@ -433,6 +435,12 @@ class UserUtil
             $event = new Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
             EventManagerUtil::notify($event);
             return false;
+        }
+
+        // Storing Last Login date
+        if (!UserUtil::setVar('lastlogin', date("Y-m-d H:i:s", time()), $uid)) {
+            // show messages but continue
+            LogUtil::registerError(__('Error! Could not save the log-in date.'));
         }
 
         if (!System::isInstalling()) {

@@ -21,40 +21,11 @@ function Users_authapi_login($args)
 
     // password check doesn't apply to HTTP(S) based login
     if ($checkPassword) {
-        $result = ModUtil::apiFunc('Users', 'user', 'checkpassword', array('user' => $user));
+        $result = ModUtil::apiFunc('Users', 'auth', 'checkpassword', array('user' => $user));
         if (!$result) {
             return false;
         }
     }
-
-    // Storing Last Login date
-    if (!UserUtil::setVar('lastlogin', date("Y-m-d H:i:s", time()), $uid)) {
-        // show messages but continue
-        LogUtil::registerError(__('Error! Could not save the log-in date.'));
-    }
-
-    if (!System::isInstalling()) {
-        SessionUtil::requireSession();
-    }
-
-    // Set session variables
-    SessionUtil::setVar('uid', (int) $uid);
-    if (!empty($rememberme)) {
-        SessionUtil::setVar('rememberme', 1);
-    }
-
-    if (isset($confirmtou) && $confirmtou == 1) {
-        // if we get here, the user did accept the terms of use
-        // now update the status
-        self::setVar('activated', 1, (int) $uid);
-        SessionUtil::delVar('confirmtou');
-    }
-
-    // now we've logged in the permissions previously calculated are invalid
-    $GLOBALS['authinfogathered'][$uid] = 0;
-
-    $event = new Event('user.login', null, array('user' => UserUtil::getVar('uid')));
-    EventManagerUtil::notify($event);
 
     return true;
 }
