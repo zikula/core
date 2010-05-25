@@ -499,7 +499,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                             'category' => $modscat[$category]));
         }
         // create the default blocks.
-        requre_once 'system/Blocks/init.php';
+        require_once 'system/Blocks/init.php';
         blocks_defaultdata();
     }
 
