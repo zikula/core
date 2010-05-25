@@ -422,7 +422,7 @@ class UserUtil
         foreach ($authmodules as $authmodule) {
             $authmodule = trim($authmodule);
             if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                $uid = ModUtil::apiFunc($authmodule, 'user', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
+                $uid = ModUtil::apiFunc($authmodule, 'auth', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
                 if ($uid) {
                     break;
                 }
@@ -489,23 +489,27 @@ class UserUtil
     public static function logout()
     {
         if (self::isLoggedIn()) {
-            $event = new Event('user.logout', null, array('user' => UserUtil::getVar('uid')));
-            EventManagerUtil::notify($event);
             $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
             foreach ($authmodules as $authmodule)
             {
                 $authmodule = trim($authmodule);
                 if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                    if (!$result = ModUtil::apiFunc($authmodule, 'user', 'logout')) {
+                    if (!$result = ModUtil::apiFunc($authmodule, 'auth', 'logout')) {
+                        $event = new Event('user.logout.failed', null, array('user' => UserUtil::getVar('uid')));
+                        EventManagerUtil::notify($event);
                         return false;
                     }
                 }
             }
 
+            $event = new Event('user.logout', null, array('user' => UserUtil::getVar('uid')));
+            EventManagerUtil::notify($event);
+
             // delete logged on user the session
             // SessionUtil::delVar('rememberme');
             // SessionUtil::delVar('uid');
             session_destroy();
+
         }
 
         return true;
