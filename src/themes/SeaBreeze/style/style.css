@@ -332,16 +332,17 @@ It defaults to BackCompat mode, which works like previous versions of IE.
 }
 
 /* footer area */
+#footer p,
 #footer a,
 #footer a:visited {
     color: #000000;
     font: 11px Tahoma, Verdana, Arial, Helvetica, sans-serif;
     text-decoration: none;
-    clear: both;
 }
 
 #footer a:hover {
     color: #333;
+    text-decoration: underline;
 }
 
 /* alignments */
