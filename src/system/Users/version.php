@@ -16,7 +16,7 @@ $modversion['displayname']    = __('Users manager');
 $modversion['description']    = __('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.');
 //! module name that appears in URL
 $modversion['url']            = __('users');
-$modversion['version']        = '1.16';
+$modversion['version']        = '1.17';
 
 $modversion['credits']        = '';
 $modversion['help']           = '';

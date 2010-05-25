@@ -150,7 +150,9 @@ Updated DataUtil::mb_unserialise() so it is not affected by special characters.
 Restored 'updated' plugin and, published and updated modifiers in the rss theme
 Reverted to old behaviour where admin created users are automatically activated.
 DBUtil::select*ObjectArray methods do not correctly resume after permission filtering has occurred.
-Added the FilterUtil library as part of the core. 
+Added the FilterUtil library as part of the core.
+Added System::is* convenience methods: isDevelopmentMode(), isLegacyMode(), isInstalling() and hasLegacyTemplates().
+Removed support AuthPN and rolled authentication module support into the Users module.
 
 CHANGELOG - ZIKULA 1.2.1
 ------------------------

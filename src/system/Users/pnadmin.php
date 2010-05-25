@@ -978,6 +978,20 @@ function users_admin_updateconfig()
     ModUtil::setVar('Users', 'gravatarimage', $config['gravatarimage']);
     ModUtil::setVar('Users', 'lowercaseuname', $config['lowercaseuname']);
 
+    if (empty($config['authmodules'])) {
+        return LogUtil::registerError(__('Error! You must specify at least one authentication module, e.g. Users.'));
+    }
+    $authmethods = explode(',', $config['authmodules']);
+    if (!$authmethods) {
+        return LogUtil::registerError(__('Error! You must specify at least one authentication module, e.g. Users.'));
+    }
+    foreach ($authmethods as $authmethod) {
+        if (!ModUtil::available($authmethod)) {
+            return LogUtil::registerError(__f('Error! Module %s is not available.', $authmethod));
+        }
+    }
+    ModUtil::setVar('Users', 'authmodules', $config['authmodules']);
+
     if (ModUtil::available('legal')) {
         ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);
         ModUtil::setVar('Legal', 'privacypolicy', $config['privacypolicy']);

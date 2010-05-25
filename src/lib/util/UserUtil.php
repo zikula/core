@@ -373,102 +373,66 @@ class UserUtil
         ModUtil::loadApi('Users', 'user', true);
 
         $uname = strtolower($uname);
-        if (!ModUtil::available('AuthPN')) {
-            if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
-                $user = DBUtil::selectObjectByID('users', $uname, 'uname', null, null, null, false, 'lower');
-            } else {
-                $user = DBUtil::selectObjectByID('users', $uname, 'email', null, null, null, false, 'lower');
-            }
-
-            if (!$user) {
-                return false;
-            }
-
-            // check if the account is active
-            if (isset($user['activated']) && $user['activated'] == '0') {
-                // account inactive, deny login
-                return false;
-            } else if ($user['activated'] == '2') {
-                // we need a session var here that can have 3 states
-                // 0: account needs to be activated, this is the value after
-                //    we detected this
-                // 1: account needs to activated, user check the accept checkbox
-                // 2: everything is ok
-                // have we been here before?
-                $confirmtou = SessionUtil::getVar('confirmtou', 0);
-                switch ($confirmtou)
-                {
-                    case 0 :
-                    // continue if legal module is active and and configured to
-                    // use the terms of use
-                        if (ModUtil::available('legal')) {
-                            $tou = ModUtil::getVar('legal', 'termsofuse');
-                            if ($tou == 1) {
-                                // users must confirm terms of use before before he can continue
-                                // we redirect him to the login screen
-                                // to ensure that he reads this reminder
-                                SessionUtil::setVar('confirmtou', 0);
-                                return false;
-                            }
-                        }
-                        break;
-                    case 1 : // user has accepted the terms of use - continue
-                    case 2 :
-                    default :
-                }
-            }
-
-            $uid = $user['uid'];
-
-            // password check doesn't apply to HTTP(S) based login
-            if ($checkPassword) {
-                $upass = $user['pass'];
-                $pnuser_hash_number = $user['hash_method'];
-                $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
-
-                $hpass = hash($hashmethodsarray[$pnuser_hash_number], $pass);
-                if ($hpass != $upass) {
-                    $event = new Event('user.login.failed', null, array('username' => $uname));
-                    EventManagerUtil::notify($event);
-                    return false;
-                }
-
-                // Check stored hash matches the current system type, if not convert it.
-                $system_hash_method = $uservars['hash_method'];
-                if ($system_hash_method != $hashmethodsarray[$pnuser_hash_number]) {
-                    $newhash = hash($system_hash_method, $pass);
-                    $hashtonumberarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
-
-                    $obj = array('uid' => $uid, 'pass' => $newhash, 'hash_method' => $hashtonumberarray[$system_hash_method]);
-                    $result = DBUtil::updateObject($obj, 'users', '', 'uid');
-
-                    if (!$result) {
-                        return false;
-                    }
-                }
-            }
-
-            // Storing Last Login date
-            if (!self::setVar('lastlogin', date("Y-m-d H:i:s", time()), $uid)) {
-                // show messages but continue
-                LogUtil::registerError(__('Error! Could not save the log-in date.'));
-            }
+        if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
+            $user = DBUtil::selectObjectByID('users', $uname, 'uname', null, null, null, false, 'lower');
         } else {
-            $authmodules = explode(',', ModUtil::getVar('AuthPN', 'authmodules'));
-            foreach ($authmodules as $authmodule) {
-                $authmodule = trim($authmodule);
-                if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                    $uid = ModUtil::apiFunc($authmodule, 'user', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
-                    if ($uid) {
-                        break;
+            $user = DBUtil::selectObjectByID('users', $uname, 'email', null, null, null, false, 'lower');
+        }
+
+        if (!$user) {
+            return false;
+        }
+
+        // check if the account is active
+        if (isset($user['activated']) && $user['activated'] == '0') {
+            // account inactive, deny login
+            return false;
+        } else if ($user['activated'] == '2') {
+            // we need a session var here that can have 3 states
+            // 0: account needs to be activated, this is the value after
+            //    we detected this
+            // 1: account needs to activated, user check the accept checkbox
+            // 2: everything is ok
+            // have we been here before?
+            $confirmtou = SessionUtil::getVar('confirmtou', 0);
+            switch ($confirmtou)
+            {
+                case 0 :
+                // continue if legal module is active and and configured to
+                // use the terms of use
+                    if (ModUtil::available('legal')) {
+                        $tou = ModUtil::getVar('legal', 'termsofuse');
+                        if ($tou == 1) {
+                            // users must confirm terms of use before before he can continue
+                            // we redirect him to the login screen
+                            // to ensure that he reads this reminder
+                            SessionUtil::setVar('confirmtou', 0);
+                            return false;
+                        }
                     }
+                    break;
+                case 1 : // user has accepted the terms of use - continue
+                case 2 :
+                default :
+            }
+        }
+
+        $uname = strtolower($uname);
+        $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
+        foreach ($authmodules as $authmodule) {
+            $authmodule = trim($authmodule);
+            if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
+                $uid = ModUtil::apiFunc($authmodule, 'user', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
+                if ($uid) {
+                    break;
                 }
             }
-            if (!isset($uid) || !$uid) {
-                $event = new Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
-                EventManagerUtil::notify($event);
-                return false;
-            }
+        }
+
+        if (!isset($uid) || !$uid) {
+            $event = new Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
+            EventManagerUtil::notify($event);
+            return false;
         }
 
         if (!System::isInstalling()) {
@@ -527,15 +491,13 @@ class UserUtil
         if (self::isLoggedIn()) {
             $event = new Event('user.logout', null, array('user' => UserUtil::getVar('uid')));
             EventManagerUtil::notify($event);
-            if (ModUtil::available('AuthPN')) {
-                $authmodules = explode(',', ModUtil::getVar('AuthPN', 'authmodules'));
-                foreach ($authmodules as $authmodule)
-                {
-                    $authmodule = trim($authmodule);
-                    if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                        if (!$result = ModUtil::apiFunc($authmodule, 'user', 'logout')) {
-                            return false;
-                        }
+            $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
+            foreach ($authmodules as $authmodule)
+            {
+                $authmodule = trim($authmodule);
+                if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
+                    if (!$result = ModUtil::apiFunc($authmodule, 'user', 'logout')) {
+                        return false;
                     }
                 }
             }

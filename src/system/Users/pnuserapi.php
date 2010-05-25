@@ -35,13 +35,13 @@ function users_userapi_getall($args)
     // corresponding filter permission to filter anonymous in admin view:
     // Administrators | Users:: | Anonymous:: | None
     $permFilter[] = array('realm' => 0,
-                      'component_left'   => 'Users',
-                      'component_middle' => '',
-                      'component_right'  => '',
-                      'instance_left'    => 'uname',
-                      'instance_middle'  => '',
-                      'instance_right'   => 'uid',
-                      'level'            => ACCESS_READ);
+            'component_left'   => 'Users',
+            'component_middle' => '',
+            'component_right'  => '',
+            'instance_left'    => 'uname',
+            'instance_middle'  => '',
+            'instance_right'   => 'uid',
+            'level'            => ACCESS_READ);
 
     // form where clause
     $where = '';
@@ -163,10 +163,10 @@ function users_userapi_optionalitems($args)
     foreach ($ak as $v) {
         $prop_validation = @unserialize($objArray[$v]['prop_validation']);
         $prop_array = array('prop_viewby'      => $prop_validation['viewby'],
-                            'prop_displaytype' => $prop_validation['displaytype'],
-                            'prop_listoptions' => $prop_validation['listoptions'],
-                            'prop_note'        => $prop_validation['note'],
-                            'prop_validation'  => $prop_validation['validation']);
+                'prop_displaytype' => $prop_validation['displaytype'],
+                'prop_listoptions' => $prop_validation['listoptions'],
+                'prop_note'        => $prop_validation['note'],
+                'prop_validation'  => $prop_validation['validation']);
 
         array_push($objArray[$v], $prop_array);
     }
@@ -588,10 +588,10 @@ function users_userapi_mailpasswd($args)
         $message = $pnRender->fetch('users_userapi_lostpasscodemail.htm');
         $subject = __f('Confirmation code for %s', $user['uname']);
         ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                     array('toaddress' => $user['email'],
-                           'subject'   => $subject,
-                           'body'      => $message,
-                           'html'      => true));
+                array('toaddress' => $user['email'],
+                'subject'   => $subject,
+                'body'      => $message,
+                'html'      => true));
         return 4;
     }
 
@@ -601,10 +601,10 @@ function users_userapi_mailpasswd($args)
         $message = $pnRender->fetch('users_userapi_passwordmail.htm');
         $subject = __f('Password for %s', $user['uname']);
         ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                     array('toaddress' => $user['email'],
-                           'subject'   => $subject,
-                           'body'      => $message,
-                           'html'      => true));
+                array('toaddress' => $user['email'],
+                'subject'   => $subject,
+                'body'      => $message,
+                'html'      => true));
 
         // Next step: add the new password to the database
         $hash_method = ModUtil::getVar('Users', 'hash_method');
@@ -639,8 +639,8 @@ function users_userapi_activateuser($args)
     // Preventing reactivation from same link !
     $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);
     $obj = array('uid'          => $args['uid'],
-                 'activated'    => '1',
-                 'user_regdate' => DataUtil::formatForStore($newregdate));
+            'activated'    => '1',
+            'user_regdate' => DataUtil::formatForStore($newregdate));
 
     ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
 
@@ -684,13 +684,13 @@ function users_userapi_gethashmethods($args)
     if ($reverse) {
 
         return array(1 => 'md5',
-                     5 => 'sha1',
-                     8 => 'sha256');
+                5 => 'sha1',
+                8 => 'sha256');
     } else {
 
         return array('md5'    => 1,
-                     'sha1'   => 5,
-                     'sha256' => 8);
+                'sha1'   => 5,
+                'sha256' => 8);
     }
 }
 
@@ -768,12 +768,12 @@ function Users_userapi_savepreemail($args)
     $confirmValue = substr(md5(time() . rand(0, 30000)),0 ,7);;
 
     $obj = array('uname' => $uname,
-                 'email' => DataUtil::formatForStore($args['newemail']),
-                 'pass' => '',
-                 'dynamics' => time(),
-                 'comment' => $confirmValue,
-                 'type' => 2,
-                 'tag' => 0);
+            'email' => DataUtil::formatForStore($args['newemail']),
+            'pass' => '',
+            'dynamics' => time(),
+            'comment' => $confirmValue,
+            'type' => 2,
+            'tag' => 0);
 
     // checks if user has request the change recently and it is not confirmed
     $exists = DBUtil::selectObjectCountByID('users_temp', $uname, 'uname', 'lower');
@@ -850,4 +850,85 @@ function Users_userapi_getlinks()
     }
 
     return $links;
+}
+
+function Users_userapi_login($args)
+{
+    $uname = (string)$args['uname'];
+    $pass = (string)$args['pass'];
+    $rememberme = (bool)$args['rememberme'];
+    $checkPassword = (bool)$args['checkPassword'];
+
+    // password check doesn't apply to HTTP(S) based login
+    if ($checkPassword) {
+        $result = ModUtil::apiFunc('Users', 'user', 'checkpassword', array('user' => $user));
+        if (!$result) {
+            return false;
+        }
+    }
+
+    // Storing Last Login date
+    if (!UserUtil::setVar('lastlogin', date("Y-m-d H:i:s", time()), $uid)) {
+        // show messages but continue
+        LogUtil::registerError(__('Error! Could not save the log-in date.'));
+    }
+
+    if (!System::isInstalling()) {
+        SessionUtil::requireSession();
+    }
+
+    // Set session variables
+    SessionUtil::setVar('uid', (int) $uid);
+    if (!empty($rememberme)) {
+        SessionUtil::setVar('rememberme', 1);
+    }
+
+    if (isset($confirmtou) && $confirmtou == 1) {
+        // if we get here, the user did accept the terms of use
+        // now update the status
+        self::setVar('activated', 1, (int) $uid);
+        SessionUtil::delVar('confirmtou');
+    }
+
+    // now we've logged in the permissions previously calculated are invalid
+    $GLOBALS['authinfogathered'][$uid] = 0;
+
+    $event = new Event('user.login', null, array('user' => UserUtil::getVar('uid')));
+    EventManagerUtil::notify($event);
+
+    return true;
+}
+
+function Users_userapi_logout()
+{
+    return true;
+}
+
+function Users_userapi_checkpassword($args)
+{
+    $user = $args['user'];// user array
+    $upass = $user['pass'];
+    $hash_number = $user['hash_method'];
+    $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
+
+    $hpass = hash($hashmethodsarray[$hash_number], $pass);
+    if ($hpass != $upass) {
+        return false;
+    }
+
+    // Check stored hash matches the current system type, if not convert it.
+    $system_hash_method = $uservars['hash_method'];
+    if ($system_hash_method != $hashmethodsarray[$hash_number]) {
+        $newhash = hash($system_hash_method, $pass);
+        $hashtonumberarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
+
+        $obj = array('uid' => $uid, 'pass' => $newhash, 'hash_method' => $hashtonumberarray[$system_hash_method]);
+        $result = DBUtil::updateObject($obj, 'users', '', 'uid');
+
+        if (!$result) {
+            return false;
+        }
+    }
+
+    return true;
 }

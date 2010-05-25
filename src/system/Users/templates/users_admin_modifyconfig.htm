@@ -259,8 +259,16 @@
             </div>
         </fieldset>
 
-        {modcallhooks hookobject=module hookaction=modifyconfig module=Users}
+        <fieldset>
+            <legend>{gt text="Authentication Module settings"}</legend>
+            <div class="z-formrow">
+                <label for="users_authmodules">{gt text="Authentication modules"}</label>
+                <input id="users_authmodules" type="text" name="config[authmodules]" size="40" maxlength="255" value="{$config.authmodules|varprepfordisplay}" />
+                <em class="z-formnote">{gt text="Notice: This is a comma-separated list of modules to be used for authentication on the site."}</em>
+            </div>
+        </fieldset>
 
+        {modcallhooks hookobject=module hookaction=modifyconfig module=Users}
         <div class="z-formbuttons">
             {button src=button_ok.gif set=icons/small __alt="Save" __title="Save"}
             <a href="{modurl modname=Users type=admin func=view}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>

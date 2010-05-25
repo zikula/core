@@ -66,6 +66,7 @@ function users_init()
     ModUtil::setVar('Users', 'reg_answer', '');
     ModUtil::setVar('Users', 'idnnames', 1);
     ModUtil::setVar('Users', 'use_password_strength_meter', 0);
+    ModUtil::setVar('Users', 'authmodules', 'Users');
 
     // Initialisation successful
     return true;
@@ -98,14 +99,15 @@ function users_upgrade($oldversion)
                 ModUtil::setVar('Users', 'hash_method', 'sha256');
             }
         case '1.15':
-            pnModDelVar('Users', 'savelastlogindate');
+            ModUtil::delVar('Users', 'savelastlogindate');
             ModUtil::setVar('Users', 'allowgravatars', 1);
             ModUtil::setVar('Users', 'gravatarimage', 'gravatar.gif');
             if (!DBUtil::changeTable('users_temp')) {
                 return '1.15';
             }
         case '1.16':
-
+            ModUtil::setVar('Users', 'authmodules', 'Users');
+        case '1.17':
     }
 
     // Update successful
