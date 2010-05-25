@@ -470,7 +470,7 @@ class DataUtil
             // accents deletion
             $permasearch = explode(',', System::getVar('permasearch'));
             $permareplace = explode(',', System::getVar('permareplace'));
-            $var = str_replace($var, $permasearch, $permareplace);
+            $var = str_replace($permasearch, $permareplace, $var);
             // repeated separator
             $var = str_replace($permalinksseparator . $permalinksseparator . $permalinksseparator, $permalinksseparator, $var);
             // final clean
