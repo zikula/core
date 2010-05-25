@@ -356,27 +356,26 @@ class UserUtil
         return $dropdown;
     }
 
-    public static function login($uname, $pass, $rememberme = false, $checkPassword = true)
+    public static function login($login, $pass, $rememberme = false, $checkPassword = true)
     {
         if (self::isLoggedIn()) {
             return true;
-        }
-
-        $uservars = ModUtil::getVar('Users');
-
-        if (!System::varValidate($uname, (($uservars['loginviaoption'] == 1) ? 'email' : 'uname'))) {
-            return false;
         }
 
         // get the database connection
         ModUtil::dbInfoLoad('Users', 'Users');
         ModUtil::loadApi('Users', 'user', true);
 
-        $uname = strtolower($uname);
+        $uservars = ModUtil::getVar('Users');
+
+        if (!System::varValidate($login, (($uservars['loginviaoption'] == 1) ? 'email' : 'uname'))) {
+            return false;
+        }
+
         if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
-            $user = DBUtil::selectObjectByID('users', $uname, 'uname', null, null, null, false, 'lower');
+            $user = DBUtil::selectObjectByID('users', $login, 'uname', null, null, null, false, 'lower');
         } else {
-            $user = DBUtil::selectObjectByID('users', $uname, 'email', null, null, null, false, 'lower');
+            $user = DBUtil::selectObjectByID('users', $login, 'email', null, null, null, false, 'lower');
         }
 
         if (!$user) {
@@ -385,53 +384,23 @@ class UserUtil
 
         $uid = $user['uid'];
 
-        // check if the account is active
-        if (isset($user['activated']) && $user['activated'] == '0') {
-            // account inactive, deny login
-            return false;
-        } else if ($user['activated'] == '2') {
-            // we need a session var here that can have 3 states
-            // 0: account needs to be activated, this is the value after
-            //    we detected this
-            // 1: account needs to activated, user check the accept checkbox
-            // 2: everything is ok
-            // have we been here before?
-            $confirmtou = SessionUtil::getVar('confirmtou', 0);
-            switch ($confirmtou)
-            {
-                case 0 :
-                // continue if legal module is active and and configured to
-                // use the terms of use
-                    if (ModUtil::available('legal')) {
-                        $tou = ModUtil::getVar('legal', 'termsofuse');
-                        if ($tou == 1) {
-                            // users must confirm terms of use before before he can continue
-                            // we redirect him to the login screen
-                            // to ensure that he reads this reminder
-                            SessionUtil::setVar('confirmtou', 0);
-                            return false;
-                        }
+        if ($checkPassword) {
+            $result = false;
+            $uname = strtolower($uname);
+            $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
+            foreach ($authmodules as $authmodule) {
+                $authmodule = trim($authmodule);
+                if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
+                    $result = ModUtil::apiFunc($authmodule, 'auth', 'login', array('login' => $uname, 'pass' => $pass));
+                    if ($result) {
+                        break;
                     }
-                    break;
-                case 1 : // user has accepted the terms of use - continue
-                case 2 :
-                default :
-            }
-        }
-
-        $uname = strtolower($uname);
-        $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
-        foreach ($authmodules as $authmodule) {
-            $authmodule = trim($authmodule);
-            if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                $result = ModUtil::apiFunc($authmodule, 'auth', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
-                if ($result) {
-                    break;
                 }
             }
         }
 
         if (!isset($uid) || !$uid || $result === false) {
+            die('here');
             $event = new Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
             EventManagerUtil::notify($event);
             return false;
@@ -498,8 +467,7 @@ class UserUtil
     {
         if (self::isLoggedIn()) {
             $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
-            foreach ($authmodules as $authmodule)
-            {
+            foreach ($authmodules as $authmodule) {
                 $authmodule = trim($authmodule);
                 if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
                     if (!$result = ModUtil::apiFunc($authmodule, 'auth', 'logout')) {
@@ -522,6 +490,30 @@ class UserUtil
 
         return true;
     }
+
+    /**
+     * Check user password.
+     *
+     * @param string $pass  Password
+     *
+     * @return boolean
+     */
+    public static function checkPassword($login, $pass)
+    {
+        $result = false;
+        $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
+        foreach ($authmodules as $authmodule) {
+            $authmodule = trim($authmodule);
+            if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
+                $result = ModUtil::apiFunc('Users', 'auth', 'checkpassword', array('login' => $login, 'pass' => $pass));
+                if ($result) {
+                    break;
+                }
+            }
+        }
+        return $result;
+    }
+
 
     /**
      * is the user logged in?
@@ -750,26 +742,6 @@ class UserUtil
         $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
         self::setVar('pass', hash($method, $pass));
         self::setVar('hash_method', $hashmethodsarray[$method]);
-    }
-
-    /**
-     * Check user password
-     *
-     * @param pass $ requested password
-     * @return bool check result
-     */
-    public static function checkPassword($pass)
-    {
-        if (!self::isLoggedIn()) {
-            return false;
-        }
-
-        $upass = self::getVar('pass');
-
-        $method = ModUtil::getVar('Users', 'hash_method');
-        $cpass = hash($method, $pass);
-
-        return ($cpass == $upass);
     }
 
     /**

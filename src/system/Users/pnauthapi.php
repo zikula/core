@@ -14,20 +14,13 @@
 
 function Users_authapi_login($args)
 {
-    $uname = (string)$args['uname'];
+    $login = (string)strtolower($args['uname']);
     $pass = (string)$args['pass'];
-    $rememberme = (bool)$args['rememberme'];
-    $checkPassword = (bool)$args['checkPassword'];
 
     // password check doesn't apply to HTTP(S) based login
     if ($checkPassword) {
-        $result = ModUtil::apiFunc('Users', 'auth', 'checkpassword', array('user' => $user));
-        if (!$result) {
-            return false;
-        }
+        return ModUtil::apiFunc('Users', 'auth', 'checkpassword', array('login' => $login, 'pass' => $pass));
     }
-
-    return true;
 }
 
 function Users_authapi_logout()
@@ -37,20 +30,40 @@ function Users_authapi_logout()
 
 function Users_authapi_checkpassword($args)
 {
-    $user = $args['user'];// user array
-    $upass = $user['pass'];
+    $login = strtolower($args['login']);
+    $raw_password = $args['pass'];
+
+    $uservars = ModUtil::getVar('Users');
+    if (!System::varValidate($login, (($uservars['loginviaoption'] == 1) ? 'email' : 'uname'))) {
+        return false;
+    }
+
+    if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
+        $user = DBUtil::selectObjectByID('users', $login, 'uname', null, null, null, false, 'lower');
+    } else {
+        $user = DBUtil::selectObjectByID('users', $login, 'email', null, null, null, false, 'lower');
+    }
+
+    if (!$user) {
+        return false;
+    }
+
+    $uid = $user['uid'];
+
     $hash_number = $user['hash_method'];
+    $stored_hash = $user['pass'];
     $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
 
-    $hpass = hash($hashmethodsarray[$hash_number], $pass);
-    if ($hpass != $upass) {
+    $hashed_password = hash($hashmethodsarray[$hash_number], $raw_password);
+
+    if ($hashed_password != $stored_hash) {
         return false;
     }
 
     // Check stored hash matches the current system type, if not convert it.
     $system_hash_method = $uservars['hash_method'];
     if ($system_hash_method != $hashmethodsarray[$hash_number]) {
-        $newhash = hash($system_hash_method, $pass);
+        $newhash = hash($system_hash_method, $raw_password);
         $hashtonumberarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
 
         $obj = array('uid' => $uid, 'pass' => $newhash, 'hash_method' => $hashtonumberarray[$system_hash_method]);
