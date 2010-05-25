@@ -112,4 +112,8 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 
 - The prefixes are NOT gone for the class function based controllers like pnadmin etc.
   This is deliberate to encourage you to move to OO module controllers.
+
+- If you need to make browser hack please use the block made for the case, e.g.
+  {browserhack condition="if lte IE 7"}foo{/browserback}
+
    
