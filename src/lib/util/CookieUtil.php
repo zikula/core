@@ -71,10 +71,11 @@ class CookieUtil
 
     /**
      * Delete given cookie
-     * can be called multiple times, but must be other output is sent to browser.
+     * Can be called multiple times, but must be called before any output
+     * is sent to browser or it wont work.
      *
-     * @author Drak
-     * @param string $name nmame of cookie
+     * @param string $name Name of cookie.
+     *
      * @return bool
      */
     public static function deleteCookie($name)
