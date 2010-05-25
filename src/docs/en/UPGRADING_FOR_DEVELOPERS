@@ -115,5 +115,6 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 
 - If you need to make browser hack please use the block made for the case, e.g.
   {browserhack condition="if lte IE 7"}foo{/browserback}
+  This block also takes assign="var" so you can assign rather than display.
 
    

@@ -12,8 +12,22 @@
  * information regarding copyright and licensing.
  */
 
-
-function smarty_block_browserhack($params, $content, Renderer &$render)
+/**
+ * Browserhack block.
+ *
+ * <samp>
+ * {browserhack condition="if lte IE 7"}something goes here{/browserhack}
+ * {browserhack condition="if lte IE 7" assign="var"}something goes here{/browserhack}
+ * </samp>
+ *
+ * @param array $params    Array with keys 'condition' whatever goes in the browserhack,
+ *                         and 'assign' to assign rather than display.
+ * @param string $content  Content of the block
+ * @param object $render   Instance of Renderer object.
+ *
+ * @return string|void
+ */
+function smarty_block_browserhack($params, $content, &$render)
 {
     if ($content) {
         if (!isset($params['condition'])) {
