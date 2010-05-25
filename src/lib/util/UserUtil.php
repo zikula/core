@@ -753,6 +753,26 @@ class UserUtil
     }
 
     /**
+     * Check user password
+     *
+     * @param pass $ requested password
+     * @return bool check result
+     */
+    public static function checkPassword($pass)
+    {
+        if (!self::isLoggedIn()) {
+            return false;
+        }
+
+        $upass = self::getVar('pass');
+
+        $method = ModUtil::getVar('Users', 'hash_method');
+        $cpass = hash($method, $pass);
+
+        return ($cpass == $upass);
+    }
+
+    /**
      * Delete the contents of a user variable. This can either be
      * - a variable stored in the users table or
      * - an attribute to the users table, either a new style sttribute or the old style user information
