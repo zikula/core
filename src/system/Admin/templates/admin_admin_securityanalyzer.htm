@@ -1,7 +1,6 @@
-{*  $Id$  *}
 {modurl modname='Admin' type='admin' func='help' assign='adminhelpurl'}
 {securityutil_checkpermission_block component='::' instance='::' level=ACCESS_ADMIN}
-{if $notices.security.magic_quotes_gpc or $notices.security.register_globals or $notices.security.config_php or !$notices.security.temp_htaccess or !$notices.security.useids or !$notices.security.scactive or (!$notices.security.useids and $notices.security.scactive)}
+{if $notices.security.magic_quotes_gpc or $notices.security.register_globals or $notices.security.config_php or !$notices.security.temp_htaccess or !$notices.security.scactive}
 <div id="z-securityanalyzer">
     <h3>{gt text="Security analyser warnings" domain="zikula"}</h3>
     <ul>
@@ -30,12 +29,6 @@
             <a href="{$adminhelpurl|varprepfordisplay}#admin_security_center_warning2">{gt text="Security center module is not installed, but preferably should be." domain="zikula"}</a>
         </li>
         {/if}
-{*        {if !$notices.security.useids && $notices.security.scactive}
-        <li>
-            <a href="{modurl modname='SecurityCenter' type='admin' func='modifyconfig'}#securitycenter_ids">{gt text="PHPIDS with the Security center is not activated, but preferably should be." domain="zikula"}</a>
-        </li>
-        {/if} *}
-
     </ul>
 </div>
 {/if}

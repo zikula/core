@@ -292,6 +292,8 @@ div#z-updatechecker h3,
 div#z-securityanalyzer a,
 div#z-securityanalyzer h3 {
     color: #444;
+    padding: 0;
+    margin: 0;
 }
 
 div#z-developernotices a:hover,
