@@ -424,14 +424,14 @@ class UserUtil
         foreach ($authmodules as $authmodule) {
             $authmodule = trim($authmodule);
             if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                $uid = ModUtil::apiFunc($authmodule, 'auth', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
-                if ($uid) {
+                $result = ModUtil::apiFunc($authmodule, 'auth', 'login', array('uname' => $uname, 'pass' => $pass, 'rememberme' => $rememberme, 'checkPassword' => $checkPassword));
+                if ($result) {
                     break;
                 }
             }
         }
 
-        if (!isset($uid) || !$uid) {
+        if (!isset($uid) || !$uid || $result === false) {
             $event = new Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
             EventManagerUtil::notify($event);
             return false;
