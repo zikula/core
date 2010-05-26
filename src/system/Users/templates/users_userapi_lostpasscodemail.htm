@@ -1,9 +1,12 @@
 {*  $Id$  *}
+{* NOTE: This is the HTML version of this e-mail. If this is modified, ensure that users_userapi_lostpasscodemail.txt is also modified! *}
 
 <p>{gt text='Hello! The user account \'%1$s\' at %2$s has this e-mail address associated with it.' tag1=$uname tag2=$sitename}</p>
 
 <p>{gt text="Someone with the IP address %s has just requested a confirmation code for a change of password." tag1=$hostname}</p>
 <p>{gt text="The confirmation code is: %s" tag1=$code}</p>
 
-<p>{gt text="With this confirmation code, you can now create a new password by clicking on this link: %s" tag1=$url}</p>
-<p>{gt text="If the request was not made by yourself then you don't need to take any action."}{gt text="The password won't be changed unless the confirmation code is used, and you are the only recipient of this message. You can just delete the message and log-in with your existing password next time you visit the site."}</p>
+<p>{gt text="With this confirmation code, you can now create a new password by clicking on this link:"} <a href="{$url}">{gt text='Reset My Password'}</a>.<br>
+{gt text="(If you cannot click on the link, you can copy this URL and paste it into your browser: %s )" tag1=$url}</p>
+
+<p>{gt text="If the request was not made by yourself then you don't need to take any action."} {gt text="The password won't be changed unless the confirmation code is used, and you are the only recipient of this message. You can just delete the message and log-in with your existing password next time you visit the site."}</p>

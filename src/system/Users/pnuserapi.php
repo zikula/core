@@ -549,6 +549,62 @@ function users_userapi_finishnewuser($args)
 }
 
 /**
+ * Send the user a lost password confirmation code.
+ *
+ * @param array $args All parameters passed to this function.
+ *                    $args['uname'] (string) The user's user name.
+ *                    $args['email'] (string) The user's e-mail address.
+ *
+ * @return bool True if confirmation code sent; otherwise false.
+ */
+function users_userapi_mailconfirmationcode($args)
+{
+    $emailMessageSent = false;
+
+    if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
+        || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email')))
+    {
+        return LogUtil::registerArgsError();
+    }
+
+    $user = UserUtil::getVars($args['id'], true, $args['idfield']);
+
+    if (!$user) {
+        LogUtil::registerError('Sorry! Could not find any matching user account.');
+    } else {
+        $confirmationCode = substr($user['pass'], 0, 5);
+
+        $urlArgs = array();
+        $urlArgs['code'] = urlencode($confirmationCode);
+        $urlArgs[$args['idfield']] = urlencode($args['id']);
+
+        $renderer = Renderer::getInstance('Users', false);
+        $renderer->assign('uname', $user['uname']);
+        $renderer->assign('sitename', $sitename);
+        $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
+        $renderer->assign('code', $confirmationCode);
+        $renderer->assign('url',  ModUtil::url('Users', 'user', 'lostpasswordcode', $urlArgs, null, null, true));
+        $htmlBody = $renderer->fetch('users_userapi_lostpasscodemail.htm');
+        $plainTextBody = $renderer->fetch('users_userapi_lostpasscodemail.txt');
+
+        $subject = __f('Confirmation code for %s', $user['uname']);
+
+        $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+            array(
+                'toaddress' => $user['email'],
+                'subject'   => $subject,
+                'body'      => $htmlBody,
+                'altbody'   => $plainTextBody
+            ));
+        if (!$emailMessageSent) {
+            LogUtil::registerError(__('Error! Unable to send confirmation code e-mail message.'));
+        }
+    }
+
+    return $emailMessageSent;
+}
+
+/**
  * Send the user a lost password.
  *
  * @param array $args All parameters passed to this function.
@@ -556,69 +612,59 @@ function users_userapi_finishnewuser($args)
  *                    $args['email'] (string) The user's e-mail address.
  *                    $args['code']  (string) The confirmation code.
  *
- * @return int An error code: 0=DatabaseError 1=WrongCode 2=NoSuchUsernameOrEmailAddress 3=PasswordMailed 4=ConfirmationCodeMailed
+ * @return bool True if the new password was sent; otherwise false.
  */
-function users_userapi_mailpasswd($args)
+function users_userapi_mailpassword($args)
 {
-    $pntable = System::dbGetTables();
+    $emailMessageSent = false;
 
-    $column = $pntable['users_column'];
-    $where  = '';
-    if (!empty($args['email'])) {
-        $where = "$column[email] = '" . DataUtil::formatForStore($args['email']) . "'";
-
-    } elseif (!empty($args['uname'])) {
-        $where = "$column[uname] = '" . DataUtil::formatForStore($args['uname']) . "'";
+    if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
+        || !isset($args['code']) || empty($args['code'])
+        || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email')))
+    {
+        return LogUtil::registerArgsError();
     }
-    $user  = DBUtil::selectObject('users', $where);
+
+    $user = UserUtil::getVars($args['id'], true, $args['idfield']);
+
     if (!$user) {
-        return 2;
+        LogUtil::registerError('Sorry! Could not find any matching user account.');
+    } else {
+        $confirmationCode = substr($user['pass'], 0, 5);
+
+        if ($confirmationCode == $args['code']) {
+            $newpass = _users_userapi_makePass();
+
+            $renderer = Renderer::getInstance('Users', false);
+            $renderer->assign('uname', $user['uname']);
+            $renderer->assign('sitename', $sitename);
+            $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
+            $renderer->assign('password', $newpass);
+            $renderer->assign('url',  ModUtil::url('Users', 'user', 'loginscreen', array(), null, null, true));
+            $htmlBody = $renderer->fetch('users_userapi_passwordmail.htm');
+            $plainTextBody = $renderer->fetch('users_userapi_passwordmail.txt');
+
+            $subject = __f('Password for %s', $user['uname']);
+
+            $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                array(
+                    'toaddress' => $user['email'],
+                    'subject'   => $subject,
+                    'body'      => $htmlBody,
+                    'altbody'   => $plainTextBody
+                ));
+
+            if ($emailMessageSent) {
+                UserUtil::setPassword($newpass);
+            } else {
+                LogUtil::registerError(__('Error! Unable to send new password e-mail message.'));
+            }
+        } else {
+            LogUtil::registerError(__("Error! The code that you've enter is invalid."));
+        }
     }
 
-    $pnRender = Renderer::getInstance('Users', false);
-    $pnRender->assign('uname', $user['uname']);
-    $pnRender->assign('sitename', $sitename);
-    $pnRender->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
-
-    $areyou = substr($user['pass'], 0, 5);
-
-    if (!$args['code']) {
-        $pnRender->assign('code', $areyou);
-        $pnRender->assign('url',  ModUtil::url('Users', 'user', 'lostpassword', array(), null, null, true));
-        $message = $pnRender->fetch('users_userapi_lostpasscodemail.htm');
-        $subject = __f('Confirmation code for %s', $user['uname']);
-        ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                array('toaddress' => $user['email'],
-                'subject'   => $subject,
-                'body'      => $message,
-                'html'      => true));
-        return 4;
-    }
-
-    if ($areyou == $args['code']) {
-        $pnRender->assign('password', $newpass = _users_userapi_makePass());
-        $pnRender->assign('url',      ModUtil::url('Users', 'user', 'loginscreen', array(), null, null, true));
-        $message = $pnRender->fetch('users_userapi_passwordmail.htm');
-        $subject = __f('Password for %s', $user['uname']);
-        ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
-                array('toaddress' => $user['email'],
-                'subject'   => $subject,
-                'body'      => $message,
-                'html'      => true));
-
-        // Next step: add the new password to the database
-        $hash_method = ModUtil::getVar('Users', 'hash_method');
-        $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
-        $cryptpass = hash($hash_method, $newpass);
-        $obj = array();
-        $obj['uname'] = $user['uname'];
-        $obj['pass']  = $cryptpass;
-        $obj['hash_method'] = $hashmethodsarray[$hash_method];
-        $res = DBUtil::updateObject ($obj, 'users', '', 'uname');
-        return ($res ? 3 : 0);
-    }
-
-    return 1;
+    return $emailMessageSent;
 }
 
 /**
