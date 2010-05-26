@@ -535,6 +535,7 @@ function users_user_mailpasswd()
     $uname = FormUtil::getPassedValue ('uname', null, 'POST');
     $email = FormUtil::getPassedValue ('email', null, 'POST');
     $code  = FormUtil::getPassedValue ('code',  null, 'POST');
+    SessionUtil::requireSession();
     SessionUtil::delVar('lostpassword_uname');
     SessionUtil::delVar('lostpassword_email');
     SessionUtil::delVar('lostpassword_code');
@@ -552,7 +553,7 @@ function users_user_mailpasswd()
     SessionUtil::setVar('lostpassword_email', $email);
 
     if (!empty($email) && !empty($uname)) {
-        LogUtil::registerError(__('Error! Please enter a user name OR e-mail address, no both of them.'));
+        LogUtil::registerError(__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
         return System::redirect(ModUtil::url('Users', 'user', 'lostpassword'));
     }
 
