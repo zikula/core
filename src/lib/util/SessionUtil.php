@@ -452,8 +452,9 @@ class SessionUtil
     {
         if (self::getVar('uid') == '0') {
             // no need to do anything for guests without sessions
-            if (System::getVar('anonymoussessions') == '0')
+            if (System::getVar('anonymoussessions') == '0' && !session_id()) {
                 return;
+            }
 
             // no need to display expiry for anon users with sessions since it's invisible anyway
             // handle expired sessions differently
@@ -586,7 +587,6 @@ function _SessionUtil__Close()
  */
 function _SessionUtil__Read($sessid)
 {
-    // if (System::getVar('anonymoussessions') == '0') {
     if (System::getVar('sessionstoretofile')) {
         $path = DataUtil::formatForOS(session_save_path());
         if (file_exists("$path/$sessid")) {
@@ -682,11 +682,6 @@ function _SessionUtil__Destroy($sessid)
 
     // expire the cookie
     setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
-
-    // can exit if anon user and anon session disabled
-    if (System::getVar('anonymoussessions') == '0' && SessionUtil::getVar('uid') == '0') {
-        return true;
-    }
 
     // ensure we delete the stored session (not a regenerated one)
     if (isset($GLOBALS['_ZSession']['regenerated']) && $GLOBALS['_ZSession']['regenerated'] == true) {
