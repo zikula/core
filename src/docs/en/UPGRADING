@@ -83,8 +83,7 @@ no problems.
   install.php and upgrade.php from the root folder of your site.
   If you use your own themes, please note that themes now require specific header
   information which you must update to use the lang, langdirection and charset
-  plugin tags. Please refer to both andreas08's and voodoodolly's master.htm
-  templates which have variations for XHTML 1.0 STRICT and HTML 1.1.
+  plugin tags. Please refer to both andreas08's master.htm template.
   If you disabled your site before starting the upgrade (see 2.2) you should
   re-enable it now.
 
