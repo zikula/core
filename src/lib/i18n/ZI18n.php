@@ -157,15 +157,15 @@ class ZI18n
     public function processSign($number)
     {
         if ($number > 0) {
-            $this->sign = $this->locale['Positive_sign'];
-            $this->sign_posn = $this->locale['P_sign_posn'];
-            $this->sep_by_space = $this->locale['P_sep_by_space'];
-            $this->cs_precedes = $this->locale['P_cs_precedes'];
+            $this->sign = $this->locale['positive_sign'];
+            $this->sign_posn = $this->locale['p_sign_posn'];
+            $this->sep_by_space = $this->locale['p_sep_by_space'];
+            $this->cs_precedes = $this->locale['p_cs_precedes'];
         } else {
-            $this->sign = $this->locale['Negative_sign'];
-            $this->sign_posn = $this->locale['N_sign_posn'];
-            $this->sep_by_space = $this->locale['N_sep_by_space'];
-            $this->cs_precedes = $this->locale['N_cs_precedes'];
+            $this->sign = $this->locale['negative_sign'];
+            $this->sign_posn = $this->locale['n_sign_posn'];
+            $this->sep_by_space = $this->locale['n_sep_by_space'];
+            $this->cs_precedes = $this->locale['n_cs_precedes'];
         }
     }
 }
