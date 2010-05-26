@@ -156,7 +156,7 @@ class ZI18n
      */
     public function processSign($number)
     {
-        if ($number > 0) {
+        if ($number >= 0) {
             $this->sign = $this->locale['positive_sign'];
             $this->sign_posn = $this->locale['p_sign_posn'];
             $this->sep_by_space = $this->locale['p_sep_by_space'];
