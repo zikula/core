@@ -279,23 +279,23 @@ function users_admin_view($args = array())
         $activationTitle = '';
         // adapt states if it is necessary
         if ($adaptState) {
-            if ($items[$key]['activated'] == 2) {
-                $items[$key]['activated'] = 1;
-            } else if ($items[$key]['activated'] == 6) {
-                $items[$key]['activated'] = 4;
+            if ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
+                $items[$key]['activated'] = UserUtil::ACTIVATED_ACTIVE;
+            } else if ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
+                $items[$key]['activated'] = UserUtil::ACTIVATED_INACTIVE_PWD;
             }
         }
         // show user's activation state
-        if ($items[$key]['activated'] == 1) {
+        if ($items[$key]['activated'] == UserUtil::ACTIVATED_ACTIVE) {
             $activationImg = 'greenled.gif';
             $activationTitle = __('Active');
-        } else if ($items[$key]['activated'] == 2) {
+        } else if ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
             $activationImg = 'yellowled.gif';
             $activationTitle = __('Inactive until Legal terms accepted');
-        } else if ($items[$key]['activated'] == 4) {
+        } else if ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD) {
             $activationImg = 'yellowled.gif';
             $activationTitle = __('Inactive until changing password');
-        } else if ($items[$key]['activated'] == 6) {
+        } else if ($items[$key]['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
             $activationImg = 'yellowled.gif';
             $activationTitle = __('Inactive until change password and accept legal terms');
         } else {
@@ -787,10 +787,10 @@ function users_admin_modify($args)
 
     // if module Legal is not available show the equivalent states for user activation value
     if (!ModUtil::available('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) {
-        if ($uservars['activated'] == 2) {
-            $uservars['activated'] = 1;
-        } else if ($uservars['activated'] == 6) {
-            $uservars['activated'] = 4;
+        if ($uservars['activated'] == UserUtil::ACTIVATED_INACTIVE_TOUPP) {
+            $uservars['activated'] = UserUtil::ACTIVATED_ACTIVE;
+        } else if ($uservars['activated'] == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
+            $uservars['activated'] = UserUtil::ACTIVATED_INACTIVE_PWD;
         }
     }
 
@@ -1442,12 +1442,12 @@ function users_admin_uploadImport($args)
 
         $activated = trim($importValues[$counter - 1]['activated']);
         // check activation value and set 1 as default if it is not defined or it is incorrect
-        if (!$activated || ($activated != 0 &&
-            $activated != 1 &&
-            $activated != 2 &&
-            $activated != 4 &&
-            $activated != 6)) {
-                $importValues[$counter - 1]['activated'] = 1;
+        if (!$activated || ($activated != UserUtil::ACTIVATED_INACTIVE &&
+            $activated != UserUtil::ACTIVATED_ACTIVE &&
+            $activated != UserUtil::ACTIVATED_INACTIVE_TOUPP &&
+            $activated != UserUtil::ACTIVATED_INACTIVE_PWD &&
+            $activated != UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP)) {
+                $importValues[$counter - 1]['activated'] = UserUtil::ACTIVATED_ACTIVE;
         }
 
         // check send mail and set 0 as default if it is not defined

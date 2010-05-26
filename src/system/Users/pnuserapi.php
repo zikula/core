@@ -369,20 +369,22 @@ function users_userapi_finishnewuser($args)
         $makepass  = $args['pass'];
         $cryptpass = $args['pass'];
         $hashmethod = $args['hash_method'];
-        $activated = 1;
+        $activated = UserUtil::ACTIVATED_ACTIVE;
     } else {
         if (ModUtil::getVar('Users', 'reg_verifyemail') == 1 && !$args['isadmin']) {
             $makepass = _users_userapi_makePass();
             $cryptpass = hash($hash_method, $makepass);
-            $activated = 1;
+            $activated = UserUtil::ACTIVATED_ACTIVE;
         } elseif (ModUtil::getVar('Users', 'reg_verifyemail') == 2) {
             $makepass = $args['pass'];
             $cryptpass = hash($hash_method, $args['pass']);
-            $activated = ($args['isadmin'] && isset($args['usermustconfirm']) && $args['usermustconfirm'] != 1) ? 1 : 0;
+            $activated = ($args['isadmin'] && isset($args['usermustconfirm']) && $args['usermustconfirm'] != 1) 
+                ? UserUtil::ACTIVATED_ACTIVE
+                : UserUtil::ACTIVATED_INACTIVE;
         } else {
             $makepass = $args['pass']; // for welcome email. [class007]
             $cryptpass = hash($hash_method, $args['pass']);
-            $activated = 1;
+            $activated = UserUtil::ACTIVATED_ACTIVE;
         }
     }
 
@@ -519,7 +521,7 @@ function users_userapi_finishnewuser($args)
         $pnRender->assign('moderation', $moderation);
         $pnRender->assign('user_regdate', $args['user_regdate']);
 
-        if ($activated == 1) {
+        if ($activated == UserUtil::ACTIVATED_ACTIVE) {
             // Password Email & Welcome Email
             $message = $pnRender->fetch('users_userapi_welcomeemail.htm');
             $subject = __f('Password for %1$s from %2$s', array($args['uname'], $sitename));
@@ -705,7 +707,7 @@ function users_userapi_activateuser($args)
     // Preventing reactivation from same link !
     $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);
     $obj = array('uid'          => $args['uid'],
-            'activated'    => '1',
+            'activated'    => UserUtil::ACTIVATED_ACTIVE,
             'user_regdate' => DataUtil::formatForStore($newregdate));
 
     ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));

@@ -157,7 +157,7 @@ function users_defaultdata()
     $record['counter']         = '0';
     $record['timezone_offset'] = '0';
     $record['hash_method']     = '1';
-    $record['activated']       = '1';
+    $record['activated']       = UserUtil::ACTIVATED_ACTIVE;
     DBUtil::insertObject($record, 'users', 'uid', true);
 
     // Admin
@@ -178,7 +178,7 @@ function users_defaultdata()
     $record['commentmax']      = '4096';
     $record['counter']         = '0';
     $record['timezone_offset'] = '0';
-    $record['activated']       = '1';
+    $record['activated']       = UserUtil::ACTIVATED_ACTIVE;
 
     DBUtil::insertObject($record, 'users', 'uid', true);
 }

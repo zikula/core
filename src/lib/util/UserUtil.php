@@ -20,6 +20,19 @@
  */
 class UserUtil
 {
+    // Activated states
+    // 0 = Inactive (Not able to log in. Not yet completed the activation process, or set by site admin.)
+    const ACTIVATED_INACTIVE = 0;
+    // 1 = Active (Able to log in.)
+    const ACTIVATED_ACTIVE = 1;
+    // 2 = Inactive until Terms of Use and/or Privacy Policy accepted (Able to start log-in, but must accept TOU/PP to complete.)
+    const ACTIVATED_INACTIVE_TOUPP = 2;
+    // 4 = Inactive until password changed (Able to start log-in, but must change password to complete.)
+    const ACTIVATED_INACTIVE_PWD = 4;
+    // 6 = Inactive until Terms of Use and/or Privacy Policy accepted and password changed
+    //     (Able to start log-in, but must accept TOU/PP and also must change password to complete.)
+    const ACTIVATED_INACTIVE_PWD_TOUPP = 6;
+
     /**
      * Return a user object
      *

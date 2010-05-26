@@ -673,7 +673,7 @@ function Users_adminapi_createImport($args)
         $pnRender->assign('sitename', $sitename);
         $pnRender->assign('siteurl', $siteurl);
         foreach ($importValues as $value) {
-            if ($value['activated'] == 1 && $value['sendMail'] == 1) {
+            if ($value['activated'] == UserUtil::ACTIVATED_ACTIVE && $value['sendMail'] == 1) {
                 $pnRender->assign('email', $value['email']);
                 $pnRender->assign('uname', $value['uname']);
                 $pnRender->assign('pass', $value['pass']);

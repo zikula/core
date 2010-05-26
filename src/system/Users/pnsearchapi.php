@@ -76,7 +76,7 @@ function users_searchapi_search($args)
 
     // build the where clause
     $where   = array();
-    $where[] = "$userscolumn[activated] = '1'";
+    $where[] = "{$userscolumn['activated']} = " . UserUtil::ACTIVATED_ACTIVE;
 
     $unameClause = search_construct_where($args,array($userscolumn['uname']));
     // invoke the current profilemodule search query

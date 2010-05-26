@@ -65,15 +65,15 @@
                 <div class="z-formrow">
                     <label for="users_activated">{gt text='User status'}</label>
                     <select id="users_activated" name="activated">
-                        <option value="0" {if $userinfo.activated eq 0}selected="selected"{/if}>{gt text="Inactive"}</option>
+                        <option value="{'UserUtil::ACTIVATED_INACTIVE'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE'|constant}selected="selected"{/if}>{gt text="Inactive"}</option>
                         {if $legal && ($tou_active || $pp_active eq true)}
-                        <option value="2" {if $userinfo.activated eq 2}selected="selected"{/if}>{gt text="Inactive until %s accepted" tag1=$touppTextString}</option>
+                        <option value="{'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}selected="selected"{/if}>{gt text="Inactive until %s accepted" tag1=$touppTextString}</option>
                         {/if}
-                        <option value="4" {if $userinfo.activated eq 4}selected="selected"{/if}>{gt text="Force password change on login"}</option>
+                        <option value="{'UserUtil::ACTIVATED_INACTIVE_PWD'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_PWD'|constant}selected="selected"{/if}>{gt text="Force password change on login"}</option>
                         {if $legal && ($tou_active || $pp_active eq true)}
-                        <option value="6" {if $userinfo.activated eq 6}selected="selected"{/if}>{gt text="Force password change and accept %s" tag1=$touppTextString}</option>
+                        <option value="{'UserUtil::ACTIVATED_INACTIVE_PWDTOUPP'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_PWDTOUPP'|constant}selected="selected"{/if}>{gt text="Force password change and accept %s" tag1=$touppTextString}</option>
                         {/if}
-                        <option value="1" {if $userinfo.activated eq 1}selected="selected"{/if}>{gt text="Active"}</option>
+                        <option value="{'UserUtil::ACTIVATED_ACTIVE'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_ACTIVE'|constant}selected="selected"{/if}>{gt text="Active"}</option>
                     </select>
                     {if !$legal}
                         <p class="z-formnote z-warningmsg">{gt text="Notice: The option \"Inactive until 'Terms of use' and 'Privacy policy' accepted\" is not possible because the module Legal is not available."}</p>

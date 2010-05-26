@@ -436,7 +436,7 @@ function users_user_login()
             UserUtil::setVar('pass', $newpasshash, $userid);
             $pass = $newpass;
         }
-        UserUtil::setVar('activated', 1, $userid);
+        UserUtil::setVar('activated', UserUtil::ACTIVATED_ACTIVE, $userid);
     }
 
     $loginoption    = ModUtil::getVar('Users', 'loginviaoption');
