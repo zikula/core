@@ -700,10 +700,13 @@ class Form_Render extends Renderer
 
         $this->Includes = unserialize($bytes);
 
-        // not required now because of autoloader
-//        foreach ($this->Includes as $includeFilename => $dummy) {
-//            require_once $includeFilename;
-//        }
+        // Load the third party plugins only
+        foreach ($this->Includes as $includeFilename => $dummy) {
+            if (strpos($includeFilename, 'config'.DIRECTORY_SEPARATOR)
+             || strpos($includeFilename, 'modules'.DIRECTORY_SEPARATOR)) {
+                require_once $includeFilename;
+            }
+        }
     }
 
     /* --- Authentication key --- */
