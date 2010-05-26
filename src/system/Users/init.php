@@ -67,6 +67,7 @@ function users_init()
     ModUtil::setVar('Users', 'idnnames', 1);
     ModUtil::setVar('Users', 'use_password_strength_meter', 0);
     ModUtil::setVar('Users', 'authmodules', 'Users');
+    ModUtil::setVar('Users', 'recovery_forcepwdchg', 'Users', 0);
 
     // Initialisation successful
     return true;

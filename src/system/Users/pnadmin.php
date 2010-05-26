@@ -977,6 +977,7 @@ function users_admin_updateconfig()
     ModUtil::setVar('Users', 'allowgravatars', $config['allowgravatars']);
     ModUtil::setVar('Users', 'gravatarimage', $config['gravatarimage']);
     ModUtil::setVar('Users', 'lowercaseuname', $config['lowercaseuname']);
+    ModUtil::setVar('Users', 'recovery_forcepwdchg', $config['recovery_forcepwdchg']);
 
     if (empty($config['authmodules'])) {
         return LogUtil::registerError(__('Error! You must specify at least one authentication module, e.g. Users.'));

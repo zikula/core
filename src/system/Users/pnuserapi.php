@@ -661,10 +661,16 @@ function users_userapi_mailpassword($args)
                 $hashMethod = ModUtil::getVar('Users', 'hash_method');
                 $hashMethodsArray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
                 $cryptPass = hash($hashMethod, $newpass);
+
+                $forceChange = ModUtil::getVar('Users', 'recovery_forcepwdchg', false);
+
                 $obj = array();
                 $obj['uid'] = $user['uid'];
                 $obj['pass']  = $cryptPass;
                 $obj['hash_method'] = $hashMethodsArray[$hashMethod];
+                if ($forceChange) {
+                    $obj['activated'] = 4;
+                }
                 $passwordSaved = DBUtil::updateObject ($obj, 'users', '', 'uid');
 
                 if (!$passwordSaved) {

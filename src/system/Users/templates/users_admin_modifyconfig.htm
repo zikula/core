@@ -260,6 +260,21 @@
         </fieldset>
 
         <fieldset>
+            <legend>{gt text="Password recovery settings"}</legend>
+            <div class="z-formrow">
+                <label>{gt text="Force password change after recovery"}</label>
+                <div class="z-formlist">
+                    <input id="recovery_forcepwdchg1" type="radio" name="config[recovery_forcepwdchg]" value="1" {if $config.recovery_forcepwdchg eq 1} checked="checked"{/if} />
+                    <label for="recovery_forcepwdchg1">{gt text="Yes. The user must change his password before logging in."}</label>
+                </div>
+                <div class="z-formlist">
+                    <input id="recovery_forcepwdchg0" type="radio" name="config[recovery_forcepwdchg]" value="0" {if $config.recovery_forcepwdchg eq 0} checked="checked"{/if} />
+                    <label for="recovery_forcepwdchg0">{gt text="No. The user is allowed to continue using the system-generated password."}</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
             <legend>{gt text="Authentication Module settings"}</legend>
             <div class="z-formrow">
                 <label for="users_authmodules">{gt text="Authentication modules"}</label>
