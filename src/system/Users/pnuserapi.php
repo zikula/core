@@ -617,6 +617,7 @@ function users_userapi_mailconfirmationcode($args)
 function users_userapi_mailpassword($args)
 {
     $emailMessageSent = false;
+    $passwordSaved = false;
 
     if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
         || !isset($args['code']) || empty($args['code'])
@@ -655,7 +656,20 @@ function users_userapi_mailpassword($args)
                 ));
 
             if ($emailMessageSent) {
-                UserUtil::setPassword($newpass);
+                // Next step: add the new password to the database
+                // Note: cannot use UserUtil::setPassword() because there is no user logged in!
+                $hashMethod = ModUtil::getVar('Users', 'hash_method');
+                $hashMethodsArray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
+                $cryptPass = hash($hashMethod, $newpass);
+                $obj = array();
+                $obj['uid'] = $user['uid'];
+                $obj['pass']  = $cryptPass;
+                $obj['hash_method'] = $hashMethodsArray[$hashMethod];
+                $passwordSaved = DBUtil::updateObject ($obj, 'users', '', 'uid');
+
+                if (!$passwordSaved) {
+                    LogUtil::registerError(__('Error! Unable to save new password.'));
+                }
             } else {
                 LogUtil::registerError(__('Error! Unable to send new password e-mail message.'));
             }
@@ -664,7 +678,7 @@ function users_userapi_mailpassword($args)
         }
     }
 
-    return $emailMessageSent;
+    return ($emailMessageSent && $passwordSaved);
 }
 
 /**
