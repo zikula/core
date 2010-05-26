@@ -179,7 +179,7 @@ Zikula.recursiveSortable = Class.create({
         this.list.select('li').each(function(node){
             if(this.isAccepted(node)) {
                 var item = new Hash();
-                item.set('parent',(node.up('li') != undefined) ? this.getId(node.up('li')) : null);
+                item.set('parentid',(node.up('li') != undefined) ? this.getId(node.up('li')) : null);
                 item.set('haschildren',(node.down('li') != undefined) ? true : false);
                 this.saved.set(this.getId(node),item);
             }

@@ -126,10 +126,10 @@ function blocks_defaultdata()
         $menucontent['template'] = 'blocks_block_extmenu.htm';
         $menucontent['blocktitles'][$lang] = __('Main menu');
         // insert the links
-        $menucontent['links'][$lang][] = array('name' => __('Home'), 'url' => '{homepage}', 'title' => __("Go to the site's home page"), 'level' => 0, 'parent' => 0, 'image' => '', 'active' => '1');
-        $menucontent['links'][$lang][] = array('name' => __('Site admin panel'), 'url' => '{Admin:adminpanel:admin}', 'title' => __('Go to the site admin panel'), 'level' => 0, 'parent' => 0, 'image' => '', 'active' => '1');
-        $menucontent['links'][$lang][] = array('name' => __('User account panel'), 'url' => '{Users}', 'title' => __('Go to your user account panel'), 'level' => 0, 'parent' => 0, 'image' => '', 'active' => '1');
-        $menucontent['links'][$lang][] = array('name' => __('Log out'), 'url' => '{Users:logout}', 'title' => __('Log out of your user account'), 'level' => 0, 'parent' => 0, 'image' => '', 'active' => '1');
+        $menucontent['links'][$lang][] = array('name' => __('Home'), 'url' => '{homepage}', 'title' => __("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+        $menucontent['links'][$lang][] = array('name' => __('Site admin panel'), 'url' => '{Admin:adminpanel:admin}', 'title' => __('Go to the site admin panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+        $menucontent['links'][$lang][] = array('name' => __('User account panel'), 'url' => '{Users}', 'title' => __('Go to your user account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+        $menucontent['links'][$lang][] = array('name' => __('Log out'), 'url' => '{Users:logout}', 'title' => __('Log out of your user account'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
     }
 
     ZLanguage::setLocale($saveLanguage);

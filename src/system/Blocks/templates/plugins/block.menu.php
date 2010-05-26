@@ -116,12 +116,12 @@ function _smarty_block_menu_parsemenu($params)
             $item['id'] = 'dummy_'.$i;
         }
         $_node = array('item' => $item, 'nodes' => array());
-        if(!isset($item['parent']) || $item['parent'] === null) {
+        if(!isset($item['parentid']) || $item['parentid'] === null) {
             $tree[$item['id']] = $_node;
             $path = null;
         } else {
-            $path = $map[$item['parent']];
-            $path[] = $item['parent'];
+            $path = $map[$item['parentid']];
+            $path[] = $item['parentid'];
             $handle =& $tree;
             while (list($key, $value) = each($path)) {
                 if($value === null) continue;
@@ -149,7 +149,7 @@ function _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass=null,$listI
     foreach ($tree as $tab) {
         if(!empty($tab['nodes'])) {
             $subhtml = _smarty_block_menu_parsemenu_html($tab['nodes'],$listTag);
-            $html .= preg_replace('/^.*?(<\/li>)$/mi', $subhtml.'</li>', $tab['item']['content'],1);
+            $html .= preg_replace('/<\/li>\s*$/Di', $subhtml.'</li>', $tab['item']['content'],1);
         } else {
             $html .= $tab['item']['content'];
         }

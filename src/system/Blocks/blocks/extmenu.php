@@ -109,7 +109,7 @@ function Blocks_extmenublock_display($blockinfo)
         $blocked = array();
         foreach ($vars['links'][$thislang] as $linkid => $link) {
             $denied = !SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . ':' . $linkid . ':', ACCESS_READ);
-            if($denied || in_array($link['parent'], $blocked)) {
+            if($denied || in_array($link['parentid'], $blocked)) {
                 $blocked[] = $linkid;
             } elseif ($link['active'] != 1) {
                 $blocked[] = $linkid;
@@ -142,7 +142,7 @@ function Blocks_extmenublock_display($blockinfo)
                                 'url'    => '',
                                 'title'  => '',
                                 'level'  => 0,
-                                'parent' => null,
+                                'parentid' => null,
                                 'image'  => ''
                                 );
             if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
@@ -150,7 +150,7 @@ function Blocks_extmenublock_display($blockinfo)
                                     'url'    => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
                                     'title'  => '',
                                     'level'  => 0,
-                                    'parent' => null,
+                                    'parentid' => null,
                                     'image'  => ''
                                     );
             }
@@ -166,7 +166,7 @@ function Blocks_extmenublock_display($blockinfo)
                                              'url'    => System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
                                              'title'  => $mod['description'],
                                              'level'  => 0,
-                                             'parent' => null,
+                                             'parentid' => null,
                                              'image'  => ''
                                              );
                         break;
@@ -176,7 +176,7 @@ function Blocks_extmenublock_display($blockinfo)
                                              'url'    => ModUtil::url($mod['name'], 'user', 'main'),
                                              'title'  => $mod['description'],
                                              'level'  => 0,
-                                             'parent' => null,
+                                             'parentid' => null,
                                              'image'  => ''
                                              );
                         break;
@@ -353,7 +353,7 @@ function Blocks_extmenublock_modify($blockinfo)
                                                       'url'    => $newurl,
                                                       'title'  => __('--New link--'),
                                                       'level'  => 0,
-                                                      'parent' => null,
+                                                      'parentid' => null,
                                                       'image'  => '',
                                                       'active' => 1);
         }
@@ -453,7 +453,7 @@ function Blocks_extmenublock_update($blockinfo)
     if(is_array($linksorder) && !empty($linksorder)) {
         foreach ($vars['links'] as $lang => $langlinks) {
             foreach ($langlinks as $linkid => $link) {
-                $vars['links'][$lang][$linkid]['parent'] = $linksorder[$linkid]['parent'];
+                $vars['links'][$lang][$linkid]['parentid'] = $linksorder[$linkid]['parentid'];
                 $vars['links'][$lang][$linkid]['haschildren'] = $linksorder[$linkid]['haschildren'];
             }
         }
