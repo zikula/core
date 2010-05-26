@@ -716,9 +716,9 @@ function Users_userapi_accountlinks()
             continue;
         }
 
-        $modpath = ($mod['type'] == 3) ? 'system' : 'modules';
+        $modpath = ($mod['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        if (file_exists("$modpath/".DataUtil::formatForOS($mod['directory']).'/pnaccountapi.php')) {
+        if (file_exists("$modpath/".DataUtil::formatForOS($mod['directory']).'/accountapi.php') || file_exists("$modpath/".DataUtil::formatForOS($mod['directory']).'/pnaccountapi.php')) {
             $items = ModUtil::apiFunc($mod['name'], 'account', 'getall');
             if ($items) {
                 foreach ($items as $k => $item) {
