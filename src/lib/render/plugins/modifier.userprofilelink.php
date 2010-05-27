@@ -77,6 +77,8 @@ function smarty_modifier_userprofilelink($string, $class = '', $image = '', $max
         }
     } elseif (!empty($image)) {
         $string = ''; //image for anonymous user should be "empty"
+    } elseif (is_numeric($string)) {
+        $string = UserUtil::getVar('uname', $uid);
     }
 
     return $string;
