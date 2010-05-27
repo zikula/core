@@ -18,7 +18,7 @@ Event.observe(window, 'load', function() {
             if (nid != null && nodes[i].id != 'addcatlink') {
                 addContext(nid);
                 addEditor(nid);
-                if (nodes[i].class == 'active')
+                if (nodes[i].className == 'active')
                     continue;
                 var droppable = Droppables.add(nid, {
                     accept : 'draggable',
