@@ -34,25 +34,16 @@ function users_adminapi_userexists($args)
 /**
  * Get a list of user groups. DO NOT confuse this function with users_user_getusergroups.
  *
- * @see    users_user_getusergroups()
+ * @deprecated since 1.3.0
+ * @see Groups_user_getall()
  *
  * @return array|bool An array of user groups ordered by name; false on error.
  */
 function users_adminapi_getusergroups()
 {
-    // Need read access to call this function
-    if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-        return false;
-    }
-
-    // Get and display current groups
-    $objArray = DBUtil::selectObjectArray('groups', '', 'name');
-
-    if ($objArray === false) {
-        LogUtil::registerError(__('Error! Could not load data.'));
-    }
-
-    return $objArray;
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'Groups_userapi_getall')), 'STRICT');
+    // Note: the original code returned an array of ALL groups ordered by name. Do not confuse this with Groups_userapi_getusergroups!
+    return ModUtil::apiFunc('Groups', 'user', 'getall');
 }
 
 /**

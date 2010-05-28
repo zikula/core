@@ -485,8 +485,7 @@ function users_admin_search()
     $pnRender = Renderer::getInstance('Users', false);
 
     // get group items
-    // TODO: move to a call to the groups module
-    $groups = ModUtil::apiFunc('Users', 'admin', 'getusergroups');
+    $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
     $pnRender->assign('groups', $groups);
 
     return $pnRender->fetch('users_admin_search.htm');
