@@ -15,7 +15,7 @@
 /**
  * MultiHook Event Handler class.
  */
-class SysInfo_admin_extensionsHandler extends CustomEventHandler
+class SysInfo_EventHandlers_Extensions extends CustomEventHandler
 {
     /**
      * Array of event names for this handler (usually just one).
