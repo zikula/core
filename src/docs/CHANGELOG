@@ -138,6 +138,7 @@ Deprecated entire pn* API.
 Removed prefixes from module directories for the following folders, docs, style, javascript, templates, blocks, includes (remains backward compatible).
 Removed prefixed from the following module files, init.php, tables.php and version.php (remains backward compatible).
 Added {browserhack} block to allow adding of browser hacks.  E.g. {browserhack condition="if lte IE 7"}foo{/browserback}.  Block also takes assign="var".
+Added support for HTTP 500 response in Errors module.
 
 CHANGELOG - ZIKULA 1.2.2
 ------------------------

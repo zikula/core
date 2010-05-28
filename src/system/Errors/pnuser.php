@@ -39,6 +39,8 @@ function errors_user_main($args)
         case 404:
             header("{$protocol} 404 Not Found");
             break;
+        case 500:
+            header("{$protocol} 500 Internal Server Error");
         default:
     }
 
