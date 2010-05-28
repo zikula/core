@@ -349,14 +349,9 @@ function Admin_admin_adminpanel($args)
 
             if (($catid == $acid) || (($catid == false) && ($acid == ModUtil::getVar('Admin', 'defaultcategory')))) {
                 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
-                if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-                    $menutexturl = ModUtil::url($modinfo['name'], 'admin');
-                    $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-                } else {
-                    $menutexturl = 'admin.php?module=' . $modinfo['name'];
-                    $modpath = 'modules';
-                }
-
+                $menutexturl = ModUtil::url($modinfo['name'], 'admin');
+                $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+                
                 if ($displayNameType == 1) {
                     $menutext = $modinfo['displayname'];
                 } elseif ($displayNameType == 2) {
