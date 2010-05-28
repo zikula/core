@@ -19,7 +19,7 @@ function install()
 
     define('_ZINSTALLVER', '1.3.0-dev');
 
-    $installbySQL = false;
+    $installbySQL = (file_exists('install/sql/custom.sql')) ? true : true;
 
     // start the basics of Zikula
     include 'lib/ZLoader.php';
