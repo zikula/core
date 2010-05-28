@@ -87,7 +87,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     }
 
     if (is_array($javascripts) && !empty($javascripts)) {
-        // some check for prototype/pnajax/scriptaculous
+        // some check for prototype/ajax/scriptaculous
         $enableSplice = false;
         $javascriptLinksToCheck = array('javascript/ajax/prototype.js',
                                         'javascript/ajax/scriptaculous.js',
@@ -97,7 +97,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
                                         'javascript/ajax/scriptaculous.js?load=controls',
                                         'javascript/ajax/scriptaculous.js?load=slider',
                                         'javascript/ajax/scriptaculous.js?load=sound',
-                                        'javascript/ajax/pnajax.js');
+                                        'javascript/ajax/ajax.js');
 
         $javascriptNewLinks     = array('javascript/ajax/prototype.js',
                                         'javascript/ajax/scriptaculous.js',
@@ -107,7 +107,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
                                         'javascript/ajax/controls.js',
                                         'javascript/ajax/slider.js',
                                         'javascript/ajax/sound.js',
-                                        'javascript/ajax/pnajax.js');
+                                        'javascript/ajax/ajax.js');
 
         foreach ($javascripts as $key => $currentJS) {
             if (in_array($currentJS, $javascriptLinksToCheck)) {
@@ -131,7 +131,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
         // is highly appreciated! [landseer]
         //
         $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . System::getVar('entrypoint', 'index.php') . '"; document.location.pnbaseURL="' . System::getBaseUrl(). '"; ';
-        // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in pnajax.js
+        // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in ajax.js
         $ajaxtimeout = System::getVar('ajaxtimeout', 5000);
         if ($ajaxtimeout != 5000) {
             $return .= 'document.location.ajaxtimeout=' . (int) DataUtil::formatForDisplay($ajaxtimeout). ';';

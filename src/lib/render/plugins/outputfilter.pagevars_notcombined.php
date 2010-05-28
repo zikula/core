@@ -84,10 +84,10 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     }
 
     if (is_array($javascripts) && !empty($javascripts)) {
-        // check for prototype and pnajax
-        if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/pnajax.js', $javascripts)) {
-            // prototype found, we also load pnajax.js now
-            $javascripts[] = 'javascript/ajax/pnajax.js';
+        // check for prototype and ajax
+        if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/ajax.js', $javascripts)) {
+            // prototype found, we also load ajax.js now
+            $javascripts[] = 'javascript/ajax/ajax.js';
         }
 
         // Ugly but necessary inline javascript for now: Some javascripts, eg. the lightbox, need to know the path to the system and
@@ -101,7 +101,7 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
         // is highly appreciated! [landseer]
         //
         $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . System::getVar('entrypoint', 'index.php') . '"; document.location.pnbaseURL="' . System::getBaseUrl() . '"; ';
-        // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in pnajax.js
+        // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in ajax.js
         $ajaxtimeout = System::getVar('ajaxtimeout', 5000);
         if ($ajaxtimeout != 5000) {
             $return .= 'document.location.ajaxtimeout=' . (int) DataUtil::formatForDisplay($ajaxtimeout) . ';';
