@@ -33,9 +33,9 @@ function modules_adminapi_update($args)
 {
     // Argument check
     if (!isset($args['id']) || !is_numeric($args['id']) ||
-        !isset($args['displayname']) ||
-        !isset($args['description']) ||
-        !isset($args['url'])) {
+            !isset($args['displayname']) ||
+            !isset($args['description']) ||
+            !isset($args['url'])) {
         return LogUtil::registerArgsError();
     }
     // Security check
@@ -63,9 +63,9 @@ function modules_adminapi_update($args)
 
     // Rename operation
     $obj = array('id'          => $args['id'],
-                 'displayname' => $args['displayname'],
-                 'description' => $args['description'],
-                 'url'         => $args['url']);
+            'displayname' => $args['displayname'],
+            'description' => $args['description'],
+            'url'         => $args['url']);
     if (!DBUtil::updateObject($obj, 'modules')) {
         return LogUtil::registerError(__('Error! Could not save your changes.'));
     }
@@ -105,7 +105,7 @@ function modules_adminapi_updatehooks($args)
 
     $where = "WHERE $hookscolumn[smodule] = ''";
     $orderBy = "ORDER BY $hookscolumn[tmodule],
-                         $hookscolumn[smodule] DESC";
+            $hookscolumn[smodule] DESC";
     $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
     if ($objArray === false) {
         return false;
@@ -160,7 +160,7 @@ function modules_adminapi_extendedupdatehooks($args)
 
     $where = "WHERE $hookscolumn[smodule] = ''";
     $orderBy = "ORDER BY $hookscolumn[tmodule],
-                         $hookscolumn[smodule] DESC";
+            $hookscolumn[smodule] DESC";
     // read the hooks themselves - the entries in the database that are not connected
     // with a module
     $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
@@ -240,8 +240,8 @@ function modules_adminapi_list($args)
     if (isset($args['letter']) && !empty($args['letter'])) {
         $where[] = "$modulescolumn[name] LIKE '" . DataUtil::formatForStore($args['letter']) . "%' OR " . "$modulescolumn[name] LIKE '" . DataUtil::formatForStore(strtolower($args['letter'])) . "%'";
         // why reset startnum here? This prevents moving to a second page within
-    // a lettered filter - markwest
-    //$startnum = 1;
+        // a lettered filter - markwest
+        //$startnum = 1;
     }
 
     if ($type != 0) {
@@ -318,8 +318,8 @@ function modules_adminapi_setstate($args)
     }
 
     list($name, $directory, $oldstate) = array($result['name'],
-                                               $result['directory'],
-                                               $result['state']);
+            $result['directory'],
+            $result['state']);
 
     $modinfo = ModUtil::getInfo($args['id']);
     // Check valid state transition
@@ -338,10 +338,10 @@ function modules_adminapi_setstate($args)
         case ModUtil::STATE_INACTIVE:
             break;
         case ModUtil::STATE_ACTIVE:
-            // allow new style modules to transition ditectly from upgraded to active state
+        // allow new style modules to transition ditectly from upgraded to active state
             if ((($oldstate == ModUtil::STATE_UNINITIALISED) ||
-                 ($oldstate == ModUtil::STATE_MISSING) ||
-                 ($oldstate == ModUtil::STATE_UPGRADED)) && $modinfo['type'] == 1) {
+                            ($oldstate == ModUtil::STATE_MISSING) ||
+                            ($oldstate == ModUtil::STATE_UPGRADED)) && $modinfo['type'] == 1) {
                 return LogUtil::registerError(__('Error! Invalid module state transition.'));
             }
             break;
@@ -398,6 +398,13 @@ function modules_adminapi_remove($args)
     }
 
     $osdir = DataUtil::formatForOS($modinfo['directory']);
+    $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+
+    $bootstrap = "$modpath/$osdir/bootstrap.php";
+    if (file_exists($bootstrap)) {
+        include_once $bootstrap;
+    }
+
     if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
         $dir = "modules/$osdir/locale";
         if (is_dir($dir)) {
@@ -409,36 +416,32 @@ function modules_adminapi_remove($args)
     ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
 
     // Get module database info
-    ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
-
+    ModUtil::dbInfoLoad($modinfo['name'], $osdir);
     // Module deletion function. Only execute if the module hasn't been initialised.
     if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-        if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
-                if (!include_once($file)) {
-                    LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
-                }
+        if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
+            if (!include_once($file)) {
+                LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
             }
+        }
 
-            // perform the actual deletion of the module
-            $func = $modinfo['name'] . '_delete';
-            $interactive_func = $modinfo['name'] . '_init_interactivedelete';
+        // perform the actual deletion of the module
+        $func = $modinfo['name'] . '_delete';
+        $interactive_func = $modinfo['name'] . '_init_interactivedelete';
 
-            // allow bypass of interactive removal during a new installation only.
-            if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
-                return; // return void here
-            }
+        // allow bypass of interactive removal during a new installation only.
+        if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
+            return; // return void here
+        }
 
-            if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && function_exists($interactive_func)) {
-                SessionUtil::setVar('interactive_remove', true);
-                return $interactive_func();
-            }
+        if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && function_exists($interactive_func)) {
+            SessionUtil::setVar('interactive_remove', true);
+            return $interactive_func();
+        }
 
-            if (function_exists($func)) {
-                if ($func() != true) {
-                    return false;
-                }
+        if (function_exists($func)) {
+            if ($func() != true) {
+                return false;
             }
         }
     }
@@ -606,59 +609,59 @@ function modules_adminapi_getfilemodules($args)
                 }
                 if (!isset($args['name'])) {
                     $filemodules["$rootdir/$dir"] = array(
-                                               'directory'       => $dir,
-                                               'name'            => $name,
-                                               'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
-                                               'type'            => $modtype,
-                                               'displayname'     => $displayname,
-                                               'url'             => $url,
-                                               'regid'           => $regid,
-                                               'version'         => $version,
-                                               'description'     => $description,
-                                               'admin_capable'   => $adminCapable,
-                                               'user_capable'    => $userCapable,
-                                               'profile_capable' => $profileCapable,
-                                               'message_capable' => $messageCapable,
-                                               'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
-                                               'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
-                                               'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
-                                               'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
-                                               'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
-                                               'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
-                                               'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
-                                               'securityschema'  => $securityschema,
-                                               'moddependencies' => $moddependencies,
-                                               'core_min'        => $core_min,
-                                               'core_max'        => $core_max
-                                              );
+                            'directory'       => $dir,
+                            'name'            => $name,
+                            'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
+                            'type'            => $modtype,
+                            'displayname'     => $displayname,
+                            'url'             => $url,
+                            'regid'           => $regid,
+                            'version'         => $version,
+                            'description'     => $description,
+                            'admin_capable'   => $adminCapable,
+                            'user_capable'    => $userCapable,
+                            'profile_capable' => $profileCapable,
+                            'message_capable' => $messageCapable,
+                            'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
+                            'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
+                            'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
+                            'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
+                            'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
+                            'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
+                            'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
+                            'securityschema'  => $securityschema,
+                            'moddependencies' => $moddependencies,
+                            'core_min'        => $core_min,
+                            'core_max'        => $core_max
+                    );
                 } else {
                     if ($name == $args['name']) {
                         $filemodules = array(
-                                               'directory'       => $dir,
-                                               'name'            => $name,
-                                               'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
-                                               'type'            => $modtype,
-                                               'displayname'     => $displayname,
-                                               'url'             => $url,
-                                               'regid'           => $regid,
-                                               'version'         => $version,
-                                               'description'     => $description,
-                                               'admin_capable'   => $adminCapable,
-                                               'user_capable'    => $userCapable,
-                                               'profile_capable' => $profileCapable,
-                                               'message_capable' => $messageCapable,
-                                               'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
-                                               'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
-                                               'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
-                                               'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
-                                               'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
-                                               'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
-                                               'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
-                                               'securityschema'  => $securityschema,
-                                               'moddependencies' => $moddependencies,
-                                               'core_min'        => $core_min,
-                                               'core_max'        => $core_max
-                                              );
+                                'directory'       => $dir,
+                                'name'            => $name,
+                                'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
+                                'type'            => $modtype,
+                                'displayname'     => $displayname,
+                                'url'             => $url,
+                                'regid'           => $regid,
+                                'version'         => $version,
+                                'description'     => $description,
+                                'admin_capable'   => $adminCapable,
+                                'user_capable'    => $userCapable,
+                                'profile_capable' => $profileCapable,
+                                'message_capable' => $messageCapable,
+                                'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
+                                'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
+                                'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
+                                'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
+                                'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
+                                'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
+                                'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
+                                'securityschema'  => $securityschema,
+                                'moddependencies' => $moddependencies,
+                                'core_min'        => $core_min,
+                                'core_max'        => $core_max
+                        );
                     }
                 }
 
@@ -731,7 +734,7 @@ function modules_adminapi_regenerate($args)
                     // ensure the old module name doesn't get listed as missing and the new name as uninitialised
                     unset($dbmodules[$dbname]);
                     if ($dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_UNINITIALISED &&
-                        $dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_INVALID) {
+                            $dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_INVALID) {
                         unset($dbmodinfo['version']);
                     }
                     // update the db with the new module info
@@ -743,7 +746,7 @@ function modules_adminapi_regenerate($args)
         if (isset($dbmodules[$name]['id'])) {
             $modinfo['id'] = $dbmodules[$name]['id'];
             if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
-                $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
+                    $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
                 unset($modinfo['version']);
             }
             if (!$defaults) {
@@ -762,14 +765,14 @@ function modules_adminapi_regenerate($args)
             if ($dbmodules[$modinfo['name']]['state'] != '' && $dbmodules[$modinfo['name']]['state'] < 10) {
                 // set the module as invalid version increasing the state value with 10 in order to recover the previous state in case the module files were compatible again
                 modules_adminapi_setstate(array('id'   => $dbmodules[$modinfo['name']]['id'],
-                                                'state' => $dbmodules[$modinfo['name']]['state'] + 10));
+                        'state' => $dbmodules[$modinfo['name']]['state'] + 10));
             }
         } else {
             // set the previous state for the module
             if ($dbmodules[$modinfo['name']]['state'] > 10) {
                 // set the module as valid preserving the previous state
                 modules_adminapi_setstate(array('id'   => $dbmodules[$modinfo['name']]['id'],
-                                                'state' => $dbmodules[$modinfo['name']]['state'] - 10));
+                        'state' => $dbmodules[$modinfo['name']]['state'] - 10));
             }
         }
     }
@@ -832,13 +835,13 @@ function modules_adminapi_regenerate($args)
             if ($dbmodules[$name]['state'] == ModUtil::STATE_MISSING) {
                 // module was lost, now it is here again
                 modules_adminapi_setstate(array('id'   => $dbmodules[$name]['id'],
-                                                'state' => ModUtil::STATE_INACTIVE));
+                        'state' => ModUtil::STATE_INACTIVE));
             }
             if ($dbmodules[$name]['version'] != $modinfo['version']) {
                 if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
-                    $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
+                        $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
                     modules_adminapi_setstate(array('id'   => $dbmodules[$name]['id'],
-                                                    'state' => ModUtil::STATE_UPGRADED));
+                            'state' => ModUtil::STATE_UPGRADED));
                 }
             }
         }
@@ -883,8 +886,15 @@ function modules_adminapi_initialise($args)
     }
 
     // Get module database info
-    ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
     $osdir = DataUtil::formatForOS($modinfo['directory']);
+    ModUtil::dbInfoLoad($modinfo['name'], $osdir);
+    $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+
+    $bootstrap = "$modpath/$osdir/bootstrap.php";
+    if (file_exists($bootstrap)) {
+        include_once $bootstrap;
+    }
+
     if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
         if (is_dir("modules/$osdir/locale")) {
             ZLanguage::bindModuleDomain($modinfo['name']);
@@ -892,7 +902,6 @@ function modules_adminapi_initialise($args)
     }
 
     // load module maintainence functions
-    $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
     if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
         if (!include_once($file)) {
             LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
@@ -900,31 +909,29 @@ function modules_adminapi_initialise($args)
     }
 
     // perform the actual install of the module
-    if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-        // system or module
-        $func = $modinfo['name'] . '_init';
-        $interactive_func = $modinfo['name'] . '_init_interactiveinit';
+    // system or module
+    $func = $modinfo['name'] . '_init';
+    $interactive_func = $modinfo['name'] . '_init_interactiveinit';
 
-        // allow bypass of interactive install during a new installation only.
-        if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
-            return; // return void here
-        }
+    // allow bypass of interactive install during a new installation only.
+    if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
+        return; // return void here
+    }
 
-        if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && function_exists($interactive_func)) {
-            SessionUtil::setVar('interactive_init', true);
-            return $interactive_func();
-        }
+    if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && function_exists($interactive_func)) {
+        SessionUtil::setVar('interactive_init', true);
+        return $interactive_func();
+    }
 
-        if (function_exists($func)) {
-            if ($func() != true) {
-                return false;
-            }
+    if (function_exists($func)) {
+        if ($func() != true) {
+            return false;
         }
     }
 
     // Update state of module
     if (!modules_adminapi_setstate(array('id' => $args['id'],
-                                         'state' => ModUtil::STATE_ACTIVE))) {
+    'state' => ModUtil::STATE_ACTIVE))) {
         return LogUtil::registerError(__('Error! Could not change module state.'));
     }
 
@@ -955,66 +962,69 @@ function modules_adminapi_upgrade($args)
         return LogUtil::registerError(__('Error! No such module ID exists.'));
     }
 
-    if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-        // Get module database info
-        ModUtil::dbInfoLoad($modinfo['name'], $modinfo['directory']);
-        $osdir = DataUtil::formatForOS($modinfo['directory']);
-        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            $dir = "modules/$osdir/locale";
-            if (is_dir($dir)) {
-                ZLanguage::bindModuleDomain($modinfo['name']);
-            }
-        }
+    $osdir = DataUtil::formatForOS($modinfo['directory']);
+    ModUtil::dbInfoLoad($modinfo['name'], $osdir);
+    $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        // load module maintainence functions
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!include_once($file)) {
-                LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
-            }
-        }
-
-        // perform the actual upgrade of the module
-        $func = $modinfo['name'] . '_upgrade';
-        $interactive_func = $modinfo['name'] . '_init_interactiveupgrade';
-
-        // allow bypass of interactive upgrade during a new installation only.
-        if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
-            return; // return void here
-        }
-
-        if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && function_exists($interactive_func)) {
-            SessionUtil::setVar('interactive_upgrade', true);
-            return $interactive_func(array('oldversion' => $modinfo['version']));
-        }
-
-        if (function_exists($func)) {
-            $result = $func($modinfo['version']);
-            if (is_string($result)) {
-                if ($result != $modinfo['version']) {
-                    // update the last successful updated version
-                    $modinfo['version'] = $result;
-                    $obj = DBUtil::updateObject($modinfo, 'modules', '', 'id', true);
-                }
-                return false;
-            } elseif ($result != true) {
-                return false;
-            }
-        }
-        $modversion['version'] = '0';
-        $file1 = "$modpath/$osdir/version.php";
-        $file2 = "$modpath/$osdir/pnversion.php";
-        if (file_exists($file1)) {
-            $file = $file1;
-        } elseif (file_exists($file2)) {
-            $file = $file2;
-        }
-
-        include $file;
-
-        $version = $modversion['version'];
+    $bootstrap = "$modpath/$osdir/bootstrap.php";
+    if (file_exists($bootstrap)) {
+        include_once $bootstrap;
     }
 
+    if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
+        $dir = "modules/$osdir/locale";
+        if (is_dir($dir)) {
+            ZLanguage::bindModuleDomain($modinfo['name']);
+        }
+    }
+
+    // load module maintainence functions
+    if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
+        if (!include_once($file)) {
+            LogUtil::registerError(__f("Error! Could not load a required file: '%s'.", $file));
+        }
+    }
+
+    // perform the actual upgrade of the module
+    $func = $modinfo['name'] . '_upgrade';
+    $interactive_func = $modinfo['name'] . '_init_interactiveupgrade';
+
+    // allow bypass of interactive upgrade during a new installation only.
+    if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
+        return; // return void here
+    }
+
+    if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && function_exists($interactive_func)) {
+        SessionUtil::setVar('interactive_upgrade', true);
+        return $interactive_func(array('oldversion' => $modinfo['version']));
+    }
+
+    if (function_exists($func)) {
+        $result = $func($modinfo['version']);
+        if (is_string($result)) {
+            if ($result != $modinfo['version']) {
+                // update the last successful updated version
+                $modinfo['version'] = $result;
+                $obj = DBUtil::updateObject($modinfo, 'modules', '', 'id', true);
+            }
+            return false;
+        } elseif ($result != true) {
+            return false;
+        }
+    }
+    $modversion['version'] = '0';
+    $file1 = "$modpath/$osdir/version.php";
+    $file2 = "$modpath/$osdir/pnversion.php";
+    if (file_exists($file1)) {
+        $file = $file1;
+    } elseif (file_exists($file2)) {
+        $file = $file2;
+    }
+
+    include $file;
+
+    $version = $modversion['version'];
+    
     // Update state of module
     $result = modules_adminapi_setstate(array('id' => $args['id'], 'state' => ModUtil::STATE_ACTIVE));
     if ($result) {
@@ -1028,7 +1038,7 @@ function modules_adminapi_upgrade($args)
     ModUtil::dbInfoLoad('Modules');
 
     $obj = array('id'            => $args['id'],
-                 'version'       => $version);
+            'version'       => $version);
     DBUtil::updateObject($obj, 'modules');
 
     // call any module upgrade hooks
@@ -1245,7 +1255,7 @@ function modules_adminapi_getmoduleshooks($args)
     $where = "WHERE $hookscolumn[smodule] = ''
                  OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
     $orderBy = "ORDER BY $hookscolumn[tmodule],
-                         $hookscolumn[smodule] DESC";
+            $hookscolumn[smodule] DESC";
     $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
 
     if ($objArray === false) {
@@ -1297,7 +1307,7 @@ function modules_adminapi_getextendedmoduleshooks($args)
 
     $where = "WHERE $hookscolumn[smodule] = ''";
     $orderBy = "ORDER BY $hookscolumn[action],
-                         $hookscolumn[sequence] ASC";
+            $hookscolumn[sequence] ASC";
     $hooksArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
     // sort the hooks by action
     $grouped_hooks = array();
@@ -1314,7 +1324,7 @@ function modules_adminapi_getextendedmoduleshooks($args)
 
     $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
     $orderBy = "ORDER BY $hookscolumn[action],
-                         $hookscolumn[sequence] ASC";
+            $hookscolumn[sequence] ASC";
     $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
     if ($objArray === false) {
         return false;
@@ -1432,20 +1442,20 @@ function modules_adminapi_checkconsistency($args)
     foreach ($filemodules as $dir => $modinfo) {
         if (isset($modulenames[strtolower($modinfo['name'])])) {
             $errors_modulenames[] = array('name' => $modinfo['name'],
-                                          'dir1' => $modulenames[strtolower($modinfo['name'])],
-                                          'dir2' => $dir);
+                    'dir1' => $modulenames[strtolower($modinfo['name'])],
+                    'dir2' => $dir);
         }
 
         if (isset($displaynames[strtolower($modinfo['displayname'])])) {
             $errors_displaynames[] = array('name' => $modinfo['displayname'],
-                                           'dir1' => $displaynames[strtolower($modinfo['displayname'])],
-                                           'dir2' => $dir);
+                    'dir1' => $displaynames[strtolower($modinfo['displayname'])],
+                    'dir2' => $dir);
         }
 
         if (isset($displaynames[strtolower($modinfo['url'])])) {
-                    $errors_displaynames[] = array('name' => $modinfo['url'],
-                                                   'dir1' => $displaynames[strtolower($modinfo['url'])],
-                                                   'dir2' => $dir);
+            $errors_displaynames[] = array('name' => $modinfo['url'],
+                    'dir1' => $displaynames[strtolower($modinfo['url'])],
+                    'dir2' => $dir);
         }
 
         $modulenames[strtolower($modinfo['name'])] = $dir;
@@ -1455,6 +1465,6 @@ function modules_adminapi_checkconsistency($args)
     // do we need to check for duplicate oldnames as well?
 
     return array('errors_modulenames'  => $errors_modulenames,
-                 'errors_displaynames' => $errors_displaynames);
+            'errors_displaynames' => $errors_displaynames);
 
 }
