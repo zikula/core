@@ -111,6 +111,12 @@ function Users_pntables()
                                               'tag'          => "I1 NOTNULL DEFAULT '0'",
                                               'hash_method'  => "I1 NOTNULL DEFAULT '8'");
 
+    // Turn on object attribution for the users_temp table. This is needed to store registration-time
+    // attributes for a new user pending moderation.
+    $pntable['users_temp_db_extra_enable_attribution'] = true;
+    // needed for meta data? not sure....
+    $pntable['users_temp_primary_key_column'] = 'tid';
+
     // sessions
     // Get the name for the session item table.  This is not necessary
     // but helps in the following statements and keeps them readable

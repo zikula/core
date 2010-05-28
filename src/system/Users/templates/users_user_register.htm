@@ -79,7 +79,13 @@
             <div class="z-formrow">
                 <label for="users_vpass">{gt text="Password (repeat for verification)"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_vpass" type="password" name="vpass" size="25" maxlength="60" />
-                <span class="z-sub z-formnote">({gt text="Notice: The minimum length for user passwords is:"} {$minpass})</span>
+                <span class="z-sub z-formnote">{gt text="Notice: The minimum length for user passwords is %1s characters." tag1=$minpass}</span>
+            </div>
+            <div class="z-formrow">
+                <label for="users_password_reminder">{gt text="Password reminder"}</label>
+                <input type="text" id="password_reminder" name="password_reminder" value="" size="25" maxlength="128" />
+                <div class="z-sub z-formnote">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
+                <div class="z-formnote z-informationmsg">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
             </div>
             {/if}
             <div class="z-formrow">

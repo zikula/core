@@ -33,6 +33,14 @@ class UserUtil
     //     (Able to start log-in, but must accept TOU/PP and also must change password to complete.)
     const ACTIVATED_INACTIVE_PWD_TOUPP = 6;
 
+    // Registration verification and pasword generation options
+    // 0 = User chooses password, no verification by e-mail.
+    const VERIFY_NO = 0;
+    // 1 = System-generated password is sent directly to e-mail address
+    const VERIFY_SYSTEMPWD = 1;
+    // 2 = User chooses password, then activates account via e-mail
+    const VERIFY_USERPWD = 2;
+
     /**
      * Return a user object
      *

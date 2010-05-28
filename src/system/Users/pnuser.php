@@ -906,6 +906,7 @@ function Users_user_updatepassword()
     $oldpassword        = FormUtil::getPassedValue('oldpassword', '', 'POST');
     $newpassword        = FormUtil::getPassedValue('newpassword', '', 'POST');
     $newpasswordconfirm = FormUtil::getPassedValue('newpasswordconfirm', '', 'POST');
+    $passwordReminder   = FormUtil::getPassedValue('password_reminder', '', 'POST');
 
     $uname = UserUtil::getVar('uname');
     // password existing check doesn't apply to HTTP(S) based login
@@ -940,6 +941,7 @@ function Users_user_updatepassword()
 
     // set the new password
     UserUtil::setPassword($newpassword);
+    UserUtil::setVar('password_reminder', $passwordReminder);
 
     LogUtil::registerStatus(__('Done! Saved your new password.'));
     return System::redirect(ModUtil::url('Users', 'user', 'main'));
