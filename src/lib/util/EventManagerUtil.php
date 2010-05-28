@@ -105,9 +105,20 @@ class EventManagerUtil
             if (!strrpos($file, '.php')) {
                 continue;
             }
+            $before = get_declared_classes();
             include realpath($dir . DIRECTORY_SEPARATOR . $file);
-            $class = substr($file, 0, strrpos($file, '.php'));
-            $handler = new $class;
+            $after = get_declared_classes();
+            $diff = new ArrayIterator(array_diff($after, $before));
+            if (count($diff) > 1) {
+                while ($diff->valid()) {
+                    $className = $diff->current();
+                    $diff->next();
+                }
+            } else {
+                $className = $diff->current();
+            }
+
+            $handler = new $className;
             $handler->attach();
         }
 
