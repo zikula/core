@@ -643,6 +643,7 @@ function users_userapi_mailpassword($args)
             $renderer->assign('sitename', $sitename);
             $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
             $renderer->assign('password', $newpass);
+            $renderer->assign('recovery_forcepwdchg', ModUtil::getVar('Users', 'recovery_forcepwdchg', false));
             $renderer->assign('url',  ModUtil::url('Users', 'user', 'loginscreen', array(), null, null, true));
             $htmlBody = $renderer->fetch('users_userapi_passwordmail.htm');
             $plainTextBody = $renderer->fetch('users_userapi_passwordmail.txt');
