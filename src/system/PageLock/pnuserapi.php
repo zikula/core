@@ -29,7 +29,7 @@ function PageLock_userapi_pageLock($args)
     if (!empty($lockName) || !$ignoreEmptyLock) {
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/scriptaculous.js');
-        PageUtil::AddVar('javascript', 'javascript/ajax/pnajax.js');
+        PageUtil::AddVar('javascript', 'javascript/ajax/ajax.js');
         PageUtil::AddVar('javascript', 'system/PageLock/javascript/pagelock.js');
         PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('PageLock'));
 
