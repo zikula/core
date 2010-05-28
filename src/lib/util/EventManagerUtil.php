@@ -119,6 +119,9 @@ class EventManagerUtil
             }
 
             $handler = new $className;
+            if (!$handler instanceof CustomEventHandler) {
+                throw new LogicException(sprintf('Class %s must be an instance of CustomEventHandler', $className));
+            }
             $handler->attach();
         }
 
