@@ -74,7 +74,13 @@ module.postcallhooks
             'implode' => $implode)
 
 theme.init
-    Occurs just before Theme#__construct() exits.  Subject is $this, args are array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)
+    Occurs just before Theme#__construct() exits.  Subject is $this, args are 
+    array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)
+
+theme.prefooter
+    Occurs in Theme::themefooter() just after getting the $maincontent.  The
+    event subject is $this (Theme instance) and has event data which you can modify
+    with $event->setData() in the event handler.
 
 render.init
     Occurs just before Renderer#__construct() exists. Subject is $this, args are array('module' => $module, 'modinfo' => $modinfo, 'themeinfo' => $themeinfo)

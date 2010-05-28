@@ -181,6 +181,10 @@ class Theme extends Renderer
         $maincontent = ob_get_contents();
         ob_end_clean();
 
+        $event = new Event('theme.prefooter', $this, array(), $maincontent);
+        EventManagerUtil::notify($event);
+        $maincontent = $event->getData();
+
         // add the module wrapper
         if (!$this->system && (!isset($this->themeconfig['modulewrapper']) || $this->themeconfig['modulewrapper'])) {
             $maincontent = '<div id="z-maincontent" class="z-module-' . DataUtil::formatForDisplay($this->toplevelmodule) . '">' . $maincontent . '</div>';
