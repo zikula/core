@@ -19,11 +19,11 @@
         <input type="hidden" name="url" value="{$returnurl|varprepfordisplay}" />
         <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
         <div><input type="submit" value="{gt text="Log in" domain='zikula'}" /></div>
-        {if $allowregistration}
         <ul>
-            <li><a href="{modurl modname=Users func=register}">{gt text="New account" domain='zikula'}</a></li>
-            <li><a href="{modurl modname=Users func=lostpassword}">{gt text="Lost password" domain='zikula'}</a></li>
+            {if $allowregistration}
+            <li><a href="{modurl modname='Users' func='register'}">{gt text="New account" domain='zikula'}</a></li>
+            {/if}
+            <li><a href="{modurl modname='Users' func='lostpwduname'}">{gt text="Lost user name or password" domain='zikula'}</a></li>
         </ul>
-        {/if}
     </div>
 </form>

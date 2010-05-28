@@ -159,6 +159,83 @@ function users_user_register()
 }
 
 /**
+ * Display the lost user name / password choices.
+ *
+ * @return string The rendered template.
+ */
+function users_user_lostpwduname()
+{
+    // we shouldn't get here if logged in already....
+    if (UserUtil::isLoggedIn()) {
+        return System::redirect(ModUtil::url('Users', 'user', 'main'));
+    }
+
+    // create output object
+    $renderer = Renderer::getInstance('Users');
+    return $renderer->fetch('users_user_lostpwduname.htm');
+}
+
+/**
+ * Display the lost user name form.
+ *
+ * @return string The rendered template.
+ */
+function users_user_lostuname()
+{
+    // we shouldn't get here if logged in already....
+    if (UserUtil::isLoggedIn()) {
+        return System::redirect(ModUtil::url('Users', 'user', 'main'));
+    }
+
+    // create output object
+    $renderer = Renderer::getInstance('Users');
+    return $renderer->fetch('users_user_lostuname.htm');
+}
+
+/**
+ * Send the user a lost uname.
+ *
+ * Available Post Parameters:
+ * - email (string) The user's e-mail address.
+ * - code  (string) The confirmation code.
+ *
+ * @return bool True if successful request or expected error, false if unexpected error.
+ */
+function users_user_mailuname()
+{
+    $emailMessageSent = false;
+
+    if (!SecurityUtil::confirmAuthKey('Users')) {
+        return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'lostuname'));
+    }
+
+    $email = FormUtil::getPassedValue('email', null, 'POST');
+
+    SessionUtil::requireSession();
+    SessionUtil::delVar('lostuname_email');
+
+    if (empty($email)) {
+        LogUtil::registerError(__('Error! E-mail address field is empty.'));
+    } else {
+        // save username and password for redisplay
+        SessionUtil::setVar('lostuname_email', $email);
+        
+        $emailMessageSent = ModUtil::apiFunc('Users', 'user', 'mailuname', array(
+            'idfield' => 'email',
+            'id' => $email
+            ));
+    }
+
+    if ($emailMessageSent) {
+        SessionUtil::delVar('lostuname_email');
+        LogUtil::registerStatus(__f('Done! The user name for %s has been sent via e-mail.', $email));
+        return System::redirect(ModUtil::url('Users', 'user', 'loginscreen'));
+    } else {
+        return System::redirect(ModUtil::url('Users', 'user', 'lostuname'));
+    }
+}
+
+/**
  * Display the lost password form.
  *
  * @return string The rendered template.
@@ -174,7 +251,6 @@ function users_user_lostpassword()
     $renderer = Renderer::getInstance('Users');
     return $renderer->fetch('users_user_lostpassword.htm');
 }
-
 
 /**
  * Send the user a confirmation code in order to reset a lost password.
@@ -269,7 +345,7 @@ function users_user_lostpasswordcode()
 }
 
 /**
- * Send the user a lost password.
+ * Show the user his password reminder.
  *
  * Available Post Parameters:
  * - uname (string) The user's user name.
@@ -278,7 +354,7 @@ function users_user_lostpasswordcode()
  *
  * @return bool True if successful request or expected error, false if unexpected error.
  */
-function users_user_mailpassword()
+function users_user_passwordreminder()
 {
     $emailMessageSent = false;
 
@@ -311,11 +387,113 @@ function users_user_mailpassword()
             // save email for redisplay
             SessionUtil::setVar('lostpassword_email', $email);
         }
-        $emailMessageSent = ModUtil::apiFunc('Users', 'user', 'mailpassword', array(
-            'idfield' => $idfield,
-            'id'      => $idvalue,
-            'code'    => $code
-            ));
+
+        if (ModUtil::apiFunc('Users', 'user', 'checkconfirmationcode', array(
+                'idfield' => $idfield,
+                'id' => $idvalue,
+                'code' => $code,
+            )))
+        {
+            $userInfo = UserUtil::getVars($idvalue, true, $idfield);
+            $passwordReminder = $userInfo['__ATTRIBUTES__']['password_reminder'];
+        } else {
+            LogUtil::registerError(__("Error! The code that you've enter is invalid."));
+        }
+    }
+
+    if (!isset($userInfo)) {
+        // $userInfo is not set, so there was an error prior to an attempt to get the user.
+
+        // save username and password for redisplay
+        SessionUtil::setVar('lostpassword_uname', $uname);
+        SessionUtil::setVar('lostpassword_email', $email);
+        SessionUtil::setVar('lostpassword_code',  $code);
+
+        return System::redirect(ModUtil::url('Users', 'user', 'lostpasswordcode'));
+    } elseif (isset($userInfo) && !$userInfo) {
+        // $userInfo is set, but false. There was a database error retrieving the user.
+        return System::redirect(ModUtil::url('Users', 'user', 'lostpassword'));
+    } elseif (empty($passwordReminder)) {
+        // $userInfo is set, and not false, but $passwordReminder is empty. Got the user, but no reminder.
+        $mailpasswordArgs = array();
+        if (!empty($uname)) {
+            $mailpasswordArgs['uname'] = $uname;
+        }
+        if (!empty($email)) {
+            $mailpasswordArgs['email'] = $email;
+        }
+        $mailpasswordArgs['code'] = $code;
+        $mailpasswordArgs['authid'] = SecurityUtil::generateAuthKey('Users');
+
+        return System::redirect(ModUtil::url('Users', 'user', 'mailpassword', $mailpasswordArgs));
+    } else {
+        // $userInfo is set, and not false, and $passwordReminder is available. Show it.
+        $renderer = Renderer::getInstance('Users');
+        $renderer->assign('lostpassword_uname', $userInfo['uname']);
+        $renderer->assign('password_reminder', $passwordReminder);
+        $renderer->assign('lostpassword_code', $code);
+        return $renderer->fetch('users_user_passwordreminder.htm');
+    }
+}
+
+/**
+ * Send the user a lost password.
+ *
+ * Available Post Parameters:
+ * - uname (string) The user's user name.
+ * - email (string) The user's e-mail address.
+ * - code  (string) The confirmation code.
+ *
+ * @return bool True if successful request or expected error, false if unexpected error.
+ */
+function users_user_mailpassword($args = array())
+{
+    $emailMessageSent = false;
+
+    if (!SecurityUtil::confirmAuthKey('Users')) {
+        return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'lostpasswordcode'));
+    }
+
+    $uname = FormUtil::getPassedValue('uname', null, 'GETPOST');
+    $email = FormUtil::getPassedValue('email', null, 'GETPOST');
+    $code  = FormUtil::getPassedValue('code',  null, 'GETPOST');
+
+    SessionUtil::requireSession();
+    SessionUtil::delVar('lostpassword_uname');
+    SessionUtil::delVar('lostpassword_email');
+    SessionUtil::delVar('lostpassword_code');
+
+    if (empty($uname) && empty($email)) {
+        LogUtil::registerError(__('Error! User name and e-mail address fields are empty.'));
+    } elseif (!empty($email) && !empty($uname)) {
+        LogUtil::registerError(__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
+    } else {
+        if (!empty($uname)) {
+            $idfield = 'uname';
+            $idvalue = $uname;
+            // save username for redisplay
+            SessionUtil::setVar('lostpassword_uname', $uname);
+        } else {
+            $idfield = 'email';
+            $idvalue = $email;
+            // save email for redisplay
+            SessionUtil::setVar('lostpassword_email', $email);
+        }
+
+        if (ModUtil::apiFunc('Users', 'user', 'checkconfirmationcode', array(
+                'idfield' => $idfield,
+                'id' => $idvalue,
+                'code' => $code,
+            )))
+        {
+            $emailMessageSent = ModUtil::apiFunc('Users', 'user', 'mailpassword', array(
+                'idfield' => $idfield,
+                'id'      => $idvalue,
+                'code'    => $code
+                ));
+        } else {
+            LogUtil::registerError(__("Error! The code that you've enter is invalid."));
+        }
     }
 
     if ($emailMessageSent) {
@@ -326,7 +504,7 @@ function users_user_mailpassword()
         SessionUtil::setVar('lostpassword_uname', $uname);
         SessionUtil::setVar('lostpassword_email', $email);
         SessionUtil::setVar('lostpassword_code',  $code);
-        
+
         return System::redirect(ModUtil::url('Users', 'user', 'lostpasswordcode'));
     }
 }
@@ -356,6 +534,7 @@ function users_user_login()
     $pass       = FormUtil::getPassedValue ('pass');
     $url        = FormUtil::getPassedValue ('url');
     $rememberme = FormUtil::getPassedValue ('rememberme', '');
+    $passwordReminder = FormUtil::getPassedValue ('password_reminder', '');
 
     $userid = UserUtil::getIdFromName($uname);
 
@@ -412,6 +591,12 @@ function users_user_login()
             $validnewpass = false;
         }
 
+        // checks if the new password and the repeated new password are the same
+        if (empty($passwordReminder) && $validnewpass) {
+            $errormsg = __('Sorry! You must provide a new password reminder word or phrase.');
+            $validnewpass = false;
+        }
+
         if (!$validnewpass) {
             // user password change is incorrect
             $tryagain = true;
@@ -434,6 +619,7 @@ function users_user_login()
             $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'gethashmethods', array('reverse' => true));
             $newpasshash = hash($hashmethodsarray[$hash_number], $newpass);
             UserUtil::setVar('pass', $newpasshash, $userid);
+            UserUtil::setVar('password_reminder', $passwordReminder, $userid);
             $pass = $newpass;
         }
         UserUtil::setVar('activated', UserUtil::ACTIVATED_ACTIVE, $userid);
@@ -526,6 +712,7 @@ function users_user_finishnewuser()
     // TODO - user_viewmail is not used anywhere in the function. Is it an old legacy field, or does it need to be processed?
     $user_viewemail = FormUtil::getPassedValue ('user_viewmail', null, 'POST');
     $reg_answer     = FormUtil::getPassedValue ('reg_answer', null, 'POST');
+    $passwordReminder = FormUtil::getPassedValue ('password_reminder', null, 'POST');
 
     if (ModUtil::getVar('Users', 'lowercaseuname', false)) {
         $uname = strtolower($uname);
@@ -640,12 +827,13 @@ function users_user_finishnewuser()
 
     // TODO: Clean up
     $registered = ModUtil::apiFunc('Users', 'user', 'finishnewuser',
-                               array('uname'         => $uname,
-                                     'pass'          => $pass,
-                                     'email'         => $email,
-                                     'user_regdate'  => $user_regdate,
-                                     'storynum'      => $storynum,
-                                     'commentlimit'  => $commentlimit));
+                               array('uname'                => $uname,
+                                     'pass'                 => $pass,
+                                     'password_reminder'    => $passwordReminder,
+                                     'email'                => $email,
+                                     'user_regdate'         => $user_regdate,
+                                     'storynum'             => $storynum,
+                                     'commentlimit'         => $commentlimit));
 
     if (!$registered) {
         LogUtil::registerError(__('Error! The registration process failed. Please contact the site administrator.'));
