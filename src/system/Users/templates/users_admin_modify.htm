@@ -71,7 +71,7 @@
                         {/if}
                         <option value="{'UserUtil::ACTIVATED_INACTIVE_PWD'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_PWD'|constant}selected="selected"{/if}>{gt text="Force password change on login"}</option>
                         {if $legal && ($tou_active || $pp_active eq true)}
-                        <option value="{'UserUtil::ACTIVATED_INACTIVE_PWDTOUPP'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_PWDTOUPP'|constant}selected="selected"{/if}>{gt text="Force password change and accept %s" tag1=$touppTextString}</option>
+                        <option value="{'UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP'|constant}selected="selected"{/if}>{gt text="Force password change and accept %s" tag1=$touppTextString}</option>
                         {/if}
                         <option value="{'UserUtil::ACTIVATED_ACTIVE'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_ACTIVE'|constant}selected="selected"{/if}>{gt text="Active"}</option>
                     </select>
