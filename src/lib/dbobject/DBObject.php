@@ -130,7 +130,7 @@ class DBObject
                 case self::GET_FROM_GET:
                 case self::GET_FROM_POST:
                 case self::GET_FROM_REQUEST:
-                    $this->setData(FormUtil::getPassedValue($this->_objPath, null, $init));
+                    $this->setData($this->getDataFromInput($this->_objPath, null, $init));
                     break;
 
                 case self::GET_FROM_SESSION:

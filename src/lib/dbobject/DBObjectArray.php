@@ -135,7 +135,7 @@ class DBObjectArray
                 case DBObject::GET_FROM_GET:
                 case DBObject::GET_FROM_POST:
                 case DBObject::GET_FROM_REQUEST:
-                    $this->setData(FormUtil::getPassedValue($this->_objPath, null, $init));
+                    $this->setData($this->getDataFromInput($this->_objPath, null, $init));
                     break;
 
                 case DBObject::GET_FROM_SESSION:
