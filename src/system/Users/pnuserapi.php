@@ -770,7 +770,7 @@ function users_userapi_gethashmethods($args)
 function Users_userapi_accountlinks()
 {
     // Get all user modules
-    $mods = pnModGetAllMods();
+    $mods = ModUtil::getAllMods();
 
     if ($mods == false) {
         return false;
