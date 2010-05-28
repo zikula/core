@@ -583,16 +583,17 @@ class ModUtil
         $cosfile = "config/functions/$osdirectory/pn{$ostype}{$osapi}.php";
         $mosfile = "$modpath/$osdirectory/pn{$ostype}{$osapi}.php";
         $mosdir  = "$modpath/$osdirectory/pn{$ostype}{$osapi}";
-        $oopcontroller = "$modpath/$osdirectory/{$ostype}{$osapi}.php";
+        $oopcontroller = "$modpath/$osdirectory/".ucwords($ostype).ucwords($osapi).'.php';
 
         // OOP modules will load automatically
-        if (class_exists("{$modname}_{$ostype}{$osapi}")) {
+        $className = "{$modname}_" .ucwords($ostype).ucwords($osapi);
+        if (class_exists($className)) {
             return true;
         }
 
-        if (file_exists($oopcontroller) && !class_exists("{$modname}_{$ostype}{$osapi}")) {
+        if (file_exists($oopcontroller) && !class_exists($className)) {
             ZLoader::addAutoloader($modname, realpath("$modpath"));
-            if (!class_exists("{$modname}_{$ostype}{$osapi}")) {
+            if (!class_exists($className)) {
                 return false;
             }
             // Load optional bootstrap
@@ -716,7 +717,7 @@ class ModUtil
         $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
 
-        $className = "{$modname}_{$type}{$ftype}";
+        $className = "{$modname}_". ucwords($type).ucwords($ftype);
         $controller = null;
 
         if (class_exists($className)) {
@@ -726,9 +727,9 @@ class ModUtil
             } else {
                 $controller = $r->newInstance();
                 try {
-                    if (strrpos($className, 'api') && !$controller instanceof AbstractApi) {
+                    if (strrpos($className, 'Api') && !$controller instanceof AbstractApi) {
                         throw new LogicException(sprintf('Controller %s must inherit from AbstractApi', $className));
-                    } elseif (!strrpos($className, 'api') && !$controller instanceof AbstractController) {
+                    } elseif (!strrpos($className, 'Api') && !$controller instanceof AbstractController) {
                         throw new LogicException(sprintf('Controller %s must inherit from AbstractController', $className));
                     }
                 } catch (LogicException $e) {
