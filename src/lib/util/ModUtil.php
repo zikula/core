@@ -725,10 +725,19 @@ class ModUtil
                 $controller = $controllers[$className];
             } else {
                 $controller = $r->newInstance();
-                if (strrpos($className, 'api') && !$controller instanceof AbstractApi) {
-                    throw new LogicException(sprintf('Controller %s must inherit from AbstractApi', $className));
-                } elseif (!strrpos($className, 'api') && !$controller instanceof AbstractController) {
-                    throw new LogicException(sprintf('Controller %s must inherit from AbstractController', $className));
+                try {
+                    if (strrpos($className, 'api') && !$controller instanceof AbstractApi) {
+                        throw new LogicException(sprintf('Controller %s must inherit from AbstractApi', $className));
+                    } elseif (!strrpos($className, 'api') && !$controller instanceof AbstractController) {
+                        throw new LogicException(sprintf('Controller %s must inherit from AbstractController', $className));
+                    }
+                } catch (LogicException $e) {
+                    if (System::isDevelopmentMode()) {
+                        throw $e;
+                    } else {
+                        LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
+                        return false;
+                    }
                 }
                 $controllers[$className] = $controller;
             }
