@@ -935,8 +935,10 @@ function modules_adminapi_initialise($args)
         return LogUtil::registerError(__('Error! Could not change module state.'));
     }
 
-    $category = ModUtil::getVar('Admin', 'defaultcategory');
-    ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
+    if (!System::isInstalling()) {
+        $category = ModUtil::getVar('Admin', 'defaultcategory');
+        ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
+    }
 
     // call any module initialisation hooks
     ModUtil::callHooks('module', 'initialise', $modinfo['name'], array('module' => $modinfo['name']));
