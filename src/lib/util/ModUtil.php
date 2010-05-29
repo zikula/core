@@ -601,31 +601,39 @@ class ModUtil
 
         $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
         $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-        $oopcontroller = "$modpath/$osdir/".ucwords($ostype).ucwords($osapi).'.php';
 
         // OOP modules will load automatically
-        $className = "{$modname}_" .ucwords($ostype).ucwords($osapi);
+        $className = $modname.'_'.ucwords($ostype).ucwords($osapi);
 
         // if class is loadable or has been loaded exit here.
         if (class_exists($className)) {
             return true;
         }
 
-        // if file exists but is not available the autoloader has not yet been loaded.
-        // this only happens once deliberately.
-        if (file_exists($oopcontroller) && !class_exists($className)) {
-            ZLoader::addAutoloader($modname, realpath($modpath));
-            // Load optional bootstrap
-            $bootstrap = "$modpath/$osdir/bootstrap.php";
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
+        // checks if it is an OOP module once, and register the autoloader if so.
+        $moodule = strtolower("{$modname}OOP");
+        if (!isset($loaded[$moodule])) {
+            if (file_exists("$modpath/$osdir/".ucwords($ostype).ucwords($osapi).'.php') /*is_dir("$modpath/$osdir/lib")*/) {
+                ZLoader::addAutoloader($modname, realpath($modpath/*.'/lib'*/));
+                // load optional bootstrap
+                $bootstrap = "$modpath/$osdir/bootstrap.php";
+                if (file_exists($bootstrap)) {
+                    include_once $bootstrap;
+                }
 
-            // register any event handlers.
-            EventManagerUtil::attachCustomHandlers(realpath("$modpath/$osdir/EventHandlers"));
-            
-            // verify class is loadable
-            if (!class_exists($className)) {
+                // register any event handlers.
+                // module handlers must be attached from the bootstrap.
+                EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
+
+                $loaded[$moodule] = true;
+            } else {
+                $loaded[$moodule] = false;
+            }
+        }
+
+        // is OOP module, verify class is loadable
+        if ($loaded[$moodule]) {
+            if (!class_exists($className, false)) {
                 return false;
             }
         } elseif (file_exists($cosfile)) {
