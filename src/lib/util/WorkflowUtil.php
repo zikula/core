@@ -236,17 +236,28 @@ class WorkflowUtil
         $allowedActions = array();
         foreach ($actions as $action) {
             if (self::permissionCheck($module, $schemaName, $obj, $action['permission'], $action['id'])) {
-                $allowedActions[$action['id']] = $action['title'];
+                $allowedActions[$action['id']] = $action;
             }
         }
 
         return $allowedActions;
     }
 
+    public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = array())
+    {
+        $result = self::getActionsByState($schemaName, $module, $state, $obj);
+        $allowedActions = array();
+        foreach ($result as $action) {
+            $allowedActions[$action['id']] = $action['title'];
+        }
+    }
+
     /**
      * getActionsByStateArray
      *
      * Returns allowed action array for given state
+     *
+     * @deprecated 1.3.0
      *
      * @param string $schemaName
      * @param string $module
@@ -256,25 +267,7 @@ class WorkflowUtil
      */
     public static function getActionsByStateArray($schemaName, $module = null, $state = 'initial', $obj = array())
     {
-        if (!isset($module)) {
-            $module = ModUtil::getName();
-        }
-
-        // load up schema
-        $schema = self::loadSchema($schemaName, $module);
-        if (!$schema) {
-            return false;
-        }
-
-        $actions = $schema['actions'][$state];
-        $allowedActions = array();
-        foreach ($actions as $action) {
-            if (self::permissionCheck($module, $schemaName, $obj, $action['permission'], $action['id'])) {
-                $allowedActions[$action['id']] = $action;
-            }
-        }
-
-        return $allowedActions;
+        return self::getActionsByState($schemaName, $module, $state, $obj);
     }
 
     /**
@@ -306,7 +299,7 @@ class WorkflowUtil
         }
 
         $workflow = $obj['__WORKFLOW__'];
-        return self::getActionsByStateArray($workflow['schemaname'], $workflow['module'], $workflow['state'], $obj);
+        return self::getActionsByState($workflow['schemaname'], $workflow['module'], $workflow['state'], $obj);
     }
 
     /**
