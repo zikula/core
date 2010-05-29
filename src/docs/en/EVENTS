@@ -73,6 +73,10 @@ module.postcallhooks
             'extrainfo' => $extrainfo,
             'implode' => $implode)
 
+module.customcontroller in order to override the classname calculated in ModUtil::exec().
+    Receives no subject, args of array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
+    and 'event data' of $className.  This can be overriden by settings $event->setData() followed by $event->setNotified().
+
 theme.init
     Occurs just before Theme#__construct() exits.  Subject is $this, args are 
     array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)

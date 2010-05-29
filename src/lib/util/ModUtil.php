@@ -601,7 +601,6 @@ class ModUtil
 
         $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
         $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-        //$mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
         $oopcontroller = "$modpath/$osdir/".ucwords($ostype).ucwords($osapi).'.php';
 
         // OOP modules will load automatically
@@ -615,7 +614,7 @@ class ModUtil
         // if file exists but is not available the autoloader has not yet been loaded.
         // this only happens once deliberately.
         if (file_exists($oopcontroller) && !class_exists($className)) {
-            ZLoader::addAutoloader($modname, realpath("$modpath"));
+            ZLoader::addAutoloader($modname, realpath($modpath));
             // verify class is loadable
             if (!class_exists($className)) {
                 return false;
@@ -743,6 +742,11 @@ class ModUtil
         $controller = null;
 
         if (class_exists($className)) {
+            $event = new Event('module.customcontroller', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+            EventManagerUtil::notifyUntil($event);
+            if ($event->hasNotified()) {
+                $className = $event->getData();
+            }
             $r = new ReflectionClass($className);
             if (array_key_exists($className, $controllers)) {
                 $controller = $controllers[$className];
