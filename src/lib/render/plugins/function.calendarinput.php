@@ -125,7 +125,7 @@ function smarty_function_calendarinput($params, &$smarty)
     $html .= '<img class="z-calendarimg" src="'.System::getBaseUrl().'javascript/jscalendar/img.gif" id="'.$triggerName.
     '" style="cursor: pointer;" title="' . DataUtil::formatForDisplay(__('Date selector')) . '"  alt="' . DataUtil::formatForDisplay(__('Date selector')) . '" />';
 
-    $i18n = & ZI18n::getInstance();
+    $i18n = ZI18n::getInstance();
 
     $html .= "<script type=\"text/javascript\">
               // <![CDATA[

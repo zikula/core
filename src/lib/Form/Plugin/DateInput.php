@@ -78,7 +78,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     {
         static $firstTime = true;
 
-        $i18n = & ZI18n::getInstance();
+        $i18n = ZI18n::getInstance();
 
         if (!empty($this->defaultValue) && !$render->IsPostBack()) {
             $d = strtolower($this->defaultValue);
