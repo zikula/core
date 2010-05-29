@@ -293,7 +293,7 @@ class ModUtil
             $modules = self::getModsTable();
 
             if ($modules === false) {
-                return;
+                return false;
             }
 
             foreach ($modules as $mod) {
@@ -485,8 +485,8 @@ class ModUtil
 
         // check to ensure we aren't doing this twice
         if (isset($loaded[$modname]) && !$force) {
-            $result = true;
-            return $result;
+            $data = true;
+            return $data;
         }
 
         // get the directory if we don't already have it
@@ -494,23 +494,33 @@ class ModUtil
             // get the module info
             $modinfo = self::getInfo(self::getIdFromName($modname));
             $directory = $modinfo['directory'];
+
+            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        } else {
+            $modpath = is_dir("system/$directory") ? 'system' : 'modules';
         }
 
         // Load the database definition if required
         $files = array();
         $files[] = "config/functions/$directory/tables.php";
-        $files[] = "system/$directory/tables.php";
-        $files[] = "modules/$directory/tables.php";
+        $files[] = "$modpath/$directory/tables.php";
         $files[] = "config/functions/$directory/pntables.php";
-        $files[] = "system/$directory/pntables.php";
-        $files[] = "modules/$directory/pntables.php";
-        Loader::loadOneFile($files);
+        $files[] = "$modpath/$directory/pntables.php";
 
-        $tablefunc = $modname . '_pntables';
-        if (function_exists($tablefunc)) {
-            $data = $tablefunc();
-            $GLOBALS['pntables'] = array_merge((array)$GLOBALS['pntables'], (array)$data);
+        if (Loader::loadOneFile($files)) {
+            $tablefunc = $modname . '_tables';
+            if (function_exists($tablefunc)) {
+                $data = $tablefunc();
+                $GLOBALS['pntables'] = array_merge((array)$GLOBALS['pntables'], (array)$data);
+            } else {
+                $tablefunc = $modname . '_pntables';
+                if (function_exists($tablefunc)) {
+                    $data = $tablefunc();
+                    $GLOBALS['pntables'] = array_merge((array)$GLOBALS['pntables'], (array)$data);
+                }
+            }
         }
+
         $loaded[$modname] = true;
 
         // return data so we know which tables were loaded by this module
@@ -591,7 +601,7 @@ class ModUtil
 
         $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
         $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-        $mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
+        //$mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
         $oopcontroller = "$modpath/$osdir/".ucwords($ostype).ucwords($osapi).'.php';
 
         // OOP modules will load automatically
@@ -621,7 +631,7 @@ class ModUtil
         } elseif (file_exists($mosfile)) {
             // Load the file from modules
             include_once $mosfile;
-        } elseif (is_dir($mosdir)) {
+        //} elseif (is_dir($mosdir)) {
         } else {
         // File does not exist
             return false;
