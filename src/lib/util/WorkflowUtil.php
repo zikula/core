@@ -236,7 +236,7 @@ class WorkflowUtil
         $allowedActions = array();
         foreach ($actions as $action) {
             if (self::permissionCheck($module, $schemaName, $obj, $action['permission'], $action['id'])) {
-                $allowedActions[$action['id']] = $action['id'];
+                $allowedActions[$action['id']] = $action['title'];
             }
         }
 
@@ -306,7 +306,7 @@ class WorkflowUtil
         }
 
         $workflow = $obj['__WORKFLOW__'];
-        return self::getActionsByState($workflow['schemaname'], $workflow['module'], $workflow['state'], $obj);
+        return self::getActionsByStateArray($workflow['schemaname'], $workflow['module'], $workflow['state'], $obj);
     }
 
     /**
