@@ -139,6 +139,7 @@ class PageUtil
                 $_pnPageVars[$varname]['contents'] = $_pnPageVars[$varname]['default'];
             }
         }
+
         return true;
     }
 
@@ -211,6 +212,7 @@ class PageUtil
         } else {
             $_pnPageVars[$varname]['contents'] = $value;
         }
+
         return true;
     }
 
@@ -230,6 +232,7 @@ class PageUtil
     public static function addVar($varname, $value)
     {
         global $_pnPageVars;
+
         // check for $_pnPageVars sanity
         if (!isset($_pnPageVars)) {
             $_pnPageVars = array();
@@ -237,16 +240,37 @@ class PageUtil
             return false;
         }
 
-        // shorthand syntax for some common JS libraries
-        $shortJsVars = array('behaviour', 'prototype', 'scriptaculous', 'validation');
-        if ($varname == 'javascript' && is_array($value)) {
-            foreach (array_keys($value) as $k) {
-                if (in_array($value[$k], $shortJsVars)) {
-                    $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
+        if ($varname == 'javascript') {
+            // shorthand syntax for some common JS libraries
+            $shortJsVars = array('behaviour', 'prototype', 'scriptaculous', 'validation');
+            if (is_array($value)) {
+                foreach (array_keys($value) as $k) {
+                    if (in_array($value[$k], $shortJsVars)) {
+                        $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
+                    }
+                }
+            } elseif (in_array($value, $shortJsVars)) {
+                $value = 'javascript/ajax/' . DataUtil::formatForOS($value) . '.js';
+            }
+
+            // check for customized javascripts
+            if (is_array($value)) {
+                foreach (array_keys($value) as $k) {
+                    if (strpos($value[$k], 'system/') !== false || strpos($value[$k], 'modules/') !== false) {
+                        $custom = str_replace(array('javascript/', 'pnjavascript/'), '', DataUtil::formatForOS($value[$k]));
+                        $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
+                        if (file_exists($custom)) {
+                            $value[$k] = $custom;
+                        }
+                    }
+                }
+            } elseif (strpos($value, 'system/') !== false || strpos($value, 'modules/') !== false) {
+                $custom = str_replace(array('javascript/', 'pnjavascript/'), '', DataUtil::formatForOS($value));
+                $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
+                if (file_exists($custom)) {
+                    $value[$k] = $custom;
                 }
             }
-        } elseif ($varname == 'javascript' && in_array($value, $shortJsVars)) {
-            $value = 'javascript/ajax/' . DataUtil::formatForOS($value) . '.js';
         }
 
         if (!isset($_pnPageVars[$varname])) {
@@ -267,5 +291,4 @@ class PageUtil
 
         return true;
     }
-
 }
