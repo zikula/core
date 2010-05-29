@@ -614,7 +614,7 @@ class ModUtil
         $moodule = strtolower("{$modname}OOP");
         if (!isset($loaded[$moodule])) {
             if (file_exists("$modpath/$osdir/".ucwords($ostype).ucwords($osapi).'.php') /*is_dir("$modpath/$osdir/lib")*/) {
-                ZLoader::addAutoloader($modname, realpath($modpath/*.'/lib'*/));
+                ZLoader::addAutoloader($modname, realpath($modpath/*"$modpath/$osdir/lib"*/));
                 // load optional bootstrap
                 $bootstrap = "$modpath/$osdir/bootstrap.php";
                 if (file_exists($bootstrap)) {
@@ -623,7 +623,8 @@ class ModUtil
 
                 // register any event handlers.
                 // module handlers must be attached from the bootstrap.
-                EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
+                EventManagerUtil::attachCustomHandlers(realpath("$modpath/$osdir/EventHandlers")); 
+                //EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
 
                 $loaded[$moodule] = true;
             } else {
