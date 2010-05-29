@@ -630,7 +630,6 @@ class ModUtil
         } elseif (file_exists($mosfile)) {
             // Load the file from modules
             include_once $mosfile;
-        //} elseif (is_dir($mosdir)) {
         } else {
         // File does not exist
             return false;
