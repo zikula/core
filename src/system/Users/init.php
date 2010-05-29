@@ -32,6 +32,10 @@ function users_init()
         return false;
     }
 
+    if (!DBUtil::createTable('users_shadow')) {
+        return false;
+    }
+
     // Set default values for module
     users_defaultdata();
 
