@@ -72,9 +72,7 @@ function smarty_block_case($params, $content, &$smarty, &$repeat)
         // $tab_params['expr'] & $params['expr'] needs to be evaluated
         // For now - only worry about the expression passed by the case statement
 
-        $testExpression = smarty_block_case_eval($params['expr']);
-
-        if (isset($params['expr']) && ($testExpression != $tag_params['expr'])) {
+        if (isset($params['expr']) && ($params['expr'] != $tag_params['expr'])) {
             // page doesn't match
             $repeat = false;
             return;
@@ -88,29 +86,4 @@ function smarty_block_case($params, $content, &$smarty, &$repeat)
         // handle block close tag
         return $content;
     }
-
-}
-
-/**
- * Internal function, not meant to be called from outside {@link smarty_block_case()}.
- *
- * Evaluates and returns the expression by echoing the expression into and
- * capturing an output buffer.
- *
- * @param string|numeric $expression The case expression to evaluate.
- *
- * @return string The result of capturing the trimmed and echoed expression from the output buffer.
- */
-function smarty_block_case_eval($expression = '')
-{
-    // Evaluates the expression
-    $wrapper = "echo {expression} ;";
-    $testExpression = str_ireplace("{expression}", $expression, $wrapper);
-
-    ob_start();
-    eval(trim($testExpression));
-    $content = ob_get_contents();
-    ob_end_clean();
-
-    return $content;
 }
