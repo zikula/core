@@ -614,16 +614,19 @@ class ModUtil
         // if file exists but is not available the autoloader has not yet been loaded.
         // this only happens once deliberately.
         if (file_exists($oopcontroller) && !class_exists($className)) {
-            EventManagerUtil::attachCustomHandlers(realpath($modpath). '/EventHandlers');
             ZLoader::addAutoloader($modname, realpath($modpath));
-            // verify class is loadable
-            if (!class_exists($className)) {
-                return false;
-            }
             // Load optional bootstrap
             $bootstrap = "$modpath/$osdir/bootstrap.php";
             if (file_exists($bootstrap)) {
                 include_once $bootstrap;
+            }
+
+            // register any event handlers.
+            EventManagerUtil::attachCustomHandlers(realpath($modpath). '/EventHandlers');
+            
+            // verify class is loadable
+            if (!class_exists($className)) {
+                return false;
             }
         } elseif (file_exists($cosfile)) {
             // Load the file from config
