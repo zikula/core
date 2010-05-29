@@ -340,7 +340,7 @@ function Admin_admin_adminpanel($args)
     $displayNameType = ModUtil::getVar('Admin', 'displaynametype', 1);
 
     // get admin capable modules
-    $adminmodules = pnModGetAdminMods();
+    $adminmodules = ModUtil::getAdminMods();
     $adminlinks = array();
     foreach ($adminmodules as $adminmodule) {
         if (SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
@@ -416,7 +416,7 @@ function Admin_admin_modifyconfig()
     $pnRender = Renderer::getInstance('Admin', false);
 
     // get admin capable mods
-    $adminmodules = pnModGetAdminMods();
+    $adminmodules = ModUtil::getAdminMods();
 
     // Get all categories
     $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
@@ -494,7 +494,7 @@ function Admin_admin_updateconfig()
     ModUtil::setVars('Admin', $modvars);
 
     // get admin modules
-    $adminmodules = pnModGetAdminMods();
+    $adminmodules = ModUtil::getAdminMods();
     $adminmods = FormUtil::getPassedValue('adminmods', null, 'POST');
 
     foreach ($adminmodules as $adminmodule) {
@@ -547,15 +547,9 @@ function Admin_admin_categorymenu($args)
     foreach ($adminmodules as $adminmodule) {
         if (SecurityUtil::checkPermission("$adminmodule[name]::", '::', ACCESS_EDIT)) {
             $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $adminmodule['id']));
-            if ($adminmodule['type'] == 2 || $adminmodule['type'] == 3) {
-                $menutexturl = ModUtil::url($adminmodule['name'], 'admin');
-                $menutext = $adminmodule['displayname'];
-                $menutexttitle = $adminmodule['description'];
-            } else {
-                $menutexturl = 'admin.php?module=' . $adminmodule['name'];
-                $menutext = $adminmodule['displayname'];
-                $menutexttitle =  $adminmodule['description'];
-            }
+            $menutexturl = ModUtil::url($adminmodule['name'], 'admin');
+            $menutext = $adminmodule['displayname'];
+            $menutexttitle = $adminmodule['description'];
             $adminlinks[$catid][] = array('menutexturl' => $menutexturl,
                                           'menutext' => $menutext,
                                           'menutexttitle' => $menutexttitle,
