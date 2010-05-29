@@ -228,7 +228,7 @@ class BlockUtil
 
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
 
-        if ($modinfo['i18n']) {
+        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modinfo['name']);
         }
 

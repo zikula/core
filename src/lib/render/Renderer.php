@@ -169,7 +169,7 @@ class Renderer extends Smarty
         $this->assign('imagelangpath', $this->baseurl . 'themes/' . $theme . '/images/' . $this->language);
 
         // for {gt} template plugin to detect gettext domain
-        if ($this->module[$module]['i18n']) {
+        if ($this->module[$module]['type'] == ModUtil::TYPE_MODULE) {
             $this->renderDomain = ZLanguage::getModuleDomain($this->module[$module]['name']);
         }
 
@@ -214,7 +214,7 @@ class Renderer extends Smarty
         }
 
         // for {gt} template plugin to detect gettext domain
-        if (self::$instance->module[$module]['i18n']) {
+        if (self::$instance->module[$module]['type'] == ModUtil::TYPE_MODULE) {
             self::$instance->renderDomain = ZLanguage::getModuleDomain(self::$instance->module[$module]['name']);
         }
 
@@ -696,7 +696,7 @@ function z_prefilter_add_literal_callback($matches)
         $script = str_replace('<!--[', '{{', str_replace(']-->', '}}', $script));
     }
     $script = str_replace('{{', '{/literal}{', str_replace('}}', '}{literal}', $script));
-    
+
     return $tagOpen . '{literal}' . $script . '{/literal}' . $tagClose;
 }
 

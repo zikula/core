@@ -625,7 +625,7 @@ class ModUtil
         }
         $loaded[$modtype] = 1;
 
-        if ($modinfo['i18n']) {
+        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modname);
         }
 
@@ -1324,7 +1324,6 @@ class ModUtil
         if (!isset($modstable) || System::isInstalling()) {
             $modstable = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
             foreach ($modstable as $mid => $module) {
-                $modstable[$mid]['i18n'] = ($module['type'] == 2 ? true : false);
                 if (!isset($module['url']) || empty($module['url'])) {
                     $modstable[$mid]['url'] = $module['displayname'];
                 }
