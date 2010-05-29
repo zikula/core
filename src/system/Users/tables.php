@@ -57,7 +57,7 @@ function Users_pntables()
                                          'user_regdate'    => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
                                          'user_viewemail'  => "I2 DEFAULT 0",
                                          'user_theme'      => "C(64) DEFAULT ''",
-                                         'pass'            => "C(128) NOTNULL DEFAULT ''",
+                                         'pass'            => "C(134) NOTNULL DEFAULT ''",
                                          'storynum'        => "I(4) NOTNULL DEFAULT '10'",
                                          'ublockon'        => "I1 NOTNULL DEFAULT '0'",
                                          'ublock'          => "X NOTNULL DEFAULT ''",
@@ -79,6 +79,27 @@ function Users_pntables()
     // needed for meta data? not sure....
     $pntable['users_primary_key_column'] = 'uid';
 
+    // Shadow file for additional user-related security information
+    $pntable['users_shadow'] = DBUtil::getLimitedTablename('users_shadow');;
+
+    // Set the column names.  Note that the array has been formatted
+    // on-screen to be very easy to read by a user.
+    $pntable['users_shadow_column'] = array (
+        'id'                => 'z_sid',
+        'uid'               => 'z_uid',
+        'code'              => 'z_code',
+        'code_hash_method'  => 'z_hash_method',
+        'code_expires'      => 'z_expires',
+    );
+
+    $pntable['users_shadow_column_def'] = array(
+        'id'                => "I4 PRIMARY AUTO",
+        'uid'               => "I4 NOTNULL DEFAULT 0",
+        'code'              => "C(134) NOTNULL DEFAULT ''",
+        'code_hash_method'  => "I1 NOTNULL DEFAULT 8",
+        'code_expires'      => "I4 NOTNULL DEFAULT 0",
+    );
+    
     // Temp Table - Moderation
     // Get the name for the Temporary item table.  This is not necessary
     // but helps in the following statements and keeps them readable
@@ -104,7 +125,7 @@ function Users_pntables()
                                               'uname'        => "C(25) NOTNULL DEFAULT ''",
                                               'email'        => "C(60) NOTNULL DEFAULT ''",
                                               'femail'       => "I1 NOTNULL DEFAULT '0'",
-                                              'pass'         => "C(128) NOTNULL DEFAULT ''",
+                                              'pass'         => "C(134) NOTNULL DEFAULT ''",
                                               'dynamics'     => "XL NOTNULL",
                                               'comment'      => "C(254) NOTNULL DEFAULT ''",
                                               'type'         => "I1 NOTNULL DEFAULT '0'",

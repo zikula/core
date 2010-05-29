@@ -434,6 +434,56 @@ class SecurityUtil
     }
 
     /**
+     * Hashes the data with a random salt value and returns a string containing the salt and hash.
+     *
+     * @param string $algo          Any value returned by hash_algo().
+     * @param string $data          The data to be salted and hashed.
+     * @param int    $saltLength    The number of characters to use in the salt.
+     * @param string $saltDelim     The delimiter between the salt and the hash, must be a single character.
+     *
+     * @return string|bool The salt and hashed data separated by the salt delimiter; or false if an error occured.
+     */
+    public static function getSaltedHash($algo, $data, $saltLength = 5, $saltDelim = '$')
+    {
+        $saltedHash = false;
+        $algoList = hash_algos();
+
+        if ((array_search($algo, $algoList) !== false) && is_int($saltLength) && is_string($saltDelim) && (strlen($saltDelim) == 1)) {
+            $salt = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, array($saltDelim));
+            $hash = hash($algo, $salt . $data);
+            $saltedHash = $salt . $saltDelim . $hash;
+        }
+
+        return $saltedHash;
+    }
+
+    /**
+     * Checks the given data against the given salted hash to see if they match.
+     *
+     * @param string $algo          Any value returned by hash_algo(), but it must match the $algo used to create the salted hash.
+     * @param string $data          The data to check.
+     * @param string $saltedHash    The salted hash value to check against.
+     * @param string $saltDelim     The delimiter between the salt and the hash, must be a single character.
+     *
+     * @return int|bool 1 if the data matches the salted hash; 0 if the data does not match; false if an error occured.
+     */
+    public static function checkSaltedHash($algo, $data, $saltedHash, $saltDelim = '$')
+    {
+        $dataMatches = false;
+        $algoList = hash_algos();
+
+        if ((array_search($algo, $algoList) !== false) && is_string($saltDelim) && (strlen($saltDelim) == 1)) {
+            list($salt, $hash) = explode($saltDelim, $saltedHash, 2);
+
+            $dataHash = hash($algo, $salt . $data);
+
+            $dataMatches = (int)($dataHash === $hash);
+        }
+
+        return $dataMatches;
+    }
+
+    /**
      * Translation functions - avoids globals in external code
      */
     // Translate level -> name

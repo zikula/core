@@ -109,6 +109,15 @@ function users_upgrade($oldversion)
         case '1.16':
             ModUtil::setVar('Users', 'authmodules', 'Users');
         case '1.17':
+            DBUtil::dropIndex('uname', 'users');
+            DBUtil::dropIndex('email', 'users');
+            if (!DBUtil::changeTable('users')
+                || !DBUtil::changeTable('users_temp')
+                || !DBUtil::createTable('users_shadow'))
+            {
+                return '1.17';
+            }
+        case '1.18':
     }
 
     // Update successful
