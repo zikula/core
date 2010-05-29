@@ -33,7 +33,7 @@ abstract class AbstractBase
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
 
-        EventManagerUtil::attachCustomHandlers(realpath($this->baseDir. '/EventHandlers'));
+        //EventManagerUtil::attachCustomHandlers(realpath($this->baseDir. '/EventHandlers'));
     }
 
     private function _setup()
