@@ -212,13 +212,13 @@ class WorkflowUtil
     /**
      * get Actions by State
      *
-     * Returns allowed action ids for given state
+     * Returns allowed action data for given state
      *
      * @param string $schemaName
      * @param string $module
      * @param string $state default = 'initial'
      * @param array $obj
-     * @return mixed array or bool false
+     * @return mixed array($action.id => $action) or bool false
      */
     public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = array())
     {
@@ -243,19 +243,34 @@ class WorkflowUtil
         return $allowedActions;
     }
 
+    /**
+     * get Actions Titles by State
+     *
+     * Returns allowed action ids and titles only, for given state
+     *
+     * @param string $schemaName
+     * @param string $module
+     * @param string $state default = 'initial'
+     * @param array $obj
+     * @return mixed array($action.id => $action.title) or bool false
+     */
     public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = array())
     {
-        $result = self::getActionsByState($schemaName, $module, $state, $obj);
-        $allowedActions = array();
-        foreach ($result as $action) {
-            $allowedActions[$action['id']] = $action['title'];
+        $allowedActions = self::getActionsByState($schemaName, $module, $state, $obj);
+
+        if ($allowedActions) {
+            foreach (array_keys($allowedActions) as $id) {
+                $allowedActions[$id] = $allowedActions[$id]['title'];
+            }
         }
+
+        return $allowedActions;
     }
 
     /**
      * getActionsByStateArray
      *
-     * Returns allowed action array for given state
+     * Returns allowed action data for given state
      *
      * @deprecated 1.3.0
      *

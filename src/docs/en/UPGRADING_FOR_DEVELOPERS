@@ -124,6 +124,16 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
   {browserhack condition="if lte IE 7"}foo{/browserback}
   This block also takes assign="var" so you can assign rather than display.
 
-
-
-   
+- If you use WorkflowUtil, there are four changes for Zikula 1.3:
+   - getActionsByStateArray:
+       is not deprecated.
+   - getActionsByState:
+       now returns all the action data as array($action.id => $action),
+       instead of array(id => id).
+   - getActionTitlesByState:
+       useful method to build the buttons for the current state,
+       returning the allowed actions as array($action.id => $action.title).
+   - getActionsForObject:
+       now returns the result of getActionsByState.
+   If you used values, replace them with the result keys, and take advantage
+   of the action data now available.
