@@ -137,6 +137,7 @@ ul.z-menulinks li {
     border-right:1px solid #aaa;
     display:inline;
     padding:0 10px;
+    margin:0;
 }
 ul.z-menulinks li:first-child {
     border-left:1px solid #aaa;
