@@ -98,7 +98,7 @@ function Admin_delete()
         return false;
     }
 
-    pnModDelVar('Admin');
+    ModUtil::delVar('Admin');
 
     // Deletion successful
     return true;
@@ -123,8 +123,8 @@ function Admin_defaultdata()
                           'description' => __('Modules for controlling user membership, access rights and profiles.')),
                     array('catname'     => __('Content'),
                           'description' => __('Modules for providing content to your users.')),
-                    array('catname'     => __('3rd-party'),
-                          'description' => __('3rd-party add-on modules and newly-installed modules.')),
+                    array('catname'     => __('Uncategorised'),
+                          'description' => __('Newly-installed or uncategorized modules.')),
                     array('catname'     => __('Security'),
                           'description' => __('Modules for managing the site\'s security.')));
 

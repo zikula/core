@@ -338,7 +338,7 @@ function modules_adminapi_setstate($args)
         case ModUtil::STATE_INACTIVE:
             break;
         case ModUtil::STATE_ACTIVE:
-        // allow new style modules to transition ditectly from upgraded to active state
+            // allow new style modules to transition ditectly from upgraded to active state
             if ((($oldstate == ModUtil::STATE_UNINITIALISED) ||
                             ($oldstate == ModUtil::STATE_MISSING) ||
                             ($oldstate == ModUtil::STATE_UPGRADED)) && $modinfo['type'] == 1) {
@@ -934,6 +934,9 @@ function modules_adminapi_initialise($args)
     'state' => ModUtil::STATE_ACTIVE))) {
         return LogUtil::registerError(__('Error! Could not change module state.'));
     }
+
+    $category = ModUtil::getVar('Admin', 'defaultcategory');
+    ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
 
     // call any module initialisation hooks
     ModUtil::callHooks('module', 'initialise', $modinfo['name'], array('module' => $modinfo['name']));
