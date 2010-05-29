@@ -108,6 +108,7 @@ function Blocks_extmenublock_display($blockinfo)
     if (!empty($vars['links'][$thislang])) {
         $blocked = array();
         foreach ($vars['links'][$thislang] as $linkid => $link) {
+            $link['parentid'] = isset($link['parentid']) ? $link['parentid'] : null;
             $denied = !SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . ':' . $linkid . ':', ACCESS_READ);
             if($denied || in_array($link['parentid'], $blocked)) {
                 $blocked[] = $linkid;
@@ -451,7 +452,7 @@ function Blocks_extmenublock_update($blockinfo)
     $linksorder = FormUtil::getPassedValue('linksorder');
     $linksorder = json_decode($linksorder, true);
     if(is_array($linksorder) && !empty($linksorder)) {
-        foreach ($vars['links'] as $lang => $langlinks) {
+        foreach ((array)$vars['links'] as $lang => $langlinks) {
             foreach ($langlinks as $linkid => $link) {
                 $vars['links'][$lang][$linkid]['parentid'] = $linksorder[$linkid]['parentid'];
                 $vars['links'][$lang][$linkid]['haschildren'] = $linksorder[$linkid]['haschildren'];

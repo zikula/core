@@ -46,10 +46,6 @@ Zikula.itemlist = Class.create({
         });
         this.lastitemid = isNaN(maxId) ? this.lastitemid : maxId;
 
-        if (size == offset) {
-            this.appenditem();
-        }
-
         // define a rule to delete a menuitem when the trash icon is clicked
         var buttondeleteselector = '#'+this.id+' .buttondelete';
         $$(buttondeleteselector).invoke('observe','click',this.deleteitem.bindAsEventListener(this));
@@ -80,6 +76,10 @@ Zikula.itemlist = Class.create({
                 }
             );
         }
+        if (size == offset) {
+            this.appenditem();
+        }
+
     },
 
     /**

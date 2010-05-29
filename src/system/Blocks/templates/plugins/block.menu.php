@@ -48,32 +48,31 @@ function smarty_block_menu($params, $content, &$smarty, &$repeat)
     $index = isset($params['_index']) ? $params['_index'] : 0;
     $total = count($from);
     $repeat = $index < $total;
-    $lastKey = isset($params['_lastKey']) ? $params['_lastKey'] : null;
-    if($lastKey === null) {
-        $currentKey = key($from);
-    } else {
-        $stop = false;
-        foreach($from as $k => $v) {
-            if($stop) {
-                $currentKey = $k;
-                break;
-            }
-            if($k === $lastKey) {
-                $stop = true;
-            }
-        }
+    $iterator = new ArrayIterator($from);
+    try {
+        $iterator->seek($index);
+        $currentKey = $iterator->key();
+    } catch(Exception $e) {
+        $currentKey = null;
     }
+    try {
+        $iterator->seek($index-1);
+        $lastKey = $iterator->key();
+    } catch(Exception $e) {
+        $lastKey = null;
+    }
+
     if(isset($params['name'])) {
         $menuProps = array(
             'index' => $index,
             'iteration' => $index+1,
             'total' => $total,
             'first' => (bool)is_null($content),
-            'last' =>  $index+1 == $total
+            'last' =>  $index+1 >= $total
         );
     }
-    if($repeat) {
-        $smarty->assign($item, $from[$currentKey]);
+    if($repeat || (empty($from) && is_null($content))) {
+        $smarty->assign($item, isset($from[$currentKey]) ? $from[$currentKey] : null);
         $smarty->assign('index', $index);
         $smarty->assign('total', $total);
         if(isset($menuProps)) {
@@ -83,13 +82,20 @@ function smarty_block_menu($params, $content, &$smarty, &$repeat)
             $smarty->assign($key,$currentKey);
         }
         $smarty->_tag_stack[$menuTagStackKey][1]['_index'] = $index+1;
-        $smarty->_tag_stack[$menuTagStackKey][1]['_lastKey'] = $currentKey;
         if(!is_null($content)) {
             $smarty->_tag_stack[$menuTagStackKey][1]['_content'][$lastKey] = $content;
         }
+        if(empty($from) && is_null($content)) {
+            $repeat = true;
+        }
     } else {
-        $params['_content'][$lastKey] = $content;
-        $result = _smarty_block_menu_parsemenu($params);
+        if(empty($from)) {
+            $params['_content'] = $content;
+            $result = _smarty_block_menu_parseheader($params);
+        } else {
+            $params['_content'][$lastKey] = $content;
+            $result = _smarty_block_menu_parsemenu($params);
+        }
         if (isset($params['assign'])) {
             $smarty->assign($params['assign'],$result);
         } else {
@@ -154,6 +160,22 @@ function _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass=null,$listI
             $html .= $tab['item']['content'];
         }
     }
+
+    $html .= '</'.$listTag.'>';
+
+    return $html;
+}
+function _smarty_block_menu_parseheader($params)
+{
+    $listClass = isset($params['class']) ? $params['class'] : null;
+    $listId = isset($params['id']) ? $params['id'] : null;
+    $listTag = isset($params['tag']) ? $params['tag'] : 'ul';
+    $html = '<'.$listTag;
+    $html .= !empty($listId) ? ' id="'.$listId.'"' : '';
+    $html .= !empty($listClass) ? ' class="'.$listClass.'"' : '';
+    $html .= '>';
+
+    $html .= $params['_content'];
 
     $html .= '</'.$listTag.'>';
 

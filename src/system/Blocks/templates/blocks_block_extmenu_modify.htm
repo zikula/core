@@ -1,6 +1,6 @@
 {ajaxheader modname="Blocks" filename="blocks.js"}
-{pageaddvar name="javascript" value="javascript/helpers/Zikula.recursiveSortable.js"}
 {pageaddvar name="javascript" value="javascript/helpers/Zikula.itemlist.js"}
+{pageaddvar name="javascript" value="javascript/helpers/Zikula.recursiveSortable.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/extmenu_modify.css"}
 
 {if $redirect neq ''}
@@ -38,7 +38,7 @@
 
 <h4 id="editmenu">{gt text="Content" domain='zikula'}</h4>
 <p class="z-informationmsg">{gt text="In the table below, drag and drop the menu items into your desired order. The item order and the contents of each menu item are saved when you click the 'Save' button. The number in the right-hand column is the ID of the menu item. Use this ID number if you want to use permission rules to restrict access to the menu item." domain='zikula'}</p>
-<p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="z-icon-es-new" onclick="javascript:list_menuitemlist.appenditem();" href="javascript:void(0);">{gt text="Create new menu item" domain='zikula'}</a></p>
+<p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="z-icon-es-new" href="#">{gt text="Create new menu item" domain='zikula'}</a></p>
 
 {* return to this block after saving *}
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
@@ -54,6 +54,7 @@
         <span class="z-itemcell z-w10"><strong>{gt text="Active" domain='zikula'}</strong></span>
     </li>
     {/if}
+    {if $extmenu.total > 0}
     <li id="li_menuitemlist_{$itemid}" class="{cycle values='z-odd,z-even'} z-sortable z-clearfix">
         {foreach key='thislanguage' item='item' from=$menuitem}
         <div class="z-clearfix">
@@ -91,16 +92,8 @@
         </ul>
         {/if}
     </li>
+    {/if}
 {/menu}
-
-<script type="text/javascript">
-    /* <![CDATA[ */
-    var list_menuitemlist = null;
-    Event.observe(window, 'load', function() {
-        list_menuitemlist = new Zikula.itemlist('menuitemlist', {headerpresent: true, firstidiszero: true, recursive: true, inputName: 'linksorder'});
-    }, false);
-    /* ]]> */
-</script>
 
 <ul style="display:none">
     <li id="menuitemlist_emptyitem" class="z-sortable z-clearfix" style="padding-left: 30px !important;">
@@ -132,3 +125,16 @@
         {/foreach}
     </li>
 </ul>
+
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var list_menuitemlist = null;
+    document.observe("dom:loaded",function(){
+        list_menuitemlist = new Zikula.itemlist('menuitemlist', {headerpresent: true, firstidiszero: true, recursive: true, inputName: 'linksorder'});
+    });
+    $('appendmenuitem').observe('click',function(event){
+        list_menuitemlist.appenditem();
+        event.stop();
+    })
+    /* ]]> */
+</script>

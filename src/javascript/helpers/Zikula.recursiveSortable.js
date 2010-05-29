@@ -25,7 +25,6 @@ Zikula.recursiveSortable = Class.create({
             dropAfterOverlap:   [0.3, 0.7],
             only:               null,
             onUpdate:           Prototype.emptyFunction,
-//            onSave:             Prototype.emptyFunction,
             maxDepth:           0,
             inputName:          'order',
             nodeIdPattern:       /^[^_\-](?:[A-Za-z0-9\-\_]*)[_](.*)$/,
@@ -46,8 +45,6 @@ Zikula.recursiveSortable = Class.create({
 
         this.unsaved = false;
         this.serialize();
-//        Event.observe(window, 'beforeunload', this.beforeUnloadHandler.bindAsEventListener(this));
-//        window.zkd = this;
     },
     initNode: function(node) {
         if(this.isAccepted(node)) {
@@ -57,7 +54,6 @@ Zikula.recursiveSortable = Class.create({
                 onEnd: this.endDrag.bind(this),
                 onStart : this.startDrag.bind(this),
                 revert:true,
-//                starteffect:null,
                 endeffect: function(element) {
                     new Effect.Highlight(element);
                 },
