@@ -17,5 +17,3 @@ ZLoader::register();
 
 System::init();
 System::redirect(ModUtil::url('Users'));
-
-

@@ -31,7 +31,7 @@ class ModUtil
     const DEPENDENCY_CONFLICTS = 3;
 
     /**
-     * The pnModInitCoreVars preloads some module vars.
+     * The initCoreVars preloads some module vars.
      *
      * Preloads module vars for a number of key modules to reduce sql statements.
      *
@@ -49,14 +49,19 @@ class ModUtil
         // if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar)) {
             $pnmodvar = array();
-            $pntables = System::dbGetTables();
-            $col = $pntables['module_vars_column'];
+            $tables   = System::dbGetTables();
+            $col      = $tables['module_vars_column'];
 
-            $where = "$col[modname]='" . PN_CONFIG_MODULE .
-                    "' OR $col[modname]='pnRender' OR $col[modname]='Theme' OR $col[modname]='Blocks' OR $col[modname]='Users' OR $col[modname]='Settings'";
+            $where =   "$col[modname] = '" . PN_CONFIG_MODULE ."'
+                     OR $col[modname] = 'pnRender'
+                     OR $col[modname] = 'Theme'
+                     OR $col[modname] = 'Blocks'
+                     OR $col[modname] = 'Users'
+                     OR $col[modname] = 'Settings'";
+
             $profileModule = System::getVar('profilemodule', '');
             if (!empty($profileModule) && self::available($profileModule)) {
-                $where .= " OR $col[modname] = '" . $profileModule . "'";
+                $where .= " OR $col[modname] = '$profileModule'";
             }
 
             $pnmodvars = DBUtil::selectObjectArray('module_vars', $where);
@@ -78,7 +83,7 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
-        $name = isset($name) ? ((string)$name) : '';
+        $name    = isset($name) ? ((string)$name) : '';
 
         // make sure we have the necessary parameters
         if (!System::varValidate($modname, 'mod') || !System::varValidate($name, 'modvar')) {
@@ -92,20 +97,20 @@ class ModUtil
     }
 
     /**
-     * The pnModGetVar function gets a module variable.
+     * The getVar method gets a module variable.
      *
-     * If the name parameter is included then function returns the
+     * If the name parameter is included then method returns the
      * module variable value.
-     * if the name parameter is ommitted then function returns a multi
+     * if the name parameter is ommitted then method returns a multi
      * dimentional array of the keys and values for the module vars.
      *
      * @param string  $modname The name of the module.
      * @param string  $name    The name of the variable.
      * @param boolean $default The value to return if the requested modvar is not set.
      *
-     * @return string|array If the name parameter is included then function returns
+     * @return  string|array If the name parameter is included then method returns
      *          string - module variable value
-     *          if the name parameter is ommitted then function returns
+     *          if the name parameter is ommitted then method returns
      *          array - multi dimentional array of the keys
      *                  and values for the module vars.
      */
@@ -121,10 +126,10 @@ class ModUtil
 
         // if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar[$modname])) {
-            $pntables = System::dbGetTables();
-            $col = $pntables['module_vars_column'];
-            $where = "WHERE $col[modname]='" . DataUtil::formatForStore($modname) . "'";
-            $sort = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
+            $tables = System::dbGetTables();
+            $col    = $tables['module_vars_column'];
+            $where  = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
+            $sort   = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
 
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
@@ -139,7 +144,7 @@ class ModUtil
 
         // if they didn't pass a variable name then return every variable
         // for the specified module as an associative array.
-        // array('var1'=>value1, 'var2'=>value2)
+        // array('var1' => value1, 'var2' => value2)
         if (empty($name) && isset($pnmodvar[$modname])) {
             return $pnmodvar[$modname];
         }
@@ -157,7 +162,7 @@ class ModUtil
     }
 
     /**
-     * The pnModSetVar Function sets a module variable.
+     * The setVar method sets a module variable.
      *
      * @param string $modname The name of the module.
      * @param string $name    The name of the variable.
@@ -181,13 +186,13 @@ class ModUtil
         $obj['value'] = serialize($value);
 
         if (pnModVarExists($modname, $name)) {
-            $pntable = System::dbGetTables();
-            $cols = $pntable['module_vars_column'];
-            $where = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
-                    AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
+            $tables = System::dbGetTables();
+            $cols   = $tables['module_vars_column'];
+            $where  = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
+                         AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
             $res = DBUtil::updateObject($obj, 'module_vars', $where);
         } else {
-            $obj['name'] = $name;
+            $obj['name']    = $name;
             $obj['modname'] = $modname;
             $res = DBUtil::insertObject($obj, 'module_vars');
         }
@@ -200,7 +205,7 @@ class ModUtil
     }
 
     /**
-     * The pnModSetVars function sets multiple module variables.
+     * The setVars method sets multiple module variables.
      *
      * @param string $modname The name of the module.
      * @param array  $vars    An associative array of varnames/varvalues.
@@ -210,13 +215,14 @@ class ModUtil
     public static function setVars($modname, $vars)
     {
         $ok = true;
-        foreach ($vars as $var => $value)
+        foreach ($vars as $var => $value) {
             $ok = $ok && self::setVar($modname, $var, $value);
+        }
         return $ok;
     }
 
     /**
-     * The pnModDelVar function deletes a module variable.
+     * The delVar method deletes a module variable.
      *
      * Delete a module variables. If the optional name parameter is not supplied all variables
      * for the module 'modname' are deleted.
@@ -228,15 +234,16 @@ class ModUtil
      */
     public static function delVar($modname, $name = '')
     {
-// define input, all numbers and booleans to strings
+        // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
 
-// validate
+        // validate
         if (!System::varValidate($modname, 'modvar')) {
             return false;
         }
 
         global $pnmodvar;
+
         $val = null;
         if (empty($name)) {
             if (isset($pnmodvar[$modname])) {
@@ -249,12 +256,12 @@ class ModUtil
             }
         }
 
-        $pntable = System::dbGetTables();
-        $cols = $pntable['module_vars_column'];
+        $tables = System::dbGetTables();
+        $cols   = $tables['module_vars_column'];
 
-// check if we're deleting one module var or all module vars
+        // check if we're deleting one module var or all module vars
         $specificvar = '';
-        $name = DataUtil::formatForStore($name);
+        $name    = DataUtil::formatForStore($name);
         $modname = DataUtil::formatForStore($modname);
         if (!empty($name)) {
             $specificvar = " AND $cols[name] = '$name'";
@@ -266,7 +273,7 @@ class ModUtil
     }
 
     /**
-     * The ModUtil::getIdFromName function gets module ID given its name.
+     * The getIdFromName method gets module ID given its name.
      *
      * @param string $module The name of the module.
      *
@@ -274,10 +281,10 @@ class ModUtil
      */
     public static function getIdFromName($module)
     {
-// define input, all numbers and booleans to strings
+        // define input, all numbers and booleans to strings
         $module = (isset($module) ? strtolower((string)$module) : '');
 
-// validate
+        // validate
         if (!System::varValidate($module, 'mod')) {
             return false;
         }
@@ -314,7 +321,7 @@ class ModUtil
     }
 
     /**
-     * The ModUtil::getInfo function gets information on module.
+     * The getInfo method gets information on module.
      *
      * Return array of module information or false if core ( id = 0 ).
      *
@@ -360,7 +367,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetUserMods function gets a list of user modules.
+     * The getUserMods method gets a list of user modules.
      *
      * @return array An array of module information arrays.
      */
@@ -370,7 +377,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetProfilesMods function gets a list of profile modules.
+     * The getProfileMods method gets a list of profile modules.
      *
      * @return array An array of module information arrays.
      */
@@ -380,7 +387,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetMessageMods function gets a list of message modules.
+     * The getMessageMods method gets a list of message modules.
      *
      * @return array An array of module information arrays.
      */
@@ -390,7 +397,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetAdminMods function gets a list of administration modules.
+     * The getAdminMods method gets a list of administration modules.
      *
      * @return array An array of module information arrays.
      */
@@ -400,7 +407,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetTypeMods function gets a list of modules by module type.
+     * The getTypeMods method gets a list of modules by module type.
      *
      * @param string $type The module type to get (either 'user' or 'admin') (optional) (default='user').
      *
@@ -408,16 +415,17 @@ class ModUtil
      */
     public static function getTypeMods($type = 'user')
     {
-        if ($type != 'user' && $type != 'admin' && $type != 'profile' && $type != 'message')
+        if ($type != 'user' && $type != 'admin' && $type != 'profile' && $type != 'message') {
             $type = 'user';
+        }
 
         static $modcache = array();
 
         if (!isset($modcache[$type]) || !$modcache[$type]) {
             $modcache[$type] = array();
-            $cap = $type . '_capable';
+            $cap  = $type . '_capable';
             $mods = self::getAllMods();
-            $ak = array_keys($mods);
+            $ak   = array_keys($mods);
             foreach ($ak as $k) {
                 if ($mods[$k][$cap] == '1') {
                     $modcache[$type][] = $mods[$k];
@@ -429,7 +437,7 @@ class ModUtil
     }
 
     /**
-     * The pnModGetAllMods function gets a list of all modules.
+     * The getAllMods method gets a list of all modules.
      *
      * @return array An array of module information arrays.
      */
@@ -438,11 +446,12 @@ class ModUtil
         static $modsarray = array();
 
         if (empty($modsarray)) {
-            $pntable = System::dbGetTables();
-            $modulescolumn = $pntable['modules_column'];
-            $where = "WHERE $modulescolumn[state] = " . ModUtil::STATE_ACTIVE . "
-                  OR $modulescolumn[name] = 'Modules'";
-            $orderBy = "ORDER BY $modulescolumn[displayname]";
+            $tables  = System::dbGetTables();
+            $cols    = $tables['modules_column'];
+            $where   = "WHERE $cols[state] = " . ModUtil::STATE_ACTIVE . "
+                           OR $cols[name] = 'Modules'";
+            $orderBy = "ORDER BY $cols[displayname]";
+
             $modsarray = DBUtil::selectObjectArray('modules', $where, $orderBy);
             if ($modsarray === false) {
                 return false;
@@ -453,7 +462,7 @@ class ModUtil
     }
 
     /**
-     * Loads datbase definition for a module.
+     * Loads database definition for a module.
      *
      * @param string  $modname   The name of the module to load database definition for.
      * @param string  $directory Directory that module is in (if known).
@@ -475,15 +484,16 @@ class ModUtil
         }
 
         static $loaded = array();
-        // Check to ensure we aren't doing this twice
+
+        // check to ensure we aren't doing this twice
         if (isset($loaded[$modname]) && !$force) {
             $result = true;
             return $result;
         }
 
-        // Get the directory if we don't already have it
+        // get the directory if we don't already have it
         if (empty($directory)) {
-        // get the module info
+            // get the module info
             $modinfo = self::getInfo(self::getIdFromName($modname));
             $directory = $modinfo['directory'];
         }
@@ -505,7 +515,7 @@ class ModUtil
         }
         $loaded[$modname] = true;
 
-        // V4B RNG: return data so we know which tables were loaded by this module
+        // return data so we know which tables were loaded by this module
         return $data;
     }
 
@@ -558,6 +568,7 @@ class ModUtil
         $modtype = strtolower("$modname{$type}{$osapi}");
 
         static $loaded = array();
+
         if (!empty($loaded[$modtype])) {
             // Already loaded from somewhere else
             return true;
@@ -575,15 +586,15 @@ class ModUtil
             return false;
         }
 
-
         // create variables for the OS preped version of the directory
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        $osdirectory = DataUtil::formatForOS($modinfo['directory']);
+        $osdir   = DataUtil::formatForOS($modinfo['directory']);
         $ostype  = DataUtil::formatForOS($type);
-        $cosfile = "config/functions/$osdirectory/pn{$ostype}{$osapi}.php";
-        $mosfile = "$modpath/$osdirectory/pn{$ostype}{$osapi}.php";
-        $mosdir  = "$modpath/$osdirectory/pn{$ostype}{$osapi}";
-        $oopcontroller = "$modpath/$osdirectory/".ucwords($ostype).ucwords($osapi).'.php';
+
+        $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
+        $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
+        $mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
+        $oopcontroller = "$modpath/$osdir/".ucwords($ostype).ucwords($osapi).'.php';
 
         // OOP modules will load automatically
         $className = "{$modname}_" .ucwords($ostype).ucwords($osapi);
@@ -597,7 +608,7 @@ class ModUtil
                 return false;
             }
             // Load optional bootstrap
-            $bootstrap = "$modpath/$osdirectory/bootstrap.php";
+            $bootstrap = "$modpath/$osdir/bootstrap.php";
             if (file_exists($bootstrap)) {
                 include_once $bootstrap;
             }
@@ -624,15 +635,13 @@ class ModUtil
         // add stylesheet to the page vars, this makes the modulestylesheet plugin obsolete,
         // but only for non-api loads as we would pollute the stylesheets
         // not during installation as the Theme engine may not be available yet and not for system themes
-        // TO-DO: figure out how to determine if a userapi belongs to a hook module and load the
-        //        corresponding css, perhaps with a new entry in modules table?
-        if (!System::isInstalling()) {
-            if ($api == false) {
-                PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
-                if ($type == 'admin') {
-                    // load special admin.css for administrator backend
-                    PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
-                }
+        // TODO: figure out how to determine if a userapi belongs to a hook module and load the
+        //       corresponding css, perhaps with a new entry in modules table?
+        if (!System::isInstalling() && !$api) {
+            PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
+            if ($type == 'admin') {
+                // load special admin.css for administrator backend
+                PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
             }
         }
 
@@ -790,7 +799,7 @@ class ModUtil
             if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (is_callable($modfunc)) {
-                    return $modfunc($args);
+                    //return $modfunc($args);
                     EventManagerUtil::notify($preExecuteEvent)->getData();
                     $postExecuteEvent->setData($modfunc($args));
                     return EventManagerUtil::notify($postExecuteEvent)->getData();
@@ -806,6 +815,7 @@ class ModUtil
             // return void
             $event = new Event('module.execute_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
             EventManagerUtil::notifyUntil($event);
+
             if ($preExecuteEvent->hasNotified()) {
                 return $preExecuteEvent->getData();
             }
@@ -851,7 +861,7 @@ class ModUtil
         }
 
         // define some statics as this API is likely to be called many times
-        static $entrypoint, $host, $baseuri, $https, $shorturlstype, $shorturlsstripentrypoint, $shorturlsdefaultmodule;
+        static $entrypoint, $host, $baseuri, $https, $shorturls, $shorturlstype, $shorturlsstripentrypoint, $shorturlsdefaultmodule;
 
         // entry point
         if (!isset($entrypoint)) {
@@ -1040,7 +1050,7 @@ class ModUtil
         static $module;
 
         if (!isset($module)) {
-            $type = FormUtil::getPassedValue('type', null, 'GETPOST');
+            $type   = FormUtil::getPassedValue('type', null, 'GETPOST');
             $module = FormUtil::getPassedValue('module', null, 'GETPOST');
 
             if (empty($module)) {
@@ -1053,13 +1063,7 @@ class ModUtil
             if (isset($modinfo['name'])) {
                 $module = $modinfo['name'];
                 if ($type != 'init' && !ModUtil::available($module)) {
-                    // anything from user.php is the user module
-                    // not really - of course but it'll do..... [markwest]
-                    if (stristr($_SERVER['PHP_SELF'], 'user.php')) {
-                        $module = 'Users';
-                    } else {
-                        $module = System::getVar('startpage');
-                    }
+                    $module = System::getVar('startpage');
                 }
             }
         }
@@ -1091,6 +1095,7 @@ class ModUtil
 
         // Insert hook
         $obj = array('object' => $hookobject, 'action' => $hookaction, 'tarea' => $hookarea, 'tmodule' => $hookmodule, 'ttype' => $hooktype, 'tfunc' => $hookfunc);
+
         return (bool)DBUtil::insertObject($obj, 'hooks', 'id');
     }
 
@@ -1117,16 +1122,16 @@ class ModUtil
         }
 
         // Get database info
-        $pntable = System::dbGetTables();
-        $hookscolumn = $pntable['hooks_column'];
+        $tables = System::dbGetTables();
+        $hookscolumn = $tables['hooks_column'];
 
         // Remove hook
         $where = "WHERE $hookscolumn[object] = '" . DataUtil::formatForStore($hookobject) . "'
-              AND $hookscolumn[action] = '" . DataUtil::formatForStore($hookaction) . "'
-              AND $hookscolumn[tarea] = '" . DataUtil::formatForStore($hookarea) . "'
-              AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($hookmodule) . "'
-              AND $hookscolumn[ttype] = '" . DataUtil::formatForStore($hooktype) . "'
-              AND $hookscolumn[tfunc] = '" . DataUtil::formatForStore($hookfunc) . "'";
+                    AND $hookscolumn[action] = '" . DataUtil::formatForStore($hookaction) . "'
+                    AND $hookscolumn[tarea] = '" . DataUtil::formatForStore($hookarea) . "'
+                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($hookmodule) . "'
+                    AND $hookscolumn[ttype] = '" . DataUtil::formatForStore($hooktype) . "'
+                    AND $hookscolumn[tfunc] = '" . DataUtil::formatForStore($hookfunc) . "'";
 
         return (bool)DBUtil::deleteWhere('hooks', $where);
     }
@@ -1159,11 +1164,11 @@ class ModUtil
         $lModname = strtolower($modname);
         if (!isset($modulehooks[$lModname])) {
             // Get database info
-            $pntable = System::dbGetTables();
-            $hookscolumn = $pntable['hooks_column'];
-            $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modname) . "'";
-            $orderby = "$hookscolumn[sequence] ASC";
-            $hooks = DBUtil::selectObjectArray('hooks', $where, $orderby);
+            $tables  = System::dbGetTables();
+            $cols    = $tables['hooks_column'];
+            $where   = "WHERE $cols[smodule] = '" . DataUtil::formatForStore($modname) . "'";
+            $orderby = "$cols[sequence] ASC";
+            $hooks   = DBUtil::selectObjectArray('hooks', $where, $orderby);
             $modulehooks[$lModname] = $hooks;
         }
 
@@ -1177,10 +1182,8 @@ class ModUtil
                     if (isset($modulehook['tarea']) && $modulehook['tarea'] == 'GUI') {
                         $gui = true;
                         if (self::available($modulehook['tmodule'], $modulehook['ttype']) && self::load($modulehook['tmodule'], $modulehook['ttype'])) {
-                            $output[$modulehook['tmodule']] = self::func($modulehook['tmodule'],
-                                    $modulehook['ttype'],
-                                    $modulehook['tfunc'],
-                                    array('objectid' => $hookid, 'extrainfo' => $extrainfo));
+                            $output[$modulehook['tmodule']] = self::func($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'],
+                                                                         array('objectid' => $hookid, 'extrainfo' => $extrainfo));
                         }
                     } else {
                         if (isset($modulehook['tmodule']) &&
@@ -1210,6 +1213,7 @@ class ModUtil
                             'implode' => $implode,
                             'output' => $output));
             EventManagerUtil::notify($event);
+
             return $event['output'];
         }
 
@@ -1222,6 +1226,7 @@ class ModUtil
                         'extrainfo' => $extrainfo,
                         'implode' => $implode));
         EventManagerUtil::notify($event);
+
         return $event['extrainfo'];
     }
 
@@ -1251,12 +1256,12 @@ class ModUtil
         }
 
         // Get database info
-        $pntable = System::dbGetTables();
-        $hookscolumn = $pntable['hooks_column'];
+        $tables = System::dbGetTables();
+        $hookscolumn = $tables['hooks_column'];
 
         // Get applicable hooks
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($smodule) . "'
-              AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($tmodule) . "'";
+                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($tmodule) . "'";
 
         $hooked[$tmodule][$smodule] = $numitems = DBUtil::selectObjectCount('hooks', $where);
         $hooked[$tmodule][$smodule] = ($numitems > 0);
@@ -1278,13 +1283,13 @@ class ModUtil
      * /var/www/html/system/Template
      *
      * This allows you to say:
-     * include(pnModGetBaseDir() . '/includes/private_functions.php');.
+     * include(ModUtil::getBaseDir() . '/includes/private_functions.php');.
      *
      * @param string $modname Name of module to that you want the base directory of.
      *
      * @return string The path from the root directory to the specified module.
      */
-    public static function pnModGetBaseDir($modname = '')
+    public static function getBaseDir($modname = '')
     {
         if (empty($modname)) {
             $modname = self::getName();
@@ -1350,18 +1355,18 @@ class ModUtil
      * the module table are returned which means that new/unscanned modules
      * will not be returned
      *
-     * @param state    The module state (optional) (defaults = active state)
+     * @param state The module state (optional) (defaults = active state)
      * @param sort  The sort to use
      *
      * @return The resulting module object array
      */
     public static function getModulesByState($state=3, $sort='displayname')
     {
-        $pntables     = System::dbGetTables();
-        $moduletable  = $pntables['modules'];
-        $modulecolumn = $pntables['modules_column'];
+        $tables = System::dbGetTables();
+        $cols   = $tables['modules_column'];
 
-        $where = "$modulecolumn[state] = $state";
+        $where = "$cols[state] = $state";
+
         return DBUtil::selectObjectArray ('modules', $where, $sort);
     }
 }
