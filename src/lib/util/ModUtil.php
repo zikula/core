@@ -633,7 +633,7 @@ class ModUtil
 
         // is OOP module, verify class is loadable
         if ($loaded[$moodule]) {
-            if (!class_exists($className, false)) {
+            if (!class_exists($className)) {
                 return false;
             }
         } elseif (file_exists($cosfile)) {
