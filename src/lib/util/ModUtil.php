@@ -51,9 +51,7 @@ class ModUtil
             $pnmodvar = array();
             $tables   = System::dbGetTables();
             $col      = $tables['module_vars_column'];
-
-            $where =   "$col[modname] = '" . PN_CONFIG_MODULE ."'
-                     OR $col[modname] = 'pnRender'
+            $where =   "$col[modname] = '" . ModUtil::CONFIG_MODULE ."'
                      OR $col[modname] = 'Theme'
                      OR $col[modname] = 'Blocks'
                      OR $col[modname] = 'Users'
@@ -66,7 +64,7 @@ class ModUtil
 
             $pnmodvars = DBUtil::selectObjectArray('module_vars', $where);
             foreach ($pnmodvars as $var) {
-                $pnmodvar[$var['modname']][$var['name']] = @unserialize($var['value']);
+                $pnmodvar[$var['modname']][$var['name']] = unserialize($var['value']);
             }
         }
     }
@@ -598,12 +596,17 @@ class ModUtil
 
         // OOP modules will load automatically
         $className = "{$modname}_" .ucwords($ostype).ucwords($osapi);
+
+        // if class is loadable or has been loaded exit here.
         if (class_exists($className)) {
             return true;
         }
 
+        // if file exists but is not available the autoloader has not yet been loaded.
+        // this only happens once deliberately.
         if (file_exists($oopcontroller) && !class_exists($className)) {
             ZLoader::addAutoloader($modname, realpath("$modpath"));
+            // verify class is loadable
             if (!class_exists($className)) {
                 return false;
             }
@@ -799,7 +802,6 @@ class ModUtil
             if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (is_callable($modfunc)) {
-                    //return $modfunc($args);
                     EventManagerUtil::notify($preExecuteEvent)->getData();
                     $postExecuteEvent->setData($modfunc($args));
                     return EventManagerUtil::notify($postExecuteEvent)->getData();
