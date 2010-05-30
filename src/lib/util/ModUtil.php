@@ -30,6 +30,8 @@ class ModUtil
     const DEPENDENCY_RECOMMENDED = 2;
     const DEPENDENCY_CONFLICTS = 3;
 
+    public static $ooModules = array();
+
     /**
      * The initCoreVars preloads some module vars.
      *
@@ -604,36 +606,15 @@ class ModUtil
 
         // OOP modules will load automatically
         $className = ($api) ? "{$modname}_Api_" . ucwords($ostype) : "{$modname}_". ucwords($ostype);
-        
+
         // if class is loadable or has been loaded exit here.
-        if (class_exists($className)) {
+        if (self::isIntialized($modname)) {
             return true;
         }
 
-        // checks if it is an OOP module once, and register the autoloader if so.
-        $moodule = strtolower("{$modname}OOP");
-        if (!isset($loaded[$moodule])) {
-            //if (file_exists("$modpath/$osdir/".ucwords($ostype).ucwords($osapi).'.php') /*is_dir("$modpath/$osdir/lib")*/) {
-            if (is_dir("$modpath/$osdir/lib")) {
-                ZLoader::addAutoloader($modname, realpath("$modpath/$osdir/lib"));
-                // load optional bootstrap
-                $bootstrap = "$modpath/$osdir/bootstrap.php";
-                if (file_exists($bootstrap)) {
-                    include_once $bootstrap;
-                }
-
-                // register any event handlers.
-                // module handlers must be attached from the bootstrap.
-                EventManagerUtil::attachCustomHandlers(realpath("$modpath/$osdir/lib/$osdir/EventHandlers"));
-                //EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
-
-                $loaded[$moodule] = true;
-            }
-        }
-
         // is OOP module
-        if (isset($loaded[$moodule])) {
-            // nothing to do
+        if (self::isOO($modname)) {
+            self::initOOModule($modname);
         } elseif (file_exists($cosfile)) {
             // Load the file from config
             include_once $cosfile;
@@ -641,7 +622,7 @@ class ModUtil
             // Load the file from modules
             include_once $mosfile;
         } else {
-        // File does not exist
+            // File does not exist
             return false;
         }
         $loaded[$modtype] = 1;
@@ -747,15 +728,16 @@ class ModUtil
         $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
 
-        $className = ($api) ? "{$modname}_Api_" . ucwords($type) : "{$modname}_". ucwords($type);
         $controller = null;
+        $className = ($api) ? "{$modname}_Api_" . ucwords($type) : "{$modname}_". ucwords($type);
+
+        $event = new Event('module.customcontroller', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        EventManagerUtil::notifyUntil($event);
+        if ($event->hasNotified()) {
+            $className = $event->getData();
+        }
 
         if (class_exists($className)) {
-            $event = new Event('module.customcontroller', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
-            EventManagerUtil::notifyUntil($event);
-            if ($event->hasNotified()) {
-                $className = $event->getData();
-            }
             $r = new ReflectionClass($className);
             if (array_key_exists($className, $controllers)) {
                 $controller = $controllers[$className];
@@ -1208,7 +1190,7 @@ class ModUtil
                         $gui = true;
                         if (self::available($modulehook['tmodule'], $modulehook['ttype']) && self::load($modulehook['tmodule'], $modulehook['ttype'])) {
                             $output[$modulehook['tmodule']] = self::func($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'],
-                                                                         array('objectid' => $hookid, 'extrainfo' => $extrainfo));
+                                    array('objectid' => $hookid, 'extrainfo' => $extrainfo));
                         }
                     } else {
                         if (isset($modulehook['tmodule']) &&
@@ -1392,5 +1374,61 @@ class ModUtil
         $where = "$cols[state] = $state";
 
         return DBUtil::selectObjectArray ('modules', $where, $sort);
+    }
+
+    public static function initOOModule($moduleName)
+    {
+        if (self::isIntialized($moduleName)) {
+            return true;
+        }
+
+        $modinfo = self::getInfo(self::getIdFromName($moduleName));
+        if (!$modinfo) {
+            return false;
+        }
+
+        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $osdir   = DataUtil::formatForOS($modinfo['directory']);
+        ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"));
+        // load optional bootstrap
+        $bootstrap = "$modpath/$osdir/bootstrap.php";
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
+        }
+
+        // register any event handlers.
+        // module handlers must be attached from the bootstrap.
+        EventManagerUtil::attachCustomHandlers(realpath("$modpath/$osdir/lib/$osdir/EventHandlers"));
+        //EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
+
+        self::$ooModules[$moduleName]['initialized'] = true;
+        return true;
+    }
+
+    public static function isIntialized($moduleName)
+    {
+        return (self::isOO($moduleName) && self::$ooModules[$moduleName]['initialized']);
+    }
+
+    public static function isOO($moduleName)
+    {
+        if (!isset(self::$ooModules[$moduleName])) {
+            self::$ooModules[$moduleName] = array();
+            self::$ooModules[$moduleName]['initialized'] = false;
+            self::$ooModules[$moduleName]['oo'] = false;
+            $modinfo = self::getInfo(self::getIdFromName($moduleName));
+            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $osdir   = DataUtil::formatForOS($modinfo['directory']);
+
+            if (!$modinfo) {
+                return false;
+            }
+
+            if (is_dir("$modpath/$osdir/lib")) {
+               self::$ooModules[$moduleName]['oo'] = true;
+           }
+        }
+
+        return self::$ooModules[$moduleName]['oo'];
     }
 }
