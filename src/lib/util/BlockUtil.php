@@ -305,7 +305,7 @@ class BlockUtil
         } else {
             $initfunc();
         }
-        
+
         // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
 
@@ -333,7 +333,7 @@ class BlockUtil
                 $blockdirs[$modname][] = "modules/$moddir/lib/$modir/Block";
                 $blockdirs[$modname][] = "modules/$moddir/pnblocks";
 
-                foreach ($blockdirs[$modname] as $dir) {echo 1;
+                foreach ($blockdirs[$modname] as $dir) {
                     if (is_dir($dir) && is_readable($dir)) {
                         $dh = opendir($dir);
                         while (($f = readdir($dh)) !== false) {
