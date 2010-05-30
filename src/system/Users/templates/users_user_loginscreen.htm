@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {ajaxheader modname='Users' filename='users.js'}
 {gt text='User log-in' assign='templatetitle'}
 {modulelinks modname='Users' type='user'}
@@ -85,6 +84,7 @@
         {assign var='touppTextString' value=$ppString}
         {assign var='touppTitle' value=$ppTitle}
         {/if}
+
         <fieldset>
             <legend>{$touppTitle}</legend>
             <p class="z-warningmsg">{gt text='Notice: Please be informed that the site\'s %1$s have changed. You are asked to read the new %2$s, and to state your acceptance of them by activating the following checkbox. This is required before you can log in. Thank you for your understanding.' tag1=$touppURLString tag2=$touppTextString}</p>
@@ -92,9 +92,9 @@
                 <label for="users_touaccepted">&nbsp;{gt text="I accept the %s" tag1=$touppURLString}</label>
                 <input id="users_touaccepted" type="checkbox" name="touaccepted" value="1" />
             </div>
-            {/if}
-
         </fieldset>
+        {/if}
+
         <div class="z-formbuttons">
             {button src=button_ok.gif set=icons/small __alt="Log in" __title="Log in"}
         </div>

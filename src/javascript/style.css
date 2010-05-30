@@ -178,12 +178,22 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     margin: 5px 0;
     padding: 5px 5px 5px 36px;
 }
+.z-errormsg h1,
+.z-errormsg h2,
+.z-errormsg h3, {
+    color: #880000;
+}
 .z-informationmsg {
     background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat;
     border: 1px solid #9bb8d9;
     color: #27427D;
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
+}
+.z-informationmsg h1,
+.z-informationmsg h2,
+.z-informationmsg h3, {
+    color: #27427D;
 }
 .z-statusmsg {
     background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
@@ -192,12 +202,22 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
 }
+.z-statusmsg h1,
+.z-statusmsg h2,
+.z-statusmsg h3, {
+    color: #005000;
+}
 .z-warningmsg {
     background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
     border: 1px solid #EED324;
     color: #702E02;
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
+}
+.z-warningmsg h1,
+.z-warningmsg h2,
+.z-warningmsg h3, {
+    color: #702E02;
 }
 
 /*******************************************************************************/
@@ -293,6 +313,9 @@ table.z-datatable ul {
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
     overflow: hidden;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     background: #fafafa;
     -o-background-size: 100% 100%;
     -moz-background-size: 100% 100%;
