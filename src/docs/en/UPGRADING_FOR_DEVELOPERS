@@ -79,7 +79,7 @@
 
 - OO module controllers will initialise an autoloader for the class so that
   a call to a class Example_DBObject_Users would load
-  module/Example/DBObject/Users.php - the class contained should be
+  module/Example/lib/Example/DBObject/Users.php - the class contained should be
   Example_DBObject_Users.
 
 - You may additionally register autoloaders with
@@ -137,3 +137,22 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
        now returns the result of getActionsByState.
    If you used values, replace them with the result keys, and take advantage
    of the action data now available.
+
+- Refactoring module code:
+  - With the following instruction you need to remove all prefixed from function
+    names, like function Module_admin_foo() becomes public function foo()
+  - Any methods which should not be exposed, ie callable from the URL should be
+    make protected or private.
+
+    - Blocks: refactor blocks into lib/$modname/Block/$name.  e.g.
+      MyMod/blocks/foo.php becomes MyMod/lib/MyMod/Block/Foo.php
+      Encapsulate in class MyMod_Block_Foo extends AbstractBlock
+
+    - Controllers: refactor pnuser.php (etc) to lib/$modname/$name e.g.
+      MyMod/pnuser.php becomes MyMod/lib/MyMod/User.php
+      Encapsulate in class MyMod_User extends AbstractController
+
+    - Apis: refactor pnuserapi.php (etc) to lib/$modname/$name e.g.
+      MyMod/pnuserapi.php becomes MyMod/lib/MyMod/UserApi.php
+      Encapsulate in class MyMod_UserApi extends AbstractApi
+
