@@ -628,16 +628,12 @@ class ModUtil
                 //EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
 
                 $loaded[$moodule] = true;
-            } else {
-                $loaded[$moodule] = false;
             }
         }
 
-        // is OOP module, verify class is loadable
-        if ($loaded[$moodule]) {
-            if (!class_exists($className)) {
-                return false;
-            }
+        // is OOP module
+        if (isset($loaded[$moodule])) {
+            // nothing to do
         } elseif (file_exists($cosfile)) {
             // Load the file from config
             include_once $cosfile;
