@@ -636,7 +636,7 @@ class SecurityCenter_UserApi extends AbstractApi
     private function _getidsconfig()
     {
         $config = array();
-        $idsDir = dirname(__FILE__) . '/vendor/IDS/';
+        $idsDir = dirname(__FILE__) . '/lib/vendor/IDS/';
 
         // General configuration settings
         $config['General'] = array();
