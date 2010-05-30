@@ -403,7 +403,7 @@ class UserUtil
             return false;
         }
 
-        $uid = $user['uid'];
+        $uid = (isset($user['uid']) ? $user['uid'] : null);
 
         // check if the account is active
         if (isset($user['activated']) && $user['activated'] == '0') {
@@ -548,24 +548,33 @@ class UserUtil
     /**
      * Check user password.
      *
-     * @param string $pass  Password
+     * @param string $username              The user's user name (or other appropriate authenticating identifier)
+     * @param string $pass                  The user's password
+     * @param bool   $returnAuthModuleName  If false (default) simply return a boolean, if true, then if the password authenticates
+     *                                      return the authmodule name that authenticated the password instead of true. (optional,
+     *                                      defaults to false)
      *
-     * @return boolean
+     * @return bool|string True if the password authenticates against one of the authmodules and $returnAuthModuleName is false;
+     *                      the name of the authmodule if the password authenticates and $returnAuthModuleName is true; otherwise false.
      */
-    public static function checkPassword($login, $pass)
+    public static function checkPassword($username, $pass, $returnAuthModuleName = false)
     {
-        $result = false;
-        $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
-        foreach ($authmodules as $authmodule) {
-            $authmodule = trim($authmodule);
-            if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                $result = ModUtil::apiFunc('Users', 'auth', 'checkpassword', array('login' => $login, 'pass' => $pass));
-                if ($result) {
+        $passwordMatches = false;
+        $authModuleNames = explode(',', ModUtil::getVar('Users', 'authmodules'));
+        foreach ($authModuleNames as $authModuleName) {
+            $authModuleName = trim($authModuleName);
+            if (ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'user')) {
+                $passwordMatches = ModUtil::apiFunc($authModuleName, 'auth', 'checkpassword', array('login' => $username, 'pass' => $pass));
+                if ($passwordMatches) {
                     break;
                 }
             }
         }
-        return $result;
+        if ($passwordMatches && $returnAuthModuleName) {
+            return $authModuleName;
+        } else {
+            return $passwordMatches;
+        }
     }
 
 
