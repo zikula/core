@@ -329,8 +329,8 @@ class BlockUtil
 
             if (!isset($blockdirs[$modname])) {
                 $blockdirs[$modname] = array();
-                $blockdirs[$modname][] = "system/$moddir/lib/$modir/Block";
-                $blockdirs[$modname][] = "modules/$moddir/lib/$modir/Block";
+                $blockdirs[$modname][] = "system/$moddir/lib/$moddir/Block";
+                $blockdirs[$modname][] = "modules/$moddir/lib/$moddir/Block";
                 $blockdirs[$modname][] = "modules/$moddir/pnblocks";
 
                 foreach ($blockdirs[$modname] as $dir) {
