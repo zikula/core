@@ -141,7 +141,7 @@ class BlockUtil
 
         if (is_callable($displayfunc)) {
             if (is_array($displayfunc)) {
-                return call_user_func_array($displayfunc, array($blockinfo));
+                return call_user_func($displayfunc, $blockinfo);
             } else {
                 return $displayfunc($blockinfo);
             }
