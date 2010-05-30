@@ -516,6 +516,10 @@ function users_user_mailpassword($args = array())
  * If a redirect URL is specified, then the user is redirected to that page upon
  * successful login.
  *
+ * NOTE TO DEVELOPERS: Do not assume that the Users module will be the module that authenticates the
+ * user name (or email or whatever) and password! This function must rely on UserUtil and its
+ * dispatching of authentication to the proper authmodule!
+ *
  * @return bool True on successful login, otherwise false.
  */
 function users_user_login()
@@ -536,10 +540,13 @@ function users_user_login()
     $rememberme = FormUtil::getPassedValue ('rememberme', '');
     $passwordReminder = FormUtil::getPassedValue ('password_reminder', '');
 
+    // TODO - What if the user is using an identifier from an alternate authenticating module (e.g. OpenID or Facebook)? This forces the zikula uname and that uname to be required to match!
     $userid = UserUtil::getIdFromName($uname);
 
     $userstatus = UserUtil::getVar('activated', $userid);
     $tryagain = false;
+
+    // TODO - There appears to be something about confirmtou and pp in UserUtil::login. Is this and that a duplication?
     $confirmtou = 0;
     $changepassword = 0;
     if (($userstatus == 2 || $userstatus == 6) && ModUtil::available('legal') && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
@@ -551,6 +558,7 @@ function users_user_login()
         }
     }
 
+    // TODO - This forces authentication against the Users module authapi! What if the user is trying to log in with an OpenID or something else?
     // the current password must be valid
     $current_pass = UserUtil::getVar('pass', $userid);
     $hash_number = UserUtil::getVar('hash_method', $userid);
@@ -561,6 +569,7 @@ function users_user_login()
         $tryagain = true;
     }
 
+    // TODO - A forced change of password only makes sense if the Users module is the authenticating module. Change this so that a forced Zikula password change is independent of the authmodule.
     if ($userstatus == 4 || $userstatus == 6) {
         $changepassword = 1;
         $validnewpass = true;
