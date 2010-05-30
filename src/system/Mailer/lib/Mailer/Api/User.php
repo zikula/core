@@ -46,7 +46,7 @@ class Mailer_Api_User extends AbstractApi
      * @todo Loading of language file based on Zikula language
      * @return bool true if successful, false otherwise
      */
-    function Mailer_userapi_sendmessage($args)
+    function sendmessage($args)
     {
         // Check for installed advanced Mailer module
         $processed = (isset($args['processed']) ? (int) $args['processed'] : 0);

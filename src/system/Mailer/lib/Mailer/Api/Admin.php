@@ -11,7 +11,7 @@
  * @subpackage Mailer
  */
 
-class Mailer_Api_Getlinks extends AbstractApi
+class Mailer_Api_Admin extends AbstractApi
 {
     /**
      * Get available admin panel links.
