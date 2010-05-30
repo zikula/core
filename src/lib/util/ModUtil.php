@@ -747,7 +747,7 @@ class ModUtil
         $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
 
-        $className = "{$modname}_". ucwords($type).ucwords($ftype);
+        $className = ($api) ? "{$modname}_Api_". ucwords($type) : "{$modname}_". ucwords($type);
         $controller = null;
 
         if (class_exists($className)) {

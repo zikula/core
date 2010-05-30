@@ -10,7 +10,7 @@
  * @subpackage SecurityCenter
  */
 
-class SecurityCenter_AdminApi extends AbstractApi
+class SecurityCenter_Api_Admin extends AbstractApi
 {
     /**
      * delete a hacking attempt item

@@ -11,7 +11,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  */
 
-class SysInfo_AdminApi extends AbstractApi
+class SysInfo_Api_Admin extends AbstractApi
 {
     /**
      * get available admin panel links

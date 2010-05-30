@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_UserApi extends AbstractApi
+class SecurityCenter_Api_User extends AbstractApi
 {
     /**
      * Get all hack attempts in db.
