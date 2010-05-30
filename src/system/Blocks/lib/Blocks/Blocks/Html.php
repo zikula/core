@@ -10,46 +10,49 @@
  * @author Patric Kellum
  */
 
-/**
- * initialise block
- *
- * @author       The Zikula Development Team
- */
-function Blocks_htmlblock_init()
+class Blocks_Block_Html extends AbstractBase
 {
-    // Security
-    SecurityUtil::registerPermissionSchema('HTMLblock::', 'Block title::');
-}
-
-/**
- * get information on block
- *
- * @author       The Zikula Development Team
- * @return       array       The block information
- */
-function Blocks_htmlblock_info()
-{
-    return array('module'         => 'Blocks',
-                 'text_type'      => __('HTML'),
-                 'text_type_long' => __('HTML'),
-                 'allow_multiple' => true,
-                 'form_content'   => true,
-                 'form_refresh'   => false,
-                 'show_preview'   => true);
-}
-
-/**
- * display block
- *
- * @author       The Zikula Development Team
- * @param        array       $blockinfo     a blockinfo structure
- * @return       output      the rendered bock
- */
-function Blocks_htmlblock_display($blockinfo)
-{
-    if (!SecurityUtil::checkPermission('HTMLblock::', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
-        return;
+    /**
+     * initialise block
+     *
+     * @author       The Zikula Development Team
+     */
+    public function init()
+    {
+        // Security
+        SecurityUtil::registerPermissionSchema('HTMLblock::', 'Block title::');
     }
 
-    return BlockUtil::themeBlock($blockinfo);
+    /**
+     * get information on block
+     *
+     * @author       The Zikula Development Team
+     * @return       array       The block information
+     */
+    public function info()
+    {
+        return array('module'         => 'Blocks',
+                'text_type'      => $this->__('HTML'),
+                'text_type_long' => $this->__('HTML'),
+                'allow_multiple' => true,
+                'form_content'   => true,
+                'form_refresh'   => false,
+                'show_preview'   => true);
+    }
+
+    /**
+     * display block
+     *
+     * @author       The Zikula Development Team
+     * @param        array       $blockinfo     a blockinfo structure
+     * @return       output      the rendered bock
+     */
+    public function display($blockinfo)
+    {
+        if (!SecurityUtil::checkPermission('HTMLblock::', "$blockinfo[title]::", ACCESS_OVERVIEW)) {
+            return;
+        }
+
+        return BlockUtil::themeBlock($blockinfo);
+    }
 }
