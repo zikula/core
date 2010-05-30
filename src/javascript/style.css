@@ -180,7 +180,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 }
 .z-errormsg h1,
 .z-errormsg h2,
-.z-errormsg h3, {
+.z-errormsg h3 {
     color: #880000;
 }
 .z-informationmsg {
@@ -192,7 +192,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 }
 .z-informationmsg h1,
 .z-informationmsg h2,
-.z-informationmsg h3, {
+.z-informationmsg h3 {
     color: #27427D;
 }
 .z-statusmsg {
@@ -204,7 +204,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 }
 .z-statusmsg h1,
 .z-statusmsg h2,
-.z-statusmsg h3, {
+.z-statusmsg h3 {
     color: #005000;
 }
 .z-warningmsg {
@@ -216,7 +216,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 }
 .z-warningmsg h1,
 .z-warningmsg h2,
-.z-warningmsg h3, {
+.z-warningmsg h3 {
     color: #702E02;
 }
 

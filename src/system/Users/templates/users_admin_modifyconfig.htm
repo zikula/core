@@ -220,17 +220,17 @@
                     <input id="idnnamesno" type="radio" name="config[idnnames]" value="0" {if $config.idnnames neq 1}checked="checked" {/if}/>
                     <label for="idnnamesno">{gt text="No"}</label>
                 </div>
-                <em class="z-formnote">{gt text="Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs."}</em>
+                <em class="z-formnote z-sub">{gt text="Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_question">{gt text="Spam protection question"}</label>
                 <input id="users_reg_question" name="config[reg_question]" value="{$config.reg_question|varprephtmldisplay}" size="50" maxlength="255" />
-                <em class="z-formnote">{gt text="Notice: You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
+                <em class="z-formnote z-sub">{gt text="Notice: You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_answer">{gt text="Spam protection answer"}</label>
                 <input id="users_reg_answer" name="config[reg_answer]" value="{$config.reg_answer|varprephtmldisplay}" size="50" maxlength="255" />
-                <em class="z-formnote">{gt text="Notice: Registering users will have to provide this response when answering the spam protection question."}</em>
+                <em class="z-formnote z-sub">{gt text="Notice: Registering users will have to provide this response when answering the spam protection question."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_use_password_strength_meter">{gt text="Show password strength meter during registration"}</label>
@@ -279,7 +279,7 @@
             <div class="z-formrow">
                 <label for="users_authmodules">{gt text="Authentication modules"}</label>
                 <input id="users_authmodules" type="text" name="config[authmodules]" size="40" maxlength="255" value="{$config.authmodules|varprepfordisplay}" />
-                <em class="z-formnote">{gt text="Notice: This is a comma-separated list of modules to be used for authentication on the site."}</em>
+                <em class="z-formnote z-sub">{gt text="Notice: This is a comma-separated list of modules to be used for authentication on the site."}</em>
             </div>
         </fieldset>
 
