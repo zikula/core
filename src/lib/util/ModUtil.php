@@ -603,8 +603,8 @@ class ModUtil
         $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
 
         // OOP modules will load automatically
-        $className = $modname.'_'.ucwords($ostype).ucwords($osapi);
-
+        $className = ($api) ? "{$modname}_Api_" . ucwords($ostype) : "{$modname}_". ucwords($ostype);
+        
         // if class is loadable or has been loaded exit here.
         if (class_exists($className)) {
             return true;
@@ -747,7 +747,7 @@ class ModUtil
         $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
 
-        $className = ($api) ? "{$modname}_Api_". ucwords($type) : "{$modname}_". ucwords($type);
+        $className = ($api) ? "{$modname}_Api_" . ucwords($type) : "{$modname}_". ucwords($type);
         $controller = null;
 
         if (class_exists($className)) {

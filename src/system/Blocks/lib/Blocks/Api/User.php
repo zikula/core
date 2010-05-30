@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_UserApi extends AbstractApi
+class Blocks_Api_User extends AbstractApi
 {
     /**
      * Get all blocks

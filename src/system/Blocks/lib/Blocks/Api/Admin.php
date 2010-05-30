@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_AdminApi extends AbstractApi
+class Blocks_Api_Admin extends AbstractApi
 {
     /**
      * update attributes of a block
