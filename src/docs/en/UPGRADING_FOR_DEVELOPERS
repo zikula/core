@@ -152,7 +152,7 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
       MyMod/pnuser.php becomes MyMod/lib/MyMod/User.php
       Encapsulate in class MyMod_User extends AbstractController
 
-    - Apis: refactor pnuserapi.php (etc) to lib/$modname/$name e.g.
-      MyMod/pnuserapi.php becomes MyMod/lib/MyMod/UserApi.php
-      Encapsulate in class MyMod_UserApi extends AbstractApi
+    - Apis: refactor pnuserapi.php (etc) to lib/$modname/Api/$name e.g.
+      MyMod/pnuserapi.php becomes MyMod/lib/MyMod/Api/User.php
+      Encapsulate in class MyMod_Api_User extends AbstractApi
 
