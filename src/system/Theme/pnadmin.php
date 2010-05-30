@@ -52,7 +52,7 @@ function theme_admin_create($args)
     // check our input
     if (!isset($themeinfo) || !isset($themeinfo['name']) || empty($themeinfo) || empty($themeinfo['name'])) {
         $url = ModUtil::url('Theme', 'admin', 'new');
-        return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
+        return LogUtil::registerError(__("Error! You must enter at least the theme name."), null, $url);
     }
 
     // Security check
@@ -1291,7 +1291,7 @@ function theme_admin_clear_compiled()
     if ($res) {
         LogUtil::registerStatus(__('Done! Deleted theme engine compiled templates.'));
     } else {
-        LogUtil::registerError(__('Error: Failed to clear theme engine compiled templates.'));
+        LogUtil::registerError(__('Error! Failed to clear theme engine compiled templates.'));
     }
 
     return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
@@ -1321,7 +1321,7 @@ function theme_admin_clear_cache()
     if ($res) {
         LogUtil::registerStatus(__('Done! Deleted theme engine cached templates.'));
     } else {
-        LogUtil::registerError(__('Error: Failed to clear theme engine cached templates.'));
+        LogUtil::registerError(__('Error! Failed to clear theme engine cached templates.'));
     }
 
     return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
@@ -1376,7 +1376,7 @@ function theme_admin_render_clear_compiled()
     if ($res) {
         LogUtil::registerStatus(__('Done! Deleted rendering engine compiled templates.'));
     } else {
-        LogUtil::registerError(__('Error: Failed to clear rendering engine compiled templates.'));
+        LogUtil::registerError(__('Error! Failed to clear rendering engine compiled templates.'));
     }
 
     return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
@@ -1406,7 +1406,7 @@ function theme_admin_render_clear_cache()
     if ($res) {
         LogUtil::registerStatus(__('Done! Deleted rendering engine cached pages.'));
     } else {
-        LogUtil::registerError(__('Error: Failed to clear rendering engine cached pages.'));
+        LogUtil::registerError(__('Error! Failed to clear rendering engine cached pages.'));
     }
 
     return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
