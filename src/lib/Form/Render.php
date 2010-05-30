@@ -389,7 +389,7 @@ class Form_Render extends Renderer
     {
         $lim = count($this->Plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $plugin = & $this->GetPluginById_rec($this->Plugins[$i], $id);
+            $plugin = $this->GetPluginById_rec($this->Plugins[$i], $id);
             if ($plugin != null) {
                 return $plugin;
             }
