@@ -132,15 +132,21 @@ class BlockUtil
     {
         global $blocks_modules;
 
-        self::load($modname, $block);
-
-        $displayfunc = "{$modname}_{$block}block_display";
-
-        if (function_exists($displayfunc)) {
-// New-style blocks
-            return $displayfunc($blockinfo);
+        $blockInstance = self::load($modname, $block);
+        if ($blockInstance instanceof AbstractBlock) {
+            $displayfunc = array($blockInstance, 'display');
         } else {
-// Old-style blocks
+            $displayfunc = "{$modname}_{$block}block_display";
+        }
+
+        if (is_callable($displayfunc)) {
+            if (is_array($displayfunc)) {
+                return call_user_func_array($displayfunc, array($blockinfo));
+            } else {
+                return $displayfunc($blockinfo);
+            }
+        } else {
+            // Old-style blocks
             if (isset($blocks_modules[0][$block]['func_display'])) {
                 return $blocks_modules[0][$block]['func_display']($blockinfo);
             } else {
@@ -206,7 +212,7 @@ class BlockUtil
         } else {
             $row['minbox'] = '';
         }
-// end collapseable menu config
+        // end collapseable menu config
 
         return Theme::getInstance()->themesidebox($row);
     }
@@ -232,59 +238,78 @@ class BlockUtil
             ZLanguage::bindModuleDomain($modinfo['name']);
         }
 
+        $basedir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $moddir = DataUtil::formatForOS($modinfo['directory']);
-        $blockdir = $moddir . '/blocks';
-        $blockdirOld = $moddir . '/pnblocks';
-        $incfile = DataUtil::formatForOS($block . '.php');
+        $blockdir = "$basedir/$moddir/lib/$moddir/Block";
+        $ooblock = "$blockdir/".ucwords($block). '.php';
+        $isOO = false;
+        if (file_exists($ooblock)) {
+            include_once $ooblock;
+            $isOO = true;
+        }
 
-        $files = array();
-        if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-            $files[] = 'system/' . $blockdir . '/' . $incfile;
-            $files[] = 'system/' . $blockdirOld . '/' . $incfile;
-            $rc = Loader::loadOneFile($files);
-            if (!$rc) {
+        if (!$isOO) {
+            $blockdirOld = $moddir . '/pnblocks';
+            $incfile = DataUtil::formatForOS($block . '.php');
+
+            if (file_exists("$basedir/$blockdirOld/$incfile")) {
+                include_once "$basedir/$blockdirOld/$incfile";
+            } else {
                 return false;
             }
-        } elseif ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            $files[] = 'modules/' . $blockdir . '/' . $incfile;
-            $files[] = 'modules/' . $blockdirOld . '/' . $incfile;
-            $rc = Loader::loadOneFile($files);
-            if (!$rc) {
-                return false;
-            }
-        } else {
-            return false;
         }
 
         $loaded["$modname/$block"] = 1;
 
-// get the block info
-        $infofunc = "{$modname}_{$block}block_info";
-        if (function_exists($infofunc)) {
+        // get the block info
+        if ($isOO) {
+            $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+            $r = new ReflectionClass($className);
+            $blockInstance = $r->newInstance();
+            try {
+                if (!$blockInstance instanceof AbstractBlock) {
+                    throw new LogicException(sprintf('Block %s must inherit from AbstractBlock', $className));
+                }
+            } catch (LogicException $e) {
+                if (System::isDevelopmentMode()) {
+                    throw $e;
+                } else {
+                    LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
+                    return false;
+                }
+            }
+        }
+
+        $infofunc = $isOO ? array($blockInstance, 'info') : "{$modname}_{$block}block_info";
+        if (is_array($infofunc)) {
+            $blocks_modules[$block] = call_user_func($blockInstance, $infofunc);
+        } else {
             $blocks_modules[$block] = $infofunc();
         }
 
-// set the module and keys for the new block
+        // set the module and keys for the new block
         $blocks_modules[$block]['bkey'] = $block;
         $blocks_modules[$block]['module'] = $modname;
         $blocks_modules[$block]['mid'] = ModUtil::getIdFromName($modname);
 
-// merge the blockinfo in the global list of blocks
+        // merge the blockinfo in the global list of blocks
         if (!isset($GLOBALS['blocks_modules'])) {
             $GLOBALS['blocks_modules'] = array();
         }
         $GLOBALS['blocks_modules'][$blocks_modules[$block]['mid']][$block] = $blocks_modules[$block];
 
-// Initialise block if required (new-style)
-        $initfunc = "{$modname}_{$block}block_init";
-        if (function_exists($initfunc)) {
+        // Initialise block if required (new-style)
+        $initfunc = $isOO ? array($blockInstance, 'init') : "{$modname}_{$block}block_init";
+        if (is_array($infofunc)) {
+            call_user_func($blockInstance, $infofunc);
+        } else {
             $initfunc();
         }
-
-// add stylesheet to the page vars, this makes manual loading obsolete
+        
+        // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
 
-        return true;
+        return ($isOO) ? $blockInstance : true;
     }
 
     /**
@@ -295,7 +320,7 @@ class BlockUtil
     {
         static $blockdirs = array();
 
-// Load new-style blocks from system and modules tree
+        // Load new-style blocks from system and modules tree
         $mods = ModUtil::getAllMods();
 
         foreach ($mods as $mod) {
@@ -304,12 +329,11 @@ class BlockUtil
 
             if (!isset($blockdirs[$modname])) {
                 $blockdirs[$modname] = array();
-                $blockdirs[$modname][] = 'system/' . $moddir . '/blocks';
-                $blockdirs[$modname][] = 'modules/' . $moddir . '/blocks';
-                $blockdirs[$modname][] = 'system/' . $moddir . '/pnblocks';
-                $blockdirs[$modname][] = 'modules/' . $moddir . '/pnblocks';
+                $blockdirs[$modname][] = "system/$moddir/lib/$modir/Block";
+                $blockdirs[$modname][] = "modules/$moddir/lib/$modir/Block";
+                $blockdirs[$modname][] = "modules/$moddir/pnblocks";
 
-                foreach ($blockdirs[$modname] as $dir) {
+                foreach ($blockdirs[$modname] as $dir) {echo 1;
                     if (is_dir($dir) && is_readable($dir)) {
                         $dh = opendir($dir);
                         while (($f = readdir($dh)) !== false) {
@@ -324,21 +348,8 @@ class BlockUtil
             }
         }
 
-        /* TODO A - review this code - drak
-    $dir = 'config/blocks';
-    if (is_dir($dir) && is_readable($dir)) {
-        $dh = opendir($dir);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -4) == '.php') {
-                $block = substr($f, 0, -4);
-                BlockUtil::load('Legacy', $block);
-            }
-        }
-        closedir($dh);
-    }
-        */
 
-// Return information gathered
+        // Return information gathered
         return $GLOBALS['blocks_modules'];
     }
 
@@ -350,14 +361,14 @@ class BlockUtil
      */
     public static function varsFromContent($content)
     {
-// Assume serialized content ends in a ";" followed by some curly-end-braces
+        // Assume serialized content ends in a ";" followed by some curly-end-braces
         if (preg_match('/;}*$/', $content)) {
-// Serialised content
+            // Serialised content
             $vars = unserialize($content);
             return $vars;
         }
 
-// Unserialised content
+        // Unserialised content
         $links = explode("\n", $content);
         $vars = array();
         foreach ($links as $link) {

@@ -10,7 +10,7 @@
  * @author Patric Kellum
  */
 
-class Blocks_Block_Html extends AbstractBase
+class Blocks_Block_Html extends AbstractBlock
 {
     /**
      * initialise block
