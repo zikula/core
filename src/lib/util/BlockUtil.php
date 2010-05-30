@@ -22,7 +22,7 @@ class BlockUtil
 
         ModUtil::dbInfoLoad('Blocks', 'Blocks');
 
-// get the block position
+        // get the block position
         if (empty($positions)) {
             $positions = DBUtil::selectObjectArray('block_positions', null, null, -1, -1, 'name');
         }
@@ -33,12 +33,12 @@ class BlockUtil
             $modname = ModUtil::getName();
         }
 
-// get the blocks in this block position
+        // get the blocks in this block position
         if (empty($blockplacements)) {
             $blockplacements = DBUtil::selectObjectArray('block_placements', null, 'pn_order');
         }
 
-// get variables from input
+        // get variables from input
         if (!isset($func)) {
             $func = FormUtil::getPassedValue('func', 'main', 'GETPOST');
         }
@@ -46,33 +46,33 @@ class BlockUtil
             $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
         }
 
-// loop around the blocks display only the ones we need
+        // loop around the blocks display only the ones we need
         if (!isset($currentlang)) {
             $currentlang = ZLanguage::getLanguageCode();
         }
 
         $blockoutput = array();
         foreach ($blockplacements as $blockplacement) {
-// don't display a block if it's not in this block position
+            // don't display a block if it's not in this block position
             if ($blockplacement['pid'] != $positions[$side]['pid']) {
                 continue;
             }
-// get the full block info
+            // get the full block info
             $blockinfo = self::getBlockInfo($blockplacement['bid']);
-// block filtering
+            // block filtering
             if (!empty($blockinfo['filter']['modules']) || !empty($blockinfo['filter']['type']) || !empty($blockinfo['filter']['func']) || !empty($blockinfo['filter']['customargs'])) {
-// check the module name
+                // check the module name
                 if (!empty($blockinfo['filter']['modules']) && !in_array($modname, $blockinfo['filter']['modules'])) {
                     continue;
                 }
-// check the function type
+                // check the function type
                 if (!empty($blockinfo['filter']['type'])) {
                     $blockinfo['filter']['type'] = explode(',', $blockinfo['filter']['type']);
                     if (!in_array($type, $blockinfo['filter']['type'])) {
                         continue;
                     }
                 }
-// check the function name
+                // check the function name
                 if (!empty($blockinfo['filter']['functions'])) {
                     $blockinfo['filter']['functions'] = explode(',', $blockinfo['filter']['functions']);
                     if (!in_array($func, $blockinfo['filter']['functions'])) {
@@ -94,13 +94,13 @@ class BlockUtil
                 }
             }
 
-// dont display the block if it's not active or not in matching langauge
+            // dont display the block if it's not active or not in matching langauge
             if (!$blockinfo['active'] || (!empty($blockinfo['language']) && $blockinfo['language'] != $currentlang)) {
                 continue;
             }
 
             $blockinfo['position'] = $positions[$side]['name'];
-// get the module info and display the block
+            // get the module info and display the block
             $modinfo = ModUtil::getInfo($blockinfo['mid']);
             if ($echo) {
                 echo self::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
@@ -178,7 +178,7 @@ class BlockUtil
             $themedir = DataUtil::formatForOS($themeinfo['directory']);
         }
 
-// check for collapsable menus being enabled, and setup the collapsable menu image.
+        // check for collapsable menus being enabled, and setup the collapsable menu image.
         if (!isset($upb)) {
             if (file_exists('themes/' . $themedir . '/images/upb.gif')) {
                 $upb = '<img src="themes/' . $themedir . '/images/upb.gif" alt="-" />';
@@ -280,10 +280,10 @@ class BlockUtil
             }
         }
 
-        $infofunc = $isOO ? array($blockInstance, 'info') : "{$modname}_{$block}block_info";
-        if (is_array($infofunc)) {
-            $blocks_modules[$block] = call_user_func($blockInstance, $infofunc);
+        if ($isOO) {
+            $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
         } else {
+            $infofunc = "{$modname}_{$block}block_info";
             $blocks_modules[$block] = $infofunc();
         }
 
@@ -299,10 +299,10 @@ class BlockUtil
         $GLOBALS['blocks_modules'][$blocks_modules[$block]['mid']][$block] = $blocks_modules[$block];
 
         // Initialise block if required (new-style)
-        $initfunc = $isOO ? array($blockInstance, 'init') : "{$modname}_{$block}block_init";
-        if (is_array($infofunc)) {
-            call_user_func($blockInstance, $infofunc);
+        if ($isOO) {
+            call_user_func(array($blockInstance, 'init'));
         } else {
+            $initfunc = "{$modname}_{$block}block_init";
             $initfunc();
         }
 
