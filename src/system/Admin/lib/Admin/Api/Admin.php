@@ -365,7 +365,7 @@ class Admin_Api_Admin extends AbstractApi
         $styles = array();
 
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $base = ($modinfo['directory'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'module';
+        $base = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         if (is_dir($dir = "$base/$osmoddir/style") || is_dir($dir = "$base/$osmoddir/pnstyle")) {
             $handle = opendir($dir);
             while (false !== ($file = readdir($handle))) {
