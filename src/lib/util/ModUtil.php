@@ -738,10 +738,10 @@ class ModUtil
         }
 
         if (class_exists($className)) {
-            $r = new ReflectionClass($className);
             if (array_key_exists($className, $controllers)) {
                 $controller = $controllers[$className];
             } else {
+                $r = new ReflectionClass($className);
                 $controller = $r->newInstance();
                 try {
                     if (strrpos($className, 'Api') && !$controller instanceof AbstractApi) {
