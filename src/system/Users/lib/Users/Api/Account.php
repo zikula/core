@@ -10,6 +10,13 @@
  * @link http://www.zikula.org
  */
 
+/**
+ * The Account API provides links for modules on the "user account page"; this
+ * class provides those links for the Users module.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Api_Account extends AbstractApi
 {
     /**

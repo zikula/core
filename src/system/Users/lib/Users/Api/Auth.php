@@ -12,6 +12,13 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * The Auth API provides user authentication services for the log-in process; this class
+ * provides user authentication through the core Users table.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Api_Auth extends AbstractApi
 {
     public function login($args)

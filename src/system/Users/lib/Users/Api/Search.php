@@ -11,6 +11,13 @@
  * @subpackage Users
  */
 
+/**
+ * The Search API allows a user to search for items in a module; this class provides
+ * serach services for the Users module.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Api_Search extends AbstractApi
 {
     /**

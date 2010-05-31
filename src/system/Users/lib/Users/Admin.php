@@ -10,6 +10,13 @@
  * @subpackage Users
  */
 
+/**
+ * Controllers provide users access to actions that they can perform on the system;
+ * this class provides access to administrator-initiated actions for the Users module.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Admin extends AbstractController
 {
     /**

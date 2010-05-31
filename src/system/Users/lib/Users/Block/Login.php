@@ -10,6 +10,12 @@
  * @subpackage Users
  */
 
+/**
+ * A block that allows users to log into the system.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Block_Login extends AbstractBlock
 {
     /**

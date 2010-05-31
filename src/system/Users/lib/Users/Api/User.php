@@ -10,6 +10,13 @@
  * @subpackage Users
  */
 
+/**
+ * The User API provides system-level and database-level functions for user-initiated actions;
+ * this class provides those functions for the Users module.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Api_User extends AbstractApi
 {
     /**

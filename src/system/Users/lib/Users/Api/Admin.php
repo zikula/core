@@ -10,6 +10,13 @@
  * @subpackage Users
  */
 
+/**
+ * The Admin API provides administrative system-level and database-level functions for modules;
+ * this class provides those functions for the Users module.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Api_Admin extends AbstractApi
 {
     /**

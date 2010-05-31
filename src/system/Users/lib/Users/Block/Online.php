@@ -10,6 +10,12 @@
  * @subpackage Users
  */
 
+/**
+ * A block that shows who is currently using the system.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Block_Online extends AbstractBlock
 {
     /**

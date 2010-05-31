@@ -11,6 +11,12 @@
  * @license http://www.gnu.org/copyleft/gpl.html
 */
 
+/**
+ * A user-customizable block.
+ *
+ * @package Zikula
+ * @subpackage Users
+ */
 class Users_Block_User extends AbstractBlock
 {
     /**
