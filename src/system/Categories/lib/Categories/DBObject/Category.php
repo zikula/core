@@ -17,11 +17,11 @@
  * @package Zikula_System_Modules
  * @subpackage Categories
  */
-class PNCategory extends DBObject
+class Categories_DBObject_Category extends DBObject
 {
-    function PNCategory($init=null, $key=0)
+    public function __construct($init=null, $key=0)
     {
-        $this->DBObject();
+        parent::__construct();
         $this->_objType       = 'categories_category';
         $this->_objPath       = 'category';
 
@@ -39,7 +39,7 @@ class PNCategory extends DBObject
     }
 
     // checkbox has to be explicitly processed
-    function getDataFromInputPostProcess ($data=null)
+    public function getDataFromInputPostProcess ($data=null)
     {
         if (!$data) {
             $data =& $this->_objData;
@@ -74,7 +74,7 @@ class PNCategory extends DBObject
     }
 
     // the only reason we need all this stuff beflow is the because of the serialization
-    function selectPostProcess ($data=null)
+    public function selectPostProcess ($data=null)
     {
         if (!$data) {
             $data =& $this->_objData;
@@ -90,7 +90,7 @@ class PNCategory extends DBObject
         return $data;
     }
 
-    function insertPreProcess ($data=null)
+    public function insertPreProcess ($data=null)
     {
         if (!$data) {
             $data =& $this->_objData;
@@ -112,7 +112,7 @@ class PNCategory extends DBObject
         return $data;
     }
 
-    function insertPostProcess($data=null)
+    public function insertPostProcess($data=null)
     {
         if (!$data) {
             $data =& $this->_objData;
@@ -134,7 +134,7 @@ class PNCategory extends DBObject
         return $data;
     }
 
-    function updatePreProcess ($data=null)
+    public function updatePreProcess ($data=null)
     {
         if (!$data) {
             $data =& $this->_objData;
@@ -159,7 +159,7 @@ class PNCategory extends DBObject
         return $data;
     }
 
-    function updatePostProcess ($data=null)
+    public function updatePostProcess ($data=null)
     {
         if (!$data) {
             $data =& $this->_objData;
@@ -181,7 +181,7 @@ class PNCategory extends DBObject
         return $data;
     }
 
-    function validatePostProcess ($data=null)
+    public function validatePostProcess ($data=null)
     {
         if (!$data) {
             $data = $this->_objData;
@@ -204,12 +204,12 @@ class PNCategory extends DBObject
         return true;
     }
 
-    function deleteMoveSubcategories ($newParentID)
+    public function deleteMoveSubcategories ($newParentID)
     {
         return $this->delete (false, $newParentID);
     }
 
-    function delete ($deleteSubcats=false, $newParentID=0)
+    public function delete ($deleteSubcats=false, $newParentID=0)
     {
         $data = $this->_objData;
 
@@ -229,7 +229,7 @@ class PNCategory extends DBObject
         }
     }
 
-    function move ($newParentID)
+    public function move ($newParentID)
     {
         $data = $this->_objData;
 
@@ -240,7 +240,7 @@ class PNCategory extends DBObject
         CategoryUtil::moveCategoriesByPath ($data['ipath'], $newParentID);
     }
 
-    function copy ($newParentID)
+    public function copy ($newParentID)
     {
         $data = $this->_objData;
 

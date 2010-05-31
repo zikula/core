@@ -17,11 +17,11 @@
  * @package Zikula_System_Modules
  * @subpackage Categories
  */
-class PNCategoryRegistryArray extends DBObjectArray
+class Categories_DBObject_RegistryArray extends DBObjectArray
 {
-    function PNCategoryRegistryArray($init=null, $where='')
+    public function __construct($init=null, $where='')
     {
-        $this->DBObjectArray ();
+        parent::__construct();
 
         $this->_objType       = 'categories_registry';
         $this->_objField      = 'id';

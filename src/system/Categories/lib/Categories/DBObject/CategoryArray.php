@@ -17,11 +17,11 @@
  * @package Zikula_System_Modules
  * @subpackage Categories
  */
-class PNCategoryArray extends DBObjectArray
+class Categories_DBObject_CategoryArray extends DBObjectArray
 {
-    function PNCategoryArray($init=null, $where='')
+    public function __construct($init=null, $where='')
     {
-        $this->DBObjectArray ();
+        parent::__construct();
 
         $this->_objType  = 'categories_category';
         $this->_objField = 'id';
@@ -37,13 +37,13 @@ class PNCategoryArray extends DBObjectArray
         $this->_init($init, $where);
     }
 
-    function buildRelativePaths ($rootCategory, $includeRoot=false)
+    public function buildRelativePaths ($rootCategory, $includeRoot=false)
     {
         CategoryUtil::buildRelativePaths ($rootCategory, $this->_objData, $includeRoot);
     }
 
     // checkbox has to be explicitly processed
-    function getDataFromInputPostProcess ($objArray=null)
+    public function getDataFromInputPostProcess ($objArray=null)
     {
         if (!$objArray) {
             $objArray =& $this->_objData;
@@ -65,7 +65,7 @@ class PNCategoryArray extends DBObjectArray
     }
 
     // the only reason we need al this stuff beflow is the because of the serialization
-    function selectPostProcess ($objArray=null)
+    public function selectPostProcess ($objArray=null)
     {
         if (!$objArray) {
             $objArray =& $this->_objData;
@@ -84,7 +84,7 @@ class PNCategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    function insertPreProcess ($objArray=null)
+    public function insertPreProcess ($objArray=null)
     {
         if (!$objArray) {
             $objArray =& $this->_objData;
@@ -105,7 +105,7 @@ class PNCategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    function insertPostProcess($objArray=null)
+    public function insertPostProcess($objArray=null)
     {
         if (!$objArray) {
             $objArray =& $this->_objData;
@@ -125,7 +125,7 @@ class PNCategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    function updatePreProcess ($objArray=null)
+    public function updatePreProcess ($objArray=null)
     {
         if (!$objArray) {
             $objArray =& $this->_objData;
@@ -147,7 +147,7 @@ class PNCategoryArray extends DBObjectArray
         return $objArray;
     }
 
-    function updatePostProcess ($objArray=null)
+    public function updatePostProcess ($objArray=null)
     {
         if ($objArray) {
             return $this->insertPostProcess ($objArray);
@@ -156,7 +156,7 @@ class PNCategoryArray extends DBObjectArray
         return $this->insertPostProcess ();
     }
 
-    function delete ($deleteSubcats=false, $newParentID=0)
+    public function delete ($deleteSubcats=false, $newParentID=0)
     {
         $objArray = $this->_objData;
 

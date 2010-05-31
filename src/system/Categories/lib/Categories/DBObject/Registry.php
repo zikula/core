@@ -17,11 +17,11 @@
  * @package Zikula_System_Modules
  * @subpackage Categories
  */
-class PNCategoryRegistry extends DBObject
+class Categories_DBObject_Registry extends DBObject
 {
-    function PNCategoryRegistry($init=null, $key=0)
+    public function __construct($init=null, $key=0)
     {
-        $this->DBObject();
+        parent::__construct();
         $this->_objType = 'categories_registry';
         $this->_objPath = 'category_registry';
 
@@ -34,7 +34,7 @@ class PNCategoryRegistry extends DBObject
     }
 
 
-    function deletePostProcess ($data=null)
+    public function deletePostProcess ($data=null)
     {
         // After delete, it should delete the references to this registry
         // in the categories mapobj table
@@ -43,7 +43,7 @@ class PNCategoryRegistry extends DBObject
     }
 
 
-    function validatePostProcess ($data=null)
+    public function validatePostProcess ($data=null)
     {
         $data = $this->_objData;
         if ($data['modname'] && $data['table'] && $data['property'] && !$data['id']) {
