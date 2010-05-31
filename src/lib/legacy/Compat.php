@@ -279,7 +279,7 @@ class pnFormRender extends Form_Render
     public function pnFormRegisterBlock($pluginName, &$params, &$content)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::RegisterBlock')), 'STRICT');
-        $this->RegisterBlock($pluginName, $params, $content);
+        return $this->RegisterBlock($pluginName, $params, $content);
     }
 
     /**
@@ -898,7 +898,6 @@ class pnFormHandler extends Form_Handler
      */
     public function __construct()
     {
-        parent::__construct();
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Handler')), 'STRICT');
     }
 }
