@@ -156,3 +156,14 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
       MyMod/pnuserapi.php becomes MyMod/lib/MyMod/Api/User.php
       Encapsulate in class MyMod_Api_User extends AbstractApi
 
+- If you use categorisation please refactor to use the following classes:
+    PNCategory => Categories_DBObject_Category
+    PNCategoryArray => Categories_DBObject_CategoryArray
+    PNCategoryRegistry => Categories_DBObject_Registry
+    PNCategoryRegistryArray => Categories_DBObject_RegistryArray
+
+    Remove all references to Loader::loadClassFromModule, Loader::loadClassFromModuleArray()
+
+- Remove any references to Loader::loadClass() - classes are loaded automatically.
+
+
