@@ -106,6 +106,9 @@ function checkuser_response(req)
             case 17:
               Element.addClassName('users_pass', 'errorrequired');
               break;
+            case 18:
+              Element.addClassName('users_password_reminder', 'errorrequired');
+              break;
             case 25:
               var fields = json.fields;
               for(var i = 0; i < fields.length; i++) {

@@ -77,7 +77,7 @@ class Users_Ajax extends AbstractController
      *               6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
      *               9=EmailTaken 10=emails different 11=User Agent Banned
      *               12=Email Domain banned 13=DUD incorrect 14=spam question incorrect
-     *               15=Pass too short 16=Pass different 17=No pass
+     *               15=Pass too short 16=Pass different 17=No pass 18=no password reminder
      */
     public function checkUser()
     {
@@ -100,6 +100,7 @@ class Users_Ajax extends AbstractController
         $dynadata     = DataUtil::convertFromUTF8(FormUtil::getPassedValue('dynadata', null,   'POST'));
         $pass         = DataUtil::convertFromUTF8(FormUtil::getPassedValue('pass', null,       'POST'));
         $vpass        = DataUtil::convertFromUTF8(FormUtil::getPassedValue('vpass', null,      'POST'));
+        $passwordReminder = DataUtil::convertFromUTF8(FormUtil::getPassedValue('password_reminder', null, 'POST'));
         $reg_answer   = DataUtil::convertFromUTF8(FormUtil::getPassedValue('reg_answer', null, 'POST'));
 
         if ((!$uname) || !(!preg_match("/[[:space:]]/", $uname)) || !System::varValidate($uname, 'uname')) {
@@ -184,6 +185,10 @@ class Users_Ajax extends AbstractController
             } elseif (empty($pass) && !$modvars['reg_verifyemail']) {
                 return array('result' => $this->__('Error! Please enter a password.'), 'errorcode' => 17);
             }
+        }
+
+        if (!isset($passwordReminder) || empty($passwordReminder)) {
+            return array('result' => $this->__('Error! Please enter a password reminder.'), 'errorcode' => 18);
         }
 
         if (ModUtil::available('legal')) {
