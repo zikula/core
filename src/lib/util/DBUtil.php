@@ -1049,53 +1049,8 @@ class DBUtil
         // TODO D [there should be a dangling attribute cleanup function somewhere]
         if (!DBConnectionStack::isDefaultConnection() || $where) {
             return $object;
-        }
-
-        $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
-
-        if (($enableAllServices ||
-            (isset($tables["{$tableName}_db_extra_enable_categorization"]) && $tables["{$tableName}_db_extra_enable_categorization"])  ) &&
-            System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
-            $tableName != 'categories_' &&
-            $tableName != 'objectdata_attributes' &&
-            $tableName != 'objectdata_log' &&
-            ModUtil::available('Categories'))
-        {
-            ObjectUtil::deleteObjectCategories ($object, $tableName, $idfield);
-        }
-
-        if (((isset($tables["{$tableName}_db_extra_enable_all"]) && $tables["{$tableName}_db_extra_enable_all"]) ||
-             (isset($tables["{$tableName}_db_extra_enable_attribution"]) && $tables["{$tableName}_db_extra_enable_attribution"] ) ||
-            System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
-            $tableName != 'objectdata_attributes' &&
-            $tableName != 'objectdata_log' &&
-            ModUtil::available('ObjectData'))
-        {
-            ObjectUtil::deleteObjectAttributes ($object, $tableName, $idfield);
-        }
-
-        if (($enableAllServices ||
-            (isset($tables["{$tableName}_db_extra_enable_meta"]) && $tables["{$tableName}_db_extra_enable_meta"] ) ||
-            System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
-            $tableName != 'objectdata_attributes' &&
-            $tableName != 'objectdata_meta' &&
-            $tableName != 'objectdata_log' &&
-            ModUtil::available('ObjectData'))
-        {
-            ObjectUtil::deleteObjectMetaData ($object, $tableName, $idfield);
-        }
-
-        if (($enableAllServices ||
-            (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
-            System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-            strcmp($table, 'objectdata_log') !== 0)
-        {
-            $log = new ObjectData_Log();
-            $log['object_type'] = $table;
-            $log['object_id']   = $object[$idfield];
-            $log['op']          = 'D';
-            $log['diff']        = serialize($object);
-            $log->save();
+        } else {
+            self::_deletePostProcess($object, $table, $idfield);
         }
 
         return $res;
@@ -1167,6 +1122,71 @@ class DBUtil
         $where     = self::_checkWhereClause($where);
         $sql       = 'DELETE FROM ' . $tableName . ' ' . $where;
         return self::executeSQL($sql);
+    }
+
+
+    /**
+     * Post-processing after this object has beens deleted.
+     * This routine is responsible for deleting the 'extra' data (attributes, categories,
+     * and meta data) from the database and the optionally creating an
+     * entry in the object-log table.
+     *
+     * @param mixed     $object  The object wehave just saved.
+     * @param string    $table   The treated table reference.
+     * @param integer   $idfield The id column for the object/table combination.
+     *
+     * @deprecated
+     * @see CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
+     */
+    private static function _deletePostProcess($object, $table, $idfield)
+    {
+        $tables = System::dbGetTables();
+        $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
+
+        if (($enableAllServices ||
+            (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])  ) &&
+            System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
+            $table != 'categories_' &&
+            $table != 'objectdata_attributes' &&
+            $table != 'objectdata_log' &&
+            ModUtil::available('Categories'))
+        {
+            ObjectUtil::deleteObjectCategories ($object, $table, $idfield);
+        }
+
+        if (((isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]) ||
+             (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
+            System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
+            $table != 'objectdata_attributes' &&
+            $table != 'objectdata_log' &&
+            ModUtil::available('ObjectData'))
+        {
+            ObjectUtil::deleteObjectAttributes ($object, $table, $idfield);
+        }
+
+        if (($enableAllServices ||
+            (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"] ) ||
+            System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
+            $table != 'objectdata_attributes' &&
+            $table != 'objectdata_meta' &&
+            $table != 'objectdata_log' &&
+            ModUtil::available('ObjectData'))
+        {
+            ObjectUtil::deleteObjectMetaData ($object, $table, $idfield);
+        }
+
+        if (($enableAllServices ||
+            (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
+            System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
+            strcmp($table, 'objectdata_log') !== 0)
+        {
+            $log = new ObjectData_Log();
+            $log['object_type'] = $table;
+            $log['object_id']   = $object[$idfield];
+            $log['op']          = 'D';
+            $log['diff']        = serialize($object);
+            $log->save();
+        }
     }
 
     /**
