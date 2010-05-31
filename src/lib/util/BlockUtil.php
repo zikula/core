@@ -229,7 +229,7 @@ class BlockUtil
         static $loaded = array();
 
         if (isset($loaded["$modname/$block"])) {
-            return true;
+            return $loaded["$modname/$block"];
         }
 
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
@@ -262,8 +262,6 @@ class BlockUtil
             }
         }
 
-        $loaded["$modname/$block"] = 1;
-
         // get the block info
         if ($isOO) {
             $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
@@ -282,6 +280,8 @@ class BlockUtil
                 }
             }
         }
+
+        $loaded["$modname/$block"] = ($isOO ? $blockInstance : true);
 
         if ($isOO) {
             $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
@@ -312,7 +312,7 @@ class BlockUtil
         // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
 
-        return ($isOO) ? $blockInstance : true;
+        return $loaded["$modname/$block"];
     }
 
     /**

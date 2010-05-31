@@ -253,7 +253,8 @@ class Blocks_Admin extends AbstractController
 
         // Load block
         $modinfo = ModUtil::getInfo($blockinfo['mid']);
-        if (!BlockUtil::load($modinfo['name'], $blockinfo['bkey'])) {
+        $blockObj = BlockUtil::load($modinfo['name'], $blockinfo['bkey']);
+        if (!$blockObj) {
             return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
         }
 
@@ -287,7 +288,7 @@ class Blocks_Admin extends AbstractController
         $pnRender->assign($blockinfo);
 
         // assign the list of modules
-        $pnRender->assign('mods', pnModGetAllMods());
+        $pnRender->assign('mods', ModUtil::getAllMods());
 
         // assign block positions
         $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
@@ -301,19 +302,26 @@ class Blocks_Admin extends AbstractController
 
         // New way
         $usname = preg_replace('/ /', '_', $modinfo['name']);
-        $modfunc = $usname . '_' . $blockinfo['bkey'] . 'block_modify';
-        $blockoutput = '';
-        if (function_exists($modfunc)) {
-            $blockoutput = $modfunc($blockinfo);
+        if (is_object($blockObj)) {
+            $modfunc = array($blockObj, 'modify');
         } else {
-            // Old way
-            $blocks_modules = $GLOBALS['blocks_modules'][$blockinfo['mid']];
-            if (!empty($blocks_modules[$blockinfo['bkey']]) && !empty($blocks_modules[$blockinfo['bkey']]['func_edit'])) {
-                if (function_exists($blocks_modules[$blockinfo['bkey']]['func_edit'])) {
-                    $blockoutput = $blocks_modules[$blockinfo['bkey']]['func_edit'](array_merge($_GET, $_POST, $blockinfo));
-                }
-            }
+            $modfunc = $usname . '_' . $blockinfo['bkey'] . 'block_modify';
         }
+
+        $blockoutput = '';
+        if (is_array($modfunc)) {
+            $blockoutput = call_user_func($modfunc, $blockinfo);
+        } elseif (function_exists($modfunc)) {
+            $blockoutput = $modfunc($blockinfo);
+        }// else {
+//            // Old way
+//            $blocks_modules = $GLOBALS['blocks_modules'][$blockinfo['mid']];
+//            if (!empty($blocks_modules[$blockinfo['bkey']]) && !empty($blocks_modules[$blockinfo['bkey']]['func_edit'])) {
+//                if (function_exists($blocks_modules[$blockinfo['bkey']]['func_edit'])) {
+//                    $blockoutput = $blocks_modules[$blockinfo['bkey']]['func_edit'](array_merge($_GET, $_POST, $blockinfo));
+//                }
+//            }
+//        }
 
         // the blocks will have reset the renderDomain property (bad singleton design) - drak
         $pnRender->renderDomain = null;
