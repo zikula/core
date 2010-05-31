@@ -17,10 +17,6 @@ $modversion['description']    = __('Provides support for user groups, and incorp
 $modversion['url']            = __('groups');
 $modversion['version']        = '2.3';
 
-$modversion['credits']        = '';
-$modversion['help']           = '';
-$modversion['changelog']      = '';
-$modversion['license']        = '';
 $modversion['official']       = 1;
 $modversion['author']         = 'Mark West, Franky Chestnut, Michael Halbook';
 $modversion['contact']        = 'http://www.markwest.me.uk/, http://dev.pnconcept.com, http://www.halbrooktech.com';
