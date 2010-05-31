@@ -50,7 +50,6 @@ class CategoryUtil
 
         $lang = ZLanguage::getLanguageCode();
 
-        Loader::loadClassFromModule('Categories', 'Category');
         $rootCat = CategoryUtil::getCategoryByPath ($rootPath);
         if (!$rootCat) {
             return LogUtil (__f("Error! Non-existing root category '%s' received", $rootPath));
@@ -58,7 +57,7 @@ class CategoryUtil
 
         $checkCat = CategoryUtil::getCategoryByPath ("$rootPath/$name");
         if (!$checkCat) {
-            $cat  = new PNCategory();
+            $cat  = new Categories_DBObject_Category();
             $data = array();
             $data['parent_id']    = $rootCat['id'];
             $data['name']         = $name;
@@ -729,7 +728,7 @@ class CategoryUtil
             $cat['parent_id'] = $oldToNewID[$cat['parent_id']];
             $cat['path'] = $newParent['path'] . '/' . $cat['path_relative'];
 
-            $pnCat = new pnCategory($cat);
+            $pnCat = new Categories_DBObject_Category($cat);
             $pnCat->insert();
             $oldToNewID[$oldID] = $pnCat->_objData['id'];
         }
