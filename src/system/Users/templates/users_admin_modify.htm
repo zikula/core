@@ -20,9 +20,10 @@
 
     <h2>{$templatetitle}</h2>
 
-    <form class="z-form" action="{modurl modname='Users' type='admin' func='processusers' op=$op}" method="post">
+    <form class="z-form" id="form_users_modify" action="{modurl modname='Users' type='admin' func='processusers' op=$op}" method="post">
         <div>
-            <input type="hidden" name="authid" value="{insert name='generateauthkey' module='Users'}" />
+            {securityutil_generateauthkey module='Users' assign='usersModifyFormAuthId'}
+            <input type="hidden" name="authid" value="{$usersModifyFormAuthId}" />
             <input type="hidden" name="userid" value="{$userid}" />
             <input type="hidden" name="do"     value="yes" />
             <fieldset>
@@ -97,7 +98,9 @@
 
             <div class="z-formbuttons">
                 {button src='button_ok.gif' set='icons/small' __alt='Save' __title='Save'}
-                <a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userid}">{img modname='core' set='icons/small' src="delete_user.gif" __alt='Delete' __title='Delete'}</a> 
+                <a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userid}">{img modname='core' set='icons/small' src="delete_user.gif" __alt='Delete' __title='Delete'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/small' src="lostusername.png" __alt='Send user name' __title='Send user name'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/small' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'}</a>
                 <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel'}</a>
             </div>
         </div>

@@ -249,6 +249,7 @@ class Users_Admin extends AbstractController
         // each item based on the permissions the user has.
         foreach ($items as $key => $item) {
             $options = array();
+            $authId = SecurityUtil::generateAuthKey('Users');
             if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_READ) && $item['uid'] != 1) {
 
                 // Options for the item.
@@ -257,15 +258,25 @@ class Users_Admin extends AbstractController
                                        'image' => 'personal.gif',
                                        'title' => $this->__('View the profile'));
                 }
-                if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_EDIT)) {
-                    $options[] = array('url'   => ModUtil::url('Users', 'admin', 'modify', array('userid' => $item['uid'])),
-                                       'image' => 'xedit.gif',
-                                       'title' => $this->__('Edit'));
+                if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_MODERATE)) {
+                    $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostUsername', array('uid' => $item['uid'], 'authid' => $authId)),
+                                       'image' => 'lostusername.png',
+                                       'title' => $this->__('Send user name'));
 
-                    if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_DELETE)) {
-                        $options[] = array('url'   => ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $item['uid'])),
-                                           'image' => '14_layer_deletelayer.gif',
-                                           'title' => $this->__('Delete'));
+                    $options[] = array('url'   => ModUtil::url('Users', 'admin', 'lostPassword', array('uid' => $item['uid'], 'authid' => $authId)),
+                                       'image' => 'lostpassword.png',
+                                       'title' => $this->__('Send password recovery code'));
+
+                    if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_EDIT)) {
+                        $options[] = array('url'   => ModUtil::url('Users', 'admin', 'modify', array('userid' => $item['uid'])),
+                                           'image' => 'xedit.gif',
+                                           'title' => $this->__('Edit'));
+
+                        if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_DELETE)) {
+                            $options[] = array('url'   => ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $item['uid'])),
+                                               'image' => '14_layer_deletelayer.gif',
+                                               'title' => $this->__('Delete'));
+                        }
                     }
                 }
                 // get user groups
@@ -844,6 +855,74 @@ class Users_Admin extends AbstractController
         $Renderer->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
 
         return $Renderer->fetch('users_admin_modify.htm');
+    }
+
+    public function lostUsername()
+    {
+        if (!SecurityUtil::confirmAuthKey('Users')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'admin', 'view'));
+        }
+
+        $uid = FormUtil::getPassedValue('uid', null, 'GET');
+
+        if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
+            return LogUtil::registerArgsError(ModUtil::url('Users', 'admin', 'view'));
+        }
+
+        $user = UserUtil::getVars($uid);
+        if (!$user) {
+            return LogUtil::registerError($this->__('Sorry! Unable to retrieve information for that user id.'));
+        }
+
+        if (!SecurityUtil::checkPermission('Users::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $userNameSent = ModUtil::apiFunc('Users', 'user', 'mailUname', array(
+            'idfield'       => 'uid',
+            'id'            => $user['uid'],
+            'adminRequest'  => true,
+        ));
+
+        if ($userNameSent) {
+            LogUtil::registerStatus($this->_f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
+        }
+
+        return System::redirect(ModUtil::url('Users', 'admin', 'view'));
+    }
+
+    public function lostPassword()
+    {
+        if (!SecurityUtil::confirmAuthKey('Users')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'admin', 'view'));
+        }
+
+        $uid = FormUtil::getPassedValue('uid', null, 'GET');
+
+        if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
+            return LogUtil::registerArgsError(ModUtil::url('Users', 'admin', 'view'));
+        }
+
+        $user = UserUtil::getVars($uid);
+        if (!$user) {
+            return LogUtil::registerError($this->__('Sorry! Unable to retrieve information for that user id.'));
+        }
+
+        if (!SecurityUtil::checkPermission('Users::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $confirmationCodeSent = ModUtil::apiFunc('Users', 'user', 'mailConfirmationCode', array(
+            'idfield'       => 'uid',
+            'id'            => $user['uid'],
+            'adminRequest'  => true,
+        ));
+
+        if ($userNameSent) {
+            LogUtil::registerStatus($this->_f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
+        }
+
+        return System::redirect(ModUtil::url('Users', 'admin', 'view'));
     }
 
     /**

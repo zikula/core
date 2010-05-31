@@ -586,10 +586,12 @@ class Users_Api_User extends AbstractApi
         $emailMessageSent = false;
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
-            || ($args['idfield'] != 'email'))
+            || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid')))
         {
             return LogUtil::registerArgsError();
         }
+
+        $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
@@ -601,6 +603,7 @@ class Users_Api_User extends AbstractApi
             $renderer->assign('sitename', System::getVar('sitename'));
             $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
             $renderer->assign('url',  ModUtil::url('Users', 'user', 'loginScreen', array(), null, null, true));
+            $renderer->assign('adminRequested',  $adminRequested);
             $htmlBody = $renderer->fetch('users_userapi_lostunamemail.htm');
             $plainTextBody = $renderer->fetch('users_userapi_lostunamemail.txt');
 
@@ -635,10 +638,12 @@ class Users_Api_User extends AbstractApi
         $emailMessageSent = false;
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
-            || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email')))
+            || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid')))
         {
             return LogUtil::registerArgsError();
         }
+
+        $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
@@ -680,6 +685,7 @@ class Users_Api_User extends AbstractApi
                     $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
                     $renderer->assign('code', $confirmationCode);
                     $renderer->assign('url',  ModUtil::url('Users', 'user', 'lostPasswordCode', $urlArgs, null, null, true));
+                    $renderer->assign('adminRequested',  $adminRequested);
                     $htmlBody = $renderer->fetch('users_userapi_lostpasscodemail.htm');
                     $plainTextBody = $renderer->fetch('users_userapi_lostpasscodemail.txt');
 
