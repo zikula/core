@@ -166,4 +166,4 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 
 - Remove any references to Loader::loadClass() - classes are loaded automatically.
 
-
+- Remove {addition_headers} plugin from any themes, this doesn't work anymore.
