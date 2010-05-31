@@ -603,6 +603,7 @@ class ModUtil
 
         $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
         $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
+        $mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
 
         // OOP modules will load automatically
         $className = ($api) ? "{$modname}_Api_" . ucwords($ostype) : "{$modname}_". ucwords($ostype);
@@ -621,6 +622,7 @@ class ModUtil
         } elseif (file_exists($mosfile)) {
             // Load the file from modules
             include_once $mosfile;
+        } elseif (is_dir($mosdir)) { 
         } else {
             // File does not exist
             return false;
