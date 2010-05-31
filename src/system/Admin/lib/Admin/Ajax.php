@@ -93,7 +93,7 @@ class Admin_Ajax extends AbstractController
                 'description' => ''));
         $output['alerttext'] = '';
         $output['response'] = (!$result) ? "0" : $result;
-        $url = ModUtil::url('adminpanel', 'admin', 'adminpanel', array('acid' => $result));
+        $url = ModUtil::url('Admin', 'admin', 'adminpanel', array('acid' => $result));
         $output['url'] = $url;
         AjaxUtil::output($output, true);
     }
