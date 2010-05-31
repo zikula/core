@@ -378,6 +378,7 @@ class Users_Api_User extends AbstractApi
             $makepass  = $args['pass'];
             $cryptpass = $args['pass'];
             $hashMethodKey = $args['hash_method'];
+            $passwordReminder = $args['__ATTRIBUTES__']['password_reminder'];
             $activated = UserUtil::ACTIVATED_ACTIVE;
         } else {
             if ((ModUtil::getVar('Users', 'reg_verifyemail') == UserUtil::VERIFY_SYSTEMPWD) && !$args['isadmin']) {
