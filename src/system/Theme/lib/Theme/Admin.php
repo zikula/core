@@ -62,8 +62,8 @@ class Theme_Admin extends AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        // rewrite the variables to the running config
-        if (ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo))) {
+        // create theme
+        if (!ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo))) {
             LogUtil::registerStatus($this->__f('Done! Theme %s created.', $themeinfo['name']));
         }
 
