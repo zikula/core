@@ -82,6 +82,23 @@ class PNObjectArray extends DBObjectArray
     }
 }
 
+class PNCategory extends Categories_DBObject_Category
+{
+}
+
+class PNCategoryArray extends Categories_DBObject_CategoryArray
+{
+}
+
+class PNCategoryRegistry extends Categories_DBObject_Registry
+{
+}
+
+class PNCategoryRegistryArray extends Categories_DBObject_Registry
+{
+}
+
+
 /**
  * Alias to the Form_Render class for backward compatibility to Zikula 1.2.x.
  *

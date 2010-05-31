@@ -37,6 +37,7 @@ class ZLoader
         self::$autoloaders = new KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
+        self::addAutoloader('Categories', 'system/Categories/lib');
         include ZLOADER_PATH. 'legacy/Loader.php';
         include ZLOADER_PATH. 'legacy/Api.php';
 
