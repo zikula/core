@@ -47,7 +47,7 @@ class Form_Plugin_ContextMenu_Separator extends Form_Plugin
         // Locate parent context menu
         $contextMenu = &$this->parentPlugin;
 
-        while ($contextMenu != null  &&  strcasecmp(get_class($contextMenu), 'pnformcontextmenu') != 0) {
+        while ($contextMenu != null && !($contextMenu instanceof Form_Block_ContextMenu)) {
             $contextMenu = &$contextMenu->parentPlugin;
         }
 
