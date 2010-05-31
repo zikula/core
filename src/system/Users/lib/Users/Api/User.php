@@ -189,13 +189,14 @@ class Users_Api_User extends AbstractApi
      * @param array $args All parameters passed to this function.
      *                    $args['uname']        (string) The proposed user name for the new user record.
      *                    $args['email']        (string) The proposed e-mail address for the new user record.
+     *                    $args['password_reminder'] (string) The proposed password reminder entered by the user.
      *                    $args['agreetoterms'] (int)    A flag indicating that the user has agreed to the site's terms and policies; 0 indicates no, otherwise yes.
      *
      * @return array An array containing an error code and a result message. Possible error codes are:
      *               -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
      *               3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
      *               6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
-     *               9=EmailTaken 11=User Agent Banned 12=Email Domain banned
+     *               9=EmailTaken 11=User Agent Banned 12=Email Domain banned 18=no password reminder
      *
      */
     public function checkUser($args)
@@ -278,6 +279,10 @@ class Users_Api_User extends AbstractApi
                     return 9;
                 }
             }
+        }
+
+        if (!isset($args['password_reminder']) || emtpy($args['password_reminder'])) {
+            return 18;
         }
 
         $useragent = strtolower(System::serverGetVar('HTTP_USER_AGENT'));

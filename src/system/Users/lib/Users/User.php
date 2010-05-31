@@ -768,7 +768,8 @@ class Users_User extends AbstractController
         $checkuser = ModUtil::apiFunc('Users', 'user', 'checkUser',
                                   array('uname'        => $uname,
                                         'email'        => $email,
-                                        'agreetoterms' => $agreetoterms));
+                                        'agreetoterms' => $agreetoterms,
+                                        'password_reminder' => $passwordReminder));
 
         // if errorcode != 1 then return error msgs
         if ($checkuser != 1) {
@@ -806,6 +807,9 @@ class Users_User extends AbstractController
                     break;
                 case 12:
                     $message =  $this->__('Sorry! E-mail addresses from the domain you entered are not accepted for registering an account on this site.');
+                    break;
+                case 18:
+                    $message =  $this->__('Error! Please enter a password reminder.');
                     break;
                 default:
                     $message =  $this->__('Sorry! You have not been granted access to this module.');
