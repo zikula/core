@@ -852,23 +852,41 @@ class CategoryUtil
      *
      * @return generated tree JS text
      */
-    public static function getCategoryTreeJS($cats, $doReplaceRootCat = true)
+    public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false)
     {
-        $menuString = self::getCategoryTreeStructure($cats);
+        $lang = ZLanguage::getLanguageCode();
+        $params = array();
+        $params['mode'] = 'edit';
+        foreach ($cats as $i => $c) {
 
-        $treemid = new TreeMenu();
-        $treemid->setMenuStructureString($menuString);
-        $treemid->parseStructureForMenu('treemenu1');
-        $treemid->setLibjsdir("javascript/phplayersmenu/libjs");
-        $treemid->setImgdir("javascript/phplayersmenu/images");
-        $treemid->setImgwww("javascript/phplayersmenu/images");
-        $treemenu1 = $treemid->newTreeMenu('treemenu1');
+            $params['cid'] = $c['id'];
+            $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'admin', 'edit', $params));
 
-        if ($doReplaceRootCat) {
-            $treemenu1 = str_replace('__SYSTEM__', __('Root category'), $treemenu1);
+            if (FormUtil::getPassedValue('type') == 'admin') {
+                $url .= '#top';
+            }
+            if($doReplaceRootCat && $c['id'] == 1 &&  $c['name'] == '__SYSTEM__') {
+                $c['name'] =  __('Root category');
+            }
+
+            if (isset($c['display_name'][$lang]) && !empty($c['display_name'][$lang])) {
+                $name = DataUtil::formatForDisplay($c['display_name'][$lang]);
+            } else {
+                $name = DataUtil::formatForDisplay($c['name']);
+            }
+
+            $cats[$i]['active'] = $c['status'] == 'A' ? true : false;
+            $cats[$i]['href'] = $url;
+            $cats[$i]['name'] = $name;
         }
+        $pnRender = Renderer::getInstance('Categories', false);
+        $treePath = $pnRender->_get_plugin_filepath('function', 'tree');
+        Loader::loadFile($treePath);
 
-        return $treemenu1;
+        $tree = new Tree();
+        $tree->setOption('id','categoriesTree');
+        $tree->loadArrayData($cats);
+        return $tree->getHTML();
     }
 
     /**

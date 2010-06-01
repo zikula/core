@@ -28,12 +28,6 @@ class Categories_Admin extends AbstractController
      */
     public function view()
     {
-        $layersMenuPath = 'javascript/phplayersmenu/lib';
-        Loader::loadFile ('PHPLIB.php', $layersMenuPath);
-        Loader::loadFile ('layersmenu-common.inc.php', $layersMenuPath);
-        Loader::loadFile ('layersmenu.inc.php', $layersMenuPath);
-        Loader::loadFile ('treemenu.inc.php', $layersMenuPath);
-
         $root_id = FormUtil::getPassedValue ('dr', 1);
 
         if (!SecurityUtil::checkPermission('Categories::category', "ID::$root_id", ACCESS_EDIT)) {
@@ -47,9 +41,9 @@ class Categories_Admin extends AbstractController
         // disable attribution for performance
         $GLOBALS['pntables']['categories_category_db_extra_enable_attribution'] = false;
         $pntables    = pnDBGetTables ();
-        $columnArray = array ('id', 'name', 'display_name', 'path');
+        $columnArray = array ('id', 'name', 'display_name', 'parent_id', 'path', 'ipath', 'status');
         $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true, '', '', null, $columnArray);
-        $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats);
+        $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);
         $GLOBALS['pntables']['categories_category_db_extra_enable_attribution'] = true;
 
         $pnRender = Renderer::getInstance('Categories', false);
