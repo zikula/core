@@ -31,6 +31,7 @@ class ModUtil
     const DEPENDENCY_CONFLICTS = 3;
 
     public static $ooModules = array();
+    public static $classInstances = array();
 
     /**
      * The initCoreVars preloads some module vars.
@@ -581,7 +582,7 @@ class ModUtil
 
         if (!empty($loaded[$modtype])) {
             // Already loaded from somewhere else
-            return true;
+            return $loaded[$modtype];
         }
 
         // check the modules state
@@ -610,7 +611,7 @@ class ModUtil
 
         // if class is loadable or has been loaded exit here.
         if (self::isIntialized($modname)) {
-            return true;
+            return $modname;
         }
 
         // is OOP module
@@ -708,11 +709,6 @@ class ModUtil
      */
     public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
     {
-        static $controllers;
-        if (is_null($controllers)) {
-            $controllers = array();
-        }
-
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $ftype = ($api ? 'api' : '');
@@ -740,8 +736,8 @@ class ModUtil
         }
 
         if (class_exists($className)) {
-            if (array_key_exists($className, $controllers)) {
-                $controller = $controllers[$className];
+            if (self::hasInstance($className)) {
+                $controller = self::$classInstances[$className];
             } else {
                 $r = new ReflectionClass($className);
                 $controller = $r->newInstance();
@@ -759,7 +755,7 @@ class ModUtil
                         return false;
                     }
                 }
-                $controllers[$className] = $controller;
+                self::$classInstances[$className] = $controller;
             }
 
             if (is_callable(array($controller, $func))) {
@@ -790,7 +786,7 @@ class ModUtil
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     Loader::loadFile($file);
                     if (function_exists($modfunc)) {
-                        EventManagerUtil::notify($preExecuteEvent)->getData();
+                        EventManagerUtil::notify($preExecuteEvent);
                         $postExecuteEvent->setData($modfunc($args));
                         return EventManagerUtil::notify($postExecuteEvent)->getData();
                     }
@@ -800,7 +796,7 @@ class ModUtil
             if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (is_callable($modfunc)) {
-                    EventManagerUtil::notify($preExecuteEvent)->getData();
+                    EventManagerUtil::notify($preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
                     return EventManagerUtil::notify($postExecuteEvent)->getData();
                 }
@@ -809,7 +805,7 @@ class ModUtil
             if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (is_callable($modfunc)) {
-                    EventManagerUtil::notify($preExecuteEvent)->getData();
+                    EventManagerUtil::notify($preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
                     return EventManagerUtil::notify($postExecuteEvent)->getData();
                 }
@@ -1432,5 +1428,10 @@ class ModUtil
         }
 
         return self::$ooModules[$moduleName]['oo'];
+    }
+
+    public function hasInstance($className)
+    {
+        return array_key_exists($className, self::$classInstances);
     }
 }

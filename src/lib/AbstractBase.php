@@ -34,6 +34,8 @@ abstract class AbstractBase
         }
 
         //EventManagerUtil::attachCustomHandlers(realpath($this->baseDir. '/EventHandlers'));
+
+        $this->postInitialize();
     }
 
     private function _setup()
@@ -66,4 +68,11 @@ abstract class AbstractBase
     {
         return _fn($sin, $plu, $n, $params, $this->domain);
     }
+
+    protected function postInitialize()
+    {
+
+    }
+
+
 }
