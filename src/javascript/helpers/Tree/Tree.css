@@ -1,0 +1,71 @@
+
+div.treewraper * {
+    margin: 0;
+    padding: 0;
+}
+div.treewraper ul ul,
+div.treewraper ul li {
+    zoom: 1;
+    min-height: 5px;
+}
+div.treewraper ul {
+    margin: 0 0 0 15px !important;
+    padding: 0;
+    text-indent:0;
+}
+div.treewraper ul li {
+    list-style-type:none;
+    background-image: url(pion.gif);
+    background-position: left top;
+    background-repeat: repeat-y;
+    margin: 0 0 0 5px;
+    padding: 0;
+    line-height: 2em;
+}
+div.treewraper ul li.leaf {
+    background-image: url(node.gif);
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+div.treewraper ul li.last,
+div.treewraper ul li.single {
+    background-image: url(lnode.gif);
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+div.treewraper img.toggle,
+div.treewraper li.parent > span {
+    cursor: pointer;
+}
+div.treewraper img.icon {
+    margin: 0 5px 0 0;
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+div.treewraper ul.sortable img.icon {
+    cursor: pointer;
+}
+div.treewraper ul li.leaf img.toggle {
+    visibility: hidden;
+}
+
+div.treewraper ul.sortable .dropOnClass {
+    background: #BBBBBB;
+}
+div.treewraper ul.sortable .dropAfterClass {
+    border-bottom: 2px solid #646464;
+    margin-bottom: -2px;
+    background: transparent;
+}
+div.treewraper ul.sortable .dropBeforeClass {
+    border-top: 2px solid #646464;
+    margin-top: -2px;
+    background: transparent;
+}
+/*div.treewraper ul.sortable li {
+    position: static !important;
+}
+div.treewraper ul.sortable li.onDragClass {
+    position: relative !important;
+}*/
