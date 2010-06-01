@@ -202,10 +202,10 @@ class FormUtil
     public static function getRequiredFieldMarker($validationInfo, $field)
     {
         if (self::isRequiredField($validationInfo, $field)) {
-            return _REQUIRED_MARKER;
+            return HtmlUtil::REQUIRED_MARKER;
         }
 
-        return _MARKER_NONE;
+        return HtmlUtil::MARKER_NONE;
     }
 
     /**
@@ -326,10 +326,10 @@ class FormUtil
     public static function getValidationFieldMarker($objectType, $field)
     {
         if (self::hasValidationErrors($objectType, $field)) {
-            return _VALIDATION_MARKER;
+            return HtmlUtil::VALIDATION_MARKER;
         }
 
-        return _MARKER_NONE;
+        return HtmlUtil::MARKER_NONE;
     }
 
     /**
@@ -367,12 +367,12 @@ class FormUtil
     public static function getFieldMarker($objectType, $validationInfo, $field)
     {
         if (self::hasValidationErrors($objectType, $field)) {
-            return _VALIDATION_MARKER;
+            return HtmlUtil::VALIDATION_MARKER;
         } else if (self::isRequiredField($validationInfo, $field)) {
-            return _REQUIRED_MARKER;
+            return HtmlUtil::REQUIRED_MARKER;
         }
 
-        return _MARKER_NONE;
+        return HtmlUtil::MARKER_NONE;
     }
 
     /**

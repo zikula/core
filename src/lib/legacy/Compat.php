@@ -18,6 +18,10 @@ $GLOBALS['PNRuntime'] = & $GLOBALS['ZRuntime'];
 
 // start BC classes licensed as LGPv2.1
 
+define('_MARKER_NONE',                '&nbsp;&nbsp;');
+define('_REQUIRED_MARKER',            '<span style="font-size:larger;color:blue"><b>*</b></span>');
+define('_VALIDATION_MARKER',          '<span style="font-size:larger;color:red"><b>!</b></span>');
+
 /**
  * Alias to the Renderer class for backward compatibility to Zikula 1.2.x.
  *

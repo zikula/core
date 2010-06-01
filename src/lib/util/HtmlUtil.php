@@ -12,10 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-define('_MARKER_NONE',                '&nbsp;&nbsp;');
-define('_REQUIRED_MARKER',            '<span style="font-size:larger;color:blue"><b>*</b></span>');
-define('_VALIDATION_MARKER',          '<span style="font-size:larger;color:red"><b>!</b></span>');
-
 /**
  * HTMLUtil is a class used to generate specific HTML code.
  *
@@ -24,6 +20,9 @@ define('_VALIDATION_MARKER',          '<span style="font-size:larger;color:red">
  */
 class HtmlUtil
 {
+    const MARKER_NONE = '&nbsp;&nbsp;';
+    const REQUIRED_MARKER = '<span style="font-size:larger;color:blue"><b>*</b></span>';
+    const VALIDATION_MARKER = '<span style="font-size:larger;color:red"><b>!</b></span>';
     /**
      * Return the HTML code for the specified date selector input box.
      *
