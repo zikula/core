@@ -422,4 +422,12 @@ class AdodbStatementAdapter implements Doctrine_Adapter_Statement_Interface
         $this->fields = $this->fetch(PDO::FETCH_NUM);
         $this->EOF = !(bool)$this->fields;
     }
+
+    /**
+     * Fake ADODB close.
+     */
+    public function Close()
+    {
+        // do nothing for BC
+    }
 }
