@@ -93,7 +93,7 @@
             <fieldset>
                 <legend>{gt text="Session settings"}</legend>
                 <div class="z-formrow">
-                    <label for="securitycenter_seclevel">{gt text="Security level"}</label>
+                    <label for="securitycenter_seclevel">{gt text="Security level"} <a href="http://www.php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime">(?)</a></label>
                     <select id="securitycenter_seclevel" name="seclevel" size="1">
                         <option value="High"{if $seclevel eq 'High'} selected="selected"{/if}>{gt text="High (user is logged-out after X minutes of inactivity)"}</option>
                         <option value="Medium"{if $seclevel eq 'Medium'} selected="selected"{/if}>{gt text="Medium (user is logged-out after X minutes of inactivity, unless 'Remember me' checkbox is activated during log-in)"}</option>
@@ -111,7 +111,7 @@
                 </div>
                 <div id="securitycenter_seclevel_secinactivemins_container">
                     <div class="z-formrow">
-                        <label for="securitycenter_secinactivemins">{gt text="Expire session after"}</label>
+                        <label for="securitycenter_secinactivemins">{gt text="Expire session after"} <a href="http://www.php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime">(?)</a></label>
                         <div>
                             <input id="securitycenter_secinactivemins" type="text" name="secinactivemins" value="{$secinactivemins|varprepfordisplay}" size="4" />
                             <em>{gt text="minutes of inactivity"}</em>
@@ -130,12 +130,12 @@
                 </div>
 
                 <div id="securitycenter_sessionsavepath_container" class="z-formrow">
-                    <label for="securitycenter_sessionsavepath">{gt text="Path for saving session files"}</label>
+                    <label for="securitycenter_sessionsavepath">{gt text="Path for saving session files"} <a href="http://www.php.net/manual/en/session.configuration.php#ini.session.save-path">(?)</a></label>
                     <input id="securitycenter_sessionsavepath" type="text" name="sessionsavepath" size="50" value="{$sessionsavepath|varprepfordisplay}" />
                     <p id="securitycenter_sessionfilessavepathwarning_container" class="z-formnote z-informationmsg">{gt text="Notice: If you change 'Where to save sessions' to 'File' then you must enter a path in the 'Path for saving session files' box above. The path must be writeable."}</p>
                 </div>
                 <div class="z-formrow">
-                    <label for="securitycenter_gc_probability">{gt text="Garbage collection probability"}</label>
+                    <label for="securitycenter_gc_probability">{gt text="Garbage collection probability"} <a href="http://www.php.net/manual/en/session.configuration.php#ini.session.gc-probability">(?)</a></label>
                     <div>
                         <input id="securitycenter_gc_probability" type="text" name="gc_probability" value="{$gc_probability|varprepfordisplay}" size="4" maxlength="5" />
                         <em>{gt text="/10000"}</em>
