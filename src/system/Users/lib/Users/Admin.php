@@ -161,7 +161,7 @@ class Users_Admin extends AbstractController
                 . 'Please enter the same password once in each password field (this is required for verification).');
 
         } elseif (($pass != '') && (strlen($pass) < $minpass)) {
-            $errormsg[] = $this->_fn('Your password must be at least %1$s character long', 'Your password must be at least %2$s characters long', $minpass);
+            $errormsg[] = $this->_fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass);
         }
 
         if (!empty($errormsg)) {
