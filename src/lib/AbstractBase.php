@@ -21,7 +21,7 @@ abstract class AbstractBase
     protected $options;
     protected $baseDir;
     protected $modinfo;
-    protected $domain;
+    protected $domain = null;
 
     public function __construct(array $options = array())
     {
@@ -32,8 +32,6 @@ abstract class AbstractBase
             ZLanguage::bindModuleDomain($modname);
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
-
-        //EventManagerUtil::attachCustomHandlers(realpath($this->baseDir. '/EventHandlers'));
 
         $this->postInitialize();
     }
@@ -54,7 +52,7 @@ abstract class AbstractBase
         return __($msgid, $this->domain);
     }
 
-    protected function _f($msgid, $params)
+    protected function __f($msgid, $params)
     {
         return __f($msgid, $params, $this->domain);
     }
