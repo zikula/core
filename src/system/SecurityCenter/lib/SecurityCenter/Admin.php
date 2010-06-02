@@ -653,7 +653,7 @@ class SecurityCenter_Admin extends AbstractController
             }
         }
 //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
-        ModUtil::setVar('SecurityCenter', 'purifierConfig', serialize($config));
+        System::setVar('htmlpurifierConfig', serialize($config));
 
         $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
 
