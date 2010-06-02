@@ -148,6 +148,7 @@ CHANGELOG - ZIKULA 1.2.4
 Add authkey to updateemail form (issue #1993)
 Added <!--[browserhack]--> smarty block to allow adding of browser hacks (issue #2087)
 Fixed display of number equal to zero, was displaying -0.
+Save and restore pnRender::renderDomain when calling hooks.
 
 CHANGELOG - ZIKULA 1.2.3
 ------------------------
