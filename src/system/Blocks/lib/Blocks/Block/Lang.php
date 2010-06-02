@@ -206,7 +206,7 @@ class Blocks_Block_Lang extends AbstractBlock
         $vars['format'] = FormUtil::getPassedValue('format');
 
         // Scan for languages and save cached version
-        $vars['languages'] = Blocks_thelangblock_getAvailableLanguages();
+        $vars['languages'] = $this->getAvailableLanguages();
 
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
