@@ -771,7 +771,7 @@ class Modules_Api_Admin extends AbstractApi
                 }
             } else {
                 // set the previous state for the module
-                if ($dbmodules[$modinfo['name']]['state'] > 10) {
+                if (isset($dbmodules[$modinfo['name']]) && $dbmodules[$modinfo['name']]['state'] > 10) {
                     // set the module as valid preserving the previous state
                     $this->setstate(array('id'   => $dbmodules[$modinfo['name']]['id'],
                             'state' => $dbmodules[$modinfo['name']]['state'] - 10));
