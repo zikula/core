@@ -44,28 +44,22 @@ function addContext(nid)
     context_menu[context_menu.length - 1].addItem( {
         label : lblEdit,
         callback : function(nid) {
-        var match = /acid=([0-9]*){1,}/.exec(nid);
-        if (match instanceof Array) {
-            if (match.length == 2) {
-                cid = match[match.length - 1];
+            var cid = nid.href.match(/acid=(\d+)/)[1];
+            if (cid) {
                 getEditor("C" + cid).enterEditMode('click');
             }
+            return;
         }
-        return;
-    }
     });
     context_menu[context_menu.length - 1].addItem( {
         label : lblDelete,
         callback : function(nid) {
-        var match = /acid=([0-9]*){1,}/.exec(nid);
-        if (match instanceof Array) {
-            if (match.length == 2) {
-                var cid = match[match.length - 1];
+            var cid = nid.href.match(/acid=(\d+)/)[1];
+            if (cid) {
                 deleteTab(cid);
             }
+            return;
         }
-        return;
-    }
     });
 }
 
