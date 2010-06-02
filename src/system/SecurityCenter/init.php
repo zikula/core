@@ -70,7 +70,7 @@ function securitycenter_init()
     System::setVar('outputfilter', 1);
 
     // Location of HTML Purifier
-    System::setVar('htmlpurifierlocation', 'system/SecurityCenter/vendor/htmlpurifier/');
+    System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
 
     // HTML Purifier cache dir
     $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
@@ -89,9 +89,9 @@ function securitycenter_init()
 
     // now lets set the default mail message contents
     // file is read from pnincludes directory
-    $summarycontent = implode('', file(getcwd() . '/system/SecurityCenter/vendor/summary.txt'));
+    $summarycontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/summary.txt'));
     System::setVar('summarycontent', $summarycontent);
-    $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/vendor/full.txt'));
+    $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/full.txt'));
     System::setVar('fullcontent', $fullcontent);
 
     // cci vars, see pndocs/ccisecuritystrings.txt
@@ -250,7 +250,7 @@ function securitycenter_upgrade($oldversion)
 
         case '1.4':
             // Location of HTML Purifier
-            System::setVar('htmlpurifierlocation', 'system/SecurityCenter/vendor/htmlpurifier/');
+            System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
             // fall through
 
         case '1.6':
