@@ -22,5 +22,5 @@
  */
 function smarty_function_formcategorycheckboxlist($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_CategoryCheckboxList', $params);
+    return $render->registerPlugin('Form_Plugin_CategoryCheckboxList', $params);
 }

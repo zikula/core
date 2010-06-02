@@ -24,7 +24,7 @@
  *   $render = FormUtil::newpnForm('howtopnforms');
  *
  *   // Execute form using supplied template and event handler
- *   return $render->Execute('modname_user_new.html', new modname_user_newHandler());
+ *   return $render->execute('modname_user_new.html', new modname_user_newHandler());
  * }
  * </code>
  * See tutorials elsewhere for general introduction to pnForm.
@@ -146,7 +146,7 @@ class Form_Render extends Renderer
         $this->ValidationChecked = false;
         $this->_IsValid = null;
 
-        $this->InitializeState();
+        $this->initializeState();
         $this->InitializeIncludes();
     }
 
@@ -159,39 +159,39 @@ class Form_Render extends Renderer
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
-    public function Execute($template, &$eventHandler)
+    public function execute($template, &$eventHandler)
     {
         // Save handler for later use
         $this->EventHandler = &$eventHandler;
 
-        if ($this->IsPostBack()) {
+        if ($this->isPostBack()) {
             if (!SecurityUtil::confirmAuthKey())
                 return LogUtil::registerAuthidError();
             {
             }
 
-            $this->DecodeIncludes();
-            $this->DecodeState();
-            $this->DecodeEventHandler();
+            $this->decodeIncludes();
+            $this->decodeState();
+            $this->decodeEventHandler();
 
             if ($eventHandler->initialize($this) === false) {
-                return $this->GetErrorMsg();
+                return $this->getErrorMsg();
             }
 
             // (no create event)
-            $this->InitializePlugins(); // initialize event
-            $this->DecodePlugins(); // decode event
-            $this->DecodePostBackEvent(); // Execute optional postback after plugins have read their values
+            $this->initializePlugins(); // initialize event
+            $this->decodePlugins(); // decode event
+            $this->decodePostBackEvent(); // Execute optional postback after plugins have read their values
         } else {
             if ($eventHandler->initialize($this) === false)
-                return $this->GetErrorMsg();
+                return $this->getErrorMsg();
         }
 
         // render event (calls registerPlugin)
         $output = $this->fetch($template);
 
-        if ($this->HasError()) {
-            return $this->GetErrorMsg();
+        if ($this->hasError()) {
+            return $this->getErrorMsg();
         }
 
         // Check redirection at this point, ignore any generated HTML if redirected is required.
@@ -220,7 +220,7 @@ class Form_Render extends Renderer
      * // Smarty plugin function
      * function smarty_function_myplugin($params, &$render)
      * {
-     *   return $render->RegisterPlugin('MyPlugin', $params);
+     *   return $render->registerPlugin('MyPlugin', $params);
      * }
      * </code>
      * Registering a plugin ensures it is included in the plugin hierarchy of the current page, so that it's
@@ -237,10 +237,10 @@ class Form_Render extends Renderer
      *
      * @return string Returns what the render() method of the plugin returns.
      */
-    public function RegisterPlugin($pluginName, &$params, $isBlock = false)
+    public function registerPlugin($pluginName, &$params, $isBlock = false)
     {
         // Make sure we have a suitable ID for the plugin
-        $id = $this->GetPluginId($params);
+        $id = $this->getPluginId($params);
 
         $stackCount = count($this->BlockStack);
 
@@ -249,7 +249,7 @@ class Form_Render extends Renderer
         // So create new plugins for these blocks instead of relying on the existing plugins.
 
 
-        if (!$this->IsPostBack() || $stackCount > 0 && $this->BlockStack[$stackCount - 1]->volatile) {
+        if (!$this->isPostBack() || $stackCount > 0 && $this->BlockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
 
             // Make sure to store ID and render reference in plugin
@@ -318,7 +318,7 @@ class Form_Render extends Renderer
      * // Smarty block function
      * function smarty_block_myblock($params, $content, &$render)
      * {
-     *   return return $render->RegisterBlock('MyBlock', $params, $content);
+     *   return return $render->registerBlock('MyBlock', $params, $content);
      * }
      * </code>
      *
@@ -326,12 +326,12 @@ class Form_Render extends Renderer
      * @param array  &$params    Parameters passed from the Smarty block function.
      * @param string &$content   Content passed from the Smarty block function.
      */
-    public function RegisterBlock($pluginName, &$params, &$content)
+    public function registerBlock($pluginName, &$params, &$content)
     {
         if (!$content) {
-            return $this->RegisterBlockBegin($pluginName, $params);
+            return $this->registerBlockBegin($pluginName, $params);
         } else {
-            return $this->RegisterBlockEnd($pluginName, $params, $content);
+            return $this->registerBlockEnd($pluginName, $params, $content);
         }
     }
 
@@ -340,9 +340,9 @@ class Form_Render extends Renderer
      *
      * @internal
      */
-    public function RegisterBlockBegin($pluginName, &$params)
+    public function registerBlockBegin($pluginName, &$params)
     {
-        $output = $this->RegisterPlugin($pluginName, $params, true);
+        $output = $this->registerPlugin($pluginName, $params, true);
         $plugin = &$this->BlockStack[count($this->BlockStack) - 1];
         $plugin->blockBeginOutput = $output;
     }
@@ -352,7 +352,7 @@ class Form_Render extends Renderer
      *
      * @internal
      */
-    public function RegisterBlockEnd($pluginName, &$params, $content)
+    public function registerBlockEnd($pluginName, &$params, $content)
     {
         $plugin = &$this->BlockStack[count($this->BlockStack) - 1];
         array_pop($this->BlockStack);
@@ -371,7 +371,7 @@ class Form_Render extends Renderer
      *
      * @internal
      */
-    public function GetPluginId(&$params)
+    public function getPluginId(&$params)
     {
         if (!isset($params['id'])) {
             return 'plg' . ($this->IdCount++);
@@ -381,7 +381,7 @@ class Form_Render extends Renderer
     }
 
     /**
-     * GetPluginById.
+     * getPluginById.
      *
      * @param intiger $id Plugin ID.
      */
@@ -389,7 +389,7 @@ class Form_Render extends Renderer
     {
         $lim = count($this->Plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $plugin = $this->GetPluginById_rec($this->Plugins[$i], $id);
+            $plugin = $this->getPluginById_rec($this->Plugins[$i], $id);
             if ($plugin != null) {
                 return $plugin;
             }
@@ -400,12 +400,12 @@ class Form_Render extends Renderer
     }
 
     /**
-     * GetPluginById_rec.
+     * getPluginById_rec.
      *
      * @param plugin? $plugin Plugin
      * @param intiger $id     Plugin ID.
      */
-    public function &GetPluginById_rec($plugin, $id)
+    public function &getPluginById_rec($plugin, $id)
     {
         if ($plugin->id == $id) {
             return $plugin;
@@ -413,7 +413,7 @@ class Form_Render extends Renderer
 
         $lim = count($plugin->plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $subPlugin = & $this->GetPluginById_rec($plugin->plugins[$i], $id);
+            $subPlugin = & $this->getPluginById_rec($plugin->plugins[$i], $id);
             if ($subPlugin != null) {
                 return $subPlugin;
             }
@@ -424,35 +424,35 @@ class Form_Render extends Renderer
     }
 
     /**
-     * IsPostBack.
+     * isPostBack.
      *
      * @return boolean
      */
-    public function IsPostBack()
+    public function isPostBack()
     {
         return isset($_POST['__pnFormSTATE']);
     }
 
     /**
-     * FormDie.
+     * formDie.
      *
      * @param string $msg Message to echo.
      */
-    public function FormDie($msg)
+    public function formDie($msg)
     {
         echo ($msg);
         System::shutdown(0);
     }
 
     /**
-     * TranslateForDisplay.
+     * translateForDisplay.
      *
      * @param string  $txt      Text to translate for display.
      * @param boolean $doEncode True to formatForDisplay.
      *
      * @return string Text.
      */
-    public function TranslateForDisplay($txt, $doEncode = true)
+    public function translateForDisplay($txt, $doEncode = true)
     {
         $txt = (strlen($txt) > 0 && $txt[0] == '_' && defined($txt) ? constant($txt) : $txt);
         if ($doEncode) {
@@ -464,25 +464,25 @@ class Form_Render extends Renderer
     /* --- Validation --- */
 
     /**
-     * AddValidator.
+     * addValidator.
      *
      * @param validator $validator Validator to add.
      */
-    public function AddValidator(&$validator)
+    public function addValidator(&$validator)
     {
         $this->Validators[] = &$validator;
     }
 
     /**
-     * IsValid. calls Validate() if validation not yet checked.
+     * isValid. calls validate() if validation not yet checked.
      * Then returns true if all validators pass.
      *
      * @return boolean True if all validators are valid.
      */
-    public function IsValid()
+    public function isValid()
     {
         if (!$this->ValidationChecked) {
-            $this->Validate();
+            $this->validate();
         }
 
         return $this->_IsValid;
@@ -502,7 +502,7 @@ class Form_Render extends Renderer
      * Validate all validators and set ValidationChecked to true.
      *
      */
-    public function Validate()
+    public function validate()
     {
         $this->_IsValid = true;
 
@@ -519,7 +519,7 @@ class Form_Render extends Renderer
      * Clears the validation for all validators.
      *
      */
-    public function ClearValidation()
+    public function clearValidation()
     {
         $this->_IsValid = true;
 
@@ -531,7 +531,7 @@ class Form_Render extends Renderer
 
     /* --- Public state management --- */
 
-    public function SetState($region, $varName, &$varValue)
+    public function setState($region, $varName, &$varValue)
     {
         if (!isset($this->State[$region])) {
             $this->State[$region] = array();
@@ -555,18 +555,18 @@ class Form_Render extends Renderer
      * function handleCommand(...)
      * {
      *   if (... it did not work ...)
-     *     return $render->RegisterError('Operation X failed due to Y');
+     *     return $render->registerError('Operation X failed due to Y');
      * }
      * </code>
      */
-    public function SetErrorMsg($msg)
+    public function setErrorMsg($msg)
     {
         LogUtil::registerError($msg);
         $this->ErrorMsgSet = true;
         return false;
     }
 
-    public function GetErrorMsg()
+    public function getErrorMsg()
     {
         if ($this->ErrorMsgSet) {
             include_once ('lib/render/plugins/function.getstatusmsg.php');
@@ -577,7 +577,7 @@ class Form_Render extends Renderer
         }
     }
 
-    public function HasError()
+    public function hasError()
     {
         return $this->ErrorMsgSet;
     }
@@ -590,11 +590,11 @@ class Form_Render extends Renderer
      * function initialize(&$render)
      * {
      *   if (... not has access ...)
-     *     return $render->RegisterError(LogUtil::registerPermissionError());
+     *     return $render->registerError(LogUtil::registerPermissionError());
      * }
      * </code>
      */
-    public function RegisterError($dummy)
+    public function registerError($dummy)
     {
         $this->ErrorMsgSet = true;
         return false;
@@ -602,7 +602,7 @@ class Form_Render extends Renderer
 
     /* --- Redirection --- */
 
-    public function Redirect($url)
+    public function redirect($url)
     {
         System::redirect($url);
         $this->Redirected = true;
@@ -621,9 +621,9 @@ class Form_Render extends Renderer
      * <code>
      * function render(&$render)
      * {
-     *   $click = $render->GetPostBackEventReference($this, $this->commandName);
+     *   $click = $render->getPostBackEventReference($this, $this->commandName);
      *   $url = 'javascript:' . $click;
-     *   $title = $render->TranslateForDisplay($this->title);
+     *   $title = $render->translateForDisplay($this->title);
      *   $html = "<li><a href=\"$url\">$title</a></li>";
      *
      *   return $html;
@@ -632,14 +632,14 @@ class Form_Render extends Renderer
      * function raisePostBackEvent(&$render, $eventArgument)
      * {
      *   $args = array('commandName' => $eventArgument, 'commandArgument' => null);
-     *   $render->RaiseEvent($this->onCommand == null ? 'handleCommand' : $this->onCommand, $args);
+     *   $render->raiseEvent($this->onCommand == null ? 'handleCommand' : $this->onCommand, $args);
      * }
      * </code>
      *
      * @param plugin object Reference to the plugin that should receive the postback event
      * @param commandName string Command name to pass to the event handler
      */
-    public function GetPostBackEventReference($plugin, $commandName)
+    public function getPostBackEventReference($plugin, $commandName)
     {
         return "pnFormDoPostBack('$plugin->id', '$commandName');";
     }
@@ -647,7 +647,7 @@ class Form_Render extends Renderer
     /// Raise event in the main user event handler
     /// This method raises an event in the main user event handler. It is usually called from a plugin to signal
     /// that something in that plugin needs attention.
-    public function RaiseEvent($eventHandlerName, $args)
+    public function raiseEvent($eventHandlerName, $args)
     {
         $handlerClass = & $this->EventHandler;
 
@@ -664,12 +664,12 @@ class Form_Render extends Renderer
 
     /* --- Include list --- */
 
-    public function InitializeIncludes()
+    public function initializeIncludes()
     {
         $this->Includes = array();
     }
 
-    public function GetIncludesText()
+    public function getIncludesText()
     {
         $bytes = serialize($this->Includes);
         $bytes = SecurityUtil::signData($bytes);
@@ -678,19 +678,19 @@ class Form_Render extends Renderer
         return $base64;
     }
 
-    public function GetIncludesHTML()
+    public function getIncludesHTML()
     {
-        $base64 = $this->GetIncludesText();
+        $base64 = $this->getIncludesText();
 
         // TODO - this is a quick hack to move __pnFormINCLUDES into a session variable.
-        // A better way needs to be found rather than relying on a call to GetIncludesHTML.
+        // A better way needs to be found rather than relying on a call to getIncludesHTML.
         SessionUtil::setVar('__pnFormINCLUDES', $base64);
         return '';
     }
 
-    public function DecodeIncludes()
+    public function decodeIncludes()
     {
-        // TODO - See GetIncludesHTML()
+        // TODO - See getIncludesHTML()
         $base64 = SessionUtil::getVar('__pnFormINCLUDES');
         $bytes = base64_decode($base64);
         $bytes = SecurityUtil::checkSignedData($bytes);
@@ -711,7 +711,7 @@ class Form_Render extends Renderer
 
     /* --- Authentication key --- */
 
-    public function GetAuthKeyHTML()
+    public function getAuthKeyHTML()
     {
         $key = SecurityUtil::generateAuthKey();
         $html = "<input type=\"hidden\" name=\"authid\" value=\"$key\" id=\"pnFormAuthid\"/>";
@@ -720,17 +720,17 @@ class Form_Render extends Renderer
 
     /* --- State management --- */
 
-    public function InitializeState()
+    public function initializeState()
     {
         $this->State = array();
     }
 
-    public function GetStateText()
+    public function getStateText()
     {
-        $this->SetState('pnFormRender', 'eventHandler', $this->EventHandler);
+        $this->setState('pnFormRender', 'eventHandler', $this->EventHandler);
 
-        $pluginState = $this->GetPluginState();
-        $this->SetState('pnFormRender', 'plugins', $pluginState);
+        $pluginState = $this->getPluginState();
+        $this->setState('pnFormRender', 'plugins', $pluginState);
 
         $bytes = serialize($this->State);
         $bytes = SecurityUtil::signData($bytes);
@@ -739,14 +739,14 @@ class Form_Render extends Renderer
         return $base64;
     }
 
-    public function GetPluginState()
+    public function getPluginState()
     {
         //$this->dumpPlugins("Encode state", $this->Plugins);
-        $state = $this->GetPluginState_rec($this->Plugins);
+        $state = $this->getPluginState_rec($this->Plugins);
         return $state;
     }
 
-    public function GetPluginState_rec($plugins)
+    public function getPluginState_rec($plugins)
     {
         $state = array();
 
@@ -766,7 +766,7 @@ class Form_Render extends Renderer
                 $pluginState[] = $plugin->$name;
             }
 
-            $state[] = array(get_class($plugin), $pluginState, $this->GetPluginState_rec($subPlugins));
+            $state[] = array(get_class($plugin), $pluginState, $this->getPluginState_rec($subPlugins));
 
             $plugin->plugins = & $subPlugins;
         }
@@ -774,21 +774,21 @@ class Form_Render extends Renderer
         return $state;
     }
 
-    public function GetStateHTML()
+    public function getStateHTML()
     {
-        $base64 = $this->GetStateText();
+        $base64 = $this->getStateText();
 
         // TODO - this is a quick hack to move __pnFormSTATE into a session variable.
         // This is meant to solve issue #2013
-        // A better way needs to be found rather than relying on a call to GetStateHTML.
+        // A better way needs to be found rather than relying on a call to getStateHTML.
         SessionUtil::setVar('__pnFormSTATE', $base64);
-        // TODO - __pnFormSTATE still needs to be on the form, to ensure that IsPostBack() returns properly
+        // TODO - __pnFormSTATE still needs to be on the form, to ensure that isPostBack() returns properly
         return '<input type="hidden" name="__pnFormSTATE" value="true"/>';
     }
 
-    public function DecodeState()
+    public function decodeState()
     {
-        // TODO - see GetStateHTML()
+        // TODO - see getStateHTML()
         $base64 = SessionUtil::getVar('__pnFormSTATE');
         $bytes = base64_decode($base64);
         $bytes = SecurityUtil::checkSignedData($bytes);
@@ -845,7 +845,7 @@ class Form_Render extends Renderer
         return $plugins;
     }
 
-    public function DecodeEventHandler()
+    public function decodeEventHandler()
     {
         $storedHandler = & $this->GetState('pnFormRender', 'eventHandler');
         $currentHandler = & $this->EventHandler;
@@ -860,38 +860,38 @@ class Form_Render extends Renderer
 
     /* --- plugin event generators --- */
 
-    public function InitializePlugins()
+    public function initializePlugins()
     {
-        $this->InitializePlugins_rec($this->Plugins);
+        $this->initializePlugins_rec($this->Plugins);
 
         return true;
     }
 
-    public function InitializePlugins_rec($plugins)
+    public function initializePlugins_rec($plugins)
     {
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $this->InitializePlugins_rec($plugins[$i]->plugins);
+            $this->initializePlugins_rec($plugins[$i]->plugins);
             $plugins[$i]->initialize($this);
         }
     }
 
-    public function DecodePlugins()
+    public function decodePlugins()
     {
-        $this->DecodePlugins_rec($this->Plugins);
+        $this->decodePlugins_rec($this->Plugins);
 
         return true;
     }
 
-    public function DecodePlugins_rec($plugins)
+    public function decodePlugins_rec($plugins)
     {
         for ($i = 0, $lim = count($plugins); $i < $lim; ++$i) {
-            $this->DecodePlugins_rec($plugins[$i]->plugins);
+            $this->decodePlugins_rec($plugins[$i]->plugins);
             $plugins[$i]->decode($this);
         }
     }
 
-    public function DecodePostBackEvent()
+    public function decodePostBackEvent()
     {
         $eventTarget = FormUtil::getPassedValue('pnFormEventTarget', null, 'POST');
         $eventArgument = FormUtil::getPassedValue('pnFormEventArgument', null, 'POST');
@@ -903,29 +903,29 @@ class Form_Render extends Renderer
             }
         }
 
-        $this->DecodePostBackEvent_rec($this->Plugins);
+        $this->decodePostBackEvent_rec($this->Plugins);
     }
 
-    public function DecodePostBackEvent_rec($plugins)
+    public function decodePostBackEvent_rec($plugins)
     {
         for ($i = 0, $lim = count($plugins); $i < $lim; ++$i) {
-            $this->DecodePostBackEvent_rec($plugins[$i]->plugins);
+            $this->decodePostBackEvent_rec($plugins[$i]->plugins);
             $plugins[$i]->decodePostBackEvent($this);
         }
     }
 
-    public function PostRender()
+    public function postRender()
     {
-        $this->PostRender_rec($this->Plugins);
+        $this->postRender_rec($this->Plugins);
 
         return true;
     }
 
-    public function PostRender_rec($plugins)
+    public function postRender_rec($plugins)
     {
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $this->PostRender_rec($plugins[$i]->plugins);
+            $this->postRender_rec($plugins[$i]->plugins);
             $plugins[$i]->postRender($this);
         }
     }
@@ -964,22 +964,22 @@ class Form_Render extends Renderer
      * </code>
      *
      */
-    public function GetValues()
+    public function getValues()
     {
         $result = array();
 
-        $this->GetValues_rec($this->Plugins, $result);
+        $this->getValues_rec($this->Plugins, $result);
 
         return $result;
     }
 
-    public function GetValues_rec($plugins, &$result)
+    public function getValues_rec($plugins, &$result)
     {
         $lim = count($plugins);
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
             $plugin = $plugins[$i];
 
-            $this->GetValues_rec($plugin->plugins, $result);
+            $this->getValues_rec($plugin->plugins, $result);
 
             if (method_exists($plugin, 'saveValue')) {
                 $plugin->saveValue($this, $result);
@@ -987,30 +987,30 @@ class Form_Render extends Renderer
         }
     }
 
-    public function SetValues(&$values, $group = null)
+    public function setValues(&$values, $group = null)
     {
         $empty = null;
-        return $this->SetValues2($values, $group, $empty);
+        return $this->setValues2($values, $group, $empty);
     }
 
-    public function SetValues2(&$values, $group = null, $plugins)
+    public function setValues2(&$values, $group = null, $plugins)
     {
         if ($plugins == null) {
-            $this->SetValues_rec($values, $group, $this->Plugins);
+            $this->setValues_rec($values, $group, $this->Plugins);
         } else {
-            $this->SetValues_rec($values, $group, $plugins);
+            $this->setValues_rec($values, $group, $plugins);
         }
 
         return true;
     }
 
-    public function SetValues_rec(&$values, $group, $plugins)
+    public function setValues_rec(&$values, $group, $plugins)
     {
         $lim = count($plugins);
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
             $plugin = $plugins[$i];
 
-            $this->SetValues_rec($values, $group, $plugin->plugins);
+            $this->setValues_rec($values, $group, $plugin->plugins);
 
             if (method_exists($plugin, 'loadValue')) {
                 $plugin->loadValue($this, $values);

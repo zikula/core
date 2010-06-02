@@ -91,5 +91,5 @@
  */
 function smarty_function_formdropdownlist($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_DropdownList', $params);
+    return $render->registerPlugin('Form_Plugin_DropdownList', $params);
 }

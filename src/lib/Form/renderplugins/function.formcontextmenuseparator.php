@@ -14,5 +14,5 @@
 
 function smarty_function_formcontextmenuseparator($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_ContextMenu_Separator', $params);
+    return $render->registerPlugin('Form_Plugin_ContextMenu_Separator', $params);
 }

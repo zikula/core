@@ -133,7 +133,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     function initialize(&$render)
     {
-        $render->AddValidator($this);
+        $render->addValidator($this);
     }
 
     function load(&$render, &$params)

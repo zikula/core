@@ -29,5 +29,5 @@
 function smarty_function_formpostbackfunction($params, &$render)
 {
     // Let the pnFormPlugin class do all the hard work
-    return $render->RegisterPlugin('Form_Plugin_PostBackFunction', $params);
+    return $render->registerPlugin('Form_Plugin_PostBackFunction', $params);
 }

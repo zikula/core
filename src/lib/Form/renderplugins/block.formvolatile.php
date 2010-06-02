@@ -52,5 +52,5 @@
  */
 function smarty_block_formvolatile($params, $content, &$render)
 {
-    return $render->RegisterBlock('Form_Block_Volatile', $params, $content);
+    return $render->registerBlock('Form_Block_Volatile', $params, $content);
 }

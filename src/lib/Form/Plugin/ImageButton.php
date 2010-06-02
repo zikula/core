@@ -46,11 +46,11 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
 
         $onclickHtml = '';
         if ($this->confirmMessage != null) {
-            $msg = $render->TranslateForDisplay($this->confirmMessage) . '?';
+            $msg = $render->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
         }
 
-        $text = $render->TranslateForDisplay($this->text);
+        $text = $render->translateForDisplay($this->text);
         $imageUrl = $this->imageUrl;
 
         $attributes = $this->renderAttributes($render);
@@ -72,7 +72,7 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
                 'posX' => (int) $_POST[$fullNameX],
                 'posY' => (int) $_POST[$fullNameY]);
             if (!empty($this->onCommand))
-                if ($render->RaiseEvent($this->onCommand, $args) === false) {
+                if ($render->raiseEvent($this->onCommand, $args) === false) {
                     return false;
                 }
         }

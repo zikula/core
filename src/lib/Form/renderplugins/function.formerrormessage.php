@@ -23,10 +23,10 @@
  *  {
  *    if ($args['commandName'] == 'update')
  *    {
- *      if (!$render->IsValid())
+ *      if (!$render->isValid())
  *        return false;
  *
- *      $data = $render->GetValues();
+ *      $data = $render->getValues();
  *      if (... something is wrong ...)
  *      {
  *        $errorPlugin = $render->GetPluginById('MyPluginId');
@@ -47,5 +47,5 @@
 */
 function smarty_function_formerrormessage($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_ErrorMessage', $params);
+    return $render->registerPlugin('Form_Plugin_ErrorMessage', $params);
 }

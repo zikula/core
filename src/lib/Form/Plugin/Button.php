@@ -24,10 +24,10 @@
  * {
  * if ($args['commandName'] == 'update')
  * {
- * if (!$render->IsValid())
+ * if (!$render->isValid())
  * return false;
  *
- * $data = $render->GetValues();
+ * $data = $render->getValues();
  *
  * DBUtil::updateObject($data, 'demo_data');
  * }
@@ -103,12 +103,12 @@ class Form_Plugin_Button extends Form_StyledPlugin
         $onclickHtml = '';
         $onkeypressHtml = '';
         if ($this->confirmMessage != null) {
-            $msg = $render->TranslateForDisplay($this->confirmMessage) . '?';
+            $msg = $render->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
             $onkeypressHtml = " onkeypress=\"return confirm('$msg');\"";
         }
 
-        $text = $render->TranslateForDisplay($this->text);
+        $text = $render->translateForDisplay($this->text);
 
         $attributes = $this->renderAttributes($render);
 
@@ -126,7 +126,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
                 'commandName' => $this->commandName,
                 'commandArgument' => $this->commandArgument);
             if (!empty($this->onCommand)) {
-                if ($render->RaiseEvent($this->onCommand, $args) === false) {
+                if ($render->raiseEvent($this->onCommand, $args) === false) {
                     return false;
                 }
             }

@@ -69,7 +69,7 @@
  *   function load(&$render, &$params)
  *   {
  *     $this->loadValue($render, $render->get_template_vars());
- *     $render->AddValidator($this);
+ *     $render->addValidator($this);
  *   }
  *   </code>
  *   This event is only fired the first time the plugin is instantiated,
@@ -396,7 +396,7 @@ class Form_Plugin
     }
 
     /**
-     * PostRender event handler
+     * postRender event handler
      *
      * Default action is to do nothing.
      *

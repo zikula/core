@@ -57,7 +57,7 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 
     function initialize(&$render)
     {
-        $render->AddValidator($this);
+        $render->addValidator($this);
     }
 
     function render(&$render)

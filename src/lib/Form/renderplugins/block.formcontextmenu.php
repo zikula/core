@@ -54,5 +54,5 @@
  */
 function smarty_block_formcontextmenu($params, $content, &$render)
 {
-    return $render->RegisterBlock('Form_Block_ContextMenu', $params, $content);
+    return $render->registerBlock('Form_Block_ContextMenu', $params, $content);
 }

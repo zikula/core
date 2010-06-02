@@ -104,7 +104,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         }
 
         if (!empty($this->commandName)) {
-            $click = 'javascript:' . $this->renderConfirm($render, $render->GetPostBackEventReference($this, $this->commandName));
+            $click = 'javascript:' . $this->renderConfirm($render, $render->getPostBackEventReference($this, $this->commandName));
 
         } else if (!empty($this->commandScript)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
@@ -119,7 +119,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         }
 
         $url = $click;
-        $title = $render->TranslateForDisplay($this->title);
+        $title = $render->translateForDisplay($this->title);
 
         if (!empty($this->imageURL)) {
             $style = " style=\"background-image: url($this->imageURL)\"";
@@ -135,7 +135,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     function renderConfirm(&$render, $script)
     {
         if (!empty($this->confirmMessage)) {
-            $msg = $render->TranslateForDisplay($this->confirmMessage) . '?';
+            $msg = $render->translateForDisplay($this->confirmMessage) . '?';
             return "if (confirm('$msg')) { $script }";
         } else {
             return $script;
@@ -153,7 +153,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         $args = array(
             'commandName' => $eventArgument,
             'commandArgument' => $commandArgument);
-        $render->RaiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
+        $render->raiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
     }
 
     function &getParentContextMenu()

@@ -58,7 +58,7 @@
  * </code>
  *
  * The resulting dataset is a list of strings representing the selected
- * values. So when you do a $data = $render->GetValues(); you will
+ * values. So when you do a $data = $render->getValues(); you will
  * get a dataset like this:
  *
  * <code>
@@ -72,5 +72,5 @@
  */
 function smarty_function_formcheckboxlist($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_CheckboxList', $params);
+    return $render->registerPlugin('Form_Plugin_CheckboxList', $params);
 }

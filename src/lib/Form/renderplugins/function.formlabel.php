@@ -29,5 +29,5 @@
  */
 function smarty_function_formlabel($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_Label', $params);
+    return $render->registerPlugin('Form_Plugin_Label', $params);
 }

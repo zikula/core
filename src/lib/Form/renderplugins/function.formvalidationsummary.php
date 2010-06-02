@@ -14,5 +14,5 @@
 
 function smarty_function_formvalidationsummary($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_ValidationSummary', $params);
+    return $render->registerPlugin('Form_Plugin_ValidationSummary', $params);
 }

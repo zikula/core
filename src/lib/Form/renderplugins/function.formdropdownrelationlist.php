@@ -14,5 +14,5 @@
 
 function smarty_function_formdropdownrelationlist($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_DropdownRelationlist', $params);
+    return $render->registerPlugin('Form_Plugin_DropdownRelationlist', $params);
 }

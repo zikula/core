@@ -234,7 +234,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
         $postbackHtml = '';
         if ($this->autoPostBack) {
-            $postbackHtml = " onchange=\"" . $render->GetPostBackEventReference($this, '') . "\"";
+            $postbackHtml = " onchange=\"" . $render->getPostBackEventReference($this, '') . "\"";
         }
 
         $multipleHtml = '';
@@ -291,7 +291,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
             'commandName' => null,
             'commandArgument' => null);
         if (!empty($this->onSelectedIndexChanged)) {
-            $render->RaiseEvent($this->onSelectedIndexChanged, $args);
+            $render->raiseEvent($this->onSelectedIndexChanged, $args);
         }
     }
 

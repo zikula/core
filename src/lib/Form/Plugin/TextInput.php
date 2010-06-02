@@ -222,7 +222,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         if (array_key_exists('maxLength', $params)) {
             $this->maxLength = $params['maxLength'];
         } else if ($this->maxLength == null && strtolower($this->textMode) != 'multiline') {
-            $render->FormDie("Missing maxLength value in textInput plugin '$this->id'.");
+            $render->formDie("Missing maxLength value in textInput plugin '$this->id'.");
         }
     }
 
@@ -236,7 +236,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     function initialize(&$render)
     {
-        $render->AddValidator($this);
+        $render->addValidator($this);
     }
 
     function render(&$render)
@@ -245,7 +245,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
         $nameHtml = " name=\"{$this->inputName}\"";
 
-        $titleHtml = ($this->toolTip != null ? ' title="' . $render->TranslateForDisplay($this->toolTip) . '"' : '');
+        $titleHtml = ($this->toolTip != null ? ' title="' . $render->translateForDisplay($this->toolTip) . '"' : '');
 
         $readOnlyHtml = ($this->readOnly ? ' readonly="readonly" tabindex="-1"' : '');
 
@@ -333,7 +333,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         } else if (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
             $this->setError(sprintf(__('Error! Input text must be no longer than %s characters.'), $this->maxLength));
         } else if ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
-            $this->setError($render->TranslateForDisplay($this->regexValidationMessage));
+            $this->setError($render->translateForDisplay($this->regexValidationMessage));
         }
     }
 
@@ -351,7 +351,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         $this->toolTip = null;
     }
 
-    // Called by the render when doing $render->GetValues()
+    // Called by the render when doing $render->getValues()
     // Uses the group parameter to decide where to store data.
     function saveValue(&$render, &$data)
     {

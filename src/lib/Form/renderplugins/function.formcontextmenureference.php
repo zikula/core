@@ -15,7 +15,7 @@
 
 function smarty_function_formcontextmenureference($params, &$render)
 {
-    $output = $render->RegisterPlugin('Form_Plugin_ContextMenu_Reference', $params);
+    $output = $render->registerPlugin('Form_Plugin_ContextMenu_Reference', $params);
     if (array_key_exists('assign', $params)) {
         $render->assign($params['assign'], $output);
     } else {

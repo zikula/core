@@ -14,5 +14,5 @@
 
 function smarty_function_formemailinput($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_EMailInput', $params);
+    return $render->registerPlugin('Form_Plugin_EMailInput', $params);
 }

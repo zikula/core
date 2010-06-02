@@ -24,5 +24,5 @@
 */
 function smarty_function_formcontextmenuitem($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_ContextMenu_Item', $params);
+    return $render->registerPlugin('Form_Plugin_ContextMenu_Item', $params);
 }

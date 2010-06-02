@@ -28,10 +28,10 @@
  * {
  * if ($args['commandName'] == 'update')
  * {
- * if (!$render->IsValid())
+ * if (!$render->isValid())
  * return false;
  *
- * $data = $render->GetValues();
+ * $data = $render->getValues();
  *
  * DBUtil::updateObject($data, 'demo_data');
  * }
@@ -104,18 +104,18 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
 
         $onclickHtml = '';
         if ($this->confirmMessage != null) {
-            $msg = $render->TranslateForDisplay($this->confirmMessage) . '?';
+            $msg = $render->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
         }
 
-        $text = $render->TranslateForDisplay($this->text);
+        $text = $render->translateForDisplay($this->text);
 
         $attributes = $this->renderAttributes($render);
 
         $carg = serialize(array(
             'cname' => $this->commandName,
             'carg' => $this->commandArgument));
-        $href = $render->GetPostBackEventReference($this, $carg);
+        $href = $render->getPostBackEventReference($this, $carg);
         $href = htmlspecialchars($href);
 
         $result = "<a {$idHtml}{$onclickHtml}{$attributes} href=\"javascript:$href\">$text</a>";
@@ -132,6 +132,6 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
             'commandName' => $carg['cname'],
             'commandArgument' => $carg['carg']);
         if (!empty($this->onCommand))
-            $render->RaiseEvent($this->onCommand, $args);
+            $render->raiseEvent($this->onCommand, $args);
     }
 }

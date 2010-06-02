@@ -217,7 +217,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     function initialize(&$render)
     {
-        $render->AddValidator($this);
+        $render->addValidator($this);
     }
 
     function render(&$render)
@@ -230,7 +230,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
         $postbackHtml = '';
         if ($this->autoPostBack) {
-            $postbackHtml = " onclick=\"" . $render->GetPostBackEventReference($this, '') . "\"";
+            $postbackHtml = " onclick=\"" . $render->getPostBackEventReference($this, '') . "\"";
         }
 
         $class = 'radio';
@@ -260,7 +260,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
             'commandName' => null,
             'commandArgument' => null);
         if (!empty($this->onCheckedChanged)) {
-            $render->RaiseEvent($this->onCheckedChanged, $args);
+            $render->raiseEvent($this->onCheckedChanged, $args);
         }
     }
 

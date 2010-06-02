@@ -14,5 +14,5 @@
 
 function smarty_function_formuploadinput($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_UploadInput', $params);
+    return $render->registerPlugin('Form_Plugin_UploadInput', $params);
 }

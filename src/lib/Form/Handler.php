@@ -44,14 +44,14 @@ class Form_Handler
      * function initialize(&$render)
      * {
      *   if (!HasAccess) // your access check here
-     *      return $render->SetErrorMsg('No access');
+     *      return $render->setErrorMsg('No access');
      *
      *   $id = FormUtil::getPassedValue('id');
      *
      *  $data = ModUtil::apiFunc('MyModule', 'user', 'get',
      *                       array('id' => $id));
      *   if (count($data) == 0)
-     *     return $render->SetErrorMsg('Unknown data');
+     *     return $render->setErrorMsg('Unknown data');
      *
      *   $render->assign($data);
      *

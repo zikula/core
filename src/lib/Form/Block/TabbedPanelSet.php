@@ -91,7 +91,7 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
             $cssClass = 'linktab';
             $selected = ($i == $this->selectedIndex);
 
-            $title = $render->TranslateForDisplay($title);
+            $title = $render->translateForDisplay($title);
 
             if ($selected) {
                 $cssClass .= ' selected';
@@ -113,7 +113,7 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
     function registerTabbedPanel(&$render, &$panel, $title)
     {
         $panel->panelSetId = $this->id;
-        if (!$render->IsPostBack()) {
+        if (!$render->isPostBack()) {
             $panel->index = $this->registeredTabIndex++;
             $this->titles[] = $title;
         }

@@ -14,5 +14,5 @@
 
 function smarty_function_formurlinput($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_URLInput', $params);
+    return $render->registerPlugin('Form_Plugin_URLInput', $params);
 }

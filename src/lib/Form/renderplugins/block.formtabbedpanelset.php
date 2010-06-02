@@ -41,5 +41,5 @@
  */
 function smarty_block_formtabbedpanelset($params, $content, &$render)
 {
-    return $render->RegisterBlock('Form_Block_TabbedPanelSet', $params, $content);
+    return $render->registerBlock('Form_Block_TabbedPanelSet', $params, $content);
 }

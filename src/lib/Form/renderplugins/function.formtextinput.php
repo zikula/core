@@ -29,5 +29,5 @@
 function smarty_function_formtextinput($params, &$render)
 {
     // Let the pnFormPlugin class do all the hard work
-    return $render->RegisterPlugin('Form_Plugin_TextInput', $params);
+    return $render->registerPlugin('Form_Plugin_TextInput', $params);
 }

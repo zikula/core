@@ -29,13 +29,13 @@ function smarty_block_form($params, $content, &$render)
         $classString = "class=\"$params[cssClass]\" ";
     }
 
-    $render->PostRender();
+    $render->postRender();
 
     $out  =  "<form id=\"pnFormForm\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
     $out .= $content;
-    $out .= "\n<div>\n" . $render->GetStateHTML() . "\n"; // Add <div> for XHTML validation
-    $out .= $render->GetIncludesHTML() . "\n";
-    $out .= $render->GetAuthKeyHTML() . "
+    $out .= "\n<div>\n" . $render->getStateHTML() . "\n"; // Add <div> for XHTML validation
+    $out .= $render->getIncludesHTML() . "\n";
+    $out .= $render->getAuthKeyHTML() . "
 <input type=\"hidden\" name=\"pnFormEventTarget\" id=\"pnFormEventTarget\" value=\"\" />
 <input type=\"hidden\" name=\"pnFormEventArgument\" id=\"pnFormEventArgument\" value=\"\" />
 <script type=\"text/javascript\">

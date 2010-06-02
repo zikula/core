@@ -30,5 +30,5 @@
  */
 function smarty_function_formimagebutton($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_ImageButton', $params);
+    return $render->registerPlugin('Form_Plugin_ImageButton', $params);
 }

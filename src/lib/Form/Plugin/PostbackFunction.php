@@ -69,7 +69,7 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
         $html = '';
 
         $html .= "<script type=\"text/javascript\">\n<!--\n{$this->function} = function() { ";
-        $html .= $render->GetPostBackEventReference($this, $this->commandName);
+        $html .= $render->getPostBackEventReference($this, $this->commandName);
         $html .= " }\n// -->\n</script>";
 
         return $html;
@@ -81,7 +81,7 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
             'commandName' => $eventArgument,
             'commandArgument' => null);
         if (!empty($this->onCommand))
-            $render->RaiseEvent($this->onCommand, $args);
+            $render->raiseEvent($this->onCommand, $args);
     }
 }
 

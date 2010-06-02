@@ -14,5 +14,5 @@
 
 function smarty_function_formfloatinput($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_FloatInput', $params);
+    return $render->registerPlugin('Form_Plugin_FloatInput', $params);
 }

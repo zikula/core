@@ -72,7 +72,7 @@ class Form_Plugin_Label extends Form_StyledPlugin
     {
         $idHtml = $this->getIdHtml();
 
-        $text = $render->TranslateForDisplay($this->text, ($this->html == 1) ? false : true);
+        $text = $render->translateForDisplay($this->text, ($this->html == 1) ? false : true);
 
         if ($this->cssClass != null) {
             $classHtml = " class=\"$this->cssClass\"";
@@ -96,7 +96,7 @@ class Form_Plugin_Label extends Form_StyledPlugin
     {
         $plugin = & $render->GetPluginById($this->for);
         if ($plugin != null) {
-            $plugin->myLabel = $render->TranslateForDisplay($this->text, ($this->html == 1) ? false : true);
+            $plugin->myLabel = $render->translateForDisplay($this->text, ($this->html == 1) ? false : true);
             //echo "Set label '$this->text' on $plugin->id. ";
         }
     }

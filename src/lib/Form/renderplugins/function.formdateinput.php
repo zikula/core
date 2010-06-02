@@ -27,5 +27,5 @@
  */
 function smarty_function_formdateinput($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_DateInput', $params);
+    return $render->registerPlugin('Form_Plugin_DateInput', $params);
 }

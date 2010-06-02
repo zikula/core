@@ -24,5 +24,5 @@
  */
 function smarty_function_formlanguageselector($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_LanguageSelector', $params);
+    return $render->registerPlugin('Form_Plugin_LanguageSelector', $params);
 }

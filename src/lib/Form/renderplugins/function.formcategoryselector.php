@@ -23,5 +23,5 @@
  */
 function smarty_function_formcategoryselector($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_CategorySelector', $params);
+    return $render->registerPlugin('Form_Plugin_CategorySelector', $params);
 }

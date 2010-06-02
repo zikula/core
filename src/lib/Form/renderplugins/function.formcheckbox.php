@@ -22,5 +22,5 @@
  */
 function smarty_function_formcheckbox($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_Checkbox', $params);
+    return $render->registerPlugin('Form_Plugin_Checkbox', $params);
 }

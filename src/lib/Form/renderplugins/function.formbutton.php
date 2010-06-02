@@ -24,10 +24,10 @@
  *  {
  *    if ($args['commandName'] == 'update')
  *    {
- *      if (!$render->IsValid())
+ *      if (!$render->isValid())
  *        return false;
  *
- *      $data = $render->GetValues();
+ *      $data = $render->getValues();
  *
  *      DBUtil::updateObject($data, 'demo_data');
  *    }
@@ -44,5 +44,5 @@
  */
 function smarty_function_formbutton($params, &$render)
 {
-    return $render->RegisterPlugin('Form_Plugin_Button', $params);
+    return $render->registerPlugin('Form_Plugin_Button', $params);
 }
