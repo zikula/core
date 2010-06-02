@@ -115,9 +115,9 @@ class SecurityCenter_Api_User extends AbstractApi
                     foreach ($_GET as $key => $secvalue) {
                         if (!is_array($secvalue)) {
                             if ($this->_checkinputvalue($secvalue)) {
-                                $this->loghackattempt(array('detecting_file' => 'pnAntiCracker',
+                                $this->loghackattempt(array('detecting_file' => 'SecurityCenter',
                                         'detecting_line' => __LINE__,
-                                        'hacktype' => 'pnSecurity Alert',
+                                        'hacktype' => 'SecurityCenter Alert',
                                         'message' => 'GET: '.$key.'=>'.$secvalue));
                                 Header('Location: ' . System::getVar('entrypoint', 'index.php'));
                             }
@@ -132,9 +132,9 @@ class SecurityCenter_Api_User extends AbstractApi
                     foreach ($_POST as $key => $secvalue) {
                         if (!is_array($secvalue)) {
                             if ($this->_checkinputvalue($secvalue)) {
-                                $this->loghackattempt(array('detecting_file' => 'pnAntiCracker',
+                                $this->loghackattempt(array('detecting_file' => 'SecurityCenter',
                                         'detecting_line' => __LINE__,
-                                        'hacktype' => 'pnSecurity Alert',
+                                        'hacktype' => 'SecurityCenter Alert',
                                         'message' => 'POST: '.$key.'=>'.$secvalue));
                                 Header('Location: ' . System::getVar('entrypoint', 'index.php'));
                             }
@@ -149,9 +149,9 @@ class SecurityCenter_Api_User extends AbstractApi
                     foreach ($_COOKIE as $secvalue) {
                         if (!is_array($secvalue)) {
                             if ($this->_checkinputvalue($secvalue)) {
-                                $this->loghackattempt(array('detecting_file' => 'pnAntiCracker',
+                                $this->loghackattempt(array('detecting_file' => 'SecurityCenter',
                                         'detecting_line' => __LINE__,
-                                        'hacktype' => 'pnSecurity Alert',
+                                        'hacktype' => 'SecurityCenter Alert',
                                         'message' => 'COOKIE: '.$key.'=>'.$secvalue));
                                 Header('Location: ' . System::getVar('entrypoint', 'index.php'));
                             }
@@ -636,7 +636,7 @@ class SecurityCenter_Api_User extends AbstractApi
     private function _getidsconfig()
     {
         $config = array();
-        $idsDir = dirname(__FILE__) . '/lib/vendor/IDS/';
+        $idsDir = $this->baseDir . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR .'IDS'. DIRECTORY_SEPARATOR;
 
         // General configuration settings
         $config['General'] = array();
