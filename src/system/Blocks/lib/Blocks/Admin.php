@@ -427,26 +427,28 @@ class Blocks_Admin extends AbstractController
 
         // Load block
         $modinfo = ModUtil::getInfo($blockinfo['mid']);
-        if (!BlockUtil::load($modinfo['name'], $blockinfo['bkey'])) {
+        $blockObj = BlockUtil::load($modinfo['name'], $blockinfo['bkey']);
+        if (!$blockObj) {
             return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
         }
 
         // Do block-specific update
         $usname = preg_replace('/ /', '_', $modinfo['name']);
-        $updatefunc = $usname . '_' . $blockinfo['bkey'] . 'block_update';
-        if (function_exists($updatefunc)) {
-            $blockinfo = $updatefunc($blockinfo);
-            if (!$blockinfo) {
-                return System::redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
-            }
+        if (is_object($blockObj)) {
+            $updatefunc = array($blockObj, 'update');
         } else {
-            // Old way
-            $blocks_modules = $GLOBALS['blocks_modules'][$blockinfo['mid']];
-            if (!empty($blocks_modules[$blockinfo['bkey']]) && !empty($blocks_modules[$blockinfo['bkey']]['func_update'])) {
-                if (function_exists($blocks_modules[$blockinfo['bkey']]['func_update'])) {
-                    $blockinfo = $blocks_modules[$blockinfo['bkey']]['func_update'](array_merge($_POST, $blockinfo));
-                }
-            }
+            $updatefunc = $usname . '_' . $blockinfo['bkey'] . 'block_update';
+        }
+
+        $blockoutput = '';
+        if (is_array($updatefunc)) {
+            $blockinfo = call_user_func($updatefunc, $blockinfo);
+        } elseif (function_exists($updatefunc)) {
+            $blockinfo = $updatefunc($blockinfo);
+        }
+
+        if (!$blockinfo) {
+            return System::redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
 
         // Pass to API
