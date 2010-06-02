@@ -160,7 +160,7 @@ class ModUtil
 
         // since they passed a variable name then only return the value for
         // that variable
-        if (array_key_exists($name, $pnmodvar[$modname])) {
+        if (isset($pnmodvar[$modname]) && array_key_exists($name, $pnmodvar[$modname])) {
             return $pnmodvar[$modname][$name];
         }
 
