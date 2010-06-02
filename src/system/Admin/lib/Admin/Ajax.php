@@ -115,7 +115,7 @@ class Admin_Ajax extends AbstractController
         //get passed cid to delete
         $cid = trim(FormUtil::getPassedValue('cid'));
         //check user has permission to delete this
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[catname]::$cid", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE)) {
             $output['alerttext'] = 'You do not have permission to delete category:'.$cid;
             $output['response'] = '-1';
             return AjaxUtil::output($output, true);
@@ -152,7 +152,7 @@ class Admin_Ajax extends AbstractController
         $cat = trim(FormUtil::getPassedValue('catname'));
 
         //security checks
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[catname]::$cid", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('Admin::Category', "$cat[catname]::$cid", ACCESS_EDIT)) {
             $output['alerttext'] = 'You do not have permission to edit this category.';
             $output['response'] = '-1';
             return AjaxUtil::output($output, true);

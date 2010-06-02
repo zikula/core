@@ -167,8 +167,8 @@ function deleteTabResponse(req) {
         pnshowajaxerror("Oops something went wrong! " + json.alerttext + "response: "
                 + json.response);
     } else {
-        var element = document.getElementById("C" + json.response);
-        element.parentNode.removeChild(element);
+        var element = $("C" + json.response);
+        element.up('li').remove();
     }
     var aid = json.authid;
     if (aid !== '') {
