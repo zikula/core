@@ -442,12 +442,12 @@ class UserUtil
 
             if ($checkPassword) {
                 $result = false;
-                $uname = strtolower($uname);
+                $login = strtolower($login);
                 $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
                 foreach ($authmodules as $authmodule) {
                     $authmodule = trim($authmodule);
                     if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                        $result = ModUtil::apiFunc($authmodule, 'auth', 'login', array('login' => $uname, 'pass' => $pass));
+                        $result = ModUtil::apiFunc($authmodule, 'auth', 'login', array('login' => $login, 'pass' => $pass));
                         if ($result) {
                             break;
                         }

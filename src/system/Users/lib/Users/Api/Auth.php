@@ -1,4 +1,4 @@
-<?php
+u d<?php
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -23,13 +23,11 @@ class Users_Api_Auth extends AbstractApi
 {
     public function login($args)
     {
-        $login = (string)strtolower($args['uname']);
+        $login = (string)strtolower($args['login']);
         $pass = (string)$args['pass'];
 
         // password check doesn't apply to HTTP(S) based login
-        if ($checkPassword) {
-            return ModUtil::apiFunc('Users', 'auth', 'checkPassword', array('login' => $login, 'pass' => $pass));
-        }
+        return ModUtil::apiFunc('Users', 'auth', 'checkPassword', array('login' => $login, 'pass' => $pass));
     }
 
     public function logout()
