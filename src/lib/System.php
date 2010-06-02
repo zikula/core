@@ -75,7 +75,7 @@ class System
             return null;
         }
 
-        if (isset($GLOBALS['ZConfig']['System'][$name])) {
+        if (array_key_exists($name, $GLOBALS['ZConfig']['System'])) {
             $mod_var = $GLOBALS['ZConfig']['System'][$name];
         } else {
             $mod_var = ModUtil::getVar(ModUtil::CONFIG_MODULE, $name);
@@ -142,7 +142,7 @@ class System
 
         // Update my vars
         $val = false;
-        if (isset($GLOBALS['ZConfig']['System'][$name])) {
+        if (array_key_exists($name, $GLOBALS['ZConfig']['System'])) {
             $val = $GLOBALS['ZConfig']['System'][$name];
             unset($GLOBALS['ZConfig']['System'][$name]);
         }

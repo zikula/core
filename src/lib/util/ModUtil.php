@@ -67,7 +67,7 @@ class ModUtil
 
             $pnmodvars = DBUtil::selectObjectArray('module_vars', $where);
             foreach ($pnmodvars as $var) {
-                if (isset($GLOBALS['ZConfig']['System'][$var['name']])) {
+                if (array_key_exists($GLOBALS['ZConfig']['System'][$var['name']])) {
                     $pnmodvar[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
                 } elseif ($var['value'] == '0' || $var['value'] == '1') {
                     $pnmodvar[$var['modname']][$var['name']] = $var['value'];
@@ -141,7 +141,7 @@ class ModUtil
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
                 // ref #2045 vars are being stored with 0/1 unserialised.
-                if (isset($GLOBALS['ZConfig']['System'][$k])) {
+                if (array_key_exists($GLOBALS['ZConfig']['System'][$k])) {
                     $pnmodvar[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
                 } else if ($v == '0' || $v == '1') {
                     $pnmodvar[$modname][$k] = $v;
@@ -154,13 +154,13 @@ class ModUtil
         // if they didn't pass a variable name then return every variable
         // for the specified module as an associative array.
         // array('var1' => value1, 'var2' => value2)
-        if (empty($name) && isset($pnmodvar[$modname])) {
+        if (empty($name) && array_key_exists($modname, $pnmodvar)) {
             return $pnmodvar[$modname];
         }
 
         // since they passed a variable name then only return the value for
         // that variable
-        if (isset($pnmodvar[$modname][$name])) {
+        if (array_key_exists($name, $pnmodvar[$modname])) {
             return $pnmodvar[$modname][$name];
         }
 
@@ -255,11 +255,11 @@ class ModUtil
 
         $val = null;
         if (empty($name)) {
-            if (isset($pnmodvar[$modname])) {
+            if (array_key_exists($modname, $pnmodvar)) {
                 unset($pnmodvar[$modname]);
             }
         } else {
-            if (isset($pnmodvar[$modname][$name])) {
+            if (array_key_exists($name, $pnmodvar[$modname])) {
                 $val = $pnmodvar[$modname][$name];
                 unset($pnmodvar[$modname][$name]);
             }
