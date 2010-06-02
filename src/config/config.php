@@ -33,6 +33,8 @@ $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
 
 //  Uncomment this line temporarily if you crash the HTMLPurifier configuration
 //$ZConfig['System']['outputfilter'] = 0;
+//  Uncomment this line temporarily if you crash the PHPIDS configuration
+//$ZConfig['System']['useids'] = 0;
 
 // ----------------------------------------------------------------------
 // Database & System Config
