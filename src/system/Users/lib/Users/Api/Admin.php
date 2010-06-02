@@ -498,7 +498,7 @@ class Users_Api_Admin extends AbstractApi
             }
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'new'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('Users', 'admin', 'newuser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new');
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'import'), 'text' => $this->__('Import users'), 'class' => 'z-icon-es-import');
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
