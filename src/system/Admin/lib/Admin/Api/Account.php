@@ -27,7 +27,7 @@ class Admin_Api_Account extends AbstractApi
             $items['0'] = array('url' => ModUtil::url('Admin', 'admin', 'adminpanel'),
                     'module' => 'core',
                     'set' => 'icons/large',
-                    'title' => $this->__('Site admin panel'),
+                    'title' => $this->__('Administration panel'),
                     'icon' => 'package_settings.gif');
         }
 

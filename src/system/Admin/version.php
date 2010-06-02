@@ -11,7 +11,7 @@
  */
 
 $modversion['name']           = 'Admin';
-$modversion['displayname']    = __('Admin panel manager');
+$modversion['displayname']    = __('Administration panel manager');
 $modversion['description']    = __("Provides the site's administration panel, and the ability to configure and manage it.");
 //! module name that appears in URL
 $modversion['url']            = __('adminpanel');
