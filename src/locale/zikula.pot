@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-02 05:58-0400\n"
+"POT-Creation-Date: 2010-06-02 06:16-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -537,7 +537,8 @@ msgstr ""
 #: system/Permissions/lib/Permissions/Ajax.php:158
 #: system/Permissions/lib/Permissions/Ajax.php:196
 #: system/Groups/lib/Groups/Ajax.php:41 system/Groups/lib/Groups/Ajax.php:109
-#: system/Groups/lib/Groups/Ajax.php:169 lib/util/LogUtil.php:189
+#: system/Groups/lib/Groups/Ajax.php:169
+#: system/Categories/lib/Categories/Ajax.php:21 lib/util/LogUtil.php:189
 #: lib/util/LogUtil.php:197
 msgid "Sorry! You have not been granted access to this page."
 msgstr ""
@@ -549,7 +550,7 @@ msgstr ""
 #: system/Permissions/lib/Permissions/Ajax.php:162
 #: system/Groups/lib/Groups/Ajax.php:30 system/Groups/lib/Groups/Ajax.php:113
 #: system/Groups/lib/Groups/Ajax.php:162 system/Users/lib/Users/Ajax.php:85
-#: lib/util/LogUtil.php:156
+#: system/Categories/lib/Categories/Ajax.php:24 lib/util/LogUtil.php:156
 msgid ""
 "Sorry! Invalid authorisation key ('authkey'). This is probably either "
 "because you pressed the 'Back' button to return to a page which does not "
@@ -714,7 +715,7 @@ msgstr ""
 #: system/Theme/lib/Theme/Admin.php:878
 #: system/Theme/lib/Theme/Api/Admin.php:291
 #: system/Theme/lib/Theme/Api/Admin.php:452
-#: system/Categories/lib/Categories/Admin.php:100
+#: system/Categories/lib/Categories/Admin.php:94
 #: system/SecurityCenter/lib/SecurityCenter/Admin.php:59
 #: system/SecurityCenter/lib/SecurityCenter/Api/Admin.php:31
 #: system/Admin/lib/Admin/Api/Admin.php:64
@@ -1827,6 +1828,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_view.htm:33
 #: system/Blocks/templates/blocks_admin_view.htm:90
 #: system/Blocks/templates/blocks_admin_view.htm:91
+#: system/Blocks/templates/blocks_admin_view.htm:140
 #: system/Blocks/templates/blocks_admin_modifyposition.htm:46
 #: system/Blocks/templates/blocks_admin_modifyposition.htm:51
 #: system/Blocks/templates/blocks_admin_modifyposition.htm:52
@@ -1847,6 +1849,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_view.htm:32
 #: system/Blocks/templates/blocks_admin_view.htm:86
 #: system/Blocks/templates/blocks_admin_view.htm:87
+#: system/Blocks/templates/blocks_admin_view.htm:139
 #: system/Blocks/templates/blocks_admin_modifyposition.htm:46
 #: system/Blocks/templates/blocks_admin_modifyposition.htm:47
 #: system/Blocks/templates/blocks_admin_modifyposition.htm:48
@@ -2121,10 +2124,12 @@ msgid ""
 "verification)."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:164
+#: system/Users/lib/Users/Admin.php:164 system/Users/lib/Users/Ajax.php:183
+#: system/Users/lib/Users/Api/Admin.php:192
+#: system/Users/lib/Users/User.php:833
 #, php-format
-msgid "Your password must be at least %1$s character long"
-msgid_plural "Your password must be at least %2$s characters long"
+msgid "Your password must be at least %s character long"
+msgid_plural "Your password must be at least %s characters long"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2344,15 +2349,6 @@ msgid ""
 "enter the same password once in each password field (this is required for "
 "verification)."
 msgstr ""
-
-#: system/Users/lib/Users/Ajax.php:183
-#: system/Users/lib/Users/Api/Admin.php:192
-#: system/Users/lib/Users/User.php:833
-#, php-format
-msgid "Your password must be at least %s character long"
-msgid_plural "Your password must be at least %s characters long"
-msgstr[0] ""
-msgstr[1] ""
 
 #: system/Users/lib/Users/Ajax.php:186 system/Users/lib/Users/User.php:836
 msgid "Error! Please enter a password."
@@ -2767,7 +2763,7 @@ msgstr ""
 msgid "users"
 msgstr ""
 
-#: system/Categories/lib/Categories/Admin.php:94
+#: system/Categories/lib/Categories/Admin.php:88
 msgid ""
 "Error! Cannot determine valid 'cid' for edit mode in 'Categories_admin_edit'."
 msgstr ""
@@ -2820,7 +2816,7 @@ msgid "Done! Inserted the %s category."
 msgstr ""
 
 #: system/Categories/lib/Categories/Api/Admin.php:26
-#: system/Categories/templates/categories_admin_view.htm:2
+#: system/Categories/templates/categories_admin_view.htm:3
 msgid "Categories list"
 msgstr ""
 
@@ -4155,7 +4151,7 @@ msgstr ""
 msgid "Error! Non-existing root category '%s' received"
 msgstr ""
 
-#: lib/util/CategoryUtil.php:868 lib/util/CategoryUtil.php:1107
+#: lib/util/CategoryUtil.php:869 lib/util/CategoryUtil.php:1125
 msgid "Root category"
 msgstr ""
 
@@ -7365,6 +7361,11 @@ msgstr ""
 msgid "browserhack block: condition param is required, non specified."
 msgstr ""
 
+#: lib/render/plugins/function.tree.php:29
+#, php-format
+msgid "Error! in %1$s: %2$s or %3$s parameter must be specified."
+msgstr ""
+
 #: lib/render/plugins/function.category_path.php:74
 #, php-format
 msgid "Error! in %1$s: invalid value for the %2$s parameter (%3$s)."
@@ -7479,7 +7480,9 @@ msgstr ""
 #: upgrade.php:91
 msgid ""
 "For more information about the upgrade process, please read the <a href="
-"\"docs/"
+"\"docs/' . $lang . '/UPGRADING\">upgrade documentation</a>, visit our <a "
+"href=\"http://community.zikula.org/Wiki.htm\">wiki</a> or the <a href="
+"\"http://community.zikula.org/module-Forum.htm\">support forum</a>."
 msgstr ""
 
 #: upgrade.php:95
@@ -8862,7 +8865,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_view.htm:8
 #: system/Modules/templates/modules_admin_regenerate_errors.htm:4
 #: system/Modules/templates/modules_admin_view.htm:6
-#: system/Categories/templates/categories_admin_view.htm:5
+#: system/Categories/templates/categories_admin_view.htm:7
 msgid "View"
 msgstr ""
 
@@ -9057,6 +9060,7 @@ msgid "Delete permission rule"
 msgstr ""
 
 #: system/Permissions/templates/permissions_admin_delete.htm:8
+#: system/Permissions/templates/permissions_admin_view.htm:215
 msgid "Do you really want to delete this permission rule?"
 msgstr ""
 
@@ -9123,6 +9127,24 @@ msgstr ""
 #: system/Permissions/templates/permissions_admin_view.htm:196
 #: system/Permissions/templates/permissions_admin_view.htm:197
 msgid "Check permission"
+msgstr ""
+
+#: system/Permissions/templates/permissions_admin_view.htm:213
+msgid "Updating permission rule..."
+msgstr ""
+
+#: system/Permissions/templates/permissions_admin_view.htm:214
+msgid "Deleting permission rule..."
+msgstr ""
+
+#: system/Permissions/templates/permissions_admin_view.htm:216
+msgid "Testing permission..."
+msgstr ""
+
+#: system/Permissions/templates/permissions_admin_view.htm:217
+msgid ""
+"This permission rule has been locked. If you need to unlock it, go to the "
+"Permission rules manager Settings page."
 msgstr ""
 
 #: system/PageLock/templates/PageLock_lockedwindow.html:8
@@ -9237,6 +9259,19 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
+#: system/Groups/templates/groups_admin_view.htm:221
+msgid "Updating group"
+msgstr ""
+
+#: system/Groups/templates/groups_admin_view.htm:222
+msgid "Deleting group"
+msgstr ""
+
+#: system/Groups/templates/groups_admin_view.htm:223
+#: system/Groups/templates/groups_admin_delete.htm:8
+msgid "Do you really want to delete this group?"
+msgstr ""
+
 #: system/Groups/templates/groups_user_grouprow_overview.htm:15
 #: system/Groups/templates/groups_user_memberslist.htm:30
 msgid ""
@@ -9261,10 +9296,6 @@ msgstr ""
 
 #: system/Groups/templates/groups_user_view.htm:17
 msgid "Extras"
-msgstr ""
-
-#: system/Groups/templates/groups_admin_delete.htm:8
-msgid "Do you really want to delete this group?"
 msgstr ""
 
 #: system/Groups/templates/groups_admin_userpending.htm:2
@@ -11500,6 +11531,31 @@ msgstr ""
 msgid "Enter your e-mail address"
 msgstr ""
 
+#: system/Users/templates/users_user_register.htm:63
+#: system/Users/templates/users_user_changepassword.htm:23
+msgid "Too Short Password"
+msgstr ""
+
+#: system/Users/templates/users_user_register.htm:64
+#: system/Users/templates/users_user_changepassword.htm:24
+msgid "Weak, Use letters & numbers"
+msgstr ""
+
+#: system/Users/templates/users_user_register.htm:65
+#: system/Users/templates/users_user_changepassword.htm:25
+msgid "Medium, Use special characters"
+msgstr ""
+
+#: system/Users/templates/users_user_register.htm:66
+#: system/Users/templates/users_user_changepassword.htm:26
+msgid "Strong Password"
+msgstr ""
+
+#: system/Users/templates/users_user_register.htm:67
+#: system/Users/templates/users_user_changepassword.htm:27
+msgid "Password can not match the username, choose a different password."
+msgstr ""
+
 #: system/Users/templates/users_user_register.htm:74
 #: system/Users/templates/users_user_changepassword.htm:34
 msgid "Enter your new password"
@@ -12090,6 +12146,7 @@ msgstr ""
 
 #: system/Categories/templates/categories_user_edit.htm:4
 #: system/Categories/templates/categories_admin_edit.htm:6
+#: system/Admin/templates/admin_admin_categorymenu.htm:9
 msgid "Edit category"
 msgstr ""
 
@@ -12223,6 +12280,7 @@ msgid "Do you really want to delete the category '%s'?"
 msgstr ""
 
 #: system/Categories/templates/categories_admin_delete.htm:2
+#: system/Admin/templates/admin_admin_categorymenu.htm:10
 msgid "Delete category"
 msgstr ""
 
@@ -13291,6 +13349,14 @@ msgstr ""
 
 #: system/Admin/templates/admin_admin_updatechecker.htm:4
 msgid "Please download the new Zikula core"
+msgstr ""
+
+#: system/Admin/templates/admin_admin_categorymenu.htm:8
+msgid "Right-click to edit module category"
+msgstr ""
+
+#: system/Admin/templates/admin_admin_categorymenu.htm:11
+msgid "Saving"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_adminpanel_inc2.htm:13
