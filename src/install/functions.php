@@ -11,6 +11,9 @@
 
 function install()
 {
+    global $pnmodvar;
+    $pnmodvar = array();
+    
     // configure our installation environment
     // no time limit since installation might take a while
     // error reporting level for debugging
