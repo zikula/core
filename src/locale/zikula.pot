@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-02 06:16-0400\n"
+"POT-Creation-Date: 2010-06-02 18:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -131,7 +131,7 @@ msgid "SMTP mail transfer protocol"
 msgstr ""
 
 #: system/Mailer/lib/Mailer/Admin.php:136
-#: system/Blocks/lib/Blocks/Admin.php:865
+#: system/Blocks/lib/Blocks/Admin.php:867
 #: system/Permissions/lib/Permissions/Admin.php:722
 #: system/Groups/lib/Groups/Admin.php:824 system/Theme/lib/Theme/Admin.php:227
 #: system/Theme/lib/Theme/Admin.php:1267
@@ -142,7 +142,7 @@ msgstr ""
 #: system/Users/lib/Users/Admin.php:1095
 #: system/Categories/lib/Categories/AdminForm.php:307
 #: system/SecurityCenter/lib/SecurityCenter/Admin.php:429
-#: system/SecurityCenter/lib/SecurityCenter/Admin.php:827
+#: system/SecurityCenter/lib/SecurityCenter/Admin.php:828
 #: system/Admin/lib/Admin/Admin.php:521
 msgid "Done! Saved module configuration."
 msgstr ""
@@ -428,8 +428,8 @@ msgstr ""
 
 #: system/Blocks/lib/Blocks/Admin.php:243
 #: system/Blocks/lib/Blocks/Admin.php:258
-#: system/Blocks/lib/Blocks/Admin.php:431
-#: system/Blocks/lib/Blocks/Admin.php:586
+#: system/Blocks/lib/Blocks/Admin.php:432
+#: system/Blocks/lib/Blocks/Admin.php:588
 msgid "Sorry! No such block found."
 msgstr ""
 
@@ -501,32 +501,32 @@ msgstr ""
 msgid "Seven days"
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:455
+#: system/Blocks/lib/Blocks/Admin.php:457
 msgid "Done! Saved blocks."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:490
+#: system/Blocks/lib/Blocks/Admin.php:492
 msgid "Error! Could not load blocks."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:557
-#: system/Blocks/lib/Blocks/Admin.php:672
+#: system/Blocks/lib/Blocks/Admin.php:559
+#: system/Blocks/lib/Blocks/Admin.php:674
 msgid "Done! Created block."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:620
+#: system/Blocks/lib/Blocks/Admin.php:622
 msgid "Done! Deleted block."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:761
+#: system/Blocks/lib/Blocks/Admin.php:763
 msgid "Done! Saved block."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:788
+#: system/Blocks/lib/Blocks/Admin.php:790
 msgid "Error! No such block position found."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:809
+#: system/Blocks/lib/Blocks/Admin.php:811
 msgid "Done! Deleted block position."
 msgstr ""
 
@@ -794,13 +794,13 @@ msgstr ""
 msgid "Go to the site's home page"
 msgstr ""
 
-#: system/Blocks/init.php:130 system/Admin/lib/Admin/Api/Account.php:30
+#: system/Blocks/init.php:130
 #: system/Admin/templates/admin_admin_categorymenu.htm:15
-msgid "Site admin panel"
+msgid "Administration"
 msgstr ""
 
 #: system/Blocks/init.php:130
-msgid "Go to the site admin panel"
+msgid "Go to the administration panel"
 msgstr ""
 
 #: system/Blocks/init.php:131 system/Users/templates/users_user_main.htm:2
@@ -1366,8 +1366,8 @@ msgid "groups"
 msgstr ""
 
 #: system/Groups/init.php:101 system/Categories/init.php:434
-#: system/Admin/init.php:122 install/functions.php:481
-#: install/functions.php:482 install/functions.php:485
+#: system/Admin/init.php:122 install/functions.php:484
+#: install/functions.php:485 install/functions.php:488
 msgid "Users"
 msgstr ""
 
@@ -3419,7 +3419,7 @@ msgstr ""
 msgid "Caching"
 msgstr ""
 
-#: system/Admin/lib/Admin/Block/Adminnav.php:32
+#: system/Admin/lib/Admin/Block/Adminnav.php:32 system/Admin/version.php:14
 msgid "Administration panel manager"
 msgstr ""
 
@@ -3464,8 +3464,8 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: system/Admin/version.php:14 system/Admin/templates/admin_admin_menu.htm:4
-msgid "Admin panel manager"
+#: system/Admin/lib/Admin/Api/Account.php:30
+msgid "Administration panel"
 msgstr ""
 
 #: system/Admin/version.php:15
@@ -3481,9 +3481,9 @@ msgstr ""
 
 #: system/Admin/init.php:118 install/installtypes/basic.php:21
 #: install/installtypes/basic.php:23 install/installtypes/basic.php:29
-#: install/installtypes/basic.php:31 install/functions.php:480
-#: install/functions.php:484 install/functions.php:487
-#: install/functions.php:488
+#: install/installtypes/basic.php:31 install/functions.php:483
+#: install/functions.php:487 install/functions.php:490
+#: install/functions.php:491
 msgid "System"
 msgstr ""
 
@@ -3492,7 +3492,7 @@ msgid "Core modules at the heart of operation of the site."
 msgstr ""
 
 #: system/Admin/init.php:120 install/installtypes/basic.php:25
-#: install/functions.php:483 install/functions.php:486
+#: install/functions.php:486 install/functions.php:489
 #: system/Theme/templates/theme_admin_newtheme.htm:54
 msgid "Layout"
 msgstr ""
@@ -4151,7 +4151,7 @@ msgstr ""
 msgid "Error! Non-existing root category '%s' received"
 msgstr ""
 
-#: lib/util/CategoryUtil.php:869 lib/util/CategoryUtil.php:1125
+#: lib/util/CategoryUtil.php:869 lib/util/CategoryUtil.php:1126
 msgid "Root category"
 msgstr ""
 
@@ -8523,6 +8523,7 @@ msgid "Message Type"
 msgstr ""
 
 #: system/Mailer/templates/mailer_admin_testconfig.htm:37
+#: system/Mailer/templates/mailer_admin_testconfig.htm:53
 msgid "Plain-text message"
 msgstr ""
 
@@ -8542,10 +8543,6 @@ msgstr ""
 #: system/Users/templates/users_admin_listusers.htm:101
 #: system/SecurityCenter/templates/securitycenter_admin_view_log_event.htm:34
 msgid "Message"
-msgstr ""
-
-#: system/Mailer/templates/mailer_admin_testconfig.htm:53
-msgid "Plain-text Message"
 msgstr ""
 
 #: system/Mailer/templates/mailer_admin_testconfig.htm:58
@@ -9848,8 +9845,8 @@ msgstr ""
 
 #: system/Theme/templates/theme_block_render.htm:20
 msgid ""
-"Notice: The template file must be placed in the '/pntemplates' subdirectory "
-"of the specified module."
+"Notice: The template file must be placed in the '/templates' subdirectory of "
+"the specified module."
 msgstr ""
 
 #: system/Theme/templates/theme_block_render.htm:25
@@ -11034,6 +11031,7 @@ msgid "New user account"
 msgstr ""
 
 #: system/Users/templates/users_admin_newuser.htm:27
+#: system/Users/templates/users_user_register.htm:82
 #, php-format
 msgid "Notice: The minimum length for user passwords is %s characters."
 msgstr ""
@@ -11559,11 +11557,6 @@ msgstr ""
 #: system/Users/templates/users_user_register.htm:74
 #: system/Users/templates/users_user_changepassword.htm:34
 msgid "Enter your new password"
-msgstr ""
-
-#: system/Users/templates/users_user_register.htm:82
-#, php-format
-msgid "Notice: The minimum length for user passwords is %1s characters."
 msgstr ""
 
 #: system/Users/templates/users_user_register.htm:85
@@ -13066,11 +13059,14 @@ msgid "Security analyser warnings"
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:61
+#, php-format
 msgid ""
 "In the Administration panel, you will see security warnings displayed if the "
 "Security analyser detects potential security vulnerabilities in your site's "
 "installation. If you see no warning box then it means that no "
-"vulnerabilities have been found. Please read the <a href="
+"vulnerabilities have been found. Please read the <a href=\"%s\">security "
+"documentation</a> for more security-related information. Below are "
+"explanations for each vulnerability possibly identified."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:63
@@ -13113,6 +13109,7 @@ msgid ""
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:67
+#, php-format
 msgid ""
 "After completing the installation process, it is very important to delete "
 "the Installer's file 'install.php' and directory 'install' from the site "
@@ -13120,6 +13117,8 @@ msgid ""
 "otherwise there is an opportunity for a security breach. If the Security "
 "analyser detects this vulnerability, you will have to remove them before you "
 "can access the Administration panel. In addition, please consult the <a href="
+"\"%s\">security documentation</a> for more information about how to "
+"optimally configure a site from the security viewpoint."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:69
@@ -13129,13 +13128,15 @@ msgid ""
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:70
+#, php-format
 msgid ""
 "When a site is originally installed, the Installer script creates a "
 "configuration file called 'config.php' that is located in the sub-directory "
 "'config' within the site's root directory. It should not be left writeable, "
 "because this leaves an opportunity for a security breach. You should set the "
 "file's permissions to read-only (644 or 444). In addition, please consult "
-"the <a href="
+"the <a href=\"%s\">security documentation</a> for more information about how "
+"to optimally configure a site from the security viewpoint."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:72
@@ -13157,12 +13158,13 @@ msgid "PHP 'magic_quotes_gpc' setting is ON, but should be OFF."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:76
+#, php-format
 msgid ""
 "In some hosting environments, the PHP setting 'magic_quotes_gpc' may be set "
 "to ON. However, this creates an opportunity for security breaches. If the "
 "site is accessible from the Internet, you are strongly recommended to ensure "
 "that 'magic_quotes_gpc' is set to OFF. For instructions about how to do "
-"this, please consult the <a href="
+"this, please consult the <a href=\"%s\">security documentation</a>."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:78
@@ -13171,12 +13173,13 @@ msgid "PHP 'register_globals' setting is ON, but should be OFF."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:79
+#, php-format
 msgid ""
 "In some hosting environments, the PHP setting 'register_globals' may be set "
 "to ON. However, this can create an opportunity for security breaches. If the "
 "site is accessible from the Internet, you are strongly recommended to ensure "
 "that 'register_globals' is set to OFF. For instructions about how to do "
-"this, please consult the <a href="
+"this, please consult the <a href=\"%s\">security documentation</a>."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:81
@@ -13187,6 +13190,7 @@ msgid ""
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:82
+#, php-format
 msgid ""
 "If properly installed, a site will include an '.htaccess' file in the site's "
 "temporary directory (which is called '/ztemp', unless another location is "
@@ -13194,7 +13198,7 @@ msgid ""
 "web space may lead to this file not being transferred. In this case, you are "
 "strongly recommended to create one (and to ensure that '.htaccess' files "
 "exist in certain other directories, too). For more information about this, "
-"please consult the <a href="
+"please consult the <a href=\"%s\">security documentation</a>."
 msgstr ""
 
 #: system/Admin/templates/admin_admin_help.htm:84
@@ -13366,6 +13370,10 @@ msgstr ""
 
 #: system/Admin/templates/admin_admin_adminpanel.htm:7
 msgid "There are currently no modules in this category."
+msgstr ""
+
+#: system/Admin/templates/admin_admin_menu.htm:4
+msgid "Admin panel manager"
 msgstr ""
 
 #: themes/andreas08/templates/modules/admin.htm:35
