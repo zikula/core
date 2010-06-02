@@ -1188,6 +1188,9 @@ class ModUtil
         $gui = false;
         $output = array();
 
+        $render = Renderer::getInstance();
+        $domain = $render->renderDomain;
+
         // Call each hook
         foreach ($modulehooks[$lModname] as $modulehook) {
             if (!isset($extrainfo['tmodule']) || (isset($extrainfo['tmodule']) && $extrainfo['tmodule'] == $modulehook['tmodule'])) {
@@ -1227,6 +1230,7 @@ class ModUtil
                             'output' => $output));
             EventManagerUtil::notify($event);
 
+            $render->renderDomain = $domain;
             return $event['output'];
         }
 
@@ -1240,6 +1244,7 @@ class ModUtil
                         'implode' => $implode));
         EventManagerUtil::notify($event);
 
+        $render->renderDomain = $domain;
         return $event['extrainfo'];
     }
 
