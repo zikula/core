@@ -67,7 +67,7 @@ class ModUtil
 
             $pnmodvars = DBUtil::selectObjectArray('module_vars', $where);
             foreach ($pnmodvars as $var) {
-                if (array_key_exists($GLOBALS['ZConfig']['System'][$var['name']])) {
+                if (array_key_exists($var['name'],$GLOBALS['ZConfig']['System'])) {
                     $pnmodvar[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
                 } elseif ($var['value'] == '0' || $var['value'] == '1') {
                     $pnmodvar[$var['modname']][$var['name']] = $var['value'];
@@ -141,7 +141,7 @@ class ModUtil
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
                 // ref #2045 vars are being stored with 0/1 unserialised.
-                if (array_key_exists($GLOBALS['ZConfig']['System'][$k])) {
+                if (array_key_exists($k,$GLOBALS['ZConfig']['System'])) {
                     $pnmodvar[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
                 } else if ($v == '0' || $v == '1') {
                     $pnmodvar[$modname][$k] = $v;
