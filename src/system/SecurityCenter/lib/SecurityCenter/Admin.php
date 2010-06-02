@@ -723,11 +723,12 @@ class SecurityCenter_Admin extends AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $ot       = FormUtil::getPassedValue('ot', 'log_event', 'GETPOST');
-        $sort     = FormUtil::getPassedValue('sort', 'lge_date DESC', 'GETPOST');
+        $ot = FormUtil::getPassedValue('ot', 'log_event', 'GETPOST');
         if ($ot == 'intrusion') {
+        	$sort = FormUtil::getPassedValue('sort', 'ids_date DESC', 'GETPOST');
             $filterdefault = array('uid' => null, 'name' => null, 'tag' => null, 'value' => null, 'page' => null, 'ip' => null, 'impact' => null);
         } else {
+        	$sort = FormUtil::getPassedValue('sort', 'lge_date DESC', 'GETPOST');
             $filterdefault = array('uid' => null, 'component' => null, 'module' => null, 'type' => null);
         }
         $filter   = FormUtil::getPassedValue('filter', $filterdefault, 'GETPOST');
@@ -739,7 +740,7 @@ class SecurityCenter_Admin extends AbstractController
         $class = 'SecurityCenter_DBObject_'.StringUtil::camelize($ot).'Array';
         $objArray = new $class();
         $where = $objArray->genFilter();
-        $data  = $objArray->get($where, '', $startnum, $pagesize);
+        $data  = $objArray->get($where, $sort, $startnum, $pagesize);
 
         // Create output object
         $pnRender = Renderer::getInstance('SecurityCenter', false);
