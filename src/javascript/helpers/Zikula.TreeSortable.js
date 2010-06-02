@@ -13,11 +13,15 @@
 
 Zikula._TreeSortable = Class.create(Zikula._Tree, {
     initialize: function($super, element, config) {
+        config = this.decodeConfig(config);
         config = Object.extend({
-            handler:            'icon',
-            nodeNoChildren:     'leaf',
+            nodeLeaf:           'leaf',
             nodeLast:           'last',
+            disabled:           [],
+            disabledForDrag:    [],
+            disabledForDrop:    [],
             draggableClass:     'draggable',
+            droppableClass:     'droppable',
             onDragClass:        'onDragClass',
             dropOnClass:        'dropOnClass',
             dropAfterClass:     'dropAfterClass',
@@ -32,22 +36,30 @@ Zikula._TreeSortable = Class.create(Zikula._Tree, {
         this.tree.select('li').each(this.initNode.bind(this));
     },
     initNode: function(node) {
-        node.addClassName(this.config.draggableClass);
-        new Draggable(node,{
-            handle:this.config.handler,
-            onEnd: this.endDrag.bind(this),
-            onStart : this.startDrag.bind(this),
-            revert:true,
-            starteffect:null,
-            scroll: window
-        });
-        Droppables.add(node, {
-            accept:this.config.draggableClass,
-            hoverclass:this.config.dropOnClass,
-            overlap:'vertical',
-            onDrop:this.dropNode.bind(this),
-            onHover:this.hoverNode.bind(this)
-        });
+        if(this.config.disabled.include(this.getNodeId(node))) {
+            return;
+        }
+        if(!this.config.disabledForDrag.include(this.getNodeId(node))) {
+            node.addClassName(this.config.draggableClass);
+            new Draggable(node,{
+                handle:this.config.icon,
+                onEnd: this.endDrag.bind(this),
+                onStart : this.startDrag.bind(this),
+                revert:true,
+                starteffect:null,
+                scroll: window
+            });
+        }
+        if(!this.config.disabledForDrop.include(this.getNodeId(node))) {
+            node.addClassName(this.config.droppableClass);
+            Droppables.add(node, {
+                accept:this.config.draggableClass,
+                hoverclass:this.config.dropOnClass,
+                overlap:'vertical',
+                onDrop:this.dropNode.bind(this),
+                onHover:this.hoverNode.bind(this)
+            });
+        }
     },
     startDrag: function(draggable) {
         this.dropCache = {};
@@ -202,18 +214,18 @@ Zikula._TreeSortable = Class.create(Zikula._Tree, {
             node.removeClassName(this.config.nodeLast);
         }
         if (node.down('li') == undefined) {
-            node.addClassName(this.config.nodeNoChildren);
-            node.down(this.config.icon).writeAttribute('src',this.config.images.item);
+            node.addClassName(this.config.nodeLeaf);
+            node.down('.'+this.config.icon).writeAttribute('src',this.config.images.item);
             if (node.down('ul') != undefined) {
                 node.down('ul').remove();
             }
         } else {
-            node.removeClassName(this.config.nodeNoChildren);
+            node.removeClassName(this.config.nodeLeaf);
             if(node.down('ul').visible()) {
-                node.down(this.config.toggler).writeAttribute({src: this.config.images.minus});
-                node.down(this.config.icon).writeAttribute('src',this.config.images.parentOpen);
+                node.down('.'+this.config.toggler).writeAttribute({src: this.config.images.minus});
+                node.down('.'+this.config.icon).writeAttribute('src',this.config.images.parentOpen);
             } else {
-                node.down(this.config.icon).writeAttribute('src',this.config.images.parent);
+                node.down('.'+this.config.icon).writeAttribute('src',this.config.images.parent);
             }
         }
     }

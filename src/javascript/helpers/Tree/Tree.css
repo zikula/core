@@ -1,4 +1,3 @@
-
 div.treewraper * {
     margin: 0;
     padding: 0;
@@ -43,7 +42,7 @@ div.treewraper img.icon {
     height: 16px;
     vertical-align: text-bottom;
 }
-div.treewraper ul.sortable img.icon {
+div.treewraper ul.sortable li.draggable > img.icon {
     cursor: pointer;
 }
 div.treewraper ul li.leaf img.toggle {
@@ -63,9 +62,3 @@ div.treewraper ul.sortable .dropBeforeClass {
     margin-top: -2px;
     background: transparent;
 }
-/*div.treewraper ul.sortable li {
-    position: static !important;
-}
-div.treewraper ul.sortable li.onDragClass {
-    position: relative !important;
-}*/

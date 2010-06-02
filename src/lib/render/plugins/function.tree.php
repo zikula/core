@@ -56,8 +56,7 @@ class Tree {
     public function __construct($config=array())
     {
         $this->config = array(
-            'sortable'      => false, // Tree lub TreeSortable
-            'sortable'      => true, // Tree lub TreeSortable
+            'sortable'      => false,
             'cssFile'       => 'javascript/helpers/Tree/Tree.css',
             'imagesDir'     => 'javascript/helpers/Tree/',
             'plus'          => 'plus.gif',
@@ -67,9 +66,17 @@ class Tree {
             'item'          => 'filenew.gif',
             'id'            => 'zikulatree',
             'wraperClass'   => 'treewraper',
-            'class'         => 'tree',
+            'treeClass'     => 'tree',
             'nodePrefix'    => 'node_',
-            'nullParent'    => 0
+            'nullParent'    => 0,
+            'toggler'       => 'toggle',
+            'icon'          => 'icon',
+            'nodeUnactive'  => 'unactive',
+            'nodeSingle'    => 'single',
+            'nodeFirst'     => 'first',
+            'nodeLast'      => 'last',
+            'nodeParent'    => 'parent',
+            'nodeLeaf'      => 'leaf'
         );
         $this->setOptionArray($config);
     }
@@ -104,17 +111,28 @@ class Tree {
             PageUtil::addVar('javascript', 'javascript/helpers/Zikula.TreeSortable.js');
         }
         $jsClass = $this->config['sortable'] ? 'Zikula.TreeSortable' : 'Zikula.Tree';
-        $initScript = '
-        <script type="text/javascript">
-            document.observe("dom:loaded", function() {
-                '.$jsClass.'.add("'.$this->config['id'].'");
+        $initScript = "
+        <script type=\"text/javascript\">
+            document.observe('dom:loaded', function() {
+                {$jsClass}.add('{$this->config['id']}','{$this->getConfigForScript()}');
             });
-        </script>';
+        </script>";
         PageUtil::addVar('rawtext', $initScript);
         $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';
         $tree = $this->toHTML($this->tree,$this->config['id']);
         $this->html = "<div {$wraperClass}>{$tree}</div>";
         return $this->html;
+    }
+    public function getConfigForScript($encode=true)
+    {
+        $jsConfig = $this->config;
+        $imagesKeys = array('plus','minus','parent','parentOpen','item');
+        $jsConfig['images'] = array();
+        foreach($imagesKeys as $img) {
+            $jsConfig['images'][$img] = $this->config[$img];
+            unset($jsConfig[$img]);
+        }
+        return $encode ? json_encode($jsConfig) : $jsConfig;
     }
     private function parseString($menuString)
     {
@@ -178,13 +196,13 @@ class Tree {
         foreach ($tree as $id => $tab) {
             $links = array();
             $item = $tab['item'];
-            $toggle = '<img class="toggle" src="'.$this->config['imagesDir'].$this->config['minus'].'">';
+            $toggle = '<img class="'.$this->config['toggler'].'" src="'.$this->config['imagesDir'].$this->config['minus'].'">';
 
             $iconImage = !empty($item['icon']) ? $item['icon'] : $this->config['item'];
             $iconImage = !empty($tab['nodes']) ?  $this->config['parentOpen'] : $this->config['item'];
-            $icon = '<img class="icon" src="'.$this->config['imagesDir'].$iconImage.'">';
+            $icon = '<img class="'.$this->config['icon'].'" src="'.$this->config['imagesDir'].$iconImage.'">';
 
-            $class = $item['active'] == 1 ? $item['class'] : 'unactive '.$item['class'];
+            $class = $item['active'] == 1 ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];
             $linkClass = !empty($class) ? ' class="'.$class.'"' : '';
             $linkHref = 'href="'.$item['href'].'"';
             $linkTitle = !empty($item['title']) ? ' title="'.$item['title'].'"' : '';
@@ -196,10 +214,10 @@ class Tree {
             $liId = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
             $links = implode('',$links);
             $liClass = array();
-            $liClass[] = $size == 1 ? 'single' : '';
-            $liClass[] = ($i == 1 && $size > 1) ? 'first' : '';
-            $liClass[] = ($i == $size && $size > 1) ? 'last' : '';
-            $liClass[] = !empty($tab['nodes']) ? 'parent' : 'leaf';
+            $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
+            $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
+            $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';
+            $liClass[] = !empty($tab['nodes']) ? $this->config['nodeParent'] : $this->config['nodeLeaf'];
             $liClass = trim(implode(' ', $liClass));
             $i++;
             $liClass ='class="'.$liClass.'"';
@@ -207,8 +225,7 @@ class Tree {
         }
 
         $ulID = !empty($treeId) ? ' id="'.$treeId.'"' : '';
-        $ulClass = !empty($this->config['class']) ? ' class="'.$this->config['class'].'"' : '';
-        $ulClass = ' class="tree"';
+        $ulClass = !empty($this->config['treeClass']) ? ' class="'.$this->config['treeClass'].'"' : '';
         $liHtml = implode('',$liHtml);
         $html = "<ul {$ulID} {$ulClass}>{$liHtml}</ul>";
 

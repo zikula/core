@@ -2,23 +2,22 @@ Event.observe(window,'load', function() {
     Zikula.TreeSortable.categoriesTree.config.onSave = CategoriesSave;
 });
 function CategoriesSave(node,params,data) {
-    var categoryId = Zikula.TreeSortable.categoriesTree.getNodeId(node),
-        parentId = Zikula.TreeSortable.categoriesTree.getNodeId(node.up('li'));
-        pars = {
-        'categoryId': categoryId,
-        'parentId': parentId,
-        'data': data,
-        'authid': $F('categoriesauthid')
+    // do not allow inserts on root level
+    if(node.up('li') == undefined) {
+        return false;
     }
-    var res = null,
-        request = new Ajax.Request(
-    "ajax.php?module=Categories&func=resequence",
-    {
-        method: 'post',
-        parameters: pars,
-        onSuccess: CategoriesSuccessResponse,
-        onFailure: CategoriesFailureResponse
-    });
+    var pars = {
+            'data': data,
+            'authid': $F('categoriesauthid')
+        }
+    var request = new Ajax.Request(
+        "ajax.php?module=Categories&func=resequence",
+        {
+            method: 'post',
+            parameters: pars,
+            onSuccess: CategoriesSuccessResponse,
+            onFailure: CategoriesFailureResponse
+        });
     return request.success();
 }
 function CategoriesSuccessResponse(response)

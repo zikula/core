@@ -885,6 +885,8 @@ class CategoryUtil
 
         $tree = new Tree();
         $tree->setOption('id','categoriesTree');
+        $tree->setOption('sortable',$sortable);
+        $tree->setOption('disabled',array(1));
         $tree->loadArrayData($cats);
         return $tree->getHTML();
     }

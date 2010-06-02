@@ -23,19 +23,16 @@ class Categories_Ajax extends AbstractController {
         if (!SecurityUtil::confirmAuthKey()) {
             AjaxUtil::error($this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
         }
-        $categoryId = FormUtil::getPassedValue('categoryId', null, 'post');
-        $parentId = FormUtil::getPassedValue('parentId', null, 'post');
         $data = json_decode(FormUtil::getPassedValue('data', null, 'post'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
 
-        // check if there is need to move categories
-        $oldParent = isset($cats[$categoryId]) ? $cats[$categoryId]['parent_id'] : null;
-
         foreach ($cats as $id => $cat) {
-            $cats[$id]['sort_value'] = $data[$id]['lineno'];
-            $cats[$id]['parent_id'] = $data[$id]['parent'];
-            $obj = new Categories_DBObject_Category($cats[$id]);
-            $obj->update();
+            if(isset($data[$id])) {
+                $cats[$id]['sort_value'] = $data[$id]['lineno'];
+                $cats[$id]['parent_id'] = $data[$id]['parent'];
+                $obj = new Categories_DBObject_Category($cats[$id]);
+                $obj->update();
+            }
         }
 
         return array('result' => true);

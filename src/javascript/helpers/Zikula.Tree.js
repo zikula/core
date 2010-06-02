@@ -21,10 +21,11 @@ Zikula._Tree = Class.create({
     initialize: function(element,config) {
         this.tree = $(element);
         this.id = this.tree.identify();
+        config = this.decodeConfig(config);
         this.config = Object.extend({
             nodeIdPattern:       /^[^_\-](?:[A-Za-z0-9\-\_]*)[_](.*)$/,
-            toggler:            'img.toggle',
-            icon:               'img.icon',
+            toggler:            'toggle',
+            icon:               'icon',
             imagesDir:          'javascript/helpers/Tree/',
             images:             {}
         }, config || { });
@@ -42,7 +43,7 @@ Zikula._Tree = Class.create({
             }
         }
         // bind toggle action
-        this.tree.select(this.config.toggler).invoke('observe','click',this.toggleNode.bindAsEventListener(this));
+        this.tree.select('.'+this.config.toggler).invoke('observe','click',this.toggleNode.bindAsEventListener(this));
         // bind also empty spans
         this.tree.select('li.parent > span').invoke('observe','click',this.toggleNode.bindAsEventListener(this));
         // initialy hide childnodes
@@ -66,14 +67,14 @@ Zikula._Tree = Class.create({
     },
     showNode: function(node) {
         node.show();
-        node.previous(this.config.toggler).writeAttribute('src',this.config.images.minus);
-        node.previous(this.config.icon).writeAttribute('src',this.config.images.parentOpen);
+        node.previous('.'+this.config.toggler).writeAttribute('src',this.config.images.minus);
+        node.previous('.'+this.config.icon).writeAttribute('src',this.config.images.parentOpen);
         this.status.set(node.up('li').identify(),node.visible());
     },
     hideNode: function(node) {
         node.hide();
-        node.previous(this.config.toggler).writeAttribute('src',this.config.images.plus);
-        node.previous(this.config.icon).writeAttribute('src',this.config.images.parent);
+        node.previous('.'+this.config.toggler).writeAttribute('src',this.config.images.plus);
+        node.previous('.'+this.config.icon).writeAttribute('src',this.config.images.parent);
         this.status.set(node.up('li').identify(),node.visible());
     },
     getStatus: function() {
@@ -84,6 +85,12 @@ Zikula._Tree = Class.create({
     },
     getNodeId: function(node) {
         return Number(node.id.match(this.config.nodeIdPattern)[1]);
+    },
+    decodeConfig: function(config) {
+        if(Object.isString(config) && config.isJSON()) {
+            config = config.evalJSON(true);
+        }
+        return config;
     },
     serialize: function(branch) {
         this.serialized = {};
