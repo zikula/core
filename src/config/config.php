@@ -31,6 +31,9 @@ $ZConfig['System']['default_timezone'] = 'GMT'; // TZ timezone
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters
 $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
 
+//  Uncomment this line temporarily if you crash the HTMLPurifier configuration
+//$ZConfig['System']['outputfilter'] = 0;
+
 // ----------------------------------------------------------------------
 // Database & System Config
 //      dsn:          Connection details for database in the form

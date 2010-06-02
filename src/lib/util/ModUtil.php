@@ -67,7 +67,13 @@ class ModUtil
 
             $pnmodvars = DBUtil::selectObjectArray('module_vars', $where);
             foreach ($pnmodvars as $var) {
-                $pnmodvar[$var['modname']][$var['name']] = unserialize($var['value']);
+                if (isset($GLOBALS['ZConfig']['System'][$var['name']])) {
+                    $pnmodvar[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
+                } elseif ($var['value'] == '0' || $var['value'] == '1') {
+                    $pnmodvar[$var['modname']][$var['name']] = $var['value'];
+                } else {
+                   $pnmodvar[$var['modname']][$var['name']] = unserialize($var['value']);
+                }
             }
         }
     }
@@ -135,7 +141,9 @@ class ModUtil
             $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
             foreach ($results as $k => $v) {
                 // ref #2045 vars are being stored with 0/1 unserialised.
-                if ($v == '0' || $v == '1') {
+                if (isset($GLOBALS['ZConfig']['System'][$k])) {
+                    $pnmodvar[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
+                } else if ($v == '0' || $v == '1') {
                     $pnmodvar[$modname][$k] = $v;
                 } else {
                     $pnmodvar[$modname][$k] = unserialize($v);

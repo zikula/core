@@ -83,7 +83,7 @@ class System
             $GLOBALS['ZConfig']['System'][$name] = $mod_var;
         }
 
-        // Known Issue: the $default value will never be used because $mod_var returned from pnModGetVar will
+        // Known Issue: the $default value will never be used because $mod_var returned from ModUtil::getVar will
         // be false if the value does not exist in the database. This function will always return false in this
         // case. Unfortunately legacy code relies on the behavior, so it cannot be fixed. See issues #1025, #2011
         // and possibly others.
