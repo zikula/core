@@ -81,7 +81,7 @@ Zikula._Tree = Class.create({
         this.status = Cookie.get(this.id) ? $H(Cookie.get(this.id).evalJSON()) : new Hash();
     },
     saveStatus: function() {
-        Cookie.set(this.id,this.status.toJSON());
+        Cookie.set(this.id,this.status.toJSON(),3600*24*7);
     },
     getNodeId: function(node) {
         return Number(node.id.match(this.config.nodeIdPattern)[1]);
