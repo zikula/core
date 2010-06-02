@@ -883,6 +883,7 @@ class CategoryUtil
         $tree = new Zikula_Tree();
         $tree->setOption('id','categoriesTree');
         $tree->setOption('sortable',$sortable);
+        // disable darg and drop for root category
         $tree->setOption('disabled',array(1));
         $tree->loadArrayData($cats);
         return $tree->getHTML();
@@ -978,6 +979,7 @@ class CategoryUtil
     /**
      * Return an array of folders the user has at least access/view rights to.
      *
+     * @deprecated
      * @param $cats array  list of categories
      * @return array The resulting folder path array
      */
