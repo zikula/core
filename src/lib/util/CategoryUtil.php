@@ -879,9 +879,6 @@ class CategoryUtil
             $cats[$i]['href'] = $url;
             $cats[$i]['name'] = $name;
         }
-//        $pnRender = Renderer::getInstance('Categories', false);
-//        $treePath = $pnRender->_get_plugin_filepath('function', 'tree');
-//        Loader::loadFile($treePath);
 
         $tree = new Zikula_Tree();
         $tree->setOption('id','categoriesTree');
