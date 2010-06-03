@@ -50,7 +50,7 @@ class Users_Api_Admin extends AbstractApi
      */
     public function getUserGroups()
     {
-        LogUtil::log($this->_f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'Groups_userapi_getall')), 'STRICT');
+        LogUtil::log($this->__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'Groups_userapi_getall')), 'STRICT');
         // Note: the original code returned an array of ALL groups ordered by name. Do not confuse this with Groups_userapi_getusergroups!
         return ModUtil::apiFunc('Groups', 'user', 'getAll');
     }
@@ -212,7 +212,7 @@ class Users_Api_Admin extends AbstractApi
                                           array('dynadata' => $dynadata));
 
             if ($checkrequired['result'] == true) {
-                return LogUtil::registerError($this->_f('Error! A required item is missing from your profile information (%s).', $checkrequired['translatedFieldsStr']));
+                return LogUtil::registerError($this->__f('Error! A required item is missing from your profile information (%s).', $checkrequired['translatedFieldsStr']));
             }
         }
 
@@ -678,14 +678,14 @@ class Users_Api_Admin extends AbstractApi
                     $pnRender->assign('uname', $value['uname']);
                     $pnRender->assign('pass', $value['pass']);
                     $message = $pnRender->fetch('users_adminapi_notifyemail.htm');
-                    $subject = $this->_f('Password for %1$s from %2$s', array($value['uname'], $sitename));
+                    $subject = $this->__f('Password for %1$s from %2$s', array($value['uname'], $sitename));
                     if (!ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
                                         array('toaddress' => $value['email'],
                                               'subject' => $subject,
                                               'body' => $message,
                                               'html' => true)))
                     {
-                        LogUtil::registerError($this->_f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. '
+                        LogUtil::registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. '
                             . 'After this error, no more messages were sent.', $value['uname']));
                         break;
                     }

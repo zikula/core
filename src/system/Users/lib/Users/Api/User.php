@@ -473,7 +473,7 @@ class Users_Api_User extends AbstractApi
                 // Password Email - Must be send now as the password will be encrypted and unretrievable later on.
                 $message = $pnRender->fetch('users_userapi_welcomeemail.htm');
 
-                $subject = $this->_f('Password for %1$s from %2$s', array($args['uname'], $sitename));
+                $subject = $this->__f('Password for %1$s from %2$s', array($args['uname'], $sitename));
                 ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
                 // mail notify email to inform admin about registration
@@ -552,12 +552,12 @@ class Users_Api_User extends AbstractApi
             if ($activated == UserUtil::ACTIVATED_ACTIVE) {
                 // Password Email & Welcome Email
                 $message = $pnRender->fetch('users_userapi_welcomeemail.htm');
-                $subject = $this->_f('Password for %1$s from %2$s', array($args['uname'], $sitename));
+                $subject = $this->__f('Password for %1$s from %2$s', array($args['uname'], $sitename));
                 ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
             } else {
                 // Activation Email
-                $subject = $this->_f('Activation of %s', $args['uname']);
+                $subject = $this->__f('Activation of %s', $args['uname']);
                 // add en encoded activation code. The string is split with a hash (this character isn't used by base 64 encoding)
                 $pnRender->assign('code', base64_encode($uid . '#' . $args['user_regdate']));
                 $message = $pnRender->fetch('users_userapi_activationemail.htm');
@@ -613,7 +613,7 @@ class Users_Api_User extends AbstractApi
             $htmlBody = $renderer->fetch('users_userapi_lostunamemail.htm');
             $plainTextBody = $renderer->fetch('users_userapi_lostunamemail.txt');
 
-            $subject = $this->_f('User name for %s', $user['uname']);
+            $subject = $this->__f('User name for %s', $user['uname']);
 
             $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
                 array(
@@ -695,7 +695,7 @@ class Users_Api_User extends AbstractApi
                     $htmlBody = $renderer->fetch('users_userapi_lostpasscodemail.htm');
                     $plainTextBody = $renderer->fetch('users_userapi_lostpasscodemail.txt');
 
-                    $subject = $this->_f('Confirmation code for %s', $user['uname']);
+                    $subject = $this->__f('Confirmation code for %s', $user['uname']);
 
                     $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
                         array(
@@ -818,7 +818,7 @@ class Users_Api_User extends AbstractApi
             $htmlBody = $renderer->fetch('users_userapi_passwordmail.htm');
             $plainTextBody = $renderer->fetch('users_userapi_passwordmail.txt');
 
-            $subject = $this->_f('Password for %s', $user['uname']);
+            $subject = $this->__f('Password for %s', $user['uname']);
 
             $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
                 array(
@@ -1032,7 +1032,7 @@ class Users_Api_User extends AbstractApi
         }
 
         // send confirmation e-mail to user with the changing code
-        $subject = $this->_f('Confirmation change of e-mail for %s', $uname);
+        $subject = $this->__f('Confirmation change of e-mail for %s', $uname);
 
         $pnRender = Renderer::getInstance('Users', false);
         $pnRender->assign('uname', $uname);

@@ -1,4 +1,4 @@
-u d<?php
+<?php
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *

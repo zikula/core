@@ -147,7 +147,7 @@ class Users_Admin extends AbstractController
                                           array('dynadata' => $dynadata));
 
             if ($checkrequired['result'] == true) {
-                $errormsg[] = $this->_f('Error! A required item is missing from your profile information (%s).', $checkrequired['translatedFieldsStr']);
+                $errormsg[] = $this->__f('Error! A required item is missing from your profile information (%s).', $checkrequired['translatedFieldsStr']);
             }
         }
 
@@ -885,7 +885,7 @@ class Users_Admin extends AbstractController
         ));
 
         if ($userNameSent) {
-            LogUtil::registerStatus($this->_f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
+            LogUtil::registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
         }
 
         return System::redirect(ModUtil::url('Users', 'admin', 'view'));
@@ -919,7 +919,7 @@ class Users_Admin extends AbstractController
         ));
 
         if ($userNameSent) {
-            LogUtil::registerStatus($this->_f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
+            LogUtil::registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
         }
 
         return System::redirect(ModUtil::url('Users', 'admin', 'view'));
@@ -1079,7 +1079,7 @@ class Users_Admin extends AbstractController
         }
         foreach ($authmethods as $authmethod) {
             if (!ModUtil::available($authmethod)) {
-                return LogUtil::registerError($this->_f('Error! Module %s is not available.', $authmethod));
+                return LogUtil::registerError($this->__f('Error! Module %s is not available.', $authmethod));
             }
         }
         ModUtil::setVar('Users', 'authmodules', $config['authmodules']);
@@ -1467,7 +1467,7 @@ class Users_Admin extends AbstractController
 
             // check if the line have all the needed values
             if (count($lineArray) != count($firstLineArray)) {
-                return $this->_f('Error! The number of parameters in line %s is not correct. Please check your import file.', $counter);
+                return $this->__f('Error! The number of parameters in line %s is not correct. Please check your import file.', $counter);
             }
             $importValues[] = array_combine($firstLineArray, $lineArray);
 
@@ -1475,7 +1475,7 @@ class Users_Admin extends AbstractController
             // check user name
             $uname = trim($importValues[$counter - 1]['uname']);
             if ($uname == '' || strlen($uname) > 25) {
-                return $this->_f('Sorry! The user name is not valid in line %s. The user name is mandatory and the maximum length is 25 characters. Please check your import file.',
+                return $this->__f('Sorry! The user name is not valid in line %s. The user name is mandatory and the maximum length is 25 characters. Please check your import file.',
                     $counter);
             }
 
@@ -1484,18 +1484,18 @@ class Users_Admin extends AbstractController
             if (!$is_admin && $pregcondition != '') {
                 // check for illegal usernames
                 if (preg_match($pregcondition, $uname)) {
-                    return $this->_f('Sorry! The user name %1$s is reserved and cannot be registered in line %2$s. Please check your import file.', array($uname, $counter));
+                    return $this->__f('Sorry! The user name %1$s is reserved and cannot be registered in line %2$s. Please check your import file.', array($uname, $counter));
                 }
             }
 
             // check if the user name is valid because spaces or invalid characters
             if (preg_match("/[[:space:]]/", $uname) || !System::varValidate($uname, 'uname')) {
-                return $this->_f('Sorry! The user name %1$s cannot contain spaces in line %2$s. Please check your import file.', array($uname, $counter));
+                return $this->__f('Sorry! The user name %1$s cannot contain spaces in line %2$s. Please check your import file.', array($uname, $counter));
             }
 
             // check if the user name is repeated
             if (in_array($uname, $usersArray)) {
-                return $this->_f('Sorry! The user name %1$s is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
+                return $this->__f('Sorry! The user name %1$s is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
                     array($uname, $counter));
             }
             $usersArray[] = $uname;
@@ -1503,29 +1503,29 @@ class Users_Admin extends AbstractController
             // check password
             $pass = trim($importValues[$counter - 1]['pass']);
             if ($pass == '') {
-                return $this->_f('Sorry! You did not provide a password in line %s. Please check your import file.', $counter);
+                return $this->__f('Sorry! You did not provide a password in line %s. Please check your import file.', $counter);
             }
 
             // check password lenght
             if (strlen($pass) <  $minpass) {
-                return $this->_f('Sorry! The password must be at least %1$s characters long in line %2$s. Please check your import file.', array($minpass, $counter));
+                return $this->__f('Sorry! The password must be at least %1$s characters long in line %2$s. Please check your import file.', array($minpass, $counter));
             }
 
             // check email
             $email = trim($importValues[$counter - 1]['email']);
             if ($email == '') {
-                return $this->_f('Sorry! You did not provide a email in line %s. Please check your import file.', $counter);
+                return $this->__f('Sorry! You did not provide a email in line %s. Please check your import file.', $counter);
             }
 
             // check email format
             if (!System::varValidate($email, 'email')) {
-                return $this->_f('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons in line %s. Please check your import file.', $counter);
+                return $this->__f('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons in line %s. Please check your import file.', $counter);
             }
 
             // check if email is unique only if it is necessary
             if ($reg_uniemail == 1) {
                 if (in_array($email, $emailsArray)) {
-                    return $this->_f('Sorry! The %1$s e-mail address is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
+                    return $this->__f('Sorry! The %1$s e-mail address is repeated in line %2$s, and it cannot be used twice for creating accounts. Please check your import file.',
                         array($email, $counter));
                 }
                 $emailsArray[] = $email;
@@ -1552,7 +1552,7 @@ class Users_Admin extends AbstractController
                 $groupsArray = explode('|', $groups);
                 foreach ($groupsArray as $group) {
                     if (!in_array($group, $allGroupsArray)) {
-                        return $this->_f('Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
+                        return $this->__f('Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps it do not exist. Please check your import file.', array($group, $counter));
                     }
                 }
             }

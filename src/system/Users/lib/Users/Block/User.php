@@ -61,7 +61,7 @@ class Users_Block_User extends AbstractBlock
 
         if (UserUtil::isLoggedIn() && UserUtil::getVar('ublockon') == 1) {
             if (!isset($blockinfo['title']) || empty($blockinfo['title'])) {
-                $blockinfo['title'] = $this->_f('Custom block content for %s', UserUtil::getVar('name'));
+                $blockinfo['title'] = $this->__f('Custom block content for %s', UserUtil::getVar('name'));
             }
             $blockinfo['content'] = nl2br(UserUtil::getVar('ublock'));
             return BlockUtil::themeBlock($blockinfo);

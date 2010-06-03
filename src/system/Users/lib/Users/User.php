@@ -130,7 +130,7 @@ class Users_User extends AbstractController
      */
     public function underAge()
     {
-        LogUtil::registerError($this->_f('Sorry! You must be %s or over to register for a user account here.', ModUtil::getVar('Users', 'minage')));
+        LogUtil::registerError($this->__f('Sorry! You must be %s or over to register for a user account here.', ModUtil::getVar('Users', 'minage')));
         return System::redirect(ModUtil::url('Users', 'user', 'view'));
     }
 
@@ -237,7 +237,7 @@ class Users_User extends AbstractController
 
         if ($emailMessageSent) {
             SessionUtil::delVar('lostuname_email');
-            LogUtil::registerStatus($this->_f('Done! The user name for %s has been sent via e-mail.', $email));
+            LogUtil::registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $email));
             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
         } else {
             return System::redirect(ModUtil::url('Users', 'user', 'lostUname'));
@@ -312,7 +312,7 @@ class Users_User extends AbstractController
         SessionUtil::setVar('lostpassword_email', $email);
 
         if ($emailMessageSent) {
-            LogUtil::registerStatus($this->_f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
+            LogUtil::registerStatus($this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
             return System::redirect(ModUtil::url('Users', 'user', 'lostPasswordCode'));
         } else {
             return System::redirect(ModUtil::url('Users', 'user', 'lostPassword'));
@@ -506,7 +506,7 @@ class Users_User extends AbstractController
         }
 
         if ($emailMessageSent) {
-            LogUtil::registerStatus($this->_f('Done! Password for %s has been sent via e-mail.', $who));
+            LogUtil::registerStatus($this->__f('Done! Password for %s has been sent via e-mail.', $who));
             return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
         } else {
             // save username and password for redisplay
@@ -750,7 +750,7 @@ class Users_User extends AbstractController
 
                 if ($checkrequired) {
                     // ! %s is a comma separated list of fields that were left blank
-                    $message = $this->_f('Error! One or more required fields were left blank or incomplete (%s).', $checkrequired['translatedFieldsStr']);
+                    $message = $this->__f('Error! One or more required fields were left blank or incomplete (%s).', $checkrequired['translatedFieldsStr']);
 
                     return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'register'));
                 }

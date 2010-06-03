@@ -282,7 +282,7 @@ class Users_Ajax extends AbstractController
             return $result;
         }
 
-        return array('result' => $this->_f('Error! One or more required fields were left blank or incomplete (%s).', $result['translatedFieldsStr']),
+        return array('result' => $this->__f('Error! One or more required fields were left blank or incomplete (%s).', $result['translatedFieldsStr']),
                      'errorcode' => 25,
                      'fields' => $result['fields']);
     }
