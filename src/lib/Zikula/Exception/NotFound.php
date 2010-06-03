@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Zikula_Exception_NotFound extends Exception
+class Zikula_Exception_NotFound extends Zikula_Exception
 {
     
 }

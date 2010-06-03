@@ -12,7 +12,18 @@
  * information regarding copyright and licensing.
  */
 
-class Zikula_Exception_Forbidden extends Zikula_Exception
+class Zikula_Exception extends Exception
 {
-    
+    protected $debug;
+
+    public function __construct($message, $code, $previous, $debug)
+    {
+        parent::__construct($message, $code, $previous);
+        $this->debug = $debug;
+    }
+
+    public function getDebug()
+    {
+        return $this->debug;
+    }
 }
