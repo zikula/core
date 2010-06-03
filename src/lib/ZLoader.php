@@ -137,6 +137,6 @@ class ZLoader
             'ZLanguageBrowser' => 'i18n',
             'EventManager' => 'EventManager',
             'Event' => 'EventManager',
-            'CustomEventHandler' => 'EventManager');
+            );
     }
 }
