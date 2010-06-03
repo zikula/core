@@ -839,48 +839,8 @@ class SecurityCenter_Api_User extends AbstractApi
             }
         }
 
-        if ($usedImpact > $impactThresholdThree) {
-            // block request
-
-            // unset mailicous values
-            foreach ($result as $event) {
-                $eventName = $event->getName();
-                $malVarName = substr($eventName, 2);
-                $eventType = substr($eventName, 1, 0);
-
-                switch($eventType) {
-                    case 0:
-                        unset($_REQUEST[$malVarName]);
-                        break;
-                    case 1:
-                        unset($_GET[$malVarName]);
-                        break;
-                    case 2:
-                        unset($_POST[$malVarName]);
-                        break;
-                    case 3:
-                        unset($_COOKIE[$malVarName]);
-                        break;
-                    case 4:
-                        $_SERVER['REQUEST_URI'] = '';
-                        break;
-                    case 5:
-                        $_SERVER['HTTP_USER_AGENT'] = $this->__('Removed malicious user agent content');
-                        break;
-                    case 6:
-                        $_SERVER['HTTP_REFERER'] = $this->__('Removed malicious referer content');
-                        break;
-                }
-            }
-
-            // use z_exit here?
-            return LogUtil::registerError($this->__('Malicious request code / a hacking attempt was detected. Thus your request has been blocked.'));
-        }
-
-        if ($usedImpact > $impactThresholdFour) {
-            // kick user, destroy session
-            SessionUtil::expire();
-        }
+        // block request
+        $this->throwForbiddenIf($usedImpact > $impactThresholdThree, __('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, null, $result);
 
         return;
     }
