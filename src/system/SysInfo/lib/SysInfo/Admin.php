@@ -227,6 +227,24 @@ class SysInfo_Admin extends AbstractController
 
         return $pnRender->fetch('sysinfo_admin_filesystem.htm');
     }
+
+    /**
+     * Show version information for installed Zikula modules
+     * @return string HTML output string
+     */
+    public function extensions()
+    {
+        if (!SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        // Zikula Modules and Themes versions
+        $pnRender = Renderer::getInstance('SysInfo');
+        $pnRender->assign('mods', ModuleUtil::getModules());
+        $pnRender->assign('themes', ThemeUtil::getAllThemes());
+
+        return $pnRender->fetch('sysinfo_admin_extensions.htm');
+    }
 }
 
 /**
