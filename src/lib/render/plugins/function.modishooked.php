@@ -25,12 +25,12 @@
  *   - assign:    The name of a variable to which the results are assigned
  *
  * Examples
- *   <!--[ModUtil::isHooked tmodname='Ratings' smodname='News']-->
+ *   {modishooked tmodname='Ratings' smodname='News'}
  *
- *   <!--[ModUtil::isHooked tmodname='bar' smodname='foo' assign='barishookedtofoo']-->
- *   <!--[if $barishookedtofoo]-->.....<!--[/if]-->
+ *   {modishooked tmodname='bar' smodname='foo' assign='barishookedtofoo'}
+ *   {if $barishookedtofoo}.....{/if}
  *
- * @see          function.ModUtil::isHooked.php::smarty_function_modishooked()
+ * @see          function.modishooked.php::smarty_function_modishooked()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       bool        true if the module is available; false otherwise
@@ -42,12 +42,12 @@ function smarty_function_modishooked($params, &$smarty)
     $tmodname = isset($params['tmodname']) ? $params['tmodname'] : null;
 
     if (!$tmodname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::isHooked', 'tmodname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'tmodname')));
         return false;
     }
 
     if (!$smodname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::isHooked', 'smodname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'smodname')));
         return false;
     }
 

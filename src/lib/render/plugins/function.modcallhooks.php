@@ -17,7 +17,7 @@
  *
  * This function calls a specific module function.  It returns whatever the return
  * value of the resultant function is if it succeeds.
- * Note that in contrast to the API function ModUtil::callHooks you need not to load the
+ * Note that in contrast to the API function modcallhooks you need not to load the
  * module with ModUtil::load.
  *
  *
@@ -29,9 +29,9 @@
  * - all remaining parameters are passed to the ModUtil::callHooks API via the extrainfo array
  *
  * Example
- * <!--[ModUtil::callHooks hookobject='item' hookaction='modify' hookid=$tid $modname='ThisModule' $objectid=$tid]-->
+ * {modcallhooks hookobject='item' hookaction='modify' hookid=$tid $modname='ThisModule' $objectid=$tid}
  *
- * @see          function.ModUtil::callHooks.php::smarty_function_modcallhooks()
+ * @see          function.modcallhooks.php::smarty_function_modcallhooks()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       string      the results of the module function
@@ -52,11 +52,11 @@ function smarty_function_modcallhooks($params, &$smarty)
     unset($params['implode']);
 
     if (!$hookobject) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::callHooks', 'hookobject')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookobject')));
         return false;
     }
     if (!$hookaction) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::callHooks', 'hookaction')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookaction')));
         return false;
     }
     if (!$hookid) {

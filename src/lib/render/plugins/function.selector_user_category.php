@@ -18,7 +18,7 @@
  *   - cid:      category ID
  *
  * Example
- * <!--[selector_user_category cid="1" assign="category"]-->
+ * {selector_user_category cid="1" assign="category"}
  *
  * @param array $params All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.

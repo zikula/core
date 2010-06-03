@@ -24,9 +24,9 @@
  *
  * Example
  *
- *   <!--[$MyVar|DataUtil::formatForDisplay]-->
+ *   <!--[$MyVar|varprepfordisplay]-->
  *
- * @see          modifier.DataUtil::formatForDisplayHTML.php::smarty_modifier_DataUtil::formatForDisplayHTML()
+ * @see          modifier.varprephtmldisplay.php::smarty_modifier_DataUtil::formatForDisplayHTML()
  * @param        array    $string     the contents to transform
  * @return       string   the modified output
  */

@@ -17,15 +17,15 @@
  *
  * This function obtains a server-specific variable from the system.
  *
- * Note that the results should be handled by the DataUtil::formatForDisplay of the
- * DataUtil::formatForDisplayHTML modifiers before being displayed.
+ * Note that the results should be handled by the varprepfordisplay of the
+ * varprephtmldisplay modifiers before being displayed.
  *
  *
  * Available parameters:
  *   - name:     The name of the module variable to obtain
  *
  * Example
- *   <!--[servergetvar name='PHP_SELF']-->
+ *   {servergetvar name='PHP_SELF'}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

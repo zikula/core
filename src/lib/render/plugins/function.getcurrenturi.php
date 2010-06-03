@@ -16,8 +16,8 @@
  * Smarty function to obtain current URI
  *
  * This function obtains the current request URI.
- * Unlike the API function System::getCurrentUri, the results of this function are already
- * sanitized to display, so it should not be passed to the DataUtil::formatForDisplay modifier.
+ * Unlike the API function getcurrenturi, the results of this function are already
+ * sanitized to display, so it should not be passed to the varprepfordisplay modifier.
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out

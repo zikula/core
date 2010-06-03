@@ -25,7 +25,7 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <input type="hidden" name="authid" value="<!--[SecurityUtil::generateAuthKey module="MyModule"]-->">
+ *   <input type="hidden" name="authid" value="{secgenauthkey module="MyModule"}">
  *
  * @todo         prevent this function from being cached (Smarty 2.6.0)
  * @param        array       $params      All attributes passed to this function from the template

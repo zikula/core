@@ -24,7 +24,7 @@
  *               variable instead of printed out
  *
  * Example
- *   <!--[ModUtil::getName|DataUtil::formatForDisplay]-->
+ *   <!--[modgetname|varprepfordisplay]-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

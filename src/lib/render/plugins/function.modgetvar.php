@@ -17,8 +17,8 @@
  *
  * This function obtains a module-specific variable from the Zikula system.
  *
- * Note that the results should be handled by the DataUtil::formatForDisplay of the
- * DataUtil::formatForDisplayHTML modifiers before being displayed.
+ * Note that the results should be handled by the varprepfordisplay of the
+ * varprephtmldisplay modifiers before being displayed.
  *
  *
  * Available parameters:
@@ -27,7 +27,7 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[ModUtil::getVar module='Example' name='foobar' assign='foobarOfExample']-->
+ *   {modgetvar module='Example' name='foobar' assign='foobarOfExample'}
  *
  *
  * @author       Andreas Stratmann
@@ -48,12 +48,12 @@ function smarty_function_modgetvar($params, &$smarty)
     $name    = isset($params['name'])    ? $params['name']       : null;
 
     if (!$module) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::getVar', 'module')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modgetvar', 'module')));
         return false;
     }
 
     if (!$name && !$assign) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::getVar', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodgetvar', 'name')));
         return false;
     }
 

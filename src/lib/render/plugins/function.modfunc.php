@@ -29,7 +29,7 @@
  *   - all remaining parameters are passed to the module function
  *
  * Example
- * <!--[ModUtil::func modname='News' type='user' func='view']-->
+ * {modfunc modname='News' type='user' func='view'}
  *
  * @author       Andreas Stratmann
  * @see          function.ModUtil::apiFunc.php::smarty_function_modapifunc()
@@ -53,7 +53,7 @@ function smarty_function_modfunc($params, &$smarty)
     unset($params['assign']);
 
     if (!$modname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::func', 'modname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modfunc', 'modname')));
         return false;
     }
 

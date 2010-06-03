@@ -17,7 +17,7 @@
  *
  * This function returns a module URL string if successful. Unlike the API
  * function ModURL, this is already sanitized to display, so it should not be
- * passed to the DataUtil::formatForDisplay modifier.
+ * passed to the varprepfordisplay modifier.
  *
  * Available parameters:
  *   - modname:  The well-known name of a module for which to create the URL (required)
@@ -33,12 +33,12 @@
  *
  * Example
  * Create a URL to the News 'view' function with parameters 'sid' set to 3
- *   <a href="<!--[ModUtil::url modname='News' type='user' func='display' sid='3']-->">Link</a>
+ *   <a href="{modurl modname='News' type='user' func='display' sid='3'}">Link</a>
  *
  * Example SSL
  * Create a secure https:// URL to the News 'view' function with parameters 'sid' set to 3
  * ssl - set to constant null,true,false NOTE: $ssl = true not $ssl = 'true'  null - leave the current status untouched, true - create a ssl url, false - create a non-ssl url
- *   <a href="<!--[ModUtil::url modname='News' type='user' func='display' sid='3' ssl=true]-->">Link</a>
+ *   <a href="{modurl modname='News' type='user' func='display' sid='3' ssl=true}">Link</a>
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -70,7 +70,7 @@ function smarty_function_modurl($params, &$smarty)
     unset($params['forcelongurl']);
 
     if (!$modname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::url', 'modname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modurl', 'modname')));
         return false;
     }
 

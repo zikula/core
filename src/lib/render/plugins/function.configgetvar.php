@@ -30,9 +30,9 @@
  *
  * Examples:
  *
- * <samp><p>Welcome to {System::getVar name='sitename'}!</p></samp>
+ * <samp><p>Welcome to {configgetvar name='sitename'}!</p></samp>
  *
- * <samp>{System::getVar name='sitename' assign='thename'}</samp><br>
+ * <samp>{configgetvar name='sitename' assign='thename'}</samp><br>
  * <samp><p>Welcome to {$thename|varprepfordisplay}!</p></samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
@@ -48,7 +48,7 @@ function smarty_function_configgetvar($params, &$smarty)
     $assign    = isset($params['assign'])  ? $params['assign']  : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('System::getVar', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('configgetvar', 'name')));
         return false;
     }
 

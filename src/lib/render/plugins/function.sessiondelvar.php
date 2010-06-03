@@ -23,7 +23,7 @@
  *   - assign:  If set, the result is assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[SessionUtil::delVar name='foobar']-->
+ *   {sessiondelvar name='foobar'}
  *
  * @author       Michael Nagy
  * @since        23/12/2004
@@ -40,7 +40,7 @@ function smarty_function_sessiondelvar($params, &$smarty)
     $path    = isset($params['path'])    ? $params['path']    : '/';
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('SessionUtil::delVar', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessiondelvar', 'name')));
         return false;
     }
 

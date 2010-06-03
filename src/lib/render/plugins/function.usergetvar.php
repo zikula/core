@@ -17,8 +17,8 @@
  *
  * This function obtains a user-specific variable from the Zikula system.
  *
- * Note that the results should be handled by the DataUtil::formatForDisplay of the
- * DataUtil::formatForDisplayHTML modifiers before being displayed.
+ * Note that the results should be handled by the varprepfordisplay of the
+ * varprephtmldisplay modifiers before being displayed.
  *
  *
  * Available parameters:

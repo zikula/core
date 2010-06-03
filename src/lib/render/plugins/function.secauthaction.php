@@ -14,7 +14,7 @@
 
 /**
  * Example:
- * <!--[SecurityUtil::checkPermission comp="Stories::" inst=".*" level="ACCESS_ADMIN" assign="auth"]-->
+ * {secauthaction comp="Stories::" inst=".*" level="ACCESS_ADMIN" assign="auth"}
  *
  * true/false will be returned.
  *

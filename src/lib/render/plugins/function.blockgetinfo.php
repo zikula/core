@@ -42,7 +42,7 @@ function smarty_function_blockgetinfo($params, &$smarty)
     $assign = isset($params['assign']) ? $params['assign']   : null;
 
     if (!$bid) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('BlockUtil::getBlockInfo', 'bid')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockgetinfo', 'bid')));
     }
 
     // get the block info array
@@ -59,7 +59,7 @@ function smarty_function_blockgetinfo($params, &$smarty)
         if ($assign) {
             $smarty->assign($assign, $blockinfo);
         } else {
-            $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the full block information.', array('BlockUtil::getBlockInfo', 'assign')));
+            $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the full block information.', array('pnblockgetinfo', 'assign')));
         }
     }
 

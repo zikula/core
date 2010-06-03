@@ -32,17 +32,17 @@
  * be applied to all information that is passed in by the user or if it should
  * only be used in specific cases.
  *
- * This modifier is to be removed in future versions, as pnvarcensor*DEPRECATED* is being moved
+ * This modifier is to be removed in future versions, as pnVarCensor is being moved
  * to be a transform hook.
  *
  * Example
  *
- *   <!--[$MyVar|pnvarcensor*DEPRECATED*]-->
+ *   {$MyVar|varcensor}
  *
  * @param        array    $string     the contents to transform
  * @return       string   the modified output
  */
 function smarty_modifier_varcensor($string)
 {
-    return pnvarcensor*DEPRECATED*($string);
+    return pnVarCensor($string);
 }
