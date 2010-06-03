@@ -14,6 +14,16 @@
 
 /**
  * Custom Event Handler interface.
+ *
+ * EventHandlers that implement this class should implement an indexed array
+ * of eventname => handlerMethod like the following.  (Can contain multiple
+ * index pairs).
+ *
+ * protected $names = array('name' => 'handlerMethod')
+ *
+ * The handler methods must be implemented as followes:
+ *
+ * public function handler(Event $event)
  */
 abstract class CustomEventHandler
 {
@@ -22,16 +32,8 @@ abstract class CustomEventHandler
      */
     public function __construct()
     {
-        if (is_null($this->names)) {
-            throw new InvalidArgumentException(sprintf('$names property must be defined in %s', get_class($this)));
-        }
-
-        if (!is_array($this->names)) {
-            throw new InvalidArgumentException(sprintf('$names property must be an array in %s', get_class($this)));
-        }
-
-        if (!$this->names) {
-            throw new InvalidArgumentException(sprintf('$names property contain at least one array element in %s', get_class($this)));
+        if (!is_array($this->names) || !$this->names) {
+            throw new InvalidArgumentException(sprintf('%s->names property contain indexed array of eventname => handlerMethod', get_class($this)));
         }
     }
 
@@ -40,13 +42,12 @@ abstract class CustomEventHandler
      */
     public function attach()
     {
-        foreach ($this->names as $name) {
-            EventManagerUtil::attach($name, array($this, 'handler'));
+        foreach ($this->names as $name => $method) {
+            if (is_integer($name)) {
+                throw new InvalidArgumentException(sprintf('%s->names property contain indexed array of eventname => handlerMethod', get_class($this)));
+            }
+
+            EventManagerUtil::attach($name, array($this, $method));
         }
     }
-
-    /**
-     * Child must implment this interface.
-     */
-    abstract function handler(Event $event);
 }

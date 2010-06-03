@@ -22,7 +22,7 @@ class SysInfo_EventHandlers_AddLinks extends CustomEventHandler
      *
      * @var array
      */
-    protected $names = array('module.postexecute');
+    protected $names = array('module.postexecute' => 'handler');
 
     /**
      * Event handler here.

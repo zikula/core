@@ -22,7 +22,7 @@ class SysInfo_EventHandlers_Extensions extends CustomEventHandler
      *
      * @var array
      */
-    protected $names = array('controller.method_not_found');
+    protected $names = array('controller.method_not_found' => 'handler');
 
     /**
      * Event handler here.
