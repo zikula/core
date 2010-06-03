@@ -72,7 +72,7 @@
                     <label for="admin_startcategory">{gt text="Category initially selected"}</label>
                     <select id="admin_startcategory" name="modvars[startcategory]">
                         {section name=category loop=$categories}
-                        {if  $startcategory eq $categories[category].cid}
+                        {if  $modvars.startcategory eq $categories[category].cid}
                         <option value="{$categories[category].cid|varprepfordisplay}" selected="selected">{$categories[category].catname|varprepfordisplay}</option>
                         {else}
                         <option value="{$categories[category].cid|varprepfordisplay}">{$categories[category].catname|varprepfordisplay}</option>
