@@ -194,7 +194,7 @@ class ModUtil
         $obj = array();
         $obj['value'] = serialize($value);
 
-        if (ModUtil::varExists($modname, $name)) {
+        if (self::hasVar($modname, $name)) {
             $tables = System::dbGetTables();
             $cols   = $tables['module_vars_column'];
             $where  = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
@@ -631,7 +631,7 @@ class ModUtil
         } elseif (file_exists($mosfile)) {
             // Load the file from modules
             include_once $mosfile;
-        } elseif (is_dir($mosdir)) { 
+        } elseif (is_dir($mosdir)) {
         } else {
             // File does not exist
             return false;
