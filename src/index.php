@@ -128,7 +128,7 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
         if ($return === false) {
             // check for existing errors or set a generic error
             if (!LogUtil::hasErrors()) {
-                 LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function). %s", array($modinfo['url'], $func, $message)), $httpCode, $debug);
+                 LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function). %s", array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
             }
             echo ModUtil::func('Errors', 'user', 'main');
         } elseif (is_string($return) && strlen($return) > 1) {
@@ -146,7 +146,7 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
                 echo $renderer->fetch("{$modname}_{$type}_{$func}.htm");
             }
         } else {
-            LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function. %s', array($modinfo['url'], $func, $message)), $httpCode, $debug);
+            LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function. %s', array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
             echo ModUtil::func('Errors', 'user', 'main');
         }
     }
