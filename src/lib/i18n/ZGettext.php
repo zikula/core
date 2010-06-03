@@ -99,7 +99,6 @@ class ZGettext
         $codeset = ini_get('mbstring.internal_encoding');
 
         $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = array($domain => array('path' => $path.DIRECTORY_SEPARATOR, 'codeset' => $codeset, 'reader' => null));
-        ini_set('xdebug.var_display_max_depth', 12);
     }
 
     /**
