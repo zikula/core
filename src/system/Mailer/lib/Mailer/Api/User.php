@@ -50,8 +50,10 @@ class Mailer_Api_User extends AbstractApi
     {
         // Check for installed advanced Mailer module
         $processed = (isset($args['processed']) ? (int) $args['processed'] : 0);
-        if (ModUtil::available('advMailer') && ($processed != 1)) {
-            return ModUtil::apiFunc('advMailer', 'user', 'sendmessage', $args);
+        $event = new Event('mailer.sendmessage', $this, $args);
+        EventManagerUtil::notifyUntil($event);
+        if ($event->hasNotified()) {
+            return $event->getData();
         }
 
         // include php mailer class file
