@@ -46,7 +46,8 @@ function addContext(nid)
         callback : function(nid) {
             var cid = nid.href.match(/acid=(\d+)/)[1];
             if (cid) {
-                getEditor("C" + cid).enterEditMode('click');
+                // stupid hack - enterEditMode need event object as argument, so create fake event
+                getEditor("C" + cid).enterEditMode(nid.fire('click'));
             }
             return;
         }
@@ -80,30 +81,40 @@ function addEditor(nid) {
         submitOnBlur: true,
         okControl: false,
         cancelControl: false,
+        // in webkit browsers , when submitOnBlur is true
+        // enter press causes form submission twice so catch this event, stop it and call blur on input
+        onFormCustomization: function(obj, form) {
+            $(form).observe('keypress',function(e) {
+                if(e.keyCode == Event.KEY_RETURN) {
+                    e.stop();
+                    e.element().blur();
+                }
+            });
+        },
         callback: function(form, value) { 
-        var authid = document.getElementById('authid').value;
-        var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
-        //this check should stop the form from submitting if the catname is the same, it doesnt work
-        //if (getOrig("C" + cid) == value) {
-        //    alert ("cat name the same!");
-        //    return false;
-        //}
-        return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
-    },
-    onComplete: function(transport, element) {
-        var json = pndejsonize(transport.responseText);
-        if (json.alerttext !== '' || json.response == '-1') {
-            this.element.innerHTML = getOrig(element.id);
-            pnshowajaxerror("Oops something went wrong: " + json.alerttext);
-        } else {
-            this.element.innerHTML = json.response;
+            var authid = document.getElementById('authid').value;
+            var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
+            //this check should stop the form from submitting if the catname is the same, it doesnt work
+            //if (getOrig("C" + cid) == value) {
+            //    alert ("cat name the same!");
+            //    return false;
+            //}
+            return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
+        },
+        onComplete: function(transport, element) {
+            var json = pndejsonize(transport.responseText);
+            if (json.alerttext !== '' || json.response == '-1') {
+                this.element.innerHTML = getOrig(element.id);
+                pnshowajaxerror("Oops something went wrong: " + json.alerttext);
+            } else {
+                this.element.innerHTML = json.response;
+            }
+            var aid = json.authid;
+            if (aid !== '') {
+                document.getElementById('authid').value = aid;
+                pnupdateauthids(aid);
+            }
         }
-        var aid = json.authid;
-        if (aid !== '') {
-        	document.getElementById('authid').value = aid;
-            pnupdateauthids(aid);
-        }
-    }
     });
     editors.push(Array(nid, editor, nelement.innerHTML));
 }
