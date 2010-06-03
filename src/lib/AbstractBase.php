@@ -72,5 +72,43 @@ abstract class AbstractBase
 
     }
 
+    protected function throwNotFound($message='', $code=null, $previous=null, $debug=null)
+    {
+        throw new Zikula_Exception_NotFound($message, $code, $previous, $debug);
+    }
+
+    protected function throwNotFoundIf($condition, $message='', $code=null, $previous=null, $debug=null)
+    {
+        if ($condition) {
+            $this->throwNotFound($message, $code, $previous, $debug);
+        }
+    }
+
+    protected function throwNotFoundUnless($condition, $message='', $code=null, $previous=null, $debug=null)
+    {
+        if (!$condition) {
+            $this->throwNotFound($message, $code, $previous, $debug);
+        }
+    }
+
+    protected function throwForbidden($message, $code=null, $previous=null, $debug=null)
+    {
+        throw new Zikula_Exception_Forbidden($message='', $code, $previous, $debug);
+    }
+
+    protected function throwForbiddenIf($condition, $message='', $code=null, $previous=null, $debug=null)
+    {
+        if ($condition) {
+            $this->throwForbidden($message, $code, $previous, $debug);
+        }
+    }
+
+    protected function throwForbiddenUnless($condition, $message='', $code=null, $previous=null, $debug=null)
+    {
+        if (!$condition) {
+            $this->throwForbidden($message, $code, $previous, $debug);
+        }
+    }
+
 
 }
