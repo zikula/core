@@ -143,8 +143,8 @@ Improved password recovery workflow (Issue #1631).
 Added user name recovery (Issue #243).
 Fixed issue with system vars and modvars that prevented retrieval of a stored NULL value which would return the default value instead.
 Added exception support in front controller and module controllers.
-Removed core hack for AdvMailer module, use theme.init events instead.
-Removed core hack for MultiHook module, use mailer.sendmessage events instead.
+Removed core hack for AdvMailer module, use mailer.sendmessage events instead.
+Removed core hack for MultiHook module, use theme.init events instead.
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
