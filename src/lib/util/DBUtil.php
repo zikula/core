@@ -519,7 +519,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        if (empty($fields)) {
+        if (!$fields) {
             throw new Exception(__f('The parameter %s must not be empty', 'fields'));
         }
 
@@ -552,13 +552,13 @@ class DBUtil
      *
      * @return boolean
      */
-    public static function dropColumn($table, $fields)
+    public static function dropColumn($table, array $fields)
     {
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        if (empty($fields)) {
+        if (!$fields) {
             throw new Exception(__f('The parameter %s must not be empty', 'fields'));
         }
 
