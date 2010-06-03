@@ -167,3 +167,18 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 - Remove any references to Loader::loadClass() - classes are loaded automatically.
 
 - Remove {addition_headers} plugin from any themes, this doesn't work anymore.
+
+- You may now use the following convenience methods from OO controllers and APIs.
+    (see AbstractBase.php for details)
+
+    $this->throwNotFound()
+    $this->throwNotFoundIf()
+    $this->throwNotFoundUnless()
+
+    $this->throwForbidden()
+    $this->throwForbiddenIf()
+    $this->throwForbiddenUnless()
+
+    $this->redirect()
+    $this->redirectIf()
+    $this->redirectUnless()
