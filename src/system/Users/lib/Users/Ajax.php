@@ -185,10 +185,10 @@ class Users_Ajax extends AbstractController
             } elseif (empty($pass) && !$modvars['reg_verifyemail']) {
                 return array('result' => $this->__('Error! Please enter a password.'), 'errorcode' => 17);
             }
-        }
-
-        if (!isset($passwordReminder) || empty($passwordReminder)) {
-            return array('result' => $this->__('Error! Please enter a password reminder.'), 'errorcode' => 18);
+            
+            if (!isset($passwordReminder) || empty($passwordReminder)) {
+                return array('result' => $this->__('Error! Please enter a password reminder.'), 'errorcode' => 18);
+            }
         }
 
         if (ModUtil::available('legal')) {

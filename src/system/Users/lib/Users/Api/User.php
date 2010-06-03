@@ -281,9 +281,13 @@ class Users_Api_User extends AbstractApi
             }
         }
 
-        if (!isset($args['password_reminder']) || emtpy($args['password_reminder'])) {
-            return 18;
+        $emailVerification = ModUtil::getVar('Users', 'reg_verifyemail');
+        if (!$emailVerification || $emailVerification == UserUtil::VERIFY_USERPWD) {
+            if (!isset($args['password_reminder']) || emtpy($args['password_reminder'])) {
+                return 18;
+            }
         }
+        // else z_exit?? because it really should be set at this point, either by the user, or some system-generated value.
 
         $useragent = strtolower(System::serverGetVar('HTTP_USER_AGENT'));
         $illegaluseragents = ModUtil::getVar('Users', 'reg_Illegaluseragents');
