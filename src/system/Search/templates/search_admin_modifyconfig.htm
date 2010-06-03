@@ -20,11 +20,13 @@
             <fieldset>
                 <legend>{gt text="Disable search plug-ins"}</legend>
                 {foreach from=$plugins item=plugin}
+                {if isset($plugin.title)}
                 <div class="z-formrow">
                     <label for="search_disable{$plugin.title|varprepfordisplay}">{modgetinfo info=displayname modname=$plugin.title}</label>
                     <input id="search_disable{$plugin.title|varprepfordisplay}" type="checkbox" name="disable[{$plugin.title|varprepfordisplay}]" value="1"
                     {if $plugin.disabled} checked="checked"{/if} />
                 </div>
+                {/if}
                 {/foreach}
             </fieldset>
             {modcallhooks hookobject=module hookaction=modifyconfig module=Search}

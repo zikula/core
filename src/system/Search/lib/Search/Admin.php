@@ -61,7 +61,9 @@ class Search_Admin extends AbstractController
 
         // get the disabled status
         foreach ($plugins as $key => $plugin) {
-            $plugins[$key]['disabled'] = ModUtil::getVar('Search', "disable_$plugin[title]");
+            if (isset($plugin['title'])) {
+                $plugins[$key]['disabled'] = ModUtil::getVar('Search', "disable_$plugin[title]");
+            }
         }
 
         // Create output object
