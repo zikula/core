@@ -1409,8 +1409,7 @@ class ModUtil
 
         // register any event handlers.
         // module handlers must be attached from the bootstrap.
-        EventManagerUtil::attachCustomHandlers(realpath("$modpath/$osdir/lib/$osdir/EventHandlers"));
-        //EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
+        EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
 
         self::$ooModules[$moduleName]['initialized'] = true;
         return true;
