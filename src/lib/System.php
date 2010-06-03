@@ -333,7 +333,7 @@ class System
         }
 
         if ($stages & self::CORE_STAGES_DECODEURLS) {
-            pnQueryStringDecode();
+            self::queryStringDecode();
             EventManagerUtil::notify($coreInitEvent);
         }
 

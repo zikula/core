@@ -547,7 +547,7 @@ class SessionUtil
         // Include number of dots in session name such that we use a different session for
         // www.domain.xx and domain.xx. Otherwise we run into problems with both cookies for
         // www.domain.xx as well as domain.xx being sent to www.domain.xx simultaneously!
-        $hostNameDotCount = substr_count(pnGetHost(), '.');
+        $hostNameDotCount = substr_count(System::getHost(), '.');
         return System::getVar('sessionname') . $hostNameDotCount;
     }
 }

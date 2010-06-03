@@ -1546,7 +1546,8 @@ class pnFormVolatile extends Form_Block_Volatile
  */
 function cnvlanguagelist()
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated.', array(__FUNCTION__)), 'STRICT');
+    // sprintf() is deliberate here, do not change - drak.
+    LogUtil::log(sprintf('Warning! Function %1$s is deprecated.', array(__FUNCTION__)), 'STRICT');
 
     $cnvlang = array();
     $cnvlang['KOI8-R'] = 'rus';

@@ -71,68 +71,65 @@ if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name']))
     System::shutdown();
 }
 
-if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-    // New-new style of loading modules
-    if (!isset($arguments)) {
-        $arguments = array();
+
+// New-new style of loading modules
+if (!isset($arguments)) {
+    $arguments = array();
+}
+
+// we need to force the mod load if we want to call a modules interactive init
+// function because the modules is not active right now
+$force_modload = ($type=='init') ? true : false;
+if (empty($type)) $type = 'user';
+if (empty($func)) $func = 'main';
+if (ModUtil::load($modinfo['name'], $type, $force_modload)) {
+    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        $dbConn = System::dbGetConn(true);
+        $dbConn->StartTrans();
     }
 
-    // we need to force the mod load if we want to call a modules interactive init
-    // function because the modules is not active right now
-    $force_modload = ($type=='init') ? true : false;
-    if (empty($type)) $type = 'user';
-    if (empty($func)) $func = 'main';
-    if (pnModLoad($modinfo['name'], $type, $force_modload)) {
-        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            $dbConn = pnDBGetConn(true);
-            $dbConn->StartTrans();
-        }
+    $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
 
-        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
-
-        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            if ($dbConn->HasFailedTrans()) {
-                $return = __('Error! The transaction failed. Please perform a rollback.') . $return;
-            }
-            $dbConn->CompleteTrans();
+    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        if ($dbConn->HasFailedTrans()) {
+            $return = __('Error! The transaction failed. Please perform a rollback.') . $return;
         }
-    } else {
-        $return = false;
-    }
-
-    // Sort out return of function.  Can be
-    // true - finished
-    // false - display error msg
-    // text - return information
-    if ($return !== true) {
-        if ($return === false) {
-            // check for existing errors or set a generic error
-            if (!LogUtil::hasErrors()) {
-                 LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function).", array($modinfo['url'], $func)), 404);
-            }
-            echo ModUtil::func('Errors', 'user', 'main');
-        } elseif (is_string($return) && strlen($return) > 1) {
-            // Text
-            echo $return;
-        } elseif (is_array($return)) {
-            $pnRender = pnRender::getInstance($modinfo['name']);
-            $pnRender->assign($return);
-            if (isset($return['template'])) {
-                echo $pnRender->fetch($return['template']);
-            } else {
-                $modname = strtolower($modinfo['name']);
-                $type = strtolower($type);
-                $func = strtolower($func);
-                echo $pnRender->fetch("{$modname}_{$type}_{$func}.htm");
-            }
-        } else {
-            LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function.', array($modinfo['url'], $func)), 404);
-            echo ModUtil::func('Errors', 'user', 'main');
-        }
-        Theme::getInstance()->themefooter();
+        $dbConn->CompleteTrans();
     }
 } else {
-    Theme::getInstance()->themefooter();
+    $return = false;
 }
+
+// Sort out return of function.  Can be
+// true - finished
+// false - display error msg
+// text - return information
+if ($return !== true) {
+    if ($return === false) {
+        // check for existing errors or set a generic error
+        if (!LogUtil::hasErrors()) {
+            LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function).", array($modinfo['url'], $func)), 404);
+        }
+        echo ModUtil::func('Errors', 'user', 'main');
+    } elseif (is_string($return) && strlen($return) > 1) {
+        // Text
+        echo $return;
+    } elseif (is_array($return)) {
+        $renderer = Renderer::getInstance($modinfo['name']);
+        $renderer->assign($return);
+        if (isset($return['template'])) {
+            echo $renderer->fetch($return['template']);
+        } else {
+            $modname = strtolower($modinfo['name']);
+            $type = strtolower($type);
+            $func = strtolower($func);
+            echo $renderer->fetch("{$modname}_{$type}_{$func}.htm");
+        }
+    } else {
+        LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function.', array($modinfo['url'], $func)), 404);
+        echo ModUtil::func('Errors', 'user', 'main');
+    }
+}
+Theme::getInstance()->themefooter();
 
 System::shutdown();
