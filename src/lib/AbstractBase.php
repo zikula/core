@@ -110,5 +110,24 @@ abstract class AbstractBase
         }
     }
 
+    protected function redirect($url, $type = 302)
+    {
+        throw new Zikula_Exception_Redirect($url, $type);
+    }
+
+    protected function redirectIf($condition, $url, $type = 302)
+    {
+        if ($condition) {
+            $this->redirect($url, $type);
+        }
+    }
+
+    protected function redirectUnless($condition, $url, $type = 302)
+    {
+        if (!$condition) {
+            $this->redirect($url, $type);
+        }
+    }
+
 
 }

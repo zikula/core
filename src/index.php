@@ -98,6 +98,9 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
                 $httpCode = 404;
             } elseif ($e instanceof Zikula_Exception_Forbidden) {
                 $httpCode = 403;
+            } elseif ($e instanceof Zikula_Exception_Redirect) {
+                System::redirect($e->getUrl);
+                System::shutDown();
             }
         }
 
