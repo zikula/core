@@ -147,7 +147,7 @@ class ZLanguage
         $_this->languageCodeLegacy = $_this->lookupLegacyCode($_this->languageCode);
         $_this->locale = self::transformInternal(ZGettext::getInstance()->setLocale($lc, self::transformFS($locale)));
         $_this->i18n = ZI18n::getInstance($locale);
-        if (!array_key_exists($_this->domainCache[$locale])) {
+        if (!array_key_exists($locale,$_this->domainCache)) {
             $_this->domainCache[$locale] = array();
         }
     }
