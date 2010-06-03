@@ -88,7 +88,18 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
             $dbConn->StartTrans();
         }
 
-        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+        $return = false;
+        $httpCode = 404;
+
+        try {
+            $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+        } catch (Zikula_Exception $e) {
+            if ($e instanceof Zikula_Exception_NotFound) {
+                $httpCode = 404;
+            } elseif ($e instanceof Zikula_Exception_Forbidden) {
+                $httpCode = 403;
+            }
+        }
 
         if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
             if ($dbConn->HasFailedTrans()) {
@@ -108,7 +119,7 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
         if ($return === false) {
             // check for existing errors or set a generic error
             if (!LogUtil::hasErrors()) {
-                 LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function).", array($modinfo['url'], $func)), 404);
+                 LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function).", array($modinfo['url'], $func)), $httpCode);
             }
             echo ModUtil::func('Errors', 'user', 'main');
         } elseif (is_string($return) && strlen($return) > 1) {
@@ -126,7 +137,7 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
                 echo $renderer->fetch("{$modname}_{$type}_{$func}.htm");
             }
         } else {
-            LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function.', array($modinfo['url'], $func)), 404);
+            LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function.', array($modinfo['url'], $func)), $httpCode);
             echo ModUtil::func('Errors', 'user', 'main');
         }
     }
