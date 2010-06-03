@@ -971,7 +971,9 @@ class UserUtil
             return $theme;
         }
 
-        throw new RuntimeException(__('UserUtil::getTheme: unable to calculate theme name.'));
+        if (!System::isInstalling()) {
+            throw new RuntimeException(__('UserUtil::getTheme: unable to calculate theme name.'));
+        }
     }
 
     private static function _themeEvent($themeName)
