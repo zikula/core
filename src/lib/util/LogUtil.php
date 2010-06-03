@@ -205,7 +205,7 @@ class LogUtil
      * @param $url the url to redirect to (optional) (default=null)
      * @return false
      */
-    public static function registerError($message, $type = null, $url = null)
+    public static function registerError($message, $type = null, $url = null, $debug=null)
     {
         if (!isset($message) || empty($message)) {
             return z_exit(__f('Empty [%s] received.', 'message'));
@@ -213,7 +213,7 @@ class LogUtil
 
         global $ZConfig;
 
-        $showDetailInfo = (System::isInstalling() || ($ZConfig['System']['development'] && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)));
+        $showDetailInfo = (System::isInstalling() || (System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)));
 
         if ($showDetailInfo) {
             $bt = debug_backtrace();
@@ -236,9 +236,12 @@ class LogUtil
             $func = ((!empty($class)) ? "$class::$func" : $func);
             $msg = __f('%1$s The origin of this message was \'%2$s\' at line %3$s in file \'%4$s\'.', array($message, $func, $line, $file));
             //
-            if ($ZConfig['System']['development']) {
+            if (System::isDevelopmentMode()) {
+                $msg .= '<br />';
+                $msg .= _prayer($debug);
                 $msg .= '<br />';
                 $msg .= _prayer(debug_backtrace());
+
             }
         }
 
