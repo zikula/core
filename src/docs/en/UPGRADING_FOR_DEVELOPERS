@@ -69,8 +69,8 @@
        $foo->bar = array($foo, 'bar')
        myfunction() = 'myfunction'
 
-- Added ability to have OO controllers in modules.  Look at SysInfo module for
-  example. The name of the classes are Modulename_$type (case sensitive).
+- Added ability to have OO controllers in modules.  Look at system modules for
+  examples. The name of the classes are Modulename_$type (case sensitive).
   The $func argument would be the public methods contained therein.
   Also see the EventHandlers folder which shows how a method can be
   added to the controller via a notifyUntil() events of name
@@ -104,10 +104,10 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
     - Rename pntables.php to tables.php
     - Rename pnversion.php to version.php
     - Rename pndocs to docs
-    - Rename pnincludes to includes or lib, or vendor if specifying 3rd party libs
+    - Rename pnincludes to lib/, or lib/vendor if specifying 3rd party libs
     - Rename pnstyle to style
     - Rename pnjavascript to javascript
-    - Rename pnblocks to blocks
+    - Rename pnblocks to lib/$ModuleName/Block
     - Rename pntemplates to templates
 
 - OO module controllers now have access to convenience where the domain is calculated
