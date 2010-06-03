@@ -72,7 +72,7 @@ abstract class AbstractBase
 
     }
 
-    protected function throwNotFound($message='', $code=null, $previous=null, $debug=null)
+    protected function throwNotFound($message='', $code=0, $previous=null, $debug=null)
     {
         throw new Zikula_Exception_NotFound($message, $code, $previous, $debug);
     }
@@ -91,7 +91,7 @@ abstract class AbstractBase
         }
     }
 
-    protected function throwForbidden($message, $code=null, $previous=null, $debug=null)
+    protected function throwForbidden($message, $code=0, $previous=null, $debug=null)
     {
         throw new Zikula_Exception_Forbidden($message='', $code, $previous, $debug);
     }

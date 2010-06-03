@@ -16,7 +16,7 @@ class Zikula_Exception extends Exception
 {
     protected $debug;
 
-    public function __construct($message, $code, $previous, $debug)
+    public function __construct($message, $code=0, $previous=null, $debug=null)
     {
         parent::__construct($message, $code, $previous);
         $this->debug = $debug;
