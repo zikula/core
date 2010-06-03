@@ -18,16 +18,16 @@
  * Example
  *
  *   Simple version, shows $username
- *   <!--[$username|userprofilelink]-->
+ *   {$username|userprofilelink}
  *   Simple version, shows $username, using class="classname"
- *   <!--[$username|userprofilelink:classname]-->
+ *   {$username|userprofilelink:classname}
  *   Using profile.gif instead of username, no class
- *   <!--[$username|userprofilelink:'':'images/profile.gif']-->
+ *   {$username|userprofilelink:'':'images/profile.gif'}
  *
  *   Using language depending image from pnimg. Note that we pass
  *   the pnimg result array to the modifier as-is
- *   <!--[ pnimg src='profile.gif' assign=profile]-->
- *   <!--[$username|userprofilelink:'classname':$profile]-->
+ *   { pnimg src='profile.gif' assign=profile}
+ *   {$username|userprofilelink:'classname':$profile}
  *
  * @param        $string    string       the users name
  * @param        $class     string       the class name for the link (optional)

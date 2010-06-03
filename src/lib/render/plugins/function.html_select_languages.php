@@ -24,7 +24,7 @@
  *   - all:      show dummy entry '_ALL' on top of the list with empty value
  *
  * Example
- *   <!--[html_select_languages name=language selected=eng]-->
+ *   {html_select_languages name=language selected=eng}
  *
  *
  * @deprecated smarty_function_html_select_locales()

@@ -34,13 +34,13 @@
  *   - fqurl          If set the image path is absolute, if not relative
  *   - all remaining parameters are passed to the image tag
  *
- * Example: <!--[img src="heading.gif" ]-->
+ * Example: {img src="heading.gif" }
  * Output:  <img src="modules/Example/images/eng/heading.gif" alt="" width="261" height="69"  />
  *
- * Example: <!--[img src="heading.gif" width="100" border="1" alt="foobar" ]-->
+ * Example: {img src="heading.gif" width="100" border="1" alt="foobar" }
  * Output:  <img src="modules/Example/images/eng/heading.gif" width="100" border="1" alt="foobar"  />
  *
- * Example <!--[img src=xhtml11.png modname=core set=powered]-->
+ * Example {img src=xhtml11.png modname=core set=powered}
  * <img src="/Theme/images/powered/xhtml11.png" alt="" width="88" height="31"  />
  *
  * If the parameter assign is set, the results are assigned as an array. The components of
@@ -48,10 +48,10 @@
  * set to the complete image tag.
  *
  * Example:
- * <!--[img src="heading.gif" assign="myvar"]-->
- * <!--[$myvar.src]-->
- * <!--[$myvar.width]-->
- * <!--[$myvar.imgtag]-->
+ * {img src="heading.gif" assign="myvar"}
+ * {$myvar.src}
+ * {$myvar.width}
+ * {$myvar.imgtag}
  *
  * Output:
  * modules/Example/images/eng/heading.gif

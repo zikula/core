@@ -16,7 +16,7 @@
  * Smarty function to display the login box
  *
  * Example
- * <!--[userlogin size=14 maxlength=25 maxlengthpass=20]-->
+ * {userlogin size=14 maxlength=25 maxlengthpass=20}
  *
  * @see          function.userlogin.php::smarty_function_userlogin()
  * @param        array       $params         All attributes passed to this function from the template

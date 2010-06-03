@@ -16,7 +16,7 @@
  * Smarty function to get the language direction.
  *
  * Example
- * <html dir="<!--[langdirection]-->">
+ * <html dir="{langdirection}">
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.

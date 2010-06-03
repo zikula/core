@@ -35,7 +35,7 @@
  * </ul>
  *
  * Example
- *   <!--[pnpagesetvar name="title" value="mytitle"]-->
+ *   {pagesetvar name="title" value="mytitle"}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

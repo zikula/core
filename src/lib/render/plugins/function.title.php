@@ -23,8 +23,8 @@
  *  - nositename if set, the sitename will not be appended
  *
  * Example
- * <!--[title]-->
- * <!--[title separator='/']-->
+ * {title}
+ * {title separator='/'}
  *
  * @see          function.title.php::smarty_function_title()
  * @param        array       $params      All attributes passed to this function from the template

@@ -21,7 +21,7 @@
  *
  * Example
  *
- *   <!--[$MyVar|pnml]-->
+ *   {$MyVar|ml}
  *
  * @see          modifier.varprepfordisplay.php::smarty_modifier_varprepfordisplay()
  * @param        array    $string     the contents to transform

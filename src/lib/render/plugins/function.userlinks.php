@@ -16,7 +16,7 @@
  * Smarty function to display some user links
  *
  * Example
- * <!--[userlinks start="[" end="]" seperator="|"]-->
+ * {userlinks start="[" end="]" seperator="|"}
  *
  *
  * @see          function.userlinks.php::smarty_function_userlinks()

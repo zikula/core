@@ -19,7 +19,7 @@
  *  - assign      if set, the language will be assigned to this variable
  *
  * Example
- * <html lang="<!--[lang]-->">
+ * <html lang="{lang}">
  *
  * @param    array    $params     All attributes passed to this function from the template
  * @param    object   $smarty     Reference to the Smarty object

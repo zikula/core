@@ -28,7 +28,7 @@
  *   - assign:    if set, the results ( array('url', 'link') are assigned to the corresponding variable instead of printed out
  *
  * Example
- * <!--[pnmanuallink newwindow=1 width=400 height=300 title=rtfm ]-->
+ * {manuallink newwindow=1 width=400 height=300 title=rtfm }
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

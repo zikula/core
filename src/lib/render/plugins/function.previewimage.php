@@ -22,7 +22,7 @@
  *  - assign     if set, the title will be assigned to this variable
  *
  * Example
- * <!--[previewimage name=andreas08 size=large]-->
+ * {previewimage name=andreas08 size=large}
  *
  * @see           function.title.php::smarty_function_previewimage()
  * @param      array       $params      All attributes passed to this function from the template

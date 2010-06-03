@@ -35,7 +35,7 @@
  *  - assign      if set, the keywords will be assigned to this variable
  *
  * Example
- * <meta name="KEYWORDS" content="<!--[keywords]-->">
+ * <meta name="KEYWORDS" content="{keywords}">
  *
  * @param    array    $params     All attributes passed to this function from the template
  * @param    object   $smarty     Reference to the Smarty object

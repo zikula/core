@@ -16,7 +16,7 @@
  * Smarty function to display the theme info
  *
  * Example
- * <!--[themeinfo]-->
+ * {themeinfo}
  *
  * @see          function.themeinfo.php::smarty_function_themeinfo()
  * @param        array       $params      All attributes passed to this function from the template

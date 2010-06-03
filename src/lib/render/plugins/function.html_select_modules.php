@@ -25,11 +25,11 @@
  *
  * Example
  *
- *     <!--[html_select_modules name=mod selected=$mymod]-->
+ *     {html_select_modules name=mod selected=$mymod}
  *
  *     <select name="mod">
  *         <option value="">&bsp;</option>
- *         <!--[html_select_modules selected=$mythemechoice]-->
+ *         {html_select_modules selected=$mythemechoice}
  *     </select>
  *
  * @see          function.html_select_modules.php::smarty_function_html_select_modules()

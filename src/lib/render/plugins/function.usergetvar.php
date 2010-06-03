@@ -27,7 +27,7 @@
  *   - assign:  If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[usergetvar name='user_icq' uid=1|varprepfordisplay]-->
+ *   {usergetvar name='user_icq' uid=1|varprepfordisplay}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

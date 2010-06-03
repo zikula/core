@@ -34,9 +34,9 @@
  *   - tag:      You can specify if you would like a span or a div tag
  *
  * Example
- *   <!--[getstatusmsg|varprephtmldisplay]-->
- *   <!--[getstatusmsg style="color:red;" |varprephtmldisplay]-->
- *   <!--[getstatusmsg class="statusmessage" tag="span"|varprephtmldisplay]-->
+ *   {getstatusmsg|varprephtmldisplay}
+ *   {getstatusmsg style="color:red;" |varprephtmldisplay}
+ *   {getstatusmsg class="statusmessage" tag="span"|varprephtmldisplay}
  *
  *
  * @todo         prevent this function from being cached (Smarty 2.6.0)

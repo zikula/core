@@ -16,16 +16,16 @@
  * pnRender pager plugin
  *
  * Examples (see also the demo page)
- *   <!--[pager rowcount="400" limit="50"]-->
- *   <!--[pager rowcount="400" limit="35" template="pageritems.html"]-->
- *   <!--[pager rowcount="480" limit="90" template="pagerintervals.html" posvar="myposvar"]-->
- *   <!--[pager rowcount="500" limit="47" template="pagerimage.html"]-->
- *   <!--[pager rowcount="432" limit="25" template="pagercss.html"]-->
- *   <!--[pager rowcount="1200" limit="40" maxpages="10"]-->
- *   <!--[pager rowcount="1200" limit="40" template="pagercss.html" maxpages="7"]-->
- *   <!--[pager rowcount="1200" limit="40" template="pagerjs.html" maxpages="10"]-->
- *   <!--[pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20"]-->
- *   <!--[pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20" optimize=true]-->
+ *   {pager rowcount="400" limit="50"}
+ *   {pager rowcount="400" limit="35" template="pageritems.html"}
+ *   {pager rowcount="480" limit="90" template="pagerintervals.html" posvar="myposvar"}
+ *   {pager rowcount="500" limit="47" template="pagerimage.html"}
+ *   {pager rowcount="432" limit="25" template="pagercss.html"}
+ *   {pager rowcount="1200" limit="40" maxpages="10"}
+ *   {pager rowcount="1200" limit="40" template="pagercss.html" maxpages="7"}
+ *   {pager rowcount="1200" limit="40" template="pagerjs.html" maxpages="10"}
+ *   {pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20"}
+ *   {pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20" optimize=true}
  *
  * @param    string    $modname                 - fixed name of the module to page (optional)
  * @param    string    $type                    - fixed value of the type url parameter (optional)

@@ -24,10 +24,10 @@
  *   - assign:   The name of a variable to which the results are assigned
  *
  * Examples
- *   <!--[ModUtil::available modname="News"]-->
+ *   {modavailable modname="News"}
  *
- *   <!--[ModUtil::available modname="foobar" assign="myfoo"]-->
- *   <!--[if $myfoo]-->.....<!--[/if]-->
+ *   {modavailable modname="foobar" assign="myfoo"}
+ *   {if $myfoo}.....{/if}
  *
  *
  * @author       Michael Nagy

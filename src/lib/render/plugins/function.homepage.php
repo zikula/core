@@ -19,7 +19,7 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[homepage]-->
+ *   {homepage}
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.

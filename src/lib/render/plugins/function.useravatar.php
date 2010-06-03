@@ -16,7 +16,7 @@
  * Smarty function to display the avatar of a user
  *
  * Example
- * <!--[useravatar uid="2"]-->
+ * {useravatar uid="2"}
  *
  * @param        object      &$smarty     Reference to the Smarty object
  * @param        integer     $uid         user-id

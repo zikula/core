@@ -21,9 +21,9 @@
  *                (optional: default 2)
  *
  * Example
- * <!--[pagerendertime]--> outputs 'Page created in 0.18122792243958 seconds.'
+ * {pagerendertime} outputs 'Page created in 0.18122792243958 seconds.'
  *
- * <!--[pagerendertime round=2]--> outputs 'Page created in 0.18 seconds.'
+ * {pagerendertime round=2} outputs 'Page created in 0.18 seconds.'
  *
  * @param    array    $params     All attributes passed to this function from the template
  * @param    object   $smarty     Reference to the Smarty object

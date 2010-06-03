@@ -17,7 +17,7 @@
  *
  * Example
  *
- *   <!--[$myvar|yesno|varprepfordisplay]--> returns Yes if $myvar = 1 and No if $myvar = 0
+ *   {$myvar|yesno|varprepfordisplay} returns Yes if $myvar = 1 and No if $myvar = 0
  *
  * @param        string    $string     the contents to transform
  * @param        string    $images    display the yes/no response as tick/cross

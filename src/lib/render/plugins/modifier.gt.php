@@ -18,7 +18,7 @@
  *
  * Example
  *
- *   <!--[$var|gt:$renderObject]-->
+ *   {$var|gt:$renderObject}
  *
  * @param        string   $string   the contents to transform
  * @param        object   $smarty   this smarty object (available as $renderObject in templates)

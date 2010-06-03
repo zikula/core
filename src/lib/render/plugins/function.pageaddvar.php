@@ -35,8 +35,8 @@
  * </ul>
  *
  * Examples
- *   <!--[pnpageaddvar name='javascript' value='path/to/myscript.js']-->
- *   <!--[pnpageaddvar name='javascript' value='path/to/myscript.js,path/to/another/script.js']-->
+ *   {pageaddvar name='javascript' value='path/to/myscript.js'}
+ *   {pageaddvar name='javascript' value='path/to/myscript.js,path/to/another/script.js'}
  *
  *
  * @param        array       $params      All attributes passed to this function from the template

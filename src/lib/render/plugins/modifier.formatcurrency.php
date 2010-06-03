@@ -14,7 +14,7 @@
 /**
  * Example
  *
- *   <!--[$MyVar|formatcurrency]-->
+ *   {$MyVar|formatcurrency}
  *
  * @param        array    $string     the contents to transform
  * @return       string   the modified output

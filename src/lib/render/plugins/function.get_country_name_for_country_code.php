@@ -20,7 +20,7 @@
  *   - code:     Country code to get the corresponding name for
  *
  * Example
- *   <!--[get_country_name_for_country_code  code=ZZ]-->
+ *   {get_country_name_for_country_code  code=ZZ}
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.

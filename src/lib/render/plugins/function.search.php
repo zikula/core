@@ -32,10 +32,10 @@
  *  - js                use javascript to automatically clear the default value (defaults to true)
  *
  * Example
- * <!--[search]-->
+ * {search}
  *
- * <!--[pnml name="_SEARCH" assign="search_label"]-->
- * <!--[search active="faqs, stories" label=$search_label class="pnsearchform"]-->
+ * {ml name="_SEARCH" assign="search_label"}
+ * {search active="faqs, stories" label=$search_label class="pnsearchform"}
  *
  * Note
  * IE (incorrectly) treats a form as a block element rather than an inline

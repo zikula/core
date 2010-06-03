@@ -16,8 +16,8 @@
  * render plugin for fetching a particular module object
  *
  * Examples
- *   <!--[selectmodobject module="AutoCustomer" objecttype="customer" id=4 assign="myCustomer"]-->
- *   <!--[selectmodobject module="AutoCocktails" objecttype="recipe" id=12 assign="myRecipe"]-->
+ *   {selectmodobject module="AutoCustomer" objecttype="customer" id=4 assign="myCustomer"}
+ *   {selectmodobject module="AutoCocktails" objecttype="recipe" id=12 assign="myRecipe"}
  *
  * @param    module     string              name of the module storing the desired object
  * @param    objecttype string              name of object type

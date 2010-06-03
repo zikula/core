@@ -27,11 +27,11 @@
  * define('_EXAMPLESTRING', 'Hello World')
  *
  * In the template:
- * <!--[pnml name='_EXAMPLEDEFINE']--> returns Hello World
+ * {ml name='_EXAMPLEDEFINE'} returns Hello World
  *
  * _EXAMPLESTRING = 'There are %u% users online';
  *  $usersonline = 10
- * <!--[pnml name='_EXAMPLEDEFINE' u=$usersonline]--> returns There are 10 users online
+ * {ml name='_EXAMPLEDEFINE' u=$usersonline} returns There are 10 users online
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

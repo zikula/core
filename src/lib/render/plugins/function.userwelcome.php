@@ -16,7 +16,7 @@
  * Smarty function to display the welcome message
  *
  * Example
- * <!--[userwelcome]-->
+ * {userwelcome}
  *
  * @see          function.userwelcome.php::smarty_function_userwelcome()
  * @param        array       $params      All attributes passed to this function from the template

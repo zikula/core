@@ -16,11 +16,11 @@
  * Smarty function to display the current date and time
  *
  * Example
- * <!--[datetime]-->
+ * {datetime}
  *
- * <!--[datetime format='datebrief']-->
+ * {datetime format='datebrief'}
  *
- * <!--[datetime format='%b %d, %Y - %I:%M %p']-->
+ * {datetime format='%b %d, %Y - %I:%M %p'}
  *
  * Format:
  * %a - abbreviated weekday name according to the current locale

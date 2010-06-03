@@ -23,10 +23,10 @@
  *  - onload      function to be called with onLoad handler in body tag, makes sense with assign set only, see example #2
  *  - assign      if set, the tag and the script filename are returned
  *
- * Example: <!--[modulejavascript modname=foobar script=openwindow.js modonly=1 ]-->
+ * Example: {modulejavascript modname=foobar script=openwindow.js modonly=1 }
  * Output:  <script type="text/javascript" src="modules/foobar/javascript/openwindow.js">
  *
- * Example: <!--[modulejavascript modname=foobar script=openwindow.js modonly=1 onload="dosomething()" assign=myjs ]-->
+ * Example: {modulejavascript modname=foobar script=openwindow.js modonly=1 onload="dosomething()" assign=myjs }
  * Output: nothing, but assigns a variable containing several values:
  *      $myjs.scriptfile = "modules/foobar/javascript/openwindow.js"
  *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/foobar/javascript/openwindow.js\"></script>"
@@ -34,9 +34,9 @@
  *      Possible code in master.htm would be:
  *
  *      ...
- *      <!--[ $myjs.tag ]-->
+ *      { $myjs.tag }
  *      </head>
- *      <body <!--[ $myjs.onload ]--> >
+ *      <body { $myjs.onload } >
  *      ...
  *
  *      which results in

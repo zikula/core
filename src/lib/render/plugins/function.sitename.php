@@ -19,7 +19,7 @@
  *  - assign     if set, the title will be assigned to this variable
  *
  * Example
- * <!--[sitename]-->
+ * {sitename}
  *
  * @see          function.sitename.php::smarty_function_sitename()
  * @param        array       $params      All attributes passed to this function from the template

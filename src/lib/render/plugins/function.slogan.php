@@ -16,7 +16,7 @@
  * Smarty function to display the slogan
  *
  * Example
- * <!--[slogan]-->
+ * {slogan}
  *
  * @see          function.slogan.php::smarty_function_slogan()
  * @param        array       $params      All attributes passed to this function from the template

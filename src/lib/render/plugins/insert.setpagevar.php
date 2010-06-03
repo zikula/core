@@ -30,7 +30,7 @@
  * </ul>
  *
  * Example
- *   <!--[insert name='setpagevar' var='title' value='mytitle']-->
+ *   {insert name='setpagevar' var='title' value='mytitle'}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

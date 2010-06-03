@@ -24,8 +24,8 @@
  *   - and any additional ones to override for the current request
  *
  * Example
- *   <!--[getcurrenturi]-->
- *   <!--[getcurrenturi lang='de']-->
+ *   {getcurrenturi}
+ *   {getcurrenturi lang='de'}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

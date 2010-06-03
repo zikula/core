@@ -27,10 +27,10 @@
  *   - all remaining parameters are passed to the module API function
  *
  * Examples
- *   <!--[ModUtil::apiFunc modname='News' type='user' func='get' sid='3']-->
+ *   {ModUtil::apiFunc modname='News' type='user' func='get' sid='3'}
  *
- *   <!--[ModUtil::apiFunc modname='foobar' type='user' func='getfoo' id='1' assign='myfoo']-->
- *   <!--[$myfoo.title]-->
+ *   {ModUtil::apiFunc modname='foobar' type='user' func='getfoo' id='1' assign='myfoo'}
+ *   {$myfoo.title}
  *
  *
  * @author       Andreas Stratmann

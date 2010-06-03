@@ -28,9 +28,9 @@
  *   - modid       (optional) module id, if not set, the recent module is used
  *
  * Example
- *   <!--[ModUtil::getInfo info='displayname']-->
- *   <!--[ModUtil::getInfo info='all' assign='gimmeeverything']-->
- *   <!--[ModUtil::getInfo modname='anyymodname' info='all' assign='gimmeeverything']-->
+ *   {ModUtil::getInfo info='displayname'}
+ *   {ModUtil::getInfo info='all' assign='gimmeeverything'}
+ *   {ModUtil::getInfo modname='anyymodname' info='all' assign='gimmeeverything'}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

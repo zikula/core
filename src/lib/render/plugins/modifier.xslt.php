@@ -19,7 +19,7 @@
  *
  * Example
  *
- *   <!--[$myvar|xslt:'your_xsl_file.xsl']-->
+ *   {$myvar|xslt:'your_xsl_file.xsl'}
  *
  * @see          modifier.xslt.php::smarty_modifier_xslt
  * @param        array    $string     the contents to transform

@@ -29,9 +29,9 @@
  *   - tag:      You can specify if you would like a span or a div tag
  *
  * Example
- *   <!--[insert name="getstatusmsg"]-->
- *   <!--[insert name="getstatusmsg" style="color:red;"]-->
- *   <!--[insert name="getstatusmsg" class="statusmessage" tag="span"]-->
+ *   {insert name="getstatusmsg"}
+ *   {insert name="getstatusmsg" style="color:red;"}
+ *   {insert name="getstatusmsg" class="statusmessage" tag="span"}
  *
  * @param $params
  * @param $smarty

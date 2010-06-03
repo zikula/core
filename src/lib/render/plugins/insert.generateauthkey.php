@@ -20,7 +20,7 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- * <input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="Users" ]-->" />
+ * <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users" }" />
  *
  * @param $params
  * @param $smarty

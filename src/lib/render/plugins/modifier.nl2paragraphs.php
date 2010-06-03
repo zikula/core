@@ -23,7 +23,7 @@
  *
  * Example
  *
- *   <!--[$myvar|nl2paragraphs]-->
+ *   {$myvar|nl2paragraphs}
  *
  * @param        array    $string     the contents to transform
  * @return       string   the modified output

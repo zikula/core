@@ -27,10 +27,10 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Examples
- * <!--[gt text="Hello world"]-->
- * <!--[gt text="Hello %s" tag1=$name]-->
- * <!--[gt text="You want one cup" plural="You want two cups" count=2]-->
- * <!--[gt text='Hello %1$s, welcome to %2$s' tag1=$city tag2=$country comment="%1 is a name %2 is the place"]-->
+ * {gt text="Hello world"}
+ * {gt text="Hello %s" tag1=$name}
+ * {gt text="You want one cup" plural="You want two cups" count=2}
+ * {gt text='Hello %1$s, welcome to %2$s' tag1=$city tag2=$country comment="%1 is a name %2 is the place"}
  * ## WARNING! When using %1$s in a template, smarty compiles this to PHP so the string must be in single quotes or
  * ## the $s will be evaluated as variable $s
  *

@@ -16,7 +16,7 @@
  * Smarty function to display admin links for a module
  *
  * Example
- * <!--[moduleadminlinks modname=Example start="[" end="]" seperator="|" class="z-menuitem-title"]-->
+ * {moduleadminlinks modname=Example start="[" end="]" seperator="|" class="z-menuitem-title"}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

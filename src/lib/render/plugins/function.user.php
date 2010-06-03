@@ -16,7 +16,7 @@
  * Smarty function to display the user name
  *
  * Example
- * <!--[user]-->
+ * {user}
  *
  * @see          function.userwelcome.php::smarty_function_user()
  * @param        array       $params      All attributes passed to this function from the template

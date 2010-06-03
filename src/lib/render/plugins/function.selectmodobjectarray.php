@@ -16,8 +16,8 @@
  * render plugin for fetching a list of module objects
  *
  * Examples
- *   <!--[selectmodobjectarray module="AutoCustomer" objecttype="customer" assign="myCustomers"]-->
- *   <!--[selectmodobjectarray module="AutoCocktails" objecttype="recipe" orderby="name desc" assign="myRecipes"]-->
+ *   {selectmodobjectarray module="AutoCustomer" objecttype="customer" assign="myCustomers"}
+ *   {selectmodobjectarray module="AutoCocktails" objecttype="recipe" orderby="name desc" assign="myRecipes"}
  *
  * @param    module     string              name of the module storing the desired object
  * @param    objecttype string              name of object type

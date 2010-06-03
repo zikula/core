@@ -17,7 +17,7 @@
  *
  * Example
  *
- *   <!--[$language|getlanguagename]-->
+ *   {$language|getlanguagename}
  *
  * @param        string   $langcode   the language to process
  * @return       string   the language name

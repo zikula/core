@@ -26,11 +26,11 @@
  *
  * Examples
  *
- *     <!--[html_select_themes name=mytheme selected=mythemechoice]-->
+ *     {html_select_themes name=mytheme selected=mythemechoice}
  *
  *     <select name="mytheme">
- *         <option value=""><!--[pnml name=_DEFAULT]--></option>
- *         <!--[html_select_themes selected=$mythemechoice]-->
+ *         <option value="">{ml name=_DEFAULT}</option>
+ *         {html_select_themes selected=$mythemechoice}
  *     </select>
  *
  * @param        array       $params      All attributes passed to this function from the template

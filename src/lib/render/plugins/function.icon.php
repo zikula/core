@@ -30,10 +30,10 @@
  *   - default        If set then a default image is used should the requested image not be found (Note: full path required)
  *   - all remaining parameters are passed to the image tag
  *
- * Example: <!--[icon type="save" size="extrasmall" altml="_SAVE"]-->
+ * Example: {icon type="save" size="extrasmall" altml="_SAVE"}
  * Output:  <img src="images/icons/extrasmall/save.png" alt="Save" />
  *
- * Example: <!--[icon type="save" width="100" border="1" alt="foobar" ]-->
+ * Example: {icon type="save" width="100" border="1" alt="foobar" }
  * Output:  <img src="images/icons/extrasmall/save.png" width="100" border="1" alt="foobar"  />
  *
  * If the parameter assign is set, the results are assigned as an array. The components of
@@ -41,10 +41,10 @@
  * set to the complete image tag.
  *
  * Example:
- * <!--[icon src="heading.gif" assign="myvar"]-->
- * <!--[$myvar.src]-->
- * <!--[$myvar.width]-->
- * <!--[$myvar.imgtag]-->
+ * {icon src="heading.gif" assign="myvar"}
+ * {$myvar.src}
+ * {$myvar.width}
+ * {$myvar.imgtag}
  *
  * Output:
  * modules/Example/images/eng/heading.gif

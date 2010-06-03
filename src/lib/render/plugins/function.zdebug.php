@@ -23,7 +23,7 @@
  *
  *
  * Example
- *   <!--[ pndebug ]-->
+ *   { pndebug }
  *
  *
  * @param        array       $params      All attributes passed to this function from the template

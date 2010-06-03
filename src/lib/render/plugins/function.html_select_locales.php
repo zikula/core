@@ -24,7 +24,7 @@
  *   - all:      show dummy entry '_ALL' on top of the list with empty value
  *
  * Example
- *   <!--[html_select_locales name=locale selected=en]-->
+ *   {html_select_locales name=locale selected=en}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

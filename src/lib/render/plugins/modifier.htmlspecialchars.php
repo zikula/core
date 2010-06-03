@@ -18,7 +18,7 @@
  *
  * Example
  *
- *   <!--[$MyVar|htmlspecialchars]-->
+ *   {$MyVar|htmlspecialchars}
  *
  * @param        array    $string     the contents to transform
  * @return       string   the modified output

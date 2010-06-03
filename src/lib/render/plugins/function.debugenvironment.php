@@ -19,7 +19,7 @@
  * values to two array. This is being used in pndebug to show them.
  *
  * Example
- *   <!--[pndebugenvironment]-->
+ *   {debugenvironment}
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.
