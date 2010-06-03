@@ -276,7 +276,7 @@ function addCategory(cat) {
  * @return Boolean False.
  */
 function cancelCategory(cat) {
-	parent = document.getElementById('addcat');
+    var parent = document.getElementById('addcat');
     parent.innerHTML = old;
     parent.setAttribute("class", "");
     return false;
