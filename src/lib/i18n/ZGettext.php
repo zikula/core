@@ -97,14 +97,10 @@ class ZGettext
     public function bindTextDomain($domain, $path)
     {
         $codeset = ini_get('mbstring.internal_encoding');
-        if ($path[strlen($path) - 1] != '/') {
-            $path .= '/';
-        } elseif ($path[strlen($path) - 1] != '\\') {
-            $path .= '\\';
-        }
-        $this->textDomains = array($this->getLocale() => array($this->getCategory() => array($domain => array('path' => $path, 'codeset' => $codeset, 'reader' => null))));
-    }
 
+        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = array($domain => array('path' => $path.DIRECTORY_SEPARATOR, 'codeset' => $codeset, 'reader' => null));
+        ini_set('xdebug.var_display_max_depth', 12);
+    }
 
     /**
      * bindTextDomainCodeset
@@ -144,10 +140,10 @@ class ZGettext
         $domain = (isset($domain) ? $domain : $_this->defaultDomain);
         $category = (isset($category) ? $_this->translateCategory($category) : $_this->getCategory());
         $locale = $_this->getLocale();
-        $textDomain = & $_this->textDomains[$locale][$category][$domain];
+        $textDomain = & $_this->textDomains[$locale][$category][$domain][$domain];
 
         if(!$textDomain['reader']) {
-            $path = $textDomain['path']."$locale/$category/$domain.mo";
+            $path = realpath($textDomain['path']."$locale/$category/$domain.mo");
             $reader = new StreamReader_CachedFile($path);
             $textDomain['reader'] = new ZMO($reader, $cache);
             $codeset = (isset($textDomain['codeset']) ? $textDomain['codeset'] : ini_get('mbstring.internal_encoding'));

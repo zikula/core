@@ -28,7 +28,7 @@ class ZLanguage
     public $encoding;
     public $languageCode;
     public $browserLanguagePref;
-    public $domainCache;
+    public $domainCache = array();
     public $multiLingualCapable;
     public $langUrlRule;
     public $errors = array();
@@ -53,7 +53,7 @@ class ZLanguage
         $this->detectLanguage();
         $this->validate();
         $this->fixLanguageToSession();
-        $this->setlocale($this->languageCode);
+        $this->setLocale($this->languageCode);
         $this->bindCoreDomain();
         $this->processErrors();
     }
@@ -147,6 +147,9 @@ class ZLanguage
         $_this->languageCodeLegacy = $_this->lookupLegacyCode($_this->languageCode);
         $_this->locale = self::transformInternal(ZGettext::getInstance()->setLocale($lc, self::transformFS($locale)));
         $_this->i18n = ZI18n::getInstance($locale);
+        if (!array_key_exists($_this->domainCache[$locale])) {
+            $_this->domainCache[$locale] = array();
+        }
     }
 
 
@@ -197,63 +200,41 @@ class ZLanguage
 
         // exit if the language system hasnt yet fully initialised
         if (!$locale) {
-            return;
+            return false;
         }
 
         // prevent double loading
-        if (isset($_this->domainCache[$locale][$domain])) {
+        //if (isset($_this->domainCache[$locale][$domain])) {
+        if (array_key_exists($domain, $_this->domainCache[$locale])) {
             return true;
         }
 
         ZGettext::getInstance()->bindTextDomain($domain, $path);
         ZGettext::getInstance()->bindTextDomainCodeset($domain, $_this->encoding);
-
+        $_this->domainCache[$locale][$domain] = true;
         return $_this->domainCache[$locale][$domain];
-    }
-
-    public static function bindPluginDomain($name)
-    {
-        $parts = explode('_', $name);
-        $app = $parts[1];
-        $name = $parts[2];
-        $_this  = self::getInstance();
-        $domain = self::getPluginDomain($app, $name);
-        return self::bindDomain($domain, $_this->searchOverrides($domain, "apps/$app/plugins/$name/locale"));
-    }
-
-    public static function bindSystemPluginDomain($name)
-    {
-        $_this  = self::getInstance();
-        $domain = self::getSystemPluginDomain($name);
-        return self::bindDomain($domain, $_this->searchOverrides($domain, "plugins/$name/locale"));
     }
 
     public static function bindThemeDomain($name)
     {
         $_this  = self::getInstance();
         $domain = self::getThemeDomain($name);
-        return self::bindDomain($domain, $_this->searchOverrides($domain, "themes/$name/locale"));
+        $path = $_this->searchOverrides($domain, 'themes' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'locale');
+        return self::bindDomain($domain, $path);
     }
-
-    public static function bindAppDomain($name)
-    {
-        $_this  = self::getInstance();
-        $domain = self::getAppDomain($name);
-        return self::bindDomain($domain, $_this->searchOverrides($domain, "apps/$name/locale"));
-    }
-
 
     public static function bindModuleDomain($name)
     {
         // system modules are in the zikula domain
         $module = ModUtil::getInfo(ModUtil::getIdFromName($name));
-        if ($module['type'] == '3') {
+        if ($module['type'] == ModUtil::TYPE_SYSTEM) {
             return 'zikula';
         }
 
         $_this  = self::getInstance();
         $domain = self::getModuleDomain($name);
-        return self::bindDomain($domain, $_this->searchOverrides($domain, "modules/$name/locale"));
+        $path = $_this->searchOverrides($domain, 'modules' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'locale');
+        return self::bindDomain($domain, $path);
     }
 
 
@@ -269,8 +250,8 @@ class ZLanguage
     {
         $lang = self::transformFS($this->languageCode);
         $prefix = realpath(realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..');
-        $override = "$prefix/config/locale/$lang/LC_MESSAGES/$domain.mo";
-        return (is_readable($override) ? "$prefix/config/locale" : "$prefix/$path");
+        $override = realpath("$prefix/config/locale/$lang/LC_MESSAGES/$domain.mo");
+        return (is_readable($override) ? $prefix . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'locale' : $prefix . DIRECTORY_SEPARATOR . $path);
     }
 
 
@@ -279,30 +260,10 @@ class ZLanguage
         return strtolower("module_$name");
     }
 
-    public static function getAppDomain($name)
-    {
-        return strtolower("app_$name");
-    }
-
-
     public static function getThemeDomain($name)
     {
         return strtolower("theme_$name");
     }
-
-    public static function getSystemPluginDomain($name)
-    {
-        return strtolower("systemplugin_$name");
-    }
-
-    public static function getPluginDomain($name)
-    {
-        $parts = explode('_', $name);
-        $app = $parts[0];
-        $name = $parts[1];
-        return strtolower("plugin_{$app}_{$name}");
-    }
-
 
     public static function getLangUrlRule()
     {
