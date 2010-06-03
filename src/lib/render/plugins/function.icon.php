@@ -72,7 +72,7 @@ function smarty_function_icon($params, &$smarty)
     $size   = isset($params['size'])    ? $params['size']    : 'extrasmall';
 
     // language
-    //$lang =  DataUtil::formatForOS(pnUserGetLang());
+    //$lang =  DataUtil::formatForOS(UserUtil::getLang());
 
     $iconpath = 'images/icons/';
 

@@ -366,7 +366,7 @@ class Theme extends Renderer
         // Assign the query string
         $this->qstring = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
         // Assign the current script
-        $this->requesturi = pnGetCurrentURI();
+        $this->requesturi = System::getCurrentUri();
 
         // assign some basic paths for the engine
         $this->template_dir = $this->themepath . '/templates'; // default directory for templates

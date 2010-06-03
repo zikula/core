@@ -32,7 +32,7 @@ function smarty_function_usergetidfromname($params, &$smarty)
     $uname   = isset($params['uname'])   ? $params['uname']    : null;
 
     if (!$uname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnusergetidfromname', 'uname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('UserUtil::getIdFromName', 'uname')));
         return false;
     }
 

@@ -262,7 +262,7 @@ class Admin_Admin extends AbstractController
     {
         if (!SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
-            return System::redirect(pnGetHomepageURL());
+            return System::redirect(System::getHomepageUrl());
         }
 
         // Create output object
@@ -327,7 +327,7 @@ class Admin_Admin extends AbstractController
 
             // Check to see if we have access to the requested category.
             if (!SecurityUtil::checkPermission("Admin::", "::$acid", ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError(pnGetHomepageURL());
+                return LogUtil::registerPermissionError(System::getHomepageUrl());
             }
 
             $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $acid));
@@ -543,7 +543,7 @@ class Admin_Admin extends AbstractController
         $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
 
         // get admin capable modules
-        $adminmodules = pnModGetAdminMods();
+        $adminmodules = ModUtil::getAdminMods();
         $adminlinks = array();
 
         foreach ($adminmodules as $adminmodule) {

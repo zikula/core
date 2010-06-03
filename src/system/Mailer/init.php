@@ -70,7 +70,7 @@ function Mailer_upgrade($oldversion)
 function Mailer_delete()
 {
     // Delete any module variables
-    pnModDelVar('Mailer');
+    ModUtil::delVar('Mailer');
 
     // Deletion successful
     return true;

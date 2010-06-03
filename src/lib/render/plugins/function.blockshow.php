@@ -36,17 +36,17 @@ function smarty_function_blockshow($params, &$smarty)
     $assign    = isset($params['assign'])    ? $params['assign']    : null;
 
     if (!$module) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnblockshow', 'module')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('BlockUtil::show', 'module')));
         return;
     }
 
     if (!$blockname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnblockshow', 'blockname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('BlockUtil::show', 'blockname')));
         return;
     }
 
     if (!$block) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnblockshow', 'id/info')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('BlockUtil::show', 'id/info')));
         return;
     }
 

@@ -17,8 +17,8 @@
  *
  * This function sets a session-specific variable in the Zikula system.
  *
- * Note that the results should be handled by the pnvarprepfordisplay or the
- * pnvarprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the DataUtil::formatForDisplay or the
+ * DataUtil::formatForDisplayHTML modifiers before being displayed.
  *
  *
  * Available parameters:
@@ -27,7 +27,7 @@
  *   - assign:  If set, the result is assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[pnsessionsetvar name='foo' value='bar']-->
+ *   <!--[SessionUtil::setVar name='foo' value='bar']-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -41,12 +41,12 @@ function smarty_function_sessionsetvar($params, &$smarty)
     $value   = isset($params['value'])   ? $params['value']   : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnsessionsetvar', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('SessionUtil::setVar', 'name')));
         return false;
     }
 
     if (!$value) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnsessionsetvar', 'value')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('SessionUtil::setVar', 'value')));
         return false;
     }
 

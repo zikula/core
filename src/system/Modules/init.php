@@ -77,7 +77,7 @@ function modules_upgrade($oldversion)
             modules_init_migrateModuleTable();
         case '3.7':
             // legacy is no longer supported
-            pnConfigDelVar('loadlegacy');
+            System::delVar('loadlegacy');
             // future upgrade routines
     }
 

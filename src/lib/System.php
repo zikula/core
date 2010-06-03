@@ -451,7 +451,7 @@ class System
      * strip slashes
      *
      * stripslashes on multidimensional arrays.
-     * Used in conjunction with pnVarCleanFromInput
+     * Used in conjunction with FormUtil::getPassedValue
      *
      * @param any $ variables or arrays to be stripslashed
      */
@@ -464,7 +464,7 @@ class System
         if (!is_array($value)) {
             $value = stripslashes($value);
         } else {
-            array_walk($value, 'pnStripslashes');
+            array_walk($value, 'System::stripslashes');
         }
     }
 

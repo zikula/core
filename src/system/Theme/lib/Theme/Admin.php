@@ -482,7 +482,7 @@ class Theme_Admin extends AbstractController
         $pnRender->assign('themeinfo', $themeinfo);
 
         // assign an array to populate the modules dropdown
-        $allmods = pnModGetAllMods();
+        $allmods = ModUtil::getAllMods();
         $mods = array();
         foreach ($allmods as $mod) {
             $mods[$mod['name']] = $mod['displayname'];
@@ -749,7 +749,7 @@ class Theme_Admin extends AbstractController
         $pnRender->assign('themeinfo', $themeinfo);
 
         // assign all modules
-        $allmods = pnModGetAllMods();
+        $allmods = ModUtil::getAllMods();
         $mods = array();
         foreach ($allmods as $mod) {
             $mods[$mod['name']] = $mod['name'];
@@ -1062,7 +1062,7 @@ class Theme_Admin extends AbstractController
         ModUtil::apiFunc('Theme', 'upgrade', 'rewritenewstemplates', array('themename' => $themename));
 
         // delete a module var that will have been created
-        pnModDelVar('Xanthia', $themename.'newzone');
+        ModUtil::delVar('Xanthia', $themename.'newzone');
 
         // delete old files
         $files = array("themes/$themeinfo[directory]/xaninit.php", "themes/$themeinfo[directory]/theme.php",
@@ -1160,7 +1160,7 @@ class Theme_Admin extends AbstractController
         $pnRender->assign('theme_change', System::getVar('theme_change'));
 
         // assign a list of modules suitable for html_options
-        $usermods = pnModGetUserMods();
+        $usermods = ModUtil::getUserMods();
         $mods = array();
         foreach ($usermods as $usermod) {
             $mods[$usermod['name']] = $usermod['displayname'];

@@ -35,7 +35,7 @@ function smarty_function_getcurrenturl($params, &$smarty)
         unset($params['assign']);
     }
 
-    $result = htmlspecialchars(pnGetCurrentURL($params));
+    $result = htmlspecialchars(System::getCurrentUrl($params));
 
     if ($assign) {
         $smarty->assign($assign, $result);

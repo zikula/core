@@ -15,7 +15,7 @@
 /**
  * Smarty function to check for the availability of a module
  *
- * This function calls pnModIsHooked to determine if two Zikula modules are
+ * This function calls ModUtil::isHooked to determine if two Zikula modules are
  * hooked together. True is returned if the modules are hooked, false otherwise.
  * The result can also be assigned to a template variable.
  *
@@ -25,12 +25,12 @@
  *   - assign:    The name of a variable to which the results are assigned
  *
  * Examples
- *   <!--[pnmodishooked tmodname='Ratings' smodname='News']-->
+ *   <!--[ModUtil::isHooked tmodname='Ratings' smodname='News']-->
  *
- *   <!--[pnmodishooked tmodname='bar' smodname='foo' assign='barishookedtofoo']-->
+ *   <!--[ModUtil::isHooked tmodname='bar' smodname='foo' assign='barishookedtofoo']-->
  *   <!--[if $barishookedtofoo]-->.....<!--[/if]-->
  *
- * @see          function.pnmodishooked.php::smarty_function_modishooked()
+ * @see          function.ModUtil::isHooked.php::smarty_function_modishooked()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       bool        true if the module is available; false otherwise
@@ -42,16 +42,16 @@ function smarty_function_modishooked($params, &$smarty)
     $tmodname = isset($params['tmodname']) ? $params['tmodname'] : null;
 
     if (!$tmodname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodishooked', 'tmodname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::isHooked', 'tmodname')));
         return false;
     }
 
     if (!$smodname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodishooked', 'smodname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::isHooked', 'smodname')));
         return false;
     }
 
-    $result = pnModIsHooked($tmodname, $smodname);
+    $result = ModUtil::isHooked($tmodname, $smodname);
 
     if ($assign) {
         $smarty->assign($params['assign'], $result);

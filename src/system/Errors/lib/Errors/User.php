@@ -51,8 +51,8 @@ class Errors_User extends AbstractController
 
         // assign the document info
         $pnRender->assign('reportlevel', System::getVar('reportlevel'));
-        $pnRender->assign('currenturi', pnGetCurrentURI());
-        $pnRender->assign('localreferer', pnLocalReferer());
+        $pnRender->assign('currenturi', System::getCurrentUri());
+        $pnRender->assign('localreferer', System::localReferer());
         $pnRender->assign('sitename', System::getVar('sitename'));
         $pnRender->assign('reportlevel', System::getVar('reportlevel'));
         $pnRender->assign('funtext', System::getVar('funtext'));

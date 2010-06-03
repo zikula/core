@@ -52,9 +52,9 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
         $arguments = array();
     }
 
-    if (pnModLoad($modinfo['name'], $type)) {
+    if (ModUtil::load($modinfo['name'], $type)) {
         if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-                $dbConn = pnDBGetConn(true);
+                $dbConn = System::dbGetConn(true);
                 $dbConn->StartTrans();
         }
 

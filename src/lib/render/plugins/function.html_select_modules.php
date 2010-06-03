@@ -52,19 +52,19 @@ function smarty_function_html_select_modules($params, &$smarty)
     // get the modules
     switch ($params['type']) {
         case 'all' :
-            $modules = pnModGetAllMods();
+            $modules = ModUtil::getAllMods();
             break;
         case 'admin' :
-            $modules = pnModGetAdminMods();
+            $modules = ModUtil::getAdminMods();
             break;
         case 'user' :
-            $modules = pnModGetUserMods();
+            $modules = ModUtil::getUserMods();
             break;
         case 'profile' :
-            $modules = pnModGetProfileMods();
+            $modules = ModUtil::getProfileMods();
             break;
         case 'message' :
-            $modules = pnModGetMessageMods();
+            $modules = ModUtil::getMessageMods();
             break;
     }
 

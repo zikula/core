@@ -25,7 +25,7 @@ class FormUtil
      * is safe to use for recursive arrays and either returns a non-empty
      * string or the (optional) default.
      *
-     * This method is based on pnVarCleanFromInput but array-safe.
+     * This method is based on FormUtil::getPassedValue but array-safe.
      *
      * @param key        The field to return
      * @param default    The value to return if the requested field is not found (optional) (default=false)
@@ -150,7 +150,7 @@ class FormUtil
         }
 
         if (get_magic_quotes_gpc()) {
-            pnStripslashes($value);
+            System::stripslashes($value);
         }
 
         if (!$isAdmin) {

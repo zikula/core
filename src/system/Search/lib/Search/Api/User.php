@@ -211,7 +211,7 @@ class Search_Api_User extends AbstractApi
 
         // Attempt to load the search API for each user module
         // The modules should be determined by a select of the modules table or something like that in the future
-        $usermods = pnModGetAllMods();
+        $usermods = ModUtil::getAllMods();
         foreach ($usermods as $usermod) {
             if (ModUtil::loadApi($usermod['name'], 'search')  &&
                     ($args['loadall'] ||

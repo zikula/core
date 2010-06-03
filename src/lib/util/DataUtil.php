@@ -38,7 +38,7 @@ class DataUtil
                 $var[$k] = self::cleanVar($v);
             }
         } else {
-            pnStripslashes($var);
+            System::stripslashes($var);
         }
 
         return $var;

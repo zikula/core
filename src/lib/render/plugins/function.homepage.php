@@ -30,7 +30,7 @@ function smarty_function_homepage($params, &$smarty)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $result = htmlspecialchars(pnGetHomepageURL());
+    $result = htmlspecialchars(System::getHomepageUrl());
 
     if ($assign) {
         $smarty->assign($assign, $result);

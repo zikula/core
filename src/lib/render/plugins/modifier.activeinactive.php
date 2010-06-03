@@ -17,7 +17,7 @@
  *
  * Example
  *
- *   <!--[$myvar|activeinactive|pnvarprepfordisplay]--> returns Active if $myvar = 1 and Inactive if $myvar = 0
+ *   <!--[$myvar|activeinactive|DataUtil::formatForDisplay]--> returns Active if $myvar = 1 and Inactive if $myvar = 0
  *
  * @param        string    $string     the contents to transform
  * @return       string   the modified output

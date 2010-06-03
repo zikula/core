@@ -18,14 +18,14 @@
  * This function obtains the base URL for the site. The base url is defined as the
  * full URL for the site minus any file information  i.e. everything before the
  * 'index.php' from your start page.
- * Unlike the API function pngethost, the results of this function are already
- * sanitized to display, so it should not be passed to the pnvarprepfordisplay modifier.
+ * Unlike the API function System::getHost, the results of this function are already
+ * sanitized to display, so it should not be passed to the DataUtil::formatForDisplay modifier.
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[pngethost]-->
+ *   <!--[System::getHost]-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -35,7 +35,7 @@ function smarty_function_gethost ($params, &$smarty)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
-    $result = htmlspecialchars(pnGetHost());
+    $result = htmlspecialchars(System::getHost());
 
     if ($assign) {
         $smarty->assign($assign, $result);

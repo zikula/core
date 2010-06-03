@@ -43,30 +43,30 @@
     <table class="z-admintable">
         <thead>
             <tr>
-                <!--[php]-->
+                {php}
                   $this->_tpl_vars['filter']['sort'] = 'bid';
-                <!--[/php]-->
+                {/php}
 		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Block ID"}</a></th>
-                <!--[php]-->
+                {php}
                   $this->_tpl_vars['filter']['sort'] = 'title';
-                <!--[/php]-->
+                {/php}
 		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Title"}</a></th>
-                <!--[php]-->
+                {php}
                   $this->_tpl_vars['filter']['sort'] = 'module_name';
-                <!--[/php]-->
+                {/php}
 		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Module"}</a></th>
-                <!--[php]-->
+                {php}
                   $this->_tpl_vars['filter']['sort'] = 'bkey';
-                <!--[/php]-->
+                {/php}
 		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Name"}</a></th>
                 <th>{gt text="Position(s)"}</th>
-                <!--[php]-->
+                {php}
                   $this->_tpl_vars['filter']['sort'] = 'language'
-                <!--[/php]-->
+                {/php}
 		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Language"}</a></th>
-                <!--[php]-->
+                {php}
                   $this->_tpl_vars['filter']['sort'] = 'active'
-                <!--[/php]-->
+                {/php}
 		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="State"}</a></th>
                 <th>{gt text="Actions"}</th>
             </tr>

@@ -34,7 +34,7 @@ function smarty_function_varcleanfrominput($params, &$smarty)
     $name   = isset($params['name'])   ? $params['name']   : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnvarcleanfrominput', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('FormUtil::getPassedValue', 'name')));
         return false;
     }
 

@@ -435,7 +435,7 @@ class Groups_Api_Admin extends AbstractApi
                             'subject'   => $args['reasontitle'],
                             'body'      => $args['reason']));
                 } else {
-                    $send = pnMail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: ".System::getVar('adminmail')."\nX-Mailer: PHP/" . phpversion(), 0);
+                    $send = System::mail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: ".System::getVar('adminmail')."\nX-Mailer: PHP/" . phpversion(), 0);
                 }
                 break;
         }

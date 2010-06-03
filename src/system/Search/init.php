@@ -74,7 +74,7 @@ function search_delete()
     }
 
     // Delete any module variables
-    pnModDelVar('Search');
+    ModUtil::delVar('Search');
 
     // Deletion successful
     return true;

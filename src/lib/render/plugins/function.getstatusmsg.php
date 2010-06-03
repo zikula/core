@@ -34,9 +34,9 @@
  *   - tag:      You can specify if you would like a span or a div tag
  *
  * Example
- *   <!--[pngetstatusmsg|pnvarprephtmldisplay]-->
- *   <!--[pngetstatusmsg style="color:red;" |pnvarprephtmldisplay]-->
- *   <!--[pngetstatusmsg class="statusmessage" tag="span"|pnvarprephtmldisplay]-->
+ *   <!--[LogUtil::getStatusMessages|DataUtil::formatForDisplayHTML]-->
+ *   <!--[LogUtil::getStatusMessages style="color:red;" |DataUtil::formatForDisplayHTML]-->
+ *   <!--[LogUtil::getStatusMessages class="statusmessage" tag="span"|DataUtil::formatForDisplayHTML]-->
  *
  *
  * @todo         prevent this function from being cached (Smarty 2.6.0)
@@ -55,8 +55,8 @@ function smarty_function_getstatusmsg($params, &$smarty)
     //prepare output var
     $output = '';
 
-    // $msgStatus = pnGetStatusMsg();
-    // we do not use pnGetStatusMsg() because we need to know if we have to
+    // $msgStatus = LogUtil::getStatusMessages();
+    // we do not use LogUtil::getStatusMessages() because we need to know if we have to
     // show a status or an error
     $msgStatus = SessionUtil::getVar('_ZStatusMsg');
     $msgtype   = ($class ? $class : 'z-statusmsg');

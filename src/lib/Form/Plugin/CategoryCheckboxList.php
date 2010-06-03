@@ -41,7 +41,7 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
         $result = parent::render($render);
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "$this->category[id]::", ACCESS_EDIT)) {
-            $url = DataUtil::formatForDisplay(pnModURL ('Categories', 'user', 'edit', array('dr' => $this->category['id'])));
+            $url = DataUtil::formatForDisplay(ModUtil::url ('Categories', 'user', 'edit', array('dr' => $this->category['id'])));
             $result .= "<a class=\"z-formnote\" href=\"$url\">" . __('Edit') . '</a>';
         }
 

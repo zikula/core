@@ -53,7 +53,7 @@ function smarty_function_userlogin($params, &$smarty)
         }
 
         // determine the current url so we can return the user to the correct place after login
-        $returnurl = pnGetCurrentURI();
+        $returnurl = System::getCurrentUri();
 
         // b.plagge 20070821 - authkey is required
         $authkey = SecurityUtil::generateAuthKey('Users');

@@ -36,7 +36,7 @@
  * @author       Andreas Stratmann
  * @author       Jörg Napp
  * @since        03/05/23
- * @see          function.pnmodfunc.php::smarty_function_modfunc()
+ * @see          function.ModUtil::func.php::smarty_function_modfunc()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       string      the results of the module API function

@@ -17,7 +17,7 @@
  *
  * Example
  *
- *   <!--[$myvar|onlineoffline|pnvarprepfordisplay]--> returns Online if $myvar = 1 and Offline if $myvar = 0
+ *   <!--[$myvar|onlineoffline|DataUtil::formatForDisplay]--> returns Online if $myvar = 1 and Offline if $myvar = 0
  *
  * @param        string    $string     the contents to transform
  * @return       string   the modified output

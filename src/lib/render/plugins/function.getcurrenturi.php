@@ -16,8 +16,8 @@
  * Smarty function to obtain current URI
  *
  * This function obtains the current request URI.
- * Unlike the API function pngetcurrenturi, the results of this function are already
- * sanitized to display, so it should not be passed to the pnvarprepfordisplay modifier.
+ * Unlike the API function System::getCurrentUri, the results of this function are already
+ * sanitized to display, so it should not be passed to the DataUtil::formatForDisplay modifier.
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
@@ -39,7 +39,7 @@ function smarty_function_getcurrenturi($params, &$smarty)
         unset($params['assign']);
     }
 
-    $result = htmlspecialchars(pnGetCurrentURI($params));
+    $result = htmlspecialchars(System::getCurrentUri($params));
 
     if ($assign) {
         $smarty->assign($assign, $result);

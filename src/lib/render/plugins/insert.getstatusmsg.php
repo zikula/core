@@ -47,8 +47,8 @@ function smarty_insert_getstatusmsg($params, &$smarty)
     //prepare output var
     $output = '';
 
-    // $msgStatus = pnGetStatusMsg();
-    // we do not use pnGetStatusMsg() because we need to know if we have to
+    // $msgStatus = LogUtil::getStatusMessages();
+    // we do not use LogUtil::getStatusMessages() because we need to know if we have to
     // show a status or an error
     $msgStatus = SessionUtil::getVar('_ZStatusMsg');
     $msgtype   = ($class ? $class : 'z-statusmsg');

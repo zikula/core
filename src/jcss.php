@@ -93,7 +93,7 @@ function is_serialized($string)
  *
  * @return void
  */
-function pnStripslashes(&$value)
+function System::stripslashes(&$value)
 {
     if (empty($value))
         return;
@@ -101,7 +101,7 @@ function pnStripslashes(&$value)
     if (!is_array($value)) {
         $value = stripslashes($value);
     } else {
-        array_walk($value, 'pnStripslashes');
+        array_walk($value, 'System::stripslashes');
     }
 }
 

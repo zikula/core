@@ -17,8 +17,8 @@
  *
  * This function obtains a session-specific variable from the Zikula system.
  *
- * Note that the results should be handled by the pnvarprepfordisplay or the
- * pnvarprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the DataUtil::formatForDisplay or the
+ * DataUtil::formatForDisplayHTML modifiers before being displayed.
  *
  *
  * Available parameters:
@@ -26,7 +26,7 @@
  *   - assign:  If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   <!--[pnsessiongetvar name='foobar'|pnvarprepfordisplay]-->
+ *   <!--[SessionUtil::getVar name='foobar'|DataUtil::formatForDisplay]-->
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
@@ -44,7 +44,7 @@ function smarty_function_sessiongetvar($params, &$smarty)
     $overwriteExistingVar = isset($params['overwriteExistingVar']) ? $params['overwriteExistingVar'] : false;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnsessiongetvar', 'name')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('SessionUtil::getVar', 'name')));
         return false;
     }
 

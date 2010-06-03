@@ -190,7 +190,7 @@ class LogUtil
         $code = 403;
         if (!UserUtil::isLoggedIn()) {
             if (is_null($url)) {
-                $url = ModUtil::url('Users', 'user', 'loginscreen', array('returnpage' => urlencode(pnGetCurrentURI())));
+                $url = ModUtil::url('Users', 'user', 'loginscreen', array('returnpage' => urlencode(System::getCurrentUri())));
             }
             $code = null;
         }

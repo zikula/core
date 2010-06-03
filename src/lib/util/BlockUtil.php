@@ -201,12 +201,12 @@ class BlockUtil
         if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($row['collapsable']) && ($row['collapsable'] == '1')) {
             if (BlockUtil::checkUserBlock($row) == '1') {
                 if (!empty($row['title'])) {
-                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => pnSecGenAuthKey()))) . '">' . $upb . '</a>';
+                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => SecurityUtil::generateAuthKey()))) . '">' . $upb . '</a>';
                 }
             } else {
                 $row['content'] = '';
                 if (!empty($row['title'])) {
-                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => pnSecGenAuthKey()))) . '">' . $downb . '</a>';
+                    $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => SecurityUtil::generateAuthKey()))) . '">' . $downb . '</a>';
                 }
             }
         } else {

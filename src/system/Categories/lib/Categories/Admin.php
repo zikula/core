@@ -40,7 +40,7 @@ class Categories_Admin extends AbstractController
 
         // disable attribution for performance
         $GLOBALS['pntables']['categories_category_db_extra_enable_attribution'] = false;
-        $pntables    = pnDBGetTables ();
+        $pntables    = System::dbGetTables ();
         $columnArray = array ('id', 'name', 'display_name', 'parent_id', 'path', 'ipath', 'status');
         $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true, '', '', null, $columnArray);
         $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);

@@ -281,6 +281,6 @@ function _securitycenter_deleteObsoleteConfigVars()
 {
     $obsoleteVars = array('zipcompress', 'compresslevel');
     foreach($obsoleteVars as $obVar) {
-        pnConfigDelVar($obVar);
+        System::delVar($obVar);
     }
 }

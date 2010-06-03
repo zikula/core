@@ -92,7 +92,7 @@ class Blocks_Block_Menu extends AbstractBlock
 
         // Modules
         if (!empty($vars['displaymodules'])) {
-            $mods = pnModGetUserMods();
+            $mods = ModUtil::getUserMods();
 
             // Separate from current content, if any
             if ($vars['content'] == 1) {
@@ -152,7 +152,7 @@ class Blocks_Block_Menu extends AbstractBlock
         static $uri;
 
         if (!isset($uri)) {
-            $uri = pnGetCurrentURI();
+            $uri = System::getCurrentUri();
         }
 
         if (!isset($title) || $title == '') {

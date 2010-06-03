@@ -131,7 +131,7 @@ class Blocks_Block_Extmenu extends AbstractBlock
 
         // Modules
         if (!empty($vars['displaymodules'])) {
-            $newmods = pnModGetUserMods();
+            $newmods = ModUtil::getUserMods();
             $mods = array();
             foreach ($newmods as $module) {
                 if (!preg_match('#(?:error|blocks)#', strtolower($module['name']))) {
@@ -193,7 +193,7 @@ class Blocks_Block_Extmenu extends AbstractBlock
             return;
         }
 
-        $currenturi = urlencode(str_replace(System::getBaseUri() . '/', '', pnGetCurrentURI()));
+        $currenturi = urlencode(str_replace(System::getBaseUri() . '/', '', System::getCurrentUri()));
 
         // assign the items
         $pnRender->assign('menuitems', $menuitems);
@@ -220,7 +220,7 @@ class Blocks_Block_Extmenu extends AbstractBlock
     function is_recent_page($url)
     {
         if (!empty($url)) {
-            $uri = pnGetCurrentURI();
+            $uri = System::getCurrentUri();
             if (is_integer(strpos($uri, $url))) {
                 return true;
             }
@@ -237,7 +237,7 @@ class Blocks_Block_Extmenu extends AbstractBlock
     {
         // allow a simple portable way to link to the home page of the site
         if ($url == '{homepage}') {
-            $url = htmlspecialchars(pnGetHomepageURL());
+            $url = htmlspecialchars(System::getHomepageUrl());
         } elseif (!empty($url)) {
             switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
             {

@@ -95,7 +95,7 @@ class Blocks_Block_Lang extends AbstractBlock
         }
 
 
-        // prepare vars for pnModURL
+        // prepare vars for ModUtil::url
         $module = FormUtil::getPassedValue('module', null, 'GET');
         $type = FormUtil::getPassedValue('type', null, 'GET');
         $func = FormUtil::getPassedValue('func', null, 'GET');

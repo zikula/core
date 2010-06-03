@@ -451,7 +451,7 @@ class SecurityCenter_Api_User extends AbstractApi
         $adminmail = System::getVar('adminmail');
         $headers = "From: $sitename <$adminmail>\n"
                 ."X-Priority: 1 (Highest)";
-        pnMail($adminmail, $this->__f('Possible attempt to crack your site (type: %s)', $args['hacktype']), $bodytext, $headers );
+        System::mail($adminmail, $this->__f('Possible attempt to crack your site (type: %s)', $args['hacktype']), $bodytext, $headers );
 
         return;
     }
@@ -753,7 +753,7 @@ class SecurityCenter_Api_User extends AbstractApi
             $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
             $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
-            $currentPage = pnGetCurrentURI();
+            $currentPage = System::getCurrentUri();
             $currentUid = UserUtil::getVar('uid');
 
             // log details to database
@@ -835,7 +835,7 @@ class SecurityCenter_Api_User extends AbstractApi
             } else {
                 $headers = "From: $siteName <$adminmail>\n"
                         ."X-Priority: 1 (Highest)";
-                pnMail($adminmail, $mailTitle, $mailBody, $headers);
+                System::mail($adminmail, $mailTitle, $mailBody, $headers);
             }
         }
 

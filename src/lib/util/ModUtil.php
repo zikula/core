@@ -194,7 +194,7 @@ class ModUtil
         $obj = array();
         $obj['value'] = serialize($value);
 
-        if (pnModVarExists($modname, $name)) {
+        if (ModUtil::varExists($modname, $name)) {
             $tables = System::dbGetTables();
             $cols   = $tables['module_vars_column'];
             $where  = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
@@ -850,7 +850,7 @@ class ModUtil
      *                                   true - create a ssl url, false - create a non-ssl url.
      * @param string       $fragment     The framgment to target within the URL.
      * @param boolean|null $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL.
-     * @param boolean      $forcelongurl Force pnModURL to not create a short url even if the system is configured to do so.
+     * @param boolean      $forcelongurl Force ModUtil::url to not create a short url even if the system is configured to do so.
      * @param boolean      $forcelang    Forcelang.
      *
      * @return sting Absolute URL for call

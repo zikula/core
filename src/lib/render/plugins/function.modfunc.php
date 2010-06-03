@@ -17,8 +17,8 @@
  *
  * This function calls a specific module function.  It returns whatever the return
  * value of the resultant function is if it succeeds.
- * Note that in contrast to the API function pnModFunc you need not to load the
- * module with pnModLoad.
+ * Note that in contrast to the API function ModUtil::func you need not to load the
+ * module with ModUtil::load.
  *
  *
  * Available parameters:
@@ -29,7 +29,7 @@
  *   - all remaining parameters are passed to the module function
  *
  * Example
- * <!--[pnmodfunc modname='News' type='user' func='view']-->
+ * <!--[ModUtil::func modname='News' type='user' func='view']-->
  *
  * @author       Andreas Stratmann
  * @see          function.ModUtil::apiFunc.php::smarty_function_modapifunc()
@@ -46,14 +46,14 @@ function smarty_function_modfunc($params, &$smarty)
     $type    = isset($params['type']) && $params['type'] ? $params['type']    : 'user';
     $return  = isset($params['return'])                  ? $params['return']  : null;
 
-    // avoid passing these to pnModFunc
+    // avoid passing these to ModUtil::func
     unset($params['modname']);
     unset($params['type']);
     unset($params['func']);
     unset($params['assign']);
 
     if (!$modname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodfunc', 'modname')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::func', 'modname')));
         return false;
     }
 

@@ -14,7 +14,7 @@
 
 /**
  * Example:
- * <!--[pnsecauthaction realm="0" comp="Stories::" inst=".*" level="ACCESS_ADMIN" assign="auth"]-->
+ * <!--[SecurityUtil::checkPermission comp="Stories::" inst=".*" level="ACCESS_ADMIN" assign="auth"]-->
  *
  * true/false will be returned.
  *

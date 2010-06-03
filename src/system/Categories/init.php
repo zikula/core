@@ -94,7 +94,7 @@ function Categories_delete()
     DBUtil::dropTable('categories_mapmeta');
     DBUtil::dropTable('categories_registry');
 
-    pnModDelVar('Categories');
+    ModUtil::delVar('Categories');
 
     // delete other modules use of categories flag
     $pntable = System::dbGetTables();

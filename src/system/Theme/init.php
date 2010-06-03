@@ -87,7 +87,7 @@ function theme_upgrade($oldversion)
                 ModUtil::setVar('Theme', 'render_' . $k, $v);
             }
             // delete pnRender modvars
-            pnModDelVar('pnRender');
+            ModUtil::delVar('pnRender');
 
             $modid = ModUtil::getIdFromName('pnRender');
 
@@ -156,7 +156,7 @@ function theme_delete()
     }
 
     // delete all module variables
-    pnModDelVar('Theme');
+    ModUtil::delVar('Theme');
 
     // Deletion not allowed
     return false;

@@ -53,7 +53,7 @@ function smarty_function_selector_user_category($params, &$smarty)
                                                   $submit, $displayPath, $doReplaceRootCat, $multipleSize);
 
     if ($editLink && $allowUserEdit && UserUtil::isLoggedIn() && SecurityUtil::checkPermission( 'Categories::', "$category[id]::", ACCESS_EDIT)) {
-        $url = pnModURL ('Categories', 'user', 'edituser');
+        $url = ModUtil::url ('Categories', 'user', 'edituser');
         $html .= "&nbsp;&nbsp;<a href=\"$url\">" . __('Edit sub-categories') . '</a>';
     }
 

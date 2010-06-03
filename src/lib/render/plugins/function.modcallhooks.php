@@ -17,8 +17,8 @@
  *
  * This function calls a specific module function.  It returns whatever the return
  * value of the resultant function is if it succeeds.
- * Note that in contrast to the API function pnmodcallhooks you need not to load the
- * module with pnModLoad.
+ * Note that in contrast to the API function ModUtil::callHooks you need not to load the
+ * module with ModUtil::load.
  *
  *
  * Available parameters:
@@ -26,12 +26,12 @@
  * - 'hookaction' the action the hook is called for - one of 'create', 'delete', 'transform', or 'display'
  * - 'hookid'     the id of the object the hook is called for (module-specific)
  * - 'assign'     If set, the results are assigned to the corresponding variable instead of printed out
- * - all remaining parameters are passed to the pnModCallHooks API via the extrainfo array
+ * - all remaining parameters are passed to the ModUtil::callHooks API via the extrainfo array
  *
  * Example
- * <!--[pnmodcallhooks hookobject='item' hookaction='modify' hookid=$tid $modname='ThisModule' $objectid=$tid]-->
+ * <!--[ModUtil::callHooks hookobject='item' hookaction='modify' hookid=$tid $modname='ThisModule' $objectid=$tid]-->
  *
- * @see          function.pnmodcallhooks.php::smarty_function_modcallhooks()
+ * @see          function.ModUtil::callHooks.php::smarty_function_modcallhooks()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       string      the results of the module function
@@ -44,7 +44,7 @@ function smarty_function_modcallhooks($params, &$smarty)
     $hookobject = isset($params['hookobject']) ? $params['hookobject']    : null;
     $implode    = isset($params['implode'])    ? (bool)$params['implode'] : true;
 
-    // avoid sending these to pnModCallHooks
+    // avoid sending these to ModUtil::callHooks
     unset($params['hookobject']);
     unset($params['hookaction']);
     unset($params['hookid']);
@@ -52,11 +52,11 @@ function smarty_function_modcallhooks($params, &$smarty)
     unset($params['implode']);
 
     if (!$hookobject) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodcallhooks', 'hookobject')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::callHooks', 'hookobject')));
         return false;
     }
     if (!$hookaction) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnmodcallhooks', 'hookaction')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('ModUtil::callHooks', 'hookaction')));
         return false;
     }
     if (!$hookid) {

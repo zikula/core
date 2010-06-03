@@ -45,15 +45,15 @@ function smarty_block_secauthaction_block($params, $content, &$smarty)
 
     // check our input
     if (!isset($params['component'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_pnsecauthaction_block', 'component')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_SecurityUtil::checkPermission_block', 'component')));
         return false;
     }
     if (!isset($params['instance'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_pnsecauthaction_block', 'instance')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_SecurityUtil::checkPermission_block', 'instance')));
         return false;
     }
     if (!isset($params['level'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_pnsecauthaction_block', 'level')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_SecurityUtil::checkPermission_block', 'level')));
         return false;
     }
 

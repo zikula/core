@@ -23,7 +23,7 @@
  *               in the extrainfo array
  * Example
  *
- *   <!--[$MyVar|pnmodcallhooks]-->
+ *   <!--[$MyVar|ModUtil::callHooks]-->
  *
  * @param        array    $string     the contents to transform
  * @return       string   the modified output

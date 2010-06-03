@@ -181,7 +181,7 @@ class Mailer_Admin extends AbstractController
         $subject = (string)FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
         $body = (string)FormUtil::getPassedValue('body', isset($args['body']) ? $args['body'] : null, 'POST');
         $altBody = (string)FormUtil::getPassedValue('altbody', isset($args['altbody']) ? $args['altbody'] : null, 'POST');
-        $pnmail = (bool)FormUtil::getPassedValue('pnmail', isset($args['pnmail']) ? $args['pnmail'] : false, 'POST');
+        $System::mail = (bool)FormUtil::getPassedValue('System::mail', isset($args['System::mail']) ? $args['System::mail'] : false, 'POST');
         $html = (bool)FormUtil::getPassedValue('html', isset($args['html']) ? $args['html'] : false, 'POST');
 
         // confirm our forms authorisation key
@@ -190,9 +190,9 @@ class Mailer_Admin extends AbstractController
         }
 
         // set the email
-        if ($pnmail) {
+        if ($System::mail) {
             $from = System::getVar('adminmail');
-            $result = pnMail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html, $altBody);
+            $result = System::mail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html, $altBody);
         } else {
             $result = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                     array('toname' => $toname,

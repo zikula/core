@@ -120,7 +120,7 @@ class Permissions_Admin extends AbstractController
             $pnRender->assign('permgrp', PNPERMS_ALL);
         }
 
-        $accesslevels = SecurityUtil::accesslevelnames();
+        $accesslevels = SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames();
 
         $orderBy = "ORDER BY $permcolumn[sequence]";
         $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy, -1, -1, false);
@@ -210,7 +210,7 @@ class Permissions_Admin extends AbstractController
         $pnRender->assign('adminid', ModUtil::getVar('Permissions', 'adminid'));
 
         // Assign the permission levels
-        $pnRender->assign('permissionlevels', SecurityUtil::accesslevelnames());
+        $pnRender->assign('permissionlevels', SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames());
 
         return $pnRender->fetch('permissions_admin_view.htm');
     }
@@ -326,7 +326,7 @@ class Permissions_Admin extends AbstractController
         $pnRender = Renderer::getInstance('Permissions', false);
 
         // Assign the permission levels
-        $pnRender->assign('permissionlevels', SecurityUtil::accesslevelnames());
+        $pnRender->assign('permissionlevels', SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames());
 
         // Work out which tables to operate against, and
         // various other bits and pieces
@@ -346,7 +346,7 @@ class Permissions_Admin extends AbstractController
         $pnRender->assign('title', $viewperms);
         $pnRender->assign('mlpermtype', $mlpermtype);
 
-        $accesslevels = SecurityUtil::accesslevelnames();
+        $accesslevels = SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames();
         $numrows = count($objArray);
 
         $pnRender->assign('idvalues', $ids);

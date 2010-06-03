@@ -815,9 +815,9 @@ class UserUtil
      * - an attribute to the users table, either a new style sttribute or the old style user information
      *
      * Examples:
-     * pnUserDelVar('ublock');  // clears the recent users table entry for 'ublock'
-     * pnUserDelVar('_YOURAVATAR', 123), // removes a users avatar, old style (uid = 123)
-     * pnUserDelVar('avatar', 123);  // removes a users avatar, new style (uid=123)
+     * UserUtil::delVar('ublock');  // clears the recent users table entry for 'ublock'
+     * UserUtil::delVar('_YOURAVATAR', 123), // removes a users avatar, old style (uid = 123)
+     * UserUtil::delVar('avatar', 123);  // removes a users avatar, new style (uid=123)
      * (internally both the new style and the old style clear the same attribute)
      *
      * It does not allow the deletion of uid, email, uname and pass (word) as these are mandatory
@@ -971,7 +971,7 @@ class UserUtil
             return $theme;
         }
 
-        throw new RuntimeException(__('pnUserGetTheme: unable to calculate theme name.'));
+        throw new RuntimeException(__('UserUtil::getTheme: unable to calculate theme name.'));
     }
 
     private static function _themeEvent($themeName)

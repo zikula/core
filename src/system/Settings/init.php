@@ -54,7 +54,7 @@ function settings_init()
     System::setVar('startfunc', '');
     System::setVar('startargs', '');
     System::setVar('entrypoint', 'index.php');
-    pnConfigsetVar('language_detect', 0);
+    System::setVar('language_detect', 0);
     System::setVar('shorturls', false);
     System::setVar('shorturlstype', '0');
     System::setVar('shorturlsext', 'html');
@@ -100,12 +100,12 @@ function settings_upgrade($oldversion)
     switch ($oldversion)
     {
         case '2.5':
-            pnConfigDelVar('jsquicktags');
-            pnConfigDelVar('backend_title');
-            pnConfigDelVar('refereronprint');
-            pnConfigDelVar('storyorder');
-            pnConfigDelVar('backend_language');
-            pnConfigDelVar('site_logo');
+            System::delVar('jsquicktags');
+            System::delVar('backend_title');
+            System::delVar('refereronprint');
+            System::delVar('storyorder');
+            System::delVar('backend_language');
+            System::delVar('site_logo');
 
         case '2.6':
             System::setVar('updatelastchecked', 0);
@@ -124,10 +124,10 @@ function settings_upgrade($oldversion)
             System::setVar('permareplace', __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,s,a,A,o,O,u,U'));
 
         case '2.8':
-            pnConfigDelVar('dyn_keywords');
+            System::delVar('dyn_keywords');
         case '2.9':
         case '2.9.1':
-            pnConfigDelVar('timezone_info');
+            System::delVar('timezone_info');
         case '2.9.2':
             // future upgrade routines
     }

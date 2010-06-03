@@ -17,8 +17,8 @@
  *
  * This function obtains a server-specific variable from the system.
  *
- * Note that the results should be handled by the pnvarprepfordisplay of the
- * pnvarprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the DataUtil::formatForDisplay of the
+ * DataUtil::formatForDisplayHTML modifiers before being displayed.
  *
  *
  * Available parameters:
