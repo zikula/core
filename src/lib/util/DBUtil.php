@@ -534,7 +534,13 @@ class DBUtil
             $connection = DBConnectionStack::getConnection();
             foreach ($fields as $field) {
                 $options = self::getTableOptions($table);
-                $connection->export->alterTable($tableName, array('add' => array($field => $options)));
+                $definition = self::getTableDefinition($table);
+                if (!isset($definition[$field[0]])) {
+                    throw new InvalidArgumentException(__f('%1$s does not exist in table definition for %2$s.', array($field[0], $table)));
+                }
+                $def = $definition[$field[0]];
+
+                $connection->export->alterTable($tableName, array('add' => array($field[0] => $def)));
             }
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Column creation failed.') . ' ' . $e->getMessage());
@@ -552,7 +558,7 @@ class DBUtil
      *
      * @return boolean
      */
-    public static function dropColumn($table, array $fields)
+    public static function dropColumn($table, $fields)
     {
         if (empty($table)) {
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
@@ -565,9 +571,8 @@ class DBUtil
         if (!is_string($fields) && !is_array($fields)) {
             throw new Exception(__f('The parameter %s must be an array.', 'fields'));
         }
-        if (is_string($fields)) {
-            $fields = array($fields);
-        }
+        
+        $fields = (array)$fields;
         $arrayFields = array();
         foreach ($fields as $field) {
             $arrayFields[$field] = array();
@@ -2838,9 +2843,7 @@ class DBUtil
                 }
                 $ddict[$val] = $fieldDef;
             }
-            //if ($table == 'zws_coupon') {
-            //prayer ($ddict); exit();
-            //}
+
             return $ddict;
         } else {
             throw new Exception(__f('Neither the sql parameter nor the table structure contain the ADODB dictionary representation of table [%s] ...', $table));
