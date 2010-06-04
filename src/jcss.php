@@ -83,25 +83,42 @@ function is_serialized($string)
     return ($string == 'b:0;' ? true : (bool)@unserialize($string));
 }
 
-/**
- * Un-quotes a quoted string.
- *
- * This function Un-quotes a quoted string. Return is void, $value is
- * un-quoted by reference.
- *
- * @param string &$value String to un-quotes.
- *
- * @return void
- */
-function System::stripslashes(&$value)
-{
-    if (empty($value))
-        return;
 
-    if (!is_array($value)) {
-        $value = stripslashes($value);
-    } else {
-        array_walk($value, 'System::stripslashes');
+/**
+ * Class System fake.
+ *
+ * This is a  fake System class
+ *
+ * @package zikula
+ */
+class System
+{
+
+    /**
+     * Un-quotes a quoted string.
+     *
+     * This function Un-quotes a quoted string. Return is void, $value is
+     * un-quoted by reference.
+     *
+     * @param string &$value String to un-quotes.
+     *
+     * @return void
+     */
+    function stripslashes(&$value)
+    {
+        if (empty($value))
+            return;
+
+        if (!is_array($value)) {
+            $value = stripslashes($value);
+        } else {
+            array_walk($value, 'System::stripslashes');
+        }
+    }
+
+    public function isInstalling()
+    {
+        return (bool)defined('_ZINSTALLVER');
     }
 }
 
