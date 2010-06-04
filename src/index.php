@@ -107,6 +107,10 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
             } elseif ($e instanceof Zikula_Exception_Redirect) {
                 System::redirect($e->getUrl);
                 System::shutDown();
+            } elseif ($e instanceof Exception) {
+                // general catch all
+                 $httpCode = 500;
+                 $message = $e->getMessage();
             }
         }
 
