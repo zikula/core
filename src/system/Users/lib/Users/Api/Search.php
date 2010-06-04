@@ -87,7 +87,8 @@ class Users_Api_Search extends AbstractApi
         $where   = array();
         $where[] = "{$userscolumn['activated']} = " . UserUtil::ACTIVATED_ACTIVE;
 
-        $unameClause = search_construct_where($args,array($userscolumn['uname']));
+        $unameClause = Search_Api_User::construct_where($args, array($userscolumn['uname']));
+        
         // invoke the current profilemodule search query
         if ($useProfileMod) {
             $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata',
