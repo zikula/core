@@ -90,7 +90,9 @@ class Search_User extends AbstractController
                 // and formatting it here according with the module's template
                 // we have also to provide some trick to assure the 'backward compatibility'
 
-                $plugin_options[$mods['title']] = ModUtil::apiFunc($mods['title'], 'search', 'options', $vars);
+                if (isset($mods['title'])) {
+                    $plugin_options[$mods['title']] = ModUtil::apiFunc($mods['title'], 'search', 'options', $vars);
+                }
             }
 
             $pnRender->renderDomain = $domain;
