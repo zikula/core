@@ -71,31 +71,47 @@ if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name']))
     System::shutdown();
 }
 
-if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-    // New-new style of loading modules
-    if (!isset($arguments)) {
-        $arguments = array();
+// New-new style of loading modules
+if (!isset($arguments)) {
+    $arguments = array();
+}
+
+// we need to force the mod load if we want to call a modules interactive init
+// function because the modules is not active right now
+$force_modload = ($type=='init') ? true : false;
+$type = (empty($type)) ? $type = 'user' : $type;
+$func = (empty($func)) ? $func = 'main' : $func;
+$return = ModUtil::load($modinfo['name'], $type, $force_modload);
+$httpCode = 404;
+
+if ($return) {
+    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        $dbConn = System::dbGetConn(true);
+        $dbConn->beginTransaction();
     }
 
-    // we need to force the mod load if we want to call a modules interactive init
-    // function because the modules is not active right now
-    $force_modload = ($type=='init') ? true : false;
-    if (empty($type)) $type = 'user';
-    if (empty($func)) $func = 'main';
-    if (ModUtil::load($modinfo['name'], $type, $force_modload)) {
-        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            $dbConn = System::dbGetConn(true);
-            $dbConn->StartTrans();
+    $return = false;
+    $message = '';
+    $debug = null;
+
+    try {
+        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+        if (!$return) {
+            // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
+            throw new Zikula_Exception_NotFound(__('Page not found.'));
         }
+        $httpCode = 200;
 
-        $return = false;
-        $httpCode = 404;
-        $message = '';
-        $debug = null;
-
-        try {
-            $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
-        } catch (Zikula_Exception $e) {
+        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+            $dbConn->commit();
+        }
+    } catch (Exception $e) {
+        $event = new Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+        EventManagerUtil::notifyUntil($event);
+        if ($event->hasNotified()) {
+            $httpCode = $event['httpcode'];
+            $message = $event['message'];
+        } else {
             if ($e instanceof Zikula_Exception_NotFound) {
                 $httpCode = 404;
                 $message = $e->getMessage();
@@ -107,53 +123,39 @@ if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYP
             } elseif ($e instanceof Zikula_Exception_Redirect) {
                 System::redirect($e->getUrl);
                 System::shutDown();
+            } elseif ($e instanceof PDOException) {
+                $httpCode = 500;
+                $message = $e->getMessage();
+                if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+                    $return = __('Error! The transaction failed. Transaction rolled back.') . $return;
+                    $dbConn->rollback();
+                } else {
+                    $return = __('Error! The transaction failed.') . $return;
+                }
             } elseif ($e instanceof Exception) {
                 // general catch all
-                 $httpCode = 500;
-                 $message = $e->getMessage();
+                $httpCode = 500;
+                $message = $e->getMessage();
             }
-        }
-
-        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            if ($dbConn->HasFailedTrans()) {
-                $return = __('Error! The transaction failed. Please perform a rollback.') . $return;
-            }
-            $dbConn->CompleteTrans();
-        }
-    } else {
-        $return = false;
-    }
-
-    // Sort out return of function.  Can be
-    // true - finished
-    // false - display error msg
-    // text - return information
-    if ($return !== true) {
-        if ($return === false) {
-            // check for existing errors or set a generic error
-            if (!LogUtil::hasErrors()) {
-                 LogUtil::registerError(__f("Could not load the '%s' module (at '%s' function). %s", array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
-            }
-            echo ModUtil::func('Errors', 'user', 'main');
-        } elseif (is_string($return) && strlen($return) > 1) {
-            // Text
-            echo $return;
-        } elseif (is_array($return)) {
-            $renderer = Renderer::getInstance($modinfo['name']);
-            $renderer->assign($return);
-            if (isset($return['template'])) {
-                echo $renderer->fetch($return['template']);
-            } else {
-                $modname = strtolower($modinfo['name']);
-                $type = strtolower($type);
-                $func = strtolower($func);
-                echo $renderer->fetch("{$modname}_{$type}_{$func}.htm");
-            }
-        } else {
-            LogUtil::registerError(__f('The \'%1$s\' module returned at the \'%2$s\' function. %s', array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
-            echo ModUtil::func('Errors', 'user', 'main');
         }
     }
+}
+
+switch (true)
+{
+    case ($return === false):
+        if (!LogUtil::hasErrors()) {
+            LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
+        }
+        echo ModUtil::func('Errors', 'user', 'main');
+        break;
+    case ($httpCode == 200):
+        echo $return;
+        break;
+    default:
+        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
+        echo ModUtil::func('Errors', 'user', 'main');
+        break;
 }
 
 Theme::getInstance()->themefooter();

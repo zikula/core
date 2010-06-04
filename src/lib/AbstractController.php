@@ -25,6 +25,6 @@ abstract class AbstractController extends AbstractBase
             return $event->getData();
         }
 
-        throw new BadMethodCallException(__f('%1$s::%2$s() does not exist in %1$s', array(get_class($this), $method)));
+        throw new Zikula_Exception_NotFound(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
     }
 }
