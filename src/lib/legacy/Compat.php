@@ -3453,3 +3453,16 @@ function pnThemeGetThemesTable()
 
     return ThemeUtil::getThemesTable();
 }
+
+function search_construct_where($args, $fields, $mlfield = null)
+{
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('search_construct_where()', 'Search_Api_User::construct_where()')), 'STRICT');
+    return Search_Api_User::construct_where($args, $fields, $mlfield);
+
+}
+
+function search_split_query($q, $dbwildcard = true)
+{
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('search_split_query()', 'Search_Api_User::split_query()')), 'STRICT');
+    return Search_Api_User::split_query($q, $dbwildcard);
+}

@@ -360,7 +360,7 @@ class Search_Api_User extends AbstractApi
 * @param string $dbwildcard wrap each word in a DB wildcard character (%)
 * @return array an array of words optionally surrounded by '%'
     */
-    function search_split_query($q, $dbwildcard = true)
+    public static function split_query($q, $dbwildcard = true)
     {
         if (!isset($q)) {
             return;
@@ -385,7 +385,7 @@ class Search_Api_User extends AbstractApi
 * Contruct part of a where clause out of the supplied search parameters
 *
     */
-    function search_construct_where($args, $fields, $mlfield = null)
+    public static function construct_where($args, $fields, $mlfield = null)
     {
         $where = '';
 
@@ -460,7 +460,7 @@ class search_result_checker
     var $search_modules = array();
 
 
-    function search_result_checker($search_modules)
+    function __construct($search_modules)
     {
         $this->search_modules = $search_modules;
     }
