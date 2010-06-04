@@ -110,6 +110,11 @@ function smarty_function_button($params, &$smarty)
     } else {
         $class = '';
     }
+    if (isset($params['text'])) {
+        $text = DataUtil::formatForDisplay($params['text']);
+    } else {
+        $text = '';
+    }
 
     $title = (isset($params['title']) ? $params['title'] : '');
     $alt = (isset($params['alt']) ? $params['alt'] : '');
@@ -124,7 +129,7 @@ function smarty_function_button($params, &$smarty)
         $return = '<button'.$id.$class.' type="'.DataUtil::formatForDisplay($type).
         '"'.$name.$value.' title="'.DataUtil::formatForDisplay($title).'"><img src="'.
         DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).
-        '" /></button>';
+        '" />'.$text.'</button>';
     } else {
         $return = '<input'.$id.$class.' type="image"'.$name.$value.' title="'.
         DataUtil::formatForDisplay($title).'" src="'.DataUtil::formatForDisplay($imgsrc).

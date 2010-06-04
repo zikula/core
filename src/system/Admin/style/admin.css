@@ -2,7 +2,7 @@
 Admin interface stylesheet
 
 This stylesheet implements a set of styles used throughout the admin interface
-of Zikula allowing the site administrator to configure via standard css 
+of Zikula allowing the site administrator to configure via standard css
 techniques the presentation of the admin interface.
 
 Themers can create a theme specific version of this stylesheet by creating a
@@ -89,13 +89,6 @@ div.z-adminbox a.z-disabledadminlink {
 /* styling for noscript category propertly selector label */
 div.property_selector_noscript {
     display: inline;
-}
-
-/* style the button tag */
-div.z-admincontainer button {
-    border: 0px;
-    padding: 0px;
-    background-color: transparent;
 }
 
 /******************************************************************************/

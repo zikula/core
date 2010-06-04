@@ -339,7 +339,7 @@ table.z-datatable ul {
 .z-form .z-formrow input,
 .z-form .z-formrow textarea,
 .z-form .z-formrow select {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
     border: 1px solid #ddd;
     font-size: 1em;
     margin: 0;
@@ -779,4 +779,133 @@ div.z-formbuttons button {
 .z-icon-es-cubes {
     background:url("../images/icons/extrasmall/kcmdf.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
+}
+
+/******************************************************************************/
+/* Buttons styles
+/******************************************************************************/
+
+.z-buttons a,
+.z-buttons button {
+    display: inline-block;
+    margin:0 7px 0 0;
+    font-size: 1em;
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    line-height:130%;
+    text-decoration:none;
+    font-weight:bold;
+    cursor:pointer;
+    padding:5px 10px 6px 7px;
+    color: #565656;
+    border-color:#DDDDDD #CDCDCD #CDCDCD #DDDDDD;
+    border-right:1px solid #CDCDCD;
+    border-style:solid;
+    border-width:1px;
+    background: #f5f5f5;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
+    background: -moz-linear-gradient(top,  #F5F5F5, #dedede);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
+}
+
+.z-buttons button:hover,
+.z-buttons a:hover {
+    text-decoration: none;
+    background: #616161;
+    background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5));
+    background: -moz-linear-gradient(top,  #dedede, #F5F5F5);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#F5F5F5');
+}
+.z-buttons button:active,
+.z-buttons a:active {
+    background: #d0d0d0;
+    background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0));
+    background: -moz-linear-gradient(top,  #d0d0d0, #f0f0f0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d0d0d0', endColorstr='#f0f0f0');
+}
+
+.z-buttons button {
+    width:auto;
+    overflow:visible;
+    padding:4px 10px 3px 7px; /* IE6 */
+}
+.z-buttons button[type] {
+    padding:5px 10px 5px 7px; /* Firefox */
+    line-height:17px; /* Safari */
+}
+*:first-child+html button[type] {
+    padding:4px 10px 3px 7px; /* IE7 */
+}
+.z-buttons button img,
+.z-buttons a img {
+    margin:0 5px -3px 0 !important;
+    padding:0;
+    border:none;
+    height:16px;
+    width:16px;
+}
+.z-buttons a img {
+    margin-right:1px!important;
+}
+
+/* colored button: light red */
+.z-buttons .z-btred {
+    color: #d12f19;
+    background: #fbe3e4;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fbe3e4), to(#fbc2c4));
+    background: -moz-linear-gradient(top,  #fbe3e4, #fbc2c4);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbe3e4', endColorstr='#fbc2c4');
+}
+.z-buttons .z-btred:hover {
+    background: #fbc2c4;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fbc2c4), to(#fbe3e4));
+    background: -moz-linear-gradient(top,  #fbc2c4, #fbe3e4);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbc2c4', endColorstr='#fbe3e4');
+}
+.z-buttons .z-btred:active {
+    background: #EFA4A7;
+    background: -webkit-gradient(linear, left top, left bottom, from(#EFA4A7), to(#EFC2C5));
+    background: -moz-linear-gradient(top,  #EFA4A7, #EFC2C5);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EFA4A7', endColorstr='#EFC2C5');
+}
+
+/* colored button: light blue */
+.z-buttons .z-btblue {
+    color: #336699;
+    background: #dff4ff;
+    background: -webkit-gradient(linear, left top, left bottom, from(#dff4ff), to(#c2e1ef));
+    background: -moz-linear-gradient(top,  #dff4ff, #c2e1ef);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dff4ff', endColorstr='#c2e1ef');
+}
+.z-buttons .z-btblue:hover {
+    background: #c2e1ef;
+    background: -webkit-gradient(linear, left top, left bottom, from(#c2e1ef), to(#dff4ff));
+    background: -moz-linear-gradient(top,  #c2e1ef, #dff4ff);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c2e1ef', endColorstr='#dff4ff');
+}
+.z-buttons .z-btblue:active {
+    background: #A7CEDF;
+    background: -webkit-gradient(linear, left top, left bottom, from(#A7CEDF), to(#C2E0EF));
+    background: -moz-linear-gradient(top,  #A7CEDF, #C2E0EF);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A7CEDF', endColorstr='#C2E0EF');
+}
+
+/* colored button: light green */
+.z-buttons .z-btgreen {
+    color: #529214;
+    background: #EFFFEF;
+    background: -webkit-gradient(linear, left top, left bottom, from(#EFFFEF), to(#D1EFD2));
+    background: -moz-linear-gradient(top,  #EFFFEF, #D1EFD2);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EFFFEF', endColorstr='#D1EFD2');
+}
+.z-buttons .z-btgreen:hover {
+    background: #D1EFD2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D1EFD2), to(#EFFFEF));
+    background: -moz-linear-gradient(top,  #D1EFD2, #EFFFEF);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D1EFD2', endColorstr='#EFFFEF');
+}
+.z-buttons .z-btgreen:active {
+    background-color:#C2EFC3;
+    background: -webkit-gradient(linear, left top, left bottom, from(#C2EFC3), to(#D1EFD1));
+    background: -moz-linear-gradient(top,  #C2EFC3, #D1EFD1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C2EFC3', endColorstr='#D1EFD1');
 }
