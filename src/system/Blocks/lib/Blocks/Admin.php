@@ -433,18 +433,14 @@ class Blocks_Admin extends AbstractController
         }
 
         // Do block-specific update
-        $usname = preg_replace('/ /', '_', $modinfo['name']);
-        if (is_object($blockObj)) {
-            $updatefunc = array($blockObj, 'update');
+        if (is_object($blockObj) && method_exists($blockObj, 'update')) {
+            $blockinfo = call_user_func(array($blockObj, 'update'), $blockinfo);
         } else {
+            $usname = preg_replace('/ /', '_', $modinfo['name']);
             $updatefunc = $usname . '_' . $blockinfo['bkey'] . 'block_update';
-        }
-
-        $blockoutput = '';
-        if (is_array($updatefunc)) {
-            $blockinfo = call_user_func($updatefunc, $blockinfo);
-        } elseif (function_exists($updatefunc)) {
-            $blockinfo = $updatefunc($blockinfo);
+            if (function_exists($updatefunc)) {
+                $blockinfo = $updatefunc($blockinfo);
+            }
         }
 
         if (!$blockinfo) {
