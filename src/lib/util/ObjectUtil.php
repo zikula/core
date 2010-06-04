@@ -1167,9 +1167,11 @@ class ObjectUtil
 
         // use the cagtegory map created previously to build the object category array
         foreach ($objArray as $k => $obj) {
-            foreach ($obj['__CATEGORIES__'] as $prop => $cat) {
-                $data[$cat]['path'] = str_replace('__SYSTEM__', __('Root Category'), $data[$cat]['path']);
-                $objArray[$k]['__CATEGORIES__'][$prop] = $data[$cat];
+            if (isset($obj['__CATEGORIES__'])) {
+                foreach ($obj['__CATEGORIES__'] as $prop => $cat) {
+                    $data[$cat]['path'] = str_replace('__SYSTEM__', __('Root Category'), $data[$cat]['path']);
+                    $objArray[$k]['__CATEGORIES__'][$prop] = $data[$cat];
+                }
             }
         }
 
