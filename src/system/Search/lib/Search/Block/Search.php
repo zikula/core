@@ -10,7 +10,7 @@
  * @subpackage Blocks
  */
 
-class Search_Block extends AbstractBlock
+class Search_Block_Search extends AbstractBlock
 {
     /**
      * initialise block
