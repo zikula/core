@@ -47,6 +47,7 @@
  *                          for the input element. (optional)
  *  - title     (string)    if set, the value for the title attribute of the
  *                          button or input element. (optional)
+ *  - text      (string)    if set, the button tag surrounds this string
  *  - assign    (string)    If set, the results are assigned to the corresponding
  *                          template variable instead of being returned to the template (optional)
  *
