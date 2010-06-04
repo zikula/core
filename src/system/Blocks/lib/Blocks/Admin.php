@@ -299,29 +299,16 @@ class Blocks_Admin extends AbstractController
         $pnRender->assign('block_positions', $block_positions);
 
         // Block-specific
-
-        // New way
-        $usname = preg_replace('/ /', '_', $modinfo['name']);
-        if (is_object($blockObj)) {
-            $modfunc = array($blockObj, 'modify');
-        } else {
-            $modfunc = $usname . '_' . $blockinfo['bkey'] . 'block_modify';
-        }
-
         $blockoutput = '';
-        if (is_array($modfunc)) {
-            $blockoutput = call_user_func($modfunc, $blockinfo);
-        } elseif (function_exists($modfunc)) {
-            $blockoutput = $modfunc($blockinfo);
-        }// else {
-//            // Old way
-//            $blocks_modules = $GLOBALS['blocks_modules'][$blockinfo['mid']];
-//            if (!empty($blocks_modules[$blockinfo['bkey']]) && !empty($blocks_modules[$blockinfo['bkey']]['func_edit'])) {
-//                if (function_exists($blocks_modules[$blockinfo['bkey']]['func_edit'])) {
-//                    $blockoutput = $blocks_modules[$blockinfo['bkey']]['func_edit'](array_merge($_GET, $_POST, $blockinfo));
-//                }
-//            }
-//        }
+        if ($blockObj instanceof AbstractBlock) {
+            $blockoutput = call_user_func(array($blockObj, 'modify'), $blockinfo);
+        } else {
+            $usname = preg_replace('/ /', '_', $modinfo['name']);
+            $updatefunc = $usname . '_' . $blockinfo['bkey'] . 'block_modify';
+            if (function_exists($updatefunc)) {
+                $blockoutput = $updatefunc($blockinfo);
+            }
+        }
 
         // the blocks will have reset the renderDomain property (bad singleton design) - drak
         $pnRender->renderDomain = null;
@@ -433,7 +420,7 @@ class Blocks_Admin extends AbstractController
         }
 
         // Do block-specific update
-        if (is_object($blockObj) && method_exists($blockObj, 'update')) {
+        if ($blockObj instanceof AbstractBlock) {
             $blockinfo = call_user_func(array($blockObj, 'update'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);

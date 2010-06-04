@@ -17,6 +17,22 @@
  */
 abstract class AbstractBlock extends AbstractBase
 {
+    abstract public function init();
+
+    abstract public function info();
+
+    abstract public function display($blockinfo);
+
+    public function modify($blockinfo)
+    {
+        return '';
+    }
+
+    public function update($blockinfo)
+    {
+        return $blockinfo;
+    }
+
     public function __call($method, $args)
     {
         $event = new Event('block.method_not_found', $this, array('method' => $method, 'args' => $args));
