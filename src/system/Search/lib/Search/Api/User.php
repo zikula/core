@@ -398,7 +398,7 @@ class Search_Api_User extends AbstractApi
             $q = str_replace('%', '\\%', $q);  // Don't allow user input % as wildcard
             $where .= ' (';
             if ($args['searchtype'] !== 'EXACT') {
-                $searchwords = Search_Api_User::split_query($q);
+                $searchwords = self::split_query($q);
                 $connector = $args['searchtype'] == 'AND' ? ' AND ' : ' OR ';
             } else {
                 $searchwords = array("%{$q}%");
