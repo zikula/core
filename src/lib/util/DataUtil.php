@@ -461,35 +461,23 @@ class DataUtil
         if (!isset($permalinksseparator)) {
             $permalinksseparator = System::getVar('shorturlsseparator');
         }
+
         $var = strip_tags($var);
         $var = preg_replace("/&[#a-zA-Z0-9]+;|\?/", '', $var); // remove &....; and ?
         $var = strtr($var, ' ', $permalinksseparator); //words separation
 
+        $permasearch = explode(',', System::getVar('permasearch'));
+        $permareplace = explode(',', System::getVar('permareplace'));
 
-        if (strpos(strtolower(ZLanguage::getEncoding()), 'utf') === false) {
-            // accents deletion
-            $permasearch = explode(',', System::getVar('permasearch'));
-            $permareplace = explode(',', System::getVar('permareplace'));
-            $var = str_replace($permasearch, $permareplace, $var);
-            // repeated separator
-            $var = str_replace($permalinksseparator . $permalinksseparator . $permalinksseparator, $permalinksseparator, $var);
-            // final clean
-            $var = preg_replace("/[^a-z0-9_{$permalinksseparator}]/i", '', $var);
-            $var = trim($var, $permalinksseparator);
-        } else {
-            $res = ini_get('mbstring.func_overload');
-            if ($res < 4) {
-                // any mb charsets and permalinks won't work
-                // add: PHP_VALUE mbstring.func_overload 6
-                // to your .htaccess or php.ini file
-                // sure, a hack - needs to be replaced with a more generic check
-                if (System::getVar('shorturls') && ZLanguage::getLanguageCode() == 'ja') {
-                    $msg = __("Error! Place 'PHP_VALUE mbstring.func_overload 4' in your server's '.htaccess' server configuration file or 'php.ini' PHP configuration file. Short URLs will not work unless you do so.");
-                    LogUtil::registerError($msg);
-                }
-            }
-            $var = preg_replace("/[[:space:]]/", $permalinksseparator, $var);
+        // replace all chars $permasearch with the one in $permareplace
+        foreach($permasearch as $key => $value) {
+             $var = mb_ereg_replace("[$value]", $permareplace[$key], $var);
         }
+
+        // final clean
+        $var = mb_ereg_replace("[^a-z0-9_{$permalinksseparator}]", '', $var, "imsr");
+        $var = trim($var, $permalinksseparator);
+
         return $var;
     }
 
