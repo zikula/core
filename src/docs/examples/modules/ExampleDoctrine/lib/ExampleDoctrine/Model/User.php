@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class ExampleDoctrine_Model_User extends Zikula_Record
+class ExampleDoctrine_Model_User extends Doctrine_Record
 {
     public function setTableDefinition()
     {
