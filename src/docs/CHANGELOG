@@ -145,6 +145,7 @@ Fixed issue with system vars and modvars that prevented retrieval of a stored NU
 Added exception support in front controller and module controllers.
 Removed core hack for AdvMailer module, use mailer.sendmessage events instead.
 Removed core hack for MultiHook module, use theme.init events instead.
+Added const render plugin and modifier to allow class constants in templates.
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
