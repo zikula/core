@@ -1,0 +1,46 @@
+NOTES ON USING DOCTRINE
+-----------------------
+1.  It is not necessary to loadModels() except in specific conditions when it is
+required.  Registering the module namespace (which happens automatically) is
+enough.  This is the main advantage of using the PEAR class/file naming scheme.
+
+2.  Models are required to tell Doctrine about the structure of a table.  But they
+also allow additional behavior.
+
+Rather than reading the entire Doctrine manual, we refer to certain things you need
+to know about.
+
+
+BASICS
+------
+Defining Models:
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/defining-models/en
+Please note the documentation often omits $this->setTableName('groups') in the
+setTableDefinition() method.  This is required.
+
+Working with Models:
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/working-with-models/en
+
+DQL
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/dql-doctrine-query-language/en
+
+
+OPTIONAL BUT RECOMMENDED TOPICS
+-------------------------------
+Validation:
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/data-validation/en
+
+Behaviours:
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/behaviors/en
+
+Search:
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/searching/en
+
+
+ADVANCED TOPICS
+---------------
+Caching:
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/caching/en
+
+Event Listeners:
+http://www.doctrine-project.org/projects/orm/1.2/docs/manual/event-listeners/en
