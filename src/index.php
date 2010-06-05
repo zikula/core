@@ -121,7 +121,7 @@ if ($return) {
                 $message = $e->getMessage();
                 $debug = $e->getDebug();
             } elseif ($e instanceof Zikula_Exception_Redirect) {
-                System::redirect($e->getUrl);
+                System::redirect($e->getUrl, array(), $e->getType());
                 System::shutDown();
             } elseif ($e instanceof PDOException) {
                 $httpCode = 500;

@@ -650,7 +650,7 @@ class System
      * @param array $addtionalheaders array of header strings to send with redirect
      * @returns bool true if redirect successful, false otherwise
      */
-    public static function redirect($redirecturl, $additionalheaders = array())
+    public static function redirect($redirecturl, $additionalheaders = array(), $type = 302)
     {
         // very basic input validation against HTTP response splitting
         $redirecturl = str_replace(array(
@@ -686,6 +686,10 @@ class System
             // Get base URL and append it to our redirect url
             $baseurl = System::getBaseUrl();
             $redirecturl = $baseurl . $redirecturl;
+        }
+        $protocol = System::serverGetVar('SERVER_PROTOCOL');
+        if ($type == 301) {
+            header("{$protocol} 301 Moved Permanently");
         }
         header("Location: $redirecturl");
         return true;
