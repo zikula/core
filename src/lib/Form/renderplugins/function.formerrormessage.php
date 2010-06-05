@@ -29,7 +29,7 @@
  *      $data = $render->getValues();
  *      if (... something is wrong ...)
  *      {
- *        $errorPlugin = $render->GetPluginById('MyPluginId');
+ *        $errorPlugin = $render->getPluginById('MyPluginId');
  *        $errorPlugin->message = 'Something happend';
  *        return false;
  *      }

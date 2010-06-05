@@ -18,7 +18,7 @@
  * This is the base class to inherit from when creating your own form handlers.
  *
  * Member variables in a form handler object is persisted accross different page requests. This means
- * a member variable $this->X can be set on one request and on the next request it will still contain
+ * a member variable $this->x can be set on one request and on the next request it will still contain
  * the same value.
  *
  * A form handler will be notified of various events that happens during it's life-cycle.

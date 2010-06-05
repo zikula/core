@@ -94,7 +94,7 @@ class Form_Plugin_Label extends Form_StyledPlugin
 
     function postRender(&$render)
     {
-        $plugin = & $render->GetPluginById($this->for);
+        $plugin = & $render->getPluginById($this->for);
         if ($plugin != null) {
             $plugin->myLabel = $render->translateForDisplay($this->text, ($this->html == 1) ? false : true);
             //echo "Set label '$this->text' on $plugin->id. ";

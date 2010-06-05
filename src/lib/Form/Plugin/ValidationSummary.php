@@ -29,7 +29,7 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
 
     function render(&$render)
     {
-        $validators = & $render->Validators;
+        $validators = & $render->validators;
         $html = '';
         foreach ($validators as $validator) {
             if (!$validator->isValid) {

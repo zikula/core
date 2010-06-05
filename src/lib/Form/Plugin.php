@@ -20,13 +20,13 @@
  * the pnForm framewith with the use of {@link pnFormRender::pnFormRegisterPlugin()}.
  *
  * Member variables in a plugin object is persisted accross different page requests. This means
- * a member variable $this->X can be set on one request and on the next request it will still contain
+ * a member variable $this->x can be set on one request and on the next request it will still contain
  * the same value. This probably removes 99% of the use of hidden HTML variables in your web forms.
  * A member variable <i>must</i> be declared in order to be persisted:
  * <code>
  * class MyPlugin inherits pnFormPlugin
  * {
- *    var $X;
+ *    var $x;
  * }
  * </code>
  *
@@ -35,7 +35,7 @@
  * <code>
  * class MyPlugin inherits pnFormPlugin
  * {
- *    var $X;
+ *    var $y;
  * }
  * </code>
  *
@@ -323,7 +323,7 @@ class Form_Plugin
     {
         if ($this->onDataBound != null) {
             $dataBoundHandlerName = $this->onDataBound;
-            $render->EventHandler->$dataBoundHandlerName($render, $this, $params);
+            $render->eventHandler->$dataBoundHandlerName($render, $this, $params);
         }
     }
 

@@ -37,7 +37,7 @@ class Form_Render extends Renderer
      * @var array
      * @internal
      */
-    public $State;
+    public $state;
 
     /**
      * List of included files required to recreate plugins (Smarty function.xxx.php files).
@@ -61,7 +61,7 @@ class Form_Render extends Renderer
      * @var array
      * @internal
      */
-    public $BlockStack;
+    public $blockStack;
 
     /**
      * List of validators on page.
@@ -136,18 +136,18 @@ class Form_Render extends Renderer
         array_push($this->plugins_dir, "lib/Form/renderplugins");
 
         // Setup
-        $this->IdCount = 1;
-        $this->ErrorMsgSet = false;
-        $this->Plugins = array();
-        $this->BlockStack = array();
-        $this->Redirected = false;
+        $this->idCount = 1;
+        $this->errorMsgSet = false;
+        $this->plugins = array();
+        $this->blockStack = array();
+        $this->redirected = false;
 
-        $this->Validators = array();
-        $this->ValidationChecked = false;
-        $this->_IsValid = null;
+        $this->validators = array();
+        $this->validationChecked = false;
+        $this->_isValid = null;
 
         $this->initializeState();
-        $this->InitializeIncludes();
+        $this->initializeIncludes();
     }
 
     /** Main event loop handler.
@@ -162,7 +162,7 @@ class Form_Render extends Renderer
     public function execute($template, &$eventHandler)
     {
         // Save handler for later use
-        $this->EventHandler = &$eventHandler;
+        $this->eventHandler = &$eventHandler;
 
         if ($this->isPostBack()) {
             if (!SecurityUtil::confirmAuthKey())
@@ -197,7 +197,7 @@ class Form_Render extends Renderer
         // Check redirection at this point, ignore any generated HTML if redirected is required.
         // We cannot skip HTML generation entirely in case of System::redirect since there might be
         // some relevant code to execute in the plugins.
-        if ($this->Redirected) {
+        if ($this->redirected) {
             return true;
         }
 
@@ -242,25 +242,25 @@ class Form_Render extends Renderer
         // Make sure we have a suitable ID for the plugin
         $id = $this->getPluginId($params);
 
-        $stackCount = count($this->BlockStack);
+        $stackCount = count($this->blockStack);
 
         // A volatile block is a block that cannot be restored through view state
         // This is the case for pnForm plugins inside <!--[if]--> and <!--[foreach]--> tags.
         // So create new plugins for these blocks instead of relying on the existing plugins.
 
 
-        if (!$this->isPostBack() || $stackCount > 0 && $this->BlockStack[$stackCount - 1]->volatile) {
+        if (!$this->isPostBack() || $stackCount > 0 && $this->blockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
 
             // Make sure to store ID and render reference in plugin
             $plugin->id = $id;
 
             if ($stackCount > 0) {
-                $plugin->parentPlugin = &$this->BlockStack[$stackCount - 1];
-                $this->BlockStack[$stackCount - 1]->registerPlugin($this, $plugin);
+                $plugin->parentPlugin = &$this->blockStack[$stackCount - 1];
+                $this->blockStack[$stackCount - 1]->registerPlugin($this, $plugin);
             } else {
                 // Store plugin for later reference
-                $this->Plugins[] = $plugin;
+                $this->plugins[] = $plugin;
             }
 
             // Copy parameters to member variables and attribute set
@@ -270,12 +270,12 @@ class Form_Render extends Renderer
 
             // Remember which file this plugin came from in order to be able to restore it.
             $pluginPath = str_replace(realpath(dirname(__FILE__) . '/..') . DIRECTORY_SEPARATOR, '', $plugin->getFilename());
-            $this->Includes[$pluginPath] = 1;
+            $this->includes[$pluginPath] = 1;
 
         } else {
             // Fetch plugin instance by ID
             // It has already got it's initialize and decode event at this point
-            $plugin = & $this->GetPluginById($id);
+            $plugin = & $this->getPluginById($id);
 
             // Kill existing plugins beneath a volatile block
             if (isset($plugin->volatile) && $plugin->volatile) {
@@ -286,7 +286,7 @@ class Form_Render extends Renderer
         $plugin->dataBound($this, $params);
 
         if ($isBlock) {
-            $this->BlockStack[] = $plugin;
+            $this->blockStack[] = $plugin;
         }
 
         // Ask plugin to render itself
@@ -343,7 +343,7 @@ class Form_Render extends Renderer
     public function registerBlockBegin($pluginName, &$params)
     {
         $output = $this->registerPlugin($pluginName, $params, true);
-        $plugin = &$this->BlockStack[count($this->BlockStack) - 1];
+        $plugin = &$this->blockStack[count($this->blockStack) - 1];
         $plugin->blockBeginOutput = $output;
     }
 
@@ -354,8 +354,8 @@ class Form_Render extends Renderer
      */
     public function registerBlockEnd($pluginName, &$params, $content)
     {
-        $plugin = &$this->BlockStack[count($this->BlockStack) - 1];
-        array_pop($this->BlockStack);
+        $plugin = &$this->blockStack[count($this->blockStack) - 1];
+        array_pop($this->blockStack);
 
         if ($plugin->visible) {
             $output = $plugin->blockBeginOutput . $plugin->renderContent($this, $content) . $plugin->renderEnd($this);
@@ -374,7 +374,7 @@ class Form_Render extends Renderer
     public function getPluginId(&$params)
     {
         if (!isset($params['id'])) {
-            return 'plg' . ($this->IdCount++);
+            return 'plg' . ($this->idCount++);
         }
 
         return $params['id'];
@@ -385,11 +385,11 @@ class Form_Render extends Renderer
      *
      * @param intiger $id Plugin ID.
      */
-    public function &GetPluginById($id)
+    public function &getPluginById($id)
     {
-        $lim = count($this->Plugins);
+        $lim = count($this->plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            $plugin = $this->getPluginById_rec($this->Plugins[$i], $id);
+            $plugin = $this->getPluginById_rec($this->plugins[$i], $id);
             if ($plugin != null) {
                 return $plugin;
             }
@@ -470,7 +470,7 @@ class Form_Render extends Renderer
      */
     public function addValidator(&$validator)
     {
-        $this->Validators[] = &$validator;
+        $this->validators[] = &$validator;
     }
 
     /**
@@ -481,7 +481,7 @@ class Form_Render extends Renderer
      */
     public function isValid()
     {
-        if (!$this->ValidationChecked) {
+        if (!$this->validationChecked) {
             $this->validate();
         }
 
@@ -489,13 +489,13 @@ class Form_Render extends Renderer
     }
 
     /**
-     * GetValidators.
+     * getValidators.
      *
      * @return array Array of all Validators.
      */
-    public function &GetValidators()
+    public function &getValidators()
     {
-        return $this->Validators;
+        return $this->validators;
     }
 
     /**
@@ -506,13 +506,13 @@ class Form_Render extends Renderer
     {
         $this->_IsValid = true;
 
-        $lim = count($this->Validators);
+        $lim = count($this->validators);
         for ($i = 0; $i < $lim; ++$i) {
-            $this->Validators[$i]->validate($this);
-            $this->_IsValid = $this->_IsValid && $this->Validators[$i]->isValid;
+            $this->validators[$i]->validate($this);
+            $this->_IsValid = $this->_IsValid && $this->validators[$i]->isValid;
         }
 
-        $this->ValidationChecked = true;
+        $this->validationChecked = true;
     }
 
     /**
@@ -523,9 +523,9 @@ class Form_Render extends Renderer
     {
         $this->_IsValid = true;
 
-        $lim = count($this->Validators);
+        $lim = count($this->validators);
         for ($i = 0; $i < $lim; ++$i) {
-            $this->Validators[$i]->clearValidation($this);
+            $this->validators[$i]->clearValidation($this);
         }
     }
 
@@ -533,16 +533,16 @@ class Form_Render extends Renderer
 
     public function setState($region, $varName, &$varValue)
     {
-        if (!isset($this->State[$region])) {
-            $this->State[$region] = array();
+        if (!isset($this->state[$region])) {
+            $this->state[$region] = array();
         }
 
-        $this->State[$region][$varName] = &$varValue;
+        $this->state[$region][$varName] = &$varValue;
     }
 
-    public function &GetState($region, $varName)
+    public function &getState($region, $varName)
     {
-        return $this->State[$region][$varName];
+        return $this->state[$region][$varName];
     }
 
     /* --- Error handling --- */
@@ -562,13 +562,13 @@ class Form_Render extends Renderer
     public function setErrorMsg($msg)
     {
         LogUtil::registerError($msg);
-        $this->ErrorMsgSet = true;
+        $this->errorMsgSet = true;
         return false;
     }
 
     public function getErrorMsg()
     {
-        if ($this->ErrorMsgSet) {
+        if ($this->errorMsgSet) {
             include_once ('lib/render/plugins/function.getstatusmsg.php');
             $args = array();
             return smarty_function_getstatusmsg($args, $this);
@@ -579,7 +579,7 @@ class Form_Render extends Renderer
 
     public function hasError()
     {
-        return $this->ErrorMsgSet;
+        return $this->errorMsgSet;
     }
 
     /**
@@ -596,7 +596,7 @@ class Form_Render extends Renderer
      */
     public function registerError($dummy)
     {
-        $this->ErrorMsgSet = true;
+        $this->errorMsgSet = true;
         return false;
     }
 
@@ -605,7 +605,7 @@ class Form_Render extends Renderer
     public function redirect($url)
     {
         System::redirect($url);
-        $this->Redirected = true;
+        $this->redirected = true;
     }
 
     /* --- Event handling --- */
@@ -649,7 +649,7 @@ class Form_Render extends Renderer
     /// that something in that plugin needs attention.
     public function raiseEvent($eventHandlerName, $args)
     {
-        $handlerClass = & $this->EventHandler;
+        $handlerClass = & $this->eventHandler;
 
         if (method_exists($handlerClass, $eventHandlerName)) {
             if ($handlerClass->$eventHandlerName($this, $args) === false) {
@@ -666,12 +666,12 @@ class Form_Render extends Renderer
 
     public function initializeIncludes()
     {
-        $this->Includes = array();
+        $this->includes = array();
     }
 
     public function getIncludesText()
     {
-        $bytes = serialize($this->Includes);
+        $bytes = serialize($this->includes);
         $bytes = SecurityUtil::signData($bytes);
         $base64 = base64_encode($bytes);
 
@@ -698,10 +698,10 @@ class Form_Render extends Renderer
             return; // error handler required - drak
         }
 
-        $this->Includes = unserialize($bytes);
+        $this->includes = unserialize($bytes);
 
         // Load the third party plugins only
-        foreach ($this->Includes as $includeFilename => $dummy) {
+        foreach ($this->includes as $includeFilename => $dummy) {
             if (strpos($includeFilename, 'config'.DIRECTORY_SEPARATOR)
              || strpos($includeFilename, 'modules'.DIRECTORY_SEPARATOR)) {
                 require_once $includeFilename;
@@ -722,17 +722,17 @@ class Form_Render extends Renderer
 
     public function initializeState()
     {
-        $this->State = array();
+        $this->state = array();
     }
 
     public function getStateText()
     {
-        $this->setState('pnFormRender', 'eventHandler', $this->EventHandler);
+        $this->setState('pnFormRender', 'eventHandler', $this->eventHandler);
 
         $pluginState = $this->getPluginState();
         $this->setState('pnFormRender', 'plugins', $pluginState);
 
-        $bytes = serialize($this->State);
+        $bytes = serialize($this->state);
         $bytes = SecurityUtil::signData($bytes);
         $base64 = base64_encode($bytes);
 
@@ -741,8 +741,8 @@ class Form_Render extends Renderer
 
     public function getPluginState()
     {
-        //$this->dumpPlugins("Encode state", $this->Plugins);
-        $state = $this->getPluginState_rec($this->Plugins);
+        //$this->dumpPlugins("Encode state", $this->plugins);
+        $state = $this->getPluginState_rec($this->plugins);
         return $state;
     }
 
@@ -796,20 +796,20 @@ class Form_Render extends Renderer
             return; // FIXME: error handler required - drak
         }
 
-        $this->State = unserialize($bytes);
-        $this->Plugins = & $this->DecodePluginState();
+        $this->state = unserialize($bytes);
+        $this->plugins = & $this->decodePluginState();
 
-    //$this->dumpPlugins("Decoded state", $this->Plugins);
+    //$this->dumpPlugins("Decoded state", $this->plugins);
     }
 
-    public function &DecodePluginState()
+    public function &decodePluginState()
     {
-        $state = $this->GetState('pnFormRender', 'plugins');
-        $decodedState = $this->DecodePluginState_rec($state);
+        $state = $this->getState('pnFormRender', 'plugins');
+        $decodedState = $this->decodePluginState_rec($state);
         return $decodedState;
     }
 
-    public function &DecodePluginState_rec(&$state)
+    public function &decodePluginState_rec(&$state)
     {
         $plugins = array();
 
@@ -833,7 +833,7 @@ class Form_Render extends Renderer
                 $plugin->$var = $pluginState[$i];
             }
 
-            $plugin->plugins = $this->DecodePluginState_rec($subState);
+            $plugin->plugins = $this->decodePluginState_rec($subState);
             $plugins[] = $plugin;
 
             $lim = count($plugin->plugins);
@@ -847,8 +847,8 @@ class Form_Render extends Renderer
 
     public function decodeEventHandler()
     {
-        $storedHandler = & $this->GetState('pnFormRender', 'eventHandler');
-        $currentHandler = & $this->EventHandler;
+        $storedHandler = & $this->getState('pnFormRender', 'eventHandler');
+        $currentHandler = & $this->eventHandler;
 
         // Copy saved data into event handler (this is where form handler variables are restored)
         $varInfo = get_class_vars(get_class($storedHandler));
@@ -862,7 +862,7 @@ class Form_Render extends Renderer
 
     public function initializePlugins()
     {
-        $this->initializePlugins_rec($this->Plugins);
+        $this->initializePlugins_rec($this->plugins);
 
         return true;
     }
@@ -878,7 +878,7 @@ class Form_Render extends Renderer
 
     public function decodePlugins()
     {
-        $this->decodePlugins_rec($this->Plugins);
+        $this->decodePlugins_rec($this->plugins);
 
         return true;
     }
@@ -897,13 +897,13 @@ class Form_Render extends Renderer
         $eventArgument = FormUtil::getPassedValue('pnFormEventArgument', null, 'POST');
 
         if ($eventTarget != '') {
-            $targetPlugin = & $this->GetPluginById($eventTarget);
+            $targetPlugin = & $this->getPluginById($eventTarget);
             if ($targetPlugin != null) {
                 $targetPlugin->raisePostBackEvent($this, $eventArgument);
             }
         }
 
-        $this->decodePostBackEvent_rec($this->Plugins);
+        $this->decodePostBackEvent_rec($this->plugins);
     }
 
     public function decodePostBackEvent_rec($plugins)
@@ -916,7 +916,7 @@ class Form_Render extends Renderer
 
     public function postRender()
     {
-        $this->postRender_rec($this->Plugins);
+        $this->postRender_rec($this->plugins);
 
         return true;
     }
@@ -968,7 +968,7 @@ class Form_Render extends Renderer
     {
         $result = array();
 
-        $this->getValues_rec($this->Plugins, $result);
+        $this->getValues_rec($this->plugins, $result);
 
         return $result;
     }
@@ -996,7 +996,7 @@ class Form_Render extends Renderer
     public function setValues2(&$values, $group = null, $plugins)
     {
         if ($plugins == null) {
-            $this->setValues_rec($values, $group, $this->Plugins);
+            $this->setValues_rec($values, $group, $this->plugins);
         } else {
             $this->setValues_rec($values, $group, $plugins);
         }
@@ -1022,7 +1022,7 @@ class Form_Render extends Renderer
     {
         echo "<pre style=\"background-color: #CFC; text-align: left;\">\n";
         echo "** $msg **\n";
-        $this->dumpPlugins_rec($this->Plugins);
+        $this->dumpPlugins_rec($this->plugins);
         echo "</pre>";
     }
 

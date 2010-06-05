@@ -222,17 +222,17 @@ class pnFormRender extends Form_Render
 
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Form_Render')), 'STRICT');
 
-        $this->pnFormState = &$this->State;
-        $this->pnFormIncludes = &$this->Includes;
-        $this->pnFormPlugins = &$this->Plugins;
-        $this->pnFormBlockStack = &$this->BlockStack;
-        $this->pnFormValidators = &$this->Validators;
-        $this->pnFormValidationChecked = &$this->ValidationChecked;
-        $this->_pnFormIsValid = &$this->_IsValid;
-        $this->pnFormIdCount = &$this->IdCount;
-        $this->pnFormEventHandler = &$this->EventHandler;
-        $this->pnFormErrorMsgSet = &$this->ErrorMsgSet;
-        $this->pnFormRedirected = &$this->Redirected;
+        $this->pnFormState = &$this->state;
+        $this->pnFormIncludes = &$this->includes;
+        $this->pnFormPlugins = &$this->plugins;
+        $this->pnFormBlockStack = &$this->blockStack;
+        $this->pnFormValidators = &$this->validators;
+        $this->pnFormValidationChecked = &$this->validationChecked;
+        $this->_pnFormIsValid = &$this->_isValid;
+        $this->pnFormIdCount = &$this->idCount;
+        $this->pnFormEventHandler = &$this->eventHandler;
+        $this->pnFormErrorMsgSet = &$this->errorMsgSet;
+        $this->pnFormRedirected = &$this->redirected;
     }
 
     /**
@@ -631,12 +631,12 @@ class pnFormRender extends Form_Render
      * Alias to equivalent function in Form_Render for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::GetPluginById
+     * @see Form_Render::getPluginById
      */
     function &pnFormGetPluginById($id)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::GetPluginById')), 'STRICT');
-        return $this->GetPluginById($id);
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getPluginById')), 'STRICT');
+        return $this->getPluginById($id);
     }
 
     /**

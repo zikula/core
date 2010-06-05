@@ -286,9 +286,9 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     function findCheckedRadioButton(&$render, &$firstRadioButton)
     {
-        $lim = count($render->Plugins);
+        $lim = count($render->plugins);
         for ($i = 0; $i < $lim; ++$i) {
-            if ($this->findCheckedRadioButton_rec($firstRadioButton, $render->Plugins[$i])) {
+            if ($this->findCheckedRadioButton_rec($firstRadioButton, $render->plugins[$i])) {
                 return true;
             }
         }
