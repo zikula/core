@@ -687,11 +687,9 @@ class System
             $baseurl = System::getBaseUrl();
             $redirecturl = $baseurl . $redirecturl;
         }
-        $protocol = System::serverGetVar('SERVER_PROTOCOL');
-        if ($type == 301) {
-            header("{$protocol} 301 Moved Permanently");
-        }
-        header("Location: $redirecturl");
+
+        header("Location: $redirecturl",true,(int)$type);
+
         return true;
     }
 
