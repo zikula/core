@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {gt text="Move category" assign=templatetitle}
 {include file="categories_admin_menu.htm"}
 <div class="z-admincontainer">
@@ -23,9 +22,9 @@
                     {$categorySelector}
                 </div>
             </fieldset>
-            <div class="z-formbuttons">
-                {button src=button_ok.gif set=icons/small __alt="Move" __title="Move"}
-                <a href="{modurl modname=Categories type=admin}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+            <div class="z-buttons">
+                {button src=button_ok.gif set=icons/extrasmall __alt="Move" __title="Move" __text="Move"}
+                <a href="{modurl modname=Categories type=admin}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"}{gt text="Cancel"}</a>
             </div>
         </div>
     </form>
