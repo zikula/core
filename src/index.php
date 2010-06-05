@@ -84,6 +84,9 @@ $func = (empty($func)) ? $func = 'main' : $func;
 $return = ModUtil::load($modinfo['name'], $type, $force_modload);
 $httpCode = 404;
 
+$message = '';
+$debug = null;
+
 if ($return) {
     if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
         $dbConn = System::dbGetConn(true);
@@ -91,8 +94,6 @@ if ($return) {
     }
 
     $return = false;
-    $message = '';
-    $debug = null;
 
     try {
         $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
