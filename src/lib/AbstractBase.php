@@ -20,6 +20,8 @@ abstract class AbstractBase
     protected $name;
     protected $options;
     protected $baseDir;
+    protected $systemBaseDir;
+    protected $libBaseDir;
     protected $modinfo;
     protected $domain = null;
 
@@ -43,8 +45,10 @@ abstract class AbstractBase
         $parts = explode('_', $r->getName());
         $this->name = $parts[0];
         $this->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($this->name));
-        $base = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'module' : 'system';
-        $this->baseDir = $base . DIRECTORY_SEPARATOR . $this->modinfo['directory'];
+        $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
+        $this->systemBaseDir = realpath(dirname(__FILE__) . '/..');
+        $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/" . $this->modinfo['directory']);
+        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
     }
 
     public function __($msgid)

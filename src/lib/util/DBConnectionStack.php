@@ -420,7 +420,8 @@ class DBConnectionStack
 
             // Set model loading strategy to conservative
             // see http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-models#autoloading-models
-            //$object->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_CONSERVATIVE);
+            $object->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_CONSERVATIVE);
+            //$object->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
 
 
             return;
