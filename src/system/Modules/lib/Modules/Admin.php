@@ -12,7 +12,6 @@
 
 class Modules_Admin extends AbstractController
 {
-
     /**
      * Modules Module main admin function
      * @author Jim McDonald
@@ -51,19 +50,14 @@ class Modules_Admin extends AbstractController
         if ($restore) {
             $modversion = array();
             // load the version array
-            if ($obj['type'] == 3) {
-                $pnversion = "system/$obj[directory]/pnversion.php";
-            } elseif ($obj['type'] == 2 ) {
-                ZLanguage::bindModuleDomain($obj['directory']);
-                $pnversion = "modules/$obj[directory]/pnversion.php";
-            } elseif ($obj['type'] == 7) {
-                $version = "apps/$obj[name]/Module.php";
-            }
-            if (is_readable($pnversion)) {
+            $baseDir = ($obj['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $version[] = "$baseDir/$obj[directory]/version.php";
+            $pnversion[] = "$baseDir/$obj[directory]/pnversion.php";
+
+            if (is_readable($version)) {
+                include($version);
+            } elseif (is_readable($pnversion)) {
                 include($pnversion);
-            } elseif (is_readable($version)) {
-                $class = "$obj[name]_Module";
-                $modversion = new $class();
             } else {
                 return LogUtil::registerError($this->__('Error! Unable to load version file for this module.'),
                         404,
