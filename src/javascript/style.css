@@ -527,7 +527,7 @@ div.z-formbuttons button {
     float: none;
     width: auto;
     display: block;
-    padding: 0;
+    padding: 0.3em 0;
     text-align: left;
 }
 .z-linear div.z-formrow input ,
@@ -785,6 +785,19 @@ div.z-formbuttons button {
 /* Buttons styles
 /******************************************************************************/
 
+.z-form .z-buttons {
+    padding: 0.5em 0;
+    min-height: 2em;
+    overflow: hidden;
+    clear: both;
+    text-align: left;
+    display: block;
+    margin-left: 30%;
+}
+.z-form.z-linear .z-buttons {
+    padding: 0;
+    margin: 0;
+}
 .z-buttons a,
 .z-buttons button {
     display: inline-block;
@@ -842,9 +855,6 @@ div.z-formbuttons button {
     border:none;
     height:16px;
     width:16px;
-}
-.z-buttons a img {
-    margin-right:1px!important;
 }
 
 /* colored button: light red */
