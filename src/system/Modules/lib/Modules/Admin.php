@@ -51,13 +51,13 @@ class Modules_Admin extends AbstractController
             $modversion = array();
             // load the version array
             $baseDir = ($obj['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            $version[] = "$baseDir/$obj[directory]/version.php";
-            $pnversion[] = "$baseDir/$obj[directory]/pnversion.php";
+            $version = "$baseDir/$obj[directory]/version.php";
+            $pnversion = "$baseDir/$obj[directory]/pnversion.php";
 
             if (is_readable($version)) {
-                include($version);
+                include $version;
             } elseif (is_readable($pnversion)) {
-                include($pnversion);
+                include $pnversion;
             } else {
                 return LogUtil::registerError($this->__('Error! Unable to load version file for this module.'),
                         404,
