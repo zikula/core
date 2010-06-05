@@ -163,7 +163,7 @@ class LogUtil
      * @param $url       The URL to redirect to (optional) (default=null)
      * @return false
      */
-    public static function registerPermissionError($url = null)
+    public static function registerPermissionError($url = null, $redirect = true)
     {
         static $strLevels = array();
         if (!$strLevels) {
@@ -188,7 +188,7 @@ class LogUtil
 
         self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
         $code = 403;
-        if (!UserUtil::isLoggedIn()) {
+        if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
                 $url = ModUtil::url('Users', 'user', 'loginscreen', array('returnpage' => urlencode(System::getCurrentUri())));
             }

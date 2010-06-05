@@ -30,6 +30,11 @@ class AjaxUtil
      */
     public static function error($error='', $code='400 Bad data')
     {
+        if(empty($error)) {
+            $type = LogUtil::getErrorType();
+            $code = $type ? $type : $code;
+            $error = LogUtil::getErrorMessagesText("\n");
+        }
         if (!empty($error)) {
             header('HTTP/1.0 ' . $code);
             echo DataUtil::convertToUTF8($error);

@@ -26,12 +26,13 @@ class Permissions_Ajax extends AbstractController
     public function updatepermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error(FormUtil::getPassedValue('authid') . ' : ' . $this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
+
 
         $pid       = FormUtil::getPassedValue('pid', null, 'post');
         $gid       = FormUtil::getPassedValue('gid', null, 'post');
@@ -88,11 +89,11 @@ class Permissions_Ajax extends AbstractController
     public function changeorder()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error($this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         $permorder = FormUtil::getPassedValue('permorder');
@@ -116,11 +117,11 @@ class Permissions_Ajax extends AbstractController
     public function createpermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error($this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         // add a blank permission
@@ -155,11 +156,11 @@ class Permissions_Ajax extends AbstractController
     public function deletepermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error($this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         $pid = FormUtil::getPassedValue('pid', null, 'get');
@@ -193,7 +194,7 @@ class Permissions_Ajax extends AbstractController
     public function testpermission()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         $uname = DataUtil::convertFromUTF8(FormUtil::getPassedValue('test_user', '', 'get'));
