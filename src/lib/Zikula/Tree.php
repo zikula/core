@@ -163,11 +163,11 @@ class Zikula_Tree {
         foreach ($tree as $id => $tab) {
             $links = array();
             $item = $tab['item'];
-            $toggle = '<img class="'.$this->config['toggler'].'" src="'.$this->config['imagesDir'].$this->config['minus'].'">';
+            $toggle = '<img class="'.$this->config['toggler'].'" alt="" src="'.$this->config['imagesDir'].$this->config['minus'].'" />';
 
             $iconImage = !empty($item['icon']) ? $item['icon'] : $this->config['item'];
             $iconImage = !empty($tab['nodes']) ?  $this->config['parentOpen'] : $this->config['item'];
-            $icon = '<img class="'.$this->config['icon'].'" src="'.$this->config['imagesDir'].$iconImage.'">';
+            $icon = '<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
 
             $class = $item['active'] == 1 ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];
             $linkClass = !empty($class) ? ' class="'.$class.'"' : '';
