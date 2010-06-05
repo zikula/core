@@ -1,5 +1,9 @@
 NOTES ON USING DOCTRINE
 -----------------------
+Zikula supports Doctrine 1.2. Please make sure you are reading the correct version
+of the documentation looking on the vendor website
+http://www.doctrine-project.org/projects/orm/1.2/docs/en
+
 1.  It is not necessary to loadModels() except in specific conditions when it is
 required.  Registering the module namespace (which happens automatically) is
 enough.  This is the main advantage of using the PEAR class/file naming scheme.
