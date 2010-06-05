@@ -18,10 +18,10 @@ class Categories_Ajax extends AbstractController {
      */
     public function resequence() {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error($this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
         $data = json_decode(FormUtil::getPassedValue('data', null, 'post'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');

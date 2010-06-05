@@ -23,11 +23,11 @@ class Blocks_Ajax extends AbstractController
     public function changeblockorder()
     {
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error($this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         $blockorder = FormUtil::getPassedValue('blockorder');
@@ -36,7 +36,7 @@ class Blocks_Ajax extends AbstractController
         // empty block positions for this block zone
         $res = DBUtil::deleteObjectByID('block_placements', $position, 'pid');
         if (!$res) {
-            AjaxUtil::error($this->__('Error! Could not save your changes.'));
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
         }
 
         // add new block positions
@@ -46,7 +46,7 @@ class Blocks_Ajax extends AbstractController
         }
         $res = DBUtil::insertObjectArray($blockplacements, 'block_placements');
         if (!$res) {
-            AjaxUtil::error($this->__('Error! Could not save your changes.'));
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
         }
 
         return array('result' => true);
@@ -63,20 +63,18 @@ class Blocks_Ajax extends AbstractController
     public function toggleblock()
     {
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         $bid = FormUtil::getPassedValue('bid', -1, 'GET');
         if ($bid == -1) {
-            LogUtil::registerError($this->__('No block ID passed.'));
-            AjaxUtil::output();
+            return AjaxUtil::error(LogUtil::registerError($this->__('No block ID passed.')));
         }
 
         // read the block information
         $blockinfo = BlockUtil::getBlockInfo($bid);
         if ($blockinfo == false) {
-            LogUtil::registerError($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
-            AjaxUtil::output();
+            return AjaxUtil::error(LogUtil::registerError($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid))));
         }
 
         if ($blockinfo['active'] == 1) {

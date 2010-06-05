@@ -82,15 +82,13 @@ class Users_Ajax extends AbstractController
     public function checkUser()
     {
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error(FormUtil::getPassedValue('authid') . ' : ' . $this->__("Sorry! Invalid authorisation key ('authkey'). "
-                . "This is probably either because you pressed the 'Back' button to return to a page which does not allow that, "
-                . "or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         $modvars = ModUtil::getVar('Users');
 
         if (!$modvars['reg_allowreg']) {
-            AjaxUtil::error($this->__('Sorry! New user registration is currently disabled.'));
+            return AjaxUtil::error(LogUtil::registerError($this->__('Sorry! New user registration is currently disabled.')));
         }
 
         $uname        = DataUtil::convertFromUTF8(FormUtil::getPassedValue('uname',  null,     'POST'));

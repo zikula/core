@@ -27,12 +27,10 @@ class Admin_Ajax extends AbstractController
 
         //security checks
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-            $output['alerttext'] = 'You do not have permission to do this.';
-            return AjaxUtil::output($output, true);
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            $output['alerttext'] = "Invalid AuthKey.";
-            return AjaxUtil::output($output, false);
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         //get passed information
@@ -68,12 +66,10 @@ class Admin_Ajax extends AbstractController
 
         //security checks
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-            $output['alerttext'] = 'You do not have permission to do this.';
-            return AjaxUtil::output($output, true);
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            $output['alerttext'] = "Invalid AuthKey.";
-            return AjaxUtil::output($output, false);
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         //get form information

@@ -27,7 +27,7 @@ class Groups_Ajax extends AbstractController
     public function updategroup($args)
     {
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error(FormUtil::getPassedValue('authid') . ' : ' . $this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         $gid          = FormUtil::getPassedValue('gid', null,    'post');
@@ -38,7 +38,7 @@ class Groups_Ajax extends AbstractController
         $description  = DataUtil::convertFromUTF8(FormUtil::getPassedValue('description', null, 'post'));
 
         if (!SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_EDIT)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         if (empty($name)) {
@@ -106,11 +106,11 @@ class Groups_Ajax extends AbstractController
     public function creategroup()
     {
         if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error(FormUtil::getPassedValue('authid') . ' : ' . $this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         $typelabel = array(0  => $this->__('Core'),
@@ -130,7 +130,7 @@ class Groups_Ajax extends AbstractController
         $newgroup = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
 
         if ($newgroup == false) {
-            AjaxUtil::error($this->__('Error! Could not create the new group.'));
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not create the new group.')));
         }
 
         // temporary group name
@@ -159,27 +159,27 @@ class Groups_Ajax extends AbstractController
     public function deletegroup()
     {
         if (!SecurityUtil::confirmAuthKey()) {
-            AjaxUtil::error($this->__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."));
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         $gid   = FormUtil::getPassedValue('gid', null, 'get');
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
 
         if (!SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_DELETE)) {
-            AjaxUtil::error($this->__('Sorry! You have not been granted access to this page.'));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
 
         // Check if it is the default group...
         $defaultgroup = ModUtil::getVar('Groups', 'defaultgroup');
 
         if ($group['gid'] == $defaultgroup) {
-            AjaxUtil::error($this->__('Error! You cannot delete the default user group.'));
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! You cannot delete the default user group.')));
         }
 
         if (ModUtil::apiFunc('Groups', 'admin', 'delete', array('gid' => $gid)) == true) {
             return array('gid' => $gid);
         }
 
-        AjaxUtil::error($this->__f('Error! Could not delete the \'%s\' group.', $gid));
+        return AjaxUtil::error(LogUtil::registerError($this->__f('Error! Could not delete the \'%s\' group.', $gid)));
     }
 }
