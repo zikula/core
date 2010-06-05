@@ -408,7 +408,7 @@ class Modules_Api_Admin extends AbstractApi
         }
 
         if (is_dir("$modpath/$osdir/lib")) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib/$osdir");
+            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
@@ -902,7 +902,7 @@ class Modules_Api_Admin extends AbstractApi
         }
 
         if (is_dir("$modpath/$osdir/lib")) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib/$osdir");
+            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
@@ -987,7 +987,7 @@ class Modules_Api_Admin extends AbstractApi
         }
 
         if (is_dir("$modpath/$osdir/lib")) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib/$osdir");
+            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
