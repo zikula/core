@@ -48,6 +48,10 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
 // check requested module and set to start module if not present
 if (empty($module)) {
     $module = System::getVar('startpage');
+    if (empty($module)) {
+        Theme::getInstance()->themefooter();
+        System::shutdown();
+    }
     $type   = System::getVar('starttype');
     $func   = System::getVar('startfunc');
     $args   = explode(',', System::getVar('startargs'));
