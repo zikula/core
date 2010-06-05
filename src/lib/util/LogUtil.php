@@ -161,6 +161,7 @@ class LogUtil
      * then logs the failed permission check so that it can be analyzed later.
      *
      * @param $url       The URL to redirect to (optional) (default=null)
+     * @param $redirect  Whether to redirect not logged in users to the login form (default=true)
      * @return false
      */
     public static function registerPermissionError($url = null, $redirect = true)
