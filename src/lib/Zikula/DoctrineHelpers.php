@@ -27,6 +27,49 @@ class Zikula_DoctrineHelpers
     }
 
     /**
+     * Create Tables from models for given module.
+     *
+     * @param string $modname Module name.
+     */
+    public static function createTablesFromModels($modname)
+    {
+        $modname = (isset($modname) ? strtolower((string)$modname) : '');
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $osdir = DataUtil::formatForOS($modinfo['directory']);
+        $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
+        $dm = Doctrine_Manager::getInstance();
+        $save = $dm->getAttribute(Doctrine::ATTR_MODEL_LOADING);
+        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
+        Doctrine_Core::createTablesFromModels(realpath("$base/$osdir/lib/$osdir/Model"));
+        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
+    }
+
+    /**
+     * Aggressively load models.
+     *
+     * This helper is required because we are using PEAR naming standards with
+     * our own autoloading.  Doctrine's model loading doesn't take this into
+     * account in non agressive modes.
+     *
+     * In general, this method is NOT required.
+     *
+     * @param string Module name to load models for.
+     */
+    public static function loadModels($modname)
+    {
+        $modname = (isset($modname) ? strtolower((string)$modname) : '');
+        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $osdir = DataUtil::formatForOS($modinfo['directory']);
+        $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
+        $dm = Doctrine_Manager::getInstance();
+        $save = $dm->getAttribute(Doctrine::ATTR_MODEL_LOADING);
+        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
+        Doctrine_Core::loadModels(realpath("$base/$osdir/lib/$osdir/Model"));
+        $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
+    }
+
+
+    /**
      * Decorates table name with prefix
      *
      * @param <string> $tableName
