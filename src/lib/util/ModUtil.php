@@ -511,6 +511,14 @@ class ModUtil
             $modpath = is_dir("system/$directory") ? 'system' : 'modules';
         }
 
+        // no need for pntables scan if using Doctrine
+        $doctrineModelDir = "$modpath/$directory/lib/$directory/Model";
+        if (is_dir($doctrineModelDir)) {
+            //Doctrine_Core::loadModels($doctrineModelDir); // not really necessary since we autoload our classes
+            $loaded[$modname] = true;
+            return true;
+        }
+
         // Load the database definition if required
         $files = array();
         $files[] = "config/functions/$directory/tables.php";
