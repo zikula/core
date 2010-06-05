@@ -45,7 +45,7 @@ class Form_Render extends Renderer
      * @var array
      * @internal
      */
-    public $Includes;
+    public $includes;
 
     /**
      * List of instantiated plugins.
@@ -53,7 +53,7 @@ class Form_Render extends Renderer
      * @var array
      * @internal
      */
-    public $Plugins;
+    public $plugins;
 
     /**
      * Stack with all instantiated blocks (push when starting block, pop when ending block).
@@ -69,7 +69,7 @@ class Form_Render extends Renderer
      * @var array
      * @internal
      */
-    public $Validators;
+    public $validators;
 
     /**
      * Flag indicating if validation has been done or not.
@@ -77,7 +77,7 @@ class Form_Render extends Renderer
      * @var boolean
      * @internal
      */
-    public $ValidationChecked;
+    public $validationChecked;
 
     /**
      * Indicates whether page is valid or not.
@@ -85,7 +85,7 @@ class Form_Render extends Renderer
      * @var boolean
      * @internal
      */
-    public $_IsValid;
+    public $_isValid;
 
     /**
      * Current ID count - used to assign automatic ID's to all items.
@@ -93,7 +93,7 @@ class Form_Render extends Renderer
      * @var intiger
      * @internal
      */
-    public $IdCount;
+    public $idCount;
 
     /**
      * Reference to the main user code event handler.
@@ -101,7 +101,7 @@ class Form_Render extends Renderer
      * @var pnFormHandler
      * @internal
      */
-    public $EventHandler;
+    public $eventHandler;
 
     /**
      * Error message has been set.
@@ -109,7 +109,7 @@ class Form_Render extends Renderer
      * @var boolean
      * @internal
      */
-    public $ErrorMsgSet;
+    public $errorMsgSet;
 
     /**
      * Set to true if pnFormRedirect was called. Means no HTML output should be returned.
@@ -117,7 +117,7 @@ class Form_Render extends Renderer
      * @var boolean
      * @internal
      */
-    public $Redirected;
+    public $redirected;
 
     /**
      * Constructor.
