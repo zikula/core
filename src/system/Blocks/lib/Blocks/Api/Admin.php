@@ -214,7 +214,7 @@ class Blocks_Api_Admin extends AbstractApi
     public function deactivate($args)
     {
         $args['active'] = 0;
-        $res = (boolean)blocks_adminapi_setActiveState ($args);
+        $res = (boolean)$this->setActiveState($args);
 
         if (!$res) {
             return LogUtil::registerError($this->__('Error! Could not deactivate the block.'));
@@ -233,7 +233,7 @@ class Blocks_Api_Admin extends AbstractApi
     public function activate($args)
     {
         $args['active'] = 1;
-        $res = (boolean)blocks_adminapi_setActiveState ($args);
+        $res = (boolean)$this->setActiveState ($args);
 
         if (!$res) {
             return LogUtil::registerError($this->__('Error! Could not activate the block.'));
