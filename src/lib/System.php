@@ -1,10 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @version $Id$
- * @license GNU/GPLv2 (or at your option any later version).
- * Please see the NOTICE and LICENSE files distributed with this source
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPv2.1 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
@@ -1218,12 +1223,12 @@ class System
         }
     }
 
-    public function isInstalling()
+    public static function isInstalling()
     {
         return (bool)defined('_ZINSTALLVER');
     }
 
-    public function isLegacyMode()
+    public static function isLegacyMode()
     {
         if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
             return false;
@@ -1231,7 +1236,7 @@ class System
         return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
     }
 
-    public function hasLegacyTemplates()
+    public static function hasLegacyTemplates()
     {
         if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
             return false;
@@ -1239,7 +1244,7 @@ class System
         return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
     }
 
-    public function isDevelopmentMode()
+    public static function isDevelopmentMode()
     {
         if (!isset($GLOBALS['ZConfig']['System']['development'])) {
             return false;
