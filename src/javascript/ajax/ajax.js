@@ -9,14 +9,17 @@
  * @subpackage Javascript
 */
 
+var Zikula = {};
+
+
 /**
- * pndejsonize
+ * Zikula.dejsonize
  * unserializes an array
  *
  * @param jsondata JSONized array in utf-8 (as created by AjaxUtil::output
  * @return array
  */
-function pndejsonize(jsondata)
+Zikula.dejsonize = function(jsondata)
 {
     var result;
     try {
@@ -28,40 +31,40 @@ function pndejsonize(jsondata)
 }
 
 /**
- * pnshowajaxerror
+ * Zikula.showajaxerror
  * shows an error message with alert()
  * todo: beautify this
  *
  * @param errortext the text to show
  * @return void
  */
-function pnshowajaxerror(errortext)
+Zikula.showajaxerror = function(errortext)
 {
-    alert(errortext); 
+    alert(errortext);
     return;
 }
 
 /**
- * pnsetselectoption
+ * Zikula.setselectoption
  * sets a select to a given value
  *
  * @param id select id or object
- * @param sel the value that should be selected 
+ * @param sel the value that should be selected
  * @return void
  */
-function pnsetselectoption(id, sel)
+Zikula.setselectoption = function(id, sel)
 {
     $A($(id).options).each(function(opt){ opt.selected = (opt.value == sel);});
 }
 
 /**
- * pngetcheckboxvalue
+ * Zikula.getcheckboxvalue
  * gets the value of a checkbox depending on the state
  *
  * @param id checkbox id or object
  * @return string
  */
-function pngetcheckboxvalue(id)
+Zikula.getcheckboxvalue = function(id)
 {
     try {
         if($(id)) {
@@ -71,18 +74,18 @@ function pngetcheckboxvalue(id)
             return '';
         }
     } catch(error) {
-        alert("pngetcheckboxvalue: unknown checkbox '" + id +"'");
+        alert("Zikula.getcheckboxvalue: unknown checkbox '" + id +"'");
     }
 }
 
-/** 
- * pnupdateauthids
+/**
+ * Zikula.updateauthids
  * updates all hidden authid fields with a new authid obtained with an ajax call
  *
  * @param authid the new authid
  * @return void
  */
-function pnupdateauthids(authid)
+Zikula.updateauthids = function(authid)
 {
     if(authid.length != 0) {
         for(var i=0; i<document.forms.length; i++) {
@@ -96,63 +99,8 @@ function pnupdateauthids(authid)
     return;
 }
 
-/** 
- * Ajax timeout detection. We set the time out to 5 seconds
- * taken from http://codejanitor.com/wp/2006/03/23/ajax-timeouts-with-prototype/
- *
- * @param none
- * @return void
- */
-function callInProgress(xmlhttp) {
-    switch (xmlhttp.readyState) {
-        case 1: 
-        case 2: 
-        case 3:
-            return true;
-            break;
-        // Case 4 and 0
-        default:
-            return false;
-            break;
-    }
-}
-
-// Register global responders that will occur on all AJAX requests
-Ajax.Responders.register({
-    onCreate: function(request) {
-        if($('ajax_indicator')) {
-            Element.show('ajax_indicator');
-        }
-        request['timeoutId'] = window.setTimeout(
-            function() {
-                // If we have hit the timeout and the AJAX request is active, abort it and let the user know
-                if (callInProgress(request.transport)) {
-                    request.transport.abort();                           
-                    if($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
-                        $('ajax_indicator').src = document.baseURI + 'images/icons/extrasmall/error.gif';
-                    }
-                    pnshowajaxerror('Ajax connection time out!');
-                    // Run the onFailure method if we set one up when creating the AJAX object
-                    if (request.options['onFailure']) {
-                        request.options['onFailure'](request.transport, request.json);
-                    }
-                }
-            },
-            (typeof(document.location.ajaxtimeout)!='undefined' && document.location.ajaxtimeout!=0)  ? document.location.ajaxtimeout : 5000 // per default five seconds - can be changed in the settings
-        );
-    },
-    onComplete: function(request) {
-        if($('ajax_indicator')) {
-            Element.hide('ajax_indicator');
-        }
-        // Clear the timeout, the request completed ok
-        window.clearTimeout(request['timeoutId']);
-    }
-});
-
-
 /**
- * recolor
+ * Zikula.recolor
  * set z-odd / z-even on each li after append, move and delete
  *
  * @param   string listclass class applied to the list of items
@@ -160,7 +108,7 @@ Ajax.Responders.register({
  * @return  none;
  * @author  Frank Schummertz
  */
-function pnrecolor(listclass, headerclass)
+Zikula.recolor = function(listclass, headerclass)
 {
     var pnodd = true;
 
@@ -184,7 +132,7 @@ function pnrecolor(listclass, headerclass)
 }
 
 /**
- * switchdisplaystate
+ * Zikula.switchdisplaystate
  * change the display attribute of an specific object
  *
  * @param   string id of the object to hide/show
@@ -192,7 +140,7 @@ function pnrecolor(listclass, headerclass)
  * @author  Axel Guckelsberger
  * @author  Mateo Tibaquira
  */
-function switchdisplaystate(id)
+Zikula.switchdisplaystate = function(id)
 {
     var pntmpobj = $(id);
 
@@ -212,7 +160,7 @@ function switchdisplaystate(id)
 }
 
 /**
- * radioswitchdisplaystate
+ * Zikula.radioswitchdisplaystate
  * change the display attribute of an specific container depending of a radio input
  *
  * @param  string idgroup       id of the container where the radio input to observe are
@@ -220,7 +168,7 @@ function switchdisplaystate(id)
  * @param  bool   state         state of the radio to show the idcontainer
  * @return void
  */
-function radioswitchdisplaystate(idgroup, idcontainer, state)
+Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
 {
     var objgroup = $(idgroup);
     var objcont = $(idcontainer);
@@ -247,7 +195,7 @@ function radioswitchdisplaystate(idgroup, idcontainer, state)
 }
 
 /**
- * checkboxswitchdisplaystate
+ * Zikula.checkboxswitchdisplaystate
  * change the display attribute of an specific container depending of a checkbox input
  *
  * @param  string idcheckbox    id of the checkbox input to observe
@@ -255,7 +203,7 @@ function radioswitchdisplaystate(idgroup, idcontainer, state)
  * @param  bool   state         state of the checkbox to show the idcontainer
  * @return void
  */
-function checkboxswitchdisplaystate(idcheckbox, idcontainer, state)
+Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
 {
     var objcont = $(idcontainer);
 
@@ -278,4 +226,139 @@ function checkboxswitchdisplaystate(idcheckbox, idcontainer, state)
             }
         }
     }
+}
+
+/**
+ * Ajax timeout detection. We set the time out to 5 seconds
+ * taken from http://codejanitor.com/wp/2006/03/23/ajax-timeouts-with-prototype/
+ *
+ * @param none
+ * @return void
+ */
+Zikula.callInProgress = function(xmlhttp) {
+    switch (xmlhttp.readyState) {
+        case 1:
+        case 2:
+        case 3:
+            return true;
+            break;
+        // Case 4 and 0
+        default:
+            return false;
+            break;
+    }
+}
+
+// Register global responders that will occur on all AJAX requests
+Ajax.Responders.register({
+    onCreate: function(request) {
+        if($('ajax_indicator')) {
+            Element.show('ajax_indicator');
+        }
+        request['timeoutId'] = window.setTimeout(
+            function() {
+                // If we have hit the timeout and the AJAX request is active, abort it and let the user know
+                if (Zikula.callInProgress(request.transport)) {
+                    request.transport.abort();
+                    if($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
+                        $('ajax_indicator').src = document.baseURI + 'images/icons/extrasmall/error.gif';
+                    }
+                    pnshowajaxerror('Ajax connection time out!');
+                    // Run the onFailure method if we set one up when creating the AJAX object
+                    if (request.options['onFailure']) {
+                        request.options['onFailure'](request.transport, request.json);
+                    }
+                }
+            },
+            (typeof(document.location.ajaxtimeout)!='undefined' && document.location.ajaxtimeout!=0)  ? document.location.ajaxtimeout : 5000 // per default five seconds - can be changed in the settings
+        );
+    },
+    onComplete: function(request) {
+        if($('ajax_indicator')) {
+            Element.hide('ajax_indicator');
+        }
+        // Clear the timeout, the request completed ok
+        window.clearTimeout(request['timeoutId']);
+    }
+});
+
+
+/**
+ * @deprecated
+ */
+function pndejsonize(jsondata)
+{
+    return Zikula.dejsonize(jsondata)
+}
+
+/**
+ * @deprecated
+ */
+function pnshowajaxerror(errortext)
+{
+    return Zikula.showajaxerror(errortext);
+}
+
+/**
+ * @deprecated
+ */
+function pnsetselectoption(id, sel)
+{
+    return Zikula.setselectoption(id, sel);
+}
+
+/**
+ * @deprecated
+ */
+function pngetcheckboxvalue(id)
+{
+    return Zikula.getcheckboxvalue(id);
+}
+
+/**
+ * @deprecated
+ */
+function pnupdateauthids(authid)
+{
+    return Zikula.updateauthids(authid);
+}
+
+/**
+ * @deprecated
+ */
+function callInProgress(xmlhttp)
+{
+    return Zikula.callInProgress(xmlhttp);
+}
+
+/**
+ * @deprecated
+ */
+function pnrecolor(listclass, headerclass)
+{
+    return Zikula.recolor(listclass, headerclass);
+}
+
+/**
+ * @deprecated
+ */
+function switchdisplaystate(id)
+{
+    return Zikula.switchdisplaystate(id);
+}
+
+/**
+ * @deprecated
+ */
+function radioswitchdisplaystate(idgroup, idcontainer, state)
+{
+    return Zikula.radioswitchdisplaystate(idgroup, idcontainer, state);
+}
+
+/**
+ * @deprecated
+ */
+function checkboxswitchdisplaystate(idcheckbox, idcontainer, state)
+{
+    return Zikula.checkboxswitchdisplaystate(idcheckbox, idcontainer, state);
 }
