@@ -4,7 +4,7 @@
  * Onload function adds droppable locations to all the tabs as well as context
  * menus and inplace editors.
  */
- 
+
 
 Event.observe(window, 'load', function() {
     context_menu = Array();
@@ -18,13 +18,13 @@ Event.observe(window, 'load', function() {
             if (nid != null && nodes[i].id != 'addcatlink') {
                 addContext(nid);
                 addEditor(nid);
-                if (nodes[i].className == 'active')
+                if ($(nodes[i]).up('li').hasClassName('active'))
                     continue;
                 var droppable = Droppables.add(nid, {
                     accept : 'draggable',
                     hoverclass : 'ajaxhover',
                     onDrop : function(drag, drop) {
-                    moveModule(drag.id, drop.id);
+                        moveModule(drag.id, drop.id);
                 }
                 });
                 droppables.push(droppable);
@@ -46,8 +46,7 @@ function addContext(nid)
         callback : function(nid) {
             var cid = nid.href.match(/acid=(\d+)/)[1];
             if (cid) {
-                // stupid hack - enterEditMode need event object as argument, so create fake event
-                getEditor("C" + cid).enterEditMode(nid.fire('click'));
+                getEditor("C" + cid).enterEditMode();
             }
             return;
         }
@@ -75,7 +74,7 @@ function addEditor(nid) {
     var editor = new Ajax.InPlaceEditor(nid,"index.php?module=Admin&type=ajax&func=editCategory",{
         clickToEditText: lblclickToEdit,
         savingText: lblSaving,
-        externalControl: "none",
+        externalControl: "admintabs-none",
         externalControlOnly: true,
         rows:1,cols: tLength,
         submitOnBlur: true,
@@ -91,7 +90,7 @@ function addEditor(nid) {
                 }
             });
         },
-        callback: function(form, value) { 
+        callback: function(form, value) {
             var authid = document.getElementById('admintabsauthid').value;
             var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
             //this check should stop the form from submitting if the catname is the same, it doesnt work
@@ -153,7 +152,7 @@ function getOrig(nid) {
 //-----------------------Deleting Tabs----------------------------------------
 /**
  * Makes ajax request to delete category specified by id.
- * 
+ *
  * @param id the cid of the category to be deleted
  * @return void
  */
@@ -169,7 +168,7 @@ function deleteTab(id) {
 
 /**
  * Gets the response of a deleteTab request.
- * 
+ *
  * @param  req     The request handle.
  * @return Boolean False always, removes tab from dom on success.
  */
@@ -196,7 +195,7 @@ function deleteTabResponse(req) {
 //----------------------Moving Modules----------------------------------------
 /**
  * makes an ajax request to move a module to a new category.
- * 
+ *
  * @param id  Integer The id of the module to move.
  * @param cid Integer The cid of the category to move to.
  */
@@ -215,7 +214,7 @@ function moveModule(id, cid) {
 
 /**
  * Response handler for moveModule.
- * 
+ *
  * @param req Ajax request.
  * @return void, module is removed from dom on success.
  */
@@ -225,6 +224,7 @@ function changeModuleCategoryResponse(req) {
         return;
     }
     var json = pndejsonize(req.responseText);
+    console.log(json);
     if (json.alerttext !== '') {
         pnshowajaxerror(json.alerttext);
         var aid = json.authid;
@@ -237,13 +237,14 @@ function changeModuleCategoryResponse(req) {
     document.getElementById('admintabsauthid').value = aid;
     pnupdateauthids(aid);
     var element = document.getElementById('A' + json.response);
+    if(json.newParentCat != element.parentNode.id) {}
     element.parentNode.removeChild(element);
     return;
 }
 //--------------------Creating Categories-------------------------------------
 /**
  * Presents user with the new category form.
- * 
+ *
  * @param cat The calling element. (EG call like: newCategory(this); from html)
  * @return Boolean False.
  */
@@ -258,7 +259,7 @@ function newCategory(cat) {
 
 /**
  * Creates the AJAX request to create the new category.
- * 
+ *
  * @param cat The calling element. (see above)
  * @return Boolean false.
  */
@@ -282,8 +283,8 @@ function addCategory(cat) {
 
 /**
  * Cancel the addition of a new category, puts widget back to normal.
- * 
- * @param cat the current element 
+ *
+ * @param cat the current element
  * (EG cancelCategory must be called: cancelCategory(this) from html)
  * @return Boolean False.
  */
@@ -296,7 +297,7 @@ function cancelCategory(cat) {
 
 /**
  * Ajax response handler for addCategory.
- * 
+ *
  * @param req Ajax request.
  * @return False, new tab is added on success.
  */
@@ -326,11 +327,11 @@ function addCategoryResponse(req) {
         addEditor('C'+json.response);
         document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
-        Droppables.add('C'+json.response, { 
+        Droppables.add('C'+json.response, {
             accept: 'draggable',
             hoverclass: 'ajaxhover',
             onDrop: function(drag, drop) {moveModule(drag.id, drop.id);}
         });
     }
-    return false;    
+    return false;
 }

@@ -52,7 +52,9 @@ class Admin_Ajax extends AbstractController
         if(!$result) {
             return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not add module to module category.')));
         }
+        $output['alerttext'] = '';
         $output['response'] = $moduleID;
+        $output['newParentCat'] = $newParentCat;
         return AjaxUtil::output($output, true);
     }
 

@@ -15,9 +15,9 @@
         </span>
 
         <script type="text/javascript">
-            new Draggable("A{/literal}{$adminlink.id}{literal}", {
+            new Draggable("A{{$adminlink.id}}", {
                 revert: true,
-                handle: "dragicon{/literal}{$adminlink.id}{literal}",
+                handle: "dragicon{{$adminlink.id}}",
                 zindex: 2200 // must be higher than the active minitab and all other admin icons
             });
         </script>

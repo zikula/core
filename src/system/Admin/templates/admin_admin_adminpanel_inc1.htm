@@ -20,9 +20,11 @@
                 {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
                 {if $modlinks}
                 {img modname='Admin' id="mcontext`$moduleid`" class="z-pointericon" src='arrow.png' __alt='Functions'}
+                {/if}
 
                 <script type="text/javascript">
                 /* <![CDATA[ */
+                {{if $modlinks}}
                     var context_mcontext{{$moduleid}} = new Control.ContextMenu('mcontext{{$moduleid}}',{
                         leftClick: true,
                         animation: false
@@ -34,17 +36,17 @@
                             callback: function(){window.location = document.location.pnbaseURL + '{{$modlink.url}}';}
                         });
                     {{/foreach}}
-                
-                    new Draggable("A{/literal}{$adminlink.id}{literal}", {
+
+                {{/if}}
+                    new Draggable("A{{$adminlink.id}}", {
                         revert: true,
-                        handle: "dragicon{/literal}{$adminlink.id}{literal}",
+                        handle: "dragicon{{$adminlink.id}}",
                         zindex: 2200 // must be higher than the active minitab and all other admin icons
                     });
                 
                 /* ]]> */
                 </script>
 
-                {/if}
 
             </div>
 
