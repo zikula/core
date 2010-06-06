@@ -13,10 +13,10 @@ core.preinit
     Occurs after the config.php is loaded.
 
 core.init
-    Occurs after each pnInit stage, $event['stages'] contains the stage.
+    Occurs after each System::init() stage, $event['stage'] contains the stage.
 
 core.postinit
-    Occurs just before pnInit exists from normal execution.
+    Occurs just before System::init() exists from normal execution.
 
 user.login
     Occurs right after login, $event['user'] is the UID of the logged in user.

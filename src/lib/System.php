@@ -160,7 +160,8 @@ class System
      */
     public static function init($stages = self::CORE_STAGES_ALL)
     {
-        $coreInitEvent = new Event('core.init', null, array('stages' => $stages));
+        $coreInitEvent = new Event('core.init');
+
         static $globalscleansed = false;
 
         // force register_globals = off
@@ -225,7 +226,8 @@ class System
                 $GLOBALS['ZConfig']['Multisites']['multi'] = 0;
             }
 
-        // initialise custom event listeners from config.php settings
+            // initialise custom event listeners from config.php settings
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_CONFIG);
             EventManagerUtil::notify($coreInitEvent);
         }
 
@@ -260,6 +262,7 @@ class System
         }
 
         if ($stages & self::CORE_STAGES_OBJECTLAYER) {
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_OBJECTLAYER);
             EventManagerUtil::notify($coreInitEvent);
         }
 
@@ -282,6 +285,7 @@ class System
                 }
             }
 
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_DB);
             EventManagerUtil::notify($coreInitEvent);
         }
 
@@ -302,6 +306,7 @@ class System
                 set_error_handler('System::errorHandler');
             }
 
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_TABLES);
             EventManagerUtil::notify($coreInitEvent);
         }
 
@@ -322,6 +327,7 @@ class System
                 }
             }
 
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_SESSIONS);
             EventManagerUtil::notify($coreInitEvent);
         }
 
@@ -329,16 +335,17 @@ class System
         // start block
         if ($stages & self::CORE_STAGES_LANGS) {
             $lang = ZLanguage::getInstance();
-            EventManagerUtil::notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_DECODEURLS) {
             self::queryStringDecode();
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEUTLS);
             EventManagerUtil::notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_LANGS) {
             $lang->setup();
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_LANGS);
             EventManagerUtil::notify($coreInitEvent);
         }
         // end block
@@ -356,6 +363,7 @@ class System
                 ModUtil::apiFunc('SecurityCenter', 'user', 'secureinput');
             }
 
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_MODS);
             EventManagerUtil::notify($coreInitEvent);
         }
 
@@ -371,6 +379,7 @@ class System
             PageUtil::registerVar('footer', true);
             // Load the theme
             Theme::getInstance();
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_THEME);
             EventManagerUtil::notify($coreInitEvent);
         }
 
