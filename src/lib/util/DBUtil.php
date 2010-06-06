@@ -33,7 +33,7 @@ class DBUtil
      */
     public static function hasObjectCache($tablename)
     {
-        return ($tablename != 'session_info' && !System::isInstalling() && DBConnectionStack::isDefaultConnection() && System::getVar('OBJECT_CACHE_ENABLE'));
+        return ($tablename != 'session_info' && !System::isInstalling() && DBConnectionStack::isDefaultConnection() && System::getVar('CACHE_ENABLE'));
     }
 
     /**

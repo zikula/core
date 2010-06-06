@@ -69,14 +69,31 @@ class DoctrineUtil
 
     public static function clearResultCache()
     {
+        if (!(System::getVar('CACHE_ENABLE') && System::getVar('CACHE_RESULT'))) {
+            return;
+        }
+
         $driver = DBConnectionStack::getConnection()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
         $driver->deleteByPrefix($driver->getOption('prefix'));
     }
 
     public static function clearQueryCache()
     {
+        if (!System::getVar('CACHE_ENABLE')) {
+            return;
+        }
+        
         $driver = DBConnectionStack::getConnection()->getAttribute(Doctrine_Core::ATTR_QUERY_CACHE);
         $driver->deleteByPrefix($driver->getOption('prefix'));
+    }
+
+    public static function useResultsCache($query)
+    {
+        if (!System::getVar('CACHE_ENABLE')) {
+            return $query;
+        }
+
+        return $query->useResultsCache(true);
     }
 
     /**
