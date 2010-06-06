@@ -88,13 +88,7 @@ Zikula.getcheckboxvalue = function(id)
 Zikula.updateauthids = function(authid)
 {
     if(authid.length != 0) {
-        for(var i=0; i<document.forms.length; i++) {
-            for(var j=0; j<document.forms[i].elements.length; j++) {
-                if(document.forms[i].elements[j].type=='hidden' && document.forms[i].elements[j].name=='authid') {
-                    document.forms[i].elements[j].value = authid;
-                }
-            }
-        }
+        $$('form input[name=authid]').invoke('writeAttribute','value',authid);
     }
     return;
 }
