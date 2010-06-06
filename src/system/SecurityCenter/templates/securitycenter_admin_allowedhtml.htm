@@ -49,25 +49,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {foreach from=$htmltags item=htmltag}
+                        {foreach from=$htmltags key=htmltag item=usagetag}
                         <tr class="{cycle values=z-odd,z-even}">
                             <td>&lt;{$htmltag|varprepfordisplay}&gt;</td>
-                            <td><input class="notallowed_radio"  onclick="CheckCheckAll('notallowed');"  type="radio" value="0" name="htmlallow{$htmltag|varprepfordisplay}tag" {if $currenthtmltags.$htmltag eq 0} checked="checked"{/if} /></td>
-                            <td><input class="allowed_radio"     onclick="CheckCheckAll('allowed');"     type="radio" value="1" name="htmlallow{$htmltag|varprepfordisplay}tag" {if $currenthtmltags.$htmltag eq 1} checked="checked"{/if} /></td>
-                            <td><input class="allowedwith_radio" onclick="CheckCheckAll('allowedwith');" type="radio" value="2" name="htmlallow{$htmltag|varprepfordisplay}tag" {if $currenthtmltags.$htmltag eq 2} checked="checked"{/if} /></td>
-                            <td>
-                                {if $htmltag eq '!--'}
-                                <a href="http://www.w3schools.com/tags/tag_comment.asp">{gt text='About "&lt;%s&gt;"' tag1=$htmltag}</a>
-                                {elseif $htmltag eq 'em' or $htmltag eq 'strong' or $htmltag eq 'dfn' or $htmltag eq 'code' or $htmltag eq 'samp' or $htmltag eq 'kbd' or $htmltag eq 'var' or $htmltag eq 'cite'}
-                                <a href="http://www.w3schools.com/tags/tag_phrase_elements.asp">{gt text='About "&lt;%s&gt;"' tag1=$htmltag}</a>
-                                {elseif $htmltag eq 'tt' or $htmltag eq 'i' or $htmltag eq 'b' or $htmltag eq 'big' or $htmltag eq 'small'}
-                                <a href="http://www.w3schools.com/tags/tag_font_style.asp">{gt text='About "&lt;%s&gt;"' tag1=$htmltag}</a>
-                                {elseif $htmltag eq 'h1' or $htmltag eq 'h2' or $htmltag eq 'h3' or $htmltag eq 'h4' or $htmltag eq 'h5' or $htmltag eq 'h6'}
-                                <a href="http://www.w3schools.com/tags/tag_hn.asp">{gt text='About "&lt;%s&gt;"' tag1=$htmltag}</a>
-                                {else}
-                                <a href="http://www.w3schools.com/tags/tag_{$htmltag}.asp">{gt text='About "&lt;%s&gt;"' tag1=$htmltag}</a>
-                                {/if}
-                            </td>
+                            <td><input class="notallowed_radio"  onclick="CheckCheckAll('notallowed');"  type="radio" value="0" name="htmlallow{$htmltag|varprepfordisplay}tag" {if (isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 0) or !isset($currenthtmltags.$htmltag)} checked="checked"{/if} /></td>
+                            <td><input class="allowed_radio"     onclick="CheckCheckAll('allowed');"     type="radio" value="1" name="htmlallow{$htmltag|varprepfordisplay}tag" {if isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 1} checked="checked"{/if} /></td>
+                            <td><input class="allowedwith_radio" onclick="CheckCheckAll('allowedwith');" type="radio" value="2" name="htmlallow{$htmltag|varprepfordisplay}tag" {if isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 2} checked="checked"{/if} /></td>
+                            <td>{if !empty($usagetag)}<a href="{$usagetag}">{gt text='About "&lt;%s&gt;"' tag1=$htmltag}</a>{/if}</td>
                         </tr>
                         {/foreach}
                     </tbody>

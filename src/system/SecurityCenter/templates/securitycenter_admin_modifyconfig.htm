@@ -274,8 +274,8 @@
                 <div class="z-formrow">
                     <label for="securitycenter_outputfilter">{gt text="Select output filter"}</label>
                     <select id="securitycenter_outputfilter" name="outputfilter">
-                        <option value="0"{if $outputfilter eq 0} selected="selected"{/if}>{gt text="Use internal output filter"}</option>
-                        <option value="1"{if $outputfilter eq 1} selected="selected"{/if}>{gt text="Use 'HTML Purifier' as output filter"}</option>
+                        <option value="0"{if $outputfilter eq 0} selected="selected"{/if}>{gt text="Use internal output filter only"}</option>
+                        <option value="1"{if $outputfilter eq 1} selected="selected"{/if}>{gt text="Use 'HTML Purifier' + internal mechanism as output filter"}</option>
                     </select>
                 </div>
             </fieldset>
