@@ -102,10 +102,15 @@ function addEditor(nid) {
             return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
         },
         onComplete: function(transport, element) {
+            if(transport.status != 200 ) {
+                this.element.innerHTML = getOrig(element.id);
+                pnshowajaxerror(transport.responseText);
+                return;
+            }
             var json = pndejsonize(transport.responseText);
             if (json.alerttext !== '' || json.response == '-1') {
                 this.element.innerHTML = getOrig(element.id);
-                pnshowajaxerror("Oops something went wrong: " + json.alerttext);
+                pnshowajaxerror(json.alerttext);
             } else {
                 this.element.innerHTML = json.response;
             }
@@ -175,8 +180,7 @@ function deleteTabResponse(req) {
     }
     var json = pndejsonize(req.responseText);
     if (json.alerttext !== '' || json.response == '-1') {
-        pnshowajaxerror("Oops something went wrong! " + json.alerttext + "response: "
-                + json.response);
+        pnshowajaxerror(json.alerttext);
     } else {
         var element = $("C" + json.response);
         element.up('li').remove();
@@ -223,9 +227,6 @@ function changeModuleCategoryResponse(req) {
     var json = pndejsonize(req.responseText);
     if (json.alerttext !== '') {
         pnshowajaxerror(json.alerttext);
-    }
-    if (json.response == '-1') {
-        pnshowajaxerror("Oops something went wrong!");
         var aid = json.authid;
         document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
@@ -308,7 +309,7 @@ function addCategoryResponse(req) {
     var json = pndejsonize(req.responseText);
     var aid = json.authid;
     if (json.alerttext !== '' || json.response == '0') {
-        pnshowajaxerror("Oops something went wrong! " + json.alerttext);
+        pnshowajaxerror(json.alerttext);
         document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
     } else {

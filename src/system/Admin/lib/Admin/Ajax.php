@@ -41,7 +41,7 @@ class Admin_Ajax extends AbstractController
         $module = ModUtil::getInfo($moduleID);
         if (!$module) {
             //deal with couldnt get module info
-            $output['alerttext'] = "Could not get module name for id:$moduleID";
+            $output['alerttext'] = $this->__f('Error! Could not get module name for id %s.', DataUtil::formatForDisplay($moduleID));
             return AjaxUtil::output($output, true);
         }
         //get the module name
@@ -49,8 +49,10 @@ class Admin_Ajax extends AbstractController
         //move the module
         $result = ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('category' => $newParentCat,
                 'module' => $module));
-        $output['alerttext'] = '';
-        $output['response'] = ($result) ? $moduleID : "-1";
+        if(!$result) {
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not add module to module category.')));
+        }
+        $output['response'] = $moduleID;
         return AjaxUtil::output($output, true);
     }
 
@@ -80,7 +82,7 @@ class Admin_Ajax extends AbstractController
         $cats = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($cats as $cat) {
             if (in_array($catName, $cat)) {
-                $output['alerttext'] = 'A category by this name already exists.';
+                $output['alerttext'] = $this->__('Error! A category by this name already exists.');
                 return AjaxUtil::output($output, true);
             }
         }
@@ -104,24 +106,18 @@ class Admin_Ajax extends AbstractController
     public function deleteCategory() {
         //security checks
         if (!SecurityUtil::confirmAuthKey()) {
-            $output['alerttext'] = "Invalid AuthKey.";
-            $output['response'] = '-1';
-            return AjaxUtil::output($output, false);
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
         //get passed cid to delete
         $cid = trim(FormUtil::getPassedValue('cid'));
         //check user has permission to delete this
         if (!SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE)) {
-            $output['alerttext'] = 'You do not have permission to delete category:'.$cid;
-            $output['response'] = '-1';
-            return AjaxUtil::output($output, true);
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
         //find the category corrisponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
-            $output['alerttext'] = 'Could not find category:'.$cid;
-            $output['response'] = '-1';
-            return AjaxUtil::output($output, true);
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')));
         }
 
         //delete the category
@@ -132,9 +128,7 @@ class Admin_Ajax extends AbstractController
             return AjaxUtil::output($output, true);
         }
         //unknown error
-        $output['alerttext'] = 'Unknown error.';
-        $output['response'] = '-1';
-        return AjaxUtil::output($output, true);
+        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not perform the deletion.')));
     }
 
     /**
@@ -149,21 +143,15 @@ class Admin_Ajax extends AbstractController
 
         //security checks
         if (!SecurityUtil::checkPermission('Admin::Category', "$cat[catname]::$cid", ACCESS_EDIT)) {
-            $output['alerttext'] = 'You do not have permission to edit this category.';
-            $output['response'] = '-1';
-            return AjaxUtil::output($output, true);
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            $output['alerttext'] = 'Invalid AuthKey';
-            $output['response'] = '-1';
-            return AjaxUtil::output($output, false);
+            return AjaxUtil::error(LogUtil::registerAuthidError());
         }
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
-            $output['alerttext'] = 'ID or Cateogry name not set.';
-            $output['response'] = '-1';
-            return AjaxUtil::output($output, true);
+            return AjaxUtil::error(LogUtil::registerArgsError());
         }
 
         //check if category with same name exists
@@ -177,7 +165,7 @@ class Admin_Ajax extends AbstractController
                     return AjaxUtil::output($output, true);
                 }
                 //a different category has the same name, not allowed.
-                $output['alerttext'] = 'A category by this name already exists.';
+                $output['alerttext'] = $this->__('Error! A category by this name already exists.');
                 $output['response'] = '-1';
                 return AjaxUtil::output($output, true);
             }
@@ -186,9 +174,7 @@ class Admin_Ajax extends AbstractController
         //get the category from the database
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
-            $output['alerttext'] = "Category $cid does not exist.";
-            $output['response'] = '-1';
-            return AjaxUtil::output($output, true);
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')));
         }
 
         //update the category using the info from the database and from the form.
@@ -198,8 +184,6 @@ class Admin_Ajax extends AbstractController
             return AjaxUtil::output($output, true);
         }
         //update failed for some reason
-        $output['alerttext'] = 'Unknown error.';
-        $output['response'] = '-1';
-        return AjaxUtil::output($output, true);
+        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
     }
 }
