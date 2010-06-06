@@ -92,7 +92,7 @@ function addEditor(nid) {
             });
         },
         callback: function(form, value) { 
-            var authid = document.getElementById('authid').value;
+            var authid = document.getElementById('admintabsauthid').value;
             var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
             //this check should stop the form from submitting if the catname is the same, it doesnt work
             //if (getOrig("C" + cid) == value) {
@@ -111,7 +111,7 @@ function addEditor(nid) {
             }
             var aid = json.authid;
             if (aid !== '') {
-                document.getElementById('authid').value = aid;
+                document.getElementById('admintabsauthid').value = aid;
                 pnupdateauthids(aid);
             }
         }
@@ -153,7 +153,7 @@ function getOrig(nid) {
  * @return void
  */
 function deleteTab(id) {
-    var authid = document.getElementById('authid').value;
+    var authid = document.getElementById('admintabsauthid').value;
     var pars = "module=Admin&type=ajax&func=deleteCategory&cid=" + id + '&authid=' + authid;
     var myAjax = new Ajax.Request("ajax.php", {
         method : 'get',
@@ -183,7 +183,7 @@ function deleteTabResponse(req) {
     }
     var aid = json.authid;
     if (aid !== '') {
-        document.getElementById('authid').value = aid;
+        document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
     }
     return false;
@@ -199,7 +199,7 @@ function deleteTabResponse(req) {
 function moveModule(id, cid) {
     var id = id.substr(1);
     var cid = cid.substr(1);
-    var authid = document.getElementById('authid').value;
+    var authid = document.getElementById('admintabsauthid').value;
     var pars = "module=Admin&type=ajax&func=changeModuleCategory&modid=" + id
     + "&cat=" + cid + '&authid=' + authid;
     var myAjax = new Ajax.Request("ajax.php", {
@@ -227,13 +227,13 @@ function changeModuleCategoryResponse(req) {
     if (json.response == '-1') {
         pnshowajaxerror("Oops something went wrong!");
         var aid = json.authid;
-        document.getElementById('authid').value = aid;
+        document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
         return;
     }
     $('z-admincontainer').highlight();
     var aid = json.authid;
-    document.getElementById('authid').value = aid;
+    document.getElementById('admintabsauthid').value = aid;
     pnupdateauthids(aid);
     var element = document.getElementById('A' + json.response);
     element.parentNode.removeChild(element);
@@ -269,7 +269,7 @@ function addCategory(cat) {
         cancelCategory(oldcat);
         return false;
     }
-    var authid = document.getElementById('authid').value;
+    var authid = document.getElementById('admintabsauthid').value;
     var pars = "module=Admin&type=ajax&func=addCategory&catname=" + catname + "&authid=" + authid;
     var myAjax = new Ajax.Request("ajax.php", {
         method : 'get',
@@ -309,7 +309,7 @@ function addCategoryResponse(req) {
     var aid = json.authid;
     if (json.alerttext !== '' || json.response == '0') {
         pnshowajaxerror("Oops something went wrong! " + json.alerttext);
-        document.getElementById('authid').value = aid;
+        document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
     } else {
         newcat = document.getElementById('addcat');
@@ -323,7 +323,7 @@ function addCategoryResponse(req) {
         document.getElementById('admintabs').appendChild(newelement);
         addContext('C'+json.response);
         addEditor('C'+json.response);
-        document.getElementById('authid').value = aid;
+        document.getElementById('admintabsauthid').value = aid;
         pnupdateauthids(aid);
         Droppables.add('C'+json.response, { 
             accept: 'draggable',
