@@ -82,6 +82,11 @@
   module/Example/lib/Example/DBObject/Users.php - the class contained should be
   Example_DBObject_Users.
 
+  Please note that because of the use of ModUtil::func() and ModUtil::apiFunc()
+  Controller and Controller Apis must be named according to the type in real
+  camel case (ucwords).  E.g. type = adminform means the file *must* be names
+  Adminform and NOT AdminForm.  The class name would be Modulename_Adminform.
+
 - You may additionally register autoloaders with
   ZLoader::addAutoloader($namespace, $path) where
   $namespace is the first part of the PEAR classname, and $path is
