@@ -122,7 +122,7 @@ $ZConfig['System']['Z_CONFIG_USE_TRANSACTIONS'] = 0;           // run request as
 // ----------------------------------------------------------------------
 // Database cache settings
 // ----------------------------------------------------------------------
-$ZConfig['System']['CACHE_ENABLE'] = true;          // false to disable, true to enable
+$ZConfig['System']['CACHE_ENABLE'] = false;          // false to disable, true to enable
 $ZConfig['System']['CACHE_TYPE'] = 'Apc';           // Memcache, Apc, Array, Db, Xcache (todo: Memcached, File)
 
 // CACHE_SERVERS valid for Memcache/d only.
@@ -134,7 +134,7 @@ $ZConfig['System']['CACHE_COMPRESSION'] = true; // true/false valid for CACHE_TY
 
 // For pure Doctrine Queries only. Effective only when CACHE_ENABLE = true and CACHE_RESULT = true
 // http://www.doctrine-project.org/projects/orm/1.2/docs/manual/caching/en#query-cache-result-cache:result-cache
-$ZConfig['System']['CACHE_RESULT'] = true;   // true to enable or null to disable.
+$ZConfig['System']['CACHE_RESULT'] = false;   // true to enable or null to disable.
 $ZConfig['System']['CACHE_RESULT_TTL'] = 30; // seconds, 3600 = 1 hour.
 
 // ----------------------------------------------------------------------
