@@ -122,12 +122,20 @@ $ZConfig['System']['Z_CONFIG_USE_TRANSACTIONS'] = 0;           // run request as
 // ----------------------------------------------------------------------
 // Database cache settings
 // ----------------------------------------------------------------------
-$ZConfig['System']['OBJECT_CACHE_ENABLE'] = 0;          // 0 to disable, 1 to enable
-$ZConfig['System']['OBJECT_CACHE_TYPE'] = 'Memcache';   // Memcache, Apc, Array, Db, Xcache (todo: Memcached, File)
+$ZConfig['System']['CACHE_ENABLE'] = true;          // false to disable, true to enable
+$ZConfig['System']['CACHE_TYPE'] = 'Apc';           // Memcache, Apc, Array, Db, Xcache (todo: Memcached, File)
+
+// CACHE_SERVERS valid for Memcache/d only.
 // array of arrays: params according to the addServer methods at e.g.
 // http://php.net/manual/memcached.addservers.php or
 // http://php.net/manual/function.memcache-addserver.php
-$ZConfig['System']['OBJECT_CACHE_SERVERS'][] = array('host' => 'localhost', 'port' => '11211', 'weight' => 1); // APC required no servers
+$ZConfig['System']['CACHE_SERVERS'][] = array('host' => 'localhost', 'port' => '11211', 'weight' => 1);
+$ZConfig['System']['CACHE_COMPRESSION'] = true; // true/false valid for CACHE_TYPE = Memcache/d
+
+// For pure Doctrine Queries only. Effective only when CACHE_ENABLE = true and CACHE_RESULT = true
+// http://www.doctrine-project.org/projects/orm/1.2/docs/manual/caching/en#query-cache-result-cache:result-cache
+$ZConfig['System']['CACHE_RESULT'] = true;   // true to enable or null to disable.
+$ZConfig['System']['CACHE_RESULT_TTL'] = 30; // seconds, 3600 = 1 hour.
 
 // ----------------------------------------------------------------------
 // Initialize runtime variables to sane defaults

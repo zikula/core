@@ -26,7 +26,7 @@ function ExampleDoctrine_init()
 {
     // create the socialNetwork table
     try {
-        Zikula_DoctrineHelpers::createTablesFromModels('ExampleDoctrine');
+        DoctrineUtil::createTablesFromModels('ExampleDoctrine');
     } catch (Exception $e) {
         return false;
     }
@@ -74,7 +74,7 @@ function ExampleDoctrine_upgrade($oldversion)
 function ExampleDoctrine_delete()
 {
     // drop table
-    Zikula_DoctrineHelpers::dropTable('exampledoctrine_users');
+    DoctrineUtil::dropTable('exampledoctrine_users');
 
     // remove all module vars
     ModUtil::delVar('ExampleDoctrine');

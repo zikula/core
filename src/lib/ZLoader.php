@@ -115,6 +115,7 @@ class ZLoader
             'CookieUtil' => 'util',
             'DataUtil' => 'util',
             'DateUtil' => 'util',
+            'DoctrineUtil' => 'util',
             'EventManagerUtil' => 'util',
             'FileUtil' => 'util',
             'FilterUtil' => 'util',

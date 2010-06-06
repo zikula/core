@@ -53,17 +53,25 @@ class DBConnectionStack
             self::$manager = Doctrine_Manager::getInstance();
             self::configureDoctrine(self::$manager);
             // setup caching
-            if (!System::isInstalling() && System::getVar('OBJECT_CACHE_ENABLE')) {
-                $type = System::getVar('OBJECT_CACHE_TYPE');
+            if (!System::isInstalling() && System::getVar('CACHE_ENABLE')) {
+                $type = System::getVar('CACHE_TYPE');
 
                 // Setup Doctrine Caching
                 $type = ucfirst(strtolower($type));
                 $doctrineCacheClass = "Doctrine_Cache_$type";
-                self::$cacheDriver = new $doctrineCacheClass();
+                $r = new ReflectionClass($doctrineCacheClass);
+                $options = array('prefix' => 'dd');
+                if (strpos($type, 'Memcache') === 0) {
+                    $servers = System::getVar('CACHE_SERVERS');
+                    $options = array_merge($options, array('servers' => $servers, 'compression' => System::getVar('CACHE_COMPRESSION')));
+                }
+                
+                self::$cacheDriver = $r->newInstance($options);
                 self::$manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, self::$cacheDriver);
                 self::$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, self::$cacheDriver);
-                // TODO B implment resultcache lifespan configuration variable
-                //$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, 3600);
+                
+                // implment resultcache lifespan configuration variable
+                self::$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, System::getVar('CACHE_RESULT_TTL'));
             }
         }
 
@@ -71,13 +79,18 @@ class DBConnectionStack
             return self::$connectionInfo[$name];
         }
         $connInfo = $GLOBALS['ZConfig']['DBInfo'][$name];
-
+        
         // collect information for DBConnectionStack
         $dsnParts = self::$manager->parseDsn($connInfo['dsn']);
         $connInfo['dbtype'] = strtolower($dsnParts['scheme']);
         $connInfo['dbhost'] = $dsnParts['host'];
         $connInfo['dbname'] = $dsnParts['database'];
         $connInfo['prefix'] = System::getVar('prefix') . '_';
+
+        if (!System::isInstalling() && System::getVar('CACHE_ENABLE')) {
+            // Support for multisites to prevent clashes
+            self::$cacheDriver->setOption('prefix', md5($connInfo['dsn']));
+        }
 
         // test the DB connection works or just set lazy
         try {
@@ -366,16 +379,13 @@ class DBConnectionStack
     function configureDoctrine($object)
     {
         if ($object instanceof Doctrine_Manager) {
-            // set global options
-
-
             // Cross-DBMS portability options
             // Modes are bitwised, so they can be combined using | and removed using ^.
             // See http://www.doctrine-project.org/documentation/manual/1_1/en/configuration#portability:portability-mode-attributes
             // Turn on all portability features (commented out as this is the default setting)
             $object->setAttribute('portability', Doctrine::PORTABILITY_ALL);
 
-            // Turn of identifier quoting, as it causes more problems than it solves
+            // Turn off identifier quoting, as it causes more problems than it solves
             // See http://www.doctrine-project.org/documentation/manual/1_1/en/configuration#identifier-quoting
             $object->setAttribute(Doctrine::ATTR_QUOTE_IDENTIFIER, false);
 
@@ -398,15 +408,11 @@ class DBConnectionStack
             // Index names (default: [name]_idx)
             $object->setAttribute(Doctrine::ATTR_IDXNAME_FORMAT, '%s');
 
-
             // Sequence names (default: [name]_seq)
             // $object->setAttribute(Doctrine::ATTR_SEQNAME_FORMAT, '%s_sequence');
 
-
             // Database names
             // $object->setAttribute(Doctrine::ATTR_DBNAME_FORMAT, 'myframework_%s');
-            // TODO B [use ATTR_DBNAME_FORMAT for MultiSites possibilities] (Guite)
-
 
             // Table name prefixes
             $tablePrefix = System::getVar('prefix');

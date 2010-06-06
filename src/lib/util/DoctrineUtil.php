@@ -13,11 +13,10 @@
  */
 
 /**
- * Zikula_DoctrineHelpers class
+ * DoctrineUtil helper class
  */
-class Zikula_DoctrineHelpers
+class DoctrineUtil
 {
-
     /**
      * Constructor
      */
@@ -68,6 +67,17 @@ class Zikula_DoctrineHelpers
         $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
     }
 
+    public static function clearResultCache()
+    {
+        $driver = DBConnectionStack::getConnection()->getAttribute(Doctrine_Core::ATTR_RESULT_CACHE);
+        $driver->deleteByPrefix($driver->getOption('prefix'));
+    }
+
+    public static function clearQueryCache()
+    {
+        $driver = DBConnectionStack::getConnection()->getAttribute(Doctrine_Core::ATTR_QUERY_CACHE);
+        $driver->deleteByPrefix($driver->getOption('prefix'));
+    }
 
     /**
      * Decorates table name with prefix
