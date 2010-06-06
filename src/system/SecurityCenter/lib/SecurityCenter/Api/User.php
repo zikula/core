@@ -840,7 +840,7 @@ class SecurityCenter_Api_User extends AbstractApi
         }
 
         // block request
-        $this->throwForbiddenIf($usedImpact > $impactThresholdThree, __('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, null, $result);
+        $this->throwForbiddenIf($usedImpact > $impactThresholdThree, __('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
 
         return;
     }
