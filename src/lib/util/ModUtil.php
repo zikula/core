@@ -1456,7 +1456,7 @@ class ModUtil
         return self::$ooModules[$moduleName]['oo'];
     }
 
-    public function hasInstance($className)
+    public static function hasInstance($className)
     {
         return array_key_exists($className, self::$classInstances);
     }
