@@ -160,7 +160,7 @@ class Categories_User extends AbstractController
             return LogUtil::registerError(__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
-        $userCatName = Categories_user_getusercategoryname();
+        $userCatName = $this->getusercategoryname();
         if (!$userCatName) {
             return LogUtil::registerError(__('Error! Cannot determine user category root node name.'));
         }
@@ -185,7 +185,7 @@ class Categories_User extends AbstractController
                     'path'             => $thisUserRootCatPath,
                     'status'           => 'A');
 
-            $obj = new Categories_DBObject_ategory ();
+            $obj = new Categories_DBObject_Category();
             $obj->setData ($cat);
             $obj->insert ();
             // since the original insert can't construct the ipath (since
