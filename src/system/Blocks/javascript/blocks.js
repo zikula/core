@@ -65,7 +65,7 @@ function initactivationbuttons()
  */
 function blockorderchanged()
 {
-    var pars = "module=Blocks&func=changeblockorder&authid=" + $F('authid')
+    var pars = "module=Blocks&func=changeblockorder&authid=" + $F('blocksauthid')
                + "&position=" + $F('position')
                + "&" + Sortable.serialize('assignedblocklist', { 'name': 'blockorder' });
     var myAjax = new Ajax.Request(
