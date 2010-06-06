@@ -275,7 +275,7 @@ function install()
                 if (!is_readable('config/config.php')) {
                     @chmod('config/config.php', 0440);
                     if (!is_readable('config/config.php')) {
-                       @chmod('config/config.php', 0444);
+                        @chmod('config/config.php', 0444);
                     }
                 }
                 if($installbySQL){
@@ -287,12 +287,13 @@ function install()
             }
         case 'gotosite':
             if(!$installbySQL){
-                define('ThemeUtil::STATE_ALL', 0);
-                define('ThemeUtil::STATE_ACTIVE', 1);
-                define('ThemeUtil::STATE_INACTIVE', 2);
+                if (!class_exists('ThemeUtil')) {
+                    require_once 'lib/util/ThemeUtil.php';
+                }
                 System::setVar('Default_Theme', $defaulttheme);
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
+
             SessionUtil::requireSession();
             if (!UserUtil::isLoggedIn()) {
                 return System::redirect();
@@ -437,15 +438,15 @@ function installmodules($installtype = 'basic', $lang = 'en')
 
     if ($installtype == 'basic') {
         $coremodules = array(
-                        'Modules',
-                        'Admin',
-                        'Permissions',
-                        'Groups',
-                        'Blocks',
-                        'ObjectData',
-                        'Users',
-                        'Theme',
-                        'Settings');
+                'Modules',
+                'Theme',
+                'Admin',
+                'Permissions',
+                'Groups',
+                'Blocks',
+                'ObjectData',
+                'Users',
+                'Settings');
         // manually install the modules module
         foreach ($coremodules as $coremodule) {
             // sanity check - check if module is already installed

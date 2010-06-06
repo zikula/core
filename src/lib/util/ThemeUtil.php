@@ -139,7 +139,7 @@ class ThemeUtil
         if (!is_array($themeid) || !isset($themeid[$theme])) {
             $themes = self::getThemesTable();
 
-            if ($themes === false) {
+            if (!$themes) {
                 return;
             }
 
