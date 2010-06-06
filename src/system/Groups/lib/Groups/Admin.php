@@ -477,7 +477,7 @@ class Groups_Admin extends AbstractController
                 $options[] = array('url'   => ModUtil::url('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
                         'uid'    => $user['uid'],
                         'authid' => SecurityUtil::generateAuthKey())),
-                        'imgfile' => '14_layer_deletelayer.gif',
+                        'imgfile' => 'edit_remove.gif',
                         'title' => $this->__('Remove user from group'));
                 $groupmembers[] = array('uname'   => UserUtil::getVar('uname', $user['uid']),
                         'name'    => UserUtil::getVar('name', $user['uid']),

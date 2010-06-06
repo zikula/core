@@ -17,9 +17,9 @@
                     <input id="themeswitcher_theme_change" name="resetuserselected" type="checkbox" value="1"  />
                 </div>
                 {/if}
-                <div class="z-formbuttons">
-                    {button src=button_ok.gif set=icons/small __alt="Accept" __title="Accept"}
-                    <a href="{modurl modname=Theme type=admin func=view}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+                <div class="z-buttons">
+                    {button src=button_ok.gif set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
+                    <a href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"}{gt text="Cancel"}</a>
                 </div>
             </fieldset>
         </div>

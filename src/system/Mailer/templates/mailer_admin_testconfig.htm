@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {include file="mailer_admin_menu.htm"}
 {ajaxheader modname=Mailer filename=mailer_admin_testconfig.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
@@ -54,9 +53,9 @@
                     <textarea id="mailer_altbody" name="altbody" cols="50" rows="10"></textarea>
                 </div>
             </fieldset>
-            <div class="z-formbuttons">
-                {button src=button_ok.gif set=icons/small __alt="Test settings now" __title="Test settings now"}
-                <a href="{modurl modname=Mailer type=admin}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+            <div class="z-buttons">
+                {button src=button_ok.gif set=icons/extrasmall __alt="Test settings now" __title="Test settings now" __text="Test settings now"}
+                <a href="{modurl modname=Mailer type=admin}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"}{gt text="Cancel"}</a>
             </div>
         </div>
     </form>

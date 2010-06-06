@@ -1,4 +1,3 @@
-{* $Id$ *}
 {gt text="Membership application" assign=templatetitle}
 {include file="groups_admin_menu.htm"}
 
@@ -33,18 +32,17 @@
                 {/if}
                 <div class="z-formrow">
                     <label for="groups_sendtag">{gt text="Send notification"}</label>
-                    <!--<input id="groups_sendtag" name="sendtag" type="checkbox" />-->
                     <select id="groups_sendtag" name="sendtag">
                         {html_options options=$sendoptions}
                     </select>
                 </div>
             </fieldset>
 
-            <div class="z-formbuttons">
+            <div class="z-buttons">
                 {if $action == "deny"}
-                <button type="submit">{img modname=core src=editdelete.gif set=icons/extrasmall __alt="Deny" __title="Deny"}&nbsp;{gt text="Deny"}</button>
+                <button type="submit">{img modname=core src=editdelete.gif set=icons/extrasmall __alt="Deny" __title="Deny"}{gt text="Deny"}</button>
                 {else}
-                <button type="submit">{img modname=core src=button_ok.gif set=icons/extrasmall __alt="Accept" __title="Accept"}&nbsp;{gt text="Accept"}</button>
+                <button type="submit">{img modname=core src=button_ok.gif set=icons/extrasmall __alt="Accept" __title="Accept"}{gt text="Accept"}</button>
                 {/if}
             </div>
         </div>

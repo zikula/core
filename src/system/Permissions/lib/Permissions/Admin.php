@@ -334,7 +334,7 @@ class Permissions_Admin extends AbstractController
         $permcolumn = $pntable['group_perms_column'];
         $mlpermtype = $this->__('Group');
         $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
-        $ids = permissions_getGroupsInfo();
+        $ids = $this->getGroupsInfo();
 
         $orderBy = "ORDER BY $permcolumn[sequence]";
         $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);

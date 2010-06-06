@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {include file="permissions_admin_menu.htm"}
 {include file="componentinstance.js"}
 <div class="z-admincontainer">
@@ -48,7 +47,7 @@
                             <input name="submit" type="submit" value="{$submit}" />
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="{cycle values="z-odd,z-even"}">
                         <td>{$permissions[permissions].sequence|varprepfordisplay}</td>
                         <td>{$permissions[permissions].group|varprepfordisplay}</td>
                         <td>{$permissions[permissions].component|varprepfordisplay}</td>
@@ -87,22 +86,22 @@
                     </tr>
                     {/section}
                     {if $action eq "add"}
-                    <tr>
+                    <tr class="{cycle values="z-odd,z-even"}" style="vertical-align:top;">
                         <td>&nbsp;</td>
                         <td>
                             <select name="id">
                                 {html_options options=$idvalues}
                             </select>
                         </td>
-                        <td><textarea name="component">.*</textarea></td>
-                        <td><textarea name="instance">.*</textarea></td>
+                        <td><textarea name="component" rows="2" cols="20">.*</textarea></td>
+                        <td><textarea name="instance"  rows="2" cols="20">.*</textarea></td>
                         <td>
                             <select name="level">
                                 {html_options options=$permissionlevels}
                             </select>
                         </td>
-                        <td>
-                            {button src=button_ok.gif set=icons/small alt=$submit title=$submit constants=false}
+                        <td class="z-buttons z-right" style="margin:0;">
+                            {button src=button_ok.gif set=icons/extrasmall alt=$submit title=$submit text=$submit constants=false}
                         </td>
                     </tr>
                     {/if}

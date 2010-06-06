@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {gt text="Permission rules list" assign=templatetitle}
 {include file="permissions_admin_menu.htm"}
 
@@ -192,10 +191,10 @@
                     {/if}
                 </div>
             </div>
-            <div class="z-formbuttons">
-                <button id="testpermsubmit" type="submit" title="{gt text="Check permission"}">{img modname=core src=button_ok.gif set=icons/small  __alt="Check permission" __title="Check permission"}</button>
-                <button class="z-hide" id="testpermsubmitajax" onclick="javascript:performpermissiontest(); return false;" title="{gt text="Check permission"}">{img modname=core src=button_ok.gif set=icons/small  __alt="Check permission" __title="Check permission"}</button>
-                <button id="testpermreset" type="reset" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/small  __alt="Cancel" __title="Cancel"}</button>
+            <div class="z-buttons">
+                <button id="testpermsubmit" type="submit" title="{gt text="Check permission"}">{img modname=core src=button_ok.gif set=icons/extrasmall  __alt="Check permission" __title="Check permission"}{gt text="Check permission"}</button>
+                <button class="z-hide" id="testpermsubmitajax" onclick="javascript:performpermissiontest(); return false;" title="{gt text="Check permission"}">{img modname=core src=button_ok.gif set=icons/extrasmall  __alt="Check permission" __title="Check permission"}{gt text="Check permission"}</button>
+                <button id="testpermreset" type="reset" title="{gt text="Reset"}">{img modname=core src=button_cancel.gif set=icons/extrasmall  __alt="Reset" __title="Reset"}{gt text="Reset"}</button>
             </div>
         </fieldset>
     </form>

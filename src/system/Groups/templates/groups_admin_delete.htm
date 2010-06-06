@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {include file="groups_admin_menu.htm"}
 {gt text="Delete" assign=templatetitle}
 
@@ -13,9 +12,9 @@
             <input type="hidden" name="gid" value="{$gid|varprepfordisplay}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
-                <div class="z-formbuttons">
-                    {button src=button_ok.gif set=icons/small __alt="Delete" __title="Delete"}
-                    <a href="{modurl modname=Groups type=admin func=view}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+                <div class="z-buttons">
+                    {button class="z-btgreen" src=button_ok.gif set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
+                    <a class="z-btred" href="{modurl modname=Groups type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"}{gt text="Cancel"}</a>
                 </div>
             </fieldset>
         </div>

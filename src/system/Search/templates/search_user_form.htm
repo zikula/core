@@ -1,7 +1,4 @@
-{*  $Id$  *}
-
 {pageaddvar name="javascript" value="system/Search/javascript/search_user_form.js"}
-
 {gt text='Search keywords' assign='templatetitle' domain='zikula'}
 {include file='search_user_menu.htm'}
 
@@ -27,8 +24,8 @@
                 <option value="alphabetical"{if $searchtype eq 'alphabetical'} selected="selected"{/if}>{gt text="Alphabetical" domain='zikula'}</option>
             </select>
         </div>
-        <div class="z-formbuttons">
-            <input type="submit" value="{gt text='Search now' domain='zikula'}" />
+        <div class="z-buttons">
+            {button src=button_ok.gif set=icons/extrasmall __alt="Search now" __title="Search now" __text="Search now"}
         </div>
     </fieldset>
     {if $plugin_options}
@@ -44,6 +41,3 @@
     </fieldset>
     {/if}
 </form>
-
-
-

@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {gt text="Group membership" assign=templatetitle}
 {include file="groups_admin_menu.htm"}
 
@@ -25,6 +24,8 @@
                     {/section}
                 </td>
             </tr>
+            {sectionelse}
+            <tr class="z-admintableempty"><td colspan="4">{gt text="No items found."}</td></tr>
             {/section}
         </tbody>
     </table>
@@ -48,12 +49,12 @@
                     </select>
                 </div>
             </fieldset>
-            <div class="z-formbuttons">
-                <input name="submit" type="submit" value="{gt text="Save"}" />
+            <div class="z-buttons">
+                {button src=button_ok.gif set=icons/extrasmall __alt="Add" __title="Add" __text="Add"}
             </div>
         </div>
     </form>
     {else}
-    {gt text="Notice: Please select one or more users to add to the group. To select multiple users, use 'Shift-Click' or 'Control-Click'."}
+    <p class="z-informationmsg">{gt text="Notice: Please select one or more users to add to the group. To select multiple users, use 'Shift-Click' or 'Control-Click'."}</p>
     {/if}
 </div>
