@@ -88,7 +88,7 @@ function securitycenter_init()
     System::setVar('idsimpactmode', 1);               // per request per default
 
     // now lets set the default mail message contents
-    // file is read from pnincludes directory
+    // file is read from includes directory
     $summarycontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/summary.txt'));
     System::setVar('summarycontent', $summarycontent);
     $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/full.txt'));
