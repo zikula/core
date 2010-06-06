@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv2.1 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -65,11 +65,11 @@ class DBConnectionStack
                     $servers = System::getVar('CACHE_SERVERS');
                     $options = array_merge($options, array('servers' => $servers, 'compression' => System::getVar('CACHE_COMPRESSION')));
                 }
-                
+
                 self::$cacheDriver = $r->newInstance($options);
                 self::$manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, self::$cacheDriver);
                 self::$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, self::$cacheDriver);
-                
+
                 // implment resultcache lifespan configuration variable
                 self::$manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, System::getVar('CACHE_RESULT_TTL'));
             }
@@ -79,7 +79,7 @@ class DBConnectionStack
             return self::$connectionInfo[$name];
         }
         $connInfo = $GLOBALS['ZConfig']['DBInfo'][$name];
-        
+
         // collect information for DBConnectionStack
         $dsnParts = self::$manager->parseDsn($connInfo['dsn']);
         $connInfo['dbtype'] = strtolower($dsnParts['scheme']);
