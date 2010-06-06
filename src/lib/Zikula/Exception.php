@@ -24,6 +24,6 @@ class Zikula_Exception extends Exception
 
     public function getDebug()
     {
-        return $this->debug;
+        return (array)$this->debug;
     }
 }

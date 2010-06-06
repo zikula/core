@@ -120,11 +120,11 @@ if ($return) {
             if ($e instanceof Zikula_Exception_NotFound) {
                 $httpCode = 404;
                 $message = $e->getMessage();
-                $debug = $e->getDebug();
+                $debug = array_merge($e->getDebug(), $e->getTrace());
             } elseif ($e instanceof Zikula_Exception_Forbidden) {
                 $httpCode = 403;
                 $message = $e->getMessage();
-                $debug = $e->getDebug();
+                $debug = array_merge($e->getDebug(), $e->getTrace());
             } elseif ($e instanceof Zikula_Exception_Redirect) {
                 System::redirect($e->getUrl, array(), $e->getType());
                 System::shutDown();
@@ -141,6 +141,7 @@ if ($return) {
                 // general catch all
                 $httpCode = 500;
                 $message = $e->getMessage();
+                $debug = $e->getTrace();
             }
         }
     }
