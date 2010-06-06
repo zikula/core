@@ -10,7 +10,7 @@
  * @package Zikula_Core
  */
 
-class Categories_AdminForm extends AbstractController
+class Categories_Adminform extends AbstractController
 {
 
     /**

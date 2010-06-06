@@ -10,7 +10,7 @@
  * @package Zikula_Core
  */
 
-class Categories_UserForm extends AbstractController
+class Categories_Userform extends AbstractController
 {
     /**
      * delete category
