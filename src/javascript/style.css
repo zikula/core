@@ -805,7 +805,7 @@ div.z-formbuttons button {
     font-size: 1em;
     font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
     line-height:130%;
-    text-decoration:none;
+    text-decoration:none !important;
     font-weight:bold;
     cursor:pointer;
     padding:5px 10px 6px 7px;
@@ -822,7 +822,7 @@ div.z-formbuttons button {
 
 .z-buttons button:hover,
 .z-buttons a:hover {
-    text-decoration: none;
+    text-decoration: none !important;
     background: #616161;
     background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5));
     background: -moz-linear-gradient(top,  #dedede, #F5F5F5);
