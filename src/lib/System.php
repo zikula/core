@@ -339,7 +339,7 @@ class System
 
         if ($stages & self::CORE_STAGES_DECODEURLS) {
             self::queryStringDecode();
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEUTLS);
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEURLS);
             EventManagerUtil::notify($coreInitEvent);
         }
 
