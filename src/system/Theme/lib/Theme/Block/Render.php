@@ -20,7 +20,7 @@ class Theme_Block_Render extends AbstractBlock
      * initialise block
      *
      */
-    function init()
+    public function init()
     {
         // Security
         SecurityUtil::registerPermissionSchema('Theme:Renderblock:', 'Block title::');
@@ -31,11 +31,11 @@ class Theme_Block_Render extends AbstractBlock
      *
      * @return    array    blockinfo array
      */
-    function info()
+    public function info()
     {
         return array('module'         => 'Theme',
-                'text_type'      => __('Rendering engine'),
-                'text_type_long' => __('Custom rendering engine block'),
+                'text_type'      => $this->__('Rendering engine'),
+                'text_type_long' => $this->__('Custom rendering engine block'),
                 'allow_multiple' => true,
                 'form_content'   => false,
                 'form_refresh'   => false,
@@ -48,7 +48,7 @@ class Theme_Block_Render extends AbstractBlock
      * @param     $row     blockinfo array
      * @return    string   HTML output string
      */
-    function display($row)
+    public function display($row)
     {
         if (!SecurityUtil::checkPermission('Theme:Renderblock:', "$row[title]::", ACCESS_OVERVIEW)) {
             return;
@@ -59,14 +59,14 @@ class Theme_Block_Render extends AbstractBlock
 
         // Parameter check
         if (!isset($vars['template']) || !isset($vars['module'])) {
-            $row['content'] = __('Misconfigured block');
+            $row['content'] = $this->__('Misconfigured block');
             return BlockUtil::themeBlock($row);
         }
 
         // If the module is available we load the user api.
         // If the module is not available we show an error messages.
         if ( (!ModUtil::available($vars['module'])) || (!ModUtil::loadApi($vars['module'], 'user')) ) {
-            $row['content'] = __('Misconfigured block').' - '.__('No module.').$vars['module'];
+            $row['content'] = $this->__('Misconfigured block').' - '.$this->__('No module.').$vars['module'];
             return BlockUtil::themeBlock($row);
         }
 
@@ -115,7 +115,7 @@ class Theme_Block_Render extends AbstractBlock
      * @param     $row     blockinfo array
      * @return    string   HTML output string
      */
-    function modify($row)
+    public function modify($row)
     {
         if (!SecurityUtil::checkPermission('Theme:Renderblock:', "$row[title]::", ACCESS_ADMIN)) {
             return false;

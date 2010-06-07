@@ -24,7 +24,7 @@ class Theme_Block_Themeswitcher extends AbstractBlock
      * initialise block
      *
      */
-    function init()
+    public function init()
     {
         SecurityUtil::registerPermissionSchema('Themeswitcherblock::', 'Block title::');
     }
@@ -34,19 +34,19 @@ class Theme_Block_Themeswitcher extends AbstractBlock
      *
      * @return       array       The block information
      */
-    function info()
+    public function info()
     {
-        $requirement_message = '';
         $switchThemeEnable = System::getVar('theme_change');
 
         if (!$switchThemeEnable) {
-            $theme_settings_link = ModUtil::url('Theme', 'admin', 'modifyconfig');
-            $requirement_message .= __f('Notice: This theme switcher block will not be displayed until you allow users to change themes. You can enable/disable this from the <a href="%s">settings</a> of the Theme module.', $tag1=$theme_settings_link);
+            $requirement_message = $this->__f('Notice: This theme switcher block will not be displayed until you allow users to change themes. You can enable/disable this from the <a href="%s">settings</a> of the Theme module.', ModUtil::url('Theme', 'admin', 'modifyconfig'));
+        } else {
+            $requirement_message = '';
         }
 
         return array('module'       => 'Theme',
-                'text_type'         => __('Theme switcher'),
-                'text_type_long'    => __('Theme switcher'),
+                'text_type'         => $this->__('Theme switcher'),
+                'text_type_long'    => $this->__('Theme switcher'),
                 'allow_multiple'    => true,
                 'form_content'      => false,
                 'form_refresh'      => false,
@@ -55,7 +55,7 @@ class Theme_Block_Themeswitcher extends AbstractBlock
                 'requirement'       => $requirement_message);
     }
 
-    function display($blockinfo)
+    public function display($blockinfo)
     {
         // check if the module is available
         if (!ModUtil::available('Theme')) {
@@ -119,7 +119,7 @@ class Theme_Block_Themeswitcher extends AbstractBlock
         return BlockUtil::themeBlock($blockinfo);
     }
 
-    function modify($blockinfo)
+    public function modify($blockinfo)
     {
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
