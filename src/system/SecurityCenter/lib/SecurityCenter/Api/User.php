@@ -177,12 +177,24 @@ class SecurityCenter_Api_User extends AbstractApi
                     if (isset($_COOKIE)) {
                         $request['COOKIE'] = $_COOKIE;
                     }
-                    if (isset($_SERVER['REQUEST_URI'])) {
-                        $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
+                    if (isset($_SERVER['HTTP_HOST'])) {
+                        $request['HOST'] = $_SERVER['HTTP_HOST'];
+                    }
+                    if (isset($_SERVER['HTTP_ACCEPT'])) {
+                        $request['ACCEPT'] = $_SERVER['HTTP_ACCEPT'];
                     }
                     if (isset($_SERVER['USER_AGENT'])) {
                         $request['USER_AGENT'] = $_SERVER['USER_AGENT'];
                     }
+                    // while i think that REQUEST_URI is unnecessary,
+                    // the REFERER would be important, but results in way too many false positives
+/*                    if (isset($_SERVER['REQUEST_URI'])) {
+                        $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
+                    }
+                    if (isset($_SERVER['HTTP_REFERER'])) {
+                        $request['REFERER'] = $_SERVER['HTTP_REFERER'];
+                    }
+*/
 
                     // initialise configuration object
                     $init = IDS_Init::init();
@@ -662,13 +674,13 @@ class SecurityCenter_Api_User extends AbstractApi
         $config['General']['HTML_Purifier_Cache'] = CacheUtil::getLocalDir() . '/purifierCache';
 
         // define which fields contain html and need preparation before hitting the PHPIDS rules
-        $config['General']['html'] = array('$this->__wysiwyg');
+        $config['General']['html'] = System::getVar('idshtmlfields', array());
 
         // define which fields contain JSON data and should be treated as such for fewer false positives
-        $config['General']['json'] = array('$this->__jsondata');
+        $config['General']['json'] = System::getVar('idsjsonfields', array());;
 
         // define which fields shouldn't be monitored (a[b]=c should be referenced via a.b)
-        $config['General']['exceptions'] = array('$this->__utmz', '$this->__utmc');
+        $config['General']['exceptions'] = System::getVar('idsexceptions', array());;
 
         // PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
         $config['General']['min_php_version'] = '5.1.6';

@@ -265,6 +265,21 @@
                             <option value="3"{if $idsimpactmode eq 3} selected="selected"{/if}>{gt text="React on impact sum per session [strict] (uses the values from above * 5)"}</option>
                         </select>
                     </div>
+                    <div class="z-formrow">
+                        <label for="securitycenter_idshtmlfields">{gt text="Define which fields contain HTML and need preparation"}</label>
+                        <textarea id="securitycenter_idshtmlfields" name="idshtmlfields" cols="50" rows="8">{$idshtmlfields|varprepfordisplay}</textarea>
+                        <em class="z-formnote z-sub">{gt text='(Place each value on a separate line.)'}</em>
+                    </div>
+                    <div class="z-formrow">
+                        <label for="securitycenter_idsjsonfields">{gt text="Define which fields contain JSON data and should be treated as such"}</label>
+                        <textarea id="securitycenter_idsjsonfields" name="idsjsonfields" cols="50" rows="8">{$idsjsonfields|varprepfordisplay}</textarea>
+                        <em class="z-formnote z-sub">{gt text='(Place each value on a separate line.)'}</em>
+                    </div>
+                    <div class="z-formrow">
+                        <label for="securitycenter_idshtmlfields">{gt text="Define which fields should not be monitored"}</label>
+                        <textarea id="securitycenter_idsexceptions" name="idsexceptions" cols="50" rows="8">{$idsexceptions|varprepfordisplay}</textarea>
+                        <em class="z-formnote z-sub">{gt text='(Place each value on a separate line.)'}</em>
+                    </div>
                 </div>
             </fieldset>
             <fieldset>

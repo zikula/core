@@ -86,6 +86,13 @@ function securitycenter_init()
     System::setVar('idsimpactthresholdthree', 25);    // block request
     System::setVar('idsimpactthresholdfour', 75);     // kick user, destroy session
     System::setVar('idsimpactmode', 1);               // per request per default
+    System::setVar('idshtmlfields', array('POST.__wysiwyg'));
+    System::setVar('idsjsonfields', array('POST.__jsondata'));
+    System::setVar('idsexceptions', array(  'GET.__utmz',
+                                            'GET.__utmc',
+                                            'REQUEST.linksorder', 'POST.linksorder',
+                                            'REQUEST.fullcontent', 'POST.fullcontent',
+                                            'REQUEST.summarycontent', 'POST.summarycontent'));
 
     // now lets set the default mail message contents
     // file is read from includes directory
@@ -271,6 +278,14 @@ function securitycenter_upgrade($oldversion)
         case '1.4':
             // Location of HTML Purifier
             System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
+
+            System::setVar('idshtmlfields', array('POST.__wysiwyg'));
+            System::setVar('idsjsonfields', array('POST.__jsondata'));
+            System::setVar('idsexceptions', array(  'GET.__utmz',
+                                                    'GET.__utmc',
+                                                    'REQUEST.linksorder', 'POST.linksorder',
+                                                    'REQUEST.fullcontent', 'POST.fullcontent',
+                                                    'REQUEST.summarycontent', 'POST.summarycontent'));
             // fall through
 
         case '1.6':
