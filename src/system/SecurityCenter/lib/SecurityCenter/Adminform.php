@@ -10,7 +10,7 @@
  * @subpackage SecurityCenter
  */
 
-class SecurityCenter_AdminForm extends AbstractController
+class SecurityCenter_Adminform extends AbstractController
 {
     /**
      * Generic delete function for object model
