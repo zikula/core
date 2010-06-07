@@ -86,7 +86,7 @@ class IDS_Converter
      */
     public static function convertFromRepetition($value) 
     {
-    	// remove obvios repetition patterns
+        // remove obvios repetition patterns
         $value = preg_replace(
             '/(?:(.{2,})\1{32,})|(?:[+=|\-@\s]{128,})/', 
             'x', 
@@ -134,11 +134,14 @@ class IDS_Converter
      * @static
      * @return string
      */
-    public static function convertFromNewLines($value)
+    public static function convertFromWhiteSpace($value)
     {
         //check for inline linebreaks
         $search = array('\r', '\n', '\f', '\t', '\v');
         $value  = str_replace($search, ';', $value);
+
+        // replace replacement characters regular spaces
+        $value = str_replace('�', ' ', $value);
 
         //convert real linebreaks
         return preg_replace('/(?:\n|\r|\v)/m', '  ', $value);
@@ -259,7 +262,12 @@ class IDS_Converter
             $converted = html_entity_decode($converted, ENT_QUOTES, 'UTF-8');
             $value    .= "\n" . str_replace(';;', ';', $converted);
         }
-
+        // normalize obfuscated protocol handlers
+        $value = preg_replace(
+            '/(?:j\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\s*)|(d\s*a\s*t\s*a\s*)/ms', 
+            'javascript', $value
+        );
+        
         return $value;
     }
 
@@ -324,15 +332,16 @@ class IDS_Converter
         $pattern = array('/(?:IS\s+null)|(LIKE\s+null)|' .
             '(?:(?:^|\W)IN[+\s]*\([\s\d"]+[^()]*\))/ims');
         $value   = preg_replace($pattern, '"=0', $value);
-        $value   = preg_replace('/\W+\s+like\s+\W+/', ' 1 like 1 ', $value);
-        $value   = preg_replace('/null[,\s]/ims', ',0', $value);
+        $value   = preg_replace('/\W+\s*like\s*\W+/ims', '1" OR "1"', $value);
+        $value   = preg_replace('/null[,"\s]/ims', ',0', $value);
+        $value   = preg_replace('/\d+\./ims', ' 1', $value);
         $value   = preg_replace('/,null/ims', ',0', $value);
         $value   = preg_replace('/(?:between|mod)/ims', 'or', $value);
         $value   = preg_replace('/(?:and\s+\d+\.?\d*)/ims', '', $value);
         $value   = preg_replace('/(?:\s+and\s+)/ims', ' or ', $value);
         $pattern = array('/[^\w,(]NULL|\\\N|TRUE|FALSE|UTC_TIME|' .
                          'LOCALTIME(?:STAMP)?|CURRENT_\w+|BINARY|' .
-                         '(?:(?:ASCII|SOUNDEX|' .
+                         '(?:(?:ASCII|SOUNDEX|FIND_IN_SET|' .
                          'MD5|R?LIKE)[+\s]*\([^()]+\))|(?:-+\d)/ims');
         $value   = preg_replace($pattern, 0, $value);
         $pattern = array('/(?:NOT\s+BETWEEN)|(?:IS\s+NOT)|(?:NOT\s+IN)|' .
@@ -360,12 +369,11 @@ class IDS_Converter
         $search = array(
             chr(0), chr(1), chr(2), chr(3), chr(4), chr(5),
             chr(6), chr(7), chr(8), chr(11), chr(12), chr(14),
-            chr(15), chr(16), chr(17), chr(18), chr(19),
-            chr(192), chr(193), chr(238), chr(255)
+            chr(15), chr(16), chr(17), chr(18), chr(19), chr(24), 
+            chr(25), chr(192), chr(193), chr(238), chr(255)
         );
         
         $value = str_replace($search, '%00', $value);
-        $urlencoded = urlencode($value);
 
         //take care for malicious unicode characters
         $value = urldecode(preg_replace('/(?:%E(?:2|3)%8(?:0|1)%(?:A|8|9)' .
@@ -418,7 +426,7 @@ class IDS_Converter
 
         foreach ($matches[1] as $item) {
             if (isset($item) && !preg_match('/[a-f0-9]{32}/i', $item)) {
-            	$base64_item = base64_decode($item);
+                $base64_item = base64_decode($item);
                 $value = str_replace($item, $base64_item, $value);
             }
         }
@@ -439,7 +447,7 @@ class IDS_Converter
         $values = str_split($value);
         foreach ($values as $item) {
             if (ord($item) >= 127) {
-                $value = str_replace($item, 'U', $value);
+                $value = str_replace($item, ' ', $value);
             }
         }
 
@@ -481,7 +489,7 @@ class IDS_Converter
 
         if (!empty($matches[0])) {
             foreach ($matches[0] as $match) {
-            	$chr = chr(hexdec(substr($match, 2, 4))); 
+                $chr = chr(hexdec(substr($match, 2, 4))); 
                 $value = str_replace($match, $chr, $value);
             }
             $value .= "\n\u0001";
@@ -489,7 +497,6 @@ class IDS_Converter
 
         return $value;
     }
-
 
     /**
      * Converts relevant UTF-7 tags to UTF-8
@@ -607,8 +614,7 @@ class IDS_Converter
     /**
      * This method collects and decodes proprietary encoding types
      *
-     * @param string      $value   the value to convert
-     * @param IDS_Monitor $monitor the monitor object
+     * @param string $value the value to convert
      *
      * @static
      * @return string
@@ -652,9 +658,6 @@ class IDS_Converter
         //normalize ampersand listings
         $value = preg_replace('/(\w\s)&\s(\w)/', '$1$2', $value);
         
-        //normalize JS backspace linebreaks
-        $value = preg_replace('/^\/|\/$|,\/\n|\/,|[\\\]+\s{4}/', null, $value);
-        
         return $value;
     }
 
@@ -670,13 +673,12 @@ class IDS_Converter
     public static function runCentrifuge($value, IDS_Monitor $monitor = null)
     {
         $threshold = 3.49;
-
         if (strlen($value) > 25) {
             
             //strip padding
             $tmp_value = preg_replace('/\s{4}|==$/m', null, $value);
             $tmp_value = preg_replace(
-                '/\s{4}|[\p{L}\d\+\-,.%()]{8,}/m', 
+                '/\s{4}|[\p{L}\d\+\-=,.%()]{8,}/m', 
                 'aaa', 
                 $tmp_value
             );

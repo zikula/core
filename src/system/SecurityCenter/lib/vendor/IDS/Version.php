@@ -45,5 +45,5 @@
  */
 abstract class IDS_Version
 {
-    const VERSION = '0.6.3.1';
+    const VERSION = '0.6.4';
 }

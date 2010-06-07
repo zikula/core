@@ -44,6 +44,7 @@ require_once 'IDS/Log/Interface.php';
       `name` varchar(128) NOT null,
       `value` text NOT null,
       `page` varchar(255) NOT null,
+      `tags` varchar(128) NOT null,
       `ip` varchar(15) NOT null,
       `impact` int(11) unsigned NOT null,
       `origin` varchar(15) NOT null,
@@ -142,6 +143,7 @@ class IDS_Log_Database implements IDS_Log_Interface
      * @param mixed $config IDS_Init instance | array
      * 
      * @return void
+     * @throws PDOException if a db error occurred
      */
     protected function __construct($config) 
     {
@@ -160,10 +162,10 @@ class IDS_Log_Database implements IDS_Log_Interface
         }
 
         // determine correct IP address
-        if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
-            $this->ip = $_SERVER['REMOTE_ADDR'];
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $this->ip = $_SERVER['REMOTE_ADDR'];
         }
 
         try {
@@ -178,6 +180,7 @@ class IDS_Log_Database implements IDS_Log_Interface
                     name,
                     value,
                     page,
+					tags,
                     ip,
                     impact,
                     origin,
@@ -187,6 +190,7 @@ class IDS_Log_Database implements IDS_Log_Interface
                     :name,
                     :value,
                     :page,
+					:tags,
                     :ip,
                     :impact,
                     :origin,
@@ -195,7 +199,7 @@ class IDS_Log_Database implements IDS_Log_Interface
             ');
 
         } catch (PDOException $e) {
-            die('PDOException: ' . $e->getMessage());
+            throw new PDOException('PDOException: ' . $e->getMessage());
         }
     }
 
@@ -205,8 +209,8 @@ class IDS_Log_Database implements IDS_Log_Interface
      * This method allows the passed argument to be either an instance of IDS_Init or
      * an array.
      *
-     * @param mixed $config IDS_Init | array
-     * @param string the class name to use
+     * @param  mixed  $config    IDS_Init | array
+     * @param  string $classname the class name to use
      * 
      * @return object $this
      */
@@ -260,10 +264,12 @@ class IDS_Log_Database implements IDS_Log_Interface
             $name   = $event->getName();
             $value  = $event->getValue();
             $impact = $event->getImpact();
+            $tags   = implode(', ', $event->getTags());
 
             $this->statement->bindParam('name', $name);
             $this->statement->bindParam('value', $value);
             $this->statement->bindParam('page', $page);
+            $this->statement->bindParam('tags', $tags);
             $this->statement->bindParam('ip', $ip);
             $this->statement->bindParam('impact', $impact);
             $this->statement->bindParam('origin', $_SERVER['SERVER_ADDR']);

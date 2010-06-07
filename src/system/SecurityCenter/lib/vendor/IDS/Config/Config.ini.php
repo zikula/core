@@ -4,7 +4,6 @@
 
 ; General configuration settings
 
-; !!!DO NOT PLACE THIS FILE INSIDE THE WEB-ROOT IF DATABASE CONNECTION DATA WAS ADDED!!!
 
 [General]
 
@@ -34,6 +33,8 @@
     ; define which fields shouldn't be monitored (a[b]=c should be referenced via a.b)
     exceptions[]    = GET.__utmz
     exceptions[]    = GET.__utmc
+
+    ; you can use regular expressions for wildcard exceptions - example: /.*foo/i
 
     ; PHPIDS should run with PHP 5.1.2 but this is untested - set 
     ; this value to force compatibilty with minor versions

@@ -175,8 +175,8 @@ class IDS_Log_Email implements IDS_Log_Interface
      * This method allows the passed argument to be either an instance of
      * IDS_Init or an array.
      *
-     * @param mixed  $config IDS_Init | array
-     * @param string the class name to use
+     * @param  mixed  $config    IDS_Init | array
+     * @param  string $classname the class name to use
      *
      * @return object $this
      */
@@ -281,8 +281,8 @@ class IDS_Log_Email implements IDS_Log_Interface
         foreach ($data as $event) {
             $attackedParameters .= $event->getName() . '=' .
                 ((!isset($this->urlencode) ||$this->urlencode) 
-                	? urlencode($event->getValue()) 
-                	: $event->getValue()) . ", ";
+                    ? urlencode($event->getValue()) 
+                    : $event->getValue()) . ", ";
         }
 
         $format .= "Affected parameters: %s \n";
@@ -292,7 +292,7 @@ class IDS_Log_Email implements IDS_Log_Interface
         return sprintf($format,
                        $this->ip,
                        date('c'),
-                       $event->getImpact(),
+                       $data->getImpact(),
                        join(' ', $data->getTags()),
                        trim($attackedParameters),
                        urlencode($_SERVER['REQUEST_URI']),
