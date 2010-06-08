@@ -29,6 +29,11 @@
             <a href="{$adminhelpurl|varprepfordisplay}#admin_security_center_warning2">{gt text="Security center module is not installed, but preferably should be." domain="zikula"}</a>
         </li>
         {/if}
+        {if $notices.security.useids and $notices.security.idssoftblock}
+        <li>
+            <a href="{$adminhelpurl|varprepfordisplay}#admin_idssoftblock_warning">{gt text="PHPIDS is activated, but requests are NOT blocked." domain="zikula"}</a>
+        </li>
+        {/if}
     </ul>
 </div>
 {/if}

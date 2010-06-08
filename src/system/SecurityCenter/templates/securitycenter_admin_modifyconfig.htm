@@ -192,6 +192,7 @@
                 <legend>{gt text="HTTP variable cleansing"}</legend>
                 <div class="z-formrow">
                     <label for="securitycenter_filtergetvars">{gt text='Sanitise \'$_GET\' variables'}</label>
+
                     <div id="securitycenter_filtergetvars">
                         <input id="filtergetvars1" type="radio" name="filtergetvars" value="1"{if $filtergetvars eq 1} checked="checked"{/if} />
                         <label for="filtergetvars1">{gt text="Yes"}</label>
@@ -227,6 +228,15 @@
                         <label for="useidsyes">{gt text="Yes"}</label>
                         <input id="useidsno" type="radio" name="useids" value="0"{if $useids neq 1} checked="checked"{/if} />
                         <label for="useidsno">{gt text="No"}</label>
+                    </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="securitycenter_idssoftblock">{gt text="Block action"}</label>
+                    <div id="securitycenter_idssoftblock">
+                        <input id="idssoftblockyes" type="radio" name="idssoftblock" value="1"{if $idssoftblock eq 1} checked="checked"{/if} />
+                        <label for="idssoftblockyes">{gt text="Warn only"}</label>
+                        <input id="idssoftblockno" type="radio" name="idssoftblock" value="0"{if $idssoftblock neq 1} checked="checked"{/if} />
+                        <label for="idssoftblockno">{gt text="Block"}</label>
                     </div>
                 </div>
                 <div id="securitycenter_idsfields">

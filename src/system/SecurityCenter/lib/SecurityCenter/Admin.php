@@ -397,6 +397,9 @@ class SecurityCenter_Admin extends AbstractController
             }
         }
 
+        $idssoftblock = (bool) FormUtil::getPassedValue('idssoftblock', 1, 'POST');
+        System::setVar('idssoftblock', $idssoftblock);
+
         $idsfilter = FormUtil::getPassedValue('idsfilter', 'xml', 'POST');
         System::setVar('idsfilter', $idsfilter);
 

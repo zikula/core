@@ -688,6 +688,7 @@ class Admin_Admin extends AbstractController
 
         // check for outputfilter
         $data['useids'] = (bool)(ModUtil::available('SecurityCenter') && System::getVar('useids') == 1);
+        $data['idssoftblock'] = System::getVar('idssoftblock');
 
         return $data;
     }

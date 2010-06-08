@@ -80,6 +80,7 @@ function securitycenter_init()
 
     // create vars for phpids usage
     System::setVar('useids', 0);
+    System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
     System::setVar('idsfilter', 'xml');               // filter type
     System::setVar('idsimpactthresholdone', 1);       // db logging
     System::setVar('idsimpactthresholdtwo', 10);      // mail admin
@@ -281,6 +282,7 @@ function securitycenter_upgrade($oldversion)
             // Location of HTML Purifier
             System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
 
+            System::setVar('idssoftblock', 0);
             System::setVar('idshtmlfields', array('POST.__wysiwyg'));
             System::setVar('idsjsonfields', array('POST.__jsondata'));
             System::setVar('idsexceptions', array(  'GET.__utmz',

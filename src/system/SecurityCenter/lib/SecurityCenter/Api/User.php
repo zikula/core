@@ -851,8 +851,16 @@ class SecurityCenter_Api_User extends AbstractApi
             }
         }
 
-        // block request
-        $this->throwForbiddenIf($usedImpact > $impactThresholdThree, __('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+        if ($usedImpact > $impactThresholdThree) {
+            // block request
+
+            if (System::getVar('idssoftblock')) {
+                // warn only for debugging the ruleset
+                LogUtil::registerError(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
+            } else {
+                $this->throwForbidden(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+            }
+        }
 
         return;
     }
