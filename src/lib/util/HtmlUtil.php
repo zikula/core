@@ -55,17 +55,17 @@ class HtmlUtil
         $displayName = 'display_' . $htmlname;
         //$daFormat    = preg_replace ('/([a-z|A-Z])/', '%$1', $dateFormat); // replace 'x' -> '%x'
 
-        $html .= '<span id="' . $displayName . '">' . $defaultString . '</span>';
+        $html .= '<span id="' . DataUtil::formatForDisplay($displayName) . '">' . DataUtil::formatForDisplay($defaultString) . '</span>';
         $html .= '&nbsp;';
-        $html .= '<input type="hidden" name="' . $fieldKey . '" id="' . $htmlname . '" value="' . $defaultDate . '" />';
-        $html .= '<img src="javascript/jscalendar/img.gif" id="' . $triggerName . '" style="cursor: pointer; border: 0px solid blue;" title="Date selector" alt="Date selector" onmouseover="this.style.background=\'blue\';" onmouseout="this.style.background=\'\'" />';
+        $html .= '<input type="hidden" name="' . DataUtil::formatForDisplay($fieldKey) . '" id="' . DataUtil::formatForDisplay($htmlname) . '" value="' . DataUtil::formatForDisplay($defaultDate) . '" />';
+        $html .= '<img src="javascript/jscalendar/img.gif" id="' . DataUtil::formatForDisplay($triggerName) . '" style="cursor: pointer; border: 0px solid blue;" title="Date selector" alt="Date selector" onmouseover="this.style.background=\'blue\';" onmouseout="this.style.background=\'\'" />';
 
         $html .= '<script type="text/javascript"> Calendar.setup({';
         $html .= 'ifFormat    : "%Y-%m-%d %H:%M:00",'; // universal format, don't change this!
-        $html .= 'inputField  : "' . $htmlname . '",';
-        $html .= 'displayArea : "' . $displayName . '",';
-        $html .= 'daFormat    : "' . $dateFormat . '",';
-        $html .= 'button      : "' . $triggerName . '",';
+        $html .= 'inputField  : "' . DataUtil::formatForDisplay($htmlname) . '",';
+        $html .= 'displayArea : "' . DataUtil::formatForDisplay($displayName) . '",';
+        $html .= 'daFormat    : "' . DataUtil::formatForDisplay($dateFormat) . '",';
+        $html .= 'button      : "' . DataUtil::formatForDisplay($triggerName) . '",';
         $html .= 'align       : "Tl",';
 
         if ($defaultDate) {
@@ -111,17 +111,17 @@ class HtmlUtil
 
         if ($defaultText && !$selectedValue) {
             $sel = ((string)$defaultValue == (string)$selectedValue ? 'selected="selected"' : '');
-            $html .= "<option value=\"$defaultValue\" $sel>$defaultText</option>";
+            $html .= "<option value=\"" . DataUtil::formatForDisplay($defaultValue) . "\" $sel>" . DataUtil::formatForDisplay($defaultText) . "</option>";
         }
 
         if ($allText) {
             $sel = ((string)$allValue == (string)$selectedValue ? 'selected="selected"' : '');
-            $html .= "<option value=\"$allValue\" $sel>$allText</option>";
+            $html .= "<option value=\"" . DataUtil::formatForDisplay($allValue) . "\" $sel>" . DataUtil::formatForDisplay($allText) . "</option>";
         }
 
         foreach ($data as $k => $v) {
             $sel = ((string)$selectedValue == (string)$k ? 'selected="selected"' : '');
-            $html .= "<option value=\"$k\" $sel>" . DataUtil::formatForDisplayHTML($v) . '</option>';
+            $html .= "<option value=\"" . DataUtil::formatForDisplay($k) . "\" $sel>" . DataUtil::formatForDisplay($v) . "</option>";
         }
 
         $html .= '</select>';
@@ -271,7 +271,7 @@ class HtmlUtil
                     $disp = $v['name'];
                 }
 
-                $html .= "<input type=\"checkbox\" name=\"$fname\" " . ($values[$k] ? ' checked="checked" ' : '') . ($disabled ? ' disabled="disabled" ' : '') . " />&nbsp;&nbsp;&nbsp;&nbsp;$disp<br />";
+                $html .= "<input type=\"checkbox\" name=\"" . DataUtil::formatForDisplay($fname) . "\" " . ($values[$k] ? ' checked="checked" ' : '') . ($disabled ? ' disabled="disabled" ' : '') . " />&nbsp;&nbsp;&nbsp;&nbsp;" . DataUtil::formatForDisplay($disp) . "<br />";
             }
         }
 
@@ -690,13 +690,13 @@ class HtmlUtil
         $multipleSize = $multipleSize > 1 ? "size=\"$multipleSize\"" : '';
         $submit       = $submit ? 'onchange="this.form.submit();"' : '';
 
-        $html = "<select name=\"$name\" id=\"$id\" $multipleSize $multiple $submit $disabled>";
+        $html = "<select name=\"" . DataUtil::formatForDisplay($name) . "\" id=\"" . DataUtil::formatForDisplay($id) . "\" " . DataUtil::formatForDisplay($multipleSize) . " $multiple $submit $disabled>";
 
         for ($i=1; $i<13; $i++) {
             $val = sprintf ("%02d", $i);
             $opt = $text ? $mnames[$i]:$val;
             $sel = ($i==$selected ? 'selected="selected"' : '');
-            $html = $html . "<option value=\"$val\" $sel>$opt</option>";
+            $html = $html . "<option value=\"$val\" $sel>" . DataUtil::formatForDisplay($opt) . "</option>";
         }
 
         $html = $html . '</select>';

@@ -46,7 +46,7 @@ class SecurityCenter_DBObject_IntrusionArray extends DBObjectArray
 
         foreach($filterFields as $fieldName) {
             if (isset($filter[$fieldName]) && $filter[$fieldName]) {
-                $wheres[] = "ids_" . $fieldName . " = '" . $filter[$fieldName] . "'";
+                $wheres[] = "ids_" . $fieldName . " = '" . DataUtil::formatForStore($filter[$fieldName]) . "'";
             }
         }
 

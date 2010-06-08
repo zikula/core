@@ -92,7 +92,9 @@ function securitycenter_init()
                                             'GET.__utmc',
                                             'REQUEST.linksorder', 'POST.linksorder',
                                             'REQUEST.fullcontent', 'POST.fullcontent',
-                                            'REQUEST.summarycontent', 'POST.summarycontent'));
+                                            'REQUEST.summarycontent', 'POST.summarycontent',
+                                            'REQUEST.filter.page', 'POST.filter.page',
+                                            'REQUEST.filter.value', 'POST.filter.value'));
 
     // now lets set the default mail message contents
     // file is read from includes directory
@@ -285,7 +287,9 @@ function securitycenter_upgrade($oldversion)
                                                     'GET.__utmc',
                                                     'REQUEST.linksorder', 'POST.linksorder',
                                                     'REQUEST.fullcontent', 'POST.fullcontent',
-                                                    'REQUEST.summarycontent', 'POST.summarycontent'));
+                                                    'REQUEST.summarycontent', 'POST.summarycontent',
+                                                    'REQUEST.filter.page', 'POST.filter.page',
+                                                    'REQUEST.filter.value', 'POST.filter.value'));
             // fall through
 
         case '1.6':

@@ -776,7 +776,7 @@ class SecurityCenter_Admin extends AbstractController
         // instantiate object, generate where clause and select
         $class = 'SecurityCenter_DBObject_'.StringUtil::camelize($ot).'Array';
         $objArray = new $class();
-        $where = $objArray->genFilter();
+        $where = $objArray->genFilter($filter);
         $data  = $objArray->get($where, $sort, $startnum, $pagesize);
 
         // Create output object
