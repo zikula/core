@@ -9,8 +9,9 @@
  * @subpackage Javascript
 */
 
-var Zikula = {};
-
+if (typeof(Zikula) == 'undefined') {
+    Zikula = {};
+}
 
 /**
  * Zikula.dejsonize
