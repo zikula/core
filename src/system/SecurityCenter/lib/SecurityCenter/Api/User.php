@@ -670,7 +670,8 @@ class SecurityCenter_Api_User extends AbstractApi
 
         // we use a different HTML Purifier source
         // by default PHPIDS does also contain those files
-        //$config['General']['HTML_Purifier_Path'] = System::getVar('htmlpurifierlocation') . 'HTMLPurifier.auto.php';
+        // we do this more efficiently in boostrap (drak).
+        $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IDS/Monitor will never fill in the HTML_Purifier_Cache property (drak).
         $config['General']['HTML_Purifier_Cache'] = CacheUtil::getLocalDir() . '/purifierCache';
 
         // define which fields contain html and need preparation before hitting the PHPIDS rules
