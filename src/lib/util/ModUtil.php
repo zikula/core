@@ -628,9 +628,6 @@ class ModUtil
         $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
         $mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
 
-        // OOP modules will load automatically
-        $className = ($api) ? "{$modname}_Api_" . ucwords($ostype) : "{$modname}_". ucwords($ostype);
-
         // if class is loadable or has been loaded exit here.
         if (self::isIntialized($modname)) {
             return $modname;
