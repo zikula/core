@@ -178,10 +178,13 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     margin: 5px 0;
     padding: 5px 5px 5px 36px;
 }
+.z-errormsg p,
 .z-errormsg h1,
 .z-errormsg h2,
 .z-errormsg h3 {
-    color: #880000;
+    color:#880000 !important;
+    margin:0.5em 0 !important;
+    padding:0 !important;
 }
 .z-informationmsg {
     background: #e6e6ff url('../images/icons/extrasmall/info.gif') 13px 50% no-repeat;
@@ -190,10 +193,13 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
 }
+.z-informationmsg p,
 .z-informationmsg h1,
 .z-informationmsg h2,
 .z-informationmsg h3 {
-    color: #27427D;
+    color: #27427D !important;
+    margin:0.5em 0 !important;
+    padding:0 !important;
 }
 .z-statusmsg {
     background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
@@ -202,10 +208,13 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
 }
+.z-statusmsg p,
 .z-statusmsg h1,
 .z-statusmsg h2,
 .z-statusmsg h3 {
-    color: #005000;
+    color: #005000 !important;
+    margin:0.5em 0 !important;
+    padding:0 !important;
 }
 .z-warningmsg {
     background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
@@ -214,10 +223,13 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
 }
+.z-warningmsg p,
 .z-warningmsg h1,
 .z-warningmsg h2,
 .z-warningmsg h3 {
-    color: #702E02;
+    color: #702E02 !important;
+    margin:0.5em 0 !important;
+    padding:0 !important;
 }
 
 /*******************************************************************************/
@@ -408,19 +420,19 @@ div.z-viewbuttons img {
 /* styles for the buttons in a z-form
 /*******************************************************************************/
 
-div.z-formbuttons {
+.z-formbuttons {
     text-align: left;
     display: block;
     margin-left: 30%;
 }
-div.z-formbuttons input,
-div.z-formbuttons img {
+.z-formbuttons input,
+.z-formbuttons img {
     text-align: center;
     margin: 5px;
     width: auto;
     cursor: pointer;
 }
-div.z-formbuttons button {
+.z-formbuttons button {
     border: 0px;
     padding: 0px;
     background-color: transparent;
@@ -785,20 +797,8 @@ div.z-formbuttons button {
 /* Buttons styles
 /******************************************************************************/
 
-.z-form .z-buttons {
-    padding: 0.5em 0;
-    min-height: 2em;
-    overflow: hidden;
-    clear: both;
-    text-align: left;
-    display: block;
-    margin-left: 30%;
-}
-.z-form.z-linear .z-buttons {
-    padding: 0;
-    margin: 0;
-}
 .z-buttons a,
+.z-buttons input,
 .z-buttons button {
     display: inline-block;
     margin:0 7px 0 0;
@@ -808,8 +808,8 @@ div.z-formbuttons button {
     text-decoration:none !important;
     font-weight:bold;
     cursor:pointer;
-    padding:5px 10px 6px 7px;
-    color: #565656;
+    padding:5px 10px 6px 10px;
+    color: #555;
     border-color:#DDDDDD #CDCDCD #CDCDCD #DDDDDD;
     border-right:1px solid #CDCDCD;
     border-style:solid;
@@ -820,16 +820,19 @@ div.z-formbuttons button {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
 }
 
-.z-buttons button:hover,
-.z-buttons a:hover {
+.z-buttons a:hover,
+.z-buttons input:hover,
+.z-buttons button:hover {
     text-decoration: none !important;
     background: #616161;
     background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5));
     background: -moz-linear-gradient(top,  #dedede, #F5F5F5);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#F5F5F5');
 }
-.z-buttons button:active,
-.z-buttons a:active {
+
+.z-buttons a:active,
+.z-buttons input:active,
+.z-buttons button:active {
     background: #d0d0d0;
     background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0));
     background: -moz-linear-gradient(top,  #d0d0d0, #f0f0f0);
@@ -839,14 +842,14 @@ div.z-formbuttons button {
 .z-buttons button {
     width:auto;
     overflow:visible;
-    padding:4px 10px 3px 7px; /* IE6 */
+    padding:4px 10px 3px 10px; /* IE6 */
 }
 .z-buttons button[type] {
-    padding:5px 10px 5px 7px; /* Firefox */
+    padding:5px 10px 5px 10px; /* Firefox */
     line-height:17px; /* Safari */
 }
 *:first-child+html button[type] {
-    padding:4px 10px 3px 7px; /* IE7 */
+    padding:4px 10px 3px 10px; /* IE7 */
 }
 .z-buttons button img,
 .z-buttons a img {

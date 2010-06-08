@@ -168,15 +168,15 @@ ul.systemrequirements li
 }
 ul.systemrequirements li.passed
 {
-    background-image: url(../../images/icons/small/ok.gif);
+    background-image: url(../../images/icons/extrasmall/ok.gif);
 }
 ul.systemrequirements li.failed
 {
-    background-image: url(../../images/icons/small/cancel.gif);
+    background-image: url(../../images/icons/extrasmall/cancel.gif);
 }
 ul.systemrequirements li.warning
 {
-    background-image: url(../../images/icons/small/info.gif);
+    background-image: url(../../images/icons/extrasmall/info.gif);
 }
 
 .validationfailed {
