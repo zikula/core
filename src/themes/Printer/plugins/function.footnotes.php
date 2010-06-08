@@ -56,7 +56,7 @@ function smarty_function_footnotes($params, &$smarty)
         $text .= '</ol>';
     }
 
-	if (isset($params['assign'])) {
+    if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $text);
     } else {
         return $text;
