@@ -57,18 +57,18 @@ class Blocks_Block_Menu extends AbstractBlock
         }
 
         // setup the renderer for this block
-        $pnRender = Renderer::getInstance('Blocks');
+        $render = Renderer::getInstance('Blocks');
 
         // Set the cache id
-        $pnRender->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
+        $render->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
 
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // check out if the contents are cached.
-        if ($pnRender->is_cached('blocks_block_menu.htm')) {
+        if ($render->is_cached('blocks_block_menu.htm')) {
             // Populate block info and pass to theme
-            $blockinfo['content'] = $pnRender->fetch('blocks_block_menu.htm');
+            $blockinfo['content'] = $render->fetch('blocks_block_menu.htm');
             return BlockUtil::themeBlock($blockinfo);
         }
 
@@ -84,7 +84,7 @@ class Blocks_Block_Menu extends AbstractBlock
             foreach ($contentlines as $contentline) {
                 list($url, $title, $comment) = explode('|', $contentline);
                 if (SecurityUtil::checkPermission('Menublock::', "$blockinfo[title]:$title:", ACCESS_READ)) {
-                    $menuitems[] = blocks_menu_addMenuItem($title, $url, $comment);
+                    $menuitems[] = self::addMenuItem($title, $url, $comment);
                     $content = true;
                 }
             }
@@ -96,21 +96,21 @@ class Blocks_Block_Menu extends AbstractBlock
 
             // Separate from current content, if any
             if ($vars['content'] == 1) {
-                $menuitems[] = blocks_menu_addMenuItem('', '', '');
+                $menuitems[] = self::addMenuItem('', '', '');
             }
 
             foreach($mods as $mod) {
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
                     switch($mod['type']) {
                         case 1:
-                            $menuitems[] = blocks_menu_addMenuItem($mod['displayname'],
+                            $menuitems[] = self::addMenuItem($mod['displayname'],
                                     System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
                                     $mod['description']);
                             $content = true;
                             break;
                         case 2:
                         case 3:
-                            $menuitems[] = blocks_menu_addMenuItem($mod['displayname'],
+                            $menuitems[] = self::addMenuItem($mod['displayname'],
                                     ModUtil::url($mod['name'], 'user', 'main'),
                                     $mod['description']);
                             $content = true;
@@ -126,10 +126,10 @@ class Blocks_Block_Menu extends AbstractBlock
         }
 
         // assign the items
-        $pnRender->assign('menuitems', $menuitems);
+        $render->assign('menuitems', $menuitems);
 
         // get the block content
-        $blockinfo['content'] = $pnRender->fetch('blocks_block_menu.htm');
+        $blockinfo['content'] = $render->fetch('blocks_block_menu.htm');
 
         // add the stylesheet to the header
         if (isset($vars['stylesheet'])) {
@@ -253,10 +253,10 @@ class Blocks_Block_Menu extends AbstractBlock
 
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
-        $pnRender = Renderer::getInstance('Blocks');
+        $render = Renderer::getInstance('Blocks');
 
         // assign the vars
-        $pnRender->assign($vars);
+        $render->assign($vars);
 
         $menuitems = array();
         if (!empty($vars['content'])) {
@@ -266,10 +266,10 @@ class Blocks_Block_Menu extends AbstractBlock
                 $menuitems[] = $link;
             }
         }
-        $pnRender->assign('menuitems', $menuitems);
+        $render->assign('menuitems', $menuitems);
 
         // return the output
-        return $pnRender->fetch('blocks_block_menu_modify.htm');
+        return $render->fetch('blocks_block_menu_modify.htm');
     }
 
     /**
@@ -332,8 +332,8 @@ class Blocks_Block_Menu extends AbstractBlock
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $pnRender = Renderer::getInstance('Blocks');
-        $pnRender->clear_cache('blocks_block_menu.htm');
+        $render = Renderer::getInstance('Blocks');
+        $render->clear_cache('blocks_block_menu.htm');
 
         return($blockinfo);
     }
