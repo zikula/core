@@ -29,7 +29,7 @@ Doctrine 1.2.2
     Downloaded from: http://www.doctrine-project.org/projects/orm/download
     License: LGPL
     Location in Zikula: lib/vendor/Doctrine
-    Patch details: none
+    Patch details: git master @ June 9th 2010 (pending 1.2.3 release 30th June).
 
 SimplePie
     Vendor website: http://simplepie.org/
