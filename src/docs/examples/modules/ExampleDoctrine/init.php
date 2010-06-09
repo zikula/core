@@ -54,8 +54,8 @@ function ExampleDoctrine_upgrade($oldversion)
             // do something
         case 1.0:
             // do something
-            // Zikula_DoctrineHelpers::*() for adding/dropping columns/index and so on
-            // last do Zikula_DoctrineHelpers::createTablesFromModels('ExampleDoctrine');
+            // DoctrineUtil::*() for adding/dropping columns/index and so on
+            // last do DoctrineUtil::createTablesFromModels('ExampleDoctrine');
             // to create any new tables
     }
 
