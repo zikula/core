@@ -84,7 +84,7 @@ class EventManagerUtil
      */
     static public function detach($name, $handler)
     {
-        self::getEventManager()->detach($name);
+        self::getEventManager()->detach($name, $handler);
     }
 
     /**
