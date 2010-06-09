@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: UnitOfWork.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: UnitOfWork.php 7643 2010-06-08 15:02:52Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,7 +33,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7643 $
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @author      Roman Borschel <roman@code-factory.org>
  */
@@ -595,7 +595,14 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
 
                 $table = $record->getTable();
                 $identifier = (array) $table->getIdentifier();
-                $data = $record->getPrepared();                
+                $data = $record->getPrepared();       
+
+                foreach ($data as $key  => $value) {
+                    if ($value instanceof Doctrine_Expression) {
+                        $data[$key] = $value->getSql();
+                    }
+                }
+
                 $result = $this->conn->replace($table, $data, $identifier);
 
                 $record->invokeSaveHooks('post', 'insert', $insertEvent);

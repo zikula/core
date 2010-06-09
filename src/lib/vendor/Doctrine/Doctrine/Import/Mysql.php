@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Mysql.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Mysql.php 7644 2010-06-08 15:12:02Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -25,7 +25,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @author      Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7644 $
  * @link        www.doctrine-project.org
  * @since       1.0
  */
@@ -67,7 +67,7 @@ class Doctrine_Import_Mysql extends Doctrine_Import
     {
         $keyName = 'Key_name';
         $nonUnique = 'Non_unique';
-        if ($this->conn->getAttribute(Doctrine_Core::ATTR_PORTABILITY) & Doctrine_Core::PORTABILITY_FIX_CASE) {
+        if ($this->conn->getAttribute(Doctrine_Core::ATTR_FIELD_CASE) && ($this->conn->getAttribute(Doctrine_Core::ATTR_PORTABILITY) & Doctrine_Core::PORTABILITY_FIX_CASE)) {
             if ($this->conn->getAttribute(Doctrine_Core::ATTR_FIELD_CASE) == CASE_LOWER) {
                 $keyName = strtolower($keyName);
                 $nonUnique = strtolower($nonUnique);
@@ -186,7 +186,7 @@ class Doctrine_Import_Mysql extends Doctrine_Import
     {
         $keyName = 'Key_name';
         $nonUnique = 'Non_unique';
-        if ($this->conn->getAttribute(Doctrine_Core::ATTR_PORTABILITY) & Doctrine_Core::PORTABILITY_FIX_CASE) {
+        if ($this->conn->getAttribute(Doctrine_Core::ATTR_FIELD_CASE) && ($this->conn->getAttribute(Doctrine_Core::ATTR_PORTABILITY) & Doctrine_Core::PORTABILITY_FIX_CASE)) {
             if ($this->conn->getAttribute(Doctrine_Core::ATTR_FIELD_CASE) == CASE_LOWER) {
                 $keyName = strtolower($keyName);
                 $nonUnique = strtolower($nonUnique);

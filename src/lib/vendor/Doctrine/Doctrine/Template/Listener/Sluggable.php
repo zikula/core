@@ -162,7 +162,7 @@ class Doctrine_Template_Listener_Sluggable extends Doctrine_Record_Listener
             $i++;
             $reflectionClass = new ReflectionClass($parentTable[$i]);
           }
-          $table = Doctrine::getTable($parentTable[$i]);
+          $table = Doctrine_Core::getTable($parentTable[$i]);
         } else {
           $table = $record->getTable();
         }

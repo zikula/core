@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Mysql.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Mysql.php 7653 2010-06-08 15:54:31Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7653 $
  */
 class Doctrine_Export_Mysql extends Doctrine_Export
 {
@@ -160,6 +160,17 @@ class Doctrine_Export_Mysql extends Doctrine_Export
 
         // add all indexes
         if (isset($options['indexes']) && ! empty($options['indexes'])) {
+            // Case Insensitive checking for duplicate indexes...
+            $dupes = array();
+            foreach ($options['indexes'] as $key => $index) {
+                if (in_array(strtolower($key), $dupes)) {
+                    unset($options['indexes'][$key]);
+                } else {
+                    $dupes[] = strtolower($key);
+                }
+            }
+            unset($dupes);
+
             foreach($options['indexes'] as $index => $definition) {
                 $queryFields .= ', ' . $this->getIndexDeclaration($index, $definition);
             }
@@ -267,7 +278,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
                     ' ' . $field['check'] : '';
 
         $comment   = (isset($field['comment']) && $field['comment']) ?
-                    " COMMENT '" . $field['comment'] . "'" : '';
+                    " COMMENT " . $this->conn->quote($field['comment'], 'text') : '';
 
         $method = 'get' . $field['type'] . 'Declaration';
 
@@ -718,6 +729,30 @@ class Doctrine_Export_Mysql extends Doctrine_Export
     }
 
     /**
+     * Returns a character set declaration.
+     *
+     * @param string $charset A character set
+     *
+     * @return string A character set declaration
+     */
+    public function getCharsetFieldDeclaration($charset)
+    {
+        return $this->conn->dataDict->getCharsetFieldDeclaration($charset);
+    }
+
+    /**
+     * Returns a collation declaration.
+     *
+     * @param string $collation A collation
+     *
+     * @return string A collation declaration
+     */
+    public function getCollationFieldDeclaration($collation)
+    {
+        return $this->conn->dataDict->getCollationFieldDeclaration($collation);
+    }
+
+    /**
      * getAdvancedForeignKeyOptions
      * Return the FOREIGN KEY query section dealing with non-standard options
      * as MATCH, INITIALLY DEFERRED, ON UPDATE, ...
@@ -777,7 +812,7 @@ class Doctrine_Export_Mysql extends Doctrine_Export
     public function dropForeignKey($table, $name)
     {
         $table = $this->conn->quoteIdentifier($table);
-        $name  = $this->conn->quoteIdentifier($name);
+        $name  = $this->conn->quoteIdentifier($this->conn->formatter->getForeignKeyName($name));
 
         return $this->conn->exec('ALTER TABLE ' . $table . ' DROP FOREIGN KEY ' . $name);
     }

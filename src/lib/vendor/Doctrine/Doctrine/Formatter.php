@@ -186,6 +186,7 @@ class Doctrine_Formatter extends Doctrine_Connection_Module
         case 'blob':
         case 'clob':
         case 'enum':
+        case 'set':
         case 'boolean':
         return "'" . str_replace("'","''",$input) . "'";
         }

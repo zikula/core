@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Record.php 7491 2010-03-29 21:01:59Z jwage $
+ *  $Id: Record.php 7673 2010-06-08 20:49:54Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7491 $
+ * @version     $Revision: 7673 $
  */
 abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Countable, IteratorAggregate, Serializable
 {
@@ -832,6 +832,9 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
                     case 'gzip':
                         $vars['_data'][$k] = gzcompress($vars['_data'][$k]);
                         break;
+                    case 'enum':
+                        $vars['_data'][$k] = $this->_table->enumIndex($k, $vars['_data'][$k]);
+                        break;
                 }
             }
         }
@@ -858,9 +861,6 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
         $manager    = Doctrine_Manager::getInstance();
         $connection = $manager->getConnectionForComponent(get_class($this));
 
-        $this->_oid = self::$_index;
-        self::$_index++;
-
         $this->_table = $connection->getTable(get_class($this));
         
         $this->preUnserialize($event);
@@ -879,7 +879,7 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
                     $this->_data[$k] = unserialize($this->_data[$k]);
                     break;
                 case 'gzip':
-                   $this->_data[$k] = gzuncompress($this->_data[$k]);
+                    $this->_data[$k] = gzuncompress($this->_data[$k]);
                     break;
                 case 'enum':
                     $this->_data[$k] = $this->_table->enumValue($k, $this->_data[$k]);
@@ -888,7 +888,19 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
             }
         }
 
+        // Remove existing record from the repository and table entity map.
+        $this->_table->setData($this->_data);
+        $existing_record = $this->_table->getRecord();
+        if ($existing_record->exists()) {
+            $this->_table->getRepository()->evict($existing_record->getOid());
+            $this->_table->removeRecord($existing_record);
+        }
+
+        // Add the unserialized record to repository and entity map.
+        $this->_oid = self::$_index;
+        self::$_index++;
         $this->_table->getRepository()->add($this);
+        $this->_table->addRecord($this);
 
         $this->cleanData($this->_data);
 
@@ -1148,11 +1160,12 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
                 return false;
             }
 
-            $data = empty($data) ? $this->getTable()->find($id, Doctrine_Core::HYDRATE_ARRAY) : $data;
+            $table = $this->getTable();
+            $data = empty($data) ? $table->find($id, Doctrine_Core::HYDRATE_ARRAY) : $data;
             
             if (is_array($data)) {
                 foreach ($data as $field => $value) {
-                    if ( ! array_key_exists($field, $this->_data) || $this->_data[$field] === self::$_null) {
+                    if ($table->hasField($field) && ( ! array_key_exists($field, $this->_data) || $this->_data[$field] === self::$_null)) {
                        $this->_data[$field] = $value;
                    }
                 }
@@ -1331,7 +1344,7 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
 
             if ($this->hasAccessor($fieldName) || method_exists($this, $accessor)) {
                 $this->hasAccessor($fieldName, $accessor);
-                return $this->$accessor($load);
+                return $this->$accessor($load, $fieldName);
             }
         }
         return $this->_get($fieldName, $load);
@@ -1437,7 +1450,7 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
 
             if ($this->hasMutator($fieldName) || method_exists($this, $mutator)) {
                 $this->hasMutator($fieldName, $mutator);
-                return $this->$mutator($value, $load);
+                return $this->$mutator($value, $load, $fieldName);
             }
         }
         return $this->_set($fieldName, $value, $load);
@@ -1529,7 +1542,7 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
         } else if (in_array($type, array('decimal', 'float')) && is_numeric($old) && is_numeric($new)) {
             return $old * 100 != $new * 100;
         } else if (in_array($type, array('integer', 'int')) && is_numeric($old) && is_numeric($new)) {
-            return $old !== $new;
+            return $old != $new;
         } else if ($type == 'timestamp' || $type == 'date') {
             $oldStrToTime = strtotime($old);
             $newStrToTime = strtotime($new);
@@ -2028,6 +2041,7 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
                         $this->link($key, $value, false);
                     } else {
                         $this->$key->synchronizeWithArray($value);
+                        $this->$key = $this->$key;
                     }
                 }
             } else if ($this->getTable()->hasField($key) || array_key_exists($key, $this->_values)) {
@@ -2177,8 +2191,8 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
     public function copy($deep = false)
     {
         $data = $this->_data;
-
-        if ($this->_table->getIdentifierType() === Doctrine_Core::IDENTIFIER_AUTOINC) {
+        $idtype = $this->_table->getIdentifierType();
+        if ($idtype === Doctrine_Core::IDENTIFIER_AUTOINC || $idtype === Doctrine_Core::IDENTIFIER_SEQUENCE) {
             $id = $this->_table->getIdentifier();
 
             unset($data[$id]);
@@ -2512,7 +2526,11 @@ abstract class Doctrine_Record extends Doctrine_Record_Abstract implements Count
                 if ($this->$alias instanceof Doctrine_Record) {
                     $this->set($alias, $record);
                 } else {
-                    $this->get($alias)->add($record);
+                    if ($c = $this->get($alias)) {
+                        $c->add($record);
+                    } else {
+                        $this->set($alias, $record);
+                    }
                 }
             }
 

@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Mssql.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Mssql.php 7644 2010-06-08 15:12:02Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -27,7 +27,7 @@
  * @author      Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
  * @author      Frank M. Kromann <frank@kromann.info> (PEAR MDB2 Mssql driver)
  * @author      David Coallier <davidc@php.net> (PEAR MDB2 Mssql driver)
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7644 $
  * @link        www.doctrine-project.org
  * @since       1.0
  */
@@ -206,7 +206,7 @@ class Doctrine_Import_Mssql extends Doctrine_Import
     {
         $keyName = 'INDEX_NAME';
         $pkName = 'PK_NAME';
-        if ($this->conn->getAttribute(Doctrine_Core::ATTR_PORTABILITY) & Doctrine_Core::PORTABILITY_FIX_CASE) {
+        if ($this->conn->getAttribute(Doctrine_Core::ATTR_FIELD_CASE) && ($this->conn->getAttribute(Doctrine_Core::ATTR_PORTABILITY) & Doctrine_Core::PORTABILITY_FIX_CASE)) {
             if ($this->conn->getAttribute(Doctrine_Core::ATTR_FIELD_CASE) == CASE_LOWER) {
                 $keyName = strtolower($keyName);
                 $pkName  = strtolower($pkName);

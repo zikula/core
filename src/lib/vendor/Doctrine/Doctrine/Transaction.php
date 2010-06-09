@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Transaction.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Transaction.php 7651 2010-06-08 15:47:06Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,7 +30,7 @@
  * @subpackage  Transaction
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7651 $
  */
 class Doctrine_Transaction extends Doctrine_Connection_Module
 {

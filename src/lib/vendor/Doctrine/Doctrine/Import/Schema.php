@@ -123,7 +123,9 @@ class Doctrine_Import_Schema
                                                           'zerofill',
                                                           'owner',
                                                           'extra',
-                                                          'comment'),
+                                                          'comment',
+                                                          'charset',
+                                                          'collation'),
 
                                    'relation'   =>  array('key',
                                                           'class',

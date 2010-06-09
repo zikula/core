@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Table.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Table.php 7668 2010-06-08 20:14:58Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,7 +28,7 @@
  * @package     Doctrine
  * @subpackage  Table
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7668 $
  * @link        www.doctrine-project.org
  * @since       1.0
  * @method mixed findBy*(mixed $value) magic finders; @see __call()
@@ -1033,7 +1033,7 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
 
         $class = $this->getAttribute(Doctrine_Core::ATTR_QUERY_CLASS);
 
-        return Doctrine_Query::create(null, $class)
+        return Doctrine_Query::create($this->_conn, $class)
             ->from($this->getComponentName() . $alias);
     }
 
@@ -1121,7 +1121,11 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
            $alias = $this->getComponentName();
         }
    
-        $e1 = explode(',', $orderBy);
+        if ( ! is_array($orderBy)) {
+            $e1 = explode(',', $orderBy);
+        } else {
+            $e1 = $orderBy;
+        }
         $e1 = array_map('trim', $e1);
         foreach ($e1 as $k => $v) {
             $e2 = explode(' ', $v);
@@ -1986,17 +1990,16 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
     public function enumValue($fieldName, $index)
     {
         if ($index instanceof Doctrine_Null) {
+            return false;
+        }
+
+        if ($this->_conn->getAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM)) {
             return $index;
         }
 
         $columnName = $this->getColumnName($fieldName);
-        if ( ! $this->_conn->getAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM)
-            && isset($this->_columns[$columnName]['values'][$index])
-        ) {
-            return $this->_columns[$columnName]['values'][$index];
-        }
 
-        return $index;
+        return isset($this->_columns[$columnName]['values'][$index]) ? $this->_columns[$columnName]['values'][$index] : false;
     }
 
     /**
@@ -2011,11 +2014,10 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
     {
         $values = $this->getEnumValues($fieldName);
 
-        $index = array_search($value, $values);
-        if ($index === false || !$this->_conn->getAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM)) {
-            return $index;
+        if ($this->_conn->getAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM)) {
+            return $value;
         }
-        return $value;
+        return array_search($value, $values);
     }
 
     /**
@@ -2293,8 +2295,7 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
      *
      * 1. It unserializes array and object typed columns
      * 2. Uncompresses gzip typed columns
-     * 3. Gets the appropriate enum values for enum typed columns
-     * 4. Initializes special null object pointer for null values (for fast column existence checking purposes)
+     * 3. Initializes special null object pointer for null values (for fast column existence checking purposes)
      *
      * example:
      * <code type='php'>
@@ -2322,12 +2323,10 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
             $type = is_null($typeHint) ? $this->getTypeOf($fieldName) : $typeHint;
 
             switch ($type) {
+                case 'enum':
                 case 'integer':
                 case 'string';
                     // don't do any casting here PHP INT_MAX is smaller than what the databases support
-                break;
-                case 'enum':
-                    return $this->enumValue($fieldName, $value);
                 break;
                 case 'set':
                     return explode(',', $value);

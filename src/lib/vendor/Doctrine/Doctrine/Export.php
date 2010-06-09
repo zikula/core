@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Export.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Export.php 7653 2010-06-08 15:54:31Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -29,7 +29,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7653 $
  */
 class Doctrine_Export extends Doctrine_Connection_Module
 {
@@ -148,7 +148,7 @@ class Doctrine_Export extends Doctrine_Connection_Module
      */
     public function dropForeignKey($table, $name)
     {
-        return $this->dropConstraint($table, $name);
+        return $this->dropConstraint($table, $this->conn->formatter->getForeignKeyName($name));
     }
 
     /**

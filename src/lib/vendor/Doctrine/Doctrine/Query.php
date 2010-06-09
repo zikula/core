@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Query.php 7490 2010-03-29 19:53:27Z jwage $
+ *  $Id: Query.php 7674 2010-06-08 22:59:01Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -30,7 +30,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7490 $
+ * @version     $Revision: 7674 $
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @todo        Proposal: This class does far too much. It should have only 1 task: Collecting
  *              the DQL query parts and the query parameters (the query state and caching options/methods
@@ -347,7 +347,7 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
     /**
      * Check if a dql alias has a sql aggregate alias
      *
-     * @param string $dqlAlias 
+     * @param string $dqlAlias
      * @return boolean
      */
     public function hasSqlAggregateAlias($dqlAlias)
@@ -616,7 +616,6 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
             }
 
             $terms = $this->_tokenizer->sqlExplode($reference, ' ');
-
             $pos   = strpos($terms[0], '(');
 
             if (count($terms) > 1 || $pos !== false) {
@@ -627,7 +626,15 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
                     $alias = substr($expression, 0, $pos);
                 }
 
-                $componentAlias = $this->getExpressionOwner($expression);
+                // Fix for http://www.doctrine-project.org/jira/browse/DC-706
+                if ($pos !== false && substr($expression, 0, 1) !== "'" && substr($expression, 0, $pos) == '') {
+                    $_queryComponents = $this->_queryComponents;
+                    reset($_queryComponents);
+                    $componentAlias = key($_queryComponents);
+                } else {
+                    $componentAlias = $this->getExpressionOwner($expression);
+                }
+
                 $expression = $this->parseClause($expression);
 
                 $tableAlias = $this->getSqlTableAlias($componentAlias);
@@ -1400,16 +1407,16 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
                         $partOriginal = str_replace(',', '', trim($f));
                         $callback = create_function('$e', 'return trim($e, \'[]`"\');');
                         $part = trim(implode('.', array_map($callback, explode('.', $partOriginal))));
-                
+
                         if (strpos($part, '.') === false) {
                             continue;
                         }
-                
+
                         // don't add functions
                         if (strpos($part, '(') !== false) {
                             continue;
                         }
-                
+
                         // don't add primarykey column (its already in the select clause)
                         if ($part !== $primaryKey) {
                             $subquery .= ', ' . $partOriginal;
@@ -1455,8 +1462,9 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
             // preserve LEFT JOINs only if needed
             if (substr($part, 0, 9) === 'LEFT JOIN') {
                 $e = explode(' ', $part);
-
-                if (empty($this->_sqlParts['orderby']) && empty($this->_sqlParts['where']) && empty($this->_sqlParts['having'])) {
+                // Fix for http://www.doctrine-project.org/jira/browse/DC-706
+                // Fix for http://www.doctrine-project.org/jira/browse/DC-594
+                if (empty($this->_sqlParts['orderby']) && empty($this->_sqlParts['where']) && empty($this->_sqlParts['having']) && empty($this->_sqlParts['groupby'])) {
                     continue;
                 }
             }
@@ -2107,7 +2115,7 @@ class Doctrine_Query extends Doctrine_Query_Abstract implements Countable
         $params = $this->_conn->convertBooleans($params);
 
         if ($this->_resultCache) {
-            $conn = $this->getConnection(); 
+            $conn = $this->getConnection();
             $cacheDriver = $this->getResultCacheDriver();
             $hash = $this->getResultCacheHash($params).'_count';
             $cached = ($this->_expireResultCache) ? false : $cacheDriver->fetch($hash);

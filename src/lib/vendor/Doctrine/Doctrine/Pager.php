@@ -366,7 +366,7 @@ class Doctrine_Pager
      * @param $page       current page
      * @return void
      */
-    private function _setPage($page)
+    protected function _setPage($page)
     {
         $page = intval($page);
         $this->_page = ($page <= 0) ? 1 : $page;

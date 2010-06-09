@@ -153,6 +153,7 @@ class Doctrine_Data_Export extends Doctrine_Data
 
         foreach ($data AS $className => $classData) {
             $preparedData[$className] = array();
+            $keyType = $classData->getTable()->getIdentifierType();
             foreach ($classData as $record) {
                 $className = get_class($record);
                 $recordKey = $className . '_' . implode('_', $record->identifier());
@@ -168,7 +169,7 @@ class Doctrine_Data_Export extends Doctrine_Data
                       $keys = array($keys);
                     }
 
-                    if (count($keys) <= 1 && in_array($key, $keys)) {
+                    if ($keyType !== Doctrine_Core::IDENTIFIER_NATURAL && count($keys) <= 1 && in_array($key, $keys)) {
                         continue;
                     }
 
