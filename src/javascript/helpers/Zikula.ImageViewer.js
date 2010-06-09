@@ -1,15 +1,4 @@
-/**
- * Zikula Application Framework
- * @version $Id: Zikula.ImageViewer.js 28169 2010-01-30 10:09:37Z jusuff $
- *
- * Licensed to the Zikula Foundation under one or more contributor license
- * agreements. This work is licensed to You under the following license:
- *
- * @license GNU/LGPv2.1 (or at your option any later version).
- *
- * Please see the NOTICE and LICENSE files distributed with this source
- * code for further information regarding copyright ownership and licensing.
- */
+// Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
 if (typeof(Zikula) == 'undefined') {
     Zikula = {};

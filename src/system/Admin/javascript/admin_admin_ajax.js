@@ -1,11 +1,9 @@
+// Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-//---------------------------Set Up-------------------------------------------
 /**
  * Onload function adds droppable locations to all the tabs as well as context
  * menus and inplace editors.
  */
-
-
 Event.observe(window, 'load', function() {
     context_menu = Array();
     editors = Array();

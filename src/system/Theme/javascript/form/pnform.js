@@ -1,15 +1,4 @@
-/**
- * pnForms javascript code
- *
- * @copyright (c) 2006, Zikula Development Team
- * @link http://www.zikula.com
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author Jorn Wildt
- * @package pnForm
- * @subpackage JavaScript
- */
-
+// Copyright Zikula Foundation 2006 - license GNU/LGPLv2.1 (or at your option, any later version).
 
 var pnForm = {};
 

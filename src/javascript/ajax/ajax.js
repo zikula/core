@@ -1,13 +1,4 @@
-/**
- * Zikula Application Framework
- *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.com
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_Core
- * @subpackage Javascript
-*/
+// Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
 if (typeof(Zikula) == 'undefined') {
     Zikula = {};

@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
+
 Event.observe(window, 'load', mailer_testconfig_init, false);
 
 function mailer_testconfig_init()
