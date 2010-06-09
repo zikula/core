@@ -43,5 +43,12 @@ class SystemListenersUtil
         }
     }
 
+    public static function systemPlugins(Event $event)
+    {
+        if (!System::isInstalling()) {
+            PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
+        }
+    }
+
 
 }

@@ -185,7 +185,7 @@ class FileUtil
         while (($file = readdir($dh)) !== false) {
             $relativepath = $relativePath;
             if (!in_array($file, $skiplist)) {
-                $path = "$rootPath/$file";
+                $path = $rootPath . DIRECTORY_SEPARATOR . $file;
 
                 if ($type == 'f' && !$recurse && is_dir($path)) {
                     continue;
@@ -200,9 +200,9 @@ class FileUtil
                     $filenameToStore = $file;
                     if (is_string($relativepath)) {
                         if (!$nestedData) {
-                            $filenameToStore = "$relativepath/$file";
+                            $filenameToStore = $relativepath . DIRECTORY_SEPARATOR . $file;
                         }
-                        $relativepath = "$relativepath/$file";
+                        $relativepath = $relativepath . DIRECTORY_SEPARATOR . $file;
                     } else {
                         $relativepath = $file;
                     }

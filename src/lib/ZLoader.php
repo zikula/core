@@ -46,6 +46,7 @@ class ZLoader
 
         // setup core events.
         EventManagerUtil::attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
+        EventManagerUtil::attach('core.postinit', array('SystemListenersUtil', 'systemPlugins'));
         EventManagerUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
     }
 
@@ -124,6 +125,7 @@ class ZLoader
             'LogUtil' => 'util',
             'ModUtil' => 'util',
             'ObjectUtil' => 'util',
+            'PluginUtil' => 'util',
             'PageUtil' => 'util',
             'RandomUtil' => 'util',
             'SecurityUtil' => 'util',

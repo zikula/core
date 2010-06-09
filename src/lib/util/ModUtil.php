@@ -61,10 +61,12 @@ class ModUtil
             $tables   = System::dbGetTables();
             $col      = $tables['module_vars_column'];
             $where =   "$col[modname] = '" . ModUtil::CONFIG_MODULE ."'
+                     OR $col[modname] = '" . PluginUtil::CONFIG ."'
                      OR $col[modname] = 'Theme'
                      OR $col[modname] = 'Blocks'
                      OR $col[modname] = 'Users'
-                     OR $col[modname] = 'Settings'";
+                     OR $col[modname] = 'Settings'
+                     OR $col[modname] = 'SecurityCenter'";
 
             $profileModule = System::getVar('profilemodule', '');
             if (!empty($profileModule) && self::available($profileModule)) {
@@ -668,6 +670,8 @@ class ModUtil
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
             }
         }
+
+        PluginUtil::loadPlugins("$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
 
         $event = new Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
         EventManagerUtil::notify($event);
