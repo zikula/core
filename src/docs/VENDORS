@@ -51,3 +51,11 @@ PHPMailer 5.0.0
     License: LGPL 2.1+
     Location in Zikula: system/Mailer/vendor
     Patch details: none
+
+Zend Framework 1.10.5 (selected components)
+    Zend_Exception, Zend_Loader, Zend_Log
+    Vendor website: http://framework.zend.com/).
+    Downloaded from: http://framework.zend.com/
+    License: New BSD
+    Location in Zikula: lib/vendor/Zend
+    Patch details: none
