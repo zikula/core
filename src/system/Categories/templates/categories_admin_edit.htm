@@ -126,10 +126,10 @@
                 {if (!$category.is_leaf && $haveSubcategories && $haveLeafSubcategories)}
                 {button src=edit.gif set=icons/extrasmall name="category_user_edit" value="edit" __alt="Edit" __title="Edit" __text="Edit"}
                 {/if}
-                <a href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"}{gt text="Cancel"}</a>
+                <a href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 {else}
                 {button src=button_ok.gif set=icons/extrasmall name="category_submit" value="add" __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"}{gt text="Cancel"}</a>
+                <a href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 {/if}
             </div>
         </form>
