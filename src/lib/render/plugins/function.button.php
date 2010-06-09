@@ -112,7 +112,7 @@ function smarty_function_button($params, &$smarty)
         $class = '';
     }
     if (isset($params['text'])) {
-        $text = DataUtil::formatForDisplay($params['text']);
+        $text = ' ' . DataUtil::formatForDisplay($params['text']);
     } else {
         $text = '';
     }

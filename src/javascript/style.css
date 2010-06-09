@@ -798,28 +798,50 @@ div.z-viewbuttons img {
 /* Buttons styles
 /******************************************************************************/
 
+
+.z-buttons .z-button,
 .z-buttons a,
 .z-buttons input,
 .z-buttons button {
     display: inline-block;
-    margin:0 7px 0 0;
+    outline: none;
+    cursor: pointer;
     font-size: 1em;
-    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
     line-height:130%;
-    text-decoration:none !important;
-    font-weight:bold;
-    cursor:pointer;
-    padding:5px 10px 6px 10px;
+    font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    text-decoration: none !important;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 5px 0 0;
+    padding: 5px 10px 6px 10px;
     color: #444;
     border-color:#CCCCCC #B9B9B9 #B9B9B9 #CCCCCC;
-    border-style:solid;
-    border-width:1px;
+    border-style: solid;
+    border-width: 1px;
     background: #f5f5f5;
     background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
     background: -moz-linear-gradient(top,  #F5F5F5, #dedede);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
 }
 
+.z-buttons input[type=image] {
+    float: left;
+}
+
+.z-buttons button {
+    width: auto;
+    overflow: visible;
+    padding: 4px 10px 3px 10px; /* IE6 */
+}
+.z-buttons button[type] {
+    padding: 5px 10px 5px 10px; /* Firefox */
+    line-height: 17px; /* Safari */
+}
+*:first-child+html button[type] {
+    padding: 4px 10px 3px 10px; /* IE7 */
+}
+
+.z-buttons .z-button:hover,
 .z-buttons a:hover,
 .z-buttons input:hover,
 .z-buttons button:hover {
@@ -830,6 +852,7 @@ div.z-viewbuttons img {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#F5F5F5');
 }
 
+.z-buttons .z-button:active,
 .z-buttons a:active,
 .z-buttons input:active,
 .z-buttons button:active {
@@ -839,25 +862,14 @@ div.z-viewbuttons img {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d0d0d0', endColorstr='#f0f0f0');
 }
 
-.z-buttons button {
-    width:auto;
-    overflow:visible;
-    padding:4px 10px 3px 10px; /* IE6 */
-}
-.z-buttons button[type] {
-    padding:5px 10px 5px 10px; /* Firefox */
-    line-height:17px; /* Safari */
-}
-*:first-child+html button[type] {
-    padding:4px 10px 3px 10px; /* IE7 */
-}
+.z-buttons .z-button img,
 .z-buttons button img,
 .z-buttons a img {
-    margin:0 5px -3px 0 !important;
-    padding:0;
-    border:none;
-    height:16px;
-    width:16px;
+    margin: 0 3px -3px 0 !important;
+    padding: 0;
+    border: none;
+    height: 16px;
+    width: 16px;
 }
 
 /* colored button: light red */
