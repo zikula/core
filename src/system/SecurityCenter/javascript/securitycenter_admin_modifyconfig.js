@@ -1,3 +1,16 @@
+/**
+ * Zikula Application Framework
+ * @version $Id$
+ *
+ * Licensed to the Zikula Foundation under one or more contributor license
+ * agreements. This work is licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option any later version).
+ *
+ * Please see the NOTICE and LICENSE files distributed with this source
+ * code for further information regarding copyright ownership and licensing.
+ */
+
 Event.observe(window, 'load', securitycenter_modifyconfig_init, false);
 
 function securitycenter_modifyconfig_init()
@@ -18,10 +31,6 @@ function securitycenter_modifyconfig_init()
     Event.observe('securitycenter_signcookies_yes', 'click', securitycenter_signcookies_onchange, false);
     Event.observe('securitycenter_signcookies_no', 'click', securitycenter_signcookies_onchange, false);
     Event.observe('securitycenter_sessionname', 'click', securitycenter_sessionname_onchange, false);
-// There is no element with the ID - markwest?
-//   Event.observe('securitycenter_wheretosavesessions', 'click', securitycenter_wheretosavesessions_onchange, false);
-// There is no function 'securitycenter_sitesecureurl_onchange' - markwest?
-//    Event.observe('securitycenter_secure_domain', 'change', securitycenter_sitesecureurl_onchange, false);
 
     securitycenter_sessionname_onchange();    
     securitycenter_wheretosavesessions_onchange();
