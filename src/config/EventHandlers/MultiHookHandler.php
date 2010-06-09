@@ -22,7 +22,7 @@ class MultiHookHandler extends CustomEventHandler
      *
      * @var array
      */
-    protected $names = array('theme.init' => 'handler');
+    protected $eventNames = array('theme.init' => 'handler');
 
     /**
      * Event handler here.

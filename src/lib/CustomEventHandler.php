@@ -19,7 +19,7 @@
  * of eventname => handlerMethod like the following.  (Can contain multiple
  * index pairs).
  *
- * protected $names = array('name' => 'handlerMethod')
+ * protected $eventNames = array('name' => 'handlerMethod')
  *
  * The handler methods must be implemented as followes:
  *
@@ -32,8 +32,8 @@ abstract class CustomEventHandler
      */
     public function __construct()
     {
-        if (!is_array($this->names) || !$this->names) {
-            throw new InvalidArgumentException(sprintf('%s->names property contain indexed array of eventname => handlerMethod', get_class($this)));
+        if (!is_array($this->eventNames) || !$this->eventNames) {
+            throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
         }
     }
 
@@ -42,9 +42,9 @@ abstract class CustomEventHandler
      */
     public function attach()
     {
-        foreach ($this->names as $name => $method) {
+        foreach ($this->eventNames as $name => $method) {
             if (is_integer($name)) {
-                throw new InvalidArgumentException(sprintf('%s->names property contain indexed array of eventname => handlerMethod', get_class($this)));
+                throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
             }
 
             EventManagerUtil::attach($name, array($this, $method));
