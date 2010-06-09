@@ -1,7 +1,9 @@
 ﻿// Texpand
 // Unobtrusively resize textarea's height as content is added.
+// http://github.com/gf3/texpand
 //
-// Copyright (c) 2008, Gianni Chiappetta - gianni[at]runlevel6[dot]org
+// Copyright (c) 2009 Gianni Chiappetta
+// The MIT License
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
