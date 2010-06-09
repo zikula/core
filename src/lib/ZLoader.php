@@ -38,6 +38,7 @@ class ZLoader
         self::$autoloaders->spl_autoload_register();
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
+        self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
         include ZLOADER_PATH. 'legacy/Loader.php';
         include ZLOADER_PATH. 'legacy/Api.php';
 
