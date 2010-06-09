@@ -50,4 +50,11 @@ abstract class CustomEventHandler
             EventManagerUtil::attach($name, array($this, $method));
         }
     }
+
+    public function detach()
+    {
+        foreach ($this->eventNames as $name => $method) {
+            EventManagerUtil::detach($name, array($this, $method));
+        }
+    }
 }
