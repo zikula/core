@@ -109,7 +109,7 @@ class Theme_Admin extends AbstractController
 
         // filter by letter if required
         if (isset($startlet) && !empty($startlet)) {
-            $allthemes = array_filter($allthemes, '_theme_admin_filterbyletter');
+            $allthemes = array_filter($allthemes, '$this->_filterbyletter');
         }
         $themes = array_slice($allthemes, $startnum-1, $itemsperpage);
         $pnRender->assign('themes', $themes);
@@ -130,7 +130,7 @@ class Theme_Admin extends AbstractController
      *
      * @access private
      */
-    function _theme_admin_filterbyletter($theme)
+    private function _filterbyletter($theme)
     {
         static $startlet;
 
@@ -667,9 +667,9 @@ class Theme_Admin extends AbstractController
         $pageconfiguration['blockinstances'] = $blockinstancetemplates;
 
         // check if the filters exists. We do this now and not when using them to increase performance
-        $filters['outputfilters'] = _theme_admin_checkfilters('outputfilter', $filters['outputfilters']);
-        $filters['prefilters']    = _theme_admin_checkfilters('prefilter', $filters['prefilters']);
-        $filters['postfilters']   = _theme_admin_checkfilters('postfilter', $filters['postfilters']);
+        $filters['outputfilters'] = $this->_checkfilters('outputfilter', $filters['outputfilters']);
+        $filters['prefilters']    = $this->_checkfilters('prefilter', $filters['prefilters']);
+        $filters['postfilters']   = $this->_checkfilters('postfilter', $filters['postfilters']);
         $pageconfiguration['filters'] = $filters;
 
         // write the page configuration
@@ -686,7 +686,7 @@ class Theme_Admin extends AbstractController
      * check if the given filter exists
      *
      */
-    function _theme_admin_checkfilters($type, $filters)
+    private function _checkfilters($type, $filters)
     {
         $filters = trim($filters);
         if (empty($filters)) {
