@@ -1,0 +1,119 @@
+Zikula Plugin System
+--------------------
+
+The Zikula plugins system is based on the EventManager system.  There are two
+kinds of plugins:
+
+1.  System Plugins (don't confuse with system/ modules).
+    These are located in plugins/
+    Classes are named SystemPlugin_$PluginName_Plugin
+    e.g. plugins/Example/Plugin.php (contains
+    class SystemPlugin_Example_Plugin extends AbstractPlugin
+
+    System plugins are invoked post System::init() before system hooks are
+    initialised.
+
+    System plugins might be used for adding template plugins or js libraries
+    to be available for then entire Zikula installation.
+
+2.  Module Plugins
+    These can be located in system/$modname/plugins or modules/$modame/plugins
+    Classes are named ModulePlugin_$Modname_$PluginName_Plugin
+    e.g. modules/News/plugins/Example/Plugin.php (contains
+    class ModulePlugin_News_Example_Plugin extends AbstractPlugin
+
+    Module plugins are only loaded when the ModUtil::loadGeneric is invoked for 
+    that module.
+
+    Module plugins are there to allow 3rd parties to extend a module or add
+    expected functionality.  E.g. a shopping cart could add additional
+    shipping methods, or payment gateways using plugins.  Module plugins provide
+    local functionality to the module, and (in general) are not aimed at the
+    whole Zikula system because they are only initialised when the module, or
+    module api is invoked.
+
+Plugin classes are just like event handlers, ultimately they inherit from the
+same CustomEventHandler abstract.  However the difference is the plugin is
+a discrete file heirachy where you may store related files and libraries.
+
+Uses for plugins
+----------------
+Providing php, js, css or image libraries.
+Extending functionality of the system, or of modules.
+
+Archetecture
+------------
+Plugins provide a rather free system.  You only need what you need.  The only
+compulsory aspect is the Plugin.php which is the heart of the plugin.
+
+Plugins provide the following methods:
+
+initialize()
+install()
+upgrade()
+uninstall()
+enable()
+disable()
+
+The Plugin class provides the following hooks
+preInitialize()
+postInitialize()
+
+preInstall()
+postInstall()
+
+preUpgrade()
+postUpgrade()
+
+preInstall()
+postInstall()
+
+postEnable()
+
+postDisable()
+
+If your plugin requires localisation, the usual folder structure is required inside
+the plugin.  Please note the required domain is:
+systemplugin_$name or
+moduleplugin_$modname_$pluginname
+
+So the POT file would be located in the plugin's main folder in
+locale/$domain.pot
+
+You are expected to bind the domain if you need it using (for example)
+    ZLanguage::bindDomain("systemplugin_$pluginname", $this->baseDir . '/locale')
+where $path is the path to the locale directory which would be $this->baseDir . '/locale';
+
+For a module plugin it would be
+    ZLanguage::bindDomain("moduleplugin_$modname_$pluginname", $this->baseDir . '/locale');
+
+This would be best placed in preInitialize();
+Plugins DO NOT support DBUtil or the legacy tables.php based DB modelling.  You must
+use Doctrine models if you require persistence.
+
+PLUGIN VARIABLES
+----------------
+Please use the following convention if you need to store variables
+    ModUtil::set/getVar("systemplugin.$pluginname", ...);
+    ModUtil::set/getVar("moduleplugin.$modname.$pluginname", ...);
+
+e.g.
+
+ModUtil::set/getVar("moduleplugin.news.example", 'myvar');
+
+RENDERING
+---------
+If you need to produce templated output, please create a templates/ folder
+and store templates there.  You will need to specify the location directly:
+
+e.g.
+    $view = Renderer::getInstance('News');
+    $view->fetch($this->baseDir . '/templates/myview.htm');
+
+
+You can add plugin paths e.g. templates/plugins in your preInitialize() method hook
+with something like
+
+    $renderer = Renderer::getInstance();
+    array_push($renderer->plugins_dir, $pluginpath);
+

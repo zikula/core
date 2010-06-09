@@ -26,37 +26,25 @@ class PluginUtil
 
     protected static $plugins;
 
-    public static function getVar($name, $default = null)
+    public static function getState($name, $default = null)
     {
         return ModUtil::getVar(self::CONFIG, $name, $default);
     }
 
-    public static function delVar($name)
+    public static function delState($name)
     {
         return ModUtil::delVar(self::CONFIG, $name);
     }
 
-    public static function setVar($name, $value)
+    public static function setState($name, $value)
     {
         return ModUtil::setVar(self::CONFIG, $name, $value);
-    }
-
-    public static function hasVar($name)
-    {
-        return ModUtil::hasVar(self::CONFIG, $name);
     }
 
     public static function getDefaultState()
     {
         return self::$defaultState;
     }
-
-//    public static function getState($name)
-//    {
-//        $plugin = self::getVar($name, null);
-//        $plugin = (is_null($plugin)) ? self::$defaultState : $plugin;
-//        return $plugin['state'];
-//    }
 
     /**
      * Load all plugins in path.
@@ -204,7 +192,7 @@ class PluginUtil
         }
 
         $state = array('state' => self::ENABLED, 'version' => $plugin::VERSION);
-        self::setVar($plugin->getModVarName(), $state);
+        self::setState($plugin->getModVarName(), $state);
     }
 
     public static function upgrade($className)
@@ -214,21 +202,22 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = self::getVar($plugin->getModVarName(), self::getDefaultState());
+        $state = self::getState($plugin->getModVarName(), self::getDefaultState());
         if (version_compare($plugin::VERSON, $state['version'], '>=') ) {
             throw new LogicError(__f('Installed version and plugin version are equal, nothing to do for %s', $className));
         }
 
-        if ($plugin->upgrade($state['version'])) {
-            $state['version'] = $plugin::VESION;
-            self::setVar($plugin->getModVarName(), $state);
+        $result = $plugin->upgrade($state['version']);
+        if ($result) {
+            $state['version'] = ($result == true) ? $plugin::VESION : $result;
+            self::setState($plugin->getModVarName(), $state);
             return true;
         }
 
         return false;
     }
 
-    public static function remove($className)
+    public static function uninstall($className)
     {
         $plugin = self::loadPlugin($className);
         if (!$plugin->isInstalled()) {
@@ -238,7 +227,7 @@ class PluginUtil
         self::disable($className);
 
         if ($plugin->remove()) {
-            self::delVar($plugin->getModVarName());
+            self::delState($plugin->getModVarName());
             return true;
         }
 
@@ -252,9 +241,9 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = PluginUtil::getVar($plugin->getModVarName());
+        $state = PluginUtil::getState($plugin->getModVarName());
         $state['state'] = PluginUtil::DISABLED;
-        PluginUtil::setVar($plugin->getModVarName(), $state);
+        PluginUtil::setState($plugin->getModVarName(), $state);
         $plugin->postDisable();
         return true;
     }

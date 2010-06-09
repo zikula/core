@@ -30,6 +30,7 @@ abstract class AbstractPlugin extends CustomEventHandler
     {
         $this->className = get_class($this);
         $this->modVarName = strtolower(str_replace('_', '.', $this->className));
+        $this->baseDir = realpath(dirname(__FILE__));
     }
 
     public function getModVarName()
@@ -59,34 +60,34 @@ abstract class AbstractPlugin extends CustomEventHandler
 
     public function isEnabled()
     {
-        $plugin = PluginUtil::getVar($this->modVarName, PluginUtil::getDefaultState());
+        $plugin = PluginUtil::getState($this->modVarName, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::ENABLED) ? true : false;
     }
 
     public function isInstalled()
     {
-        $plugin = PluginUtil::getVar($this->modVarName, PluginUtil::getDefaultState());
+        $plugin = PluginUtil::getState($this->modVarName, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
     }
 
-    public function getState()
-    {
-        PluginUtil::getVar($this->modVarName, PluginUtil::getDefaultState());
-    }
-
-    public function setState($state, $version = false)
-    {
-        if (!isset($state['state'])) {
-            throw new InvalidArgumentException('State key must be set');
-        }
-        $plugin = PluginUtil::getVar($this->modVarName, PluginUtil::getDefaultState());
-        $plugin['state'] = $state;
-        if ($version) {
-            $plugin['version'] = self::VERSION;
-        }
-        
-        $plugin = PluginUtil::getVar($this->modVarName, $plugin);
-    }
+//    public function getState()
+//    {
+//        PluginUtil::getState($this->modVarName, PluginUtil::getDefaultState());
+//    }
+//
+//    public function setState($state, $version = false)
+//    {
+//        if (!isset($state['state'])) {
+//            throw new InvalidArgumentException('State key must be set');
+//        }
+//        $plugin = PluginUtil::getVar($this->modVarName, PluginUtil::getDefaultState());
+//        $plugin['state'] = $state;
+//        if ($version) {
+//            $plugin['version'] = self::VERSION;
+//        }
+//
+//        $plugin = PluginUtil::getState($this->modVarName, $state);
+//    }
 
     public function preInstall()
     {
