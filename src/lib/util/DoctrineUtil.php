@@ -29,8 +29,9 @@ class DoctrineUtil
      * Create Tables from models for given module.
      *
      * @param string $modname Module name.
+     * @param string $path Optional force path to Model directory (used by plugins).
      */
-    public static function createTablesFromModels($modname)
+    public static function createTablesFromModels($modname, $path = null)
     {
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
@@ -39,7 +40,8 @@ class DoctrineUtil
         $dm = Doctrine_Manager::getInstance();
         $save = $dm->getAttribute(Doctrine::ATTR_MODEL_LOADING);
         $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, Doctrine::MODEL_LOADING_AGGRESSIVE);
-        Doctrine_Core::createTablesFromModels(realpath("$base/$osdir/lib/$osdir/Model"));
+        $path = (is_null($path)) ? "$base/$osdir/lib/$osdir/Model" : "$base/$osdir/$path";
+        Doctrine_Core::createTablesFromModels(realpath($path));
         $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
     }
 
