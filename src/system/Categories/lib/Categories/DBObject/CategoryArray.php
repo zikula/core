@@ -1,18 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright value4business GmbH
- * @link http://www.zikula.org
- * @version $Id: PNCategoryArray.class.php 20307 2006-10-14 21:06:59Z rgasch $
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author Robert Gasch rgasch@gmail.com
- * @package Zikula_Core
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 
 /**
- * PNCategoryArray
+ * CategoryArray
  *
  * @package Zikula_System_Modules
  * @subpackage Categories

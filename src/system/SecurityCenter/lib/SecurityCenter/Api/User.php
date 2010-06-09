@@ -12,6 +12,7 @@
  * information regarding copyright and licensing.
  */
 
+
 class SecurityCenter_Api_User extends AbstractApi
 {
     /**
