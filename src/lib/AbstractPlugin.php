@@ -33,6 +33,11 @@ abstract class AbstractPlugin extends CustomEventHandler
         $this->baseDir = realpath(dirname(__FILE__));
     }
 
+    public function getVersion()
+    {
+        return self::VERSION;
+    }
+
     public function getModVarName()
     {
         return $this->modVarName;

@@ -191,7 +191,7 @@ class PluginUtil
             return false;
         }
 
-        $state = array('state' => self::ENABLED, 'version' => $plugin::VERSION);
+        $state = array('state' => self::ENABLED, 'version' => $plugin->getVersion());
         self::setState($plugin->getModVarName(), $state);
     }
 
@@ -203,13 +203,13 @@ class PluginUtil
         }
 
         $state = self::getState($plugin->getModVarName(), self::getDefaultState());
-        if (version_compare($plugin::VERSON, $state['version'], '>=') ) {
+        if (version_compare($plugin->getVersion(), $state['version'], '>=') ) {
             throw new LogicError(__f('Installed version and plugin version are equal, nothing to do for %s', $className));
         }
 
         $result = $plugin->upgrade($state['version']);
         if ($result) {
-            $state['version'] = ($result == true) ? $plugin::VESION : $result;
+            $state['version'] = ($result == true) ? $plugin->getVersion() : $result;
             self::setState($plugin->getModVarName(), $state);
             return true;
         }
