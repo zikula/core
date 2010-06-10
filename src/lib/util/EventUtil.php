@@ -108,6 +108,9 @@ class EventUtil
             return;
         }
 
+        $eventManager = self::getManager();
+        $serviceManager = ServiceUtil::getManager();
+
         $it = FileUtil::getFiles($dir, false, false, 'php', 'f');
 
         foreach ($it as $file) {
@@ -125,7 +128,9 @@ class EventUtil
                 $className = $diff->current();
             }
 
-            $handler = new $className;
+            $r = new ReflectionClass($className);
+            $handler = $r->newInstanceArgs(array($eventManager, $serviceManager));
+
             if (!$handler instanceof Zikula_EventHandler) {
                 throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
             }

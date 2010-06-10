@@ -27,14 +27,20 @@
  */
 abstract class Zikula_EventHandler
 {
+    protected $eventManager;
+    protected $serviceManager;
+
     /**
      * Constructor validation.
      */
-    public function __construct()
+    public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
     {
         if (!is_array($this->eventNames) || !$this->eventNames) {
             throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
         }
+        
+        $this->eventManager = $eventManager;
+        $this->serviceManager = $serviceManager;
     }
 
     /**
