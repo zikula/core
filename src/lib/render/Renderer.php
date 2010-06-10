@@ -15,7 +15,6 @@
 /**
  * Renderer class
  */
-
 class Renderer extends Smarty
 {
     private static $instance;
@@ -42,8 +41,6 @@ class Renderer extends Smarty
 
     public function __construct($module = '', $caching = null)
     {
-        // this property is Dwoo only but doesnt affect Smarty.
-        $this->show_compat_errors = true;
         parent::__construct();
 
         // set the error reporting level
@@ -71,14 +68,14 @@ class Renderer extends Smarty
         $this->theme = $theme = $this->themeinfo['directory'];
 
         $this->modinfo = $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
-        $modpath = ($this->module[$module]['type'] == 3) ? 'system' : 'modules';
+        $modpath = ($this->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         switch ($this->module[$module]['type'])
         {
-            case 2:
+            case ModUtil::TYPE_MODULE :
                 $mpluginPath = "modules/" . $this->module[$module]['directory'] . "/templates/plugins";
                 $mpluginPathOld = "modules/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
                 break;
-            case 3:
+            case ModUtil::TYPE_SYSTEM :
                 $mpluginPath = "system/" . $this->module[$module]['directory'] . "/templates/plugins";
                 $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
                 break;
@@ -273,50 +270,7 @@ class Renderer extends Smarty
             $os_module = DataUtil::formatForOS($module);
             $os_theme = DataUtil::formatForOS($this->theme);
 
-            // Define the locations in which we will look for templates
-            // (in this order)
-            // Note: Paths 1, 3, 5 and 7 - This allows for the hook or block functions
-            // (such as ratings and comments) to use different templates depending
-            // on the top level module. e.g. the comments dialog can be different
-            // for news  and polls...
-            // They are only evaluated when the calling module is not the current one.
-            //
-            // 1. The top level module directory in the requested module folder
-            // in the theme directory.
-            $array = array("themes/$os_theme/templates/modules/$os_module/$os_pnmodgetname",
-                    "themes/$os_theme/templates/modules/$os_module",
-                    "config/templates/$os_module/$os_pnmodgetname",
-                    "config/templates/$os_module",
-                    "modules/$os_module/templates/$os_pnmodgetname",
-                    "modules/$os_module/templates",
-                    "system/$os_module/templates/$os_pnmodgetname",
-                    "system/$os_module/templates",
-                    "modules/$os_module/pntemplates/$os_pnmodgetname",
-                    "modules/$os_module/pntemplates",
-                    "system/$os_module/pntemplates/$os_pnmodgetname",
-                    "system/$os_module/pntemplates",
-            );
-
-            $themehookpath = "themes/$os_theme/templates/modules/$os_module/$os_pnmodgetname";
-            // 2. The module directory in the current theme.
-            $themepath = "themes/$os_theme/templates/modules/$os_module";
-            // 3. The global template directory for the current top level module
-            $globalhookpath = "config/templates/$os_module/$os_pnmodgetname";
-            // 4. The global template directory
-            $globalpath = "config/templates/$os_module";
-            // 5. The top level module directory in the requested module folder
-            // in the modules sub folder.
-            $modhookpath = "modules/$os_module/pntemplates/$os_pnmodgetname";
-            // 6. The module directory in the modules sub folder.
-            $modpath = "modules/$os_module/pntemplates";
-            // 7. The top level module directory in the requested module folder
-            // in the system sub folder.
-            $syshookpath = "system/$os_module/pntemplates/$os_pnmodgetname";
-            // 8. The module directory in the system sub folder.
-            $syspath = "system/$os_module/pntemplates";
-
             $ostemplate = DataUtil::formatForOS($template); //.'.htm';
-
 
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for
