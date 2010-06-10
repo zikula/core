@@ -24,12 +24,16 @@ abstract class Zikula_Base
     protected $libBaseDir;
     protected $modinfo;
     protected $domain = null;
+    protected $serviceManager;
+    protected $eventManager;
 
     public function __construct(array $options = array())
     {
         $this->_setup();
         $this->options = $options;
-
+        $this->serviceManager = ServiceUtil::getManager();
+        $this->eventManager = EventUtil::getManager();
+        
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
