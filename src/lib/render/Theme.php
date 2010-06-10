@@ -316,7 +316,7 @@ class Theme extends Renderer
         $files = scandir($this->cache_dir);
         foreach ($files as $file) {
             if (preg_match('#[a-f0-0]*_(js|css)\.php$#', $file)) {
-                unlink($this->cache_dir.$file);
+                unlink($this->cache_dir . '/' . $file);
             }
         }
 
