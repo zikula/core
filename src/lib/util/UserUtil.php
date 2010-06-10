@@ -917,7 +917,7 @@ class UserUtil
         if (!empty($pagetheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
             if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin' || stristr($qstring, 'admin.php')))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                $theme = self::_themeZikula_Event($themeinfo['name']);
+                $theme = self::_themeEvent($themeinfo['name']);
                 return $theme;
             }
         }
@@ -928,7 +928,7 @@ class UserUtil
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
                 if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                    $theme = self::_themeZikula_Event($themeinfo['name']);
+                    $theme = self::_themeEvent($themeinfo['name']);
                     return $theme;
                 }
             }
@@ -944,7 +944,7 @@ class UserUtil
                 } else {
                     SessionUtil::setVar('theme', $newtheme);
                 }
-                $theme = self::_themeZikula_Event($themeinfo['name']);
+                $theme = self::_themeEvent($themeinfo['name']);
                 return $theme;
             }
         }
@@ -958,7 +958,7 @@ class UserUtil
             }
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
             if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-                $theme = self::_themeZikula_Event($themeinfo['name']);
+                $theme = self::_themeEvent($themeinfo['name']);
                 return $theme;
             }
         }
@@ -967,7 +967,7 @@ class UserUtil
         $defaulttheme = System::getVar('Default_Theme');
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
         if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
-            $theme = self::_themeZikula_Event($themeinfo['name']);
+            $theme = self::_themeEvent($themeinfo['name']);
             return $theme;
         }
 
@@ -976,7 +976,7 @@ class UserUtil
         }
     }
 
-    private static function _themeZikula_Event($themeName)
+    private static function _themeEvent($themeName)
     {
         $event = new Zikula_Event('user.gettheme', null, array('name' => $themeName));
         EventUtil::notifyUntil($event);
