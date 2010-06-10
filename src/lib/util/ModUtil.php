@@ -742,7 +742,7 @@ class ModUtil
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
 
         $controller = null;
-        $className = ($api) ? "{$modname}_Api_" . ucwords($type) : "{$modname}_". ucwords($type);
+        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_'. ucwords($type);
 
         $event = new Zikula_Event('module.customcontroller', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::notifyUntil($event);
