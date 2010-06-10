@@ -15,7 +15,6 @@
 
 class FilterUtil_Common
 {
-
     /**
      * Table name in pntable.php
      */
@@ -83,6 +82,7 @@ class FilterUtil_Common
             $this->module = 'core';
             return true;
         }
+
         return false;
     }
 
@@ -95,15 +95,15 @@ class FilterUtil_Common
      */
     protected function setTable($table)
     {
-        $pntable = & System::dbGetTables();
+        $tables = System::dbGetTables();
 
-        if (!isset($pntable[$table]) || !isset($pntable[$table . '_column'])) {
+        if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
             return false;
         }
 
         $this->pntable = $table;
-        $this->table = $pntable[$table];
-        $this->column = $pntable[$table . '_column'];
+        $this->table   = $tables[$table];
+        $this->column  = $tables[$table . '_column'];
 
         return true;
     }
@@ -135,10 +135,10 @@ class FilterUtil_Common
             return;
         }
 
-        $pntable = & System::dbGetTables();
+        $tables = System::dbGetTables();
         $c = & $this->column;
         // reset column array...
-        $c = $pntable[$this->pntable . '_column'];
+        $c = $tables[$this->pntable . '_column'];
         // now add alias "tbl" to all fields
         foreach ($this->column as &$a) {
             $a = 'tbl.' . $a;
@@ -147,17 +147,17 @@ class FilterUtil_Common
         // add fields of all joins
         $alias = 'a';
         foreach ($this->join as &$join) {
-            $jc = & $pntable[$join['join_table'] . '_column'];
+            $jc = & $tables[$join['join_table'] . '_column'];
             foreach ($join['join_field'] as $k => $f) {
                 $a = $join['object_field_name'][$k];
                 if (isset($c[$a])) {
-                    //Oh, that won't work! Two fields with the same alias!
+                    // Oh, that won't work! Two fields with the same alias!
                     return z_exit('Invalid join information!');
                 }
-                //so, let's add the field to the column array
+                // so, let's add the field to the column array
                 $c[$a] = $alias . '.' . $jc[$f];
             }
-            //now increase the alias ('a'++ = 'b')
+            // now increase the alias ('a'++ = 'b')
             $alias++;
         }
     }
@@ -187,8 +187,8 @@ class FilterUtil_Common
      */
     protected function addCommon(&$config)
     {
-        $config['table'] = $this->pntable;
+        $config['table']  = $this->pntable;
         $config['module'] = $this->module;
-        $config['join'] = & $this->join;
+        $config['join']   = & $this->join;
     }
 }

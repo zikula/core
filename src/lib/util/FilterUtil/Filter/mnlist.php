@@ -44,6 +44,11 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
         }
     }
 
+    public function availableOperators()
+    {
+        return array('eq', 'ne');
+    }
+
     /**
      * Adds fields to list in common way
      *
@@ -67,9 +72,8 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      */
     public function activateOperators($op)
     {
-        static $ops = array(
-                        'eq',
-                        'ne');
+        static $ops = array('eq', 'ne');
+
         if (is_array($op)) {
             foreach ($op as $v) {
                 $this->activateOperators($v);
@@ -101,11 +105,6 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
             $ops[$op] = $fields;
         }
         return $ops;
-    }
-
-    public function availableOperators()
-    {
-        return array('eq', 'ne');
     }
 
     /**
@@ -147,19 +146,24 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
         if (!isset($this->fields[$field])) {
             return '';
         }
+
+        $where = '';
         $alias = 'plg' . $this->id . $field;
+
         switch ($op) {
             case 'ne':
-                return array(
-                                'where' => $value . ' NOT IN (SELECT ' . $this->mncolumn[$field][$this->fields[$field]] . ' FROM ' . $this->mntable[$field] . ' ' . $alias . ' WHERE ' . $this->column[$this->comparefield[$field]] . " = $alias." . $this->mncolumn[$field][$this->comparefield[$field]] . ')');
+                $where = $value.' NOT IN ('.
+                         'SELECT '.$this->mncolumn[$field][$this->fields[$field]].' FROM '.$this->mntable[$field].' '.$alias.
+                         ' WHERE '.$this->column[$this->comparefield[$field]]." = $alias.".$this->mncolumn[$field][$this->comparefield[$field]].')';
                 break;
+
             case 'eq':
-                return array(
-                                'where' => $value . ' IN (SELECT ' . $this->mncolumn[$field][$this->fields[$field]] . ' FROM ' . $this->mntable[$field] . ' ' . $alias . ' WHERE ' . $this->column[$this->comparefield[$field]] . " = $alias." . $this->mncolumn[$field][$this->comparefield[$field]] . ')');
+                $where = $value.' IN ('.
+                         'SELECT '.$this->mncolumn[$field][$this->fields[$field]].' FROM '.$this->mntable[$field].' '.$alias.
+                         ' WHERE '.$this->column[$this->comparefield[$field]]." = $alias.".$this->mncolumn[$field][$this->comparefield[$field]].')';
                 break;
-            default:
-                return '';
         }
+
+        return array('where' => $where); 
     }
 }
-

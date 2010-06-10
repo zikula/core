@@ -15,7 +15,7 @@
 class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
     private $ops = array();
-    private $fields;
+    private $fields = array();
 
     /**
      * Constructor
@@ -35,16 +35,7 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
         if (isset($config['ops']) && (!isset($this->ops) || !is_array($this->ops))) {
             $this->activateOperators($config['ops']);
         } else {
-            $this->activateOperators(array(
-                            'eq',
-                            'ne',
-                            'lt',
-                            'le',
-                            'gt',
-                            'ge',
-                            'like',
-                            'null',
-                            'notnull'));
+            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'null', 'notnull'));
         }
 
         if ($config['default'] == true || count($this->fields) <= 0) {
@@ -83,8 +74,9 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
     public function activateOperators($op)
     {
         if (is_array($op)) {
-            foreach ($op as $v)
+            foreach ($op as $v) {
                 $this->activateOperators($v);
+            }
         } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $this->availableOperators()) !== false) {
             $this->ops[] = $op;
         }
@@ -102,19 +94,22 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
         if ($this->default == true) {
             $fields[] = '-';
         }
+
         $ops = array();
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
+
         return $ops;
     }
 
     public function availableOperators()
     {
         return array(
-                        'eq',
-                        'ne',
-                        'sub');
+                     'eq',
+                     'ne',
+                     'sub'
+                    );
     }
 
     /**
@@ -133,29 +128,32 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
             return '';
         }
 
+        $where = '';
+
         switch ($op) {
-            case "eq":
-                $where = $this->column[$field] . ' = ' . $value;
+            case 'eq':
+                $where = $this->column[$field].' = '.$value;
                 break;
-            case "ne":
-                $where = $this->column[$field] . ' != ' . $value;
+
+            case 'ne':
+                $where = $this->column[$field].' != '.$value;
                 break;
-            case "sub":
+
+            case 'sub':
                 $cats = CategoryUtil::getSubCategories($value);
                 $items = array();
                 $items[] = $value;
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
                 }
-                if (count($items) == 1)
+                if (count($items) == 1) {
                     $where = $this->column[$field] . " = " . implode("", $items);
-                else
+                } else {
                     $where = $this->column[$field] . " IN (" . implode(",", $items) . ")";
+                }
                 break;
-            default:
-                $where = '';
         }
-        return array(
-                        'where' => $where);
+
+        return array('where' => $where);
     }
 }

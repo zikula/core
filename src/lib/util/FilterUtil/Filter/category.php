@@ -15,7 +15,8 @@
 
 class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
-
+    private $ops = array();
+    private $fields = array();
     private $property;
 
     /**
@@ -46,6 +47,15 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
         }
     }
 
+    public function availableOperators()
+    {
+        return array(
+                     'eq',
+                     'ne',
+                     'sub'
+                    );
+    }
+
     /**
      * Adds fields to list in common way
      *
@@ -58,7 +68,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && !$this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && /*!$this->fieldExists($fields) &&*/ array_search($fields, $this->fields) === false) {
             $this->fields[] = $fields;
         }
     }
@@ -97,10 +107,12 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
         if ($this->default == true) {
             $fields[] = '-';
         }
+
         $ops = array();
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
+
         return $ops;
     }
 
@@ -113,14 +125,6 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     public function setProperty($property)
     {
         $this->property = (array) $property;
-    }
-
-    public function availableOperators()
-    {
-        return array(
-                        'eq',
-                        'ne',
-                        'sub');
     }
 
     /**
@@ -138,8 +142,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
             return '';
         }
 
-        $items = array();
-        $items[] = $value;
+        $items = array($value);
         if ($op == 'sub') {
             $cats = CategoryUtil::getSubCategories($value);
             foreach ($cats as $item) {
@@ -156,6 +159,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
         if ($op == 'ne') {
             $where = 'NOT ' . $where;
         }
+
         return array('where' => $where);
     }
 }

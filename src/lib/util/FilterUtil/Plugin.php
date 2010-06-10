@@ -41,9 +41,11 @@ class FilterUtil_Plugin extends FilterUtil_Common
     public function __construct($config = array(), $plgs = null)
     {
         parent::__construct($config);
+
         if ($plgs !== null && is_array($plgs) && count($plgs) > 0) {
             $ok = $this->loadPlugins($plgs);
         }
+
         return ($ok === false ? false : $this);
     }
 
@@ -57,6 +59,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
     public function loadPlugins($plgs)
     {
         $error = false;
+
         foreach ($plgs as $k => $v) {
             $error = ($this->loadPlugin($k, $v) ? $error : true);
         }
@@ -78,20 +81,22 @@ class FilterUtil_Plugin extends FilterUtil_Common
         if ($this->isLoaded($name)) {
             return true;
         }
+
         $module = $this->module;
         if (strpos($name, '@')) {
             list ($module, $name) = explode('@', $name, 2);
         }
         $class = 'FilterUtil_Filter_' . $name;
         $file = 'filter.' . $name . '.class.php';
-        //Load hierarchy
-        $dests = array();
+
+        // Load hierarchy
+        $dest = array();
         if ($module != 'core' && ModUtil::available($module)) {
             $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
             $directory = $modinfo['directory'];
             $dest[] = "config/filter/$directory/$file";
-            $dest[] = "system/$directory/filter/$file";
-            $dest[] = "modules/$directory/filter/$file";
+            $dest[] = "$modpath/$directory/filter/$file";
         }
 
         $dest[] = "config/filter/$file";
@@ -121,6 +126,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
     private function registerPlugin($k)
     {
         $obj = & $this->plg[$k];
+
         if ($obj instanceof FilterUtil_Build) {
             $ops = $obj->getOperators();
             if (isset($ops) && is_array($ops)) {
@@ -137,6 +143,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
                 }
             }
         }
+
         if ($obj instanceof FilterUtil_Replace) {
             $this->replaces[] = $k;
         }
@@ -156,6 +163,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
         if (!$this->PluginIsLoaded($name)) {
             return false;
         }
+
         return $this->plg[$name]->getConfig();
     }
 
@@ -170,9 +178,10 @@ class FilterUtil_Plugin extends FilterUtil_Common
      */
     public function isLoaded($name)
     {
-        if (isset($this->plg[$name]) && is_a($this->plg[$name], 'FilterUtil_Filter_' . $name)) {
+        if (isset($this->plg[$name]) && is_a($this->plg[$name], 'FilterUtil_Filter_'.$name)) {
             return true;
         }
+
         return false;
     }
 
@@ -190,14 +199,15 @@ class FilterUtil_Plugin extends FilterUtil_Common
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
                 $obj = & $this->plg[$k];
-                list ($field, $op, $value) = $obj->replace($field, $op, $value);
+                list($field, $op, $value) = $obj->replace($field, $op, $value);
             }
         }
 
         return array(
-                        'field' => $field,
-                        'op' => $op,
-                        'value' => $value);
+                     'field' => $field,
+                     'op'    => $op,
+                     'value' => $value
+                    );
     }
 
     /**

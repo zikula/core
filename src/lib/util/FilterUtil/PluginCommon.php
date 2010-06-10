@@ -40,5 +40,4 @@ class FilterUtil_PluginCommon extends FilterUtil_Common
     {
         $this->id = $id;
     }
-
 }

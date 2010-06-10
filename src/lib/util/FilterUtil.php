@@ -55,11 +55,14 @@ class FilterUtil extends FilterUtil_Common
     public function __construct($module, $table, $args = array())
     {
         $this->setVarName('filter');
+
         $args['module'] = $module;
-        $args['table'] = $table;
+        $args['table']  = $table;
         parent::__construct($args);
+
         $config = array();
         $this->addCommon($config);
+
         $this->plugin = new FilterUtil_Plugin($args, array('default' => array()));
 
         if (isset($args['plugins'])) {
@@ -88,8 +91,8 @@ class FilterUtil extends FilterUtil_Common
         $this->varname = $name;
     }
 
-    //++++++++++++++++ Object handling +++++++++++++++++++
 
+    //++++++++++++++++ Object handling +++++++++++++++++++
 
     /**
      * strip brackets around a filterstring
@@ -122,9 +125,11 @@ class FilterUtil extends FilterUtil_Common
             $parts = explode('^', $filter, 3);
         }
 
-        $obj = array(   'field' => false,
-                        'op' => false,
-                        'value' => false);
+        $obj = array(
+                     'field' => false,
+                     'op'    => false,
+                     'value' => false
+                    );
 
         if (isset($parts[2]) && substr($parts[2], 0, 1) == '$') {
             $value = FormUtil::getPassedValue(substr($parts[2], 1), null);
@@ -141,7 +146,7 @@ class FilterUtil extends FilterUtil_Common
             $obj['op'] = $parts[1];
         }
 
-        if (!$obj['field'] || !$obj['op']) { // no valid Condition
+        if (!$obj['field'] || !$obj['op']) { // invalid condition
             return false;
         }
 
@@ -159,6 +164,7 @@ class FilterUtil extends FilterUtil_Common
     private function genObjectRecursive($filter)
     {
         $obj = array();
+        $string = '';
         $cycle = 0;
         $op = 0;
         $level = 0;
@@ -175,7 +181,7 @@ class FilterUtil extends FilterUtil_Common
                         }
                     }
                     if (count($obj) > 0) {
-                        $op = 'and' . $cycle++;
+                        $op = 'AND' . $cycle++;
                     }
                     $string = '';
                     break;
@@ -188,7 +194,7 @@ class FilterUtil extends FilterUtil_Common
                         }
                     }
                     if (count($obj) > 0) {
-                        $op = 'or' . $cycle++;
+                        $op = 'OR' . $cycle++;
                     }
                     $string = '';
                     break;
@@ -223,6 +229,7 @@ class FilterUtil extends FilterUtil_Common
                     break;
             }
         }
+
         if (!empty($string)) {
             $sub = $this->makeCondition($string);
             if ($sub != false && count($sub) > 0) {
@@ -255,8 +262,10 @@ class FilterUtil extends FilterUtil_Common
         if (!isset($this->obj) || !is_array($this->obj)) {
             $this->genObject();
         }
+
         return $this->obj;
     }
+
 
     //---------------- Object handling ---------------------
     //++++++++++++++++ Filter handling +++++++++++++++++++++
@@ -327,14 +336,15 @@ class FilterUtil extends FilterUtil_Common
         } else {
             $this->filter = $filter;
         }
+
         $this->obj = false;
         $this->sql = false;
 
     }
 
+
     //--------------- Filter handling ----------------------
     //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
-
 
     /**
      * Help function for generate the filter SQL from a Filter-object
@@ -348,6 +358,7 @@ class FilterUtil extends FilterUtil_Common
         if (!is_array($obj) || count($obj) == 0) {
             return '';
         }
+
         if (isset($obj['field']) && !empty($obj['field'])) {
             $obj['value'] = DataUtil::formatForStore($obj['value']);
             $res = $this->plugin->getSQL($obj['field'], $obj['op'], $obj['value']);
@@ -372,9 +383,11 @@ class FilterUtil extends FilterUtil_Common
                 }
             }
         }
+
         return array(
-                        'where' => (empty($where) ? '' : "(\n $where \n)"),
-                        'join' => &$this->join);
+                     'where' => (empty($where) ? '' : "(\n $where \n)"),
+                     'join' => &$this->join
+                    );
     }
 
     /**
@@ -399,6 +412,7 @@ class FilterUtil extends FilterUtil_Common
         if (!isset($this->sql) || !is_array($this->sql)) {
             $this->genSQL();
         }
+
         return $this->sql;
     }
 }
