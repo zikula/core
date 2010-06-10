@@ -27,25 +27,25 @@ class Categories_Adminform extends AbstractController
 
         $args = array();
 
-        if (FormUtil::getPassedValue('category_copy_x', null, 'POST')) {
+        if (FormUtil::getPassedValue('category_copy', null, 'POST')) {
             $args['op']  = 'copy';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_move_x', null, 'POST')) {
+        if (FormUtil::getPassedValue('category_move', null, 'POST')) {
             $args['op']  = 'move';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_delete_x', null, 'POST')) {
+        if (FormUtil::getPassedValue('category_delete', null, 'POST')) {
             $args['op']  = 'delete';
             $args['cid'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_user_edit_x', null, 'POST')) {
+        if (FormUtil::getPassedValue('category_user_edit', null, 'POST')) {
             $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
             $args['dr'] = $_POST['category']['id'];
             return System::redirect(ModUtil::url('Categories', 'user', 'edit', $args));
@@ -103,7 +103,7 @@ class Categories_Adminform extends AbstractController
 
         // submit button wasn't pressed -> category was chosen from dropdown
         // we now get the parent (security) category domains so we can inherit them
-        if (!FormUtil::getPassedValue('category_submit_x', null, 'POST')) {
+        if (!FormUtil::getPassedValue('category_submit', null, 'POST')) {
             $newCat = $_POST['category'];
             $pcID   = $newCat['parent_id'];
 
@@ -118,11 +118,11 @@ class Categories_Adminform extends AbstractController
 
             $_SESSION['newCategory'] = $newCat;
 
-            return System::redirect(ModUtil::url('Categories', 'admin', 'new') . '#top');
+            return System::redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
         }
 
         if (!$cat->validate('admin')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'new') . '#top');
+            return System::redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
         }
 
         $attributes = array();
