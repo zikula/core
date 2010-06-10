@@ -175,8 +175,8 @@ class Renderer extends Smarty
 
         // This event sends $this as the subject so you can modify as required:
         // e.g.  $event->getSubject()->register_prefilter('foo');
-        $event = new Event('render.init', $this);
-        EventManagerUtil::notify($event);
+        $event = new Zikula_Event('render.init', $this);
+        EventUtil::notify($event);
     }
 
     /**

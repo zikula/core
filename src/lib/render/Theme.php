@@ -150,8 +150,8 @@ class Theme extends Renderer
 
         // This event sends $this as the subject so you can modify as required:
         // e.g.  $event->getSubject()->load_filter('output', 'multihook');
-        $event = new Event('theme.init', $this, array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo));
-        EventManagerUtil::notify($event);
+        $event = new Zikula_Event('theme.init', $this, array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo));
+        EventUtil::notify($event);
 
         // Start the output buffering to capture module output
         ob_start();
@@ -181,8 +181,8 @@ class Theme extends Renderer
         $maincontent = ob_get_contents();
         ob_end_clean();
 
-        $event = new Event('theme.prefooter', $this, array(), $maincontent);
-        EventManagerUtil::notify($event);
+        $event = new Zikula_Event('theme.prefooter', $this, array(), $maincontent);
+        EventUtil::notify($event);
         $maincontent = $event->getData();
 
         // add the module wrapper

@@ -14,7 +14,7 @@
 
 class SystemListenersUtil
 {
-    public static function sessionLogging(Event $event)
+    public static function sessionLogging(Zikula_Event $event)
     {
         if ($event['stage'] == System::CORE_STAGES_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
@@ -26,7 +26,7 @@ class SystemListenersUtil
         }
     }
 
-    public static function systemHooks(Event $event)
+    public static function systemHooks(Zikula_Event $event)
     {
         if (!System::isInstalling()) {
             // call system init hooks
@@ -43,7 +43,7 @@ class SystemListenersUtil
         }
     }
 
-    public static function systemPlugins(Event $event)
+    public static function systemPlugins(Zikula_Event $event)
     {
         if (!System::isInstalling()) {
             PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");

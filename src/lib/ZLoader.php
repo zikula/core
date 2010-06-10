@@ -44,12 +44,12 @@ class ZLoader
         include ZLOADER_PATH. 'legacy/Api.php';
 
         // load eventhandlers from config/EventHandlers directory if any.
-        EventManagerUtil::attachCustomHandlers('config/EventHandlers');
+        EventUtil::attachCustomHandlers('config/EventHandlers');
 
         // setup core events.
-        EventManagerUtil::attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
-        EventManagerUtil::attach('core.postinit', array('SystemListenersUtil', 'systemPlugins'));
-        EventManagerUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
+        EventUtil::attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
+        EventUtil::attach('core.postinit', array('SystemListenersUtil', 'systemPlugins'));
+        EventUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
     }
 
     public static function addAutoloader($namespace, $path = '', $separator = '_')
@@ -119,7 +119,7 @@ class ZLoader
             'DataUtil' => 'util',
             'DateUtil' => 'util',
             'DoctrineUtil' => 'util',
-            'EventManagerUtil' => 'util',
+            'EventUtil' => 'util',
             'FileUtil' => 'util',
             'FilterUtil' => 'util',
             'FormUtil' => 'util',
@@ -140,8 +140,6 @@ class ZLoader
             'SystemListenersUtil' => 'util',
             'Loader' => 'legacy',
             'ZLanguageBrowser' => 'i18n',
-            'EventManager' => 'EventManager',
-            'Event' => 'EventManager',
             );
     }
 }

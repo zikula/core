@@ -111,8 +111,8 @@ if ($return) {
             $dbConn->commit();
         }
     } catch (Exception $e) {
-        $event = new Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-        EventManagerUtil::notifyUntil($event);
+        $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+        EventUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             $httpCode = $event['httpcode'];
             $message = $event['message'];

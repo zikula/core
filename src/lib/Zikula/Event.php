@@ -1,24 +1,25 @@
 <?php
 /**
- * Copyright 2009 Zikula Foundation.
+ * Copyright 2009 Zikula Foundation
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package EventManager
+ * @package Zikula
+ * @subpackage Zikula_EventManager
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * Event encapsulation class.
+ * Zikula_Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Event implements ArrayAccess
+class Zikula_Event implements ArrayAccess
 {
     /**
      * Name of the event.
@@ -208,7 +209,7 @@ class Event implements ArrayAccess
         if ($this->hasArg($key)) {
             return $this->args[$key];
         }
-
+        
         throw new InvalidArgumentException(sprintf('The requested key %s does not exist', $key));
     }
 

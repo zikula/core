@@ -666,8 +666,8 @@ class ModUtil
 
         PluginUtil::loadPlugins("$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
 
-        $event = new Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
-        EventManagerUtil::notify($event);
+        $event = new Zikula_Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+        EventUtil::notify($event);
 
         return $modname;
     }
@@ -745,8 +745,8 @@ class ModUtil
         $controller = null;
         $className = ($api) ? "{$modname}_Api_" . ucwords($type) : "{$modname}_". ucwords($type);
 
-        $event = new Event('module.customcontroller', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
-        EventManagerUtil::notifyUntil($event);
+        $event = new Zikula_Event('module.customcontroller', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        EventUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             $className = $event->getData();
         }
@@ -780,11 +780,11 @@ class ModUtil
         }
 
         if ($loaded) {
-            $preExecuteEvent = new Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            $postExecuteEvent = new Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
 
             if (is_callable($modfunc)) {
-                EventManagerUtil::notify($preExecuteEvent);
+                EventUtil::notify($preExecuteEvent);
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
@@ -793,7 +793,7 @@ class ModUtil
                     $postExecuteEvent->setData($modfunc($args));
                 }
 
-                return EventManagerUtil::notify($postExecuteEvent)->getData();
+                return EventUtil::notify($postExecuteEvent)->getData();
             }
 
             // get the theme
@@ -802,9 +802,9 @@ class ModUtil
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     Loader::loadFile($file);
                     if (function_exists($modfunc)) {
-                        EventManagerUtil::notify($preExecuteEvent);
+                        EventUtil::notify($preExecuteEvent);
                         $postExecuteEvent->setData($modfunc($args));
-                        return EventManagerUtil::notify($postExecuteEvent)->getData();
+                        return EventUtil::notify($postExecuteEvent)->getData();
                     }
                 }
             }
@@ -812,18 +812,18 @@ class ModUtil
             if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (is_callable($modfunc)) {
-                    EventManagerUtil::notify($preExecuteEvent);
+                    EventUtil::notify($preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
-                    return EventManagerUtil::notify($postExecuteEvent)->getData();
+                    return EventUtil::notify($postExecuteEvent)->getData();
                 }
             }
 
             if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
                 Loader::loadFile($file);
                 if (is_callable($modfunc)) {
-                    EventManagerUtil::notify($preExecuteEvent);
+                    EventUtil::notify($preExecuteEvent);
                     $postExecuteEvent->setData($modfunc($args));
-                    return EventManagerUtil::notify($postExecuteEvent)->getData();
+                    return EventUtil::notify($postExecuteEvent)->getData();
                 }
             }
 
@@ -834,8 +834,8 @@ class ModUtil
             // 3. Save the result $event->setData($result).
             // 4. $event->setNotify().
             // return void
-            $event = new Event('module.execute_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            EventManagerUtil::notifyUntil($event);
+            $event = new Zikula_Event('module.execute_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            EventUtil::notifyUntil($event);
 
             if ($preExecuteEvent->hasNotified()) {
                 return $preExecuteEvent->getData();
@@ -1230,7 +1230,7 @@ class ModUtil
             }
 
             // This event expects that you might modify the $event['output'].  Check array_key_exists('output', $event) in event handler.
-            $event = new Event('module.postcallhooks', null, array(
+            $event = new Zikula_Event('module.postcallhooks', null, array(
                             'gui' => $gui,
                             'hookobject' => $hookobject,
                             'hookaction' => $hookaction,
@@ -1238,21 +1238,21 @@ class ModUtil
                             'extrainfo' => $extrainfo,
                             'implode' => $implode,
                             'output' => $output));
-            EventManagerUtil::notify($event);
+            EventUtil::notify($event);
 
             $render->renderDomain = $domain;
             return $event['output'];
         }
 
         // Check array_key_exists('output', $event) in event handler to distinguish from above hook where you might modify $event['output'].
-        $event = new Event('module.postcallhooks', null, array(
+        $event = new Zikula_Event('module.postcallhooks', null, array(
                         'gui' => $gui,
                         'hookobject' => $hookobject,
                         'hookaction' => $hookaction,
                         'hookid' => $hookid,
                         'extrainfo' => $extrainfo,
                         'implode' => $implode));
-        EventManagerUtil::notify($event);
+        EventUtil::notify($event);
 
         $render->renderDomain = $domain;
         return $event['extrainfo'];
@@ -1422,7 +1422,7 @@ class ModUtil
 
         // register any event handlers.
         // module handlers must be attached from the bootstrap.
-        EventManagerUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
+        EventUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
 
         self::$ooModules[$moduleName]['initialized'] = true;
         return true;

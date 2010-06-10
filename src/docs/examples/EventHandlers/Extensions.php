@@ -29,7 +29,7 @@ class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
      *
      * @param Event $event
      */
-    public function handler(Event $event)
+    public function handler(Zikula_Event $event)
     {
         /**
          * Show version information for installed Zikula modules

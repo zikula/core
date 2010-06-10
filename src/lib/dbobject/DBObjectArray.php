@@ -523,7 +523,7 @@ class DBObjectArray
      */
     public function insertPreProcess($data = null)
     {
-        EventManagerUtil::notify(new Event('dbobject.insertpreprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobject.insertpreprocess', $this));
         return $this->_objData;
     }
 
@@ -532,7 +532,7 @@ class DBObjectArray
      */
     public function insertPostProcess($data = null)
     {
-        EventManagerUtil::notify(new Event('dbobject.insertpostprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobject.insertpostprocess', $this));
         return $this->_objData;
     }
 
@@ -565,7 +565,7 @@ class DBObjectArray
      */
     public function updatePreProcess($data = null)
     {
-        EventManagerUtil::notify(new Event('dbobject.updatepreprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobject.updatepreprocess', $this));
         return $this->_objData;
     }
 
@@ -574,7 +574,7 @@ class DBObjectArray
      */
     public function updatePostProcess($data = null)
     {
-        EventManagerUtil::notify(new Event('dbobject.updatepostprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobject.updatepostprocess', $this));
         return $this->_objData;
     }
 
@@ -607,7 +607,7 @@ class DBObjectArray
      */
     public function deletePreProcess($data = null)
     {
-        EventManagerUtil::notify(new Event('dbobject.deletepreprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobject.deletepreprocess', $this));
         return $this->_objData;
     }
 
@@ -616,7 +616,7 @@ class DBObjectArray
      */
     public function deletePostProcess($data = null)
     {
-        EventManagerUtil::notify(new Event('dbobject.deletepostprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobject.deletepostprocess', $this));
         return $this->_objData;
     }
 

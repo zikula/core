@@ -50,8 +50,8 @@ class Mailer_Api_User extends Zikula_Api
     {
         // Check for installed advanced Mailer module
         $processed = (isset($args['processed']) ? (int) $args['processed'] : 0);
-        $event = new Event('mailer.sendmessage', $this, $args);
-        EventManagerUtil::notifyUntil($event);
+        $event = new Zikula_Event('mailer.sendmessage', $this, $args);
+        EventUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             return $event->getData();
         }

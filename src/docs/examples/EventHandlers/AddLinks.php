@@ -29,7 +29,7 @@ class SysInfo_EventHandlers_AddLinks extends Zikula_EventHandler
      *
      * @param Event $event
      */
-    public function handler(Event $event)
+    public function handler(Zikula_Event $event)
     {
         // check if this is for this handler
         if (!($event->getSubject() instanceof SysInfo_Api_Admin && $event['modfunc'][1] == 'getlinks')) {

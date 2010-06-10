@@ -14,7 +14,7 @@
 
 include 'lib/ZLoader.php';
 ZLoader::register();
-EventManagerUtil::attach('core.init', 'upgrade_suppressErrors');
+EventUtil::attach('core.init', 'upgrade_suppressErrors');
 
 ini_set('max_execution_time', 86400);
 

@@ -165,7 +165,7 @@ class System
      */
     public static function init($stages = self::CORE_STAGES_ALL)
     {
-        $coreInitEvent = new Event('core.init');
+        $coreInitEvent = new Zikula_Event('core.init');
 
         static $globalscleansed = false;
 
@@ -215,7 +215,7 @@ class System
         // store the load stages in a global so other API's can check whats loaded
         $GLOBALS['loadstages'] = $stages;
 
-        EventManagerUtil::notify(new Event('core.preinit'));
+        EventUtil::notify(new Zikula_Event('core.preinit'));
 
         // Initialise and load configuration
         if ($stages & self::CORE_STAGES_CONFIG) {
@@ -233,7 +233,7 @@ class System
 
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArg('stage', self::CORE_STAGES_CONFIG);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         // Initialize the (ugly) additional header array
@@ -268,7 +268,7 @@ class System
 
         if ($stages & self::CORE_STAGES_OBJECTLAYER) {
             $coreInitEvent->setArg('stage', self::CORE_STAGES_OBJECTLAYER);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_DB) {
@@ -291,7 +291,7 @@ class System
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_DB);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_TABLES) {
@@ -312,7 +312,7 @@ class System
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_TABLES);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_SESSIONS) {
@@ -333,7 +333,7 @@ class System
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_SESSIONS);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
@@ -345,13 +345,13 @@ class System
         if ($stages & self::CORE_STAGES_DECODEURLS) {
             self::queryStringDecode();
             $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEURLS);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_LANGS) {
             $lang->setup();
             $coreInitEvent->setArg('stage', self::CORE_STAGES_LANGS);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
         // end block
 
@@ -369,7 +369,7 @@ class System
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_MODS);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_THEME) {
@@ -385,7 +385,7 @@ class System
             // Load the theme
             Theme::getInstance();
             $coreInitEvent->setArg('stage', self::CORE_STAGES_THEME);
-            EventManagerUtil::notify($coreInitEvent);
+            EventUtil::notify($coreInitEvent);
         }
 
         // check the users status, if not 1 then log him out
@@ -399,7 +399,7 @@ class System
             }
         }
 
-        EventManagerUtil::notify(new Event('core.postinit', null, array('stages' => $stages)));
+        EventUtil::notify(new Zikula_Event('core.postinit', null, array('stages' => $stages)));
 
         // remove log files being too old
         LogUtil::_cleanLogFiles();
@@ -1055,8 +1055,8 @@ class System
      */
     public static function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
     {
-        $event = new Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
-        EventManagerUtil::notify($event);
+        $event = new Zikula_Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
+        EventUtil::notify($event);
 
         // check for an @ suppression
         if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED || $errno == E_STRICT)) {
