@@ -7,7 +7,7 @@ SetEnvIf Request_URI "\.tif$" object_is_tif=tif
 SetEnvIf Request_URI "\.swf$" object_is_swf=swf
 SetEnvIf Request_URI "\.flv$" object_is_flv=flv
 SetEnvIf Request_URI "\.ico$" object_is_ico=ico
-SetEnvIf Request_URI "\.cur$" object_is_ico=cur
+SetEnvIf Request_URI "\.cur$" object_is_cur=cur
 Order deny,allow
 Deny from all
 Allow from env=object_is_css
