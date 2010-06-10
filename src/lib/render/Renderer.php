@@ -184,41 +184,50 @@ class Renderer extends Smarty
      */
     public static function getInstance($module = null, $caching = null, $cache_id = null, $add_core_data = false)
     {
-        if (!self::$instance) {
-            self::$instance = new self($module, $caching);
+        if (is_null($module)) {
+            $module = ModUtil::getName();
+        }
+        
+        $sm = ServiceUtil::getManager();
+        $serviceId = strtolower(sprintf('zikula.render.%s', $module));
+        if (!$sm->hasService($serviceId)) {
+            $render = new self($module, $caching);
+            $sm->attachService($serviceId, $render);
+        } else {
+            $render = $sm->getService($serviceId);
         }
 
         if (!is_null($caching)) {
-            self::$instance->caching = $caching;
+            $render->caching = $caching;
         }
 
         if (!is_null($cache_id)) {
-            self::$instance->cache_id = $cache_id;
+            $render->cache_id = $cache_id;
         }
 
         if ($module === null) {
-            $module = self::$instance->toplevelmodule;
+            $module = $render->toplevelmodule;
         }
 
-        if (!array_key_exists($module, self::$instance->module)) {
-            self::$instance->module[$module] = ModUtil::getInfo(ModUtil::getIdFromName($module));
+        if (!array_key_exists($module, $render->module)) {
+            $render->module[$module] = ModUtil::getInfo(ModUtil::getIdFromName($module));
             //$instance->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
-            self::$instance->_add_plugins_dir($module);
+            $render->_add_plugins_dir($module);
         }
 
         if ($add_core_data) {
-            self::$instance->add_core_data();
+            $render->add_core_data();
         }
 
         // for {gt} template plugin to detect gettext domain
-        if (self::$instance->module[$module]['type'] == ModUtil::TYPE_MODULE) {
-            self::$instance->renderDomain = ZLanguage::getModuleDomain(self::$instance->module[$module]['name']);
+        if ($render->module[$module]['type'] == ModUtil::TYPE_MODULE) {
+            $render->renderDomain = ZLanguage::getModuleDomain($render->module[$module]['name']);
         }
 
         // load the usemodules configuration if exists
-        $modpath = (self::$instance->module[$module]['type'] == 3) ? 'system' : 'modules';
-        $usepath = "$modpath/" . self::$instance->module[$module]['directory'] . '/templates/config';
-        $usepathOld = "$modpath/" . self::$instance->module[$module]['directory'] . '/pntemplates/config';
+        $modpath = ($render->module[$module]['type'] == 3) ? 'system' : 'modules';
+        $usepath = "$modpath/" . $render->module[$module]['directory'] . '/templates/config';
+        $usepathOld = "$modpath/" . $render->module[$module]['directory'] . '/pntemplates/config';
         $usemod_confs = array();
         $usemod_confs[] = "$usepath/usemodules.txt";
         $usemod_confs[] = "$usepathOld/usemodules.txt";
@@ -229,13 +238,13 @@ class Renderer extends Smarty
                 $additionalmodules = file($usemod_conf);
                 if (is_array($additionalmodules)) {
                     foreach ($additionalmodules as $addmod) {
-                        self::$instance->_add_plugins_dir(trim($addmod));
+                        $render->_add_plugins_dir(trim($addmod));
                     }
                 }
             }
         }
 
-        return self::$instance;
+        return $render;
     }
 
     /**

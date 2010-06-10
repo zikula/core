@@ -52,7 +52,7 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @throws Exception If the service is already registered.
      *
-     * @return void
+     * @return object $service.
      */
     public function attachService($id, $service, $shared = true)
     {
@@ -61,6 +61,7 @@ class Zikula_ServiceManager implements ArrayAccess
         }
         $this->services[$id] = new Zikula_ServiceManager_Service($id, null, $shared);
         $this->services[$id]->setService($service);
+        return $service;
     }
 
     /**

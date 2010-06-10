@@ -210,7 +210,7 @@ class BlockUtil
         }
 
         if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($row['collapsable']) && ($row['collapsable'] == '1')) {
-            if (BlockUtil::checkUserBlock($row) == '1') {
+            if (self::checkUserBlock($row) == '1') {
                 if (!empty($row['title'])) {
                     $row['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $row['bid'], 'authid' => SecurityUtil::generateAuthKey()))) . '">' . $upb . '</a>';
                 }
@@ -290,6 +290,8 @@ class BlockUtil
                     return false;
                 }
             }
+            
+            ServiceUtil::getManager()->attachService(strtolower("block.$className"), $blockInstance);
         }
 
         $loaded["$modname/$block"] = ($isOO ? $blockInstance : true);
@@ -353,7 +355,7 @@ class BlockUtil
                         while (($f = readdir($dh)) !== false) {
                             if (substr($f, -4) == '.php') {
                                 $block = substr($f, 0, -4);
-                                BlockUtil::load($modname, $block);
+                                self::load($modname, $block);
                             }
                         }
                         closedir($dh);

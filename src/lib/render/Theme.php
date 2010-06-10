@@ -159,15 +159,22 @@ class Theme extends Renderer
 
     public static function getInstance($theme = null, $usefilters = true)
     {
-        if (!self::$themeInstance) {
-            if (!isset($theme)) {
-                $theme = UserUtil::getTheme();
-            }
-            $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
-            self::$themeInstance = new self($themeinfo['name'], $usefilters);
+        if (!isset($theme)) {
+            $theme = UserUtil::getTheme();
         }
 
-        return self::$themeInstance;
+        $serviceId = 'zikula.theme';
+        $sm = ServiceUtil::getManager();
+
+        if (!$sm->hasService($serviceId)) {
+            $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
+            $themeInstance = new self($themeinfo['name'], $usefilters);
+            $sm->attachService($serviceId, $themeInstance);
+        } else {
+            $themeInstance = $sm->getService($serviceId);
+        }
+
+        return $themeInstance;
     }
 
     /**

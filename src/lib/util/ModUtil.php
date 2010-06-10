@@ -38,7 +38,6 @@ class ModUtil
     const DEPENDENCY_CONFLICTS = 3;
 
     public static $ooModules = array();
-    public static $classInstances = array();
 
     /**
      * The initCoreVars preloads some module vars.
@@ -751,9 +750,13 @@ class ModUtil
             $className = $event->getData();
         }
 
+        $serviceId = strtolower("module.$className");
+        $sm = ServiceUtil::getManager();
+
         if (class_exists($className)) {
-            if (self::hasInstance($className)) {
-                $controller = self::$classInstances[$className];
+            if ($sm->hasService($serviceId)) {
+                $controller = $sm->getService($serviceId);
+                //$controller = self::$classInstances[$className];
             } else {
                 $r = new ReflectionClass($className);
                 $controller = $r->newInstance();
@@ -771,7 +774,8 @@ class ModUtil
                         return false;
                     }
                 }
-                self::$classInstances[$className] = $controller;
+                $sm->attachService(strtolower($serviceId), $controller);
+                //self::$classInstances[$className] = $controller;
             }
 
             if (is_callable(array($controller, $func))) {
@@ -1390,7 +1394,7 @@ class ModUtil
      *
      * @return The resulting module object array
      */
-    public static function getModulesByState($state=3, $sort='displayname')
+    public static function getModulesByState($state = self::STATE_ACTIVE, $sort='displayname')
     {
         $tables = System::dbGetTables();
         $cols   = $tables['modules_column'];
@@ -1453,10 +1457,5 @@ class ModUtil
         }
 
         return self::$ooModules[$moduleName]['oo'];
-    }
-
-    public static function hasInstance($className)
-    {
-        return array_key_exists($className, self::$classInstances);
     }
 }

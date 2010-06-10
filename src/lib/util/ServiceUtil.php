@@ -20,18 +20,22 @@
  */
 class ServiceUtil
 {
-    private static $instance;
+    private static $serviceManager;
 
     private function __construct()
     {
     }
 
-    public function getManager()
+    public static function getManager()
     {
-        if (!self::$instance) {
-            self::$instance = new Zikula_ServiceManager();
+        if (self::$serviceManager) {
+            return self::$serviceManager;
         }
 
-        return self::$instance;
+        // this looks strange, but it's deliberate (for IDEs to see API - drak)
+        $serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
+        self::$serviceManager = $serviceManager;
+
+        return $serviceManager;
     }
 }
