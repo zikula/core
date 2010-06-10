@@ -144,7 +144,7 @@ class BlockUtil
         global $blocks_modules;
 
         $blockInstance = self::load($modname, $block);
-        if ($blockInstance instanceof AbstractBlock) {
+        if ($blockInstance instanceof Zikula_Block) {
             $displayfunc = array($blockInstance, 'display');
         } else {
             $displayfunc = "{$modname}_{$block}block_display";
@@ -279,8 +279,8 @@ class BlockUtil
             $r = new ReflectionClass($className);
             $blockInstance = $r->newInstance();
             try {
-                if (!$blockInstance instanceof AbstractBlock) {
-                    throw new LogicException(sprintf('Block %s must inherit from AbstractBlock', $className));
+                if (!$blockInstance instanceof Zikula_Block) {
+                    throw new LogicException(sprintf('Block %s must inherit from Zikula_Block', $className));
                 }
             } catch (LogicException $e) {
                 if (System::isDevelopmentMode()) {

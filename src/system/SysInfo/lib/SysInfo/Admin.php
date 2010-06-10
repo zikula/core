@@ -16,7 +16,7 @@
  * Show general installation information
  * @return string HTML output string
  */
-class SysInfo_Admin extends AbstractController
+class SysInfo_Admin extends Zikula_Controller
 {
     public function main()
     {

@@ -13,7 +13,7 @@
  */
 
 
-class SecurityCenter_Api_Admin extends AbstractApi
+class SecurityCenter_Api_Admin extends Zikula_Api
 {
     /**
      * delete a hacking attempt item

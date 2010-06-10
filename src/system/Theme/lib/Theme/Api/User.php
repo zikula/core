@@ -10,7 +10,7 @@
  * @subpackage  Theme
  */
 
-class Theme_Api_User extends AbstractApi
+class Theme_Api_User extends Zikula_Api
 {
     /**
      * Get all settings for a theme

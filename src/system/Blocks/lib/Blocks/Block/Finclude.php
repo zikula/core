@@ -10,7 +10,7 @@
  * @author Patric Kellum
  */
 
-class Blocks_Block_Finclude extends AbstractBlock
+class Blocks_Block_Finclude extends Zikula_Block
 {
     /**
      * initialise block

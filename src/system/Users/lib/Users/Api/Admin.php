@@ -17,7 +17,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Api_Admin extends AbstractApi
+class Users_Api_Admin extends Zikula_Api
 {
     /**
      * Find whether the user exists.

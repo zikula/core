@@ -13,7 +13,7 @@
  */
 
 
-class SecurityCenter_Adminform extends AbstractController
+class SecurityCenter_Adminform extends Zikula_Controller
 {
     /**
      * Generic delete function for object model

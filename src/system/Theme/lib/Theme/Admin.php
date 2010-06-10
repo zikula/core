@@ -10,7 +10,7 @@
  * @subpackage Theme
  */
 
-class Theme_Admin extends AbstractController
+class Theme_Admin extends Zikula_Controller
 {
     /**
      * the main admin function
@@ -1413,7 +1413,7 @@ class Theme_Admin extends AbstractController
 
         return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
     }
-    
+
     /**
      * Clear all cache and compile directories
      *

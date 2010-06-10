@@ -15,7 +15,7 @@
 /**
  * Add a method to the SysInfo module using Method not found Event Handler class.
  */
-class SysInfo_EventHandlers_Extensions extends CustomEventHandler
+class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
 {
     /**
      * Array of event names for this handler (usually just one).

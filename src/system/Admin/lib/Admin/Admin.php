@@ -10,7 +10,7 @@
  * @subpackage Admin
  */
 
-class Admin_Admin extends AbstractController
+class Admin_Admin extends Zikula_Controller
 {
     /**
      * the main administration function

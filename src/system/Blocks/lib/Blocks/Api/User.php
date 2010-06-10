@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_Api_User extends AbstractApi
+class Blocks_Api_User extends Zikula_Api
 {
     /**
      * Get all blocks

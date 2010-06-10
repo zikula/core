@@ -17,7 +17,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Api_Account extends AbstractApi
+class Users_Api_Account extends Zikula_Api
 {
     /**
      * Return an array of items to show in the the user's account panel.

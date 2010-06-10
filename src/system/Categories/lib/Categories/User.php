@@ -13,7 +13,7 @@
  */
 
 
-class Categories_User extends AbstractController
+class Categories_User extends Zikula_Controller
 {
 
     /**

@@ -13,7 +13,7 @@
  */
 
 
-class Categories_Api_Admin extends AbstractApi
+class Categories_Api_Admin extends Zikula_Api
 {
     /**
      * get available admin panel links

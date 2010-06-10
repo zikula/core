@@ -13,7 +13,7 @@
  * @author Stefano Garuti (ported to pnAPI)
  */
 
-class Search_Api_User extends AbstractApi
+class Search_Api_User extends Zikula_Api
 {
     /**
      * perform the search

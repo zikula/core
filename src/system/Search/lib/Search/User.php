@@ -9,10 +9,10 @@
  * @package Zikula_System_Modules
  * @subpackage Search
  * @author Patrick Kellum
- * @author Stefano Garuti 
+ * @author Stefano Garuti
  */
 
-class Search_User extends AbstractController
+class Search_User extends Zikula_Controller
 {
 
     /**
@@ -76,7 +76,7 @@ class Search_User extends AbstractController
 
         $pnRender = Renderer::getInstance('Search');
         $domain = $pnRender->renderDomain;
-        
+
         // get all the search plugins
         $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
 

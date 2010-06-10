@@ -18,7 +18,7 @@
 // Adapted to Zikula by N!cklas - nicklas@johansson.tk
 // Last changes by Lindbergh , http://lindbergh.ohost.de
 
-class Theme_Block_Themeswitcher extends AbstractBlock
+class Theme_Block_Themeswitcher extends Zikula_Block
 {
     /**
      * initialise block

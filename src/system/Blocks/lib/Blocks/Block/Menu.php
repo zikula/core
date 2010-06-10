@@ -10,7 +10,7 @@
  * @author Brian Lindner
  */
 
-class Blocks_Block_Menu extends AbstractBlock
+class Blocks_Block_Menu extends Zikula_Block
 {
     /**
      * initialise block

@@ -10,7 +10,7 @@
  * @subpackage Theme
  */
 
-class Theme_Api_Account extends AbstractApi
+class Theme_Api_Account extends Zikula_Api
 {
     /**
      * Return an array of items to show in the your account panel.

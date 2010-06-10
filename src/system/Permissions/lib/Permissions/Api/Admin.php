@@ -9,7 +9,7 @@
  * @subpackage Permissions
  */
 
-class Permissions_Api_Admin extends AbstractApi
+class Permissions_Api_Admin extends Zikula_Api
 {
     /**
      * increment sequence number of a permission

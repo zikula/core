@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_Api_Admin extends AbstractApi
+class Blocks_Api_Admin extends Zikula_Api
 {
     /**
      * update attributes of a block

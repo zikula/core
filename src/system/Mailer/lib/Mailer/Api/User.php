@@ -10,7 +10,7 @@
  * @subpackage Mailer
  */
 
-class Mailer_Api_User extends AbstractApi
+class Mailer_Api_User extends Zikula_Api
 {
     /**
      * API function to send e-mail message

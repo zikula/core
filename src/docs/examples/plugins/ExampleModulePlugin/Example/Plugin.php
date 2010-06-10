@@ -13,7 +13,7 @@
  */
 
 
-class ModulePlugin_SecurityCenter_Example_Plugin extends AbstractPlugin
+class ModulePlugin_SecurityCenter_Example_Plugin extends Zikula_Plugin
 {
     protected $eventNames = array('foo' => 'handler');
 

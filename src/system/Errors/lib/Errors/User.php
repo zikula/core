@@ -10,7 +10,7 @@
  * @subpackage Errors
  */
 
-class Errors_User extends AbstractController
+class Errors_User extends Zikula_Controller
 {
     /**
      * Display an error

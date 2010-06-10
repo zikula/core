@@ -11,7 +11,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  */
 
-class Groups_User extends AbstractController
+class Groups_User extends Zikula_Controller
 {
     /**
      * Groups Module main user function

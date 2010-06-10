@@ -10,7 +10,7 @@
  * @author Patric Kellum
  */
 
-class Blocks_Block_Html extends AbstractBlock
+class Blocks_Block_Html extends Zikula_Block
 {
     /**
      * initialise block

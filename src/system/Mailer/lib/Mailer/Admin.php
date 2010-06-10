@@ -10,7 +10,7 @@
  * @subpackage Mailer
  */
 
-class Mailer_Admin extends AbstractController
+class Mailer_Admin extends Zikula_Controller
 {
     /**
      * the main administration function

@@ -10,7 +10,7 @@
  * @subpackage PageLock
  */
 
-class PageLock_Ajax extends AbstractController
+class PageLock_Ajax extends Zikula_Controller
 {
     /**
      * refresh a page lock

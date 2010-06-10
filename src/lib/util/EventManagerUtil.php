@@ -120,8 +120,8 @@ class EventManagerUtil
             }
 
             $handler = new $className;
-            if (!$handler instanceof CustomEventHandler) {
-                throw new LogicException(sprintf('Class %s must be an instance of CustomEventHandler', $className));
+            if (!$handler instanceof Zikula_EventHandler) {
+                throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
             }
             $handler->attach();
         }

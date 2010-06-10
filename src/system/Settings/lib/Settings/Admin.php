@@ -13,7 +13,7 @@
  */
 
 
-class Settings_Admin extends AbstractController
+class Settings_Admin extends Zikula_Controller
 {
     /**
      * entry point for the module

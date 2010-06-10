@@ -10,7 +10,7 @@
  * @subpackage Theme
  */
 
-class Theme_User extends AbstractController
+class Theme_User extends Zikula_Controller
 {
     /**
      * display theme changing user interface

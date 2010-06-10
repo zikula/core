@@ -13,7 +13,7 @@
  */
 
 
-class SecurityCenter_Admin extends AbstractController
+class SecurityCenter_Admin extends Zikula_Controller
 {
     /**
      * the main administration function
@@ -858,7 +858,7 @@ class SecurityCenter_Admin extends AbstractController
             }
             $allowedhtml[$htmltag] = $tagval;
         }
-        
+
         System::setVar('AllowableHTML', $allowedhtml);
 
         // one additonal config var is set on this page

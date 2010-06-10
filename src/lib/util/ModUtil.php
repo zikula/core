@@ -758,10 +758,10 @@ class ModUtil
                 $r = new ReflectionClass($className);
                 $controller = $r->newInstance();
                 try {
-                    if (strrpos($className, 'Api') && !$controller instanceof AbstractApi) {
-                        throw new LogicException(sprintf('Controller %s must inherit from AbstractApi', $className));
-                    } elseif (!strrpos($className, 'Api') && !$controller instanceof AbstractController) {
-                        throw new LogicException(sprintf('Controller %s must inherit from AbstractController', $className));
+                    if (strrpos($className, 'Api') && !$controller instanceof Zikula_Api) {
+                        throw new LogicException(sprintf('Controller %s must inherit from Zikula_Api', $className));
+                    } elseif (!strrpos($className, 'Api') && !$controller instanceof Zikula_Controller) {
+                        throw new LogicException(sprintf('Controller %s must inherit from Zikula_Controller', $className));
                     }
                 } catch (LogicException $e) {
                     if (System::isDevelopmentMode()) {

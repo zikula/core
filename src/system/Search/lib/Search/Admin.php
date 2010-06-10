@@ -11,7 +11,7 @@
  * @author Mark West
  */
 
-class Search_Admin extends AbstractController
+class Search_Admin extends Zikula_Controller
 {
     /**
      * the main administration function

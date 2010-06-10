@@ -13,7 +13,7 @@
  */
 
 
-class Categories_Api_Account extends AbstractApi
+class Categories_Api_Account extends Zikula_Api
 {
     /**
      * Return an array of items to show in the your account panel.

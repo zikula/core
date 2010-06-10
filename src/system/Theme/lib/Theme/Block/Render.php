@@ -14,7 +14,7 @@
  * @subpackage  Theme
  */
 
-class Theme_Block_Render extends AbstractBlock
+class Theme_Block_Render extends Zikula_Block
 {
     /**
      * initialise block
@@ -105,7 +105,7 @@ class Theme_Block_Render extends AbstractBlock
         $parameters = FormUtil::getPassedValue('rparameters', null, 'POST');
 
         $row['content'] = BlockUtil::varsToContent(compact('module', 'template', 'parameters' ));
-        
+
         return($row);
     }
 

@@ -15,7 +15,7 @@
 /**
  * MultiHook Event Handler class added at 'theme.init'.
  */
-class MultiHookHandler extends CustomEventHandler
+class MultiHookHandler extends Zikula_EventHandler
 {
     /**
      * Array of event names for this handler (usually just one).

@@ -17,7 +17,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Ajax extends AbstractController
+class Users_Ajax extends Zikula_Controller
 {
     /**
      * Performs a user search based on the user name fragment entered so far.
@@ -183,7 +183,7 @@ class Users_Ajax extends AbstractController
             } elseif (empty($pass) && !$modvars['reg_verifyemail']) {
                 return array('result' => $this->__('Error! Please enter a password.'), 'errorcode' => 17);
             }
-            
+
             if (!isset($passwordReminder) || empty($passwordReminder)) {
                 return array('result' => $this->__('Error! Please enter a password reminder.'), 'errorcode' => 18);
             }

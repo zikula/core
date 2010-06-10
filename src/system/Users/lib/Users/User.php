@@ -17,7 +17,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_User extends AbstractController
+class Users_User extends Zikula_Controller
 {
     /**
      * Render and display the user's account panel. If he is not logged in, then redirect to the login screen.

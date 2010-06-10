@@ -10,7 +10,7 @@
  * @author Mark West
  */
 
-class Blocks_Block_Xslt extends AbstractBlock
+class Blocks_Block_Xslt extends Zikula_Block
 {
     /**
      * initialise block

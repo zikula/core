@@ -11,7 +11,7 @@
  * @subpackage   Admin
  */
 
-class Admin_Block_Adminnav extends AbstractBlock
+class Admin_Block_Adminnav extends Zikula_Block
 {
     /**
      * initialise block

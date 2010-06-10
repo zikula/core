@@ -10,7 +10,7 @@
  * @subpackage  Theme
  */
 
-class Theme_Api_Upgrade extends AbstractApi
+class Theme_Api_Upgrade extends Zikula_Api
 {
 //    /**
 //     * Create a palette in the db

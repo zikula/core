@@ -10,7 +10,7 @@
  * @subpackage Permissions
  */
 
-class Permissions_Ajax extends AbstractController
+class Permissions_Ajax extends Zikula_Controller
 {
     /**
      * Updates a permission rule in the database

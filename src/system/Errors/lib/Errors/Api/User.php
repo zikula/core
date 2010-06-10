@@ -11,7 +11,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  */
 
-class Errors_Api_User extends AbstractApi
+class Errors_Api_User extends Zikula_Api
 {
     /**
      * Send E-mail

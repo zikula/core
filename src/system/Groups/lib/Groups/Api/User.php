@@ -10,7 +10,7 @@
  * @subpackage Groups
  */
 
-class Groups_Api_User extends AbstractApi
+class Groups_Api_User extends Zikula_Api
 {
     /**
      * get all group items

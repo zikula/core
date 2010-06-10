@@ -10,7 +10,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  */
 
-class Permissions_Admin extends AbstractController
+class Permissions_Admin extends Zikula_Controller
 {
     /**
      * the main administration function

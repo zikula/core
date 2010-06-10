@@ -17,7 +17,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Admin extends AbstractController
+class Users_Admin extends Zikula_Controller
 {
     /**
      * Redirects users to the "view" page.

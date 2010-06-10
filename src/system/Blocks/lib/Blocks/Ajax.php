@@ -10,7 +10,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_Ajax extends AbstractController
+class Blocks_Ajax extends Zikula_Controller
 {
     /**
      * changeblockorder

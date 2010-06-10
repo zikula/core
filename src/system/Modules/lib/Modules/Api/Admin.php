@@ -11,7 +11,7 @@
  * @subpackage Modules
  */
 
-class Modules_Api_Admin extends AbstractApi
+class Modules_Api_Admin extends Zikula_Api
 {
     /**
      * update module information

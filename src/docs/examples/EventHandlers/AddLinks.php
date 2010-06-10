@@ -15,7 +15,7 @@
 /**
  * Add a link to SysInfo administration links Event Handler class.
  */
-class SysInfo_EventHandlers_AddLinks extends CustomEventHandler
+class SysInfo_EventHandlers_AddLinks extends Zikula_EventHandler
 {
     /**
      * Array of event names for this handler (usually just one).

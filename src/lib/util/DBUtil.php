@@ -289,7 +289,7 @@ class DBUtil
                     }
                 }
                 if ($GLOBALS['ZConfig']['System']['compat_layer']) {
-                    return new AdodbStatementAdapter($result);
+                    return new Zikula_Adapter_AdodbStatement($result);
                 } else {
                     return $result;
                 }

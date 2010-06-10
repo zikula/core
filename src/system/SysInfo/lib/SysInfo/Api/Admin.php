@@ -13,7 +13,7 @@
  */
 
 
-class SysInfo_Api_Admin extends AbstractApi
+class SysInfo_Api_Admin extends Zikula_Api
 {
     /**
      * get available admin panel links

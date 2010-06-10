@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_Block_Lang extends AbstractBlock
+class Blocks_Block_Lang extends Zikula_Block
 {
     /**
      * initialise block

@@ -13,7 +13,7 @@
  */
 
 
-class SecurityCenter_Api_User extends AbstractApi
+class SecurityCenter_Api_User extends Zikula_Api
 {
     /**
      * Get all hack attempts in db.

@@ -11,7 +11,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  */
 
-class Groups_Api_Account extends AbstractApi
+class Groups_Api_Account extends Zikula_Api
 {
     /**
      * Return an array of items to show in the your account panel

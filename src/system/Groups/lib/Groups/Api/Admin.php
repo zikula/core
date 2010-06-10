@@ -11,7 +11,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html
  */
 
-class Groups_Api_Admin extends AbstractApi
+class Groups_Api_Admin extends Zikula_Api
 {
     /**
      * create a new group item

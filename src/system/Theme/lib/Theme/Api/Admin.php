@@ -10,7 +10,7 @@
  * @subpackage  Theme
  */
 
-class Theme_Api_Admin extends AbstractApi
+class Theme_Api_Admin extends Zikula_Api
 {
     /**
      * regenerate themes list

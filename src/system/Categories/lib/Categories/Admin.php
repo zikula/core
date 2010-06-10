@@ -13,7 +13,7 @@
  */
 
 
-class Categories_Admin extends AbstractController
+class Categories_Admin extends Zikula_Controller
 {
 
     /**

@@ -13,7 +13,7 @@
  */
 
 
-class Categories_Userform extends AbstractController
+class Categories_Userform extends Zikula_Controller
 {
     /**
      * delete category

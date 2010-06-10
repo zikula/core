@@ -18,7 +18,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Api_Search extends AbstractApi
+class Users_Api_Search extends Zikula_Api
 {
     /**
      * Return search plugin info.
@@ -88,7 +88,7 @@ class Users_Api_Search extends AbstractApi
         $where[] = "{$userscolumn['activated']} = " . UserUtil::ACTIVATED_ACTIVE;
 
         $unameClause = Search_Api_User::construct_where($args, array($userscolumn['uname']));
-        
+
         // invoke the current profilemodule search query
         if ($useProfileMod) {
             $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata',

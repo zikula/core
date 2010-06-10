@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_User extends AbstractController
+class Blocks_User extends Zikula_Controller
 {
     /**
      * The main blocks user function

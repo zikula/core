@@ -11,7 +11,7 @@
  * @subpackage Mailer
  */
 
-class Mailer_Api_Admin extends AbstractApi
+class Mailer_Api_Admin extends Zikula_Api
 {
     /**
      * Get available admin panel links.

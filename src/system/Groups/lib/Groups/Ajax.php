@@ -10,7 +10,7 @@
  * @subpackage Permissions
  */
 
-class Groups_Ajax extends AbstractController
+class Groups_Ajax extends Zikula_Controller
 {
     /**
      * Updates a group in the database

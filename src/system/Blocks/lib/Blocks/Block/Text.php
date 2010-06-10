@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_Block_Text extends AbstractBlock
+class Blocks_Block_Text extends Zikula_Block
 {
 
     /**

@@ -9,7 +9,7 @@
  * @subpackage Blocks
  */
 
-class Blocks_Admin extends AbstractController
+class Blocks_Admin extends Zikula_Controller
 {
     /**
      * the main administration function

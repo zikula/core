@@ -14,7 +14,7 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Ajax extends AbstractController
+class Admin_Ajax extends Zikula_Controller
 {
     /**
      * Change the category a module belongs to by ajax.

@@ -19,7 +19,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Api_Auth extends AbstractApi
+class Users_Api_Auth extends Zikula_Api
 {
     public function login($args)
     {

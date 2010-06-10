@@ -17,7 +17,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Api_User extends AbstractApi
+class Users_Api_User extends Zikula_Api
 {
     /**
      * Get all users (for which the current user has permission to read).

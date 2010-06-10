@@ -13,6 +13,7 @@
  */
 
 include 'lib/i18n/ZGettextFunctions.php';
+include 'lib/Zikula/KernelClassLoader.php';
 
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
@@ -34,7 +35,7 @@ class ZLoader
     {
         self::$map = self::map();
         spl_autoload_register(array('ZLoader', 'autoload'));
-        self::$autoloaders = new KernelClassLoader();
+        self::$autoloaders = new Zikula_KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');

@@ -10,7 +10,7 @@
  * @author Frank Schummertz [landseer]
  */
 
-class Blocks_Block_Extmenu extends AbstractBlock
+class Blocks_Block_Extmenu extends Zikula_Block
 {
     /**
      * initialise block

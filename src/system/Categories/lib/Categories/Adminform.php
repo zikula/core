@@ -13,7 +13,7 @@
  */
 
 
-class Categories_Adminform extends AbstractController
+class Categories_Adminform extends Zikula_Controller
 {
 
     /**

@@ -13,7 +13,7 @@
  */
 
 
-class Categories_Ajax extends AbstractController {
+class Categories_Ajax extends Zikula_Controller {
 
     /**
      * Resequence categories

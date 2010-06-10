@@ -10,7 +10,7 @@
  * @subpackage Admin
  */
 
-class Admin_Api_Admin extends AbstractApi
+class Admin_Api_Admin extends Zikula_Api
 {
     /**
      * create a admin category
