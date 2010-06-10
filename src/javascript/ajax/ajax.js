@@ -5,6 +5,27 @@ if (typeof(Zikula) == 'undefined') {
 }
 
 /**
+ * Zikula.Browser
+ * extends prototype Browser detection
+ *
+ * @return array
+ */
+Zikula.Browser = (function(){
+    var IES = {IE6:false,IE7:false,IE8:false,IE8e7:false};
+    if(Prototype.Browser.IE) {
+        if (document.documentMode != 'undefined' && document.documentMode == 8) {
+            IES.IE8 = true;
+        } else if (typeof document.documentElement.style.maxHeight != 'undefined'){
+            IES.IE7 = true;
+            IES.IE8e7 = (typeof document.documentMode != 'undefined'); //IE8 in IE7 mode
+        } else {
+            IES.IE6 = true;
+        }
+    }
+    return Object.extend(IES,Prototype.Browser);
+  })()
+
+/**
  * Zikula.dejsonize
  * unserializes an array
  *
