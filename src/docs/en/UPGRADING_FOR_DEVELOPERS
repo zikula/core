@@ -151,15 +151,15 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 
     - Blocks: refactor blocks into lib/$modname/Block/$name.  e.g.
       MyMod/blocks/foo.php becomes MyMod/lib/MyMod/Block/Foo.php
-      Encapsulate in class MyMod_Block_Foo extends AbstractBlock
+      Encapsulate in class MyMod_Block_Foo extends Zikula_Block
 
     - Controllers: refactor pnuser.php (etc) to lib/$modname/$name e.g.
       MyMod/pnuser.php becomes MyMod/lib/MyMod/User.php
-      Encapsulate in class MyMod_User extends AbstractController
+      Encapsulate in class MyMod_User extends Zikula_Controller
 
     - Apis: refactor pnuserapi.php (etc) to lib/$modname/Api/$name e.g.
       MyMod/pnuserapi.php becomes MyMod/lib/MyMod/Api/User.php
-      Encapsulate in class MyMod_Api_User extends AbstractApi
+      Encapsulate in class MyMod_Api_User extends Zikula_Api
 
 - If you use categorisation please refactor to use the following classes:
     PNCategory => Categories_DBObject_Category
@@ -174,7 +174,7 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 - Remove {addition_headers} plugin from any themes, this doesn't work anymore.
 
 - You may now use the following convenience methods from OO controllers and APIs.
-    (see AbstractBase.php for details)
+    (see lib/Zikula/Base.php for details)
 
     $this->throwNotFound()
     $this->throwNotFoundIf()

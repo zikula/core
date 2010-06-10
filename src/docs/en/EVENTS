@@ -1,10 +1,10 @@
-You may register event listeners with EventManagerUtil::attach($name, $handler);
+You may register event listeners with EventUtil::attach($name, $handler);
 
 You may issue events with
 
     [php]
-    $event = new Event($name, $subject, $args);
-    EventManagerUtil::notify($event);
+    $event = new Zikula_Event($name, $subject, $args);
+    EventUtil::notify($event);
 
 Any changes made to the $event object or $subject in the handlers will be carry over (standard PHP5 behaviour).
 

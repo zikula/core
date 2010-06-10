@@ -1,14 +1,14 @@
 Zikula Plugin System
 --------------------
 
-The Zikula plugins system is based on the EventManager system.  There are two
+The Zikula plugins system is based on the Zikula_EventManager system.  There are two
 kinds of plugins:
 
 1.  System Plugins (don't confuse with system/ modules).
     These are located in plugins/
     Classes are named SystemPlugin_$PluginName_Plugin
     e.g. plugins/Example/Plugin.php (contains
-    class SystemPlugin_Example_Plugin extends AbstractPlugin
+    class SystemPlugin_Example_Plugin extends Zikula_Plugin
 
     System plugins are invoked post System::init() before system hooks are
     initialised.
@@ -20,7 +20,7 @@ kinds of plugins:
     These can be located in system/$modname/plugins or modules/$modame/plugins
     Classes are named ModulePlugin_$Modname_$PluginName_Plugin
     e.g. modules/News/plugins/Example/Plugin.php (contains
-    class ModulePlugin_News_Example_Plugin extends AbstractPlugin
+    class ModulePlugin_News_Example_Plugin extends Zikula_Plugin
 
     Module plugins are only loaded when the ModUtil::loadGeneric is invoked for 
     that module.
