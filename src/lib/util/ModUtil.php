@@ -756,7 +756,6 @@ class ModUtil
         if (class_exists($className)) {
             if ($sm->hasService($serviceId)) {
                 $controller = $sm->getService($serviceId);
-                //$controller = self::$classInstances[$className];
             } else {
                 $r = new ReflectionClass($className);
                 $controller = $r->newInstance();
@@ -775,7 +774,6 @@ class ModUtil
                     }
                 }
                 $sm->attachService(strtolower($serviceId), $controller);
-                //self::$classInstances[$className] = $controller;
             }
 
             if (is_callable(array($controller, $func))) {

@@ -110,6 +110,7 @@ class ZLoader
             'ZWorkflowParser' => 'workflow',
             'Renderer' => 'render',
             'Theme' => 'render',
+            'PluginRender' => 'render',
             'DBObject' => 'dbobject',
             'DBObjectArray' => 'dbobject',
             'DBUtil' => 'util',

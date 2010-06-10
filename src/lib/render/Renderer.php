@@ -17,8 +17,6 @@
  */
 class Renderer extends Smarty
 {
-    private static $instance;
-
     public $module;
     public $toplevelmodule;
     public $modinfo;
@@ -49,7 +47,7 @@ class Renderer extends Smarty
         //$this->auto_literal = false;
 
         // Initialize the module property with the name of
-        // the topmost module. Foor Hooks, Blocks, API Functions and others
+        // the topmost module. For Hooks, Blocks, API Functions and others
         // you need to set this property to the name of the respective module!
         $this->toplevelmodule = ModUtil::getName();
         if (!$module) {
@@ -247,6 +245,17 @@ class Renderer extends Smarty
         return $render;
     }
 
+    public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
+    {
+        PluginRender::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
+    }
+
+    public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null, $add_core_data = false)
+    {
+        $modName = 'zikula';
+        return PluginRender::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
+    }
+
     /**
      * Checks whether requested template exists.
      *
@@ -271,42 +280,36 @@ class Renderer extends Smarty
         }
 
         // the current module
-        $modgetname = ModUtil::getName();
+        $modname = ModUtil::getName();
 
         foreach ($this->module as $module => $modinfo) {
             // prepare the values for OS
-            $os_pnmodgetname = DataUtil::formatForOS($modgetname);
+            $os_modname = DataUtil::formatForOS($modname);
             $os_module = DataUtil::formatForOS($module);
             $os_theme = DataUtil::formatForOS($this->theme);
+            $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
 
             $ostemplate = DataUtil::formatForOS($template); //.'.htm';
 
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for
             // templates.
-            if ($module == $modgetname) {
+            if ($module == $modname) {
                 $search_path = array(
-
                         "themes/$os_theme/templates/modules/$os_module", // themepath
                         "config/templates/$os_module", //global path
-                        "modules/$os_module/templates", // modpath
-                        "system/$os_module/templates", // sysmodpath
-                        "modules/$os_module/pntemplates", // modpath old
-                        "system/$os_module/pntemplates", //sys mod path old
+                        "$os_dir/$os_module/templates", // modpath
+                        "$os_dir/$os_module/pntemplates", // modpath old
                 );
             } else {
-                $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_pnmodgetname", // themehookpath
+                $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
                         "themes/$os_theme/templates/modules/$os_module", // themepath
-                        "config/templates/$os_module/$os_pnmodgetname", //globalhookpath
+                        "config/templates/$os_module/$os_modname", //globalhookpath
                         "config/templates/$os_module", //global path
-                        "modules/$os_module/templates/$os_pnmodgetname", //modhookpath
-                        "modules/$os_module/templates", // modpath
-                        "system/$os_module/templates/$os_pnmodgetname", //sysmodhookpath
-                        "system/$os_module/templates", // sysmodpath
-                        "modules/$os_module/pntemplates/$os_pnmodgetname", // modhookpathold
-                        "modules/$os_module/pntemplates", // modpath old
-                        "system/$os_module/pntemplates/$os_pnmodgetname", //sysmodhookpath old
-                        "system/$os_module/pntemplates", //sys mod path old
+                        "$os_dir/$os_module/templates/$os_modname", //modhookpath
+                        "$os_dir/$os_module/templates", // modpath
+                        "$os_dir/$os_module/pntemplates/$os_modname", // modhookpathold
+                        "$os_dir/$os_module/pntemplates", // modpath old
                 );
             }
 
