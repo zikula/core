@@ -136,6 +136,7 @@ class PluginRender extends Renderer
 
         foreach ($this->module as $module => $modinfo) {
             // prepare the values for OS
+            $module = $modinfo['name'];
             $os_modname = DataUtil::formatForOS($modname);
             $os_module = DataUtil::formatForOS($module);
             //$os_theme = DataUtil::formatForOS($this->theme);

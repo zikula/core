@@ -185,7 +185,7 @@ class Renderer extends Smarty
         if (is_null($module)) {
             $module = ModUtil::getName();
         }
-        
+
         $sm = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.render.%s', $module));
         if (!$sm->hasService($serviceId)) {
@@ -223,7 +223,7 @@ class Renderer extends Smarty
         }
 
         // load the usemodules configuration if exists
-        $modpath = ($render->module[$module]['type'] == 3) ? 'system' : 'modules';
+        $modpath = ($render->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $usepath = "$modpath/" . $render->module[$module]['directory'] . '/templates/config';
         $usepathOld = "$modpath/" . $render->module[$module]['directory'] . '/pntemplates/config';
         $usemod_confs = array();
@@ -284,6 +284,8 @@ class Renderer extends Smarty
 
         foreach ($this->module as $module => $modinfo) {
             // prepare the values for OS
+            $module = $modinfo['name'];
+
             $os_modname = DataUtil::formatForOS($modname);
             $os_module = DataUtil::formatForOS($module);
             $os_theme = DataUtil::formatForOS($this->theme);
