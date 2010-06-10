@@ -5,23 +5,21 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Common
- * @subpackage ServiceManager
+ * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @package Zikula
+ * @subpackage Zikula_ServiceManager
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\ServiceManager;
-
 /**
- * Service definition configuration.
+ * Zikula_ServiceManager_Service definition configuration.
  *
  * This is used in advanced definition configuration to specify that a parameter
  * is a service managed by the ServiceManager.
  */
-class Service
+class Zikula_ServiceManager_Service
 {
     /**
      * Service identifier.

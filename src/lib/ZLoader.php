@@ -37,6 +37,10 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new Zikula_KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
+
+        // Setup EventManager and ServiceManager
+        $em = EventUtil::getManager(ServiceUtil::getManager());
+
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
@@ -131,6 +135,7 @@ class ZLoader
             'PageUtil' => 'util',
             'RandomUtil' => 'util',
             'SecurityUtil' => 'util',
+            'ServiceUtil' => 'util',
             'SessionUtil' => 'util',
             'StringUtil' => 'util',
             'ThemeUtil' => 'util',
