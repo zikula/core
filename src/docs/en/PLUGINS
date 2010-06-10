@@ -77,21 +77,23 @@ the plugin.  Please note the required domain is:
 systemplugin_$name or
 moduleplugin_$modname_$pluginname
 
+These can be obtained from
+    ZLanguage::getModulePluginDomain($modName, $pluginName);
+    ZLanguage::getSystemPluginDomain($pluginName);
+
 So the POT file would be located in the plugin's main folder in
 locale/$domain.pot
 
 You are expected to bind the domain if you need it using (for example)
-    ZLanguage::bindDomain("systemplugin_$pluginname", $this->baseDir . '/locale')
-where $path is the path to the locale directory which would be $this->baseDir . '/locale';
-
 For a module plugin it would be
-    ZLanguage::bindDomain("moduleplugin_$modname_$pluginname", $this->baseDir . '/locale');
+    ZLanguage::bindModulePluginDomain($modName, $pluginName);
+    ZLanguage::bindSystemPluginDomain($pluginName);
 
 This would be best placed in preInitialize();
 Plugins DO NOT support DBUtil or the legacy tables.php based DB modelling.  You must
 use Doctrine models if you require persistence.
 
-PLUGIN VARIABLES
+PLUGIN (modvar) VARIABLES
 ----------------
 Please use the following convention if you need to store variables
     ModUtil::set/getVar("systemplugin.$pluginname", ...);

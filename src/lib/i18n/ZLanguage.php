@@ -215,28 +215,49 @@ class ZLanguage
         return $_this->domainCache[$locale][$domain];
     }
 
-    public static function bindThemeDomain($name)
+    public static function bindThemeDomain($modName)
     {
         $_this  = self::getInstance();
-        $domain = self::getThemeDomain($name);
-        $path = $_this->searchOverrides($domain, 'themes' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'locale');
+        $domain = self::getThemeDomain($modName);
+        $path = $_this->searchOverrides($domain, "themes/$modName/locale");
         return self::bindDomain($domain, $path);
     }
 
-    public static function bindModuleDomain($name)
+    public static function bindModuleDomain($modName)
     {
         // system modules are in the zikula domain
-        $module = ModUtil::getInfo(ModUtil::getIdFromName($name));
+        $module = ModUtil::getInfo(ModUtil::getIdFromName($modName));
         if ($module['type'] == ModUtil::TYPE_SYSTEM) {
             return 'zikula';
         }
 
         $_this  = self::getInstance();
-        $domain = self::getModuleDomain($name);
-        $path = $_this->searchOverrides($domain, 'modules' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'locale');
+        $domain = self::getModuleDomain($modName);
+        $path = $_this->searchOverrides($domain, "modules/$modName/locale");
         return self::bindDomain($domain, $path);
     }
 
+    public static function bindModulePluginDomain($moduleName, $pluginName)
+    {
+        // system modules are in the zikula domain
+        $module = ModUtil::getInfo(ModUtil::getIdFromName($moduleName));
+        if ($module['type'] == ModUtil::TYPE_SYSTEM) {
+            return 'zikula';
+        }
+
+        $_this  = self::getInstance();
+        $domain = self::getModulePluginDomain($moduleName, $pluginName);
+        $path = $_this->searchOverrides($domain, "modules/$moduleName/plugins/$pluginName/locale");
+        return self::bindDomain($domain, $path);
+    }
+
+    public static function bindSystemPluginDomain($pluginName)
+    {
+        $_this  = self::getInstance();
+        $domain = self::getSystemPluginDomain($moduleName, $pluginName);
+        $path = $_this->searchOverrides($domain, "plugins/$pluginName/locale");
+        return self::bindDomain($domain, $path);
+    }
 
     public static function bindCoreDomain()
     {
@@ -249,15 +270,25 @@ class ZLanguage
     private function searchOverrides($domain, $path)
     {
         $lang = self::transformFS($this->languageCode);
-        $prefix = realpath(realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..');
+        $prefix = realpath(realpath(dirname(__FILE__)) . '/../..');
         $override = realpath("$prefix/config/locale/$lang/LC_MESSAGES/$domain.mo");
-        return (is_readable($override) ? $prefix . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'locale' : $prefix . DIRECTORY_SEPARATOR . $path);
+        return (is_readable($override)) ? realpath("$prefix/config/locale") : realpath("$prefix/$path");
     }
 
 
     public static function getModuleDomain($name)
     {
         return strtolower("module_$name");
+    }
+
+    public static function getModulePluginDomain($modName, $pluginName)
+    {
+        return strtolower("moduleplugin_{$modName}_{$pluginName}");
+    }
+
+    public static function getSystemPluginDomain($pluginName)
+    {
+        return strtolower("systemplugin_$pluginName");
     }
 
     public static function getThemeDomain($name)
