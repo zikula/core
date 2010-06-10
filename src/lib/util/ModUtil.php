@@ -1049,7 +1049,9 @@ class ModUtil
 
         if (!isset($modstate[$modname]) || $force == true) {
             $modinfo = self::getInfo(self::getIDFromName($modname));
-            $modstate[$modname] = $modinfo['state'];
+            if (isset($modinfo['state'])) {
+                $modstate[$modname] = $modinfo['state'];
+            }
         }
 
         if ((isset($modstate[$modname]) &&
