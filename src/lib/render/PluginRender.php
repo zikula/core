@@ -21,6 +21,15 @@ class PluginRender extends Renderer
     {
         parent::__construct($module, $caching);
         $this->pluginName = $pluginName;
+        $modinfo = $this->module[$module];
+        if ($modinfo['type'] == ModUtil::TYPE_CORE) {
+            $path = "plugins/{$pluginName}/templates/plugins";
+        } else {
+            $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'module' : 'system';
+            $modPath = $modinfo['name'];
+            $path = "$base/$modPath/plugins/{$pluginName}/templates/plugins";
+        }
+        array_push($this->plugins_dir, $path);
     }
 
 

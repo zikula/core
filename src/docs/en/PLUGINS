@@ -109,13 +109,13 @@ If you need to produce templated output, please create a templates/ folder
 and store templates there.  You will need to specify the location directly:
 
 e.g.
-    $view = Renderer::getInstance('News');
-    $view->fetch($this->baseDir . '/templates/myview.htm');
+    // module plugin
+    $view = Renderer::getModulePluginInstance('News', 'Example');
+    $view->fetch($this->baseDir . 'myview.htm');
 
+    // system plugin
+    $view = Renderer::getSystemPluginInstance('News', 'Example');
+    $view->fetch($this->baseDir . 'myview.htm');
 
-You can add plugin paths e.g. templates/plugins in your preInitialize() method hook
-with something like
-
-    $renderer = Renderer::getInstance();
-    array_push($renderer->plugins_dir, $pluginpath);
-
+If you get a render instance, the plugin path will be automatically added as
+templates/plugins inside the plugin directory.
