@@ -28,6 +28,7 @@ class ModUtil
     // Types
     const TYPE_MODULE = 2;
     const TYPE_SYSTEM = 3;
+    const TYPE_CORE = 4;
 
     /**
      * Module dependency states
@@ -351,14 +352,6 @@ class ModUtil
         // a $modid of 0 is associated with the core ( pn_blocks.mid, ... ).
         if (!is_numeric($modid)) {
             return false;
-        }
-
-        if ($modid == 0) {
-            // 0 = the core itself, create a basic dummy module
-            $modinfo['name'] = 'zikula';
-            $modinfo['id'] = 0;
-            $modinfo['displayname'] = 'Zikula Core v' . System::VERSION_NUM;
-            return $modinfo;
         }
 
         static $modinfo;
@@ -1362,6 +1355,9 @@ class ModUtil
                 }
             }
         }
+
+        // add Core module (hack).
+        $modstable[0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . System::VERSION_NUM);
 
         return $modstable;
     }
