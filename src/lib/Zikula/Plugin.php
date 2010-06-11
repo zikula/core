@@ -20,9 +20,9 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $className;
     protected $modVarName;
 
-    public function __construct()
+    public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
     {
-        parent::__construct();
+        parent::__construct($eventManager, $serviceManager);
         $this->_setup();
     }
 

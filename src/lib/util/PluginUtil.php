@@ -98,9 +98,11 @@ class PluginUtil
         if (isset(self::$plugins[$className])) {
             return self::$plugins[$className];
         }
+        
+        $r = new ReflectionClass($className);
+        $plugin = $r->newInstanceArgs(array(EventUtil::getManager(), ServiceUtil::getManager()));
 
-        $plugin = new $className;
-        if (!$plugin instanceof AbstractPlugin) {
+        if (!$plugin instanceof Zikula_Plugin) {
             throw new LogicException(sprintf('Class %s must be an instance of AbstractPlugin', $className));
         }
 
