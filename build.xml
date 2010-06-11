@@ -126,7 +126,7 @@
     <!-- PHPDocumentor -->
     <target name="phpdoc">
         <echo msg="PHPDocumentor..." />
-        <exec command="phpdoc --directory ${sourcedir}/src/lib --ignore ${phpdocignorepaths} --target ${builddir}/docs" escape="false" />
+        <exec command="phpdoc --directory ${sourcedir}/src/lib/api,${sourcedir}/src/lib/dbobject,${sourcedir}/src/lib/FileSystem,${sourcedir}/src/lib/Form,${sourcedir}/src/lib/i18n,${sourcedir}/src/lib/render,${sourcedir}/src/lib/StreamReader,${sourcedir}/src/lib/templates,${sourcedir}/src/lib/util,${sourcedir}/src/lib/workflow,${sourcedir}/src/lib/Zikula --target ${builddir}/docs" escape="false" />
     </target>
 
     <!-- PHP copy/paste analysis -->
