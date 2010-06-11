@@ -44,7 +44,7 @@ class PluginRender extends Renderer
             $render = new self($moduleName, $pluginName, $caching);
             $sm->attachService($serviceId, $render);
         } else {
-            $render = $sm->getService($serviceId);
+            return $sm->getService($serviceId);
         }
 
         if (!is_null($caching)) {

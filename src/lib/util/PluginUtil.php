@@ -24,8 +24,6 @@ class PluginUtil
 
     protected static $defaultState = array('state' => self::NOTINSTALLED, 'version' => 0);
 
-    protected static $plugins;
-
     public static function getState($name, $default = null)
     {
         return ModUtil::getVar(self::CONFIG, $name, $default);
@@ -95,15 +93,17 @@ class PluginUtil
      */
     public static function loadPlugin($className)
     {
-        if (isset(self::$plugins[$className])) {
-            return self::$plugins[$className];
+        $sm = ServiceUtil::getManager();
+        $serviceId = strtolower(str_replace('_', '.', $className));
+        if ($sm->hasService($serviceId)) {
+            return $sm->getService($serviceId);
         }
-        
+
         $r = new ReflectionClass($className);
         $plugin = $r->newInstanceArgs(array(EventUtil::getManager(), ServiceUtil::getManager()));
 
         if (!$plugin instanceof Zikula_Plugin) {
-            throw new LogicException(sprintf('Class %s must be an instance of AbstractPlugin', $className));
+            throw new LogicException(sprintf('Class %s must be an instance of Zikula_Plugin', $className));
         }
 
         if ($plugin->isInstalled() && $plugin->isEnabled()) {
@@ -112,15 +112,16 @@ class PluginUtil
             $plugin->postInitialize();
             $plugin->attach();
         }
-
-        self::$plugins[$className] = $plugin;
-        return self::$plugins[$className];
+        
+        return $sm->attachService($serviceId, $plugin);
     }
 
     public static function getPlugin($className)
     {
-        if (isset(self::$plugins[$className])) {
-            return self::$plugins[$className];
+        $sm = ServiceUtil::getManager();
+        $serviceId = strtolower(str_replace('_', '.', $className));
+        if ($sm->hasService($serviceId)) {
+            return $sm->getService($serviceId);
         }
     }
 
