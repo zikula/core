@@ -15,7 +15,11 @@
 
 abstract class Zikula_Plugin extends Zikula_EventHandler
 {
+    const TYPE_MODULE = 1;
+    const TYPE_SYSTEM = 2;
+    
     protected $meta;
+    protected $pluginType;
     protected $serviceId;
     protected $className;
     protected $domain;
@@ -41,6 +45,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         if (strpos($this->serviceId, 'moduleplugin') === 0) {
             $this->moduleName = $p[1];
             $this->pluginName = $p[2];
+            $this->pluginType = self::TYPE_MODULE;
             if ($this->gettextEnabled) {
                 $this->domain = ZLanguage::getModulePluginDomain($this->moduleName, $this->pluginName);
                 ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
@@ -48,6 +53,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         } elseif (strpos($this->serviceId, 'systemplugin') === 0) {
             $this->moduleName = 'zikula';
             $this->pluginName = $p[1];
+            $this->pluginType = self::TYPE_SYSTEM;
             if ($this->gettextEnabled) {
                 $this->domain = ZLanguage::getSystemPluginDomain($this->moduleName, $this->pluginName);
                 ZLanguage::bindSystemPluginDomain($this->pluginName);

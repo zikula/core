@@ -1,8 +1,14 @@
 Zikula Plugin System
 --------------------
 
-The Zikula plugins system is based on the Zikula_EventManager system.  There are two
-kinds of plugins:
+The Zikula plugins system is based on the Zikula_EventManager system.
+
+Plugins can be used for a diverse number of purposes.  For example they could be
+as simple as to register a class namespace, or add some plugin search paths for
+Smarty.  They can be used to add features to existing modules.  They can be used
+to make your modules pluggable, like adding shipping methods to a shopping cart.
+
+There are two kinds of plugins:
 
 1.  System Plugins (don't confuse with system/ modules).
     These are located in plugins/
@@ -32,14 +38,23 @@ kinds of plugins:
     whole Zikula system because they are only initialised when the module, or
     module api is invoked.
 
-Plugin classes are just like event handlers, ultimately they inherit from the
-same CustomEventHandler abstract.  However the difference is the plugin is
-a discrete file heirachy where you may store related files and libraries.
+Plugin classes are just like event handlers, but inherit from Zikula_Plugin,
+although ultimately they inherit from the same Zikula_EventHandler abstract.
+However the difference is the plugin is a discrete file heirachy where you may
+store related files and libraries.
+
+Plugins differ from pure event handlers (instances of Zikula_EventHandler) in
+because Zikula_EventHandlers cannot be enabled or disabled and consist of just on
+file, they are always on and are more low level.
+
+Zikula_Plugin instances can change state and have a discrete folder space.  The
+Zikula_Plugin abstract class provides many useful conveniences like translation,
+automatic domain binding etc.
 
 Uses for plugins
 ----------------
 Providing php, js, css or image libraries.
-Extending functionality of the system, or of modules.
+Extending functionality of the zikula core system wide or of modules individually.
 
 Archetecture
 ------------
@@ -49,6 +64,9 @@ compulsory aspect is the Plugin.php which is the heart of the plugin.
 Plugins provide the following methods:
 
 initialize()
+
+get*() methods.
+
 install()
 upgrade()
 uninstall()
