@@ -176,5 +176,18 @@ class Zikula_EventManager
     {
         return (array_key_exists($name, $this->handlers) && count($this->handlers[$name] > 0) ? true : false);
     }
+
+    /**
+     * Getter for the serviceManager property.
+     *
+     * @return object ServiceManager instance.
+     */
+    public function getServiceManager()
+    {
+        if (!$this->serviceManager) {
+            throw new LogicException('No ServiceManager was registered with this EventManager instance at construction.');
+        }
+        return $this->serviceManager;
+    }
 }
 
