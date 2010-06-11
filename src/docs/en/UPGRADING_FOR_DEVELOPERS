@@ -187,3 +187,5 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
     $this->redirect()
     $this->redirectIf()
     $this->redirectUnless()
+
+- The gettext plugin now does not need domain= set at all for modules.

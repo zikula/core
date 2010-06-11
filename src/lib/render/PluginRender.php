@@ -70,7 +70,7 @@ class PluginRender extends Renderer
         }
 
         // for {gt} template plugin to detect gettext domain
-        if ($render->module[$moduleName]['type'] == ModUtil::TYPE_MODULE) {
+        if ($render->module[$moduleName]['type'] == ModUtil::TYPE_MODULE || $render->module[$moduleName]['type'] == ModUtil::TYPE_SYSTEM) {
             $render->renderDomain = ZLanguage::getModulePluginDomain($render->module[$moduleName]['name'], $render->pluginName);
         } elseif ($render->module[$moduleName]['type'] == ModUtil::TYPE_CORE) {
             $render->renderDomain = ZLanguage::getSystemPluginDomain($render->module[$moduleName]['name'], $render->pluginName);
@@ -153,7 +153,6 @@ class PluginRender extends Renderer
                         //"config/plugins/$configPath/{$this->pluginName}/templates", //global path
                         "{$base}plugins/{$this->pluginName}/templates",
                 );
-                        var_dump($search_path);
 
             foreach ($search_path as $path) {
                 if (is_readable("$path/$ostemplate")) {

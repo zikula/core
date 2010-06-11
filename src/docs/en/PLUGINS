@@ -90,6 +90,13 @@ For a module plugin it would be
     ZLanguage::bindSystemPluginDomain($pluginName);
 
 This would be best placed in preInitialize();
+You can also take advantage of shortcuts `$this->__()` etc.  Inside the
+preInitialize() you can add
+
+    $this->domain = ZLanguage::getModulePluginDomain($modName, $pluginName);
+or
+    $this->domain = ZLanguage::getSystemPluginDomain($pluginName);
+
 Plugins DO NOT support DBUtil or the legacy tables.php based DB modelling.  You must
 use Doctrine models if you require persistence.
 
@@ -116,6 +123,9 @@ e.g.
     // system plugin
     $view = Renderer::getSystemPluginInstance('News', 'Example');
     $view->fetch($this->baseDir . 'myview.htm');
+
+    Please note this will set the correct domain, in templates you
+    DO NOT NEED domain= inside gettext calls.
 
 If you get a render instance, the plugin path will be automatically added as
 templates/plugins inside the plugin directory.

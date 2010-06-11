@@ -247,7 +247,7 @@ class Renderer extends Smarty
 
     public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
-        PluginRender::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
+        return PluginRender::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
     }
 
     public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null, $add_core_data = false)

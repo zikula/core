@@ -15,16 +15,17 @@
 
 abstract class Zikula_Plugin extends Zikula_EventHandler
 {
-    const VERSION = 'undefined';
+    protected $version;
 
     protected $className;
     protected $modVarName;
+    protected $domain;
 
     public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
     {
         parent::__construct($eventManager, $serviceManager);
-        if ($this->getVersion() == 'undefined') {
-            throw new LogicException(sprintf('The VERSION constant is not defined for this class. Please declare const VERSION = \'a.b.c\'; in the class definition for %s', get_class($this)));
+        if (!$this->getVersion()) {
+            throw new LogicException(sprintf('The \'version\' property is not defined for this class. Please declare "protected $version = \'a.b.c\';" in %s', get_class($this)));
         }
 
         $this->_setup();
@@ -37,9 +38,29 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         $this->baseDir = realpath(dirname(__FILE__));
     }
 
-    public function getVersion()
+    final public function getVersion()
     {
-        return self::VERSION;
+        return $this->version;
+    }
+
+    public function __($msgid)
+    {
+        return __($msgid, $this->domain);
+    }
+
+    protected function __f($msgid, $params)
+    {
+        return __f($msgid, $params, $this->domain);
+    }
+
+    protected function _n($singular, $plural, $count)
+    {
+        return _n($singular, $plural, $count, $this->domain);
+    }
+
+    protected function _fn($sin, $plu, $n, $params)
+    {
+        return _fn($sin, $plu, $n, $params, $this->domain);
     }
 
     public function getModVarName()
@@ -142,4 +163,6 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     {
         return true;
     }
+
+    
 }
