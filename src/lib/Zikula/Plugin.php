@@ -15,7 +15,7 @@
 
 abstract class Zikula_Plugin extends Zikula_EventHandler
 {
-    const VERSION = '1.0.0';
+    const VERSION = 'undefined';
 
     protected $className;
     protected $modVarName;
@@ -23,6 +23,10 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
     {
         parent::__construct($eventManager, $serviceManager);
+        if ($this->getVersion() == 'undefined') {
+            throw new LogicException(sprintf('The VERSION constant is not defined for this class. Please declare const VERSION = \'a.b.c\'; in the class definition for %s', get_class($this)));
+        }
+
         $this->_setup();
     }
 
