@@ -37,8 +37,8 @@ class SystemListenersUtil
                 ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
 
                 // reset the render domain - system init hooks mess the translation domain for the core
-                $render = Renderer::getInstance();
-                $render->renderDomain = null;
+                //889 $render = Renderer::getInstance();
+                //889 $render->renderDomain = null;
             }
         }
     }

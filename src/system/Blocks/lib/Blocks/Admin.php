@@ -311,7 +311,7 @@ class Blocks_Admin extends Zikula_Controller
         }
 
         // the blocks will have reset the renderDomain property (bad singleton design) - drak
-        $pnRender->renderDomain = null;
+        //889$pnRender->renderDomain = null;
 
         // Block output
         $pnRender->assign('blockoutput', $blockoutput);

@@ -75,7 +75,7 @@ class Search_User extends Zikula_Controller
         SessionUtil::delVar('searchmodvar');
 
         $pnRender = Renderer::getInstance('Search');
-        $domain = $pnRender->renderDomain;
+        //889$domain = $pnRender->renderDomain;
 
         // get all the search plugins
         $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
@@ -95,7 +95,7 @@ class Search_User extends Zikula_Controller
                 }
             }
 
-            $pnRender->renderDomain = $domain;
+            //889$pnRender->renderDomain = $domain;
 
             // Create output object
             // add content to template

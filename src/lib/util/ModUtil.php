@@ -1200,8 +1200,8 @@ class ModUtil
         $gui = false;
         $output = array();
 
-        $render = Renderer::getInstance();
-        $domain = $render->renderDomain;
+        //889$render = Renderer::getInstance();
+        //889$domain = $render->renderDomain;
 
         // Call each hook
         foreach ($modulehooks[$lModname] as $modulehook) {
@@ -1242,7 +1242,7 @@ class ModUtil
                             'output' => $output));
             EventUtil::notify($event);
 
-            $render->renderDomain = $domain;
+            //889$render->renderDomain = $domain;
             return $event['output'];
         }
 
@@ -1256,7 +1256,7 @@ class ModUtil
                         'implode' => $implode));
         EventUtil::notify($event);
 
-        $render->renderDomain = $domain;
+        //889$render->renderDomain = $domain;
         return $event['extrainfo'];
     }
 

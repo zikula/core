@@ -39,7 +39,7 @@
  */
 function smarty_function_modfunc($params, &$smarty)
 {
-    $saveDomain = $smarty->renderDomain;
+    //889$saveDomain = $smarty->renderDomain;
     $assign  = isset($params['assign'])                  ? $params['assign']  : null;
     $func    = isset($params['func']) && $params['func'] ? $params['func']    : 'main';
     $modname = isset($params['modname'])                 ? $params['modname'] : null;
@@ -77,7 +77,7 @@ function smarty_function_modfunc($params, &$smarty)
     }
 
     // ensure the renderDomain wasnt overwritten
-    $smarty->renderDomain = $saveDomain;
+    //889$smarty->renderDomain = $saveDomain;
 
     if ($assign) {
         $smarty->assign($assign, $result);
