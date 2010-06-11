@@ -13,11 +13,61 @@
  */
 
 
-class ModulePlugin_SecurityCenter_Example_Plugin extends Zikula_Plugin
+class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
 {
-    protected $eventNames = array('foo' => 'handler');
+    protected $version = '1.0.0';
 
-    public function handler()
+    protected $eventNames = array('module.postexecute'          => 'addLinks',
+                                  'controller.method_not_found' => 'anotherfunction');
+
+    public function preInitialize()
     {
+        $this->domain = ZLanguage::bindModulePluginDomain('SysInfo', 'Example');
+    }
+
+    /**
+     * Event handler here.
+     *
+     * @param Event $event
+     */
+    public function addLinks(Zikula_Event $event)
+    {
+        // check if this is for this handler
+        if (!($event->getSubject() instanceof SysInfo_Api_Admin && $event['modfunc'][1] == 'getlinks')) {
+            return;
+        }
+
+        if (SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
+            $event->data[] = array('url' => ModUtil::url('SysInfo', 'admin', 'anotherfunction'), 'text' => $this->__('Here is another link'));
+        }
+    }
+
+    /**
+     * 'anotherfunction' Event handler .
+     *
+     * @param Event $event
+     */
+    public function anotherfunction(Zikula_Event $event)
+    {
+        /**
+         * Show version information for installed Zikula modules
+         * @return string HTML output string
+         */
+
+        // check if this is for this handler
+        $subject = $event->getSubject();
+        if (!($event['method'] == 'anotherfunction' && $subject instanceof SysInfo_admin)) {
+            return;
+        }
+
+        if (!SecurityUtil::checkPermission('SysInfo::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        // Zikula Modules and Themes versions
+        $view = Renderer::getModulePluginInstance('SysInfo', 'Example');
+
+        $event->setData($view->fetch('anotherfunction.htm'));
+        $event->setNotified();
     }
 }
