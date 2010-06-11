@@ -5,6 +5,20 @@ if (typeof(Zikula) == 'undefined') {
 }
 
 /**
+ * Zikula.init
+ * Load what's needed on dom loaded
+ *
+ * @return array
+ */
+Zikula.init = function()
+{
+    if(Zikula.Browser.IE) {
+        Zikula.fixbuttons();
+    }
+}
+document.observe('dom:loaded',Zikula.init);
+
+/**
  * Zikula.Browser
  * extends prototype Browser detection
  *
@@ -67,7 +81,7 @@ Zikula.showajaxerror = function(errortext)
  */
 Zikula.setselectoption = function(id, sel)
 {
-    $A($(id).options).each(function(opt){ opt.selected = (opt.value == sel);});
+    $A($(id).options).each(function(opt){opt.selected = (opt.value == sel);});
 }
 
 /**
@@ -233,6 +247,34 @@ Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
             }
         }
     }
+}
+
+/**
+ * Zikula.fixbuttons
+ * Workaround for wrong buttons values in IE and multiple submit buttons in IE6/7
+ *
+ * @param none
+ * @return void
+ */
+Zikula.fixbuttons = function()
+{
+    $$('button').invoke('observe','click',function(e){
+        var form = e.element().up('form');
+        if(form) {
+            form.store('buttonClicked',e.element().identify());
+        }
+    });
+
+    $$('form').invoke('observe','submit',function(e){
+        form = e.element();
+        var buttonClicked = form.retrieve('buttonClicked',null);
+        form.select('button').each(function(b){
+            b.disabled = true;
+            if(b.identify() == buttonClicked) {
+                form.insert(new Element('input',{type:'hidden',name:b.name,value:b.attributes.getNamedItem('value').nodeValue}));
+            }
+        });
+    });
 }
 
 /**
