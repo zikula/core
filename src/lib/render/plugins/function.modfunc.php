@@ -6,7 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Render
+ * @subpackage Template_Plugins
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -31,7 +32,6 @@
  * Example
  * {modfunc modname='News' type='user' func='view'}
  *
- * @author       Andreas Stratmann
  * @see          function.ModUtil::apiFunc.php::smarty_function_modapifunc()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

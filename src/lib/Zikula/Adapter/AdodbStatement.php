@@ -1,7 +1,5 @@
 <?php
 /*
- *  $Id: Statement.php 1532 2007-05-31 17:45:07Z zYne $
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -17,6 +15,9 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
  * <http://www.doctrine-project.org>.
+ *
+ * @package Zikula_Legacy
+ *
  */
 
 /**
@@ -25,8 +26,6 @@
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
- * @since       1.0
- * @version     $Revision: 1532 $
  */
 class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interface
 {

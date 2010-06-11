@@ -6,7 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Form
+ * @subpackage Form_Plugin
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -16,9 +17,6 @@
  * Category selector
  *
  * This plugin creates a category selector using a series of checkboxes
- *
- * @package pnForm
- * @subpackage Plugins
  */
 class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
 {

@@ -6,7 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Render
+ * @subpackage Template_Plugins
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,25 +16,8 @@
 /**
 * Smarty plugin
 * -------------------------------------------------------------
-* Type:     function
-* Name:     pagerabc
-* Purpose:  Displays alphabetical selection links
-* Version:  1.1
-* Date:     April 30, 2005
 * Author:   Peter Dudas <duda at bigfish dot hu>
-*           Martin Andersen; API links for ShortURL compliance
 * -------------------------------------------------------------
-*  Changes:   2002/09/25                 - created
-*             2005/04/30   msandersen    - Added Span with Pager class, uses API for links when link to API module, various tweaks
-*             2005/08/20   msandersen    - Changed forwardvars behaviour to be consistent with pager plugin:
-*                                          If forwardvars is not set, ALL the URL vars are forwarded.
-*                                          Fixed bug where if forwardvars weren't specifically set with "module,func" these core vars would not be used at all in the links
-*                                          Added support for use on the Startpage, where the vars are taken from the config starttype, startfunc, and startargs vars.
-*                                          Fixed the example below.
-*             2008/12/07   nestormateo   - General code improvement
-*                                          Do not extract the parameters
-*                                          CSS class from parameters
-*                                          Improved the example below
 *
 *  Examples:
 *    code:

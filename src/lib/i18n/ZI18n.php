@@ -1,12 +1,12 @@
 <?php
 /**
  * Zikula Application Framework
- * @version $Id$
  *
  * Licensed to the Zikula Foundation under one or more contributor license
  * agreements. This work is licensed to You under the following license:
  *
  * @license GNU/LGPv2.1 (or at your option any later version).
+ * @package I18n
  *
  * Please see the NOTICE and LICENSE files distributed with this source
  * code for further information regarding copyright ownership and licensing.

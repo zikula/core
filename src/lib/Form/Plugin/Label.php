@@ -6,7 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Form
+ * @subpackage Form_Plugin
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -23,9 +24,6 @@
  * set to the supplied id. In addition to this, the pnFormLabel plugin also sets
  * "myLabel" on the "pointed-to" plugin to the supplied label text. This enables
  * the validation summary to display the label text.
- *
- * @package pnForm
- * @subpackage Plugins
  */
 class Form_Plugin_Label extends Form_StyledPlugin
 {

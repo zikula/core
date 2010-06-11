@@ -6,6 +6,8 @@
  * @copyright (c) 2009, Zikula Development Team
  * @link http://www.zikula.org
  * @license GNU/GPL version 2 (or at your option, any later version).
+ *
+ * @package StreamReader
  */
 
  /**

@@ -6,7 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Form
+ * @subpackage Template_Plugins
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -46,9 +47,6 @@
  *
  * You don't need the volatile block if you can guarantee that the number of elements will
  * be the same always.
- *
- * @package pnForm
- * @subpackage Plugins
  */
 function smarty_block_formvolatile($params, $content, &$render)
 {

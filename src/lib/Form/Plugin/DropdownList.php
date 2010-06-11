@@ -6,7 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Form
+ * @subpackage Form_Plugin
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,13 +16,7 @@
 /**
  * Dropdown list plugin
  *
- * @copyright (c) 2006, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @author Jorn Wildt
- * @package Zikula_Template_Plugins
- * @subpackage Functions
  */
 
 /**

@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,9 +14,6 @@
 
 /**
  * FileUtil class.
- *
- * @package Zikula_Core
- * @subpackage FileUtil
  */
 class FileUtil
 {

@@ -6,7 +6,8 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv2.1 (or at your option, any later version).
- * @package Zikula
+ * @package Form
+ * @subpackage Template_Plugins
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -21,9 +22,6 @@
  *
  * You can also use all of the features from the pnFormTextInput plugin since the date input
  * inherits from it.
- *
- * @package pnForm
- * @subpackage Plugins
  */
 function smarty_function_formdateinput($params, &$render)
 {
