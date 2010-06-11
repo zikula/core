@@ -25,7 +25,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $domain;
     protected $moduleName;
     protected $pluginName;
-    protected $gettextEnabled = false;
+    protected $gettextEnabled = true;
 
     public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
     {

@@ -12,11 +12,33 @@
  * information regarding copyright and licensing.
  */
 
-
 class SystemPlugin_Example_Plugin extends Zikula_Plugin
 {
-    protected $eventNames = array('hello' => 'handler');
+    protected $eventNames = array('theme.init' => 'handler');
 
-    function handler()
-    {}
+    protected function getMeta()
+    {
+        return array('displayname' => $this->__('Example System Plugin'),
+                     'description' => $this->__('Adds prefilter to theme instance.'),
+                     'version'     => '1.0.0'
+                      );
+    }
+
+    public function handler(Zikula_Event $event)
+    {
+        // subject must be an instance of Theme class.
+        $theme = $event->getSubject();
+        if (!$theme instanceof Theme) {
+            return;
+        }
+
+        // register output filter to add MultiHook environment if requried
+        if (ModUtil::available('MultiHook')) {
+            $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('MultiHook'));
+            if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
+                $theme->load_filter('output', 'multihook');
+                ModUtil::apiFunc('MultiHook', 'theme', 'preparetheme');
+            }
+        }
+    }
 }
