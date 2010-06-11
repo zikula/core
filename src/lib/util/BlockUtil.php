@@ -237,13 +237,13 @@ class BlockUtil
      */
     public static function load($modname, $block)
     {
-        static $loaded = array();
-
-        if (isset($loaded["$modname/$block"])) {
-            return $loaded["$modname/$block"];
-        }
-
+        $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        
+        $serviceId = strtolower('block.' .$modinfo['name'] . '_' . 'Block_' . $block);
+        if ($sm->hasService($serviceId)) {
+            return $sm->getService($serviceId);
+        }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modinfo['name']);
@@ -291,10 +291,10 @@ class BlockUtil
                 }
             }
             
-            ServiceUtil::getManager()->attachService(strtolower("block.$className"), $blockInstance);
+            ServiceUtil::getManager()->attachService($serviceId, $blockInstance);
         }
 
-        $loaded["$modname/$block"] = ($isOO ? $blockInstance : true);
+        $result = ($isOO ? $blockInstance : true);
 
         if ($isOO) {
             $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
@@ -325,7 +325,7 @@ class BlockUtil
         // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
 
-        return $loaded["$modname/$block"];
+        return $result;
     }
 
     /**
