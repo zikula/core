@@ -14,14 +14,9 @@
 
 /**
  * Theme
- *
- * @package Zikula_Core
- * @subpackage Zikula
  */
 class Theme extends Renderer
 {
-    private static $themeInstance;
-
     // base theme info
     public $id; // id
     public $name; // name
