@@ -229,7 +229,7 @@ class PluginUtil
 
         self::disable($className);
 
-        if ($plugin->remove()) {
+        if ($plugin->uninstall()) {
             self::delState($plugin->getServiceId());
             return true;
         }
