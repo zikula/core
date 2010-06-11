@@ -77,38 +77,27 @@ the plugin.  Please note the required domain is:
 systemplugin_$name or
 moduleplugin_$modname_$pluginname
 
-These can be obtained from
-    ZLanguage::getModulePluginDomain($modName, $pluginName);
-    ZLanguage::getSystemPluginDomain($pluginName);
+If you set protected $gettextEnabled = true; in the plugin class, these will be set
+automatically and the domain will be bound.
+
+To access translation just use the shortcuts `$this->__()` etc.
 
 So the POT file would be located in the plugin's main folder in
 locale/$domain.pot
-
-You are expected to bind the domain if you need it using (for example)
-For a module plugin it would be
-    ZLanguage::bindModulePluginDomain($modName, $pluginName);
-    ZLanguage::bindSystemPluginDomain($pluginName);
-
-This would be best placed in preInitialize();
-You can also take advantage of shortcuts `$this->__()` etc.  Inside the
-preInitialize() you can add
-
-    $this->domain = ZLanguage::getModulePluginDomain($modName, $pluginName);
-or
-    $this->domain = ZLanguage::getSystemPluginDomain($pluginName);
 
 Plugins DO NOT support DBUtil or the legacy tables.php based DB modelling.  You must
 use Doctrine models if you require persistence.
 
 PLUGIN (modvar) VARIABLES
 ----------------
-Please use the following convention if you need to store variables
+Please use $this->serviceId to get the correct name for modvars. It will
+produce the following results automatically
     ModUtil::set/getVar("systemplugin.$pluginname", ...);
     ModUtil::set/getVar("moduleplugin.$modname.$pluginname", ...);
 
 e.g.
 
-ModUtil::set/getVar("moduleplugin.news.example", 'myvar');
+ModUtil::set/getVar($this->serviceId, 'myvar');
 
 RENDERING
 ---------
@@ -117,11 +106,11 @@ and store templates there.  You will need to specify the location directly:
 
 e.g.
     // module plugin
-    $view = Renderer::getModulePluginInstance('News', 'Example');
+    $view = Renderer::getModulePluginInstance($this->moduleName, );
     $view->fetch($this->baseDir . 'myview.htm');
 
     // system plugin
-    $view = Renderer::getSystemPluginInstance('News', 'Example');
+    $view = Renderer::getSystemPluginInstance($this->pluginName);
     $view->fetch($this->baseDir . 'myview.htm');
 
     Please note this will set the correct domain, in templates you

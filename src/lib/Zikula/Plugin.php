@@ -15,32 +15,70 @@
 
 abstract class Zikula_Plugin extends Zikula_EventHandler
 {
-    protected $version;
-
+    protected $meta;
+    protected $serviceId;
     protected $className;
-    protected $modVarName;
     protected $domain;
+    protected $moduleName;
+    protected $pluginName;
+    protected $gettextEnabled = false;
 
     public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
     {
         parent::__construct($eventManager, $serviceManager);
-        if (!$this->getVersion()) {
-            throw new LogicException(sprintf('The \'version\' property is not defined for this class. Please declare "protected $version = \'a.b.c\';" in %s', get_class($this)));
-        }
-
         $this->_setup();
+        if (!$this->getMetaDisplayName() || !$this->getMetaDescription() || !$this->getMetaVersion()) {
+            throw new LogicException(sprintf("setMeta() must be defined in %s must and return array('displayname' => 'displayname', 'description' => 'description', 'version' => 'a.b.c')", get_class($this)));
+        }
     }
 
     private function _setup()
     {
         $this->className = get_class($this);
-        $this->modVarName = strtolower(str_replace('_', '.', $this->className));
+        $this->serviceId = strtolower(str_replace('_', '.', $this->className));
         $this->baseDir = realpath(dirname(__FILE__));
+        $p = explode('_', $this->className);
+        if (strpos($this->serviceId, 'moduleplugin') === 0) {
+            $this->moduleName = $p[1];
+            $this->pluginName = $p[2];
+            if ($this->gettextEnabled) {
+                $this->domain = ZLanguage::getModulePluginDomain($this->moduleName, $this->pluginName);
+                ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
+            }
+        } elseif (strpos($this->serviceId, 'systemplugin') === 0) {
+            $this->moduleName = 'zikula';
+            $this->pluginName = $p[1];
+            if ($this->gettextEnabled) {
+                $this->domain = ZLanguage::getSystemPluginDomain($this->moduleName, $this->pluginName);
+                ZLanguage::bindSystemPluginDomain($this->pluginName);
+            }
+        } else {
+            throw new LogicException(sprintf('This class %s does not appear to be named correctly', $this->className));
+        }
+        $this->meta = $this->getMeta();
     }
 
-    final public function getVersion()
+    protected function getMeta()
     {
-        return $this->version;
+        return array('displayname' => $this->__(''),
+                     'description' => $this->__(''),
+                     'version' => ''
+                );
+    }
+
+    final public function getMetaDisplayName()
+    {
+        return $this->meta['displayname'];
+    }
+
+    final public function getMetaDescription()
+    {
+        return $this->meta['description'];
+    }
+
+    final public function getMetaVersion()
+    {
+        return $this->meta['version'];
     }
 
     public function __($msgid)
@@ -63,9 +101,19 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         return _fn($sin, $plu, $n, $params, $this->domain);
     }
 
-    public function getModVarName()
+    public function getServiceId()
     {
-        return $this->modVarName;
+        return $this->serviceId;
+    }
+
+    public function getModuleName()
+    {
+        return $this->moduleName;
+    }
+
+    public function getPluginName()
+    {
+        return $this->pluginName;
     }
 
     public function preInitialize()
@@ -90,19 +138,19 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     public function isEnabled()
     {
-        $plugin = PluginUtil::getState($this->modVarName, PluginUtil::getDefaultState());
+        $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::ENABLED) ? true : false;
     }
 
     public function isInstalled()
     {
-        $plugin = PluginUtil::getState($this->modVarName, PluginUtil::getDefaultState());
+        $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
     }
 
 //    public function getState()
 //    {
-//        PluginUtil::getState($this->modVarName, PluginUtil::getDefaultState());
+//        PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
 //    }
 //
 //    public function setState($state, $version = false)
@@ -110,13 +158,13 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 //        if (!isset($state['state'])) {
 //            throw new InvalidArgumentException('State key must be set');
 //        }
-//        $plugin = PluginUtil::getVar($this->modVarName, PluginUtil::getDefaultState());
+//        $plugin = PluginUtil::getVar($this->serviceId, PluginUtil::getDefaultState());
 //        $plugin['state'] = $state;
 //        if ($version) {
 //            $plugin['version'] = self::VERSION;
 //        }
 //
-//        $plugin = PluginUtil::getState($this->modVarName, $state);
+//        $plugin = PluginUtil::getState($this->serviceId, $state);
 //    }
 
     public function preInstall()
@@ -163,6 +211,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     {
         return true;
     }
+
 
     
 }

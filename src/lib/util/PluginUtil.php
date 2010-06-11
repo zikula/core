@@ -195,7 +195,7 @@ class PluginUtil
         }
 
         $state = array('state' => self::ENABLED, 'version' => $plugin->getVersion());
-        self::setState($plugin->getModVarName(), $state);
+        self::setState($plugin->getServiceId(), $state);
     }
 
     public static function upgrade($className)
@@ -205,7 +205,7 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = self::getState($plugin->getModVarName(), self::getDefaultState());
+        $state = self::getState($plugin->getServiceId(), self::getDefaultState());
         if (version_compare($plugin->getVersion(), $state['version'], '>=') ) {
             throw new LogicError(__f('Installed version and plugin version are equal, nothing to do for %s', $className));
         }
@@ -213,7 +213,7 @@ class PluginUtil
         $result = $plugin->upgrade($state['version']);
         if ($result) {
             $state['version'] = ($result == true) ? $plugin->getVersion() : $result;
-            self::setState($plugin->getModVarName(), $state);
+            self::setState($plugin->getServiceId(), $state);
             return true;
         }
 
@@ -230,7 +230,7 @@ class PluginUtil
         self::disable($className);
 
         if ($plugin->remove()) {
-            self::delState($plugin->getModVarName());
+            self::delState($plugin->getServiceId());
             return true;
         }
 
@@ -244,9 +244,9 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = PluginUtil::getState($plugin->getModVarName());
+        $state = PluginUtil::getState($plugin->getServiceId());
         $state['state'] = PluginUtil::DISABLED;
-        PluginUtil::setState($plugin->getModVarName(), $state);
+        PluginUtil::setState($plugin->getServiceId(), $state);
         $plugin->postDisable();
         return true;
     }
@@ -258,9 +258,9 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = PluginUtil::getVar($plugin->getModVarName());
+        $state = PluginUtil::getVar($plugin->getServiceId());
         $state['state'] = PluginUtil::ENABLED;
-        PluginUtil::setVar($plugin->getModVarName(), $state);
+        PluginUtil::setVar($plugin->getServiceId(), $state);
         $plugin->postEnable();
         return true;
     }

@@ -15,14 +15,17 @@
 
 class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
 {
-    protected $version = '1.0.0';
-
+    protected $gettextEnabled = true;
+    
     protected $eventNames = array('module.postexecute'          => 'addLinks',
                                   'controller.method_not_found' => 'anotherfunction');
 
-    public function preInitialize()
+    protected function getMeta()
     {
-        $this->domain = ZLanguage::bindModulePluginDomain('SysInfo', 'Example');
+        return array('displayname' => $this->__('Example SysInfo Plugin'),
+                     'description' => $this->__('Adds link to administration menu.'),
+                     'version'     => '1.0.0'
+                      );
     }
 
     /**
@@ -64,8 +67,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
             return LogUtil::registerPermissionError();
         }
 
-        // Zikula Modules and Themes versions
-        $view = Renderer::getModulePluginInstance('SysInfo', 'Example');
+        $view = Renderer::getModulePluginInstance($this->moduleName, $this->pluginName);
 
         $event->setData($view->fetch('anotherfunction.htm'));
         $event->setNotified();
