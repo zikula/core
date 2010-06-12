@@ -124,7 +124,8 @@ Blocks module admin section now has filtering options for block-position, module
 Blocks module now has sorting options for the main columns in the admin view (Issue #2012).
 Added $ZConfig['System']['legacy_prefilters'] to the config.php to enable/disable legacy template prefilters.
 Added $ZConfig['System']['compat_layer'] to config.php to enable/disable the compatibility layer.
-Introduced EventManager and the following events: core.preinit, core.init, core.postinit, user.login, user.logout, user.login.failed, module.execute, module.postcallhooks, theme.init, render.init, user.gettheme, module.postloadgeneric, dbobject.pre/post*, systemerror.
+Introduced EventManager.
+Added various events through out the core execution cycle.
 Fixed Form_Render::registerPlugin() in environments where the installation is not in the server document root.
 Added adapter to support the illegal use of DBUtil::executeSQL() processing the ADODB object manually (without the use of DBUtil::marshallObjects().
 Fixed theme list not sorted correctly on Theme view (Issue #1974).
@@ -132,12 +133,11 @@ Fixed pager plugin images always in english (Issue #1883).
 Fixed wrong contents in modvar 'permareplace' (Issue #2044).
 Updated css messages (Issue #2043 & Issue #2030).
 Added ability to have OO controllers in modules.
-New OO modules may have a bootstrap.php which will be included during first ModUtil::load call.
+New OO modules may have a bootstrap.php which will be included during first ModUtil::load*() call.
 Added recursive lists for extmenu blocks.
 Deprecated entire pn* API.
 Removed prefixes from module directories for the following folders, docs, style, javascript, templates, blocks, includes (remains backward compatible).
 Removed prefixed from the following module files, init.php, tables.php and version.php (remains backward compatible).
-Added {browserhack} block to allow adding of browser hacks.  E.g. {browserhack condition="if lte IE 7"}foo{/browserback}.  Block also takes assign="var".
 Added support for HTTP 500 response in Errors module.
 Improved password recovery workflow (Issue #1631).
 Added user name recovery (Issue #243).
@@ -146,11 +146,16 @@ Added exception support in front controller and module controllers.
 Removed core hack for AdvMailer module, use mailer.sendmessage events instead.
 Removed core hack for MultiHook module, use theme.init events instead.
 Added const render plugin and modifier to allow class constants in templates.
+Added ServiceManager for systemwide dependency injection.
+Added system-wide and module specific event based plugin system.
+Added front controller exception handling.
+Removed Renderer singleton pattern, this is now handled via ServiceManager, one instance per module or plugin.
+Removed need to specify domain= in template {gt} calls.
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
 Add authkey to updateemail form (issue #1993)
-Added <!--[browserhack]--> smarty block to allow adding of browser hacks (issue #2087)
+Added template block <!--[browserhack]--> to allow adding of browser hacks:  e.g. <!--[browserhack condition="if lte IE 7"]-->foo<!--[/browserback]--> (issue #2087).
 Fixed display of number equal to zero, was displaying -0.
 Save and restore pnRender::renderDomain when calling hooks.
 
