@@ -2776,26 +2776,45 @@ class DBUtil
                 $fPrim = false;
                 $fType = null;
                 $fUSign = false;
+                $fScale = null;
 
                 $clean = preg_replace('/\s\s+/', ' ', $tables[$tabledef][$id]);
                 $fields = explode(' ', $clean);
 
-                // determine field type
-                $type = $fields[0];
-                if (($pos = strpos($type, '(')) !== false) {
-                    $type = substr($type, 0, $pos);
+                // parse type and length
+                preg_match('#(C2|I1|I2|I3|I4|I8|T|TS|X|X2|XL)|(B|C|D|F|I|L)(?:\()(\d+)(?:\))|(N)(?:\()([0-9.]+)(?:\))#', $fields[0], $matches);
+                if (!$matches) {
+                    throw new Exception(__f('Error in definition %s, %s', $table, $id));
                 }
-                $fType = $typemap[$type];
 
-                // determine field length
-                if ($pos) {
-                    $fLen = substr($fields[0], $pos + 1);
-                    if (($pos = strpos($fLen, ')')) !== false) {
-                        $fLen = substr($fLen, 0, $pos);
-                    } else {
-                        throw new Exception(__f('Missing closing bracket in field datadict specification for %1$s.%2$s', $table, $id));
-                    }
+                switch (count($matches))
+                {
+                    case 2:
+                        $type = $matches[1];
+                        break;
+                    case 4:
+                        $type = $matches[2];
+                        $fLen = $matches[3];
+                        break;
+                    case 6:
+                        $type = $matches[4];
+                        $p = explode('.', $matches[5]);
+                        if (count($p) == 2) {
+                            $fLen = $p[0];
+                            $fScale = $p[1];
+                        } else {
+                            $fLen = $matches[5];
+                        }
+                        break;
                 }
+
+                // get field type
+                if (isset($fScale)) {
+                    $fType = 'decimal';
+                } else {
+                    $fType = $typemap[$type];
+                }
+
                 unset($fields[0]);
 
                 // transform to Doctrine datadict representation
@@ -2834,6 +2853,11 @@ class DBUtil
                 $fieldDef = array();
                 $fieldDef['type'] = $fType;
                 $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? ($fUSign ? $iLengthMap[$type] : $iLengthMap[$type] - 1) : $fLen);
+                
+                if ($fType == 'decimal') {
+                    $fieldDef['scale'] = $fScale;
+                }
+
                 $fieldDef['autoincrement'] = $fAuto;
                 $fieldDef['primary'] = $fPrim;
                 $fieldDef['unsigned'] = $fUSign;
@@ -2846,7 +2870,7 @@ class DBUtil
 
             return $ddict;
         } else {
-            throw new Exception(__f('Neither the sql parameter nor the table structure contain the ADODB dictionary representation of table [%s] ...', $table));
+            throw new Exception(__f('Neither the sql parameter nor the table structure contain the data dictionary representation of table [%s] ...', $table));
         }
     }
 
