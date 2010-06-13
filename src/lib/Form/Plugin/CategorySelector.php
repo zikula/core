@@ -123,7 +123,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "$this->category[id]::", ACCESS_EDIT)) {
             $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'user', 'edit', array(
                 'dr' => $this->category['id'])));
-            $result .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"images/icons/extrasmall/xedit.gif\" title=\"" . _EDIT . '" alt="' . _EDIT . '" /></a>';
+            $result .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"images/icons/extrasmall/xedit.gif\" title=\"" . __('Edit') . '" alt="' . __('Edit') . '" /></a>';
         }
 
         return $result;
