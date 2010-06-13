@@ -733,9 +733,9 @@ class ModUtil
         return (bool)self::getClass($modname, $type);
     }
 
-    public static function hasApi($modname, $type, $api)
+    public static function hasApi($modname, $type)
     {
-        return (bool)self::getClass($modname, $type, $api);
+        return (bool)self::getClass($modname, $type, true);
     }
 
     public static function getCallable($modname, $type, $func, $api = false, $force = false)
