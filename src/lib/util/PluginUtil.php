@@ -175,7 +175,6 @@ class PluginUtil
             $p = explode(DIRECTORY_SEPARATOR, $plugin);
             $name = end($p);
             $className = "SystemPlugin_{$name}_Plugin";
-            var_dump($className);
             self::loadPlugin($className);
             $classNames[] = $className;
         }

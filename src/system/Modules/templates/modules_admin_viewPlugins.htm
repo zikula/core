@@ -2,26 +2,33 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View plugins"}</div>
-    <h2>{gt text="Plugins list"}</h2>
+    {if $systemplugins}
+        <h2>{gt text="System plugins"}</h2>
+    {else}
+        <h2>{gt text="Plugins list"}</h2>
+    {/if}
 
     <table class="z-admintable">
         <thead>
             <tr>
-                <th>
-                    <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
-                        <div>
-                            <input type="hidden" name="sort" value="{$sort|varprepfordisplay}" />
-                            <input type="hidden" name="state" value="{$state|varprepfordisplay}" />
+                {if !$systemplugins}
+                    <th>
+                        <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
                             <div>
-                                <label for="bymodule">
-                                    <a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module}">{gt text="Module"}</a>
-                                </label><br />
-                                {selector_module name="bymodule" selectedValue=$module allValue="0" __allText="All" submit=true}
+                                <input type="hidden" name="sort" value="{$sort|varprepfordisplay}" />
+                                <input type="hidden" name="state" value="{$state|varprepfordisplay}" />
+                                <input type="hidden" name="systemplugins" value="{$systemplugins|varprepfordisplay}" />
+                                <div>
+                                    <label for="bymodule">
+                                        <a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
+                                    </label><br />
+                                    {selector_module name="bymodule" selectedValue=$module allValue="0" __allText="All" submit=true}
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </th>
-                <th><a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module}">{gt text="Internal Plugin name"}</a></th>
+                        </form>
+                    </th>
+                {/if}
+                <th><a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
                 <th>{gt text="Plugin display name"}</th>
                 <th>{gt text="Description"}</th>
                 <th>{gt text="Version"}</th>
@@ -30,6 +37,7 @@
                         <div>
                             <input type="hidden" name="sort" value="{$sort|varprepfordisplay}" />
                             <input type="hidden" name="bymodule" value="{$module|varprepfordisplay}" />
+                            <input type="hidden" name="systemplugins" value="{$systemplugins|varprepfordisplay}" />
                             <div>
                                 <label for="modules_state">{gt text="State"}</label><br />
                                 <select id="modules_state" name="state" onchange="submit()">
@@ -48,9 +56,11 @@
         <tbody>
             {foreach from=$plugins item="plugin"}
             <tr class="{cycle values="z-odd,z-even"}">
-                <td>
-                    {$plugin.instance->getModuleName()|varprepfordisplay}
-                </td>
+                {if !$systemplugins}
+                    <td>
+                        {$plugin.instance->getModuleName()|varprepfordisplay}
+                    </td>
+                {/if}
                 <td>{$plugin.instance->getPluginName()|varprepfordisplay}</td>
                 <td>{$plugin.instance->getMetaDisplayName()|varprepfordisplay}</td>
                 <td>{$plugin.instance->getMetaDescription()|varprepfordisplay}</td>

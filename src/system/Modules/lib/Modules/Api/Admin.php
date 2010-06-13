@@ -1377,6 +1377,7 @@ class Modules_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'view'), 'text' => $this->__('Modules list'), 'class' => 'z-icon-es-list');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins'), 'text' => $this->__('Plugins list'), 'class' => 'z-icon-es-cubes');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('System hooks'), 'class' => 'z-icon-es-package');
+            $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)), 'text' => $this->__('System Plugins'), 'class' => 'z-icon-es-cubes');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 

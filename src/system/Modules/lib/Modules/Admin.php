@@ -1128,6 +1128,7 @@ class Modules_Admin extends Zikula_Controller
         $state = FormUtil::getPassedValue('state', -1, 'GETPOST');
         $sort = FormUtil::getPassedValue('sort', null, 'GETPOST');
         $module = FormUtil::getPassedValue('bymodule', null, 'GETPOST');
+        $systemplugins = FormUtil::getPassedValue('systemplugins', false, 'GETPOST')? true : null;
         
         $pnRender = Renderer::getInstance('Modules', false);
         $pnRender->assign('state', $state);
@@ -1135,8 +1136,9 @@ class Modules_Admin extends Zikula_Controller
         // generate an auth key to use in urls
         $authid = SecurityUtil::generateAuthKey();
         $plugins = array();
+        $pluginClasses = $systemplugins? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
         
-        foreach (PluginUtil::loadAllPlugins() as $className) {
+        foreach ($pluginClasses as $className) {
             $instance = PluginUtil::loadPlugin($className);
             $pluginstate = PluginUtil::getState($instance->getServiceId(), PluginUtil::getDefaultState());
 
@@ -1162,6 +1164,7 @@ class Modules_Admin extends Zikula_Controller
                                                           'state'  => $state,
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
+                                                          'systemplugins' => $systemplugins,
                                                           'authid' => $authid)
                                                 ),
                                        'image' => 'agt_update_misc.gif',
@@ -1176,6 +1179,7 @@ class Modules_Admin extends Zikula_Controller
                                                           'state'  => $state,
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
+                                                          'systemplugins' => $systemplugins,
                                                           'authid' => $authid)
                                                 ),
                                        'image' => 'folder_grey.gif',
@@ -1186,6 +1190,7 @@ class Modules_Admin extends Zikula_Controller
                                                           'state'  => $state,
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
+                                                          'systemplugins' => $systemplugins,
                                                           'authid' => $authid)
                                                 ),
                                        'image' => '14_layer_deletelayer.gif',
@@ -1200,6 +1205,7 @@ class Modules_Admin extends Zikula_Controller
                                                           'state'  => $state,
                                                           'bymodule' => $module,
                                                           'sort'   => $sort,
+                                                          'systemplugins' => $systemplugins,
                                                           'authid' => $authid)
                                                 ),
                                        'image' => 'folder_green.gif',
@@ -1210,6 +1216,7 @@ class Modules_Admin extends Zikula_Controller
                                                            'state' => $state,
                                                            'bymodule' => $module,
                                                            'sort'   => $sort,
+                                                           'systemplugins' => $systemplugins,
                                                            'authid' => $authid)
                                                 ),
                                        'image' => '14_layer_deletelayer.gif',
@@ -1231,6 +1238,7 @@ class Modules_Admin extends Zikula_Controller
                                                       'state'  => $state,
                                                       'bymodule' => $module,
                                                       'sort'   => $sort,
+                                                      'systemplugins' => $systemplugins,
                                                       'authid' => $authid)
                                             ),
                                        'image' => 'agt_update-product.gif',
@@ -1241,6 +1249,7 @@ class Modules_Admin extends Zikula_Controller
                                                        'state' => $state,
                                                        'bymodule' => $module,
                                                        'sort'   => $sort,
+                                                       'systemplugins' => $systemplugins,
                                                        'authid' => $authid)
                                             ),
                                        'image' => '14_layer_deletelayer.gif',
@@ -1276,6 +1285,7 @@ class Modules_Admin extends Zikula_Controller
         $pnRender->assign('module', $module);
         $pnRender->assign('sort', $sort);
         $pnRender->assign('state', $state);
+        $pnRender->assign('systemplugins', $systemplugins);
 
         // Return the output that has been generated by this function
         return $pnRender->fetch('modules_admin_viewPlugins.htm');
@@ -1314,6 +1324,7 @@ class Modules_Admin extends Zikula_Controller
         $state = FormUtil::getPassedValue('state', -1);
         $sort = FormUtil::getPassedValue('sort', null);
         $module = FormUtil::getPassedValue('bymodule', null);
+        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Modules', 'admin', 'viewPlugins'));
@@ -1326,7 +1337,8 @@ class Modules_Admin extends Zikula_Controller
 
         $this->redirect(ModUtil::url('Modules', 'admin', 'viewPlugins', array('state' => $state,
                                                                               'sort'  => $sort,
-                                                                              'bymodule' => $module)));
+                                                                              'bymodule' => $module,
+                                                                              'systemplugins' => $systemplugins)));
     }
 
     /**
@@ -1348,6 +1360,7 @@ class Modules_Admin extends Zikula_Controller
         $state = FormUtil::getPassedValue('state', -1);
         $sort = FormUtil::getPassedValue('sort', null);
         $module = FormUtil::getPassedValue('bymodule', null);
+        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Modules', 'admin', 'viewPlugins'));
@@ -1360,7 +1373,8 @@ class Modules_Admin extends Zikula_Controller
 
         $this->redirect(ModUtil::url('Modules', 'admin', 'viewPlugins', array('state' => $state,
                                                                               'sort'  => $sort,
-                                                                              'bymodule' => $module)));
+                                                                              'bymodule' => $module,
+                                                                              'systemplugins' => $systemplugins)));
     }
 
     /**
@@ -1382,6 +1396,7 @@ class Modules_Admin extends Zikula_Controller
         $state = FormUtil::getPassedValue('state', -1);
         $sort = FormUtil::getPassedValue('sort', null);
         $module = FormUtil::getPassedValue('bymodule', null);
+        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Modules', 'admin', 'viewPlugins'));
@@ -1394,7 +1409,8 @@ class Modules_Admin extends Zikula_Controller
 
         $this->redirect(ModUtil::url('Modules', 'admin', 'viewPlugins', array('state' => $state,
                                                                               'sort'  => $sort,
-                                                                              'bymodule' => $module)));
+                                                                              'bymodule' => $module,
+                                                                              'systemplugins' => $systemplugins)));
     }
 
     /**
@@ -1416,6 +1432,7 @@ class Modules_Admin extends Zikula_Controller
         $state = FormUtil::getPassedValue('state', -1);
         $sort = FormUtil::getPassedValue('sort', null);
         $module = FormUtil::getPassedValue('bymodule', null);
+        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Modules', 'admin', 'viewPlugins'));
@@ -1428,7 +1445,8 @@ class Modules_Admin extends Zikula_Controller
 
         $this->redirect(ModUtil::url('Modules', 'admin', 'viewPlugins', array('state' => $state,
                                                                               'sort'  => $sort,
-                                                                              'bymodule' => $module)));
+                                                                              'bymodule' => $module,
+                                                                              'systemplugins' => $systemplugins)));
     }
 
     /**
@@ -1450,6 +1468,7 @@ class Modules_Admin extends Zikula_Controller
         $state = FormUtil::getPassedValue('state', -1);
         $sort = FormUtil::getPassedValue('sort', null);
         $module = FormUtil::getPassedValue('bymodule', null);
+        $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
 
         if(empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Modules', 'admin', 'viewPlugins'));
@@ -1462,6 +1481,7 @@ class Modules_Admin extends Zikula_Controller
 
         $this->redirect(ModUtil::url('Modules', 'admin', 'viewPlugins', array('state' => $state,
                                                                               'sort'  => $sort,
-                                                                              'bymodule' => $module)));
+                                                                              'bymodule' => $module,
+                                                                              'systemplugins' => $systemplugins)));
     }
 }
