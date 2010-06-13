@@ -213,17 +213,14 @@ class Search_Api_User extends Zikula_Api
         // The modules should be determined by a select of the modules table or something like that in the future
         $usermods = ModUtil::getAllMods();
         foreach ($usermods as $usermod) {
-            if (ModUtil::loadApi($usermod['name'], 'search')  &&
-                    ($args['loadall'] ||
-                            (!ModUtil::getVar('Search', "disable_$usermod[name]") &&
-                                    SecurityUtil::checkPermission('Search::Item', "$usermod[name]::", ACCESS_READ)
-                    )
-            )
-            ) {
+            if ($args['loadall'] || (!ModUtil::getVar('Search', "disable_$usermod[name]") && SecurityUtil::checkPermission('Search::Item', "$usermod[name]::", ACCESS_READ))) {
                 $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
-                $info['name'] = $usermod['name'];
-                $search_modules[] = $info;
-                $plugins_found = 'yes';
+                if ($info) {
+                    $info['name'] = $usermod['name'];
+                    $search_modules[] = $info;
+                    $plugins_found = 'yes';
+                }
+                
             }
         }
 
