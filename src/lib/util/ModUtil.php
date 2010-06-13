@@ -37,7 +37,8 @@ class ModUtil
     const DEPENDENCY_RECOMMENDED = 2;
     const DEPENDENCY_CONFLICTS = 3;
 
-    public static $ooModules = array();
+    protected static $ooModules = array();
+    protected static $modinfo;
 
     /**
      * The initCoreVars preloads some module vars.
@@ -80,7 +81,7 @@ class ModUtil
                 } elseif ($var['value'] == '0' || $var['value'] == '1') {
                     $pnmodvar[$var['modname']][$var['name']] = $var['value'];
                 } else {
-                   $pnmodvar[$var['modname']][$var['name']] = unserialize($var['value']);
+                    $pnmodvar[$var['modname']][$var['name']] = unserialize($var['value']);
                 }
             }
         }
@@ -353,23 +354,21 @@ class ModUtil
             return false;
         }
 
-        static $modinfo;
+        if (!is_array(self::$modinfo) || System::isInstalling()) {
+            self::$modinfo = self::getModsTable();
 
-        if (!is_array($modinfo) || System::isInstalling()) {
-            $modinfo = self::getModsTable();
-
-            if (!$modinfo) {
+            if (!self::$modinfo) {
                 return null;
             }
 
-            if (!isset($modinfo[$modid])) {
-                $modinfo[$modid] = false;
-                return $modinfo[$modid];
+            if (!isset(self::$modinfo[$modid])) {
+                self::$modinfo[$modid] = false;
+                return self::$modinfo[$modid];
             }
         }
 
-        if (isset($modinfo[$modid])) {
-            return $modinfo[$modid];
+        if (isset(self::$modinfo[$modid])) {
+            return self::$modinfo[$modid];
         }
 
         return false;
@@ -580,6 +579,16 @@ class ModUtil
     /**
      * Load a module.
      *
+     * This loads/set's up a module.  For classic style modules, it tests to see
+     * if the module type files exist, admin.php, user.php etc and includes them.
+     * If they do not exist, it will return false.
+     *
+     * Loading a module simply means making the functions/methods available
+     * by loading the files and other tasks like binding any language domain.
+     *
+     * For OO style modules this means registering the main module autoloader,
+     * and binding any language domain.
+     *
      * @param string  $modname The name of the module.
      * @param string  $type    The type of functions to load.
      * @param boolean $force   Determines to load Module even if module isn't active.
@@ -615,12 +624,6 @@ class ModUtil
 
         // create variables for the OS preped version of the directory
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        $ostype  = DataUtil::formatForOS($type);
-
-        $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
-        $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-        $mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
 
         // if class is loadable or has been loaded exit here.
         if (self::isIntialized($modname)) {
@@ -630,19 +633,37 @@ class ModUtil
         // is OOP module
         if (self::isOO($modname)) {
             self::initOOModule($modname);
-        } elseif (file_exists($cosfile)) {
-            // Load the file from config
-            include_once $cosfile;
-        } elseif (file_exists($mosfile)) {
-            // Load the file from modules
-            include_once $mosfile;
-        } elseif (is_dir($mosdir)) {
         } else {
-            // File does not exist
-            return false;
-        }
-        $loaded[$modtype] = 1;
+            $osdir   = DataUtil::formatForOS($modinfo['directory']);
+            $ostype  = DataUtil::formatForOS($type);
 
+            $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
+            $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
+            $mosdir  = "$modpath/$osdir/pn{$ostype}{$osapi}";
+
+            if (file_exists($cosfile)) {
+                // Load the file from config
+                include_once $cosfile;
+            } elseif (file_exists($mosfile)) {
+                // Load the file from modules
+                include_once $mosfile;
+            } elseif (is_dir($mosdir)) {
+            } else {
+                // File does not exist
+                return false;
+            }
+        }
+
+        $loaded[$modtype] = $modname;
+
+        self::_postLoadGeneric($modinfo, $type, $api, $force);
+
+        return $modname;
+    }
+
+    private static function _postLoadGeneric($modinfo, $type, $api, $force)
+    {
+        $modname = $modinfo['name'];
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modname);
         }
@@ -663,13 +684,206 @@ class ModUtil
             }
         }
 
-        PluginUtil::loadPlugins("$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
-
         $event = new Zikula_Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
         EventUtil::notify($event);
-
-        return $modname;
     }
+
+    public static function getClass($modname, $type, $api = false, $force = false)
+    {
+        // do not cache this process - drak
+        if (!self::isOO($modname)) {
+            return false;
+        }
+
+        if ($api) {
+            $result = self::loadApi($modname, $type);
+        } else {
+            $result = self::load($modname, $type);
+        }
+
+        if (!$result) {
+            return false;
+        }
+
+        $modinfo = self::getInfo(self::getIDFromName($modname));
+
+        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_'. ucwords($type);
+
+        // allow overriding the OO class (to override existing methods using inheritance).
+        $event = new Zikula_Event('module.custom_classname', null, array('modfunc' => $modfunc, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        EventUtil::notifyUntil($event);
+        if ($event->hasNotified()) {
+            $className = $event->getData();
+        }
+
+        // check the modules state
+        if (!$force && !self::available($modname) && $modname != 'Modules') {
+            return false;
+        }
+
+        if (class_exists($className)) {
+            return $className;
+        }
+
+        return false;
+    }
+
+    public static function hasController($modname, $type)
+    {
+        return (bool)self::getClass($modname, $type);
+    }
+
+    public static function hasApi($modname, $type, $api)
+    {
+        return (bool)self::getClass($modname, $type, $api);
+    }
+
+    public static function getCallable($modname, $type, $func, $api = false, $force = false)
+    {
+        $className = self::getClass($modname, $type, $api, $force);
+        if (!$className) {
+            return false;
+        }
+
+        $serviceId = strtolower("module.$className");
+        $sm = ServiceUtil::getManager();
+
+        $callable = false;
+        if ($sm->hasService($serviceId)) {
+            $controller = $sm->getService($serviceId);
+        } else {
+            $r = new ReflectionClass($className);
+            $controller = $r->newInstance();
+            try {
+                if (strrpos($className, 'Api') && !$controller instanceof Zikula_Api) {
+                    throw new LogicException(sprintf('Controller %s must inherit from Zikula_Api', $className));
+                } elseif (!strrpos($className, 'Api') && !$controller instanceof Zikula_Controller) {
+                    throw new LogicException(sprintf('Controller %s must inherit from Zikula_Controller', $className));
+                }
+            } catch (LogicException $e) {
+                if (System::isDevelopmentMode()) {
+                    throw $e;
+                } else {
+                    LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
+                    return false;
+                }
+            }
+            $sm->attachService(strtolower($serviceId), $controller);
+        }
+
+        if (is_callable(array($controller, $func))) {
+            $callable = array($controller, $func);
+        }
+
+        return array('serviceid' => $serviceId, 'classname' => $className, 'callable' => $callable);
+    }
+
+    /**
+     * Run a module function.
+     *
+     * @param string  $modname The name of the module.
+     * @param string  $type    The type of function to run.
+     * @param string  $func    The specific function to run.
+     * @param array   $args    The arguments to pass to the function.
+     * @param boolean $api     Whether or not to execute an API (or regular) function.
+     *
+     * @return mixed.
+     */
+    public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
+    {
+        // define input, all numbers and booleans to strings
+        $modname = isset($modname) ? ((string)$modname) : '';
+        $ftype = ($api ? 'api' : '');
+        $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
+
+        // validate
+        if (!System::varValidate($modname, 'mod')) {
+            return null;
+        }
+
+        $modinfo = self::getInfo(self::getIDFromName($modname));
+        $path = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
+
+        $controller = null;
+        $loaded = call_user_func_array($loadfunc, array($modname, $type));
+        if (self::isOO($modname)) {
+            $result = self::getCallable($modname, $type, $func, $api);
+            if ($result) {
+                $modfunc = $result['callable'];
+                $controller = $result['controller'];
+            }
+        }
+        
+        $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
+        
+        if ($loaded) {
+            $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+
+            if (is_callable($modfunc)) {
+                EventUtil::notify($preExecuteEvent);
+
+                // Check $modfunc is an object instance (OO) or a function (old)
+                if (is_array($modfunc)) {
+                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                } else {
+                    $postExecuteEvent->setData($modfunc($args));
+                }
+
+                return EventUtil::notify($postExecuteEvent)->getData();
+            }
+
+            // get the theme
+            if ($GLOBALS['loadstages'] & System::CORE_STAGES_THEME) {
+                $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
+                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
+                    include_once $file;
+                    if (function_exists($modfunc)) {
+                        EventUtil::notify($preExecuteEvent);
+                        $postExecuteEvent->setData($modfunc($args));
+                        return EventUtil::notify($postExecuteEvent)->getData();
+                    }
+                }
+            }
+
+            if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
+                include_once $file;
+                if (is_callable($modfunc)) {
+                    EventUtil::notify($preExecuteEvent);
+                    $postExecuteEvent->setData($modfunc($args));
+                    return EventUtil::notify($postExecuteEvent)->getData();
+                }
+            }
+
+            if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
+                include_once $file;
+                if (is_callable($modfunc)) {
+                    EventUtil::notify($preExecuteEvent);
+                    $postExecuteEvent->setData($modfunc($args));
+                    return EventUtil::notify($postExecuteEvent)->getData();
+                }
+            }
+
+            // try to load plugin
+            // This kind of eventhandler should
+            // 1. Check $event['modfunc'] to see if it should run else exit silently.
+            // 2. Do something like $result = {$event['modfunc']}({$event['args'});
+            // 3. Save the result $event->setData($result).
+            // 4. $event->setNotify().
+            // return void
+
+            // This event means that no $type was found
+            $event = new Zikula_Event('module.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
+            EventUtil::notifyUntil($event);
+
+            if ($preExecuteEvent->hasNotified()) {
+                return $preExecuteEvent->getData();
+            }
+
+            return false;
+        }
+    }
+
 
     /**
      * Run a module function.
@@ -711,139 +925,6 @@ class ModUtil
         return self::exec($modname, $type, $func, $args, true);
     }
 
-    /**
-     * Run a module function.
-     *
-     * @param string  $modname The name of the module.
-     * @param string  $type    The type of function to run.
-     * @param string  $func    The specific function to run.
-     * @param array   $args    The arguments to pass to the function.
-     * @param boolean $api     Whether or not to execute an API (or regular) function.
-     *
-     * @return mixed.
-     */
-    public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
-    {
-        // define input, all numbers and booleans to strings
-        $modname = isset($modname) ? ((string)$modname) : '';
-        $ftype = ($api ? 'api' : '');
-        $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
-
-        // validate
-        if (!System::varValidate($modname, 'mod')) {
-            return null;
-        }
-
-        $modinfo = self::getInfo(self::getIDFromName($modname));
-        $path = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
-
-        // Build function name and call function
-        $modfunc = "{$modname}_{$type}{$ftype}_{$func}";
-        $loaded = call_user_func_array($loadfunc, array($modname, $type));
-
-        $controller = null;
-        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_'. ucwords($type);
-
-        $event = new Zikula_Event('module.customcontroller', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
-        EventUtil::notifyUntil($event);
-        if ($event->hasNotified()) {
-            $className = $event->getData();
-        }
-
-        $serviceId = strtolower("module.$className");
-        $sm = ServiceUtil::getManager();
-
-        if (class_exists($className)) {
-            if ($sm->hasService($serviceId)) {
-                $controller = $sm->getService($serviceId);
-            } else {
-                $r = new ReflectionClass($className);
-                $controller = $r->newInstance();
-                try {
-                    if (strrpos($className, 'Api') && !$controller instanceof Zikula_Api) {
-                        throw new LogicException(sprintf('Controller %s must inherit from Zikula_Api', $className));
-                    } elseif (!strrpos($className, 'Api') && !$controller instanceof Zikula_Controller) {
-                        throw new LogicException(sprintf('Controller %s must inherit from Zikula_Controller', $className));
-                    }
-                } catch (LogicException $e) {
-                    if (System::isDevelopmentMode()) {
-                        throw $e;
-                    } else {
-                        LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
-                        return false;
-                    }
-                }
-                $sm->attachService(strtolower($serviceId), $controller);
-            }
-
-            if (is_callable(array($controller, $func))) {
-                $modfunc = array($controller, $func);
-            }
-        }
-
-        if ($loaded) {
-            $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-
-            if (is_callable($modfunc)) {
-                EventUtil::notify($preExecuteEvent);
-
-                // Check $modfunc is an object instance (OO) or a function (old)
-                if (is_array($modfunc)) {
-                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
-                } else {
-                    $postExecuteEvent->setData($modfunc($args));
-                }
-
-                return EventUtil::notify($postExecuteEvent)->getData();
-            }
-
-            // get the theme
-            if ($GLOBALS['loadstages'] & System::CORE_STAGES_THEME) {
-                $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
-                    Loader::loadFile($file);
-                    if (function_exists($modfunc)) {
-                        EventUtil::notify($preExecuteEvent);
-                        $postExecuteEvent->setData($modfunc($args));
-                        return EventUtil::notify($postExecuteEvent)->getData();
-                    }
-                }
-            }
-
-            if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
-                Loader::loadFile($file);
-                if (is_callable($modfunc)) {
-                    EventUtil::notify($preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-                    return EventUtil::notify($postExecuteEvent)->getData();
-                }
-            }
-
-            if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
-                Loader::loadFile($file);
-                if (is_callable($modfunc)) {
-                    EventUtil::notify($preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-                    return EventUtil::notify($postExecuteEvent)->getData();
-                }
-            }
-
-            // try to load plugin
-            // This kind of eventhandler should
-            // 1. Check $event['modfunc'] to see if it should run else exit silently.
-            // 2. Do something like $result = {$event['modfunc']}({$event['args'});
-            // 3. Save the result $event->setData($result).
-            // 4. $event->setNotify().
-            // return void
-            $event = new Zikula_Event('module.execute_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            EventUtil::notifyUntil($event);
-
-            if ($preExecuteEvent->hasNotified()) {
-                return $preExecuteEvent->getData();
-            }
-        }
-    }
 
     /**
      * Generate a module function URL.
@@ -1426,6 +1507,9 @@ class ModUtil
         // module handlers must be attached from the bootstrap.
         EventUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
 
+        // load any plugins
+        PluginUtil::loadPlugins("$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
+
         self::$ooModules[$moduleName]['initialized'] = true;
         return true;
     }
@@ -1450,8 +1534,8 @@ class ModUtil
             }
 
             if (is_dir("$modpath/$osdir/lib")) {
-               self::$ooModules[$moduleName]['oo'] = true;
-           }
+                self::$ooModules[$moduleName]['oo'] = true;
+            }
         }
 
         return self::$ooModules[$moduleName]['oo'];
