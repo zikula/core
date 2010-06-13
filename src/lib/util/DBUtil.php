@@ -2785,7 +2785,7 @@ class DBUtil
                 // parse type and length
                 preg_match('#(B|D|C2|I|I1|I2|I3|I4|I8|F|L|T|TS|X|X2|XL)|(C)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))#', $fields[0], $matches);
                 if (!$matches) {
-                    throw new Exception(__f('Error in definition %s, %s', $table, $id));
+                    throw new InvalidArgumentException(__f('Error in table definition for %1$s, column %2$s', array($table, $id)));
                 }
 
                 switch (count($matches))
