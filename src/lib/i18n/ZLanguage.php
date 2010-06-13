@@ -254,7 +254,7 @@ class ZLanguage
     public static function bindSystemPluginDomain($pluginName)
     {
         $_this  = self::getInstance();
-        $domain = self::getSystemPluginDomain($moduleName, $pluginName);
+        $domain = self::getSystemPluginDomain($pluginName);
         $path = $_this->searchOverrides($domain, "plugins/$pluginName/locale");
         return self::bindDomain($domain, $path);
     }

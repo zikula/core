@@ -708,11 +708,9 @@ class ModUtil
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
         $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_'. ucwords($type);
-        $ftype = ($api) ? 'api' : '';
-        $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
 
         // allow overriding the OO class (to override existing methods using inheritance).
-        $event = new Zikula_Event('module.custom_classname', null, array('modfunc' => $modfunc, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        $event = new Zikula_Event('module.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::notifyUntil($event);
         if ($event->hasNotified()) {
             $className = $event->getData();
@@ -807,6 +805,7 @@ class ModUtil
         $path = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
 
         $controller = null;
+        $modfunc = null;
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
         if (self::isOO($modname)) {
             $result = self::getCallable($modname, $type, $func, $api);
@@ -819,8 +818,8 @@ class ModUtil
         $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         
         if ($loaded) {
-            $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
 
             if (is_callable($modfunc)) {
                 EventUtil::notify($preExecuteEvent);
