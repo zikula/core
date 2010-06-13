@@ -15,6 +15,5 @@
 include 'lib/ZLoader.php';
 ZLoader::register();
 
-// start PN
 System::init();
 System::redirect(ModUtil::url('Admin', 'admin'));
