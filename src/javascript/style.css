@@ -204,7 +204,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 .z-statusmsg {
     background: #DFF2BF url('../images/icons/extrasmall/button_ok.gif') 13px 50% no-repeat;
     border: 1px solid #99CC99;
-    color: #005000;
+    color: #264409;
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
 }
@@ -212,14 +212,14 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 .z-statusmsg h1,
 .z-statusmsg h2,
 .z-statusmsg h3 {
-    color: #005000 !important;
+    color: #264409 !important;
     margin:0.5em 0 !important;
     padding:0 !important;
 }
 .z-warningmsg {
     background: #FEEFB3 url('../images/icons/extrasmall/bell.gif') 13px 50% no-repeat;
     border: 1px solid #EED324;
-    color: #702E02;
+    color: #514721;
     padding: 5px 5px 5px 36px;
     margin: 5px 0;
 }
@@ -227,7 +227,7 @@ ul.z-menulinks li.z-ml-disabled a:hover {
 .z-warningmsg h1,
 .z-warningmsg h2,
 .z-warningmsg h3 {
-    color: #702E02 !important;
+    color: #514721 !important;
     margin:0.5em 0 !important;
     padding:0 !important;
 }
