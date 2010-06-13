@@ -283,7 +283,7 @@ class Users_Api_User extends Zikula_Api
 
         $emailVerification = ModUtil::getVar('Users', 'reg_verifyemail');
         if (!$emailVerification || $emailVerification == UserUtil::VERIFY_USERPWD) {
-            if (!isset($args['password_reminder']) || emtpy($args['password_reminder'])) {
+            if (!isset($args['password_reminder']) || empty($args['password_reminder'])) {
                 return 18;
             }
         }
