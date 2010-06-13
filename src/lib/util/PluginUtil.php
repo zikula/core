@@ -125,6 +125,11 @@ class PluginUtil
         }
     }
 
+    public static function getAllPlugins()
+    {
+        return array_merge(self::getAllSystemPlugins(), self::getAllModulePlugins());
+    }
+
     /**
      * Discover all plugins.
      *
@@ -132,13 +137,10 @@ class PluginUtil
      *
      * @return array Of plugins paths.
      */
-    public static function getAllPlugins($modulesOnly = true)
+    public static function getAllModulePlugins()
     {
         $pluginsArray = array();
-        if (!$modulesOnly) {
-            $pluginsArray = FileUtil::getFiles('plugins', false, false, null, 'd');
-        }
-        
+       
         $dirs = array('system', 'modules');
         foreach ($dirs as $dir) {
             $modules = FileUtil::getFiles($dir, false, false, null, 'd');
@@ -153,24 +155,41 @@ class PluginUtil
         return $pluginsArray;
     }
 
-    /**
-     * Loads all plugins.
-     *
-     * For use by Plugin manager (installer).
-     *
-     * @return array of plugin classes loaded.
-     */
+    public static function getAllSystemPlugins()
+    {
+        return FileUtil::getFiles('plugins', false, false, null, 'd');
+    }
+
     public static function loadAllPlugins()
     {
+        return array_merge(self::loadAllSystemPlugins(), self::loadAllModulePlugins());
+    }
+
+    public static function loadAllSystemPlugins()
+    {
         $classNames = array();
-        $plugins = self::getAllPlugins();
+        $plugins = self::getAllSystemPlugins();
         foreach ($plugins as $plugin) {
             $plugin = realpath($plugin);
-            $file = $plugin . DIRECTORY_SEPARATOR . "Plugin.php";
-            if (!file_exists($file)) {
-                throw new RuntimeException(sprintf('%s must exist', $file));
-            }
-            include_once $file;
+            self::_includeFile($plugin);
+            $p = explode(DIRECTORY_SEPARATOR, $plugin);
+            $name = end($p);
+            $className = "SystemPlugin_{$name}_Plugin";
+            var_dump($className);
+            self::loadPlugin($className);
+            $classNames[] = $className;
+        }
+
+        return $classNames;
+    }
+
+    public static function loadAllModulePlugins()
+    {
+        $classNames = array();
+        $plugins = self::getAllModulePlugins();
+        foreach ($plugins as $plugin) {
+            $plugin = realpath($plugin);
+            self::_includeFile($plugin);
             $p = explode(DIRECTORY_SEPARATOR, $plugin);
             $dir = end($p);
             prev($p);
@@ -182,6 +201,16 @@ class PluginUtil
 
         return $classNames;
     }
+
+    private static function _includeFile($plugin)
+    {
+        $file = $plugin . DIRECTORY_SEPARATOR . "Plugin.php";
+        if (!file_exists($file)) {
+            throw new RuntimeException(sprintf('%s must exist', $file));
+        }
+        include_once $file;
+    }
+
 
     /**
      * Check's if a module has plugins or not.
