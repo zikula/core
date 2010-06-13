@@ -1,0 +1,74 @@
+{include file="modules_admin_menu.htm"}
+
+<div class="z-admincontainer">
+    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View plugins"}</div>
+    <h2>{gt text="Plugins list"}</h2>
+
+
+    <table class="z-admintable">
+        <thead>
+            <tr>
+                <th>
+                    <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
+                        <input type="hidden" name="sort" value="{$sort|varprepfordisplay}" />
+                        <input type="hidden" name="state" value="{$state|varprepfordisplay}" />
+                        <div>
+                            <label for="bymodule">
+                                <a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module}">{gt text="Module"}</a>
+                            </label><br />
+                            {selector_module name="bymodule" selectedValue=$module allValue="0" __allText="All" submit=true}
+                        </div>
+                    </form>
+                </th>
+                <th><a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module}">{gt text="Internal Plugin name"}</a></th>
+                <th>{gt text="Plugin display name"}</th>
+                <th>{gt text="Description"}</th>
+                <th>{gt text="Version"}</th>
+                <th style="white-space:nowrap">
+                    <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
+                        <input type="hidden" name="sort" value="{$sort|varprepfordisplay}" />
+                        <input type="hidden" name="bymodule" value="{$module|varprepfordisplay}" />
+                        <div>
+                            <label for="modules_state">{gt text="State"}</label><br />
+                            <select id="modules_state" name="state" onchange="submit()">
+                                <option value="-1">{gt text="All"}</option>
+                                <option value="{const name="PluginUtil::NOTINSTALLED"}"{if $state eq 2} selected="selected"{/if}>{gt text="Not installed"}</option>
+                                <option value="{const name="PluginUtil::DISABLED}"{if $state eq 0} selected="selected"{/if}>{gt text="Inactive"}</option>
+                                <option value="{const name="PluginUtil::ENABLED}"{if $state eq 1} selected="selected"{/if}>{gt text="Active"}</option>
+                            </select>
+                        </div>
+                    </form>
+                </th>
+                <th>{gt text="Actions"}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$plugins item="plugin"}
+            <tr class="{cycle values="z-odd,z-even"}">
+                <td>
+                    {$plugin.instance->getModuleName()|varprepfordisplay}
+                </td>
+                <td>{$plugin.instance->getPluginName()|varprepfordisplay}</td>
+                <td>{$plugin.instance->getMetaDisplayName()|varprepfordisplay}</td>
+                <td>{$plugin.instance->getMetaDescription()|varprepfordisplay}</td>
+                <td>{$plugin.version|varprepfordisplay}</td>
+                <td style="white-space:nowrap">
+                    {img src=$plugin.statusimage modname=core set=icons/extrasmall alt=$plugin.status title=$plugin.status}&nbsp;{$plugin.status|varprepfordisplay}
+                    {if isset($plugin.newversion)}
+                    <br />({$plugin.newversion|varprepfordisplay})
+                    {/if}
+                </td>
+                <td style="white-space:nowrap">
+                    {strip}
+                    {foreach from=$plugin.actions item="action"}
+                        <a href="{$action.url|varprepfordisplay}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title}</a>&nbsp;
+                    {/foreach}
+                    {/strip}
+                </td>
+            </tr>
+            {foreachelse}
+            <tr class="z-admintableempty"><td colspan="7">{gt text="No items found."}</td></tr>
+            {/foreach}
+        </tbody>
+    </table>
+</div>
