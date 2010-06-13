@@ -254,11 +254,14 @@ class Modules_Admin extends Zikula_Controller
                                     'id' => $mod['id'])),
                                     'image' => 'attach.gif',
                                     'title' => $this->__('Hook settings'));
-                            $actions[] = array(
-                                    'url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array(
-                                    'bymodule' => $mod['name'])),
-                                    'image' => 'blockdevice.gif',
-                                    'title' => $this->__('Plugins'));
+
+                            if(PluginUtil::hasModulePlugins($mod['name'])) {
+                                $actions[] = array(
+                                        'url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array(
+                                        'bymodule' => $mod['name'])),
+                                        'image' => 'blockdevice.gif',
+                                        'title' => $this->__('Plugins'));
+                            }
                             break;
                         case ModUtil::STATE_INACTIVE:
                             $actions[] = array(

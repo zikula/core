@@ -183,6 +183,29 @@ class PluginUtil
         return $classNames;
     }
 
+    /**
+     * Check's if a module has plugins or not.
+     * 
+     * @param string $modulename Name of an module
+     *
+     * @return boolean true when the module has plugins
+     */
+    public static function hasModulePlugins($modulename) {
+        $pluginClasses = PluginUtil::loadAllPlugins();
+        $hasPlugins = false;
+
+        foreach($pluginClasses as $pluginClass) {
+            $parts = explode('_', $pluginClass);
+
+            if($parts[0] == 'ModulePlugin' && $parts[1] == $modulename) {
+                $hasPlugins = true;
+                break;
+            }
+        }
+
+        return $hasPlugins;
+    }
+
     public static function install($className)
     {
         $plugin = self::loadPlugin($className);
