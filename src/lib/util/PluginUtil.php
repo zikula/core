@@ -194,8 +194,10 @@ class PluginUtil
             return false;
         }
 
-        $state = array('state' => self::ENABLED, 'version' => $plugin->getVersion());
+        $state = array('state' => self::ENABLED, 'version' => $plugin->getMetaVersion());
         self::setState($plugin->getServiceId(), $state);
+
+        return true;
     }
 
     public static function upgrade($className)
@@ -206,13 +208,13 @@ class PluginUtil
         }
 
         $state = self::getState($plugin->getServiceId(), self::getDefaultState());
-        if (version_compare($plugin->getVersion(), $state['version'], '>=') ) {
-            throw new LogicError(__f('Installed version and plugin version are equal, nothing to do for %s', $className));
+        if (version_compare($plugin->getMetaVersion(), $state['version'], '<=') ) {
+            throw new LogicException(__f('Installed version and plugin version are equal, nothing to do for %s', $className));
         }
 
         $result = $plugin->upgrade($state['version']);
         if ($result) {
-            $state['version'] = ($result == true) ? $plugin->getVersion() : $result;
+            $state['version'] = ($result == true) ? $plugin->getMetaVersion() : $result;
             self::setState($plugin->getServiceId(), $state);
             return true;
         }
@@ -258,9 +260,9 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = PluginUtil::getVar($plugin->getServiceId());
+        $state = PluginUtil::getState($plugin->getServiceId());
         $state['state'] = PluginUtil::ENABLED;
-        PluginUtil::setVar($plugin->getServiceId(), $state);
+        PluginUtil::setState($plugin->getServiceId(), $state);
         $plugin->postEnable();
         return true;
     }
