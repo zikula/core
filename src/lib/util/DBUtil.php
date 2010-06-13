@@ -3124,11 +3124,40 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
+        $metaColumns = self::metaColumnNames($table);
+        
+        // first round - create any missing columns
+        foreach ($definition as $key => $columnDefinition) {
+            if (isset($metaColumns[$key])) {
+                continue;
+            }
+            $alterTableDefinition = array('add' => array($key => $columnDefinition));
+            try {
+                $connection->export->alterTable($tableName, $alterTableDefinition);
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+            }
+        }
+
+        // second round, alter table structures to match new tables definition.
         foreach ($definition as $key => $columnDefinition) {
             $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
+                echo $e->getMessage();
+                return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+            }
+        }
+
+        // drop all indexes
+        $indexes = self::metaIndexes($table);
+        foreach ($indexes as $index) {
+            try {
+                $connection->export->dropIndex($tableName, $index);
+            } catch (Exception $e) {
+                echo $e->getMessage();
                 return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
             }
         }
@@ -3365,38 +3394,16 @@ class DBUtil
      */
     public static function metaColumns($table, $assoc = false, $notcasesensitive = true)
     {
-        if (empty($table)) {
-            throw new Exception(__f('The parameter %s must not be empty', 'table'));
+        $rows = self::metaColumnNames($table, $assoc);
+        $array = array();
+        if ($notcasesensitive) {
+            foreach ($rows as $key => $row) {
+                $array[strtolower($key)] = $row;
+            }
+            return $array;
         }
 
-        $tables = System::dbGetTables();
-        $tableName = $tables[$table];
-
-        if (empty($tableName)) {
-            throw new Exception(__f('%s does not point to a valid table definition', $tableName));
-        }
-
-        // TODO B [migrate adodb fetchmode constants to Doctrine equivalents] (Guite)
-        /*
-        if ($assoc) {
-            global $ADODB_FETCH_MODE;
-            $save = $ADODB_FETCH_MODE;
-            $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-        }
-*/
-        // TODO C [use use $assoc and $notcasesensitive params in DBUtil::metaColumns() for backwards compatability] (Guite)
-
-
-        try {
-            return DBConnectionStack::getConnection()->import->listTableColumns($tableName);
-        } catch (Exception $e) {
-            return LogUtil::registerError(__('Error! Fetching table column list failed.') . ' ' . $e->getMessage());
-        }
-        /*
-        if ($assoc) {
-            $ADODB_FETCH_MODE = $save;
-        }
-*/
+        return $rows;
     }
 
     /**
@@ -3420,7 +3427,16 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
-        return DBConnectionStack::getConnection()->MetaColumnNames($tableName, $numericIndex);
+        $rows = DBConnectionStack::getConnection()->import->listTableColumns($tableName);
+        $array = array();
+        if ($numericIndex) {
+            foreach ($rows as $row) {
+               $array[] = $row;
+            }
+            return $array;
+        }
+
+        return $rows;
     }
 
     /**
