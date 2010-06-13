@@ -44,7 +44,8 @@ module.postexecute
     receives the modules output with $event->getData();
     can modify this output with $event->serData($data);
 
-module.execute_not_found if no methods are found to execute in ModUtil::exec()
+module.type_not_found if $type is not found in ModUtil::exec() (e.g. no admin.php)
+    This is for classic module types only.
     array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
     This kind of eventhandler should
         1. Check $event['modfunc'] to see if it should run else exit silently.
@@ -73,9 +74,11 @@ module.postcallhooks
             'extrainfo' => $extrainfo,
             'implode' => $implode)
 
-module.customcontroller in order to override the classname calculated in ModUtil::exec().
-    Receives no subject, args of array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
-    and 'event data' of $className.  This can be overriden by settings $event->setData() followed by $event->setNotified().
+module.custom_classname in order to override the classname calculated in ModUtil::exec().
+    In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
+    This allows to override the methods using inheritance.
+    Receives no subject, args of array('modfunc' => $modfunc, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)
+    and 'event data' of $className.  This can be altered by settings $event->setData() followed by $event->setNotified().
 
 theme.init
     Occurs just before Theme#__construct() exits.  Subject is $this, args are 
