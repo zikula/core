@@ -3135,7 +3135,6 @@ class DBUtil
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
-                echo $e->getMessage();
                 return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
             }
         }
@@ -3146,7 +3145,6 @@ class DBUtil
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
-                echo $e->getMessage();
                 return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
             }
         }
@@ -3157,7 +3155,6 @@ class DBUtil
             try {
                 $connection->export->dropIndex($tableName, $index);
             } catch (Exception $e) {
-                echo $e->getMessage();
                 return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
             }
         }
