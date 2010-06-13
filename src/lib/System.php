@@ -364,7 +364,7 @@ class System
                 ob_start("ob_gzhandler");
             }
 
-            if (ModUtil::available('SecurityCenter') && self::getVar('enableanticracker') == 1 && ModUtil::loadApi('SecurityCenter', 'user')) {
+            if (ModUtil::available('SecurityCenter') && self::getVar('enableanticracker') == 1) {
                 ModUtil::apiFunc('SecurityCenter', 'user', 'secureinput');
             }
 
@@ -754,7 +754,7 @@ class System
         $return = false;
 
         // check if the mailer module is availble and if so call the API
-        if ((ModUtil::available('Mailer')) && (ModUtil::loadApi('Mailer', 'user'))) {
+        if ((ModUtil::available('Mailer'))) {
             $return = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array(
                     'toaddress' => $to,
                     'subject' => $subject,
