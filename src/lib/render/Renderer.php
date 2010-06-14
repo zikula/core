@@ -383,6 +383,7 @@ class Renderer extends Smarty
     public function display($template, $cache_id = null, $compile_id = null)
     {
         echo $this->fetch($template, $cache_id, $compile_id);
+        return true;
     }
 
     /**

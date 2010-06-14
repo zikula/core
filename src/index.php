@@ -150,7 +150,7 @@ switch (true)
 {
     case ($return === true):
         // prevent rendering of the theme.
-        System::shutdown();
+        System::shutDown();
         break;
     case ($return === false):
         if (!LogUtil::hasErrors()) {
