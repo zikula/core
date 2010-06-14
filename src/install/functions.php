@@ -135,7 +135,7 @@ function install()
                 update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbtype, $dbtabletype);
 
                 // Must reinitialize the database since settings have changed as a result of the install process.
-                // We do this manually because the API doesn't allow for pnInit to be called multiple times with different info in config.php
+                // We do this manually because the API doesn't allow for System::init to be called multiple times with different info in config.php
                 // Probably a better way of doing this?
                 $ZConfig = array();
                 $ZDebug = array();
@@ -587,7 +587,7 @@ function _forcelogin($action = '')
 {
     // login to supplied admin credentials
     if ($GLOBALS['ZConfig']['System']['installed']) { // need auth because Zikula is already installed.
-        pnInit(System::CORE_STAGES_SESSIONS);
+        System::init(System::CORE_STAGES_SESSIONS);
         if (UserUtil::isLoggedIn()) {
             if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                 UserUtil::logout(); // not administrator user so boot them.
