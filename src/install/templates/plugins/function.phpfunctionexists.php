@@ -1,11 +1,11 @@
 <?php
 /**
- * pnRender plugin
+ * renderer plugin
  *
- * This file is a plugin for pnRender, the Zikula implementation of Smarty
+ * This file is a plugin for renderer, the Zikula implementation of Smarty
  *
  * @package      Xanthia_Templating_Environment
- * @subpackage   pnRender
+ * @subpackage   renderer
  * @version      $Id: function.themelist.php 20025 2006-09-15 07:31:06Z markwest $
  * @author       The Zikula development team
  * @link         http://www.zikula.org  The Zikula Home Page

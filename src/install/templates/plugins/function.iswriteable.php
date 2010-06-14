@@ -7,7 +7,7 @@
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package      Xanthia_Templating_Environment
- * @subpackage   pnRender
+ * @subpackage   renderer
  */
 
 function smarty_function_iswriteable($params, &$smarty)
