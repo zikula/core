@@ -31,7 +31,7 @@ function replace_pnApi($contents)
 //    'no__' => 'no__',
     'pnrender::' => 'Renderer::',
     '& pnrender::' => 'Renderer::',
-    'pnrender' => 'Renderer',
+    'pnrender' => 'renderer',
     'pnconfiggetvar' => 'System::getVar',
     'pnconfigsetvar' => 'System::setVar',
     'pnconfigdelvar' => 'System::delVar',
