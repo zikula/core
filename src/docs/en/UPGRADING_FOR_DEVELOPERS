@@ -1,7 +1,8 @@
 - Change all module templates plugin delimiters to { and }.  For any template
   plugins inside a <script></script> block or a <style></style> block please
-  use {{  and }}.  Please note the old delimiters will be supported until
-  Zikula 1.5.0.
+  use {{ and }}.
+
+- Module folders now MUST start with a capital letter.
 
 - All plugins with pn have been renamed without the pn prefix.  The pndebug
   plugin has been renamed to zdebug. Please adjust your templates accordingly.
@@ -189,3 +190,4 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
     $this->redirectUnless()
 
 - The gettext plugin now does not need domain= set at all for modules.
+
