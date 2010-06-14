@@ -148,6 +148,10 @@ if ($return) {
 
 switch (true)
 {
+    case ($return === true):
+        // prevent rendering of the theme.
+        System::shutdown();
+        break;
     case ($return === false):
         if (!LogUtil::hasErrors()) {
             LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'. %3$s', array($modinfo['url'], $func, $message)), $httpCode, null, $debug);
