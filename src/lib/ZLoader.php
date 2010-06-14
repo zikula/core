@@ -45,7 +45,6 @@ class ZLoader
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
         include ZLOADER_PATH. 'legacy/Loader.php';
-        include ZLOADER_PATH. 'legacy/Api.php';
 
         // load eventhandlers from config/EventHandlers directory if any.
         EventUtil::attachCustomHandlers('config/EventHandlers');

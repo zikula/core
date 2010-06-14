@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+include 'lib/legacy/Api.php';
+
 // backwards compatibility references
 $GLOBALS['PNConfig'] = & $GLOBALS['ZConfig'];
 $GLOBALS['PNRuntime'] = & $GLOBALS['ZRuntime'];
