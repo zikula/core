@@ -48,6 +48,8 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
 if (empty($module)) {
     $module = System::getVar('startpage');
     if (empty($module)) {
+        LogUtil::registerError(__f("The requested page coule not be found.", DataUtil::formatForDisplay(strip_tags($module))));
+        echo ModUtil::func('Errors', 'user', 'main', array('type' => 404));
         Theme::getInstance()->themefooter();
         System::shutdown();
     }

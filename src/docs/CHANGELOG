@@ -152,6 +152,8 @@ Added front controller exception handling.
 Removed Renderer singleton pattern, this is now handled via ServiceManager, one instance per module or plugin.
 Removed need to specify domain= in template {gt} calls.
 Improved StringUtil::highlightWords() (patch by Gabriele Pohl).
+When short URLs are enabled, 3-letter or 2-letters can't be used anymore (issue #1800).  This also fixes issues with the RSS theme.
+Fixed validation of directory based short URLs to produce 404 if target not found issue (#923).
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
