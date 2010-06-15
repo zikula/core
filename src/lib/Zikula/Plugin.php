@@ -20,6 +20,8 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     protected $eventManager;
     protected $serviceManager;
+
+    protected $booted = false;
     
     protected $meta;
     protected $pluginType;
@@ -32,7 +34,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $baseDir;
     protected $reflection;
     
-    public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
+    public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
         $this->serviceManager = $serviceManager;
@@ -155,6 +157,16 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     public function postDisable()
     {
+    }
+
+    public function hasBooted()
+    {
+        return $this->booted;
+    }
+
+    public function setBooted()
+    {
+        $this->booted = true;
     }
 
     public function isEnabled()

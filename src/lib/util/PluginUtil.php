@@ -100,19 +100,20 @@ class PluginUtil
         }
 
         $r = new ReflectionClass($className);
-        $plugin = $r->newInstanceArgs(array(EventUtil::getManager(), ServiceUtil::getManager()));
+        $plugin = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
 
         if (!$plugin instanceof Zikula_Plugin) {
             throw new LogicException(sprintf('Class %s must be an instance of Zikula_Plugin', $className));
         }
 
-        if ($plugin->isInstalled() && $plugin->isEnabled()) {
+        if (!$plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled()) {
             $plugin->preInitialize();
             $plugin->initialize();
             $plugin->postInitialize();
             if (is_array($plugin->getEventNames()) && $plugin->getEventNames()) {
                 $plugin->attach();
             }
+            $plugin->setBooted();
         }
         
         return $sm->attachService($serviceId, $plugin);
@@ -221,7 +222,7 @@ class PluginUtil
      * @return boolean true when the module has plugins
      */
     public static function hasModulePlugins($modulename) {
-        $pluginClasses = PluginUtil::loadAllPlugins();
+        $pluginClasses = self::loadAllPlugins();
         $hasPlugins = false;
 
         foreach($pluginClasses as $pluginClass) {
@@ -299,9 +300,9 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = PluginUtil::getState($plugin->getServiceId());
-        $state['state'] = PluginUtil::DISABLED;
-        PluginUtil::setState($plugin->getServiceId(), $state);
+        $state = self::getState($plugin->getServiceId());
+        $state['state'] = self::DISABLED;
+        self::setState($plugin->getServiceId(), $state);
         $plugin->postDisable();
         return true;
     }
@@ -313,9 +314,9 @@ class PluginUtil
             throw new LogicException(__f('Plugin %s is not installed', $className));
         }
 
-        $state = PluginUtil::getState($plugin->getServiceId());
-        $state['state'] = PluginUtil::ENABLED;
-        PluginUtil::setState($plugin->getServiceId(), $state);
+        $state = self::getState($plugin->getServiceId());
+        $state['state'] = self::ENABLED;
+        self::setState($plugin->getServiceId(), $state);
         $plugin->postEnable();
         return true;
     }
