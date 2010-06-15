@@ -53,6 +53,13 @@ class pnRender extends Renderer
  */
 class PNObject extends DBObject
 {
+    public $_GET_FROM_DB = 'D'; // get data from DB
+    public $_GET_FROM_GET = 'G'; // get data from $_GET
+    public $_GET_FROM_POST = 'P'; // get data from $_POST
+    public $_GET_FROM_REQUEST = 'R'; // get data from $_REQUEST
+    public $_GET_FROM_SESSION = 'S'; // get data from $_SESSION
+    public $_GET_FROM_VALIDATION_FAILED = 'V'; // get data from failed validation
+
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
@@ -75,6 +82,13 @@ class PNObject extends DBObject
  */
 class PNObjectArray extends DBObjectArray
 {
+    public $_GET_FROM_DB = 'D'; // get data from DB
+    public $_GET_FROM_GET = 'G'; // get data from $_GET
+    public $_GET_FROM_POST = 'P'; // get data from $_POST
+    public $_GET_FROM_REQUEST = 'R'; // get data from $_REQUEST
+    public $_GET_FROM_SESSION = 'S'; // get data from $_SESSION
+    public $_GET_FROM_VALIDATION_FAILED = 'V'; // get data from failed validation
+    
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
