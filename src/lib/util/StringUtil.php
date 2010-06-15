@@ -97,13 +97,10 @@ class StringUtil
      *
      * @return The token array
      */
-    //if (!function_exists("stripos")) {
     public static function stripos($haystack, $needle, $offset = 0)
     {
         return mb_strpos(mb_strtoupper($haystack), mb_strtoupper($needle), $offset);
     }
-    //}
-
 
     /**
      * Returns the left x chars of a string. If the string is longer than x,
@@ -141,6 +138,16 @@ class StringUtil
         return $string;
     }
 
+    /**
+     * Markup text with highlight tags around search phrases.
+     * Shorten text appropriate to view in hitlist.
+     *
+     * @param text         the string to operate on
+     * @param wordStr      the search phrase
+     * @param contextSize  the number of chars shown as context around the search phrase
+     *
+     * @return a part of the supplied string
+     */
     public static function highlightWords($text, $wordStr, $contextSize = 200)
     {
         // Strip HTML tags and special chars completely
@@ -150,36 +157,54 @@ class StringUtil
         // Split words into word array
         $words = preg_split('/ /', $wordStr, -1, PREG_SPLIT_NO_EMPTY);
 
-        $firstMatch = true;
+        // Only shorten the text, if it is longer than contextSize
+        $textLen = mb_strlen($text);
+        if ($textLen > $contextSize) {
+            // Find the very first position of all search phrases
+            $startPos = $textLen;
+            $foundStartPos = false;
+            foreach ($words as $word) {
+                $thisPos = mb_strpos($text, $word);
+                if ($thisPos < $startPos) {
+                    $startPos = $thisPos;
+                    $foundStartPos = true;
+                }
+            }
+            // No search phrase found
+            if ($foundStartPos === false) {
+                $startPos = 0;
+            }
 
-        $i = 1;
-        foreach ($words as $word) {
-            $text = str_replace($word, '<strong class="highlight' . ($i % 10) . '">' . $word . '</strong>', $text);
-            ++$i;
-        }
-        $completeReplacedText = nl2br($text);
+            // Get context on the left
+            $startPos = max(0, $startPos - floor($contextSize / 2) );
+            // Get the first word of section in full length
+            while ($startPos > 0 && $text[$startPos] != ' ') {
+                --$startPos;
+            }
 
-        // Find first position of first "<" (which is the first highlighted word)
-        $startPos = mb_strpos($completeReplacedText, "<");
-        if ($startPos === false) {
-            $startPos = 0;
-        }
-        $startPos = max(0, $startPos - $contextSize / 2);
-        while ($startPos > 0 && $completeReplacedText[$startPos] != ' ') {
-            --$startPos;
-        }
+            // Get context on the right
+            $endPos = min($textLen, $startPos + $contextSize);
+            // Get the last word of section in full length
+            while ($endPos < (mb_strlen($text)) && $text[$endPos] != ' ') {
+                ++$endPos;
+            }
 
-        // Find last position of ">" (last highlighted word).
-        $endPos = mb_strrpos($completeReplacedText, ">");
-        if ($endPos === false) {
-            $endPos = $contextSize;
-        }
-        $endPos = min(mb_strlen($completeReplacedText), $endPos + $contextSize / 2);
-        while ($endPos < mb_strlen($completeReplacedText) - 1 && $completeReplacedText[$endPos] != ' ') {
-            ++$endPos;
+            // Setup section 
+            $section = mb_strcut($text, $startPos, $endPos-$startPos);
+
+        } else { // Text is shorter than $contextSize
+            $section = $text;
         }
 
-        return mb_substr($completeReplacedText, $startPos, $endPos - $startPos);
+        // Highlight search phrases within section
+        if (($textLen <= $contextSize) || ($foundStartPos === true)) {
+            $i = 1;
+            foreach ($words as $word) {
+                $section = str_replace($word, '<strong class="highlight' . ($i % 10) . '">' . $word . '</strong>', $section);
+                ++$i;
+            }
+        }
+        return $section;
     }
 
     public static function camelize($string, $separator = '_')
