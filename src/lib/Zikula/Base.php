@@ -27,6 +27,7 @@ abstract class Zikula_Base
     protected $domain = null;
     protected $serviceManager;
     protected $eventManager;
+    protected $reflection;
 
     public function __construct(array $options = array())
     {
@@ -44,15 +45,54 @@ abstract class Zikula_Base
 
     private function _setup()
     {
-        $r = new ReflectionObject($this);
-        //$this->baseDir = substr($r->getFileName(), 0, strrpos($r->getFileName(), $r->getName().'.php')-1);
-        $parts = explode('_', $r->getName());
+        $this->reflection = new ReflectionObject($this);
+        $parts = explode('_', $this->reflection->getName());
         $this->name = $parts[0];
         $this->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($this->name));
         $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
         $this->systemBaseDir = realpath(dirname(__FILE__) . '/../..');
         $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/" . $this->modinfo['directory']);
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
+    }
+
+    public function getReflection()
+    {
+        return $this->reflection;
+    }
+
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function getModInfo()
+    {
+        return $this->modinfo;
+    }
+
+    public function getBaseDir()
+    {
+        return $this->baseDir();
+    }
+
+    public function getLibBaseDir()
+    {
+        return $this->libBaseDir;
+    }
+
+    public function getSystemBaseDir()
+    {
+        return $this->systemBaseDir;
     }
 
     public function __($msgid)
