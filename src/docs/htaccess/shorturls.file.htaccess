@@ -39,9 +39,6 @@ RewriteRule ^javascript/.*$ - [PT]
 RewriteRule ^index\.p?html?$ index.php [L,NC,NS]
 RewriteRule ^user\.p?html?$ user.php [L,NC,NS]
 
-# Language changing
-RewriteRule ^changelang-([^-]+)\.p?html?$ index.php?newlang=$1 [L,NC,NS]
-
 # Theme changing
 RewriteRule ^changetheme-([^-]+)\.p?html?$ index.php?newtheme=$1 [L,NC,NS]
 RewriteRule ^previewtheme-([^-]+)\.p?html?$ index.php?theme=$1 [L,NC,NS]
@@ -55,24 +52,9 @@ RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-
 RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-lang-(.*)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6&$7=$8&$9=$10&lang=$11 [L,NC,NS]
 
 # General rules for modules with index.php?module=...
-#RewriteRule ^module-([^-]+)\.p?html?$ index.php?module=$1&func=main [L,NC,NS]
+RewriteRule ^module-([^-]+)\.p?html?$ index.php?module=$1&func=main [L,NC,NS]
 RewriteRule ^module-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2 [L,NC,NS]
 RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2&$3=$4 [L,NC,NS]
 RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6 [L,NC,NS]
 RewriteRule ^module-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?module=$1&func=$2&$3=$4&$5=$6&$7=$8 [L,NC,NS]
-
-# General rules for modules with index.php?name=...
-RewriteRule ^([^-]+)\.p?html?$ index.php?name=$1 [L,NC,NS]
-RewriteRule ^([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3 [L,NC,NS]
-RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3&$4=$5 [L,NC,NS]
-RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3&$4=$5&$6=$7 [L,NC,NS]
-# RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&$2=$3&$4=$5&$6=$7&$8=$9 [L,NC,NS]
-
-# General rules for modules with index.php?name=...&file=...
-RewriteRule ^([^-]+)\+([^-]+)\.p?html?$ index.php?name=$1&req=$2 [L,NC,NS]
-RewriteRule ^([^-]+)\.p?html?$ index.php?name=$1 [L,NC,NS]
-RewriteRule ^([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2 [L,NC,NS]
-RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2&$3=$4 [L,NC,NS]
-RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2&$3=$4&$5=$6 [L,NC,NS]
-RewriteRule ^([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)-([^-]+)\.p?html?$ index.php?name=$1&file=$2&$3=$4&$5=$6&$7=$8 [L,NC,NS]
 
