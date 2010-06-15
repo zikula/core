@@ -29,6 +29,8 @@ function replace_pnApi($contents)
 //    '__' => '__',
 //    '_n' => '_n',
 //    'no__' => 'no__',
+    '_pntables()' => '_tables()',
+    '_pntables ()' => '_tables()',
     'pnrender::' => 'Renderer::',
     '& pnrender::' => 'Renderer::',
     'pnrender' => 'renderer',
