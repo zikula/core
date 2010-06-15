@@ -110,7 +110,9 @@ class PluginUtil
             $plugin->preInitialize();
             $plugin->initialize();
             $plugin->postInitialize();
-            $plugin->attach();
+            if (is_array($plugin->getEventNames()) && $plugin->getEventNames()) {
+                $plugin->attach();
+            }
         }
         
         return $sm->attachService($serviceId, $plugin);

@@ -33,8 +33,6 @@ abstract class Zikula_Base
     {
         $this->_setup();
         $this->options = $options;
-        $this->serviceManager = ServiceUtil::getManager();
-        $this->eventManager = EventUtil::getManager();
         
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
@@ -53,6 +51,8 @@ abstract class Zikula_Base
         $this->systemBaseDir = realpath(dirname(__FILE__) . '/../..');
         $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/" . $this->modinfo['directory']);
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
+        $this->serviceManager = ServiceUtil::getManager();
+        $this->eventManager = EventUtil::getManager();
     }
 
     public function getReflection()

@@ -13,14 +13,11 @@
  * information regarding copyright and licensing.
  */
 
-
 abstract class Zikula_Plugin extends Zikula_EventHandler
 {
     const TYPE_MODULE = 1;
     const TYPE_SYSTEM = 2;
-    
-    protected $eventManager;
-    protected $serviceManager;
+
     protected $meta;
     protected $pluginType;
     protected $serviceId;
@@ -168,25 +165,6 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
     }
-
-//    public function getState()
-//    {
-//        PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
-//    }
-//
-//    public function setState($state, $version = false)
-//    {
-//        if (!isset($state['state'])) {
-//            throw new InvalidArgumentException('State key must be set');
-//        }
-//        $plugin = PluginUtil::getVar($this->serviceId, PluginUtil::getDefaultState());
-//        $plugin['state'] = $state;
-//        if ($version) {
-//            $plugin['version'] = self::VERSION;
-//        }
-//
-//        $plugin = PluginUtil::getState($this->serviceId, $state);
-//    }
 
     public function preInstall()
     {

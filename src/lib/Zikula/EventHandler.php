@@ -28,6 +28,8 @@
  */
 abstract class Zikula_EventHandler
 {
+    protected $eventNames;
+    
     protected $eventManager;
     protected $serviceManager;
 
@@ -44,24 +46,43 @@ abstract class Zikula_EventHandler
         $this->serviceManager = $serviceManager;
     }
 
+    public function getEventNames()
+    {
+        return $this->eventNames;
+    }
+
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+    public function getServiceManager()
+    {
+        return $this->serviceManager;
+    }
+
     /**
      * Attach handler with EventManager.
      */
     public function attach()
     {
+        if (!is_array($this->eventNames)) {
+            throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
+        }
+
         foreach ($this->eventNames as $name => $method) {
             if (is_integer($name)) {
                 throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
             }
 
-            EventUtil::attach($name, array($this, $method));
+            $this->eventManager->attach($name, array($this, $method));
         }
     }
 
     public function detach()
     {
         foreach ($this->eventNames as $name => $method) {
-            EventUtil::detach($name, array($this, $method));
+            $this->eventManager->detach($name, array($this, $method));
         }
     }
 }
