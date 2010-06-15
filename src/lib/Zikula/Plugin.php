@@ -18,6 +18,9 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     const TYPE_MODULE = 1;
     const TYPE_SYSTEM = 2;
 
+    protected $eventManager;
+    protected $serviceManager;
+    
     protected $meta;
     protected $pluginType;
     protected $serviceId;

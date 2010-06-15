@@ -258,7 +258,7 @@ class System
             } else {
                 require_once 'lib/templates/notinstalled.htm';
             }
-            self::shutdown();
+            self::shutDown();
         }
 
         // initialise time to render
@@ -284,7 +284,7 @@ class System
                     } else {
                         include 'lib' . $templateFile;
                     }
-                    self::shutdown();
+                    self::shutDown();
                 } else {
                     return false;
                 }
@@ -1135,7 +1135,7 @@ class System
         'file' => $errfile,
         'line' => $errline));
         Theme::getInstance()->themefooter();
-        self::shutdown();
+        self::shutDown();
     }
 
     /**
