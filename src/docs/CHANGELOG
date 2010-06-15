@@ -151,7 +151,7 @@ Added system-wide and module specific event based plugin system.
 Added front controller exception handling.
 Removed Renderer singleton pattern, this is now handled via ServiceManager, one instance per module or plugin.
 Removed need to specify domain= in template {gt} calls.
-Improved StringUtil::highlightWords() (patch by Gabriele Dipohl).
+Improved StringUtil::highlightWords() (patch by Gabriele Pohl).
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
