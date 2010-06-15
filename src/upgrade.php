@@ -395,7 +395,7 @@ function upgrade_clear_caches()
     Renderer::getInstance()->clear_compiled();
 }
 
-function upgrade_suppressErrors(Event $event)
+function upgrade_suppressErrors(Zikula_Event $event)
 {
     if (!$event['stages'] & System::CORE_STAGES_CONFIG) {
         return;
