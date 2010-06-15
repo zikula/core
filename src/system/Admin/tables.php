@@ -20,7 +20,7 @@
  *
  * @return array Return pntables array.
  */
-function Admin_pntables()
+function Admin_tables()
 {
     $pntable = array();
 

@@ -15,14 +15,13 @@
 include 'lib/legacy/Api.php';
 
 // backwards compatibility references
-$GLOBALS['PNConfig'] = & $GLOBALS['ZConfig'];
-$GLOBALS['PNRuntime'] = & $GLOBALS['ZRuntime'];
+$GLOBALS['PNConfig'] = &$GLOBALS['ZConfig'];
+$GLOBALS['PNRuntime'] = &$GLOBALS['ZRuntime'];
+$GLOBALS['dbtables'] = &$GLOBALS['pntables'];
 
-// start BC classes licensed as LGPv2.1
-
-define('_MARKER_NONE',                '&nbsp;&nbsp;');
-define('_REQUIRED_MARKER',            '<span style="font-size:larger;color:blue"><b>*</b></span>');
-define('_VALIDATION_MARKER',          '<span style="font-size:larger;color:red"><b>!</b></span>');
+define('_MARKER_NONE', '&nbsp;&nbsp;');
+define('_REQUIRED_MARKER',  '<span style="font-size:larger;color:blue"><b>*</b></span>');
+define('_VALIDATION_MARKER', '<span style="font-size:larger;color:red"><b>!</b></span>');
 
 /**
  * Alias to the Renderer class for backward compatibility to Zikula 1.2.x.
@@ -1551,9 +1550,6 @@ class pnFormVolatile extends Form_Block_Volatile
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__, 'Form_Block_Volatile')), 'STRICT');
     }
 }
-
-// end BC classes
-
 
 /**
  * @deprecated since 1.2

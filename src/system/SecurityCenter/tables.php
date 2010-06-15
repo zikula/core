@@ -18,7 +18,7 @@
  *
  * @return array pntables array.
  */
-function securitycenter_pntables()
+function securitycenter_tables()
 {
     // Initialise table array
     $pntable = array();

@@ -14,12 +14,12 @@
 
 
 /**
- * This function is called internally by the core whenever the module is loaded. 
+ * This function is called internally by the core whenever the module is loaded.
  *
  * @return array.
  */
 
-function sysinfo_pntables()
+function sysinfo_tables()
 {
     return array();
 }

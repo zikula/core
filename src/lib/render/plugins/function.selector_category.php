@@ -46,11 +46,11 @@ function smarty_function_selector_category ($params, &$smarty)
     $doReplaceRootCat = isset($params['doReplaceRootCat']) ? $params['doReplaceRootCat'] : null;
 
     // disable attribution if we don't need it
-    $_pnTables = null;
+    $_dbTables = null;
     if (!$fieldIsAttribute) {
-        $t = $_pnTables = $GLOBALS['pntables'];
+        $t = $_dbTables = $GLOBALS['dbtables'];
         $t['categories_category_db_extra_enable_attribution'] = false;
-        $GLOBALS['pntables'] = $t;
+        $GLOBALS['dbtables'] = $t;
     }
 
     if (!$category && !$path && $categoryRegistryModule && $categoryRegistryTable && $categoryRegistryProperty) {
@@ -90,8 +90,8 @@ function smarty_function_selector_category ($params, &$smarty)
     }
 
     // re-enable attribution if we disabled it previously
-    if ($_pnTables) {
-        $GLOBALS['pntables'] = $_pnTables;
+    if ($_dbTables) {
+        $GLOBALS['dbtables'] = $_dbTables;
     }
 
     if ($assign) {

@@ -26,7 +26,7 @@
  *
  * @return       array       The table information.
  */
-function Permissions_pntables()
+function Permissions_tables()
 {
     // Initialise table array
     $pntable = array();

@@ -222,7 +222,7 @@ function modules_init_changestructure120()
     ";
 
     DBUtil::changeTable('modules', $sql);
-    $GLOBALS['pntables']['modules_column']['url'] = 'pn_url';
+    $GLOBALS['dbtables']['modules_column']['url'] = 'pn_url';
     unset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom120']);
 
     ModUtil::dbInfoLoad('Modules', true);

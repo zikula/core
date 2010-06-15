@@ -295,8 +295,8 @@ class System
         }
 
         if ($stages & self::CORE_STAGES_TABLES) {
-            // Initialise pntables
-            $GLOBALS['pntables'] = isset($pntable) ? $pntable : null;
+            // Initialise dbtables
+            $GLOBALS['dbtables'] = isset($pntable) ? $pntable : null;
             // ensure that the base modules info is available
             ModUtil::dbInfoLoad('Modules', 'Modules');
             ModUtil::dbInfoLoad('Theme', 'Theme');
@@ -434,7 +434,7 @@ class System
      */
     public static function dbGetTables()
     {
-        return $GLOBALS['pntables'];
+        return $GLOBALS['dbtables'];
     }
 
     /**

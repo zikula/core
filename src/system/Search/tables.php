@@ -18,13 +18,13 @@
  *
  * This function is called internally by the core whenever the module is loaded. It adds in the information of the search module's database tables.
  */
-function Search_pntables()
+function Search_tables()
 {
     $search_stat = DBUtil::getLimitedTablename('search_stat');
 
     $pntable = array();
     $pntable['search_stat'] = $search_stat;
-    $pntable['search_stat_column'] = array ('id'     => 'pn_id', 
+    $pntable['search_stat_column'] = array ('id'     => 'pn_id',
                                             'search' => 'pn_search',
                                             'count'  => 'pn_count',
                                             'date'   => 'pn_date');

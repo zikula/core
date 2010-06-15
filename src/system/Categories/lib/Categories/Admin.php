@@ -41,12 +41,12 @@ class Categories_Admin extends Zikula_Controller
         }
 
         // disable attribution for performance
-        $GLOBALS['pntables']['categories_category_db_extra_enable_attribution'] = false;
+        $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = false;
         $pntables    = System::dbGetTables ();
         $columnArray = array ('id', 'name', 'display_name', 'parent_id', 'path', 'ipath', 'status');
         $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true, '', '', null, $columnArray);
         $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);
-        $GLOBALS['pntables']['categories_category_db_extra_enable_attribution'] = true;
+        $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = true;
 
         $pnRender = Renderer::getInstance('Categories', false);
         $pnRender->assign('menuTxt', $menuTxt);

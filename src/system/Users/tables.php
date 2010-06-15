@@ -19,7 +19,7 @@
  *
  * @return array The table information.
  */
-function Users_pntables()
+function Users_tables()
 {
     // Initialise table array
     $pntable = array();
@@ -99,7 +99,7 @@ function Users_pntables()
         'code_hash_method'  => "I1 NOTNULL DEFAULT 8",
         'code_expires'      => "I4 NOTNULL DEFAULT 0",
     );
-    
+
     // Temp Table - Moderation
     // Get the name for the Temporary item table.  This is not necessary
     // but helps in the following statements and keeps them readable

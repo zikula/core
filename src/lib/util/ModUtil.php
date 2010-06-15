@@ -527,15 +527,13 @@ class ModUtil
 
         if (Loader::loadOneFile($files)) {
             $tablefunc = $modname . '_tables';
+            $tablefuncOld = $modname . '_pntables';
             if (function_exists($tablefunc)) {
                 $data = $tablefunc();
-                $GLOBALS['pntables'] = array_merge((array)$GLOBALS['pntables'], (array)$data);
-            } else {
-                $tablefunc = $modname . '_pntables';
-                if (function_exists($tablefunc)) {
-                    $data = $tablefunc();
-                    $GLOBALS['pntables'] = array_merge((array)$GLOBALS['pntables'], (array)$data);
-                }
+                $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
+            } elseif (function_exists($tablefuncOld)) {
+                $data = $tablefuncOld();
+                $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
             }
         }
 
@@ -814,9 +812,9 @@ class ModUtil
                 $controller = $modfunc[0];
             }
         }
-        
+
         $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
-        
+
         if ($loaded) {
             $preExecuteEvent = new Zikula_Event('module.preexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
             $postExecuteEvent = new Zikula_Event('module.postexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));

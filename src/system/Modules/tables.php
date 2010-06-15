@@ -24,7 +24,7 @@
  * @author       Frank Schummertz
  * @return       array       The table information.
  */
-function Modules_pntables()
+function Modules_tables()
 {
     // Initialise table array
     $pntable = array();
@@ -63,7 +63,7 @@ function Modules_pntables()
     // A bit of magic to handle upgrades from 0.76x to 0.8x
     $modules = $prefix . '_modules';
     $pntable['modules'] = $modules;
-    $pntable['modules_column'] = Modules_pntables_detectversion();
+    $pntable['modules_column'] = Modules_tables_detectversion();
 
     // column definition
     $pntable['modules_column_def'] = array ('id'             => "I PRIMARY AUTO",
@@ -132,7 +132,7 @@ function Modules_pntables()
 }
 
 
-function Modules_pntables_detectversion()
+function Modules_tables_detectversion()
 {
     if (isset($_SESSION['_ZUpgrader']['_ZUpgradeFrom76x'])) {
         return array ('id'             => 'pn_id',

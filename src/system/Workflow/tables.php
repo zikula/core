@@ -17,7 +17,7 @@
  *
  * @return array of table data
  */
-function Workflow_pntables()
+function Workflow_tables()
 {
     $pntables = array();
     $pntables['workflows'] = DBUtil::getLimitedTablename('workflows');

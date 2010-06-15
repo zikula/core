@@ -18,7 +18,7 @@
  * define table information for the module
  *
  */
-function & PageLock_pntables()
+function PageLock_tables()
 {
   $pntable = array();
   $prefix = System::getVar('prefix');

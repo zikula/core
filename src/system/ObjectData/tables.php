@@ -18,7 +18,7 @@
  *
  * return array
  */
-function ObjectData_pntables()
+function ObjectData_tables()
 {
     // Initialise table array
     $pntables = array();

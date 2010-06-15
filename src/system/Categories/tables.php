@@ -18,7 +18,7 @@
  *
  * @return array Array of informations related to the Categories module tables.
  */
-function Categories_pntables()
+function Categories_tables()
 {
     // Initialise table array
     $pntable = array();

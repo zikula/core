@@ -22,7 +22,7 @@
  *
  * @return       array       The table information.
  */
-function theme_pntables()
+function theme_tables()
 {
     // Initialise table array
     $pntable = array();

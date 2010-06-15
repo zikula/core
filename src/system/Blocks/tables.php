@@ -23,7 +23,7 @@
  * @author       Mark West
  * @return       array       The table information.
  */
-function Blocks_pntables()
+function Blocks_tables()
 {
     // Initialise table array
     $pntable = array();
