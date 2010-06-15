@@ -979,7 +979,7 @@ class System
             }
             // the module is the first argument string
             if (isset($args[1]) && !empty($args[1])) {
-                if (ZLanguage::isLangParam($args[1])) {
+                if (ZLanguage::isLangParam($args[1]) && in_array($args[1], ZLanguage::getInstalledLanguages())) {
                     self::queryStringSetVar('lang', $args[1]);
                     array_shift($args);
                 }
