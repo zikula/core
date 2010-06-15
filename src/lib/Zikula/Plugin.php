@@ -19,6 +19,8 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     const TYPE_MODULE = 1;
     const TYPE_SYSTEM = 2;
     
+    protected $eventManager;
+    protected $serviceManager;
     protected $meta;
     protected $pluginType;
     protected $serviceId;
@@ -27,21 +29,33 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $moduleName;
     protected $pluginName;
     protected $gettextEnabled = true;
-
+    protected $baseDir;
+    protected $reflection;
+    
     public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
     {
-        parent::__construct($eventManager, $serviceManager);
+        $this->eventManager = $eventManager;
+        $this->serviceManager = $serviceManager;
         $this->_setup();
         if (!$this->getMetaDisplayName() || !$this->getMetaDescription() || !$this->getMetaVersion()) {
             throw new LogicException(sprintf("setMeta() must be defined in %s must and return array('displayname' => 'displayname', 'description' => 'description', 'version' => 'a.b.c')", get_class($this)));
         }
     }
 
+    public function getReflection()
+    {
+        if (!is_null($this->reflection)) {
+            return $this->reflection;
+        }
+
+        return new ReflectionObject($this);
+    }
+
     private function _setup()
     {
         $this->className = get_class($this);
         $this->serviceId = strtolower(str_replace('_', '.', $this->className));
-        $this->baseDir = realpath(dirname(__FILE__));
+        $this->baseDir = dirname($this->getReflection()->getFileName());
         $p = explode('_', $this->className);
         if (strpos($this->serviceId, 'moduleplugin') === 0) {
             $this->moduleName = $p[1];
