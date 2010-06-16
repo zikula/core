@@ -625,6 +625,7 @@ class ModUtil
 
         // if class is loadable or has been loaded exit here.
         if (self::isIntialized($modname)) {
+            self::_loadStyleSheets($modname, $api, $type);
             return $modname;
         }
 
@@ -654,14 +655,6 @@ class ModUtil
 
         $loaded[$modtype] = $modname;
 
-        self::_postLoadGeneric($modinfo, $type, $api, $force);
-
-        return $modname;
-    }
-
-    private static function _postLoadGeneric($modinfo, $type, $api, $force)
-    {
-        $modname = $modinfo['name'];
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modname);
         }
@@ -669,6 +662,16 @@ class ModUtil
         // Load database info
         self::dbInfoLoad($modname, $modinfo['directory']);
 
+        self::_loadStyleSheets($modname, $api, $type);
+
+        $event = new Zikula_Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+        EventUtil::notify($event);
+
+        return $modname;
+    }
+
+    private static function _loadStyleSheets($modname, $api, $type)
+    {
         // add stylesheet to the page vars, this makes the modulestylesheet plugin obsolete,
         // but only for non-api loads as we would pollute the stylesheets
         // not during installation as the Theme engine may not be available yet and not for system themes
@@ -681,9 +684,6 @@ class ModUtil
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin', 'admin.css'));
             }
         }
-
-        $event = new Zikula_Event('module.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
-        EventUtil::notify($event);
     }
 
     public static function getClass($modname, $type, $api = false, $force = false)
