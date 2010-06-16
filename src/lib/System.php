@@ -644,16 +644,20 @@ class System
         // check the use of friendly url setup
         $shorturls = self::getVar('shorturls', false);
         $dirBased = (self::getVar('shorturlstype') == 0 ? true : false);
+        $langRequired = ZLanguage::isRequiredLangParam();
 
         if ($shorturls && $dirBased) {
-            $result = System::getBaseUrl() . self::getVar('entrypoint', 'index.php');
-        } else {
+            $result = System::getBaseUrl();
+            if ($langRequired) {
+                $result .= ZLanguage::getLanguageCode();
+            }
+        } else  {
             $result = self::getVar('entrypoint', 'index.php');
+            if (ZLanguage::isRequiredLangParam()) {
+                $result .= '?lang=' . ZLanguage::getLanguageCode();
+            }
         }
-        if (ZLanguage::isRequiredLangParam()) {
-            $result .= '?lang=' . ZLanguage::getLanguageCode();
-        }
-
+        
         return $result;
     }
 

@@ -46,6 +46,7 @@ function smarty_outputfilter_shorturls($source, &$smarty)
 
         // (?i) means case insensitive; \w='word' character; \d=digit; (amp;)? means optional; (?:catid=)? means optional and won't capture string for backreferences
         $in = array(
+            $prefix . $entrypoint . '\?lang=([a-z-]+)"|',
             $prefix . '\?theme=([\w\d\.\:\_\/]+)"|',
             $prefix . $entrypoint . '"|',
             $prefix . 'user.php"|',
@@ -76,6 +77,7 @@ function smarty_outputfilter_shorturls($source, &$smarty)
         );
 
         $out = array(
+            'index-lang-$1.'.$extension,
             '"previewtheme-$1.'.$extension.'"',
             '"index.'.$extension.'"',
             '"user.'.$extension.'"',
@@ -112,9 +114,5 @@ function smarty_outputfilter_shorturls($source, &$smarty)
     $source = preg_replace($in, $out, $source);
 
     // return the modified source
-    if (strpos($source, 'london')) {
-        echo "<pre>$source";
-        die();
-    }
     return $source;
 }

@@ -38,6 +38,7 @@ RewriteRule ^javascript/.*$ - [PT]
 # Basic entry point rules
 RewriteRule ^index\.p?html?$ index.php [L,NC,NS]
 RewriteRule ^user\.p?html?$ user.php [L,NC,NS]
+RewriteRule ^index-lang-([a-z-]+)\.p?html?$ index.php?lang=$1 [L,NC,NS]
 
 # Theme changing
 RewriteRule ^changetheme-([^-]+)\.p?html?$ index.php?newtheme=$1 [L,NC,NS]
