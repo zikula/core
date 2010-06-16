@@ -120,7 +120,7 @@ class Permissions_Admin extends Zikula_Controller
             $renderer->assign('permgrp', PNPERMS_ALL);
         }
 
-        $accesslevels = SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames();
+        $accesslevels = SecurityUtil::accesslevelnames();
 
         $orderBy = "ORDER BY $permcolumn[sequence]";
         $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy, -1, -1, false);
@@ -210,7 +210,7 @@ class Permissions_Admin extends Zikula_Controller
         $renderer->assign('adminid', ModUtil::getVar('Permissions', 'adminid'));
 
         // Assign the permission levels
-        $renderer->assign('permissionlevels', SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames());
+        $renderer->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
         return $renderer->fetch('permissions_admin_view.htm');
     }
@@ -326,7 +326,7 @@ class Permissions_Admin extends Zikula_Controller
         $renderer = Renderer::getInstance('Permissions', false);
 
         // Assign the permission levels
-        $renderer->assign('permissionlevels', SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames());
+        $renderer->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
         // Work out which tables to operate against, and
         // various other bits and pieces
@@ -346,7 +346,7 @@ class Permissions_Admin extends Zikula_Controller
         $renderer->assign('title', $viewperms);
         $renderer->assign('mlpermtype', $mlpermtype);
 
-        $accesslevels = SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames();
+        $accesslevels = SecurityUtil::accesslevelnames();
         $numrows = count($objArray);
 
         $renderer->assign('idvalues', $ids);
