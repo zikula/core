@@ -397,7 +397,7 @@ function upgrade_clear_caches()
 
 function upgrade_suppressErrors(Zikula_Event $event)
 {
-    if (!$event['stages'] & System::CORE_STAGES_CONFIG) {
+    if (!$event['stage'] == System::CORE_STAGES_CONFIG) {
         return;
     }
 
