@@ -23,6 +23,10 @@
   any more because Zikula no longer supports define based language packs.
   Upgrade themes and modules.
 
+- See all deprecated template plugins in lib/legacy/plugins
+
+- Output filtering is now done with safetext, and safehtml modifiers.
+
 - Rename all PNObject* to DBObject*.
 
 - DBUtil::executeSQL used to return a ADODB object but now returns a PHP PDO
