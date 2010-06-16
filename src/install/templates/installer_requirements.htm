@@ -114,13 +114,13 @@
                 {/if}
             </ul>
         </fieldset>
-        <div class="z-formbuttons">
+        <div class="z-buttons z-formbuttons">
             {if $checkfailed neq true}
             <input type="hidden" name="action" value="dbinformation" />
-            <input type="submit" value="{gt text="Next"}" />
+            <input type="submit" value="{gt text="Next"}" class="z-btblue" />
             {else}
             <input type="hidden" name="action" value="requirements" />
-            <input type="submit" value="{gt text="Check again"}" />
+            <input type="submit" value="{gt text="Check again"}" class="z-btblue" />
             {/if}
         </div>
     </div>
