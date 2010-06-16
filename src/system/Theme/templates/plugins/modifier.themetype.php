@@ -7,12 +7,12 @@
  * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  *
- * pnRender plugin
+ * renderer plugin
  *
- * This file is a plugin for pnRender, the Zikula implementation of Smarty
+ * This file is a plugin for renderer, the Zikula implementation of Smarty
  *
  * @package      Zikula_System_Modules
- * @subpackage   pnRender
+ * @subpackage   renderer
  */
 
 /**

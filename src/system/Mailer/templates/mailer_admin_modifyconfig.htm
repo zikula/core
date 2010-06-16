@@ -15,7 +15,7 @@
                 <div class="z-formrow">
                     {charset assign=defaultcharset}
                     <label for="mailer_charset">{gt text="Character set (default: '%s')" tag1=$defaultcharset}</label>
-                    <input id="mailer_charset" name="charset" type="text" size="10" maxlength="20" value="{$charset|varprepfordisplay}" />
+                    <input id="mailer_charset" name="charset" type="text" size="10" maxlength="20" value="{$charset|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_encoding">{gt text="Encoding (default: '8bit')"}</label>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_wordwrap">{gt text="Word wrap (default: 50)"}</label>
-                    <input id="mailer_wordwrap" name="wordwrap" type="text" size="3" maxlength="3" value="{$wordwrap|varprepfordisplay}" />
+                    <input id="mailer_wordwrap" name="wordwrap" type="text" size="3" maxlength="3" value="{$wordwrap|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_msmailheaders">{gt text="Use Microsoft mail client headers"}</label>
@@ -48,22 +48,22 @@
                 <legend>{gt text="'Sendmail' settings"}</legend>
                 <div class="z-formrow">
                     <label for="mailer_sendmailpath">{gt text="Path to 'Sendmail'"}</label>
-                    <input id="mailer_sendmailpath" name="sendmailpath" type="text" size="50" maxlength="50" value="{$sendmailpath|varprepfordisplay}" />
+                    <input id="mailer_sendmailpath" name="sendmailpath" type="text" size="50" maxlength="50" value="{$sendmailpath|safetext}" />
                 </div>
             </fieldset>
             <fieldset id="mailer_smtpsettings">
                 <legend>{gt text="SMTP settings"}</legend>
                 <div class="z-formrow">
                     <label for="mailer_smtpserver">{gt text="SMTP server (default: localhost)"}</label>
-                    <input id="mailer_smtpserver" name="smtpserver" type="text" size="30" maxlength="50" value="{$smtpserver|varprepfordisplay}" />
+                    <input id="mailer_smtpserver" name="smtpserver" type="text" size="30" maxlength="50" value="{$smtpserver|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_smtpport">{gt text="SMTP port (default: 25)"}</label>
-                    <input id="mailer_smtpport" name="smtpport" type="text" size="5" maxlength="5" value="{$smtpport|varprepfordisplay}" />
+                    <input id="mailer_smtpport" name="smtpport" type="text" size="5" maxlength="5" value="{$smtpport|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_smtptimeout">{gt text="SMTP time-out (default: 10 seconds)"}</label>
-                    <input id="mailer_smtptimeout" name="smtptimeout" type="text" size="5" maxlength="5" value="{$smtptimeout|varprepfordisplay}" />
+                    <input id="mailer_smtptimeout" name="smtptimeout" type="text" size="5" maxlength="5" value="{$smtptimeout|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_smtpauth">{gt text="Enable SMTP authentication"}</label>
@@ -76,11 +76,11 @@
                 <div id="mailer_smtp_authentication">
                     <div class="z-formrow">
                         <label for="mailer_smtpusername">{gt text="SMTP user name"}</label>
-                        <input id="mailer_smtpusername" name="smtpusername" type="text" size="30" maxlength="50" value="{$smtpusername|varprepfordisplay}" />
+                        <input id="mailer_smtpusername" name="smtpusername" type="text" size="30" maxlength="50" value="{$smtpusername|safetext}" />
                     </div>
                     <div class="z-formrow">
                         <label for="mailer_smtppassword">{gt text="SMTP password"}</label>
-                        <input id="mailer_smtppassword" name="smtppassword" type="password" size="30" maxlength="30" value="{$smtppassword|varprepfordisplay}" />
+                        <input id="mailer_smtppassword" name="smtppassword" type="password" size="30" maxlength="30" value="{$smtppassword|safetext}" />
                     </div>
                 </div>
             </fieldset>

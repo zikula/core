@@ -4,7 +4,7 @@
  *
  * @copyright (c) 2002, Zikula Development Team
  * @link http://www.zikula.org
- * @version $Id: pnRender.php 27057 2009-10-21 16:15:43Z drak $
+ * @version $Id: renderer.php 27057 2009-10-21 16:15:43Z drak $
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  *
  * Render - Zikula wrapper class for Smarty

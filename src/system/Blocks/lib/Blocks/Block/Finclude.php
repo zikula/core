@@ -115,13 +115,13 @@ class Blocks_Block_Finclude extends Zikula_Block
 
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
-        $pnRender = Renderer::getInstance('Blocks');
+        $renderer = Renderer::getInstance('Blocks');
 
         // assign the vars
-        $pnRender->assign($vars);
+        $renderer->assign($vars);
 
         // return the output
-        return $pnRender->fetch('blocks_block_finclude_modify.htm');
+        return $renderer->fetch('blocks_block_finclude_modify.htm');
     }
 
     /**

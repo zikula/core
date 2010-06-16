@@ -7,12 +7,12 @@
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Groups"}" />
-            <input type="hidden" name="gid" value="{$gid|varprepfordisplay}" />
+            <input type="hidden" name="gid" value="{$gid|safetext}" />
             <fieldset>
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
                     <label for="groups_name">{gt text="Name"}</label>
-                    <input id="groups_name" name="name" type="text" size="30" maxlength="30" value="{$name|varprepfordisplay}" />
+                    <input id="groups_name" name="name" type="text" size="30" maxlength="30" value="{$name|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="groups_gtype">{gt text="Type"}</label>

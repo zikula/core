@@ -18,12 +18,12 @@
         <tbody>
             {foreach from=$hackattempts item=hackattempt}
             <tr class="{cycle values="z-odd,z-even"}">
-                <td>{$hackattempt.hid|varprepfordisplay}</td>
-                <td>{$hackattempt.hackfile|varprepfordisplay}</td>
-                <td>{$hackattempt.hackline|varprepfordisplay}</td>
-                <td>{$hackattempt.hacktype|varprepfordisplay}</td>
-                <td>{$hackattempt.hacktime|varprepfordisplay}</td>
-                <td>{$hackattempt.userid|varprepfordisplay}</td>
+                <td>{$hackattempt.hid|safetext}</td>
+                <td>{$hackattempt.hackfile|safetext}</td>
+                <td>{$hackattempt.hackline|safetext}</td>
+                <td>{$hackattempt.hacktype|safetext}</td>
+                <td>{$hackattempt.hacktime|safetext}</td>
+                <td>{$hackattempt.userid|safetext}</td>
                 <td>
                     {assign var="options" value=$hackattempt.options}
                     <form action="{modurl modname="SecurityCenter" type="admin" func="main"}" method="get">
@@ -31,7 +31,7 @@
                             <select name="viewhackattempt" onchange="location.href=this.options[this.selectedIndex].value">
                                 <option value="{modurl modname="SecurityCenter" type="admin" func="main"}">{gt text="Additional information"}</option>
                                 {foreach item=option from=$options}
-                                <option value="{$option.url|varprepfordisplay}">{$option.title|varprepfordisplay}</option>
+                                <option value="{$option.url|safetext}">{$option.title|safetext}</option>
                                 {/foreach}
                             </select>
                         </div>

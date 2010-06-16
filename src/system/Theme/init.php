@@ -83,15 +83,15 @@ function theme_upgrade($oldversion)
             ModUtil::setVar('Theme', 'cssjscombine_lifetime', 3600);
 
         case '3.3':
-            // convert pnRender modvars
-            $pnrendervars = ModUtil::getVar('pnRender');
-            foreach ($pnrendervars as $k => $v) {
+            // convert renderer modvars
+            $renderervars = ModUtil::getVar('renderer');
+            foreach ($renderervars as $k => $v) {
                 ModUtil::setVar('Theme', 'render_' . $k, $v);
             }
-            // delete pnRender modvars
-            ModUtil::delVar('pnRender');
+            // delete renderer modvars
+            ModUtil::delVar('renderer');
 
-            $modid = ModUtil::getIdFromName('pnRender');
+            $modid = ModUtil::getIdFromName('renderer');
 
             // check and update blocks
             $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('modid' => $modid));
@@ -107,7 +107,7 @@ function theme_upgrade($oldversion)
             // check and fix permissions
             $pntable = System::dbGetTables();
             $permscolumn = $pntable['group_perms_column'];
-            $permswhere = "WHERE $permscolumn[component] = 'pnRender:pnRenderblock:'";
+            $permswhere = "WHERE $permscolumn[component] = 'renderer:rendererblock:'";
             $perms = DBUtil::selectObjectArray('group_perms', $permswhere);
             if (!empty($perms)) {
                 foreach ($perms as $perm) {
@@ -117,13 +117,13 @@ function theme_upgrade($oldversion)
 
             }
 
-            // Set Module pnRender 'Inactive'
+            // Set Module renderer 'Inactive'
             if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
                 'id' => $modid,
                 'state' => ModUtil::STATE_INACTIVE))) {
                 return '3.3';
             }
-            // Remove Module pnRender from Modulelist
+            // Remove Module renderer from Modulelist
             if (!ModUtil::apiFunc('Modules', 'admin', 'remove', array(
                 'id' => $modid))) {
                 return '3.3';

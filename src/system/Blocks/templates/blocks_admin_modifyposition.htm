@@ -7,12 +7,12 @@
     <form class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" id="blocksauthid" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />
-            <input type="hidden" id="position" name="position[pid]" value="{$pid|varprepfordisplay}" />
+            <input type="hidden" id="position" name="position[pid]" value="{$pid|safetext}" />
             <fieldset>
                 <legend>{gt text="Block position"}</legend>
                 <div class="z-formrow">
                     <label for="blocks_positionname">{gt text="Name"}</label>
-                    <input type="text" id="blocks_positionname" name="position[name]" value="{$name|varprepfordisplay}" size="50" maxlength="255" />
+                    <input type="text" id="blocks_positionname" name="position[name]" value="{$name|safetext}" size="50" maxlength="255" />
                     <em class="z-sub z-formnote">{gt text="Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_)."}</em>
                 </div>
                 <div class="z-formrow">
@@ -37,9 +37,9 @@
                 </li>
                 {foreach item=block from=$assignedblocks}
                 <li id="block_{$block.bid}" class="{cycle name=assignedblocklist values="z-odd,z-even"} z-sortable z-clearfix">
-                    <span id="blockdrag_{$block.bid}" class="z-itemcell z-w25">{$block.title|varprepfordisplay|default:"&nbsp;"}</span>
-                    <span class="z-itemcell z-w25">{$block.modname|varprepfordisplay}</span>
-                    <span class="z-itemcell z-w25">{$block.bkey|varprepfordisplay}</span>
+                    <span id="blockdrag_{$block.bid}" class="z-itemcell z-w25">{$block.title|safetext|default:"&nbsp;"}</span>
+                    <span class="z-itemcell z-w25">{$block.modname|safetext}</span>
+                    <span class="z-itemcell z-w25">{$block.bkey|safetext}</span>
                     <span class="z-itemcell z-w25">
                         {if $block.active}
                         <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>
@@ -66,9 +66,9 @@
                 </li>
                 {foreach item=block from=$unassignedblocks}
                 <li id="block_{$block.bid}" class="{cycle name=unassignedblocklist values="z-odd,z-even"} z-sortable z-clearfix">
-                    <span id="blockdrag_{$block.bid}" class="z-itemcell z-w25">{$block.title|varprepfordisplay|default:"&nbsp;"}</span>
-                    <span class="z-itemcell z-w25">{$block.modname|varprepfordisplay}</span>
-                    <span class="z-itemcell z-w25">{$block.bkey|varprepfordisplay}</span>
+                    <span id="blockdrag_{$block.bid}" class="z-itemcell z-w25">{$block.title|safetext|default:"&nbsp;"}</span>
+                    <span class="z-itemcell z-w25">{$block.modname|safetext}</span>
+                    <span class="z-itemcell z-w25">{$block.bkey|safetext}</span>
                     <span class="z-itemcell z-w25">
                         {if $block.active}
                         <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.gif modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.gif modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>

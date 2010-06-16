@@ -9,7 +9,7 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="pid" value="{$pid|varprepfordisplay}" />
+            <input type="hidden" name="pid" value="{$pid|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-buttons z-formbuttons">

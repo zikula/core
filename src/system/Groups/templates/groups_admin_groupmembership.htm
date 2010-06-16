@@ -3,7 +3,7 @@
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=agt_family.gif set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle} ({$name|varprepfordisplay})</h2>
+    <h2>{$templatetitle} ({$name|safetext})</h2>
     <table class="z-admintable">
         <thead>
             <tr>
@@ -15,12 +15,12 @@
         <tbody>
             {section name=groupmembers loop=$groupmembers}
             <tr class="{cycle values="z-odd,z-even"}">
-                <td>{$groupmembers[groupmembers].uname|varprepfordisplay} {if $groupmembers[groupmembers].name neq ''}({$groupmembers[groupmembers].name|varprepfordisplay}){/if}</td>
-                <td>{$groupmembers[groupmembers].uid|varprepfordisplay}</td>
+                <td>{$groupmembers[groupmembers].uname|safetext} {if $groupmembers[groupmembers].name neq ''}({$groupmembers[groupmembers].name|safetext}){/if}</td>
+                <td>{$groupmembers[groupmembers].uid|safetext}</td>
                 <td>
                     {assign var="options" value=$groupmembers[groupmembers].options}
                     {section name=options loop=$options}
-                    <a href="{$options[options].url|varprepfordisplay}">{img src=$options[options].imgfile modname=core set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>
+                    <a href="{$options[options].url|safetext}">{img src=$options[options].imgfile modname=core set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>
                     {/section}
                 </td>
             </tr>
@@ -40,7 +40,7 @@
     <form class="z-form" action="{modurl modname="Groups" type="admin" func="adduser"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Groups"}" />
-            <input type="hidden" name="gid" value="{$gid|varprepfordisplay}" />
+            <input type="hidden" name="gid" value="{$gid|safetext}" />
             <fieldset>
                 <div class="z-formrow">
                     <label for="groups_uid">{gt text="Users to add"}</label>

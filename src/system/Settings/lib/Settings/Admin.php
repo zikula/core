@@ -39,7 +39,7 @@ class Settings_Admin extends Zikula_Controller
         }
 
         // create a new output object
-        $pnRender = Renderer::getInstance('Settings', false);
+        $renderer = Renderer::getInstance('Settings', false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -50,9 +50,9 @@ class Settings_Admin extends Zikula_Controller
             $configvars[$key] = $configvar;
         }
 
-        $pnRender->assign('settings', $configvars);
+        $renderer->assign('settings', $configvars);
 
-        return $pnRender->fetch('settings_admin_modifyconfig.htm');
+        return $renderer->fetch('settings_admin_modifyconfig.htm');
     }
 
     /**
@@ -153,7 +153,7 @@ class Settings_Admin extends Zikula_Controller
         }
 
         // create a new output object
-        $pnRender = Renderer::getInstance('Settings', false);
+        $renderer = Renderer::getInstance('Settings', false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -164,9 +164,9 @@ class Settings_Admin extends Zikula_Controller
         // get the server timezone - we should not allow to change this
         $configvars['timezone_server'] = DateUtil::getTimezone();
         $configvars['timezone_server_abbr'] = DateUtil::getTimezoneAbbr();
-        $pnRender->assign($configvars);
+        $renderer->assign($configvars);
 
-        return $pnRender->fetch('settings_admin_multilingual.htm');
+        return $renderer->fetch('settings_admin_multilingual.htm');
     }
 
     /**
@@ -257,7 +257,7 @@ class Settings_Admin extends Zikula_Controller
         }
 
         // create a new output object
-        $pnRender = Renderer::getInstance('Settings');
+        $renderer = Renderer::getInstance('Settings');
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -269,9 +269,9 @@ class Settings_Admin extends Zikula_Controller
         }
         // add the development flag
         $configvars['development'] = System::getVar('development');
-        $pnRender->assign($configvars);
+        $renderer->assign($configvars);
 
-        return $pnRender->fetch('settings_admin_errorhandling.htm');
+        return $renderer->fetch('settings_admin_errorhandling.htm');
     }
 
     /**

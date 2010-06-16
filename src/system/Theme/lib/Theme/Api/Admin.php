@@ -522,24 +522,24 @@ class Theme_Api_Admin extends Zikula_Api
         }
 
         // Create output object
-        $pnRender = Renderer::getInstance('Theme', false);
+        $renderer = Renderer::getInstance('Theme', false);
 
         // force the expose template option to off as it'll break this functionality
-        $pnRender->expose_template = false;
+        $renderer->expose_template = false;
 
         // assign the theme info
-        $pnRender->assign($themeinfo);
+        $renderer->assign($themeinfo);
 
-        $versionfile = $pnRender->fetch('upgrade/version.htm');
-        $potfile = $pnRender->fetch('upgrade/pot.htm');
-        $pnRender->assign('palettes', array('palette1' =>  array()));
-        $palettesfile = $pnRender->fetch('upgrade/themepalettes.htm');
-        $variablesfile = $pnRender->fetch('upgrade/themevariables.htm');
-        $pnRender->assign('pageconfigurations', array('master'));
-        $pageconfigurationsfile = $pnRender->fetch('upgrade/pageconfigurations.htm');
-        $pnRender->assign('pagetemplate', 'master.htm');
-        $pnRender->assign('templates', array('left' => 'block.htm', 'right' => 'block.htm', 'center' => 'block.htm'));
-        $pageconfigurationfile = $pnRender->fetch('upgrade/pageconfiguration.htm');
+        $versionfile = $renderer->fetch('upgrade/version.htm');
+        $potfile = $renderer->fetch('upgrade/pot.htm');
+        $renderer->assign('palettes', array('palette1' =>  array()));
+        $palettesfile = $renderer->fetch('upgrade/themepalettes.htm');
+        $variablesfile = $renderer->fetch('upgrade/themevariables.htm');
+        $renderer->assign('pageconfigurations', array('master'));
+        $pageconfigurationsfile = $renderer->fetch('upgrade/pageconfigurations.htm');
+        $renderer->assign('pagetemplate', 'master.htm');
+        $renderer->assign('templates', array('left' => 'block.htm', 'right' => 'block.htm', 'center' => 'block.htm'));
+        $pageconfigurationfile = $renderer->fetch('upgrade/pageconfiguration.htm');
 
         // work out which base page template to use
         switch ($themeinfo['layout']) {
@@ -555,9 +555,9 @@ class Theme_Api_Admin extends Zikula_Api
             default:
                 $pagetemplate = 'emptypage';
         }
-        $pagetemplatefile = $pnRender->fetch("upgrade/$pagetemplate.htm");
-        $cssfile = $pnRender->fetch("upgrade/$pagetemplate.css");
-        $blockfile = $pnRender->fetch('upgrade/block.htm');
+        $pagetemplatefile = $renderer->fetch("upgrade/$pagetemplate.htm");
+        $cssfile = $renderer->fetch("upgrade/$pagetemplate.css");
+        $blockfile = $renderer->fetch('upgrade/block.htm');
 
         $files = array(
                 "themes/$themeinfo[name]/version.php" => 'versionfile',

@@ -11,7 +11,7 @@
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
                     <label for="groups_itemsperpage">{gt text="Items per page"}</label>
-                    <input id="groups_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|varprepfordisplay}" />
+                    <input id="groups_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="groups_defaultgroupid">{gt text="Initial user group"}</label>

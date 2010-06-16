@@ -7,7 +7,7 @@
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />
-            <input type="hidden" name="themename" value="{$themename|varprepfordisplay}" />
+            <input type="hidden" name="themename" value="{$themename|safetext}" />
             <fieldset>
                 <div class="z-formrow">
                     <label for="theme_pagemodule">{gt text="Module"}</label>
@@ -21,20 +21,20 @@
                 </div>
                 <div class="z-formrow">
                     <label for="theme_pagetype">{gt text="Function type"}</label>
-                    <input id="theme_pagetype" type="text" name="pagetype" size="30" value="{$pagetype|varprepfordisplay}" />
+                    <input id="theme_pagetype" type="text" name="pagetype" size="30" value="{$pagetype|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="theme_pagefunc">{gt text="Function name"}</label>
-                    <input id="theme_pagefunc" type="text" name="pagefunc" size="30" value="{$pagefunc|varprepfordisplay}" />
+                    <input id="theme_pagefunc" type="text" name="pagefunc" size="30" value="{$pagefunc|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="theme_pagecustomargs">{gt text="Function arguments"}</label>
-                    <input id="theme_pagecustomargs" type="text" name="pagecustomargs" size="30" value="{$pagecustomargs|varprepfordisplay}" />
+                    <input id="theme_pagecustomargs" type="text" name="pagecustomargs" size="30" value="{$pagecustomargs|safetext}" />
                     <em class="z-formnote z-sub">{gt text="Notice: This is a list of arguments found in the page URL, separated by '/'."}</em>
                 </div>
                 <div class="z-formrow">
                     <label for="theme_filename">{gt text="Configuration file"}</label>
-                    <input id="theme_filename" type="text" name="filename" size="30" value="{$filename|varprepfordisplay}" />
+                    <input id="theme_filename" type="text" name="filename" size="30" value="{$filename|safetext}" />
                 </div>
                 <div class="z-buttons z-formbuttons">
                     {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save"}

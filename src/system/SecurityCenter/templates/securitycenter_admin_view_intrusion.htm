@@ -44,14 +44,14 @@
             {secgenauthkey module="SecurityCenter" assign="authkey"}
             {foreach from=$objectArray item=event}
             <tr class="{cycle values="z-odd,z-even"}">
-                <td>{$event.name|varprepfordisplay}</td>
-                <td>{$event.tag|varprepfordisplay}</td>
-                <td>{$event.value|varprepfordisplay}</td>
-                <td>{$event.page|varprepfordisplay}</td>
-                <td>{$event.username|varprepfordisplay}</td>
-                <td>{$event.ip|varprepfordisplay}</td>
-                <td>{$event.impact|varprepfordisplay}</td>
-                <td>{$event.date|varprepfordisplay}</td>
+                <td>{$event.name|safetext}</td>
+                <td>{$event.tag|safetext}</td>
+                <td>{$event.value|safetext}</td>
+                <td>{$event.page|safetext}</td>
+                <td>{$event.username|safetext}</td>
+                <td>{$event.ip|safetext}</td>
+                <td>{$event.impact|safetext}</td>
+                <td>{$event.date|safetext}</td>
                 <td><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" ot="intrusion" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}

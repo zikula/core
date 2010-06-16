@@ -16,7 +16,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="securitycenter_itemsperpage">{gt text="Items per page"}</label>
-                    <input id="securitycenter_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|varprepfordisplay}" />
+                    <input id="securitycenter_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="securitycenter_emailhackattempt">{gt text="Notify about hacking attempts via e-mail"}</label>
@@ -55,7 +55,7 @@
                 <legend>{gt text="Host settings"}</legend>
                 <div class="z-formrow">
                     <label for="securitycenter_keyexpiry">{gt text="Time limit for authorisation keys ('authkeys') in seconds (default: 0)"}</label>
-                    <input id="securitycenter_keyexpiry" type="text" name="keyexpiry" value="{$keyexpiry|varprepfordisplay}" size="10" maxlength="15" />
+                    <input id="securitycenter_keyexpiry" type="text" name="keyexpiry" value="{$keyexpiry|safetext}" size="10" maxlength="15" />
                 </div>
                 <div class="z-formrow">
                     <label for="securitycenter_sessionauthkeyua">{gt text="Bind authkey to user agent ('UserAgent')"}</label>
@@ -68,7 +68,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="securitycenter_secure_domain">{gt text="Secure host name"}</label>
-                    <input id="securitycenter_secure_domain" type="text" name="secure_domain" value="{$secure_domain|varprepfordisplay}" size="50" maxlength="100" />
+                    <input id="securitycenter_secure_domain" type="text" name="secure_domain" value="{$secure_domain|safetext}" size="50" maxlength="100" />
                     <p id="securitycenter_sitesecureurl_container" class="z-formnote z-informationmsg">{gt text="Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the 'Secure host name' box, make sure you include a trailing slash at the end of the address."}</p>
                 </div>
             </fieldset>
@@ -85,7 +85,7 @@
                 </div>
                 <div id="securitycenter_signingkey_container" class="z-formrow">
                     <label for="securitycenter_signingkey">{gt text="Signing key"}</label>
-                    <input id="securitycenter_signingkey" name="signingkey" type="text" value="{$signingkey|varprepfordisplay}" size="50" maxlength="100" />
+                    <input id="securitycenter_signingkey" name="signingkey" type="text" value="{$signingkey|safetext}" size="50" maxlength="100" />
                 </div>
             </fieldset>
             <fieldset>
@@ -102,7 +102,7 @@
                     <div class="z-formrow">
                         <label for="securitycenter_secmeddays">{gt text="Automatically log user out after"}</label>
                         <div>
-                            <input id="securitycenter_secmeddays" type="text" name="secmeddays" value="{$secmeddays|varprepfordisplay}" size="4" />
+                            <input id="securitycenter_secmeddays" type="text" name="secmeddays" value="{$secmeddays|safetext}" size="4" />
                             <em>{gt text="days (if 'Remember me' is activated)"}</em>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                     <div class="z-formrow">
                         <label for="securitycenter_secinactivemins">{gt text="Expire session after"} <a href="http://www.php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime">(?)</a></label>
                         <div>
-                            <input id="securitycenter_secinactivemins" type="text" name="secinactivemins" value="{$secinactivemins|varprepfordisplay}" size="4" />
+                            <input id="securitycenter_secinactivemins" type="text" name="secinactivemins" value="{$secinactivemins|safetext}" size="4" />
                             <em>{gt text="minutes of inactivity"}</em>
                         </div>
                     </div>
@@ -129,13 +129,13 @@
 
                 <div id="securitycenter_sessionsavepath_container" class="z-formrow">
                     <label for="securitycenter_sessionsavepath">{gt text="Path for saving session files"} <a href="http://www.php.net/manual/en/session.configuration.php#ini.session.save-path">(?)</a></label>
-                    <input id="securitycenter_sessionsavepath" type="text" name="sessionsavepath" size="50" value="{$sessionsavepath|varprepfordisplay}" />
+                    <input id="securitycenter_sessionsavepath" type="text" name="sessionsavepath" size="50" value="{$sessionsavepath|safetext}" />
                     <p id="securitycenter_sessionfilessavepathwarning_container" class="z-formnote z-informationmsg">{gt text="Notice: If you change 'Where to save sessions' to 'File' then you must enter a path in the 'Path for saving session files' box above. The path must be writeable."}</p>
                 </div>
                 <div class="z-formrow">
                     <label for="securitycenter_gc_probability">{gt text="Garbage collection probability"} <a href="http://www.php.net/manual/en/session.configuration.php#ini.session.gc-probability">(?)</a></label>
                     <div>
-                        <input id="securitycenter_gc_probability" type="text" name="gc_probability" value="{$gc_probability|varprepfordisplay}" size="4" maxlength="5" />
+                        <input id="securitycenter_gc_probability" type="text" name="gc_probability" value="{$gc_probability|safetext}" size="4" maxlength="5" />
                         <em>{gt text="/10000"}</em>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                 <div class="z-formrow">
                     <label for="securitycenter_sessionregeneratefreq">{gt text="Regeneration probability"}</label>
                     <div>
-                        <input id="securitycenter_sessionregeneratefreq" type="text" name="sessionregeneratefreq" value="{$sessionregeneratefreq|varprepfordisplay}" size="3" maxlength="3" />
+                        <input id="securitycenter_sessionregeneratefreq" type="text" name="sessionregeneratefreq" value="{$sessionregeneratefreq|safetext}" size="3" maxlength="3" />
                         <em>{gt text="% (0 to disable)"}</em>
                     </div>
                 </div>
@@ -184,7 +184,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="securitycenter_sessionname">{gt text="Session cookie name"}</label>
-                    <input id="securitycenter_sessionname" type="text" name="sessionname" value="{$sessionname|varprepfordisplay}" size="20" />
+                    <input id="securitycenter_sessionname" type="text" name="sessionname" value="{$sessionname|safetext}" size="20" />
                     <p id="securitycenter_sessionnamewarning_container" class="z-formnote z-warningmsg">{gt text="Notice: If you change the 'Session cookie name' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again."}</p>
                 </div>
             </fieldset>
@@ -253,19 +253,19 @@
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_impactthresholdone">{gt text="Minimum impact to log intrusion in the database"}</label>
-                        <input id="securitycenter_impactthresholdone" type="text" name="idsimpactthresholdone" size="3" value="{$idsimpactthresholdone|varprepfordisplay}" />
+                        <input id="securitycenter_impactthresholdone" type="text" name="idsimpactthresholdone" size="3" value="{$idsimpactthresholdone|safetext}" />
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_impactthresholdtwo">{gt text="Minimum impact to email the administrator"}</label>
-                        <input id="securitycenter_impactthresholdtwo" type="text" name="idsimpactthresholdtwo" size="3" value="{$idsimpactthresholdtwo|varprepfordisplay}" />
+                        <input id="securitycenter_impactthresholdtwo" type="text" name="idsimpactthresholdtwo" size="3" value="{$idsimpactthresholdtwo|safetext}" />
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_impactthresholdthree">{gt text="Minimum impact to block the request"}</label>
-                        <input id="securitycenter_impactthresholdthree" type="text" name="idsimpactthresholdthree" size="3" value="{$idsimpactthresholdthree|varprepfordisplay}" />
+                        <input id="securitycenter_impactthresholdthree" type="text" name="idsimpactthresholdthree" size="3" value="{$idsimpactthresholdthree|safetext}" />
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_impactthresholdfour">{gt text="Minimum impact to kick the user (destroy the session)"}</label>
-                        <input id="securitycenter_impactthresholdfour" type="text" name="idsimpactthresholdfour" size="3" value="{$idsimpactthresholdfour|varprepfordisplay}" />
+                        <input id="securitycenter_impactthresholdfour" type="text" name="idsimpactthresholdfour" size="3" value="{$idsimpactthresholdfour|safetext}" />
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_impactmode">{gt text="Select the way the impact thresholds are used in Zikula"}</label>
@@ -277,17 +277,17 @@
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_idshtmlfields">{gt text="Define which fields contain HTML and need preparation"}</label>
-                        <textarea id="securitycenter_idshtmlfields" name="idshtmlfields" cols="50" rows="8">{$idshtmlfields|varprepfordisplay}</textarea>
+                        <textarea id="securitycenter_idshtmlfields" name="idshtmlfields" cols="50" rows="8">{$idshtmlfields|safetext}</textarea>
                         <em class="z-formnote z-sub">{gt text='(Place each value on a separate line.)'}</em>
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_idsjsonfields">{gt text="Define which fields contain JSON data and should be treated as such"}</label>
-                        <textarea id="securitycenter_idsjsonfields" name="idsjsonfields" cols="50" rows="8">{$idsjsonfields|varprepfordisplay}</textarea>
+                        <textarea id="securitycenter_idsjsonfields" name="idsjsonfields" cols="50" rows="8">{$idsjsonfields|safetext}</textarea>
                         <em class="z-formnote z-sub">{gt text='(Place each value on a separate line.)'}</em>
                     </div>
                     <div class="z-formrow">
                         <label for="securitycenter_idshtmlfields">{gt text="Define which fields should not be monitored"}</label>
-                        <textarea id="securitycenter_idsexceptions" name="idsexceptions" cols="50" rows="8">{$idsexceptions|varprepfordisplay}</textarea>
+                        <textarea id="securitycenter_idsexceptions" name="idsexceptions" cols="50" rows="8">{$idsexceptions|safetext}</textarea>
                         <em class="z-formnote z-sub">{gt text='(Place each value on a separate line.)'}</em>
                     </div>
                 </div>
@@ -306,11 +306,11 @@
                 <legend>{gt text="E-mail message"}</legend>
                 <div class="z-formrow">
                     <label for="securitycenter_summarycontent">{gt text="Content of summary e-mail message"}</label>
-                    <textarea id="securitycenter_summarycontent" name="summarycontent" cols="50" rows="14">{$summarycontent|varprepfordisplay}</textarea>
+                    <textarea id="securitycenter_summarycontent" name="summarycontent" cols="50" rows="14">{$summarycontent|safetext}</textarea>
                 </div>
                 <div class="z-formrow">
                     <label for="securitycenter_fullcontent">{gt text="Additional content for full e-mail message"}</label>
-                    <textarea id="securitycenter_fullcontent" name="fullcontent" cols="50" rows="14">{$fullcontent|varprepfordisplay}</textarea>
+                    <textarea id="securitycenter_fullcontent" name="fullcontent" cols="50" rows="14">{$fullcontent|safetext}</textarea>
                 </div>
             </fieldset>
 

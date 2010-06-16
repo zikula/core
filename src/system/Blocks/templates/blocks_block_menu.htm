@@ -2,7 +2,7 @@
     <ul class="navlist">
     {foreach from=$menuitems item=item}
         {if $item.MENUITEMTITLE != '' && $item.MENUITEMURL != ''}
-            <li><a href="{$item.MENUITEMURL|varprepfordisplay}" title="{$item.MENUITEMCOMMENT}">{$item.MENUITEMTITLE|varprepfordisplay}</a></li>
+            <li><a href="{$item.MENUITEMURL|safetext}" title="{$item.MENUITEMCOMMENT}">{$item.MENUITEMTITLE|safetext}</a></li>
         {else}
             <li style="list-style:none">{$item.MENUITEMTITLE|varprephtmldisplay}</li>
         {/if}

@@ -8,7 +8,7 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Modules"}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="id" value="{$id|varprepfordisplay}" />
+            <input type="hidden" name="id" value="{$id|safetext}" />
             <input type="hidden" name="startnum" value="{$startnum}" />
             <input type="hidden" name="letter" value="{$letter}" />
             <input type="hidden" name="state" value="{$state}" />

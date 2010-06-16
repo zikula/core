@@ -587,7 +587,7 @@ class SecurityCenter_Api_User extends Zikula_Api
 
                         if (!isset($dummy)) {
                             // quick fix for http://noc.postnuke.com/tracker/index.php?func=detail&aid=5662&group_id=5&atid=101
-                            // this needs some review as far as the pnRender singleton is concerned
+                            // this needs some review as far as the renderer singleton is concerned
                             $dummy = Renderer::getInstance();
                             // original code:
                             //$dummy = Renderer::getInstance('SecurityCenter');
@@ -600,14 +600,14 @@ class SecurityCenter_Api_User extends Zikula_Api
                         if (isset($safecache[$sha])) {
                             $returnValue = $safecache[$sha];
                         } else {
-                            // save pnRender delimiters
-                            $returnValue = str_replace($dummy->left_delimiter,  'PNRENDER_LEFT_DELIMITER',  $returnValue);
-                            $returnValue = str_replace($dummy->right_delimiter, 'PNRENDER_RIGHT_DELIMITER', $returnValue);
+                            // save renderer delimiters
+                            $returnValue = str_replace($dummy->left_delimiter,  'renderer_LEFT_DELIMITER',  $returnValue);
+                            $returnValue = str_replace($dummy->right_delimiter, 'renderer_RIGHT_DELIMITER', $returnValue);
                             $returnValue = $purifier->purify($returnValue);
 
-                            // restore pnRender delimiters
-                            $returnValue = str_replace('PNRENDER_LEFT_DELIMITER',  $dummy->left_delimiter,  $returnValue);
-                            $returnValue = str_replace('PNRENDER_RIGHT_DELIMITER', $dummy->right_delimiter, $returnValue);
+                            // restore renderer delimiters
+                            $returnValue = str_replace('renderer_LEFT_DELIMITER',  $dummy->left_delimiter,  $returnValue);
+                            $returnValue = str_replace('renderer_RIGHT_DELIMITER', $dummy->right_delimiter, $returnValue);
 
                             // cache the value
                             $safecache[$sha] = $returnValue;

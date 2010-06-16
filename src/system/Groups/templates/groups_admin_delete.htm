@@ -9,7 +9,7 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Groups"}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="gid" value="{$gid|varprepfordisplay}" />
+            <input type="hidden" name="gid" value="{$gid|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-buttons z-formbuttons">

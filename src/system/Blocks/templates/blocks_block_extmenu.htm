@@ -2,7 +2,7 @@
     {menu from=$menuitems item='item' name='extmenu' class='navlist'}
     {if $item.name != '' && $item.url != ''}
     <li{if $item.url|replace:$baseurl:'' eq $currenturi|urldecode} class="selected"{/if}>
-        <a href="{$item.url|varprepfordisplay}" title="{$item.title}">
+        <a href="{$item.url|safetext}" title="{$item.title}">
             {if $item.image != ''}
             <img src="{$item.image}" alt="{$item.title}" />
             {/if}

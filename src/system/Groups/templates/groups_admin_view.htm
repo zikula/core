@@ -30,18 +30,18 @@
                     <input type="hidden" id="stateid_{$group.gid}" value="{$group.state}" />
                     <input type="hidden" id="modifystatus_{$group.gid}" value="0" />
                     <span id="groupgid_{$group.gid}" class="z-itemcell z-w05">
-                        {$group.gid|varprepfordisplay}
+                        {$group.gid|safetext}
                     </span>
                     <span id="groupname_{$group.gid}" class="z-itemcell z-w15">
-                        {$group.name|varprepfordisplay} {if $group.gid eq $defaultgroup} (*){/if}
+                        {$group.name|safetext} {if $group.gid eq $defaultgroup} (*){/if}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupname_{$group.gid}" class="z-itemcell z-w15 z-hide">
-                        <input type="text" id="name_{$group.gid}" name="name_{$group.gid}" value="{$group.name|varprepfordisplay}" size="15" />
+                        <input type="text" id="name_{$group.gid}" name="name_{$group.gid}" value="{$group.name|safetext}" size="15" />
                     </span>
                     {* *}
                     <span id="groupgtype_{$group.gid}" class="z-itemcell z-w10">
-                        {gt text="$group.gtypelbl|varprepfordisplay}
+                        {gt text="$group.gtypelbl|safetext}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupgtype_{$group.gid}" class="z-itemcell z-w10 z-hide">
@@ -60,7 +60,7 @@
                     </span>
                     {* *}
                     <span id="groupstate_{$group.gid}" class="z-itemcell z-w10">
-                        {gt text="$group.statelbl|varprepfordisplay}
+                        {gt text="$group.statelbl|safetext}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupstate_{$group.gid}" class="z-itemcell z-w10 z-hide">
@@ -70,22 +70,22 @@
                     </span>
                     {* *}
                     <span id="groupnbuser_{$group.gid}" class="z-itemcell z-w10 z-center">
-                        {$group.nbuser|varprepfordisplay}
+                        {$group.nbuser|safetext}
                     </span>
                     <span id="groupnbumax_{$group.gid}" class="z-itemcell z-w10 z-center">
-                        {$group.nbumax|varprepfordisplay}
+                        {$group.nbumax|safetext}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupnbumax_{$group.gid}" class="z-itemcell z-w10 z-hide z-center">
-                        <input type="text" id="nbumax_{$group.gid}" size="5" name="nbumax_{$group.gid}" value="{$group.nbumax|varprepfordisplay}" />
+                        <input type="text" id="nbumax_{$group.gid}" size="5" name="nbumax_{$group.gid}" value="{$group.nbumax|safetext}" />
                     </span>
                     {* *}
                     {assign var="options" value=$group.options}
                     <span id="groupaction_{$group.gid}" class="z-itemcell z-w10">
                         <button class="z-imagebutton z-hide" id="modifyajax_{$group.gid}"   title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
-                        <a id="modify_{$group.gid}"  href="{$group.editurl|varprepfordisplay}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</a>
-                        <a id="delete_{$group.gid}"     href="{$group.deleteurl|varprepfordisplay}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __title="Delete" __alt="Delete"}</a>
-                        <a id="members_{$group.gid}"  href="{$group.membersurl|varprepfordisplay}" title="{gt text="Group membership"}">{img src=edit_group.gif modname=core set=icons/extrasmall __title="Group membership" __alt="Group membership"}</a>
+                        <a id="modify_{$group.gid}"  href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</a>
+                        <a id="delete_{$group.gid}"     href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.gif modname=core set=icons/extrasmall __title="Delete" __alt="Delete"}</a>
+                        <a id="members_{$group.gid}"  href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=edit_group.gif modname=core set=icons/extrasmall __title="Group membership" __alt="Group membership"}</a>
                         <script type="text/javascript">
                             Element.addClassName('insert_{{$group.gid}}', 'z-hide');
                             Element.addClassName('modify_{{$group.gid}}', 'z-hide');
@@ -112,10 +112,10 @@
                     <input type="hidden" id="groupgid_1" value="{$group.gid}" />
                     <input type="hidden" id="modifystatus_{$group.gid}" value="0" />
                     <span id="groupgid_1" class="z-itemcell z-w05">
-                        {$group.gid|varprepfordisplay}
+                        {$group.gid|safetext}
                     </span>
                     <span id="groupname_1" class="z-itemcell z-w15 z-hide">
-                        {$group.name|varprepfordisplay}
+                        {$group.name|safetext}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupname_1" class="z-itemcell z-w15">
@@ -123,7 +123,7 @@
                     </span>
                     {* *}
                     <span id="groupgtype_1" class="z-itemcell z-w10 z-hide">
-                        {gt text="$group.gtypelbl|varprepfordisplay}
+                        {gt text="$group.gtypelbl|safetext}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupgtype_1" class="z-itemcell z-w15">
@@ -138,11 +138,11 @@
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupdescription_1" class="z-itemcell z-w30">
-                        <textarea id="description_1" rows="2" cols="20" name="description_1">{$group.description|varprepfordisplay}</textarea>&nbsp;
+                        <textarea id="description_1" rows="2" cols="20" name="description_1">{$group.description|safetext}</textarea>&nbsp;
                     </span>
                     {* *}
                     <span id="groupstate_1" class="z-itemcell z-w10 z-hide">
-                        {gt text="$group.statelbl|varprepfordisplay}
+                        {gt text="$group.statelbl|safetext}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupstate_1" class="z-itemcell z-w10">
@@ -152,15 +152,15 @@
                     </span>
                     {* *}
                     <span id="groupnbuser_1" class="z-itemcell z-w10 z-hide z-center">
-                        {*$group.nbuser|varprepfordisplay*}&nbsp;
+                        {*$group.nbuser|safetext*}&nbsp;
                     </span>
                     {* *}
                     <span id="groupnbumax_1" class="z-itemcell z-w10 z-hide z-center">
-                        {$group.nbumax|varprepfordisplay}
+                        {$group.nbumax|safetext}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupnbumax_1" class="z-itemcell z-w10 z-center">
-                        <input type="text" id="nbumax_1" size="5" name="nbumax_1" value="{$group.nbumax|varprepfordisplay}" />
+                        <input type="text" id="nbumax_1" size="5" name="nbumax_1" value="{$group.nbumax|safetext}" />
                     </span>
                     {* *}
                     <span id="groupaction_1" class="z-itemcell z-w12 z-hide">

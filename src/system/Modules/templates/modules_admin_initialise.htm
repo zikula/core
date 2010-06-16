@@ -6,7 +6,7 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Modules"}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="id" value="{$id|varprepfordisplay}" />
+            <input type="hidden" name="id" value="{$id|safetext}" />
             <div class="z-formrow">
                 <p class="z-warningmsg">{gt text="Error! This module has dependencies that are currently not met by the system."}</p>
             </div>

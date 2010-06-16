@@ -23,7 +23,7 @@
     <ul id="admintabs" class="z-clearfix">
         {foreach from=$menuoptions name=menuoption item=menuoption}
         <li {if $currentcat eq $menuoption.cid} class="active"{/if}>
-            <a id="C{$menuoption.cid}" href="{$menuoption.url|varprepfordisplay}" title="{$menuoption.description|varprepfordisplay}">{$menuoption.title|varprepfordisplay}</a>
+            <a id="C{$menuoption.cid}" href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>
             <span id="catcontext{$smarty.foreach.menuoption.index}" class="z-admindrop">&nbsp;</span>
 
             <script type="text/javascript">
@@ -35,7 +35,7 @@
 
                 {{foreach from=$menuoption.items item=item}}
                     context_catcontext{{$smarty.foreach.menuoption.index}}.addItem({
-                        label: '{{$item.menutext|varprepfordisplay}}',
+                        label: '{{$item.menutext|safetext}}',
                         callback: function(){window.location = document.location.pnbaseURL + '{{$item.menutexturl}}';}
                     });
                 {{/foreach}}

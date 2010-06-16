@@ -1,6 +1,6 @@
 {include file="securitycenter_admin_menu.htm"}
 <div class="z-admincontainer">
-    <h2>{$title|varprepfordisplay}</h2>
+    <h2>{$title|safetext}</h2>
     <table class="z-admintable">
         <thead>
             <tr>
@@ -11,8 +11,8 @@
         <tbody>
             {section name=arrayvariables loop=$arrayvariables}
             <tr class="{cycle values="z-odd,z-even"}">
-                <td>{$arrayvariables[arrayvariables].key|varprepfordisplay}</td>
-                <td>{$arrayvariables[arrayvariables].value|varprepfordisplay}</td>
+                <td>{$arrayvariables[arrayvariables].key|safetext}</td>
+                <td>{$arrayvariables[arrayvariables].value|safetext}</td>
             </tr>
             {/section}
         </tbody>

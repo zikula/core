@@ -1,7 +1,7 @@
 {$menu}
 <div id="z-admincontainer" class="z-admincontainer">
-    <h2>{$category.catname|varprepfordisplay}</h2>
-    <div class="z-admincategorydescription">{$category.description|varprepfordisplay}</div>
+    <h2>{$category.catname|safetext}</h2>
+    <div class="z-admincategorydescription">{$category.description|safetext}</div>
 
     {if empty($adminlinks)}
         <p class="z-bold z-center">{gt text="There are currently no modules in this category."}</p>

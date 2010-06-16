@@ -7,21 +7,21 @@
     <form class="z-form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />
-            <input type="hidden" name="themename" value="{$themename|varprepfordisplay}" />
+            <input type="hidden" name="themename" value="{$themename|safetext}" />
 
             {if $palettes}
                 {foreach from=$palettes item=palette key=palettename}
                 <fieldset>
-                    <legend>{$palettename|varprepfordisplay}</legend>
+                    <legend>{$palettename|safetext}</legend>
                     <div class="z-formrow">
                         <label><strong>{gt text="Name"}</strong></label>
                         <span><strong>{gt text="Value"}</strong></span>
                     </div>
                     {foreach from=$palette item=color key=name}
                     <div class="z-formrow">
-                        <label>{$name|varprepfordisplay}</label>
+                        <label>{$name|safetext}</label>
                         <div>
-                            <input size="6" maxlength="7" type="text" name="palettes[{$palettename}][{$name}]" value="{$color|varprepfordisplay}" />
+                            <input size="6" maxlength="7" type="text" name="palettes[{$palettename}][{$name}]" value="{$color|safetext}" />
                             <a href="javascript:TCP.popup(document.forms['theme_modify_palette'].elements['{$palettename}[{$name}]'])">{img class=theme_colorpicker_image modname=core set=icons/extrasmall src=colors.gif}</a>
                         </div>
                         <div class="z-formnote" style="background-color:{$color};">&nbsp;</div>

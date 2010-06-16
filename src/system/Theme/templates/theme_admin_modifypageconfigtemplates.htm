@@ -3,12 +3,12 @@
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.htm"}
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
-    <h2>{$templatetitle} - {$filename|varprepfordisplay}</h2>
+    <h2>{$templatetitle} - {$filename|safetext}</h2>
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Theme"}" />
-            <input type="hidden" name="themename" value="{$themename|varprepfordisplay}" />
-            <input type="hidden" name="filename" value="{$filename|varprepfordisplay}" />
+            <input type="hidden" name="themename" value="{$themename|safetext}" />
+            <input type="hidden" name="filename" value="{$filename|safetext}" />
             <fieldset>
                 <legend>{gt text="Page settings"}</legend>
                 <div class="z-formrow">
@@ -46,23 +46,23 @@
                 <p class="z-informationmsg">{gt text='Comma separated list of filters, eg. myfilter (for outputfilters) represents outputfilter.myfilter.php file, see <a href="http://www.smarty.net/manual/en/advanced.features.php">the Smarty documentation</a> for more information about filters.'}</p>
                 <div class="z-formrow">
                     <label for="theme_filters_outputfilters">{gt text="Output filters"}</label>
-                    <input type="text" id="theme_filters_outputfilters" name="filters[outputfilters]" size="40" maxlength="255" value="{$pageconfiguration.filters.outputfilters|varprepfordisplay}" />
+                    <input type="text" id="theme_filters_outputfilters" name="filters[outputfilters]" size="40" maxlength="255" value="{$pageconfiguration.filters.outputfilters|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="theme_filters_prefilters">{gt text="Pre-filters"}</label>
-                    <input type="text" id="theme_filters_prefilters" name="filters[prefilters]" size="40" maxlength="255" value="{$pageconfiguration.filters.prefilters|varprepfordisplay}" />
+                    <input type="text" id="theme_filters_prefilters" name="filters[prefilters]" size="40" maxlength="255" value="{$pageconfiguration.filters.prefilters|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="theme_filters_postfilters">{gt text="Post-filters"}</label>
-                    <input type="text" id="theme_filters_postfilters" name="filters[postfilters]" size="40" maxlength="255" value="{$pageconfiguration.filters.postfilters|varprepfordisplay}" />
+                    <input type="text" id="theme_filters_postfilters" name="filters[postfilters]" size="40" maxlength="255" value="{$pageconfiguration.filters.postfilters|safetext}" />
                 </div>
             </fieldset>
             <fieldset>
                 <legend>{gt text="Block position templates"}</legend>
                 {foreach from=$blockpositions item=position}
                 <div class="z-formrow">
-                    <label for="theme_blocktemplate_{$position|varprepfordisplay}">{$position}</label>
-                    <select id="theme_blocktemplate_{$position|varprepfordisplay}" name="blockpositiontemplates[{$position|varprepfordisplay}]">
+                    <label for="theme_blocktemplate_{$position|safetext}">{$position}</label>
+                    <select id="theme_blocktemplate_{$position|safetext}" name="blockpositiontemplates[{$position|safetext}]">
                         <option value="">{gt text="Default template"}</option>
                         {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockpositions.$position}
                     </select>
@@ -90,9 +90,9 @@
                 {foreach from=$allblocks item=moduleblocks}
                 {foreach from=$moduleblocks item=block}
                 <div class="z-formrow">
-                    <label for="theme_blocktemplate_{$block.bkey|varprepfordisplay}">{$block.module|varprepfordisplay}/{$block.text_type_long|varprepfordisplay}</label>
+                    <label for="theme_blocktemplate_{$block.bkey|safetext}">{$block.module|safetext}/{$block.text_type_long|safetext}</label>
                     {assign var=bkey value=$block.bkey}
-                    <select id="theme_blocktemplate_{$block.bkey|varprepfordisplay}" name="blocktypetemplates[{$block.bkey|varprepfordisplay}]">
+                    <select id="theme_blocktemplate_{$block.bkey|safetext}" name="blocktypetemplates[{$block.bkey|safetext}]">
                         <option value="">{gt text="Default template"}</option>
                         {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blocktypes.$bkey}
                     </select>
@@ -104,15 +104,15 @@
                 <legend>{gt text="Block instance templates"}</legend>
                 {foreach from=$blocks item=block}
                 <div class="z-formrow">
-                    <label for="theme_blocktemplate_{$block.bid|varprepfordisplay}">
+                    <label for="theme_blocktemplate_{$block.bid|safetext}">
                         {if $block.title neq ''}
-                        {$block.title|varprepfordisplay}
+                        {$block.title|safetext}
                         {else}
                         {gt text='Untitled block of type %1$s, ID %2$s' tag1=$block.bkey tag2=$block.bid"}
                         {/if}
                     </label>
                     {assign var=bid value=$block.bid}
-                    <select id="theme_blocktemplate_{$block.bid|varprepfordisplay}" name="blockinstancetemplates[{$block.bid|varprepfordisplay}]">
+                    <select id="theme_blocktemplate_{$block.bid|safetext}" name="blockinstancetemplates[{$block.bid|safetext}]">
                         <option value="">{gt text="Default template"}</option>
                         {html_options values=$blocktemplates output=$blocktemplates selected=$pageconfiguration.blockinstances.$bid}
                     </select>

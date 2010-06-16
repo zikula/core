@@ -15,11 +15,11 @@
             <legend>{$hookaction|capitalize}&nbsp;Hooked modules</legend>
             <div id="{$hookaction}" class="hookcontainer">
                 <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Modules"}" />
-                <input type="hidden" name="id" value="{$id|varprepfordisplay}" />
+                <input type="hidden" name="id" value="{$id|safetext}" />
                 {foreach item=hook from=$hookgroup}
-                <div id="hook_{$hookaction}_{$hook.tmodule|varprepfordisplay}" class="z-formrow z-sortable {cycle values="z-odd,z-even"}" style="background-image:url(../../../images/icons/extrasmall/move.gif); background-position:5px 50%; background-repeat:no-repeat; border:1px dotted #999999; padding-left: 30px; line-height:2em; margin:0.5em; padding:0.2em; cursor:move; ">
-                    <span class="z-label" style="width:40%;">{gt text="Activate"} {$hook.tmodule|varprepfordisplay} {gt text="for"} {$modinfo.displayname}</span>
-                    <input id="modules_{$hookaction}_{$hook.tmodule|varprepfordisplay}" name="hooks[{$hookaction}][{$hook.tmodule|varprepfordisplay}]" type="checkbox" {if $hook.hookvalue eq 1}checked="checked"{/if} value="ON" />
+                <div id="hook_{$hookaction}_{$hook.tmodule|safetext}" class="z-formrow z-sortable {cycle values="z-odd,z-even"}" style="background-image:url(../../../images/icons/extrasmall/move.gif); background-position:5px 50%; background-repeat:no-repeat; border:1px dotted #999999; padding-left: 30px; line-height:2em; margin:0.5em; padding:0.2em; cursor:move; ">
+                    <span class="z-label" style="width:40%;">{gt text="Activate"} {$hook.tmodule|safetext} {gt text="for"} {$modinfo.displayname}</span>
+                    <input id="modules_{$hookaction}_{$hook.tmodule|safetext}" name="hooks[{$hookaction}][{$hook.tmodule|safetext}]" type="checkbox" {if $hook.hookvalue eq 1}checked="checked"{/if} value="ON" />
                 </div>
                 {/foreach}
             </div>

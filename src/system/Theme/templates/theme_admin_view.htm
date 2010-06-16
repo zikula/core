@@ -18,7 +18,7 @@
             {foreach from=$themes item=theme}
             <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
                 <td>
-                    {$theme.displayname|varprepfordisplay}
+                    {$theme.displayname|safetext}
                     {if $theme.name|strtolower eq $currenttheme|strtolower} (*) {/if}
                 </td>
                 <td>{$theme.type|themetype}</td>
@@ -27,9 +27,9 @@
                     <a href="{modurl modname="Theme" type="admin" func="upgrade" themename=$theme.name}">{img modname=core src=filesaveas.gif set=icons/extrasmall __alt="Upgrade" __title="Upgrade"}</a>&nbsp;&nbsp;
                     {else}
                     {if $theme.admin eq true}
-                    <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|varprepfordisplay}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
+                    <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
                     {else}
-                    <a href="{entrypoint}?theme={$theme.displayname}" title="{$theme.displayname|varprepfordisplay}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
+                    <a href="{entrypoint}?theme={$theme.displayname}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
                     {/if}
                     {/if}
                     <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a>&nbsp;&nbsp;

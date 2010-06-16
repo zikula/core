@@ -11,15 +11,15 @@
                 <legend>{gt text="Main info"}</legend>
                 <div class="z-formrow">
                     <label for="settings_sitename">{gt text="Site name"}</label>
-                    <input id="settings_sitename" type="text" name="settings[sitename]" value="{$settings.sitename|varprepfordisplay}" size="50" maxlength="100" />
+                    <input id="settings_sitename" type="text" name="settings[sitename]" value="{$settings.sitename|safetext}" size="50" maxlength="100" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_slogan">{gt text="Description line"}</label>
-                    <input id="settings_slogan" type="text" name="settings[slogan]" value="{$settings.slogan|varprepfordisplay}" size="50" maxlength="100" />
+                    <input id="settings_slogan" type="text" name="settings[slogan]" value="{$settings.slogan|safetext}" size="50" maxlength="100" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_adminmail">{gt text="Admin's e-mail address"}</label>
-                    <input id="settings_adminmail" type="text" name="settings[adminmail]" value="{$settings.adminmail|varprepfordisplay}" size="30" maxlength="100" />
+                    <input id="settings_adminmail" type="text" name="settings[adminmail]" value="{$settings.adminmail|safetext}" size="30" maxlength="100" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_siteoff">{gt text="Disable site"}</label>
@@ -33,7 +33,7 @@
                 <div id="settings_siteoff_container">
                     <div class="z-formrow">
                         <label for="settings_siteoffreason">{gt text="Reason for disabling site"}</label>
-                        <textarea id="settings_siteoffreason" class="z_texpand" name="settings[siteoffreason]" cols="50" rows="5">{$settings.siteoffreason|varprepfordisplay}</textarea>
+                        <textarea id="settings_siteoffreason" class="z_texpand" name="settings[siteoffreason]" cols="50" rows="5">{$settings.siteoffreason|safetext}</textarea>
                     </div>
                 </div>
             </fieldset>
@@ -42,7 +42,7 @@
                 <div id="settings_keywords_container">
                     <div class="z-formrow">
                         <label for="settings_metakeywords">{gt text="Meta keywords"}</label>
-                        <textarea id="settings_metakeywords" class="z_texpand" name="settings[metakeywords]" cols="60" rows="5">{$settings.metakeywords|varprepfordisplay}</textarea>
+                        <textarea id="settings_metakeywords" class="z_texpand" name="settings[metakeywords]" cols="60" rows="5">{$settings.metakeywords|safetext}</textarea>
                     </div>
                 </div>
             </fieldset>
@@ -58,20 +58,20 @@
                 </div>
                 <div class="z-formrow">
                     <label for="settings_starttype">{gt text="Start function type"}</label>
-                    <input id="settings_starttype" type="text" name="settings[starttype]" value="{$settings.starttype|varprepfordisplay}" size="10" maxlength="10" />
+                    <input id="settings_starttype" type="text" name="settings[starttype]" value="{$settings.starttype|safetext}" size="10" maxlength="10" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_startfunc">{gt text="Start function"}</label>
-                    <input id="settings_startfunc" type="text" name="settings[startfunc]" value="{$settings.startfunc|varprepfordisplay}" size="20" maxlength="40" />
+                    <input id="settings_startfunc" type="text" name="settings[startfunc]" value="{$settings.startfunc|safetext}" size="20" maxlength="40" />
                 </div>
                 <div class="z-formrow">
                     <label for="settings_startargs">{gt text="Start function arguments"}</label>
-                    <input id="settings_startargs" type="text" name="settings[startargs]" value="{$settings.startargs|varprepfordisplay}" size="20" maxlength="60" />
+                    <input id="settings_startargs" type="text" name="settings[startargs]" value="{$settings.startargs|safetext}" size="20" maxlength="60" />
                     <em class="z-formnote">{gt text="(Comma-separated)"}</em>
                 </div>
                 <div class="z-formrow">
                     <label for="settings_entrypoint">{gt text="Site entry point"}</label>
-                    <input id="settings_entrypoint" type="text" name="settings[entrypoint]" value="{$settings.entrypoint|varprepfordisplay}" size="20" maxlength="60" />
+                    <input id="settings_entrypoint" type="text" name="settings[entrypoint]" value="{$settings.entrypoint|safetext}" size="20" maxlength="60" />
                     <em class="z-formnote">{gt text="(Default: index.php)"}</em>
                     <p class="z-formnote z-informationmsg">{gt text="Notice: The entry point file must be present in the Zikula root directory before you set it here as your site's start page."}</p>
                 </div>

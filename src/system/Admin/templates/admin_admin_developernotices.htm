@@ -6,7 +6,7 @@
     <ul>
         {if $notices.developer.render}
         <li>
-            <a href="{$themeurl|varprepfordisplay}">{gt text="Enabled Renderer settings" domain="zikula"}:</a>
+            <a href="{$themeurl|safetext}">{gt text="Enabled Renderer settings" domain="zikula"}:</a>
             {foreach from=$notices.developer.render name=item item=item}
             {$item.title}{if !$smarty.foreach.item.last}, {/if}
             {/foreach}
@@ -14,7 +14,7 @@
         {/if}
         {if $notices.developer.theme}
         <li>
-            <a href="{$themeurl|varprepfordisplay}">{gt text="Enabled Theme settings" domain="zikula"}:</a>
+            <a href="{$themeurl|safetext}">{gt text="Enabled Theme settings" domain="zikula"}:</a>
             {foreach from=$notices.developer.theme name=item item=item}
             {$item.title}{if !$smarty.foreach.item.last}, {/if}
             {/foreach}

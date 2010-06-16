@@ -7,7 +7,7 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="SecurityCenter"}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="hid" value="{$hid|varprepfordisplay}" />
+            <input type="hidden" name="hid" value="{$hid|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-formrow">

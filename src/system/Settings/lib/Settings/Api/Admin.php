@@ -36,7 +36,7 @@ class Settings_Api_Admin extends Zikula_Api
     /**
      * Clear all compiled and cache directories.
      *
-     * This function simply calls the theme and pnrender modules to refresh the entire site.
+     * This function simply calls the theme and renderer modules to refresh the entire site.
      *
      * @return boolean true.
      */

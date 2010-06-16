@@ -50,11 +50,11 @@
                 </div>
                 <div class="z-formrow">
                     <label for="admin_itemsperpage">{gt text="Modules per page in module categories list"}</label>
-                    <input id="admin_itemsperpage" name="modvars[itemsperpage]" type="text" size="3" maxlength="3" value="{$modvars.itemsperpage|varprepfordisplay}" />
+                    <input id="admin_itemsperpage" name="modvars[itemsperpage]" type="text" size="3" maxlength="3" value="{$modvars.itemsperpage|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="admin_modulesperrow">{gt text="Modules per row in admin panel"}</label>
-                    <input id="admin_modulesperrow" name="modvars[modulesperrow]" type="text" size="3" maxlength="3" value="{$modvars.modulesperrow|varprepfordisplay}" />
+                    <input id="admin_modulesperrow" name="modvars[modulesperrow]" type="text" size="3" maxlength="3" value="{$modvars.modulesperrow|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="admintheme">{gt text="Theme to use"}</label>
@@ -72,9 +72,9 @@
                     <select id="admin_startcategory" name="modvars[startcategory]">
                         {section name=category loop=$categories}
                         {if  $modvars.startcategory eq $categories[category].cid}
-                        <option value="{$categories[category].cid|varprepfordisplay}" selected="selected">{$categories[category].catname|varprepfordisplay}</option>
+                        <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].catname|safetext}</option>
                         {else}
-                        <option value="{$categories[category].cid|varprepfordisplay}">{$categories[category].catname|varprepfordisplay}</option>
+                        <option value="{$categories[category].cid|safetext}">{$categories[category].catname|safetext}</option>
                         {/if}
                         {/section}
                     </select>
@@ -87,9 +87,9 @@
                     <select id="admin_defaultcategory" name="modvars[defaultcategory]">
                         {section name=category loop=$categories}
                         {if  $modvars.defaultcategory eq $categories[category].cid}
-                        <option value="{$categories[category].cid|varprepfordisplay}" selected="selected">{$categories[category].catname|varprepfordisplay}</option>
+                        <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].catname|safetext}</option>
                         {else}
-                        <option value="{$categories[category].cid|varprepfordisplay}">{$categories[category].catname|varprepfordisplay}</option>
+                        <option value="{$categories[category].cid|safetext}">{$categories[category].catname|safetext}</option>
                         {/if}
                         {/section}
                     </select>
@@ -97,12 +97,12 @@
                 {section name=modulecategory loop=$modulecategories}
                 <div class="z-formrow">
                     <label for="admin_{$modulecategories[modulecategory].name}">{$modulecategories[modulecategory].displayname}</label>
-                    <select id="admin_{$modulecategories[modulecategory].name}" name="adminmods[{$modulecategories[modulecategory].name|varprepfordisplay}]">
+                    <select id="admin_{$modulecategories[modulecategory].name}" name="adminmods[{$modulecategories[modulecategory].name|safetext}]">
                         {section name=category loop=$categories}
                         {if  $modulecategories[modulecategory].category eq $categories[category].cid}
-                        <option value="{$categories[category].cid|varprepfordisplay}" selected="selected">{$categories[category].catname|varprepfordisplay}</option>
+                        <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].catname|safetext}</option>
                         {else}
-                        <option value="{$categories[category].cid|varprepfordisplay}">{$categories[category].catname|varprepfordisplay}</option>
+                        <option value="{$categories[category].cid|safetext}">{$categories[category].catname|safetext}</option>
                         {/if}
                         {/section}
                     </select>

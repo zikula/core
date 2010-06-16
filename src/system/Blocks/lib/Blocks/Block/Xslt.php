@@ -98,13 +98,13 @@ class Blocks_Block_Xslt extends Zikula_Block
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // Create output object
-        $pnRender = Renderer::getInstance('Blocks', false);
+        $renderer = Renderer::getInstance('Blocks', false);
 
         // assign our block vars
-        $pnRender->assign($vars);
+        $renderer->assign($vars);
 
         // return the output
-        return $pnRender->fetch('blocks_block_xslt_modify.htm');
+        return $renderer->fetch('blocks_block_xslt_modify.htm');
     }
 
     /**

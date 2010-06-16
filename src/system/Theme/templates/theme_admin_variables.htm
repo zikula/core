@@ -7,7 +7,7 @@
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatevariables"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />
-            <input type="hidden" name="themename" value="{$themename|varprepfordisplay}" />
+            <input type="hidden" name="themename" value="{$themename|safetext}" />
             <table class="z-admintable">
                 <thead>
                     <tr>
@@ -20,24 +20,24 @@
                     <tr class="{cycle values=z-odd,z-even}">
                         <td>
                             {if $variables.$name.editable}
-                            <input type="text" name="variablesnames[{$name|varprepfordisplay}]" value="{$name|varprepfordisplay}" />
+                            <input type="text" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
                             {else}
-                            <input type="hidden" name="variablesnames[{$name|varprepfordisplay}]" value="{$name|varprepfordisplay}" />
+                            <input type="hidden" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
                             {if $variables.$name.language}
                             {gt text=$variables.$name.language}
                             {else}
-                            {$name|varprepfordisplay}
+                            {$name|safetext}
                             {/if}
                             {/if}
                         </td>
                         <td>
                             {if $variables.$name.type eq 'yesno'}
-                            <input type="radio" name="variablesvalues[{$name|varprepfordisplay}]" value="1"{if $value eq 1} checked="checked"{/if} />&nbsp;{gt text="Yes"}&nbsp;
-                            <input type="radio" name="variablesvalues[{$name|varprepfordisplay}]" value="0"{if $value eq 0} checked="checked"{/if} />&nbsp;{gt text="No"}
+                            <input type="radio" name="variablesvalues[{$name|safetext}]" value="1"{if $value eq 1} checked="checked"{/if} />&nbsp;{gt text="Yes"}&nbsp;
+                            <input type="radio" name="variablesvalues[{$name|safetext}]" value="0"{if $value eq 0} checked="checked"{/if} />&nbsp;{gt text="No"}
                             {elseif $variables.$name.type eq 'select'}
                             {html_options name=variablesvalues[$name] values=$variables.$name.values output=$variables.$name.output selected=$value}
                             {else}
-                            <input type="text" name="variablesvalues[{$name|varprepfordisplay}]" value="{$value|varprepfordisplay}" />
+                            <input type="text" name="variablesvalues[{$name|safetext}]" value="{$value|safetext}" />
                             {/if}
                         </td>
                     </tr>

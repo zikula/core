@@ -10,7 +10,7 @@
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
                     <label for="modules_itemsperpage">{gt text="Items per page"}</label>
-                    <input id="modules_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|varprepfordisplay}" />
+                    <input id="modules_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label>{gt text="Module defaults"}</label>

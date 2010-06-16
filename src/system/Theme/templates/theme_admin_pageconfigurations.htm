@@ -15,8 +15,8 @@
         <tbody>
             {foreach from=$pageconfigurations item=filesection key=name}
             <tr class="{cycle name=pageconfigurations values=z-odd,z-even}">
-                <td>{$name|varprepfordisplay}</td>
-                <td>{$filesection.file|varprepfordisplay}</td>
+                <td>{$name|safetext}</td>
+                <td>{$filesection.file|safetext}</td>
                 <td>
                     <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
                     <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
@@ -37,7 +37,7 @@
         <tbody>
             {foreach from=$pageconfigs item=fileexists key=filename}
             <tr class="{cycle name=pageconfigs values=z-odd,z-even}">
-                <td>{$filename|varprepfordisplay}</td>
+                <td>{$filename|safetext}</td>
                 <td>{$fileexists|yesno}</td>
                 <td><a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a></td>
             </tr>
@@ -49,7 +49,7 @@
     <form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module=Theme}" />
-            <input type="hidden" name="themename" value="{$themename|varprepfordisplay}" />
+            <input type="hidden" name="themename" value="{$themename|safetext}" />
             <fieldset>
                 <div class="z-formrow">
                     <label for="theme_pagemodule">{gt text="Module"}</label>

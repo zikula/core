@@ -10,7 +10,7 @@
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
                     <label for="themeswitcher_itemsperpage">{gt text="Items per page"}</label>
-                    <input id="themeswitcher_itemsperpage" type="text" name="itemsperpage" value="{$itemsperpage|varprepfordisplay}" size="4" maxlength="4" tabindex="2" />
+                    <input id="themeswitcher_itemsperpage" type="text" name="itemsperpage" value="{$itemsperpage|safetext}" size="4" maxlength="4" tabindex="2" />
                 </div>
                 <div class="z-formrow">
                     <label for="theme_change">{gt text="Allow users to change themes"}</label>
@@ -53,7 +53,7 @@
                     <div class="z-formrow">
                         <label for="cache_lifetime">{gt text="Length of time to keep cached theme pages"}</label>
                         <span>
-                            <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|varprepfordisplay}" size="6" tabindex="2" />
+                            <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
                             {gt text="seconds"}
                         </span>
                         <p class="z-formnote z-informationmsg">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="A cache lifetime of -1 will set the cache output to never expire."}</p>
@@ -63,8 +63,8 @@
                         <div id="theme_nocache">
                             {foreach from=$mods key=modname item=moddisplayname}
                             <div class="z-formlist">
-                                <input id="theme_nocache_{$modname|varprepfordisplay}" type="checkbox" name="modulesnocache[]" value="{$modname|varprepfordisplay}"{if isset($modulesnocache.$modname)} checked="checked"{/if} />
-                                <label for="theme_nocache_{$modname|varprepfordisplay}">{$moddisplayname|varprepfordisplay}</label>
+                                <input id="theme_nocache_{$modname|safetext}" type="checkbox" name="modulesnocache[]" value="{$modname|safetext}"{if isset($modulesnocache.$modname)} checked="checked"{/if} />
+                                <label for="theme_nocache_{$modname|safetext}">{$moddisplayname|safetext}</label>
                             </div>
                             {/foreach}
                         </div>
@@ -83,7 +83,7 @@
                     <div class="z-formrow">
                         <label for="render_lifetime">{gt text="Length of time to keep cached render pages"}</label>
                         <span>
-                            <input id="render_lifetime" type="text" name="render_lifetime" value="{$render_lifetime|varprepfordisplay}" size="6" />
+                            <input id="render_lifetime" type="text" name="render_lifetime" value="{$render_lifetime|safetext}" size="6" />
                             {gt text="seconds"}
                         </span>
                         <p class="z-formnote z-informationmsg">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="Notice: A cache lifetime of -1 will set the cache output to never expire."}</p>
@@ -113,7 +113,7 @@
                     <div class="z-formrow">
                         <label for="cssjscombine_lifetime">{gt text="Length of time to keep combination cache"}</label>
                         <span>
-                            <input type="text" name="cssjscombine_lifetime" id="cssjscombine_lifetime" value="{$cssjscombine_lifetime|varprepfordisplay}" size="6" />
+                            <input type="text" name="cssjscombine_lifetime" id="cssjscombine_lifetime" value="{$cssjscombine_lifetime|safetext}" size="6" />
                             {gt text="seconds"}
                         </span>
                     </div>

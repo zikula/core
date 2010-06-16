@@ -5,7 +5,7 @@
 </div>
 <div class="z-formrow">
     <label for="xslt_docurl">{gt text="Document contents" domain='zikula'}</label>
-    <textarea id="xslt_doccontents" rows="20" cols="50" name="doccontents">{$doccontents|varprepfordisplay}</textarea>
+    <textarea id="xslt_doccontents" rows="20" cols="50" name="doccontents">{$doccontents|safetext}</textarea>
 </div>
 <div class="z-formrow">
     <label for="xslt_styleurl">{gt text="Style sheet URL" domain='zikula'}</label>
@@ -14,5 +14,5 @@
 </div>
 <div class="z-formrow">
     <label for="xslt_stylecontents">{gt text="Style sheet contents" domain='zikula'}</label>
-    <textarea id="xslt_stylecontents" rows="20" cols="50" name="stylecontents">{$stylecontents|varprepfordisplay}</textarea>
+    <textarea id="xslt_stylecontents" rows="20" cols="50" name="stylecontents">{$stylecontents|safetext}</textarea>
 </div>

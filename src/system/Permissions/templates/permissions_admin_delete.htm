@@ -9,8 +9,8 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Permissions"}" />
             <input type="hidden" name="confirmation" value="1" />
-            <input type="hidden" name="pid" value="{$pid|varprepfordisplay}" />
-            <input type="hidden" name="permgrp" value="{$permgrp|varprepfordisplay}" />
+            <input type="hidden" name="pid" value="{$pid|safetext}" />
+            <input type="hidden" name="permgrp" value="{$permgrp|safetext}" />
             <fieldset>
                 <legend>{gt text="Confirmation prompt"}</legend>
                 <div class="z-buttons z-formbuttons">

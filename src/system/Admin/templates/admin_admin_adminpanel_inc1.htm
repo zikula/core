@@ -8,13 +8,13 @@
     {if $count eq 1}<div class="z-adminiconrow z-clearfix">{/if}
         <div id="A{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
             {if $modvars.admingraphic eq 1}
-            <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">
-                <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutext|varprepfordisplay}" alt="{$adminlink.menutext|varprepfordisplay}" />
+            <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
+                <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutext|safetext}" alt="{$adminlink.menutext|safetext}" />
             </a>
             {/if}
             <div class="z-adminlinkheader">
                 {img modname='Admin' src='mouse.png' set='icons/extrasmall' __alt='Drag and drop into a new module category' __title='Drag and drop into a new module category' id="dragicon`$adminlink.id`" class='z-dragicon'}
-                <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|varprepfordisplay}">{$adminlink.menutext|varprepfordisplay}</a>
+                <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
 
                 {assign var="modlinks" value=false}
                 {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
@@ -32,7 +32,7 @@
                 
                     {{foreach from=$modlinks item=modlink}}
                         context_mcontext{{$moduleid}}.addItem({
-                            label: '{{$modlink.text|varprepfordisplay}}',
+                            label: '{{$modlink.text|safetext}}',
                             callback: function(){window.location = document.location.pnbaseURL + '{{$modlink.url}}';}
                         });
                     {{/foreach}}
@@ -51,7 +51,7 @@
             </div>
 
             {math equation="170-x*30" x=$modvars.modulesperrow format="%.0f" assign=trunLen}
-            <div class="z-menutexttitle">{$adminlink.menutexttitle|varprepfordisplay|truncate:$trunLen:"&hellip;":false}</div>
+            <div class="z-menutexttitle">{$adminlink.menutexttitle|safetext|truncate:$trunLen:"&hellip;":false}</div>
 
         </div>
 

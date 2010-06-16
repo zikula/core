@@ -57,22 +57,22 @@
             <li id="permission_{$permission.permid}" class="{cycle values="z-odd,z-even"} z-sortable z-clearfix">
                 <div id="permissioncontent_{$permission.permid}" class="permissioncontent">
                     <input type="hidden" id="groupid_{$permission.permid}" value="{$permission.groupid}" class="permgroup" />
-                    <input type="hidden" id="comp_{$permission.permid}" value="{$permission.component|varprepfordisplay}" class="permgroup" />
+                    <input type="hidden" id="comp_{$permission.permid}" value="{$permission.component|safetext}" class="permgroup" />
                     <input type="hidden" id="levelid_{$permission.permid}" value="{$permission.accesslevelid}" class="permlevel" />
                     <input type="hidden" id="sequence_{$permission.permid}" value="{$permission.sequence}" class="permsequence" />
                     <input type="hidden" id="modifystatus_{$permission.permid}" value="0" />
                     <span id="permdrag_{$permission.permid}" class="z-itemcell z-w05">
                         {strip}
                         {if $permission.arrows.up eq 1}
-                        <a href="{$permission.up.url|varprepfordisplay}">{img src="1uparrow.gif" modname=core set=icons/extrasmall alt=$permission.up.title title=$permission.up.title}</a>
+                        <a href="{$permission.up.url|safetext}">{img src="1uparrow.gif" modname=core set=icons/extrasmall alt=$permission.up.title title=$permission.up.title}</a>
                         {/if}
                         {if $permission.arrows.down eq 1}
-                        <a href="{$permission.down.url|varprepfordisplay}">{img src="1downarrow.gif" modname=core set=icons/extrasmall alt=$permission.down.title title=$permission.down.title}</a>
+                        <a href="{$permission.down.url|safetext}">{img src="1downarrow.gif" modname=core set=icons/extrasmall alt=$permission.down.title title=$permission.down.title}</a>
                         {/if}
                         {/strip}
                     </span>
                     <span id="permgroup_{$permission.permid}" class="z-itemcell z-w15">
-                        {$permission.group|varprepfordisplay}
+                        {$permission.group|safetext}
                     </span>
                     <span id="editpermgroup_{$permission.permid}" class="z-itemcell z-w15 z-hide">
                         <select name="group_{$permission.permid}" id="group_{$permission.permid}">
@@ -80,18 +80,18 @@
                         </select>
                     </span>
 
-                    <span id="permcomp_{$permission.permid}" class="z-itemcell z-w25">{$permission.component|varprepfordisplay}</span>
+                    <span id="permcomp_{$permission.permid}" class="z-itemcell z-w25">{$permission.component|safetext}</span>
                     <span id="editpermcomp_{$permission.permid}" class="z-itemcell z-w25 z-hide">
-                        <textarea id="component_{$permission.permid}" name="component_{$permission.permid}" rows="2" cols="20">{$permission.component|varprepfordisplay}</textarea>
+                        <textarea id="component_{$permission.permid}" name="component_{$permission.permid}" rows="2" cols="20">{$permission.component|safetext}</textarea>
                     </span>
 
-                    <span id="perminst_{$permission.permid}" class="z-itemcell z-w25">{$permission.instance|varprepfordisplay}</span>
+                    <span id="perminst_{$permission.permid}" class="z-itemcell z-w25">{$permission.instance|safetext}</span>
                     <span id="editperminst_{$permission.permid}" class="z-itemcell z-w25 z-hide">
-                        <textarea id="instance_{$permission.permid}" name="instance_{$permission.permid}" rows="2" cols="20">{$permission.instance|varprepfordisplay}</textarea>
+                        <textarea id="instance_{$permission.permid}" name="instance_{$permission.permid}" rows="2" cols="20">{$permission.instance|safetext}</textarea>
                     </span>
 
                     <span id="permlevel_{$permission.permid}" class="z-itemcell z-w20">
-                        {$permission.accesslevel|varprepfordisplay}
+                        {$permission.accesslevel|safetext}
                     </span>
                     <span id="editpermlevel_{$permission.permid}" class="z-itemcell z-w20 z-hide">
                         <select name="level_{$permission.permid}" id="level_{$permission.permid}">
@@ -99,9 +99,9 @@
                         </select>
                     </span>
                     <span id="permaction_{$permission.permid}" class="z-itemcell z-w07">
-                        <a id="insert_{$permission.permid}"     href="{$permission.inserturl|varprepfordisplay}" title="{gt text="Insert permission rule before"}">{img src=insert_table_row.gif modname=core set=icons/extrasmall __title="Insert permission rule before" __alt="Insert permission rule before"}</a>
-                        <a id="modify_{$permission.permid}"     href="{$permission.editurl|varprepfordisplay}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</a>
-                        <a id="delete_{$permission.permid}"     href="{$permission.deleteurl|varprepfordisplay}" title="{gt text="Delete"}">{img src=delete_table_row.gif modname=core set=icons/extrasmall __title="Delete" __alt="Delete"}</a>
+                        <a id="insert_{$permission.permid}"     href="{$permission.inserturl|safetext}" title="{gt text="Insert permission rule before"}">{img src=insert_table_row.gif modname=core set=icons/extrasmall __title="Insert permission rule before" __alt="Insert permission rule before"}</a>
+                        <a id="modify_{$permission.permid}"     href="{$permission.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</a>
+                        <a id="delete_{$permission.permid}"     href="{$permission.deleteurl|safetext}" title="{gt text="Delete"}">{img src=delete_table_row.gif modname=core set=icons/extrasmall __title="Delete" __alt="Delete"}</a>
                         <button class="z-imagebutton z-hide" id="modifyajax_{$permission.permid}"   title="{gt text="Edit"}">{img src=xedit.gif modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                         <button class="z-imagebutton z-hide" id="testpermajax_{$permission.permid}" title="{gt text="User permission check"}">{img src=testbed_protocol.gif modname=core set=icons/extrasmall __title="Check a users permission" __alt="Check a users permission"}</button>
                     </span>
@@ -123,21 +123,21 @@
                     <span id="permdrag_1" class="z-itemcell z-w05">
                         &nbsp;
                     </span>
-                    <span id="permgroup_1" class="z-itemcell z-w15 z-hide">{$permission.group|varprepfordisplay}</span>
+                    <span id="permgroup_1" class="z-itemcell z-w15 z-hide">{$permission.group|safetext}</span>
                     <span id="editpermgroup_1" class="z-itemcell z-w15">
                         <select name="group_1" id="group_1">
                             {html_options options=$groups}
                         </select>
                     </span>
-                    <span id="permcomp_1" class="z-itemcell z-w25 z-hide">{$permission.component|varprepfordisplay}</span>
+                    <span id="permcomp_1" class="z-itemcell z-w25 z-hide">{$permission.component|safetext}</span>
                     <span id="editpermcomp_1" class="z-itemcell z-w25">
                         <textarea id="component_1" name="component_1"></textarea>
                     </span>
-                    <span id="perminst_1" class="z-itemcell z-w25 z-hide">{$permission.instance|varprepfordisplay}</span>
+                    <span id="perminst_1" class="z-itemcell z-w25 z-hide">{$permission.instance|safetext}</span>
                     <span id="editperminst_1" class="z-itemcell z-w25">
                         <textarea id="instance_1" name="instance_1"></textarea>
                     </span>
-                    <span id="permlevel_1" class="z-itemcell z-w20 z-hide">{$permission.accesslevel|varprepfordisplay}</span>
+                    <span id="permlevel_1" class="z-itemcell z-w20 z-hide">{$permission.accesslevel|safetext}</span>
                     <span id="editpermlevel_1" class="z-itemcell z-w20">
                         <select name="level_1" id="level_1">
                             {html_options options=$permissionlevels}
@@ -166,15 +166,15 @@
             <legend>{gt text="User permission check"}</legend>
             <div class="z-formrow">
                 <label for="test_user">{gt text="User name"}</label>
-                <input type="text" size="40" maxlength="50" name="test_user" id="test_user" value="{$testuser|varprepfordisplay}" />
+                <input type="text" size="40" maxlength="50" name="test_user" id="test_user" value="{$testuser|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="test_component">{gt text="Component to check"}</label>
-                <input type="text" size="40" maxlength="50" name="test_component" id="test_component" value="{$testcomponent|varprepfordisplay}" />
+                <input type="text" size="40" maxlength="50" name="test_component" id="test_component" value="{$testcomponent|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="test_instance">{gt text="Instance to check"}</label>
-                <input type="text" size="40" maxlength="50" name="test_instance" id="test_instance" value="{$testinstance|varprepfordisplay}" />
+                <input type="text" size="40" maxlength="50" name="test_instance" id="test_instance" value="{$testinstance|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="test_level">{gt text="Permission level"}</label>

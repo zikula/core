@@ -120,10 +120,10 @@ class Theme_Api_Upgrade extends Zikula_Api
         // fix some characters in the theme name
         $themeinfo['name'] = preg_replace("/[^a-z0-9_]/i", '', $themeinfo['name']);
 
-        $pnRender = Renderer::getInstance('Theme', false);
-        $pnRender->assign($themeinfo);
-        $versionfile = $pnRender->fetch('upgrade/version.htm');
-        $versionlangfile = $pnRender->fetch('upgrade/version_lang.htm');
+        $renderer = Renderer::getInstance('Theme', false);
+        $renderer->assign($themeinfo);
+        $versionfile = $renderer->fetch('upgrade/version.htm');
+        $versionlangfile = $renderer->fetch('upgrade/version_lang.htm');
 
         // write the main version file
         $handle = fopen("themes/$themeinfo[directory]/version.php", 'w');
@@ -169,9 +169,9 @@ class Theme_Api_Upgrade extends Zikula_Api
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
 
-        $pnRender = Renderer::getInstance('Theme', false);
-        $pnRender->assign('palettes', $GLOBALS['palettes']);
-        $file = $pnRender->fetch('upgrade/themepalettes.htm');
+        $renderer = Renderer::getInstance('Theme', false);
+        $renderer->assign('palettes', $GLOBALS['palettes']);
+        $file = $renderer->fetch('upgrade/themepalettes.htm');
         if (strlen(trim($file)) == 0) {
             return true;
         }
@@ -206,9 +206,9 @@ class Theme_Api_Upgrade extends Zikula_Api
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
 
-        $pnRender = Renderer::getInstance('Theme', false);
-        $pnRender->assign('variables', $GLOBALS['variables']);
-        $file = $pnRender->fetch('upgrade/themevariables.htm');
+        $renderer = Renderer::getInstance('Theme', false);
+        $renderer->assign('variables', $GLOBALS['variables']);
+        $file = $renderer->fetch('upgrade/themevariables.htm');
         $handle = fopen("themes/$themeinfo[directory]/templates/config/themevariables.ini", 'w');
         if (!$handle) {
             return LogUtil::registerError($this->__f('Error! Could not open file so that it could be written to: %s', "themes/$themeinfo[directory]/templates/config/themevariables.ini"));
@@ -239,9 +239,9 @@ class Theme_Api_Upgrade extends Zikula_Api
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
 
-        $pnRender = Renderer::getInstance('Theme', false);
-        $pnRender->assign('pageconfigurations', $GLOBALS['pageconfigurations']);
-        $file = $pnRender->fetch('upgrade/pageconfigurations.htm');
+        $renderer = Renderer::getInstance('Theme', false);
+        $renderer->assign('pageconfigurations', $GLOBALS['pageconfigurations']);
+        $file = $renderer->fetch('upgrade/pageconfigurations.htm');
         $handle = fopen("themes/$themeinfo[directory]/templates/config/pageconfigurations.ini", 'w');
         if (!$handle) {
             return LogUtil::registerError($this->__f('Error! Could not open file so that it could be written to: %s', "themes/$themeinfo[directory]/templates/config/pageconfigurations.ini"));
@@ -272,14 +272,14 @@ class Theme_Api_Upgrade extends Zikula_Api
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
 
-        $pnRender = Renderer::getInstance('Theme', false);
-        $pnRender->assign('pagetemplate', $GLOBALS['templates']['theme'][$args['pageconfiguration']]);
+        $renderer = Renderer::getInstance('Theme', false);
+        $renderer->assign('pagetemplate', $GLOBALS['templates']['theme'][$args['pageconfiguration']]);
         if (!isset($GLOBALS['defaultpalette'])) {
             $GLOBALS['defaultpalette'] = '';
         }
-        $pnRender->assign('defaultpalette', $GLOBALS['defaultpalette']);
-        $pnRender->assign('templates', $GLOBALS['templates']['block']);
-        $file = $pnRender->fetch('upgrade/pageconfiguration.htm');
+        $renderer->assign('defaultpalette', $GLOBALS['defaultpalette']);
+        $renderer->assign('templates', $GLOBALS['templates']['block']);
+        $file = $renderer->fetch('upgrade/pageconfiguration.htm');
         $handle = fopen("themes/$themeinfo[directory]/templates/config/{$args['pageconfiguration']}.ini", 'w');
         if (!$handle) {
             return LogUtil::registerError($this->__f('Error! Could not open file so that it could be written to: %s', "themes/$themeinfo[directory]/templates/config/{$args[pageconfiguration]}.ini"));
@@ -406,9 +406,9 @@ class Theme_Api_Upgrade extends Zikula_Api
 
             // for the display template we need to add pager and hook support.
             if ($newfilename == 'news_user_articlecontent.htm') {
-                $pnRender = Renderer::getInstance('Theme', false);
-                $pnRender->assign('filesource', $filesource);
-                $filesource = $pnRender->fetch('upgrade/newsarticlecontent.htm');
+                $renderer = Renderer::getInstance('Theme', false);
+                $renderer->assign('filesource', $filesource);
+                $filesource = $renderer->fetch('upgrade/newsarticlecontent.htm');
             }
             $handle = fopen($newfilepath, 'w');
             if (!$handle) {

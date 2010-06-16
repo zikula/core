@@ -24,11 +24,11 @@
     {array_field_isset assign="displayname" array=$cat.display_name field=$userlanguage returnValue=1}
     <tbody>
         <tr class="{cycle values="z-odd,z-even"}">
-            <td style="text-align:left">{$cat.id|varprepfordisplay}</td>
+            <td style="text-align:left">{$cat.id|safetext}</td>
             <td style="text-align:left">{$displayname|default:$cat.name}</td>
-            <td style="text-align:left">{$cat.value|varprepfordisplay}</td>
-            <td style="text-align:center">{$cat.status|varprepfordisplay}</td>
-            <td style="text-align:right">{$cat.sort_value|varprepfordisplay}</td>
+            <td style="text-align:left">{$cat.value|safetext}</td>
+            <td style="text-align:center">{$cat.status|safetext}</td>
+            <td style="text-align:right">{$cat.sort_value|safetext}</td>
             {if (isset($rootCat.__ATTRIBUTES__) && $rootCat.__ATTRIBUTES__)}
             <td style="text-align:right">{$cat__ATTRIBUTES__|@count}</td>
             {/if}
@@ -60,7 +60,7 @@
                 {/if}
             </td>
             <td style="text-align:center">
-                {gt text="Do you really want to delete the category '%s'?" tag1=$cat.name|varprepfordisplay  assign="delPrompt"}
+                {gt text="Do you really want to delete the category '%s'?" tag1=$cat.name|safetext  assign="delPrompt"}
                 <a href="{modurl modname="Categories" type="userform" func="delete" dr=$dr cid=$cat.id}" onclick="return confirm('{$delPrompt}');" >
                     {img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete"}
                 </a>

@@ -42,28 +42,28 @@
             <tr class="{cycle values="z-odd,z-even"}">
                 <td>
                     {if $modules[modules].modinfo.admin_capable and $modules[modules].modinfo.state eq 3 and $modules[modules].modinfo.type eq 1}
-                    <a title="{gt text="Go to the module's administration panel"}" href="admin.php?module={$modules[modules].modinfo.name|varprepfordisplay}">{$modules[modules].modinfo.name|varprepfordisplay}</a>
+                    <a title="{gt text="Go to the module's administration panel"}" href="admin.php?module={$modules[modules].modinfo.name|safetext}">{$modules[modules].modinfo.name|safetext}</a>
                     {elseif $modules[modules].modinfo.admin_capable and $modules[modules].modinfo.state eq 3}
-                    <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin}">{$modules[modules].modinfo.name|varprepfordisplay}</a>
+                    <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin}">{$modules[modules].modinfo.name|safetext}</a>
                     {else}
-                    {$modules[modules].modinfo.name|varprepfordisplay}
+                    {$modules[modules].modinfo.name|safetext}
                     {/if}
                 </td>
-                <td>{$modules[modules].modinfo.displayname|varprepfordisplay|default:"&nbsp;"}</td>
-                <td>{$modules[modules].modinfo.url|varprepfordisplay}</td>
-                <td>{$modules[modules].modinfo.description|varprepfordisplay|default:"&nbsp;"}</td>
-                <td>{$modules[modules].modinfo.version|varprepfordisplay}</td>
+                <td>{$modules[modules].modinfo.displayname|safetext|default:"&nbsp;"}</td>
+                <td>{$modules[modules].modinfo.url|safetext}</td>
+                <td>{$modules[modules].modinfo.description|safetext|default:"&nbsp;"}</td>
+                <td>{$modules[modules].modinfo.version|safetext}</td>
                 <td style="white-space:nowrap">
-                    {img src=$modules[modules].statusimage modname=core set=icons/extrasmall alt=$modules[modules].status title=$modules[modules].status}&nbsp;{$modules[modules].status|varprepfordisplay}
+                    {img src=$modules[modules].statusimage modname=core set=icons/extrasmall alt=$modules[modules].status title=$modules[modules].status}&nbsp;{$modules[modules].status|safetext}
                     {if isset($modules[modules].modinfo.newversion)}
-                    <br />({$modules[modules].modinfo.newversion|varprepfordisplay})
+                    <br />({$modules[modules].modinfo.newversion|safetext})
                     {/if}
                 </td>
                 <td style="white-space:nowrap">
                     {assign var="options" value=$modules[modules].options}
                     {strip}
                     {section name=options loop=$options}
-                    <a href="{$options[options].url|varprepfordisplay}">{img modname=core src=$options[options].image set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>&nbsp;
+                    <a href="{$options[options].url|safetext}">{img modname=core src=$options[options].image set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>&nbsp;
                     {/section}
                     {/strip}
                 </td>

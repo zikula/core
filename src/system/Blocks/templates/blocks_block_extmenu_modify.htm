@@ -10,13 +10,13 @@
 <h4>{gt text="Template" domain='zikula'}</h4>
 <div class="z-formrow">
     <label for="blocks_menu_template">{gt text="Template for this block"}</label>
-    <input id="blocks_menu_template" type="text" name="template" size="30" maxlength="60" value="{$template|varprepfordisplay}" />
+    <input id="blocks_menu_template" type="text" name="template" size="30" maxlength="60" value="{$template|safetext}" />
 </div>
 
 <h4>{gt text="CSS styling" domain='zikula'}</h4>
 <div class="z-formrow">
     <label for="blocks_menu_stylesheet">{gt text="Style sheet" domain='zikula'}</label>
-    <input id="blocks_menu_stylesheet" type="text" name="stylesheet" size="20" value="{$stylesheet|varprepfordisplay}" />
+    <input id="blocks_menu_stylesheet" type="text" name="stylesheet" size="20" value="{$stylesheet|safetext}" />
 </div>
 
 <h4>{gt text="Visibility within block"}</h4>
@@ -62,16 +62,16 @@
                 {$thislanguage}
             </span>
             <span class="z-itemcell z-w20">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_image" name="links[{$thislanguage}][{$itemid}][image]" size="25" maxlength="255" value="{$item.image|varprepfordisplay}" />
+                <input type="text" id="links_{$thislanguage}_{$itemid}_image" name="links[{$thislanguage}][{$itemid}][image]" size="25" maxlength="255" value="{$item.image|safetext}" />
             </span>
             <span class="z-itemcell z-w22">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_name"  name="links[{$thislanguage}][{$itemid}][name]" size="25" maxlength="255" value="{$item.name|varprepfordisplay}" />
+                <input type="text" id="links_{$thislanguage}_{$itemid}_name"  name="links[{$thislanguage}][{$itemid}][name]" size="25" maxlength="255" value="{$item.name|safetext}" />
             </span>
             <span class="z-itemcell z-w22">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_url"   name="links[{$thislanguage}][{$itemid}][url]" size="25" maxlength="255" value="{$item.url|varprepfordisplay}" />
+                <input type="text" id="links_{$thislanguage}_{$itemid}_url"   name="links[{$thislanguage}][{$itemid}][url]" size="25" maxlength="255" value="{$item.url|safetext}" />
             </span>
             <span class="z-itemcell z-w15">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_title" name="links[{$thislanguage}][{$itemid}][title]" size="25" maxlength="255" value="{$item.title|varprepfordisplay}" />
+                <input type="text" id="links_{$thislanguage}_{$itemid}_title" name="links[{$thislanguage}][{$itemid}][title]" size="25" maxlength="255" value="{$item.title|safetext}" />
             </span>
             <span class="z-itemcell z-w10">
                 <input type="checkbox" id="links_{$thislanguage}_{$itemid}_active" name="links[{$thislanguage}][{$itemid}][active]" {if $item.active}checked="checked"{/if} value="1" />

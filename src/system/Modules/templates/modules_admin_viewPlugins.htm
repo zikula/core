@@ -15,9 +15,9 @@
                     <th>
                         <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
                             <div>
-                                <input type="hidden" name="sort" value="{$sort|varprepfordisplay}" />
-                                <input type="hidden" name="state" value="{$state|varprepfordisplay}" />
-                                <input type="hidden" name="systemplugins" value="{$systemplugins|varprepfordisplay}" />
+                                <input type="hidden" name="sort" value="{$sort|safetext}" />
+                                <input type="hidden" name="state" value="{$state|safetext}" />
+                                <input type="hidden" name="systemplugins" value="{$systemplugins|safetext}" />
                                 <div>
                                     <label for="bymodule">
                                         <a href="{modurl modname="Modules" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
@@ -35,9 +35,9 @@
                 <th style="white-space:nowrap">
                     <form action="{modurl modname="Modules" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
                         <div>
-                            <input type="hidden" name="sort" value="{$sort|varprepfordisplay}" />
-                            <input type="hidden" name="bymodule" value="{$module|varprepfordisplay}" />
-                            <input type="hidden" name="systemplugins" value="{$systemplugins|varprepfordisplay}" />
+                            <input type="hidden" name="sort" value="{$sort|safetext}" />
+                            <input type="hidden" name="bymodule" value="{$module|safetext}" />
+                            <input type="hidden" name="systemplugins" value="{$systemplugins|safetext}" />
                             <div>
                                 <label for="modules_state">{gt text="State"}</label><br />
                                 <select id="modules_state" name="state" onchange="submit()">
@@ -58,23 +58,23 @@
             <tr class="{cycle values="z-odd,z-even"}">
                 {if !$systemplugins}
                     <td>
-                        {$plugin.instance->getModuleName()|varprepfordisplay}
+                        {$plugin.instance->getModuleName()|safetext}
                     </td>
                 {/if}
-                <td>{$plugin.instance->getPluginName()|varprepfordisplay}</td>
-                <td>{$plugin.instance->getMetaDisplayName()|varprepfordisplay}</td>
-                <td>{$plugin.instance->getMetaDescription()|varprepfordisplay}</td>
-                <td>{$plugin.version|varprepfordisplay}</td>
+                <td>{$plugin.instance->getPluginName()|safetext}</td>
+                <td>{$plugin.instance->getMetaDisplayName()|safetext}</td>
+                <td>{$plugin.instance->getMetaDescription()|safetext}</td>
+                <td>{$plugin.version|safetext}</td>
                 <td style="white-space:nowrap">
-                    {img src=$plugin.statusimage modname=core set=icons/extrasmall alt=$plugin.status title=$plugin.status}&nbsp;{$plugin.status|varprepfordisplay}
+                    {img src=$plugin.statusimage modname=core set=icons/extrasmall alt=$plugin.status title=$plugin.status}&nbsp;{$plugin.status|safetext}
                     {if isset($plugin.newversion)}
-                    <br />({$plugin.newversion|varprepfordisplay})
+                    <br />({$plugin.newversion|safetext})
                     {/if}
                 </td>
                 <td style="white-space:nowrap">
                     {strip}
                     {foreach from=$plugin.actions item="action"}
-                    <a href="{$action.url|varprepfordisplay}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title}</a>&nbsp;
+                    <a href="{$action.url|safetext}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title}</a>&nbsp;
                     {/foreach}
                     {/strip}
                 </td>

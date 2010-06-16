@@ -7,17 +7,17 @@
     <form id="blockupdateform" class="z-form" action="{modurl modname="Blocks" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Blocks"}" />
-            <input type="hidden" name="bid" value="{$bid|varprepfordisplay}" />
+            <input type="hidden" name="bid" value="{$bid|safetext}" />
             {if $requirement neq ''}
             <p class="z-warningmsg">
                 {$requirement}
             </p>
             {/if}
             <fieldset>
-                <legend>{$modtitle|varprepfordisplay}</legend>
+                <legend>{$modtitle|safetext}</legend>
                 <div class="z-formrow">
                     <label for="blocks_title">{gt text="Title"}</label>
-                    <input id="blocks_title" name="title" type="text" size="40" maxlength="255" value="{$title|varprepfordisplay}" />
+                    <input id="blocks_title" name="title" type="text" size="40" maxlength="255" value="{$title|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="blocks_language">{gt text="Language"}</label>
@@ -49,15 +49,15 @@
                     </div>
                     <div class="z-formrow">
                         <label for="blocks_type">{gt text="Function type(s)"}</label>
-                        <input id="blocks_type" name="filter[type]" type="text" size="40" maxlength="255" value="{$filter.type|varprepfordisplay}" />
+                        <input id="blocks_type" name="filter[type]" type="text" size="40" maxlength="255" value="{$filter.type|safetext}" />
                     </div>
                     <div class="z-formrow">
                         <label for="blocks_functions">{gt text="Function name"}</label>
-                        <input id="blocks_functions" name="filter[functions]" type="text" size="40" maxlength="255" value="{$filter.functions|varprepfordisplay}" />
+                        <input id="blocks_functions" name="filter[functions]" type="text" size="40" maxlength="255" value="{$filter.functions|safetext}" />
                     </div>
                     <div class="z-formrow">
                         <label for="blocks_customargs">{gt text="Function arguments"}</label>
-                        <input id="blocks_customargs" name="filter[customargs]" type="text" size="40" maxlength="255" value="{$filter.customargs|varprepfordisplay}" />
+                        <input id="blocks_customargs" name="filter[customargs]" type="text" size="40" maxlength="255" value="{$filter.customargs|safetext}" />
                     </div>
                 </div>
             </fieldset>
@@ -86,7 +86,7 @@
                 <legend>{gt text="Customisation"}</legend>
                 <div class="z-formrow">
                     <label for="blocks_content">{gt text="Content"}</label>
-                    <textarea id="blocks_content" name="content" cols="50" rows="10">{$content|varprepfordisplay}</textarea>
+                    <textarea id="blocks_content" name="content" cols="50" rows="10">{$content|safetext}</textarea>
                 </div>
             </fieldset>
             {/if}

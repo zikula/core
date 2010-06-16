@@ -11,16 +11,16 @@
     <form class="z-form" action="{modurl modname="Modules" type="admin" func="updatehooks"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Modules"}" />
-            <input type="hidden" name="id" value="{$id|varprepfordisplay}" />
+            <input type="hidden" name="id" value="{$id|safetext}" />
             <fieldset>
                 <legend>{gt text="Hooked modules"}</legend>
                 {section name=hook loop=$hooks}
                 <div class="z-formrow">
-                    <label for="modules_{$hooks[hook].tmodule|varprepfordisplay}" style="width:40%;">{gt text="Activate"} {$hooks[hook].tmodule|varprepfordisplay} {gt text="for"} {$modinfo.displayname}</label>
+                    <label for="modules_{$hooks[hook].tmodule|safetext}" style="width:40%;">{gt text="Activate"} {$hooks[hook].tmodule|safetext} {gt text="for"} {$modinfo.displayname}</label>
                     {if $hooks[hook].hookvalue eq 1}
-                    <input id="modules_{$hooks[hook].tmodule|varprepfordisplay}" name="hooks_{$hooks[hook].tmodule|varprepfordisplay}" type="checkbox" checked="checked" value="ON" />
+                    <input id="modules_{$hooks[hook].tmodule|safetext}" name="hooks_{$hooks[hook].tmodule|safetext}" type="checkbox" checked="checked" value="ON" />
                     {else}
-                    <input id="modules_{$hooks[hook].tmodule|varprepfordisplay}" name="hooks_{$hooks[hook].tmodule|varprepfordisplay}" type="checkbox" value="ON" />
+                    <input id="modules_{$hooks[hook].tmodule|safetext}" name="hooks_{$hooks[hook].tmodule|safetext}" type="checkbox" value="ON" />
                     {/if}
                 </div>
                 {/section}

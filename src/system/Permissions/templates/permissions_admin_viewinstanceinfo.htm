@@ -21,8 +21,8 @@
         <tbody>
         {foreach from=$schemas key=component item=instance name=schemas}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td>{$component|varprepfordisplay}</td>
-            <td>{$instance|varprepfordisplay}</td>
+            <td>{$component|safetext}</td>
+            <td>{$instance|safetext}</td>
         </tr>
         {/foreach}
         </tbody>

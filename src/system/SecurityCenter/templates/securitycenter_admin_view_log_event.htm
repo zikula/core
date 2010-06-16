@@ -38,14 +38,14 @@
             {secgenauthkey module="SecurityCenter" assign="authkey"}
             {foreach from=$objectArray item=event}
             <tr class="{cycle values="z-odd,z-even"}">
-                <td>{$event.date|varprepfordisplay}</td>
-                <td>{$event.username|varprepfordisplay}</td>
-                <td>{$event.component|varprepfordisplay}</td>
-                <td>{$event.module|varprepfordisplay}</td>
-                <td>{$event.type|varprepfordisplay}</td>
-                <td>{$event.function|varprepfordisplay}</td>
-                <td>{$event.sec_component|varprepfordisplay}&nbsp;|&nbsp;{$event.sec_instance|varprepfordisplay}&nbsp;|&nbsp;{$event.sec_permission|varprepfordisplay}</td>
-                <td valign="top">{$event.message|varprepfordisplay}</td>
+                <td>{$event.date|safetext}</td>
+                <td>{$event.username|safetext}</td>
+                <td>{$event.component|safetext}</td>
+                <td>{$event.module|safetext}</td>
+                <td>{$event.type|safetext}</td>
+                <td>{$event.function|safetext}</td>
+                <td>{$event.sec_component|safetext}&nbsp;|&nbsp;{$event.sec_instance|safetext}&nbsp;|&nbsp;{$event.sec_permission|safetext}</td>
+                <td valign="top">{$event.message|safetext}</td>
                 <td valign="top"><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" ot="log_event" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}

@@ -5,13 +5,13 @@
 {gt text="Create new category" assign=templatetitle}
 {/if}
 
-<h2 id="top">{$modinfo.displayname|varprepfordisplay}</h2>
+<h2 id="top">{$modinfo.displayname|safetext}</h2>
 
 {formutil_getpassedvalue key="dr" default="0" assign="dr"}
 {modurl modname="Categories" type="userform" func="resequence" assign="resq" dr=$dr}
 
 <ul class="z-menulinks">
-    <li><a href="{$resq|varprepfordisplay}">{gt text="Resequence"}</a></li>
+    <li><a href="{$resq|safetext}">{gt text="Resequence"}</a></li>
     {if ($referer)}
     <li><a href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
@@ -30,25 +30,25 @@
         <fieldset>
             <legend>{gt text="Category"}</legend>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Categories"}" />
-            <input type="hidden" name="dr" value="{$rootCat.id|varprepfordisplay}" />
-            <input type="hidden" name="category[parent_id]" value="{$rootCat.id|varprepfordisplay}" />
+            <input type="hidden" name="dr" value="{$rootCat.id|safetext}" />
+            <input type="hidden" name="category[parent_id]" value="{$rootCat.id|safetext}" />
             <input type="hidden" name="category[is_locked]" value="0" />
             <input type="hidden" name="category[is_leaf]" value="1" />
             {array_field_isset assign="catID" array=$category field="id" returnValue=1}
             {if ($catID)}
-            <input type="hidden" name="category[id]"              value="{$category.id|varprepfordisplay}" />
-            <input type="hidden" name="category[path]"            value="{$category.path|varprepfordisplay}" />
-            <input type="hidden" name="category[ipath]"           value="{$category.ipath|varprepfordisplay}" />
-            <input type="hidden" name="category[obj_status]"      value="{$category.obj_status|varprepfordisplay}" />
-            <input type="hidden" name="category[cr_date]"         value="{$category.cr_date|varprepfordisplay}" />
-            <input type="hidden" name="category[cr_uid]"          value="{$category.cr_uid|varprepfordisplay}" />
-            <input type="hidden" name="category[lu_date]"         value="{$category.lu_date|varprepfordisplay}" />
-            <input type="hidden" name="category[lu_uid]"          value="{$category.lu_uid|varprepfordisplay}" />
+            <input type="hidden" name="category[id]"              value="{$category.id|safetext}" />
+            <input type="hidden" name="category[path]"            value="{$category.path|safetext}" />
+            <input type="hidden" name="category[ipath]"           value="{$category.ipath|safetext}" />
+            <input type="hidden" name="category[obj_status]"      value="{$category.obj_status|safetext}" />
+            <input type="hidden" name="category[cr_date]"         value="{$category.cr_date|safetext}" />
+            <input type="hidden" name="category[cr_uid]"          value="{$category.cr_uid|safetext}" />
+            <input type="hidden" name="category[lu_date]"         value="{$category.lu_date|safetext}" />
+            <input type="hidden" name="category[lu_uid]"          value="{$category.lu_uid|safetext}" />
             {/if}
             <div class="z-formrow">
                 <label for="category_name">{gt text="Name"}</label>
                 {array_field_isset assign="catName" array=$category field="name" returnValue=1}
-                <input id="category_name" name="category[name]" value="{$catName|varprepfordisplay}" type="text" size="32" maxlength="255" />
+                <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" size="32" maxlength="255" />
                 {php}
                 $tplVars =& $this->_tpl_vars;
                 if (isset($tplVars['validationErrors']) && $tplVars['validationErrors'])
@@ -63,12 +63,12 @@
             <div class="z-formrow">
                 <label for="category_value">{gt text="Value"}</label>
                 {array_field_isset assign="catValue" array=$category field="value" returnValue=1}
-                <input id="category_value" name="category[value]" value="{$catValue|varprepfordisplay}" type="text" size="16" maxlength="255" />
+                <input id="category_value" name="category[value]" value="{$catValue|safetext}" type="text" size="16" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="category_sort_value">{gt text="Sort value"}</label>
                 {array_field_isset assign="catSortValue" array=$category field="sort_value" returnValue=1}
-                <input id="category_sort_value" name="category[sort_value]" value="{$catSortValue|varprepfordisplay}" type="text" size="16" maxlength="16" />
+                <input id="category_sort_value" name="category[sort_value]" value="{$catSortValue|safetext}" type="text" size="16" maxlength="16" />
             </div>
             <div class="z-formrow">
                 <label>{gt text="Name"}</label>
@@ -109,15 +109,15 @@
             <h4>{gt text="Category system information"}</h4>
             <div class="z-formrow">
                 <label for="category_id">{gt text="Internal ID"}</label>
-                <span id="category_id">{$category.id|varprepfordisplay}</span>
+                <span id="category_id">{$category.id|safetext}</span>
             </div>
             <div class="z-formrow">
                 <label for="category_path">{gt text="Path"}</label>
-                <span id="category_path">{$category.path|varprepfordisplay}</span>
+                <span id="category_path">{$category.path|safetext}</span>
             </div>
             <div class="z-formrow">
                 <label for="category_ipath">{gt text="I-path"}</label>
-                <span id="category_ipath">{$category.ipath|varprepfordisplay}</span>
+                <span id="category_ipath">{$category.ipath|safetext}</span>
             </div>
             {/if}
         </fieldset>

@@ -73,12 +73,12 @@
         <tbody>
             {foreach item=block from=$blocks}
             <tr class="{cycle values="z-odd,z-even" name=blocks}">
-                <td>{$block.bid|varprepfordisplay}</td>
-                <td>{$block.title|varprepfordisplay}</td>
-                <td>{$block.modname|varprepfordisplay}</td>
-                <td>{$block.bkey|varprepfordisplay}</td>
-                <td>{$block.positions|varprepfordisplay}</td>
-                <td>{$block.language|varprepfordisplay}</td>
+                <td>{$block.bid|safetext}</td>
+                <td>{$block.title|safetext}</td>
+                <td>{$block.modname|safetext}</td>
+                <td>{$block.bkey|safetext}</td>
+                <td>{$block.positions|safetext}</td>
+                <td>{$block.language|safetext}</td>
                 <td>
                     {if $block.active}
                     <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.gif" modname="core" set="icons/extrasmall" title=$deactivate alt=$deactivate id="active_`$block.bid`"}{img src="redled.gif" modname="core" set="icons/extrasmall" title=$activate alt=$activate style="display: none;" id="inactive_`$block.bid`"}</a>
@@ -93,7 +93,7 @@
                 <td>
                     {foreach item=option from=$block.options}
                     {if $option.noscript eq true}<noscript><div>{/if}
-                        <a href="{$option.url|varprepfordisplay}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
+                        <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
                     {if $option.noscript eq true}</div></noscript>{/if}
                     {/foreach}
                 </td>
@@ -123,7 +123,7 @@
                 <td>&lt;!--[blockposition name={$position.name|varprephtmldisplay}]--&gt;</td>
                 <td>
                     {foreach item=option from=$position.options}
-                    <a href="{$option.url|varprepfordisplay}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
+                    <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
                     {/foreach}
                 </td>
             </tr>

@@ -48,9 +48,9 @@ class Categories_Admin extends Zikula_Controller
         $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);
         $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = true;
 
-        $pnRender = Renderer::getInstance('Categories', false);
-        $pnRender->assign('menuTxt', $menuTxt);
-        return $pnRender->fetch('categories_admin_view.htm');
+        $renderer = Renderer::getInstance('Categories', false);
+        $renderer->assign('menuTxt', $menuTxt);
+        return $renderer->fetch('categories_admin_view.htm');
     }
 
     /**
@@ -62,8 +62,8 @@ class Categories_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $pnRender = Renderer::getInstance('Categories', false);
-        return $pnRender->fetch('categories_admin_config.htm');
+        $renderer = Renderer::getInstance('Categories', false);
+        return $renderer->fetch('categories_admin_config.htm');
     }
 
     /**
@@ -141,20 +141,20 @@ class Categories_Admin extends Zikula_Controller
 
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 
-        $pnRender = Renderer::getInstance('Categories', false);
-        $pnRender->assign('mode', $mode);
-        $pnRender->assign('category', $editCat);
-        $pnRender->assign('attributes', $attributes);
-        $pnRender->assign('languages', $languages);
-        $pnRender->assign('categorySelector', $selector);
-        $pnRender->assign('validation', $category->_objValidation);
+        $renderer = Renderer::getInstance('Categories', false);
+        $renderer->assign('mode', $mode);
+        $renderer->assign('category', $editCat);
+        $renderer->assign('attributes', $attributes);
+        $renderer->assign('languages', $languages);
+        $renderer->assign('categorySelector', $selector);
+        $renderer->assign('validation', $category->_objValidation);
 
         if ($mode == 'edit') {
-            $pnRender->assign('haveSubcategories', CategoryUtil::haveDirectSubcategories ($cid));
-            $pnRender->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories ($cid, false, true));
+            $renderer->assign('haveSubcategories', CategoryUtil::haveDirectSubcategories ($cid));
+            $renderer->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories ($cid, false, true));
         }
 
-        return $pnRender->fetch('categories_admin_edit.htm');
+        return $renderer->fetch('categories_admin_edit.htm');
     }
 
     public function editregistry ()
@@ -184,14 +184,14 @@ class Categories_Admin extends Zikula_Controller
         $objArray = new $arrayClass ();
         $dataA    = $objArray->get($where, $sort);
 
-        $pnRender = Renderer::getInstance('Categories', false);
-        $pnRender->assign('objectArray', $dataA);
-        $pnRender->assign('newobj', $data);
-        $pnRender->assign('root_id', $root_id);
-        $pnRender->assign('id', $id);
-        $pnRender->assign('validation', $obj->_objValidation);
+        $renderer = Renderer::getInstance('Categories', false);
+        $renderer->assign('objectArray', $dataA);
+        $renderer->assign('newobj', $data);
+        $renderer->assign('root_id', $root_id);
+        $renderer->assign('id', $id);
+        $renderer->assign('validation', $obj->_objValidation);
 
-        return $pnRender->fetch('categories_admin_registry_edit.htm');
+        return $renderer->fetch('categories_admin_registry_edit.htm');
     }
 
     /**
@@ -222,14 +222,14 @@ class Categories_Admin extends Zikula_Controller
         $allCats     = CategoryUtil::getSubCategories ($root_id, true, true, true, false, true, $cid);
         $selector    = CategoryUtil::getSelector_Categories ($allCats);
 
-        $pnRender = Renderer::getInstance('Categories');
-        $pnRender->caching = false;
-        $pnRender->assign('category', $category);
-        $pnRender->assign('numSubcats', count($subCats));
-        $pnRender->assign('categorySelector', $selector);
+        $renderer = Renderer::getInstance('Categories');
+        $renderer->caching = false;
+        $renderer->assign('category', $category);
+        $renderer->assign('numSubcats', count($subCats));
+        $renderer->assign('categorySelector', $selector);
 
         $tplName = 'categories_admin_' . $op . '.htm';
-        return $pnRender->fetch($tplName);
+        return $renderer->fetch($tplName);
     }
 
     /**
@@ -241,15 +241,15 @@ class Categories_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $pnRender = Renderer::getInstance('Categories', false);
-        $pnRender->assign ('userrootcat', ModUtil::getVar('Categories', 'userrootcat', '/__SYSTEM__'));
-        $pnRender->assign ('allowusercatedit', ModUtil::getVar('Categories', 'allowusercatedit', 0));
-        $pnRender->assign ('autocreateusercat', ModUtil::getVar('Categories', 'autocreateusercat', 0));
-        $pnRender->assign ('autocreateuserdefaultcat', ModUtil::getVar('Categories', 'autocreateuserdefaultcat', 0));
-        $pnRender->assign ('userdefaultcatname', ModUtil::getVar('Categories', 'userdefaultcatname', 0));
-        $pnRender->assign ('permissionsall', ModUtil::getVar('Categories', 'permissionsall', 0));
+        $renderer = Renderer::getInstance('Categories', false);
+        $renderer->assign ('userrootcat', ModUtil::getVar('Categories', 'userrootcat', '/__SYSTEM__'));
+        $renderer->assign ('allowusercatedit', ModUtil::getVar('Categories', 'allowusercatedit', 0));
+        $renderer->assign ('autocreateusercat', ModUtil::getVar('Categories', 'autocreateusercat', 0));
+        $renderer->assign ('autocreateuserdefaultcat', ModUtil::getVar('Categories', 'autocreateuserdefaultcat', 0));
+        $renderer->assign ('userdefaultcatname', ModUtil::getVar('Categories', 'userdefaultcatname', 0));
+        $renderer->assign ('permissionsall', ModUtil::getVar('Categories', 'permissionsall', 0));
 
-        return $pnRender->fetch('categories_admin_preferences.htm');
+        return $renderer->fetch('categories_admin_preferences.htm');
     }
 
 }

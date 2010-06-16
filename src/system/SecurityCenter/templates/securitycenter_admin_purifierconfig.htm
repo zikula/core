@@ -29,7 +29,7 @@
 
                 {if $directive.allowNull}
                 <div class="z-formrow">
-                    <label for="purifierConfig_div_{$directive.key}">{$directiveName|varprepfordisplay} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a></label>
+                    <label for="purifierConfig_div_{$directive.key}">{$directiveName|safetext} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a></label>
                     <div id="purifierConfig_div_{$directive.key}">
                         <input id="purifierConfig_Null_{$directive.key}" name="purifierConfig[Null_{$directive.key}]" type="checkbox" value="1"{if is_null($directive.value)} checked="checked"{/if} onclick="{if ($directive.type != $purifierTypes.bool)}toggleWriteability('{$idVal}', checked);{else}toggleWriteability('{$idVal}_Yes', checked); toggleWriteability('{$idVal}_No', checked);{/if}" />
                         <label for="purifierConfig_Null_{$directive.key}">{gt text='Use default value (if checked) or override value'}</label>
@@ -39,7 +39,7 @@
                     <label for="{$idVal}">&nbsp;</label>
                 {else}
                 <div class="z-formrow">
-                    <label for="{$idVal}">{$directiveName|varprepfordisplay} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a></label>
+                    <label for="{$idVal}">{$directiveName|safetext} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a></label>
                 {/if}
 
                 {if is_null($directive.value)}{assign var='disabledVal' value=' disabled="disabled"'}{else}{assign var='disabledVal' value=''}{/if}
@@ -47,11 +47,11 @@
                 {if isset($directive.allowedValues)}
                 <select id="{$idVal}" name="{$nameVal}"{$disabledVal} style="min-width: 5em;">
                     {foreach from=$directive.allowedValues item='allowedVal'}
-                    <option value="{$allowedVal}"{if ($directive.value == $allowedVal)} selected="selected"{/if}>{$allowedVal|varprepfordisplay}</option>
+                    <option value="{$allowedVal}"{if ($directive.value == $allowedVal)} selected="selected"{/if}>{$allowedVal|safetext}</option>
                     {/foreach}
                 </select>
                 {elseif (($directive.type == $purifierTypes.text) || ($directive.type == $purifierTypes.itext) || ($directive.type == $purifierTypes.list) || ($directive.type == $purifierTypes.hash) || ($directive.type == $purifierTypes.lookup))}
-                <textarea id="{$idVal}" name="{$nameVal}" cols="50" rows="8"{$disabledVal}>{$directive.value|varprepfordisplay}</textarea>
+                <textarea id="{$idVal}" name="{$nameVal}" cols="50" rows="8"{$disabledVal}>{$directive.value|safetext}</textarea>
 
                 {if (($directive.type == $purifierTypes.list) || ($directive.type == $purifierTypes.lookup))}
                 <em class="z-formnote z-sub">{gt text='(Place each value on a separate line.)'}</em>
@@ -69,7 +69,7 @@
                     <label for="{$idVal}_No">{gt text='No'}</label>
                 </div>
                 {else}
-                <em class="z-formnote z-sub">{gt text='(Modification not supported.)'} {gt text='Value:'} {$directive.value|serialize|varprepfordisplay}</em>
+                <em class="z-formnote z-sub">{gt text='(Modification not supported.)'} {gt text='Value:'} {$directive.value|serialize|safetext}</em>
                 {/if}
                 </div>
                 {/if}

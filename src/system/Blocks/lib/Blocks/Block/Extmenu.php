@@ -56,10 +56,10 @@ class Blocks_Block_Extmenu extends Zikula_Block
         }
 
         // Create output object
-        $pnRender = Renderer::getInstance('Blocks');
+        $renderer = Renderer::getInstance('Blocks');
 
         // Set the cache id
-        $pnRender->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
+        $renderer->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
 
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
@@ -74,9 +74,9 @@ class Blocks_Block_Extmenu extends Zikula_Block
         }
 
         // check out if the contents are cached.
-        if ($pnRender->is_cached($vars['template'])) {
+        if ($renderer->is_cached($vars['template'])) {
             // Populate block info and pass to theme
-            $blockinfo['content'] = $pnRender->fetch($vars['template']);
+            $blockinfo['content'] = $renderer->fetch($vars['template']);
             return BlockUtil::themeBlock($blockinfo);
         }
 
@@ -196,13 +196,13 @@ class Blocks_Block_Extmenu extends Zikula_Block
         $currenturi = urlencode(str_replace(System::getBaseUri() . '/', '', System::getCurrentUri()));
 
         // assign the items
-        $pnRender->assign('menuitems', $menuitems);
-        $pnRender->assign('blockinfo', $blockinfo);
-        $pnRender->assign('currenturi', $currenturi);
-        $pnRender->assign('access_edit', Securityutil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_EDIT));
+        $renderer->assign('menuitems', $menuitems);
+        $renderer->assign('blockinfo', $blockinfo);
+        $renderer->assign('currenturi', $currenturi);
+        $renderer->assign('access_edit', Securityutil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_EDIT));
 
         // get the block content
-        $blockinfo['content'] = $pnRender->fetch($vars['template']);
+        $blockinfo['content'] = $renderer->fetch($vars['template']);
 
         // add the stylesheet to the header
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Blocks', $vars['stylesheet']));
@@ -335,7 +335,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
 
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
-        $pnRender = Renderer::getInstance('Blocks', false);
+        $renderer = Renderer::getInstance('Blocks', false);
 
         // check if the users wants to add a new link via the "Add current url" link in the block
         $addurl = FormUtil::getPassedValue('addurl', 0, 'GET');
@@ -406,15 +406,15 @@ class Blocks_Block_Extmenu extends Zikula_Block
         $vars['links'] = $menuitems;
 
         // assign the vars
-        $pnRender->assign($vars);
-        $pnRender->assign('languages', $languages);
-        $pnRender->assign('userlanguage', $userlanguage);
-        $pnRender->assign('redirect', $redirect);
+        $renderer->assign($vars);
+        $renderer->assign('languages', $languages);
+        $renderer->assign('userlanguage', $userlanguage);
+        $renderer->assign('redirect', $redirect);
 
-        $pnRender->assign('blockinfo', $blockinfo);
+        $renderer->assign('blockinfo', $blockinfo);
 
         // return the output
-        return $pnRender->fetch('blocks_block_extmenu_modify.htm');
+        return $renderer->fetch('blocks_block_extmenu_modify.htm');
     }
 
     /**
@@ -465,8 +465,8 @@ class Blocks_Block_Extmenu extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $pnRender = Renderer::getInstance('Blocks', false);
-        $pnRender->clear_all_cache();
+        $renderer = Renderer::getInstance('Blocks', false);
+        $renderer->clear_all_cache();
 
         return $blockinfo;
     }

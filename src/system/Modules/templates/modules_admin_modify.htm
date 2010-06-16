@@ -5,20 +5,20 @@
     <form class="z-form" action="{modurl modname="Modules" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Modules"}" />
-            <input type="hidden" name="id" value="{$id|varprepfordisplay}" />
+            <input type="hidden" name="id" value="{$id|safetext}" />
             <fieldset>
                 <legend>{gt text="Module"}</legend>
                 <div class="z-formrow">
                     <label for="modules_newdisplayname">{gt text="Module display name"}</label>
-                    <input id="modules_newdisplayname" name="newdisplayname" type="text" size="30" maxlength="64" value="{$displayname|varprepfordisplay}" />
+                    <input id="modules_newdisplayname" name="newdisplayname" type="text" size="30" maxlength="64" value="{$displayname|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="modules_newurl">{gt text="Module URL"}</label>
-                    <input id="modules_newurl" name="newurl" type="text" size="30" maxlength="64" value="{$url|varprepfordisplay}" />
+                    <input id="modules_newurl" name="newurl" type="text" size="30" maxlength="64" value="{$url|safetext}" />
                 </div>
                 <div class="z-formrow">
                     <label for="modules_newdescription">{gt text="Description"}</label>
-                    <textarea id="modules_newdescription" name="newdescription" cols="50" rows="10">{$description|varprepfordisplay}</textarea>
+                    <textarea id="modules_newdescription" name="newdescription" cols="50" rows="10">{$description|safetext}</textarea>
                 </div>
                 <div class="z-formrow">
                     <label>{gt text="Defaults"}</label>

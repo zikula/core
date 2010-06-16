@@ -92,12 +92,12 @@ class Admin_Block_Adminnav extends Zikula_Block
         }
 
         // Create output object
-        $pnRender = Renderer::getInstance('Admin');
+        $renderer = Renderer::getInstance('Admin');
 
-        $pnRender->assign('admincategories', $admincategories);
+        $renderer->assign('admincategories', $admincategories);
 
         // Populate block info and pass to theme
-        $blockinfo['content'] = $pnRender->fetch('admin_block_adminnav.htm');
+        $blockinfo['content'] = $renderer->fetch('admin_block_adminnav.htm');
 
         return BlockUtil::themeBlock($blockinfo);
     }

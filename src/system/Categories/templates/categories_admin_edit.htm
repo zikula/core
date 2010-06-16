@@ -23,7 +23,7 @@
                 <div class="z-formrow">
                     <label for="category_name">{gt text="Name"} {formutil_getfieldmarker objectType="category" field="name" validation=$validation}</label>
                     {array_field_isset assign="catName" array=$category field="name" returnValue=1}
-                    <input id="category_name" name="category[name]" value="{$catName|varprepfordisplay}" type="text" size="32" maxlength="255" />
+                    <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" size="32" maxlength="255" />
                     {formutil_getvalidationerror objectType="category" field="name"}
                 </div>
                 <div class="z-formrow">
@@ -48,12 +48,12 @@
                 <div class="z-formrow">
                     <label for="category_value">{gt text="Value"}</label>
                     {array_field_isset assign="catValue" array=$category field="value" returnValue=1}
-                    <input id="category_value" name="category[value]" value="{$catValue|varprepfordisplay}" type="text" size="16" maxlength="255" />
+                    <input id="category_value" name="category[value]" value="{$catValue|safetext}" type="text" size="16" maxlength="255" />
                 </div>
                 <div class="z-formrow">
                     <label for="category_sort_value">{gt text="Sort value"}</label>
                     {array_field_isset assign="catSortValue" array=$category field="sort_value" returnValue=1}
-                    <input id="category_sort_value" name="category[sort_value]" value="{$catSortValue|varprepfordisplay}" type="text" size="16" maxlength="16" />
+                    <input id="category_sort_value" name="category[sort_value]" value="{$catSortValue|safetext}" type="text" size="16" maxlength="16" />
                 </div>
                 <div class="z-formrow">
                     <label for="category_status">{gt text="Active"}</label>
@@ -95,15 +95,15 @@
                 <legend>{gt text="Meta data"}</legend>
                 <div class="z-formrow">
                     <label for="category_meta_id">{gt text="Internal ID"}</label>
-                    <span id="category_meta_id">{$category.id|varprepfordisplay}</span>
+                    <span id="category_meta_id">{$category.id|safetext}</span>
                 </div>
                 <div class="z-formrow">
                     <label for="category_path">{gt text="Path"}</label>
-                    <span id="category_path">{$category.path|varprepfordisplay}</span>
+                    <span id="category_path">{$category.path|safetext}</span>
                 </div>
                 <div class="z-formrow">
                     <label for="category_ipath">{gt text="I-path"}</label>
-                    <span id="category_ipath">{$category.ipath|varprepfordisplay}</span>
+                    <span id="category_ipath">{$category.ipath|safetext}</span>
                 </div>
                 {usergetvar name='uname' uid=$category.cr_uid assign='crusername'}
                 {usergetvar name='uname' uid=$category.lu_uid assign='luusername'}
