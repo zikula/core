@@ -59,6 +59,11 @@ class PNObject extends DBObject
     public $_GET_FROM_SESSION = 'S'; // get data from $_SESSION
     public $_GET_FROM_VALIDATION_FAILED = 'V'; // get data from failed validation
 
+    public function __construct($init = null, $key = null, $field = null)
+    {
+    	$this->PNObject($init, $key, $field);
+    }
+    
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
@@ -68,7 +73,13 @@ class PNObject extends DBObject
      */
     public function PNObject($init = null, $key = null, $field = null)
     {
-    	static $initTypes = array('D'   => self::GET_FROM_DB,
+    	$this->DBObject($init, $key, $field);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObject')), 'STRICT');
+    }
+    
+    public function _init($init = null, $key = null, $field = null)
+    {
+        static $initTypes = array('D'   => self::GET_FROM_DB,
                                   'G'   => self::GET_FROM_GET,
                                   'P'   => self::GET_FROM_POST,
                                   'R'   => self::GET_FROM_REQUEST,
@@ -77,9 +88,7 @@ class PNObject extends DBObject
         if (is_string($init) && array_key_exists($init, $initTypes)) {
             $init = $initTypes[$init];
         }
-    	
-        $this->DBObject($init, $key, $field);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObject')), 'STRICT');
+        return parent::_init($init, $key, $field);
     }
 }
 
@@ -106,6 +115,13 @@ class PNObjectArray extends DBObjectArray
      */
     public function PNObjectArray($init = null, $where = '')
     {
+        $this->DBObjectArray($init, $where);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObjectArray')), 'STRICT');
+    }
+    
+    
+    public function _init($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
+    {
         static $initTypes = array('D'   => self::GET_FROM_DB,
                                   'G'   => self::GET_FROM_GET,
                                   'P'   => self::GET_FROM_POST,
@@ -115,9 +131,7 @@ class PNObjectArray extends DBObjectArray
         if (is_string($init) && array_key_exists($init, $initTypes)) {
             $init = $initTypes[$init];
         }
-        
-        $this->DBObjectArray($init, $where);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObjectArray')), 'STRICT');
+        return parent::_init($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 }
 
