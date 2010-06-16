@@ -45,14 +45,14 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
 }
 
 // check requested module and set to start module if not present
-if (empty($module)) {
-    $module = System::getVar('startpage');
-    if (empty($module)) {
-        LogUtil::registerError(__f("The requested page coule not be found.", DataUtil::formatForDisplay(strip_tags($module))));
-        echo ModUtil::func('Errors', 'user', 'main', array('type' => 404));
-        Theme::getInstance()->themefooter();
-        System::shutdown();
+if (!$module) {
+    if ((System::getVar('shorturls') && System::getVar('shorturlstype') == 0)) {
+        $p = explode('/', str_replace(System::getBaseUri() . '/', '', $_SERVER["REQUEST_URI"]));
+        $module = $p[0];
+    } else {
+        $module = System::getVar('startpage');
     }
+
     $type   = System::getVar('starttype');
     $func   = System::getVar('startfunc');
     $args   = explode(',', System::getVar('startargs'));
@@ -70,8 +70,8 @@ if (empty($module)) {
 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 
 if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name'])) {
-    LogUtil::registerError(__f("The '%s' module is not currently accessible.", DataUtil::formatForDisplay(strip_tags($module))));
-    echo ModUtil::func('Errors', 'user', 'main', array('type' => 404));
+    LogUtil::registerError(__("The requested page could not be found or is not currently accessible."), 404);
+    echo ModUtil::func('Errors', 'user', 'main');
     Theme::getInstance()->themefooter();
     System::shutdown();
 }
