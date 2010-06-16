@@ -1,19 +1,14 @@
-# Zikula Application Framework
-#
-# @copyright (c) 2001, Zikula Development Team
-# @link http://www.zikula.org
-# @version $Id$
-# @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-#
 # ----------------------------------------------------------------------
 # Place this file in your Zikula root directory, alongside the main
 # index.php file
+# The "Options FollowSymLinks" line may be deleted, since on certain
+# hosts it causes a config error!
 # ----------------------------------------------------------------------
 
 # security options if they work in your environment.  If you get a 500 error then they wont.
 # These settings are best turned off in php.ini and will be on modern hosting environemnts.
-#php_flag register_globals off
-#php_flag magic_quotes_gpc off
+# php_flag register_globals off
+# php_flag magic_quotes_gpc off
 
 # turn the rewriting engine on
 RewriteEngine on

@@ -1,14 +1,3 @@
-# Zikula Application Framework
-#
-# @copyright (c) 2001, Zikula Development Team
-# @link http://www.zikula.org
-# @version $Id$
-# @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
-#
-# Based upon the .htaccess of MD-Pro, written by
-# LongiTEKK.com NETWORK Admin - chtekk@longitekk.com
-# MaxDev Devel - chtekk@maxdev.com
-#
 # ----------------------------------------------------------------------
 # Place this file in your Zikula root directory, alongside the main
 # index.php file
@@ -18,17 +7,10 @@
 
 # security options if they work in your environment.  If you get a 500 error then they wont.
 # These settings are best turned off in php.ini and will be on modern hosting environemnts.
-#php_flag register_globals off
-#php_flag magic_quotes_gpc off
+# php_flag register_globals off
+# php_flag magic_quotes_gpc off
 
 RewriteEngine On
-
-# ENG
-# This option is for use in Virtual Hosts or .htaccess files to inherit rewrite rules in the main section,
-# so if you have your own server you don't have to copy the rules into every Virtual Host you run.
-# Will cause an error if placed in the main httpd.conf section, as there's nothing to inherit.
-
-# RewriteOptions 'inherit'
 
 # Exclude certain directories
 RewriteRule ^modules/.*$ - [PT]
