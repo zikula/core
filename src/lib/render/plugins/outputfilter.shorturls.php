@@ -31,7 +31,21 @@ function smarty_outputfilter_shorturls($source, &$smarty)
     $baseurl = System::getBaseUrl();
     $type    = FormUtil::getPassedValue('type', 'user', 'GETPOST');
 
-    if (System::getVar('shorturlstype') != 0 && $type !== 'admin' && !stristr(System::serverGetVar('QUERY_STRING'), 'admin')) {
+    if (System::getVar('shorturlstype') == 0) {
+        $prefix = '[(<[^>]*?)[\'"](?:'.$baseurl.'|'.$baseurl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
+        // '|"(?:'.$baseurl.')?'; <[^>]*?[\'"]
+
+        // (?i) means case insensitive; \w='word' character; \d=digit; (amp;)? means content of brackets optional; (?:catid=)? means optional and won't capture string for backreferences
+        // [#-~]+ matches ASCII# 35(#)-126(~), ie all (English) upper & lower case letters, numbers and special characters like #$!@+%^&*()~ etc, ie all but space (32), DEl, and other specxial non-printing codes like backspace, newline, and tab
+        // [0-9A-Za-zÀ-ÖØ-öø-ÿ_]+ matches all international letters
+        $in = array(
+            '[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype)(?!xmpp)(?!icq)(?!mailto)(?!javascript:)(?![/"\'\s#]+)]Ui'
+        );
+
+        $out = array(
+            '<$1 $2=$3'.$baseurl
+        );
+    } else if ($type !== 'admin' && !stristr(System::serverGetVar('QUERY_STRING'), 'admin')) {
         // Credits to
         // ColdRolledSteel: for creating this file and the rewrite rules / per aver creato questo file e le regole di riscrittura
         // msandersen: for tweaking this file and the rewrite rules / per aver aggiornato questo file e le regole di riscrittura
@@ -46,7 +60,6 @@ function smarty_outputfilter_shorturls($source, &$smarty)
 
         // (?i) means case insensitive; \w='word' character; \d=digit; (amp;)? means optional; (?:catid=)? means optional and won't capture string for backreferences
         $in = array(
-            $prefix . $entrypoint . '\?lang=([a-z-]+)"|',
             $prefix . '\?theme=([\w\d\.\:\_\/]+)"|',
             $prefix . $entrypoint . '"|',
             $prefix . 'user.php"|',
@@ -77,7 +90,6 @@ function smarty_outputfilter_shorturls($source, &$smarty)
         );
 
         $out = array(
-            'index-lang-$1.'.$extension,
             '"previewtheme-$1.'.$extension.'"',
             '"index.'.$extension.'"',
             '"user.'.$extension.'"',
