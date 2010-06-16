@@ -48,7 +48,7 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
 if (!$module) {
     if ((System::getVar('shorturls') && System::getVar('shorturlstype') == 0)) {
         $p = explode('/', str_replace(System::getBaseUri() . '/', '', $_SERVER["REQUEST_URI"]));
-        $module = $p[0];
+        $module = (empty($p[0])) ? System::getVar('startpage') : $p[0];
     } else {
         $module = System::getVar('startpage');
     }
