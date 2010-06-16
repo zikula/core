@@ -252,19 +252,6 @@ It defaults to BackCompat mode, which works like previous versions of IE.
     clear: both;
 }
 
-/* STANDARD */
-.z-formbuttons {
-    color: #336699;
-}
-
-.z-formbuttons a:hover {
-    color: #336699;
-}
-
-.z-formbuttons a:active {
-    color: #999999;
-}
-
 /* navigation top */ /*Tab Start */
 #navi {
     height: 25px;
