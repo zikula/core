@@ -601,13 +601,13 @@ class SecurityCenter_Api_User extends Zikula_Api
                             $returnValue = $safecache[$sha];
                         } else {
                             // save renderer delimiters
-                            $returnValue = str_replace($dummy->left_delimiter,  'renderer_LEFT_DELIMITER',  $returnValue);
-                            $returnValue = str_replace($dummy->right_delimiter, 'renderer_RIGHT_DELIMITER', $returnValue);
+                            $returnValue = str_replace($dummy->left_delimiter,  '%RENDERER_LEFT_DELIMITER%',  $returnValue);
+                            $returnValue = str_replace($dummy->right_delimiter, '%RENDERER_RIGHT_DELIMITER%', $returnValue);
                             $returnValue = $purifier->purify($returnValue);
 
                             // restore renderer delimiters
-                            $returnValue = str_replace('renderer_LEFT_DELIMITER',  $dummy->left_delimiter,  $returnValue);
-                            $returnValue = str_replace('renderer_RIGHT_DELIMITER', $dummy->right_delimiter, $returnValue);
+                            $returnValue = str_replace('%RENDERER_LEFT_DELIMITER%',  $dummy->left_delimiter,  $returnValue);
+                            $returnValue = str_replace('%RENDERER_RIGHT_DELIMITER%', $dummy->right_delimiter, $returnValue);
 
                             // cache the value
                             $safecache[$sha] = $returnValue;
