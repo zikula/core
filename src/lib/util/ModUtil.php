@@ -736,9 +736,8 @@ class ModUtil
         return (bool)self::getClass($modname, $type, true);
     }
 
-    public static function getCallable($modname, $type, $func, $api = false, $force = false)
+    public static function getObject($className)
     {
-        $className = self::getClass($modname, $type, $api, $force);
         if (!$className) {
             return false;
         }
@@ -748,14 +747,14 @@ class ModUtil
 
         $callable = false;
         if ($sm->hasService($serviceId)) {
-            $controller = $sm->getService($serviceId);
+            $object = $sm->getService($serviceId);
         } else {
             $r = new ReflectionClass($className);
-            $controller = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
+            $object = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
             try {
-                if (strrpos($className, 'Api') && !$controller instanceof Zikula_Api) {
-                    throw new LogicException(sprintf('Controller %s must inherit from Zikula_Api', $className));
-                } elseif (!strrpos($className, 'Api') && !$controller instanceof Zikula_Controller) {
+                if (strrpos($className, 'Api') && !$object instanceof Zikula_Api) {
+                    throw new LogicException(sprintf('Api %s must inherit from Zikula_Api', $className));
+                } elseif (!strrpos($className, 'Api') && !$object instanceof Zikula_Controller) {
                     throw new LogicException(sprintf('Controller %s must inherit from Zikula_Controller', $className));
                 }
             } catch (LogicException $e) {
@@ -766,14 +765,25 @@ class ModUtil
                     return false;
                 }
             }
-            $sm->attachService(strtolower($serviceId), $controller);
+            $sm->attachService(strtolower($serviceId), $object);
         }
 
-        if (is_callable(array($controller, $func))) {
-            $callable = array($controller, $func);
+        return $object;
+    }
+
+    public static function getCallable($modname, $type, $func, $api = false, $force = false)
+    {
+        $className = self::getClass($modname, $type, $api, $force);
+        if (!$className) {
+            return false;
         }
 
-        return array('serviceid' => $serviceId, 'classname' => $className, 'callable' => $callable);
+        $object = self::getObject($className);
+        if (is_callable(array($object, $func))) {
+            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func));
+        }
+
+        return false;
     }
 
     /**
