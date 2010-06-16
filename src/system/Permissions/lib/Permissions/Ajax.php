@@ -64,7 +64,7 @@ class Permissions_Ajax extends Zikula_Controller
 
         // read current settings and return them
         $perm = DBUtil::selectObjectByID('group_perms', $pid, 'pid');
-        $accesslevels = SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames();
+        $accesslevels = SecurityUtil::accesslevelnames();
         $perm['levelname'] = $accesslevels[$perm['level']];
         switch($perm['gid']) {
             case -1:
@@ -137,7 +137,7 @@ class Permissions_Ajax extends Zikula_Controller
             AjaxUtil::error($this->__('Error! Could not create new permission rule.'));
         }
 
-        $accesslevels = SecurityUtil::SecurityUtil::SecurityUtil::accesslevelnames();
+        $accesslevels = SecurityUtil::accesslevelnames();
 
         $newperm['instance']  = DataUtil::formatForDisplay($newperm['instance']);
         $newperm['component'] = DataUtil::formatForDisplay($newperm['component']);
