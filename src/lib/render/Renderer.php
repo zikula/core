@@ -692,7 +692,7 @@ function z_prefilter_add_literal($tpl_source, &$smarty)
 function z_prefilter_gettext_params($tpl_source, &$smarty)
 {
     $tpl_source = (preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_gettext_params_callback($m);'), $tpl_source));
-    $tpl_source = (preg_replace_callback('#%%%(("|\')(.*)("|\'))%%%#', create_function('$m', 'return "{gt text=" . $m[1] ."}";'), $tpl_source));
+    $tpl_source = (preg_replace_callback('#%(("|\')(.*)("|\'))%#', create_function('$m', 'return "{gt text=" . $m[1] ."}";'), $tpl_source));
     return $tpl_source;
 }
 
