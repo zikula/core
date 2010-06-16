@@ -83,9 +83,9 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     protected function getMeta()
     {
-        return array('displayname' => $this->__(''),
-                     'description' => $this->__(''),
-                     'version' => ''
+        return array('displayname' => '', // implement as $this->__('Display name'),
+                     'description' => '', // implement as $this->__('Description goes here'),
+                     'version' => ''      // implement as 'a.b.c'
                 );
     }
 
