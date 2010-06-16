@@ -154,27 +154,4 @@ function replace_pnApi($contents)
     }
     
     return preg_replace($searchArray, $replaceArray, $contents);
-
-}
-
-function migrate_templates($content)
-{
-     $content = preg_replace_callback('`(<(script|style)[^>]*>)(.*?)(</\2>)`s', 'z_prefilter_add_literal_callback', $content);
-     $content = str_replace('<!--[', '{', $content);
-     $content = str_replace(']-->', '}', $content);
-     $content = str_replace('{pn', '{', $content);
-     $content = str_replace('{/pn', '{/', $content);
-     $content = str_replace('|pn', '|', $content);
-     return $content;
-}
-
-function z_prefilter_add_literal_callback($matches)
-{
-    $tagOpen = $matches[1];
-    $script = $matches[3];
-    $tagClose = $matches[4];
-
-    $script = str_replace('<!--[', '{{', str_replace(']-->', '}}', $script));
-
-    return $tagOpen . $script . $tagClose;
 }

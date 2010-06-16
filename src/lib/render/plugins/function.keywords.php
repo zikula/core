@@ -23,8 +23,6 @@
  * generation. If set, the contents of "contents" are taken.
  * Beware that the function always returns the site keywords if "generate
  * meta keywords" is turned off.
- * PLEASE NOTE: This function adds additional overhead when dynamic keyword
- * generation is turned on. You should use Xanthia page caching in this case.
  *
  * available parameters:
  *  - contents    if set, this wil be taken as a base for the keywords
@@ -67,27 +65,3 @@ function smarty_function_keywords($params, &$smarty)
         return $keywords;
     }
 }
-
-if (!function_exists('html_entity_decode')) {
-    /**
-     * html_entity_decode()
-     *
-     * Convert all HTML entities to their applicable characters
-     * This function is a fallback if html_entity_decode isn't defined
-     * in the PHP version used (i.e. PHP < 4.3.0).
-     * Please note that this function doesn't support all parameters
-     * of the original html_entity_decode function.
-     *
-     * @param  string $string the this function converts all HTML entities to their applicable characters from string.
-     * @return the converted string
-     * @link http://php.net/html_entity_decode The documentation of html_entity_decode
-     **/
-    function html_entity_decode($string)
-    {
-        $trans_tbl = get_html_translation_table(HTML_ENTITIES);
-        $trans_tbl = array_flip($trans_tbl);
-        return (strtr($string, $trans_tbl));
-    }
-}
-
-

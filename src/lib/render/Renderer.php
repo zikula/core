@@ -82,13 +82,15 @@ class Renderer extends Smarty
                 $mpluginPathOld = "system/" . $this->module[$module]['directory'] . "/pntemplates/plugins";
         }
 
-        $pluginpaths = array(
-                'lib/render/plugins',
-                'config/plugins',
-                "themes/$theme/templates/modules/$module/plugins",
-                "themes/$theme/plugins",
-                $mpluginPath,
-                $mpluginPathOld);
+        $pluginpaths[] = 'lib/render/plugins';
+        if ($GLOBALS['ZConfig']['System']['compat_layer']) {
+            $pluginpaths[] = 'lib/legacy/plugins';
+        }
+        $pluginpaths[] = 'config/plugins';
+        $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins";
+        $pluginpaths[] = "themes/$theme/plugins";
+        $pluginpaths[] = $mpluginPath;
+        $pluginpaths[] = $mpluginPathOld;
 
         foreach ($pluginpaths as $pluginpath) {
             if (file_exists($pluginpath)) {

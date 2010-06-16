@@ -28,7 +28,6 @@
  * @param    object   $smarty     Reference to the Smarty object
  * @param    string   $round      format to apply to the number (based on the round php function)
  * @return   string   the page render time in seconds
- * @todo change to ML as language is hardcoded (as per .726).
  */
 function smarty_function_sqldebug ($params, &$smarty)
 {
