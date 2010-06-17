@@ -106,16 +106,21 @@ class PNObjectArray extends DBObjectArray
     public $_GET_FROM_REQUEST = 'R'; // get data from $_REQUEST
     public $_GET_FROM_SESSION = 'S'; // get data from $_SESSION
     public $_GET_FROM_VALIDATION_FAILED = 'V'; // get data from failed validation
-    
+
+    public function __construct($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
+    {
+        $this->PNObjectArray($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
+    }
+
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
      * @param object|string $init   Initialization value (see _init() for details)
      * @param string        $where  The where clause to apply to the DB get/select (optional) (default='')
      */
-    public function PNObjectArray($init = null, $where = '')
+    public function PNObjectArray($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
-        $this->DBObjectArray($init, $where);
+        $this->DBObjectArray($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObjectArray')), 'STRICT');
     }
     

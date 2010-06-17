@@ -18,7 +18,7 @@
 class DBObjectArray
 {
     // state/type (static)
-    public $_objType; // object type
+    public $_objType = 'DBOBJECTARRAY'; // object type
     public $_objJoin; // object join data
     public $_objValidation; // object validation data
 
@@ -29,14 +29,14 @@ class DBObjectArray
     public $_objColumnArray; // columns to select
     public $_objColumnPrefix; // object column prefix
     public $_objData; // object data
-    public $_objDistinct; // whether or not to use a distinct() clause
-    public $_objField; // object key retrieval field
-    public $_objInsertPreserve; // DBUtil insertObject preserve flag
-    public $_objInsertForce; // DBUtil insertObject force flag
-    public $_objKey; // object key value
-    public $_objLimitOffset; // offset for select
-    public $_objLimitNumRows; // number of rows for select
-    public $_objPath; // object input path
+    public $_objDistinct = false; // whether or not to use a distinct() clause
+    public $_objField = 'id'; // object key retrieval field
+    public $_objInsertPreserve = false; // DBUtil insertObject preserve flag
+    public $_objInsertForce = false; // DBUtil insertObject force flag
+    public $_objKey = 0; // object key value
+    public $_objLimitOffset = -1; // offset for select
+    public $_objLimitNumRows = -1; // number of rows for select
+    public $_objPath = 'DBOBJECT_PATH'; // object input path
     public $_objPermissionFilter; // object permission filter applied
     public $_objSessionPath; // object session access path
     public $_objSort; // orderBy clause for select
@@ -69,28 +69,6 @@ class DBObjectArray
      */
     public function DBObjectArray($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
-        $this->_objType = 'DBOBJECTARRAY';
-        $this->_objJoin = null;
-        $this->_objValidation = null;
-
-        $this->_objAssocKey = null;
-        $this->_objCategoryFilter = null;
-        $this->_objColumnArray = null;
-        $this->_objColumnPrefix = null;
-        $this->_objData = null;
-        $this->_objDistinct = false;
-        $this->_objField = 'id';
-        $this->_objInsertPreserve = false;
-        $this->_objInsertForce = false;
-        $this->_objKey = 0;
-        $this->_objLimitOffset = -1;
-        $this->_objLimitNumRows = -1;
-        $this->_objPath = 'DBOBJECT_PATH';
-        $this->_objPermissionFilter = null;
-        $this->_objSessionPath = null;
-        $this->_objSort = null;
-        $this->_objWhere = null;
-
         $this->_init($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 

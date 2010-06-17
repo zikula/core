@@ -18,7 +18,7 @@
 class DBObject
 {
     // state/type (static)
-    public $_objType; // object type
+    public $_objType = 'DBOBJECT'; // object type
     public $_objJoin; // object join data
     public $_objValidation; // object validation data
 
@@ -29,13 +29,12 @@ class DBObject
     public $_objColumnPrefix; // object column prefix
     public $_objData; // object data
     public $_objField; // object key retrieval field
-    public $_objInsertPreserve; // DBUtil insertObject preserve flag
-    public $_objInsertForce; // DBUtil insertObject force flag
+    public $_objInsertPreserve = false; // DBUtil insertObject preserve flag
+    public $_objInsertForce = false; // DBUtil insertObject force flag
     public $_objKey; // object key value
-    public $_objPath; // object input path
+    public $_objPath = 'DBOBJECT_PATH'; // object input path
     public $_objPermissionFilter; // object permission filter applied
     public $_objSessionPath; // object session access path
-
 
     // support
     public $_table; // table name
@@ -65,21 +64,8 @@ class DBObject
      */
     public function DBObject($init = null, $key = null, $field = null)
     {
-        $this->_objType = 'DBOBJECT';
-        $this->_objJoin = null;
-        $this->_objValidation = null;
-
-        $this->_objCategoryFilter = null;
-        $this->_objColumnArray = null;
-        $this->_objColumnPrefix = null;
-        $this->_objData = null;
         $this->_objField = $field ? $field : 'id';
-        $this->_objInsertPreserve = false;
-        $this->_objInsertForce = false;
-        $this->_objKey = $key;
         $this->_objPath = 'DBOBJECT_PATH';
-        $this->_objPermissionFilter = null;
-        $this->_objSessionPath = null;
 
         $this->_init($init, $key, $field);
     }
