@@ -182,10 +182,6 @@ class Loader
             return z_exit(__f("Error! Invalid 'base_obj_type' specification '%s'.", $base_obj_type));
         }
 
-        if (ModUtil::isOO($module)) {
-            return ucwords($module) . '_DBObject_' . ucwords($base_obj_type) . (($array) ? 'Array' : '');
-        }
-
         $prefix = (string) $prefix;
 
         if (strpos($base_obj_type, '_') !== false) {

@@ -107,10 +107,14 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
         ModUtil::dbInfoLoad($this->module);
 
         // load the object class corresponding to $this->objecttype
-        if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
-            z_exit(__f('Unable to load class [%s] for module [%s]', array(
-                DataUtil::formatForDisplay($this->objecttype, $this->module))));
+        $class = "{$this->module}_DBObject_".StringUtil::camelize($this->objecttype).'Array';
+        if (!class_exists($class) && System::isLegacyMode()) {
+            if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
+                z_exit(__f('Unable to load class [%s] for module [%s]', array(
+                    DataUtil::formatForDisplay($this->objecttype, $this->module))));
+            }
         }
+
         // instantiate the object-array
         $objectArray = new $class();
 
