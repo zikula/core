@@ -512,7 +512,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
 
     if ($installtype == 'complete') {
         $modules = array();
-        $mods = ModUtil::apiFunc('Modules', 'admin', 'list', array(
+        $mods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array(
                         'state' => ModUtil::STATE_UNINITIALISED));
         foreach ($mods as $mod) {
             if (!ModUtil::available($mod['name'])) {

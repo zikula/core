@@ -55,7 +55,7 @@
             <ul class="systemrequirements">
                 {fileexists file="config/personal_config.php" assign="file"}
                 {if $file neq true}
-                <li class="passed">{gt text="'%s' has not present.  This is OK." tag1="config/personal_config.php"}</li>
+                <li class="passed">{gt text="'%s' is not present.  This is OK." tag1="config/personal_config.php"}</li>
                 {else}
                 <li class="failed">{gt text="'%s' has been found. This is not OK: please rename this file before continuing the installation process." tag1="config/personal_config.php"}</li>{assign var=checkfailed value=true}
                 {/if}
