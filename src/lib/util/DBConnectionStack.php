@@ -47,7 +47,7 @@ class DBConnectionStack
      * @param name The database alias name in the DBInfo configuration array (optional) (default=null which then defaults to 'default')
      * @return Doctrine_Connection desired database connection reference
      */
-    static function init($name = 'default', $lazyConnect = false)
+    public static function init($name = 'default', $lazyConnect = false)
     {
         if (!isset(self::$manager)) {
             self::$manager = Doctrine_Manager::getInstance();
@@ -150,7 +150,7 @@ class DBConnectionStack
      * @param  field  the field of the connection info record to return
      * @return string The connection info array or the specified field value
      */
-    static function getConnectionInfo($name = null, $field = null)
+    public static function getConnectionInfo($name = null, $field = null)
     {
         if (!self::$manager instanceof Doctrine_Manager) {
             self::init($name);
@@ -204,7 +204,7 @@ class DBConnectionStack
      *
      * @return string the name of the currently active connection
      */
-    static function getConnectionName()
+    public static function getConnectionName()
     {
         return self::getConnectionInfo(null, 'alias');
     }
@@ -214,7 +214,7 @@ class DBConnectionStack
      *
      * @return string the dbname of the currently active connection
      */
-    static function getConnectionDBName()
+    public static function getConnectionDBName()
     {
         return self::getConnectionInfo(null, 'dbname');
     }
@@ -224,7 +224,7 @@ class DBConnectionStack
      *
      * @return string the host of the currently active connection
      */
-    static function getConnectionDBHost()
+    public static function getConnectionDBHost()
     {
         return self::getConnectionInfo(null, 'dbhost');
     }
@@ -234,7 +234,7 @@ class DBConnectionStack
      *
      * @return string the type of the currently active connection
      */
-    static function getConnectionDBType()
+    public static function getConnectionDBType()
     {
         return self::getConnectionInfo(null, 'dbtype');
     }
@@ -246,7 +246,7 @@ class DBConnectionStack
      *
      * @return string the driver of the currently active connection
      */
-    static function getConnectionDBDriver()
+    public static function getConnectionDBDriver()
     {
         return self::getConnectionInfo(null, 'dbdriver');
     }
@@ -256,7 +256,7 @@ class DBConnectionStack
      *
      * @return string the driver of the currently active connection
      */
-    static function getConnectionDBCharset()
+    public static function getConnectionDBCharset()
     {
         return self::getConnectionInfo(null, 'dbcharset');
     }
@@ -266,7 +266,7 @@ class DBConnectionStack
      *
      * @return string the driver of the currently active connection
      */
-    static function getConnectionDBCollate()
+    public static function getConnectionDBCollate()
     {
         return self::getConnectionInfo(null, 'dbcollate');
     }
@@ -276,7 +276,7 @@ class DBConnectionStack
      *
      * @return string the driver of the currently active connection
      */
-    static function getConnectionDBTableType()
+    public static function getConnectionDBTableType()
     {
         return self::getConnectionInfo(null, 'dbtabletype');
     }
@@ -286,7 +286,7 @@ class DBConnectionStack
      *
      * @return string the DSN of the currently active connection
      */
-    static function getConnectionDSN()
+    public static function getConnectionDSN()
     {
         return self::getConnectionInfo(null, 'dsn');
     }
@@ -296,7 +296,7 @@ class DBConnectionStack
      *
      * @return boolean whether or not the current connection is the default one
      */
-    static function isDefaultConnection()
+    public static function isDefaultConnection()
     {
         return (self::getConnectionName() == 'default');
     }
@@ -307,7 +307,7 @@ class DBConnectionStack
      * @param fetchmode        The fetchmode to set for the connection
      * @return the connection object
      */
-    static function getConnection($fetchmode = Doctrine::HYDRATE_NONE)
+    public static function getConnection($fetchmode = Doctrine::HYDRATE_NONE)
     {
         if (!isset(self::$manager)) {
             self::init();
@@ -330,7 +330,7 @@ class DBConnectionStack
      * @param name        The database alias name in the DBInfo configuration array
      * @return The database connection
      */
-    static function pushConnection($name)
+    public static function pushConnection($name)
     {
         if (self::init($name)) {
             return self::getConnection();
@@ -345,7 +345,7 @@ class DBConnectionStack
      * @param close       Whether or not to close the connection (optional) (default=false)
      * @return boolean The newly active connection
      */
-    static function popConnection($close = false)
+    public static function popConnection($close = false)
     {
         if (!self::$manager->count()) {
             throw new Exception(__('Attempted to pop connection from empty connection stack'));
@@ -376,7 +376,7 @@ class DBConnectionStack
      *
      * Doctrine can set every attribute on every level.
      */
-    function configureDoctrine($object)
+    public static function configureDoctrine($object)
     {
         if ($object instanceof Doctrine_Manager) {
             // Cross-DBMS portability options
