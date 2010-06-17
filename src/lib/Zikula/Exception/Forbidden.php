@@ -15,5 +15,11 @@
 
 class Zikula_Exception_Forbidden extends Zikula_Exception
 {
-
+    public function __construct($message='', $code=0, $debug=null)
+    {
+        if (empty($message)) {
+            $message = __('Sorry! You have not been granted access to this page.');
+        }
+        parent::__construct($message, $code, $debug);
+    }
 }

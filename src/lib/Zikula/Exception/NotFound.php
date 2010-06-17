@@ -15,5 +15,11 @@
 
 class Zikula_Exception_NotFound extends Zikula_Exception
 {
-
+    public function __construct($message='', $code=0, $debug=null)
+    {
+    	if (empty($message)) {
+    		$message = __('The requested page could not be found or is not currently accessible.');
+    	}
+        parent::__construct($message, $code, $debug);
+    }
 }
