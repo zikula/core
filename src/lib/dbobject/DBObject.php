@@ -50,22 +50,18 @@ class DBObject
     const GET_FROM_VALIDATION_FAILED = 'VALIDATION'; // get data from failed validation
 
 
-    public function __construct($init = null, $key = null, $field = null)
-    {
-        $this->DBObject($init, $key, $field);
-    }
-
     /**
-     * Old constructor, init everything to sane defaults and handle parameters
+     * constructor, init everything to sane defaults and handle parameters
      *
      * @param init       Initialization value (see _init() for details)
      * @param key        The DB key to use to retrieve the object (optional) (default=null)
      * @param field      The field containing the key value (optional) (default=null)
      */
-    public function DBObject($init = null, $key = null, $field = null)
+    public function __construct($init = null, $key = null, $field = null)
     {
         $this->_objField = $field ? $field : 'id';
         $this->_objPath = 'DBOBJECT_PATH';
+        $this->_objSessionPath = null;
 
         $this->_init($init, $key, $field);
     }

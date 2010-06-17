@@ -59,11 +59,6 @@ class PNObject extends DBObject
     public $_GET_FROM_SESSION = 'S'; // get data from $_SESSION
     public $_GET_FROM_VALIDATION_FAILED = 'V'; // get data from failed validation
 
-    public function __construct($init = null, $key = null, $field = null)
-    {
-    	$this->PNObject($init, $key, $field);
-    }
-    
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
@@ -73,7 +68,7 @@ class PNObject extends DBObject
      */
     public function PNObject($init = null, $key = null, $field = null)
     {
-    	$this->DBObject($init, $key, $field);
+    	$this->_init($init, $key, $field);
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObject')), 'STRICT');
     }
     
@@ -107,11 +102,6 @@ class PNObjectArray extends DBObjectArray
     public $_GET_FROM_SESSION = 'S'; // get data from $_SESSION
     public $_GET_FROM_VALIDATION_FAILED = 'V'; // get data from failed validation
 
-    public function __construct($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
-    {
-        $this->PNObjectArray($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
-    }
-
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
@@ -120,7 +110,7 @@ class PNObjectArray extends DBObjectArray
      */
     public function PNObjectArray($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
-        $this->DBObjectArray($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
+        $this->_init($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObjectArray')), 'STRICT');
     }
     

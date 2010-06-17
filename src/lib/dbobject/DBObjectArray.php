@@ -56,18 +56,10 @@ class DBObjectArray
     const GET_FROM_SESSION = 'SESSION'; // get data from $_SESSION
     const GET_FROM_VALIDATION_FAILED = 'VALIDATION'; // get data from failed validation
 
-    public function __construct($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
-    {
-        $this->DBObjectArray($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
-    }
-
     /**
-     * Old constructor, init everything to sane defaults and handle parameters
-     *
-     * @param init        Initialization value (see _init() for details)
-     * @param where       The where clause to apply to the DB get/select (optional) (default='')
+     * init everything to sane defaults and handle parameters
      */
-    public function DBObjectArray($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
+    public function __construct($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
         $this->_init($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
