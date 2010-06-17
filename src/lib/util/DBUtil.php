@@ -288,7 +288,7 @@ class DBUtil
                         }
                     }
                 }
-                if ($GLOBALS['ZConfig']['System']['compat_layer']) {
+                if (System::isLegacyMode()) {
                     return new Zikula_Adapter_AdodbStatement($result);
                 } else {
                     return $result;
@@ -2854,7 +2854,7 @@ class DBUtil
                 $fieldDef = array();
                 $fieldDef['type'] = $fType;
                 $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? ($fUSign ? $iLengthMap[$type] : $iLengthMap[$type] - 1) : $fLen);
-                
+
                 if ($fType == 'decimal') {
                     $fieldDef['scale'] = $fScale;
                 }
@@ -3150,7 +3150,7 @@ class DBUtil
         }
 
         $metaColumns = self::metaColumnNames($table);
-        
+
         // first round - create any missing columns
         foreach ($definition as $key => $columnDefinition) {
             if (isset($metaColumns[$key])) {

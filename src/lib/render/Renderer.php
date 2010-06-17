@@ -83,7 +83,7 @@ class Renderer extends Smarty
         }
 
         $pluginpaths[] = 'lib/render/plugins';
-        if ($GLOBALS['ZConfig']['System']['compat_layer']) {
+        if (System::isLegacyMode()) {
             $pluginpaths[] = 'lib/legacy/plugins';
         }
         $pluginpaths[] = 'config/plugins';

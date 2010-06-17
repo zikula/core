@@ -239,7 +239,7 @@ class System
         // Initialize the (ugly) additional header array
         $GLOBALS['additional_header'] = array();
 
-        if ($GLOBALS['ZConfig']['System']['compat_layer']) {
+        if (self::isLegacyMode()) {
             require_once 'lib/legacy/Compat.php';
         }
 
@@ -657,7 +657,7 @@ class System
                 $result .= '?lang=' . ZLanguage::getLanguageCode();
             }
         }
-        
+
         return $result;
     }
 
