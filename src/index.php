@@ -14,7 +14,6 @@
 
 include 'lib/ZLoader.php';
 ZLoader::register();
-
 System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_AJAX);
 
 if (SessionUtil::hasExpired()) {
@@ -26,9 +25,9 @@ if (SessionUtil::hasExpired()) {
 }
 
 // Get variables
-$module = FormUtil::getPassedValue('module', null, 'GETPOST');
-$type   = FormUtil::getPassedValue('type', 'user', 'GETPOST');
-$func   = FormUtil::getPassedValue('func', 'main', 'GETPOST');
+$module = filter_input(INPUT_GET, 'module', FILTER_SANITIZE_STRING);
+$type   = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_STRING);
+$func   = filter_input(INPUT_GET, 'func', FILTER_SANITIZE_STRING);
 
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
@@ -45,18 +44,20 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
 }
 
 // check requested module and set to start module if not present
+$startPage = System::getVar('startpage');
+$arguments = array();
 if (!$module) {
     if ((System::getVar('shorturls') && System::getVar('shorturlstype') == 0)) {
         $p = explode('/', str_replace(System::getBaseUri() . '/', '', $_SERVER["REQUEST_URI"]));
-        $module = (empty($p[0])) ? System::getVar('startpage') : $p[0];
+        $module = (empty($p[0])) ? $startPage : $p[0];
     } else {
-        $module = System::getVar('startpage');
+        $module = $startPage;
     }
 
     $type   = System::getVar('starttype');
     $func   = System::getVar('startfunc');
     $args   = explode(',', System::getVar('startargs'));
-    $arguments = array();
+
     foreach ($args as $arg) {
         if (!empty($arg)) {
             $argument = explode('=', $arg);
@@ -69,89 +70,76 @@ if (!$module) {
 // get module information
 $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 
-if ($type <> 'init' && !empty($module) && !ModUtil::available($modinfo['name'])) {
-    LogUtil::registerError(__("The requested page could not be found or is not currently accessible."), 404);
-    echo ModUtil::func('Errors', 'user', 'main');
-    Theme::getInstance()->themefooter();
-    System::shutdown();
-}
-
-// New-new style of loading modules
-if (!isset($arguments)) {
-    $arguments = array();
-}
-
 // we need to force the mod load if we want to call a modules interactive init
 // function because the modules is not active right now
-$force_modload = ($type=='init') ? true : false;
 $type = (empty($type)) ? $type = 'user' : $type;
 $func = (empty($func)) ? $func = 'main' : $func;
-$return = ModUtil::load($modinfo['name'], $type, $force_modload);
-$httpCode = 404;
+if ($type=='init') {
+    ModUtil::load($modinfo['name'], $type, true);
+}
 
+$httpCode = 404;
 $message = '';
 $debug = null;
+$return = false;
 
-if ($return) {
-    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-        $dbConn = System::dbGetConn(true);
-        $dbConn->beginTransaction();
+if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+    $dbConn = System::dbGetConn(true);
+    $dbConn->beginTransaction();
+}
+
+try {
+    $return = (empty($module) && empty($startPage)) ? ' ' : ModUtil::func($modinfo['name'], $type, $func, $arguments);
+    if (!$return) {
+        // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
+        throw new Zikula_Exception_NotFound(__('Page not found.'));
     }
+    $httpCode = 200;
 
-    $return = false;
-
-    try {
-        $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
-        if (!$return) {
-            // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
-            throw new Zikula_Exception_NotFound(__('Page not found.'));
-        }
-        $httpCode = 200;
-
-        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            $dbConn->commit();
-        }
-    } catch (Exception $e) {
-        $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-        EventUtil::notifyUntil($event);
-        if ($event->hasNotified()) {
-            $httpCode = $event['httpcode'];
-            $message = $event['message'];
-        } else {
-            if ($e instanceof Zikula_Exception_NotFound) {
-                $httpCode = 404;
-                $message = $e->getMessage();
-                $debug = array_merge($e->getDebug(), $e->getTrace());
-            } elseif ($e instanceof Zikula_Exception_Forbidden) {
-                $httpCode = 403;
-                $message = $e->getMessage();
-                $debug = array_merge($e->getDebug(), $e->getTrace());
-            } elseif ($e instanceof Zikula_Exception_Redirect) {
-                System::redirect($e->getUrl(), array(), $e->getType());
-                System::shutDown();
-            } elseif ($e instanceof PDOException) {
-                $httpCode = 500;
-                $message = $e->getMessage();
-                if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-                    $return = __('Error! The transaction failed. Transaction rolled back.') . $return;
-                    $dbConn->rollback();
-                } else {
-                    $return = __('Error! The transaction failed.') . $return;
-                }
-            } elseif ($e instanceof Exception) {
-                // general catch all
-                $httpCode = 500;
-                $message = $e->getMessage();
-                $debug = $e->getTrace();
+    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        $dbConn->commit();
+    }
+} catch (Exception $e) {
+    $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+    EventUtil::notifyUntil($event);
+    if ($event->hasNotified()) {
+        $httpCode = $event['httpcode'];
+        $message = $event['message'];
+    } else {
+        if ($e instanceof Zikula_Exception_NotFound) {
+            $httpCode = 404;
+            $message = $e->getMessage();
+            $debug = array_merge($e->getDebug(), $e->getTrace());
+        } elseif ($e instanceof Zikula_Exception_Forbidden) {
+            $httpCode = 403;
+            $message = $e->getMessage();
+            $debug = array_merge($e->getDebug(), $e->getTrace());
+        } elseif ($e instanceof Zikula_Exception_Redirect) {
+            System::redirect($e->getUrl(), array(), $e->getType());
+            System::shutDown();
+        } elseif ($e instanceof PDOException) {
+            $httpCode = 500;
+            $message = $e->getMessage();
+            if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+                $return = __('Error! The transaction failed. Performing rollback.') . $return;
+                $dbConn->rollback();
+            } else {
+                $return = __('Error! The transaction failed.') . $return;
             }
+        } elseif ($e instanceof Exception) {
+            // general catch all
+            $httpCode = 500;
+            $message = $e->getMessage();
+            $debug = $e->getTrace();
         }
     }
 }
+
 
 switch (true)
 {
     case ($return === true):
-        // prevent rendering of the theme.
+    // prevent rendering of the theme.
         System::shutDown();
         break;
     case ($return === false):
