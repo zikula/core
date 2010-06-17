@@ -240,26 +240,15 @@ function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
             break;
     }
 
-    $contents = '';
+    $contents = array();
     $dest = fopen($cachedFile, 'w');
 
-    $contents .= "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n";
+    $contents[] = "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n";
     foreach($files as $file) {
-        $source = fopen($file, 'r');
-        if($source) {
-            $filepath = explode('/', dirname($file));
-            $contents .= "/* --- Source file: {$file} */\n\n";
-            while (!feof($source)) {
-                if($ext == 'css') {
-                    $contents .= _smarty_outputfilter_pagevars_cssfixPath(fgets($source, 4096), $filepath);
-                } else {
-                    $contents .= fgets($source, 4096);
-                }
-            }
-            fclose($source);
-            $contents .= "\n\n";
-        }
+        _smarty_outputfilter_pagevars_readfile($contents, $file, $ext);
     }
+    
+    $contents = implode('', $contents);
 
     // optional minify
     if ($themevars['cssjsminify']) {
@@ -278,6 +267,155 @@ function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
     fwrite($dest, serialize($data));
     fclose($dest);
     return "jcss.php?f=$cachedFileUri";
+}
+
+if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
+    /**
+     * Reads an file and add its contents to the $contents array.
+     *
+     * This function includes the content of all @import statements (recursive).
+     *
+     * @param array $contents array to save content to
+     * @param string $file path to file
+     * @param string $ext 'css' or 'js'
+     */
+    function _smarty_outputfilter_pagevars_readfile(&$contents, $file, $ext)
+    {
+        $source = fopen($file, 'r');
+        if($source) {
+            $filepath = explode('/', dirname($file));
+            $contents[] = "/* --- Source file: {$file} */\n\n";
+            $inMultilineComment = false;
+            $importsAllowd = true;
+            $wasCommentHack = false;
+
+            while (!feof($source)) {
+                if($ext == 'css') {
+                    $line = fgets($source, 4096);
+                    $lineParse = trim($line);
+                    $newLine = "";
+
+                    // parse line char by char
+                    for($i = 0; $i < strlen($lineParse); $i++) {
+                        $char = $lineParse{$i};
+                        $nextchar = $i < strlen($lineParse)? $lineParse{$i+1} : "";
+                        
+                        if(!$inMultilineComment && $char == '/' && $nextchar == '*') {
+                            // a multiline comment starts here
+                            $inMultilineComment = true;
+                            $wasCommentHack = false;
+                            $newLine .= $char.$nextchar;
+                            $i++;
+
+                        } else if($inMultilineComment && $char == '*' && $nextchar == '/') {
+                            // a multiline comment stops here
+                            $inMultilineComment = false;
+                            $newLine .= $char.$nextchar;
+                            if(substr($lineParse, $i-3, 8) == '/*\*//*/') {
+                                $wasCommentHack = true;
+                                $i += 3; // move to end of hack process hack as it where
+                                $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
+                            }
+                            $i++;
+
+                        } else if($importsAllowd && $char == '@' && substr($lineParse, $i, 7) == '@import') {
+                            // an @import starts here
+                            $lineParseRest = trim(substr($lineParse, $i + 7));
+                            if(strtolower(substr($lineParseRest, 0, 3)) == 'url') {
+                                // the @import uses url to specify the path
+                                $posEnd = strpos($lineParse, ';', $i);
+                                $charsEnd = substr($lineParse, $posEnd - 1, 2);
+                                if($charsEnd == ');') {
+                                    // used url() without media
+                                    $start = strpos($lineParseRest, '(')+1;
+                                    $end = strpos($lineParseRest, ')');
+                                    $url = substr($lineParseRest, $start, $end - $start);
+                                    if($url{0} == '"' | $url{0} == "'") {
+                                        $url = substr($url, 1, strlen($url)-2);
+                                    }
+
+                                    // fix url
+                                    $url = dirname($file) . '/' .$url;
+
+                                    if(!$wasCommentHack) {
+                                        // clear buffer
+                                        $contents[] = $newLine;
+                                        $newLine = "";
+                                        // process include
+                                        _smarty_outputfilter_pagevars_readfile($contents, $url, $ext);
+                                    } else {
+                                        $newLine .= '@import url("'.$url.'");';
+                                    }
+
+                                    // skip @import statement
+                                    $i += $posEnd - $i;
+                                } else {
+                                    // @import contains media type so we can't include its contents.
+                                    // We need to fix the url instead.
+
+                                    $start = strpos($lineParseRest, '(')+1;
+                                    $end = strpos($lineParseRest, ')');
+                                    $url = substr($lineParseRest, $start, $end - $start);
+                                    if($url{0} == '"' | $url{0} == "'") {
+                                        $url = substr($url, 1, strlen($url)-2);
+                                    }
+
+                                    // fix url
+                                    $url = dirname($file) . '/' .$url;
+
+                                    // readd @import with fixed url
+                                    $newLine .= '@import url("' . $url .'")' . substr($lineParseRest, $end+1, strpos($lineParseRest, ';') - $end - 1) . ';';
+
+                                    // skip @import statement
+                                    $i += $posEnd - $i;
+                                }
+                            } else if(substr($lineParseRest, 0, 1) == '"' || substr($lineParseRest, 0, 1) == '\'') {
+                                // the @import uses an normal string to specify the path
+                                $posEnd = strpos($lineParseRest, ';');
+                                $url = substr($lineParseRest, 1, $posEnd-2);
+                                $posEnd = strpos($lineParse, ';', $i);
+
+                                // fix url
+                                $url = dirname($file) . '/' .$url;
+
+                                if(!$wasCommentHack) {
+                                    // clear buffer
+                                    $contents[] = $newLine;
+                                    $newLine = "";
+                                    // process include
+                                    _smarty_outputfilter_pagevars_readfile($contents, $url, $ext);
+                                } else {
+                                    $newLine .= '@import url("'.$url.'");';
+                                }
+
+                                // skip @import statement
+                                $i += $posEnd - $i;
+                            }
+
+                        } else if(!$inMultilineComment && $char != ' ' && $char != "\n" && $char != "\r\n" && $char != "\r") {
+                            // css rule found -> stop processing of @import statements
+                            $importsAllowd = false;
+                            $newLine .= $char;
+                            
+                        } else {
+                            $newLine .= $char;
+                        }
+                    }
+
+                    // fix other paths after @import processing
+                    if(!$importsAllowd) {
+                        $newLine = _smarty_outputfilter_pagevars_cssfixPath($newLine, explode('/', dirname($file)));
+                    }
+
+                    $contents[] = $newLine;
+                } else {
+                    $contents[] = fgets($source, 4096);
+                }
+            }
+            fclose($source);
+            $contents[] = "\n\n";
+        }
+    }
 }
 
 if (!function_exists('_smarty_outputfilter_pagevars_cssfixPath')) {
