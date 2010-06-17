@@ -148,7 +148,7 @@ class Users_Api_Search extends Zikula_Api
      *
      * @return bool True.
      */
-    public function search_check(&$args)
+    public function search_check($args)
     {
         $profileModule = System::getVar('profilemodule', '');
         if (!empty($profileModule) && ModUtil::available($profileModule)) {
