@@ -23,7 +23,7 @@ class SecurityCenter_DBObject_LogEvent extends DBObject
 {
     function __construct($init = null, $key = 0, $field = null)
     {
-
+        parent::__construct();
         $this->_objType       = 'sc_logevent';
         $this->_objField      = 'id';
         $this->_objPath       = 'logevent';
