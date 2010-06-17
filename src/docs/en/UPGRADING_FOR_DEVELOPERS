@@ -27,7 +27,9 @@
 
 - Output filtering is now done with safetext, and safehtml modifiers.
 
-- Rename all PNObject* to DBObject*.
+- Rename all PNObject* to DBObject*. Change the constructor of your DBObjects
+  from ClassName() to __construct() and to invoke parent constructor
+  change $this->PNObject() to parent::__construct().
 
 - DBUtil::executeSQL used to return a ADODB object but now returns a PHP PDO
   object.  This means any code that previously iterated on the ADODB object
