@@ -18,9 +18,10 @@ ZLoader::register();
 System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_TOOLS & ~System::CORE_STAGES_DECODEURLS);
 
 // Get variables
-$module = FormUtil::getPassedValue('module', '', 'GETPOST');
-$type   = FormUtil::getPassedValue('type', 'ajax', 'GETPOST');
-$func   = FormUtil::getPassedValue('func', '', 'GETPOST');
+$module = filter_input(INPUT_GET, 'module', FILTER_SANITIZE_STRING);
+$type = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_STRING);
+$type = ($type) ? $type : 'ajax';
+$func = filter_input(INPUT_GET, 'func', FILTER_SANITIZE_STRING);
 
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
@@ -44,48 +45,45 @@ if (!ModUtil::available($modinfo['name'])) {
     AjaxUtil::error(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
 }
 
-if ($modinfo['type'] == ModUtil::TYPE_MODULE || $modinfo['type'] == ModUtil::TYPE_SYSTEM) {
-    // New-new style of loading modules
-    if (!isset($arguments)) {
-        $arguments = array();
+$arguments = array(); // this is entirely ununsed? - drak 
+
+if (ModUtil::load($modinfo['name'], $type)) {
+    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        $dbConn = System::dbGetConn(true);
+        $dbConn->beginTransaction();
     }
 
-    if (ModUtil::load($modinfo['name'], $type)) {
-        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-                $dbConn = System::dbGetConn(true);
-                $dbConn->StartTrans();
-        }
-
-        // Run the function
+    // Run the function
+    try {
         $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
-
-        if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            if ($dbConn->HasFailedTrans()) {
-                $return = __('Error! The transaction failed. Please perform a rollback.') . "\n" . $return;
-                AjaxUtil::error($return);
-                $return == true;
-            }
-            $dbConn->CompleteTrans();
-        }
-    } else {
+    } catch (Exception $e) {
         $return = false;
     }
 
-    // Sort out return of function.  Can be
-    // true - finished
-    // false - display error msg
-    // text - return information
-    if ($return === true) {
-        // Nothing to do here everything was done in the module
-    } elseif ($return === false) {
-        // Failed to load the module
-        AjaxUtil::error(__f("Could not load the '%s' module (at '%s' function).", array(DataUtil::formatForDisplay($module), DataUtil::formatForDisplay($func))));
-    } else {
-        AjaxUtil::output($return, true, false);
+    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+        if ($return === false && $e instanceof PDOException) {
+            $return = __('Error! The transaction failed. Performing rollback.') . "\n" . $return;
+            $dbConn->rollback();
+            AjaxUtil::error($return);
+            $return == true;
+        }
+        $dbConn->commit();
     }
 } else {
-    // Old-old style of loading modules not supported with Ajax
-    AjaxUtil::error(__('Error! Ajax support is not implemented for old-style modules.'));
+    $return = false;
+}
+
+// Sort out return of function.  Can be
+// true - finished
+// false - display error msg
+// text - return information
+if ($return === true) {
+    // Nothing to do here everything was done in the module
+} elseif ($return === false) {
+    // Failed to load the module
+    AjaxUtil::error(__f("Could not load the '%s' module (at '%s' function).", array(DataUtil::formatForDisplay($module), DataUtil::formatForDisplay($func))));
+} else {
+    AjaxUtil::output($return, true, false);
 }
 
 System::shutdown();
