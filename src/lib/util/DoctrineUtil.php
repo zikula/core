@@ -296,24 +296,4 @@ class DoctrineUtil
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropForeignKey($tableName, $definition['name']);
     }
-
-    /**
-     * Get Table.
-     *
-     * Helper to make Doctrine_Core::getTable() IDE friendly.
-     *
-     * @param  string $table
-     *
-     * @return object Doctrine_Table.
-     */
-    public static function getTable($table)
-    {
-        return self::_getTable(Doctrine_Core::getTable($table));
-
-    }
-    
-    private static function _getTable(Doctrine_Table $table)
-    {
-        return $table;
-    }
 }

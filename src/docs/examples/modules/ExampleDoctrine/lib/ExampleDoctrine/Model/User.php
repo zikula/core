@@ -12,6 +12,10 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * This is the model class that define the entity structure
+ * and behaviours.
+ */
 class ExampleDoctrine_Model_User extends Doctrine_Record
 {
     public function setTableDefinition()
