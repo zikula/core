@@ -74,7 +74,7 @@ $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
 // function because the modules is not active right now
 $type = (empty($type)) ? $type = 'user' : $type;
 $func = (empty($func)) ? $func = 'main' : $func;
-if ($type=='init') {
+if ($type == 'init' || $type == 'interactiveinstaller') {
     ModUtil::load($modinfo['name'], $type, true);
 }
 

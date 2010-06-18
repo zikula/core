@@ -459,7 +459,7 @@ class Modules_Api_Admin extends Zikula_Api
 
             // perform the actual deletion of the module
             $func = ($oo) ? array($installer, 'uninstall') : $modinfo['name'] . '_delete';
-            $interactive_func = ($oo) ? array($interactiveController, 'interactive_uninstall') : $modinfo['name'] . '_init_interactivedelete';
+            $interactive_func = ($oo) ? array($interactiveController, 'uninstall') : $modinfo['name'] . '_init_interactivedelete';
 
             // allow bypass of interactive removal during a new installation only.
             if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -974,7 +974,7 @@ class Modules_Api_Admin extends Zikula_Api
         // perform the actual install of the module
         // system or module
         $func = ($oo) ? array($installer, 'install') : $modinfo['name'] . '_init';
-        $interactive_func = ($oo) ? array($interactiveController, 'interactive_install') : $modinfo['name'] . '_init_interactiveinit';
+        $interactive_func = ($oo) ? array($interactiveController, 'install') : $modinfo['name'] . '_init_interactiveinit';
 
         // allow bypass of interactive install during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -1086,7 +1086,7 @@ class Modules_Api_Admin extends Zikula_Api
 
         // perform the actual upgrade of the module
         $func = ($oo) ? array($installer, 'upgrade') : $modinfo['name'] . '_upgrade';
-        $interactive_func = ($oo) ? array($interactiveController, 'interactive_upgrade') : $modinfo['name'] . '_init_interactiveupgrade';
+        $interactive_func = ($oo) ? array($interactiveController, 'upgrade') : $modinfo['name'] . '_init_interactiveupgrade';
 
         // allow bypass of interactive upgrade during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
