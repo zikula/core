@@ -313,9 +313,13 @@ function addCategoryResponse(req) {
         pnupdateauthids(aid);
     } else {
         newcat = document.getElementById('addcat');
-        newcat.innerHTML = '<a id="C'+json.response+'" href="'+json.url+'">'+catname+'</a>';
+        newcat.innerHTML = '<a id="C' + json.response + '" href="'
+            + json.url + '">' + catname + '</a><span id="catcontext' 
+            + json.response + '" class="z-admindrop">&nbsp;</span>';
         newcat.setAttribute("class","");
         newcat.setAttribute("id", "");
+        newcatmenu =  new Control.ContextMenu('catcontext' + json.response,
+            {leftClick: true,animation: false });
 
         var newelement = document.createElement('li');
         newelement.innerHTML = old;
