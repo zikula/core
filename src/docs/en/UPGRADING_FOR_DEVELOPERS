@@ -102,6 +102,22 @@
 - You may now optionally include bootstrap.php in your module root directory.
   This will be loaded during ModUtil::load/ModUtil::loadGeneric() automatically.
 
+- INSTALLER: If you use OO module type you must additionally refactor the pninit.php
+  Rename to Installer.php
+  Encapsulate in "class $modulename_Installer extends Zikula_Installer" making sure
+  the class name $modulename matches the directory.
+  Remove $modulename_ prefix from function declarations.
+  Rename init() to install, and delete() to uninstall()
+  Remove any interactive_ methods (see below).
+
+- INTERACTIVE INSTALLER:
+  You must move the interactive methods to lib/$modulename/Interactiveinstaller.php
+  Encapulate methods in "class $modulename_Interactiveinstaller extends Zikula_InteractiveInstaller"
+  making sure the class name $modulename matches the directory.
+  Remove $modulename_ prefix from function declarations.
+  Rename interactive_init() to install(), interactive_upgrade() to upgrade(),
+  and interactive_delete() to uninstall()
+
 - pnMod* now all deprecated see ModUtil::*
 - pnUser* deprecated, see UserUtil::*
 - pnBlock deprecated, see BlockUtil::*
@@ -112,7 +128,6 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
     The old ones are still backward compatible but since file scanning is used
     your modules will be more efficient if you change to this format.
 
-    - Rename pninit.php to init.php
     - Rename pntables.php to tables.php (rename internal $modName_pntables to $mod_tables)
     - Rename pnversion.php to version.php
     - Rename pndocs to docs

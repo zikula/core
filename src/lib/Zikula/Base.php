@@ -50,7 +50,7 @@ abstract class Zikula_Base
         $this->name = $parts[0];
         $this->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($this->name));
         $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
-        $this->systemBaseDir = realpath(dirname(__FILE__) . '/../..');
+        $this->systemBaseDir = realpath("$modbase/..");
         $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/" . $this->modinfo['directory']);
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
     }

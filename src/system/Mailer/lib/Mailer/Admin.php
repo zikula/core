@@ -181,7 +181,7 @@ class Mailer_Admin extends Zikula_Controller
         $subject = (string)FormUtil::getPassedValue('subject', isset($args['subject']) ? $args['subject'] : null, 'POST');
         $body = (string)FormUtil::getPassedValue('body', isset($args['body']) ? $args['body'] : null, 'POST');
         $altBody = (string)FormUtil::getPassedValue('altbody', isset($args['altbody']) ? $args['altbody'] : null, 'POST');
-        $System::mail = (bool)FormUtil::getPassedValue('System::mail', isset($args['System::mail']) ? $args['System::mail'] : false, 'POST');
+        $pnmail = (bool)FormUtil::getPassedValue('pnmail', isset($args['pnmail']) ? $args['pnmail'] : false, 'POST');
         $html = (bool)FormUtil::getPassedValue('html', isset($args['html']) ? $args['html'] : false, 'POST');
 
         // confirm our forms authorisation key
@@ -190,7 +190,7 @@ class Mailer_Admin extends Zikula_Controller
         }
 
         // set the email
-        if ($System::mail) {
+        if ($pnmail) {
             $from = System::getVar('adminmail');
             $result = System::mail($toaddress, $subject, $body, "From: $from\nX-Mailer: PHP/" . phpversion(), $html, $altBody);
         } else {

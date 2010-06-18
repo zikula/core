@@ -439,6 +439,9 @@ function installmodules($installtype = 'basic', $lang = 'en')
     // create a result set
     $results = array();
 
+    $sm = ServiceUtil::getManager();
+    $em = EventUtil::getManager();
+
     if ($installtype == 'basic') {
         $coremodules = array(
                 'Modules',
@@ -457,9 +460,10 @@ function installmodules($installtype = 'basic', $lang = 'en')
                 continue;
             }
             ModUtil::dbInfoLoad($coremodule, $coremodule);
-            require_once "system/$coremodule/init.php";
-            $modfunc = "{$coremodule}_init";
-            if ($modfunc()) {
+            require_once "system/$coremodule/Installer.php";
+            $className = "{$coremodule}_Installer";
+            $instance = new $className($sm, $em);
+            if ($instance->install()) {
                 $results[$coremodule] = true;
             }
         }
@@ -506,8 +510,8 @@ function installmodules($installtype = 'basic', $lang = 'en')
                             'category' => $modscat[$category]));
         }
         // create the default blocks.
-        require_once 'system/Blocks/init.php';
-        blocks_defaultdata();
+        $blockInstance = new Blocks_Installer($sm, $em);
+        $blockInstance->defaultdata();
     }
 
     if ($installtype == 'complete') {

@@ -425,28 +425,54 @@ class Modules_Api_Admin extends Zikula_Api
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         // Module deletion function. Only execute if the module hasn't been initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
+            $oo = (ModUtil::isOO($modinfo['name'])) ? true : false;
+            if (!$oo && file_exists($file = "$modpath/$osdir/pninit.php")) {
                 if (!include_once($file)) {
                     LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
                 }
             }
 
+            $sm = ServiceUtil::getManager();
+            $em = EventUtil::getManager();
+            if ($oo) {
+                if (!file_exists($file = "$modpath/$osdir/Installer.php")) {
+                    LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
+                }
+                include_once $file;
+
+                $className = ucwords($modinfo['name']) . '_Installer';
+                $reflectionInstaller = new ReflectionClass($className);
+                if (!$reflectionInstaller->isSubclassOf(Zikula_Installer)) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                }
+                $installer = $reflectionInstaller->newInstanceArgs(array($sm, $em));
+                $interactiveClass = ucwords($modinfo['name']) . '_Interactiveinstaller';
+                $interactiveController = null;
+                if (class_exists($interactiveClass)) {
+                    $reflectionInteractive = new ReflectionClass($interactiveClass);
+                    if (!$reflectionInteractive->isSubclassOf(Zikula_InteractiveInstaller)) {
+                        LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                    }
+                    $interactiveController = $reflectionInteractive->newInstanceArgs(array($sm, $em));
+                }
+            }
+
             // perform the actual deletion of the module
-            $func = $modinfo['name'] . '_delete';
-            $interactive_func = $modinfo['name'] . '_init_interactivedelete';
+            $func = ($oo) ? array($installer, 'uninstall') : $modinfo['name'] . '_delete';
+            $interactive_func = ($oo) ? array($interactiveController, 'interactive_uninstall') : $modinfo['name'] . '_init_interactivedelete';
 
             // allow bypass of interactive removal during a new installation only.
-            if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
+            if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
                 return; // return void here
             }
 
-            if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && function_exists($interactive_func)) {
+            if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && is_callable($interactive_func)) {
                 SessionUtil::setVar('interactive_remove', true);
-                return $interactive_func();
+                return call_user_func($interactive_func);
             }
 
-            if (function_exists($func)) {
-                if ($func() != true) {
+            if (is_callable($func)) {
+                if (call_user_func($func) != true) {
                     return false;
                 }
             }
@@ -912,29 +938,56 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // load module maintainence functions
-        if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
+        $oo = (ModUtil::isOO($modinfo['name'])) ? true : false;
+
+        if (!$oo && file_exists($file = "$modpath/$osdir/pninit.php")) {
             if (!include_once($file)) {
                 LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
             }
         }
 
+        $sm = ServiceUtil::getManager();
+        $em = EventUtil::getManager();
+        if ($oo) {
+            if (!file_exists($file = "$modpath/$osdir/Installer.php")) {
+                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
+            }
+            include_once $file;
+
+            $className = ucwords($modinfo['name']) . '_Installer';
+            $reflectionInstaller = new ReflectionClass($className);
+            if (!$reflectionInstaller->isSubclassOf(Zikula_Installer)) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+            }
+            $installer = $reflectionInstaller->newInstanceArgs(array($sm, $em));
+            $interactiveClass = ucwords($modinfo['name']) . '_Interactiveinstaller';
+            $interactiveController = null;
+            if (class_exists($interactiveClass)) {
+                $reflectionInteractive = new ReflectionClass($interactiveClass);
+                if (!$reflectionInteractive->isSubclassOf(Zikula_InteractiveInstaller)) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                }
+                $interactiveController = $reflectionInteractive->newInstanceArgs(array($sm, $em));
+            }
+        }
+
         // perform the actual install of the module
         // system or module
-        $func = $modinfo['name'] . '_init';
-        $interactive_func = $modinfo['name'] . '_init_interactiveinit';
+        $func = ($oo) ? array($installer, 'install') : $modinfo['name'] . '_init';
+        $interactive_func = ($oo) ? array($interactiveController, 'interactive_install') : $modinfo['name'] . '_init_interactiveinit';
 
         // allow bypass of interactive install during a new installation only.
-        if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
+        if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
             return; // return void here
         }
 
-        if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && function_exists($interactive_func)) {
+        if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && is_callable($interactive_func)) {
             SessionUtil::setVar('interactive_init', true);
-            return $interactive_func();
+            return call_user_func($interactive_func);
         }
 
-        if (function_exists($func)) {
-            if ($func() != true) {
+        if (is_callable($func)) {
+            if (call_user_func($func) != true) {
                 return false;
             }
         }
@@ -998,28 +1051,55 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // load module maintainence functions
-        if (file_exists($file = "$modpath/$osdir/init.php") || file_exists($file = "$modpath/$osdir/pninit.php")) {
+        $oo = (ModUtil::isOO($modinfo['name'])) ? true : false;
+
+        if (!$oo && file_exists($file = "$modpath/$osdir/pninit.php")) {
             if (!include_once($file)) {
                 LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
             }
         }
 
+        $sm = ServiceUtil::getManager();
+        $em = EventUtil::getManager();
+        if ($oo) {
+            if (!file_exists($file = "$modpath/$osdir/Installer.php")) {
+                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
+            }
+            include_once $file;
+
+            $className = ucwords($modinfo['name']) . '_Installer';
+            $reflectionInstaller = new ReflectionClass($className);
+            if (!$reflectionInstaller->isSubclassOf(Zikula_Installer)) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+            }
+            $installer = $reflectionInstaller->newInstanceArgs(array($sm, $em));
+            $interactiveClass = ucwords($modinfo['name']) . '_Interactiveinstaller';
+            $interactiveController = null;
+            if (class_exists($interactiveClass)) {
+                $reflectionInteractive = new ReflectionClass($interactiveClass);
+                if (!$reflectionInteractive->isSubclassOf(Zikula_InteractiveInstaller)) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
+                }
+                $interactiveController = $reflectionInteractive->newInstanceArgs(array($sm, $em));
+            }
+        }
+
         // perform the actual upgrade of the module
-        $func = $modinfo['name'] . '_upgrade';
-        $interactive_func = $modinfo['name'] . '_init_interactiveupgrade';
+        $func = ($oo) ? array($installer, 'upgrade') : $modinfo['name'] . '_upgrade';
+        $interactive_func = ($oo) ? array($interactiveController, 'interactive_upgrade') : $modinfo['name'] . '_init_interactiveupgrade';
 
         // allow bypass of interactive upgrade during a new installation only.
-        if (System::isInstalling() && function_exists($interactive_func) && !function_exists($func)) {
+        if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
             return; // return void here
         }
 
-        if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && function_exists($interactive_func)) {
+        if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && is_callable($interactive_func)) {
             SessionUtil::setVar('interactive_upgrade', true);
-            return $interactive_func(array('oldversion' => $modinfo['version']));
+            return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
         }
 
-        if (function_exists($func)) {
-            $result = $func($modinfo['version']);
+        if (is_callable($func)) {
+            $result = call_user_func($func, $modinfo['version']);
             if (is_string($result)) {
                 if ($result != $modinfo['version']) {
                     // update the last successful updated version
