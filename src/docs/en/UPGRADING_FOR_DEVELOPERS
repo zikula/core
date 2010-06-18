@@ -128,7 +128,7 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
     The old ones are still backward compatible but since file scanning is used
     your modules will be more efficient if you change to this format.
 
-    - Rename pntables.php to tables.php (rename internal $modName_pntables to $mod_tables)
+    - Rename pntables.php to tables.php and rename internal functions $modName_pntables() to $modName_tables()
     - Rename pnversion.php to version.php
     - Rename pndocs to docs
     - Rename pnincludes to lib/, or lib/vendor if specifying 3rd party libs
