@@ -533,9 +533,13 @@ class SecurityCenter_Api_User extends Zikula_Api
                 // define where our cache directory lives
                 $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
 
+                // allow nofollow and imageviewer to be used as document relationships in the rel attribute
+                // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
+                $config['Attr']['AllowedRel'] = array('nofollow' => 1, 'imageviewer' => 1);
+
                 System::setVar('htmlpurifierConfig', serialize($config));
             }
-
+           
             $purifier = new HTMLPurifier($config);
         }
 
