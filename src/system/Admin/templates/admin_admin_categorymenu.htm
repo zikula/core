@@ -24,17 +24,17 @@
         {foreach from=$menuoptions name=menuoption item=menuoption}
         <li {if $currentcat eq $menuoption.cid} class="active"{/if}>
             <a id="C{$menuoption.cid}" href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>
-            <span id="catcontext{$smarty.foreach.menuoption.index}" class="z-admindrop">&nbsp;</span>
+            <span id="catcontext{$menuoption.cid}" class="z-admindrop">&nbsp;</span>
 
             <script type="text/javascript">
             /* <![CDATA[ */
-                var context_catcontext{{$smarty.foreach.menuoption.index}} = new Control.ContextMenu('catcontext{{$smarty.foreach.menuoption.index}}',{
+                var context_catcontext{{$menuoption.cid}} = new Control.ContextMenu('catcontext{{$menuoption.cid}}',{
                     leftClick: true,
                     animation: false
                 });
 
                 {{foreach from=$menuoption.items item=item}}
-                    context_catcontext{{$smarty.foreach.menuoption.index}}.addItem({
+                    context_catcontext{{$menuoption.cid}}.addItem({
                         label: '{{$item.menutext|safetext}}',
                         callback: function(){window.location = document.location.pnbaseURL + '{{$item.menutexturl}}';}
                     });

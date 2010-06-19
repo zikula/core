@@ -55,6 +55,8 @@ class Admin_Ajax extends Zikula_Controller
         $output['alerttext'] = '';
         $output['response'] = $moduleID;
         $output['newParentCat'] = $newParentCat;
+        $output['modulename'] = $module;
+        $output['url'] = ModUtil::url($module, 'admin');
         return AjaxUtil::output($output, true);
     }
 

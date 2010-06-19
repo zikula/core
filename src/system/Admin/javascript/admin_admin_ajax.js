@@ -236,6 +236,7 @@ function changeModuleCategoryResponse(req) {
     pnupdateauthids(aid);
     var element = document.getElementById('A' + json.response);
     if(json.newParentCat != element.parentNode.id) {}
+    eval("context_catcontext" + json.newParentCat + ".addItem({label: \'" + json.modulename + "',callback: function(){window.location = document.location.pnbaseURL + \'" + json.url + "\';}});");
     element.parentNode.removeChild(element);
     return;
 }
