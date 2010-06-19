@@ -319,8 +319,7 @@ function addCategoryResponse(req) {
             + json.response + '" class="z-admindrop">&nbsp;</span>';
         newcat.setAttribute("class","");
         newcat.setAttribute("id", "");
-        newcatmenu =  new Control.ContextMenu('catcontext' + json.response,
-            {leftClick: true,animation: false });
+        eval("context_catcontext" + json.response + " =  new Control.ContextMenu('catcontext' + json.response,{leftClick: true,animation: false });");
 
         var newelement = document.createElement('li');
         newelement.innerHTML = old;
