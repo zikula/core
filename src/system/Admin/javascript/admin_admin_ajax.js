@@ -236,7 +236,17 @@ function changeModuleCategoryResponse(req) {
     pnupdateauthids(aid);
     var element = document.getElementById('A' + json.response);
     if(json.newParentCat != element.parentNode.id) {}
+    //add module to new category submenu 
     eval("context_catcontext" + json.newParentCat + ".addItem({label: \'" + json.modulename + "',callback: function(){window.location = document.location.pnbaseURL + \'" + json.url + "\';}});");
+    //remove from old category submenu
+    eval("var oldmenuitems = context_catcontext" + json.oldcid + ".items");
+    for (var j in oldmenuitems) {
+        if (oldmenuitems[j].label.indexOf(json.modulename) != -1) {
+            eval("context_catcontext" + json.oldcid + ".items.splice(" + j + "," + j + ");");
+        	break;
+        }
+    }
+    //remove moved module from page
     element.parentNode.removeChild(element);
     return;
 }
