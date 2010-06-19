@@ -116,7 +116,7 @@
   making sure the class name $modulename matches the directory.
   Remove $modulename_ prefix from function declarations.
   Rename interactive_init() to install(), interactive_upgrade() to upgrade(),
-  and interactive_delete() to uninstall()
+  and interactive_delete() to uninstall() - the steps become step1(), step2() etc.
 
 - pnMod* now all deprecated see ModUtil::*
 - pnUser* deprecated, see UserUtil::*
