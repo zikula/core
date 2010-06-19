@@ -90,12 +90,10 @@ class Users_Block_Online extends Zikula_Block
         $pnr->assign('userscount', $numusers );
         $pnr->assign('guestcount', $numguests );
 
-        $numrows = 0;
-        $unreadrows = 0;
+        $pnr->assign('username', UserUtil::getVar('uname'));
 
         $msgmodule = System::getVar('messagemodule', '');
         if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
-            $pnr->assign('username', UserUtil::getVar('uname'));
             // check if message module is available and add the necessary info
             $pnr->assign('msgmodule', $msgmodule);
             if (ModUtil::available($msgmodule)) {
