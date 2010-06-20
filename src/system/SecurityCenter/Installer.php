@@ -304,6 +304,12 @@ class SecurityCenter_Installer extends Zikula_Installer
                         'REQUEST.filter.page', 'POST.filter.page',
                         'REQUEST.filter.value', 'POST.filter.value'));
             // fall through
+                
+            case '1.4.1':
+                System::delVar('htmlpurifierConfig');
+                $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
+                ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($purifierDefaultConfig));
+            // fall through
 
             case '1.6':
             // future upgrade routines

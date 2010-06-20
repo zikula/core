@@ -18,7 +18,7 @@ $modversion['displayname']    = __('Security center');
 $modversion['description']    = __('Provides the ability to manage site security. It logs attempted hacks and similar events, and incorporates a user interface for customising alerting and security settings.');
 //! module name that appears in URL
 $modversion['url']            = __('securitycenter');
-$modversion['version']        = '1.4.1';
+$modversion['version']        = '1.4.2';
 
 $modversion['official']       = 1;
 $modversion['author']         = 'Mark West';
