@@ -17,7 +17,7 @@ include 'lib/legacy/Api.php';
 // backwards compatibility references
 $GLOBALS['PNConfig'] = &$GLOBALS['ZConfig'];
 $GLOBALS['PNRuntime'] = &$GLOBALS['ZRuntime'];
-$GLOBALS['dbtables'] = &$GLOBALS['pntables'];
+$GLOBALS['pntables'] = &$GLOBALS['dbtables'];
 
 define('_MARKER_NONE', '&nbsp;&nbsp;');
 define('_REQUIRED_MARKER',  '<span style="font-size:larger;color:blue"><b>*</b></span>');
