@@ -150,7 +150,7 @@ class LogUtil
      */
     public static function registerAuthidError($url = null)
     {
-        return self::registerError(__("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again."), null, $url);
+        return self::registerError(self::getErrorMsgAuthid(), null, $url);
     }
 
     /**
@@ -192,7 +192,7 @@ class LogUtil
             }
             $code = null;
         }
-        return self::registerError(__('Sorry! You have not been granted access to this page.'), $code, $url);
+        return self::registerError(self::getErrorMsgPermission(), $code, $url);
     }
 
     /**
@@ -278,7 +278,7 @@ class LogUtil
      */
     public static function registerArgsError($url = null)
     {
-        return self::registerError(__('Error! The action you wanted to perform was not successful for some reason, maybe because of a problem with what you input. Please check and try again.'), null, $url);
+        return self::registerError(self::getErrorMsgArgs(), null, $url);
     }
     
     /**
