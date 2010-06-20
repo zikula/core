@@ -23,14 +23,23 @@ set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIREC
 include 'Smarty/Smarty.class.php';
 
 /**
- * ZLoader
+ * ZLoader.
  */
 class ZLoader
 {
+    /**
+     * @var array
+     */
     private static $map;
 
+    /**
+     * @var object
+     */
     private static $autoloaders;
 
+    /**
+     * Base setup.
+     */
     public static function register()
     {
         self::$map = self::map();
@@ -55,6 +64,15 @@ class ZLoader
         EventUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
     }
 
+    /**
+     * Add new autoloader to the stack.
+     *
+     * @param string $namespace Namespace.
+     * @param string $path      Path.
+     * @param string $separator Separator, _ or \\.
+     *
+     * @return void
+     */
     public static function addAutoloader($namespace, $path = '', $separator = '_')
     {
         if (self::$autoloaders->hasAutoloader($namespace)) {
@@ -65,7 +83,7 @@ class ZLoader
     }
 
     /**
-     * Simple autoloader
+     * Simple PEAR autoloader and handling for non-PEAR classes.
      *
      * @param string $class
      */
@@ -96,6 +114,11 @@ class ZLoader
         }
     }
 
+    /**
+     * Provides map for simple autoloader.
+     * 
+     * @return array Class locations.
+     */
     public static function map()
     {
         return array(

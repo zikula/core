@@ -14,10 +14,18 @@
  */
 
 /**
- * Abstract controller for modules.
+ * Abstract API for modules.
  */
 abstract class Zikula_Api extends Zikula_Base
 {
+    /**
+     * Magic method for method_not_found events.
+     *
+     * @param string $method Method name called.
+     * @param array $args    Arguments passed to method call.
+     *
+     * @return mixed False if not found or mixed.
+     */
     public function __call($method, $args)
     {
         $event = new Zikula_Event('controller_api.method_not_found', $this, array('method' => $method, 'args' => $args));
