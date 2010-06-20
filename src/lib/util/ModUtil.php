@@ -1184,7 +1184,7 @@ class ModUtil
             $modinfo = self::getInfo(self::getIdFromName($module));
             if (isset($modinfo['name'])) {
                 $module = $modinfo['name'];
-                if ($type != 'init' || $type != 'initeractiveinstaller' && !ModUtil::available($module)) {
+                if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !ModUtil::available($module)) {
                     $module = System::getVar('startpage');
                 }
             }
