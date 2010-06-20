@@ -608,8 +608,11 @@ class ModUtil
             return $loaded[$modtype];
         }
 
+        // this is essential to call separately and not in the condition below - drak
+        $available = self::available($modname, $force);
+
         // check the modules state
-        if (!$force && !self::available($modname) && $modname != 'Modules') {
+        if (!$force && !$available && $modname != 'Modules') {
             return false;
         }
 
@@ -1145,7 +1148,11 @@ class ModUtil
                 $modstate[$modname] = $modinfo['state'];
             }
         }
-
+ 
+        if ($force == true) {
+            $modstate[$modname] = ModUtil::STATE_ACTIVE;
+        }
+       
         if ((isset($modstate[$modname]) &&
                         $modstate[$modname] == ModUtil::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
                         (isset($modstate[$modname]) && ($modstate[$modname] == ModUtil::STATE_UPGRADED || $modstate[$modname] == ModUtil::STATE_INACTIVE)))) {
@@ -1177,7 +1184,7 @@ class ModUtil
             $modinfo = self::getInfo(self::getIdFromName($module));
             if (isset($modinfo['name'])) {
                 $module = $modinfo['name'];
-                if ($type != 'init' && !ModUtil::available($module)) {
+                if ($type != 'init' || $type != 'initeractiveinstaller' && !ModUtil::available($module)) {
                     $module = System::getVar('startpage');
                 }
             }
