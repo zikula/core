@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Installer.
+ */
 class ExampleDoctrine_Installer extends Zikula_Installer
 {
 
@@ -41,11 +44,11 @@ class ExampleDoctrine_Installer extends Zikula_Installer
     /**
      * Upgrade the module from an old version.
      *
-     * This function can be called multiple times
+     * This function can be called multiple times.
      *
      * @param integer $oldversion version to upgrade from.
      *
-     * @return boolean True on success, false otherwise
+     * @return boolean True on success, false otherwise.
      */
     public function upgrade($oldversion)
     {
@@ -70,7 +73,7 @@ class ExampleDoctrine_Installer extends Zikula_Installer
      * This function is only ever called once during the lifetime of a particular
      * module instance.
      *
-     * @return bool True on success, false otherwise
+     * @return bool True on success, false otherwise.
      */
     public function uninstall()
     {

@@ -33,12 +33,6 @@ class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
      */
     public function handler(Zikula_Event $event)
     {
-        /**
-         * Show version information for installed Zikula modules.
-         * 
-         * @return string HTML output string.
-         */
-
         // check if this is for this handler
         $subject = $event->getSubject();
         if (!($event['method'] == 'extensions' && $subject instanceof SysInfo_admin)) {

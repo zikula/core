@@ -13,7 +13,7 @@
  */
 
 /**
- * DBObjectArray
+ * DBObjectArray.
  */
 class DBObjectArray
 {
@@ -57,7 +57,7 @@ class DBObjectArray
     const GET_FROM_VALIDATION_FAILED = 'VALIDATION'; // get data from failed validation
 
     /**
-     * init everything to sane defaults and handle parameters
+     * Init everything to sane defaults and handle parameters.
      */
     public function __construct($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
@@ -65,14 +65,14 @@ class DBObjectArray
     }
 
     /**
-     * Internal intialization routine
+     * Internal intialization routine.
      *
-     * @param init          Initialization value (can be an object or a string directive) (optional) (default=null)
-     * @param where         The where clause to use when retrieving the object array (optional) (default='')
-     * @param orderBy       The order-by clause to use when retrieving the object array (optional) (default='')
-     * @param limitOffset   The limiting offset
-     * @param limitNumRows  The limiting number of rows
-     * @param assocKey      Key field to use for building an associative array (optional) (default=null)
+     * @param init          Initialization value (can be an object or a string directive) (optional) (default=null).
+     * @param where         The where clause to use when retrieving the object array (optional) (default='').
+     * @param orderBy       The order-by clause to use when retrieving the object array (optional) (default='').
+     * @param limitOffset   The limiting offset.
+     * @param limitNumRows  The limiting number of rows.
+     * @param assocKey      Key field to use for building an associative array (optional) (default=null).
      *
      * If $init is an arrary it is set(), otherwise it is interpreted as a string specifying
      * the source from where the data should be retrieved from.
@@ -121,9 +121,9 @@ class DBObjectArray
     }
 
     /**
-     * Set (and return) the object data. Since we dont' have a definitive key, we don't cache
+     * Set (and return) the object data. Since we dont' have a definitive key, we don't cache.
      *
-     * @param data      The data to assign
+     * @param data      The data to assign.
      */
     public function setData($data)
     {
@@ -136,7 +136,7 @@ class DBObjectArray
     }
 
     /**
-     * Generate an empty object with the fields initialized to null
+     * Generate an empty object with the fields initialized to null.
      */
     public function generateEmptyObjectArray($num = 1)
     {
@@ -161,12 +161,12 @@ class DBObjectArray
     }
 
     /**
-     * Return the record count for the given object set
+     * Return the record count for the given object set.
      *
-     * @param where     The where-clause to use
-     * @param doJoin    whether or not to use the auto-join for the count
+     * @param where     The where-clause to use.
+     * @param doJoin    whether or not to use the auto-join for the count.
      *
-     * @return The object's data set count
+     * @return The object's data set count.
      */
     public function getCount($where = '', $doJoin = false)
     {
@@ -183,9 +183,9 @@ class DBObjectArray
      * issues when accessing filter fields which may not be set + do additional processing as necessary.
      * Default implementation which can be overridden by subclasses.
      *
-     * @param filter    An array containing the set filter values (optional) (default=array())
+     * @param filter    An array containing the set filter values (optional) (default=array()).
      *
-     * @return The processed filter array
+     * @return The processed filter array.
      */
     public function genFilterPreProcess ($filter = array())
     {
@@ -197,9 +197,9 @@ class DBObjectArray
      **
      * Generate a filter for the array view. Default implementation which can be overridden by subclasses.
      *
-     * @param filter    An array containing the set filter values (optional) (default=array())
+     * @param filter    An array containing the set filter values (optional) (default=array()).
      *
-     * @return The generated filter (where-clause) string
+     * @return The generated filter (where-clause) string.
      */
     public function genFilter($filter = array())
     {
@@ -210,15 +210,15 @@ class DBObjectArray
     /**
      * Return/Select the object using the given where clause.
      *
-     * @param where         The where-clause to use
-     * @param orderBy          The order-by clause to use
-     * @param limitOffset   The limiting offset
-     * @param limitNumRows  The limiting number of rows
-     * @param assocKey      Key field to use for building an associative array (optional) (default=null)
-     * @param force         whether or not to force a DB-get (optional) (default=false)
-     * @param distinct      whether or not to do a select distinct (optional) (default=false)
+     * @param where         The where-clause to use.
+     * @param orderBy          The order-by clause to use.
+     * @param limitOffset   The limiting offset.
+     * @param limitNumRows  The limiting number of rows.
+     * @param assocKey      Key field to use for building an associative array (optional) (default=null).
+     * @param force         whether or not to force a DB-get (optional) (default=false).
+     * @param distinct      whether or not to do a select distinct (optional) (default=false).
      *
-     * @return The object's data value
+     * @return The object's data value.
      */
     public function getWhere($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = null, $force = false, $distinct = false)
     {
@@ -232,15 +232,15 @@ class DBObjectArray
     /**
      * Return the current object data. Maps to $this->getWhere().
      *
-     * @param where         The where-clause to use
-     * @param orderBy          The order-by clause to use
-     * @param limitOffset   The limiting offset
-     * @param limitNumRows  The limiting number of rows
-     * @param assocKey      Key field to use for building an associative array (optional) (default=null)
-     * @param force         whether or not to force a DB-get (optional) (default=false)
-     * @param distinct      whether or not to do a select distinct (optional) (default=false)
+     * @param where         The where-clause to use.
+     * @param orderBy          The order-by clause to use.
+     * @param limitOffset   The limiting offset.
+     * @param limitNumRows  The limiting number of rows.
+     * @param assocKey      Key field to use for building an associative array (optional) (default=null).
+     * @param force         whether or not to force a DB-get (optional) (default=false).
+     * @param distinct      whether or not to do a select distinct (optional) (default=false).
      *
-     * @return The object's data value
+     * @return The object's data value.
      */
     public function get($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = null, $force = false, $distinct = false)
     {
@@ -248,9 +248,9 @@ class DBObjectArray
     }
 
     /**
-     * Return the currently set object data
+     * Return the currently set object data.
      *
-     * @return The object's data array
+     * @return The object's data array.
      */
     public function getData()
     {
@@ -258,16 +258,16 @@ class DBObjectArray
     }
 
     /**
-     * Generic select handler for an object. Select (and set) the specified object array
+     * Generic select handler for an object. Select (and set) the specified object array.
      *
-     * @param where         The where-clause to use
-     * @param orderBy       The order-by clause to use
-     * @param limitOffset   The limiting offset
-     * @param limitNumRows  The limiting number of rows
-     * @param assocKey      Key field to use for building an associative array (optional) (default=null)
-     * @param distinct      whether or not to use the distinct clause
+     * @param where         The where-clause to use.
+     * @param orderBy       The order-by clause to use.
+     * @param limitOffset   The limiting offset.
+     * @param limitNumRows  The limiting number of rows.
+     * @param assocKey      Key field to use for building an associative array (optional) (default=null).
+     * @param distinct      whether or not to use the distinct clause.
      *
-     * @return The selected Object-Array
+     * @return The selected Object-Array.
      */
     public function select($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = false, $distinct = false)
     {
@@ -290,9 +290,9 @@ class DBObjectArray
     }
 
     /**
-     * Iterate over the object data and post-process it
+     * Iterate over the object data and post-process it.
      *
-     * @return The Object Data
+     * @return The Object Data.
      */
     public function selectPostProcess($data = null)
     {
@@ -302,11 +302,11 @@ class DBObjectArray
     /**
      * Get the data from the various input streams provided.
      *
-     * @param key        The access key of the object (optional) (default=null, reverts to $this->_objPath)
-     * @param default    The default value to return (optional) (default=null)
-     * @param source     Where to get the variable from (optional) (default='REQUEST')
+     * @param key        The access key of the object (optional) (default=null, reverts to $this->_objPath).
+     * @param default    The default value to return (optional) (default=null).
+     * @param source     Where to get the variable from (optional) (default='REQUEST').
      *
-     * @return The requested object/value
+     * @return The requested object/value.
      */
     public function getDataFromInput($key = null, $default = null, $source = 'REQUEST')
     {
@@ -328,11 +328,11 @@ class DBObjectArray
     /**
      * Get the data from the various input streams provided.
      *
-     * @param key        The access key of the object (optional) (default=null, reverts to $this->_objPath)
-     * @param default    The default value to return (optional) (default=null)
-     * @param source     Where to get the variable from (optional) (default=null)
+     * @param key        The access key of the object (optional) (default=null, reverts to $this->_objPath).
+     * @param default    The default value to return (optional) (default=null).
+     * @param source     Where to get the variable from (optional) (default=null).
      *
-     * @return The requested object/value
+     * @return The requested object/value.
      */
     public function getDataFromSession($key = null, $default = null, $path = '', $autocreate = true, $overwriteExistingVar = false)
     {
@@ -354,12 +354,12 @@ class DBObjectArray
     }
 
     /**
-     * Set the current object data into session
+     * Set the current object data into session.
      *
-     * @param autocreate            The autocreate passed to SessionUtil::setVar
-     * @param overwriteExistingVar  The overwriteExistingVar variable passed to SessionUtil::setVar
+     * @param autocreate            The autocreate passed to SessionUtil::setVar.
+     * @param overwriteExistingVar  The overwriteExistingVar variable passed to SessionUtil::setVar.
      *
-     * @return The session data
+     * @return The session data.
      */
     public function setDataToSession($data = null, $key = null, $path = '', $autocreate = true, $overwriteExistingVar = false)
     {
@@ -407,14 +407,14 @@ class DBObjectArray
     }
 
     /**
-     * Generic access function to retrieve data from the specified source
+     * Generic access function to retrieve data from the specified source.
      *
-     * @param source    The source data
-     * @param key       The access key of the object (optional) (default=null)
-     * @param default   The default value to return (optional) (default=null)
-     * @param clean     Whether or not to clean the acquired data (optional) (default=true)
+     * @param source    The source data.
+     * @param key       The access key of the object (optional) (default=null).
+     * @param default   The default value to return (optional) (default=null).
+     * @param clean     Whether or not to clean the acquired data (optional) (default=true).
      *
-     * @return The requested object/value
+     * @return The requested object/value.
      */
     public function getDataFromSource($source, $key = null, $default = null, $clean = true)
     {
@@ -430,9 +430,9 @@ class DBObjectArray
     }
 
     /**
-     * Generic function to retrieve
+     * Generic function to retrieve.
      *
-     * @return The Object Data
+     * @return The Object Data.
      */
     public function getDataField($offset, $key, $default = null)
     {
@@ -445,9 +445,9 @@ class DBObjectArray
     }
 
     /**
-     * Save an object - if it has an ID update it, otherwise insert it
+     * Save an object - if it has an ID update it, otherwise insert it.
      *
-     * @return The result set
+     * @return The result set.
      */
     public function save()
     {
@@ -462,9 +462,9 @@ class DBObjectArray
     }
 
     /**
-     * Generic insert handler for an object (ID is inserted into the object data)
+     * Generic insert handler for an object (ID is inserted into the object data).
      *
-     * @return The Object Data
+     * @return The Object Data.
      */
     public function insert()
     {
@@ -504,9 +504,9 @@ class DBObjectArray
     }
 
     /**
-     * Generic upate handler for an object
+     * Generic upate handler for an object.
      *
-     * @return The Object Data
+     * @return The Object Data.
      */
     public function update()
     {
@@ -546,9 +546,9 @@ class DBObjectArray
     }
 
     /**
-     * Generic delete handler for an object
+     * Generic delete handler for an object.
      *
-     * @return The Object Data
+     * @return The Object Data.
      */
     public function delete()
     {
@@ -588,11 +588,11 @@ class DBObjectArray
     }
 
     /**
-     * Delete with a where-clause
+     * Delete with a where-clause.
      *
-     * @param where         The where-clause to use
+     * @param where         The where-clause to use.
      *
-     * @return The Object Data
+     * @return The Object Data.
      */
     public function deleteWhere($where = null)
     {
@@ -611,11 +611,11 @@ class DBObjectArray
     }
 
     /**
-     * Clean the acquired input
+     * Clean the acquired input.
      *
-     * @param objArray    The object-array to clean (optional) (default=null, reverts to $this->_objData)
+     * @param objArray    The object-array to clean (optional) (default=null, reverts to $this->_objData).
      *
-     * @return The Object Data
+     * @return The Object Data.
      */
     public function clean($objArray = null)
     {
@@ -636,20 +636,20 @@ class DBObjectArray
     }
 
     /**
-     * Get a selector for the object array
+     * Get a selector for the object array.
      *
-     * @param name          The name of the selector to generate
-     * @param selected      The currently selected value (optional) (default=-1234)
-     * @param defaultValue  The default value (optional) (default=0)
-     * @param defaultText   The default text (optional) (default='')
-     * @param allValue      The all-selected value (optional) (default=0)
-     * @param allText       The all-selected text (optional) (default='')
-     * @param idField       The id field to use (optional) (default=null)
-     * @param nameField     The name field to use (optional) (default='title')
-     * @param submit        whether or not to submit the form upon selection (optional) (default=false)
-     * @param ignoreList    The list of entries to ignore (default=null)
+     * @param name          The name of the selector to generate.
+     * @param selected      The currently selected value (optional) (default=-1234).
+     * @param defaultValue  The default value (optional) (default=0).
+     * @param defaultText   The default text (optional) (default='').
+     * @param allValue      The all-selected value (optional) (default=0).
+     * @param allText       The all-selected text (optional) (default='').
+     * @param idField       The id field to use (optional) (default=null).
+     * @param nameField     The name field to use (optional) (default='title').
+     * @param submit        whether or not to submit the form upon selection (optional) (default=false).
+     * @param ignoreList    The list of entries to ignore (default=null).
      *
-     * @return The generated selector html text
+     * @return The generated selector html text.
      */
     public function getSelector($name, $selected = -1234, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $idField = '', $nameField = 'title', $submit = false, $disabled = false, $multipleSize = 1)
     {
@@ -671,14 +671,14 @@ class DBObjectArray
      */
     public function validatePostProcess($type = 'user')
     {
-        // empty function, should be implemented by child classes
+        // empty function, should be implemented by child classes.
         return true;
     }
 
     /**
-     * Constructur, init everything to sane defaults and handle parameters
+     * Constructur, init everything to sane defaults and handle parameters.
      *
-     * @return Boolean indicating whether or not validation passed successfully
+     * @return Boolean indicating whether or not validation passed successfully.
      */
     public function validate()
     {
@@ -693,7 +693,7 @@ class DBObjectArray
     }
 
     /**
-     * Get the hashcode for this object data array
+     * Get the hashcode for this object data array.
      */
     public function getHash($includeStandardFields = true, $objArray = null)
     {
@@ -713,7 +713,7 @@ class DBObjectArray
     }
 
     /**
-     * Clear the failed validation errors for this object
+     * Clear the failed validation errors for this object.
      */
     public function clearValidationErrors()
     {
@@ -721,7 +721,7 @@ class DBObjectArray
     }
 
     /**
-     * Clear the failed validation object data for this object
+     * Clear the failed validation object data for this object.
      */
     public function clearFailedValidationData()
     {
@@ -729,7 +729,7 @@ class DBObjectArray
     }
 
     /**
-     * Print HTML-formatted debug output for the object
+     * Print HTML-formatted debug output for the object.
      */
     public function prayer($print = true)
     {
@@ -742,7 +742,7 @@ class DBObjectArray
     }
 
     /**
-     * Print HTML-formatted debug output for the object data
+     * Print HTML-formatted debug output for the object data.
      */
     public function prayerData($print = true, $offset = null)
     {

@@ -12,6 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Exit.
+ *
+ * @global array $ZConfig Configuration.
+ *
+ * @param string  $msg  Message.
+ * @param boolean $html True for html.
+ *
+ * @return void|boolean
+ */
 function z_exit($msg, $html = true)
 {
     global $ZConfig;
@@ -40,14 +50,14 @@ function z_exit($msg, $html = true)
 }
 
 /**
- * Serialize the given data in an easily human-readable way for debug purposes
+ * Serialize the given data in an easily human-readable way for debug purposes.
  *
- * Taken from http://dev.nexen.net/scripts/details.php?scripts=707
+ * Taken from http://dev.nexen.net/scripts/details.php?scripts=707.
  *
- * @param data        The object to serialize
- * @param functions   whether to show function names for objects (default=false) (optional)
+ * @param data      The object to serialize.
+ * @param functions whether to show function names for objects (default=false) (optional).
  *
- * @return string A string containing serialized data
+ * @return string A string containing serialized data.
  */
 if (!function_exists('_prayer')) {
     function _prayer($data, $functions = false, $recursionLevel = 0)
@@ -124,7 +134,9 @@ if (!function_exists('_prayer')) {
 }
 
 /**
- * A prayer shortcut
+ * A prayer shortcut.
+ *
+ * @return void
  */
 function z_prayer($data, $die = true)
 {
@@ -136,14 +148,14 @@ function z_prayer($data, $die = true)
 }
 
 /**
- * Serialize the given data in an easily human-readable way for debug purposes
+ * Serialize the given data in an easily human-readable way for debug purposes.
  *
- * Taken from http://dev.nexen.net/scripts/details.php?scripts=707
+ * Taken from http://dev.nexen.net/scripts/details.php?scripts=707.
  *
- * @param data        The object to serialize
- * @param functions   whether to show function names for objects (default=false) (optional)
+ * @param data      The object to serialize
+ * @param functions whether to show function names for objects (default=false) (optional)
  *
- * @return nothing, the data is directly printed
+ * @return nothing, the data is directly printed.
  */
 if (!function_exists('prayer')) {
     function prayer($data, $functions = false)
@@ -176,9 +188,9 @@ if (!class_exists('Timer')) {
         public $times;
 
         /**
-         * Constructor
+         * Constructor.
          *
-         * @param name    The name of the timer
+         * @param name The name of the timer
          */
         public function __construct($name = '')
         {
@@ -188,9 +200,11 @@ if (!class_exists('Timer')) {
         }
 
         /**
-         * reset the timer
+         * Reset the timer.
          *
-         * @param name    The name of the timer
+         * @param string name The name of the timer.
+         *
+         * @return void
          */
         public function reset($name = '')
         {
@@ -200,7 +214,7 @@ if (!class_exists('Timer')) {
         }
 
         /**
-         * return the current microtime
+         * Return the current microtime.
          */
         public function get_microtime()
         {
@@ -210,7 +224,9 @@ if (!class_exists('Timer')) {
         }
 
         /**
-         * start the timer
+         * Start the timer.
+         *
+         * @return void
          */
         public function start()
         {
@@ -218,7 +234,9 @@ if (!class_exists('Timer')) {
         }
 
         /**
-         * stop the timer
+         * Stop the timer.
+         *
+         * @return void
          */
         public function stop($insertNewRecord = true)
         {
@@ -232,7 +250,9 @@ if (!class_exists('Timer')) {
         }
 
         /**
-         * print the timer results for a single measurement
+         * Print the timer results for a single measurement,
+         *
+         * @return array
          */
         public function stop_single()
         {
@@ -249,7 +269,9 @@ if (!class_exists('Timer')) {
         }
 
         /**
-         * print the timer results for multiple measurement
+         * Print the timer results for multiple measurement.
+         *
+         * @return array
          */
         public function stop_multiple()
         {
@@ -296,7 +318,9 @@ if (!class_exists('Timer')) {
         }
 
         /**
-         * take a snapshot while continuing the timing run
+         * Take a snapshot while continuing the timing run.
+         *
+         * @return string|void
          */
         public function snap($doStats = false)
         {
