@@ -111,6 +111,8 @@ abstract class Zikula_Base
 
     /**
      * Setup base properties.
+     *
+     * @return void
      */
     private function _setup()
     {
@@ -293,7 +295,7 @@ abstract class Zikula_Base
      *
      * Used to immediately halt execution if $condition.
      *
-     * @param bool         $condition condition.
+     * @param bool         $condition Condition.
      * @param string       $message   Default ''.
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
@@ -314,7 +316,7 @@ abstract class Zikula_Base
      *
      * Used to immediately halt execution unless $condition.
      *
-     * @param bool         $condition condition.
+     * @param bool         $condition Condition.
      * @param string       $message   Default ''.
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
@@ -353,7 +355,7 @@ abstract class Zikula_Base
      *
      * Used to immediately halt execution if condition.
      *
-     * @param bool         $condition condition.
+     * @param bool         $condition Condition.
      * @param string       $message   Default ''.
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
@@ -374,7 +376,7 @@ abstract class Zikula_Base
      *
      * Used to immediately halt execution unless condition.
      *
-     * @param bool         $condition condition.
+     * @param bool         $condition Condition.
      * @param string       $message   Default ''.
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
@@ -460,7 +462,7 @@ abstract class Zikula_Base
 
         $msgs = SessionUtil::getVar('_ZStatusMsg', array());
         
-        $msgs[] = DataUtil::formatForDisplayHTML((string) $message);
+        $msgs[] = DataUtil::formatForDisplayHTML((string)$message);
 
         SessionUtil::setVar('_ZStatusMsg', $msgs);
         

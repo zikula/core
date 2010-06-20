@@ -13,22 +13,52 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Zikula_Exception_Redirect class.
+ */
 class Zikula_Exception_Redirect extends Zikula_Exception
 {
+    /**
+     * Url.
+     *
+     * @var string
+     */
     protected $url;
+
+    /**
+     * Redirect type.
+     *
+     * @var integer
+     */
     protected $type;
 
+    /**
+     * Constructor.
+     *
+     * @param string  $url  Url.
+     * @param integer $type Default 302.
+     */
     public function __construct($url, $type = 302)
     {
         $this->url = $url;
         $this->type = $type;
     }
 
+    /**
+     * Get Url.
+     *
+     * @return string
+     */
     public function getUrl()
     {
         return $this->url;
     }
 
+    /**
+     * Get redirect type.
+     *
+     * @return integer
+     */
     public function getType()
     {
         return $this->type;

@@ -13,8 +13,18 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Zikula_Exception_Forbidden class.
+ */
 class Zikula_Exception_Forbidden extends Zikula_Exception
 {
+    /**
+     * Constructor.
+     *
+     * @param string  $message Message default = ''.
+     * @param integer $code    Code default = 0.
+     * @param mixed   $debug   Debug default = null.
+     */
     public function __construct($message='', $code=0, $debug=null)
     {
         if (empty($message)) {
