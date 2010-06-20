@@ -87,8 +87,6 @@ function is_serialized($string)
  * Class System fake.
  *
  * This is a  fake System class
- *
- * @package zikula
  */
 class System
 {
@@ -125,8 +123,6 @@ class System
  * Class SecurityUtil fake.
  *
  * This is a  fake SecurityUtil class
- *
- * @package zikula
  */
 class SecurityUtil
 {
