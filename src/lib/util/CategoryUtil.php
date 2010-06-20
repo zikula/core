@@ -456,19 +456,19 @@ class CategoryUtil
     /**
      * Return an array of Subcategories by for the given category
      *
-     * @param category     The root category to retrieve
-     * @param recurse      whether or not to recurse (if false, only direct subfolders are retrieved) (optional) (default=true)
-     * @param relative     whether or not to also generate relative paths (optional) (default=true)
-     * @param includeRoot  whether or not to include the root folder in the result set (optional) (default=false)
-     * @param includeLeaf  whether or not to also return leaf nodes (optional) (default=true)
-     * @param all          whether or not to return all (or only active) categories (optional) (default=false)
-     * @param excludeCat   The root category of the hierarchy to exclude from the result set (optional) (default='')
-     * @param assocKey     The field to use as the associated array key (optional) (default='')
-     * @param attributes   The associative array of attribute field names to filter by (optional) (default=null)
-     * @param sortField    The field to sort the resulting category array by (optional) (default=null)
-     * @param columnArray  The list of columns to fetch (optional) (default=null)
+     * @param array   category    The root category to retrieve.
+     * @param boolean recurse     Whether or not to recurse (if false, only direct subfolders are retrieved) (optional) (default=true).
+     * @param boolean relative    Whether or not to also generate relative paths (optional) (default=true).
+     * @param boolean includeRoot Whether or not to include the root folder in the result set (optional) (default=false).
+     * @param boolean includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
+     * @param boolean all         Whether or not to return all (or only active) categories (optional) (default=false).
+     * @param string  excludeCat  The root category of the hierarchy to exclude from the result set (optional) (default='').
+     * @param string  assocKey    The field to use as the associated array key (optional) (default='').
+     * @param array   attributes  The associative array of attribute field names to filter by (optional) (default=null).
+     * @param string  sortField   The field to sort the resulting category array by (optional) (default=null).
+     * @param array   columnArray The list of columns to fetch (optional) (default=null).
      *
-     * @return The resulting folder object array
+     * @return The resulting folder object array.
      */
     public static function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
     {
@@ -511,9 +511,9 @@ class CategoryUtil
     /**
      * Delete a category by it's ID
      *
-     * @param cid        The categoryID to delete
+     * @param intiger cid The categoryID to delete.
      *
-     * @return The DB result set
+     * @return The DB result set.
      */
     public static function deleteCategoryByID($cid)
     {
@@ -532,10 +532,10 @@ class CategoryUtil
     /**
      * Delete categories by Path
      *
-     * @param apath        The path we wish to delete
-     * @param field        The (path) field we delete from (either path or ipath) (optional) (default='ipath')
+     * @param string apath The path we wish to delete.
+     * @param string field The (path) field we delete from (either path or ipath) (optional) (default='ipath').
      *
-     * @return The DB result set
+     * @return The DB result set.
      */
     public static function deleteCategoriesByPath($apath, $field = 'ipath')
     {
@@ -555,12 +555,12 @@ class CategoryUtil
     }
 
     /**
-     * Move categories by ID (recursive move)
+     * Move categories by ID (recursive move).
      *
-     * @param cid           The categoryID we wish to move
-     * @param newparent_id  The categoryID of the new parent category
+     * @param intiger cid          The categoryID we wish to move.
+     * @param intiger newparent_id The categoryID of the new parent category.
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function moveCategoriesByID($cid, $newparent_id)
     {
@@ -579,13 +579,13 @@ class CategoryUtil
     }
 
     /**
-     * Move SubCategories by Path (recurisve move)
+     * Move SubCategories by Path (recurisve move).
      *
-     * @param apath         The path to move from
-     * @param newparent_id  The categoryID of the new parent category
-     * @param field         The field to use for the path reference (optional) (default='ipath')
+     * @param string  apath        The path to move from.
+     * @param intiger newparent_id The categoryID of the new parent category.
+     * @param string  field        The field to use for the path reference (optional) (default='ipath').
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function moveSubCategoriesByPath($apath, $newparent_id, $field = 'ipath')
     {
@@ -593,14 +593,14 @@ class CategoryUtil
     }
 
     /**
-     * Move Categories by Path (recursive move)
+     * Move Categories by Path (recursive move).
      *
-     * @param apath         The path to move from
-     * @param newparent_id  The categoryID of the new parent category
-     * @param field         The field to use for the path reference (optional) (default='ipath')
-     * @param includeRoot   whether or not to also move the root folder  (optional) (default=true)
+     * @param string  apath        The path to move from.
+     * @param intiger newparent_id The categoryID of the new parent category.
+     * @param string  field        The field to use for the path reference (optional) (default='ipath').
+     * @param boolean includeRoot  Whether or not to also move the root folder  (optional) (default=true).
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function moveCategoriesByPath($apath, $newparent_id, $field = 'ipath', $includeRoot = true)
     {
@@ -652,12 +652,12 @@ class CategoryUtil
     }
 
     /**
-     * Copy categories by ID (recursive copy)
+     * Copy categories by ID (recursive copy).
      *
-     * @param cid           The categoryID we wish to copy
-     * @param newparent_id  The categoryID of the new parent category
+     * @param intiger cid          The categoryID we wish to copy.
+     * @param intiger newparent_id The categoryID of the new parent category.
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function copyCategoriesByID($cid, $newparent_id)
     {
@@ -671,13 +671,13 @@ class CategoryUtil
     }
 
     /**
-     * Copy SubCategories by Path (recurisve copy)
+     * Copy SubCategories by Path (recurisve copy).
      *
-     * @param apath         The path to copy from
-     * @param newparent_id  The categoryID of the new parent category
-     * @param field         The field to use for the path reference (optional) (default='ipath')
+     * @param string  apath        The path to copy from.
+     * @param intiger newparent_id The categoryID of the new parent category.
+     * @param string  field        The field to use for the path reference (optional) (default='ipath').
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function copySubCategoriesByPath($apath, $newparent_id, $field = 'ipath')
     {
@@ -685,14 +685,14 @@ class CategoryUtil
     }
 
     /**
-     * Copy Categories by Path (recurisve copy)
+     * Copy Categories by Path (recurisve copy).
      *
-     * @param apath         The path to copy from
-     * @param newparent_id  The categoryID of the new parent category
-     * @param field         The field to use for the path reference (optional) (default='ipath')
-     * @param includeRoot   whether or not to also move the root folder (optional) (default=true)
+     * @param string  apath        The path to copy from.
+     * @param intiger newparent_id The categoryID of the new parent category.
+     * @param string  field        The field to use for the path reference (optional) (default='ipath').
+     * @param boolean includeRoot  Whether or not to also move the root folder (optional) (default=true).
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function copyCategoriesByPath($apath, $newparent_id, $field = 'ipath', $includeRoot = true)
     {
@@ -736,12 +736,12 @@ class CategoryUtil
     }
 
     /**
-     * Check whether $cid is a direct subcategory of $root_id
+     * Check whether $cid is a direct subcategory of $root_id.
      *
-     * @param root_id    The root/parent ID
-     * @param cid        The categoryID we wish to check for subcategory-ness.
+     * @param intiger root_id The root/parent ID.
+     * @param intiger cid     The categoryID we wish to check for subcategory-ness.
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function isDirectSubCategoryByID($root_id, $cid)
     {
@@ -759,10 +759,10 @@ class CategoryUtil
     }
 
     /**
-     * Check whether $cid is a direct subcategory of $root_id
+     * Check whether $cid is a direct subcategory of $root_id.
      *
-     * @param rootCat    The root/parent category
-     * @param cat        The category we wish to check for subcategory-ness.
+     * @param array rootCat The root/parent category.
+     * @param array cat     The category we wish to check for subcategory-ness.
      *
      * @return true or false
      */
@@ -772,12 +772,12 @@ class CategoryUtil
     }
 
     /**
-     * Check whether $cid is a subcategory of $root_id
+     * Check whether $cid is a subcategory of $root_id.
      *
-     * @param root_id    The ID of the root category we wish to check from
-     * @param cid        The category-id we wish to check for subcategory-ness.
+     * @param intiger root_id The ID of the root category we wish to check from.
+     * @param intiger cid     The category-id we wish to check for subcategory-ness.
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function isSubCategoryByID($root_id, $cid)
     {
@@ -796,12 +796,12 @@ class CategoryUtil
     }
 
     /**
-     * Check whether $cat is a subcategory of $rootCat
+     * Check whether $cat is a subcategory of $rootCat.
      *
-     * @param rootCat    The root/parent category
-     * @param cat        The category we wish to check for subcategory-ness.
+     * @param array rootCat The root/parent category.
+     * @param array cat     The category we wish to check for subcategory-ness.
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function isSubCategory($rootCat, $cat)
     {
@@ -812,13 +812,13 @@ class CategoryUtil
     }
 
     /**
-     * Check whether the category $cid has subcategories (optional checks for leafe )
+     * Check whether the category $cid has subcategories (optional checks for leafe ).
      *
-     * @param cid        The parent category
-     * @param countOnly  whether or not to explicitly check for leaf nodes in the subcategories
-     * @param all        whether or not to return all (or only active) subcategories
+     * @param intiger cid       The parent category.
+     * @param boolean countOnly Whether or not to explicitly check for leaf nodes in the subcategories.
+     * @param boolean all       Whether or not to return all (or only active) subcategories.
      *
-     * @return true or false
+     * @return true or false.
      */
     public static function haveDirectSubcategories($cid, $countOnly = false, $all = true)
     {
@@ -842,12 +842,12 @@ class CategoryUtil
     }
 
     /**
-     * Get the java-script for the tree menu
+     * Get the java-script for the tree menu.
      *
-     * @param cats             The categories array to represent in the tree
-     * @param doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true)
+     * @param array   cats             The categories array to represent in the tree.
+     * @param boolean doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
      *
-     * @return generated tree JS text
+     * @return generated tree JS text.
      */
     public static function getCategoryTreeJS($cats, $doReplaceRootCat = true, $sortable = false)
     {
@@ -887,14 +887,15 @@ class CategoryUtil
     }
 
     /**
-     * insert one leaf in a category tree (path as keys) recursively
+     * insert one leaf in a category tree (path as keys) recursively.
      *
      * $tree[name] = array of children
      * $tree[name]['_/_'] = branch/leaf data
      *
-     * @return array Tree
-     * @param $tree array Tree or branch
-     * @param $entry array
+     * @param array tree  Tree or branch.
+     * @param array entry The entry to insert.
+     * 
+     * @return array Tree.
      */
     public static function _tree_insert(&$tree, $entry, $currentpath = null)
     {
