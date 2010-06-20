@@ -925,10 +925,9 @@ class CategoryUtil
     /**
      * make a list, sorted on each level, from a tree.
      *
-     * @param array $tree Nested array from _tree_insert.
+     * @param array $tree  Nested array from _tree_insert.
      * @param array &$cats List of categories (initially empty array).
      * 
-     * @return void.
      */
     public static function _tree_sort($tree, &$cats)
     {
@@ -1181,10 +1180,12 @@ class CategoryUtil
     /**
      * Utility function to sort a category array by the current locale of 	either the ML name or description.
      *
+     *  The resulting sorted category array $cats updated by reference nothing is returned.
+     * 
      * @param array  &$cats The categories array.
-     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
+     * @param string $func  Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
      *
-     * @return void The resulting sorted category array (original array altered in place) $cats updated by reference.
+     * @return void.
      */
     public static function sortByLocale(&$cats, $func = 'cmpName')
     {
@@ -1216,6 +1217,8 @@ class CategoryUtil
     }
 
     /**
+     * Builds relative paths.
+     * 
      * Given an array of categories (with the Property-Names being
      * the keys of the array) and it corresponding Parent categories (indexed
      * with the Property-Names too), return an (identically indexed) array
@@ -1247,7 +1250,7 @@ class CategoryUtil
     /**
      * Given a category with its parent category.
      * 
-     * return an (idenically indexed) array of category-paths based on the given field (name or id make sense).
+     * Return an (idenically indexed) array of category-paths based on the given field (name or id make sense).
      *
      * @param intiger|array $rootCategory The root/parent category.
      * @param array         &$cat         The category to process.
@@ -1300,6 +1303,8 @@ class CategoryUtil
     }
 
     /**
+     * Builds paths.
+     * 
      * Given an array of categories (with the category-IDs being
      * the keys of the array), return an (idenically indexed) array
      * of category-paths based on the given field (name or id make sense).
@@ -1334,14 +1339,14 @@ class CategoryUtil
     }
 
     /**
-     * Rebuild the path field for all categories in the database
+     * Rebuild the path field for all categories in the database.
+     * 
      * Note that field and sourceField go in pairs (that is, if you want sensical results)!.
      *
      * @param string  $field       The field which we wish to populate (optional) (default='path').
      * @param string  $sourceField The field we use to build the path with (optional) (default='name').
      * @param intiger $leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0).
      *
-     * @return void.
      */
     public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
     {
@@ -1374,6 +1379,7 @@ class CategoryUtil
      * Check is done as "Categories:Property:$propertyName", "$cat[id]::"
      *
      * @param array   $categories Array of category data (as returned from ObjectUtil::expandObjectWithCategories).
+     * @param string  $module     Not Used!.
      * @param intiger $permLevel  Required permision level.
      *
      * @return bool True if access is allowed to at least one of the categories

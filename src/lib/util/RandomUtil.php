@@ -32,9 +32,9 @@ class RandomUtil
     /**
      * Return a random integer between $floor and $ceil (inclusive)
      *
-     * @param intiger $floor The lower bound
-     * @param intiger $ceil  The upper bound
-     * @param boolean $seed  Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
+     * @param intiger $floor The lower bound.
+     * @param intiger $ceil  The upper bound.
+     * @param boolean $seed  Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
      * @return The resulting random integer
      */
@@ -55,8 +55,9 @@ class RandomUtil
     }
 
     /**
-     * Return a random string of specified length. This function uses
-     * uses md5() to generate the string.
+     * Return a random string of specified length. 
+     * 
+     * This function uses md5() to generate the string.
      *
      * @param intiger $length The length of string to generate.
      * @param boolean $seed   Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.

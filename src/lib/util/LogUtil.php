@@ -49,11 +49,12 @@ class LogUtil
     }
 
     /**
-     * Returns a string of the available status messages, separated by the given delimeter
+     * Returns a string of the available status messages, separated by the given delimeter.
      *
-     * @param $delimeter The string to use as the delimeter between the array of messages
-     * @param $override whether to override status messages with error messages
-     * @return string the generated error message
+     * @param string  $delimeter The string to use as the delimeter between the array of messages.
+     * @param boolean $override  Whether to override status messages with error messages.
+     * 
+     * @return string the generated error message.
      */
     public static function getStatusMessagesText($delimiter = '<br />', $delete = true, $override = true)
     {
@@ -62,7 +63,10 @@ class LogUtil
     }
 
     /**
-     * Get an array of error messages
+     * Get an array of error messages.
+     * 
+     * @param boolean $delete  True to delete error messages (optional)(default=true).
+     * @param boolean $reverse True to reverse error messages (optional)(default=true).
      *
      * @return array of messages
      */
@@ -83,10 +87,11 @@ class LogUtil
     }
 
     /**
-     * Get an error message text
+     * Get an error message text.
      *
-     * @param $delimeter The string to use as the delimeter between the array of messages
-     * @return string the generated error message
+     * @param string $delimeter The string to use as the delimeter between the array of messages.
+     *
+     * @return string the generated error message.
      */
     public static function getErrorMessagesText($delimeter = '<br />', $delete = true)
     {
@@ -95,9 +100,9 @@ class LogUtil
     }
 
     /**
-     * get the error type
+     * get the error type.
      *
-     * @return int error type
+     * @return int error type.
      */
     public static function getErrorType()
     {
@@ -105,9 +110,9 @@ class LogUtil
     }
 
     /**
-     * check if errors
+     * check if errors.
      *
-     * @return int error type
+     * @return int error type.
      */
     public static function hasErrors()
     {
@@ -116,11 +121,12 @@ class LogUtil
     }
 
     /**
-     * Set an error message text
+     * Set an error message text.
      *
-     * @param $message string the error message
-     * @param $url the url to redirect to (optional) (default=null)
-     * @return true
+     * @param string $message String the error message
+     * @param string $url     The url to redirect to (optional) (default=null)
+     * 
+     * @return true, or redirect if url.
      */
     public static function registerStatus($message, $url = null)
     {
@@ -145,11 +151,13 @@ class LogUtil
     }
 
     /**
-     * Register a failed authid check. This method calls registerError and
-     * then redirects back to the specified URL.
+     * Register a failed authid check. 
+     * 
+     * This method calls registerError and then redirects back to the specified URL.
      *
-     * @param $url       The URL to redirect to (optional) (default=null)
-     * @return false
+     * @param string $url The URL to redirect to (optional) (default=null).
+     * 
+     * @return false.
      */
     public static function registerAuthidError($url = null)
     {
@@ -157,11 +165,13 @@ class LogUtil
     }
 
     /**
-     * Register a failed permission check. This method calls registerError and
-     * then logs the failed permission check so that it can be analyzed later.
+     * Register a failed permission check. 
+     * 
+     * This method calls registerError and then logs the failed permission check so that it can be analyzed later.
      *
-     * @param $url       The URL to redirect to (optional) (default=null)
-     * @param $redirect  Whether to redirect not logged in users to the login form (default=true)
+     * @param string  $url      The URL to redirect to (optional) (default=null).
+     * @param boolean $redirect Whether to redirect not logged in users to the login form (default=true).
+     * 
      * @return false
      */
     public static function registerPermissionError($url = null, $redirect = true)
@@ -199,12 +209,15 @@ class LogUtil
     }
 
     /**
-     * Set an error message text. Also adds method, file and line where the error occured
+     * Set an error message text. 
+     * 
+     * Also adds method, file and line where the error occured.
      *
-     * @param $message string the error message
-     * @param $type type of error (numeric and corresponding to a HTTP status code) (optional) (default=null)
-     * @param $url the url to redirect to (optional) (default=null)
-     * @return false
+     * @param string  $message The error message.
+     * @param intiger $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null).
+     * @param string  $url     The url to redirect to (optional) (default=null).
+     * 
+     * @return false or system redirect if url is set.
      */
     public static function registerError($message, $type = null, $url = null, $debug=null)
     {
@@ -275,9 +288,9 @@ class LogUtil
     }
 
     /**
-     * Register a failed method call due to a failed validation on the parameters passed
+     * Register a failed method call due to a failed validation on the parameters passed.
      *
-     * @returns false
+     * @returns false.
      */
     public static function registerArgsError($url = null)
     {
@@ -285,27 +298,27 @@ class LogUtil
     }
     
     /**
-     * Get the default message for an authid error
+     * Get the default message for an authid error.
      * 
-     * @return string   error message
+     * @return string error message.
      */
     public static function getErrorMsgAuthid() {
     	return __("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again.");
     }
 
     /**
-     * Get the default message for a permission error
+     * Get the default message for a permission error.
      * 
-     * @return string   error message
+     * @return string error message.
      */
     public static function getErrorMsgPermission() {
         return __('Sorry! You have not been granted access to this page.');
     }
     
     /**
-     * Get the default message for an argument error
+     * Get the default message for an argument error.
      * 
-     * @return string   error message
+     * @return string error message.
      */
     public static function getErrorMsgArgs() {
         return __('Error! The action you wanted to perform was not successful for some reason, maybe because of a problem with what you input. Please check and try again.');
@@ -314,9 +327,9 @@ class LogUtil
     /**
      * Log the given messge under the given level
      *
-     * @param msg      The message to log
-     * @param level    The log to log this message under
-     * @returns nothing
+     * @param string $msg   The message to log.
+     * @param string $level The log to log this message under(optional)(default='DEFAULT').
+     * 
      */
     public static function log($msg, $level = 'DEFAULT')
     {
@@ -341,9 +354,9 @@ class LogUtil
     }
 
     /**
-     * Generate the filename of todays log file
+     * Generate the filename of todays log file.
      *
-     * @returns the generated filename
+     * @return the generated filename.
      */
     public static function getLogFileName($level = null)
     {
@@ -379,10 +392,11 @@ class LogUtil
      *
      * Prints log file full error (if $log_show_errors is true)
      *
-     * @param msg      The message to log
-     * @param level    The log level to log this message under
+     * @param string $msg          The message to log.
+     * @param string $level        The log level to log this message under.
+     * @param array  $securityInfo Security info.
      *
-     * @returns Logging file write error (file or directory unwritable) (if $log_show_errors is true)
+     * @returns Logging file write error (file or directory unwritable) (if $log_show_errors is true).
      */
     public static function _write($msg, $level = 'DEFAULT', $securityInfo = null)
     {
@@ -489,7 +503,7 @@ class LogUtil
      * returns unwritable The file or directory cannot be written to
      * returns toobig The log file size is bigger than $log_length in logging.conf.php.
      *
-     * @returns boolean Whether or not the file is ready for writing
+     * @return boolean Whether or not the file is ready for writing.
      */
     public static function _checkLogFile($logfile, $level, &$reason)
     {
@@ -527,7 +541,7 @@ class LogUtil
     }
 
     /**
-     * Cleans up unneeded old log files
+     * Cleans up unneeded old log files.
      */
     public static function _cleanLogFiles()
     {
