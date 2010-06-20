@@ -51,7 +51,8 @@ class LogUtil
     /**
      * Returns a string of the available status messages, separated by the given delimeter.
      *
-     * @param string  $delimeter The string to use as the delimeter between the array of messages.
+     * @param string  $delimiter The string to use as the delimeter between the array of messages.
+     * @param boolean $delete    True to delete.
      * @param boolean $override  Whether to override status messages with error messages.
      * 
      * @return string the generated error message.
@@ -89,8 +90,9 @@ class LogUtil
     /**
      * Get an error message text.
      *
-     * @param string $delimeter The string to use as the delimeter between the array of messages.
-     *
+     * @param string  $delimeter The string to use as the delimeter between the array of messages.
+     * @param boolean $delete    True to delete.
+     *      *
      * @return string the generated error message.
      */
     public static function getErrorMessagesText($delimeter = '<br />', $delete = true)
@@ -106,7 +108,7 @@ class LogUtil
      */
     public static function getErrorType()
     {
-        return (int) SessionUtil::getVar('_ZErrorMsgType');
+        return (int)SessionUtil::getVar('_ZErrorMsgType');
     }
 
     /**
@@ -117,14 +119,14 @@ class LogUtil
     public static function hasErrors()
     {
         $msgs = self::getErrorMessages(false);
-        return (bool) !empty($msgs);
+        return (bool)!empty($msgs);
     }
 
     /**
      * Set an error message text.
      *
-     * @param string $message String the error message
-     * @param string $url     The url to redirect to (optional) (default=null)
+     * @param string $message String the error message.
+     * @param string $url     The url to redirect to (optional) (default=null).
      * 
      * @return true, or redirect if url.
      */
@@ -216,6 +218,7 @@ class LogUtil
      * @param string  $message The error message.
      * @param intiger $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null).
      * @param string  $url     The url to redirect to (optional) (default=null).
+     * @param string  $debug   Debug information.
      * 
      * @return false or system redirect if url is set.
      */
@@ -249,7 +252,7 @@ class LogUtil
             // TODO A [do we need to have HTML sanitization] (drak)
             $func = ((!empty($class)) ? "$class::$func" : $func);
             $msg = __f('%1$s The origin of this message was \'%2$s\' at line %3$s in file \'%4$s\'.', array($message, $func, $line, $file));
-            //
+            
             if (System::isDevelopmentMode()) {
                 $msg .= '<br />';
                 $msg .= _prayer($debug);
@@ -290,6 +293,8 @@ class LogUtil
     /**
      * Register a failed method call due to a failed validation on the parameters passed.
      *
+     * @param string $url Url to redirect to.
+     * 
      * @returns false.
      */
     public static function registerArgsError($url = null)
@@ -303,7 +308,7 @@ class LogUtil
      * @return string error message.
      */
     public static function getErrorMsgAuthid() {
-    	return __("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again.");
+        return __("Sorry! Invalid authorisation key ('authkey'). This is probably either because you pressed the 'Back' button to return to a page which does not allow that, or else because the page's authorisation key expired due to prolonged inactivity. Please refresh the page and try again.");
     }
 
     /**
@@ -330,6 +335,7 @@ class LogUtil
      * @param string $msg   The message to log.
      * @param string $level The log to log this message under(optional)(default='DEFAULT').
      * 
+     * @return void
      */
     public static function log($msg, $level = 'DEFAULT')
     {
@@ -355,6 +361,8 @@ class LogUtil
 
     /**
      * Generate the filename of todays log file.
+     *
+     * @param intiger $level Log level.
      *
      * @return the generated filename.
      */
@@ -396,7 +404,7 @@ class LogUtil
      * @param string $level        The log level to log this message under.
      * @param array  $securityInfo Security info.
      *
-     * @returns Logging file write error (file or directory unwritable) (if $log_show_errors is true).
+     * @return Logging file write error (file or directory unwritable) (if $log_show_errors is true).
      */
     public static function _write($msg, $level = 'DEFAULT', $securityInfo = null)
     {
@@ -542,6 +550,8 @@ class LogUtil
 
     /**
      * Cleans up unneeded old log files.
+     * 
+     * @return void
      */
     public static function _cleanLogFiles()
     {
