@@ -513,32 +513,40 @@ class ModUtil
         // no need for pntables scan if using Doctrine
         $doctrineModelDir = "$modpath/$directory/lib/$directory/Model";
         if (is_dir($doctrineModelDir)) {
-            //Doctrine_Core::loadModels($doctrineModelDir); // not really necessary since we autoload our classes
             $loaded[$modname] = true;
             return true;
         }
 
         // Load the database definition if required
         $files = array();
-        $files[] = "config/functions/$directory/tables.php";
+        //$files[] = "config/functions/$directory/tables.php";
         $files[] = "$modpath/$directory/tables.php";
-        $files[] = "config/functions/$directory/pntables.php";
+        //$files[] = "config/functions/$directory/pntables.php";
         $files[] = "$modpath/$directory/pntables.php";
 
         if (Loader::loadOneFile($files)) {
             $tablefunc = $modname . '_tables';
             $tablefuncOld = $modname . '_pntables';
             if (function_exists($tablefunc)) {
-                $data = $tablefunc();
-                $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
+                $data = call_user_func($tablefunc);
             } elseif (function_exists($tablefuncOld)) {
-                $data = $tablefuncOld();
-                $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
+                $data = call_user_func($tablefuncOld);
             }
+
+            // Generate _column automatically from _column_def if it is not present.
+            foreach($data as $key => $value) {
+                $table_col = substr($key, 0, -4);
+                if (substr($key, -11) == "_column_def" && !$data[$table_col]) {
+                    foreach ($value as $fieldname => $def) {
+                        $data[$table_col][$fieldname] = $fieldname;
+                    }
+                }
+            }
+
+            $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
+            $loaded[$modname] = true;
         }
-
-        $loaded[$modname] = true;
-
+        
         // return data so we know which tables were loaded by this module
         return $data;
     }
