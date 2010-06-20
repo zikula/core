@@ -28,6 +28,8 @@ class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
      * Event handler here.
      *
      * @param Zikula_Event $event Event handler.
+     *
+     * @return void
      */
     public function handler(Zikula_Event $event)
     {

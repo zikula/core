@@ -43,7 +43,7 @@ class ExampleDoctrine_Installer extends Zikula_Installer
      *
      * This function can be called multiple times
      *
-     * @param  integer $oldversion version to upgrade from.
+     * @param integer $oldversion version to upgrade from.
      *
      * @return boolean True on success, false otherwise
      */
@@ -52,12 +52,12 @@ class ExampleDoctrine_Installer extends Zikula_Installer
         switch ($oldversion)
         {
             case 0.5:
-            // do something
+                // do something
             case 1.0:
-            // do something
-            // DoctrineUtil::*() for adding/dropping columns/index and so on
-            // last do DoctrineUtil::createTablesFromModels('ExampleDoctrine');
-            // to create any new tables
+                // do something
+                // DoctrineUtil::*() for adding/dropping columns/index and so on
+                // last do DoctrineUtil::createTablesFromModels('ExampleDoctrine');
+                // to create any new tables
         }
 
         // Update successful
