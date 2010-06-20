@@ -1,0 +1,4 @@
+System level Doctrine Models go here named
+
+Zikula_Doctrine_Model_{Name} -> {Name}.php
+Zikula_Doctrine_Model_{Name}Table -> {Name}Table.php
