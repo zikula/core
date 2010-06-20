@@ -118,6 +118,11 @@
   Rename interactive_init() to install(), interactive_upgrade() to upgrade(),
   and interactive_delete() to uninstall() - the steps become step1(), step2() etc.
 
+  Basically, if the interactive installers has method install() that will override the install() in
+  the main Installer.php, if it has upgrade() it will override the main upgrade() and if it has
+  uninstall() it will override the uninstall() method.  If your module us 100% interactive install,
+  upgrade and uninstall there is no need to have an Installer.php at all.
+
 - pnMod* now all deprecated see ModUtil::*
 - pnUser* deprecated, see UserUtil::*
 - pnBlock deprecated, see BlockUtil::*

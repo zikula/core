@@ -18,7 +18,4 @@
  */
 abstract class Zikula_InteractiveInstaller extends Zikula_Controller
 {
-    abstract public function install();
-    abstract public function upgrade(array $args);
-    abstract public function uninstall();
 }
