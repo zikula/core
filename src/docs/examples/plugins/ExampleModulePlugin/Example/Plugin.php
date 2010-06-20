@@ -18,11 +18,15 @@
 class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
 {
     /**
+     * Gettext enabled flag.
+     *
      * @var boolean
      */
     protected $gettextEnabled = true;
 
     /**
+     * Event names.
+     *
      * @var array
      */
     protected $eventNames = array('module.postexecute'          => 'addLinks',
@@ -63,7 +67,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
     /**
      * Add 'anotherfunction' Event handler .
      *
-     * @param Event $event Handler.
+     * @param Zikula_Event $event Handler.
      *
      * @return void
      */

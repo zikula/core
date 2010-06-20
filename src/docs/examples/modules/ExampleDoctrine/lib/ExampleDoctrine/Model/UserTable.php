@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * Doctrine_Table class used to implement own special entity methods.
  *

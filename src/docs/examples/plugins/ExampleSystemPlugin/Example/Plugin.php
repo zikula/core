@@ -12,10 +12,23 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * SystemPlugin_Example_Plugin class.
+ */
 class SystemPlugin_Example_Plugin extends Zikula_Plugin
 {
+    /**
+     * Event names.
+     *
+     * @var array
+     */
     protected $eventNames = array('theme.init' => 'handler');
 
+    /**
+     * Get plugin meta data.
+     *
+     * @return array
+     */
     protected function getMeta()
     {
         return array('displayname' => $this->__('Example System Plugin'),
@@ -24,6 +37,13 @@ class SystemPlugin_Example_Plugin extends Zikula_Plugin
                       );
     }
 
+    /**
+     * Event handler.
+     *
+     * @param Zikula_Event $event Event.
+     *
+     * @return void
+     */
     public function handler(Zikula_Event $event)
     {
         // subject must be an instance of Theme class.

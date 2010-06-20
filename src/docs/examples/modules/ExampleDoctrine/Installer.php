@@ -46,7 +46,7 @@ class ExampleDoctrine_Installer extends Zikula_Installer
      *
      * This function can be called multiple times.
      *
-     * @param integer $oldversion version to upgrade from.
+     * @param integer $oldversion Version to upgrade from.
      *
      * @return boolean True on success, false otherwise.
      */

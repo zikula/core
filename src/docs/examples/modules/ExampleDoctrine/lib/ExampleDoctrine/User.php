@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * This is the User controller class providing navigation and interaction functionality.
  */
@@ -22,6 +21,8 @@ class ExampleDoctrine_User extends Zikula_Controller
      * This method is the default function.
      *
      * Called whenever the module's Admin area is called without defining arguments.
+     *
+     * @param array $args Array.
      *
      * @return string|boolean Output.
      */
