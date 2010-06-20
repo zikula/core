@@ -120,11 +120,13 @@ class CategoryUtil
     /**
      * Return an array of categories objects according the specified where-clause and sort criteria.
      *
-     * @param string $where    The where clause to use in the select (optional) (default='').
-     * @param string $sort     The order-by clause to use in the select (optional) (default='').
-     * @param string $assocKey The field to use as the associated array key (optional) (default='').
+     * @param string  $where                  The where clause to use in the select (optional) (default='').
+     * @param string  $sort                   The order-by clause to use in the select (optional) (default='').
+     * @param string  $assocKey               The field to use as the associated array key (optional) (default='').
+     * @param boolean $enablePermissionFilter Whether or not to enable the permission filter(optional) (default=false).
+     * @param array   $columnArray            Array of columns to select (optional) (default=null).
      *
-     * @return The resulting folder object array
+     * @return The resulting folder object array.
      */
     public static function getCategories($where = '', $sort = '', $assocKey = '', $enablePermissionFilter = true, $columnArray = null)
     {
@@ -395,7 +397,7 @@ class CategoryUtil
         }
 
         static $catPathCache = array();
-        $cacheKey = $cid . '_' . (int) $recurse . '_' . (int) $relative . '_' . (int) $includeRoot . '_' . (int) $includeLeaf . '_' . (int) $all . '_' . $excludeCid . '_' . $assocKey;
+        $cacheKey = $cid . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey;
         if (isset($catPathCache[$cacheKey])) {
             return $catPathCache[$cacheKey];
         }
@@ -438,7 +440,7 @@ class CategoryUtil
         }
 
         static $catPathCache = array();
-        $cacheKey = $apath . '_' . $field . '_' . (int) $recurse . '_' . (int) $relative . '_' . (int) $includeRoot . '_' . (int) $includeLeaf . '_' . (int) $all . '_' . $excludeCid . '_' . $assocKey;
+        $cacheKey = $apath . '_' . $field . '_' . (int)$recurse . '_' . (int)$relative . '_' . (int)$includeRoot . '_' . (int)$includeLeaf . '_' . (int)$all . '_' . $excludeCid . '_' . $assocKey;
         if (isset($catPathCache[$cacheKey])) {
             return $catPathCache[$cacheKey];
         }
@@ -522,7 +524,7 @@ class CategoryUtil
         $category_table = $pntables['categories_category'];
         $category_column = $pntables['categories_category_column'];
 
-        $cid = (int) $cid;
+        $cid = (int)$cid;
         $sql = "DELETE FROM $category_table WHERE $category_column[id] = '" . DataUtil::formatForStore($cid) . "'";
         $res = DBUtil::executeSQL($sql);
 
@@ -829,7 +831,7 @@ class CategoryUtil
         $cats = self::getCategoriesByParentID($cid, '', false, $all);
 
         if ($countOnly) {
-            return (boolean) count($cats);
+            return (boolean)count($cats);
         }
 
         foreach ($cats as $cat) {
@@ -846,6 +848,7 @@ class CategoryUtil
      *
      * @param array   $cats             The categories array to represent in the tree.
      * @param boolean $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
+     * @param boolean $sortable         Sets the zikula tree option sortable (optional) (default=false).
      *
      * @return generated tree JS text.
      */
@@ -862,7 +865,7 @@ class CategoryUtil
             if (FormUtil::getPassedValue('type') == 'admin') {
                 $url .= '#top';
             }
-            if($doReplaceRootCat && $c['id'] == 1 &&  $c['name'] == '__SYSTEM__') {
+            if($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
                 $c['name'] =  __('Root category');
             }
 
@@ -918,11 +921,11 @@ class CategoryUtil
     }
 
     /**
-     * make a list, sorted on each level, from a tree
+     * make a list, sorted on each level, from a tree.
      *
-     * @return nothing
-     * @param $tree array nested array from _tree_insert
-     * @param $cats array list of categories (initially empty array)
+     * @param array $tree Nested array from _tree_insert.
+     * @param array $cats List of categories (initially empty array).
+     * 
      */
     public static function _tree_sort($tree, &$cats)
     {
@@ -947,11 +950,12 @@ class CategoryUtil
     }
 
     /**
-     * Take a raw list of category data, return it sorted on each level
+     * Take a raw list of category data, return it sorted on each level.
      *
-     * @return array list of categories, sorted on each level
-     * @param $cats array list of categories (arrays)
-     * @param $sortField string[optional] key of category arrays
+     * @param array  $cats      List of categories (arrays).
+     * @param string $sortField Key of category arrays (optional).
+     * 
+     * @return array list of categories, sorted on each level.
      */
     public static function sortCategories($cats, $sortField = '')
     {
@@ -978,8 +982,9 @@ class CategoryUtil
      * Return an array of folders the user has at least access/view rights to.
      *
      * @deprecated
-     * @param $cats array  list of categories
-     * @return array The resulting folder path array
+     * @param  array $cats List of categories.
+     * 
+     * @return array The resulting folder path array.
      */
     public static function getCategoryTreeStructure($cats)
     {
@@ -1023,20 +1028,21 @@ class CategoryUtil
     }
 
     /**
-     * Return the HTML selector code for the given category hierarchy
+     * Return the HTML selector code for the given category hierarchy.
      *
-     * @param cats              The category hierarchy to generate a HTML selector for
-     * @param field             The field value to return (optional) (default='id')
-     * @param selected          The selected category (optional) (default=0)
-     * @param name              The name of the selector field to generate (optional) (default='category[parent_id]')
-     * @param defaultValue      The default value to present to the user (optional) (default=0)
-     * @param defaultText       The default text to present to the user (optional) (default='')
-     * @param allValue          The value to assign to the "all" option (optional) (default=0)
-     * @param allText           The text to assign to the "all" option (optional) (default='')
-     * @param submit            whether or not to submit the form upon change (optional) (default=false)
-     * @param displayPath       If false, the path is simulated, if true, the full path is shown (optional) (default=false)
-     * @param doReplaceRootCat  Whether or not to replace the root category with a localized string (optional) (default=true)
-     * @param multipleSize      If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1)
+     * @param array        $cats             The category hierarchy to generate a HTML selector for.
+     * @param string       $field            The field value to return (optional) (default='id').
+     * @param string|array $selectedValue    The selected category (optional) (default=0).
+     * @param string       $name             The name of the selector field to generate (optional) (default='category[parent_id]').
+     * @param intiger      $defaultValue     The default value to present to the user (optional) (default=0).
+     * @param string       $defaultText      The default text to present to the user (optional) (default='').
+     * @param intiger      $allValue         The value to assign to the "all" option (optional) (default=0).
+     * @param string       $allText          The text to assign to the "all" option (optional) (default='').
+     * @param boolean      $submit           Whether or not to submit the form upon change (optional) (default=false).
+     * @param boolean      $displayPath      If false, the path is simulated, if true, the full path is shown (optional) (default=false).
+     * @param boolean      $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
+     * @param intiger      $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1).
+     * @param boolean      $fieldIsAttribute True if the field is attribute (optional) (default=false).
      *
      * @return The HTML selector code for the given category hierarchy
      */
@@ -1049,7 +1055,7 @@ class CategoryUtil
         }
         if (!is_array($selectedValue)) {
             $selectedValue = array(
-                (string) $selectedValue);
+                (string)$selectedValue);
         }
 
         $id = strtr($name, '[]', '__');
@@ -1061,12 +1067,12 @@ class CategoryUtil
         $html = "<select name=\"$name\" id=\"$id\"{$multipleSize}{$multiple}{$submit}>";
 
         if (!empty($defaultText)) {
-            $sel = (in_array((string) $defaultValue, $selectedValue) ? ' selected="selected"' : '');
+            $sel = (in_array((string)$defaultValue, $selectedValue) ? ' selected="selected"' : '');
             $html .= "<option value=\"$defaultValue\"$sel>$defaultText</option>";
         }
 
         if ($allText) {
-            $sel = (in_array((string) $allValue, $selectedValue) ? ' selected="selected"' : '');
+            $sel = (in_array((string)$allValue, $selectedValue) ? ' selected="selected"' : '');
             $html .= "<option value=\"$allValue\"$sel>$allText</option>";
         }
 
@@ -1077,9 +1083,9 @@ class CategoryUtil
 
         foreach ($cats as $cat) {
             if ($fieldIsAttribute) {
-                $sel = (in_array((string) $cat['__ATTRIBUTES__'][$field], $selectedValue) ? ' selected="selected"' : '');
+                $sel = (in_array((string)$cat['__ATTRIBUTES__'][$field], $selectedValue) ? ' selected="selected"' : '');
             } else {
-                $sel = (in_array((string) $cat[$field], $selectedValue) ? ' selected="selected"' : '');
+                $sel = (in_array((string)$cat[$field], $selectedValue) ? ' selected="selected"' : '');
             }
             if ($displayPath) {
                 if ($fieldIsAttribute) {
@@ -1128,12 +1134,12 @@ class CategoryUtil
     }
 
     /**
-     * Compare function for ML name field
+     * Compare function for ML name field.
      *
-     * @param catA      1st category
-     * @param catB      2nd category
+     * @param array $catA 1st category.
+     * @param array $catB 2nd category.
      *
-     * @return The resulting compare value
+     * @return The resulting compare value.
      */
     public static function cmpName($catA, $catB)
     {
@@ -1153,8 +1159,8 @@ class CategoryUtil
     /**
      * Compare function for ML description field
      *
-     * @param catA      1st category
-     * @param catB      2nd category
+     * @param array $catA 1st category.
+     * @param array $catB 2nd category.
      *
      * @return The resulting compare value
      */
@@ -1171,12 +1177,12 @@ class CategoryUtil
 
     /**
      * Utility function to sort a category array by the current locale of
-     * either the ML name or description
+     * either the ML name or description.
      *
-     * @param cats      The categories array
-     * @param func      Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName')
+     * @param array  cats The categories array.
+     * @param string func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
      *
-     * @return The resulting sorted category array (original array altered in place)
+     * @return The resulting sorted category array (original array altered in place).
      */
     public static function sortByLocale(&$cats, $func = 'cmpName')
     {
@@ -1185,12 +1191,12 @@ class CategoryUtil
     }
 
     /**
-     * Resequence the sort fields for the given category
+     * Resequence the sort fields for the given category.
      *
-     * @param cats      The categories array
-     * @param step      The counting step/interval (optional) (default=1)
+     * @param array   cats The categories array.
+     * @param intiger step The counting step/interval (optional) (default=1).
      *
-     * @return True if something was done, false if an emtpy $cats was passed in
+     * @return True if something was done, false if an emtpy $cats was passed in.
      */
     public static function resequence($cats, $step = 1)
     {
@@ -1211,13 +1217,13 @@ class CategoryUtil
      * Given an array of categories (with the Property-Names being
      * the keys of the array) and it corresponding Parent categories (indexed
      * with the Property-Names too), return an (identically indexed) array
-     * of category-paths based on the given field (name or id make sense)
+     * of category-paths based on the given field (name or id make sense).
      *
-     * @param rootCatIDs    The root/parent categories ID
-     * @param cats          The associative categories object array
-     * @param includeRoot   If true, the root portion of the path is preserved
+     * @param array   rootCatIDs  The root/parent categories ID.
+     * @param array   cats        The associative categories object array.
+     * @param boolean includeRoot If true, the root portion of the path is preserved.
      *
-     * @return The resulting folder path array (which is also altered in place)
+     * @return The resulting folder path array (which is also altered in place).
      */
     public static function buildRelativePaths($rootCatIDs, &$cats, $includeRoot = false)
     {
@@ -1238,13 +1244,13 @@ class CategoryUtil
 
     /**
      * Given a category with its parent category, return an (idenically indexed)
-     * array of category-paths based on the given field (name or id make sense)
+     * array of category-paths based on the given field (name or id make sense).
      *
-     * @param rootCategory  The root/parent category
-     * @param cat           The category to process
-     * @param includeRoot   If true, the root portion of the path is preserved
+     * @param intiger|array $rootCategory The root/parent category.
+     * @param array         $cat          The category to process.
+     * @param boolean       $includeRoot  If true, the root portion of the path is preserved.
      *
-     * @return The resulting folder path array (which is also altered in place)
+     * @return The resulting folder path array (which is also altered in place).
      */
     public static function buildRelativePathsForCategory($rootCategory, &$cat, $includeRoot = false)
     {
@@ -1293,12 +1299,12 @@ class CategoryUtil
     /**
      * Given an array of categories (with the category-IDs being
      * the keys of the array), return an (idenically indexed) array
-     * of category-paths based on the given field (name or id make sense)
+     * of category-paths based on the given field (name or id make sense).
      *
-     * @param cats      The associative categories object array
-     * @param field     Which field to use the building the path (optional) (default='name')
+     * @param array  cats  The associative categories object array.
+     * @param string field Which field to use the building the path (optional) (default='name').
      *
-     * @return The resulting folder path array
+     * @return The resulting folder path array.
      */
     public static function buildPaths($cats, $field = 'name')
     {
@@ -1326,13 +1332,12 @@ class CategoryUtil
 
     /**
      * Rebuild the path field for all categories in the database
-     * Note that the
+     * Note that field and sourceField go in pairs (that is, if you want sensical results)!.
      *
-     * @param field         The field which we wish to populate (optional) (default='path')
-     * @param sourceField   The field we use to build the path with (optional) (default='name')
-     * @param leaf_id       The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0)
+     * @param string  field       The field which we wish to populate (optional) (default='path').
+     * @param string  sourceField The field we use to build the path with (optional) (default='name').
+     * @param intiger leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0).
      *
-     * Note that field and sourceField go in pairs (that is, if you want sensical results)!
      */
     public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
     {
@@ -1359,13 +1364,13 @@ class CategoryUtil
     }
 
     /**
-     * Check for access to a certain set of categories
+     * Check for access to a certain set of categories.
      *
      * For each category property in the list, check if we have access to that category in that property.
      * Check is done as "Categories:Property:$propertyName", "$cat[id]::"
      *
      * @param array $categories Array of category data (as returned from ObjectUtil::expandObjectWithCategories).
-     * @param int   $permLevel Required permision level.
+     * @param int   $permLevel  Required permision level.
      *
      * @return bool True if access is allowed to at least one of the categories
      */
