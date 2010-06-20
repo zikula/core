@@ -12,15 +12,42 @@
  * information regarding copyright and licensing.
  */
 
-
-
-class Zikula_Tree {
+/**
+ * Zikula_Tree class.
+ */
+class Zikula_Tree
+{
+    /**
+     * Configuration.
+     * 
+     * @var array
+     */
     private $config;
+
+    /**
+     *
+     * @var <type>
+     */
     private $data;
+
+    /**
+     *
+     * @var <type>
+     */
     private $tree;
+
+    /**
+     *
+     * @var <type> 
+     */
     private $html;
 
-    public function __construct($config=array())
+    /**
+     * Constructor.
+     *
+     * @param array $config Config array.
+     */
+    public function __construct(array $config=array())
     {
         $this->config = array(
             'sortable'      => false,
@@ -47,26 +74,52 @@ class Zikula_Tree {
         );
         $this->setOptionArray($config);
     }
+
+    /**
+     *
+     * @param <type> $key
+     * @param <type> $value
+     */
     public function setOption($key,$value)
     {
         $this->config[$key] = $value;
     }
+
+    /**
+     *
+     * @param <type> $array
+     */
     public function setOptionArray($array)
     {
         foreach((array)$array as $key => $value) {
             $this->setOption($key,$value);
         }
     }
+
+    /**
+     *
+     * @param <type> $menuArray
+     */
     public function loadArrayData($menuArray)
     {
         $this->data = $menuArray;
-        $this->parseData();
+        $this->_parseData();
     }
+
+    /**
+     *
+     * @param <type> $menuString
+     */
     public function loadStringData($menuString)
     {
-        $this->parseString($menuString);
-        $this->parseData();
+        $this->_parseString($menuString);
+        $this->_parseData();
     }
+
+    /**
+     *
+     * @return <type>
+     */
     public function getHTML()
     {
         PageUtil::addVar('stylesheet', $this->config['cssFile']);
@@ -86,10 +139,16 @@ class Zikula_Tree {
         </script>";
         PageUtil::addVar('rawtext', $initScript);
         $wraperClass = !empty($this->config['wraperClass']) ? 'class="'.$this->config['wraperClass'].'"' : '';
-        $tree = $this->toHTML($this->tree,$this->config['id']);
+        $tree = $this->_toHTML($this->tree,$this->config['id']);
         $this->html = "<div {$wraperClass}>{$tree}</div>";
         return $this->html;
     }
+
+    /**
+     *
+     * @param <type> $encode
+     * @return <type>
+     */
     public function getConfigForScript($encode=true)
     {
         $jsConfig = $this->config;
@@ -101,7 +160,13 @@ class Zikula_Tree {
         }
         return $encode ? json_encode($jsConfig) : $jsConfig;
     }
-    private function parseString($menuString)
+
+    /**
+     *
+     * @param <type> $menuString
+     * @return <type>
+     */
+    private function _parseString($menuString)
     {
         //level|text|href|title|icon|target|expanded
         $keys = array('level','name','href','title','icon','target','expanded');
@@ -118,7 +183,12 @@ class Zikula_Tree {
         }
         return $this->data;
     }
-    private function parseData()
+
+    /**
+     *
+     * @return <type>
+     */
+    private function _parseData()
     {
         $this->tree = array();
         $map = array();
@@ -155,7 +225,14 @@ class Zikula_Tree {
         }
         return $this->tree;
     }
-    private function toHTML($tree,$treeId=null)
+
+    /**
+     *
+     * @param <type> $tree
+     * @param <type> $treeId
+     * @return <type> 
+     */
+    private function _toHTML($tree,$treeId=null)
     {
         $liHtml = array();
         $size = count($tree);
@@ -176,7 +253,7 @@ class Zikula_Tree {
 
             $links[] = "<a {$linkHref} {$linkTitle} {$linkClass}>{$item['name']}</a>";
 
-            $subhtml = !empty($tab['nodes']) ? $this->toHTML($tab['nodes']) : '';
+            $subhtml = !empty($tab['nodes']) ? $this->_toHTML($tab['nodes']) : '';
 
             $liId = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
             $links = implode('',$links);

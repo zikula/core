@@ -85,7 +85,7 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * This will register the definition contained by the Service.
      *
-     * @param Service $service Instance of Service with attached definition.
+     * @param Zikula_ServiceManager_Service $service Instance of Service with attached definition.
      *
      * @throws InvalidArgumentException If service is already attach, definition already exists
      *                                  or the definition is missing from the Service instance.
@@ -194,7 +194,7 @@ class Zikula_ServiceManager implements ArrayAccess
     /**
      * Dynamically create the service according to the Definition class.
      *
-     * @param Definition $definition The definition class.
+     * @param Zikula_ServiceManager_Definition $definition The definition class.
      *
      * @return object The newly created service.
      */
@@ -285,6 +285,8 @@ class Zikula_ServiceManager implements ArrayAccess
     /**
      * Has argument.
      *
+     * @param string $id Id.
+     * 
      * @return boolean
      */
     public function hasArgument($id)
@@ -297,6 +299,8 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id    Argument id.
      * @param string $value Argument value.
+     * 
+     * @return void
      */
     public function setArgument($id, $value)
     {
@@ -323,7 +327,7 @@ class Zikula_ServiceManager implements ArrayAccess
     /**
      * Load multiple arguments.
      *
-     * @param $array Array of id=>$value.
+     * @param array $array Array of id=>$value.
      *
      * @return void
      */
@@ -374,7 +378,7 @@ class Zikula_ServiceManager implements ArrayAccess
     /**
      * Unset argument by id, implmentation for ArrayAccess.
      *
-     * @param string $id
+     * @param string $id Id.
      *
      * @return void
      */
