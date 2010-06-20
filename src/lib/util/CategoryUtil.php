@@ -20,12 +20,12 @@ class CategoryUtil
     /**
      * Return a category object by ID
      *
-     * @param rootPath     The path of the parent category
-     * @param name         The name of the category
-     * @param value        The value of the category (optional) (default=null)
-     * @param displayname  The displayname of the category (optional) (default=null, uses $name)
-     * @param description  The description of the category (optional) (default=null, uses $name)
-     * @param attributes   The attributes array to bind to the category (optional) (default=null)
+     * @param string rootPath    The path of the parent category.
+     * @param string name        The name of the category.
+     * @param string value       The value of the category (optional) (default=null).
+     * @param string displayname The displayname of the category (optional) (default=null, uses $name).
+     * @param string description The description of the category (optional) (default=null, uses $name).
+     * @param string attributes  The attributes array to bind to the category (optional) (default=null).
      *
      * @return The resulting folder object
      */
@@ -47,12 +47,12 @@ class CategoryUtil
 
         $lang = ZLanguage::getLanguageCode();
 
-        $rootCat = CategoryUtil::getCategoryByPath ($rootPath);
+        $rootCat = self::getCategoryByPath ($rootPath);
         if (!$rootCat) {
             return LogUtil (__f("Error! Non-existing root category '%s' received", $rootPath));
         }
 
-        $checkCat = CategoryUtil::getCategoryByPath ("$rootPath/$name");
+        $checkCat = self::getCategoryByPath ("$rootPath/$name");
         if (!$checkCat) {
             $cat  = new Categories_DBObject_Category();
             $data = array();
@@ -79,9 +79,9 @@ class CategoryUtil
     }
 
     /**
-     * Return a category object by ID
+     * Return a category object by ID.
      *
-     * @param cid      The category-ID to retrieve
+     * @param intiger cid The category-ID to retrieve.
      *
      * @return The resulting folder object
      */
@@ -109,7 +109,7 @@ class CategoryUtil
             'instance_right' => 'ipath',
             'level' => ACCESS_OVERVIEW);
 
-        $cache[$cid] = DBUtil::selectObjectByID('categories_category', (int) $cid, 'id', null, $permFilter);
+        $cache[$cid] = DBUtil::selectObjectByID('categories_category', (int)$cid, 'id', null, $permFilter);
 
         $cache[$cid]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_name']));
         $cache[$cid]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($cache[$cid]['display_desc']));
@@ -120,9 +120,9 @@ class CategoryUtil
     /**
      * Return an array of categories objects according the specified where-clause and sort criteria.
      *
-     * @param where       The where clause to use in the select (optional) (default='')
-     * @param sort        The order-by clause to use in the select (optional) (default='')
-     * @param assocKey    The field to use as the associated array key (optional) (default='')
+     * @param string where    The where clause to use in the select (optional) (default='').
+     * @param string sort     The order-by clause to use in the select (optional) (default='').
+     * @param string assocKey The field to use as the associated array key (optional) (default='').
      *
      * @return The resulting folder object array
      */
@@ -171,8 +171,8 @@ class CategoryUtil
     /**
      * Return a folder object by it's path
      *
-     * @param apath        The path to retrieve by (simple path or array of paths)
-     * @param field        The (path) field we search for (either path or ipath) (optional) (default='path')
+     * @param string apath The path to retrieve by (simple path or array of paths).
+     * @param string field The (path) field we search for (either path or ipath) (optional) (default='path').
      *
      * @return The resulting folder object
      */
@@ -200,9 +200,9 @@ class CategoryUtil
     }
 
     /**
-     * Return an array of categories by the registry info
+     * Return an array of categories by the registry info.
      *
-     * @param registry   The registered categories to retrieve
+     * @param array registry The registered categories to retrieve.
      *
      * @return The resulting folder object array
      */
@@ -237,12 +237,12 @@ class CategoryUtil
     /**
      * Return the direct subcategories of the specified category
      *
-     * @param id            The folder id to retrieve
-     * @param sort          The order-by clause (optional) (default='')
-     * @param relative      whether or not to also generate relative paths (optional) (default=false)
-     * @param all           whether or not to return all (or only active) categories (optional) (default=false)
-     * @param assocKey      The field to use as the associated array key (optional) (default='')
-     * @param attributes    The associative array of attribute field names to filter by (optional) (default=null)
+     * @param intiger id         The folder id to retrieve.
+     * @param string  sort       The order-by clause (optional) (default='').
+     * @param boolean relative   Whether or not to also generate relative paths (optional) (default=false).
+     * @param boolean all        Whether or not to return all (or only active) categories (optional) (default=false).
+     * @param string  assocKey   The field to use as the associated array key (optional) (default='').
+     * @param array   attributes The associative array of attribute field names to filter by (optional) (default=null).
      *
      * @return The resulting folder object
      */
@@ -256,7 +256,7 @@ class CategoryUtil
         $pntables = System::dbGetTables();
         $category_column = $pntables['categories_category_column'];
 
-        $id = (int) $id;
+        $id = (int)$id;
         $where = "$category_column[parent_id]='" . DataUtil::formatForStore($id) . "'";
 
         if (!$all) {
@@ -284,10 +284,10 @@ class CategoryUtil
     }
 
     /**
-     * Return all parent categories starting from id
+     * Return all parent categories starting from id.
      *
-     * @param id         The (leaf) folder id to retrieve
-     * @param assocKey   whether or not to return an assocKeyiative array (optional) (default='id')
+     * @param intiger        id       The (leaf) folder id to retrieve.
+     * @param string|boolean assocKey Whether or not to return an assocKeyiative array (optional) (default='id').
      *
      * @return The resulting folder object array
      */
@@ -321,15 +321,15 @@ class CategoryUtil
     /**
      * Return an array of category objects by path without the root category
      *
-     * @param apath        The path to retrieve categories by
-     * @param sort         The sort field (optional) (default='')
-     * @param field        The the (path) field to use (path or ipath) (optional) (default='ipath')
-     * @param includeLeaf  whether or not to also return leaf nodes (optional) (default=true)
-     * @param all          whether or not to return all (or only active) categories (optional) (default=false)
-     * @param exclPath     The path to exclude from the retrieved categories (optional) (default='')
-     * @param assocKey     The field to use to build an associative key (optional) (default='')
-     * @param attributes   The associative array of attribute field names to filter by (optional) (default=null)
-     * @param columnArray  The list of columns to fetch (optional) (default=null)
+     * @param string  apath       The path to retrieve categories by.
+     * @param string  sort        The sort field (optional) (default='').
+     * @param string  field       The the (path) field to use (path or ipath) (optional) (default='ipath').
+     * @param boolean includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
+     * @param boolean all         Whether or not to return all (or only active) categories (optional) (default=false).
+     * @param string  exclPath    The path to exclude from the retrieved categories (optional) (default='').
+     * @param string  assocKey    The field to use to build an associative key (optional) (default='').
+     * @param array   attributes  The associative array of attribute field names to filter by (optional) (default=null).
+     * @param array   columnArray The list of columns to fetch (optional) (default=null).
      *
      * @return The resulting folder object array
      */
@@ -370,16 +370,16 @@ class CategoryUtil
     /**
      * Return an array of Subcategories for the specified folder
      *
-     * @param cid          The root-category category-id
-     * @param recurse      whether or not to generate a recursive subcategory result set (optional) (default=true)
-     * @param relative     whether or not to generate relative path indexes (optional) (default=true)
-     * @param includeRoot  whether or not to include the root folder in the result set (optional) (default=false)
-     * @param includeLeaf  whether or not to also return leaf nodes (optional) (default=true)
-     * @param all          whether or not to include all (or only active) folders in the result set (optional) (default=false)
-     * @param excludeCid   CategoryID (root folder) to exclude from the result set (optional) (default='')
-     * @param assocKey     The field to use as the associated array key (optional) (default='')
-     * @param attributes   The associative array of attribute field names to filter by (optional) (default=null)
-     * @param columnArray  The list of columns to fetch (optional) (default=null)
+     * @param intiger cid         The root-category category-id.
+     * @param boolean recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true).
+     * @param boolean relative    Whether or not to generate relative path indexes (optional) (default=true).
+     * @param boolean includeRoot Whether or not to include the root folder in the result set (optional) (default=false).
+     * @param boolean includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
+     * @param boolean all         Whether or not to include all (or only active) folders in the result set (optional) (default=false).
+     * @param intiger excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='').
+     * @param string  assocKey    The field to use as the associated array key (optional) (default='').
+     * @param array   attributes  The associative array of attribute field names to filter by (optional) (default=null).
+     * @param array   columnArray The list of columns to fetch (optional) (default=null).
      *
      * @return The resulting folder object array
      */
@@ -413,18 +413,18 @@ class CategoryUtil
     /**
      * Return an array of Subcategories for the specified folder
      *
-     * @param apath        The path to get categories by
-     * @param field        The (path) field we match by (either path or ipath) (optional) (default='ipath')
-     * @param recurse      whether or not to generate a recursive subcategory result set (optional) (default=true)
-     * @param relative     whether or not to generate relative path indexes (optional) (default=true)
-     * @param includeRoot  whether or not to include the root folder in the result set (optional) (default=false)
-     * @param includeLeaf  whether or not to also return leaf nodes (optional) (default=true)
-     * @param all          whether or not to include all (or only active) folders in the result set (optional) (default=false)
-     * @param excludeCid   CategoryID (root folder) to exclude from the result set (optional) (default='')
-     * @param assocKey     The field to use as the associated array key (optional) (default='')
-     * @param attributes   The associative array of attribute field names to filter by (optional) (default=null)
+     * @param string  apath       The path to get categories by.
+     * @param string  field       The (path) field we match by (either path or ipath) (optional) (default='ipath').
+     * @param boolean recurse     Whether or not to generate a recursive subcategory result set (optional) (default=true).
+     * @param boolean relative    Whether or not to generate relative path indexes (optional) (default=true).
+     * @param boolean includeRoot Whether or not to include the root folder in the result set (optional) (default=false).
+     * @param boolean includeLeaf Whether or not to also return leaf nodes (optional) (default=true).
+     * @param boolean all         Whether or not to include all (or only active) folders in the result set (optional) (default=false).
+     * @param intiger excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='').
+     * @param string  assocKey    The field to use as the associated array key (optional) (default='').
+     * @param array   attributes  The associative array of attribute field names to filter by (optional) (default=null).
      *
-     * @return The resulting folder object array
+     * @return The resulting folder object array.
      */
     public static function getSubCategoriesByPath($apath, $field = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null)
     {
