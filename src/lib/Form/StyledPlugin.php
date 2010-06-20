@@ -13,7 +13,7 @@
  */
 
 /**
- * Base plugin class for plugins that uses CSS styling
+ * Base plugin class for plugins that uses CSS styling.
  *
  * This plugin adds attributes like "color", "back_groundcolor" and "font_weight" to plugins that extends it.
  * The extending plugin must call {@link pnFormPlugin::renderAttributes()} to use the added CSS features.
@@ -34,12 +34,21 @@
 class Form_StyledPlugin extends Form_Plugin
 {
     /**
-     * Styles added programatically
+     * Styles added programatically.
      *
      * @var array
      */
     public $styleAttributes = array();
 
+    /**
+     * Render attributes.
+     *
+     * @staticvar array $styleElements Elements.
+     *
+     * @param object $render Render object.
+     *
+     * @return string
+     */
     public function renderAttributes(&$render)
     {
         static $styleElements = array('width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size');

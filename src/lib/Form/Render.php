@@ -123,8 +123,6 @@ class Form_Render extends Renderer
      * Constructor.
      *
      * Use FormUtil::newpnForm() instead of instantiating pnFormRender directly.
-     *
-     * @internal
      */
     public function __construct($module)
     {
@@ -381,9 +379,11 @@ class Form_Render extends Renderer
     }
 
     /**
-     * getPluginById.
+     * Get Plugin by id.
      *
      * @param intiger $id Plugin ID.
+     *
+     * @return mixed
      */
     public function &getPluginById($id)
     {
@@ -400,10 +400,12 @@ class Form_Render extends Renderer
     }
 
     /**
-     * getPluginById_rec.
+     * Get Plugin By Id_rec.
      *
-     * @param plugin? $plugin Plugin
+     * @param object  $plugin Plugin
      * @param intiger $id     Plugin ID.
+     *
+     * @return object|null
      */
     public function &getPluginById_rec($plugin, $id)
     {
@@ -424,7 +426,7 @@ class Form_Render extends Renderer
     }
 
     /**
-     * isPostBack.
+     * Is PostBack.
      *
      * @return boolean
      */
@@ -434,9 +436,11 @@ class Form_Render extends Renderer
     }
 
     /**
-     * formDie.
+     * Form Die.
      *
      * @param string $msg Message to echo.
+     *
+     * @return void
      */
     public function formDie($msg)
     {
@@ -445,7 +449,7 @@ class Form_Render extends Renderer
     }
 
     /**
-     * translateForDisplay.
+     * Translate For Display.
      *
      * @param string  $txt      Text to translate for display.
      * @param boolean $doEncode True to formatForDisplay.
@@ -464,9 +468,11 @@ class Form_Render extends Renderer
     /* --- Validation --- */
 
     /**
-     * addValidator.
+     * Add Validator.
      *
      * @param validator $validator Validator to add.
+     *
+     * @return void
      */
     public function addValidator(&$validator)
     {
@@ -474,7 +480,8 @@ class Form_Render extends Renderer
     }
 
     /**
-     * isValid. calls validate() if validation not yet checked.
+     * Is valid calls validate() if validation not yet checked.
+     *
      * Then returns true if all validators pass.
      *
      * @return boolean True if all validators are valid.
@@ -489,7 +496,7 @@ class Form_Render extends Renderer
     }
 
     /**
-     * getValidators.
+     * Get validators.
      *
      * @return array Array of all Validators.
      */
@@ -501,6 +508,7 @@ class Form_Render extends Renderer
     /**
      * Validate all validators and set ValidationChecked to true.
      *
+     * @return void
      */
     public function validate()
     {
@@ -518,6 +526,7 @@ class Form_Render extends Renderer
     /**
      * Clears the validation for all validators.
      *
+     * @return void
      */
     public function clearValidation()
     {
@@ -548,7 +557,7 @@ class Form_Render extends Renderer
     /* --- Error handling --- */
 
     /**
-     * Register an error
+     * Register an error.
      *
      * Example:
      * <code>
@@ -558,6 +567,8 @@ class Form_Render extends Renderer
      *     return $render->registerError('Operation X failed due to Y');
      * }
      * </code>
+     *
+     * @return false
      */
     public function setErrorMsg($msg)
     {
@@ -593,6 +604,8 @@ class Form_Render extends Renderer
      *     return $render->registerError(LogUtil::registerPermissionError());
      * }
      * </code>
+     *
+     * @retrun false
      */
     public function registerError($dummy)
     {
@@ -602,6 +615,13 @@ class Form_Render extends Renderer
 
     /* --- Redirection --- */
 
+    /**
+     * Redirect.
+     *
+     * @param string $url Url.
+     *
+     * @return void
+     */
     public function redirect($url)
     {
         System::redirect($url);
@@ -611,7 +631,7 @@ class Form_Render extends Renderer
     /* --- Event handling --- */
 
     /**
-     * Get postback reference
+     * Get postback reference.
      *
      * Call this method to get a piece of code that will generate a postback event. The returned JavaScript code can
      * be called at any time to generate the postback. The plugin that receives the postback must implement
@@ -636,8 +656,10 @@ class Form_Render extends Renderer
      * }
      * </code>
      *
-     * @param plugin object Reference to the plugin that should receive the postback event
-     * @param commandName string Command name to pass to the event handler
+     * @param object $plugin      Reference to the plugin that should receive the postback event.
+     * @param string $commandName Command name to pass to the event handler.
+     *
+     * @return void
      */
     public function getPostBackEventReference($plugin, $commandName)
     {
@@ -933,7 +955,7 @@ class Form_Render extends Renderer
     /* --- Reading and settings submitted values --- */
 
     /**
-     * Read all values from form
+     * Read all values from form.
      *
      * Use this function to read the values send by the browser on postback. The return
      * value is an associative array of input names mapping to the posted values.
@@ -963,6 +985,7 @@ class Form_Render extends Renderer
      *       'servings' => 4)
      * </code>
      *
+     * @return mixed
      */
     public function getValues()
     {

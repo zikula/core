@@ -13,7 +13,7 @@
  */
 
 /**
- * Base plugin class
+ * Base plugin class.
  *
  * This is the base class to inherit from when creating new plugins for the pnForm framework.
  * Every pnForm plugin is normally created in a Smarty plugin function file and registered in
@@ -117,7 +117,7 @@
 class Form_Plugin
 {
     /**
-     * Plugin identifier
+     * Plugin identifier.
      *
      * This contains the identifier for the plugin. You can use this ID in {@link pnFormRender::pnFormGetPluginById()}
      * as well as in JavaScript where it should be set on the HTML elements (this does although depend on the plugin
@@ -187,29 +187,30 @@ class Form_Plugin
     public $onDataBound;
 
     /**
-     * Reference to sub-plugins
+     * Reference to sub-plugins.
      *
      * This variable contains an array of references to sub-plugins when this plugin is
      * a block plugin containing other plugins.
+     *
      * @var array
      */
     public $plugins;
 
     /**
-     * Temporary storage of the output from renderBegin in blocks
+     * Temporary storage of the output from renderBegin in blocks.
      * @internal
      */
     public $blockBeginOutput;
 
     /**
-     * Volatile indicator (disables state management in sub-plugins)
+     * Volatile indicator (disables state management in sub-plugins).
      * @internal
      * @var bool
      */
     public $volatile;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(&$render, &$params)
     {
@@ -219,7 +220,7 @@ class Form_Plugin
     }
 
     /**
-     * Read Smarty plugin parameters
+     * Read Smarty plugin parameters.
      *
      * This is the function that takes care of reading smarty parameters and storing them in the member variables
      * or attributes (all unknown parameters go into the "attribues" array).
@@ -241,7 +242,7 @@ class Form_Plugin
     }
 
     /**
-     * Create event handler
+     * Create event handler.
      *
      * Default action is to do nothing.
      *
@@ -255,7 +256,7 @@ class Form_Plugin
     }
 
     /**
-     * Load event handler
+     * Load event handler.
      *
      * Default action is to do nothing.
      *
@@ -269,12 +270,14 @@ class Form_Plugin
     }
 
     /**
-     * Initialize event handler
+     * Initialize event handler.
      *
      * Default action is to do nothing. Typically used to add self as validator.
      *
      * @see Form_Plugin
-     * @param FormRender &$render Reference to pnForm render object
+     *
+     * @param FormRender &$render Reference to pnForm render object.
+     *
      * @return void
      */
     public function initialize(&$render)
@@ -282,13 +285,15 @@ class Form_Plugin
     }
 
     /**
-     * Decode event handler
+     * Decode event handler.
      *
-     * Default action is to do nothing
+     * Default action is to do nothing.
      *
      * @see Form_Plugin
+     *
      * @param Form_Render &$render Reference to Form render object
      * @param array &$params Parameters passed from the Smarty plugin function
+     *
      * @return void
      */
     public function decode(&$render)
@@ -296,13 +301,14 @@ class Form_Plugin
     }
 
     /**
-     * Decode event handler for actions that generate a postback event
+     * Decode event handler for actions that generate a postback event.
      *
      * Default action is to do nothing. Usefull for buttons that should generate events
      * after the plugins have decoded their normal values.
      *
-     * @param Form_Render &$render Reference to pnForm render object
-     * @param array &$params Parameters passed from the Smarty plugin function
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     *
      * @return void
      */
     public function decodePostBackEvent(&$render)
@@ -310,13 +316,15 @@ class Form_Plugin
     }
 
     /**
-     * DataBound event handler
+     * DataBound event handler.
      *
      * Default action is to call onDataBound handler in form event handler.
      *
      * @see Form_Plugin
-     * @param pnFormRender &$render Reference to pnForm render object
-     * @param array &$params Parameters passed from the Smarty plugin function
+     *
+     * @param pnFormRender &$render Reference to pnForm render object.
+     * @param array        &$params Parameters passed from the Smarty plugin function.
+     *
      * @return void
      */
     public function dataBound(&$render, &$params)
@@ -338,14 +346,16 @@ class Form_Plugin
     }
 
     /**
-     * Render event handler
+     * Render event handler.
      *
      * Default action is to return an empty string.
      *
      * @see pnFormPlugin
-     * @param pnFormRender &$render Reference to pnForm render object
-     * @param array &$params Parameters passed from the Smarty plugin function
-     * @return string The rendered output
+     *
+     * @param pnFormRender &$render Reference to pnForm render object.
+     * @param array        &$params Parameters passed from the Smarty plugin function.
+     *
+     * @return string The rendered output.
      */
     public function render(&$render)
     {
@@ -353,13 +363,15 @@ class Form_Plugin
     }
 
     /**
-     * RenderBegin event handler
+     * RenderBegin event handler.
      *
      * Default action is to return an empty string.
      *
      * @see pnFormPlugin
-     * @param pnFormRender &$render Reference to pnForm render object
-     * @return string The rendered output
+     *
+     * @param pnFormRender &$render Reference to pnForm render object.
+     *
+     * @return string The rendered output.
      */
     public function renderBegin(&$render)
     {
@@ -367,14 +379,15 @@ class Form_Plugin
     }
 
     /**
-     * RenderContent event handler
+     * RenderContent event handler.
      *
      * Default action is to return the content unmodified.
      *
      * @see pnFormPlugin
-     * @param pnFormRender &$render Reference to pnForm render object
      *
-     * @return string The (optionally) modified content
+     * @param pnFormRender &$render Reference to pnForm render object.
+     *
+     * @return string The (optionally) modified content.
      */
     public function renderContent(&$render, $content)
     {
@@ -382,13 +395,15 @@ class Form_Plugin
     }
 
     /**
-     * RenderEnd event handler
+     * RenderEnd event handler.
      *
      * Default action is to return an empty string.
      *
      * @see pnFormPlugin
-     * @param pnFormRender &$render Reference to pnForm render object
-     * @return string The rendered output
+     *
+     * @param pnFormRender &$render Reference to pnForm render object.
+     *
+     * @return string The rendered output.
      */
     public function renderEnd(&$render)
     {
@@ -396,12 +411,13 @@ class Form_Plugin
     }
 
     /**
-     * postRender event handler
+     * postRender event handler.
      *
      * Default action is to do nothing.
      *
      * @see pnFormPlugin
-     * @param pnFormRender &$render Reference to pnForm render object
+     * @param pnFormRender &$render Reference to pnForm render object.
+     *
      * @return void
      */
     public function postRender(&$render)
@@ -414,7 +430,7 @@ class Form_Plugin
     }
 
     /**
-     * Utility function to generate HTML for ID attribute
+     * Utility function to generate HTML for ID attribute.
      *
      * Generate id="..." for use in the plugin's render methods.
      *

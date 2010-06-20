@@ -37,7 +37,7 @@
 class Form_Handler
 {
     /**
-     * Initialize form handler
+     * Initialize form handler.
      *
      * Typical use:
      * <code>
@@ -68,15 +68,16 @@ class Form_Handler
     }
 
     /**
-     * Command event handler
+     * Command event handler.
      *
      * This event handler is called when a command is issued by the user. Commands are typically something
      * that originates from a {@link pnFormButton} plugin. The passed args contains different properties
      * depending on the command source, but you should at least find a <var>$args['commandName']</var>
      * value indicating the name of the command. The command name is normally specified by the plugin
      * that initiated the command.
-     * @see pnFormButton
-     * @see pnFormImageButton
+     *
+     * @see Form_Plugin_Button
+     * @see Form_Plugin_ImageButton
      */
     public function handleCommand(&$render, &$args)
     {
