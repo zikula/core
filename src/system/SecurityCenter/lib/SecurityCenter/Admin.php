@@ -498,13 +498,16 @@ class SecurityCenter_Admin extends Zikula_Controller
 
         $renderer->assign('itemsperpage', ModUtil::getVar('SecurityCenter', 'itemsperpage'));
 
-        $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier');
-
-        if (!$reset) {
-            $config = $purifier->config;
+        if ($reset) {
+            $purifierconfig = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifierconfig', array('forcedefault' => true));
+            LogUtil::registerStatus($this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $config = HTMLPurifier_Config::createDefault();
+            $purifierconfig = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifierconfig');
         }
+
+        $purifier = new HTMLPurifier($purifierconfig);
+        
+        $config = $purifier->config;
 
         if (is_array($config) && isset($config[0])) {
             $config = $config[1];
@@ -695,8 +698,9 @@ class SecurityCenter_Admin extends Zikula_Controller
                 }
             }
         }
-//echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
-        System::setVar('htmlpurifierConfig', serialize($config));
+
+        //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
+        ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($config));
 
         $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
 

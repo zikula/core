@@ -82,6 +82,10 @@ class SecurityCenter_Installer extends Zikula_Installer
             CacheUtil::clearLocalDir('purifierCache');
         }
 
+        // HTML Purifier default settings
+        $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
+        ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($purifierDefaultConfig));
+
         // create vars for phpids usage
         System::setVar('useids', 0);
         System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
@@ -259,13 +263,16 @@ class SecurityCenter_Installer extends Zikula_Installer
 
         switch ($oldversion)
         {
-
             case '1.3':
-            // create cache directory for HTML Purifier
+                // create cache directory for HTML Purifier
                 $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
                 if (!file_exists($purifierCacheDir)) {
                     CacheUtil::clearLocalDir('purifierCache');
                 }
+
+                // HTML Purifier default settings
+                $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
+                ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($purifierDefaultConfig));
 
                 // create ids intrusions table
                 if (!DBUtil::createTable('sc_intrusion')) {
@@ -283,7 +290,7 @@ class SecurityCenter_Installer extends Zikula_Installer
             // fall through
 
             case '1.4':
-            // Location of HTML Purifier
+                // Location of HTML Purifier
                 System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
 
                 System::setVar('idssoftblock', 0);
