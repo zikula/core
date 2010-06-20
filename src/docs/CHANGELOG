@@ -153,8 +153,9 @@ Removed Renderer singleton pattern, this is now handled via ServiceManager, one 
 Removed need to specify domain= in template {gt} calls.
 Improved StringUtil::highlightWords() (patch by Gabriele Pohl).
 When short URLs are enabled, 3-letter or 2-letters can't be used anymore (issue #1800).  This also fixes issues with the RSS theme.
-Fixed validation of directory based short URLs to produce 404 if target not found issue (#923).
-Added gettext shortut {%'hello world'%} since no domain= is needed any more.
+Fixed validation of directory based short URLs to produce 404 if target not foun
+Deprecated FileUtil::mkdirs(), use native PHP mkdir() with $recursion flag set true instead.
+Merged ObjectData and Workflow table definitions to Settings and deleted the modules - don't need separate modules just to provide table definitions.
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
