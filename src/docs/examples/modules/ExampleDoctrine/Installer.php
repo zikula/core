@@ -16,12 +16,12 @@ class ExampleDoctrine_Installer extends Zikula_Installer
 {
 
     /**
-     * install the ExampleDoctrine module
+     * Install the ExampleDoctrine module.
      *
      * This function is only ever called once during the lifetime of a particular
-     * module instance
+     * module instance.
      *
-     * @return       bool       true on success, false otherwise
+     * @return boolean True on success, false otherwise.
      */
     public function install()
     {
@@ -39,12 +39,13 @@ class ExampleDoctrine_Installer extends Zikula_Installer
     }
 
     /**
-     * upgrade the module from an old version
+     * Upgrade the module from an old version.
      *
      * This function can be called multiple times
      *
-     * @param       int        $oldversion version to upgrade from
-     * @return      bool       true on success, false otherwise
+     * @param  integer $oldversion version to upgrade from.
+     *
+     * @return boolean True on success, false otherwise
      */
     public function upgrade($oldversion)
     {
@@ -64,11 +65,12 @@ class ExampleDoctrine_Installer extends Zikula_Installer
     }
 
     /**
-     * delete the module
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
+     * Uninstall the module.
      *
-     * @return       bool       true on success, false otherwise
+     * This function is only ever called once during the lifetime of a particular
+     * module instance.
+     *
+     * @return bool True on success, false otherwise
      */
     public function uninstall()
     {
@@ -82,6 +84,11 @@ class ExampleDoctrine_Installer extends Zikula_Installer
         return true;
     }
 
+    /**
+     * Provide default data.
+     *
+     * @return void
+     */
     protected function defaultdata()
     {
         $user = new ExampleDoctrine_Model_User();

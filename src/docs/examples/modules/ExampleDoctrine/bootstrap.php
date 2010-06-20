@@ -1,2 +1,6 @@
 <?php
-// only include this file if you need it.
+/**
+ * Bootstrap.
+ *
+ * Used for global setup at module load time.
+ */

@@ -21,7 +21,7 @@
     <property name="checksumpath" value="${archivedir}/${package}-checksums" />
     <property name="patchdir" value="${builddir}/patch" />
     <property name="tmpdir" value="${builddir}/tmp" />
-    <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*" />
+    <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*,themes/*,install/*" />
     
     <!-- need a second property since phpdoc doesn't respect wildcard patterns -->
     <property name="phpdocignorepaths" value="lib/vendor/,javascript/,system/" />

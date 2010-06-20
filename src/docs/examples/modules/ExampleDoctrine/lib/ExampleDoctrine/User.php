@@ -14,15 +14,16 @@
 
 
 /**
- * This is the User controller class providing navigation and interaction functionality
+ * This is the User controller class providing navigation and interaction functionality.
  */
 class ExampleDoctrine_User extends Zikula_Controller
 {
     /**
-     * This method is the default function, and is called whenever the
-     * module's Admin area is called without defining arguments.
+     * This method is the default function.
      *
-     * @return       Render output
+     * Called whenever the module's Admin area is called without defining arguments.
+     *
+     * @return string|boolean Output.
      */
     public function main($args)
     {
@@ -32,8 +33,7 @@ class ExampleDoctrine_User extends Zikula_Controller
     /**
      * This method provides a generic item list overview.
      *
-     * @param array $args
-     * @return       Render output
+     * @return string|boolean Output.
      */
     public function view()
     {
@@ -50,6 +50,11 @@ class ExampleDoctrine_User extends Zikula_Controller
         return $view->fetch('exampledoctrine_user_view.htm');
     }
 
+    /**
+     * Add record.
+     *
+     * @return string|boolean Output.
+     */
     public function add()
     {
         if (!SecurityUtil::checkPermission('ExampleDoctrine::', '::', ACCESS_ADD)) {

@@ -12,14 +12,27 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Plugin definition class.
+ */
 class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
 {
+    /**
+     * @var boolean
+     */
     protected $gettextEnabled = true;
-    
+
+    /**
+     * @var array
+     */
     protected $eventNames = array('module.postexecute'          => 'addLinks',
                                   'controller.method_not_found' => 'anotherfunction');
 
+    /**
+     * Provide plugin meta data.
+     *
+     * @return array Meta data.
+     */
     protected function getMeta()
     {
         return array('displayname' => $this->__('Example SysInfo Plugin'),
@@ -31,7 +44,9 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
     /**
      * Event handler here.
      *
-     * @param Event $event
+     * @param Zikula_Event $event Handler.
+     *
+     * @return void
      */
     public function addLinks(Zikula_Event $event)
     {
@@ -46,17 +61,14 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
     }
 
     /**
-     * 'anotherfunction' Event handler .
+     * Add 'anotherfunction' Event handler .
      *
-     * @param Event $event
+     * @param Event $event Handler.
+     *
+     * @return void
      */
     public function anotherfunction(Zikula_Event $event)
     {
-        /**
-         * Show version information for installed Zikula modules
-         * @return string HTML output string
-         */
-
         // check if this is for this handler
         $subject = $event->getSubject();
         if (!($event['method'] == 'anotherfunction' && $subject instanceof SysInfo_admin)) {

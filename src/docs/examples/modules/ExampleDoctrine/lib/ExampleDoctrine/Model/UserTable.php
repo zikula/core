@@ -14,7 +14,7 @@
 
 
 /**
- * Doctrine_Table class used to implement own special entity methods
+ * Doctrine_Table class used to implement own special entity methods.
  *
  * This class is optional, do not include it of you don't need it.
  */

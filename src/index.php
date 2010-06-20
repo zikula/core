@@ -139,7 +139,7 @@ try {
 switch (true)
 {
     case ($return === true):
-    // prevent rendering of the theme.
+        // prevent rendering of the theme.
         System::shutDown();
         break;
     case ($return === false):

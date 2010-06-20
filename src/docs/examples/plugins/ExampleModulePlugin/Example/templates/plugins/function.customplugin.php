@@ -18,7 +18,7 @@
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the {@link Renderer} object.
  *
- * @return string 
+ * @return string Some text.
  */
 function smarty_function_customplugin($params, &$smarty)
 {

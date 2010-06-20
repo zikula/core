@@ -1,7 +1,8 @@
 <?php
 /**
- * define what additional modules to install and which
- * folders to place them in
+ * Define what additional modules to install and which folders to place them in.
+ *
+ * @return array Of category information.
  */
 function installer_basic_modules()
 {
@@ -34,7 +35,9 @@ function installer_basic_modules()
 }
 
 /**
- * Custom configuration for modules installed by this install type
+ * Custom configuration for modules installed by this install type.
+ *
+ * @return void
  */
 function installer_basic_post_install()
 {

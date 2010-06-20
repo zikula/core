@@ -27,7 +27,9 @@ class MultiHookHandler extends Zikula_EventHandler
     /**
      * Event handler here.
      *
-     * @param Event $event
+     * @param Zikula_Event $event Event object.
+     *
+     * @return void
      */
     public function handler(Zikula_Event $event)
     {

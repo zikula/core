@@ -12,8 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * SwiftMailer plugin definition.
+ */
 class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin
 {
+    /**
+     * Get plugin meta data.
+     * 
+     * @return array Meta data.
+     */
     protected function getMeta()
     {
         return array('displayname' => $this->__('SwiftMailer Plugin'),
@@ -22,6 +30,13 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin
                       );
     }
 
+    /**
+     * Initialise.
+     *
+     * Runs ar plugin init time.
+     *
+     * @return void
+     */
     public function initialize()
     {
         // register namespace

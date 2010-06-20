@@ -13,11 +13,15 @@
  */
 
 /**
- * This is the model class that define the entity structure
- * and behaviours.
+ * This is the model class that define the entity structure and behaviours.
  */
 class ExampleDoctrine_Model_User extends Doctrine_Record
 {
+    /**
+     * Set table definition.
+     *
+     * @return void
+     */
     public function setTableDefinition()
     {
         $this->setTableName('exampledoctrine_users');
@@ -25,6 +29,11 @@ class ExampleDoctrine_Model_User extends Doctrine_Record
         $this->hasColumn('password', 'string', 255);
     }
 
+    /**
+     * Record setup.
+     *
+     * @return void
+     */
     public function setUp()
     {
         $this->actAs('Timestampable');

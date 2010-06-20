@@ -83,7 +83,6 @@ function is_serialized($string)
     return ($string == 'b:0;' ? true : (bool)@unserialize($string));
 }
 
-
 /**
  * Class System fake.
  *
