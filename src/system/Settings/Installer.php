@@ -80,6 +80,22 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('language_i18n', ZLanguage::getlanguageCode());
         System::setVar('language_bc', 1);
 
+        if (!DBUtil::createTable('workflows')) {
+            return false;
+        }
+
+        if (!DBUtil::createTable('objectdata_attributes')) {
+            return false;
+        }
+
+        if (!DBUtil::createTable('objectdata_log')) {
+            return false;
+        }
+
+        if (!DBUtil::createTable('objectdata_meta')) {
+            return false;
+        }
+
         // Initialisation successful
         return true;
     }
@@ -133,6 +149,12 @@ class Settings_Installer extends Zikula_Installer
             case '2.9.1':
                 System::delVar('timezone_info');
             case '2.9.2':
+                $tables = DBUtil::getTables();
+                $modulesTable = $tables['modules'];
+                $name = $tables['modules_column']['name'];
+                $sql = "DELETE FROM $modulesTable WHERE $name = 'ObjectData' OR $name = 'Workflow'";
+                DBUtil::executeSQL($sql);
+            case '2.9.3':
             // future upgrade routines
         }
 
