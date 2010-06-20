@@ -137,6 +137,9 @@ function Settings_tables()
                                               'obj_id'       => 'I4 NOTNULL DEFAULT 0',
                                               'busy'         => 'I NOTNULL DEFAULT 0',
                                               'debug'        => 'B');
+    
+    // addtitional indexes
+    $pntable['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id', 'module' => 'module');
 
     return $pntables;
 }
