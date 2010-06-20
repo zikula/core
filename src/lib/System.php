@@ -141,9 +141,9 @@ class System
         if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
             return false;
         }
-
-        // set the variable
-        self::delVar(ModUtil::CONFIG_MODULE, $name);
+        
+        // delete the variable
+        ModUtil::delVar(ModUtil::CONFIG_MODULE, $name);
 
         // Update my vars
         $val = false;
