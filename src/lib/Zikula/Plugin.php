@@ -18,9 +18,25 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     const TYPE_MODULE = 1;
     const TYPE_SYSTEM = 2;
 
+    /**
+     * EventManager.
+     *
+     * @var object
+     */
     protected $eventManager;
+
+    /**
+     * ServiceManager.
+     *
+     * @var object
+     */
     protected $serviceManager;
 
+    /**
+     * Has this plugin booted.
+     *
+     * @var boolean
+     */
     protected $booted = false;
     
     protected $meta;
@@ -32,8 +48,20 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $pluginName;
     protected $gettextEnabled = true;
     protected $baseDir;
+
+    /**
+     * This object's own reflection.
+     *
+     * @var object
+     */
     protected $reflection;
-    
+
+    /**
+     * Constructor.
+     *
+     * @param Zikula_ServiceManager $serviceManager ServiceManager
+     * @param Zikula_EventManager   $eventManager   EventManager.
+     */
     public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
@@ -44,6 +72,11 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         }
     }
 
+    /**
+     * Get this reflection.
+     *
+     * @return ReflectionObject
+     */
     public function getReflection()
     {
         if (!is_null($this->reflection)) {
@@ -53,6 +86,13 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         return new ReflectionObject($this);
     }
 
+    /**
+     * Internal setup.
+     *
+     * @throws LogicException If plugin is not named correctly.
+     *
+     * @return void
+     */
     private function _setup()
     {
         $this->className = get_class($this);
@@ -81,6 +121,11 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         $this->meta = $this->getMeta();
     }
 
+    /**
+     * Get plugin meta data.
+     *
+     * @return array
+     */
     protected function getMeta()
     {
         return array('displayname' => '', // implement as $this->__('Display name'),
@@ -89,56 +134,125 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
                 );
     }
 
+    /**
+     * Get meta display name.
+     *
+     * @return string
+     */
     final public function getMetaDisplayName()
     {
         return $this->meta['displayname'];
     }
 
+    /**
+     * Get meta description.
+     *
+     * @return string
+     */
     final public function getMetaDescription()
     {
         return $this->meta['description'];
     }
 
+    /**
+     * Get meta version number.
+     *
+     * @return string
+     */
     final public function getMetaVersion()
     {
         return $this->meta['version'];
     }
 
+    /**
+     * Translate.
+     *
+     * @param string $msgid String to be translated.
+     *
+     * @return string
+     */
     public function __($msgid)
     {
         return __($msgid, $this->domain);
     }
 
+    /**
+     * Translate with sprintf().
+     *
+     * @param string       $msgid  String to be translated.
+     * @param string|array $params Args for sprintf().
+     *
+     * @return string
+     */
     protected function __f($msgid, $params)
     {
         return __f($msgid, $params, $this->domain);
     }
 
+    /**
+     * Translate plural string.
+     *
+     * @param string $singular Singular instance.
+     * @param string $plural   Plural instance.
+     * @param string $count    Object count.
+     *
+     * @return string Translated string.
+     */
     protected function _n($singular, $plural, $count)
     {
         return _n($singular, $plural, $count, $this->domain);
     }
 
+    /**
+     * Translate plural string with sprintf().
+     *
+     * @param string       $sin    Singular instance.
+     * @param string       $plu    Plural instance.
+     * @param string       $n      Object count.
+     * @param string|array $params Sprintf() arguments.
+     *
+     * @return string
+     */
     protected function _fn($sin, $plu, $n, $params)
     {
         return _fn($sin, $plu, $n, $params, $this->domain);
     }
 
+    /**
+     * Get this service ID.
+     *
+     * @return string
+     */
     public function getServiceId()
     {
         return $this->serviceId;
     }
 
+    /**
+     * Get module name this belongs to.
+     *
+     * @return string
+     */
     public function getModuleName()
     {
         return $this->moduleName;
     }
 
+    /**
+     * Get this plugin name.
+     *
+     * @return string
+     */
     public function getPluginName()
     {
         return $this->pluginName;
     }
 
+    /**
+     * Pre intialise hook.
+     *
+     * @return void
+     */
     public function preInitialize()
     {
     }
@@ -147,6 +261,11 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     {
     }
 
+    /**
+     * Post intialise hook.
+     *
+     * @return void
+     */
     public function postInitialize()
     {
     }
@@ -159,11 +278,21 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     {
     }
 
+    /**
+     * Has booted check.
+     *
+     * @return boolean
+     */
     public function hasBooted()
     {
         return $this->booted;
     }
 
+    /**
+     * Flag booted.
+     *
+     * @return void
+     */
     public function setBooted()
     {
         $this->booted = true;

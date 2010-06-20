@@ -22,7 +22,7 @@ abstract class Zikula_Controller extends Zikula_Base
      * Magic method for method_not_found events.
      *
      * @param string $method Method name called.
-     * @param array $args    Arguments passed to method call.
+     * @param array  $args   Arguments passed to method call.
      *
      * @throws Zikula_Exception_NotFound If method handler cannot be found..
      *

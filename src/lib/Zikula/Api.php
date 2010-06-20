@@ -22,7 +22,7 @@ abstract class Zikula_Api extends Zikula_Base
      * Magic method for method_not_found events.
      *
      * @param string $method Method name called.
-     * @param array $args    Arguments passed to method call.
+     * @param array  $args   Arguments passed to method call.
      *
      * @return mixed False if not found or mixed.
      */

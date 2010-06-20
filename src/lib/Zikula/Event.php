@@ -198,9 +198,11 @@ class Zikula_Event implements ArrayAccess
     // implement ArrayAccess on $this->args property.
 
     /**
-     * ArrayAccess for $this->getArg()
+     * ArrayAccess for $this->getArg().
      *
      * @param string $key Array key.
+     *
+     * @throws InvalidArgumentException If key does not exist in $this->args.
      *
      * @return mixed
      */
@@ -229,7 +231,7 @@ class Zikula_Event implements ArrayAccess
     /**
      * ArrayAccess for unset($key).
      *
-     * @param string $key
+     * @param string $key Array key.
      *
      * @return void
      */

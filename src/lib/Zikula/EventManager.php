@@ -115,7 +115,7 @@ class Zikula_EventManager
     {
         $name = $event->getName();
         if ($this->existsHandler($name)) {
-           foreach ($this->handlers[$name] as $handler) {
+            foreach ($this->handlers[$name] as $handler) {
                 $this->invoke($handler, $event);
             }
         }
@@ -130,7 +130,7 @@ class Zikula_EventManager
      *
      * @return object Zikula_Event $event.
      */
-    public function notifyUntil(Zikula_Event $event, $value = null)
+    public function notifyUntil(Zikula_Event $event)
     {
         $name = $event->getName();
         if ($this->existsHandler($name)) {
@@ -149,8 +149,8 @@ class Zikula_EventManager
     /**
      * Invoke handler.
      *
-     * @param callable $handler Callable by PHP.
-     * @param Zikula_Event    $event   Event object.
+     * @param callable     $handler Callable by PHP.
+     * @param Zikula_Event $event   Event object.
      *
      * @return boolean
      */
@@ -179,6 +179,8 @@ class Zikula_EventManager
 
     /**
      * Getter for the serviceManager property.
+     *
+     * @throws LogicException If no ServiceManager exists.
      *
      * @return object ServiceManager instance.
      */

@@ -41,6 +41,10 @@ class Zikula_KernelClassLoader
      * @param string $namespace Namespace.
      * @param string $path      Path to the class namespace.
      * @param string $separator Namespace separator.
+     *
+     * @throws LogicException If already registered.
+     *
+     * @return void
      */
     public function register($namespace, $path = '', $separator = '\\')
     {
@@ -55,6 +59,10 @@ class Zikula_KernelClassLoader
      * Unregister namespace from autoloader.
      *
      * @param string $namespace Namespace.
+     *
+     * @throws LogicException If not registered.
+     *
+     * @return void
      */
     public function unregister($namespace)
     {
@@ -65,13 +73,22 @@ class Zikula_KernelClassLoader
         unset($this->namespaces[$namespace]);
     }
 
+    /**
+     * Has autoloader check.
+     *
+     * @param string $namespace Namespace.
+     *
+     * @return boolean
+     */
     public function hasAutoloader($namespace)
     {
         return (bool)array_key_exists($namespace, $this->namespaces);
     }
 
     /**
-     * Register this autloader in the SPL autoload stack.
+     * Register this autoloader in the SPL autoload stack.
+     *
+     * @throws LogicException If already registered.
      *
      * @return void
      */
@@ -86,7 +103,9 @@ class Zikula_KernelClassLoader
     }
 
     /**
-     * Register this autloader in the SPL autoload stack.
+     * Register this autoloader in the SPL autoload stack.
+     *
+     * @throws LogicException If not registered.
      *
      * @return void
      */
@@ -105,6 +124,8 @@ class Zikula_KernelClassLoader
      * Get class include path.
      *
      * @param string $class The class name to autoload.
+     * @param array  $array Metadata about this namespace.
+     * @param string $class Class name.
      *
      * @return string|boolean $file Path or boolean false if this loader does apply.
      */

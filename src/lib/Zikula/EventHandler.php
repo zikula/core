@@ -28,9 +28,25 @@
  */
 abstract class Zikula_EventHandler
 {
+    /**
+     * Event names.
+     *
+     * @var array
+     */
     protected $eventNames;
-    
+
+    /**
+     * EventManager instance.
+     *
+     * @var object
+     */
     protected $eventManager;
+
+    /**
+     * ServiceManager instance.
+     *
+     * @var object
+     */
     protected $serviceManager;
 
     /**
@@ -46,16 +62,31 @@ abstract class Zikula_EventHandler
         $this->serviceManager = $serviceManager;
     }
 
+    /**
+     * Get event names.
+     *
+     * @return array
+     */
     public function getEventNames()
     {
         return $this->eventNames;
     }
 
+    /**
+     * Get eventManager.
+     *
+     * @return object
+     */
     public function getEventManager()
     {
         return $this->eventManager;
     }
 
+    /**
+     * Get servicemanager.
+     *
+     * @return object
+     */
     public function getServiceManager()
     {
         return $this->serviceManager;
@@ -63,6 +94,10 @@ abstract class Zikula_EventHandler
 
     /**
      * Attach handler with EventManager.
+     *
+     * @throws InvalidArgumentException If $this->eventNames data is invalid.
+     *
+     * @return void
      */
     public function attach()
     {
@@ -79,6 +114,11 @@ abstract class Zikula_EventHandler
         }
     }
 
+    /**
+     * Detach event from EventManager.
+     *
+     * @return void
+     */
     public function detach()
     {
         foreach ($this->eventNames as $name => $method) {

@@ -19,51 +19,71 @@
 abstract class Zikula_Base
 {
     /**
+     * Name.
+     *
      * @var string
      */
     protected $name;
 
     /**
+     * Options (universal constructor).
+     *
      * @var array
      */
     protected $options;
 
     /**
+     * Base dir.
+     *
      * @var string
      */
     protected $baseDir;
 
     /**
+     * System basedir.
+     *
      * @var string
      */
     protected $systemBaseDir;
 
     /**
+     * Component's lib/ base dir.
+     *
      * @var string
      */
     protected $libBaseDir;
 
     /**
+     * Modinfo.
+     *
      * @var array
      */
     protected $modinfo;
 
     /**
+     * Translation domain.
+     *
      * @var string|null
      */
     protected $domain = null;
 
     /**
+     * ServiceManager.
+     *
      * @var object
      */
     protected $serviceManager;
 
     /**
+     * EventManager.
+     *
      * @var object
      */
     protected $eventManager;
 
     /**
+     * This object's reflection.
+     *
      * @var object
      */
     protected $reflection;
@@ -89,6 +109,9 @@ abstract class Zikula_Base
         $this->postInitialize();
     }
 
+    /**
+     * Setup base properties.
+     */
     private function _setup()
     {
         $this->reflection = new ReflectionObject($this);
@@ -172,7 +195,7 @@ abstract class Zikula_Base
     }
 
     /**
-     * Get top basedir of the component (modules/ system/ etc)/
+     * Get top basedir of the component (modules/ system/ etc)/.
      *
      * @return string
      */
@@ -256,7 +279,7 @@ abstract class Zikula_Base
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws Zikula_Exception_NotFound exception.
+     * @throws Zikula_Exception_NotFound Exception.
      *
      * @return void
      */
@@ -275,7 +298,7 @@ abstract class Zikula_Base
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_NotFound exception.
+     * @throws Zikula_Exception_NotFound Exception.
      *
      * @return void
      */
@@ -296,7 +319,7 @@ abstract class Zikula_Base
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_NotFound exception.
+     * @throws Zikula_Exception_NotFound Exception.
      *
      * @return void
      */
@@ -316,7 +339,7 @@ abstract class Zikula_Base
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws Zikula_Exception_Forbidden exception.
+     * @throws Zikula_Exception_Forbidden Exception.
      *
      * @return void
      */
@@ -335,7 +358,7 @@ abstract class Zikula_Base
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_Forbidden exception.
+     * @throws Zikula_Exception_Forbidden Exception.
      *
      * @return void
      */
@@ -356,7 +379,7 @@ abstract class Zikula_Base
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_Forbidden exception.
+     * @throws Zikula_Exception_Forbidden Exception.
      *
      * @return void
      */
@@ -431,14 +454,14 @@ abstract class Zikula_Base
      */
     protected function registerStatus($message)
     {
-    	if (!isset($message) || empty($message)) {
-    		throw new Zikula_Exception($this->__f('Empty [%s] received.', 'message'));
-    	}
-    	
-    	$msgs = SessionUtil::getVar('_ZStatusMsg', array());
+        if (!isset($message) || empty($message)) {
+            throw new Zikula_Exception($this->__f('Empty [%s] received.', 'message'));
+        }
+
+        $msgs = SessionUtil::getVar('_ZStatusMsg', array());
         
-    	$msgs[] = DataUtil::formatForDisplayHTML((string) $message);
-    	
+        $msgs[] = DataUtil::formatForDisplayHTML((string) $message);
+
         SessionUtil::setVar('_ZStatusMsg', $msgs);
         
         return $this;
@@ -458,9 +481,9 @@ abstract class Zikula_Base
      */
     protected function registerStatusIf($condition, $message)
     {
-    	if ($condition) {
-    		return $this->registerStatus($message);
-    	}
+        if ($condition) {
+            return $this->registerStatus($message);
+        }
     }
 
     /**
@@ -487,7 +510,9 @@ abstract class Zikula_Base
      *
      * Causes a error message to be stored in the session and displayed next pageload.
      *
-     * @param string $message Message.
+     * @param string  $message Message.
+     * @param integer $type    Type.
+     * @param mixed   $debug   Debug.
      *
      * @throws Zikula_Exception If no message is set.
      *
@@ -552,6 +577,8 @@ abstract class Zikula_Base
      *
      * @param boolean $condition Condition.
      * @param string  $message   Message.
+     * @param integer $type      Type.
+     * @param mixed   $debug     Debug.
      *
      * @throws Zikula_Exception If no message is set.
      *
@@ -571,6 +598,8 @@ abstract class Zikula_Base
      *
      * @param boolean $condition Condition.
      * @param string  $message   Message.
+     * @param integer $type      Type.
+     * @param mixed   $debug     Debug.
      *
      * @throws Zikula_Exception If no message is set.
      *

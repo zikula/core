@@ -18,6 +18,14 @@
  */
 abstract class Zikula_InteractiveInstaller extends Zikula_Controller
 {
+    /**
+     * Post inialise method hook.
+     *
+     * Enforces admin level permission requirement.  Throws an exception back to the
+     * front controller if not.
+     *
+     * @return void
+     */
     public function postInitialize()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->getName . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());

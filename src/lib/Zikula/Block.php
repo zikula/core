@@ -18,22 +18,57 @@
  */
 abstract class Zikula_Block extends Zikula_Base
 {
+    /**
+     * Initialise interface.
+     */
     abstract public function init();
 
+    /**
+     * Get info interface.
+     */
     abstract public function info();
 
+    /**
+     * Displat block.
+     *
+     * @param array $blockinfo Blockinfo.
+     */
     abstract public function display($blockinfo);
 
+    /**
+     * Modify block interface.
+     *
+     * @param array $blockinfo Block info.
+     *
+     * @return string
+     */
     public function modify($blockinfo)
     {
         return '';
     }
 
+    /**
+     * Update block interface.
+     *
+     * @param array $blockinfo Block info.
+     *
+     * @return array Blockinfo.
+     */
     public function update($blockinfo)
     {
         return $blockinfo;
     }
 
+    /**
+     * Magic method to for method_not_found events.
+     *
+     * @param string $method Method invoked.
+     * @param array  $args   Arguments.
+     *
+     * @throws BadMethodCallException If no event responds.
+     *
+     * @return string Data.
+     */
     public function __call($method, $args)
     {
         $event = new Zikula_Event('block.method_not_found', $this, array('method' => $method, 'args' => $args));

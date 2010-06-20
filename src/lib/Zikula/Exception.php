@@ -15,14 +15,31 @@
 
 class Zikula_Exception extends Exception
 {
+    /**
+     * Debug value.
+     *
+     * @var mixed
+     */
     protected $debug;
 
+    /**
+     * Constructor.
+     *
+     * @param string  $message Default ''.
+     * @param integer $code    Code.
+     * @param mixed   $debug   Debug.
+     */
     public function __construct($message='', $code=0, $debug=null)
     {
         parent::__construct($message, $code);
         $this->debug = $debug;
     }
 
+    /**
+     * Get debug.
+     *
+     * @return array.
+     */
     public function getDebug()
     {
         return (array)$this->debug;

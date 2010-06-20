@@ -18,6 +18,13 @@
  */
 abstract class Zikula_Installer extends Zikula_Base
 {
+    /**
+     * Constructor.
+     *
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
+     * @param Zikula_EventManager   $eventManager   EventManager.
+     * @param array                 $options        Options.
+     */
     public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager, array $options = array())
     {
         $this->serviceManager = $serviceManager;
@@ -32,6 +39,11 @@ abstract class Zikula_Installer extends Zikula_Base
         $this->postInitialize();
     }
 
+    /**
+     * Setup internal properties.
+     *
+     * @return void
+     */
     private function _setup()
     {
         $this->reflection = new ReflectionObject($this);
@@ -46,7 +58,26 @@ abstract class Zikula_Installer extends Zikula_Base
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
     }
 
+    /**
+     * Install interface.
+     *
+     * @return boolean
+     */
     abstract public function install();
-    abstract public function upgrade($args);
+
+    /**
+     * Upgrade interface.
+     *
+     * @param string Old version number.
+     *
+     * @return boolean|string $args True, false or last successful version number upgrade.
+     */
+    abstract public function upgrade($oldversion);
+
+    /**
+     * Uninstall interface.
+     *
+     * @return boolean
+     */
     abstract public function uninstall();
 }
