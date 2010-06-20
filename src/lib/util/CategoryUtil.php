@@ -892,11 +892,13 @@ class CategoryUtil
     /**
      * insert one leaf in a category tree (path as keys) recursively.
      *
+     * Example:
      * $tree[name] = array of children
-     * $tree[name]['_/_'] = branch/leaf data
+     * $tree[name]['_/_'] = branch/leaf data.
      *
-     * @param array $tree  Tree or branch.
-     * @param array $entry The entry to insert.
+     * @param array  &$tree       Tree or branch.
+     * @param array  $entry       The entry to insert.
+     * @param string $currentpath The current path to use (optional) (default=$entry['ipath']).
      * 
      * @return array Tree.
      */
@@ -924,8 +926,9 @@ class CategoryUtil
      * make a list, sorted on each level, from a tree.
      *
      * @param array $tree Nested array from _tree_insert.
-     * @param array $cats List of categories (initially empty array).
+     * @param array &$cats List of categories (initially empty array).
      * 
+     * @return void.
      */
     public static function _tree_sort($tree, &$cats)
     {
@@ -981,10 +984,10 @@ class CategoryUtil
     /**
      * Return an array of folders the user has at least access/view rights to.
      *
-     * @deprecated
-     * @param  array $cats List of categories.
+     * @param array $cats List of categories.
      * 
      * @return array The resulting folder path array.
+     * @deprecated
      */
     public static function getCategoryTreeStructure($cats)
     {
@@ -1136,8 +1139,8 @@ class CategoryUtil
     /**
      * Compare function for ML name field.
      *
-     * @param array $catA 1st category.
-     * @param array $catB 2nd category.
+     * @param array $catA First category.
+     * @param array $catB Second category.
      *
      * @return The resulting compare value.
      */
@@ -1159,8 +1162,8 @@ class CategoryUtil
     /**
      * Compare function for ML description field
      *
-     * @param array $catA 1st category.
-     * @param array $catB 2nd category.
+     * @param array $catA First category.
+     * @param array $catB Second category.
      *
      * @return The resulting compare value
      */
@@ -1176,13 +1179,12 @@ class CategoryUtil
     }
 
     /**
-     * Utility function to sort a category array by the current locale of
-     * either the ML name or description.
+     * Utility function to sort a category array by the current locale of 	either the ML name or description.
      *
-     * @param array  cats The categories array.
-     * @param string func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
+     * @param array  &$cats The categories array.
+     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
      *
-     * @return The resulting sorted category array (original array altered in place).
+     * @return void The resulting sorted category array (original array altered in place) $cats updated by reference.
      */
     public static function sortByLocale(&$cats, $func = 'cmpName')
     {
@@ -1193,8 +1195,8 @@ class CategoryUtil
     /**
      * Resequence the sort fields for the given category.
      *
-     * @param array   cats The categories array.
-     * @param intiger step The counting step/interval (optional) (default=1).
+     * @param array   $cats The categories array.
+     * @param intiger $step The counting step/interval (optional) (default=1).
      *
      * @return True if something was done, false if an emtpy $cats was passed in.
      */
@@ -1219,9 +1221,9 @@ class CategoryUtil
      * with the Property-Names too), return an (identically indexed) array
      * of category-paths based on the given field (name or id make sense).
      *
-     * @param array   rootCatIDs  The root/parent categories ID.
-     * @param array   cats        The associative categories object array.
-     * @param boolean includeRoot If true, the root portion of the path is preserved.
+     * @param array   $rootCatIDs  The root/parent categories ID.
+     * @param array   &$cats       The associative categories object array.
+     * @param boolean $includeRoot If true, the root portion of the path is preserved.
      *
      * @return The resulting folder path array (which is also altered in place).
      */
@@ -1243,11 +1245,12 @@ class CategoryUtil
     }
 
     /**
-     * Given a category with its parent category, return an (idenically indexed)
-     * array of category-paths based on the given field (name or id make sense).
+     * Given a category with its parent category.
+     * 
+     * return an (idenically indexed) array of category-paths based on the given field (name or id make sense).
      *
      * @param intiger|array $rootCategory The root/parent category.
-     * @param array         $cat          The category to process.
+     * @param array         &$cat         The category to process.
      * @param boolean       $includeRoot  If true, the root portion of the path is preserved.
      *
      * @return The resulting folder path array (which is also altered in place).
@@ -1301,8 +1304,8 @@ class CategoryUtil
      * the keys of the array), return an (idenically indexed) array
      * of category-paths based on the given field (name or id make sense).
      *
-     * @param array  cats  The associative categories object array.
-     * @param string field Which field to use the building the path (optional) (default='name').
+     * @param array  $cats  The associative categories object array.
+     * @param string $field Which field to use the building the path (optional) (default='name').
      *
      * @return The resulting folder path array.
      */
@@ -1334,10 +1337,11 @@ class CategoryUtil
      * Rebuild the path field for all categories in the database
      * Note that field and sourceField go in pairs (that is, if you want sensical results)!.
      *
-     * @param string  field       The field which we wish to populate (optional) (default='path').
-     * @param string  sourceField The field we use to build the path with (optional) (default='name').
-     * @param intiger leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0).
+     * @param string  $field       The field which we wish to populate (optional) (default='path').
+     * @param string  $sourceField The field we use to build the path with (optional) (default='name').
+     * @param intiger $leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0).
      *
+     * @return void.
      */
     public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
     {
@@ -1369,8 +1373,8 @@ class CategoryUtil
      * For each category property in the list, check if we have access to that category in that property.
      * Check is done as "Categories:Property:$propertyName", "$cat[id]::"
      *
-     * @param array $categories Array of category data (as returned from ObjectUtil::expandObjectWithCategories).
-     * @param int   $permLevel  Required permision level.
+     * @param array   $categories Array of category data (as returned from ObjectUtil::expandObjectWithCategories).
+     * @param intiger $permLevel  Required permision level.
      *
      * @return bool True if access is allowed to at least one of the categories
      */

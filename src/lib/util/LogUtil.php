@@ -18,10 +18,13 @@
 class LogUtil
 {
     /**
-     * Returns an array of status messages
+     * Returns an array of status messages.
      *
-     * @param $override whether to override status messages with error messages
-     * @return array of messages
+     * @param boolean $delete   Whether to delete error messages (optional) (default=true).
+     * @param boolean $override Whether to override status messages with error messages (optional) (default=true).
+     * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true).
+     * 
+     * @return array of messages.
      */
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
     {

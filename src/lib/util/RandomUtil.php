@@ -26,15 +26,15 @@ class RandomUtil
     {
         $factor = 95717; // prime
         list ($usec, $sec) = explode(" ", microtime());
-        return (double) strrev(($usec) * $factor / M_PI);
+        return (double)strrev(($usec) * $factor / M_PI);
     }
 
     /**
      * Return a random integer between $floor and $ceil (inclusive)
      *
-     * @param floor     The lower bound
-     * @param ceil      The upper bound
-     * @param seed      Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
+     * @param intiger $floor The lower bound
+     * @param intiger $ceil  The upper bound
+     * @param boolean $seed  Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
      *
      * @return The resulting random integer
      */
@@ -58,10 +58,10 @@ class RandomUtil
      * Return a random string of specified length. This function uses
      * uses md5() to generate the string.
      *
-     * @param length    The length of string to generate
-     * @param seed      Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
+     * @param intiger $length The length of string to generate.
+     * @param boolean $seed   Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
-     * @return The resulting random integer
+     * @return The resulting random integer.
      */
     public static function getRandomString($length, $seed = true)
     {
@@ -81,18 +81,18 @@ class RandomUtil
     /**
      * Return a random string
      *
-     * @param minLen    The minimum string length
-     * @param maxLen    The maximum string length
-     * @param leadingCapital Whether or not the string should start with a capital letter (optional) (default=true)
-     * @param useUpper       Whether or not to also use uppercase letters (optional) (default=true)
-     * @param useLower       Whether or not to also use lowercase letters (optional) (default=true)
-     * @param useSpace       Whether or not to also use whitespace letters (optional) (default=true)
-     * @param useNumber      Whether or not to also use numeric characters (optional) (default=false)
-     * @param useSpecial     Whether or not to also use special characters (optional) (default=false)
-     * @param seed           Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
-     * @param dontuse        Array of characters not to use (optional) (default=null) eg $dontuse=array('a', 'b', 'c');
+     * @param intiger $minLen         The minimum string length.
+     * @param intiger $maxLen         The maximum string length.
+     * @param boolean $leadingCapital Whether or not the string should start with a capital letter (optional) (default=true).
+     * @param boolean $useUpper       Whether or not to also use uppercase letters (optional) (default=true).
+     * @param boolean $useLower       Whether or not to also use lowercase letters (optional) (default=true).
+     * @param boolean $useSpace       Whether or not to also use whitespace letters (optional) (default=true).
+     * @param boolean $useNumber      Whether or not to also use numeric characters (optional) (default=false).
+     * @param boolean $useSpecial     Whether or not to also use special characters (optional) (default=false).
+     * @param boolean $seed           Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
+     * @param array   $dontuse        Array of characters not to use (optional) (default=null) eg $dontuse=array('a', 'b', 'c');.
      *
-     * @return The resulting random string
+     * @return The resulting random string.
      */
     public static function getString($minLen, $maxLen, $leadingCapital = true, $useUpper = true, $useLower = true, $useSpace = false, $useNumber = false, $useSpecial = false, $seed = false, $dontuse = null)
     {
@@ -148,13 +148,13 @@ class RandomUtil
     }
 
     /**
-     * Return a random sentence of nWords based on the dictionary
+     * Return a random sentence of nWords based on the dictionary.
      *
-     * @param nWords     The number of words to put in the sentence
-     * @param dictArray  The array of dictionary words to use
-     * @param seed       Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
+     * @param intiger $nWords    The number of words to put in the sentence.
+     * @param array   $dictArray The array of dictionary words to use.
+     * @param boolean $seed      Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
-     * @return The resulting random date string
+     * @return The resulting random date string.
      */
     public static function getSentence($nWords, $dictArray, $seed = false)
     {
@@ -201,16 +201,16 @@ class RandomUtil
     }
 
     /**
-     * Return a nParas paragraphs of random text based on the dictionary
+     * Return a nParas paragraphs of random text based on the dictionary.
      *
-     * @param nParas         The number of paragraphs to return to put in the sentence
-     * @param dict           The dictionary to use (a space separated list of words)
-     * @param irndS          The number of sentences in a paragraph (optional) (default=0=randomlyGenerated)
-     * @param irndW          The number of words in a sentence (optional) (default=0=randomlyGenerated)
-     * @param startCustomary Whether or not to start with the customary phrase (optional) (default=false)
-     * @param seed           Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
+     * @param intiger $nParas         The number of paragraphs to return to put in the sentence.
+     * @param string  $dict           The dictionary to use (a space separated list of words).
+     * @param intiger $irndS          The number of sentences in a paragraph (optional) (default=0=randomlyGenerated).
+     * @param intiger $irndW          The number of words in a sentence (optional) (default=0=randomlyGenerated).
+     * @param boolean $startCustomary Whether or not to start with the customary phrase (optional) (default=false).
+     * @param boolean $seed           Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
-     * @return The resulting random date string
+     * @return The resulting random date string.
      */
     public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false, $seed = false)
     {
@@ -260,14 +260,14 @@ class RandomUtil
     }
 
     /**
-     * Return a random date between $startDate and $endDate
+     * Return a random date between $startDate and $endDate.
      *
-     * @param startDate  The lower date bound
-     * @param endDate    The high date bound
-     * @param format     The date format to use
-     * @param seed       Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
+     * @param string  $startDate The lower date bound.
+     * @param string  $endDate   The high date bound.
+     * @param string  $format    The date format to use.
+     * @param boolean $seed      Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
-     * @return The resulting random date string
+     * @return The resulting random date string.
      */
     public static function getDate($startDate, $endDate, $format = DATEFORMAT_FIXED, $seed = false)
     {
@@ -286,11 +286,11 @@ class RandomUtil
     }
 
     /**
-     * Return a random user-id
+     * Return a random user-id.
      *
-     * @param seed      Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0
+     * @param boolean $seed Whether or not to seed the random number generator (optional) (default=false) seeding not required for PHP>4.2.0.
      *
-     * @return The resulting random user-id
+     * @return The resulting random user-id.
      */
     public static function getUserID($seed = false)
     {
