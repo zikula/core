@@ -241,6 +241,9 @@ class FileUtil
      * @param string  $mode     The (UNIX) mode we wish to create the files with.
      * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
+     * @deprecated
+     * @see http://php.net/mkdir
+     *
      * @return boolean TRUE on success, FALSE on failure.
      */
     public static function mkdirs($path, $mode = null, $absolute = false)
@@ -248,17 +251,9 @@ class FileUtil
         if (is_dir($path)) {
             return true;
         }
-
-        $pPath = DataUtil::formatForOS(dirname($path), $absolute);
-        if (self::mkdirs($pPath, $mode) === false) {
-            return false;
-        }
-
-        if ($mode) {
-            return mkdir($path, $mode);
-        } else {
-            return mkdir($path);
-        }
+        
+        $pPath = realpath(DataUtil::formatForOS(dirname($path), $absolute));
+        return mkdir($pPath, $mode, true);
     }
 
     /**
