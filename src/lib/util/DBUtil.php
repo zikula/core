@@ -906,10 +906,6 @@ class DBUtil
             ObjectUtil::storeObjectCategories($object, $table, $idfield, $update);
         }
 
-        if (!ModUtil::available('ObjectData')) {
-            return $object;
-        }
-
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
             System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
@@ -1163,8 +1159,7 @@ class DBUtil
              (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
             System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
             $table != 'objectdata_attributes' &&
-            $table != 'objectdata_log' &&
-            ModUtil::available('ObjectData'))
+            $table != 'objectdata_log')
         {
             ObjectUtil::deleteObjectAttributes ($object, $table, $idfield);
         }
@@ -1174,8 +1169,7 @@ class DBUtil
             System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
             $table != 'objectdata_attributes' &&
             $table != 'objectdata_meta' &&
-            $table != 'objectdata_log' &&
-            ModUtil::available('ObjectData'))
+            $table != 'objectdata_log')
         {
             ObjectUtil::deleteObjectMetaData ($object, $table, $idfield);
         }
@@ -2591,7 +2585,7 @@ class DBUtil
         }
 
         // temporary hack to prevent recursive loop because available() calls selectObjectArray again (Guite)
-        if ($table == 'modules' || !ModUtil::available('ObjectData')) {
+        if ($table == 'modules') {
             return $objects;
         }
 

@@ -299,6 +299,7 @@ class System
             $GLOBALS['dbtables'] = isset($pntable) ? $pntable : null;
             // ensure that the base modules info is available
             ModUtil::dbInfoLoad('Modules', 'Modules');
+            ModUtil::dbInfoLoad('ObjectData', 'ObjectData');
             ModUtil::dbInfoLoad('Theme', 'Theme');
             ModUtil::dbInfoLoad('Users', 'Users');
             ModUtil::dbInfoLoad('Groups', 'Groups');

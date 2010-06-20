@@ -421,9 +421,6 @@ class ObjectUtil
             return false;
         }
 
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
 
         $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
@@ -486,10 +483,6 @@ class ObjectUtil
         }
 
         if (!isset($obj['__ATTRIBUTES__']) || !is_array($obj['__ATTRIBUTES__'])) {
-            return false;
-        }
-
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
             return false;
         }
 
@@ -557,10 +550,6 @@ class ObjectUtil
             return false;
         }
 
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         $objID = $obj[$idcolumn];
         if (!$objID) {
             return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
@@ -616,10 +605,6 @@ class ObjectUtil
 
         if (!$idcolumn) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__.'::'.__FUNCTION__)));
-        }
-
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
         }
 
         $pntables = System::dbGetTables();
@@ -690,10 +675,6 @@ class ObjectUtil
      */
     public static function deleteAllObjectTypeAttributes($type)
     {
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
@@ -713,10 +694,6 @@ class ObjectUtil
      */
     public static function getSystemAttributes($sort = 'attribute_name')
     {
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         $pntables = System::dbGetTables();
         $table    = $pntables['objectdata_attributes'];
         $column   = $pntables['objectdata_attributes_column'];
@@ -739,10 +716,6 @@ class ObjectUtil
      */
     public static function getAttributeCount($atrName)
     {
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         $pntables       = System::dbGetTables();
         $column = $pntables['objectdata_attributes_column'];
 
@@ -791,10 +764,6 @@ class ObjectUtil
      */
     public static function insertObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         $meta = self::fixObjectMetaData($obj, $tablename, $idcolumn);
         if ($meta['obj_id'] > 0) {
             $result = DBUtil::insertObject($meta, 'objectdata_meta');
@@ -816,10 +785,6 @@ class ObjectUtil
      */
     public static function updateObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         if (!isset($obj['__META__']['id'])) {
             return false;
         }
@@ -843,10 +808,6 @@ class ObjectUtil
      */
     public static function deleteObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         self::fixObjectMetaData($obj, $tablename, $idcolumn);
 
         if (isset($obj['__META__']['id']) && $obj['__META__']['id']) {
@@ -879,10 +840,6 @@ class ObjectUtil
      */
     public static function retrieveObjectMetaData(&$obj, $tablename, $idcolumn = 'id')
     {
-        if (!ModUtil::available('ObjectData') || !ModUtil::dbInfoLoad('ObjectData')) {
-            return false;
-        }
-
         $meta = self::fixObjectMetaData($obj, $tablename, $idcolumn);
         if ($meta['obj_id'] > 0) {
             $pntables = System::dbGetTables();
