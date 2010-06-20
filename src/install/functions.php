@@ -445,14 +445,14 @@ function installmodules($installtype = 'basic', $lang = 'en')
     if ($installtype == 'basic') {
         $coremodules = array(
                 'Modules',
+                'Settings',
                 'Theme',
                 'Admin',
                 'Permissions',
                 'Groups',
                 'Blocks',
-                'ObjectData',
                 'Users',
-                'Settings');
+                );
         // manually install the modules module
         foreach ($coremodules as $coremodule) {
             // sanity check - check if module is already installed
@@ -492,7 +492,6 @@ function installmodules($installtype = 'basic', $lang = 'en')
                         'Permissions' => __('Users'),
                         'Groups' => __('Users'),
                         'Blocks' => __('Layout'),
-                        'ObjectData' => __('System'),
                         'Users' => __('Users'),
                         'Theme' => __('Layout'),
                         'Admin' => __('System'),
