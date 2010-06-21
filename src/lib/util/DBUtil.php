@@ -1405,7 +1405,7 @@ class DBUtil
      * @param boolean $clean          Whether or not to clean up the marshalled data (optional) (default=true).
      *
      * @return The resulting field array.
-     * @throws Exception If empty result parameter
+     * @throws Exception If empty result parameter.
      */
     public static function marshallFieldArray($result, $closeResultSet = true, $assocKey = '', $clean = true)
     {
@@ -1584,7 +1584,7 @@ class DBUtil
      * @param boolean $exitOnError Exit on error.
      *
      * @return mixed selected value.
-     * @throws Exception If rowcount or results count is empty,
+     * @throws Exception If rowcount or results count is empty.
      */
     public static function selectScalar($sql, $exitOnError = true)
     {
@@ -2505,7 +2505,7 @@ class DBUtil
      * @param array  $joinInfo    The array containing the extended join information.
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
-     * @return array array($sqlJoin, $sqlJoinFieldList, $ca).
+     * @return array $sqlJoin, $sqlJoinFieldList, $ca.
      * @deprecated
      * @see    Doctrine_Record
      */
@@ -2679,7 +2679,7 @@ class DBUtil
     /**
      * Returns the last inserted ID.
      *
-     * @param string  $table       The treated table reference
+     * @param string  $table       The treated table reference.
      * @param string  $field       The field to use.
      * @param boolean $exitOnError Exit on error.
      * @param boolean $verbose     Verbose mode.
@@ -2726,10 +2726,11 @@ class DBUtil
      * Get the table definition for a database table. Convert the representation
      * from ADODB Datadict to Doctrine
      *
-     * @param mixed $table table to get adodb sql string for.
+     * @param string $table table to get adodb sql string for.
      *
      * @return array The table definition.
-     * @throws Exception If table parameter is empty.
+     * @throws Exception                If table parameter is empty.
+     * @throws InvalidArgumentException If error in table definition. 
      */
     public static function getTableDefinition($table)
     {
@@ -2900,7 +2901,7 @@ class DBUtil
     /**
      * Get the table definition for a database table.
      *
-     * @param string $table table to get adodb sql string for.
+     * @param string $table Table to get adodb sql string for.
      *
      * @return string
      * @throws Exception If the table parameter is empty.
@@ -2940,7 +2941,7 @@ class DBUtil
     /**
      * Get the constraints for a given table.
      *
-     * @param string $table treated table.
+     * @param string $table Treated table.
      *
      * @return string Return string to get table constraints.
      * @throws Exception If the table parameter is empty or does not point to a valid table definition.
@@ -3006,9 +3007,10 @@ class DBUtil
     /**
      * Verify that column and column_def definition match.
      *
-     * @param  table   The treated table reference.
+     * @param  string table The treated table reference.
      *
      * @return boolean
+     * @throws Exception If the table parameter is empty or cannot retrieve table/column def for $table.
      */
     public static function verifyTableDefinitionConsistency($table)
     {
@@ -3138,6 +3140,7 @@ class DBUtil
      * @param array  $tabopt     Table options.
      *
      * @return boolean
+     * @throws Ecveption if the $table parameter is empty or failed consistency check.
      */
     public static function changeTable($table, $definition = null, $tabopt = null)
     {
@@ -3225,9 +3228,10 @@ class DBUtil
     /**
      * Truncate database table.
      *
-     * @param  string $table Table a tablename key for the tables structure.
+     * @param string $table Table a tablename key for the tables structure.
      *
      * @return boolean
+     * @throws Exception if the $table param is empty or does not point to a valid table definition.
      */
     public static function truncateTable($table)
     {
@@ -3257,10 +3261,11 @@ class DBUtil
     /**
      * Rename a database table.
      *
-     * @param string    $table    Table a tablename key for the tables structure.
-     * @param string    $newTable NewTable a tablename key for the tables structure.
+     * @param string $table    Table a tablename key for the tables structure.
+     * @param string $newTable NewTable a tablename key for the tables structure.
      *
      * @return boolean
+     * @throws Exception if the $table or $newTable parameter is empty, or do not point to valid definitons.
      */
     public static function renameTable($table, $newTable)
     {
@@ -3300,6 +3305,7 @@ class DBUtil
      * @param string $table Table a tablename key for the tables structure.
      *
      * @return boolean
+     * @throws Exception if the $table parameter is empty or does not point to valid table definition.
      */
     public static function dropTable($table)
     {
@@ -3331,10 +3337,11 @@ class DBUtil
      *
      * @param string       $idxname     Name of index.
      * @param string       $table       The treated table reference.
-     * @param array|string $flds        String field name, or non-associative array of field names
-     * @param array        $idxoptarray Array of UNIQUE=true and/or PRIMARY=true
+     * @param array|string $flds        String field name, or non-associative array of field names.
+     * @param array        $idxoptarray Array of UNIQUE=true and/or PRIMARY=true.
      *
      * @return boolean
+     * @throws Exception if $idxname, $table, or $flds paramters are empty 
      */
     public static function createIndex($idxname, $table, $flds, $idxoptarray = false)
     {
@@ -3402,6 +3409,7 @@ class DBUtil
      * @param string $table   The treated table reference.
      *
      * @return boolean
+     * @throws Exception If any parameter is empty, table does not point to a valid definition.
      */
     public static function dropIndex($idxname, $table)
     {
@@ -3458,6 +3466,7 @@ class DBUtil
      * @param boolean $numericIndex use numeric keys.
      *
      * @return array Array of column names.
+     * @throws Exception If the table param is empty or does not point to a valid table definition.
      */
     public static function metaColumnNames($table, $numericIndex = false)
     {
@@ -3490,6 +3499,7 @@ class DBUtil
      * @param string $table The treated table reference.
      *
      * @return array of primary keys.
+     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
      */
     public static function metaPrimaryKeys($table)
     {
@@ -3510,11 +3520,12 @@ class DBUtil
     /**
      * Get a list of foreign keys for a table.
      *
-     * @param string $table The treated table reference.
-     * @param boolean $owner
+     * @param string  $table The treated table reference.
+     * @param boolean $owner (optional) (default=false).
      * @param boolean $upper Upper case key names.
      *
      * @return array of foreign keys.
+     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
      */
     public static function metaForeignKeys($table, $owner = false, $upper = false)
     {
@@ -3535,10 +3546,11 @@ class DBUtil
     /**
      * Get a list of indexes for a table.
      *
-     * @param string    $table      The treated table reference.
-     * @param boolean   $primary    Show only primary keys.
+     * @param string  $table   The treated table reference.
+     * @param boolean $primary Show only primary keys.
      *
      * @return array Array of column names.
+     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
      */
     public static function metaIndexes($table, $primary = false)
     {
@@ -3574,7 +3586,7 @@ class DBUtil
      *
      * @return boolean
      * @deprecated
-     * @see Doctrines DBAL layer
+     * @see    Doctrines DBAL layer
      */
     public static function getLimitedTablename($table, $dbType = '')
     {
