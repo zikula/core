@@ -1274,10 +1274,12 @@ class ModUtil
      * @param integer $hookid     The id of the object the hook is called for (module-specific).
      * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
      * @param boolean $implode    Implode collapses all display hooks into a single string - default to true for compatability with .7x.
+     * @param object  $subject    Object, usually the callling class as $this.
+     * @param array   $args       Extra arguments.
      *
      * @return string|array String output from GUI hooks, extrainfo array for API hooks.
      */
-    public static function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
+    public static function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true, $subject = null, $args = array())
     {
         static $modulehooks;
 
@@ -1310,19 +1312,26 @@ class ModUtil
 
         // Call each hook
         foreach ($modulehooks[$lModname] as $modulehook) {
+            $modulehook['subject'] = $subject;
+            $modulehook['args'] = $args;
             if (!isset($extrainfo['tmodule']) || (isset($extrainfo['tmodule']) && $extrainfo['tmodule'] == $modulehook['tmodule'])) {
                 if (($modulehook['action'] == $hookaction) && ($modulehook['object'] == $hookobject)) {
                     if (isset($modulehook['tarea']) && $modulehook['tarea'] == 'GUI') {
                         $gui = true;
                         if (self::available($modulehook['tmodule'], $modulehook['ttype']) && self::load($modulehook['tmodule'], $modulehook['ttype'])) {
-                            $output[$modulehook['tmodule']] = self::func($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'],
-                                    array('objectid' => $hookid, 'extrainfo' => $extrainfo));
+                            $hookArgs = array('objectid' => $hookid, 'extrainfo' => $extrainfo, 'modulehook' => $modulehook);
+                            $output[$modulehook['tmodule']] = self::func($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], $hookArgs);
+                            $event = new Zikula_Event('module.callhooks.output', $subject, $hookArgs, $output);
+                            $output = EventUtil::notify($event)->getData();
                         }
                     } else {
                         if (isset($modulehook['tmodule']) &&
                                 self::available($modulehook['tmodule'], $modulehook['ttype']) &&
                                 self::loadApi($modulehook['tmodule'], $modulehook['ttype'])) {
-                            $extrainfo = ModUtil::apiFunc($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], array('objectid' => $hookid, 'extrainfo' => $extrainfo));
+                            $hookArgs = array('objectid' => $hookid, 'extrainfo' => $extrainfo, 'modulehook' => $modulehook);
+                            $extrainfo = self::apiFunc($modulehook['tmodule'], $modulehook['ttype'], $modulehook['tfunc'], $hookArgs);
+                            $event = new Zikula_Event('module.callhooks.extrainfo', $subject, $hookArgs, $extrainfo);
+                            $extrainfo = EventUtil::notify($event)->getData();
                         }
                     }
                 }
@@ -1336,33 +1345,35 @@ class ModUtil
                 $output = implode("\n", $output);
             }
 
-            // This event expects that you might modify the $event['output'].  Check array_key_exists('output', $event) in event handler.
-            $event = new Zikula_Event('module.postcallhooks', null, array(
+            // Events that alter $output with $event->data.
+            $event = new Zikula_Event('module.postcallhooks.output', $subject, array(
                             'gui' => $gui,
                             'hookobject' => $hookobject,
                             'hookaction' => $hookaction,
                             'hookid' => $hookid,
                             'extrainfo' => $extrainfo,
                             'implode' => $implode,
-                            'output' => $output));
+                            'output' => $output,
+                            'args' => $args), $output);
             EventUtil::notify($event);
 
             //889$render->renderDomain = $domain;
-            return $event['output'];
+            return $event->getData();
         }
 
-        // Check array_key_exists('output', $event) in event handler to distinguish from above hook where you might modify $event['output'].
-        $event = new Zikula_Event('module.postcallhooks', null, array(
+        // Events that alter $extrainfo via $event->data.
+        $event = new Zikula_Event('module.postcallhooks.extrainfo', $subject, array(
                         'gui' => $gui,
                         'hookobject' => $hookobject,
                         'hookaction' => $hookaction,
                         'hookid' => $hookid,
                         'extrainfo' => $extrainfo,
-                        'implode' => $implode));
+                        'implode' => $implode,
+                        'args' => $args), $extrainfo);
         EventUtil::notify($event);
 
         //889$render->renderDomain = $domain;
-        return $event['extrainfo'];
+        return $event->getData();
     }
 
     /**
