@@ -50,7 +50,7 @@ class Groups_User extends Zikula_Controller
         $showgid = FormUtil::getPassedValue('showgid', null, 'GET');
 
         // we need this value multiple times, so we keep it
-        $itemsperpage = ModUtil::getVar('Groups', 'itemsperpage');
+        $itemsperpage = $this->getVar('itemsperpage');
 
         if (UserUtil::isLoggedIn()) {
             $islogged = true;
@@ -240,7 +240,7 @@ class Groups_User extends Zikula_Controller
             return LogUtil::registerArgsError();
         }
 
-        $itemsperpage = ModUtil::getVar('Groups', 'itemsperpage');
+        $itemsperpage = $this->getVar('itemsperpage');
 
         if (!SecurityUtil::checkPermission('Groups::memberslist', '::', ACCESS_OVERVIEW)) {
             return LogUtil::registerPermissionError();

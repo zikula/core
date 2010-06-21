@@ -25,7 +25,7 @@ class Categories_Api_Account extends Zikula_Api
         $items = array();
 
         // Create an array of links to return
-        if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT) && ModUtil::getVar('Categories', 'allowusercatedit')) {
+        if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT) && $this->getVar('allowusercatedit')) {
             $referer = System::serverGetVar('HTTP_REFERER');
             if (strpos($referer, 'module=Categories') === false) {
                 SessionUtil::setVar('categories_referer', $referer);

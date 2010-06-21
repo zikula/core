@@ -77,7 +77,7 @@ class Admin_Block_Adminnav extends Zikula_Block
                     $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
                             array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
-                    if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == ModUtil::getVar('Admin', 'defaultcategory')))) {
+                    if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == $this->getVar('defaultcategory')))) {
                         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
                         $menutexturl = ModUtil::url($modinfo['name'], 'admin');
                         $menutexttitle = $modinfo['displayname'];

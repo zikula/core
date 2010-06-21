@@ -242,12 +242,12 @@ class Categories_Admin extends Zikula_Controller
         }
 
         $renderer = Renderer::getInstance('Categories', false);
-        $renderer->assign ('userrootcat', ModUtil::getVar('Categories', 'userrootcat', '/__SYSTEM__'));
-        $renderer->assign ('allowusercatedit', ModUtil::getVar('Categories', 'allowusercatedit', 0));
-        $renderer->assign ('autocreateusercat', ModUtil::getVar('Categories', 'autocreateusercat', 0));
-        $renderer->assign ('autocreateuserdefaultcat', ModUtil::getVar('Categories', 'autocreateuserdefaultcat', 0));
-        $renderer->assign ('userdefaultcatname', ModUtil::getVar('Categories', 'userdefaultcatname', 0));
-        $renderer->assign ('permissionsall', ModUtil::getVar('Categories', 'permissionsall', 0));
+        $renderer->assign ('userrootcat', $this->getVar('userrootcat', '/__SYSTEM__'));
+        $renderer->assign ('allowusercatedit', $this->getVar('allowusercatedit', 0));
+        $renderer->assign ('autocreateusercat', $this->getVar('autocreateusercat', 0));
+        $renderer->assign ('autocreateuserdefaultcat', $this->getVar('autocreateuserdefaultcat', 0));
+        $renderer->assign ('userdefaultcatname', $this->getVar('userdefaultcatname', 0));
+        $renderer->assign ('permissionsall', $this->getVar('permissionsall', 0));
 
         return $renderer->fetch('categories_admin_preferences.htm');
     }

@@ -23,7 +23,7 @@ class Categories_Api_User extends Zikula_Api
         $returnCategory = isset($args['returnCategory']) ? $args['returnCategory'] : false;
         $returnField    = isset($args['returnField'])    ? $args['returnField']    : 'id';
 
-        $userRoot = ModUtil::getVar('Categories', 'userrootcat', 0);
+        $userRoot = $this->getVar('userrootcat', 0);
         if (!$userRoot) {
             return LogUtil::registerError($this->__('Error! Could not determine the user root node.'));
         }

@@ -170,7 +170,7 @@ class Groups_Ajax extends Zikula_Controller
         }
 
         // Check if it is the default group...
-        $defaultgroup = ModUtil::getVar('Groups', 'defaultgroup');
+        $defaultgroup = $this->getVar('defaultgroup');
 
         if ($group['gid'] == $defaultgroup) {
             return AjaxUtil::error(LogUtil::registerError($this->__('Error! You cannot delete the default user group.')));

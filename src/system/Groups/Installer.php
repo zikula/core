@@ -66,7 +66,7 @@ class Groups_Installer extends Zikula_Installer
         {
             case '2.1':
             // change value of defaultgroup from name to gid
-                $gid = DBUtil::selectObjectByID('groups', ModUtil::getVar('Groups', 'defaultgroup'), 'name');
+                $gid = DBUtil::selectObjectByID('groups', $this->getVar('defaultgroup'), 'name');
                 $this->setVar('defaultgroup', $gid['gid']);
 
             case '2.2':

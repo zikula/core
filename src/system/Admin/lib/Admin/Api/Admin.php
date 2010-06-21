@@ -69,13 +69,13 @@ class Admin_Api_Admin extends Zikula_Api
         }
 
         // Avoid deletion of the default category
-        $defaultcategory = ModUtil::getVar('Admin', 'defaultcategory');
+        $defaultcategory = $this->getVar('defaultcategory');
         if ($category['cid'] == $defaultcategory) {
             return LogUtil::registerError($this->__('Error! You cannot delete the default module category used in the administration panel.'));
         }
 
         // Avoid deletion of the start category
-        $startcategory = ModUtil::getVar('Admin', 'startcategory');
+        $startcategory = $this->getVar('startcategory');
         if ($category['cid'] == $startcategory) {
             return LogUtil::registerError($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
         }

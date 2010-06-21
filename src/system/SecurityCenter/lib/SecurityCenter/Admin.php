@@ -112,7 +112,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         // Get all items
         $items = ModUtil::apiFunc('SecurityCenter', 'user', 'getall',
                 array('startnum' => $startnum,
-                'numitems' => ModUtil::getVar('SecurityCenter', 'itemsperpage')));
+                'numitems' => $this->getVar('itemsperpage')));
 
         $hackattempts = array();
         if ($items) {
@@ -162,7 +162,7 @@ class SecurityCenter_Admin extends Zikula_Controller
 
         // Assign the values for the smarty plugin to produce a pager.
         $renderer->assign('pager', array('numitems' => ModUtil::apiFunc('SecurityCenter', 'user', 'countitems'),
-                'itemsperpage' => ModUtil::getVar('SecurityCenter', 'itemsperpage')));
+                'itemsperpage' => $this->getVar('itemsperpage')));
 
         return $renderer->fetch('securitycenter_admin_view.htm');
     }
@@ -182,7 +182,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         // Create output object
         $renderer = Renderer::getInstance('SecurityCenter', false);
 
-        $renderer->assign('itemsperpage', ModUtil::getVar('SecurityCenter', 'itemsperpage'));
+        $renderer->assign('itemsperpage', $this->getVar('itemsperpage'));
 
         // assign all of our vars
         $vars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
@@ -496,7 +496,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         // Create output object
         $renderer = Renderer::getInstance('SecurityCenter', false);
 
-        $renderer->assign('itemsperpage', ModUtil::getVar('SecurityCenter', 'itemsperpage'));
+        $renderer->assign('itemsperpage', $this->getVar('itemsperpage'));
 
         if ($reset) {
             $purifierconfig = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifierconfig', array('forcedefault' => true));
@@ -780,7 +780,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         }
         $filter   = FormUtil::getPassedValue('filter', $filterdefault, 'GETPOST');
         $startnum = (int)FormUtil::getPassedValue('startnum', 0, 'GET');
-        $pagesize = (int)ModUtil::getVar('SecurityCenter', 'pagesize', 25);
+        $pagesize = (int)$this->getVar('pagesize', 25);
 
 
         // instantiate object, generate where clause and select

@@ -137,7 +137,7 @@ class Groups_Api_User extends Zikula_Api
         $grpcol = $pntable['groups_column'];
 
         $where = "WHERE $grpcol[gtype] >= '1'";
-        if (ModUtil::getVar('Groups', 'hideclosed')) {
+        if ($this->getVar('hideclosed')) {
             $where .= " AND $grpcol[state] > '0'";
         }
         return DBUtil::selectObjectCount('groups', $where);
@@ -241,7 +241,7 @@ class Groups_Api_User extends Zikula_Api
         $grpcol = $pntable['groups_column'];
 
         $where = "WHERE $grpcol[gtype] >= '1'";
-        if (ModUtil::getVar('Groups', 'hideclosed')) {
+        if ($this->getVar('hideclosed')) {
             $where .= " AND $grpcol[state] > '0'";
         }
         $orderBy = "ORDER BY $grpcol[name]";
@@ -474,7 +474,7 @@ class Groups_Api_User extends Zikula_Api
                     return false;
                 }
 
-                if (ModUtil::getVar('Groups', 'mailwarning')) {
+                if ($this->getVar('mailwarning')) {
                     $uname = UserUtil::getVar('uname', $userid);
                     $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                             array('toname'    => $this->__('Administrator'),

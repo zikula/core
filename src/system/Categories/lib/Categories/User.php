@@ -31,7 +31,7 @@ class Categories_User extends Zikula_Controller
         }
 
         $renderer = Renderer::getInstance('Categories', false);
-        $renderer->assign ('allowusercatedit', ModUtil::getVar('Categories', 'allowusercatedit', 0));
+        $renderer->assign ('allowusercatedit', $this->getVar('allowusercatedit', 0));
         return $renderer->fetch('categories_user_editcategories.htm');
     }
 
@@ -74,7 +74,7 @@ class Categories_User extends Zikula_Controller
         }
 
         // now check if someone is trying edit another user's categories
-        $userRoot = ModUtil::getVar('Categories', 'userrootcat', 0);
+        $userRoot = $this->getVar('userrootcat', 0);
         if ($userRoot) {
             $userRootCat = CategoryUtil::getCategoryByPath($userRoot);
             if ($userRootCat) {
@@ -149,7 +149,7 @@ class Categories_User extends Zikula_Controller
             return LogUtil::registerError($this->__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
         }
 
-        $userRoot = ModUtil::getVar('Categories', 'userrootcat', 0);
+        $userRoot = $this->getVar('userrootcat', 0);
         if (!$userRoot) {
             return LogUtil::registerError($this->__('Error! Could not determine the user root node.'));
         }
