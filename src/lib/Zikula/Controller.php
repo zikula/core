@@ -37,7 +37,7 @@ abstract class Zikula_Controller extends Zikula_Base
         parent::__construct($serviceManager, $eventManager, $options);
 
         // Create renderer object
-        $this->renderer = Renderer::getInstance($this->name);
+        $this->renderer = Renderer::getInstance($this->getName());
         $this->renderer->assign('controller', $this);
     }
 

@@ -635,4 +635,45 @@ abstract class Zikula_Base
         return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode, $subject, $args);
     }
 
+    /**
+     * Convenience Module SetVar.
+     *
+     * @param string $key   Key.
+     * @param mixed  $value Value.
+     *
+     * @return object This.
+     */
+    public function setVar($key, $value)
+    {
+        ModUtil::setVar($this->name, $key, $value);
+        return $this;
+    }
+
+    /**
+     * Convenience Module GetVar.
+     *
+     * @param string  $key     Key.
+     * @param boolean $default Default, null if none.
+     *
+     * @return mixed
+     */
+    public function getVar($key, $default=null)
+    {
+        return ModUtil::getVar($this->name, $key, $default);
+    }
+
+    /**
+     * Convenience Module DetVar.
+     *
+     * @param string $key   Key.
+     *
+     * @return object This.
+     */
+    public function delVar($key=null)
+    {
+        ModUtil::delVar($this->name, $key);
+        return $this;
+    }
+
+
 }
