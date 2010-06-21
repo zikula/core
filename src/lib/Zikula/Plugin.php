@@ -13,6 +13,9 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Zikula_Plugin abstract class.
+ */
 abstract class Zikula_Plugin extends Zikula_EventHandler
 {
     const TYPE_MODULE = 1;
@@ -38,15 +41,68 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      * @var boolean
      */
     protected $booted = false;
-    
+
+    /**
+     * Plugin meta data.
+     *
+     * @var array
+     */
     protected $meta;
+
+    /**
+     * Plugin type.
+     *
+     * @var integer
+     */
     protected $pluginType;
+
+    /**
+     * Service ID.
+     *
+     * @var string
+     */
     protected $serviceId;
+
+    /**
+     * Class name.
+     *
+     * @var string
+     */
     protected $className;
+
+    /**
+     * Translation domain.
+     *
+     * @var string
+     */
     protected $domain;
+
+    /**
+     * Module name.
+     *
+     * @var string
+     */
     protected $moduleName;
+
+    /**
+     * Plugin name.
+     *
+     * @var string
+     */
     protected $pluginName;
+
+    /**
+     * Gettext capable.
+     *
+     * @var boolean
+     */
     protected $gettextEnabled = true;
+
+    /**
+     * Base dir.
+     *
+     * @var string
+     */
     protected $baseDir;
 
     /**

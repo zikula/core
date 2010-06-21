@@ -542,14 +542,13 @@ abstract class Zikula_Base
             $func = '';
         }
 
-        $message = DataUtil::formatForDisplayHTML((string) $message);        
+        $message = DataUtil::formatForDisplayHTML((string)$message);        
         if (!$showDetailInfo) {
             $msg = $message;
         } else {
             // TODO A [do we need to have HTML sanitization] (drak)
             $func = ((!empty($class)) ? "$class::$func" : $func);
             $msg = __f('%1$s The origin of this message was \'%2$s\' at line %3$s in file \'%4$s\'.', array($message, $func, $line, $file));
-            //
             if (System::isDevelopmentMode()) {
                 $msg .= '<br />';
                 $msg .= _prayer($debug);

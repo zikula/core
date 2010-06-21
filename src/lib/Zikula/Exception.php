@@ -13,6 +13,9 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Zikula_Exception class.
+ */
 class Zikula_Exception extends Exception
 {
     /**

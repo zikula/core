@@ -123,9 +123,9 @@ class Zikula_KernelClassLoader
     /**
      * Get class include path.
      *
-     * @param string $class The class name to autoload.
-     * @param array  $array Metadata about this namespace.
-     * @param string $class Class name.
+     * @param string $namespace The class name to autoload.
+     * @param array  $array     Metadata about this namespace.
+     * @param string $class     Class name.
      *
      * @return string|boolean $file Path or boolean false if this loader does apply.
      */

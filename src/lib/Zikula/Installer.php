@@ -68,7 +68,7 @@ abstract class Zikula_Installer extends Zikula_Base
     /**
      * Upgrade interface.
      *
-     * @param string Old version number.
+     * @param string $oldversion Old version number.
      *
      * @return boolean|string $args True, false or last successful version number upgrade.
      */
