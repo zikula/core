@@ -38,8 +38,7 @@ class Settings_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // create a new output object
-        $renderer = Renderer::getInstance('Settings', false);
+        $this->renderer->setCaching(false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -50,9 +49,9 @@ class Settings_Admin extends Zikula_Controller
             $configvars[$key] = $configvar;
         }
 
-        $renderer->assign('settings', $configvars);
+        $this->renderer->assign('settings', $configvars);
 
-        return $renderer->fetch('settings_admin_modifyconfig.htm');
+        return $this->renderer->fetch('settings_admin_modifyconfig.htm');
     }
 
     /**
@@ -152,8 +151,7 @@ class Settings_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // create a new output object
-        $renderer = Renderer::getInstance('Settings', false);
+        $this->renderer->setCaching(false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -166,7 +164,7 @@ class Settings_Admin extends Zikula_Controller
         $configvars['timezone_server_abbr'] = DateUtil::getTimezoneAbbr();
         $renderer->assign($configvars);
 
-        return $renderer->fetch('settings_admin_multilingual.htm');
+        return $this->renderer->fetch('settings_admin_multilingual.htm');
     }
 
     /**
@@ -256,8 +254,7 @@ class Settings_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // create a new output object
-        $renderer = Renderer::getInstance('Settings');
+        $this->renderer->setCaching(false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -271,7 +268,7 @@ class Settings_Admin extends Zikula_Controller
         $configvars['development'] = System::getVar('development');
         $renderer->assign($configvars);
 
-        return $renderer->fetch('settings_admin_errorhandling.htm');
+        return $this->renderer->fetch('settings_admin_errorhandling.htm');
     }
 
     /**
