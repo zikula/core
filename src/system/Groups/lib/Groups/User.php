@@ -65,15 +65,16 @@ class Groups_User extends Zikula_Controller
                 'uid'      => UserUtil::getVar('uid'),
                 'islogged' => $islogged));
 
-        $renderer = Renderer::getInstance('Groups', false);
-        $renderer->add_core_data();
-        $renderer->assign('mainpage', true);
+        $this->renderer->setCaching(false);
+
+        $this->renderer->add_core_data();
+        $this->renderer->assign('mainpage', true);
 
         // The return value of the function is checked here, and if the function
         // failed then an appropriate message is posted.
         if ($groups == false) {
-            $renderer->assign('nogroups', true);
-            return $renderer->fetch('groups_user_view.htm');
+            $this->renderer->assign('nogroups', true);
+            return $this->renderer->fetch('groups_user_view.htm');
         }
 
         $groupitems = array();
@@ -95,26 +96,26 @@ class Groups_User extends Zikula_Controller
                 $group['typelbl']  = $typelabel[$group['gtype']];
                 $group['statelbl'] = $statelabel[$group['state']];
 
-                $renderer->assign($group);
+                $this->renderer->assign($group);
 
                 if ($islogged == true && SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_READ)) {
                     // The right to apply
-                    $groupitems[] = $renderer->fetch('groups_user_grouprow_read.htm', $group['gid']);
+                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_read.htm', $group['gid']);
                 } else {
                     // No right to apply
-                    $groupitems[] = $renderer->fetch('groups_user_grouprow_overview.htm', $group['gid']);
+                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_overview.htm', $group['gid']);
                 }
             }
         }
 
-        $renderer->add_core_data();
-        $renderer->assign('nogroups', false);
-        $renderer->assign('items', $groupitems);
+        $this->renderer->add_core_data();
+        $this->renderer->assign('nogroups', false);
+        $this->renderer->assign('items', $groupitems);
 
-        $renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
-                'itemsperpage' => $itemsperpage));
+        $this->renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
+                                               'itemsperpage' => $itemsperpage));
 
-        return $renderer->fetch('groups_user_view.htm');
+        return $this->renderer->fetch('groups_user_view.htm');
     }
 
     /**
@@ -170,19 +171,17 @@ class Groups_User extends Zikula_Controller
             }
         }
 
-        $renderer = Renderer::getInstance('Groups');
+        $this->renderer->add_core_data();
 
-        $renderer->add_core_data();
+        $this->renderer->assign('mainpage',     true)
+                       ->assign('hooks',        false)
+                       ->assign('gid',          $gid)
+                       ->assign('gname',        $group['name'])
+                       ->assign('gtype',        $group['gtype']) // Can't use type as it is a reserved word.
+                       ->assign('action',       $action)
+                       ->assign('description',  $group['description']);
 
-        $renderer->assign('mainpage',     true);
-        $renderer->assign('hooks',        false);
-        $renderer->assign('gid',          $gid);
-        $renderer->assign('gname',        $group['name']);
-        $renderer->assign('gtype',        $group['gtype']); // Can't use type as it is a reserved word.
-        $renderer->assign('action',       $action);
-        $renderer->assign('description',  $group['description']);
-
-        return $renderer->fetch('groups_user_membership.htm');
+        return $this->renderer->fetch('groups_user_membership.htm');
     }
 
     /*
@@ -221,8 +220,7 @@ class Groups_User extends Zikula_Controller
             LogUtil::registerStatus($this->__('Done! Saved the action.'));
         }
 
-        $renderer = Renderer::getInstance('Groups');
-        $renderer->clear_cache('groups_user_memberslist.htm');
+        $this->renderer->clear_cache('groups_user_memberslist.htm');
 
         return System::redirect(ModUtil::url('Groups', 'user', 'main'));
     }
@@ -270,12 +268,11 @@ class Groups_User extends Zikula_Controller
         $group['typelbl']  = $typelabel[$group['gtype']];
         $group['statelbl'] = $statelabel[$group['state']];
 
-        $renderer = Renderer::getInstance('Groups');
-        $renderer->assign('mainpage', false);
+        $this->renderer->assign('mainpage', false);
 
-        $renderer->add_core_data();
+        $this->renderer->add_core_data();
 
-        $renderer->assign('group', $group);
+        $this->renderer->assign('group', $group);
 
         if ($group['members']) {
             $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline', array());
@@ -310,17 +307,17 @@ class Groups_User extends Zikula_Controller
                 }
                 array_multisort($sortAarr, SORT_ASC, $members);
             }
-            $renderer->assign('members', $members);
+            $this->renderer->assign('members', $members);
         } else {
-            $renderer->assign('members', false);
+            $this->renderer->assign('members', false);
         }
 
-        $renderer->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+        $this->renderer->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
 
-        $renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
-                'itemsperpage' => $itemsperpage));
+        $this->renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
+                                               'itemsperpage' => $itemsperpage));
 
-        $renderer->assign('hooks', $this->callHooks('item',
+        $this->renderer->assign('hooks', $this->callHooks('item',
                 'display',
                 $gid,
                 ModUtil::url('Groups',
@@ -329,8 +326,8 @@ class Groups_User extends Zikula_Controller
                 array('gid' => $gid))));
 
         $profileModule = System::getVar('profilemodule', '');
-        $renderer->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
+        $this->renderer->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 
-        return $renderer->fetch('groups_user_memberslist.htm');
+        return $this->renderer->fetch('groups_user_memberslist.htm');
     }
 }
