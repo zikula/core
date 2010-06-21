@@ -35,26 +35,26 @@ class Theme_Installer extends Zikula_Installer
         ModUtil::apiFunc('Theme', 'admin', 'regenerate');
 
         // define defaults for module vars
-        ModUtil::setVar('Theme', 'modulesnocache', '');
-        ModUtil::setVar('Theme', 'enablecache', false);
-        ModUtil::setVar('Theme', 'compile_check', true);
-        ModUtil::setVar('Theme', 'cache_lifetime', 3600);
-        ModUtil::setVar('Theme', 'force_compile', false);
-        ModUtil::setVar('Theme', 'trimwhitespace', false);
-        ModUtil::setVar('Theme', 'maxsizeforlinks', 30);
-        ModUtil::setVar('Theme', 'itemsperpage', 25);
+        $this->setVar('modulesnocache', '');
+        $this->setVar('enablecache', false);
+        $this->setVar('compile_check', true);
+        $this->setVar('cache_lifetime', 3600);
+        $this->setVar('force_compile', false);
+        $this->setVar('trimwhitespace', false);
+        $this->setVar('maxsizeforlinks', 30);
+        $this->setVar('itemsperpage', 25);
 
-        ModUtil::setVar('Theme', 'cssjscombine', false);
-        ModUtil::setVar('Theme', 'cssjscompress', false);
-        ModUtil::setVar('Theme', 'cssjsminify', false);
-        ModUtil::setVar('Theme', 'cssjscombine_lifetime', 3600);
+        $this->setVar('cssjscombine', false);
+        $this->setVar('cssjscompress', false);
+        $this->setVar('cssjsminify', false);
+        $this->setVar('cssjscombine_lifetime', 3600);
 
         // Renderer
-        ModUtil::setVar('Theme', 'render_compile_check',  true);
-        ModUtil::setVar('Theme', 'render_force_compile',  true);
-        ModUtil::setVar('Theme', 'render_cache',          false);
-        ModUtil::setVar('Theme', 'render_expose_template',false);
-        ModUtil::setVar('Theme', 'render_lifetime',       3600);
+        $this->setVar('render_compile_check',  true);
+        $this->setVar('render_force_compile',  true);
+        $this->setVar('render_cache',          false);
+        $this->setVar('render_expose_template',false);
+        $this->setVar('render_lifetime',       3600);
 
         // Initialisation successful
         return true;
@@ -79,16 +79,16 @@ class Theme_Installer extends Zikula_Installer
         switch ($oldversion)
         {
             case '3.1':
-                ModUtil::setVar('Theme', 'cssjscombine', false);
-                ModUtil::setVar('Theme', 'cssjscompress', false);
-                ModUtil::setVar('Theme', 'cssjsminify', false);
-                ModUtil::setVar('Theme', 'cssjscombine_lifetime', 3600);
+                $this->setVar('cssjscombine', false);
+                $this->setVar('cssjscompress', false);
+                $this->setVar('cssjsminify', false);
+                $this->setVar('cssjscombine_lifetime', 3600);
 
             case '3.3':
             // convert pnRender modvars
                 $pnrendervars = ModUtil::getVar('pnRender');
                 foreach ($pnrendervars as $k => $v) {
-                    ModUtil::setVar('Theme', 'render_' . $k, $v);
+                    $this->setVar('render_' . $k, $v);
                 }
                 // delete pnRender modvars
                 ModUtil::delVar('pnRender');
@@ -160,7 +160,7 @@ class Theme_Installer extends Zikula_Installer
         }
 
         // delete all module variables
-        ModUtil::delVar('Theme');
+        $this->delVar('Theme');
 
         // Deletion not allowed
         return false;

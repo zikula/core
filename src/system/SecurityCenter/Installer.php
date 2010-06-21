@@ -38,7 +38,7 @@ class SecurityCenter_Installer extends Zikula_Installer
         }
 
         // Set up an initial value for a module variable.
-        ModUtil::setVar('SecurityCenter', 'itemsperpage', 10);
+        $this->setVar('itemsperpage', 10);
 
         // We use config vars for the rest of the configuration as config vars
         // are available earlier in the PN initialisation process
@@ -84,7 +84,7 @@ class SecurityCenter_Installer extends Zikula_Installer
 
         // HTML Purifier default settings
         $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
-        ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($purifierDefaultConfig));
+        $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage
         System::setVar('useids', 0);
@@ -305,7 +305,7 @@ class SecurityCenter_Installer extends Zikula_Installer
                 System::delVar('htmlpurifierConfig');
                 // HTML Purifier default settings
                 $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
-                ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($purifierDefaultConfig));
+                $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
             // fall through
 
             case '1.6':

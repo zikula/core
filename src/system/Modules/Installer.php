@@ -47,7 +47,7 @@ class Modules_Installer extends Zikula_Installer
 
         // populate default data
         $this->defaultdata();
-        ModUtil::setVar('Modules', 'itemsperpage', 25);
+        $this->setVar('itemsperpage', 25);
 
         // Initialisation successful
         return true;

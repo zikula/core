@@ -38,10 +38,10 @@ class Groups_Installer extends Zikula_Installer
         }
 
         // set all our module vars
-        ModUtil::setVar('Groups', 'itemsperpage', 25);
-        ModUtil::setVar('Groups', 'defaultgroup', 1);
-        ModUtil::setVar('Groups', 'mailwarning', 0);
-        ModUtil::setVar('Groups', 'hideclosed', 0);
+        $this->setVar('itemsperpage', 25);
+        $this->setVar('defaultgroup', 1);
+        $this->setVar('mailwarning', 0);
+        $this->setVar('hideclosed', 0);
 
         // create the default data for the modules module
         $this->defaultdata();
@@ -67,7 +67,7 @@ class Groups_Installer extends Zikula_Installer
             case '2.1':
             // change value of defaultgroup from name to gid
                 $gid = DBUtil::selectObjectByID('groups', ModUtil::getVar('Groups', 'defaultgroup'), 'name');
-                ModUtil::setVar('Groups', 'defaultgroup', $gid['gid']);
+                $this->setVar('defaultgroup', $gid['gid']);
 
             case '2.2':
             case '2.3':

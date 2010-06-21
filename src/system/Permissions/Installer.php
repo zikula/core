@@ -133,11 +133,11 @@ class Permissions_Installer extends Zikula_Installer
         $record['bond']      = '0';
         DBUtil::insertObject($record, 'group_perms', 'pid');
 
-        ModUtil::setVar('Permissions', 'filter', 1);
-        ModUtil::setVar('Permissions', 'warnbar', 1);
-        ModUtil::setVar('Permissions', 'rowview', 20);
-        ModUtil::setVar('Permissions', 'rowedit', 20);
-        ModUtil::setVar('Permissions', 'lockadmin', 1);
-        ModUtil::setVar('Permissions', 'adminid', 1);
+        $this->setVar('filter', 1);
+        $this->setVar('warnbar', 1);
+        $this->setVar('rowview', 20);
+        $this->setVar('rowedit', 20);
+        $this->setVar('lockadmin', 1);
+        $this->setVar('adminid', 1);
     }
 }

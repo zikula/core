@@ -31,18 +31,18 @@ class Admin_Installer extends Zikula_Installer
             return false;
         }
 
-        ModUtil::setVar('Admin', 'modulesperrow', 3);
-        ModUtil::setVar('Admin', 'itemsperpage', 15);
-        ModUtil::setVar('Admin', 'defaultcategory', 5);
-        ModUtil::setVar('Admin', 'modulestylesheet', 'navtabs.css');
-        ModUtil::setVar('Admin', 'admingraphic', 1);
-        ModUtil::setVar('Admin', 'startcategory', 1);
+        $this->setVar('modulesperrow', 3);
+        $this->setVar('itemsperpage', 15);
+        $this->setVar('defaultcategory', 5);
+        $this->setVar('modulestylesheet', 'navtabs.css');
+        $this->setVar('admingraphic', 1);
+        $this->setVar('startcategory', 1);
         // change below to 0 before release - just makes it easier doing development meantime - drak
         // we can now leave this at 0 since the code also checks the development flag (config.php) - markwest
-        ModUtil::setVar('Admin', 'ignoreinstallercheck', 0);
-        ModUtil::setVar('Admin', 'admintheme', '');
-        ModUtil::setVar('Admin', 'displaynametype', 1);
-        ModUtil::setVar('Admin', 'moduledescription', 1);
+        $this->setVar('ignoreinstallercheck', 0);
+        $this->setVar('admintheme', '');
+        $this->setVar('displaynametype', 1);
+        $this->setVar('moduledescription', 1);
 
         $this->defaultdata();
 
@@ -70,9 +70,9 @@ class Admin_Installer extends Zikula_Installer
                 }
 
             case '1.6':
-                ModUtil::setVar('Admin', 'modulesperrow', 3);
-                ModUtil::setVar('Admin', 'itemsperpage', 15);
-                ModUtil::setVar('Admin', 'moduledescription', 1);
+                $this->setVar('modulesperrow', 3);
+                $this->setVar('itemsperpage', 15);
+                $this->setVar('moduledescription', 1);
 
             case '1.7':
             case '1.8':
@@ -99,7 +99,7 @@ class Admin_Installer extends Zikula_Installer
             return false;
         }
 
-        ModUtil::delVar('Admin');
+        $this->delVar();
 
         // Deletion successful
         return true;

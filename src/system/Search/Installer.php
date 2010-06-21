@@ -32,8 +32,8 @@ class Search_Installer extends Zikula_Installer
         }
 
         // create module vars
-        ModUtil::setVar('Search', 'itemsperpage', 10);
-        ModUtil::setVar('Search', 'limitsummary', 255);
+        $this->setVar('itemsperpage', 10);
+        $this->setVar('limitsummary', 255);
 
         // Initialisation successful
         return true;
@@ -77,7 +77,7 @@ class Search_Installer extends Zikula_Installer
         }
 
         // Delete any module variables
-        ModUtil::delVar('Search');
+        $this->delVar();
 
         // Deletion successful
         return true;

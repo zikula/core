@@ -23,19 +23,19 @@ class Mailer_Installer extends Zikula_Installer
      */
     public function install()
     {
-        ModUtil::setVar('Mailer', 'mailertype', 1);
-        ModUtil::setVar('Mailer', 'charset', ZLanguage::getEncoding());
-        ModUtil::setVar('Mailer', 'encoding', '8bit');
-        ModUtil::setVar('Mailer', 'html', false);
-        ModUtil::setVar('Mailer', 'wordwrap', 50);
-        ModUtil::setVar('Mailer', 'msmailheaders', false);
-        ModUtil::setVar('Mailer', 'sendmailpath', '/usr/sbin/sendmail');
-        ModUtil::setVar('Mailer', 'smtpauth', false);
-        ModUtil::setVar('Mailer', 'smtpserver', 'localhost');
-        ModUtil::setVar('Mailer', 'smtpport', 25);
-        ModUtil::setVar('Mailer', 'smtptimeout', 10);
-        ModUtil::setVar('Mailer', 'smtpusername', '');
-        ModUtil::setVar('Mailer', 'smtppassword', '');
+        $this->setVar('mailertype', 1);
+        $this->setVar('charset', ZLanguage::getEncoding());
+        $this->setVar('encoding', '8bit');
+        $this->setVar('html', false);
+        $this->setVar('wordwrap', 50);
+        $this->setVar('msmailheaders', false);
+        $this->setVar('sendmailpath', '/usr/sbin/sendmail');
+        $this->setVar('smtpauth', false);
+        $this->setVar('smtpserver', 'localhost');
+        $this->setVar('smtpport', 25);
+        $this->setVar('smtptimeout', 10);
+        $this->setVar('smtpusername', '');
+        $this->setVar('smtppassword', '');
 
         // Initialisation successful
         return true;
@@ -73,7 +73,7 @@ class Mailer_Installer extends Zikula_Installer
     public function uninstall()
     {
         // Delete any module variables
-        ModUtil::delVar('Mailer');
+        $this->delVar();
 
         // Deletion successful
         return true;

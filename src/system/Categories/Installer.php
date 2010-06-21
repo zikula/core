@@ -52,11 +52,11 @@ class Categories_Installer extends Zikula_Installer
 
         $this->createTables_101();
 
-        ModUtil::setVar('Categories', 'userrootcat', '/__SYSTEM__/Users');
-        ModUtil::setVar('Categories', 'allowusercatedit', 0);
-        ModUtil::setVar('Categories', 'autocreateusercat', 0);
-        ModUtil::setVar('Categories', 'autocreateuserdefaultcat', 0);
-        ModUtil::setVar('Categories', 'userdefaultcatname', 'Default');
+        $this->setVar('userrootcat', '/__SYSTEM__/Users');
+        $this->setVar('allowusercatedit', 0);
+        $this->setVar('autocreateusercat', 0);
+        $this->setVar('autocreateuserdefaultcat', 0);
+        $this->setVar('userdefaultcatname', 'Default');
 
         // Initialisation successful
         return true;
