@@ -19,6 +19,46 @@
 abstract class Zikula_Block extends Zikula_Base
 {
     /**
+     * Renderer instance.
+     * 
+     * @var Renderer
+     */
+    protected $renderer;
+
+    /**
+     * Constructor.
+     *
+     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param Zikula_EventManager   $eventManager   EventManager instance.
+     * @param array                 $options        Options (universal constructor).
+     */
+    public function  __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager, array $options = array())
+    {
+        parent::__construct($serviceManager, $eventManager, $options);
+
+        // Create renderer object
+        $this->setRenderer();
+        $this->renderer->assign('controller', $this);
+    }
+
+    /**
+     * Set renderer property.
+     *
+     * @param Renderer $renderer Default null means new Render instance for this module name.
+     *
+     * @return Zikula_Controller
+     */
+    protected function setRenderer(Renderer $renderer = null)
+    {
+        if (is_null($renderer)) {
+            $renderer = Renderer::getInstance($this->getName());
+        }
+
+        $this->renderer = $renderer;
+        return $this;
+    }
+
+    /**
      * Initialise interface.
      */
     abstract public function init();

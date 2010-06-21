@@ -21,7 +21,7 @@ abstract class Zikula_Controller extends Zikula_Base
     /**
      * Instance of Renderer.
      * 
-     * @var object
+     * @var Renderer
      */
     protected $renderer;
 
@@ -37,8 +37,25 @@ abstract class Zikula_Controller extends Zikula_Base
         parent::__construct($serviceManager, $eventManager, $options);
 
         // Create renderer object
-        $this->renderer = Renderer::getInstance($this->getName());
+        $this->setRenderer();
         $this->renderer->assign('controller', $this);
+    }
+
+    /**
+     * Set renderer property.
+     *
+     * @param Renderer $renderer Default null means new Render instance for this module name.
+     *
+     * @return Zikula_Controller
+     */
+    protected function setRenderer(Renderer $renderer = null)
+    {
+        if (is_null($renderer)) {
+            $renderer = Renderer::getInstance($this->getName());
+        }
+
+        $this->renderer = $renderer;
+        return $this;
     }
 
     /**

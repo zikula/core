@@ -483,6 +483,33 @@ class Renderer extends Smarty
     }
 
     /**
+     * Assign variable to template.
+     *
+     * @param string $tpl_var Variable name.
+     * @param mixed  $value   Value.
+     *
+     * @return Renderer
+     */
+    function assign($tpl_var, $value = null)
+    {
+        parent::assign($tpl_var, $value);
+        return $this;
+    }
+
+    /**
+     * Set Caching.
+     *
+     * @param boolean $value True or false.
+     *
+     * @return Renderer
+     */
+    public function setCaching($value)
+    {
+        $this->caching = (bool)$value;
+        return $this;
+    }
+
+    /**
      * set up paths for the template
      *
      * This function sets the template and the config path according
