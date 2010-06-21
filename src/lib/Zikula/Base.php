@@ -613,4 +613,26 @@ abstract class Zikula_Base
         }
     }
 
+    /**
+     * Carry out hook operations for module.
+     *
+     * @param string  $hookobject The object the hook is called for - one of 'item', 'category' or 'module'.
+     * @param string  $hookaction The action the hook is called for - one of 'new', 'create', 'modify', 'update', 'delete', 'transform', 'display', 'modifyconfig', 'updateconfig'.
+     * @param integer $hookid     The id of the object the hook is called for (module-specific).
+     * @param array   $extrainfo  Extra information for the hook, dependent on hookaction.
+     * @param boolean $implode    Implode collapses all display hooks into a single string.
+     * @param object  $subject    Default $this controller.
+     * @param array   $args       Extra arguments.
+     *
+     * @return string|array String output from GUI hooks, extrainfo array for API hooks.
+     */
+    public function callHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true, $subject = null, array $args = array())
+    {
+        if (is_null($subject)) {
+            $subject = $this;
+        }
+
+        return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode, $subject, $args);
+    }
+
 }

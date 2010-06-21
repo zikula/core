@@ -54,18 +54,6 @@ module.type_not_found if $type is not found in ModUtil::exec() (e.g. no admin.ph
         4. $event->setNotify().
         5. return void
 
-module.callhooks.extrainfo
-
-    $subject
-    $args =  array('objectid' => $hookid, 'extrainfo' => $extrainfo, 'modulehook' => $modulehook);
-    $event->data = $extrainfo
-
-module.callhooks.output
-
-    $subject
-    $args =  array('objectid' => $hookid, 'extrainfo' => $extrainfo, 'modulehook' => $modulehook);
-    $event->data = $output
-
 module.postcallhooks.extrainfo
 
     $subject

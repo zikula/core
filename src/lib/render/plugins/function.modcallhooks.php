@@ -26,6 +26,9 @@
  * - 'hookobject' the object the hook is called for - either 'item' or 'category'
  * - 'hookaction' the action the hook is called for - one of 'create', 'delete', 'transform', or 'display'
  * - 'hookid'     the id of the object the hook is called for (module-specific)
+ * - 'subject'    the calling subject (usually $controller)
+ * - 'args'       extra arguments.
+ * - 'implode'    Implode collapses all display hooks into a single string.
  * - 'assign'     If set, the results are assigned to the corresponding variable instead of printed out
  * - all remaining parameters are passed to the ModUtil::callHooks API via the extrainfo array
  *
@@ -44,6 +47,8 @@ function smarty_function_modcallhooks($params, &$smarty)
     $hookaction = isset($params['hookaction']) ? $params['hookaction']    : null;
     $hookobject = isset($params['hookobject']) ? $params['hookobject']    : null;
     $implode    = isset($params['implode'])    ? (bool)$params['implode'] : true;
+    $subject    = isset($params['subject'])    ? $params['subject']       : null;
+    $args       = isset($params['args'])       ? $params['args']          : array();
 
     // avoid sending these to ModUtil::callHooks
     unset($params['hookobject']);
@@ -51,6 +56,8 @@ function smarty_function_modcallhooks($params, &$smarty)
     unset($params['hookid']);
     unset($params['assign']);
     unset($params['implode']);
+    unset($params['subject']);
+    unset($params['args']);
 
     if (!$hookobject) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookobject')));
@@ -62,6 +69,9 @@ function smarty_function_modcallhooks($params, &$smarty)
     }
     if (!$hookid) {
         $hookid = '';
+    }
+    if (is_null($subject) && isset($smarty->controller)) {
+        $subject = $smarty->controller;
     }
 
     // create returnurl if not supplied (= this page)
@@ -75,7 +85,7 @@ function smarty_function_modcallhooks($params, &$smarty)
         $assign = 'hooks';
     }
 
-    $result = ModUtil::callHooks($hookobject, $hookaction, $hookid, $params, $implode);
+    $result = ModUtil::callHooks($hookobject, $hookaction, $hookid, $params, $implode, $subject, $args);
 
     if ($assign) {
         $smarty->assign($assign, $result);
