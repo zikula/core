@@ -26,9 +26,6 @@ class Errors_User extends Zikula_Controller
     {
         $type = FormUtil::getPassedValue('errtype', isset($args['type']) ? $args['type'] : LogUtil::getErrorType(), 'GET');
 
-        // create an output object
-        $renderer = Renderer::getInstance('Errors', false);
-
         // perform any error specific tasks
         $protocol = System::serverGetVar('SERVER_PROTOCOL');
         switch ($type) {
@@ -49,22 +46,24 @@ class Errors_User extends Zikula_Controller
         // load the stylesheet
         PageUtil::addVar('stylesheet', 'system/Errors/style/style.css');
 
+        $this->renderer->setCaching(false);
+        
         // assign the document info
-        $renderer->assign('reportlevel', System::getVar('reportlevel'));
-        $renderer->assign('currenturi', System::getCurrentUri());
-        $renderer->assign('localreferer', System::localReferer());
-        $renderer->assign('sitename', System::getVar('sitename'));
-        $renderer->assign('reportlevel', System::getVar('reportlevel'));
-        $renderer->assign('funtext', System::getVar('funtext'));
+        $this->renderer->assign('reportlevel', System::getVar('reportlevel'))
+                       ->assign('currenturi', System::getCurrentUri())
+                       ->assign('localreferer', System::localReferer())
+                       ->assign('sitename', System::getVar('sitename'))
+                       ->assign('reportlevel', System::getVar('reportlevel'))
+                       ->assign('funtext', System::getVar('funtext'));
 
         // assign the list of registered errors
-        $renderer->assign('messages', LogUtil::getErrorMessages());
+        $this->renderer->assign('messages', LogUtil::getErrorMessages());
 
         // return the template output
-        if ($renderer->template_exists($template = "errors_user_{$type}.htm")) {
-            return $renderer->fetch($template);
+        if ($this->renderer->template_exists($template = "errors_user_{$type}.htm")) {
+            return $this->renderer->fetch($template);
         } else {
-            return $renderer->fetch('errors_user_main.htm');
+            return $this->renderer->fetch('errors_user_main.htm');
         }
     }
 
@@ -75,8 +74,8 @@ class Errors_User extends Zikula_Controller
      */
     public function system($args)
     {
-        $renderer = Renderer::getInstance('Errors', false);
-        $renderer->assign($args);
-        return $renderer->fetch('errors_user_system.htm');
+        $this->renderer->setCaching(false);
+        $this->renderer->assign($args);
+        return $this->renderer->fetch('errors_user_system.htm');
     }
 }
