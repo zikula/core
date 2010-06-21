@@ -13,18 +13,33 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Provide a set of default filter operations.
+ */
 class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
+    /**
+     * Enabled operators.
+     * 
+     * @var array
+     */
     private $ops = array();
+    
+    /**
+     * Fields to use the plugin for.
+     * 
+     * @var array
+     */
     private $fields = array();
 
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * Argument $config may contain
+     *  fields:   Set of fields to use, see setFields().
+     *  ops:      Operators to enable, see activateOperators().
      *
-     * @access public
-     * @param array $config Configuration
-     * @return object FilterUtil_Plugin_Default
+     * @param array $config Configuration.
      */
     public function __construct($config)
     {
@@ -46,10 +61,11 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
     }
 
     /**
-     * Adds fields to list in common way
+     * Activates the requested Operators.
      *
-     * @access public
-     * @param mixed $op Operators to activate
+     * @param mixed $op Operators to activate.
+     * 
+     * @return void
      */
     public function activateOperators($op)
     {
@@ -75,6 +91,13 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
         }
     }
 
+    /**
+     * Adds fields to list in common way.
+     *
+     * @param mixed $fields Fields to add.
+     * 
+     * @return void
+     */
     public function addFields($fields)
     {
         if (is_array($fields)) {
@@ -86,16 +109,20 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
         }
     }
 
+    /**
+     * Returns the fields.
+     * 
+     * @return array List of fields.
+     */
     public function getFields()
     {
         return $this->fields;
     }
 
     /**
-     * Get operators
+     * Get activated operators.
      *
-     * @access public
-     * @return array Set of Operators and Arrays
+     * @return array Set of Operators and Arrays.
      */
     public function getOperators()
     {
@@ -113,13 +140,13 @@ class FilterUtil_Filter_default extends FilterUtil_PluginCommon implements Filte
     }
 
     /**
-     * return SQL code
+     * Returns SQL code.
      *
-     * @access public
-     * @param string $field Field name
-     * @param string $op Operator
-     * @param string $value Test value
-     * @return string SQL code
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     * 
+     * @return array SQL code array.
      */
     public function getSQL($field, $op, $value)
     {

@@ -12,29 +12,48 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Base class of all FilterUtil plugins.
+ */
 class FilterUtil_PluginCommon extends FilterUtil_Common
 {
     /**
-     * default handler
+     * Default handler.
+     * 
+     * @var boolean
      */
     protected $default = false;
 
     /**
-     * ID of the plugin
+     * ID of the plugin.
+     * 
+     * @var integer
      */
     protected $id;
 
+    /**
+     * Constructor.
+     * 
+     * Sets parameters each Class could need.
+     * array $config must hold:
+     *   module: The module name.
+     *   table: The table name.
+     * It also may contain:
+     *   join: The join array.
+     *
+     * @param array $config Arguments as listed above.
+     */
     public function __construct($config)
     {
         parent::__construct($config);
     }
 
     /**
-     * set the plugin id
+     * Sets the plugin id.
      *
-     * @access public
-     * @param int $id Plugin ID
+     * @param int $id Plugin ID.
+     * 
+     * @return void
      */
     public function setID($id)
     {

@@ -13,22 +13,74 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Filter entries using a m:n relationship.
+ */
 class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
+    /**
+     * Enabled operators.
+     * 
+     * @var array
+     */
     private $ops = array();
+    
+    /**
+     * Field configuration.
+     * 
+     * An array of fields in the relation table in the form name => field.
+     * 
+     * @var array
+     */
     private $fields = array();
+    
+    /**
+     * The table names of the relation tables.
+     * 
+     * In the form name => table.
+     * 
+     * @var array
+     */
     private $mnpntable = array();
+    
+    /**
+     * The table names in database.
+     *
+     * In the form name => table.
+     * 
+     * @var aray
+     */
     private $mntable = array();
+    
+    /**
+     * The column set of the relation tables.
+     * 
+     * In the form name => columns.
+     * 
+     * @var array
+     */
     private $mncolumn = array();
+    
+    /**
+     * The field in table to compare the relationed field with.
+     * 
+     * In the form name => field.
+     * 
+     * @var array
+     */
     private $comparefield = array();
 
     /**
      * Constructor
      *
-     * @access public
-     * @param array $config Configuration
-     * @param array $config[fields] array of name => array(field, table, comparefield)
-     * @return object FilterUtil_Plugin_nmlist
+     * Argument $config may contain "fields". This is an array in the form
+     * name => array(field=>'', table=>'', comparefield=>'').
+     * name is the filter field name.
+     * field is the id field in the mn-relationship table.
+     * table is the table of the mn-relationship.
+     * comparefield is the field to compare with in the table.
+     *
+     * @param array $config Plugin configuration.
      */
     public function __construct($config)
     {
@@ -45,16 +97,29 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
         }
     }
 
+    /**
+     * Returns the operators the plugin can handle.
+     * 
+     * @return array Operators.
+     */
     public function availableOperators()
     {
         return array('eq', 'ne');
     }
 
     /**
-     * Adds fields to list in common way
+     * Adds fields to list in common way.
+     * 
+     * Takes an array in the form
+     * name => array(field=>'', table=>'', comparefield=>'').
+     * name is the filter field name.
+     * field is the id field in the mn-relationship table.
+     * table is the table of the mn-relationship.
+     * comparefield is the field to compare with in the table.
      *
-     * @access public
-     * @param mixed $fields Fields to add
+     * @param mixed $fields Fields to add.
+     * 
+     * @return void
      */
     public function addFields($fields)
     {
@@ -66,10 +131,11 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
     }
 
     /**
-     * Adds fields to list in common way
+     * Activates the requested Operators.
      *
-     * @access public
-     * @param mixed $op Operators to activate
+     * @param mixed $op Operators to activate.
+     * 
+     * @return void
      */
     public function activateOperators($op)
     {
@@ -84,16 +150,20 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
         }
     }
 
+    /**
+     * Returns the fields.
+     * 
+     * @return array List of fields.
+     */
     public function getFields()
     {
         return array_keys($this->fields);
     }
 
     /**
-     * Get operators
+     * Get activated operators.
      *
-     * @access public
-     * @return array Set of Operators and Arrays
+     * @return array Set of Operators and Arrays.
      */
     public function getOperators()
     {
@@ -109,9 +179,12 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
     }
 
     /**
-     * Set the n:m-Table
+     * Set the n:m-Table.
      *
-     * @param string $table Table name
+     * @param string $name  Filter field name.
+     * @param string $table Table name.
+     * 
+     * @return void
      */
     public function setListTable($name, $table)
     {
@@ -122,9 +195,12 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
     }
 
     /**
-     * Set the Compare field
+     * Set the Compare field.
      *
-     * @param string $field Field name
+     * @param string $name  Filter field name.
+     * @param string $field Field name.
+     * 
+     * @return void
      */
     public function setCompareField($name, $field)
     {
@@ -134,13 +210,13 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
     }
 
     /**
-     * return SQL code
+     * Returns SQL code.
      *
-     * @access public
-     * @param string $field Field name
-     * @param string $op Operator
-     * @param string $value Test value
-     * @return string SQL code
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     * 
+     * @return array SQL code array.
      */
     public function getSQL($field, $op, $value)
     {

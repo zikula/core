@@ -13,19 +13,42 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * FilterUtil category filter plugin
+ */
 class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
+    /**
+     * Enabled operators.
+     * 
+     * @var array
+     */
     private $ops = array();
+    
+    /**
+     * Fields to use the plugin for.
+     * 
+     * @var array
+     */
     private $fields = array();
+    
+    /**
+     * Category property.
+     * 
+     * @var array
+     */
     private $property;
 
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * Argument $config may contain
+     *  fields:   Set of fields to use, see setFields().
+     *  property: Property set of the categories to filter by.
+     *            As in DBUtil categoryFilter. See setProperty().
+     *  ops:      Operators to enable, see activateOperators().
      *
-     * @access public
-     * @param array $config Configuration
-     * @return object FilterUtil_Plugin_pgList
+     * @param array $config Configuration.
      */
     public function __construct($config)
     {
@@ -48,6 +71,11 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
         }
     }
 
+    /**
+     * Returns the operators the plugin can handle.
+     * 
+     * @return array Operators.
+     */
     public function availableOperators()
     {
         return array(
@@ -58,10 +86,11 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     }
 
     /**
-     * Adds fields to list in common way
+     * Adds fields to list in common way.
      *
-     * @access public
-     * @param mixed $fields Fields to add
+     * @param mixed $fields Fields to add.
+     * 
+     * @return void
      */
     public function addFields($fields)
     {
@@ -74,16 +103,22 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
         }
     }
 
+    /**
+     * Returns the fields.
+     * 
+     * @return array List of fields.
+     */
     public function getFields()
     {
         return $this->fields;
     }
 
     /**
-     * Adds operators
+     * Adds operators.
      *
-     * @access public
-     * @param mixed $op Operators to activate
+     * @param mixed $op Operators to activate.
+     * 
+     * @return void
      */
     public function activateOperators($op)
     {
@@ -99,8 +134,7 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     /**
      * Get operators
      *
-     * @access public
-     * @return array Set of Operators and Arrays
+     * @return array Set of Operators and Arrays.
      */
     public function getOperators()
     {
@@ -118,24 +152,26 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
     }
 
     /**
-     * Set the category property
+     * Sets the category property.
      *
-     * @see CategoryUtil
-     * @param mixed $property Category Property
+     * @param mixed $property Category Property.
+     * 
+     * @see    CategoryUtil
+     * @return void
      */
     public function setProperty($property)
     {
-        $this->property = (array) $property;
+        $this->property = (array)$property;
     }
 
     /**
-     * return SQL code
+     * Returns SQL code.
      *
-     * @access public
-     * @param string $field Field name
-     * @param string $op Operator
-     * @param string $value Test value
-     * @return string SQL code
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     * 
+     * @return array SQL code array.
      */
     function getSQL($field, $op, $value)
     {

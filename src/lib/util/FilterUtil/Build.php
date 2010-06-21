@@ -16,36 +16,36 @@
 interface FilterUtil_Build
 {
     /**
-     * Adds fields to list in common way
-     *
-     * @access public
-     * @param mixed $fields Fields to add
+     * Adds fields to list in common way.
+     * 
+     * @param mixed $fields Fields to add.
+     * 
+     * @return void
      */
     public function addFields($fields);
 
     /**
-     * Get fields in list
+     * Get fields in list.
      *
-     * @access public
-     * @return mixed Fields in list
+     * @return mixed Fields in list.
      */
     public function getFields();
 
     /**
-     * Activate/Enable operators
+     * Activates/Enables operators.
      *
-     * @access public
-     * @param mixed $op Operators to activate
+     * @param mixed $op Operators to activate.
+     * 
+     * @return void
      */
     public function activateOperators($op);
 
     /**
-     * Get operators
+     * Get operators.
      *
-     * returns an array of operators each as an array of fields
+     * Returns an array of operators each as an array of fields
      * to use the plugin for. "-" means default for all fields.
      *
-     * @access public
      * @return array Set of Operators and Arrays
      */
     public function getOperators();
@@ -53,13 +53,13 @@ interface FilterUtil_Build
     /**
      * Get SQL
      *
-     * Return SQL WHERE and DBUtil JOIN array as array('where' => , 'join' =>)
+     * Return SQL WHERE and DBUtil JOIN array as array('where' => , 'join' =>).
      *
-     * @param string $field Field name
-     * @param string $op Operator
-     * @param string $value Value
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Value.
+     * 
      * @return array $where
-     * @access public
      */
     public function getSQL($field, $op, $value);
 }

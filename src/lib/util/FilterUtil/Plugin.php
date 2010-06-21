@@ -12,31 +12,37 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Plugin manager class.
+ */
 class FilterUtil_Plugin extends FilterUtil_Common
 {
     /**
-     * Loaded plugins
+     * Loaded plugins.
+     * 
+     * @var array
      */
     private $plg;
 
     /**
-     * Loaded operators
+     * Loaded operators.
+     * 
+     * @var array
      */
     private $ops;
 
     /**
-     * Loaded replaces
+     * Loaded replaces.
+     * 
+     * @var array
      */
     private $replaces;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @access public
-     * @param array $config Configuration array
-     * @param array $plgs Plugins to load in form "plugin name => config array"
-     * @return object FilterUtil_Plugin object (optional) (default: null)
+     * @param array $config Configuration array.
+     * @param array $plgs   Plugins to load in form "plugin name => config array".
      */
     public function __construct($config = array(), $plgs = null)
     {
@@ -45,16 +51,18 @@ class FilterUtil_Plugin extends FilterUtil_Common
         if ($plgs !== null && is_array($plgs) && count($plgs) > 0) {
             $ok = $this->loadPlugins($plgs);
         }
-
-        return ($ok === false ? false : $this);
+        
+        if ($ok == false) {
+            return false;
+        }
     }
 
     /**
-     * Load plugins
+     * Loads plugins.
      *
-     * @access public
-     * @param array $plgs Array of plugin informations in form "plugin's name => config array"
-     * @return bool true on success, false otherwise
+     * @param array $plgs Array of plugin informations in form "plugin's name => config array".
+     * 
+     * @return bool true on success, false otherwise.
      */
     public function loadPlugins($plgs)
     {
@@ -68,12 +76,12 @@ class FilterUtil_Plugin extends FilterUtil_Common
     }
 
     /**
-     * Load a single plugin
+     * Loads a single plugin.
      *
-     * @access public
-     * @param string $name Plugin's name
-     * @param array $config Plugin's config
-     * @return bool True on success, false otherwise
+     * @param string $name   Plugin's name.
+     * @param array  $config Plugin's config.
+     * 
+     * @return bool True on success, false otherwise.
      */
     public function loadPlugin($name, $config = array())
     {
@@ -115,13 +123,13 @@ class FilterUtil_Plugin extends FilterUtil_Common
     }
 
     /**
-     * Register a plugin
+     * Register a plugin.
      *
-     * Check what type the plugin is from and register it
+     * Check what type the plugin is from and register it.
      *
-     * @param int $k The Plugin's ID -> Key in the $this->plg array
+     * @param int $k The Plugin's ID -> Key in the $this->plg array.
+     * 
      * @return void
-     * @access private
      */
     private function registerPlugin($k)
     {
@@ -150,13 +158,13 @@ class FilterUtil_Plugin extends FilterUtil_Common
     }
 
     /**
-     * Get plugin's configuration object
+     * Get plugin's configuration object.
      *
      * FIXME What's about this function? $name is not unique!
      *
-     * @access public
-     * @param string $name Plugin's name
-     * @return object Plugin's configuration object
+     * @param string $name Plugin's name.
+     * 
+     * @return object Plugin's configuration object.
      */
     public function getConfig($name)
     {
@@ -168,13 +176,13 @@ class FilterUtil_Plugin extends FilterUtil_Common
     }
 
     /**
-     * Check if a plugin is loaded
+     * Checks if a plugin is loaded.
      *
      * FIXME What's about this function? $name is not unique!
      *
-     * @access public
-     * @param string $name Plugin's name
-     * @return bool true if the plugin is loaded, false otherwise
+     * @param string $name Plugin's name.
+     * 
+     * @return bool true if the plugin is loaded, false otherwise.
      */
     public function isLoaded($name)
     {
@@ -186,13 +194,13 @@ class FilterUtil_Plugin extends FilterUtil_Common
     }
 
     /**
-     * run replace plugins and return condition set
+     * Runs replace plugins and return condition set.
      *
-     * @access public
-     * @param string $field Fieldname
-     * @param string $op Operator
-     * @param string $value Value
-     * @return array condition set
+     * @param string $field Fieldname.
+     * @param string $op    Operator.
+     * @param string $value Value.
+     * 
+     * @return array condition set.
      */
     public function replace($field, $op, $value)
     {
@@ -211,13 +219,13 @@ class FilterUtil_Plugin extends FilterUtil_Common
     }
 
     /**
-     * return SQL code
+     * Returns SQL code.
      *
-     * @access public
-     * @param string $field Field name
-     * @param string $op Operator
-     * @param string $value Test value
-     * @return array sql set
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     * 
+     * @return array Sql set.
      */
     public function getSQL($field, $op, $value)
     {

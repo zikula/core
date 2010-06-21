@@ -13,17 +13,27 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Simple field name replacement.
+ */
 class FilterUtil_Filter_replaceName extends FilterUtil_PluginCommon implements FilterUtil_Replace
 {
+    /**
+     * Replace pairs.
+     * 
+     * Form is old => new.
+     * 
+     * @var array
+     */
     protected $pair = array();
 
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * Argument $config may contain:
+     *  pair: array of replace pairs in form old => new.
      *
-     * @access public
-     * @param array $config Configuration
-     * @return object FilterUtil_Plugin_Default
+     * @param array $config Configuration.
      */
     public function __construct($config)
     {
@@ -35,10 +45,11 @@ class FilterUtil_Filter_replaceName extends FilterUtil_PluginCommon implements F
     }
 
     /**
-     * Add new replace pair (fieldname => replace with)
+     * Add new replace pair (fieldname => replace with).
      *
-     * @param mixed $pair Replace Pair
-     * @access public
+     * @param mixed $pair Replace pair.
+     *
+     * @return void
      */
     public function addPair($pair)
     {
@@ -52,13 +63,13 @@ class FilterUtil_Filter_replaceName extends FilterUtil_PluginCommon implements F
     }
 
     /**
-     * Replace operator
+     * Replace field's value.
      *
-     * @access public
-     * @param string $field Fieldname
-     * @param string $op Operator
-     * @param string $value Value
-     * @return array array(field, op, value)
+     * @param string $field Field name.
+     * @param string $op    Filter operator.
+     * @param string $value Filter value.
+     * 
+     * @return array New filter set.
      */
     public function replace($field, $op, $value)
     {

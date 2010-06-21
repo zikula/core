@@ -12,39 +12,57 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * This is the base class for all FilterUtil classes.
+ */
 class FilterUtil_Common
 {
     /**
-     * Table name in pntable.php
+     * Table name in pntable.php.
+     *
+     * @var string
      */
     protected static $pntable;
 
     /**
-     * Module's name
+     * Module's name.
+     * 
+     * @var string
      */
     protected static $module;
 
     /**
-     * Table name
+     * Table name.
+     * 
+     * @var string
      */
     protected static $table;
 
     /**
-     * Table columns
+     * Table columns.
+     * 
+     * @var array
      */
     protected static $column;
 
     /**
-     * Join array
+     * Join array.
+     * 
+     * @var array
      */
     protected static $join = array();
 
     /**
-     * Constructor
-     * Set parameters each Class could need
+     * Constructor.
+     * 
+     * Sets parameters each Class could need.
+     * Array $args must hold:
+     *   module: The module name.
+     *   table: The table name.
+     * It also may contain:
+     *   join: The join array.
      *
-     * @param string $args['table'] Tablename
+     * @param array $args Arguments as listed above.
      */
     public function __construct($args = array())
     {
@@ -66,11 +84,11 @@ class FilterUtil_Common
     }
 
     /**
-     * Set Module
+     * Sets Module.
      *
-     * @access public
-     * @param string $module Module name
-     * @return bool true on success, false otherwise
+     * @param string $module Module name.
+     * 
+     * @return bool true on success, false otherwise.
      */
     protected function setModule($module)
     {
@@ -87,11 +105,11 @@ class FilterUtil_Common
     }
 
     /**
-     * Set table
+     * Sets table.
      *
-     * @access public
-     * @param string $table Table name
-     * @return bool true on success, false otherwise
+     * @param string $table Table name.
+     * 
+     * @return bool true on success, false otherwise.
      */
     protected function setTable($table)
     {
@@ -109,13 +127,13 @@ class FilterUtil_Common
     }
 
     /**
-     * Set join
+     * Sets join.
      *
-     * Sets a reference to a join array for right column names
+     * Sets a reference to a join array for right column names.
      *
-     * @param array &$join Join array
+     * @param array &$join Join array.
+     * 
      * @return void
-     * @access public
      */
     protected function setJoin(&$join)
     {
@@ -124,10 +142,12 @@ class FilterUtil_Common
     }
 
     /**
-     * Add Join to columns
+     * Adds Join to columns.
      *
      * Edits the column array for use with a join array.
      * We must call it whenever we edited the join information!
+     * 
+     * @return void
      */
     protected function addJoinToColumn()
     {
@@ -165,9 +185,9 @@ class FilterUtil_Common
     /**
      * Field exists?
      *
-     * @access private
-     * @param string $field Field name
-     * @return bool true if the field exists, else if not
+     * @param string $field Field name.
+     * 
+     * @return bool true if the field exists, else if not.
      */
     protected function fieldExists($field)
     {
@@ -179,11 +199,11 @@ class FilterUtil_Common
     }
 
     /**
-     * Add common config variables to config array
+     * Adds common config variables to config array.
      *
-     * @access protected
-     * @param array $config Config array
-     * @return array Config array including common config
+     * @param array &$config Config array.
+     * 
+     * @return void
      */
     protected function addCommon(&$config)
     {

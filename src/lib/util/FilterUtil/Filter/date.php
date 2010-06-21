@@ -13,17 +13,35 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
- * Date plugin main class
- *
- * This plugin
+ * FilterUtil date handler plugin
  */
 class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUtil_Build, FilterUtil_Replace
 {
+    
+    /**
+     * Enabled operators.
+     * 
+     * @var array
+     */
     private $ops = array();
+    
+    /**
+     * Fields to use the plugin for.
+     * 
+     * @var array
+     */
     private $fields = array();
 
+    /**
+     * Constructor.
+     * 
+     * Argument $config may contain
+     *  fields:   Set of fields to use, see setFields().
+     *  ops:      Operators to enable, see activateOperators().
+     *
+     * @param array $config Configuration.
+     */
     public function __construct($config)
     {
         parent::__construct($config);
@@ -39,6 +57,11 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
         }
     }
 
+    /**
+     * Returns the operators the plugin can handle.
+     * 
+     * @return array Operators.
+     */
     public function availableOperators()
     {
         return array(
@@ -52,10 +75,11 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
     }
 
     /**
-     * Adds fields to list in common way
+     * Activates the requested Operators.
      *
-     * @access public
-     * @param mixed $op Operators to activate
+     * @param mixed $op Operators to activate.
+     * 
+     * @return void
      */
     public function activateOperators($op)
     {
@@ -68,6 +92,13 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
         }
     }
 
+    /**
+     * Adds fields to list in common way.
+     *
+     * @param mixed $fields Fields to add.
+     * 
+     * @return void
+     */
     public function addFields($fields)
     {
         if (is_array($fields)) {
@@ -79,6 +110,11 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
         }
     }
 
+    /**
+     * Returns the fields.
+     * 
+     * @return array List of fields.
+     */
     public function getFields()
     {
         return $this->fields;
@@ -106,12 +142,13 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
     }
 
     /**
-     * Replace field's value
+     * Replace field's value.
      *
-     * @param string $field Field name
-     * @param string $op Filter operator
-     * @param string $value Filter value
-     * @return string New filter value
+     * @param string $field Field name.
+     * @param string $op    Filter operator.
+     * @param string $value Filter value.
+     * 
+     * @return array New filter set.
      */
     public function replace($field, $op, $value)
     {
@@ -137,6 +174,13 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
                     );
     }
 
+    /**
+     * Convert the date to a more useful format.
+     * 
+     * @param string $date Date string.
+     * 
+     * @return string Converted date
+     */
     protected function dateConvert($date)
     {
         if (strptime($date, "%d.%m.%Y %H:%M:%S") !== false) {
@@ -151,6 +195,24 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
         return $time;
     }
 
+    /**
+     * Parses the date string to create a time period.
+     * 
+     * Takes a date and calculates a period by a specific type.
+     * Types may be:
+     *   year:       That year.
+     *   month:      That month.
+     *   day:        That day.
+     *   tomorrow:   The day after that day.
+     *   hour:       That hour.
+     *   min/minute: That minute.
+     * Returns an array(from, to).
+     * 
+     * @param string $date Date string.
+     * @param string $type Period type.
+     * 
+     * @return array Start and end of the period.
+     */
     private function makePeriod($date, $type)
     {
         $datearray = getdate($date);
@@ -165,11 +227,9 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
                 $from = mktime(0, 0, 0, $datearray['mon'], 1, $datearray['year']);
                 $to = strtotime('+1 month', $from);
                 break;
-            /*
-            case 'week':
-                $from = DateUtil::getDatetime("substr ($date, 0, strpos ($date, ' '));
-                $to = DateUtil::getDatetime("$from +1 year");
-            */
+            //case 'week':
+            //   $from = DateUtil::getDatetime("substr ($date, 0, strpos ($date, ' '));
+            //   $to = DateUtil::getDatetime("$from +1 year");
             case 'day':
             case 'tomorrow':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
@@ -191,6 +251,15 @@ class FilterUtil_Filter_date extends FilterUtil_PluginCommon implements FilterUt
         return array($from, $to);
     }
 
+    /**
+     * Returns SQL code.
+     *
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     * 
+     * @return array SQL code array.
+     */
     public function getSQL($field, $op, $value)
     {
         if (array_search($op, $this->ops) === false || array_search($field, $this->fields) === false) {

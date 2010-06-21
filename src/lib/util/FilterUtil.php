@@ -12,45 +12,57 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
- * This Class adds a Pagesetter like filter feature to PostNuke
+ * Adds a Pagesetter like filter feature to PostNuke
  */
 class FilterUtil extends FilterUtil_Common
 {
 
     /**
-     * The Input variable name
+     * The Input variable name.
+     * 
+     * @var string
      */
     private $varname;
 
     /**
-     * Plugin object
+     * Plugin object.
+     * 
+     * @var array
      */
     private $plugin;
 
     /**
-     * Filter object holder
+     * Filter object holder.
+     * 
+     * @var array
      */
     private $obj;
 
     /**
-     * Filter string holder
+     * Filter string holder.
+     * 
+     * @var array
      */
     private $filter;
 
     /**
-     * Filter SQL holder
+     * Filter SQL holder.
+     * 
+     * @var array
      */
     private $sql;
 
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * Argument $args may contain:
+     *  plugins: Set of plugins to load.
+     *  varname: Name of filters in $_REQUEST. Default: filter.
      *
-     * @param string $module Module name
-     * @param string $table Table name
-     * @param array $args Mixed arguments
-     * @access public
+     * @param string $module Module name.
+     * @param string $table  Table name.
+     * @param array  $args   Mixed arguments.
      */
     public function __construct($module, $table, $args = array())
     {
@@ -76,11 +88,11 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Set name of input variable of filter
+     * Set name of input variable of filter.
      *
-     * @access public
-     * @param string $name name of input variable
-     * @return bool true on success, false otherwise
+     * @param string $name Name of input variable.
+     * 
+     * @return bool true on success, false otherwise.
      */
     public function setVarName($name)
     {
@@ -89,17 +101,19 @@ class FilterUtil extends FilterUtil_Common
         }
 
         $this->varname = $name;
+        
+        return true;
     }
 
 
     //++++++++++++++++ Object handling +++++++++++++++++++
 
     /**
-     * strip brackets around a filterstring
+     * strip brackets around a filterstring.
      *
-     * @access private
-     * @param string $filter Filterstring
-     * @return string edited filterstring
+     * @param string $filter Filterstring.
+     * 
+     * @return string Edited filterstring.
      */
     private function stripBrackets($filter)
     {
@@ -111,11 +125,11 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Create a condition object out of a string
+     * Create a condition object out of a string.
      *
-     * @access private
-     * @param string $filter Condition string
-     * @return array condition object
+     * @param string $filter Condition string.
+     * 
+     * @return array Condition object.
      */
     private function makeCondition($filter)
     {
@@ -146,8 +160,8 @@ class FilterUtil extends FilterUtil_Common
             $obj['op'] = $parts[1];
         }
 
-        if (!$obj['field'] || !$obj['op']) { // invalid condition
-            return false;
+        if (!$obj['field'] || !$obj['op']) {
+            return false; // invalid condition
         }
 
         $obj = $this->plugin->replace($obj['field'], $obj['op'], $obj['value']);
@@ -156,10 +170,11 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Help function to generate an object out of a string
+     * Help function to generate an object out of a string.
      *
-     * @access private
-     * @param string $filter    Filterstring
+     * @param string $filter Filterstring.
+     * 
+     * @return array Filter object.
      */
     private function genObjectRecursive($filter)
     {
@@ -200,7 +215,8 @@ class FilterUtil extends FilterUtil_Common
                     break;
                 case '(': // Subquery
                     $level++;
-                    while ($level != 0 && $i <= strlen($filter)) { // get end bracket
+                    while ($level != 0 && $i <= strlen($filter)) {
+                        // get end bracket
                         $i++;
                         $c = substr($filter, $i, 1);
                         switch ($c) {
@@ -242,9 +258,9 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Generate the filter object from a string
+     * Generate the filter object from a string.
      *
-     * @access public
+     * @return void
      */
     public function genObject()
     {
@@ -254,8 +270,7 @@ class FilterUtil extends FilterUtil_Common
     /**
      * Get the filter object
      *
-     * @access public
-     * @return array filter object
+     * @return array Filter object
      */
     public function GetObject()
     {
@@ -269,6 +284,7 @@ class FilterUtil extends FilterUtil_Common
 
     //---------------- Object handling ---------------------
     //++++++++++++++++ Filter handling +++++++++++++++++++++
+    
     /**
      * Get all filters from Input
      *
@@ -302,10 +318,9 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Get filterstring
+     * Get filterstring.
      *
-     * @access public
-     * @return string $filter Filterstring
+     * @return string $filter Filterstring.
      */
     public function getFilter()
     {
@@ -324,10 +339,11 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Set filterstring
+     * Set filterstring.
      *
-     * @access public
-     * @param mixed $filter Filter string or array
+     * @param mixed $filter Filter string or array.
+     * 
+     * @return void
      */
     public function setFilter($filter)
     {
@@ -347,11 +363,11 @@ class FilterUtil extends FilterUtil_Common
     //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
 
     /**
-     * Help function for generate the filter SQL from a Filter-object
+     * Help function for generate the filter SQL from a Filter-object.
      *
-     * @access private
-     * @param array $obj Object array
-     * @return array Where and Join sql
+     * @param array $obj Object array.
+     * 
+     * @return array Where and Join sql.
      */
     private function genSqlRecursive($obj)
     {
@@ -391,9 +407,9 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Generate where/join SQL
+     * Generate where/join SQL.
      *
-     * access public
+     * @return void
      */
     public function genSql()
     {
@@ -402,10 +418,9 @@ class FilterUtil extends FilterUtil_Common
     }
 
     /**
-     * Get where/join SQL
+     * Get where/join SQL.
      *
-     * @access public
-     * @return array Array with where and join
+     * @return array Array with where and join.
      */
     public function getSql()
     {

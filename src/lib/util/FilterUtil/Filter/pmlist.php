@@ -13,17 +13,36 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * FilterUtil plugin to access a single category field.
+ * 
+ * Operator "sub" can filter for a category and all its subcategories.
+ */
 class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements FilterUtil_Build
 {
+    /**
+     * Enabled operators.
+     * 
+     * @var array
+     */
     private $ops = array();
+    
+    /**
+     * Fields to use the plugin for.
+     * 
+     * @var array
+     */
     private $fields = array();
 
     /**
      * Constructor
+     * 
+     * Argument $config may contain:
+     *  fields:  Set of fields to work on.
+     *  ops:     Enabled Operators.
+     *  default: This plugin is the default plugin for all fields?
      *
-     * @access public
-     * @param array $config Configuration
-     * @return object FilterUtil_Plugin_pgList
+     * @param array $config Configuration.
      */
     public function __construct($config)
     {
@@ -45,10 +64,11 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
     }
 
     /**
-     * Adds fields to list in common way
+     * Adds fields to list in common way.
      *
-     * @access public
-     * @param mixed $fields Fields to add
+     * @param mixed $fields Fields to add.
+     * 
+     * @return void
      */
     public function addFields($fields)
     {
@@ -61,16 +81,22 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
         }
     }
 
+    /**
+     * Returns the fields.
+     * 
+     * @return array List of fields.
+     */
     public function getFields()
     {
         return $this->fields;
     }
 
     /**
-     * Adds operators
+     * Activates the requested Operators.
      *
-     * @access public
-     * @param mixed $op Operators to activate
+     * @param mixed $op Operators to activate.
+     * 
+     * @return void
      */
     public function activateOperators($op)
     {
@@ -84,10 +110,9 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
     }
 
     /**
-     * Get operators
+     * Get activated operators.
      *
-     * @access public
-     * @return array Set of Operators and Arrays
+     * @return array Set of Operators and Arrays.
      */
     public function getOperators()
     {
@@ -104,6 +129,11 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
         return $ops;
     }
 
+    /**
+     * Returns the operators the plugin can handle.
+     * 
+     * @return array Operators.
+     */
     public function availableOperators()
     {
         return array(
@@ -114,13 +144,13 @@ class FilterUtil_Filter_pmList extends FilterUtil_PluginCommon implements Filter
     }
 
     /**
-     * return SQL code
+     * Returns SQL code.
      *
-     * @access public
-     * @param string $field Field name
-     * @param string $op Operator
-     * @param string $value Test value
-     * @return string SQL code
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Test value.
+     * 
+     * @return array SQL code array.
      */
     function getSQL($field, $op, $value)
     {
