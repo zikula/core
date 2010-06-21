@@ -112,7 +112,7 @@ class DBUtil
      * @param boolean $optionsarray The options array.
      *
      * @return boolean
-     * @throws Exception
+     * @throws Exception If the dbname is empty.
      */
     public static function createDatabase($dbname, $optionsarray = false)
     {
@@ -215,7 +215,7 @@ class DBUtil
      * @param boolean $verbose      Whether to be verbose (default=true) (optional).
      *
      * @return mixed The result set of the successfully executed query or false on error.
-     * @throws Exception no SQL statment.
+     * @throws Exception No SQL statment.
      */
     public static function executeSQL($sql, $limitOffset = -1, $limitNumRows = -1, $exitOnError = true, $verbose = true)
     {
@@ -300,7 +300,7 @@ class DBUtil
             die('Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />' . nl2br($e->getTraceAsString()));
         }
         
-        /*
+        /* Disabled
         if ($verbose) {
             print '<br />' . $dbconn->ErrorMsg() . '<br />' . $sql . '<br />';
         }
@@ -309,6 +309,7 @@ class DBUtil
             throw new Exception(__('Exiting after SQL-error'));
         }
         */
+        
         return false;
     }
 
@@ -319,7 +320,7 @@ class DBUtil
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return string The generated sql string.
-     * @throws Exception
+     * @throws Exception If invalid table key retreived or empty query generated.
      */
     public static function _getAllColumns($table, $columnArray = null)
     {
@@ -351,7 +352,7 @@ class DBUtil
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return The generated sql string
-     * @throws Exception
+     * @throws Exception If invalid table key retreived or empty query generated.
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
     {
@@ -389,7 +390,7 @@ class DBUtil
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return The column array for the given table.
-     * @throws Exception
+     * @throws Exception If empty query generated.
      */
     public static function getColumnsArray($table, $columnArray = null)
     {
@@ -430,7 +431,7 @@ class DBUtil
      * @return array            Expanded column array.
      * @deprecated
      * @see    Doctrine_Record
-     * @throws Exception     
+     * @throws Exception If invalid join information retrieved (an alias already exists).
      */
     public static function expandColumnsWithJoinInfo($columns, $joinInfo)
     {
@@ -473,7 +474,7 @@ class DBUtil
      * @param string $definition Field specific options (optional) (default=null).
      *
      * @return boolean
-     * @throws Exception
+     * @throws Exception If parameters are empty.
      */
     public static function renameColumn($table, $oldcolumn, $newcolumn, $definition = null)
     {
@@ -520,7 +521,8 @@ class DBUtil
      * @param array  $fields Fields to add from the table.
      *
      * @return boolean
-     * @throws Exception
+     * @throws Exception                If parameters are empty.
+     * @throws InvalidArgumentException If field does not exist in table definition.
      */
     public static function addColumn($table, array $fields)
     {
@@ -566,7 +568,7 @@ class DBUtil
      * @param array  $fields Fields to drop from the table.
      *
      * @return boolean
-     * @throws Exception
+     * @throws Exception If parameters are empty.
      */
     public static function dropColumn($table, $fields)
     {
@@ -613,7 +615,7 @@ class DBUtil
     public static function _formatForStore($value)
     {
         if (is_int($value)) {
-        	 // No need to DataUtil::formatForStore when casted to int
+            // No need to DataUtil::formatForStore when casted to int
             return (int)$value;
             // Avoid SQL strict problems where false would be stored as ''
         } else if ($value === false) {
@@ -628,7 +630,7 @@ class DBUtil
     /**
      * Generate and execute an insert SQL statement for the given object.
      *
-     * @param array   $object   The object we wish to insert.
+     * @param array   &$object  The object we wish to insert.
      * @param string  $table    The treated table reference.
      * @param string  $idfield  The column which stores the primary key (optional) (default='id').
      * @param boolean $preserve Whether or not to preserve existing/set standard fields (optional) (default=false).
@@ -636,10 +638,10 @@ class DBUtil
      *
      * @return The result set from the update operation. The object is updated with the newly generated ID.
      * @deprecated
-     *    @see Doctrine_Record::save()
+     * @see    Doctrine_Record::save()
      * @deprecated
-     *    @see Doctrine_Table
-     * @throws Exception
+     * @see    Doctrine_Table
+     * @throws Exception If column or column_def is not an array or cant find anything to insert into object.
      */
     public static function insertObject(array &$object, $table, $idfield = 'id', $preserve = false, $force = false)
     {
@@ -739,7 +741,7 @@ class DBUtil
     /**
      * Generate and execute an update SQL statement for the given object.
      *
-     * @param array   $object   The object we wish to update.
+     * @param array   &$object  The object we wish to update.
      * @param string  $table    The treated table reference.
      * @param string  $where    The where clause (optional) (default='').
      * @param string  $idfield  The column which stores the primary key (optional) (default='id').
@@ -748,8 +750,8 @@ class DBUtil
      *
      * @return integer The result set from the update operation
      * @deprecated
-     *    @see Doctrine_Record::save()
-     * @throws Exception
+     * @see    Doctrine_Record::save()
+     * @throws Exception If parameters not set or column or column_def not in array.
      */
     public static function updateObject(array &$object, $table, $where = '', $idfield = 'id', $force = false, $updateid = false)
     {
@@ -837,7 +839,7 @@ class DBUtil
     /**
      * Loop through the array and feed it to self::insertObject().
      *
-     * @param array   $objects  The objectArray we wish to insert.
+     * @param array   &$objects The objectArray we wish to insert.
      * @param string  $table    The treated table reference.
      * @param string  $idfield  The column which stores the primary key (optional) (default='id').
      * @param boolean $preserve Whether or not to preserve existing/set standard fields (optional) (default=false).
@@ -846,7 +848,7 @@ class DBUtil
      * @return integer The result set from the last insert operation. The objects are updated with the newly generated ID.
      *
      * @deprecated
-     *    @see Doctrine_Table
+     * @see    Doctrine_Table
      */
     public static function insertObjectArray(array &$objects, $table, $idfield = 'id', $preserve = false, $force = false)
     {
@@ -864,10 +866,10 @@ class DBUtil
     /**
      * Loop through the array and feed it to self::updateObject().
      *
-     * @param array   $objects The objectArray we wish to insert.
-     * @param string  $table   The treated table reference.
-     * @param string  $idfield The column which stores the primary key.
-     * @param boolean $force   Whether or not to insert empty values as NULL.
+     * @param array   &$objects The objectArray we wish to insert.
+     * @param string  $table    The treated table reference.
+     * @param string  $idfield  The column which stores the primary key.
+     * @param boolean $force    Whether or not to insert empty values as NULL.
      *
      * @return integer The result set from the last update operation.
      */
@@ -887,6 +889,7 @@ class DBUtil
 
     /**
      * Post-processing after this object has beens saved.
+     * 
      * This routine is responsible for writing the 'extra' data (attributes, categories,
      * and meta data) to the database and the optionally creating an
      * entry in the object-log table.
@@ -898,7 +901,8 @@ class DBUtil
      *
      * @return mixed The object.
      * @deprecated
-     *    @see CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
+     * @see    CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
+     * @throws Exception If invalid idfield received.
      */
     private static function _savePostProcess($object, $table, $idfield, $update = false)
     {
@@ -1023,8 +1027,8 @@ class DBUtil
      *
      * @return The result from the delete operation.
      * @deprecated
-     *    @see CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
-     * @throws Exception
+     * @see    CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
+     * @throws Exception Cant specify both object and whereclause or either are missing.
      */
     public static function deleteObject(array $object, $table, $where = '', $idfield = 'id')
     {
@@ -1143,6 +1147,7 @@ class DBUtil
 
     /**
      * Post-processing after this object has beens deleted.
+     * 
      * This routine is responsible for deleting the 'extra' data (attributes, categories,
      * and meta data) from the database and the optionally creating an
      * entry in the object-log table.
@@ -1152,7 +1157,7 @@ class DBUtil
      * @param integer $idfield The id column for the object/table combination.
      *
      * @deprecated
-     *    @see CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
+     * @see    CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
      */
     private static function _deletePostProcess($object, $table, $idfield)
     {
@@ -1978,7 +1983,7 @@ class DBUtil
      *
      * @return mixed The resulting object.
      * @deprecated
-     *    @see Doctrine_Table::find*
+     * @see    Doctrine_Table::find*
      * @throws Exception
      */
     public static function selectObjectByID($table, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $cacheObject = true, $transformFunc = null)
@@ -2501,7 +2506,7 @@ class DBUtil
      *
      * @return array($sqlJoin, $sqlJoinFieldList, $ca).
      * @deprecated
-     *    @see    Doctrine_Record
+     * @see       Doctrine_Record
      */
     private static function _processJoinArray($table, $joinInfo, $columnArray = null)
     {
@@ -2580,7 +2585,7 @@ class DBUtil
      * @return array the object with it's relevant sub-objects set.
      *
      * @deprecated
-     *    @see CategorisableListener, AttributableListener, MetaDataListener
+     * @see    CategorisableListener, AttributableListener, MetaDataListener
      */
     public static function _selectPostProcess($objects, $table, $idFieldName)
     {
