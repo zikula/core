@@ -42,6 +42,16 @@ abstract class Zikula_Controller extends Zikula_Base
     }
 
     /**
+     * Get Renderer object for this controller.
+     *
+     * @return Renderer
+     */
+    public function getRenderer()
+    {
+        return $this->renderer;
+    }
+
+    /**
      * Magic method for method_not_found events.
      *
      * @param string $method Method name called.
