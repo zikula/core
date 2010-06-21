@@ -226,3 +226,5 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
 - ModUtil::callHooks(), added $subject and $args params. In non OO modules please
   add a these to your module/template hook calls where $subject could be the
   controller for example $this, or inside a template, $controller.
+  The $args that hook methods receive will now contain the extra keys 'subject'
+  and 'args'.  These correspond to the $subject and $args passed to ModUtil::callHooks()
