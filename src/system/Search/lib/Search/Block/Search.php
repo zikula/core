@@ -58,9 +58,6 @@ class Search_Block_Search extends Zikula_Block
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        // Create output object
-        $renderer = Renderer::getInstance('Search');
-
         // set some defaults
         if (!isset($vars['displaySearchBtn'])) {
             $vars['displaySearchBtn'] = 0;
@@ -70,7 +67,7 @@ class Search_Block_Search extends Zikula_Block
         $vars['modvar'] = ModUtil::getVar('Search');
 
         // assign the block vars array
-        $renderer->assign('vars',$vars);
+        $this->renderer->assign('vars',$vars);
 
         // set a title if one isn't present
         if (empty($blockinfo['title'])) {
@@ -78,7 +75,7 @@ class Search_Block_Search extends Zikula_Block
         }
 
         // return the rendered block
-        $blockinfo['content'] = $renderer->fetch('search_block_search.htm');
+        $blockinfo['content'] = $this->renderer->fetch('search_block_search.htm');
         return BlockUtil::themeBlock($blockinfo);
     }
 
@@ -109,14 +106,13 @@ class Search_Block_Search extends Zikula_Block
             }
         }
 
-        // Create output object
-        $renderer = Renderer::getInstance('Search');
+        $this->renderer->setCaching(false);
 
         // assign the block vars array
-        $renderer->assign('searchvars', $vars);
-        $renderer->assign('searchmodules', $searchmodules);
+        $this->renderer->assign('searchvars', $vars)
+                       ->assign('searchmodules', $searchmodules);
 
-        return $renderer->fetch('search_block_search_modify.htm');
+        return $this->renderer->fetch('search_block_search_modify.htm');
     }
 
     /**
@@ -146,8 +142,7 @@ class Search_Block_Search extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $renderer = Renderer::getInstance('Search');
-        $renderer->clear_cache('search_block_search.htm');
+        $this->renderer->clear_cache('search_block_search.htm');
 
         return($blockinfo);
     }
