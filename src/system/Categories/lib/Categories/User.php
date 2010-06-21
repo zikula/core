@@ -30,9 +30,10 @@ class Categories_User extends Zikula_Controller
             SessionUtil::setVar('categories_referer', $referer);
         }
 
-        $renderer = Renderer::getInstance('Categories', false);
-        $renderer->assign ('allowusercatedit', $this->getVar('allowusercatedit', 0));
-        return $renderer->fetch('categories_user_editcategories.htm');
+        $this->renderer->setCaching(false);
+
+        $this->renderer->assign('allowusercatedit', $this->getVar('allowusercatedit', 0));
+        return $this->renderer->fetch('categories_user_editcategories.htm');
     }
 
     /**
@@ -119,16 +120,17 @@ class Categories_User extends Zikula_Controller
 
         $languages = ZLanguage::getInstalledLanguages();
 
-        $renderer = Renderer::getInstance('Categories', false);
-        $renderer->assign('rootCat', $rootCat);
-        $renderer->assign('category', $editCat);
-        $renderer->assign('attributes', $attributes);
-        $renderer->assign('allCats', $allCats);
-        $renderer->assign('languages', $languages);
-        $renderer->assign('userlanguage', ZLanguage::getLanguageCode());
-        $renderer->assign('referer', SessionUtil::getVar('categories_referer'));
+        $this->renderer->setCaching(false);
+        
+        $this->renderer->assign('rootCat', $rootCat)
+                       ->assign('category', $editCat)
+                       ->assign('attributes', $attributes)
+                       ->assign('allCats', $allCats)
+                       ->assign('languages', $languages)
+                       ->assign('userlanguage', ZLanguage::getLanguageCode())
+                       ->assign('referer', SessionUtil::getVar('categories_referer'));
 
-        return $renderer->fetch('categories_user_edit.htm');
+        return $this->renderer->fetch('categories_user_edit.htm');
     }
 
     /**
