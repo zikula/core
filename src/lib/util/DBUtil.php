@@ -1371,6 +1371,7 @@ class DBUtil
      *
      * @param integer $count The value to set the object marhsall counter to.
      *
+     * @return Nothing
      */
     public static function _setFetchedObjectCount($count = 0)
     {
@@ -2726,7 +2727,7 @@ class DBUtil
      * Get the table definition for a database table. Convert the representation
      * from ADODB Datadict to Doctrine
      *
-     * @param string $table table to get adodb sql string for.
+     * @param string $table Table to get adodb sql string for.
      *
      * @return array The table definition.
      * @throws Exception                If table parameter is empty.
@@ -3007,7 +3008,7 @@ class DBUtil
     /**
      * Verify that column and column_def definition match.
      *
-     * @param  string table The treated table reference.
+     * @param string $table The treated table reference.
      *
      * @return boolean
      * @throws Exception If the table parameter is empty or cannot retrieve table/column def for $table.
@@ -3140,7 +3141,7 @@ class DBUtil
      * @param array  $tabopt     Table options.
      *
      * @return boolean
-     * @throws Ecveption if the $table parameter is empty or failed consistency check.
+     * @throws Exception If the $table parameter is empty or failed consistency check.
      */
     public static function changeTable($table, $definition = null, $tabopt = null)
     {
@@ -3231,7 +3232,7 @@ class DBUtil
      * @param string $table Table a tablename key for the tables structure.
      *
      * @return boolean
-     * @throws Exception if the $table param is empty or does not point to a valid table definition.
+     * @throws Exception If the $table param is empty or does not point to a valid table definition.
      */
     public static function truncateTable($table)
     {
@@ -3265,7 +3266,7 @@ class DBUtil
      * @param string $newTable NewTable a tablename key for the tables structure.
      *
      * @return boolean
-     * @throws Exception if the $table or $newTable parameter is empty, or do not point to valid definitons.
+     * @throws Exception If the $table or $newTable parameter is empty, or do not point to valid definitons.
      */
     public static function renameTable($table, $newTable)
     {
@@ -3305,7 +3306,7 @@ class DBUtil
      * @param string $table Table a tablename key for the tables structure.
      *
      * @return boolean
-     * @throws Exception if the $table parameter is empty or does not point to valid table definition.
+     * @throws Exception If the $table parameter is empty or does not point to valid table definition.
      */
     public static function dropTable($table)
     {
@@ -3341,7 +3342,7 @@ class DBUtil
      * @param array        $idxoptarray Array of UNIQUE=true and/or PRIMARY=true.
      *
      * @return boolean
-     * @throws Exception if $idxname, $table, or $flds paramters are empty 
+     * @throws Exception If $idxname, $table, or $flds paramters are empty 
      */
     public static function createIndex($idxname, $table, $flds, $idxoptarray = false)
     {
@@ -3439,8 +3440,8 @@ class DBUtil
     /**
      * Get a list of columns in a table.
      *
-     * @param string $table The treated table reference.
-     * @param boolean $assoc
+     * @param string  $table            The treated table reference.
+     * @param boolean $assoc            Associative meta column names?.
      * @param boolean $notcasesensitive Normalize case of table name.
      *
      * @return array of column objects.
@@ -3462,8 +3463,8 @@ class DBUtil
     /**
      * Get a list of column names in a table.
      *
-     * @param string $table Table The treated table reference.
-     * @param boolean $numericIndex use numeric keys.
+     * @param string  $table        Table The treated table reference.
+     * @param boolean $numericIndex Use numeric keys.
      *
      * @return array Array of column names.
      * @throws Exception If the table param is empty or does not point to a valid table definition.
@@ -3485,7 +3486,7 @@ class DBUtil
         $array = array();
         if ($numericIndex) {
             foreach ($rows as $row) {
-               $array[] = $row;
+                $array[] = $row;
             }
             return $array;
         }
@@ -3521,7 +3522,7 @@ class DBUtil
      * Get a list of foreign keys for a table.
      *
      * @param string  $table The treated table reference.
-     * @param boolean $owner (optional) (default=false).
+     * @param boolean $owner Owner (optional) (default=false).
      * @param boolean $upper Upper case key names.
      *
      * @return array of foreign keys.
@@ -3582,7 +3583,7 @@ class DBUtil
      * empty we will show an error. In this case the prefix is too long.
      *
      * @param string $table  The treated table reference.
-     * @param string $dbtype The driver used for this DB (optional).
+     * @param string $dbType The driver used for this DB (optional).
      *
      * @return boolean
      * @deprecated
@@ -3603,7 +3604,8 @@ class DBUtil
                 $_tablename = $table; // save for later if we need to show an error
                 $lenTable = strlen($table);
                 $lenPrefix = strlen($prefix);
-                if ($lenTable + $lenPrefix + 10 > $maxlen) { // 10 for length of TRIG_SEQ_ + _
+                // 10 for length of TRIG_SEQ_ + _
+                if ($lenTable + $lenPrefix + 10 > $maxlen) {
                     $table = substr($table, 0, $maxlen - 10 - $lenPrefix); // same as 20-strlen(), but easier to understand :-)
                 }
                 if (empty($table)) {
@@ -3626,6 +3628,8 @@ class DBUtil
      * Build a Doctrine Model class dynamically to allow pntable based modules to use DQL
      *
      * @param string $table Table to use.
+     * 
+     * @return string The model class.
      */
     public static function buildDoctrineModuleClass($table)
     {
@@ -3670,7 +3674,9 @@ class {$table}_DBUtilRecordTable extends Doctrine_Table {}
     /**
      * Include dynamically created Doctrine Model class into runtime environment
      *
-     * @param string $table
+     * @param string $table The table.
+     * 
+     * @return void
      */
     public static function loadDBUtilDoctrineModel($table)
     {
