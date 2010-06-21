@@ -42,13 +42,9 @@ class ExampleDoctrine_User extends Zikula_Controller
             return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
         }
 
-        $view = Renderer::getInstance('ExampleDoctrine');
-
         $users = Doctrine_Core::getTable('ExampleDoctrine_Model_User')->findAll();
-        $view->assign('users', $users);
-
-        // fetch and return the appropriate template
-        return $view->fetch('exampledoctrine_user_view.htm');
+        return $this->renderer->assign('users', $users)
+                              ->fetch('exampledoctrine_user_view.htm');
     }
 
     /**
