@@ -19,7 +19,7 @@
  *
  * true/false will be returned.
  *
- * This file is a plugin for pnRender, the Zikula implementation of Smarty
+ * This file is a plugin for Renderer, the Zikula implementation of Smarty
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       boolean     authorized?

@@ -1,1 +1,1 @@
-This is the directory where pnRender compiled templates are stored.
+This is the directory where Renderer compiled templates are stored.

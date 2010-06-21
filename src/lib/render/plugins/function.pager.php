@@ -14,7 +14,7 @@
  */
 
 /**
- * pnRender pager plugin
+ * Renderer pager plugin
  *
  * Examples (see also the demo page)
  *   {pager rowcount="400" limit="50"}

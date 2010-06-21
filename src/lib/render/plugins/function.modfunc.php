@@ -64,15 +64,15 @@ function smarty_function_modfunc($params, &$smarty)
 
     $result = ModUtil::func($modname, $type, $func, $params);
     if (is_array($result)) {
-        $pnRender = Renderer::getInstance($modname);
-        $pnRender->assign($result);
+        $renderer = Renderer::getInstance($modname);
+        $renderer->assign($result);
         if (isset($return['template'])) {
-            echo $pnRender->fetch($return['template']);
+            echo $renderer->fetch($return['template']);
         } else {
             $modname = strtolower($modname);
             $type = strtolower($type);
             $func = strtolower($func);
-            $result = $pnRender->fetch("{$modname}_{$type}_{$func}.htm");
+            $result = $renderer->fetch("{$modname}_{$type}_{$func}.htm");
         }
     }
 
