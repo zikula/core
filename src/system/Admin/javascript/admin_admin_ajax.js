@@ -222,7 +222,7 @@ function changeModuleCategoryResponse(req) {
         return;
     }
     var json = pndejsonize(req.responseText);
-    console.log(json);
+    //console.log(json);
     if (json.alerttext !== '') {
         pnshowajaxerror(json.alerttext);
         var aid = json.authid;
