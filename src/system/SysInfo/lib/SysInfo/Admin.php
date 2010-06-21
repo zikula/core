@@ -24,18 +24,17 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // Index page, display general information
-        $renderer = Renderer::getInstance('SysInfo');
-
-        $renderer->assign('pnversionnum', System::VERSION_NUM);
-        $renderer->assign('pnversionid', System::VERSION_ID);
-        $renderer->assign('pnversionsub', System::VERSION_SUB);
+        $this->renderer->assign('pnversionnum', System::VERSION_NUM)
+                       ->assign('pnversionid', System::VERSION_ID)
+                       ->assign('pnversionsub', System::VERSION_SUB);
+        
         $serversig = System::serverGetVar('SERVER_SIGNATURE');
         if (!isset($serversig) || empty($serversig)) {
             $serversig = System::serverGetVar('SERVER_SOFTWARE');
         }
-        $renderer->assign('serversig', $serversig);
-        $renderer->assign('phpversion', phpversion());
+        $this->renderer->assign('serversig', $serversig);
+        
+        $this->renderer->assign('phpversion', phpversion());
 
         // Mess around with PHP functions for the various databases
         $serverInfo = DBUtil::serverInfo();
@@ -107,23 +106,22 @@ class SysInfo_Admin extends Zikula_Controller
             }
         }
 
-        $renderer->assign('extensions', $extensions);
-        $renderer->assign('opt_extensions', $opt_extensions);
-        $renderer->assign('opt_patches', $opt_patches);
-        $renderer->assign('dbinfo', $dbinfo);
+        $this->renderer->assign('extensions', $extensions)
+                      ->assign('opt_extensions', $opt_extensions)
+                      ->assign('opt_patches', $opt_patches)
+                      ->assign('dbinfo', $dbinfo)
+                      ->assign('php_display_errors', DataUtil::getBooleanIniValue('display_errors'))
+                      ->assign('php_display_startup_errors', DataUtil::getBooleanIniValue('display_startup_errors'))
+                      ->assign('php_expose_php', DataUtil::getBooleanIniValue('expose_php'))
+                      ->assign('php_register_globals', DataUtil::getBooleanIniValue('register_globals'))
+                      ->assign('php_magic_quotes_gpc', DataUtil::getBooleanIniValue('magic_quotes_gpc'))
+                      ->assign('php_magic_quotes_runtime', DataUtil::getBooleanIniValue('magic_quotes_runtime'))
+                      ->assign('php_allow_url_fopen', DataUtil::getBooleanIniValue('allow_url_fopen'))
+                      ->assign('php_allow_url_include', DataUtil::getBooleanIniValue('allow_url_include'))
+                      ->assign('php_disable_functions', DataUtil::getBooleanIniValue('disable_functions'))
+                      ->assign('mod_security', (bool)$mod_security);
 
-        $renderer->assign('php_display_errors', DataUtil::getBooleanIniValue('display_errors'));
-        $renderer->assign('php_display_startup_errors', DataUtil::getBooleanIniValue('display_startup_errors'));
-        $renderer->assign('php_expose_php', DataUtil::getBooleanIniValue('expose_php'));
-        $renderer->assign('php_register_globals', DataUtil::getBooleanIniValue('register_globals'));
-        $renderer->assign('php_magic_quotes_gpc', DataUtil::getBooleanIniValue('magic_quotes_gpc'));
-        $renderer->assign('php_magic_quotes_runtime', DataUtil::getBooleanIniValue('magic_quotes_runtime'));
-        $renderer->assign('php_allow_url_fopen', DataUtil::getBooleanIniValue('allow_url_fopen'));
-        $renderer->assign('php_allow_url_include', DataUtil::getBooleanIniValue('allow_url_include'));
-        $renderer->assign('php_disable_functions', DataUtil::getBooleanIniValue('disable_functions'));
-        $renderer->assign('mod_security', (bool)$mod_security);
-
-        return $renderer->fetch('sysinfo_admin_main.htm');
+        return $this->renderer->fetch('sysinfo_admin_main.htm');
     }
 
     /**
@@ -138,9 +136,6 @@ class SysInfo_Admin extends Zikula_Controller
         }
 
         $info = FormUtil::getPassedValue('info', empty($info) ? 4 : $info, 'REQUEST');
-
-        // PHP Configuration stuff
-        $renderer = Renderer::getInstance('SysInfo');
 
         // Output buffering appears to be the only way to do this...
         ob_start();
@@ -178,10 +173,9 @@ class SysInfo_Admin extends Zikula_Controller
         }
         $phpinfo = implode('', $phpinfo);
 
-        //$renderer->assign('title', $title);
-        $renderer->assign('phpinfo', $phpinfo);
+        $this->renderer->assign('phpinfo', $phpinfo);
 
-        return $renderer->fetch('sysinfo_admin_phpinfo.htm');
+        return $this->renderer->fetch('sysinfo_admin_phpinfo.htm');
     }
 
     /**
@@ -194,16 +188,13 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // Zikula Modules versions
-        $renderer = Renderer::getInstance('SysInfo');
-
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist');
 
-        $renderer->assign('filelist', $filelist);
-        $renderer->assign('ztemp', $ztemp);
+        $this->renderer->assign('filelist', $filelist)
+                       ->assign('ztemp', $ztemp);
 
-        return $renderer->fetch('sysinfo_admin_filesystem.htm');
+        return $this->renderer->fetch('sysinfo_admin_filesystem.htm');
     }
 
     /**
@@ -216,17 +207,15 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // Zikula Modules versions
-        $renderer = Renderer::getInstance('SysInfo');
-
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist',
                 array ('startdir' => $ztemp . '/',
                 'ztemp' => 1));
-        $renderer->assign('filelist', $filelist);
-        $renderer->assign('ztemp', $ztemp);
+        $this->renderer->assign('filelist', $filelist);
+        
+        $this->renderer->assign('ztemp', $ztemp);
 
-        return $renderer->fetch('sysinfo_admin_filesystem.htm');
+        return $this->renderer->fetch('sysinfo_admin_filesystem.htm');
     }
 
     /**
@@ -239,12 +228,9 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        // Zikula Modules and Themes versions
-        $renderer = Renderer::getInstance('SysInfo');
-        $renderer->assign('mods', ModuleUtil::getModules());
-        $renderer->assign('themes', ThemeUtil::getAllThemes());
-
-        return $renderer->fetch('sysinfo_admin_extensions.htm');
+        return $this->renderer->assign('mods', ModuleUtil::getModules())
+                              ->assign('themes', ThemeUtil::getAllThemes())
+                              ->fetch('sysinfo_admin_extensions.htm');
     }
 }
 
