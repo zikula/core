@@ -643,7 +643,7 @@ abstract class Zikula_Base
      *
      * @return object This.
      */
-    public function setVar($key, $value)
+    public function setVar($key, $value='')
     {
         ModUtil::setVar($this->name, $key, $value);
         return $this;
@@ -653,11 +653,11 @@ abstract class Zikula_Base
      * Convenience Module GetVar.
      *
      * @param string  $key     Key.
-     * @param boolean $default Default, null if none.
+     * @param boolean $default Default, false if not found.
      *
      * @return mixed
      */
-    public function getVar($key, $default=null)
+    public function getVar($key='', $default=false)
     {
         return ModUtil::getVar($this->name, $key, $default);
     }
@@ -665,11 +665,11 @@ abstract class Zikula_Base
     /**
      * Convenience Module DetVar.
      *
-     * @param string $key   Key.
+     * @param string $key   Key.  Empty for all.
      *
      * @return object This.
      */
-    public function delVar($key=null)
+    public function delVar($key='')
     {
         ModUtil::delVar($this->name, $key);
         return $this;
