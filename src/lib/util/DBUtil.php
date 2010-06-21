@@ -1254,22 +1254,22 @@ class DBUtil
             foreach ($tokens as $k => $v) {
                 $v = trim($v);
                 if (strpos($v, ' ') === false) { 
-                	// 1 word
+                    // 1 word
                     if (strpos($v, '(') === false) { 
-                    	// not a function call
+                        // not a function call
                         if (strpos($v, '"') === false) { 
-                        	// not surrounded by quotes already
+                            // not surrounded by quotes already
                             if (isset($columns[$v])) { 
-                            	// ensure that token is an alias
+                                // ensure that token is an alias
                                 $tokens[$k] = '"' . $v . '"'; // surround it by quotes
                             }
                         }
                     }
                 } else { 
-                	// multiple words, perform a few basic hecks
+                    // multiple words, perform a few basic hecks
                     $ttok = explode(' ', $v); // split on space
                     if (count($ttok) == 2) { 
-                    	// see if we have 2 tokens
+                        // see if we have 2 tokens
                         $t1 = strtolower(trim($ttok[0]));
                         $t2 = strtolower(trim($ttok[1]));
                         $haveQuotes = strpos($t1, '"') === false;
@@ -1367,10 +1367,10 @@ class DBUtil
      * Set the gobal object fetch counter to the specified value.
      *
      * This function is workaround for PHP4 limitations when passing default arguments by reference.
+     * Returns nothing, the global variable is assigned counter.
      *
      * @param integer $count The value to set the object marhsall counter to.
      *
-     * @return void, the global variable is assigned counter.
      */
     public static function _setFetchedObjectCount($count = 0)
     {
@@ -1405,7 +1405,7 @@ class DBUtil
      * @param boolean $clean          Whether or not to clean up the marshalled data (optional) (default=true).
      *
      * @return The resulting field array.
-     * @throws Exception
+     * @throws Exception If empty result parameter
      */
     public static function marshallFieldArray($result, $closeResultSet = true, $assocKey = '', $clean = true)
     {
@@ -1449,9 +1449,10 @@ class DBUtil
      * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
      * @param boolean $clean            Whether or not to clean up the marshalled data (optional) (default=true).
      * @param string  $permissionFilter The permission structure to use for permission checking (optional) (default=null).
+     * @param string  $tablename        The tablename.
      *
      * @return array The marshalled array of objects.
-     * @throws Exception
+     * @throws Exception If empty parameters. or if permissionfilter is not an array.
      */
     public static function marshallObjects($result, $objectColumns, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null, $tablename = null)
     {
@@ -1579,11 +1580,11 @@ class DBUtil
      *
      * Mostly useful for places where you want to do a "select count(*)" or similar scalar selection.
      *
-     * @param string  $sql Sql     string.
+     * @param string  $sql         Sql string.
      * @param boolean $exitOnError Exit on error.
      *
      * @return mixed selected value.
-     * @throws Exception
+     * @throws Exception If rowcount or results count is empty,
      */
     public static function selectScalar($sql, $exitOnError = true)
     {
@@ -1981,7 +1982,7 @@ class DBUtil
      * @return mixed The resulting object.
      * @deprecated
      * @see    Doctrine_Table::find*
-     * @throws Exception
+     * @throws Exception If id parameter is empty or non-numeric.
      */
     public static function selectObjectByID($table, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $cacheObject = true, $transformFunc = null)
     {
@@ -2237,6 +2238,7 @@ class DBUtil
      * @param string  $transformFunc Transformation function to apply to $id (optional) (default=null).
      *
      * @return The resulting object count.
+     * @throws Exception If id paramerter is empty or non-numeric.
      */
     public static function selectObjectCountByID($table, $id, $field = 'id', $transformFunc = '')
     {
@@ -2378,6 +2380,7 @@ class DBUtil
      * @param integer $limitNumRows     The upper limit bound (optional) (default=-1).
      * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
      * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
+     * @param string  $categoryFilter   The category filter (optional) (default=null).
      * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return array The resulting object.
@@ -2493,6 +2496,7 @@ class DBUtil
 
     /**
      * Joining string creation.
+     * 
      * This method creates the necessary sql information for retrieving
      * fields from joined tables defined by a joinInfo array described
      * at the top of this class.
@@ -2501,9 +2505,9 @@ class DBUtil
      * @param array  $joinInfo    The array containing the extended join information.
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
-     * @return array($sqlJoin, $sqlJoinFieldList, $ca).
+     * @return array array($sqlJoin, $sqlJoinFieldList, $ca).
      * @deprecated
-     * @see       Doctrine_Record
+     * @see    Doctrine_Record
      */
     private static function _processJoinArray($table, $joinInfo, $columnArray = null)
     {
@@ -2572,6 +2576,7 @@ class DBUtil
 
     /**
      * Post-processing for selected objects.
+     * 
      * This routine is responsible for reading the 'extra' data
      * (attributes, categories, and meta data) from the database and inserting the relevant sub-objects into the object.
      *
@@ -2646,7 +2651,7 @@ class DBUtil
      * @param string  $table            The treated table reference.
      * @param array   $columnArray      The columns to marshall into the resulting object (optional) (default=null).
      * @param string  $permissionFilter The permission filter to use for permission checking (optional) (default=null).
-     * @param integer $limitOffset      The lower limit bound (optional) (default=-1).
+     * @param integer $limitOffSet      The lower limit bound (optional) (default=-1).
      * @param integer $limitNumRows     The upper limit bound (optional) (default=-1).
      *
      * @return array The resulting object array.
@@ -2671,16 +2676,16 @@ class DBUtil
         return $objArr;
     }
 
-/**
+    /**
      * Returns the last inserted ID.
      *
-     * @param mixed   $table       The treated table reference
+     * @param string  $table       The treated table reference
      * @param string  $field       The field to use.
      * @param boolean $exitOnError Exit on error.
      * @param boolean $verbose     Verbose mode.
      *
-     * @return unknown
-     * @throws Exception
+     * @return intiger The result ID.
+     * @throws Exception IF table does not point to valid table definition, or field does not point to valif field def.
      */
     public static function getInsertID($table, $field = 'id', $exitOnError = true, $verbose = true)
     {
@@ -2724,6 +2729,7 @@ class DBUtil
      * @param mixed $table table to get adodb sql string for.
      *
      * @return array The table definition.
+     * @throws Exception If table parameter is empty.
      */
     public static function getTableDefinition($table)
     {
@@ -2879,7 +2885,7 @@ class DBUtil
                 $fieldDef['primary'] = $fPrim;
                 $fieldDef['unsigned'] = $fUSign;
                 $fieldDef['notnull'] = ($fNull !== null ? ($fNull == 'NOTNULL' ? 1 : 0) : null);
-                if($fDef != null) {
+                if ($fDef != null) {
                     $fieldDef['default'] = $fDef;
                 }
                 $ddict[$val] = $fieldDef;
@@ -2894,9 +2900,10 @@ class DBUtil
     /**
      * Get the table definition for a database table.
      *
-     * @param mixed $table table to get adodb sql string for.
+     * @param string $table table to get adodb sql string for.
      *
      * @return string
+     * @throws Exception If the table parameter is empty.
      */
     public static function _getTableDefinition($table)
     {
@@ -2936,6 +2943,7 @@ class DBUtil
      * @param string $table treated table.
      *
      * @return string Return string to get table constraints.
+     * @throws Exception If the table parameter is empty or does not point to a valid table definition.
      */
     public static function getTableConstraints($table)
     {
@@ -2950,13 +2958,12 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
-        /*
-        try {
-            return DBConnectionStack::getConnection()->import->listTableConstraints($tableName);
-        } catch (Exception $e) {
-            return LogUtil::registerError(__('Error! Table constraints determination failed.') . ' ' . $e->getMessage());
-        }
-        */
+        //try {
+        //    return DBConnectionStack::getConnection()->import->listTableConstraints($tableName);
+        //} catch (Exception $e) {
+        //    return LogUtil::registerError(__('Error! Table constraints determination failed.') . ' ' . $e->getMessage());
+        //}
+       
         $tablecol = $table . '_column';
         $tableopt = $table . '_constraints';
         $tables = System::dbGetTables();
