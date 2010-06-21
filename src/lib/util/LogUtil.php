@@ -92,7 +92,7 @@ class LogUtil
      *
      * @param string  $delimeter The string to use as the delimeter between the array of messages.
      * @param boolean $delete    True to delete.
-     *      *
+     *
      * @return string the generated error message.
      */
     public static function getErrorMessagesText($delimeter = '<br />', $delete = true)
@@ -295,7 +295,7 @@ class LogUtil
      *
      * @param string $url Url to redirect to.
      * 
-     * @returns false.
+     * @return false.
      */
     public static function registerArgsError($url = null)
     {
@@ -404,7 +404,7 @@ class LogUtil
      * @param string $level        The log level to log this message under.
      * @param array  $securityInfo Security info.
      *
-     * @return Logging file write error (file or directory unwritable) (if $log_show_errors is true).
+     * @return void
      */
     public static function _write($msg, $level = 'DEFAULT', $securityInfo = null)
     {
@@ -510,6 +510,10 @@ class LogUtil
      *
      * returns unwritable The file or directory cannot be written to
      * returns toobig The log file size is bigger than $log_length in logging.conf.php.
+     *
+     * @param string|boolean $logfile The logfile to check or false to use $level.
+     * @param string         $level   The level to get logfile for if $logfile=false.   
+     * @param string         &$reason This should be an empty string updated with reason not ready for writing.
      *
      * @return boolean Whether or not the file is ready for writing.
      */
