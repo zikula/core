@@ -1371,12 +1371,13 @@ class DBUtil
      *
      * @param integer $count The value to set the object marhsall counter to.
      *
-     * @return Nothing
+     * @return void
      */
     public static function _setFetchedObjectCount($count = 0)
     {
         // TODO D [remove PHP4 stuff in DBUtil] (Guite)
         $GLOBALS['DBUtilFetchObjectCount'] = $count;
+        return;	
     }
 
     /**
@@ -3342,7 +3343,7 @@ class DBUtil
      * @param array        $idxoptarray Array of UNIQUE=true and/or PRIMARY=true.
      *
      * @return boolean
-     * @throws Exception If $idxname, $table, or $flds paramters are empty 
+     * @throws Exception If $idxname, $table, or $flds paramters are empty.
      */
     public static function createIndex($idxname, $table, $flds, $idxoptarray = false)
     {
