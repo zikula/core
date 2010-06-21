@@ -419,7 +419,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // call any module delete hooks
-        ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
+        $this->callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
 
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
@@ -1004,7 +1004,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // call any module initialisation hooks
-        ModUtil::callHooks('module', 'initialise', $modinfo['name'], array('module' => $modinfo['name']));
+        $this->callHooks('module', 'initialise', $modinfo['name'], array('module' => $modinfo['name']));
 
         // Success
         return true;
@@ -1141,7 +1141,7 @@ class Modules_Api_Admin extends Zikula_Api
         DBUtil::updateObject($obj, 'modules');
 
         // call any module upgrade hooks
-        ModUtil::callHooks('module', 'upgrade', $modinfo['name'], array('module' => $modinfo['name']));
+        $this->callHooks('module', 'upgrade', $modinfo['name'], array('module' => $modinfo['name']));
 
         // Success
         return true;

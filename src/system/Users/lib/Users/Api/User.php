@@ -577,7 +577,7 @@ class Users_Api_User extends Zikula_Api
             }
         }
         // Let other modules know we have created an item
-        ModUtil::callHooks('item', 'create', $uid, array('module' => 'Users'));
+        $this->callHooks('item', 'create', $uid, array('module' => 'Users'));
 
         return $uid;
     }
@@ -884,7 +884,7 @@ class Users_Api_User extends Zikula_Api
                 'activated'    => UserUtil::ACTIVATED_ACTIVE,
                 'user_regdate' => DataUtil::formatForStore($newregdate));
 
-        ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
+        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
 
         return (boolean)DBUtil::updateObject($obj, 'users', '', 'uid');
     }

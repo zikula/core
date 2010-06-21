@@ -463,7 +463,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         System::setVar('fullcontent', $fullcontent);
 
         // Let any other modules know that the modules configuration has been updated
-        ModUtil::callHooks('module','updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
+        $this->callHooks('module','updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
 
         // clear all cache and compile directories
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
@@ -506,7 +506,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         }
 
         $purifier = new HTMLPurifier($purifierconfig);
-        
+
         $config = $purifier->config;
 
         if (is_array($config) && isset($config[0])) {

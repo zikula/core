@@ -269,7 +269,7 @@ class Users_Api_Admin extends Zikula_Api
         }
 
         // Let other modules know we have updated an item
-        ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
+        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
 
         return true;
     }
@@ -307,7 +307,7 @@ class Users_Api_Admin extends Zikula_Api
             }
 
             // Let other modules know we have deleted an item
-            ModUtil::callHooks('item', 'delete', $id, array('module' => 'Users'));
+            $this->callHooks('item', 'delete', $id, array('module' => 'Users'));
         }
 
         return $args['uid'];

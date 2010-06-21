@@ -1060,7 +1060,7 @@ class Modules_Admin extends Zikula_Controller
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
         // Let any other modules know that the modules configuration has been updated
-        ModUtil::callHooks('module', 'updateconfig', 'Modules', array('module' => 'Modules'));
+        $this->callHooks('module', 'updateconfig', 'Modules', array('module' => 'Modules'));
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
@@ -1129,7 +1129,7 @@ class Modules_Admin extends Zikula_Controller
         $sort = FormUtil::getPassedValue('sort', null, 'GETPOST');
         $module = FormUtil::getPassedValue('bymodule', null, 'GETPOST');
         $systemplugins = FormUtil::getPassedValue('systemplugins', false, 'GETPOST')? true : null;
-        
+
         $renderer = Renderer::getInstance('Modules', false);
         $renderer->assign('state', $state);
 
@@ -1137,7 +1137,7 @@ class Modules_Admin extends Zikula_Controller
         $authid = SecurityUtil::generateAuthKey();
         $plugins = array();
         $pluginClasses = $systemplugins? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
-        
+
         foreach ($pluginClasses as $className) {
             $instance = PluginUtil::loadPlugin($className);
             $pluginstate = PluginUtil::getState($instance->getServiceId(), PluginUtil::getDefaultState());
@@ -1228,7 +1228,7 @@ class Modules_Admin extends Zikula_Controller
             // upgrade ?
             if ($pluginstate['state'] != PluginUtil::NOTINSTALLED
                 && $pluginstate['version'] != $instance->getMetaVersion()) {
-                
+
                 $status = $this->__('New version');
                 $statusimage = 'redled.gif';
 
@@ -1255,7 +1255,7 @@ class Modules_Admin extends Zikula_Controller
                                        'image' => '14_layer_deletelayer.gif',
                                        'title' => $this->__('Remove plugin'));
             }
-            
+
             $info =  array('instance'    => $instance,
                            'status'      => $status,
                            'statusimage' => $statusimage,
@@ -1280,7 +1280,7 @@ class Modules_Admin extends Zikula_Controller
                 usort($plugins, array($this, 'viewPluginsSorter_byName'));
             }
         }
-        
+
         $renderer->assign('plugins', $plugins);
         $renderer->assign('module', $module);
         $renderer->assign('sort', $sort);
@@ -1297,7 +1297,7 @@ class Modules_Admin extends Zikula_Controller
     private function viewPluginsSorter_byModule($a, $b) {
         return strcmp($a['instance']->getModuleName(), $b['instance']->getModuleName());
     }
-    
+
     /**
      * viewPlugins sorter: Sorting by plugin internal name
      */

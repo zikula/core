@@ -649,7 +649,7 @@ class Users_User extends Zikula_Controller
         if (UserUtil::login((($loginoption==1) ? $email : $uname), $pass, $rememberme)) {
             // start login hook
             $uid = UserUtil::getVar('uid');
-            ModUtil::callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
+            $this->callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
             if ($login_redirect == 1) {
                 // WCAG compliant login
                 return System::redirect($url);
@@ -682,7 +682,7 @@ class Users_User extends Zikula_Controller
 
         // start logout hook
         $uid = UserUtil::getVar('uid');
-        ModUtil::callHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
+        $this->callHooks('zikula', 'logout', $uid, array('module' => 'zikula'));
         if (UserUtil::logout()) {
             if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because

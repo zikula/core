@@ -56,7 +56,7 @@ class Groups_Api_Admin extends Zikula_Api
         $gid = $obj['gid'];
 
         // Let any hooks know that we have created a new item.
-        ModUtil::callHooks('item', 'create', $gid, array('module' => 'Groups'));
+        $this->callHooks('item', 'create', $gid, array('module' => 'Groups'));
 
         // Return the id of the newly created item to the calling process
         return $gid;
@@ -105,7 +105,7 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Let any hooks know that we have deleted an item.
-        ModUtil::callHooks('item', 'delete', $args['gid'], array('module' => 'Groups'));
+        $this->callHooks('item', 'delete', $args['gid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -171,7 +171,7 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // New hook functions
-        ModUtil::callHooks('item', 'update', $args['gid'], array('module' => 'Groups'));
+        $this->callHooks('item', 'update', $args['gid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -215,7 +215,7 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Let other modules know we have updated an item
-        ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
+        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -264,7 +264,7 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Let other modules know we have updated an item
-        ModUtil::callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
+        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Groups'));
 
         // Let the calling process know that we have finished successfully
         return true;

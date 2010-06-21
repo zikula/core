@@ -40,7 +40,7 @@ class Admin_Api_Admin extends Zikula_Api
         }
 
         // Let other modules know an item has been created
-        ModUtil::callHooks('item', 'create', $category['cid'], array('module' => 'Admin'));
+        $this->callHooks('item', 'create', $category['cid'], array('module' => 'Admin'));
 
         // Return the id of the newly created item to the calling process
         return $category['cid'];
@@ -100,7 +100,7 @@ class Admin_Api_Admin extends Zikula_Api
         }
 
         // Let any hooks know that we have deleted an item.
-        ModUtil::callHooks('item', 'delete', $category['cid'], array('module' => 'Admin'));
+        $this->callHooks('item', 'delete', $category['cid'], array('module' => 'Admin'));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -147,7 +147,7 @@ class Admin_Api_Admin extends Zikula_Api
         }
 
         // New hook functions
-        ModUtil::callHooks('item', 'update', $args['cid'], array('module' => 'Admin'));
+        $this->callHooks('item', 'update', $args['cid'], array('module' => 'Admin'));
 
         // Let the calling process know that we have finished successfully
         return true;

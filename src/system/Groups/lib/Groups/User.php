@@ -320,7 +320,7 @@ class Groups_User extends Zikula_Controller
         $renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
                 'itemsperpage' => $itemsperpage));
 
-        $renderer->assign('hooks', ModUtil::callHooks('item',
+        $renderer->assign('hooks', $this->callHooks('item',
                 'display',
                 $gid,
                 ModUtil::url('Groups',

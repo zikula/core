@@ -44,7 +44,7 @@ class SecurityCenter_Api_Admin extends Zikula_Api
         }
 
         // Let any hooks know that we have deleted an item.
-        ModUtil::callHooks('item', 'delete', $args['hid'], array('module' => 'SecurityCenter'));
+        $this->callHooks('item', 'delete', $args['hid'], array('module' => 'SecurityCenter'));
 
         // Let the calling process know that we have finished successfully
         return true;

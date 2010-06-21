@@ -322,7 +322,7 @@ class SecurityCenter_Api_User extends Zikula_Api
         }
 
         // Let any hooks know that we have created a new item.
-        ModUtil::callHooks('item', 'create', $obj, array('module' => 'SecurityCenter'));
+        $this->callHooks('item', 'create', $obj, array('module' => 'SecurityCenter'));
 
         // Return the id of the newly created item to the calling process
         return true;
@@ -889,7 +889,7 @@ class SecurityCenter_Api_User extends Zikula_Api
      *
      * @param array $args All parameters for the function.
      *                    boolean $args['forcedefault'] true to force return of default config / false to auto detect
-     * @param 
+     * @param
      *
      * @return array HTML Purifier configuration settings.
      */

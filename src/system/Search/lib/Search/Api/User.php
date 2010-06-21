@@ -220,7 +220,7 @@ class Search_Api_User extends Zikula_Api
                     $search_modules[] = $info;
                     $plugins_found = 'yes';
                 }
-                
+
             }
         }
 
@@ -252,7 +252,7 @@ class Search_Api_User extends Zikula_Api
         }
 
         // Let any hooks know that we have created a new item.
-        ModUtil::callHooks('item', 'create', $args['q'], array('module' => 'Search'));
+        $this->callHooks('item', 'create', $args['q'], array('module' => 'Search'));
 
         return true;
     }
