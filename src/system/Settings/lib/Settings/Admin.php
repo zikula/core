@@ -162,7 +162,7 @@ class Settings_Admin extends Zikula_Controller
         // get the server timezone - we should not allow to change this
         $configvars['timezone_server'] = DateUtil::getTimezone();
         $configvars['timezone_server_abbr'] = DateUtil::getTimezoneAbbr();
-        $renderer->assign($configvars);
+        $this->renderer->assign($configvars);
 
         return $this->renderer->fetch('settings_admin_multilingual.htm');
     }
@@ -266,7 +266,7 @@ class Settings_Admin extends Zikula_Controller
         }
         // add the development flag
         $configvars['development'] = System::getVar('development');
-        $renderer->assign($configvars);
+        $this->renderer->assign($configvars);
 
         return $this->renderer->fetch('settings_admin_errorhandling.htm');
     }
