@@ -113,15 +113,13 @@ class Blocks_Block_Finclude extends Zikula_Block
             $vars['typo'] = 0;
         }
 
-        // Create output object - this object will store all of our output so that
-        // we can return it easily when required
-        $renderer = Renderer::getInstance('Blocks');
+        $this->renderer->setCaching(false);
 
         // assign the vars
-        $renderer->assign($vars);
+        $this->renderer->assign($vars);
 
         // return the output
-        return $renderer->fetch('blocks_block_finclude_modify.htm');
+        return $this->renderer->fetch('blocks_block_finclude_modify.htm');
     }
 
     /**
