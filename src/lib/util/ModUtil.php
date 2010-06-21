@@ -845,6 +845,15 @@ class ModUtil
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
+                    if ($modfunc[0] instanceof Zikula_Controller) {
+                        $reflection = call_user_func(array($modfunc[0], 'getReflection'));
+                        $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
+                        if ($subclassOfReflection->hasMethod($modfunc[1])) {
+                            // Don't allow front controller to access any public methods inside the controller parents
+                            throw new Zikula_Exception_NotFound();
+                        }
+                    }
+
                     $postExecuteEvent->setData(call_user_func($modfunc, $args));
                 } else {
                     $postExecuteEvent->setData($modfunc($args));
