@@ -19,6 +19,29 @@
 abstract class Zikula_Controller extends Zikula_Base
 {
     /**
+     * Instance of Renderer.
+     * 
+     * @var object
+     */
+    protected $renderer;
+
+    /**
+     * Constructor.
+     *
+     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param Zikula_EventManager   $eventManager   EventManager instance.
+     * @param array                 $options        Options (universal constructor).
+     */
+    public function  __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager, array $options = array())
+    {
+        parent::__construct($serviceManager, $eventManager, $options);
+
+        // Create renderer object
+        $this->renderer = Renderer::getInstance($this->name);
+        $this->renderer->assign('controller', $this);
+    }
+
+    /**
      * Magic method for method_not_found events.
      *
      * @param string $method Method name called.

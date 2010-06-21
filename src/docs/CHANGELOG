@@ -158,6 +158,8 @@ Added gettext shortut {%'hello world'%} since no domain= is needed any more.
 Deprecated FileUtil::mkdirs(), use native PHP mkdir() with $recursion flag set true instead.
 Merged ObjectData and Workflow table definitions to Settings and deleted the modules - don't need separate modules just to provide table definitions.
 tables.php: $module_column is now unnecessary if the there is no column prefix, i.e. if name => name.
+All templates now have $eventManager, $serverManager and $controller (being the OO controller owner).
+OO controllers now automatically creates renderer object and store in $renderer.
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
