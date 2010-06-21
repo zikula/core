@@ -270,10 +270,6 @@ class SecurityCenter_Installer extends Zikula_Installer
                     CacheUtil::clearLocalDir('purifierCache');
                 }
 
-                // HTML Purifier default settings
-                $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
-                ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($purifierDefaultConfig));
-
                 // create ids intrusions table
                 if (!DBUtil::createTable('sc_intrusion')) {
                     return false;
@@ -307,6 +303,7 @@ class SecurityCenter_Installer extends Zikula_Installer
                 
             case '1.4.1':
                 System::delVar('htmlpurifierConfig');
+                // HTML Purifier default settings
                 $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
                 ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($purifierDefaultConfig));
             // fall through
