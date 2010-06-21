@@ -24,6 +24,8 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
+        $this->renderer->setCaching(false);
+        
         $this->renderer->assign('pnversionnum', System::VERSION_NUM)
                        ->assign('pnversionid', System::VERSION_ID)
                        ->assign('pnversionsub', System::VERSION_SUB);
@@ -173,6 +175,8 @@ class SysInfo_Admin extends Zikula_Controller
         }
         $phpinfo = implode('', $phpinfo);
 
+        $this->renderer->setCaching(false);
+        
         $this->renderer->assign('phpinfo', $phpinfo);
 
         return $this->renderer->fetch('sysinfo_admin_phpinfo.htm');
@@ -191,6 +195,8 @@ class SysInfo_Admin extends Zikula_Controller
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist');
 
+        $this->renderer->setCaching(false);
+        
         $this->renderer->assign('filelist', $filelist)
                        ->assign('ztemp', $ztemp);
 
@@ -207,6 +213,8 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
+        $this->renderer->setCaching(false);
+        
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist',
                 array ('startdir' => $ztemp . '/',
@@ -228,6 +236,8 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
+        $this->renderer->setCaching(false);
+        
         return $this->renderer->assign('mods', ModuleUtil::getModules())
                               ->assign('themes', ThemeUtil::getAllThemes())
                               ->fetch('sysinfo_admin_extensions.htm');

@@ -31,12 +31,14 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
+        $this->renderer->setCaching(false);
+
         // Return the output that has been generated to the template
         return $this->renderer->fetch('theme_admin_newtheme.htm');
     }
 
     /**
-     * view all themes
+     * create the theme
      */
     public function create($args)
     {
@@ -81,6 +83,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
+        $this->renderer->setCaching(false);
+        
         if(isset($GLOBALS['ZConfig']['multisites']['multi']) && $GLOBALS['ZConfig']['multisites']['multi'] == 1){
             // only the main site can regenerate the themes list
             if($GLOBALS['ZConfig']['multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')){
@@ -166,6 +170,8 @@ class Theme_Admin extends Zikula_Controller
             ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themename));
         }
 
+        $this->renderer->setCaching(false);
+        
         // assign theme name, theme info and return output
         return $this->renderer->assign('themename', $themename)
                               ->assign('themeinfo', $themeinfo)
@@ -245,6 +251,8 @@ class Theme_Admin extends Zikula_Controller
         // load the language file
         ZLanguage::bindThemeDomain($themename);
 
+        $this->renderer->setCaching(false);
+        
         // assign variables, themename, themeinfo and return output
         return $this->renderer->assign('variables', ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true)))
                               ->assign('themename', $themename)
@@ -334,6 +342,8 @@ class Theme_Admin extends Zikula_Controller
         if (!SecurityUtil::checkPermission('Theme::', "$themename::colors", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
+
+        $this->renderer->setCaching(false);
 
         // assign palettes, themename, themeinfo and return output
         return $this->renderer->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename)))
@@ -441,6 +451,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
+        $this->renderer->setCaching(false);
+        
         // assign the theme name and theme info
         $this->renderer->assign('themename', $themename)
                        ->assign('themeinfo', $themeinfo);
@@ -500,6 +512,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
+        $this->renderer->setCaching(false);
+        
         // assign the base filename, themename, theme info, moduletemplates, blocktemplates and palettes
         $this->renderer->assign('filename', $filename)
                        ->assign('themename', $themename)
@@ -693,6 +707,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
+        $this->renderer->setCaching(false);
+        
         // assign the page config assignment name, theme name and theme info
         $this->renderer->assign('pcname', $pcname)
                        ->assign('themename', $themename)
@@ -836,7 +852,7 @@ class Theme_Admin extends Zikula_Controller
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-            // Create output object
+            $this->renderer->setCaching(false);
 
             // Assign the theme info
             $this->renderer->assign($themeinfo);
@@ -886,6 +902,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
+        $this->renderer->setCaching(false);
+        
         // assign the theme info and return output
         return $this->renderer->assign('themeinfo', ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename)))
                               ->fetch('theme_admin_credits.htm');
@@ -916,6 +934,7 @@ class Theme_Admin extends Zikula_Controller
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
+            $this->renderer->setCaching(false);
             
             // Add a hidden field for the item ID to the output
             $this->renderer->assign('themename', $themename);
@@ -1050,7 +1069,9 @@ class Theme_Admin extends Zikula_Controller
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-           
+
+            $this->renderer->setCaching(false);
+            
             // Add the message id
             $this->renderer->assign($themeinfo);
 
@@ -1088,6 +1109,8 @@ class Theme_Admin extends Zikula_Controller
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
+
+        $this->renderer->setCaching(false);
 
         // assign all module vars
         $this->renderer->assign(ModUtil::getVar('Theme'));

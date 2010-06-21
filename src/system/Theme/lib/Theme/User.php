@@ -48,6 +48,8 @@ class Theme_User extends Zikula_Controller
             }
         }
 
+        $this->renderer->setCaching(false);
+
         $this->renderer->assign('currentthemepic', $currentthemepic)
                        ->assign('currenttheme', $currenttheme)
                        ->assign('themes', $previewthemes)
