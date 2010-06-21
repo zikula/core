@@ -108,10 +108,11 @@ class DBUtil
     /**
      * Create database.
      *
-     * @param string    $dbname       The database name.
-     * @param boolean   $optionsarray The options array.
+     * @param string  $dbname       The database name.
+     * @param boolean $optionsarray The options array.
      *
      * @return boolean
+     * @throws Exception
      */
     public static function createDatabase($dbname, $optionsarray = false)
     {
@@ -173,12 +174,12 @@ class DBUtil
      *
      * For use by ADODB's data dictionary
      * Additional database specific settings can be defined here
-     * See ADODB's data dictionary docs for full details
+     * See ADODB's data dictionary docs for full details.
      *
      * @param string $table Optional, string with table name.
      * If $table param is set and there is a set of options configured
      * for this table via pntables.php then we return these options,
-     * the default options are returned otherwise
+     * the default options are returned otherwise.
      *
      * @return array Return the table options.
      */
@@ -207,13 +208,14 @@ class DBUtil
     /**
      * Execute SQL, check for errors and return result. Uses Doctrine's DBAL to generate DB-portable paging code.
      *
-     * @param string    $sql          The SQL statement to execute.
-     * @param integer   $limitOffset  The lower limit bound (optional) (default=-1).
-     * @param integer   $limitNumRows The upper limit bound (optional) (default=-1).
-     * @param boolean   $exitOnError  Whether to exit on error (default=true) (optional).
-     * @param boolean   $verbose      Whether to be verbose (default=true) (optional).
+     * @param string  $sql          The SQL statement to execute.
+     * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
+     * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
+     * @param boolean $exitOnError  Whether to exit on error (default=true) (optional).
+     * @param boolean $verbose      Whether to be verbose (default=true) (optional).
      *
      * @return mixed The result set of the successfully executed query or false on error.
+     * @throws Exception no SQL statment.
      */
     public static function executeSQL($sql, $limitOffset = -1, $limitNumRows = -1, $exitOnError = true, $verbose = true)
     {
@@ -297,7 +299,8 @@ class DBUtil
         } catch (Exception $e) {
             die('Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />' . nl2br($e->getTraceAsString()));
         }
-/*
+        
+        /*
         if ($verbose) {
             print '<br />' . $dbconn->ErrorMsg() . '<br />' . $sql . '<br />';
         }
@@ -305,17 +308,18 @@ class DBUtil
         if ($exitOnError) {
             throw new Exception(__('Exiting after SQL-error'));
         }
-*/
+        */
         return false;
     }
 
     /**
      * Same as Api function but without AS aliasing.
      *
-     * @param string    $table       The treated table reference.
-     * @param array     $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $table       The treated table reference.
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return string The generated sql string.
+     * @throws Exception.
      */
     public static function _getAllColumns($table, $columnArray = null)
     {
@@ -342,11 +346,12 @@ class DBUtil
     /**
      * Same as Api function but returns fully qualified fieldnames.
      *
-     * @param string    $table       The treated table reference.
-     * @param string    $tablealias  The SQL table alias to use in the SQL statement.
-     * @param array     $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $table       The treated table reference.
+     * @param string $tablealias  The SQL table alias to use in the SQL statement.
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return The generated sql string
+     * @throws Exception.
      */
     public static function _getAllColumnsQualified($table, $tablealias, $columnArray = null)
     {
@@ -380,10 +385,11 @@ class DBUtil
     /**
      * Return the column array for the given table.
      *
-     * @param string    $table       The treated table reference.
-     * @param array     $columnArray The columns to marshall into the resulting object (optional) (default=null).
+     * @param string $table       The treated table reference.
+     * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return The column array for the given table.
+     * @throws Exception.
      */
     public static function getColumnsArray($table, $columnArray = null)
     {
@@ -424,6 +430,7 @@ class DBUtil
      * @return array            Expanded column array.
      * @deprecated
      * @see    Doctrine_Record
+     * @throws Exception.     
      */
     public static function expandColumnsWithJoinInfo($columns, $joinInfo)
     {
@@ -466,6 +473,7 @@ class DBUtil
      * @param string $definition Field specific options (optional) (default=null).
      *
      * @return boolean
+     * @throws Exception.
      */
     public static function renameColumn($table, $oldcolumn, $newcolumn, $definition = null)
     {
