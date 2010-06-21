@@ -300,15 +300,13 @@ class DBUtil
             die('Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />' . nl2br($e->getTraceAsString()));
         }
         
-        /* Disabled
-        if ($verbose) {
-            print '<br />' . $dbconn->ErrorMsg() . '<br />' . $sql . '<br />';
-        }
+        //if ($verbose) {
+        //    print '<br />' . $dbconn->ErrorMsg() . '<br />' . $sql . '<br />';
+        //}
 
-        if ($exitOnError) {
-            throw new Exception(__('Exiting after SQL-error'));
-        }
-        */
+        //if ($exitOnError) {
+        //    throw new Exception(__('Exiting after SQL-error'));
+        //}
         
         return false;
     }
@@ -919,8 +917,7 @@ class DBUtil
             strcmp($table, 'categories_') !== 0 &&
             strcmp($table, 'objectdata_attributes') !== 0 &&
             strcmp($table, 'objectdata_log') !== 0 &&
-            ModUtil::available('Categories'))
-        {
+            ModUtil::available('Categories')) {
             ObjectUtil::storeObjectCategories($object, $table, $idfield, $update);
         }
 
@@ -928,8 +925,7 @@ class DBUtil
             (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
             System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
             strcmp($table, 'objectdata_attributes') !== 0 &&
-            strcmp($table, 'objectdata_log') !== 0)
-        {
+            strcmp($table, 'objectdata_log') !== 0) {
             ObjectUtil::storeObjectAttributes($object, $table, $idfield, $update);
         }
 
@@ -938,16 +934,14 @@ class DBUtil
             System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
             $table != 'objectdata_attributes' &&
             $table != 'objectdata_meta' &&
-            $table != 'objectdata_log')
-        {
+            $table != 'objectdata_log') {
             ObjectUtil::updateObjectMetaData($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
             System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-            strcmp($table, 'objectdata_log') !== 0)
-        {
+            strcmp($table, 'objectdata_log') !== 0) {
             $oldObj = self::selectObjectByID($table, $object[$idfield], $idfield);
 
             $log = new ObjectData_Log();
@@ -1158,6 +1152,7 @@ class DBUtil
      *
      * @deprecated
      * @see    CategorisableListener, AttributableListener, MetaDataListener, LoggableListener
+     * @return void
      */
     private static function _deletePostProcess($object, $table, $idfield)
     {
@@ -1170,8 +1165,7 @@ class DBUtil
             $table != 'categories_' &&
             $table != 'objectdata_attributes' &&
             $table != 'objectdata_log' &&
-            ModUtil::available('Categories'))
-        {
+            ModUtil::available('Categories')) {
             ObjectUtil::deleteObjectCategories ($object, $table, $idfield);
         }
 
@@ -1179,8 +1173,7 @@ class DBUtil
              (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"] ) ||
             System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
             $table != 'objectdata_attributes' &&
-            $table != 'objectdata_log')
-        {
+            $table != 'objectdata_log') {
             ObjectUtil::deleteObjectAttributes ($object, $table, $idfield);
         }
 
@@ -1189,16 +1182,14 @@ class DBUtil
             System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
             $table != 'objectdata_attributes' &&
             $table != 'objectdata_meta' &&
-            $table != 'objectdata_log')
-        {
+            $table != 'objectdata_log') {
             ObjectUtil::deleteObjectMetaData ($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
             (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])  ) &&
             System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-            strcmp($table, 'objectdata_log') !== 0)
-        {
+            strcmp($table, 'objectdata_log') !== 0) {
             $log = new ObjectData_Log();
             $log['object_type'] = $table;
             $log['object_id']   = $object[$idfield];
@@ -1262,17 +1253,23 @@ class DBUtil
             $tokens = explode(',', $t); // split on comma
             foreach ($tokens as $k => $v) {
                 $v = trim($v);
-                if (strpos($v, ' ') === false) { // 1 word
-                    if (strpos($v, '(') === false) { // not a function call
-                        if (strpos($v, '"') === false) { // not surrounded by quotes already
-                            if (isset($columns[$v])) { // ensure that token is an alias
+                if (strpos($v, ' ') === false) { 
+                	// 1 word
+                    if (strpos($v, '(') === false) { 
+                    	// not a function call
+                        if (strpos($v, '"') === false) { 
+                        	// not surrounded by quotes already
+                            if (isset($columns[$v])) { 
+                            	// ensure that token is an alias
                                 $tokens[$k] = '"' . $v . '"'; // surround it by quotes
                             }
                         }
                     }
-                } else { // multiple words, perform a few basic hecks
+                } else { 
+                	// multiple words, perform a few basic hecks
                     $ttok = explode(' ', $v); // split on space
-                    if (count($ttok) == 2) { // see if we have 2 tokens
+                    if (count($ttok) == 2) { 
+                    	// see if we have 2 tokens
                         $t1 = strtolower(trim($ttok[0]));
                         $t2 = strtolower(trim($ttok[1]));
                         $haveQuotes = strpos($t1, '"') === false;
@@ -1373,7 +1370,7 @@ class DBUtil
      *
      * @param integer $count The value to set the object marhsall counter to.
      *
-     * @return Nothing, the global variable is assigned counter.
+     * @return void, the global variable is assigned counter.
      */
     public static function _setFetchedObjectCount($count = 0)
     {
@@ -1393,7 +1390,7 @@ class DBUtil
     {
         // TODO D [remove PHP4 stuff in DBUtil] (Guite)
         if (isset($GLOBALS['DBUtilFetchObjectCount'])) {
-            return (int) $GLOBALS['DBUtilFetchObjectCount'];
+            return (int)$GLOBALS['DBUtilFetchObjectCount'];
         }
 
         return false;
@@ -2097,15 +2094,15 @@ class DBUtil
      * }
      * </code>
      *
-     * @param string   $table          The treated table reference
-     * @param string   $where          The where clause (optional) (default='')
-     * @param string   $orderby        The order by clause (optional) (default='')
-     * @param integer  $limitOffset    The lower limit bound (optional) (default=-1)
-     * @param integer  $limitNumRows   The upper limit bound (optional) (default=-1)
-     * @param string   $assocKey       The key field to use to build the associative index (optional) (default='')
+     * @param string   $table          The treated table reference.
+     * @param string   $where          The where clause (optional) (default='').
+     * @param string   $orderby        The order by clause (optional) (default='').
+     * @param integer  $limitOffset    The lower limit bound (optional) (default=-1).
+     * @param integer  $limitNumRows   The upper limit bound (optional) (default=-1).
+     * @param string   $assocKey       The key field to use to build the associative index (optional) (default='').
      * @param callback $filterCallback The filter callback object.
-     * @param array    $categoryFilter The category list to use for filtering
-     * @param array    $columnArray    The columns to marshall into the resulting object (optional) (default=null)
+     * @param array    $categoryFilter The category list to use for filtering.
+     * @param array    $columnArray    The columns to marshall into the resulting object (optional) (default=null).
      *
      * @return The resulting object array
      */
