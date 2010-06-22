@@ -18,7 +18,8 @@
 class UserUtil
 {
     // Activated states
-    // 0 = Inactive (Not able to log in. Not yet completed the activation process, or set by site admin.)
+    // DEVELOPERS: New values added to this
+    // 0 = Inactive (Not able to log in.)
     const ACTIVATED_INACTIVE = 0;
     // 1 = Active (Able to log in.)
     const ACTIVATED_ACTIVE = 1;
@@ -34,9 +35,30 @@ class UserUtil
     // 0 = User chooses password, no verification by e-mail.
     const VERIFY_NO = 0;
     // 1 = System-generated password is sent directly to e-mail address
+    // NOTE: Use of system-generated passwords is deprecated due to security concerns when sending passwords via e-mail
     const VERIFY_SYSTEMPWD = 1;
     // 2 = User chooses password, then activates account via e-mail
     const VERIFY_USERPWD = 2;
+
+    // Determines the allowed order of approval (moderation) and e-mail verification (activation)
+    // 0 = A moderator must approve the registration application, then the user can verify his e-mail.
+    const APPROVAL_BEFORE = 0;
+    // 1 = The user must verify his e-mail address first, then the moderator can approve the account (but the admin can override this)
+    const APPROVAL_AFTER = 1;
+    // 2 = Verification and approval can happen in any order
+    const APPROVAL_ANY = 2;
+
+    // 1 = Change of password request
+    const VERIFYCHGTYPE_PWD = 1;
+    // 2 = change of e-mail address request, pending e-mail address verification
+    const VERIFYCHGTYPE_EMAIL = 2;
+
+    // Default salt delimeter character
+    const SALT_DELIM = '$';
+
+    // Date-time format for use with DateTime#format(), date() and gmdate()
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
+    const EXPIRED = '1901-12-13 20:45:52';
 
     /**
      * Return a user object
@@ -235,7 +257,7 @@ class UserUtil
      *
      * @return an array of user IDs
      */
-    public static function getUsersForGroup($gid, $separator = ",")
+    public static function getUsersForGroup($gid)
     {
         if (!$gid) {
             return array();
@@ -374,93 +396,178 @@ class UserUtil
         return $dropdown;
     }
 
-    public static function login($login, $pass, $rememberme = false, $checkPassword = true)
+    public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)
     {
+        LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . __f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'UserUtil::loginUsing()')), 'STRICT');
+        $authinfo = array(
+            'loginid'   => $loginID,
+            'pass'      => $userEnteredPassword,
+        );
+        return self::loginUsing('Users', $authinfo, $rememberme, $checkPassword);
+    }
+
+    public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
+    {
+        // If the user is already logged in, then there's no point in loggin in again, nor is there a point in erroring.
         if (self::isLoggedIn()) {
             return true;
+        }
+        
+        if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
+            return false;
+        } elseif (!ModUtil::getInfo(ModUtil::getIdFromName($authModuleName))) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
+            return false;
+        } elseif (!ModUtil::available($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not available.", 'DEBUG');
+            return false;
+        } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not an authmodule.", 'DEBUG');
+            return false;
+        }
+
+        // Authenticate the loginID and userEnteredPassword against the specified authModule.
+        // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
+        if ($checkPassword) {
+            $uid = ModUtil::apiFunc($authModuleName, 'auth', 'login', array('authinfo' => $authinfo));
+            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModule module ('{$authModuleName}') login failure (user not found, or error).", 'DEBUG');
+
+                $event = new Zikula_Event('user.login.failed', null, array(
+                    'authmodule'    => $authModuleName,
+                    'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                ));
+                EventUtil::notify($event);
+
+                return false;
+            }
+            // At this point, the custom authmodule's login process has been executed. Anything that
+            // prevents this Zikula login process from completing should ensure that the custom authmodule's
+            // logout function is called.
+        } else {
+            $userObj = ModUtil::apiFunc($authModuleName, 'auth', 'getUserForAuthinfo', array('authinfo' => $authinfo));
+            if (!$userObj) {
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModule module ('{$authModuleName}') getUserForAuthinfo failure (user not found, or error).", 'DEBUG');
+
+                $event = new Zikula_Event('user.login.failed', null, array(
+                    'authmodule'    => $authModuleName,
+                    'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                ));
+                EventUtil::notify($event);
+
+                return false;
+            }
+            $uid = $userObj['uid'];
+
+            // At this point, the custom authmodule's login process has NOT been executed (if it is honoring
+            // the API's contract). No need to call the custom logout function if something later on prevents
+            // the Zikula login process from completing.
+        }
+
+        if (!$uid) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "UserUtil Internal Error ('{$authModuleName}') Should have uid at this point.", 'DEBUG');
+            // We should call the authmodule's custom logout function here if checkPassword was true, but since we
+            // don't have a $uid that means something horribly wrong, so we cannot.
+            return false;
         }
 
         // get the database connection
         ModUtil::dbInfoLoad('Users', 'Users');
         ModUtil::loadApi('Users', 'user', true);
 
-        $uservars = ModUtil::getVar('Users');
-
-        if (!System::varValidate($login, (($uservars['loginviaoption'] == 1) ? 'email' : 'uname'))) {
-            return false;
+        if (!$userObj) {
+            // We didn't get it above, in $checkPassword == false
+            $userObj = self::getVars($uid);
         }
 
-        if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
-            $user = DBUtil::selectObjectByID('users', $login, 'uname', null, null, null, false, 'lower');
-        } else {
-            $user = DBUtil::selectObjectByID('users', $login, 'email', null, null, null, false, 'lower');
-        }
-
-        if (!$user) {
-            return false;
-        }
-
-        $uid = (isset($user['uid']) ? $user['uid'] : null);
-
-        if (isset($uid) && $uid) {
-            // check if the account is active
-            if (isset($user['activated']) && $user['activated'] == '0') {
-                // account inactive, deny login
-                return false;
-            } else if ($user['activated'] == '2') {
-                // we need a session var here that can have 3 states
-                // 0: account needs to be activated, this is the value after
-                //    we detected this
-                // 1: account needs to activated, user check the accept checkbox
-                // 2: everything is ok
-                // have we been here before?
-                $confirmtou = SessionUtil::getVar('confirmtou', 0);
-                switch ($confirmtou)
-                {
-                    case 0 :
-                    // continue if legal module is active and and configured to
-                    // use the terms of use
-                        if (ModUtil::available('legal')) {
-                            $tou = ModUtil::getVar('legal', 'termsofuse');
-                            if ($tou == 1) {
-                                // users must confirm terms of use before before he can continue
-                                // we redirect him to the login screen
-                                // to ensure that he reads this reminder
-                                SessionUtil::setVar('confirmtou', 0);
-                                return false;
-                            }
-                        }
-                        break;
-                    case 1 : // user has accepted the terms of use - continue
-                    case 2 :
-                    default :
-                }
-            }
-
+        if (!$userObj || !is_array($userObj)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "UserUtil Internal Error ('{$authModuleName}') uid should have given us a good user. Is the authmodule's map out of sync?", 'DEBUG');
             if ($checkPassword) {
-                $result = false;
-                $login = strtolower($login);
-                $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
-                foreach ($authmodules as $authmodule) {
-                    $authmodule = trim($authmodule);
-                    if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                        $result = ModUtil::apiFunc($authmodule, 'auth', 'login', array('login' => $login, 'pass' => $pass));
-                        if ($result) {
-                            break;
-                        }
+                ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+            }
+            return false;
+        }
+
+        if (!isset($userObj['activated'])) {
+            // Provide a sane value.
+            $userObj['activated'] = self::ACTIVATED_INACTIVE;
+        }
+
+        // Check if the account is active
+        if ($userObj['activated'] != self::ACTIVATED_ACTIVE) {
+            // If we came here through the normal Users module loginScreen/login functions, then we shouldn't
+            // have to deal with terms or password status issues. If we came here from some place else, then
+            // we need to ensure it gets handled.
+            $mustConfirmTOUPP = ($userObj['activated'] == self::ACTIVATED_INACTIVE_TOUPP) || ($userObj['activated'] == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+            $mustChangePassword = ($userObj['activated'] == self::ACTIVATED_INACTIVE_PWD) || ($userObj['activated'] == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+            if ($mustConfirmTOUPP) {
+                // The user needs to confirm acceptance of the terms and/or privacy policy.
+                // First, let's see if the administrator is still using that stuff.
+                if (ModUtil::available('legal')
+                    && (ModUtil::getVar('legal', 'termsofuse', false) || ModUtil::getVar('legal', 'privacypolicy', true)))
+                {
+                    // Yes, still in use. Let loginScreen deal with it.
+                    if ($checkPassword) {
+                        // We logged into the custom authmodule above, log out now.
+                        ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+                    }
+
+                    if ($mustConfirmTOUPP && $mustChangePassword) {
+                        $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
+                    } elseif ($mustConfirmTOUPP) {
+                        $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms first.');
+                    }
+                    $callbackURL = ModUtil::url('Users','user','loginScreen', array(
+                        'confirmtou'    => $mustConfirmTOUPP,
+                        'changepassword'=> $mustChangePassword,
+                    ));
+                    return LogUtil::registerError($errorMsg, 403, $callbackURL);
+                } else {
+                    // No, the admin must have changed something with respect to the legal module since the
+                    // last time we saw this user log in.
+                    if ($mustChangePassword) {
+                        $userObj['activated'] = self::ACTIVATED_INACTIVE_PWD;
+                        self::setVar('activated', self::ACTIVATED_INACTIVE_PWD, $userObj['uid']);
+                    } else {
+                        $userObj['activated'] = self::ACTIVATED_ACTIVE;
+                        self::setVar('activated', self::ACTIVATED_ACTIVE, $userObj['uid']);
                     }
                 }
             }
+
+            if ($mustChangePassword) {
+                if ($checkPassword) {
+                    // We logged into the custom authmodule above, log out now.
+                    ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+                }
+
+                $errorMsg = $this->__('Your log-in request was not completed because you must change your account\'s password first.');
+                $callbackURL = ModUtil::url('Users','user','loginScreen', array(
+                    'confirmtou'    => $mustConfirmTOUPP,
+                    'changepassword'=> $mustChangePassword,
+                ));
+                return LogUtil::registerError($errorMsg, 403, $callbackURL);
+            }
+
+            // If we get here, then either the account is inactive, or the account was set to confirm the terms,
+            // but that is no longer needed (no more legal module, or the settings changed). Check the status one more time.
+            if ($userObj['activated'] != self::ACTIVATED_ACTIVE) {
+                // account inactive, deny login
+                if ($checkPassword) {
+                    // We logged into the authmodule above, log out now.
+                    ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+                }
+                return false;
+            }
         }
 
-        if (!isset($uid) || !$uid || $result === false) {
-            $event = new Zikula_Event('user.login.failed', null, array('user' => UserUtil::getVar('uid')));
-            EventUtil::notify($event);
-            return false;
-        }
+        // BEGIN ACTUAL LOGIN
+        // Made it through all the checks. We can actually log in now.
 
-        // Storing Last Login date
-        if (!UserUtil::setVar('lastlogin', date("Y-m-d H:i:s", time()), $uid)) {
+        // Storing Last Login date -- store it in UTC! Do not use date() function!
+        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        if (!UserUtil::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $uid)) {
             // show messages but continue
             LogUtil::registerError(__('Error! Could not save the log-in date.'));
         }
@@ -470,22 +577,30 @@ class UserUtil
         }
 
         // Set session variables
-        SessionUtil::setVar('uid', (int) $uid);
-        if (!empty($rememberme)) {
+        SessionUtil::setVar('uid', (int)$uid);
+        
+        // Remember the authenticating authmodule for logout
+        SessionUtil::setVar('authmodule', $authModuleName);
+
+        if (!empty($rememberMe)) {
             SessionUtil::setVar('rememberme', 1);
         }
 
-        if (isset($confirmtou) && $confirmtou == 1) {
+        if (isset($confirmTOUPP) && $confirmTOUPP == 1) {
             // if we get here, the user did accept the terms of use
             // now update the status
-            self::setVar('activated', 1, (int) $uid);
+            self::setVar('activated', 1, (int)$uid);
             SessionUtil::delVar('confirmtou');
         }
 
         // now we've logged in the permissions previously calculated are invalid
         $GLOBALS['authinfogathered'][$uid] = 0;
 
-        $event = new Zikula_Event('user.login', null, array('user' => UserUtil::getVar('uid')));
+        $event = new Zikula_Event('user.login', null, array(
+            'authmodule'    => $authModuleName,
+            'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+            'user'          => $uid,
+        ));
         EventUtil::notify($event);
 
         return true;
@@ -502,7 +617,7 @@ class UserUtil
     {
         $uname = System::serverGetVar('REMOTE_USER');
         $hSec  = System::getVar('session_http_login_high_security', true);
-        $rc    = self::login($uname, null, false, false);
+        $rc    = self::loginUsing('Users', array('loginid' => $uname, 'pass' => null), false, false);
         if ($rc && $hSec) {
             System::setVar('seclevel', 'High');
         }
@@ -519,22 +634,28 @@ class UserUtil
     public static function logout()
     {
         if (self::isLoggedIn()) {
-            $authmodules = explode(',', ModUtil::getVar('Users', 'authmodules'));
-            foreach ($authmodules as $authmodule) {
-                $authmodule = trim($authmodule);
-                if (ModUtil::available($authmodule) && ModUtil::loadApi($authmodule, 'user')) {
-                    if (!$result = ModUtil::apiFunc($authmodule, 'auth', 'logout')) {
-                        $event = new Zikula_Event('user.logout.failed', null, array('user' => UserUtil::getVar('uid')));
-                        EventUtil::notify($event);
-                        return false;
-                    }
+            $authModuleName = SessionUtil::getVar('authmodule', '');
+
+            if (!empty($authModuleName) && ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'auth')) {
+                $authModuleLoggedOut = ModUtil::apiFunc($authModuleName, 'auth', 'logout');
+                if (!$authModuleLoggedOut) {
+                    // TODO -- Really? We want to prevent the user from logging out of Zikula if the authmodule logout fails?  Really?
+                    $event = new Zikula_Event('user.logout.failed', null, array(
+                        'authmodule'    => $authModuleName,
+                        'user'          => UserUtil::getVar('uid'),
+                    ));
+                    EventUtil::notify($event);
+                    return false;
                 }
             }
 
-            $event = new Zikula_Event('user.logout', null, array('user' => UserUtil::getVar('uid')));
+            $event = new Zikula_Event('user.logout', null, array(
+                'authmodule'    => $authModuleName,
+                'user'          => UserUtil::getVar('uid'),
+            ));
             EventUtil::notify($event);
 
-            // delete logged on user the session
+            // delete logged-in user session
             // SessionUtil::delVar('rememberme');
             // SessionUtil::delVar('uid');
             session_destroy();
@@ -545,34 +666,19 @@ class UserUtil
     }
 
     /**
-     * Check user password.
+     * Check user password without logging in (or logging in again).
      *
-     * @param string $username              The user's user name (or other appropriate authenticating identifier)
-     * @param string $pass                  The user's password
-     * @param bool   $returnAuthModuleName  If false (default) simply return a boolean, if true, then if the password authenticates
-     *                                      return the authmodule name that authenticated the password instead of true. (optional,
-     *                                      defaults to false)
+     * @param string $authModuleName    The name of the authmodule to use for authentication.
+     * @param array  $authinfo          The information needed by the authmodule for authentication, typically a loginid and pass.
      *
-     * @return bool|string True if the password authenticates against one of the authmodules and $returnAuthModuleName is false;
-     *                      the name of the authmodule if the password authenticates and $returnAuthModuleName is true; otherwise false.
+     * @return bool True if the authinfo authenticates with the authmodule; otherwise false.
      */
-    public static function checkPassword($username, $pass, $returnAuthModuleName = false)
+    public static function authenticateUserUsing($authModuleName, array $authinfo)
     {
-        $passwordMatches = false;
-        $authModuleNames = explode(',', ModUtil::getVar('Users', 'authmodules'));
-        foreach ($authModuleNames as $authModuleName) {
-            $authModuleName = trim($authModuleName);
-            if (ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'user')) {
-                $passwordMatches = ModUtil::apiFunc($authModuleName, 'auth', 'checkpassword', array('login' => $username, 'pass' => $pass));
-                if ($passwordMatches) {
-                    break;
-                }
-            }
-        }
-        if ($passwordMatches && $returnAuthModuleName) {
-            return $authModuleName;
+        if (!empty($authModuleName) && ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'auth')) {
+            return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array('authinfo' => $authinfo));
         } else {
-            return $passwordMatches;
+            return LogUtil::registerArgsError();
         }
     }
 
@@ -585,7 +691,7 @@ class UserUtil
      */
     public static function isLoggedIn()
     {
-        return (bool) SessionUtil::getVar('uid');
+        return (bool)SessionUtil::getVar('uid');
     }
 
     /**
@@ -636,6 +742,9 @@ class UserUtil
         ModUtil::dbInfoLoad('Users', 'Users');
 
         // get user info, don't cache as this information must be up-to-date
+        // NOTE: Do not use a permission filter, or you will enter an infinite nesting loop where getVars calls checkPermission (from within
+        // DBUtil), which will call getVars to find out who you are, which will call checkPermission, etc., etc.
+        // Do your permission check in the API that is using UserUtil.
         $user = DBUtil::selectObjectByID('users', $id, $idfield, null, null, null, false);
         // user can be false (error) or empty array (no such user)
         if ($user === false || empty($user)) {
@@ -732,16 +841,20 @@ class UserUtil
         $pntable = System::dbGetTables();
 
         if (empty($name)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - empty(\$name).", 'DEBUG');
             return false;
         }
         if (!isset($value)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - !isset(\$value).", 'DEBUG');
             return false;
         }
 
         if ($uid == -1) {
             $uid = SessionUtil::getVar('uid');
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "set \$uid to '{$uid}'.", 'DEBUG');
         }
         if (empty($uid)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - empty(\$uid).", 'DEBUG');
             return false;
         }
 
@@ -798,12 +911,260 @@ class UserUtil
         return $res;
     }
 
-    public static function setPassword($pass)
+    /**
+     * Get an array of hash algorithms valid for hashing user passwords; either as an array of
+     * algorithm names index by internal integer code, or as an array of internal integer algorithm
+     * codes indexed by algorithm name.
+     *
+     * @param bool $reverse If false, then return an array of codes indexed by name (e.g. given $name, then $code = $methods[$name]);
+     *                          if true, return an array of names indexed by code (e.g. given $code, then $name = $methods[$code]);
+     *                          optional, default = false.
+     *
+     * @return array Depending on the value of $reverse, an array of codes indexed by name or an
+     *                  array of names indexed by code.
+     */
+    public static function getPasswordHashMethods($reverse = false)
     {
-        $method = ModUtil::getVar('Users', 'hash_method');
-        $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'gethashmethods');
-        self::setVar('pass', hash($method, $pass));
-        self::setVar('hash_method', $hashmethodsarray[$method]);
+        // NOTICE: Be extremely cautious about removing entries from this array! If a hash method is no longer
+        // to be used, then it probably should be removed from the available options at display time. If an entry is
+        // removed from this array but a user's password has been hashed with that method, then that user will no
+        // longer be able to log in!! Only remove an entry if you are absolutely positive no user record has a
+        // password hashed with that method!
+
+        // NOTICE: DO NOT change the numbers assigned to each hash method. The number is the identifier for the
+        // method stored in the database. If a number is changed to a different method, then any user whose password
+        // was hashed with the method previously identified by that number will no longer be able to log in!
+
+        $reverse = is_bool($reverse) ? $reverse : false;
+
+        if ($reverse) {
+            // Ensure this is in sync with the array below!
+            return array(
+                1 => 'md5',
+                5 => 'sha1',
+                8 => 'sha256'
+            );
+        } else {
+            // Ensure this is in sync with the array above!
+            return array(
+                'md5'    => 1,
+                'sha1'   => 5,
+                'sha256' => 8
+            );
+        }
+    }
+
+    /**
+     * For a given password hash algorithm name, return its internal integer code.
+     *
+     * @param string $hashAlgorithmName The name of a hash algorithm suitable for hashing user passwords.
+     *
+     * @return int|bool The internal integer code corresponding to the given algorithm name; false if the name is not valid.
+     */
+    public static function getPasswordHashMethodCode($hashAlgorithmName)
+    {
+        static $hashMethodCodesByName;
+        if (!isset($hashMethodCodesByName)) {
+            $hashMethodCodesByName = self::getPasswordHashMethods(false);
+        }
+
+        if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName)
+            || !isset($hashMethodCodesByName[$hashAlgorithmName]) || empty($hashMethodCodesByName[$hashAlgorithmName])
+            || !is_numeric($hashMethodCodesByName[$hashAlgorithmName]))
+        {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmName ('{$hashAlgorithmName}').", 'DEBUG');
+            return LogUtil::registerArgsError();
+        }
+
+        return $hashMethodCodesByName[$hashAlgorithmName];
+    }
+
+    /**
+     * For a given internal password hash algorithm code, return its name suitable for use with the hash() function.
+     *
+     * @param int $hashAlgorithmCode The internal code representing a hashing algorithm suitable for hashing user passwords.
+     *
+     * @return string|bool The hashing algorithm name corresponding to that code, suitable for use with hash(); false if the code is invalid.
+     */
+    public static function getPasswordHashMethodName($hashAlgorithmCode)
+    {
+        static $hashMethodNamesByCode;
+        if (!isset($hashMethodNamesByCode)) {
+            $hashMethodNamesByCode = self::getPasswordHashMethods(true);
+        }
+
+        if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
+            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode]))
+        {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmCode ('{$hashAlgorithmCode}'), translates to '{$hashMethodNamesByCode[$hashAlgorithmCode]}'.", 'DEBUG');
+            return LogUtil::registerArgsError();
+        }
+
+        return $hashMethodNamesByCode[$hashAlgorithmCode];
+    }
+
+    /**
+     * Determines if a given unhashed password meets the minimum criteria for use as a user password.
+     *
+     * The given password must be set, a string, not the empty string, and must have a length greater than
+     * the minimum length defined by the Users module variable 'minpass' (or 5 if that variable is not set or
+     * is misconfigured).
+     *
+     * @param string $unhashedPassword The proposed password.
+     *
+     * @return bool True if the proposed password meets the minimum criteria; otherwise false;
+     */
+    public static function validatePassword($unhashedPassword)
+    {
+        $minLength = ModUtil::getVar('Users', 'minpass', 5);
+        if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength < 1)) {
+            $minLength = 5;
+        }
+
+        return isset($unhashedPassword)
+            && is_string($unhashedPassword)
+            && (strlen($unhashedPassword) >= $minLength);
+    }
+
+    /**
+     * Given a string return it's hash and the internal integer hashing algorithm code used to hash that string.
+     *
+     * Note that this can be used for more than just user login passwords. If a user-readale password-like code is needed,
+     * then this method may be suitable.
+     *
+     * @param string $unhashedPassword An unhashed password, as might be entered by a user or generated by the system, that meets
+     *                                  all of the constraints of a valid password for a user account.
+     * @param int    $hashMethodCode   An internal code identifying one of the valid user password hashing methods; optional, leave this
+     *                                  unset (null) when creating a new password for a user to get the currently configured system
+     *                                  hashing method, otherwise to hash a password for comparison, specify the method used to hash
+     *                                  the original password.
+     *
+     * @return array|bool An array containing two elements: 'hash' containing the hashed password, and 'hashMethodCode' containing the
+     *                      internal integer hashing algorithm code used to hash the password; false if the password does not meet the
+     *                      constraints of a valid password, or if the hashing method (stored in the Users module 'hash_method' var) is
+     *                      not valid.
+     */
+    public static function getHashedPassword($unhashedPassword, $hashMethodCode = null)
+    {
+        if (!self::validatePassword($unhashedPassword)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . 'registerArgsError - password did not validate.', 'DEBUG');
+            return LogUtil::registerArgsError();
+        }
+
+        if (isset($hashMethodCode)) {
+            if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode != $hashMethodCode)) {
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashMethodCode ('{$hashMethodCode}').", 'DEBUG');
+                return LogUtil::registerArgsError();
+            }
+            $hashAlgorithmName = self::getPasswordHashMethodName($hashMethodCode);
+            if (!$hashAlgorithmName) {
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmName ('{$hashAlgorithmName}').", 'DEBUG');
+                return LogUtil::registerArgsError();
+            }
+        } else {
+            $hashAlgorithmName = ModUtil::getVar('Users', 'hash_method', '');
+            $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
+            if (!$hashMethodCode) {
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashMethodCode ('{$hashMethodCode}').", 'DEBUG');
+                return LogUtil::registerArgsError();
+            }
+        }
+
+        return SecurityUtil::getSaltedHash($unhashedPassword, $hashAlgorithmName, self::getPasswordHashMethods(false), 5, self::SALT_DELIM);
+
+        return array(
+            'hashMethodCode'    => $hashMethodCode,
+            'hash'              => hash($hashAlgorithmName, $unhashedPassword),
+        );
+    }
+
+    /**
+     * Create a system-generated password or password-like code, meeting the configured constraints for a password.
+     *
+     * @return string The generated (unhashed) password-like string.
+     */
+    public static function generatePassword()
+    {
+        $minLength = ModUtil::getVar('Users', 'minpass', 5);
+        if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength < 5)) {
+            $minLength = 5;
+        }
+        $minLength = min($minLength, 25);
+        $maxLength = min($minLength + 3, 25);
+        return RandomUtil::getStringForPassword($minLength, $maxLength);
+    }
+
+    /**
+     * Change the specified user's password to the one provided, defaulting to the current user if a uid is not specified.
+     *
+     * @param string    $unhashedPassword   The new password for the current user.
+     * @param int       $uid                The user ID of the user for whom the password should be set; optional; defaults to current user.
+     *
+     * @return bool True if the password was successfully saved; otherwise false if the password is empty,
+     *                  invalid (too short), or if the password was not successfully saved.
+     */
+    public static function setPassword($unhashedPassword, $uid = -1)
+    {
+        $passwordChanged = false;
+
+        // If uid is not -1 (specifies someone other than the current user) then make sure the current user
+        // is allowed to do that.
+
+        if (self::validatePassword($unhashedPassword)) {
+            $hashedPassword = self::getHashedPassword($unhashedPassword);
+
+            if ($hashedPassword) {
+                // TODO - Important! This needs to be an atomic change to the database. If pass is changed without hash_method, then the user will not be able to log in!
+                $passwordChanged = self::setVar('pass', $hashedPassword, $uid);
+                if (!$passwordChanged) {
+                    LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "setVar('pass') failure.", 'DEBUG');
+                }
+            } else {
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "getHashedPassword failure.", 'DEBUG');
+            }
+            // TODO - Should we force the change of passreminder here too? If the password is changing, certainly the existing reminder is no longer valid.
+        } else {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "validatePassword failure.", 'DEBUG');
+        }
+
+        return $passwordChanged;
+    }
+
+    /**
+     * Compare a password-like code to a hashed value, to determine if they match.
+     *
+     * Note that this is not limited only to use for user login passwords, but can be used where ever a human-readable
+     * password-like code is needed.
+     *
+     * @param string $unhashedPassword  The password-like code entered by the user.
+     * @param string $hashedPassword    The hashed password-like code that the entered password-like code is to be compared to.
+     * @param int    $hashMethodCode    The internal integer identifier of a hashing algorithm permitted for use with password, and
+     *                                      that has been used to hash $hashedPassword.
+     *
+     * @return bool True if the $unhashedPassword matches the $hashedPassword with the given hashing method; false if they do not
+     *                  match, or if there was an error (such as an empty password or invalid code).
+     */
+    public static function passwordsMatch($unhashedPassword, $hashedPassword)
+    {
+        $passwordsMatch = false;
+
+        if (!isset($unhashedPassword) || !is_string($unhashedPassword) || empty($unhashedPassword)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$unhashedPassword ('{$unhashedPassword}').", 'DEBUG');
+            return LogUtil::registerArgsError();
+        }
+
+        if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, self::SALT_DELIM) === false)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashedPassword ('{$hashedPassword}').", 'DEBUG');
+            return LogUtil::registerArgsError();
+        }
+
+        $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), self::SALT_DELIM);
+
+        if (!$passwordsMatch) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "pwd match failure. unhashed = '{$unhashedPassword}'; hashed = '{$hashedPassword}'", 'DEBUG');
+        }
+
+        return $passwordsMatch;
     }
 
     /**
@@ -817,7 +1178,7 @@ class UserUtil
      * UserUtil::delVar('avatar', 123);  // removes a users avatar, new style (uid=123)
      * (internally both the new style and the old style clear the same attribute)
      *
-     * It does not allow the deletion of uid, email, uname and pass (word) as these are mandatory
+     * It does not allow the deletion of uid, email, uname, pass (password), as these are mandatory
      * fields in the users table.
      *
      * @param name $ the name of the variable
@@ -1007,31 +1368,39 @@ class UserUtil
         $userscolumn = $pntable['users_column'];
 
         if (empty($where)) {
+            $sqlFragments = array();
             if (!empty($regexpfield) && (array_key_exists($regexpfield, $userscolumn)) && !empty($regexpression)) {
-                $where = 'WHERE ' . $userscolumn[$regexpfield] . ' REGEXP "' . DataUtil::formatForStore($regexpression) . '"';
+                $sqlFragments[] = '(' . $userscolumn[$regexpfield] . ' REGEXP "' . DataUtil::formatForStore($regexpression) . '")';
             }
             if (!empty($activated) && is_numeric($activated) && array_key_exists('activated', $userscolumn)) {
-                if (!empty($where)) {
-                    $where .= ' AND ';
-                } else {
-                    $where = ' WHERE ';
-                }
-                $where .= "$userscolumn[activated] != '" . DataUtil::formatForStore($activated) . "'";
+                $sqlFragments[] = "({$userscolumn['activated']} != '" . DataUtil::formatForStore($activated) . "')";
+            }
+
+            if (!empty($sqlFragments)) {
+                $where = 'WHERE ' . implode(' AND ', $sqlFragments);
             }
         }
 
         $sortby = '';
         if (!empty($sortbyfield)) {
+            // Do not skip the following line, it might still have $where stuff in there!
+            $sqlFragments = array();
             if (array_key_exists($sortbyfield, $userscolumn)) {
-                $sortby = 'ORDER BY ' . $userscolumn[$sortbyfield] . ' ' . DataUtil::formatForStore($sortorder); //sort by .....
+                $sqlFragments[] = $userscolumn[$sortbyfield] . ' ' . DataUtil::formatForStore($sortorder);
             } else {
-                $sortby = 'ORDER BY ' . DataUtil::formatForStore($sortbyfield) . ' ' . DataUtil::formatForStore($sortorder); //sorty by dynamic.....
+                $sqlFragments[] = DataUtil::formatForStore($sortbyfield) . ' ' . DataUtil::formatForStore($sortorder); //sorty by dynamic.....
             }
             if ($sortbyfield != 'uname') {
-                $sortby .= ', ' . $userscolumn['uname'] . ' ASC ';
+                $sqlFragments[] = $userscolumn['uname'] . ' ASC ';
+            }
+
+            if (!empty($sqlFragments)) {
+                $sortby = 'ORDER BY ' . implode(', ', $sqlFragments);
             }
         }
 
+        // NOTE: DO NOT use a permission filter here to avoid potential infinite loops (DBUtil calls SecurityUtil 
+        // which calls back to UserUtil. Do your permission check in the API that uses UserUtil.
         return DBUtil::selectObjectArray('users', $where, $sortby, $startnum, $limit, 'uid');
     }
 
@@ -1081,4 +1450,5 @@ class UserUtil
         $pntables = System::dbGetTables();
         return array_key_exists($label, $pntables['users_column']);
     }
+
 }

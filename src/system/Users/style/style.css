@@ -41,8 +41,13 @@
     color: green;
 }
 
-#newuser input.errorrequired,
-#newuser input:hover.errorrequired {
+#users_newuser label.errorrequired,
+#users_newuser label:hover.errorrequired {
+    border-bottom: 1px red solid;
+}
+
+#users_newuser input.errorrequired,
+#users_newuser input:hover.errorrequired {
     border: 1px red solid;
 }
 

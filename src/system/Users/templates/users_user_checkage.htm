@@ -3,14 +3,13 @@
 
 {include file='users_user_menu.htm'}
 
-{if !$reg_allowreg}
+{if !$regAllowed}
     <h3>{gt text="Sorry! New user registration is currently disabled."}</h3>
-    <div>{gt text="Reasons"}</div>
-    <div>{$reg_noregreasons|varprepfordisplay}</div>
+    <div>{$regOffReason|varprepfordisplay}</div>
 {else}
-    <p>{gt text="You are required to be %s years of age or older to register for an account on this site. Please choose your case below:" tag1=$minage}</p>
+    <p>{gt text="You are required to be %s years of age or older to register for an account on this site. Please choose your case below:" tag1=$minimumAge}</p>
     <ul>
-        <li><a href="{modurl modname="Users" type="user" func="register"}">{gt text="I am %s or over." tag1=$minage}</a></li>
-        <li><a href="{modurl modname="Users" type="user" func="underage"}">{gt text="I am under %s." tag1=$minage}</a></li>
+        <li><a href="{modurl modname='Users' type='user' func='register'}">{gt text="I am %s or older." tag1=$minimumAge}</a></li>
+        <li><a href="{modurl modname='Users' type='user' func='underage'}">{gt text="I am under %s." tag1=$minimumAge}</a></li>
     </ul>
 {/if}

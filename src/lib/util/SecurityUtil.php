@@ -27,6 +27,9 @@
  */
 class SecurityUtil
 {
+    // Default salt delimeter
+    const SALT_DELIM = '$';
+
     /**
      * Check permissions
      *
@@ -430,50 +433,112 @@ class SecurityUtil
     }
 
     /**
-     * Hashes the data with a random salt value and returns a string containing the salt and hash.
+     * Hashes the data with the specified salt value and returns a string containing the hash method, salt and hash.
      *
-     * @param string $algo          Any value returned by hash_algo().
-     * @param string $data          The data to be salted and hashed.
-     * @param int    $saltLength    The number of characters to use in the salt.
-     * @param string $saltDelim     The delimiter between the salt and the hash, must be a single character.
+     * @param string $unhashedData          The data to be salted and hashed.
+     * @param string $hashMethodName        Any value returned by hash_algo().
+     * @param string $saltStr               Any valid string, including the empty string, with which to salt the unhashed data before hashing.
+     * @param array  $hashMethodNameToCode  An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
+     *                                          name and include it on the salted hash string; optional, if not specified, then the
+     *                                          algorithm name is included in the string returned (which could be considered less than secure!).
+     * @param string $saltDelimeter         The delimiter between the salt and the hash, must be a single character.
      *
-     * @return string|bool The salt and hashed data separated by the salt delimiter; or false if an error occured.
+     * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
+     *                      false if an error occured.
      */
-    public static function getSaltedHash($algo, $data, $saltLength = 5, $saltDelim = '$')
+    public static function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = array(), $saltDelimeter = self::SALT_DELIM)
     {
         $saltedHash = false;
         $algoList = hash_algos();
 
-        if ((array_search($algo, $algoList) !== false) && is_int($saltLength) && is_string($saltDelim) && (strlen($saltDelim) == 1)) {
-            $salt = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, array($saltDelim));
-            $hash = hash($algo, $salt . $data);
-            $saltedHash = $salt . $saltDelim . $hash;
+        if ((array_search($hashMethodName, $algoList) !== false) && is_string($saltStr) && is_string($saltDelimeter) && (strlen($saltDelimeter) == 1)) {
+            $hashedData = hash($hashMethodName, $saltStr . $unhashedData);
+            if (!empty($hashMethodNameToCode)) {
+                if (isset($hashMethodNameToCode[$hashMethodName])) {
+                    $saltedHash = $hashMethodNameToCode[$hashMethodName] . $saltDelimeter . $saltStr . $saltDelimeter . $hashedData;
+                } else {
+                    $saltedHash = false;
+                }
+            } else {
+                $saltedHash = $hashMethodName . $saltDelimeter . $saltStr . $saltDelimeter . $hashedData;
+            }
         }
 
         return $saltedHash;
     }
 
     /**
+     * Hashes the data with a random salt value and returns a string containing the hash method, salt and hash.
+     *
+     * @param string $unhashedData          The data to be salted and hashed.
+     * @param string $hashMethodName        Any value returned by hash_algo().
+     * @param array  $hashMethodNameToCode  An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
+     *                                          name and include it on the salted hash string; optional, if not specified, then the
+     *                                          algorithm name is included in the string returned (which could be considered less than secure!).
+     * @param int    $saltLength            The number of random characters to use in the salt.
+     * @param string $saltDelimeter         The delimiter between the salt and the hash, must be a single character.
+     *
+     * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
+     *                      false if an error occured.
+     */
+    public static function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = array(), $saltLength = 5, $saltDelimeter = self::SALT_DELIM)
+    {
+        $saltedHash = false;
+        $saltStr = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, array($saltDelimeter));
+        return self::buildSaltedHash($unhashedData, $hashMethodName, $saltStr, $hashMethodNameToCode, $saltDelimeter);
+    }
+    
+    /**
      * Checks the given data against the given salted hash to see if they match.
      *
-     * @param string $algo          Any value returned by hash_algo(), but it must match the $algo used to create the salted hash.
-     * @param string $data          The data to check.
-     * @param string $saltedHash    The salted hash value to check against.
-     * @param string $saltDelim     The delimiter between the salt and the hash, must be a single character.
+     * @param string $unhashedData          The data to be salted and hashed.
+     * @param string $hashMethodName        Any value returned by hash_algo().
+     * @param string $saltStr               Any valid string, including the empty string, with which to salt the unhashed data before hashing.
+     * @param array  $hashMethodNameToCode  An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
+     *                                          name and include it on the salted hash string; optional, if not specified, then the
+     *                                          algorithm name is included in the string returned (which could be considered less than secure!).
+     * @param string $saltDelimeter         The delimiter between the salt and the hash, must be a single character.
      *
-     * @return int|bool 1 if the data matches the salted hash; 0 if the data does not match; false if an error occured.
+     * @return int|bool If the data matches the salted hash, then 1; If the data does not match, then 0; false if an error occured (Note:
+     *                      both 0 and false evaluate to false in boolean expressions--use strict comparisons to differentiate).
      */
-    public static function checkSaltedHash($algo, $data, $saltedHash, $saltDelim = '$')
+    public static function checkSaltedHash($unhashedData, $saltedHash, array $hashMethodCodeToName = array(), $saltDelimeter = self::SALT_DELIM)
     {
+        LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Parameter. unhashedData = '{$unhashedData}'; saltedHash = '{$saltedHash}'", 'DEBUG');
+        LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Parameter. saltDelimeter = '{$saltDelimeter}'; hashMethodCodeToName = ".var_export($hashMethodCodeToName, true), 'DEBUG');
+
         $dataMatches = false;
+
         $algoList = hash_algos();
 
-        if ((array_search($algo, $algoList) !== false) && is_string($saltDelim) && (strlen($saltDelim) == 1)) {
-            list($salt, $hash) = explode($saltDelim, $saltedHash, 2);
+        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimeter) && (strlen($saltDelimeter) == 1)
+            && (strpos($saltedHash, $saltDelimeter) !== false))
+        {
+            list ($hashMethod, $saltStr, $correctHash) = explode($saltDelimeter, $saltedHash);
 
-            $dataHash = hash($algo, $salt . $data);
+            if (!empty($hashMethodCodeToName)) {
+                if (is_numeric($hashMethod) && ((int)$hashMethod == $hashMethod)) {
+                    $hashMethod = (int)$hashMethod;
+                }
+                if (isset($hashMethodCodeToName[$hashMethod])) {
+                    $hashMethodName = $hashMethodCodeToName[$hashMethod];
+                } else {
+                    $hashMethodName = $hashMethod;
+                }
+            } else {
+                $hashMethodName = $hashMethod;
+            }
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Have name. hashMethod = '{$hashMethod}'; hashMethodName = '{$hashMethodName}'", 'DEBUG');
 
-            $dataMatches = (int)($dataHash === $hash);
+            if (array_search($hashMethodName, $algoList) !== false) {
+                $dataHash = hash($hashMethodName, $saltStr . $unhashedData);
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Comparing. dataHash = '{$dataHash}'; correctHash = '{$correctHash}'", 'DEBUG');
+                $dataMatches = is_string($dataHash) ? (int)($dataHash == $correctHash) : false;
+            } else {
+                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid aglorithm name. hashMethodName = '{$hashMethodName}'", 'DEBUG');
+            }
+        } else {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "salted hash match failure. unhashed = '{$unhashedData}'; saltedhash = '{$saltedHash}'", 'DEBUG');
         }
 
         return $dataMatches;

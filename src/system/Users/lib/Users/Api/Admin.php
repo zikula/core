@@ -192,10 +192,7 @@ class Users_Api_Admin extends Zikula_Api
                 return LogUtil::registerError($this->_fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass, $minpass));
             }
             if (!empty($pass) && $pass) {
-                $method = ModUtil::getVar('Users', 'hash_method', 'sha1');
-                $hashmethodsarray = ModUtil::apiFunc('Users', 'user', 'getHashMethods');
-                $args['pass'] = hash($method, $pass);
-                $args['hash_method'] = $hashmethodsarray[$method];
+                $args['pass'] = UserUtil::getHashedPassword($pass);
             }
         } else {
             unset($args['pass']);
@@ -314,172 +311,6 @@ class Users_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Removes a registration request from the database, either because of a denial or because of an approval.
-     * Internal use only. Not intended to be used through an API call. Security check done in the API function that
-     * calls this.
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['userid'] (numeric) The tid of the temporary user record (registration request) to delete.
-     *
-     * @return bool True if successful, false otherwise.
-     */
-    private function removeRegistration($args)
-    {
-        // Don't do a security check here. Do it in the function that calls this one.
-        // This is an internal-only function.
-
-        if (!isset($args['userid']) || !$args['userid']) {
-            return false;
-        }
-
-        $res = DBUtil::deleteObjectByID('users_temp', $args['userid'], 'tid');
-
-        return $res;
-    }
-
-    /**
-     * Deny an application for a new user account (deny a registration request).
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['userid'] (int) The tid of the temporary user record (registration request) to deny.
-     *
-     * @return bool True if successful, false otherwise.
-     */
-    public function deny($args)
-    {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
-            return false;
-        }
-
-        return $this->removeRegistration($args);
-    }
-
-    /**
-     * Approve an application for a new user account (approve a registration request).
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['userid'] (numeric) The tid of the temporary user record (registration request) to approve.
-     *
-     * @return true if successful, false otherwise
-     */
-    public function approve($args)
-    {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            return false;
-        }
-
-        if (!isset($args['userid']) || !$args['userid']) {
-            return false;
-        }
-
-        $user = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid');
-
-        if (!$user) {
-            return $user;
-        }
-
-        $user['vpass']     = $user['pass'];
-        $user['dynadata']  = unserialize($user['dynamics']);
-        $user['moderated'] = true;
-
-        $insert = ModUtil::apiFunc('Users', 'user', 'finishNewUser', $user);
-
-        if ($insert) {
-            // $insert has uid, we remove it from the temp
-            $result = $this->removeRegistration(array('userid' => $args['userid']));
-        } else {
-            $result = false;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Retrieve all pending applications for a new user account (all registration requests).
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['starnum']  (int) The ordinal number of the first item to return.
-     *                    $args['numitems'] (int) The number (count) of items to return.
-     *
-     * @return array|bool Array of registration requests, or false on failure.
-     */
-    public function getAllPendings($args)
-    {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            return false;
-        }
-
-        // Optional arguments.
-        $startnum = (isset($args['startnum']) && is_numeric($args['startnum'])) ? $args['startnum'] : 1;
-        $numitems = (isset($args['numitems']) && is_numeric($args['numitems'])) ? $args['numitems'] : -1;
-        unset($args);
-
-        $items = array();
-
-        // Security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW)) {
-            return $items;
-        }
-
-        $pntable = System::dbGetTables();
-        $userscolumn = $pntable['users_temp_column'];
-        $where = "$userscolumn[type] = 1";
-        $orderby = "ORDER BY $userscolumn[tid]";
-
-        $result = DBUtil::selectObjectArray('users_temp', $where, $orderby, $startnum-1, $numitems, '');
-
-        if ($result === false) {
-            LogUtil::registerError($this->__('Error! Could not load data.'));
-        }
-
-        return $result;
-    }
-
-    /**
-     * Retrieve one application for a new user account (one registration request).
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['userid'] (numeric) The tid of the temporary user record (registration request) to return.
-     *
-     * @return array|bool An array containing the record, or false on error.
-     */
-    public function getApplication($args)
-    {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            return false;
-        }
-
-        if (!isset($args['userid']) || !$args['userid']) {
-            return false;
-        }
-
-        $item = DBUtil::selectObjectByID('users_temp', $args['userid'], 'tid');
-
-        if ($item === false) {
-            LogUtil::registerError($this->__('Error! Could not load data.'));
-        }
-
-        return $item;
-    }
-
-    /**
-     * Returns the number of pending applications for new user accounts (registration requests).
-     *
-     * @return int|bool Numer of pending applications, false on error.
-     */
-    public function countPending()
-    {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            return false;
-        }
-
-        $pntable = System::dbGetTables();
-        $userscolumn = $pntable['users_temp_column'];
-        $where = "$userscolumn[type] = 1";
-        return DBUtil::selectObjectCount('users_temp', $where);
-    }
-
-    /**
      * Get available admin panel links.
      *
      * @return array Array of admin links.
@@ -492,13 +323,13 @@ class Users_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'z-icon-es-list');
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $pending = ModUtil::apiFunc('Users', 'admin', 'countPending');
+            $pending = ModUtil::apiFunc('Users', 'registration', 'countAll');
             if ($pending) {
-                $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewApplications'), 'text' => $this->__('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
+                $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
             }
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'newuser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('Users', 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'z-icon-es-new');
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'import'), 'text' => $this->__('Import users'), 'class' => 'z-icon-es-import');
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
@@ -597,18 +428,13 @@ class Users_Api_Admin extends Zikula_Api
         $userstable = $pntable['users'];
         $userscolumn = $pntable['users_column'];
 
-        // get encrypt method for passwords
-        $method = ModUtil::getVar('Users', 'hash_method');
-        $methodNumberArray = ModUtil::apiFunc('Users','user','getHashMethods', array('reverse' => false));
-        $methodNumber = $methodNumberArray[$method];
-
         $createUsersSQL = "INSERT INTO " . $userstable . "($userscolumn[uname],$userscolumn[email],$userscolumn[activated],$userscolumn[pass],$userscolumn[hash_method]) VALUES ";
 
         // construct a sql statement with all the inserts to avoid to much database connections
         foreach ($importValues as $value) {
             $value = DataUtil::formatForStore($value);
-            $password = DataUtil::hash(trim($value['pass']), $method);
-            $createUsersSQL .= "('" . trim($value['uname']) . "','" . trim($value['email']) . "'," . $value['activated'] . ",'" . $password . "', $methodNumber),";
+            $passwordHashinfo = UserUtil::getHashedPassword($value['pass']);
+            $createUsersSQL .= "('" . trim(mb_strtolower($value['uname'])) . "','" . trim($value['email']) . "', {$value['activated']}, '{$passwordHashinfo['hash']}', {$passwordHashinfo['hashMethodCode']}),";
             $usersArray[] = $value['uname'];
         }
 

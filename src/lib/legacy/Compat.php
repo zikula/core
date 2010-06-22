@@ -3128,7 +3128,7 @@ function themesideblock($row)
  * Log the user in
  *
  * @deprecated
- * @see UserUtil::login()
+ * @see UserUtil::loginUsing()
  *
  * @param uname $ the name of the user logging in
  * @param pass $ the password of the user logging in
@@ -3138,8 +3138,8 @@ function themesideblock($row)
  */
 function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::login()')), 'STRICT');
-    return UserUtil::login($uname, $pass, $rememberme, $checkPassword);
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::loginUsing()')), 'STRICT');
+    return UserUtil::login('Users', array('loginid' => $uname, 'pass' => $pass), $rememberme, $checkPassword);
 }
 
 /**

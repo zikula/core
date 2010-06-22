@@ -31,34 +31,63 @@ class Users_Api_User extends Zikula_Api
      */
     public function getAll($args)
     {
-        // Optional arguments.
-        $startnum = (isset($args['startnum']) && is_numeric($args['startnum'])) ? $args['startnum'] : 1;
-        $numitems = (isset($args['numitems']) && is_numeric($args['numitems'])) ? $args['numitems'] : -1;
-
         // Security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW)) {
             return false;
         }
 
+        // Check validity of startnum arg, or set default
+        if (!isset($args['startnum'])) {
+            $limitOffset = -1;
+        } else {
+            if (is_numeric($args['startnum']) && ((int)$args['startnum'] == $args['startnum'])) {
+                $limitOffset = (int)$args['startnum'] - 1;
+            } else {
+                return LogUtil::registerArgsError();
+            }
+        }
+
+        // Check validity of numitems arg, or set default
+        if (!isset($args['numitems'])) {
+            $limitNumRows = -1;
+        } else {
+            if (is_numeric($args['numitems']) && ((int)$args['numitems'] == $args['numitems']) && ($args['numitems'] >= 1)) {
+                $limitNumRows = (int)$args['numitems'];
+            } else {
+                return LogUtil::registerArgsError();
+            }
+        }
+
+        // Check validity of letter arg.
+        // $args['letter'] is really an SQL LIKE filter
+        if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
+            return LogUtil::registerArgsError();
+        }
+
         $permFilter = array();
         // corresponding filter permission to filter anonymous in admin view:
         // Administrators | Users:: | Anonymous:: | None
-        $permFilter[] = array('realm' => 0,
-                'component_left'   => 'Users',
-                'component_middle' => '',
-                'component_right'  => '',
-                'instance_left'    => 'uname',
-                'instance_middle'  => '',
-                'instance_right'   => 'uid',
-                'level'            => ACCESS_READ);
+        $permFilter[] = array(
+            'realm'             => 0,
+            'component_left'    => 'Users',
+            'component_middle'  => '',
+            'component_right'   => '',
+            'instance_left'     => 'uname',
+            'instance_middle'   => '',
+            'instance_right'    => 'uid',
+            'level'             => ACCESS_READ
+        );
+
+        $table = System::dbGetTables();
+        $usersColumn = $table['users_column'];
 
         // form where clause
         $where = '';
         if (isset($args['letter'])) {
-            $where = "WHERE pn_uname LIKE '".DataUtil::formatForStore($args['letter'])."%'";
+            $where = "WHERE {$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%'";
         }
 
-        $objArray = DBUtil::selectObjectArray('users', $where, 'uname', $startnum-1, $numitems, '', $permFilter);
+        $objArray = DBUtil::selectObjectArray('users', $where, 'uname', $limitOffset, $limitNumRows, null, $permFilter);
 
         // Check for a DB error
         if ($objArray === false) {
@@ -80,27 +109,25 @@ class Users_Api_User extends Zikula_Api
     public function get($args)
     {
         // Argument check
-        if (!isset($args['uid']) || !is_numeric($args['uid'])) {
-            if (!isset($args['uname'])) {
-                return LogUtil::registerArgsError();
-            }
-        }
-
-        $pntable = System::dbGetTables();
-        $userscolumn = $pntable['users_column'];
-
-        // calculate the where statement
         if (isset($args['uid'])) {
-            $where = "$userscolumn[uid]='" . DataUtil::formatForStore($args['uid']) . "'";
+            if (!is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
+                return LogUtil::registerArgsError();
+            } else {
+                $key = (int)$args['uid'];
+                $field = 'uid';
+            }
+        } elseif (!isset($args['uname']) || !is_string($args['uname'])) {
+            return LogUtil::registerArgsError();
         } else {
-            $where = "$userscolumn[uname]='" . DataUtil::formatForStore($args['uname']) . "'";
+            $key = (int)$args['uname'];
+            $field = 'uname';
         }
 
-        $obj = DBUtil::selectObject('users', $where);
+        $obj = UserUtil::getVars($key, false, $field);
 
-        // Security check
-        if ($obj && !SecurityUtil::checkPermission('Users::', "$obj[uname]::$obj[uid]", ACCESS_READ)) {
-            return false;
+        // Check for a DB error
+        if ($obj === false) {
+            return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
 
         // Return the item array
@@ -119,13 +146,29 @@ class Users_Api_User extends Zikula_Api
      */
     public function countItems($args)
     {
+        // Check validity of letter arg.
+        // $args['letter'] is really an SQL LIKE filter
+        if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
+            return LogUtil::registerArgsError();
+        }
+
+        $table = System::dbGetTables();
+        $usersColumn = $table['users_column'];
+
         // form where clause
         $where = '';
         if (isset($args['letter'])) {
-            $where = "WHERE pn_uname LIKE '".DataUtil::formatForStore($args['letter'])."%'";
+            $where = "WHERE {$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%'";
         }
 
-        return DBUtil::selectObjectCount('users', $where);
+        $objCount = DBUtil::selectObjectCount('users', $where);
+
+        // Check for a DB error
+        if ($objCount === false) {
+            return LogUtil::registerError($this->__('Error! Could not load data.'));
+        }
+
+        return $objCount;
     }
 
     /**
@@ -189,7 +232,7 @@ class Users_Api_User extends Zikula_Api
      * @param array $args All parameters passed to this function.
      *                    $args['uname']        (string) The proposed user name for the new user record.
      *                    $args['email']        (string) The proposed e-mail address for the new user record.
-     *                    $args['password_reminder'] (string) The proposed password reminder entered by the user.
+     *                    $args['passreminder'] (string) The proposed password reminder entered by the user.
      *                    $args['agreetoterms'] (int)    A flag indicating that the user has agreed to the site's terms and policies; 0 indicates no, otherwise yes.
      *
      * @return array An array containing an error code and a result message. Possible error codes are:
@@ -201,385 +244,102 @@ class Users_Api_User extends Zikula_Api
      */
     public function checkUser($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            return -1;
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Users_Api_Registration::getRegistrationErrors()')), 'STRICT');
+
+        $regErrorArgs = array();
+        $reginfo = array();
+        $reginfo['uname'] = $args['uname'];
+        $reginfo['email'] = $args['email'];
+        $reginfo['pass'] = $args['pass'];
+        $reginfo['passreminder'] = $args['passreminder'];
+        $reginfo['agreetoterms'] = $args['agreetoterms'];
+        $reginfo['dynadata'] = $args['dynadata'];
+        $regErrorArgs['reginfo'] = $reginfo;
+        $regErrorArgs['vemail'] = $args['vemail'];
+        $regErrorArgs['vpass'] = $args['vpass'];
+        $regErrorArgs['reg_answer'] = $args['reg_answer'];
+
+        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', $regErrorArgs);
+
+        if ($registrationErrors) {
+            return $registrationErrors['errorcode'];
+        } else {
+            return 1;
         }
-
-        if (!System::varValidate($args['email'], 'email')) {
-            return 2;
-        }
-
-        if (ModUtil::available('legal')) {
-            if ($args['agreetoterms'] == 0) {
-                return 3;
-            }
-        }
-
-        if ((!$args['uname']) || !(!preg_match("/[[:space:]]/", $args['uname'])) || !System::varValidate($args['uname'], 'uname')) {
-            return 4;
-        }
-
-        if (strlen($args['uname']) > 25) {
-            return 5;
-        }
-
-        // admins are allowed to add any usernames, even those defined as being illegal
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            // check for illegal usernames
-            $reg_illegalusername = ModUtil::getVar('Users', 'reg_Illegalusername');
-            if (!empty($reg_illegalusername)) {
-                $usernames = explode(" ", $reg_illegalusername);
-                $count = count($usernames);
-                $pregcondition = "/((";
-                for ($i = 0; $i < $count; $i++) {
-                    if ($i != $count-1) {
-                        $pregcondition .= $usernames[$i] . ")|(";
-                    } else {
-                        $pregcondition .= $usernames[$i] . "))/iAD";
-                    }
-                }
-                if (preg_match($pregcondition, $args['uname'])) {
-                    return 6;
-                }
-            }
-        }
-
-        if (strrpos($args['uname'], ' ') > 0) {
-            return 7;
-        }
-
-        // check existing and active user
-        $ucount = DBUtil::selectObjectCountByID('users', $args['uname'], 'uname', 'lower');
-        if ($ucount) {
-            return 8;
-        }
-
-        // check pending user
-        $ucount = DBUtil::selectObjectCountByID('users_temp', $args['uname'], 'uname', 'lower');
-        if ($ucount) {
-            return 8;
-        }
-
-        if (ModUtil::getVar('Users', 'reg_uniemail')) {
-            $ucount = DBUtil::selectObjectCountByID('users', $args['email'], 'email');
-            if ($ucount) {
-                return 9;
-            }
-        }
-
-        if (ModUtil::getVar('Users', 'moderation')) {
-            $ucount = DBUtil::selectObjectCountByID('users_temp', $args['uname'], 'uname');
-            if ($ucount) {
-                return 8;
-            }
-
-            $ucount = DBUtil::selectObjectCountByID('users_temp', $args['email'], 'email');
-            if (ModUtil::getVar('Users', 'reg_uniemail')) {
-                if ($ucount) {
-                    return 9;
-                }
-            }
-        }
-
-        $emailVerification = ModUtil::getVar('Users', 'reg_verifyemail');
-        if (!$emailVerification || $emailVerification == UserUtil::VERIFY_USERPWD) {
-            if (!isset($args['password_reminder']) || empty($args['password_reminder'])) {
-                return 18;
-            }
-        }
-        // else z_exit?? because it really should be set at this point, either by the user, or some system-generated value.
-
-        $useragent = strtolower(System::serverGetVar('HTTP_USER_AGENT'));
-        $illegaluseragents = ModUtil::getVar('Users', 'reg_Illegaluseragents');
-        if (!empty($illegaluseragents)) {
-            $disallowed_useragents = str_replace(', ', ',', $illegaluseragents);
-            $checkdisallowed_useragents = explode(',', $disallowed_useragents);
-            $count = count($checkdisallowed_useragents);
-            $pregcondition = "/((";
-            for ($i = 0; $i < $count; $i++) {
-                if ($i != $count-1) {
-                    $pregcondition .= $checkdisallowed_useragents[$i] . ")|(";
-                } else {
-                    $pregcondition .= $checkdisallowed_useragents[$i] . "))/iAD";
-                }
-            }
-            if (preg_match($pregcondition, $useragent)) {
-                return 11;
-            }
-        }
-
-        $illegaldomains = ModUtil::getVar('Users', 'reg_Illegaldomains');
-        if (!empty($illegaldomains)) {
-            list($foo, $maildomain) = explode('@', $args['email']);
-            $maildomain = strtolower($maildomain);
-            $disallowed_domains = str_replace(', ', ',', $illegaldomains);
-            $checkdisallowed_domains = explode(',', $disallowed_domains);
-            if (in_array($maildomain, $checkdisallowed_domains)) {
-                return 12;
-            }
-        }
-
-        return 1;
     }
 
-    /**
-     * Complete the process of creating a new user or new user registration from a registration request form.
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['isadmin']           (bool)   Whether the new user record is being submitted by a user with admin permissions or not.
-     *                    $args['user_regdate']      (string) An SQL date-time to override the registration date and time.
-     *                    $args['user_viewmail']     (int)    Whether the user has selected to allows his e-mail address to be viewed or not.
-     *                    $args['storynum']          (int)    The number of News module stories to show on the main page.
-     *                    $args['commentlimit']      (int)    The limit on the size of this user's comments.
-     *                    $args['timezoneoffset']    (int)    The user's time zone offset.
-     *                    $args['usermustconfirm']   (int)    Whether the user must activate his account or not.
-     *                    $args['skipnotifications'] (bool)   Whether e-mail notifications should be skipped or not.
-     *                    $args['moderated']         (bool)   If true, then this record is being added as a result of an admin approval of a pending registration.
-     *                    $args['hash_method']       (int)    A code indicated what hash method was used to store the user's encrypted password in the users_temp table.
-     *                    $args['uname']             (string) The user name to store on the new user record.
-     *                    $args['email']             (string) The e-mail address to store on the new user record.
-     *                    $args['pass']              (string) The new password to store on the new user record.
-     *                    $args['dynadata']          (array)  An array of data to be stored by the designated profile module and associated with this user record.
-     *
-     * @return bool True on success, otherwise false.
-     */
-    public function finishNewUser($args)
+    public function sendNotification($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            return false;
+        $toAddress = $args['toAddress'];
+        $notificationType = $args['notificationType'];
+        $templateArgs = $args['templateArgs'];
+
+        $renderer = Renderer::getInstance('Users', false);
+
+        $mailerArgs = array();
+        $mailerArgs['toaddress'] = $toAddress;
+
+        $renderer->assign($templateArgs);
+
+        $templateName = "users_userapi_{$notificationType}email.htm";
+        if ($renderer->template_exists($templateName)) {
+            $mailerArgs['html'] = true;
+            $mailerArgs['body'] = $renderer->fetch($templateName);
+            $subject = trim($renderer->get_template_vars('subject'));
         }
 
-        // arguments defaults
-        if (!isset($args['isadmin'])) {
-            $args['isadmin'] = false;
-        }
-        if (!isset($args['user_regdate'])) {
-            $args['user_regdate'] = DateUtil::getDatetime();
-        }
-        if (!isset($args['user_viewemail'])) {
-            $args['user_viewemail'] = '0';
-        }
-        if (!isset($args['storynum'])) {
-            $args['storynum'] = '5';
-        }
-        if (!isset($args['commentlimit'])) {
-            $args['commentlimit'] = '4096';
-        }
-        if (!isset($args['timezoneoffset'])) {
-            $args['timezoneoffset'] = System::getVar('timezone_offset');
-        }
-        if (!isset($args['usermustconfirm'])) {
-            $args['usermustconfirm'] = 0;
-        }
-        // allows to run without email notifications
-        if (!isset($args['skipnotifications'])) {
-            $args['skipnotifications'] = false;
-        }
-
-        // hash methods array
-        $hashMethodsArray = ModUtil::apiFunc('Users', 'user', 'getHashMethods', array('reverse' => false));
-
-        // make password
-        $hashAlgorithmName = ModUtil::getVar('Users', 'hash_method');
-        $hashMethodKey = $hashMethodsArray[$hashAlgorithmName];
-
-        if (isset($args['moderated']) && $args['moderated'] == true) {
-            $makepass  = $args['pass'];
-            $cryptpass = $args['pass'];
-            $hashMethodKey = $args['hash_method'];
-            $passwordReminder = $args['__ATTRIBUTES__']['password_reminder'];
-            $activated = UserUtil::ACTIVATED_ACTIVE;
-        } else {
-            if ((ModUtil::getVar('Users', 'reg_verifyemail') == UserUtil::VERIFY_SYSTEMPWD) && !$args['isadmin']) {
-                $makepass = $this->makePass();
-                $cryptpass = hash($hashAlgorithmName, $makepass);
-                $passwordReminder = $this->__('(Password generated by site)');
-                $activated = UserUtil::ACTIVATED_ACTIVE;
-            } elseif (ModUtil::getVar('Users', 'reg_verifyemail') == UserUtil::VERIFY_USERPWD) {
-                $makepass = $args['pass'];
-                $cryptpass = hash($hashAlgorithmName, $args['pass']);
-                if ($args['isadmin']) {
-                    $passwordReminder = $this->__('(Password provided by site administrator)');
-                } else {
-                    $passwordReminder = $args['password_reminder'];
-                }
-                $activated = ($args['isadmin'] && isset($args['usermustconfirm']) && ($args['usermustconfirm'] != 1))
-                    ? UserUtil::ACTIVATED_ACTIVE
-                    : UserUtil::ACTIVATED_INACTIVE;
+        $templateName = "users_userapi_{$notificationType}email.txt";
+        if ($renderer->template_exists($templateName)) {
+            if (isset($mailerArgs['body'])) {
+                $bodyType = 'altbody';
+                unset($mailerArgs['html']);
             } else {
-                $makepass = $args['pass']; // for welcome email. [class007]
-                $cryptpass = hash($hashAlgorithmName, $args['pass']);
-                if ($args['isadmin']) {
-                    $passwordReminder = $this->__('(Password provided by site administrator)');
-                } else {
-                    $passwordReminder = $this->__('(Password generated by site)');
-                }
-                $activated = UserUtil::ACTIVATED_ACTIVE;
+                $bodyType = 'body';
+                $mailerArgs['html'] = false;
+            }
+            $mailerArgs[$bodyType] = $renderer->fetch($templateName);
+            if (!isset($subject) || empty($subject)) {
+                // Favor the subject set in the html template over this one.
+                $subject = trim($renderer->get_template_vars('subject'));
             }
         }
 
-        if (isset($args['moderated']) && $args['moderated']) {
-            $moderation = false;
-        } elseif (!$args['isadmin']) {
-            $moderation = ModUtil::getVar('Users', 'moderation');
-            $args['moderated'] = false;
+        if (isset($args['subject']) && !empty($args['subject'])) {
+            $mailerArgs['subject'] = $args['subject'];
         } else {
-            $moderation = false;
-        }
-
-        $pntable = System::dbGetTables();
-
-        // We keep dynata as is if moderation is on as all dynadata will go in one field
-        if ($moderation) {
-            $column     = $pntable['users_temp_column'];
-            $columnid   = $column['tid'];
-        } else {
-            $column     = $pntable['users_column'];
-            $columnid   = $column['uid'];
-        }
-
-        $sitename  = System::getVar('sitename');
-        $siteurl   = System::getBaseUrl();
-
-        // create output object
-        $pnRender = Renderer::getInstance('Users', false);
-        $pnRender->assign('sitename', $sitename);
-        $pnRender->assign('siteurl', substr($siteurl, 0, strlen($siteurl)-1));
-
-        $obj = array();
-        // do moderation stuff and exit
-        if ($moderation) {
-            $dynadata = isset($args['dynadata']) ? $args['dynadata'] : FormUtil::getPassedValue('dynadata', array());
-
-            $obj['uname']        = $args['uname'];
-            $obj['email']        = $args['email'];
-            $obj['pass']         = $cryptpass;
-            $obj['dynamics']     = @serialize($dynadata);
-            $obj['comment']      = ''; //$args['comment'];
-            $obj['type']         = 1;
-            $obj['tag']          = 0;
-            $obj['hash_method']  = $hashMethodKey;
-            $obj['__ATTRIBUTES__']['password_reminder'] = $passwordReminder;
-
-            $obj = DBUtil::insertObject($obj, 'users_temp', 'tid');
-
-            if (!$obj) {
-                return false;
-            }
-            if (!$args['skipnotifications']) {
-                $pnRender->assign('email', $args['email']);
-                $pnRender->assign('uname', $args['uname']);
-                //$pnRender->assign('uid', $args['uid']);
-                $pnRender->assign('makepass', $makepass);
-                $pnRender->assign('moderation', $moderation);
-                $pnRender->assign('moderated', $args['moderated']);
-
-                // Password Email - Must be send now as the password will be encrypted and unretrievable later on.
-                $message = $pnRender->fetch('users_userapi_welcomeemail.htm');
-
-                $subject = $this->__f('Password for %1$s from %2$s', array($args['uname'], $sitename));
-                ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
-
-                // mail notify email to inform admin about registration
-                if (ModUtil::getVar('Users', 'reg_notifyemail') != '' && $moderation == 1) {
-                    $email2 = ModUtil::getVar('Users', 'reg_notifyemail');
-                    $subject2 = $this->__('New user account registered');
-                    $message2 = $pnRender->fetch('users_userapi_adminnotificationmail.htm');
-                    ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
-                }
-            }
-            return $obj['tid'];
-        }
-
-        $obj['uname']           = $args['uname'];
-        $obj['email']           = $args['email'];
-        $obj['user_regdate']    = $args['user_regdate'];
-        $obj['user_viewemail']  = $args['user_viewemail'];
-        $obj['user_theme']      = '';
-        $obj['pass']            = $cryptpass;
-        $obj['storynum']        = $args['storynum'];
-        $obj['ublockon']        = 0;
-        $obj['ublock']          = '';
-        $obj['theme']           = '';
-        $obj['counter']         = 0;
-        $obj['activated']       = $activated;
-        $obj['hash_method']     = $hashMethodKey;
-        $obj['__ATTRIBUTES__']['password_reminder'] = $passwordReminder;
-
-        $profileModule = System::getVar('profilemodule', '');
-        $useProfileModule = (!empty($profileModule) && ModUtil::available($profileModule));
-
-        // call the profile manager to handle dyndata if needed
-        if ($useProfileModule) {
-            $adddata = ModUtil::apiFunc($profileModule, 'user', 'insertDyndata', $args);
-            if (is_array($adddata)) {
-                $obj = array_merge($adddata, $obj);
-            }
-        }
-
-        $res = DBUtil::insertObject($obj, 'users', 'uid');
-
-        if (!$res) {
-            return false;
-        }
-
-        $uid = $obj['uid'];
-
-        // Add user to group
-        // TODO - move this to a groups API calls
-        $gid = ModUtil::getVar('Groups', 'defaultgroup');
-        $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
-        if (!$group) {
-            return false;
-        }
-
-        $obj = array();
-        $obj['gid'] = $group['gid'];
-        $obj['uid'] = $uid;
-        $res = DBUtil::insertObject($obj, 'group_membership', 'dummy');
-        if (!$res) {
-            return false;
-        }
-
-        if (!$args['skipnotifications']) {
-            $from = System::getVar('adminmail');
-
-            // begin mail user
-            $pnRender->assign('email', $args['email']);
-            $pnRender->assign('uname', $args['uname']);
-            $pnRender->assign('uid', $uid);
-            $pnRender->assign('makepass', $makepass);
-            $pnRender->assign('moderated', $args['moderated']);
-            $pnRender->assign('moderation', $moderation);
-            $pnRender->assign('user_regdate', $args['user_regdate']);
-
-            if ($activated == UserUtil::ACTIVATED_ACTIVE) {
-                // Password Email & Welcome Email
-                $message = $pnRender->fetch('users_userapi_welcomeemail.htm');
-                $subject = $this->__f('Password for %1$s from %2$s', array($args['uname'], $sitename));
-                ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
-
+            if (isset($subject) && !empty($subject)) {
+                $mailerArgs['subject'] = $subject;
             } else {
-                // Activation Email
-                $subject = $this->__f('Activation of %s', $args['uname']);
-                // add en encoded activation code. The string is split with a hash (this character isn't used by base 64 encoding)
-                $pnRender->assign('code', base64_encode($uid . '#' . $args['user_regdate']));
-                $message = $pnRender->fetch('users_userapi_activationemail.htm');
-                ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['email'], 'subject' => $subject, 'body' => $message, 'html' => true));
-            }
-
-            // mail notify email to inform admin about activation
-            if (ModUtil::getVar('Users', 'reg_notifyemail') != '') {
-                $email2 = ModUtil::getVar('Users', 'reg_notifyemail');
-                $subject2 = $this->__('New user account activated');
-                $message2 = $pnRender->fetch('users_userapi_adminnotificationemail.htm');
-                ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $email2, 'subject' => $subject2, 'body' => $message2, 'html' => true));
+                switch ($notificationType) {
+                    case 'activation':
+                        $mailerArgs['subject'] = $this->__('Verify your account.');
+                        break;
+                    case 'adminnotification':
+                        $mailerArgs['subject'] = $this->__('New user or registration.');
+                        break;
+                    case 'confirmchemail':
+                        $mailerArgs['subject'] = $this->__('Verify your new e-mail address.');
+                        break;
+                    case 'lostpasscode':
+                        $mailerArgs['subject'] = $this->__('Recover your password.');
+                        break;
+                    case 'lostuname':
+                        $mailerArgs['subject'] = $this->__('Recover your user name.');
+                        break;
+                    case 'welcome':
+                        $mailerArgs['subject'] = $this->__('Welcome!');
+                        break;
+                    default:
+                        $mailerArgs['subject'] = $this->__f('A message from %s.', System::getVar('sitename', System::getBaseUrl()));
+                }
             }
         }
-        // Let other modules know we have created an item
-        $this->callHooks('item', 'create', $uid, array('module' => 'Users'));
 
-        return $uid;
+        if ($mailerArgs['body']) {
+            ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $mailerArgs);
+        }
+
+        return true;
     }
 
     /**
@@ -603,11 +363,18 @@ class Users_Api_User extends Zikula_Api
 
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
+        if ($args['idfield'] == 'email') {
+            $ucount = DBUtil::selectObjectCountByID ('users', $args['id'], 'email');
+            $rcount = DBUtil::selectObjectCountByID ('users_registration', $args['id'], 'email');
+
+            if (($ucount + $rcount) > 1) {
+                return false;
+            }
+        }
+
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
-        if (!$user) {
-            LogUtil::registerError('Sorry! Could not find any matching user account.');
-        } else {
+        if ($user) {
             $renderer = Renderer::getInstance('Users', false);
             $renderer->assign('uname', $user['uname']);
             $renderer->assign('sitename', System::getVar('sitename'));
@@ -653,36 +420,36 @@ class Users_Api_User extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
+        if ($args['idfield'] == 'email') {
+            $ucount = DBUtil::selectObjectCountByID ('users', $args['id'], 'email');
+            $rcount = DBUtil::selectObjectCountByID ('users_registration', $args['id'], 'email');
+
+            if (($ucount + $rcount) > 1) {
+                return false;
+            }
+        }
+
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
-        if (!$user) {
-            LogUtil::registerError('Sorry! Could not find any matching user account.');
-        } else {
-            $hashMethodsArray = ModUtil::apiFunc('Users', 'user', 'getHashMethods', array('reverse' => false));
-            $hashAlgorithmName = ModUtil::getVar('Users', 'hash_method');
-            $hashMethodKey = $hashMethodsArray[$hashAlgorithmName];
-
-            $confirmationCode = RandomUtil::getString(5, 5, false, false, true, false, true, false, false, array('O','0','o','i','j','I','l','1','!','|'));
-            $confirmationCodeHash = SecurityUtil::getSaltedHash($hashAlgorithmName, $confirmationCode, 5, '$');
+        if ($user) {
+            $confirmationCode = UserUtil::generatePassword();
+            $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($confirmationCodeHash !== false) {
-                $userShadowObj = DBUtil::selectObjectByID('users_shadow', $user['uid'], 'uid');
+                $tables = System::dbGetTables();
+                $verifychgColumn = $tables['users_verifychg_column'];
+                DBUtil::deleteWhere('users_verifychg',
+                    "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")");
 
-                if (!$userShadowObj) {
-                    $userShadowObj = array();
-                    $userShadowObj['uid'] = $user['uid'];
-                    $userShadowObj['code'] = $confirmationCodeHash;
-                    $userShadowObj['code_hash_method'] = $hashMethodKey;
-                    $userShadowObj['code_expires'] = 0;
-                    $codeSaved = DBUtil::insertObject($userShadowObj, 'users_shadow');
-                } else {
-                    $userShadowObj['code'] = $confirmationCodeHash;
-                    $userShadowObj['code_hash_method'] = $hashMethodKey;
-                    $userShadowObj['code_expires'] = 0;
-                    $codeSaved = DBUtil::updateObject($userShadowObj, 'users_shadow');
-                }
+                $verifyChangeObj = array();
+                $verifyChangeObj['changetype'] = UserUtil::VERIFYCHGTYPE_PWD;
+                $verifyChangeObj['uid'] = $user['uid'];
+                $verifyChangeObj['newemail'] = '';
+                $verifyChangeObj['verifycode'] = $hashedConfirmationCode;
+                $verifyChangeObj['validuntil'] = null;
+                $codeSaved = DBUtil::insertObject($verifyChangeObj, 'users_verifychg');
 
                 if ($codeSaved) {
                     $urlArgs = array();
@@ -748,25 +515,28 @@ class Users_Api_User extends Zikula_Api
         if (!$user) {
             LogUtil::registerError('Sorry! Could not find any matching user account.');
         } else {
-            $userShadowObj = DBUtil::selectObjectByID('users_shadow', $user['uid'], 'uid');
+            $tables = System::dbGetTables();
+            $verifychgColumn = $tables['users_verifychg_column'];
+            $verifychgObj = DBUtil::selectObject('users_verifychg',
+                "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")");
 
-            if ($userShadowObj) {
-                $hashMethodsArray = ModUtil::apiFunc('Users', 'user', 'getHashMethods', array('reverse' => true));
-                $hashAlgorithmName = $hashMethodsArray[$userShadowObj['code_hash_method']];
-
-                $codeIsGood = SecurityUtil::checkSaltedHash($hashAlgorithmName, $args['code'], $userShadowObj['code'], '$');
+            if ($verifychgObj) {
+                $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
 
                 if ($codeIsGood) {
-                    // Guard against insanely bad time() by ensuring at least 1
-                    $timestamp = max(time(), 1);
-
-                    if (($userShadowObj['code_expires'] != 0) && ($timestamp > $userShadowObj['code_expires'])) {
+                    $now = new DateTime();
+                    try {
+                        $validUntil = new DateTime($verifychgObj['validuntil'], new DateTimeZone('UTC'));
+                    } catch (Exception $e) {
+                        $validUntil = new DateTime(UserUtil::EXPIRED);
+                    }
+                    if ($now > $validUntil) {
                         $codeIsGood = false;
                         LogUtil::registerError('Sorry! your confirmation code has expired.');
                     } else {
                         // Prevent code reuse.
-                        $userShadowObj['code_expires'] = -1;
-                        DBUtil::updateObject($userShadowObj, 'users_shadow');
+//                        $verifychgObj['validuntil'] = UserUtil::EXPIRED;
+//                        DBUtil::updateObject($verifychgObj, 'users_verifychg');
                     }
                 }
             } else {
@@ -778,118 +548,6 @@ class Users_Api_User extends Zikula_Api
     }
 
     /**
-     * Send the user a lost password.
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['uname'] (string) The user's user name.
-     *                    $args['email'] (string) The user's e-mail address.
-     *                    $args['code']  (string) The confirmation code.
-     *
-     * @return bool True if the new password was sent; otherwise false.
-     */
-    public function mailPassword($args)
-    {
-        $emailMessageSent = false;
-        $passwordSaved = false;
-
-        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
-            || !isset($args['code']) || empty($args['code'])
-            || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email')))
-        {
-            return LogUtil::registerArgsError();
-        }
-
-        $user = UserUtil::getVars($args['id'], true, $args['idfield']);
-
-        if (!$user) {
-            LogUtil::registerError('Sorry! Could not find any matching user account.');
-        } elseif (ModUtil::apiFunc('Users', 'user', 'checkConfirmationCode', array(
-                'idfield' => $args['idfield'],
-                'id' => $args['id'],
-                'code' => $args['code'],
-            )))
-        {
-            $newpass = $this->makePass();
-            $passwordReminder = $this->__('(Site-generated password)');
-
-            $renderer = Renderer::getInstance('Users', false);
-            $renderer->assign('uname', $user['uname']);
-            $renderer->assign('sitename', System::getVar('sitename'));
-            $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
-            $renderer->assign('password', $newpass);
-            $renderer->assign('recovery_forcepwdchg', ModUtil::getVar('Users', 'recovery_forcepwdchg', false));
-            $renderer->assign('url',  ModUtil::url('Users', 'user', 'loginScreen', array(), null, null, true));
-            $htmlBody = $renderer->fetch('users_userapi_passwordmail.htm');
-            $plainTextBody = $renderer->fetch('users_userapi_passwordmail.txt');
-
-            $subject = $this->__f('Password for %s', $user['uname']);
-
-            $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
-                array(
-                    'toaddress' => $user['email'],
-                    'subject'   => $subject,
-                    'body'      => $htmlBody,
-                    'altbody'   => $plainTextBody
-                ));
-
-            if ($emailMessageSent) {
-                // Next step: add the new password to the database
-                // Note: cannot use UserUtil::setPassword() because there is no user logged in!
-                $hashAlgorithmName = ModUtil::getVar('Users', 'hash_method');
-                $hashMethodsArray = ModUtil::apiFunc('Users', 'user', 'getHashMethods', array('reverse' => false));
-                $hashMethodKey = $hashMethodsArray[$hashAlgorithmName];
-                $cryptPass = hash($hashAlgorithmName, $newpass);
-
-                $forceChange = ModUtil::getVar('Users', 'recovery_forcepwdchg', false);
-
-                $obj = array();
-                $obj['uid'] = $user['uid'];
-                $obj['pass']  = $cryptPass;
-                $obj['hash_method'] = $hashMethodKey;
-                $obj['__ATTRIBUTES__']['password_reminder'] = $passwordReminder;
-                if ($forceChange) {
-                    $obj['activated'] = 4;
-                }
-                $passwordSaved = DBUtil::updateObject ($obj, 'users', '', 'uid');
-
-                if (!$passwordSaved) {
-                    LogUtil::registerError($this->__('Error! Unable to save new password.'));
-                }
-            } else {
-                LogUtil::registerError($this->__('Error! Unable to send new password e-mail message.'));
-            }
-        }
-
-        return ($emailMessageSent && $passwordSaved);
-    }
-
-    /**
-     * Activate a user's account.
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['regdate'] (string)  An SQL date-time containing the user's original registration date-time.
-     *                    $args['uid']     (numeric) The id of the user account to activate.
-     *
-     * @return bool True on success, otherwise false.
-     */
-    public function activateUser($args)
-    {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            return false;
-        }
-
-        // Preventing reactivation from same link !
-        $newregdate = DateUtil::getDatetime(strtotime($args['regdate'])+1);
-        $obj = array('uid'          => $args['uid'],
-                'activated'    => UserUtil::ACTIVATED_ACTIVE,
-                'user_regdate' => DataUtil::formatForStore($newregdate));
-
-        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
-
-        return (boolean)DBUtil::updateObject($obj, 'users', '', 'uid');
-    }
-
-    /**
      * Display a message indicating that the user's session has expired.
      *
      * @return string The rendered template.
@@ -898,42 +556,6 @@ class Users_Api_User extends Zikula_Api
     {
         $pnRender = Renderer::getInstance('Users', false);
         return $pnRender->fetch('users_userapi_expiredsession.htm');
-    }
-
-    /**
-     * Generate a password for the user.
-     *
-     * @return string The generated password.
-     */
-    private function makePass()
-    {
-        $minpass = (int)ModUtil::getVar('Users', 'minpass', 5);
-        return RandomUtil::getString($minpass, 8, false, false, true, false, true, false, true, array('0', 'o', 'l', '1'));
-    }
-
-    /**
-     * Retrieve an array of hash method codes indexed by hash method name, or an array of hash method names indexed by hash method codes.
-     *
-     * @param array $args All parameters passed to this function.
-     *                    $args['reverse'] (bool) If false, then an array of codes index by name; if true, then an array of names indexed by code.
-     *
-     * @return array The array of hash method codes and names.
-     */
-    public function getHashMethods($args)
-    {
-        $reverse = isset($args['reverse']) ? $args['reverse'] : false;
-
-        if ($reverse) {
-
-            return array(1 => 'md5',
-                    5 => 'sha1',
-                    8 => 'sha256');
-        } else {
-
-            return array('md5'    => 1,
-                    'sha1'   => 5,
-                    'sha256' => 8);
-        }
     }
 
     /**
@@ -998,38 +620,31 @@ class Users_Api_User extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        $pntable = System::dbGetTables();
-        $column = $pntable['users_temp_column'];
+        $dbinfo = System::dbGetTables();
+        $verifychgColumn = $dbinfo['users_verifychg_column'];
+        
+        $theDatetime = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTCStr = $theDatetime->format(UserUtil::DATETIME_FORMAT);
 
-        // delete all the records from e-mail confirmation that have more than five days
-        $fiveDaysAgo =  time() - 5*24*60*60;
-        $where = "$column[dynamics]<" . $fiveDaysAgo . " AND $column[type]=2";
-        DBUtil::deleteWhere ('users_temp', $where);
-
+        $uid = UserUtil::getVar('uid');
         $uname = UserUtil::getVar('uname');
 
         // generate a randomize value of 7 characters needed to confirm the e-mail change
-        $confirmValue = substr(md5(time() . rand(0, 30000)),0 ,7);;
+        $confirmCode = UserUtil::generatePassword();
+        $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
-        $obj = array('uname' => $uname,
-                'email' => DataUtil::formatForStore($args['newemail']),
-                'pass' => '',
-                'dynamics' => time(),
-                'comment' => $confirmValue,
-                'type' => 2,
-                'tag' => 0);
+        $theDatetime->modify('+5 days');
+        $obj = array(
+            'changetype'    => UserUtil::VERIFYCHGTYPE_EMAIL,
+            'uid'           => $uid,
+            'newemail'      => DataUtil::formatForStore($args['newemail']),
+            'verifycode'    => $confirmCodeHash,
+            'validuntil'    => $theDatetime->format(UserUtil::DATETIME_FORMAT),
+        );
 
-        // checks if user has request the change recently and it is not confirmed
-        $exists = DBUtil::selectObjectCountByID('users_temp', $uname, 'uname', 'lower');
-
-        if (!$exists) {
-            // create a new insert
-            $obj = DBUtil::insertObject($obj, 'users_temp', 'tid');
-        } else {
-            $where = "$column[uname]='" . $uname . "' AND $column[type]=2";
-            // update the current insert
-            $obj = DBUtil::updateObject($obj, 'users_temp', $where);
-        }
+        DBUtil::deleteWhere('users_verifychg',
+            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")");
+        $obj = DBUtil::insertObject($obj, 'users_verifychg', 'id');
 
         if (!$obj) {
             return false;
@@ -1038,14 +653,14 @@ class Users_Api_User extends Zikula_Api
         // send confirmation e-mail to user with the changing code
         $subject = $this->__f('Confirmation change of e-mail for %s', $uname);
 
-        $pnRender = Renderer::getInstance('Users', false);
-        $pnRender->assign('uname', $uname);
-        $pnRender->assign('email', UserUtil::getVar('email'));
-        $pnRender->assign('newemail', $args['newemail']);
-        $pnRender->assign('sitename', System::getVar('sitename'));
-        $pnRender->assign('url',  ModUtil::url('Users', 'user', 'confirmChEmail', array('confirmcode' => $confirmValue), null, null, true));
+        $renderer = Renderer::getInstance('Users', false);
+        $renderer->assign('uname', $uname);
+        $renderer->assign('email', UserUtil::getVar('email'));
+        $renderer->assign('newemail', $args['newemail']);
+        $renderer->assign('sitename', System::getVar('sitename'));
+        $renderer->assign('url',  ModUtil::url('Users', 'user', 'confirmChEmail', array('confirmcode' => $confirmCode), null, null, true));
 
-        $message = $pnRender->fetch('users_userapi_confirmchemail.htm');
+        $message = $renderer->fetch('users_userapi_confirmchemail.htm');
         $sent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['newemail'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
         if (!$sent) {
@@ -1065,11 +680,42 @@ class Users_Api_User extends Zikula_Api
         if (!UserUtil::isLoggedIn()) {
             return LogUtil::registerPermissionError();
         }
-        $item = DBUtil::selectObjectById('users_temp', UserUtil::getVar('uname'), 'uname');
+
+        $dbinfo = System::dbGetTables();
+        $verifychgColumn = $dbinfo['users_verifychg_column'];
+
+        // delete all the records from e-mail confirmation that have expired
+        $theDatetime = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTCStr = $theDatetime->format(UserUtil::DATETIME_FORMAT);
+        $where = "({$verifychgColumn['validuntil']} < '{$nowUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
+        DBUtil::deleteWhere ('users_verifychg', $where);
+
+        $uid = UserUtil::getVar('uid');
+
+        $item = DBUtil::selectObject('users_verifychg',
+            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")");
+
         if (!$item) {
             return false;
         }
+
         return $item;
+    }
+
+    public function removeUserPreEmail()
+    {
+        if (!UserUtil::isLoggedIn()) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $uid = UserUtil::getVar('uid');
+
+        $dbinfo = System::dbGetTables();
+        $verifychgColumn = $dbinfo['users_verifychg_column'];
+        DBUtil::deleteWhere('users_verifychg',
+            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")");
+
+        return true;
     }
 
     /**
@@ -1094,5 +740,33 @@ class Users_Api_User extends Zikula_Api
         }
 
         return $links;
+    }
+
+    public function processRegistrationErrorsForDisplay($args)
+    {
+        $errorFields = array();
+        $errorMessages = array();
+
+        if (isset($args['registrationErrors']) && is_array($args['registrationErrors']) && !empty($args['registrationErrors'])) {
+            $registrationErrors = $args['registrationErrors'];
+
+            foreach ($registrationErrors as $field => $messageList) {
+                $errorFields[$field] = true;
+                if ($field == 'reginfo_dynadata') {
+                    $errorMessages[] = $messageList['result'] . ' ' . $this->_n(
+                        '(Note: This field is not highlighted below, but it must still be corrected.)',
+                        '(Note: These fields are not highlighted below, but they must still be corrected.)',
+                        count($messageList['fields'])
+                        );
+                } else {
+                    $errorMessages = array_merge($errorMessages, $messageList);
+                }
+            }
+        }
+
+        return array(
+            'errorFields' => $errorFields,
+            'errorMessages' => $errorMessages,
+        );
     }
 }

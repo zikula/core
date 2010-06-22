@@ -1,0 +1,34 @@
+{*  $Id$  *}
+{gt text='Confirm verification code is to be sent to \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
+{include file='users_admin_menu.htm'}
+
+<div class="z-admincontainer">
+    <div class="z-adminpageicon"><img src="system/Users/images/admin.gif" alt="{$templatetitle}" /></div>
+
+    <h2>{$templatetitle}</h2>
+
+    {include file='users_admin_includeregistration.htm'}
+
+    <form id="users_verifyregistration" class="z-form" action="{modurl modname='Users' type='admin' func='verifyRegistration'}" method="post">
+        <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
+        <input type="hidden" id="users_id" name="id" value="{$reginfo.id}" />
+        <input type="hidden" id="users_force" name="force" value="{$force}" />
+        <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview}" />
+        <input type="hidden" id="users_confirmed" name="confirmed" value=true />
+        <div class="z-buttons z-formbuttons">
+            {strip}
+            {assign var="regactions" value=$actions.list[$reginfo.id]}
+            {gt assign='titleIfSent' text='Resend verification code'}
+            {gt assign='titleIfNotSent' text='Send verification code'}
+            {if !empty($reginfo.verifycode)}
+                {assign var='actionTitle' value=$titleIfSent}
+            {else}
+                {assign var='actionTitle' value=$titleIfNotSent}
+            {/if}
+            {/strip}
+            {button id='confirm' type='submit' src='button_ok.gif' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
+            <a href="{$cancelurl}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"}{gt text='Cancel'}</a>
+        </div>
+    </form>
+</div>
+{zdebug}

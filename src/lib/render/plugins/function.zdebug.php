@@ -40,8 +40,8 @@ function smarty_function_zdebug($params, &$smarty)
 {
     $out = '';
     $thismodule = ModUtil::getName();
-    if (SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN))
-    {
+//    if (SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN))
+//    {
         if (isset($params['output']) && !empty($params['output'])) {
             $smarty->assign('_smarty_debug_output', $params['output']);
         }
@@ -84,7 +84,7 @@ function smarty_function_zdebug($params, &$smarty)
         $smarty->_compile_id = $_compile_id_orig;
         $smarty->template_dir = $_template_dir_orig;
         $smarty->default_resource_type = $_default_resource_type_orig;
-    }
+//    }
 
     return $out;
 }

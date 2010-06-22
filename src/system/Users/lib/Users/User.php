@@ -98,10 +98,18 @@ class Users_User extends Zikula_Controller
         $returnurl = FormUtil::getPassedValue('returnpage', null, 'GET');
         $confirmtou = (int)FormUtil::getPassedValue('confirmtou', isset($args['confirmtou']) ? $args['confirmtou'] : 0, 'GET');
         $changepassword = (int)FormUtil::getPassedValue('changepassword', isset($args['changepassword']) ? $args['changepassword'] : 0, 'GET');
-
         $passwordtext = ($changepassword == 1) ? $this->__('Current password') : $this->__('Password');
 
         // assign variables for the template
+        if ($confirmtou || $changepassword) {
+            $renderer->assign('default_authmodule', 'Users');
+            $renderer->assign('authmodule', 'Users');
+            $renderer->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))));
+        } else {
+            $renderer->assign('default_authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'));
+            $renderer->assign('authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'));
+            $renderer->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))));
+        }
         $renderer->assign('loginviaoption', ModUtil::getVar('Users', 'loginviaoption'));
         $renderer->assign('seclevel', System::getVar('seclevel'));
         $renderer->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
@@ -143,28 +151,147 @@ class Users_User extends Zikula_Controller
     {
         // If has logged in, header to index.php
         if (UserUtil::isLoggedIn()) {
-            return System::redirect(System::getVar('entrypoint', 'index.php'));
+            return System::redirect(System::getHomepageUrl());
         }
 
-        $template = 'users_user_register.htm';
-        // check if we've agreed to the age limit
-        if (ModUtil::getVar('Users', 'minage') != 0 && !stristr(System::serverGetVar('HTTP_REFERER'), 'register')) {
+        $userAgent = System::serverGetVar('HTTP_USER_AGENT');
+        // Yes, the capital I in the module var name below is required.
+        $illegalUserAgents = ModUtil::getVar('Users', 'reg_Illegaluseragents', '');
+        $pattern = array('/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D');
+        $replace = array('', '|', '');
+        $illegalUserAgents = preg_replace($pattern, $replace, preg_quote($illegalUserAgents, '/'));
+        if (!empty($illegalUserAgents)) {
+            if (preg_match("/^({$illegalUserAgents})/iD", $userAgent)) {
+                return LogUtil::registerError($this->__('Sorry! The user agent specified is banned.'), 403, System::getHomepageUrl());
+            }
+        }
+
+        // If we are returning here from validation errors detected in registerNewUser, then get the data already entered
+        $args = SessionUtil::getVar('Users_User_register', array(), '/', false);
+        SessionUtil::delVar('Users_User_register');
+
+        $rendererArgs = array();
+        $modVars = ModUtil::getVar('Users');
+        $rendererArgs['sitename'] = System::getVar('sitename', System::getHost());
+        $rendererArgs['regAllowed'] = (isset($modVars['reg_allowreg']) && !empty($modVars['reg_allowreg']))
+            ? $modVars['reg_allowreg']
+            : false;
+        $rendererArgs['regOffReason'] = (isset($modVars['$reg_noregreasons']) && !empty($modVars['$reg_noregreasons']))
+            ? $modVars['$reg_noregreasons']
+            : $this->__('We will begin accepting new registrations again as quickly as possible. Please check back with us soon!');
+
+        // check if we've agreed to the age limit. We have if we just came from there, or $args is set
+        if ((ModUtil::getVar('Users', 'minage', 0) != 0) && !stristr(System::serverGetVar('HTTP_REFERER'), 'register')) {
             $template = 'users_user_checkage.htm';
+            
+            $rendererArgs['minimumAge'] = (isset($modVars['minage']) && !empty($modVars['minage'])) ? $modVars['minage'] : 13;
+        } else {
+            $template = 'users_user_register.htm';
+
+            $registrationErrors = isset($args['registrationErrors']) ? $args['registrationErrors'] : array();
+            // For now do it this way. Later maybe show the messages with the field--and if that's
+            // done, then $errorFields and $errorMessages not needed--we'd just pass $registrationErrors directly.
+            $errorInfo = ModUtil::apiFunc('Users', 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $registrationErrors));
+
+            $rendererArgs = array_merge($rendererArgs, $args);
+            $legalModAvailable = ModUtil::available('legal');
+            $profileModName = System::getVar('profilemodule', '');
+            $profileModAvailable = !empty($profileModName) && ModUtil::available($profileModName);
+            $rendererArgs['touActive'] = $legalModAvailable && ModUtil::getVar('legal', 'termsofuse', true);
+            $rendererArgs['ppActive'] = $legalModAvailable && ModUtil::getVar('legal', 'privacypolicy', true);
+            $rendererArgs['userMustAccept'] = $rendererArgs['touActive'] || $rendererArgs['ppActive'];
+            $rendererArgs['errorMessages'] = (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array();
+            $rendererArgs['errorFields'] = (isset($errorInfo['errorFields']) && !empty($errorInfo['errorFields'])) ? $errorInfo['errorFields'] : array();
+            $rendererArgs['registrationErrors'] = (isset($registrationErrors) && !empty($registrationErrors)) ? $registrationErrors : array();
+            $rendererArgs['usePwdStrengthMeter'] = (isset($modVars['use_password_strength_meter']) && !empty($modVars['use_password_strength_meter'])) ? $modVars['use_password_strength_meter'] : array();
+            $rendererArgs['usePwdStrengthMeter'] = (isset($modVars['use_password_strength_meter']) && !empty($modVars['use_password_strength_meter'])) ? $modVars['use_password_strength_meter'] : false;
+            $rendererArgs['showProps'] = $profileModAvailable && isset($modVars['reg_optitems']) && $modVars['reg_optitems'];
+            $rendererArgs['profileModName'] = $profileModName;
+            $rendererArgs['antiSpamQuestion'] = (isset($modVars['reg_question']) && !empty($modVars['reg_question'])) ? $modVars['reg_question'] : '';
+            $antiSpamSystemAnswer = (isset($modVars['reg_answer']) && !empty($modVars['reg_answer'])) ? $modVars['reg_answer'] : '';
+            $rendererArgs['useAntiSpamQuestion'] = !empty($rendererArgs['antiSpamQuestion']) && !empty($antiSpamSystemAnswer);
         }
 
-        // create output object
         $renderer = Renderer::getInstance('Users', false);
-
-        // other vars
-        $modvars = ModUtil::getVar('Users');
-
-        $renderer->assign($modvars);
-        $renderer->assign('sitename', System::getVar('sitename'));
-        $renderer->assign('legal',    ModUtil::available('legal'));
-        $renderer->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
-        $renderer->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
-
+        $renderer->assign($rendererArgs);
         return $renderer->fetch($template);
+    }
+
+    /**
+     * Create a new user.
+     *
+     * Available Post Parameters:
+     *
+     * @return bool True if successful, false otherwise.
+     */
+    public function registerNewUser()
+    {
+        // check permisisons
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        // get arguments
+        $reginfo = FormUtil::getPassedValue('reginfo', null, 'POST');
+        if (isset($reginfo['uname']) && !empty($reginfo['uname'])) {
+            $reginfo['uname'] = mb_strtolower($reginfo['uname']);
+        }
+        if (isset($reginfo['email']) && !empty($reginfo['email'])) {
+            $reginfo['email'] = mb_strtolower($reginfo['email']);
+        }
+        $reginfo['dynadata'] = FormUtil::getPassedValue('dynadata', array(), 'POST');
+
+        $emailAgain = FormUtil::getPassedValue('emailagain', null, 'POST');
+        $passwordAgain = FormUtil::getPassedValue('passagain', null, 'POST');
+        $antiSpamUserAnswer = FormUtil::getPassedValue('antispamanswer', null, 'POST');
+
+        if (!isset($reginfo['pass'])) {
+            // Ensure set and empty for validation.
+            $reginfo['pass'] = '';
+        }
+
+        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', array(
+            'checkmode'         => 'new',
+            'reginfo'           => $reginfo,
+            'passagain'         => $passwordAgain,
+            'emailagain'        => $emailAgain,
+            'antispamanswer'    => $antiSpamUserAnswer,
+        ));
+
+        if ($registrationErrors) {
+            SessionUtil::requireSession();
+            SessionUtil::setVar('reginfo', $reginfo, 'Users_User_register', true, true);
+            //SessionUtil::setVar('passagain', $passwordAgain, 'Users_User_register', true, true);
+            SessionUtil::setVar('emailagain', $emailAgain, 'Users_User_register', true, true);
+            SessionUtil::setVar('registrationErrors', $registrationErrors, 'Users_User_register', true, true);
+
+            return System::redirect(ModUtil::url('Users', 'user', 'register'));
+        }
+
+        $currentUserEmail = UserUtil::getVar('email');
+        $adminNotifyEmail = ModUtil::getVar('Users', 'reg_notifyemail', '');
+        $adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
+
+        $registeredObj = ModUtil::apiFunc('Users', 'registration', 'registerNewUser', array(
+            'reginfo'           => $reginfo,
+            'usernotification'  => true,
+            'adminnotification' => true
+        ));
+
+        if ($registeredObj) {
+            if (isset($registeredObj['uid'])) {
+                LogUtil::registerStatus($this->__('Done! Created new user account.'));
+            } elseif (isset($registeredObj['id'])) {
+                LogUtil::registerStatus($this->__('Done! Created new registration application.'));
+            } else {
+                LogUtil::log($this->__('Internal Warning! Unknown return type from Users_Api_Registration#registerUser().'), 'WARNING');
+                LogUtil::registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly. Please check with a site administrator before re-registering.'));
+            }
+        } else {
+            LogUtil::registerError($this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
+        }
+
+        return System::redirect(ModUtil::url('Users', 'admin', 'view'));
     }
 
     /**
@@ -237,10 +364,9 @@ class Users_User extends Zikula_Controller
 
         if ($emailMessageSent) {
             SessionUtil::delVar('lostuname_email');
-            LogUtil::registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $email));
-            return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
+            return LogUtil::registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $email), ModUtil::url('Users', 'user', 'loginScreen'));
         } else {
-            return System::redirect(ModUtil::url('Users', 'user', 'lostUname'));
+            return LogUtil::registerError($this->__('Sorry! We are unable to send a user name reminder for that e-mail address. Please contact an administrator.'), null, ModUtil::url('Users', 'user', 'lostUname'));
         }
     }
 
@@ -312,10 +438,14 @@ class Users_User extends Zikula_Controller
         SessionUtil::setVar('lostpassword_email', $email);
 
         if ($emailMessageSent) {
-            LogUtil::registerStatus($this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue));
-            return System::redirect(ModUtil::url('Users', 'user', 'lostPasswordCode'));
+            return LogUtil::registerStatus($this->__f('Done! The confirmation code for %s has been sent via e-mail.', $idvalue), ModUtil::url('Users', 'user', 'lostPasswordCode'));
         } else {
-            return System::redirect(ModUtil::url('Users', 'user', 'lostPassword'));
+            if ($idfield == 'email') {
+                $errorMessage = $this->__('Sorry! We are unable to send a password recovery code for that e-mail address. Please try your user name, or contact an administrator.');
+            } else {
+                $errorMessage = $this->__('Sorry! We are unable to send a password recovery code for that user name. Please try your e-mail address, contact an administrator.');
+            }
+            return LogUtil::registerError($errorMessage, null, ModUtil::url('Users', 'user', 'lostPassword'));
         }
     }
 
@@ -404,7 +534,7 @@ class Users_User extends Zikula_Controller
                 )))
             {
                 $userInfo = UserUtil::getVars($idvalue, true, $idfield);
-                $passwordReminder = $userInfo['__ATTRIBUTES__']['password_reminder'];
+                $passwordReminder = $userInfo['passreminder'];
             } else {
                 LogUtil::registerError($this->__("Error! The code that you've enter is invalid."));
             }
@@ -422,100 +552,75 @@ class Users_User extends Zikula_Controller
         } elseif (isset($userInfo) && !$userInfo) {
             // $userInfo is set, but false. There was a database error retrieving the user.
             return System::redirect(ModUtil::url('Users', 'user', 'lostPassword'));
-        } elseif (empty($passwordReminder)) {
-            // $userInfo is set, and not false, but $passwordReminder is empty. Got the user, but no reminder.
-            $mailpasswordArgs = array();
-            if (!empty($uname)) {
-                $mailpasswordArgs['uname'] = $uname;
-            }
-            if (!empty($email)) {
-                $mailpasswordArgs['email'] = $email;
-            }
-            $mailpasswordArgs['code'] = $code;
-            $mailpasswordArgs['authid'] = SecurityUtil::generateAuthKey('Users');
-
-            return System::redirect(ModUtil::url('Users', 'user', 'mailPassword', $mailpasswordArgs));
         } else {
             // $userInfo is set, and not false, and $passwordReminder is available. Show it.
             $renderer = Renderer::getInstance('Users');
             $renderer->assign('lostpassword_uname', $userInfo['uname']);
-            $renderer->assign('password_reminder', $passwordReminder);
+            $renderer->assign('passreminder', $passwordReminder);
             $renderer->assign('lostpassword_code', $code);
             return $renderer->fetch('users_user_passwordreminder.htm');
         }
     }
 
-    /**
-     * Send the user a lost password.
-     *
-     * Available Post Parameters:
-     * - uname (string) The user's user name.
-     * - email (string) The user's e-mail address.
-     * - code  (string) The confirmation code.
-     *
-     * @return bool True if successful request or expected error, false if unexpected error.
-     */
-    public function mailPassword($args = array())
+    public function resetPassword()
     {
-        $emailMessageSent = false;
-
-        if (!SecurityUtil::confirmAuthKey('Users')) {
-            return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'lostPasswordCode'));
+        if (!SecurityUtil::confirmAuthKey('Users', 'passwordresetauthid')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'lostPwdUname'));
         }
 
-        $uname = FormUtil::getPassedValue('uname', null, 'GETPOST');
-        $email = FormUtil::getPassedValue('email', null, 'GETPOST');
-        $code  = FormUtil::getPassedValue('code',  null, 'GETPOST');
+        $uname = FormUtil::getPassedValue('lostpassword_uname', '', 'GETPOST');
 
-        SessionUtil::requireSession();
-        SessionUtil::delVar('lostpassword_uname');
-        SessionUtil::delVar('lostpassword_email');
-        SessionUtil::delVar('lostpassword_code');
+        $userinfo = UserUtil::getVars($uname);
 
-        if (empty($uname) && empty($email)) {
-            LogUtil::registerError($this->__('Error! User name and e-mail address fields are empty.'));
-        } elseif (!empty($email) && !empty($uname)) {
-            LogUtil::registerError($this->__('Error! Please enter either a user name OR an e-mail address, but not both of them.'));
-        } else {
-            if (!empty($uname)) {
-                $idfield = 'uname';
-                $idvalue = $uname;
-                // save username for redisplay
-                SessionUtil::setVar('lostpassword_uname', $uname);
-            } else {
-                $idfield = 'email';
-                $idvalue = $email;
-                // save email for redisplay
-                SessionUtil::setVar('lostpassword_email', $email);
+        if ($userinfo) {
+            $newpass = FormUtil::getPassedValue('newpass', '', 'POST');
+            $newpassagain = FormUtil::getPassedValue('newpassagain', '', 'POST');
+            $newpassreminder = FormUtil::getPassedValue('newpassreminder', '', 'POST');
+
+            $passwordErrors = ModUtil::apiFunc('Users', 'registration', 'getPasswordErrors', array(
+                'pass'          => $newpass,
+                'passagain'     => $newpassagain,
+                'passreminder'  => $newpassreminder,
+            ));
+
+            if (empty($passwordErrors)) {
+                $passwordSet = UserUtil::setPassword($newpass, $userinfo['uid']);
+
+                if ($passwordSet) {
+                    $reminderSet = UserUtil::setVar('passreminder', $newpassreminder, $userinfo['uid']);
+
+                    if (!$reminderSet) {
+                        return LogUtil::registerError($this->__('Warning! Your new password has been saved, but there was an error while trying to save your new password reminder.'), null,
+                            ModUtil::url('Users', 'user', 'loginScreen'));
+                    } else {
+                        return LogUtil::registerStatus($this->__('Done! Your password has been reset, and you may now log in. Please keep your password in a safe place!'),
+                            ModUtil::url('Users', 'user', 'loginScreen'));
+                    }
+                } else {
+                    return LogUtil::registerError($this->__('Error! Your new password could not be saved.'), null,
+                        ModUtil::url('Users', 'user', 'lostPwdUname'));
+                }
             }
-
-            if (ModUtil::apiFunc('Users', 'user', 'checkConfirmationCode', array(
-                    'idfield' => $idfield,
-                    'id' => $idvalue,
-                    'code' => $code,
-                )))
-            {
-                $emailMessageSent = ModUtil::apiFunc('Users', 'user', 'mailPassword', array(
-                    'idfield' => $idfield,
-                    'id'      => $idvalue,
-                    'code'    => $code
-                    ));
-            } else {
-                LogUtil::registerError($this->__("Error! The code that you've enter is invalid."));
-            }
-        }
-
-        if ($emailMessageSent) {
-            LogUtil::registerStatus($this->__f('Done! Password for %s has been sent via e-mail.', $who));
-            return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
         } else {
-            // save username and password for redisplay
-            SessionUtil::setVar('lostpassword_uname', $uname);
-            SessionUtil::setVar('lostpassword_email', $email);
-            SessionUtil::setVar('lostpassword_code',  $code);
-
-            return System::redirect(ModUtil::url('Users', 'user', 'lostPasswordCode'));
+            return LogUtil::registerError($this->__('Sorry! Could not load that user account.'), null,
+                ModUtil::url('Users', 'user', 'lostPwdUname'));
         }
+
+        if (isset($passwordErrors) && !empty($passwordErrors)) {
+            $errorInfo = ModUtil::apiFunc('Users', 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $passwordErrors));
+        } else {
+            $errorInfo = array();
+        }
+        $rendererArgs = array(
+            'lostpassword_uname'    => $uname,
+            'passreminder'          => isset($userinfo['passreminder']) ? $userinfo['passreminder'] : '',
+            'newpassreminder'       => isset($newpassreminder) ? $newpassreminder : '',
+            'errormessages'         => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
+        );
+
+        $renderer = Renderer::getInstance('Users', false);
+        $renderer->assign($rendererArgs);
+        return $renderer->fetch('users_user_passwordreminder.htm');
     }
 
     /**
@@ -542,129 +647,185 @@ class Users_User extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Users','user','loginScreen'));
         }
 
-        $uname      = FormUtil::getPassedValue ('uname');
-        $email      = FormUtil::getPassedValue ('email');
-        $pass       = FormUtil::getPassedValue ('pass');
-        $url        = FormUtil::getPassedValue ('url');
-        $rememberme = FormUtil::getPassedValue ('rememberme', '');
-        $passwordReminder = FormUtil::getPassedValue ('password_reminder', '');
+        $authinfo = FormUtil::getPassedValue('authinfo', array());
+        if (isset($authinfo) && !is_array($authinfo)) {
+            return LogUtil::registerError($this->__('Error! Invalid authentication information.'), null, System::getHomepageUrl());
+        }
 
-        // TODO - What if the user is using an identifier from an alternate authenticating module (e.g. OpenID or Facebook)? This forces the zikula uname and that uname to be required to match!
-        $userid = UserUtil::getIdFromName($uname);
+        $authModuleName = FormUtil::getPassedValue('authmodule', 'Users');
+        if (empty($authModuleName)) {
+            $authModuleName = 'Users';
+        }
 
-        $userstatus = UserUtil::getVar('activated', $userid);
-        $tryagain = false;
-
-        // TODO - There appears to be something about confirmtou and pp in UserUtil::login. Is this and that a duplication?
-        $confirmtou = 0;
-        $changepassword = 0;
-        if (($userstatus == 2 || $userstatus == 6) && ModUtil::available('legal') && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
-            $confirmtou = 1;
-            $touaccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
-            if ($touaccepted<>1) {
-                // user had to accept the terms of use, but didn't
-                $tryagain = true;
+        // Backward compatibility with 1.2
+        if ($authModuleName == 'Users') {
+            if (empty($authinfo['loginid'])) {
+                $uname = FormUtil::getPassedValue('uname', '');
+                if (!empty($uname)) {
+                    $authinfo['loginid'] = $uname;
+                } else {
+                    $email = FormUtil::getPassedValue('email', '');
+                    if (!empty($email)) {
+                        $authinfo['loginid'] = $email;
+                    }
+                }
+            }
+            if (empty($authinfo['pass'])) {
+                $pass = FormUtil::getPassedValue('pass', '');
+                if (!empty($pass)) {
+                    $authinfo['pass'] = $pass;
+                }
             }
         }
 
-        // TODO - This forces authentication against the Users module authapi! What if the user is trying to log in with an OpenID or something else?
-        // the current password must be valid
-        $current_pass = UserUtil::getVar('pass', $userid);
-        $hash_number = UserUtil::getVar('hash_method', $userid);
-        $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'getHashMethods', array('reverse' => true));
-        $passhash = hash($hashmethodsarray[$hash_number], $pass);
-        if ($passhash != $current_pass) {
-            $errormsg = $this->__('Sorry! The current password you entered is not correct. Please correct your entry and try again.');
-            $tryagain = true;
-        }
+        $returnPageUrl          = FormUtil::getPassedValue('url');
+        $rememberMe             = FormUtil::getPassedValue('rememberme', '');
+        $passwordReminder       = FormUtil::getPassedValue('passreminder', '');
 
-        // TODO - A forced change of password only makes sense if the Users module is the authenticating module. Change this so that a forced Zikula password change is independent of the authmodule.
-        if ($userstatus == 4 || $userstatus == 6) {
-            $changepassword = 1;
-            $validnewpass = true;
-            $newpass = FormUtil::getPassedValue('newpass', null, 'POST');
-            $confirmnewpass = FormUtil::getPassedValue('confirmnewpass', null, 'POST');
-            // checks if the new password is valid
-            // the new password must be different of the current password
-            if ($pass == $newpass && $validnewpass) {
-                $errormsg = $this->__('Sorry! The new and the current passwords must be different. Please correct your entries and try again.');
-                $validnewpass = false;
-            }
+        $tryAgain = false;
 
-            // check if the new password satisfy the requirements
-            $minpass = ModUtil::getVar('Users', 'minpass');
-            if (!empty($newpass) && strlen($newpass) < $minpass && $validnewpass) {
-                $errormsg = $this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minpass, $minpass);
-                $validnewpass = false;
-            }
+        // Just check the password. Do not log in yet. Why? So we can deal with forced password changes and
+        // terms/privacy policy accept statuses, but only if the user has given us good login information.
+        $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array(
+            'authinfo'  => $authinfo,
+        ));
 
-            // checks if the new password and the repeated new password are the same
-            if (($newpass != $confirmnewpass) && $validnewpass) {
-                $errormsg = $this->__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.');
-                $validnewpass = false;
-            }
-
-            // checks if the new password and the repeated new password are the same
-            if (empty($newpass)) {
-                $validnewpass = false;
-            }
-
-            // checks if the new password and the repeated new password are the same
-            if (empty($passwordReminder) && $validnewpass) {
-                $errormsg = $this->__('Sorry! You must provide a new password reminder word or phrase.');
-                $validnewpass = false;
-            }
-
-            if (!$validnewpass) {
-                // user password change is incorrect
-                $tryagain = true;
-            }
-        }
-
-        if ($tryagain) {
-            // user had to accept the terms of use, but didn't
-            if ($errormsg == '') {
-                $errormsg = $this->__('Error! Log-in was not completed. Please read the information below.');
-            }
-            return LogUtil::registerError($errormsg , 403, ModUtil::url('Users','user','loginScreen',
-                                                                    array('confirmtou' => $confirmtou,
-                                                                          'changepassword' => $changepassword,
-                                                                          'returnpage' => $url)));
+        if (!$authenticatedUid || !is_numeric($authenticatedUid)) {
+            // Error message set in authenticateUser.
+            $tryAgain = true;
         } else {
-            if ($userstatus == 4 || $userstatus == 6) {
-                // change the user's password
-                $hash_number = UserUtil::getVar('hash_method', $userid);
-                $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'getHashMethods', array('reverse' => true));
-                $newpasshash = hash($hashmethodsarray[$hash_number], $newpass);
-                UserUtil::setVar('pass', $newpasshash, $userid);
-                UserUtil::setVar('password_reminder', $passwordReminder, $userid);
-                $pass = $newpass;
+            $userObj = UserUtil::getVars($authenticatedUid);
+
+            if (!$userObj || ($authenticatedUid != $userObj['uid'])) {
+                // Honestly, we really shouldn't get here if the authmodule's uid map is correct.
+                $errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
+                $tryAgain = true;
+            } else {
+                $userStatus = isset($userObj['activated']) ? $userObj['activated'] : UserUtil::ACTIVATED_INACTIVE;
+
+                // There is something about handling TOU/PP confirmation and forced password change in UserUtil::loginUsing() too.
+                // That stuff is to catch logins that happen without going through this function. This is where it is really
+                // handled.
+                $mustConfirmTOUPP = 0;
+                $mustChangePassword = 0;
+                if ((($userStatus == UserUtil::ACTIVATED_INACTIVE_TOUPP) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP))
+                    && ModUtil::available('legal')
+                    && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true)))
+                {
+                    $mustConfirmTOUPP = 1;
+                    $touppAccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
+                    if ($touppAccepted != 1) {
+                        // user had to accept the terms of use, but didn't
+                        $tryAgain = true;
+                    }
+                }
+
+                if (($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP)) {
+                    $mustChangePassword = 1;
+                    $newPasswordIsValid = true;
+                    $newPassword = FormUtil::getPassedValue('newpass', null, 'POST');
+                    $newPasswordAgain = FormUtil::getPassedValue('confirmnewpass', null, 'POST');
+                    // checks if the new password is valid
+                    // the new password must be different of the current password
+                    if ($passwordEnteredByUser == $newPassword && $newPasswordIsValid) {
+                        $errorMsg = $this->__('Sorry! The new and the current passwords must be different. Please correct your entries and try again.');
+                        $newPasswordIsValid = false;
+                    }
+
+                    // check if the new password satisfy the requirements
+                    if (empty($newPassword)) {
+                        $newPasswordIsValid = false;
+                    }
+
+                    $minPasswordLength = ModUtil::getVar('Users', 'minpass');
+                    if (!empty($newPassword) && (strlen($newPassword) < $minPasswordLength) && $newPasswordIsValid) {
+                        $errorMsg = $this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minPasswordLength, $minPasswordLength);
+                        $newPasswordIsValid = false;
+                    }
+
+                    if (($newPassword != $newPasswordAgain) && $newPasswordIsValid) {
+                        $errorMsg = $this->__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.');
+                        $newPasswordIsValid = false;
+                    }
+
+                    if (empty($passwordReminder) && $newPasswordIsValid) {
+                        $errorMsg = $this->__('Sorry! You must provide a new password reminder word or phrase.');
+                        $newPasswordIsValid = false;
+                    }
+
+                    if (!$newPasswordIsValid) {
+                        // user password change is incorrect
+                        $tryAgain = true;
+                    }
+                }
             }
-            UserUtil::setVar('activated', UserUtil::ACTIVATED_ACTIVE, $userid);
         }
 
-        $loginoption    = ModUtil::getVar('Users', 'loginviaoption');
-        $login_redirect = ModUtil::getVar('Users', 'login_redirect');
+        if ($tryAgain) {
+            // user had to accept the terms of use, but didn't -- or their login ID and/or password were incorrect
+            if (!isset($errorMsg) || empty($errorMsg)) {
+                if ($mustConfirmTOUPP && $mustChangePassword) {
+                    $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
+                } elseif ($mustConfirmTOUPP) {
+                    $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms first.');
+                } elseif ($mustChangePassword) {
+                    $errorMsg = $this->__('Your log-in request was not completed because you must change your account\'s password first.');
+                } elseif (!LogUtil::hasErrors()) {
+                    $errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
+                }
+            }
 
-        if (UserUtil::login((($loginoption==1) ? $email : $uname), $pass, $rememberme)) {
+            $callbackURL = ModUtil::url('Users','user','loginScreen', array(
+                'confirmtou'    => $mustConfirmTOUPP,
+                'changepassword'=> $mustChangePassword,
+                'returnpage'    => $returnPageUrl,
+            ));
+            if (!empty($errorMsg)) {
+                return LogUtil::registerError($errorMsg , 403, $callbackURL);
+            } else {
+                return System::redirect($callbackURL);
+            }
+        } else {
+            if (($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP)) {
+                // change the user's password
+                UserUtil::setPassword($newPassword, $userObj['uid']);
+                UserUtil::setVar('passreminder', $passwordReminder, $userObj['uid']);
+                $passwordEnteredByUser = $newPassword;
+            }
+            UserUtil::setVar('activated', UserUtil::ACTIVATED_ACTIVE, $userObj['uid']);
+        }
+
+
+        // Finally, here we actually log in. Note that the UserUtil::loginUsing() function will call the appropriate authmodule function.
+        if (UserUtil::loginUsing($authModuleName, $authinfo, $rememberMe)) {
             // start login hook
             $uid = UserUtil::getVar('uid');
             $this->callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
-            if ($login_redirect == 1) {
+            $loginRedirect = ModUtil::getVar('Users', 'login_redirect');
+            if ($loginRedirect == 1) {
                 // WCAG compliant login
-                return System::redirect($url);
+                return System::redirect($returnPageUrl);
             } else {
                 // meta refresh
-                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $url);
+                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnPageUrl);
             }
             return true;
         } else {
-            LogUtil::registerError($this->__('Sorry! Unrecognised user name or password. Please try again.'));
-            $reg_verifyemail = ModUtil::getVar('Users', 'reg_verifyemail');
-            if ($reg_verifyemail == 2) {
-                LogUtil::registerError($this->__('Notice: If you have just registered a new account then please check your e-mail and activate your account before trying to log in.'));
+            // loginUsing() should set an error message, probably through a call to the authmodule.
+            // Just in case, check and if not, set a generic message
+            if (!LogUtil::hasErrors()) {
+                LogUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
             }
-            return System::redirect(ModUtil::url('Users','user','loginScreen', array('returnpage' => urlencode($url))));
+            $moderation = ModUtil::getVar('Users', 'moderation', false);
+            $regVerifyEmail = ModUtil::getVar('Users', 'reg_verifyemail', UserUtil::VERIFY_NO);
+            if ($moderation && ($regVerifyEmail == UserUtil::VERIFY_USERPWD)) {
+                LogUtil::registerError($this->__('Note: If you have recently registered with us, then your account might be waiting for an administrator\'s approval, or might be waiting for you to verify your e-mail address. Please check your e-mail for a message from us with more information and instructions.'));
+            } elseif ($regVerifyEmail == UserUtil::VERIFY_USERPWD) {
+                LogUtil::registerError($this->__('Note: If you have recently registered with us, then your account might be waiting for you to verify your e-mail address. Please check your e-mail for a message from us, and verify your account before trying to log in.'));
+            } elseif ($moderation) {
+                LogUtil::registerError($this->__('Note: If you have recently registered with us, then your account might be waiting for an administrator\'s approval. Please check your e-mail for a message from us. When you are notified that your registration has been approved, then you will be able to log in.'));
+            }
+            return System::redirect(ModUtil::url('Users','user','loginScreen', array('returnpage' => urlencode($returnPageUrl))));
         }
     }
 
@@ -700,185 +861,106 @@ class Users_User extends Zikula_Controller
         return true;
     }
 
-    /**
-     * Complete the process of creating a new user or new user registration from a registration request form.
-     *
-     * Available Post Parameters:
-     * - uname         (string) The user name to store on the new user record.
-     * - agreetoterms  (int)    Whether the user has agreed to the terms and policies or not.
-     * - email         (string) The e-mail address to store on the new user record.
-     * - pass          (string) The new password to store on the new user record.
-     * - vpass         (string) A verification of the new password to store on the new user record.
-     * - user_viewmail (mixed)  Not Used.
-     * - reg_answer    (string) The user-entered answer to the configured registration anti-spam question.
-     *
-     * @return string|bool If registration is moderated, then the string rendering of a template, otherwise true on successful
-     *                     registration; false on error.
-     */
-    public function finishNewUser()
+    public function verifyRegistration()
     {
-        if (!SecurityUtil::confirmAuthKey('Users')) {
-            return LogUtil::registerAuthidError(ModUtil::url('Users','user','register'));
+        if (UserUtil::isLoggedIn()) {
+            return LogUtil::registerError($this->__('Sorry! An account cannot be verified while you are logged in.'),
+                ModUtil::url('Users', 'user', 'main'));
         }
 
-        $uname          = FormUtil::getPassedValue ('uname', null, 'POST');
-        $agreetoterms   = FormUtil::getPassedValue ('agreetoterms', null, 'POST');
-        $email          = FormUtil::getPassedValue ('email', null, 'POST');
-        $vemail         = FormUtil::getPassedValue ('vemail', null, 'POST');
-        $pass           = FormUtil::getPassedValue ('pass', null, 'POST');
-        $vpass          = FormUtil::getPassedValue ('vpass', null, 'POST');
-        // TODO - user_viewmail is not used anywhere in the function. Is it an old legacy field, or does it need to be processed?
-        $user_viewemail = FormUtil::getPassedValue ('user_viewmail', null, 'POST');
-        $reg_answer     = FormUtil::getPassedValue ('reg_answer', null, 'POST');
-        $passwordReminder = FormUtil::getPassedValue ('password_reminder', null, 'POST');
-
-        if (ModUtil::getVar('Users', 'lowercaseuname', false)) {
-            $uname = strtolower($uname);
+        $uname = FormUtil::getPassedValue('uname', '', 'GETPOST');
+        if ($uname) {
+            $uname = mb_strtolower($uname);
         }
+        $verifycode = FormUtil::getPassedValue('verifycode', '', 'GETPOST');
 
-        // some defaults for error detection and redirection
-        $msgtype = 'error';
-        $redirectfunc = 'loginscreen';
+        if ($uname) {
+            $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('uname' => $uname));
 
-        // Verify dynamic user data
-        if (ModUtil::getVar('Users', 'reg_optitems') == 1) {
-            $profileModule = System::getVar('profilemodule', '');
-            if (!empty($profileModule) && ModUtil::available($profileModule)) {
+            if ($reginfo) {
+                if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
+                    if (SecurityUtil::confirmAuthKey('Users', 'verifyauthid')) {
+                        // Special authid verified, so we can process the form.
+                        $newpass = FormUtil::getPassedValue('newpass', '', 'POST');
+                        $newpassagain = FormUtil::getPassedValue('newpassagain', '', 'POST');
+                        $newpassreminder = FormUtil::getPassedValue('newpassreminder', '', 'POST');
 
-                // any Profile module needs this function
-                $checkrequired = ModUtil::apiFunc($profileModule, 'user', 'checkRequired');
+                        $passwordErrors = ModUtil::apiFunc('Users', 'registration', 'getPasswordErrors', array(
+                            'pass'          => $newpass,
+                            'passagain'     => $newpassagain,
+                            'passreminder'  => $newpassreminder,
+                        ));
 
-                if ($checkrequired) {
-                    // ! %s is a comma separated list of fields that were left blank
-                    $message = $this->__f('Error! One or more required fields were left blank or incomplete (%s).', $checkrequired['translatedFieldsStr']);
+                        if (empty($passwordErrors)) {
+                            $reginfo['pass'] = UserUtil::getHashedPassword($newpass);
+                            $reginfo['passreminder'] = $newpassreminder;
 
-                    return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'register'));
+                            $reginfo = ModUtil::apiFunc('Users', 'registration', 'update', array('reginfo' => $reginfo));
+
+                            if (!$reginfo) {
+                                LogUtil::registerError($this->__('Sorry! There was an error while trying to save your new password and reminder.'));
+                            }
+                        }
+                    }
                 }
-            }
-        }
 
-        // because index.php use $name var $name can not get correct value. [class007]
-        $name         = $uname;
-        $commentlimit = (int)ModUtil::getVar('Users', 'commentlimit', 0);
-        $storynum     = (int)ModUtil::getVar('Users', 'storyhome', 10);
-        $minpass      = (int)ModUtil::getVar('Users', 'minpass', 5);
-        $user_regdate = DateUtil::getDatetime();
+                if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])) {
+                    $codesMatch = UserUtil::passwordsMatch($verifycode, $reginfo['verifycode']);
 
-        // TODO: add require check for dynamics.
-        $checkuser = ModUtil::apiFunc('Users', 'user', 'checkUser',
-                                  array('uname'        => $uname,
-                                        'email'        => $email,
-                                        'agreetoterms' => $agreetoterms,
-                                        'password_reminder' => $passwordReminder));
+                    if ($codesMatch) {
+                        $verified = ModUtil::apiFunc('Users', 'registration', 'verify', array('reginfo' => $reginfo));
 
-        // if errorcode != 1 then return error msgs
-        if ($checkuser != 1) {
-            switch ($checkuser)
-            {
-                case -1:
-                    $message = $this->__('Sorry! You have not been granted access to this module.');
-                    break;
-                case 2:
-                    $message =  $this->__('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. Please correct your entry and try again.');
-                    break;
-                case 3:
-                    $message =  $this->__('Error! Please click on the checkbox to accept the site\'s \'Terms of use\' and \'Privacy policy\'.');
-                    break;
-                case 4:
-                    $message =  $this->__('Sorry! The user name you entered is not acceptable. Please correct your entry and try again.');
-                    break;
-                case 5:
-                    $message =  $this->__('Sorry! The user name you entered is too long. The maximum length is 25 characters.');
-                    break;
-                case 6:
-                    $message =  $this->__('Sorry! The user name you entered is reserved and cannot be registered. Please choose another name and try again.');
-                    break;
-                case 7:
-                    $message =  $this->__('Sorry! Your user name cannot contain spaces. Please correct your entry and try again.');
-                    break;
-                case 8:
-                    $message =  $this->__('Sorry! This user name has already been registered. Please choose another name and try again.');
-                    break;
-                case 9:
-                    $message =  $this->__('Sorry! This e-mail address has already been registered, and it cannot be used again for creating another account.');
-                    break;
-                case 11:
-                    $message =  $this->__('Sorry! Your user agent is not accepted for registering an account on this site.');
-                    break;
-                case 12:
-                    $message =  $this->__('Sorry! E-mail addresses from the domain you entered are not accepted for registering an account on this site.');
-                    break;
-                case 18:
-                    $message =  $this->__('Error! Please enter a password reminder.');
-                    break;
-                default:
-                    $message =  $this->__('Sorry! You have not been granted access to this module.');
-            } // switch
-
-            return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'register'));
-        }
-
-        if ($email !== $vemail) {
-            $message = $this->__('Sorry! You did not enter the same e-mail address in each box. Please correct your entry and try again.');
-        }
-
-        $modvars = ModUtil::getVar('Users');
-
-        if (!$modvars['reg_verifyemail'] || $modvars['reg_verifyemail'] == 2) {
-            if ((isset($pass)) && ("$pass" != "$vpass")) {
-                $message = $this->__('Error! You did not enter the same password in each password field. '
-                    . 'Please enter the same password once in each password field (this is required for verification).');
-
-            } elseif (isset($pass) && (strlen($pass) < $minpass)) {
-                $message =  $this->_fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass);
-
-            } elseif (empty($pass) && !ModUtil::getVar('Users', 'reg_verifyemail')) {
-                $message =  $this->__('Error! Please enter a password.');
-            }
-        }
-
-        if ($modvars['reg_question'] != '' && $modvars['reg_answer'] != '') {
-            if ($reg_answer != $modvars['reg_answer']) {
-                $message = $this->__('Sorry! You gave the wrong answer to the anti-spam registration question. Please correct your entry and try again.');
-            }
-        }
-
-        if (isset($message)) {
-            return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'register'));
-        }
-
-        // TODO: Clean up
-        $registered = ModUtil::apiFunc('Users', 'user', 'finishNewUser',
-                                   array('uname'                => $uname,
-                                         'pass'                 => $pass,
-                                         'password_reminder'    => $passwordReminder,
-                                         'email'                => $email,
-                                         'user_regdate'         => $user_regdate,
-                                         'storynum'             => $storynum,
-                                         'commentlimit'         => $commentlimit));
-
-        if (!$registered) {
-            LogUtil::registerError($this->__('Error! The registration process failed. Please contact the site administrator.'));
-        } else {
-            if ((int)ModUtil::getVar('Users', 'moderation') == 1) {
-                LogUtil::registerStatus($this->__('Done! Thanks for registering! Your application has been submitted for approval.'));
-                $renderer = Renderer::getInstance('Users');
-                return $renderer->fetch('users_user_registrationfinished.htm');
+                        if ($verified) {
+                            if (isset($verified['uid'])) {
+                                return LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'),
+                                    ModUtil::url('Users', 'user', 'loginScreen'));
+                            } else {
+                                return LogUtil::registerStatus($this->__('Done! Your account has been verified, and is awaiting administrator approval.'),
+                                    ModUtil::url('Users', 'user'));
+                            }
+                        } else {
+                            if (!LogUtil::hasErrors()) {
+                                return LogUtil::registerError($this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'),
+                                    ModUtil::url('Users', 'user', 'main'));
+                            } else {
+                                return System::redirect(ModUtil::url('Users', 'user', 'main'));
+                            }
+                        }
+                    } else {
+                        LogUtil::registerError($this->__('Sorry! The verification code you provided does not match our records. Please check the code, and also check your e-mail for a newer verification code that might have been sent.'));
+                    }
+                }
+                // No code, or no password. Pass down through to the template rendering.
             } else {
-                LogUtil::registerStatus($this->__('Done! You are now a registered user. You should receive your user '
-                    . 'account details (including your password) at the e-mail address you entered.'));
-                if (ModUtil::getVar('Users', 'reg_verifyemail') == 2) {
-                    LogUtil::registerStatus($this->__('Please use the link in the e-mail message to activate your account.'));
-                }
-                return System::redirect(ModUtil::url('Users', 'user', $redirectfunc));
+                LogUtil::registerError($this->__('Sorry! A registration does not exist for the user name you provided. Maybe your request has expired? Please check the user name, or contact an administrator.'));
             }
         }
 
-        return System::redirect(System::getHomepageUrl());
+        if (isset($passwordErrors) && !empty($passwordErrors)) {
+            $errorInfo = ModUtil::apiFunc('Users', 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $passwordErrors));
+        } else {
+            $errorInfo = array();
+        }
+        $rendererArgs = array(
+            'verify_uname'      => $uname,
+            'verifycode'        => $verifycode,
+            'reginfo'           => isset($reginfo) ? $reginfo : array(),
+            'setpass'           => isset($reginfo) && isset($reginfo['id']) && !empty($reginfo['id']) && (!isset($reginfo['pass']) || empty($reginfo['pass'])),
+            'newpass'           => isset($newpass) ? $newpass : '',
+            'newpassreminder'   => isset($newpassreminder) ? $newpassreminder : '',
+            'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
+        );
+
+        $renderer = Renderer::getInstance('Users', false);
+        $renderer->assign($rendererArgs);
+        return $renderer->fetch('users_user_verifyregistration.htm');
     }
 
     /**
-     * Activate a user account.
+     * LEGACY user account activation.
+     *
+     * We must keep this function, because there is no way to know whether an inactive account
+     * is inactive because it needs activation, or for some other reason.
      *
      * Available Get/Post Parameters;
      * - code (string) Confirmation/Activation code.
@@ -910,7 +992,7 @@ class Users_User extends Zikula_Controller
         }
 
         if (hash('md5', $regdate) == hash('md5', $code)) {
-            $returncode = ModUtil::apiFunc('Users', 'user', 'activateUser',
+            $returncode = ModUtil::apiFunc('Users', 'registration', 'activateUser',
                                        array('uid'     => $uid,
                                              'regdate' => $regdate));
 
@@ -985,7 +1067,7 @@ class Users_User extends Zikula_Controller
         $pass = FormUtil::getPassedValue('pass', null, 'POST');
         $rememberme = FormUtil::getPassedValue('rememberme', false, 'POST');
 
-        UserUtil::login($user, $pass, $rememberme);
+        UserUtil::loginUsing('Users', array('loginid' => $user, 'pass' => $pass), $rememberme);
 
         if (!SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN)) {
             UserUtil::logout();
@@ -1113,46 +1195,58 @@ class Users_User extends Zikula_Controller
             return System::redirect('Users', 'user', 'main');
         }
 
-        $oldpassword        = FormUtil::getPassedValue('oldpassword', '', 'POST');
-        $newpassword        = FormUtil::getPassedValue('newpassword', '', 'POST');
-        $newpasswordconfirm = FormUtil::getPassedValue('newpasswordconfirm', '', 'POST');
-        $passwordReminder   = FormUtil::getPassedValue('password_reminder', '', 'POST');
+        $currentPassword    = FormUtil::getPassedValue('oldpassword', '', 'POST');
+        $newPassword        = FormUtil::getPassedValue('newpassword', '', 'POST');
+        $newPasswordAgain   = FormUtil::getPassedValue('newpasswordconfirm', '', 'POST');
+        $newPasswordReminder= FormUtil::getPassedValue('passreminder', '', 'POST');
 
-        $uname = UserUtil::getVar('uname');
-        // password existing check doesn't apply to HTTP(S) based login
-        if (!isset($uservars['loginviaoption']) || $uservars['loginviaoption'] == 0) {
-            $user = DBUtil::selectObjectByID('users', $uname, 'uname', null, null, null, false, 'lower');
-        } else {
-            $user = DBUtil::selectObjectByID('users', $uname, 'email', null, null, null, false, 'lower');
-        }
+        $userObj = UserUtil::getVars(UserUtil::getVar('uid'), true);
 
-        $upass = $user['pass'];
-        $hash_number = $user['hash_method'];
-        $hashmethodsarray   = ModUtil::apiFunc('Users', 'user', 'getHashMethods', array('reverse' => true));
-
-        $opass = hash($hashmethodsarray[$hash_number], $oldpassword);
-
-        if (empty($oldpassword) || $opass != $upass) {
-            return LogUtil::registerError($this->__('Sorry! The password you entered is not correct. Please correct your entry and try again.'),
+        if (empty($currentPassword) || !UserUtil::passwordsMatch($currentPassword, $userObj['pass'])) {
+            return LogUtil::registerError($this->__('Sorry! The current password you entered is not correct. Please correct your entry and try again.'),
                 null, ModUtil::url('Users', 'user', 'changePassword'));
         }
 
-        $minpass = ModUtil::getVar('Users', 'minpass');
-        if (strlen($newpassword) < $minpass) {
-            return LogUtil::registerError($this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minpass, $minpass),
-                null, ModUtil::url('Users', 'user', 'changePassword'));
+        $passwordErrors = ModUtil::apiFunc('Users', 'registration', 'getPasswordErrors', array(
+            'pass'          => $newPassword,
+            'passagain'     => $newPasswordAgain,
+            'passreminder'  => $newPasswordReminder
+        ));
+
+        if (!empty($passwordErrors)) {
+            foreach ($passwordErrors as $field => $errorList) {
+                foreach ($errorList as $errorMessage) {
+                    LogUtil::registerError($errorMessage);
+                }
+            }
+            return System::redirect(ModUtil::url('Users', 'user', 'changePassword'));
         }
 
-        // check if the new password and the confirmation are identical
-        if ($newpassword != $newpasswordconfirm) {
-            return LogUtil::registerError($this->__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.'),
-                null, ModUtil::url('Users', 'user', 'changePassword'));
-        }
-
+//        $minimumPasswordLength = ModUtil::getVar('Users', 'minpass');
+//        if (strlen($newPassword) < $minimumPasswordLength) {
+//            return LogUtil::registerError($this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minimumPasswordLength, $minimumPasswordLength),
+//                null, ModUtil::url('Users', 'user', 'changePassword'));
+//        }
+//
+//        // check if the new password and the confirmation are identical
+//        if ($newPassword != $newPasswordAgain) {
+//            return LogUtil::registerError($this->__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.'),
+//                null, ModUtil::url('Users', 'user', 'changePassword'));
+//        }
+//
         // set the new password
-        UserUtil::setPassword($newpassword);
-        UserUtil::setVar('password_reminder', $passwordReminder);
+        if (UserUtil::setPassword($newPassword)) {
+            if (!UserUtil::setVar('passreminder', $newPasswordReminder)) {
+                LogUtil::registerError($this->__('Warning! Your new password was saved, however there was a problem saving your new password reminder.'));
+            }
+        } else {
+            LogUtil::registerError($this->__('Sorry! There was a problem saving your new password.'));
+            return System::redirect(ModUtil::url('Users', 'user', 'main'));
+        }
 
+        // Force reload of user vars
+        $userObj = UserUtil::getVars(UserUtil::getVar('uid'), true);
+        
         LogUtil::registerStatus($this->__('Done! Saved your new password.'));
         return System::redirect(ModUtil::url('Users', 'user', 'main'));
     }
@@ -1204,44 +1298,57 @@ class Users_User extends Zikula_Controller
         }
 
         $newemail = FormUtil::getPassedValue('newemail', '', 'POST');
+        $newemailagain = FormUtil::getPassedValue('newemailagain', '', 'POST');
 
-        $checkuser = ModUtil::apiFunc('Users', 'user', 'checkUser',
-                                  array('uname'        => UserUtil::getVar('uname'),
-                                        'email'        => $newemail,
-                                        'agreetoterms' => true));
+        $emailErrors = ModUtil::apiFunc('Users', 'registration', 'getEmailErrors', array(
+            'uid'           => $uservars['uid'],
+            'email'         => $newemail,
+            'emailagain'    => $newemailagain,
+            'checkmode'     => 'modify',
+        ));
 
-        // check email related errors only
-        if (in_array($checkuser, array(-1, 2, 9, 11, 12))) {
-            switch($checkuser)
-            {
-                case -1:
-                    $message = $this->__('Sorry! You have not been granted access to this module.');
-                    break;
-                case 2:
-                    $message =  $this->__('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. Please correct your entry and try again.');
-                    break;
-                case 9:
-                    $message =  $this->__('Sorry! This e-mail address has already been registered, and it cannot be used again for creating another account.');
-                    break;
-                case 11:
-                    $message =  $this->__('Sorry! Your user agent is not accepted for registering an account on this site.');
-                    break;
-                case 12:
-                    $message =  $this->__('Sorry! E-mail addresses from the domain you entered are not accepted for registering an account on this site.');
-                    break;
-                default:
-                    $message =  $this->__('Sorry! You have not been granted access to this module.');
-            } // switch
-            return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'changeEmail'));
+        if (!empty($emailErrors)) {
+            foreach ($emailErrors as $field => $errorList) {
+                foreach ($errorList as $errorMessage) {
+                    LogUtil::registerError($errorMessage);
+                }
+            }
+            return System::redirect(ModUtil::url('Users', 'user', 'changeEmail'));
         }
+
+//        // check email related errors only
+//        if (in_array($checkuser, array(-1, 2, 9, 11, 12))) {
+//            switch($checkuser)
+//            {
+//                case -1:
+//                    $message = $this->__('Sorry! You have not been granted access to this module.');
+//                    break;
+//                case 2:
+//                    $message =  $this->__('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. Please correct your entry and try again.');
+//                    break;
+//                case 9:
+//                    $message =  $this->__('Sorry! This e-mail address has already been registered, and it cannot be used again for creating another account.');
+//                    break;
+//                case 11:
+//                    $message =  $this->__('Sorry! Your user agent is not accepted for registering an account on this site.');
+//                    break;
+//                case 12:
+//                    $message =  $this->__('Sorry! E-mail addresses from the domain you entered are not accepted for registering an account on this site.');
+//                    break;
+//                default:
+//                    $message =  $this->__('Sorry! You have not been granted access to this module.');
+//            } // switch
+//            return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'changeEmail'));
+//        }
 
         // save the provisional email until confimation
-        if (!ModUtil::apiFunc('Users', 'user', 'savePreEmail',
-                        array('newemail' => $newemail))) {
-            return LogUtil::registerError($this->__('Error! It has not been possible to change the e-mail address.'), null, ModUtil::url('Users', 'user', 'changeEmail'));
+        $verificationSent = ModUtil::apiFunc('Users', 'user', 'savePreEmail', array('newemail' => $newemail));
+
+        if (!$verificationSent) {
+            return LogUtil::registerError($this->__('Error! There was a problem saving your new e-mail address or sending you a verification message.'), null, ModUtil::url('Users', 'user', 'changeEmail'));
         }
 
-        LogUtil::registerStatus($this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change.'));
+        LogUtil::registerStatus($this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'));
         return System::redirect(ModUtil::url('Users', 'user', 'main'));
     }
 
@@ -1288,20 +1395,18 @@ class Users_User extends Zikula_Controller
         // get user new email that is waiting for confirmation
         $preemail = ModUtil::apiFunc('Users', 'user', 'getUserPreEmail');
 
-        // the e-mail change is valid during 5 days
-        $fiveDaysAgo =  time() - 5*24*60*60;
+        $validCode = UserUtil::passwordsMatch($confirmcode, $preemail['verifycode']);
 
-        if (!$preemail || $confirmcode != $preemail['comment'] || $preemail['dynamics'] < $fiveDaysAgo) {
+        if (!$preemail || !$validCode) {
             LogUtil::registerError($this->__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'));
             return System::redirect(ModUtil::url('Users', 'user', 'main'));
         }
 
         // user and confirmation code are correct. set the new email
-        UserUtil::setVar('email', $preemail['email']);
+        UserUtil::setVar('email', $preemail['newemail']);
 
         // the preemail record is deleted
-        ModUtil::apiFunc('Users', 'admin', 'deny',
-                    array('userid' => $preemail['tid']));
+        ModUtil::apiFunc('Users', 'user', 'removeUserPreEmail');
 
         LogUtil::registerStatus($this->__('Done! Changed your e-mail address.'));
         return System::redirect(ModUtil::url('Users', 'user', 'main'));

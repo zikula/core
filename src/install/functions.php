@@ -218,7 +218,7 @@ function install()
             break;
         case 'login':
             if (empty($loginuser) && empty($loginpassword)) {
-            } elseif (UserUtil::login($loginuser, $loginpassword, false)) {
+            } elseif (UserUtil::loginUsing('Users', array('loginid' => $loginuser, 'pass' => $loginpassword), false)) {
                 if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                     // not admin user so boot
                     UserUtil::logout();
@@ -268,7 +268,7 @@ function install()
                 //ModUtil::apiFunc('Users', 'user', 'finishnewuser', array('uname' => $username, 'email' => $email, 'pass' => $password));
                 createuser($username, $password, $email);
                 SessionUtil::requireSession();
-                UserUtil::login($username, $password);
+                UserUtil::loginUsing('Users', array('loginid' => $username, 'pass' => $password));
 
                 // add admin email as site email
                 System::setVar('adminmail', $email);
@@ -392,21 +392,24 @@ function createuser($username, $password, $email)
     $pntable = System::dbGetTables();
 
     // create the password hash
-    $password = hash(ModUtil::getVar('Users', 'hash_method'), $password);
+    $password = UserUtil::getHashedPassword($password);
 
     // prepare the data
     $username = DataUtil::formatForStore($username);
     $password = DataUtil::formatForStore($password);
     $email = DataUtil::formatForStore($email);
 
+    $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+    $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+
     // create the admin user
-    $sql = "UPDATE $pntable[users]
-            SET    pn_uname        = '$username',
-                   pn_email        = '$email',
-                   pn_pass         = '$password',
-                   pn_activated    = '1',
-                   pn_user_regdate = '" . date("Y-m-d H:i:s", time()) . "',
-                   pn_lastlogin    = '" . date("Y-m-d H:i:s", time()) . "'
+    $sql = "UPDATE {$pntable['users']}
+            SET    pn_uname        = '{$username}',
+                   pn_email        = '{$email}',
+                   pn_pass         = '{$password}',
+                   pn_activated    = 1,
+                   pn_user_regdate = '{$nowUTCStr}',
+                   pn_lastlogin    = '{$nowUTCStr}'
             WHERE  pn_uid   = 2";
 
     $result = DBUtil::executeSQL($sql);

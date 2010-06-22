@@ -149,7 +149,37 @@ class RandomUtil
     }
 
     /**
-     * Return a random sentence of nWords based on the dictionary.
+     * Return a random string suitable for use as a password or password-like code. The string should conform
+     * to the constraints of the current password requirements: suitable for human use (readable and unambiguous),
+     * within the specified minimum and maximum lengths.
+     *
+     * @param int   $minLength  The minimum length of the string to return; optional; default = 5; constrained to 1 <= $minLength <= 25.
+     * @param int   $maxLength  The maximum length of the string to return; optional; default = $minLength; constrained to $minLength <= $maxLength <= 25.
+     *
+     * @return string|bool A random string suitable for human-use as a password or password-like code; false on error.
+     */
+    public static function getStringForPassword($minLength = 5, $maxLength = null)
+    {
+        if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength <= 0)) {
+            return false;
+        }
+        $minLength = min($minLength, 25);
+
+        if (!isset($maxLength)) {
+            $maxLength = $minLength;
+        } elseif (!is_numeric($maxLength) || ((int)$maxLength != $maxLength) || ($maxLength <= 0)) {
+            return false;
+        } elseif ($maxLength <= $minLength) {
+            $maxLength = $minLength;
+        } else {
+            $maxLength = min($maxLength, 25);
+        }
+
+        return self::getString($minLength, $maxLength, false, false, true, false, true, false, false, array('0', 'o', 'O', 'l', '1', 'i', 'I', 'j', '!', '|'));
+    }
+
+    /**
+     * Return a random sentence of nWords based on the dictionary
      *
      * @param intiger $nWords    The number of words to put in the sentence.
      * @param array   $dictArray The array of dictionary words to use.

@@ -30,11 +30,11 @@ class Users_Installer extends Zikula_Installer
             return false;
         }
 
-        if (!DBUtil::createTable('users_temp')) {
+        if (!DBUtil::createTable('users_registration')) {
             return false;
         }
 
-        if (!DBUtil::createTable('users_shadow')) {
+        if (!DBUtil::createTable('users_verifychg')) {
             return false;
         }
 
@@ -64,7 +64,6 @@ class Users_Installer extends Zikula_Installer
         ModUtil::setVar('Users', 'minpass', 5);
         ModUtil::setVar('Users', 'anonymous', 'Guest');
         ModUtil::setVar('Users', 'loginviaoption', 0);
-        ModUtil::setVar('Users', 'lowercaseuname', 0);
         ModUtil::setVar('Users', 'moderation', 0);
         ModUtil::setVar('Users', 'hash_method', 'sha256');
         ModUtil::setVar('Users', 'login_redirect', 1);
@@ -73,7 +72,7 @@ class Users_Installer extends Zikula_Installer
         ModUtil::setVar('Users', 'idnnames', 1);
         ModUtil::setVar('Users', 'use_password_strength_meter', 0);
         ModUtil::setVar('Users', 'authmodules', 'Users');
-        ModUtil::setVar('Users', 'recovery_forcepwdchg', 'Users', 0);
+        ModUtil::setVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
 
         // Initialisation successful
         return true;
@@ -92,20 +91,25 @@ class Users_Installer extends Zikula_Installer
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
+            // $oldversion 1.9 and 1.10 handled by Zikula 1.2.
             case '1.11':
+                // upgrade 1.11 to 1.12
                 $this->upgrade_migrateSerialisedUserTemp();
             case '1.12':
+                // upgrade 1.12 to 1.13
                 ModUtil::setVar('Users', 'avatarpath', 'images/avatar');
                 ModUtil::setVar('Users', 'lowercaseuname', 1);
             case '1.13':
+                // upgrade 1.13 to 1.14
                 ModUtil::setVar('Users', 'use_password_strength_meter', 0);
             case '1.14':
+                // upgrade 1.14 to 1.15
                 if (ModUtil::getVar('Users', 'hash_method') == 'md5') {
                     ModUtil::setVar('Users', 'hash_method', 'sha256');
                 }
             case '1.15':
+                // upgrade 1.15 to 1.16
                 ModUtil::delVar('Users', 'savelastlogindate');
                 ModUtil::setVar('Users', 'allowgravatars', 1);
                 ModUtil::setVar('Users', 'gravatarimage', 'gravatar.gif');
@@ -113,17 +117,23 @@ class Users_Installer extends Zikula_Installer
                     return '1.15';
                 }
             case '1.16':
+                // upgrade 1.16 to 1.17
                 ModUtil::setVar('Users', 'authmodules', 'Users');
             case '1.17':
-                DBUtil::dropIndex('uname', 'users');
-                DBUtil::dropIndex('email', 'users');
+                // upgrade 1.17 to 1.18
                 if (!DBUtil::changeTable('users')
-                        || !DBUtil::changeTable('users_temp')
-                        || !DBUtil::createTable('users_shadow'))
+                    || !DBUtil::changeTable('users_temp')
+                    || !DBUtil::createTable('users_shadow'))
                 {
                     return '1.17';
                 }
             case '1.18':
+                // upgrade 1.18 to 2.0.0
+                if (!$this->upgrade118Xto200($oldversion)) {
+                    return '1.18';
+                }
+            case '2.0.0':
+                // Current version: add 2.0.0 --> next when appropriate
         }
 
         // Update successful
@@ -154,25 +164,20 @@ class Users_Installer extends Zikula_Installer
      */
     public function defaultdata()
     {
+        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+
         // Anonymous
         $record = array();
-        $record['uid']             = '1';
-        $record['uname']           = 'guest';
-        $record['pass']            = '';
-        $record['storynum']        = '10';
-        $record['umode']           = '';
-        $record['uorder']          = '0';
-        $record['thold']           = '0';
-        $record['noscore']         = '0';
-        $record['bio']             = '';
-        $record['ublockon']        = '0';
-        $record['ublock']          = '';
-        $record['theme']           = '';
-        $record['commentmax']      = '4096';
-        $record['counter']         = '0';
-        $record['timezone_offset'] = '0';
-        $record['hash_method']     = '1';
-        $record['activated']       = UserUtil::ACTIVATED_ACTIVE;
+        $record['uid']              = '1';
+        $record['uname']            = 'guest';
+        $record['email']            = '';
+        $record['user_regdate']     = $nowUTCStr;
+        $record['pass']             = '';
+        $record['ublockon']         = '0';
+        $record['ublock']           = '';
+        $record['theme']            = '';
+        $record['activated']        = UserUtil::ACTIVATED_ACTIVE;
         DBUtil::insertObject($record, 'users', 'uid', true);
 
         // Admin
@@ -180,102 +185,12 @@ class Users_Installer extends Zikula_Installer
         $record['uid']             = '2';
         $record['uname']           = 'admin';
         $record['email']           = '';
-        $record['pass']            = 'dc647eb65e6711e155375218212b3964';
-        $record['storynum']        = '10';
-        $record['umode']           = '';
-        $record['uorder']          = '0';
-        $record['thold']           = '0';
-        $record['noscore']         = '0';
-        $record['bio']             = '';
+        $record['pass']            = '1$$dc647eb65e6711e155375218212b3964';
         $record['ublockon']        = '0';
         $record['ublock']          = '';
         $record['theme']           = '';
-        $record['commentmax']      = '4096';
-        $record['counter']         = '0';
-        $record['timezone_offset'] = '0';
         $record['activated']       = UserUtil::ACTIVATED_ACTIVE;
-
         DBUtil::insertObject($record, 'users', 'uid', true);
-    }
-
-    /**
-     * Migrate old DUDs to attributes.
-     *
-     * @return bool True.
-     */
-    public function migrate_duds_to_attributes()
-    {
-        ModUtil::dbInfoLoad('Profile');
-        ModUtil::dbInfoLoad('ObjectData');
-        $pntable = System::dbGetTables();
-        $udtable   = $pntable['user_data'];
-        $udcolumn  = $pntable['user_data_column'];
-        $objtable  = $pntable['objectdata_attributes'];
-        $objcolumn = $pntable['objectdata_attributes_column'];
-
-        // load the user properties into an assoc array with prop_id as key
-        $userprops = DBUtil::selectObjectArray('user_property', '', '', -1, -1, 'prop_id');
-
-        // this array maps old DUDs to new attributes
-        $mappingarray = array('_UREALNAME'      => 'realname',
-                '_UFAKEMAIL'      => 'publicemail',
-                '_YOURHOMEPAGE'   => 'url',
-                '_TIMEZONEOFFSET' => 'tzoffset',
-                '_YOURAVATAR'     => 'avatar',
-                '_YLOCATION'      => 'city',
-                '_YICQ'           => 'icq',
-                '_YAIM'           => 'aim',
-                '_YYIM'           => 'yim',
-                '_YMSNM'          => 'msnm',
-                '_YOCCUPATION'    => 'occupation',
-                '_SIGNATURE'      => 'signature',
-                '_EXTRAINFO'      => 'extrainfo',
-                '_YINTERESTS'     => 'interests');
-
-        $aks = array_keys($userprops);
-        // expand the old DUDs with the new attribute names for the real conversion
-        foreach ($aks as $ak) {
-            if ($userprops[$ak]['prop_label'] == '_PASSWORD' || $userprops[$ak]['prop_label'] == '_UREALEMAIL') {
-                // password and real email are core information, not attributes!
-                unset($userprops[$ak]);
-            } elseif (array_key_exists($userprops[$ak]['prop_label'], $mappingarray)) {
-                // old DUD found, replace it
-                $userprops[$ak]['attribute_name'] = $mappingarray[$userprops[$ak]['prop_label']];
-            } else {
-                // user defined DUD found, do not touch it
-                $userprops[$ak]['attribute_name'] = $userprops[$ak]['prop_label'];
-            }
-        }
-
-        // One sql per user property to move all data from user_data table to the attributes table
-        // This is the most efficient way to do this. During a test upgrade this took less than 0.3 secs for 6700
-        // users and >15K of properties.
-        foreach ($userprops as $userprop) {
-            // Set cr_date and lu_date to now, cr_uid and lu_uid will be the uid of the user the attributes belong to
-            $timestring = DateUtil::getDatetime();
-            $sql = "INSERT INTO " . $objtable . " (" . $objcolumn['attribute_name'] . ",
-                                               " . $objcolumn['object_type'] . ",
-                                               " . $objcolumn['object_id'] . ",
-                                               " . $objcolumn['value'] . ",
-                                               " . $objcolumn['cr_date'] . ",
-                                               " . $objcolumn['cr_uid'] . ",
-                                               " . $objcolumn['lu_date'] . ",
-                                               " . $objcolumn['lu_uid'] . ")
-                SELECT '" . $userprop['attribute_name'] . "',
-                       'users',
-                       " . $udcolumn['uda_uid'] . ",
-                       " . $udcolumn['uda_value'] . ",
-                       '" . $timestring . "',
-                       " . $udcolumn['uda_uid'] . ",
-                       '" . $timestring . "',
-                       " . $udcolumn['uda_uid'] . "
-                FROM " . $udtable . "
-                WHERE " . $udcolumn['uda_propid'] . "='" . $userprop['prop_id'] . "'";
-            DBUtil::executeSQL($sql);
-        }
-
-        // done :-)
-        return true;
     }
 
     /**
@@ -290,5 +205,347 @@ class Users_Installer extends Zikula_Installer
             }
             DBUtil::updateObject($obj, 'users_temp', '', 'tid');
         }
+    }
+
+    public function upgrade118Xto200($oldversion)
+    {
+        LogUtil::log('UPG118-200: Beginning 1.18 to 2.0.0 upgrade.', 'DEBUG');
+
+        // Get the dbinfo for the new version
+        $funcExists = function_exists('Users_tables');
+        LogUtil::log("UPG118-200: Users_tables is defined: " . ($funcExists ? 'yes' : 'no'), 'DEBUG');
+        if (!$funcExists) {
+            require_once 'system/Users/tables.php';
+            LogUtil::log("UPG118-200: require_once: 'system/Users/tables.php'", 'DEBUG');
+        }
+
+        $dbinfoSystem = System::dbGetTables();
+        $dbinfo118X = Users_tables('1.18');
+        $dbinfo200 = Users_tables('2.0.0');
+        $usersOldFields = array('user_theme', 'user_viewemail', 'storynum', 'counter', 'hash_method', 'validfrom', 'validuntil');
+        $usersOldFieldsDB = array($dbinfo118X['users_column']['user_theme'], $dbinfo118X['users_column']['user_viewemail'],
+            $dbinfo118X['users_column']['storynum'], $dbinfo118X['users_column']['counter'], $dbinfo118X['users_column']['hash_method'],
+            $dbinfo118X['users_column']['validfrom'], $dbinfo118X['users_column']['validuntil']);
+
+        $tzUTC = new DateTimeZone('UTC');
+        $convertTZ = ($tzUTC->getOffset(new DateTime()) != 0);
+        LogUtil::log('UPG118-200: convertTZ = ' . ($convertTZ ? 'yes' : 'no'), 'DEBUG');
+
+        // Upgrade the tables
+        // First, users table conversion.
+
+        // Update the users table with new and altered fields. No fields are removed at this point, and no fields
+        // are getting a new data type that is incompatible, so no need to save anything off first.
+        // Also, create the users_registration and users_verifychg tables at this point.
+        // Hack the global dbtables with the new field information.
+        $GLOBALS['dbtables']['users_column'] = $dbinfo200['users_column'];
+        $GLOBALS['dbtables']['users_column_def'] = $dbinfo200['users_column_def'];
+        $GLOBALS['dbtables']['users_registration'] = $dbinfo200['users_registration'];
+        $GLOBALS['dbtables']['users_registration_column'] = $dbinfo200['users_registration_column'];
+        $GLOBALS['dbtables']['users_registration_column_def'] = $dbinfo200['users_registration_column_def'];
+        $GLOBALS['dbtables']['users_verifychg'] = $dbinfo200['users_verifychg'];
+        $GLOBALS['dbtables']['users_verifychg_column'] = $dbinfo200['users_verifychg_column'];
+        $GLOBALS['dbtables']['users_verifychg_column_def'] = $dbinfo200['users_verifychg_column_def'];
+
+        // Now change the tables
+        //LogUtil::log('UPG118-200: changeTable(users) ' . var_export($GLOBALS['dbtables'], true), 'DEBUG');
+        if (!DBUtil::changeTable('users')) {
+            LogUtil::log('UPG118-200: changeTable(users) failed.', 'DEBUG');
+            return false;
+        }
+        if (!DBUtil::createTable('users_registration')) {
+            LogUtil::log('UPG118-200: createTable(users_registration) failed.', 'DEBUG');
+            return false;
+        }
+        if (!DBUtil::createTable('users_verifychg')) {
+            LogUtil::log('UPG118-200: createTable(users_verifychg) failed.', 'DEBUG');
+            return false;
+        }
+
+        // First users_temp pending email verification records to users_verifychg, because the uname is changing in users.
+        $utColumn = $GLOBALS['dbtables']['users_temp_column'];
+        $ucColumn = $GLOBALS['dbtables']['users_verifychg_column'];
+        $uColumn = $GLOBALS['dbtables']['users_column'];
+        $limitNumRows = 100;
+        $limitOffset = 0;
+        $updated = true;
+        $userCount = DBUtil::selectObjectCount('users_temp');
+        while ($limitOffset < $userCount) {
+            $userArray = DBUtil::selectObjectArray('users_temp', "{$utColumn['type']} = 2", '', $limitOffset, $limitNumRows, '', null, null, array('tid', 'dynamics', 'comment', 'email'));
+            if (!empty($userArray) && is_array($userArray)) {
+                foreach ($userArray as $key => $userObj) {
+                    if (isset($userArray[$key]['dynamics']) && !empty($userArray[$key]['dynamics']) && is_numeric($userArray[$key]['dynamics'])) {
+                        LogUtil::log("UPG118-200: theDate ts = @{$userArray[$key]['dynamics']}.", 'DEBUG');
+                        $theDate = new DateTime("@{$userArray[$key]['dynamics']}", $tzUTC);
+                        $theDate->modify('+5 days');
+                        $userArray[$key]['dynamics'] = $theDate->format(UserUtil::DATETIME_FORMAT);
+                    }
+                    if (isset($userArray[$key]['comment']) && !empty($userArray[$key]['comment']) && is_string($userArray[$key]['comment'])) {
+                        $userArray[$key]['comment'] = '1$$' . $userArray[$key]['comment'];
+                    }
+                    if (isset($userArray[$key]['email']) && !empty($userArray[$key]['email']) && is_string($userArray[$key]['email'])) {
+                        $userArray[$key]['email'] = mb_strtolower($userArray[$key]['email']);
+                    }
+                }
+            }
+            $theCount = count($userArray);
+            if (DBUtil::updateObjectArray($userArray, 'users_temp', 'tid', false)) {
+                LogUtil::log("UPG118-200: Updated {$theCount} users_temp records.", 'DEBUG');
+            } else {
+                $updated = false;
+                LogUtil::log("UPG118-200: users_temp updateObjectArray returned false - {$theCount} users in the array beginning at offset {$limitOffset}.", 'DEBUG');
+                break;
+            }
+            $limitOffset += $limitNumRows;
+        }
+        if (!$updated) {
+            return false;
+        }
+        $sql = "INSERT INTO {$dbinfo200['users_verifychg']}
+                    ({$ucColumn['changetype']}, {$ucColumn['uid']}, {$ucColumn['newemail']}, {$ucColumn['verifycode']}, {$ucColumn['validuntil']})
+                SELECT 2 AS {$ucColumn['changetype']},
+                    users.{$uColumn['uid']} AS {$ucColumn['uid']},
+                    ut.{$utColumn['email']} AS {$ucColumn['newemail']},
+                    ut.{$utColumn['comment']} AS {$ucColumn['verifycode']},
+                    ut.{$utColumn['dynamics']} AS {$ucColumn['validuntil']}
+                FROM {$dbinfo118X['users_temp']} AS ut
+                    INNER JOIN {$dbinfo200['users']} AS users ON ut.{$utColumn['uname']} = users.{$uColumn['uname']}
+                WHERE ut.{$utColumn['type']} = 2";
+        $updated = DBUtil::executeSQL($sql);
+        if (!$updated) {
+            return false;
+        }
+
+        // Next, users table conversion
+        // We need to convert some information over from the old users table fields, so merge the old field list into the new one.
+        // The order of array_merge parameters is important here!
+        $GLOBALS['dbtables']['users_column'] = array_merge($dbinfo118X['users_column'], $dbinfo200['users_column']);
+        // Do the conversion in PHP we use mb_strtolower, and even if MySQL had an equivalent, there is
+        // no guarantee that another supported DB platform would.
+        $limitNumRows = 100;
+        $limitOffset = 0;
+        $updated = true;
+        $userCount = DBUtil::selectObjectCount('users');
+        while ($limitOffset < $userCount) {
+            $userArray = DBUtil::selectObjectArray('users', 'pn_uid != 1', '', $limitOffset, $limitNumRows, '', null, null, array('uid', 'uname', 'email', 'pass', 'hash_method', 'user_regdate', 'lastlogin'));
+            if (!empty($userArray) && is_array($userArray)) {
+                foreach ($userArray as $key => $userObj) {
+                    // force user names to lower case
+                    $userArray[$key]['uname'] = mb_strtolower($userArray[$key]['uname']);
+                    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; uname: '{$userArray[$key]['uname']}' was '{$userObj['uname']}'", 'DEBUG');
+
+                    // force email addresses to lower case
+                    $userArray[$key]['email'] = mb_strtolower($userArray[$key]['email']);
+                    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; email: '{$userArray[$key]['email']}' was '{$userObj['email']}'", 'DEBUG');
+
+                    // merge hash method for salted passwords
+                    if (!empty($userArray[$key]['pass']) && (strpos($userArray[$key]['pass'], '$$') === false)) {
+                        $userArray[$key]['pass'] = (isset($userArray[$key]['hash_method']) ? $userArray[$key]['hash_method'] : '') . '$$' . $userArray[$key]['pass'];
+                    }
+                    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; hash_method: '{$userObj['hash_method']}'; pass: '{$userArray[$key]['pass']}' was '{$userObj['pass']}'", 'DEBUG');
+
+                    // TODO - We probably cannot convert dates like this, especially for users with status inactive who are probably
+                    // waiting on activation.
+                    //if ($convertTZ) {
+                    //    // reset regdate to UTC
+                    //    $theDate = new DateTime($userArray[$key]['user_regdate']);
+                    //    $theDate->setTimezone($tzUTC);
+                    //    $userArray[$key]['user_regdate'] = $theDate->format('Y-m-d H:i:s');
+                    //    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; user_regdate: '{$userArray[$key]['user_regdate']}' was '{$userObj['user_regdate']}'", 'DEBUG');
+                    //
+                    //    // reset last login to UTC
+                    //    $theDate = new DateTime($userArray[$key]['lastlogin']);
+                    //    $theDate->setTimezone($tzUTC);
+                    //    $userArray[$key]['lastlogin'] = $theDate->format('Y-m-d H:i:s');
+                    //    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; lastlogin: '{$userArray[$key]['lastlogin']}' was '{$userObj['lastlogin']}'", 'DEBUG');
+                    //}
+
+                    // Save some disappearing fields as attributes, just in case someone actually used them for something. But don't overwrite if there already
+                    if (!isset($userArray[$key]['__ATTRIBUTES__']) || !is_array($userArray[$key]['__ATTRIBUTES__'])) {
+                        $userArray[$key]['__ATTRIBUTES__'] = array();
+                    }
+                    foreach ($usersOldFields as $fieldName) {
+                        if (($fieldName != 'hash_method') && isset($userArray[$key][$fieldName]) && !empty($userArray[$key][$fieldName]) && !isset($userArray[$key]['__ATTRIBUTES__'][$fieldName])) {
+                            $userArray[$key]['__ATTRIBUTES__'][$fieldName] = $userArray[$key][$fieldName];
+                        }
+                    }
+                }
+            }
+            $theCount = count($userArray);
+            if (DBUtil::updateObjectArray($userArray, 'users', 'uid', false)) {
+                LogUtil::log("UPG118-200: Updated {$theCount} users.", 'DEBUG');
+            } else {
+                $updated = false;
+                LogUtil::log("UPG118-200: users updateObjectArray returned false - {$theCount} users in the array beginning at offset {$limitOffset}.", 'DEBUG');
+                break;
+            }
+            $limitOffset += $limitNumRows;
+        }
+        if (!$updated) {
+            return false;
+        }
+
+        if ($oldversion == '1.18') {
+            // Gather any password_reminder fields set as attributes in 1.18
+            $obaColumn = $dbinfoSystem['objectdata_attributes_column'];
+            $urColumn = $dbinfo200['users_column'];
+            $sql = "UPDATE {$dbinfo200['users']} AS u
+                    INNER JOIN {$dbinfoSystem['objectdata_attributes']} AS oba
+                        ON u.{$urColumn['uid']} = oba.{$obaColumn['object_id']}
+                    SET u.{$urColumn['passreminder']} = oba.{$obaColumn['value']}
+                    WHERE oba.{$obaColumn['object_type']} = 'users'
+                        AND oba.{$obaColumn['attribute_name']} = 'password_reminder'";
+            $updated = DBUtil::executeSQL($sql);
+            if (!$updated) {
+                return false;
+            }
+            $sql = "DELETE FROM {$dbinfoSystem['objectdata_attributes']}
+                    WHERE {$obaColumn['object_type']} = 'users'
+                        AND {$obaColumn['attribute_name']} = 'password_reminder'";
+            $updated = DBUtil::executeSQL($sql);
+            if (!$updated) {
+                return false;
+            }
+        }
+
+        // Next, users_temp conversion to users_registration
+        $utColumn = $GLOBALS['dbtables']['users_temp_column'];
+        $urColumn = $GLOBALS['dbtables']['users_registration_column'];
+        $sql = "INSERT INTO {$dbinfo200['users_registration']}
+                    ({$urColumn['uname']}, {$urColumn['email']}, {$urColumn['pass']}, {$urColumn['agreetoterms']}, {$urColumn['dynadata']})
+                SELECT {$utColumn['uname']} AS {$urColumn['uname']},
+                    {$utColumn['email']} AS {$urColumn['email']},
+                    CONCAT({$utColumn['hash_method']}, '\$\$', {$utColumn['pass']}) AS {$urColumn['pass']},
+                    1 AS {$urColumn['agreetoterms']},
+                    {$utColumn['dynamics']} AS {$urColumn['dynadata']}
+                FROM {$dbinfo118X['users_temp']}
+                WHERE {$dbinfo118X['users_temp']}.{$utColumn['type']} = 1";
+        $updated = DBUtil::executeSQL($sql);
+        if (!$updated) {
+            return false;
+        }
+        // Gather any new database fields set as attributes in 1.18
+        $sql = "UPDATE {$dbinfo200['users_registration']} AS ur
+                INNER JOIN {$dbinfo118X['users_temp']} AS ut
+                    ON ur.{$urColumn['uname']} = ut.{$utColumn['uname']}
+                INNER JOIN {$dbinfoSystem['objectdata_attributes']} AS oba
+                    ON ut.{$utColumn['tid']} = oba.{$obaColumn['object_id']}
+                SET ur.{$urColumn['passreminder']} = oba.{$obaColumn['value']}
+                WHERE ut.{$utColumn['type']} = 1
+                    AND oba.{$obaColumn['object_type']} = 'users_temp'
+                    AND oba.{$obaColumn['attribute_name']} = 'password_reminder'";
+        $updated = DBUtil::executeSQL($sql);
+        if (!$updated) {
+            return false;
+        }
+        $sql = "UPDATE {$dbinfo200['users_registration']} AS ur
+                INNER JOIN {$dbinfo118X['users_temp']} AS ut
+                    ON ur.{$urColumn['uname']} = ut.{$utColumn['uname']}
+                INNER JOIN {$dbinfoSystem['objectdata_attributes']} AS oba
+                    ON ut.{$utColumn['tid']} = oba.{$obaColumn['object_id']}
+                SET ur.{$urColumn['isapproved']} = 1
+                WHERE ut.{$utColumn['type']} = 1
+                    AND oba.{$obaColumn['object_type']} = 'users_temp'
+                    AND oba.{$obaColumn['attribute_name']} = 'pendingApproval'
+                    AND oba.{$obaColumn['value']} IN ('0', 'false')";
+        $updated = DBUtil::executeSQL($sql);
+        if (!$updated) {
+            return false;
+        }
+        $sql = "UPDATE {$dbinfo200['users_registration']} AS ur
+                INNER JOIN {$dbinfo118X['users_temp']} AS ut
+                    ON ur.{$urColumn['uname']} = ut.{$utColumn['uname']}
+                INNER JOIN {$dbinfoSystem['objectdata_attributes']} AS oba
+                    ON ut.{$utColumn['tid']} = oba.{$obaColumn['object_id']}
+                SET ur.{$urColumn['isverified']} = 1
+                WHERE ut.{$utColumn['type']} = 1
+                    AND oba.{$obaColumn['object_type']} = 'users_temp'
+                    AND oba.{$obaColumn['attribute_name']} = 'pendingVerification'
+                    AND oba.{$obaColumn['value']} IN ('0', 'false')";
+        $updated = DBUtil::executeSQL($sql);
+        if (!$updated) {
+            return false;
+        }
+        $sql = "DELETE FROM {$dbinfoSystem['objectdata_attributes']}
+                WHERE {$obaColumn['object_type']} = 'users_temp'
+                    AND {$obaColumn['attribute_name']} IN ('password_reminder', 'pendingApproval', 'pendingVerification')";
+        $updated = DBUtil::executeSQL($sql);
+        if (!$updated) {
+            return false;
+        }
+        $limitNumRows = 100;
+        $limitOffset = 0;
+        $updated = true;
+        $userCount = DBUtil::selectObjectCount('users_registration');
+        while ($limitOffset < $userCount) {
+            $userArray = DBUtil::selectObjectArray('users_registration', '', '', $limitOffset, $limitNumRows, '', null, null, array('id', 'uname', 'email'));
+            if (!empty($userArray) && is_array($userArray)) {
+                foreach ($userArray as $key => $userObj) {
+                    if (isset($userArray[$key]['uname']) && !empty($userArray[$key]['uname']) && is_string($userArray[$key]['uname'])) {
+                        $userArray[$key]['uname'] = mb_strtolower($userArray[$key]['uname']);
+                    }
+                    if (isset($userArray[$key]['email']) && !empty($userArray[$key]['email']) && is_string($userArray[$key]['email'])) {
+                        $userArray[$key]['email'] = mb_strtolower($userArray[$key]['email']);
+                    }
+                }
+            }
+            $theCount = count($userArray);
+            if (DBUtil::updateObjectArray($userArray, 'users_registration', 'id', false)) {
+                LogUtil::log("UPG118-200: Updated {$theCount} user_registration records.", 'DEBUG');
+            } else {
+                $updated = false;
+                LogUtil::log("UPG118-200: users_registration updateObjectArray returned false - {$theCount} users in the array beginning at offset {$limitOffset}.", 'DEBUG');
+                break;
+            }
+            $limitOffset += $limitNumRows;
+        }
+        if (!$updated) {
+            return false;
+        }
+
+        // Next and last, convert the pending password change codes in users_shadow table over to users_verifychg, just like the pending emails
+        $usColumn = $GLOBALS['dbtables']['users_shadow_column'];
+        $ucColumn = $GLOBALS['dbtables']['users_verifychg_column'];
+        $sql = "INSERT INTO {$dbinfo200['users_verifychg']}
+                    ({$ucColumn['changetype']}, {$ucColumn['uid']}, {$ucColumn['verifycode']})
+                SELECT 1 AS {$ucColumn['changetype']},
+                    {$usColumn['uid']} AS {$ucColumn['uid']},
+                    CONCAT({$usColumn['code_hash_method']}, '$$', {$usColumn['code']}) AS {$ucColumn['verifycode']}
+                FROM {$dbinfo118X['users_shadow']}";
+        $updated = DBUtil::executeSQL($sql);
+        if (!$updated) {
+            return false;
+        }
+
+
+        // Done upgrading. Let's lose some old fields and tables we no longer need.
+        DBUtil::dropColumn('users', $usersOldFieldsDB);
+        DBUtil::dropTable('users_temp');
+        DBUtil::dropTable('users_shadow');
+
+        // Reset $GLOBALS['dbtables'] to the new table definitons, so the rest of the
+        // system upgrade goes smoothly.
+        foreach ($dbinfo118X as $key => $value) {
+            unset($GLOBALS['dbtables'][$key]);
+        }
+        foreach ($dbinfo200 as $key => $value) {
+            $GLOBALS['dbtables'][$key] = $value;
+        }
+
+        // done with db changes. Now handle some final stuff.
+        ModUtil::delVar('Users', 'authmodules');
+        ModUtil::setVar('Users', 'default_authmodule', 'Users');
+
+        $regVerifyEmail = ModUtil::getVar('Users', 'reg_verifyemail', UserUtil::VERIFY_NO);
+        if ($regVerifyEmail == UserUtil::VERIFY_SYSTEMPWD) {
+            ModUtil::setVar('Users', 'reg_verifyemail', UserUtil::VERIFY_USERPWD);
+        }
+
+        ModUtil::setVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+
+        ModUtil::delVar('Users', 'reg_forcepwdchg');
+        ModUtil::delVar('Users', 'lowercaseuname');
+
+        return true;
     }
 }

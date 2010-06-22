@@ -105,16 +105,35 @@
 
         <fieldset>
             <legend>{gt text="User registration"}</legend>
+            {if !$legal}
             <div class="z-formrow">
-                <label for="users_lowercaseuname">{gt text="New username in lowercase"}</label>
-                <div id="users_lowercaseuname">
-                    <input id="lowercaseunameyes" type="radio" name="config[lowercaseuname]" value="1" {if $config.lowercaseuname eq 1} checked="checked"{/if} />
-                    <label for="lowercaseunameyes">{gt text="Yes"}</label>
-                    <input id="lowercaseunameno" type="radio" name="config[lowercaseuname]" value="0" {if $config.lowercaseuname eq 0} checked="checked"{/if} />
-                    <label for="lowercaseunameno">{gt text="No"}</label>
-                </div>
-                <p class="z-formnote z-informationmsg">{gt text="When enabled, if a new user chooses 'MyUserName' as his/her username, it will be stored as 'myusername' in the Zikula database."}</p>
+                <p class="z-formnote z-informationmsg">{gt text="Attention: It is possible to force users to accept a 'terms of use' and/or a 'privacy policy', but the Legal module must be installed and available."}</p>
             </div>
+            {/if}
+            <div class="z-formrow">
+                <label for="users_reg_allowreg">{gt text="Allow new user account registrations"}</label>
+                <div id="users_reg_allowreg">
+                    <input id="reg_allowregyes" type="radio" name="config[reg_allowreg]" value="1" {if $config.reg_allowreg eq 1} checked="checked"{/if} />
+                    <label for="reg_allowregyes">{gt text="Yes"}</label>
+                    <input id="reg_allowregno" type="radio" name="config[reg_allowreg]" value="0" {if $config.reg_allowreg eq 0} checked="checked"{/if} />
+                    <label for="reg_allowregno">{gt text="No"}</label>
+                </div>
+            </div>
+            <div class="z-formrow" id="users_reg_allowreg_wrap">
+                <label for="users_noregreasons">{gt text="Statement displayed if registration disabled"}</label>
+                <textarea id="users_noregreasons" name="config[reg_noregreasons]" cols="45" rows="10">{$config.reg_noregreasons|varprephtmldisplay}</textarea>
+            </div>
+            {if $profile}
+            <div class="z-formrow">
+                <label for="users_reg_optitems">{gt text="Show profile module properties"}</label>
+                <div id="users_reg_optitems">
+                    <input id="reg_optitemsyes" type="radio" name="config[reg_optitems]" value="1" {if $config.reg_optitems eq 1} checked="checked"{/if} />
+                    <label for="reg_optitemsyes">{gt text="Yes"}</label>
+                    <input id="reg_optitemsno" type="radio" name="config[reg_optitems]" value="0" {if $config.reg_optitems eq 0} checked="checked"{/if} />
+                    <label for="reg_optitemsno">{gt text="No"}</label>
+                </div>
+            </div>
+            {/if}
             <div class="z-formrow">
                 <label for="users_moderation">{gt text="User registration is moderated"}</label>
                 <div id="users_moderation">
@@ -133,41 +152,30 @@
                     <label for="reg_uniemailno">{gt text="No"}</label>
                 </div>
             </div>
-            <div class="z-formrow">
-                <label for="users_reg_optitems">{gt text="Show account panel properties"}</label>
-                <div id="users_reg_optitems">
-                    <input id="reg_optitemsyes" type="radio" name="config[reg_optitems]" value="1" {if $config.reg_optitems eq 1} checked="checked"{/if} />
-                    <label for="reg_optitemsyes">{gt text="Yes"}</label>
-                    <input id="reg_optitemsno" type="radio" name="config[reg_optitems]" value="0" {if $config.reg_optitems eq 0} checked="checked"{/if} />
-                    <label for="reg_optitemsno">{gt text="No"}</label>
-                </div>
-            </div>
-            <div class="z-formrow">
-                <label for="users_reg_allowreg">{gt text="Allow new user account registrations"}</label>
-                <div id="users_reg_allowreg">
-                    <input id="reg_allowregyes" type="radio" name="config[reg_allowreg]" value="1" {if $config.reg_allowreg eq 1} checked="checked"{/if} />
-                    <label for="reg_allowregyes">{gt text="Yes"}</label>
-                    <input id="reg_allowregno" type="radio" name="config[reg_allowreg]" value="0" {if $config.reg_allowreg eq 0} checked="checked"{/if} />
-                    <label for="reg_allowregno">{gt text="No"}</label>
-                </div>
-            </div>
-            <div class="z-formrow" id="users_reg_allowreg_wrap">
-                <label for="users_noregreasons">{gt text="Statement displayed if registration disabled"}</label>
-                <textarea id="users_noregreasons" name="config[reg_noregreasons]" cols="45" rows="10">{$config.reg_noregreasons|varprephtmldisplay}</textarea>
-            </div>
-            <div class="z-formrow">
+            <div class="z-formrow" id="reg_verifyemail">
                 <label>{gt text="Verify e-mail address during registration"}</label>
                 <div class="z-formlist">
                     <input id="reg_verifyemail2" type="radio" name="config[reg_verifyemail]" value="2" {if $config.reg_verifyemail eq 2} checked="checked"{/if} />
                     <label for="reg_verifyemail2">{gt text="Yes. User chooses password, then activates account via e-mail"}</label>
                 </div>
                 <div class="z-formlist">
-                    <input id="reg_verifyemail1" type="radio" name="config[reg_verifyemail]" value="1" {if $config.reg_verifyemail eq 1} checked="checked"{/if}/>
-                    <label for="reg_verifyemail1">{gt text="Yes. System-generated password is sent directly to e-mail address"}</label>
-                </div>
-                <div class="z-formlist">
                     <input id="reg_verifyemail0" type="radio" name="config[reg_verifyemail]" value="0" {if $config.reg_verifyemail eq 0} checked="checked"{/if}/>
                     <label for="reg_verifyemail0">{gt text="No"}</label>
+                </div>
+            </div>
+            <div class="z-formrow" id="moderation_order_wrap">
+                <label>{gt text="Moderation/verification order"}</label>
+                <div class="z-formlist">
+                    <input id="moderation_order0" type="radio" name="config[moderation_order]" value="0" {if $config.moderation_order eq 0} checked="checked"{/if} />
+                    <label for="moderation_order0">{gt text="Registration applications must be approved before users verify their e-mail address."}</label>
+                </div>
+                <div class="z-formlist">
+                    <input id="moderation_order1" type="radio" name="config[moderation_order]" value="1" {if $config.moderation_order eq 1} checked="checked"{/if} />
+                    <label for="moderation_order1">{gt text="Users must verify their e-mail address before their application is approved."}</label>
+                </div>
+                <div class="z-formlist">
+                    <input id="moderation_order2" type="radio" name="config[moderation_order]" value="1" {if $config.moderation_order eq 2} checked="checked"{/if} />
+                    <label for="moderation_order2">{gt text="Application approval and e-mail address verification can occur in any order."}</label>
                 </div>
             </div>
 
@@ -189,10 +197,6 @@
                     <input id="legal_privacypolicyno" type="radio" name="config[privacypolicy]" value="0" {if !$pp_active} checked="checked"{/if} />
                     <label for="legal_privacypolicyno">{gt text="No"}</label>
                 </div>
-            </div>
-            {else}
-            <div class="z-formrow">
-                <p class="z-formnote z-informationmsg">{gt text="Attention: It is possible to force users to accept the terms of use and privacy policy, but the Legal module must be available."}</p>
             </div>
             {/if}
 
@@ -277,9 +281,14 @@
         <fieldset>
             <legend>{gt text="Authentication Module settings"}</legend>
             <div class="z-formrow">
-                <label for="users_authmodules">{gt text="Authentication modules"}</label>
-                <input id="users_authmodules" type="text" name="config[authmodules]" size="40" maxlength="255" value="{$config.authmodules|varprepfordisplay}" />
-                <em class="z-formnote z-sub">{gt text="Notice: This is a comma-separated list of modules to be used for authentication on the site."}</em>
+                <label for="users_default_authmodule">{gt text="Default user authentication (login) module"}</label>
+                <select id="users_default_authmodule" name="config[default_authmodule]">
+                {foreach from=$authmodules item='authmodule'}
+                    <option id="users_default_authmodule_{$authmodule.name}" value="{$authmodule.name}"{if $config.default_authmodule == $authmodule.name} selected="selected"{/if}>{$authmodule.displayname}</option>
+                {* {foreachelse}
+                    <option id="users_default_authmodule_Users" value="Users" selected="selected">Users manager</option>
+                *} {/foreach}
+                </select>
             </div>
         </fieldset>
 

@@ -20,6 +20,28 @@
 class Users_Admin extends Zikula_Controller
 {
     /**
+     * Determines if the user currently logged in has administrative access for the Users module.
+     *
+     * @return bool True if the current user is logged in and has administrator access for the Users
+     *                  module; otherwise false.
+     */
+    private function currentUserIsAdmin()
+    {
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN);
+    }
+
+    /**
+     * Determines if the user currently logged in has add access for the Users module.
+     *
+     * @return bool True if the current user is logged in and has administrative permission for the Users
+     *                  module; otherwise false.
+     */
+    private function currentUserIsAdminOrSubAdmin()
+    {
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD);
+    }
+
+    /**
      * Redirects users to the "view" page.
      *
      * @return string HTML string containing the rendered view template.
@@ -27,7 +49,7 @@ class Users_Admin extends Zikula_Controller
     public function main()
     {
         // Security check will be done in view()
-        return $this->view();
+        return System::redirect(ModUtil::url('Users', 'admin', 'view'));
     }
 
     /**
@@ -41,151 +63,174 @@ class Users_Admin extends Zikula_Controller
      */
     public function newUser()
     {
-        // Security check - important to do this as early as possible to avoid
-        // potential security holes or just too much wasted processing
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
-        $userinfo = FormUtil::getPassedValue('userinfo');
+        if (ModUtil::getVar('Users', 'reg_allowreg', false) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+            $registrationUnavailableReason = ModUtil::getVar('Users', 'reg_noregreasons',
+                $this->__('Sorry! New user registration is currently disabled.'));
+            return LogUtil::registerError($registrationUnavailableReason, 403, System::getHomepageUrl());
+        }
+
+        $reginfo = array();
+        $reginfo['dynadata'] = array();
+        $setPassword = false;
+        $passwordAgain = '';
+        $emailAgain = '';
+        $sendPassword = false;
+
+        // If we are returning here from validation errors detected in createUser, then get the data already entered
+        $args = SessionUtil::getVar('Users_Admin_newUser', array(), '/', false);
+        SessionUtil::delVar('Users_Admin_newUser');
+
+        if (!empty($args)) {
+            $reginfo = $args['reginfo'];
+
+            $setPassword = $args['setpass'];
+            //$passwordAgain = $args['passagain'];
+            $emailAgain = $args['emailagain'];
+            $sendPassword = $args['sendpass'];
+
+            $registrationErrors = isset($args['registrationErrors']) ? $args['registrationErrors'] : array();
+            // For now do it this way. Later maybe show the messages with the field--and if that's
+            // done, then $errorFields and $errorMessages not needed--we'd just pass $registrationErrors directly.
+            $errorInfo = ModUtil::apiFunc('Users', 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $registrationErrors));
+        }
 
         // Create output object - this object will store all of our output so that
         // we can return it easily when required
-        $pnRender = Renderer::getInstance('Users', false);
+        $renderer = Renderer::getInstance('Users', false);
 
-        // Assign the data and Users setting
-        $pnRender->assign('userinfo', $userinfo);
-        $pnRender->assign('modvars', ModUtil::getVar('Users'));
+        $modVars = ModUtil::getVar('Users');
+        $profileModName = System::getVar('profilemodule', '');
+        $profileModAvailable = !empty($profileModName) && ModUtil::available($profileModName);
+
+        $rendererArgs = array();
+        $rendererArgs['reginfo'] = $reginfo;
+        $rendererArgs['setpass'] = $setPassword;
+        //$rendererArgs['passagain'] = $passwordAgain;
+        $rendererArgs['emailagain'] = $emailAgain;
+        $rendererArgs['sendpass'] = $sendPassword;
+        $rendererArgs['sitename'] = System::getVar('sitename', System::getHost());
+        $rendererArgs['regAllowed'] = (isset($modVars['reg_allowreg']) && !empty($modVars['reg_allowreg']))
+            ? $modVars['reg_allowreg']
+            : false;
+        $rendererArgs['regOffReason'] = (isset($modVars['$reg_noregreasons']) && !empty($modVars['$reg_noregreasons']))
+            ? $modVars['$reg_noregreasons']
+            : $this->__('We will begin accepting new registrations again as quickly as possible. Please check back with us soon!');
+        $rendererArgs['userMustAccept'] = $rendererArgs['touActive'] || $rendererArgs['ppActive'];
+        $rendererArgs['errorMessages'] = (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array();
+        $rendererArgs['errorFields'] = (isset($errorInfo['errorFields']) && !empty($errorInfo['errorFields'])) ? $errorInfo['errorFields'] : array();
+        $rendererArgs['registrationErrors'] = (isset($registrationErrors) && !empty($registrationErrors)) ? $registrationErrors : array();
+        $rendererArgs['usePwdStrengthMeter'] = (isset($modVars['use_password_strength_meter']) && !empty($modVars['use_password_strength_meter'])) ? $modVars['use_password_strength_meter'] : false;
+        $rendererArgs['showProps'] = $profileModAvailable && isset($modVars['reg_optitems']) && $modVars['reg_optitems'];
+        $rendererArgs['profileModName'] = $profileModName;
 
         // Return the output that has been generated by this function
-        return $pnRender->fetch('users_admin_newuser.htm');
+        $renderer->assign($rendererArgs);
+        return $renderer->fetch('users_admin_newuser.htm');
     }
 
     /**
      * Create a new user.
      *
      * Available Post Parameters:
-     * - add_uname       (string)   The user name to store on the new user record.
-     * - add_email       (string)   The e-mail address to store on the new user record.
-     * - add_pass        (string)   The new password to store on the new user record.
-     * - add_vpass       (string)   A verification of the new password to store on the new user record.
-     * - dynadata        (array)    An array of additional information to be stored by the designated profile module, and linked to the newly created user account.
-     * - usermustconfirm (int|bool) If true, the newly created user must activate his account; if false, the newly created account is activate.
      *
      * @return bool True if successful, false otherwise.
      */
-    public function createUser()
+    public function registerNewUser()
     {
         // check permisisons
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
+        if (!SecurityUtil::confirmAuthKey('Users')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'admin', 'view'));
+        }
+        
         // get arguments
-        $userinfo = array();
-        $userinfo['add_uname'] = FormUtil::getPassedValue('add_uname', null, 'POST');
-        $userinfo['add_email'] = FormUtil::getPassedValue('add_email', null, 'POST');
-
-        $pass  = FormUtil::getPassedValue('add_pass', null, 'POST');
-        $vpass = FormUtil::getPassedValue('add_vpass', null, 'POST');
-        $dynadata = FormUtil::getPassedValue('dynadata');
-        $usermustconfirm = FormUtil::getPassedValue('usermustconfirm');
-
-        $profileModule = System::getVar('profilemodule', '');
-        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
-
-        // call the API
-        $checkuser = ModUtil::apiFunc('Users', 'user', 'checkUser',
-                                  array('uname'        => $userinfo['add_uname'],
-                                        'email'        => $userinfo['add_email'],
-                                        'agreetoterms' => 1));
-
-        // if errorcode != 1 then return error msgs
-        $errormsg = array();
-        if ($checkuser != 1) {
-            switch($checkuser)
-            {
-                case -1:
-                    $errormsg[] = $this->__('Sorry! You have not been granted access to this module.');
-                    break;
-                case 2:
-                    $errormsg[] = $this->__('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. Please correct your entry and try again.');
-                    break;
-                case 3:
-                    $errormsg[] = $this->__("Error! Please click on the checkbox to accept the site's 'Terms of use' and 'Privacy policy'.");
-                    break;
-                case 4:
-                    $errormsg[] = $this->__('Sorry! The user name you entered is not acceptable. Please correct your entry and try again.');
-                    break;
-                case 5:
-                    $errormsg[] = $this->__('Sorry! The user name you entered is too long. The maximum length is 25 characters.');
-                    break;
-                case 6:
-                    $errormsg[] = $this->__('Sorry! The user name you entered is reserved and cannot be registered. Please choose another name and try again.');
-                    break;
-                case 7:
-                    $errormsg[] = $this->__('Sorry! Your user name cannot contain spaces. Please correct your entry and try again.');
-                    break;
-                case 8:
-                    $errormsg[] = $this->__('Sorry! This user name has already been registered. Please choose another name and try again.');
-                    break;
-                case 9:
-                    $errormsg[] = $this->__('Sorry! This e-mail address has already been registered, and it cannot be used again for creating another account.');
-                    break;
-                default:
-                    $errormsg[] = $this->__('Sorry! You have not been granted access to this module.');
-            } // switch
-
-            return LogUtil::registerError($errormsg, null, ModUtil::url('Users', 'admin', 'newUser', array(
-                'userinfo' => $userinfo,
-                'dynadata' => $dynadata)));
+        $reginfo = FormUtil::getPassedValue('reginfo', null, 'POST');
+        if (isset($reginfo['uname']) && !empty($reginfo['uname'])) {
+            $reginfo['uname'] = mb_strtolower($reginfo['uname']);
         }
+        if (isset($reginfo['email']) && !empty($reginfo['email'])) {
+            $reginfo['email'] = mb_strtolower($reginfo['email']);
+        }
+        $reginfo['dynadata'] = FormUtil::getPassedValue('dynadata', array(), 'POST');
 
-        if (!empty($dynadata) && $useProfileMod) {
-            // Check for required fields - The API function is called.
-            $checkrequired = ModUtil::apiFunc($profileModule, 'user', 'checkRequired',
-                                          array('dynadata' => $dynadata));
+        $checkMode = 'new';
+        $setPassword = FormUtil::getPassedValue('setpass', true, 'POST');
+        $emailAgain = FormUtil::getPassedValue('emailagain', null, 'POST');
+        $passwordAgain = !$setPassword ? null : FormUtil::getPassedValue('passagain', null, 'POST');
+        $userMustVerify = !$setPassword || FormUtil::getPassedValue('usermustverify', false, 'POST');
+        $sendPassword = $setPassword && FormUtil::getPassedValue('sendpass', false, 'POST');
 
-            if ($checkrequired['result'] == true) {
-                $errormsg[] = $this->__f('Error! A required item is missing from your profile information (%s).', $checkrequired['translatedFieldsStr']);
+        if ($setPassword) {
+            if (!isset($reginfo['pass'])) {
+                // Ensure set and empty for validation.
+                $reginfo['pass'] = '';
             }
-        }
-
-        $minpass = ModUtil::getVar('Users', 'minpass');
-
-        if (empty($pass)) {
-            $errormsg[] = $this->__('Sorry! You did not provide a password. Please correct your entry and try again.');
-
-        } elseif ((isset($pass)) && ("$pass" != "$vpass")) {
-            $errormsg[] = $this->__('Sorry! You did not enter the same password in each password field. '
-                . 'Please enter the same password once in each password field (this is required for verification).');
-
-        } elseif (($pass != '') && (strlen($pass) < $minpass)) {
-            $errormsg[] = $this->_fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass);
-        }
-
-        if (!empty($errormsg)) {
-            return LogUtil::registerError($errormsg, null, ModUtil::url('Users', 'admin', 'newUser', array(
-                'userinfo' => $userinfo,
-                'dynadata' => $dynadata)));
-        }
-
-        $registered = ModUtil::apiFunc('Users', 'user', 'finishNewUser',
-                                   array('isadmin'       => 1,
-                                         'uname'         => $userinfo['add_uname'],
-                                         'pass'          => $pass,
-                                         'email'         => $userinfo['add_email'],
-                                         'moderated'     => false,
-                                         'dynadata'      => $dynadata,
-                                         'usermustconfirm' => $usermustconfirm));
-
-        if ($registered) {
-            LogUtil::registerStatus($this->__('Done! Created user account.'));
+            if (!isset($reginfo['passreminder'])) {
+                $reginfo['passreminder'] = $this->__('(Password provided by site administrator)');
+            }
         } else {
-            LogUtil::registerError($this->__('Error! Could not create the new user account.'));
+            // The fields may have had values but were hidden. Ensure they are not set.
+            unset($reginfo['pass']);
+            unset($reginfo['passreminder']);
         }
 
-        return System::redirect(ModUtil::url('Users', 'admin', 'main'));
+        // Set agreetoterms property, so we know to ask the user to agree on activation or login.
+        $reginfo['agreetoterms'] = false;
+
+        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', array(
+            'checkmode'     => $checkMode,
+            'reginfo'       => $reginfo,
+            'setpass'       => $setPassword,
+            'sendpass'      => $sendPassword,
+            'passagain'     => $passwordAgain,
+            'emailagain'    => $emailAgain,
+        ));
+
+        if ($registrationErrors) {
+            SessionUtil::setVar('reginfo', $reginfo, 'Users_Admin_newUser', true, true);
+            SessionUtil::setVar('setpass', $setPassword, 'Users_Admin_newUser', true, true);
+            //SessionUtil::setVar('passagain', $passwordAgain, 'Users_Admin_newUser', true, true);
+            SessionUtil::setVar('emailagain', $emailAgain, 'Users_Admin_newUser', true, true);
+            SessionUtil::setVar('usermustverify', $userMustVerify, 'Users_Admin_newUser', true, true);
+            SessionUtil::setVar('sendpass', $sendPassword, 'Users_Admin_newUser', true, true);
+            SessionUtil::setVar('registrationErrors', $registrationErrors, 'Users_Admin_newUser', true, true);
+
+            return System::redirect(ModUtil::url('Users', 'admin', 'newUser'));
+        }
+
+        $currentUserEmail = UserUtil::getVar('email');
+        $adminNotifyEmail = ModUtil::getVar('Users', 'reg_notifyemail', '');
+        $adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
+
+        $registeredObj = ModUtil::apiFunc('Users', 'registration', 'registerNewUser', array(
+            'reginfo'           => $reginfo,
+            'usermustverify'    => $userMustVerify,
+            'sendpass'          => $sendPassword,
+            'usernotification'  => true,
+            'adminnotification' => true,
+        ));
+
+        if ($registeredObj) {
+            if (isset($registeredObj['uid'])) {
+                LogUtil::registerStatus($this->__('Done! Created new user account.'));
+            } elseif (isset($registeredObj['id'])) {
+                LogUtil::registerStatus($this->__('Done! Created new registration application.'));
+            } else {
+                LogUtil::log($this->__('Internal Warning! Unknown return type from Users_Api_Registration#registerUser().'), 'DEBUG');
+                LogUtil::registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly. Please check with a site administrator before re-registering.'));
+            }
+        } else {
+            LogUtil::registerError($this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
+        }
+
+        return System::redirect(ModUtil::url('Users', 'admin', 'view'));
     }
 
     /**
@@ -214,16 +259,17 @@ class Users_Admin extends Zikula_Controller
         }
 
         // Create output object
-        $pnRender = Renderer::getInstance('Users', false);
+        $renderer = Renderer::getInstance('Users', false);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = ModUtil::getVar('Users', 'itemsperpage');
 
         // Get all users
-        $items = ModUtil::apiFunc('Users', 'user', 'getAll',
-                              array('startnum' => $startnum,
-                                    'numitems' => $itemsperpage,
-                                    'letter' => $letter));
+        $items = ModUtil::apiFunc('Users', 'user', 'getAll', array(
+            'startnum'  => $startnum,
+            'numitems'  => $itemsperpage,
+            'letter'    => $letter
+        ));
 
         // Get all groups
         $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
@@ -295,8 +341,21 @@ class Users_Admin extends Zikula_Controller
                 $userGroupsView = array();
             }
             // format the dates
-            $items[$key]['user_regdate'] = ($item['user_regdate'] != '1970-01-01 00:00:00') ? DateUtil::formatDatetime($item['user_regdate'], $this->__('%m-%d-%Y')) : '---';
-            $items[$key]['lastlogin'] = ($item['lastlogin'] != '1970-01-01 00:00:00') ? DateUtil::formatDatetime($item['lastlogin'], $this->__('%m-%d-%Y')) : '---';
+            if (!empty($item['user_regdate']) && ($item['user_regdate'] != '0000-00-00 00:00:00')
+                && ($item['user_regdate'] != '1970-01-01 00:00:00'))
+            {
+                $items[$key]['user_regdate'] = DateUtil::formatDatetime($item['user_regdate'], $this->__('%m-%d-%Y'));
+            } else {
+                $items[$key]['user_regdate'] = '---';
+            }
+
+            if (!empty($item['lastlogin']) && ($item['lastlogin'] != '0000-00-00 00:00:00')
+                && ($item['lastlogin'] != '1970-01-01 00:00:00'))
+            {
+                $items[$key]['lastlogin'] = DateUtil::formatDatetime($item['lastlogin'], $this->__('%m-%d-%Y'));
+            } else {
+                $items[$key]['lastlogin'] = '---';
+            }
 
             // show user's activation state
             $activationImg = '';
@@ -336,161 +395,21 @@ class Users_Admin extends Zikula_Controller
         }
 
         // Assign the items to the template
-        $pnRender->assign('usersitems', $items);
+        $renderer->assign('usersitems', $items);
 
         // assign the values for the smarty plugin to produce a pager in case of there
         // being many items to display.
-        $pnRender->assign('pager', array('numitems'     => ModUtil::apiFunc('Users', 'user', 'countItems', array('letter' => $letter)),
+        $renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Users', 'user', 'countItems', array('letter' => $letter)),
                                          'itemsperpage' => $itemsperpage));
 
         // Assign the groups to the template
-        $pnRender->assign('allGroups', $groupsArray);
+        $renderer->assign('allGroups', $groupsArray);
 
         // Inform to the template that user can see users' groups
-        $pnRender->assign('canSeeGroups', $canSeeGroups);
+        $renderer->assign('canSeeGroups', $canSeeGroups);
 
         // Return the output that has been generated by this function
-        return $pnRender->fetch('users_admin_view.htm');
-    }
-
-    /**
-     * Shows all the registration requests (applications), and the options available to the current user.
-     *
-     * Available Request Parameters:
-     * - startnum (int) The ordinal number of the first record to display, especially if using itemsperpage to limit the number of records on a single page.
-     *
-     * @return string HTML string containing the rendered template.
-     */
-    public function viewApplications()
-    {
-        // security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // Get parameters from whatever input we need.
-        $startnum = FormUtil::getPassedValue ('startnum');
-
-        // Create output object
-        $pnRender = Renderer::getInstance('Users', false);
-
-        // we need this value multiple times, so we keep it
-        $itemsperpage = ModUtil::getVar('Users', 'itemsperpage');
-
-        // The user API function is called.
-        $items = ModUtil::apiFunc('Users', 'admin', 'getAllPendings',
-                              array('startnum' => $startnum,
-                                    'numitems' => $itemsperpage));
-
-        // Loop through each returned item adding in the options that the user has over
-        // each item based on the permissions the user has.
-        foreach ($items as $key => $item) {
-            // Options for the item.
-            $options = array();
-
-            if (ModUtil::getVar('Users', 'reg_optitems')) {
-                $options[] = array(
-                    'url'       => ModUtil::url('Users', 'admin', 'viewTempUserInfo',
-                                        array('userid' => $item['tid'])),
-                    'imgfile'   => 'list.gif',
-                    'title'     => $this->__('Details'));
-            }
-            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-                $options[] = array(
-                    'url'       => ModUtil::url('Users', 'admin', 'processUsers',
-                                        array('userid'  => $item['tid'],
-                                              'op'      => 'approve')),
-                    'imgfile'   => 'add_user.gif',
-                    'title'     => $this->__('Approve'));
-
-                $options[] = array(
-                    'url'       => ModUtil::url('Users', 'admin', 'processUsers',
-                                        array('userid'  => $item['tid'],
-                                              'op'      => 'deny')),
-                    'imgfile'   => 'delete_user.gif',
-                    'title'     => $this->__('Deny'));
-            }
-
-            // Add the calculated menu options to the item array
-            $items[$key]['options'] = $options;
-        }
-
-        // Assign the items to the template
-        $pnRender->assign('usersitems', $items);
-
-        // assign the values for the smarty plugin to produce a pager in case of there
-        // being many items to display.
-        $pnRender->assign('pager', array('numitems'     => ModUtil::apiFunc('Users', 'admin', 'countPending'),
-                                         'itemsperpage' => $itemsperpage));
-
-        // Return the output that has been generated by this function
-        return $pnRender->fetch('users_admin_viewapplications.htm');
-    }
-
-    /**
-     * Displays the information on a single registration request (users_temp).
-     *
-     * Available Get Parameters:
-     * - userid (numeric) The id of the registration request (tid) to retrieve and display.
-     *
-     * @return string HTML string containing the rendered template.
-     */
-    public function viewTempUserInfo()
-    {
-        // security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // Get parameters from whatever input we need.
-        // (Note that the name of the passed parameter is 'userid' but that it
-        // is actually a registration application id.)
-        $regid = FormUtil::getPassedValue('userid', null, 'GET');
-
-        if (empty($regid) || !is_numeric($regid)) {
-            return LogUtil::registerArgsError();
-        }
-
-        $regApplication = ModUtil::apiFunc('Users', 'admin', 'getApplication', array('userid' => $regid));
-        if (!$regApplication) {
-            // getapplication could fail (return false) because of a nonexistant
-            // record, no permission to read an existing record, or a database error
-            return LogUtil::registerError($this->__('Unable to retrieve registration record. '
-                . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
-        }
-
-        $regApplication = array_merge($regApplication, (array)@unserialize($regApplication['dynamics']));
-
-        $options = array();
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            $options[] = array(
-                'url'       => ModUtil::url('Users', 'admin', 'processUsers',
-                                    array('userid'  => $regid,
-                                          'op'      => 'approve')),
-                'imgfile'   => 'add_user.gif',
-                'title'     => $this->__('Approve'));
-
-            $options[] = array(
-                'url'       => ModUtil::url('Users', 'admin', 'processUsers',
-                                    array('userid'  => $regid,
-                                          'op'      => 'deny')),
-                'imgfile'   => 'delete_user.gif',
-                'title'     => $this->__('Deny'));
-        }
-        $options[] = array(
-            'url'       => ModUtil::url('Users', 'admin', 'viewApplications'),
-            'imgfile'   => 'button_cancel.gif',
-            'title'     => $this->__('Return to applications'));
-
-        // Create output object
-        $pnRender = Renderer::getInstance('Users', false);
-
-        $pnRender->assign('uname',    $regApplication['uname']);
-        $pnRender->assign('userid',   $regid);
-        $pnRender->assign('userinfo', $regApplication);
-        $pnRender->assign('options',  $options);
-
-        return $pnRender->fetch('users_admin_viewtempuserdetails.htm');
+        return $renderer->fetch('users_admin_view.htm');
     }
 
     /**
@@ -506,13 +425,13 @@ class Users_Admin extends Zikula_Controller
         }
 
         // create output object
-        $pnRender = Renderer::getInstance('Users', false);
+        $renderer = Renderer::getInstance('Users', false);
 
         // get group items
         $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
-        $pnRender->assign('groups', $groups);
+        $renderer->assign('groups', $groups);
 
-        return $pnRender->fetch('users_admin_search.htm');
+        return $renderer->fetch('users_admin_search.htm');
     }
 
     /**
@@ -540,13 +459,14 @@ class Users_Admin extends Zikula_Controller
         $dynadata      = FormUtil::getPassedValue('dynadata', null, 'POST');
 
         // call the api
-        $items = ModUtil::apiFunc('Users', 'admin', 'findUsers',
-                              array('uname'         => $uname,
-                                    'email'         => $email,
-                                    'ugroup'        => $ugroup,
-                                    'regdateafter'  => $regdateafter,
-                                    'regdatebefore' => $regdatebefore,
-                                    'dynadata'      => $dynadata));
+        $items = ModUtil::apiFunc('Users', 'admin', 'findUsers', array(
+            'uname'         => $uname,
+            'email'         => $email,
+            'ugroup'        => $ugroup,
+            'regdateafter'  => $regdateafter,
+            'regdatebefore' => $regdatebefore,
+            'dynadata'      => $dynadata
+        ));
 
         if (!$items) {
             LogUtil::registerError($this->__('Sorry! No matching users found.'), 404, ModUtil::url('Users', 'admin', 'search'));
@@ -710,47 +630,6 @@ class Users_Admin extends Zikula_Controller
             }
             return System::redirect(ModUtil::url('Users', 'admin', 'main'));
 
-        } elseif ($op == 'approve' || $op == 'deny') {
-            $tag = FormUtil::getPassedValue('tag');
-
-            if (empty($tag)) {
-                $userid = FormUtil::getPassedValue('userid', null, 'GET');
-
-                $item = ModUtil::apiFunc('Users', 'admin', 'getApplication', array('userid' => $userid));
-
-                if (!$item) {
-                    return LogUtil::registerError($this->__('Sorry! Could not find any matching user account.'),
-                                                  null,
-                                                  ModUtil::url('Users', 'admin', 'main'));
-                }
-
-                // create the output object
-                $pnRender = Renderer::getInstance('Users', false);
-
-                $pnRender->assign('action', $op);
-                $pnRender->assign('userid', $userid);
-                $pnRender->assign('item',   $item);
-
-                return $pnRender->fetch('users_admin_pendingaction.htm');
-
-            } else {
-                $userid = FormUtil::getPassedValue('userid');
-                $action = FormUtil::getPassedValue('action');
-
-                $return = ModUtil::apiFunc('Users', 'admin', $action, array('userid' => $userid));
-
-                if ($return == true) {
-                    if ($op == 'approve') {
-                        LogUtil::registerStatus($this->__('Done! Created the new user account.'));
-                    } else {
-                        LogUtil::registerStatus($this->__('Done! Deleted user account.'));
-                    }
-                } else {
-                    LogUtil::registerError($this->__('Error! Could not create the new user account.'));
-                }
-                return System::redirect(ModUtil::url('Users', 'admin', 'main'));
-            }
-
         } else {
             return LogUtil::registerError($this->__('Error! No users were selected.'));
         }
@@ -818,13 +697,13 @@ class Users_Admin extends Zikula_Controller
         }
 
         // create the output oject
-        $Renderer = Renderer::getInstance('Users', false);
+        $renderer = Renderer::getInstance('Users', false);
 
         // urls
-        $Renderer->assign('urlprocessusers', ModUtil::url('Users', 'admin', 'processUsers', array('op' => 'edit', 'do' => 'yes')));
-        $Renderer->assign('op', 'edit');
-        $Renderer->assign('userid', $userid);
-        $Renderer->assign('userinfo', $uservars);
+        $renderer->assign('urlprocessusers', ModUtil::url('Users', 'admin', 'processUsers', array('op' => 'edit', 'do' => 'yes')));
+        $renderer->assign('op', 'edit');
+        $renderer->assign('userid', $userid);
+        $renderer->assign('userinfo', $uservars);
 
         // groups
         $groups_infos = array();
@@ -849,12 +728,12 @@ class Users_Admin extends Zikula_Controller
             }
         }
 
-        $Renderer->assign('groups_infos', $groups_infos);
-        $Renderer->assign('legal', ModUtil::available('legal'));
-        $Renderer->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
-        $Renderer->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
+        $renderer->assign('groups_infos', $groups_infos);
+        $renderer->assign('legal', ModUtil::available('legal'));
+        $renderer->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
+        $renderer->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
 
-        return $Renderer->fetch('users_admin_modify.htm');
+        return $renderer->fetch('users_admin_modify.htm');
     }
 
     public function lostUsername()
@@ -976,13 +855,643 @@ class Users_Admin extends Zikula_Controller
         }
 
         // create the output object
-        $Renderer = Renderer::getInstance('Users', false);
+        $renderer = Renderer::getInstance('Users', false);
 
-        $Renderer->assign('userid', $userid);
-        $Renderer->assign('uname', $uname);
+        $renderer->assign('userid', $userid);
+        $renderer->assign('uname', $uname);
 
         // return output
-        return $Renderer->fetch('users_admin_deleteusers.htm');
+        return $renderer->fetch('users_admin_deleteusers.htm');
+    }
+
+    protected function getActionsForRegistrations(array $reglist, $restoreView='view')
+    {
+        $actions = array();
+        if (!empty($reglist)) {
+            $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+
+            // Don't try to put any visual elements here (images, titles, colors, css classes, etc.). Leave that to
+            // the template, so that they can be customized without hacking the core code. In fact, all we really need here
+            // is what options are enabled. The template could build everything else. We will put the URL for the action
+            // in the array for convenience, but that could be done in the template too, really.
+            //
+            // Make certain that the following goes from most restricted to least (ADMIN...NONE order).  Having the
+            // security check as the outer if statement, and similar foreach loops within each saves on repeated checking
+            // of permissions, speeding things up a bit.
+            if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+                $actions['count'] = 6;
+                foreach ($reglist as $key => $reginfo) {
+                    $enableVerify = !$reginfo['isverified'];
+                    $enableApprove = !$reginfo['isapproved'];
+                    $enableForced = !$reginfo['isverified'] && isset($reginfo['pass']) && !empty($reginfo['pass']);
+                    $actions['list'][$reginfo['id']] = array(
+                        'display'       =>                  ModUtil::url('Users', 'admin', 'displayRegistration',   array('id' => $reginfo['id'])),
+                        'modify'        =>                  ModUtil::url('Users', 'admin', 'modifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)),
+                        'verify'        => $enableVerify ?  ModUtil::url('Users', 'admin', 'verifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)) : false,
+                        'approve'       => $enableApprove ? ModUtil::url('Users', 'admin', 'approveRegistration',   array('id' => $reginfo['id'])) : false,
+                        'deny'          =>                  ModUtil::url('Users', 'admin', 'denyRegistration',      array('id' => $reginfo['id'])),
+                        'approveForce'  => $enableForced ?  ModUtil::url('Users', 'admin', 'approveRegistration',   array('id' => $reginfo['id'], 'force' => true)) : false,
+                    );
+                }
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
+                $actions['count'] = 5;
+                foreach ($reglist as $key => $reginfo) {
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UserUtil::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != UserUtil::APPROVAL_AFTER) || $reginfo['isverified']);
+                    $actions['list'][$reginfo['id']] = array(
+                        'display'       =>                  ModUtil::url('Users', 'admin', 'displayRegistration',   array('id' => $reginfo['id'])),
+                        'modify'        =>                  ModUtil::url('Users', 'admin', 'modifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)),
+                        'verify'        => $enableVerify ?  ModUtil::url('Users', 'admin', 'verifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)) : false,
+                        'approve'       => $enableApprove ? ModUtil::url('Users', 'admin', 'approveRegistration',   array('id' => $reginfo['id'])) : false,
+                        'deny'          =>                  ModUtil::url('Users', 'admin', 'denyRegistration',      array('id' => $reginfo['id'])),
+                    );
+                }
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+                $actions['count'] = 4;
+                foreach ($reglist as $key => $reginfo) {
+                    $actionUrlArgs['id'] = $reginfo['id'];
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UserUtil::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != UserUtil::APPROVAL_AFTER) || $reginfo['isverified']);
+                    $actions['list'][$reginfo['id']] = array(
+                        'display'       =>                  ModUtil::url('Users', 'admin', 'displayRegistration',   array('id' => $reginfo['id'])),
+                        'modify'        =>                  ModUtil::url('Users', 'admin', 'modifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)),
+                        'verify'        => $enableVerify ?  ModUtil::url('Users', 'admin', 'verifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)) : false,
+                        'approve'       => $enableApprove ? ModUtil::url('Users', 'admin', 'approveRegistration',   array('id' => $reginfo['id'])) : false,
+                    );
+                }
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
+                $actions['count'] = 3;
+                foreach ($reglist as $key => $reginfo) {
+                    $actionUrlArgs['id'] = $reginfo['id'];
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UserUtil::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $actions['list'][$reginfo['id']] = array(
+                        'display'       =>                  ModUtil::url('Users', 'admin', 'displayRegistration',   array('id' => $reginfo['id'])),
+                        'modify'        =>                  ModUtil::url('Users', 'admin', 'modifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)),
+                        'verify'        => $enableVerify ?  ModUtil::url('Users', 'admin', 'verifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)) : false,
+                    );
+                }
+            } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+                $actions['count'] = 2;
+                foreach ($reglist as $key => $reginfo) {
+                    $actionUrlArgs['id'] = $reginfo['id'];
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UserUtil::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $actions['list'][$reginfo['id']] = array(
+                        'display'       =>                  ModUtil::url('Users', 'admin', 'displayRegistration',   array('id' => $reginfo['id'])),
+                        'verify'        => $enableVerify ?  ModUtil::url('Users', 'admin', 'verifyRegistration',    array('id' => $reginfo['id'], 'restoreview' => $restoreView)) : false,
+                    );
+                }
+            }
+        }
+        
+        return $actions;
+    }
+
+    /**
+     * Shows all the registration requests (applications), and the options available to the current user.
+     *
+     * Available Request Parameters:
+     * - startnum (int) The ordinal number of the first record to display, especially if using itemsperpage to limit the number of records on a single page.
+     *
+     * @return string HTML string containing the rendered template.
+     */
+    public function viewRegistrations()
+    {
+        // security check
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $regCount = ModUtil::apiFunc('Users', 'registration', 'countAll');
+        $limitNumRows = ModUtil::getVar('Users', 'itemsperpage', 25);
+        if (!is_numeric($limitNumRows) || ((int)$limitNumRows != $limitNumRows) || (($limitNumRows < 1) && ($limitNumRows != -1))) {
+            $limitNumRows = 25;
+        }
+
+        $backFromAction = FormUtil::getPassedValue('restoreview', false, 'GET');
+
+        if ($backFromAction) {
+            $returnArgs = SessionUtil::getVar('Users_admin_viewRegistrations', array('startnum' => 1), '/', false);
+            SessionUtil::delVar('Users_admin_viewRegistrations');
+
+            if ($limitNumRows < 1) {
+                unset($returnArgs['startnum']);
+            } elseif (!isset($returnArgs['startnum']) || !is_numeric($returnArgs['startnum']) || empty($returnArgs['startnum'])
+                || ((int)$returnArgs['startnum'] != $returnArgs['startnum']) || ($returnArgs['startnum'] < 1))
+            {
+                $returnArgs['startnum'] = 1;
+            } elseif ($returnArgs['startnum'] > $regCount) {
+                // Probably deleted something. Reset to last page.
+                $returnArgs['startnum'] = $regCount - ($regCount % $limitNumRows) + 1;
+            } elseif (($returnArgs['startnum'] % $limitNumRows) != 1) {
+                // Probably deleted something. Reset to last page.
+                $returnArgs['startnum'] = $returnArgs['startnum'] - ($returnArgs['startnum'] % $limitNumRows) + 1;
+            }
+
+            // Reset the URL and load the proper page.
+            return System::redirect(ModUtil::url('Users', 'admin', 'viewRegistrations', $returnArgs));
+        } else {
+            $reset = false;
+
+            $startNum = FormUtil::getPassedValue('startnum', 1);
+            if (!is_numeric($startNum) || empty($startNum)  || ((int)$startNum != $startNum) || ($startNum < 1)) {
+                $limitOffset = -1;
+                $reset = true;
+            } elseif ($limitNumRows < 1) {
+                $limitOffset = -1;
+            } elseif ($startNum > $regCount) {
+                // Probably deleted something. Reset to last page.
+                $limitOffset = $regCount - ($regCount % $limitNumRows);
+                $reset = (($regCount == 0) && ($startNum != 1));
+            } elseif (($startNum % $limitNumRows) != 1) {
+                // Reset to page boundary
+                $limitOffset = $startNum - ($startNum % $limitOffset);
+                $reset = true;
+            } else {
+                $limitOffset = $startNum - 1;
+            }
+
+            if ($reset) {
+                $returnArgs = array();
+                if ($limitOffset >= 0) {
+                    $returnArgs['startnum'] = $limitOffset + 1;
+                }
+                System::redirect(ModUtil::url('Users', 'admin', 'viewRegistrations', $returnArgs));
+            }
+        }
+
+        SessionUtil::setVar('startnum', ($limitOffset + 1), 'Users_admin_viewRegistrations');
+
+        $reglist = ModUtil::apiFunc('Users', 'registration', 'getAll', array('limitoffset' => $limitOffset, 'limitnumrows' => $limitNumRows));
+
+        if (($reglist === false) || !is_array($reglist)) {
+            if (!LogUtil::hasErrors()) {
+                LogUtil::registerError($this->__('An error occurred while trying to retrieve the registration records.'));
+            }
+            return System::redirect(ModUtil::url('Users', 'admin'), null, 500);
+        }
+
+        $actions = $this->getActionsForRegistrations($reglist, 'view');
+
+        $pager = array();
+        if ($limitNumRows > 0) {
+            $pager = array(
+                'rowcount'  => $regCount,
+                'limit'     => $limitNumRows,
+                'posvar'    => 'startnum',
+            );
+        }
+
+        $renderer = Renderer::getInstance('Users', false);
+        $renderer->assign('reglist', $reglist);
+        $renderer->assign('actions', $actions);
+        $renderer->assign('pager', $pager);
+
+        return $renderer->fetch('users_admin_viewregistrations.htm');
+    }
+
+    /**
+     * Displays the information on a single registration request (users_registration).
+     *
+     * Available Get Parameters:
+     * - userid (numeric) The id of the registration request (id) to retrieve and display.
+     *
+     * @return string HTML string containing the rendered template.
+     */
+    public function displayRegistration()
+    {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        // Get parameters from whatever input we need.
+        // (Note that the name of the passed parameter is 'userid' but that it
+        // is actually a registration application id.)
+        $id = FormUtil::getPassedValue('id', null, 'GET');
+
+        if (empty($id) || !is_numeric($id)) {
+            return LogUtil::registerArgsError(ModUtil::url('Users', 'admin', 'viewRegistrations', array('return' => true)));
+        }
+
+        $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('id' => $id));
+        if (!$reginfo) {
+            // get application could fail (return false) because of a nonexistant
+            // record, no permission to read an existing record, or a database error
+            return LogUtil::registerError($this->__('Unable to retrieve registration record. '
+                . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
+        }
+
+        // ...for the Profile module's display of dud items (it assumes a full user).
+        // Be sure that this $reginfo is never used to update the database!
+        $reginfo['__ATTRIBUTES__'] = $reginfo['dynadata'];
+
+        if (ModUtil::available('legal')) {
+            $touActive = ModUtil::getVar('legal', 'termsofuse', true);
+            $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+        } else {
+            $touActive = false;
+            $ppActive = false;
+        }
+
+        $actions = $this->getActionsForRegistrations(array($reginfo), 'display');
+
+        $renderer = Renderer::getInstance('Users', false);
+
+        $renderer->assign('reginfo', $reginfo);
+        $renderer->assign('actions', $actions);
+        $renderer->assign('touActive', $touActive);
+        $renderer->assign('ppActive', $ppActive);
+
+        return $renderer->fetch('users_admin_displayregistration.htm');
+    }
+
+    /**
+     * Display a form to edit one user account.
+     *
+     */
+    public function modifyRegistration()
+    {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $id = FormUtil::getPassedValue('id', null, 'GET');
+
+        if (isset($id)) {
+            if (!is_numeric($id) || ((int)$id != $id)) {
+                return LogUtil::registerError($this->__('Error! Invalid registration id.'),
+                    ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true)));
+            }
+
+            $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('id' => $id));
+
+            if (!$reginfo) {
+                return LogUtil::registerError($this->__('Error! Unable to load registration record.'),
+                    ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true)));
+            }
+
+            $emailAgain = $reginfo['email'];
+        } else {
+            $args = SessionUtil::getVar('Users_Admin_modifyRegistration', array(), '/', false);
+            SessionUtil::delVar('Users_Admin_modifyRegistration');
+            
+            if (!isset($args) || empty($args) || !isset($args['reginfo']) || empty($args['reginfo']) || !isset($args['registrationErrors']) || empty($args['registrationErrors'])) {
+                return LogUtil::registerError($this->__('Error! Invalid registration id, or invalid arguments returned after validation.'),
+                    ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true)));
+            }
+
+            $reginfo = $args['reginfo'];
+            $emailAgain = $args['emailagain'];
+
+            $registrationErrors = $args['registrationErrors'];
+            // For now do it this way. Later maybe show the messages with the field--and if that's
+            // done, then $errorFields and $errorMessages not needed--we'd just pass $registrationErrors directly.
+            $errorInfo = ModUtil::apiFunc('Users', 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $registrationErrors));
+        }
+
+        $restoreView = FormUtil::getPassedValue('restoreview', 'view', 'GET');
+        if ($restoreView == 'view') {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true));
+        } else {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'displayRegistration', array('id' => $reginfo['id']));
+        }
+
+        // Create output object - this object will store all of our output so that
+        // we can return it easily when required
+        $renderer = Renderer::getInstance('Users', false);
+
+        $modVars = ModUtil::getVar('Users');
+        $profileModName = System::getVar('profilemodule', '');
+        $profileModAvailable = !empty($profileModName) && ModUtil::available($profileModName);
+
+        $rendererArgs['reginfo'] = $reginfo;
+        $rendererArgs['emailagain'] = $emailAgain;
+        $rendererArgs['sitename'] = System::getVar('sitename', System::getHost());
+        $rendererArgs['errorMessages'] = (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array();
+        $rendererArgs['errorFields'] = (isset($errorInfo['errorFields']) && !empty($errorInfo['errorFields'])) ? $errorInfo['errorFields'] : array();
+        $rendererArgs['registrationErrors'] = (isset($registrationErrors) && !empty($registrationErrors)) ? $registrationErrors : array();
+        $rendererArgs['usePwdStrengthMeter'] = (isset($modVars['use_password_strength_meter']) && !empty($modVars['use_password_strength_meter'])) ? $modVars['use_password_strength_meter'] : false;
+        $rendererArgs['showProps'] = $profileModAvailable && isset($modVars['reg_optitems']) && $modVars['reg_optitems'];
+        $rendererArgs['profileModName'] = $profileModName;
+        $rendererArgs['restoreview'] = $restoreView;
+        $rendererArgs['cancelurl'] = $cancelUrl;
+
+        // Return the output that has been generated by this function
+        $renderer->assign($rendererArgs);
+        return $renderer->fetch('users_admin_modifyregistration.htm');
+    }
+
+    public function updateRegistration()
+    {
+        // check permisisons
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        if (!SecurityUtil::confirmAuthKey('Users')) {
+            return LogUtil::registerAuthidError(ModUtil::url('Users', 'admin', 'view'));
+        }
+        
+        $reginfo = FormUtil::getPassedValue('reginfo', null, 'POST');
+        $reginfo['dynadata'] = FormUtil::getPassedValue('dynadata', array(), 'POST');
+
+        $restoreView = FormUtil::getPassedValue('restoreview', 'view', 'POST');
+        if ($restoreView == 'display') {
+            $doneUrl = ModUtil::url('Users', 'admin', 'displayRegistration', array('id' => $reginfo['id']));
+        } else {
+            $doneUrl = ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true));
+        }
+
+        $checkMode = 'modify';
+        $setPassword = false;
+        $emailAgain = FormUtil::getPassedValue('emailagain', null, 'POST');
+        $sendPassword = false;
+
+        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', array(
+            'checkmode'     => $checkMode,
+            'reginfo'       => $reginfo,
+            'emailagain'    => $emailAgain,
+        ));
+
+        if ($registrationErrors) {
+            SessionUtil::setVar('reginfo', $reginfo, 'Users_Admin_modifyRegistration', true, true);
+            SessionUtil::setVar('emailagain', $emailAgain, 'Users_Admin_modifyRegistration', true, true);
+            SessionUtil::setVar('registrationErrors', $registrationErrors, 'Users_Admin_modifyRegistration', true, true);
+
+            return System::redirect(ModUtil::url('Users', 'admin', 'modifyRegistration'));
+        }
+
+        $reginfo = ModUtil::apiFunc('Users', 'registration', 'update', array('reginfo' => $reginfo));
+
+        if ($reginfo) {
+            LogUtil::registerStatus($this->__('Done! Updated registration.'));
+        } else {
+            LogUtil::registerError($this->__('Error! Could not update the registration.'));
+        }
+
+        return System::redirect($doneUrl);
+    }
+
+    public function verifyRegistration()
+    {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $id = FormUtil::getPassedValue('id', null, 'GETPOST');
+        $forceVerification = $this->currentUserIsAdmin() && FormUtil::getPassedValue('force', false, 'GETPOST');
+        $restoreView = FormUtil::getPassedValue('restoreview', 'view', 'GETPOST');
+
+        if (!isset($id) || !is_numeric($id) || ((int)$id != $id)) {
+            return LogUtil::registerArgsError();
+        }
+
+        // Got just an id.
+        $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('id' => $id));
+        if (!$reginfo) {
+            return LogUtil::registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $id));
+        }
+
+        if ($restoreView == 'display') {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'displayRegistration', array('id' => $reginfo['id']));
+        } else {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true));
+        }
+
+        $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+
+        if ($reginfo['isverified']) {
+            return LogUtil::registerError(
+                $this->__f('Error! A verification code cannot be sent for the registration record with id \'%1$s\'. It is already verified.', $reginfo['id']),
+                null,
+                $cancelUrl);
+        } elseif (!$forceVerification && ($approvalOrder == UserUtil::APPROVAL_BEFORE) && !$reginfo['isapproved']) {
+            return LogUtil::registerError(
+                $this->__f('Error! A verification code cannot be sent for the registration record with id \'%1$s\'. It must first be approved.', $reginfo['id']),
+                null,
+                $cancelUrl);
+        }
+
+        if (!FormUtil::getPassedValue('confirmed', false, 'GETPOST') || !SecurityUtil::confirmAuthKey('Users')) {
+            // Bad or no auth key, or bad or no confirmation, so display confirmation.
+
+            // ...for the Profile module's display of dud items (it assumes a full user).
+            // Be sure that this $reginfo is never used to update the database!
+            $reginfo['__ATTRIBUTES__'] = array_merge($reginfo['__ATTRIBUTES__'], $reginfo['dynadata']);
+
+            if (ModUtil::available('legal')) {
+                $touActive = ModUtil::getVar('legal', 'termsofuse', true);
+                $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+            } else {
+                $touActive = false;
+                $ppActive = false;
+            }
+
+            $renderer = Renderer::getInstance('Users', false);
+
+            $renderer->assign('reginfo', $reginfo);
+            $renderer->assign('restoreview', $restoreView);
+            $renderer->assign('force', $forceVerification);
+            $renderer->assign('cancelurl', $cancelUrl);
+            $renderer->assign('touActive', $touActive);
+            $renderer->assign('ppActive', $ppActive);
+
+            return $renderer->fetch('users_admin_verifyregistration.htm');
+        } else {
+            $codeSent = ModUtil::apiFunc('Users', 'registration', 'sendVerificationCode', array(
+                'reginfo'   => $reginfo,
+                'force'     => $forceVerification,
+            ));
+
+            if (!$codeSent) {
+                return LogUtil::registerError($this->__f('Sorry! There was a problem sending a verification code to \'%1$s\'.', $reginfo['uname']), null, $cancelUrl);
+            } else {
+                return LogUtil::registerStatus($this->__f('Done! Verification code sent to \'%1$s\'.', $reginfo['uname']), $cancelUrl);
+            }
+        }
+    }
+
+    public function approveRegistration()
+    {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $id = FormUtil::getPassedValue('id', null, 'GETPOST');
+        $forceVerification = $this->currentUserIsAdmin() && FormUtil::getPassedValue('force', false, 'GETPOST');
+        $restoreView = FormUtil::getPassedValue('restoreview', 'view', 'GETPOST');
+
+        if (!isset($id) || !is_numeric($id) || ((int)$id != $id)) {
+            return LogUtil::registerArgsError();
+        }
+
+        // Got just an id.
+        $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('id' => $id));
+        if (!$reginfo) {
+            return LogUtil::registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $id));
+        }
+
+        if ($restoreView == 'display') {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'displayRegistration', array('id' => $reginfo['id']));
+        } else {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true));
+        }
+
+        $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+
+        if ($reginfo['isapproved'] && !$forceVerification) {
+            return LogUtil::registerError(
+                $this->__f('Warning! Nothing to do! The registration record with id \'%1$s\' is already approved.', $reginfo['id']),
+                null,
+                $cancelUrl);
+        } elseif (!$forceVerification && ($approvalOrder == UserUtil::APPROVAL_AFTER) && !$reginfo['isapproved']) {
+            return LogUtil::registerError(
+                $this->__f('Error! The registration record with id \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['id']),
+                null,
+                $cancelUrl);
+        } elseif ($forceVerification && (!isset($reginfo['pass']) || empty($reginfo['pass']))) {
+            return LogUtil::registerError(
+                $this->__f('Error! E-mail verification cannot be skipped for \'%1$s\'. The user must establish a password as part of the verification process.', $reginfo['uname']),
+                null,
+                $cancelUrl);
+        }
+
+        if (!FormUtil::getPassedValue('confirmed', false, 'GETPOST') || !SecurityUtil::confirmAuthKey('Users')) {
+            // Bad or no auth key, or bad or no confirmation, so display confirmation.
+
+            // ...for the Profile module's display of dud items (it assumes a full user).
+            // Be sure that this $reginfo is never used to update the database!
+            $reginfo['__ATTRIBUTES__'] = array_merge($reginfo['__ATTRIBUTES__'], $reginfo['dynadata']);
+
+            if (ModUtil::available('legal')) {
+                $touActive = ModUtil::getVar('legal', 'termsofuse', true);
+                $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+            } else {
+                $touActive = false;
+                $ppActive = false;
+            }
+
+            $renderer = Renderer::getInstance('Users', false);
+
+            $renderer->assign('reginfo', $reginfo);
+            $renderer->assign('restoreview', $restoreView);
+            $renderer->assign('force', $forceVerification);
+            $renderer->assign('cancelurl', $cancelUrl);
+            $renderer->assign('touActive', $touActive);
+            $renderer->assign('ppActive', $ppActive);
+
+            return $renderer->fetch('users_admin_approveregistration.htm');
+        } else {
+            $approved = ModUtil::apiFunc('Users', 'registration', 'approve', array(
+                'reginfo'   => $reginfo,
+                'force'     => $forceVerification,
+            ));
+
+            if (!$approved) {
+                return LogUtil::registerError($this->__f('Sorry! There was a problem approving the registration for \'%1$s\'.', $reginfo['uname']), null, $cancelUrl);
+            } else {
+                if (isset($approved['uid'])) {
+                    return LogUtil::registerStatus($this->__f('Done! The registration for \'%1$s\' has been approved and a new user account has been created.', $reginfo['uname']), $cancelUrl);
+                } else {
+                    return LogUtil::registerStatus($this->__f('Done! The registration for \'%1$s\' has been approved and is awaiting e-mail verification.', $reginfo['uname']), $cancelUrl);
+                }
+            }
+        }
+    }
+
+    /**
+     * Display a form to confirm the deletion of one user.
+     *
+     * Available Get Parameters:
+     * - userid (numeric) The user id of the user to be deleted.
+     * - uname  (string)  The user name of the user to be deleted.
+     *
+     * @param array $args All arguments passed to the function.
+     *                    $args['userid'] (numeric) the user id of the user to be deleted. Used as a default value if the get parameter
+     *                      is not set. Allow the function to be called internally.
+     *                    $args['uname'] (string) the user name of the user to be deleted. Used as a default value if the get parameter
+     *                      is not set. Allow the function to be called internally.
+     *
+     * @return string HTML string containing the rendered template.
+     */
+    public function denyRegistration($args)
+    {
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $id = FormUtil::getPassedValue('id', null, 'GETPOST');
+        $restoreView = FormUtil::getPassedValue('restoreview', 'view', 'GETPOST');
+
+        if (!isset($id) || !is_numeric($id) || ((int)$id != $id)) {
+            return LogUtil::registerArgsError();
+        }
+
+        // Got just an id.
+        $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('id' => $id));
+        if (!$reginfo) {
+            return LogUtil::registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $id));
+        }
+
+        if ($restoreView == 'display') {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'displayRegistration', array('id' => $reginfo['id']));
+        } else {
+            $cancelUrl = ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true));
+        }
+
+        if (!FormUtil::getPassedValue('confirmed', false, 'GETPOST') || !SecurityUtil::confirmAuthKey('Users')) {
+            // Bad or no auth key, or bad or no confirmation, so display confirmation.
+
+            // ...for the Profile module's display of dud items (it assumes a full user).
+            // Be sure that this $reginfo is never used to update the database!
+            $reginfo['__ATTRIBUTES__'] = array_merge($reginfo['__ATTRIBUTES__'], $reginfo['dynadata']);
+
+            if (ModUtil::available('legal')) {
+                $touActive = ModUtil::getVar('legal', 'termsofuse', true);
+                $ppActive = ModUtil::getVar('legal', 'privacypolicy', true);
+            } else {
+                $touActive = false;
+                $ppActive = false;
+            }
+
+            $renderer = Renderer::getInstance('Users', false);
+
+            $renderer->assign('reginfo', $reginfo);
+            $renderer->assign('restoreview', $restoreView);
+            $renderer->assign('force', $forceVerification);
+            $renderer->assign('cancelurl', $cancelUrl);
+            $renderer->assign('touActive', $touActive);
+            $renderer->assign('ppActive', $ppActive);
+
+            return $renderer->fetch('users_admin_denyregistration.htm');
+        } else {
+            $sendNotification = FormUtil::getPassedValue('usernotify', false, 'POST');
+            $reason = FormUtil::getPassedValue('reason', '', 'POST');
+
+            $denied = ModUtil::apiFunc('Users', 'registration', 'remove', array(
+                'reginfo'   => $reginfo,
+            ));
+
+            if (!$denied) {
+                return LogUtil::registerError($this->__f('Sorry! There was a problem deleting the registration for \'%1$s\'.', $reginfo['uname']), null, $cancelUrl);
+            } else {
+                if ($sendNotification) {
+                    $siteurl   = System::getBaseUrl();
+                    $rendererArgs = array(
+                        'sitename'  => System::getVar('sitename'),
+                        'siteurl'   => substr($siteurl, 0, strlen($siteurl)-1),
+                        'reginfo'   => $reginfo,
+                        'reason'    => $reason,
+                    );
+
+                    $sent = ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
+                        'toAddress'         => $reginfo['email'],
+                        'notificationType'  => 'deny',
+                        'templateArgs'      => $rendererArgs
+                    ));
+                }
+                return LogUtil::registerStatus($this->__f('Done! The registration for \'%1$s\' has been denied and deleted.', $reginfo['uname']), $cancelUrl);
+            }
+        }
     }
 
     /**
@@ -1000,17 +1509,29 @@ class Users_Admin extends Zikula_Controller
         }
 
         // Create output object
-        $pnRender = Renderer::getInstance('Users', false);
+        $renderer = Renderer::getInstance('Users', false);
 
         // assign the module vars
-        $pnRender->assign('config', ModUtil::getVar('Users'));
+        $renderer->assign('config', ModUtil::getVar('Users'));
 
-        $pnRender->assign('legal', ModUtil::available('legal'));
-        $pnRender->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
-        $pnRender->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
+        $profileModule = System::getVar('profilemodule', '');
+
+        $renderer->assign('legal', ModUtil::available('legal'));
+        $renderer->assign('profile', (!empty($profileModule) && ModUtil::available($profileModule)));
+        $renderer->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true));
+        $renderer->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
+
+        $authmodules = array();
+        $modules = ModUtil::getAllMods();
+        foreach ($modules as $modinfo) {
+            if (ModUtil::available($modinfo['name']) && ModUtil::loadApi($modinfo['name'], 'auth')) {
+                $authmodules[] = $modinfo;
+            }
+        }
+        $renderer->assign('authmodules', $authmodules);
 
         // Return the output that has been generated by this function
-        return $pnRender->fetch('users_admin_modifyconfig.htm');
+        return $renderer->fetch('users_admin_modifyconfig.htm');
     }
 
     /**
@@ -1069,20 +1590,21 @@ class Users_Admin extends Zikula_Controller
         ModUtil::setVar('Users', 'gravatarimage', $config['gravatarimage']);
         ModUtil::setVar('Users', 'lowercaseuname', $config['lowercaseuname']);
         ModUtil::setVar('Users', 'recovery_forcepwdchg', $config['recovery_forcepwdchg']);
+        ModUtil::setVar('Users', 'default_authmodule', $config['default_authmodule']);
 
-        if (empty($config['authmodules'])) {
-            return LogUtil::registerError($this->__('Error! You must specify at least one authentication module, e.g. Users.'));
-        }
-        $authmethods = explode(',', $config['authmodules']);
-        if (!$authmethods) {
-            return LogUtil::registerError($this->__('Error! You must specify at least one authentication module, e.g. Users.'));
-        }
-        foreach ($authmethods as $authmethod) {
-            if (!ModUtil::available($authmethod)) {
-                return LogUtil::registerError($this->__f('Error! Module %s is not available.', $authmethod));
-            }
-        }
-        ModUtil::setVar('Users', 'authmodules', $config['authmodules']);
+//        if (empty($config['authmodules'])) {
+//            return LogUtil::registerError($this->__('Error! You must specify at least one authentication module, e.g. Users.'));
+//        }
+//        $authmethods = explode(',', $config['authmodules']);
+//        if (!$authmethods) {
+//            return LogUtil::registerError($this->__('Error! You must specify at least one authentication module, e.g. Users.'));
+//        }
+//        foreach ($authmethods as $authmethod) {
+//            if (!ModUtil::available($authmethod)) {
+//                return LogUtil::registerError($this->__f('Error! Module %s is not available.', $authmethod));
+//            }
+//        }
+//        ModUtil::setVar('Users', 'authmodules', $config['authmodules']);
 
         if (ModUtil::available('legal')) {
             ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);

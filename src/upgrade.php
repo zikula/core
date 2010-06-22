@@ -36,7 +36,7 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
     $username = FormUtil::getPassedValue('username', null, 'POST');
     $password = FormUtil::getPassedValue('password', null, 'POST');
 
-    if (!UserUtil::login($username, $password)) {
+    if (!UserUtil::loginUsing('Users', array('loginid' => $username, 'pass' => $password))) {
         // force action to login
         $action = 'login';
     } else {
@@ -288,7 +288,7 @@ function _upg_upgrademodules($username, $password)
     SessionUtil::requireSession();
 
     echo '<p class="z-statusmsg">' . __('Finished upgrade') . " - \n";
-    if (!UserUtil::login($username, $password)) {
+    if (!UserUtil::loginUsing('Users', array('loginid' => $username, 'pass' => $password))) {
         $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl()), DataUtil::formatForDisplay(System::getVar('sitename')));
         echo __f('Go to the startpage for %s', $url);
     } else {

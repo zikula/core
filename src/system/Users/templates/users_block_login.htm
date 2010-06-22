@@ -2,22 +2,23 @@
 {modgetvar module='Users' name='loginviaoption' assign='loginviaoption'}
 
 <form action="{modurl modname="Users" type="user" func="login"}" method="post">
+    <input type="hidden" name="url" value="{$returnurl|varprepfordisplay}" />
+    <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
+    <input id="users_authmodule" type="hidden" name="authmodule" value="{$authmodule}" />
     <div style="text-align:left">
-        {if $loginviaoption eq 0}
-        <div><label for="loginblock_username">{gt text="User name" domain='zikula'}</label></div>
-        <div><input id="loginblock_username" type="text" name="uname" size="14" maxlength="25" value="{gt text="User name" domain='zikula'}" onblur="if(this.value=='')this.value='{gt text="User name" domain='zikula'}';" onfocus="if(this.value=='{gt text="User name" domain='zikula'}')this.value='';" /></div>
-        {else}
-        <div><label for="loginblock_email">{gt text="E-mail address" domain='zikula'}</label></div>
-        <div><input id="loginblock_email" type="text" name="email" size="14" maxlength="64" /></div>
-        {/if}
-        <div><label for="loginblock_password">{gt text="Password" domain='zikula'}</label></div>
-        <div><input id="loginblock_password" type="password" name="pass" size="14" maxlength="20" /></div>
-        {if $seclevel neq 'High'}
+        
+        {* In the future, somewhere around here we would choose an authmodule from $authmodules, storing it in $authmodule. *}
+        {* The prompts for authinfo below would be appropriate for the authmodule, and the form would adjust if a different authmodule was selected. *}
+
+        <div><label for="loginblock_authinfo_loginid">{if $loginviaoption == 1}{gt text="E-mail address" domain='zikula'}{else}{gt text="User name" domain='zikula'}{/if}</label></div>
+        <div><input id="loginblock_authinfo_loginid" type="text" name="authinfo[loginid]" size="14" maxlength="64" value="" /></div>
+        
+        <div><label for="loginblock_authinfo_pass">{gt text="Password" domain='zikula'}</label></div>
+        <div><input id="loginblock_authinfo_pass" type="password" name="authinfo[pass]" size="14" maxlength="20" /></div>
+        {if $seclevel != 'High'}
         <input id="loginblock_rememberme" type="checkbox" value="1" name="rememberme" />
         <label for="loginblock_rememberme">{gt text="Remember me" domain='zikula'}</label>
         {/if}
-        <input type="hidden" name="url" value="{$returnurl|varprepfordisplay}" />
-        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
         <div><input type="submit" value="{gt text="Log in" domain='zikula'}" /></div>
         <ul>
             {if $allowregistration}

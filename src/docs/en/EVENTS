@@ -20,12 +20,24 @@ core.postinit
 
 user.login
     Occurs right after login, $event['user'] is the UID of the logged in user.
+    $event['authmodule'] with the name of the module that authenticated.
+    $event['loginid'] with the equivalent of the user name that authenticated (not all authmodules use loginid,
+    and therefore this may not be supplied). If authentication was attempted with Zikula's Users module, then
+    $event['loginid'] will contain the uname logged in.
 
 user.logout
     Occurs right after logout, $event['user'] is the UID of the user who logged out.
+    $event['authmodule'] with the name of the module that logged out (in addition to Zikula core).
+
+user.logout.failed
+    Occurs right after logout, $event['user'] is the UID of the user who attempted to log out.
+    $event['authmodule'] with the name of the module that attempted and failed to log out.
 
 user.login.failed
-    Occurs on login failure. $event['username'] with the username attempted.
+    Occurs on login failure. $event['authmodule'] with the name of the module that attempted to authenticate.
+    $event['loginid'] with the equivalent of the user name that was attempted (not all authmodules use loginid,
+    and therefore this may not be supplied). If authentication was attempted with Zikula's Users module, then
+    $event['loginid'] will contain the uname attempted.
 
 user.gettheme
     This is invoked with notifyUntil so you should execute $event->setNotified() in the event handler.
