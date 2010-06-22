@@ -104,7 +104,7 @@ Searchbox toggle (issue #1810).
 link to help page for each security alert (issue #1692).
 Missing language domain in themeswitcher block (issue #1896).
 HTML Settings: check all radios (issue #1551).
-The generic stylesheet (javascript/style.css) is now loaded before all other stylesheets that are loaded through pagevars. (Issue #1911).
+The generic stylesheet (styles/core.css) is now loaded before all other stylesheets that are loaded through pagevars. (Issue #1911).
 Add requirement/warning messsage into the admin panel for the blocks. (issue #757).
 Installer will chmod 0444 the config.php file after installation.
 Permission checks in the Users module were made more consistent throughout. (issue #1872).

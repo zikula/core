@@ -47,9 +47,9 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     $stylesheets = PageUtil::getVar('stylesheet');
     // Add generic stylesheet as the first stylesheet.
     if (is_array($stylesheets)) {
-        array_unshift($stylesheets, 'javascript/style.css');
+        array_unshift($stylesheets, 'styles/core.css');
     } else {
-        $stylesheets = array('javascript/style.css');
+        $stylesheets = array('styles/core.css');
     }
 
     // check if we need to perform ligthbox replacement -- javascript
