@@ -14,7 +14,7 @@
  */
 
 /**
- * Date input for pnForms
+ * Date input for pnForms.
  *
  * The date input plugin is a text input plugin that only allows dates to be posted. The value
  * returned from {@link pnForm::pnFormGetValues()} is although a string of the format 'YYYY-MM-DD'
@@ -22,6 +22,11 @@
  *
  * You can also use all of the features from the pnFormTextInput plugin since the date input
  * inherits from it.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formdateinput($params, &$render)
 {

@@ -18,6 +18,11 @@
  *
  * This plugin creates a category selector using a dropdown list.
  * The selected value of the base dropdown list will be set to ID of the selected category.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formcategoryselector($params, &$render)
 {

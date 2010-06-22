@@ -13,6 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Integer input.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
+ */
 function smarty_function_formintinput($params, &$render)
 {
     return $render->registerPlugin('Form_Plugin_IntInput', $params);

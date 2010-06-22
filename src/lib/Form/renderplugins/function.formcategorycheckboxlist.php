@@ -14,9 +14,14 @@
  */
 
 /**
- * Category selector
+ * Category selector.
  *
- * This plugin creates a category selector using a series of checkboxes
+ * This plugin creates a category selector using a series of checkboxes.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formcategorycheckboxlist($params, &$render)
 {

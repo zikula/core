@@ -14,7 +14,7 @@
  */
 
 /**
- * Tabbed panel set
+ * Tabbed panel set.
  *
  * This plugin is used to create a set of panels with their own tabs for selection.
  * The actual visibility management is handled in JavaScript by setting the CSS styling
@@ -37,8 +37,11 @@
  * templates directory or change the cssClass attribute to something different than the default
  * class name.
  *
- * @package pnForm
- * @subpackage Plugins
+ * @param array       $params  Parameters passed in the block tag.
+ * @param string      $content Content of the block.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_block_formtabbedpanelset($params, $content, &$render)
 {
