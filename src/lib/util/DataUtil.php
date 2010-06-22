@@ -415,10 +415,14 @@ class DataUtil
                 }
             }
 
-            // build the path
-            // should we use DIRECTORY_SEPARATOR here?
+            // Build the path
+            // Rather than use DIRECTORY_SEPARATOR, normalise the $var because we cannot be sure what we got
+            // and since we cannot use realpath() because this will turn paths into absolute - for legacy reasons 
+            // recipient's of the call my not be expecting absolute values (drak).
+            $var = str_replace('\\', '/', $var);
             $var = implode('/', $clean_array);
-            //if an absolute path was passed to the function, we need to make it absolute again
+
+            // If an absolute path was passed to the function, we need to make it absolute again
             if ($absolutepathused) {
                 $var = '/' . $var;
             }
