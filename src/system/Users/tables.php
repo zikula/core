@@ -21,11 +21,22 @@
  */
 function Users_tables($forVersion = null)
 {
+    if (isset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'])) {
+        // This check comes before System::isInstalling().
+        return Users_tables_for_118();
+    }
+
+    if (System::isInstalling()) {
+        // new installs
+        return Users_tables_for_200();
+    }
+
+    // Remaining cases - this should be deleted.
     if (!isset($forVersion)) {
         $usersModInfo = ModUtil::getInfo(ModUtil::getIdFromName('Users'));
         $forVersion = $usersModInfo['version'];
     }
-
+    
     if (version_compare($forVersion, '2.0.0') >= 0) {
         return Users_tables_for_200();
     } else {
