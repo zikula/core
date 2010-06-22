@@ -13,7 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * This behavior takes care for adding the standard fields if desired.
  *
@@ -24,8 +23,6 @@
  *     $this->actAs('Zikula_Doctrine_Template_StandardFields', array('oldColumnPrefix' => 'pn_'));
  * }
  * </code>
- *
- * @see Zikula_Doctrine_Template_Listener_StandardFields
  */
 class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
 {
@@ -42,6 +39,11 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
         parent::__construct($options);
     }
 
+    /**
+     * Add the columns used by the standard fields.
+     *
+     * @return void
+     */
     public function setTableDefinition()
     {
         // historical prefix
@@ -54,6 +56,11 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
         $this->hasColumn($oldPrefix . 'lu_uid as lu_uid', 'integer', 4, array('type' => 'integer', 'notnull' => true, 'default' => '0'));
     }
 
+    /**
+     * Add the standard fields listener to the record.
+     *
+     * @return void
+     */
     public function setUp()
     {
         // take care for setting these values automatically
