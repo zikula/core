@@ -15,11 +15,10 @@
 /**
  * Exit.
  *
- * @global array $ZConfig Configuration.
- *
  * @param string  $msg  Message.
  * @param boolean $html True for html.
  *
+ * @global array $ZConfig Configuration.
  * @return void|boolean
  */
 function z_exit($msg, $html = true)
@@ -49,17 +48,18 @@ function z_exit($msg, $html = true)
     return LogUtil::registerError($msg2);
 }
 
-/**
- * Serialize the given data in an easily human-readable way for debug purposes.
- *
- * Taken from http://dev.nexen.net/scripts/details.php?scripts=707.
- *
- * @param data      The object to serialize.
- * @param functions whether to show function names for objects (default=false) (optional).
- *
- * @return string A string containing serialized data.
- */
 if (!function_exists('_prayer')) {
+    /**
+     * Serialize the given data in an easily human-readable way for debug purposes.
+     *
+     * Taken from http://dev.nexen.net/scripts/details.php?scripts=707.
+     *
+     * @param array   $data           The object to serialize.
+     * @param boolean $functions      Whether to show function names for objects (default=false) (optional).
+     * @param integer $recursionLevel The current recursion level.
+     *
+     * @return string A string containing serialized data.
+     */
     function _prayer($data, $functions = false, $recursionLevel = 0)
     {
         if ($recursionLevel > 5) {
@@ -108,7 +108,7 @@ if (!function_exists('_prayer')) {
                                 $value = gettype($value);
 
                             } elseif (is_bool($value)) {
-                                $value = (int) $value;
+                                $value = (int)$value;
                             }
 
                             // parse th eoutput
@@ -136,6 +136,9 @@ if (!function_exists('_prayer')) {
 /**
  * A prayer shortcut.
  *
+ * @param array   $data The object to serialize.
+ * @param boolean $die  Whether to shutdown the process or not.
+ * 
  * @return void
  */
 function z_prayer($data, $die = true)
@@ -147,17 +150,17 @@ function z_prayer($data, $die = true)
     }
 }
 
-/**
- * Serialize the given data in an easily human-readable way for debug purposes.
- *
- * Taken from http://dev.nexen.net/scripts/details.php?scripts=707.
- *
- * @param data      The object to serialize
- * @param functions whether to show function names for objects (default=false) (optional)
- *
- * @return nothing, the data is directly printed.
- */
 if (!function_exists('prayer')) {
+    /**
+     * Serialize the given data in an easily human-readable way for debug purposes.
+     *
+     * Taken from http://dev.nexen.net/scripts/details.php?scripts=707.
+     *
+     * @param array   $data      The object to serialize.
+     * @param boolean $functions Whether to show function names for objects (default=false) (optional).
+     *
+     * @return void
+     */
     function prayer($data, $functions = false)
     {
         global $ZConfig;
@@ -172,25 +175,37 @@ if (!function_exists('prayer')) {
     }
 }
 
-/**
- * Simple timer class to measure code execution times.
- *
- * You can take multiple snapshots by calling the snap() function.
- * For multiple measurements with 1 Timer, some basic statistics
- * are computed.
- *
- * @package Debug
- */
 if (!class_exists('Timer')) {
+
+    /**
+     * Simple timer class to measure code execution times.
+     *
+     * You can take multiple snapshots by calling the snap() function.
+     * For multiple measurements with 1 Timer, some basic statistics
+     * are computed.
+     *
+     * @package Debug
+     */
     class Timer
     {
+        /**
+         * The name of the timer.
+         * 
+         * @var string
+         */
         public $name;
+        
+        /**
+         * Holds the times when to trigger the timer.
+         * 
+         * @var array
+         */
         public $times;
 
         /**
          * Constructor.
          *
-         * @param name The name of the timer
+         * @param string $name The name of the timer.
          */
         public function __construct($name = '')
         {
@@ -202,7 +217,7 @@ if (!class_exists('Timer')) {
         /**
          * Reset the timer.
          *
-         * @param string name The name of the timer.
+         * @param string $name The name of the timer.
          *
          * @return void
          */
@@ -215,6 +230,8 @@ if (!class_exists('Timer')) {
 
         /**
          * Return the current microtime.
+         * 
+         * @return integer The current microtime.
          */
         public function get_microtime()
         {
@@ -236,7 +253,9 @@ if (!class_exists('Timer')) {
         /**
          * Stop the timer.
          *
-         * @return void
+         * @param boolean $insertNewRecord Whether to insert a new record.
+         * 
+         * @return array Statistics
          */
         public function stop($insertNewRecord = true)
         {
@@ -320,7 +339,9 @@ if (!class_exists('Timer')) {
         /**
          * Take a snapshot while continuing the timing run.
          *
-         * @return string|void
+         * @param boolean $doStats Whether to return statistics or not.
+         * 
+         * @return array|void
          */
         public function snap($doStats = false)
         {
