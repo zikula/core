@@ -430,7 +430,7 @@ class UserUtil
         // Authenticate the loginID and userEnteredPassword against the specified authModule.
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
         if ($checkPassword) {
-            $uid = ModUtil::apiFunc($authModuleName, 'auth', 'login', array('authinfo' => $authinfo));
+            $uid = self::authApi($authModuleName, 'login', array('authinfo' => $authinfo));
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
                 LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModule module ('{$authModuleName}') login failure (user not found, or error).", 'DEBUG');
 
@@ -446,7 +446,7 @@ class UserUtil
             // prevents this Zikula login process from completing should ensure that the custom authmodule's
             // logout function is called.
         } else {
-            $userObj = ModUtil::apiFunc($authModuleName, 'auth', 'getUserForAuthinfo', array('authinfo' => $authinfo));
+            $userObj = self::authApi($authModuleName, 'getUserForAuthinfo', array('authinfo' => $authinfo));
             if (!$userObj) {
                 LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModule module ('{$authModuleName}') getUserForAuthinfo failure (user not found, or error).", 'DEBUG');
 
@@ -484,7 +484,7 @@ class UserUtil
         if (!$userObj || !is_array($userObj)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "UserUtil Internal Error ('{$authModuleName}') uid should have given us a good user. Is the authmodule's map out of sync?", 'DEBUG');
             if ($checkPassword) {
-                ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+                self::authApi($authModuleName, 'logout', array('uid' => $uid));
             }
             return false;
         }
@@ -510,7 +510,7 @@ class UserUtil
                     // Yes, still in use. Let loginScreen deal with it.
                     if ($checkPassword) {
                         // We logged into the custom authmodule above, log out now.
-                        ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+                        self::authApi($authModuleName, 'logout', array('uid' => $uid));
                     }
 
                     if ($mustConfirmTOUPP && $mustChangePassword) {
@@ -539,7 +539,7 @@ class UserUtil
             if ($mustChangePassword) {
                 if ($checkPassword) {
                     // We logged into the custom authmodule above, log out now.
-                    ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+                    self::authApi($authModuleName, 'logout', array('uid' => $uid));
                 }
 
                 $errorMsg = $this->__('Your log-in request was not completed because you must change your account\'s password first.');
@@ -556,7 +556,7 @@ class UserUtil
                 // account inactive, deny login
                 if ($checkPassword) {
                     // We logged into the authmodule above, log out now.
-                    ModUtil::apiFunc($authModuleName, 'auth', 'logout', array('uid' => $uid));
+                    self::authApi($authModuleName, 'logout', array('uid' => $uid));
                 }
                 return false;
             }
@@ -637,7 +637,7 @@ class UserUtil
             $authModuleName = SessionUtil::getVar('authmodule', '');
 
             if (!empty($authModuleName) && ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'auth')) {
-                $authModuleLoggedOut = ModUtil::apiFunc($authModuleName, 'auth', 'logout');
+                $authModuleLoggedOut = self::authApi($authModuleName, 'logout');
                 if (!$authModuleLoggedOut) {
                     // TODO -- Really? We want to prevent the user from logging out of Zikula if the authmodule logout fails?  Really?
                     $event = new Zikula_Event('user.logout.failed', null, array(
@@ -676,7 +676,7 @@ class UserUtil
     public static function authenticateUserUsing($authModuleName, array $authinfo)
     {
         if (!empty($authModuleName) && ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'auth')) {
-            return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array('authinfo' => $authinfo));
+            return self::authApi($authModuleName, 'authenticateUser', array('authinfo' => $authinfo));
         } else {
             return LogUtil::registerArgsError();
         }
@@ -1449,6 +1449,25 @@ class UserUtil
 
         $pntables = System::dbGetTables();
         return array_key_exists($label, $pntables['users_column']);
+    }
+
+    /**
+     * Call authmodle's auth api.
+     *
+     * @param <type> $authModuleName
+     * @param <type> $method
+     * @param <type> $args
+     *
+     * @return <type>
+     */
+    public static function authApi($authModuleName, $method, $args)
+    {
+        $object = ModUtil::getObject(ModUtil::getClass($authModuleName, 'auth', true));
+        if (!$object->getReflection()->isSubClassOf('Zikula_AuthApi')) {
+            throw new Exception(__f('%s must be a subclass of Zikula_AuthApi', $className));
+        }
+
+        return ModUtil::apiFunc($authModuleName, 'auth', $method, $args);
     }
 
 }

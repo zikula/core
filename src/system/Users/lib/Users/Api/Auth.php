@@ -23,7 +23,7 @@
  * @package Zikula
  * @subpackage Users
  */
-class Users_Api_Auth extends Zikula_Api
+class Users_Api_Auth extends Zikula_AuthApi
 {
     /**
      * Authenticates the user-entered authinfo with the authenticating source, and (if authenticated)
