@@ -228,3 +228,5 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
   controller for example $this, or inside a template, $controller.
   The $args that hook methods receive will now contain the extra keys 'subject'
   and 'args'.  These correspond to the $subject and $args passed to ModUtil::callHooks()
+
+- Replace all occurrences of "javascript/style.css" with "styles/core.css"

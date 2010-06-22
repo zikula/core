@@ -161,6 +161,7 @@ tables.php: $module_column is now unnecessary if the there is no column prefix, 
 All templates now have $eventManager, $serverManager and $controller (being the OO controller owner).
 OO controllers now automatically creates renderer object and store in $renderer.
 Issue #1838 (DataUtil::formatForOS() not Windows file path compatible).
+New location for core stylesheet in /styles/core.css (Issue #2211).
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
