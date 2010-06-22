@@ -52,3 +52,11 @@ Zend Framework 1.10.5 (selected components)
     License: New BSD
     Location in Zikula: lib/vendor/Zend
     Patch details: none
+
+IDNA Convert 0.6.3
+    Zend_Exception, Zend_Loader, Zend_Log
+    Vendor website: http://idnaconv.phlymail.de/
+    Downloaded from: http://idnaconv.phlymail.de/
+    License: LGPL 2.1+
+    Location in Zikula: lib/vendor/idn
+    Patch details: none
