@@ -63,17 +63,6 @@ class Blocks_Installer extends Zikula_Installer
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '3.2':
-                $this->upgrade_fixSerializedData();
-                $this->upgrade_migrateExtMenu();
-
-            case '3.3':
-                $this->upgrade_updateThelang();
-
-            case '3.4':
-                $this->upgrade_updateBlockLanguages();
-
-            case '3.5':
             case '3.6':
             // future upgrade routines
         }
@@ -148,107 +137,6 @@ class Blocks_Installer extends Zikula_Installer
         {
             $block['bid'] = ModUtil::apiFunc('Blocks', 'admin', 'create', $block);
             ModUtil::apiFunc('Blocks', 'admin', 'update', $block);
-        }
-
-        return;
-    }
-
-    public function upgrade_fixSerializedData()
-    {
-        // fix serialised data in blocks
-        $obj = DBUtil::selectObjectArray('blocks');
-        foreach ($obj as $block)
-        {
-            if (DataUtil::is_serialized($block['content'])) {
-                $block['content'] = serialize(DataUtil::mb_unserialize($block['content']));
-            }
-            DBUtil::updateObject($block, 'blocks', '', 'bid', true);
-        }
-
-        return true;
-    }
-
-    public function upgrade_migrateExtMenu()
-    {
-        $pntable = System::dbGetTables();
-        $blockcolumn = $pntable['blocks_column'];
-        $where = "WHERE $blockcolumn[bkey] = 'extmenu'";
-        $obj = DBUtil::selectObjectArray('blocks', $where);
-
-        if (count($obj) == 0) {
-            // nothing to do
-            return;
-        }
-
-        foreach ($obj as $block)
-        {
-            // translate display_name l3 -> l2
-            $data = unserialize($block['content']);
-            foreach ($data['blocktitles'] as $l3 => $v) {
-                if ($l2 = ZLanguage::translateLegacyCode($l3)) {
-                    unset($data['blocktitles'][$l3]);
-                    $data['blocktitles'][$l2] = $v;
-                }
-            }
-
-            foreach ($data['links'] as $l3 => $v) {
-                if ($l2 = ZLanguage::translateLegacyCode($l3)) {
-                    unset($data['links'][$l3]);
-                    $data['links'][$l2] = $v;
-                }
-            }
-
-            $block['content'] = serialize($data);
-            DBUtil::updateObject($block, 'blocks', '', 'bid', true);
-        }
-
-        return;
-    }
-
-    public function upgrade_updateThelang()
-    {
-        $pntable = System::dbGetTables();
-        $blockcolumn = $pntable['blocks_column'];
-        $where = "WHERE $blockcolumn[bkey] = 'thelang'";
-        $obj = DBUtil::selectObjectArray('blocks', $where);
-
-        if (count($obj) == 0) {
-            // nothing to do
-            return;
-        }
-
-        BlockUtil::load('Blocks', 'thelang');
-        foreach ($obj as $block)
-        {
-            // translate display_name l3 -> l2
-            $data = DataUtil::mb_unserialize($block['content']);
-            $data['languages'] = ZLanguage::getInstalledLanguages();
-
-            $block['content'] = serialize($data);
-            DBUtil::updateObject($block, 'blocks', '', 'bid', true);
-        }
-
-        return;
-    }
-
-    public function upgrade_updateBlockLanguages()
-    {
-        $pntable = System::dbGetTables();
-        $blockcolumn = $pntable['blocks_column'];
-        $where = "WHERE $blockcolumn[language] != ''";
-        $obj = DBUtil::selectObjectArray('blocks', $where);
-
-        if (count($obj) == 0) {
-            // nothing to do
-            return;
-        }
-
-        foreach ($obj as $block) {
-            // translate l3 -> l2
-            if ($l2 = ZLanguage::translateLegacyCode($block['language'])) {
-                $block['language'] = $l2;
-            }
-            DBUtil::updateObject($block, 'blocks', '', 'bid', true);
         }
 
         return;
