@@ -67,20 +67,10 @@ class Modules_Installer extends Zikula_Installer
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '3.3':
-                if (!DBUtil::changeTable('hooks')) {
-                    return '3.3';
-                }
-
-            case '3.4':
-            case '3.5':
-                $this->init_changestructure120();
-            case '3.6':
-                $this->init_migrateModuleTable();
             case '3.7':
-            // legacy is no longer supported
+                // legacy is no longer supported
                 System::delVar('loadlegacy');
-            // future upgrade routines
+                // future upgrade routines
         }
 
         // Update successful
@@ -156,100 +146,5 @@ class Modules_Installer extends Zikula_Installer
         $modversion['message_capable'] = 0;
         $modversion['state']           = 3;
         DBUtil::updateObject($record, 'modules');
-    }
-
-    public function init_changestructure()
-    {
-        // Apply the table transform
-        // modules
-        $sql = "pn_id I PRIMARY AUTO,
-            pn_name C(64) NOTNULL DEFAULT '',
-            pn_type I1 NOTNULL,
-            pn_displayname C(64) NOTNULL DEFAULT '',
-            pn_description C(255) NOTNULL DEFAULT '',
-            pn_regid I NOTNULL DEFAULT '0',
-            pn_directory C(64) NOTNULL DEFAULT '',
-            pn_version C(10) NOTNULL DEFAULT '0',
-            pn_official L NOTNULL DEFAULT 0,
-            pn_author C(255) NOTNULL DEFAULT '',
-            pn_contact C(255) NOTNULL DEFAULT '',
-            pn_admin_capable L NOTNULL DEFAULT 0,
-            pn_user_capable L NOTNULL DEFAULT 0,
-            pn_profile_capable L NOTNULL DEFAULT 0,
-            pn_message_capable L NOTNULL DEFAULT 0,
-            pn_state I1 NOTNULL DEFAULT '0',
-            pn_credits C(255) NOTNULL DEFAULT '',
-            pn_help C(255) NOTNULL DEFAULT '',
-            pn_changelog C(255) NOTNULL DEFAULT '',
-            pn_license C(255) NOTNULL DEFAULT '',
-            pn_securityschema X DEFAULT ''
-    ";
-
-        DBUtil::changeTable('modules', $sql);
-        DBUtil::changeTable('hooks');
-        DBUtil::changeTable('module_deps');
-    }
-
-    public function init_changestructure120()
-    {
-        // Apply the table transform
-        // modules
-        $sql = "pn_id I PRIMARY AUTO,
-            pn_name C(64) NOTNULL DEFAULT '',
-            pn_type I1 NOTNULL,
-            pn_displayname C(64) NOTNULL DEFAULT '',
-            pn_url C(64) NOTNULL DEFAULT '',
-            pn_description C(255) NOTNULL DEFAULT '',
-            pn_regid I NOTNULL DEFAULT '0',
-            pn_directory C(64) NOTNULL DEFAULT '',
-            pn_version C(10) NOTNULL DEFAULT '0',
-            pn_official L NOTNULL DEFAULT 0,
-            pn_author C(255) NOTNULL DEFAULT '',
-            pn_contact C(255) NOTNULL DEFAULT '',
-            pn_admin_capable L NOTNULL DEFAULT 0,
-            pn_user_capable L NOTNULL DEFAULT 0,
-            pn_profile_capable L NOTNULL DEFAULT 0,
-            pn_message_capable L NOTNULL DEFAULT 0,
-            pn_state I1 NOTNULL DEFAULT '0',
-            pn_credits C(255) NOTNULL DEFAULT '',
-            pn_help C(255) NOTNULL DEFAULT '',
-            pn_changelog C(255) NOTNULL DEFAULT '',
-            pn_license C(255) NOTNULL DEFAULT '',
-            pn_securityschema X DEFAULT ''
-    ";
-
-        DBUtil::changeTable('modules', $sql);
-        $GLOBALS['dbtables']['modules_column']['url'] = 'pn_url';
-        unset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom120']);
-
-        ModUtil::dbInfoLoad('Modules', true);
-        $modulesArray = DBUtil::selectObjectArray('modules');
-        foreach ($modulesArray as $module)
-        {
-            $module['url'] = $module['displayname'];
-            @DBUtil::updateObject($module, 'modules', '', 'id', true);
-        }
-    }
-
-    public function init_migrateModuleTable()
-    {
-        $obj = DBUtil::selectObjectArray('modules');
-        foreach ($obj as $module)
-        {
-            $secData = DataUtil::mb_unserialize($module['securityschema']);
-            $module['securityschema'] = serialize($secData);
-            DBUtil::updateObject($module, 'modules', '', 'id', true);
-        }
-
-        $obj = DBUtil::selectObjectArray('module_vars');
-        foreach ($obj as $module)
-        {
-            // force serialization (again)
-            if (DataUtil::is_serialized($module['value'])) {
-                $module['value'] = DataUtil::mb_unserialize($module['value']);
-            }
-            $module['value'] = serialize($module['value']);
-            DBUtil::updateObject($module, 'module_vars', '', 'id', true);
-        }
     }
 }
