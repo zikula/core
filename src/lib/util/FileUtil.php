@@ -241,7 +241,7 @@ class FileUtil
      * @param string  $mode     The (UNIX) mode we wish to create the files with.
      * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
-     * @deprecated
+     * @deprecated since 1.3.0
      * @see http://php.net/mkdir
      *
      * @return boolean TRUE on success, FALSE on failure.
