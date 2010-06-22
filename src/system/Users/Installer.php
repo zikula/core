@@ -44,37 +44,37 @@ class Users_Installer extends Zikula_Installer
         // Set default values for module
         $this->defaultdata();
 
-        ModUtil::setVar('Users', 'itemsperpage', 25);
-        ModUtil::setVar('Users', 'accountdisplaygraphics', 1);
-        ModUtil::setVar('Users', 'accountitemsperpage', 25);
-        ModUtil::setVar('Users', 'accountitemsperrow', 5);
-        ModUtil::setVar('Users', 'changepassword', 1);
-        ModUtil::setVar('Users', 'changeemail', 1);
-        ModUtil::setVar('Users', 'reg_allowreg', 1);
-        ModUtil::setVar('Users', 'reg_verifyemail', 1);
-        ModUtil::setVar('Users', 'reg_Illegalusername', 'root adm linux webmaster admin god administrator administrador nobody anonymous anonimo');
-        ModUtil::setVar('Users', 'reg_Illegaldomains', '');
-        ModUtil::setVar('Users', 'reg_Illegaluseragents', '');
-        ModUtil::setVar('Users', 'reg_noregreasons', __('Sorry! New user registration is currently disabled.'));
-        ModUtil::setVar('Users', 'reg_uniemail', 1);
-        ModUtil::setVar('Users', 'reg_notifyemail', '');
-        ModUtil::setVar('Users', 'reg_optitems', 0);
-        ModUtil::setVar('Users', 'userimg', 'images/menu');
-        ModUtil::setVar('Users', 'avatarpath', 'images/avatar');
-        ModUtil::setVar('Users', 'allowgravatars', 1);
-        ModUtil::setVar('Users', 'gravatarimage', 'gravatar.gif');
-        ModUtil::setVar('Users', 'minage', 13);
-        ModUtil::setVar('Users', 'minpass', 5);
-        ModUtil::setVar('Users', 'anonymous', 'Guest');
-        ModUtil::setVar('Users', 'loginviaoption', 0);
-        ModUtil::setVar('Users', 'moderation', 0);
-        ModUtil::setVar('Users', 'hash_method', 'sha256');
-        ModUtil::setVar('Users', 'login_redirect', 1);
-        ModUtil::setVar('Users', 'reg_question', '');
-        ModUtil::setVar('Users', 'reg_answer', '');
-        ModUtil::setVar('Users', 'use_password_strength_meter', 0);
-        ModUtil::setVar('Users', 'default_authmodule', 'Users');
-        ModUtil::setVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+        $this->setVar('itemsperpage', 25)
+             ->setVar('accountdisplaygraphics', 1)
+             ->setVar('accountitemsperpage', 25)
+             ->setVar('accountitemsperrow', 5)
+             ->setVar('changepassword', 1)
+             ->setVar('changeemail', 1)
+             ->setVar('reg_allowreg', 1)
+             ->setVar('reg_verifyemail', 1)
+             ->setVar('reg_Illegalusername', 'root adm linux webmaster admin god administrator administrador nobody anonymous anonimo')
+             ->setVar('reg_Illegaldomains', '')
+             ->setVar('reg_Illegaluseragents', '')
+             ->setVar('reg_noregreasons', __('Sorry! New user registration is currently disabled.'))
+             ->setVar('reg_uniemail', 1)
+             ->setVar('reg_notifyemail', '')
+             ->setVar('reg_optitems', 0)
+             ->setVar('userimg', 'images/menu')
+             ->setVar('avatarpath', 'images/avatar')
+             ->setVar('allowgravatars', 1)
+             ->setVar('gravatarimage', 'gravatar.gif')
+             ->setVar('minage', 13)
+             ->setVar('minpass', 5)
+             ->setVar('anonymous', 'Guest')
+             ->setVar('loginviaoption', 0)
+             ->setVar('moderation', 0)
+             ->setVar('hash_method', 'sha256')
+             ->setVar('login_redirect', 1)
+             ->setVar('reg_question', '')
+             ->setVar('reg_answer', '')
+             ->setVar('use_password_strength_meter', 0)
+             ->setVar('default_authmodule', 'Users')
+             ->setVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
         // Initialisation successful
         return true;
@@ -100,29 +100,29 @@ class Users_Installer extends Zikula_Installer
                 $this->upgrade_migrateSerialisedUserTemp();
             case '1.12':
                 // upgrade 1.12 to 1.13
-                ModUtil::setVar('Users', 'avatarpath', 'images/avatar');
+                $this->setVar('avatarpath', 'images/avatar');
                 // lowercaseuname Removed in 2.0.0
-                //ModUtil::setVar('Users', 'lowercaseuname', 1);
+                //$this->setVar('lowercaseuname', 1);
             case '1.13':
                 // upgrade 1.13 to 1.14
-                ModUtil::setVar('Users', 'use_password_strength_meter', 0);
+                $this->setVar('use_password_strength_meter', 0);
             case '1.14':
                 // upgrade 1.14 to 1.15
-                if (ModUtil::getVar('Users', 'hash_method') == 'md5') {
-                    ModUtil::setVar('Users', 'hash_method', 'sha256');
+                if ($this->getVar('hash_method') == 'md5') {
+                    $this->setVar('hash_method', 'sha256');
                 }
             case '1.15':
                 // upgrade 1.15 to 1.16
-                ModUtil::delVar('Users', 'savelastlogindate');
-                ModUtil::setVar('Users', 'allowgravatars', 1);
-                ModUtil::setVar('Users', 'gravatarimage', 'gravatar.gif');
+                $this->delVar('savelastlogindate');
+                $this->setVar('allowgravatars', 1);
+                $this->setVar('gravatarimage', 'gravatar.gif');
                 if (!DBUtil::changeTable('users_temp')) {
                     return '1.15';
                 }
             case '1.16':
                 // upgrade 1.16 to 1.17
                 // authmodules removed in 2.0.0
-                //ModUtil::setVar('Users', 'authmodules', 'Users');
+                //$this->setVar('authmodules', 'Users');
             case '1.17':
                 // upgrade 1.17 to 1.18
                 if (!DBUtil::changeTable('users')
@@ -544,20 +544,20 @@ class Users_Installer extends Zikula_Installer
         }
 
         // done with db changes. Now handle some final stuff.
-        ModUtil::delVar('Users', 'authmodules');
-        ModUtil::setVar('Users', 'default_authmodule', 'Users');
+        $this->delVar('authmodules');
+        $this->setVar('default_authmodule', 'Users');
 
-        $regVerifyEmail = ModUtil::getVar('Users', 'reg_verifyemail', UserUtil::VERIFY_NO);
+        $regVerifyEmail = $this->gelVar('reg_verifyemail', UserUtil::VERIFY_NO);
         if ($regVerifyEmail == UserUtil::VERIFY_SYSTEMPWD) {
-            ModUtil::setVar('Users', 'reg_verifyemail', UserUtil::VERIFY_USERPWD);
+            $this->setVar('reg_verifyemail', UserUtil::VERIFY_USERPWD);
         }
 
-        ModUtil::setVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+        $this->setVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
-        ModUtil::delVar('Users', 'reg_forcepwdchg');
-        ModUtil::delVar('Users', 'lowercaseuname');
-        ModUtil::delVar('Users', 'idnnames');
-        ModUtil::delVar('Users', 'recovery_forcepwdchg');
+        $this->delVar('reg_forcepwdchg');
+        $this->delVar('lowercaseuname');
+        $this->delVar('idnnames');
+        $this->delVar('recovery_forcepwdchg');
 
         return true;
     }
