@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {gt text='Confirm verification code is to be sent to \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
 {include file='users_admin_menu.htm'}
 
@@ -27,7 +26,7 @@
             {/if}
             {/strip}
             {button id='confirm' type='submit' src='button_ok.gif' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
-            <a href="{$cancelurl}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            <a href="{$cancelurl|safetext}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>
     </form>
 </div>

@@ -1,9 +1,8 @@
-{*  $Id$  *}
 {ajaxheader modname='Users' filename='users_admin_modifyregistration.js' noscriptaculous=true effects=true}
 {gt text='Edit registration for \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
 
 {include file='users_admin_menu.htm'}
-<a name="users_formtop"></a>
+<a id="users_formtop"></a>
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
 
@@ -52,7 +51,7 @@
             <div class="z-buttons z-formbuttons">
                 {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                 {button id='submitchanges' type='submit' src='button_ok.gif' set='icons/extrasmall' __alt='Submit new user' __title='Submit modifications' __text='Submit modifications'}
-                <a href="{$cancelurl}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <a href="{$cancelurl|safetext}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
                 {img id='ajax_indicator' style='display: none;' modname='core' set='icons/extrasmall' src='indicator_circle.gif' alt=''}
             </div>
         </fieldset>
