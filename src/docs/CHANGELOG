@@ -160,6 +160,7 @@ Merged ObjectData and Workflow table definitions to Settings and deleted the mod
 tables.php: $module_column is now unnecessary if the there is no column prefix, i.e. if name => name.
 All templates now have $eventManager, $serverManager and $controller (being the OO controller owner).
 OO controllers now automatically creates renderer object and store in $renderer.
+Issue #1838 (DataUtil::formatForOS() not Windows file path compatible).
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
