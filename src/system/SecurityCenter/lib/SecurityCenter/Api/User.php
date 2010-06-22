@@ -491,7 +491,7 @@ class SecurityCenter_Api_User extends Zikula_Api
         static $purifier;
 
         if (!isset($purifier) || $force) {
-            $config = self::getpurifierconfig();
+            $config = self::getpurifierconfig(array('forcedefault' => false));
             $purifier = new HTMLPurifier($config);
         }
 
