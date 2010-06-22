@@ -187,6 +187,19 @@ class Renderer extends Smarty
     }
 
     /**
+     * Set cache ID.
+     *
+     * @param string $id Cache ID.
+     *
+     * @return Renderer
+     */
+    public function setCache_Id($id)
+    {
+        $this->cache_id = $cache_id;
+        return $this;
+    }
+
+    /**
      * setup the current instance of the Renderer class and return it back to the module
      */
     public static function getInstance($module = null, $caching = null, $cache_id = null, $add_core_data = false)
@@ -499,13 +512,13 @@ class Renderer extends Smarty
     /**
      * Set Caching.
      *
-     * @param boolean $value True or false.
+     * @param boolean $boolean True or false.
      *
      * @return Renderer
      */
-    public function setCaching($value)
+    public function setCaching($boolean)
     {
-        $this->caching = (bool)$value;
+        $this->caching = (bool)$boolean;
         return $this;
     }
 
