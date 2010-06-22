@@ -13,11 +13,11 @@
             <legend>{gt text="General settings"}</legend>
             <div class="z-formrow">
                 <label for="users_userimg">{gt text="Path to account panel images"}</label>
-                <input id="users_userimg" type="text" name="config[userimg]" value="{$config.userimg|varprepfordisplay}" size="50" maxlength="255" />
+                <input id="users_userimg" type="text" name="config[userimg]" value="{$config.userimg|safetext}" size="50" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="users_avatarpath">{gt text="Path to user's avatar images"}</label>
-                <input id="users_avatarpath" type="text" name="config[avatarpath]" value="{$config.avatarpath|default:'images/avatar'|varprepfordisplay}" size="50" maxlength="255" />
+                <input id="users_avatarpath" type="text" name="config[avatarpath]" value="{$config.avatarpath|default:'images/avatar'|safetext}" size="50" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="users_allowgravatars">{gt text="Allow globally recognized avatars"}</label>
@@ -30,23 +30,23 @@
             </div>
             <div class="z-formrow">
                 <label for="users_gravatarimage">{gt text="Default gravatar image"}</label>
-                <input id="users_gravatarimage" type="text" name="config[gravatarimage]" value="{$config.gravatarimage|default:'gravatar.gif'|varprepfordisplay}" size="50" maxlength="255" />
+                <input id="users_gravatarimage" type="text" name="config[gravatarimage]" value="{$config.gravatarimage|default:'gravatar.gif'|safetext}" size="50" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="users_itemsperpage">{gt text="Links per page"}</label>
-                <input id="users_itemsperpage" type="text" name="config[itemsperpage]" size="3" value="{$config.itemsperpage|varprepfordisplay}" />
+                <input id="users_itemsperpage" type="text" name="config[itemsperpage]" size="3" value="{$config.itemsperpage|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="users_minage">{gt text="Minimum age for new user registration (0 for no age check)"}</label>
-                <input id="users_minage" type="text" name="config[minage]" value="{$config.minage|varprepfordisplay}" size="2" maxlength="2" />
+                <input id="users_minage" type="text" name="config[minage]" value="{$config.minage|safetext}" size="2" maxlength="2" />
             </div>
             <div class="z-formrow">
                 <label for="users_minpass">{gt text="Minimum length for user passwords"}</label>
-                <input id="users_minpass" type="text" name="config[minpass]" value="{$config.minpass|varprephtmldisplay}" size="2" maxlength="2" />
+                <input id="users_minpass" type="text" name="config[minpass]" value="{$config.minpass|safehtml}" size="2" maxlength="2" />
             </div>
             <div class="z-formrow">
                 <label for="anonymous">{gt text="Name for anonymous user"}</label>
-                <input id="anonymous" type="text" name="config[anonymous]" value="{$config.anonymous|varprephtmldisplay}" size="20" maxlength="20" />
+                <input id="anonymous" type="text" name="config[anonymous]" value="{$config.anonymous|safehtml}" size="20" maxlength="20" />
             </div>
             <div class="z-formrow">
                 <label for="users_loginviaoption">{gt text="Credential required for user log-in"}</label>
@@ -77,11 +77,11 @@
             </div>
             <div class="z-formrow">
                 <label for="users_accountitemsperpage">{gt text="Links per page"}</label>
-                <input id="users_accountitemsperpage" type="text" name="config[accountitemsperpage]" size="3" value="{$config.accountitemsperpage|varprepfordisplay}" />
+                <input id="users_accountitemsperpage" type="text" name="config[accountitemsperpage]" size="3" value="{$config.accountitemsperpage|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="users_accountitemsperrow">{gt text="Links per row"}</label>
-                <input id="users_accountitemsperrow" type="text" name="config[accountitemsperrow]" size="3" value="{$config.accountitemsperrow|varprepfordisplay}" />
+                <input id="users_accountitemsperrow" type="text" name="config[accountitemsperrow]" size="3" value="{$config.accountitemsperrow|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="users_changepassword">{gt text="Users module handles password maintenance"}</label>
@@ -121,7 +121,7 @@
             </div>
             <div class="z-formrow" id="users_reg_allowreg_wrap">
                 <label for="users_noregreasons">{gt text="Statement displayed if registration disabled"}</label>
-                <textarea id="users_noregreasons" name="config[reg_noregreasons]" cols="45" rows="10">{$config.reg_noregreasons|varprephtmldisplay}</textarea>
+                <textarea id="users_noregreasons" name="config[reg_noregreasons]" cols="45" rows="10">{$config.reg_noregreasons|safehtml}</textarea>
             </div>
             {if $profile}
             <div class="z-formrow">
@@ -202,34 +202,34 @@
 
             <div class="z-formrow">
                 <label for="users_reg_Illegalusername">{gt text="Reserved user names (space-separated)"}</label>
-                <input id="users_reg_Illegalusername" type="text" name="config[reg_Illegalusername]" value="{$config.reg_Illegalusername|varprepfordisplay}" size="50" maxlength="255" />
+                <input id="users_reg_Illegalusername" type="text" name="config[reg_Illegalusername]" value="{$config.reg_Illegalusername|safetext}" size="50" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="users_reg_notifyemail">{gt text="E-mail address to notify of new user registrations (blank for none)"}</label>
-                <input id="users_reg_notifyemail" type="text" name="config[reg_notifyemail]" value="{$config.reg_notifyemail|varprepfordisplay}" size="50" maxlength="255" />
+                <input id="users_reg_notifyemail" type="text" name="config[reg_notifyemail]" value="{$config.reg_notifyemail|safetext}" size="50" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="users_reg_Illegaluseragents">{gt text="Banned user agents (comma-separated)"}</label>
-                <input id="users_reg_Illegaluseragents" type="text" name="config[reg_Illegaluseragents]" value="{$config.reg_Illegaluseragents|varprepfordisplay}" size="50" maxlength="255" />
+                <input id="users_reg_Illegaluseragents" type="text" name="config[reg_Illegaluseragents]" value="{$config.reg_Illegaluseragents|safetext}" size="50" maxlength="255" />
             </div>
             <div class="z-formrow">
                 <label for="users_reg_Illegaldomains">{gt text="Banned domains (comma-separated)"}</label>
-                <textarea id="users_reg_Illegaldomains" name="config[reg_Illegaldomains]" cols="45" rows="10">{$config.reg_Illegaldomains|varprephtmldisplay}</textarea>
+                <textarea id="users_reg_Illegaldomains" name="config[reg_Illegaldomains]" cols="45" rows="10">{$config.reg_Illegaldomains|safehtml}</textarea>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_question">{gt text="Spam protection question"}</label>
-                <input id="users_reg_question" name="config[reg_question]" value="{$config.reg_question|varprephtmldisplay}" size="50" maxlength="255" />
+                <input id="users_reg_question" name="config[reg_question]" value="{$config.reg_question|safehtml}" size="50" maxlength="255" />
                 <em class="z-formnote z-sub">{gt text="Notice: You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_answer">{gt text="Spam protection answer"}</label>
-                <input id="users_reg_answer" name="config[reg_answer]" value="{$config.reg_answer|varprephtmldisplay}" size="50" maxlength="255" />
+                <input id="users_reg_answer" name="config[reg_answer]" value="{$config.reg_answer|safehtml}" size="50" maxlength="255" />
                 <em class="z-formnote z-sub">{gt text="Notice: Registering users will have to provide this response when answering the spam protection question."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_use_password_strength_meter">{gt text="Show password strength meter during registration"}</label>
                 <div id="users_use_password_strength_meter">
-                    <input id="use_password_strength_meter_yes" type="radio" name="config[use_password_strength_meter]" value="1" {if $config.use_password_strength_meter eq 1}checked="checked" {/if} /> 
+                    <input id="use_password_strength_meter_yes" type="radio" name="config[use_password_strength_meter]" value="1" {if $config.use_password_strength_meter eq 1}checked="checked" {/if} />
                     <label for="use_password_strength_meter_yes">{gt text="Yes"}</label>
                     <input id="use_password_strength_meter_no" type="radio" name="config[use_password_strength_meter]" value="0" {if $config.use_password_strength_meter neq 1}checked="checked" {/if} />
                     <label for="use_password_strength_meter_no">{gt text="No"}</label>

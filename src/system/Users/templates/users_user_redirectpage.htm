@@ -5,7 +5,7 @@
 <meta name="description" content="{configgetvar name=sitename}" />
 <meta name="copyright" content="Copyright (c) 2009 by {configgetvar name=sitename}" />
 <meta name="generator" content="Zikula - http://zikula.org" />
-<meta http-equiv="refresh" content="2;url={$url|varprepfordisplay}" />
+<meta http-equiv="refresh" content="2;url={$url|safetext}" />
 <title>{configgetvar name=sitename}</title>
 <link rel="stylesheet" href="{$stylesheet}" type="text/css" />
 <style type="text/css">
@@ -49,7 +49,7 @@ a:link {
 <body>
     <div>
         <h1>{$message}</h1>
-        <h2><a href="{$url|varprepfordisplay}">{$redirectmessage}</a></h2>
+        <h2><a href="{$url|safetext}">{$redirectmessage}</a></h2>
     </div>
 </body>
 </html>

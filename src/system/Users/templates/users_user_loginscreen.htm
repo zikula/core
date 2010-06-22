@@ -10,7 +10,7 @@
         <input id="users_authid" type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
         <fieldset>
             <legend>{gt text="User account"}</legend>
-            
+
             {if ($changepassword == 1) && ($authmodule == 'Users')}
             <p class="z-warningmsg">{gt text="Important: For security reasons, you must change your password before you can log in. Thank you for your understanding."}</p>
             {/if}
@@ -42,7 +42,7 @@
                 <label for="users_confirmnewpass">{gt text="New password (repeat for verification)"}</label>
                 <input id="users_confirmnewpass" type="password" name="confirmnewpass" size="20" maxlength="20" />
             </div>
-            
+
             <div class="z-formrow">
                 <label for="passreminder">{gt text="New password reminder"}</label>
                 <input type="text" id="passreminder" name="passreminder" value="" size="25" maxlength="128" />
@@ -66,8 +66,8 @@
         {gt text="Privacy Policy" assign=ppTitle}
         {modurl fqurl=true modname="Legal" type="user" func="main" assign=touUrl}
         {modurl fqurl=true modname="Legal" type="user" func="privacy" assign=ppUrl}
-        {gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">\'Terms of use\'</a>' tag1=$touUrl|varprepfordisplay assign=touURLString}
-        {gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">\'Privacy policy\'</a>' tag1=$ppUrl|varprepfordisplay assign=ppURLString}
+        {gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">\'Terms of use\'</a>' tag1=$touUrl|safetext assign=touURLString}
+        {gt text='<a href="%1$s" onclick="window.open(\'%1$s\');return false;">\'Privacy policy\'</a>' tag1=$ppUrl|safetext assign=ppURLString}
         {if $tou_active && $pp_active}
         {gt text='%1$s and %2$s' tag1=$touURLString tag2=$ppURLString assign=touppURLString}
         {gt text='%1$s and %2$s' tag1=$touString tag2=$ppString assign=touppTextString}

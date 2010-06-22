@@ -16,7 +16,7 @@
             <input type="hidden" name="do" value="yes" />
             <fieldset>
                 <legend>{gt text='Confirmation prompt'}</legend>
-                <input type="hidden" name="userid[]" value="{$userid|varprepfordisplay}" />
+                <input type="hidden" name="userid[]" value="{$userid|safetext}" />
                 <div class="z-formrow">
                     <label>{gt text='User name'}</label>
                     <span>{$uname}</span>

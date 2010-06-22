@@ -129,9 +129,9 @@ class Blocks_Installer extends Zikula_Installer
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
             // insert the links
             $menucontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{Admin:adminpanel:admin}', 'title' => $this->__('Go to the administration panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('User account panel'), 'url' => '{Users}', 'title' => $this->__('Go to your user account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{Users:logout}', 'title' => $this->__('Log out of your user account'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{Admin:adminpanel:admin}', 'title' => $this->__('Go to the site administration'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{Users:logout}', 'title' => $this->__('Log out of this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
         }
 
         ZLanguage::setLocale($saveLanguage);

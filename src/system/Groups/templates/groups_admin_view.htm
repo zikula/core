@@ -52,11 +52,11 @@
                     </span>
                     {* *}
                     <span id="groupdescription_{$group.gid}" class="z-itemcell z-w30">
-                        {$group.description|varprephtmldisplay}&nbsp;
+                        {$group.description|safehtml}&nbsp;
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupdescription_{$group.gid}" class="z-itemcell z-w30 z-hide">
-                        <textarea id="description_{$group.gid}" rows="2" cols="20" name="description_{$group.gid}">{$group.description|varprephtmldisplay}</textarea>
+                        <textarea id="description_{$group.gid}" rows="2" cols="20" name="description_{$group.gid}">{$group.description|safehtml}</textarea>
                     </span>
                     {* *}
                     <span id="groupstate_{$group.gid}" class="z-itemcell z-w10">
@@ -197,7 +197,7 @@
                 <td>{$useritem.userid}</td>
                 <td><strong>{$useritem.username|userprofilelink}</strong></td>
                 <td>{$useritem.gname}</td>
-                <td>{$useritem.application|varprephtmldisplay}</td>
+                <td>{$useritem.application|safehtml}</td>
                 <td>
                     <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='accept'}" title="{gt text="Accept"} {$useritem.username}">{img src=add_user.gif modname=core set=icons/extrasmall __alt="Accept"}</a>&nbsp;
                     <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='deny'}" title="{gt text="Deny"} {$useritem.username}">{img src=delete_user.gif modname=core set=icons/extrasmall __alt="Deny"}</a>

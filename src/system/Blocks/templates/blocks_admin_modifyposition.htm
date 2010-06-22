@@ -17,7 +17,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="blocks_positiondescription">{gt text="Description"}</label>
-                    <textarea name="position[description]" id="blocks_positiondescription" rows="5" cols="30">{$description|varprephtmldisplay}</textarea>
+                    <textarea name="position[description]" id="blocks_positiondescription" rows="5" cols="30">{$description|safehtml}</textarea>
                 </div>
                 <div class="z-formbuttons">
                     {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}

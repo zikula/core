@@ -42,10 +42,10 @@
         <tbody>
             {section name="usersitems" loop=$usersitems}
             <tr class="{cycle values='z-odd,z-even'}">
-                <td>{$usersitems[usersitems].uname|varprephtmldisplay}</td>
-                <td>{$usersitems[usersitems].uid|varprephtmldisplay}</td>
-                <td>{$usersitems[usersitems].user_regdate|varprephtmldisplay}</td>
-                <td>{$usersitems[usersitems].lastlogin|varprephtmldisplay}</td>
+                <td>{$usersitems[usersitems].uname|safehtml}</td>
+                <td>{$usersitems[usersitems].uid|safehtml}</td>
+                <td>{$usersitems[usersitems].user_regdate|safehtml}</td>
+                <td>{$usersitems[usersitems].lastlogin|safehtml}</td>
                 {if $canSeeGroups}
                 <td>
                     {foreach item=group from=$usersitems[usersitems].userGroupsView}
@@ -57,7 +57,7 @@
                 <td>
                     {assign var="options" value=$usersitems[usersitems].options}
                     {section name=options loop=$options}
-                    <a href="{$options[options].url|varprepfordisplay}">{img modname=core set=icons/extrasmall src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
+                    <a href="{$options[options].url|safetext}">{img modname=core set=icons/extrasmall src=$options[options].image title=$options[options].title alt=$options[options].title}</a>
                     {/section}
                 </td>
             </tr>

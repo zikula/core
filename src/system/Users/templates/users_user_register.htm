@@ -8,7 +8,7 @@
 {if !$regAllowed}
 <h3>{gt text="Sorry! New user registration is currently disabled."}</h3>
 <div class="z-warningmsg">
-    {gt text="Reason"}: {$regOffReason|varprepfordisplay}
+    {gt text="Reason"}: {$regOffReason|safetext}
 </div>
 {else}
 {if $userMustAccept}
@@ -134,7 +134,7 @@
         <fieldset>
             <legend>{gt text="Answer the security question (this prevents automated sign-ups by bots and scripts)"}</legend>
             <div class="z-formrow">
-                <label for="users_antispamanswer">{$antiSpamQuestion|varprephtmldisplay}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <label for="users_antispamanswer">{$antiSpamQuestion|safehtml}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_antispamanswer" name="antispamanswer"{if isset($errorFields.antispamanswer)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{$antispamanswer}" />
             </div>
         </fieldset>

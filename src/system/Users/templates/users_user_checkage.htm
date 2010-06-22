@@ -5,7 +5,7 @@
 
 {if !$regAllowed}
     <h3>{gt text="Sorry! New user registration is currently disabled."}</h3>
-    <div>{$regOffReason|varprepfordisplay}</div>
+    <div>{$regOffReason|safetext}</div>
 {else}
     <p>{gt text="You are required to be %s years of age or older to register for an account on this site. Please choose your case below:" tag1=$minimumAge}</p>
     <ul>

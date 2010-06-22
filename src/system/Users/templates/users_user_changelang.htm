@@ -11,9 +11,9 @@
             <select id="user_changelang" name="setsessionlanguage">
             {foreach key='code' item='language' from=$languages}
             {if $code eq $usrlang}
-            <option value="{$code}" selected="selected">{$language|varprepfordisplay}</option>
+            <option value="{$code}" selected="selected">{$language|safetext}</option>
             {else}
-            <option value="{$code}">{$language|varprepfordisplay}</option>
+            <option value="{$code}">{$language|safetext}</option>
             {/if}
             {/foreach}
         </select>

@@ -22,7 +22,7 @@
                 </div>
                 <div class="z-formrow">
                     <label>{gt text="Membership application"}</label>
-                    <span>{$application|varprephtmldisplay}</span>
+                    <span>{$application|safehtml}</span>
                 </div>
                 {if $action == "deny"}
                 <div class="z-formrow">

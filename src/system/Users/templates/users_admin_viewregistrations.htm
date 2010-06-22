@@ -28,8 +28,8 @@
                 {assign var='verificationSent' value=1}
             {/if}
             {/strip}<tr class="{cycle values='z-odd,z-even'}">
-                <td>{$reginfo.uname|varprepfordisplay}</td>
-                <td>{$reginfo.email|varprepfordisplay}</td>
+                <td>{$reginfo.uname|safetext}</td>
+                <td>{$reginfo.email|safetext}</td>
                 <td class="z-center">{if $reginfo.isapproved}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Approved' __alt='Approved'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending approval' __alt='Pending approval'}{/if}</td>
                 <td class="z-center">{if $reginfo.isverified}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}{elseif !$verificationSent}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent; awating approval' __alt='E-mail verification not sent; awating approval'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}{/if}</td>
                 {assign var="regactions" value=$actions.list[$reginfo.id]}

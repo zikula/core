@@ -1,6 +1,6 @@
 <td><strong>{$name}</strong></td>
 <td>{gt text=$typelbl}</td>
-<td>{$description|varprephtmldisplay}</td>
+<td>{$description|safehtml}</td>
 <td>{gt text=$statelbl}</td>
 <td>{$nbuser}</td>
 {if $nbumax eq 0}

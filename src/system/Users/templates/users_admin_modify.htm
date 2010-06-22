@@ -49,11 +49,11 @@
                 <legend>{gt text='Personal information'}</legend>
                 <div class="z-formrow">
                     <label for="users_uname">{gt text='User name'}</label>
-                    <input id="users_uname" type="text" name="uname" value="{$userinfo.uname|varprepfordisplay}" size="30" maxlength="60" />
+                    <input id="users_uname" type="text" name="uname" value="{$userinfo.uname|safetext}" size="30" maxlength="60" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_email">{gt text='E-mail address'}</label>
-                    <input id="users_email" type="text" name="email" value="{$userinfo.email|varprepfordisplay}" size="30" maxlength="60" />
+                    <input id="users_email" type="text" name="email" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
                 </div>
                 <div class="z-formrow">
                     <label for="password1">{gt text='Password'}</label>

@@ -9,7 +9,7 @@
         <ul id="nav">
             <li class="page_item"><a href="{homepage}">{gt text="Home"}</a></li>
             {if $loggedin eq true}
-            <li class="page_item"><a href="{modurl modname=Users}">{gt text='User account panel'}</a></li>
+            <li class="page_item"><a href="{modurl modname=Users}">{gt text='My account'}</a></li>
             {/if}
             {modavailable modname="Search" assign="modavail"}
             {if $modavail}

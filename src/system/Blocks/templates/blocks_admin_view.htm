@@ -45,28 +45,28 @@
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'bid';
                 {/php}
-		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Block ID"}</a></th>
+        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Block ID"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'title';
                 {/php}
-		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Title"}</a></th>
+        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Title"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'module_name';
                 {/php}
-		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Module"}</a></th>
+        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Module"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'bkey';
                 {/php}
-		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Name"}</a></th>
+        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Name"}</a></th>
                 <th>{gt text="Position(s)"}</th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'language'
                 {/php}
-		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Language"}</a></th>
+        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Language"}</a></th>
                 {php}
                   $this->_tpl_vars['filter']['sort'] = 'active'
                 {/php}
-		<th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="State"}</a></th>
+        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="State"}</a></th>
                 <th>{gt text="Actions"}</th>
             </tr>
         </thead>
@@ -118,9 +118,9 @@
         <tbody>
             {foreach from=$positions item=position}
             <tr class="{cycle values="z-odd,z-even" name=blockpositions}">
-                <td>{$position.name|varprephtmldisplay}</td>
-                <td>{$position.description|truncate:25|varprephtmldisplay}</td>
-                <td>&lt;!--[blockposition name={$position.name|varprephtmldisplay}]--&gt;</td>
+                <td>{$position.name|safehtml}</td>
+                <td>{$position.description|truncate:25|safehtml}</td>
+                <td>&lt;!--[blockposition name={$position.name|safehtml}]--&gt;</td>
                 <td>
                     {foreach item=option from=$position.options}
                     <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;

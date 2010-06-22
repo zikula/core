@@ -19,7 +19,7 @@
         <tr class="z-odd">
             <td><strong>{$group.name}</strong></td>
             <td>{$group.typelbl}</td>
-            <td style="text-align:left;">{$group.description|varprephtmldisplay}</td>
+            <td style="text-align:left;">{$group.description|safehtml}</td>
             <td>{$group.statelbl}</td>
             <td>{$group.nbuser}</td>
             <td>{$group.nbumax}</td>
