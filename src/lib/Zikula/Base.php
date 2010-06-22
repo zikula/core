@@ -101,6 +101,7 @@ abstract class Zikula_Base
         $this->eventManager = $eventManager;
         $this->options = $options;
         $this->_setup();
+        $this->_postSetup();
         
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
@@ -263,14 +264,27 @@ abstract class Zikula_Base
     /**
      * Post initialise.
      *
-     * This is run during a ModUtil::load().
+     * Run after construction.  Intended as a post construct hook for child classes.
      *
-     * @return mixed
+     * @return void
      */
     protected function postInitialize()
     {
 
     }
+
+    /**
+     * Post construct setup.
+     *
+     * Intended for base classes.
+     *
+     * @return void
+     */
+    protected function _postSetup()
+    {
+
+    }
+
 
     /**
      * Throw Zikula_Exception_NotFound exception.

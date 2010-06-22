@@ -26,16 +26,12 @@ abstract class Zikula_Controller extends Zikula_Base
     protected $renderer;
 
     /**
-     * Constructor.
+     * Post Setup hook.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param Zikula_EventManager   $eventManager   EventManager instance.
-     * @param array                 $options        Options (universal constructor).
+     * @return @void
      */
-    public function  __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager, array $options = array())
+    protected function _postSetup()
     {
-        parent::__construct($serviceManager, $eventManager, $options);
-
         // Create renderer object
         $this->setRenderer();
         $this->renderer->assign('controller', $this);
