@@ -71,9 +71,6 @@ abstract class Zikula_AuthApi extends Zikula_Api
      * unauthorized access. Custom authmodules must also ensure that they keep their mapping table in sync with
      * the user's account.
      *
-     * Note: (Specific to Zikula Users module authentication) This function uses mb_strtolower, and assumes that
-     * locale == charset.
-     *
      * @param array $args All arguments passed to this function.
      *                      array   authinfo    The authentication information uniquely associated with a user.
      *
