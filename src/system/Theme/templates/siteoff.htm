@@ -46,9 +46,9 @@ function toggleLoginBox()
 <body>
 <img src="images/icons/large/error.gif" alt="<?php __('The site is currently off-line.'); ?>" width="48" height="48" />
 <h1><?php echo __('The site is currently off-line.'); ?></h1>
-<h2><?php echo pnConfigGetVar('siteoffreason');?></h2> 
+<h2><?php echo (System::VERSION_NUM != System::getVar('Version_Num')) ? __('This site needs to be upgraded, please contact the system administrator.') : System::getVar('siteoffreason');?></h2>
 <a href="#" onclick="toggleLoginBox();" title="<?php echo __('Administrator log-in'); ?>"><?php echo __('Administrator log-in'); ?></a>
-<form id="login" action="<?php pnConfigGetVar('entrypoint', 'index.php'); ?>?module=Users&amp;func=siteofflogin" method="post">
+<form id="login" action="<?php System::getVar('entrypoint', 'index.php'); ?>?module=Users&amp;func=siteofflogin" method="post">
     <div>
         <p><?php echo __('An administrator log-in is required.'); ?>:</p>
         <div><label for="user"><?php echo __('User name'); ?>: </label><input id="user" type="text" name="user" size="14" maxlength="64" /></div>
