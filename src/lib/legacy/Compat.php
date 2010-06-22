@@ -3139,7 +3139,7 @@ function themesideblock($row)
 function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::loginUsing()')), 'STRICT');
-    return UserUtil::login('Users', array('loginid' => $uname, 'pass' => $pass), $rememberme, $checkPassword);
+    return UserUtil::loginUsing('Users', array('loginid' => $uname, 'pass' => $pass), $rememberme, $checkPassword);
 }
 
 /**
