@@ -296,4 +296,83 @@ class DoctrineUtil
         $tableName = self::decorateTableName($tableName);
         Doctrine_Manager::connection()->export->dropForeignKey($tableName, $definition['name']);
     }
+
+    /**
+     * Change database table using Doctrine dictionary method.
+     *
+     * @param string $table      Table key in pntables.
+     * @param array  $definition Table definition (default = null).
+     * @param array  $tabopt     Table options.
+     *
+     * @return boolean
+     */
+    public static function changeTable($tableName, $definition = null, $tabopt = null)
+    {
+        $connection = Doctrine_Manager::connection();
+
+        if (empty($definition) || !is_array($definition)) {
+            $definition = self::getTableDefinition($table);
+            if (!$definition) {
+                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', array($table)));
+            }
+        }
+
+        if (!isset($tabopt) || empty($tabopt)) {
+            $tabopt = self::getTableOptions();
+        }
+        $tabopt['constraints'] = self::getTableConstraints($table);
+
+        $tables = System::dbGetTables();
+        $tableName = $tables[$table];
+
+        if (empty($tableName)) {
+            throw new Exception(__f('%s does not point to a valid table definition', $table));
+        }
+
+        $metaColumns = self::metaColumnNames($table);
+
+        // first round - create any missing columns
+        foreach ($definition as $key => $columnDefinition) {
+            if (isset($metaColumns[$key])) {
+                continue;
+            }
+            $alterTableDefinition = array('add' => array($key => $columnDefinition));
+            try {
+                $connection->export->alterTable($tableName, $alterTableDefinition);
+            } catch (Exception $e) {
+                return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+            }
+        }
+
+        // second round, alter table structures to match new tables definition.
+        foreach ($definition as $key => $columnDefinition) {
+            $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
+            try {
+                $connection->export->alterTable($tableName, $alterTableDefinition);
+            } catch (Exception $e) {
+                return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+            }
+        }
+
+        // drop all indexes
+        $indexes = self::metaIndexes($table);
+        foreach ($indexes as $index) {
+            try {
+                $connection->export->dropIndex($tableName, $index);
+            } catch (Exception $e) {
+                return LogUtil::registerError(__('Error! Table update failed.') . ' ' . $e->getMessage());
+            }
+        }
+
+        // create additional indexes
+        $tableIndex = $table . '_column_idx';
+        if (array_key_exists($tableIndex, $tables) && is_array($tables[$tableIndex])) {
+            $indexes = self::metaIndexes($table);
+            foreach ($tables[$tableIndex] as $indexName => $indexDefinition) {
+                if (!isset($indexes[$indexName])) {
+                    self::createIndex($indexName, $table, $indexDefinition);
+                }
+            }
+        }
+    }
 }
