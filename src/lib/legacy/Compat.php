@@ -23,10 +23,6 @@ define('_MARKER_NONE', '&nbsp;&nbsp;');
 define('_REQUIRED_MARKER',  '<span style="font-size:larger;color:blue"><strong>*</strong></span>');
 define('_VALIDATION_MARKER', '<span style="font-size:larger;color:red"><strong>!</strong></span>');
 
-class ZFeed extends Zikula_Feed
-{
-}
-
 /**
  * Alias to the Renderer class for backward compatibility to Zikula 1.2.x.
  *

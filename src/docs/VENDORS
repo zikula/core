@@ -31,13 +31,6 @@ Doctrine 1.2.2
     Location in Zikula: lib/vendor/Doctrine
     Patch details: git master @ June 9th 2010 (pending 1.2.3 release 30th June).
 
-SimplePie
-    Vendor website: http://simplepie.org/
-    Downloaded from: http://github.com/rmccue/simplepie/downloads
-    License: Modified BSD
-    Location in Zikula: lib/vendor/SimplePie
-    Patch details: none
-
 RC4Crypt 3.2
     Vendor website: http://rc4crypt.devhome.org (defunct).
     Downloaded from: (unknown)

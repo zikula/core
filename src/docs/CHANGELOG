@@ -162,6 +162,7 @@ All templates now have $eventManager, $serverManager and $controller (being the 
 OO controllers now automatically creates renderer object and store in $renderer.
 Issue #1838 (DataUtil::formatForOS() not Windows file path compatible).
 New location for core stylesheet in /styles/core.css (Issue #2211).
+Deprecated ZFeed and SimplePie from the core.
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------
