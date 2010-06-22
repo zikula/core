@@ -211,6 +211,13 @@ class Users_Installer extends Zikula_Installer
         }
     }
 
+    /**
+     * Migrate from version 1.18 to 2.0.0
+     *
+     * @param string $oldversion The old version from which this upgrade is being processed.
+     *
+     * @return bool True on success; otherwise false.
+     */
     public function upgrade118Xto200($oldversion)
     {
         LogUtil::log('UPG118-200: Beginning 1.18 to 2.0.0 upgrade.', 'DEBUG');

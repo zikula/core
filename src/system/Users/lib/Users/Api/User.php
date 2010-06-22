@@ -227,47 +227,18 @@ class Users_Api_User extends Zikula_Api
     }
 
     /**
-     * Validate new user information entered by the user.
+     * Sends a notification e-mail of a specified type to a user or registrant.
      *
      * @param array $args All parameters passed to this function.
-     *                    $args['uname']        (string) The proposed user name for the new user record.
-     *                    $args['email']        (string) The proposed e-mail address for the new user record.
-     *                    $args['passreminder'] (string) The proposed password reminder entered by the user.
-     *                    $args['agreetoterms'] (int)    A flag indicating that the user has agreed to the site's terms and policies; 0 indicates no, otherwise yes.
+     *                      string  toAddress           The destination e-mail address.
+     *                      string  notificationType    The type of notification, converted to the name of a template
+     *                                                      in the form users_userapi_{type}mail.htm and/or .txt
+     *                      array   templateArgs        One or more arguments to pass to the renderer for use in the
+     *                                                      template.
+     *                      string  subject             The e-mail subject, overriding the template's subject.
      *
-     * @return array An array containing an error code and a result message. Possible error codes are:
-     *               -1=NoPermission 1=EverythingOK 2=NotaValidatedEmailAddr
-     *               3=NotAgreeToTerms 4=InValidatedUserName 5=UserNameTooLong
-     *               6=UserNameReserved 7=UserNameIncludeSpace 8=UserNameTaken
-     *               9=EmailTaken 11=User Agent Banned 12=Email Domain banned 18=no password reminder
-     *
+     * @return <type>
      */
-    public function checkUser($args)
-    {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Users_Api_Registration::getRegistrationErrors()')), 'STRICT');
-
-        $regErrorArgs = array();
-        $reginfo = array();
-        $reginfo['uname'] = $args['uname'];
-        $reginfo['email'] = $args['email'];
-        $reginfo['pass'] = $args['pass'];
-        $reginfo['passreminder'] = $args['passreminder'];
-        $reginfo['agreetoterms'] = $args['agreetoterms'];
-        $reginfo['dynadata'] = $args['dynadata'];
-        $regErrorArgs['reginfo'] = $reginfo;
-        $regErrorArgs['vemail'] = $args['vemail'];
-        $regErrorArgs['vpass'] = $args['vpass'];
-        $regErrorArgs['reg_answer'] = $args['reg_answer'];
-
-        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', $regErrorArgs);
-
-        if ($registrationErrors) {
-            return $registrationErrors['errorcode'];
-        } else {
-            return 1;
-        }
-    }
-
     public function sendNotification($args)
     {
         $toAddress = $args['toAddress'];
@@ -702,6 +673,11 @@ class Users_Api_User extends Zikula_Api
         return $item;
     }
 
+    /**
+     * Removes a change-of-email address verification code from the verifychg table.
+     *
+     * @return bool True.
+     */
     public function removeUserPreEmail()
     {
         if (!UserUtil::isLoggedIn()) {
@@ -742,6 +718,15 @@ class Users_Api_User extends Zikula_Api
         return $links;
     }
 
+    /**
+     * A convenience function for several operations that converts registration error messages
+     * into more easily displayable sets of data.
+     *
+     * @param array $args All parameters passed to the function.
+     *                      array   registrationErrors  The array of registration errors from getRegistrationErrors or
+     *                                                      one of its related functions.
+     * @return array Modified error information.
+     */
     public function processRegistrationErrorsForDisplay($args)
     {
         $errorFields = array();

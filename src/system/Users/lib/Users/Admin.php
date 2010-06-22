@@ -736,6 +736,11 @@ class Users_Admin extends Zikula_Controller
         return $renderer->fetch('users_admin_modify.htm');
     }
 
+    /**
+     * Allows an administrator to send a user his user name via email.
+     *
+     * @return bool True on success and redirect; otherwise false.
+     */
     public function lostUsername()
     {
         if (!SecurityUtil::confirmAuthKey('Users')) {
@@ -770,6 +775,11 @@ class Users_Admin extends Zikula_Controller
         return System::redirect(ModUtil::url('Users', 'admin', 'view'));
     }
 
+    /**
+     * Allows an administrator to send a user a password recovery verification code.
+     *
+     * @return bool True on success and redirect; otherwise false.
+     */
     public function lostPassword()
     {
         if (!SecurityUtil::confirmAuthKey('Users')) {
@@ -864,6 +874,18 @@ class Users_Admin extends Zikula_Controller
         return $renderer->fetch('users_admin_deleteusers.htm');
     }
 
+    /**
+     * Internal function to construct a list of various actions for a list of registrations appropriate
+     * for the current user.
+     *
+     * @param  array  $reglist      The list of registration records.
+     * @param  string $restoreView  Indicates where the calling function expects to return to; 'view' indicates
+     *                                  that the calling function expects to return to the registration list
+     *                                  and 'display' indicates that the calling function expects to return
+     *                                  to an individual registration record.
+     *
+     * @return array An array of valid action URLs for each registration record in the list.
+     */
     protected function getActionsForRegistrations(array $reglist, $restoreView='view')
     {
         $actions = array();
@@ -1105,8 +1127,9 @@ class Users_Admin extends Zikula_Controller
     }
 
     /**
-     * Display a form to edit one user account.
+     * Display a form to edit one tegistration account.
      *
+     * @return string|bool The rendered template; false on error.
      */
     public function modifyRegistration()
     {
@@ -1180,6 +1203,11 @@ class Users_Admin extends Zikula_Controller
         return $renderer->fetch('users_admin_modifyregistration.htm');
     }
 
+    /**
+     * Processes the results of modifyRegistration.
+     *
+     * @return bool True on success; otherwise false.
+     */
     public function updateRegistration()
     {
         // check permisisons
@@ -1231,6 +1259,12 @@ class Users_Admin extends Zikula_Controller
         return System::redirect($doneUrl);
     }
 
+    /**
+     * Renders and processes a form confirming an administrators desire to skip verification for
+     * a registration record, approve it and add it to the users table.
+     *
+     * @return string|bool The rendered template; true on success; otherwise false.
+     */
     public function verifyRegistration()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
@@ -1310,6 +1344,14 @@ class Users_Admin extends Zikula_Controller
         }
     }
 
+    /**
+     * Renders and processes a form confirming an administrators desire to approve a registration.
+     *
+     * If the registration record is also verified (or verification is not needed) a users table
+     * record is created.
+     *
+     * @return string|bool The rendered template; true on success; otherwise false.
+     */
     public function approveRegistration()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
@@ -1399,21 +1441,13 @@ class Users_Admin extends Zikula_Controller
     }
 
     /**
-     * Display a form to confirm the deletion of one user.
+     * Render and process a form confirming the administrator's rejection of a registration.
      *
-     * Available Get Parameters:
-     * - userid (numeric) The user id of the user to be deleted.
-     * - uname  (string)  The user name of the user to be deleted.
+     * If the denial is confirmed, the registration is deleted from the database.
      *
-     * @param array $args All arguments passed to the function.
-     *                    $args['userid'] (numeric) the user id of the user to be deleted. Used as a default value if the get parameter
-     *                      is not set. Allow the function to be called internally.
-     *                    $args['uname'] (string) the user name of the user to be deleted. Used as a default value if the get parameter
-     *                      is not set. Allow the function to be called internally.
-     *
-     * @return string HTML string containing the rendered template.
+     * @return string|bool The rendered template; true on success; otherwise false.
      */
-    public function denyRegistration($args)
+    public function denyRegistration()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();

@@ -41,6 +41,14 @@ class Users_Api_Registration extends Zikula_Api
         return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD);
     }
 
+    /**
+     * Related to getRegistrationErrors, returns error information related to a new or
+     * modified password.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return array An array of error information organized by registration form field.
+     */
     public function getPasswordErrors($args)
     {
         $reginfo = array();
@@ -97,6 +105,14 @@ class Users_Api_Registration extends Zikula_Api
         return $passwordErrors;
     }
 
+    /**
+     * Related to getRegistrationErrors, returns error information related to a new or
+     * modified e-mail address.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return array An array of error information organized by registration form field.
+     */
     public function getEmailErrors($args)
     {
         $reginfo = array();
@@ -256,31 +272,6 @@ class Users_Api_Registration extends Zikula_Api
             $registrationErrors = array_merge($registrationErrors, $emailErrors);
         }
 
-//        if (!isset($reginfo['email']) || empty($reginfo['email'])) {
-//            $registrationErrors['reginfo_email'][] = $this->__('You must provide an e-mail address.');
-//        } elseif (!System::varValidate($reginfo['email'], 'email')) {
-//            $registrationErrors['reginfo_email'][] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
-//        } elseif (ModUtil::getVar('Users', 'reg_uniemail', false)) {
-//            // Probably best not to use API calls to countAll
-//            $ucount = DBUtil::selectObjectCountByID ('users', $reginfo['email'], 'email');
-//            $rcount = DBUtil::selectObjectCountByID ('users_registration', $reginfo['email'], 'email');
-//
-//            if (($checkMode == 'modify') && ($rcount == 1)) {
-//                // Probably best not to use an API call
-//                $duplicateRegistration = DBUtil::selectObjectByID('users_registration', $reginfo['email'], 'email');
-//                if ($reginfo['id'] == $duplicateRegistration['id']) {
-//                    $rcount = 0;
-//                }
-//            }
-//
-//            if ($ucount || $rcount) {
-//                $registrationErrors['reginfo_email'][] = $this->__('The e-mail address you entered has already been registered.');
-//            }
-//        } elseif ($reginfo['email'] !== $emailAgain) {
-//            $registrationErrors['emailagain'][] = $this->__('You did not enter the same e-mail address in each e-mail address field. '
-//                                . 'Please enter the same e-mail address once in each field (this is required for verification).');
-//        }
-
         if ($checkMode != 'modify') {
             $verificationAndPassword = ModUtil::getVar('Users', 'reg_verifyemail', UserUtil::VERIFY_NO);
             if ($verificationAndPassword == UserUtil::VERIFY_SYSTEMPWD) {
@@ -296,44 +287,6 @@ class Users_Api_Registration extends Zikula_Api
                 if (!empty($passwordErrors)) {
                     $registrationErrors = array_merge($registrationErrors, $passwordErrors);
                 }
-
-//                $minPasswordLength = ModUtil::getVar('Users', 'minpass', 5);
-//                if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
-//                    $registrationErrors['reginfo_pass'][] = $this->__('Please enter a password.');
-//                } elseif (isset($reginfo['pass']) && (strlen($reginfo['pass']) < $minPasswordLength)) {
-//                    $registrationErrors['reginfo_pass'][] = $this->_fn(
-//                        'Your password must be at least %s character long',
-//                        'Your password must be at least %s characters long',
-//                        $minPasswordLength,
-//                        $minPasswordLength
-//                    );
-//                } elseif ($reginfo['pass'] !== $passwordAgain) {
-//                    $registrationErrors['passagain'][] = $this->__('You did not enter the same password in each password field. '
-//                                        . 'Please enter the same password once in each password field (this is required for verification).');
-//                }
-//
-//                if (!$isAdminOrSubAdmin) {
-//                    if (!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) {
-//                        $registrationErrors['reginfo_passreminder'][] = $this->__('Please enter a password reminder.');
-//                    } else {
-//                        $testPass = mb_strtolower(trim($reginfo['pass']));
-//                        $testPassreminder = mb_strtolower(trim($reginfo['passreminder']));
-//
-//                        if ((strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false)) {
-//                            $registrationErrors['reginfo_passreminder'][] = $this->__('You cannot include your password in your password reminder.');
-//                        } else {
-//                            // See if they included their password with extra character in the middle--only tests if they included non alpha-numerics in the middle.
-//                            // Removes non-alphanumerics (mb-safe), and then checks to see that the strings are still of sufficient length to have a reasonable test.
-//                            $testPass = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPass));
-//                            $testPassreminder = preg_replace('/[^\p{L}\p{N}]+/', '', preg_quote($testPassreminder));
-//                            if (!empty($testPass) && !empty($testPassreminder) && (strlen($testPass) >= $minPasswordLength)
-//                                && (strlen($testPassreminder) >= strlen($testPass)) && (stristr($testPassreminder, $testPass) !== false))
-//                            {
-//                                $registrationErrors['reginfo_passreminder'][] = $this->__('Your password reminder is too similar to your password.');
-//                            }
-//                        }
-//                    }
-//                }
             }
         }
 
@@ -1051,6 +1004,13 @@ class Users_Api_Registration extends Zikula_Api
         return DBUtil::selectObjectCount('users_registration', $where);
     }
 
+    /**
+     * Processes the results of a registration modify() operation.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return bool True on success; otherwise false.
+     */
     public function update($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
@@ -1095,6 +1055,13 @@ class Users_Api_Registration extends Zikula_Api
         }
     }
 
+    /**
+     * Processes a delete() operation for registration records.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return bool True on success; otherwise false.
+     */
     public function remove($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
@@ -1136,6 +1103,13 @@ class Users_Api_Registration extends Zikula_Api
         DBUtil::deleteWhere('users_registration', $where);
     }
 
+    /**
+     * Creates, saves and sends a registration e-mail address verification code.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return bool True on success; otherwise false.
+     */
     public function sendVerificationCode($args)
     {
         // In the future, it is possible we will add a feature to allow a newly registered user to resend
@@ -1229,6 +1203,15 @@ class Users_Api_Registration extends Zikula_Api
         }
     }
 
+    /**
+     * Processes the results of a registration e-mail verification.
+     *
+     * If the registration is also approved (or does not need it) a users table record is created.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return bool True on success; otherwise false.
+     */
     public function verify($args)
     {
         if (isset($args['reginfo'])) {
@@ -1281,6 +1264,16 @@ class Users_Api_Registration extends Zikula_Api
         }
     }
 
+    /**
+     * Approves a registration.
+     *
+     * If the registration is also verified (or does not need it) then a new users table record
+     * is created.
+     *
+     * @param array $args All parameters passed to this function.
+     *
+     * @return bool True on success; otherwise false.
+     */
     public function approve($args)
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {

@@ -562,6 +562,15 @@ class Users_User extends Zikula_Controller
         }
     }
 
+    /**
+     * Render and process a password-reset, showing the password reminder if available.
+     *
+     * This function, as a result of successfully providing a verification code, will display
+     * to the user his user name and password reminder, and give him the opportunity to reset his
+     * password.
+     *
+     * @return string|bool The rendered template; true on redirect; false on error.
+     */
     public function resetPassword()
     {
         if (!SecurityUtil::confirmAuthKey('Users', 'passwordresetauthid')) {
@@ -861,6 +870,19 @@ class Users_User extends Zikula_Controller
         return true;
     }
 
+    /**
+     * Render and process a registration e-mail verification code.
+     *
+     * This function will render and display to the user a form allowing him to enter
+     * a verification code sent to him as part of the registration process. If the user's
+     * registration does not have a password set (e.g., if an admin created the registration),
+     * then he is prompted for it at this time. This function also processes the results of
+     * that form, setting the registration record to verified (if appropriate), saving the password
+     * (if provided) and if the registration record is also approved (or does not require it)
+     * then a new user account is created.
+     *
+     * @return string|bool The rendered template; true on redirect; false on error.
+     */
     public function verifyRegistration()
     {
         if (UserUtil::isLoggedIn()) {
@@ -1222,18 +1244,6 @@ class Users_User extends Zikula_Controller
             return System::redirect(ModUtil::url('Users', 'user', 'changePassword'));
         }
 
-//        $minimumPasswordLength = ModUtil::getVar('Users', 'minpass');
-//        if (strlen($newPassword) < $minimumPasswordLength) {
-//            return LogUtil::registerError($this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minimumPasswordLength, $minimumPasswordLength),
-//                null, ModUtil::url('Users', 'user', 'changePassword'));
-//        }
-//
-//        // check if the new password and the confirmation are identical
-//        if ($newPassword != $newPasswordAgain) {
-//            return LogUtil::registerError($this->__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.'),
-//                null, ModUtil::url('Users', 'user', 'changePassword'));
-//        }
-//
         // set the new password
         if (UserUtil::setPassword($newPassword)) {
             if (!UserUtil::setVar('passreminder', $newPasswordReminder)) {
@@ -1315,31 +1325,6 @@ class Users_User extends Zikula_Controller
             }
             return System::redirect(ModUtil::url('Users', 'user', 'changeEmail'));
         }
-
-//        // check email related errors only
-//        if (in_array($checkuser, array(-1, 2, 9, 11, 12))) {
-//            switch($checkuser)
-//            {
-//                case -1:
-//                    $message = $this->__('Sorry! You have not been granted access to this module.');
-//                    break;
-//                case 2:
-//                    $message =  $this->__('Sorry! The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons. Please correct your entry and try again.');
-//                    break;
-//                case 9:
-//                    $message =  $this->__('Sorry! This e-mail address has already been registered, and it cannot be used again for creating another account.');
-//                    break;
-//                case 11:
-//                    $message =  $this->__('Sorry! Your user agent is not accepted for registering an account on this site.');
-//                    break;
-//                case 12:
-//                    $message =  $this->__('Sorry! E-mail addresses from the domain you entered are not accepted for registering an account on this site.');
-//                    break;
-//                default:
-//                    $message =  $this->__('Sorry! You have not been granted access to this module.');
-//            } // switch
-//            return LogUtil::registerError($message, null, ModUtil::url('Users', 'user', 'changeEmail'));
-//        }
 
         // save the provisional email until confimation
         $verificationSent = ModUtil::apiFunc('Users', 'user', 'savePreEmail', array('newemail' => $newemail));

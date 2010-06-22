@@ -20,42 +20,6 @@
 class Users_Api_Admin extends Zikula_Api
 {
     /**
-     * Find whether the user exists.
-     *
-     * @param array $args All parameters passed to the function.
-     *                    $args['chng_user'] (string|numeric) Either a user name or a user id for which to search.
-     *
-     * @return bool True if the specified user exists, otherwise false.
-     */
-    public function userExists($args)
-    {
-        // Do not check for is_numeric() here to determine if the chng_user is a user name or a user id.
-        // Some sites might have all numeric user names (e.g., a membership number). Since there is no way to tell if the
-        // parameter should be treated as a user name or a user id, check both defaulting to user name first.
-        $user = DBUtil::selectObjectByID('users', $args['chng_user'], 'uname');
-        if (!$user) {
-            $user = DBUtil::selectObjectByID('users', $args['chng_user'], 'uid');
-        }
-
-        return (boolean)$user;
-    }
-
-    /**
-     * Get a list of user groups. DO NOT confuse this function with users_user_getusergroups.
-     *
-     * @deprecated since 1.3.0
-     * @see Groups_user_getall()
-     *
-     * @return array|bool An array of user groups ordered by name; false on error.
-     */
-    public function getUserGroups()
-    {
-        LogUtil::log($this->__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'Groups_userapi_getall')), 'STRICT');
-        // Note: the original code returned an array of ALL groups ordered by name. Do not confuse this with Groups_userapi_getusergroups!
-        return ModUtil::apiFunc('Groups', 'user', 'getAll');
-    }
-
-    /**
      * Find users.
      *
      * @param array $args All parameters passed to this function.
