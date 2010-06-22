@@ -252,8 +252,8 @@ class FileUtil
             return true;
         }
         
-        $pPath = realpath(DataUtil::formatForOS(dirname($path), $absolute));
-        return mkdir($pPath, $mode, true);
+        $path = DataUtil::formatForOS($path, $absolute);
+        return mkdir($path, $mode, true);
     }
 
     /**
