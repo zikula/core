@@ -832,12 +832,12 @@ class SecurityCenter_Api_User extends Zikula_Api
     {
         $purifierDefaultConfig = HTMLPurifier_Config::createDefault();
         $purifierDefaultConfigValues = $purifierDefaultConfig->def->defaults;
-
+        
         $config = array();
 
         foreach($purifierDefaultConfigValues as $key => $val)
         {
-            $keys = explode(".", $key);
+            $keys = explode(".", $key, 2);
 
             $config[$keys[0]][$keys[1]] = $val;
         }
