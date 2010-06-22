@@ -253,6 +253,10 @@ function _upg_upgrademodules($username, $password)
             $newmods[] = $mod;
         }
     }
+
+    // reset for User module
+    $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] == false;
+
     $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
     if (is_array($newmods) && !empty($newmods)) {
         foreach ($newmods as $newmod) {
