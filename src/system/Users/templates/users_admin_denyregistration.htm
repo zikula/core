@@ -2,7 +2,7 @@
 {include file='users_admin_menu.htm'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon"><img src="system/Users/images/admin.gif" alt="{$templatetitle}" /></div>
+    <div class="z-adminpageicon">{img modname='Users' src='admin.gif' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
@@ -34,7 +34,7 @@
                 <div class="z-formnote">{gt text='Note: The reason is sent in the user notification e-mail. All formatting, including extra spaces and blank lines are ignored.'}</div>
             </div>
         </fieldset>
-        <div class="z-buttons z-formbuttons">
+        <div class="z-formbuttons z-buttons">
             {button id='confirm' type='submit' src='delete_user.gif' set='icons/extrasmall' __alt='Delete registration' __title='Delete registration' __text='Delete registration'}
             <a href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>

@@ -95,11 +95,11 @@
             {modcallhooks hookobject='item' hookaction='modify' hookid=$userinfo.uid module='Users'}
 
             <div class="z-center z-buttons">
-                {button src='button_ok.gif' set='icons/small' __alt='Save' __title='Save' __text='Save'}
-                <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-                <a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userid}">{img modname='core' set='icons/small' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>
-                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/small' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
-                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/small' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
+                {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userid}">{img modname='core' set='icons/extrasmall' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
+                <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
             </div>
         </div>
     </form>

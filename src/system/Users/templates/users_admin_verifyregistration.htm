@@ -2,7 +2,7 @@
 {include file='users_admin_menu.htm'}
 
 <div class="z-admincontainer">
-    <div class="z-adminpageicon"><img src="system/Users/images/admin.gif" alt="{$templatetitle}" /></div>
+    <div class="z-adminpageicon">{img modname='Users' src='admin.gif' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
@@ -14,7 +14,7 @@
         <input type="hidden" id="users_force" name="force" value="{$force}" />
         <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview}" />
         <input type="hidden" id="users_confirmed" name="confirmed" value=true />
-        <div class="z-buttons z-formbuttons">
+        <div class="z-formbuttons z-buttons">
             {strip}
             {assign var="regactions" value=$actions.list[$reginfo.id]}
             {gt assign='titleIfSent' text='Resend verification code'}
