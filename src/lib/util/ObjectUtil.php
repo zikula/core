@@ -18,12 +18,12 @@
 class ObjectUtil
 {
     /**
-     * Add standard PN architecture fields to the table definition
+     * Add standard PN architecture fields to the table definition.
      *
-     * @param columns The column list from the PNTables structure for the current table
-     * @param col_prefix The column prefix
+     * @param array  &$columns   The column list from the PNTables structure for the current table.
+     * @param string $col_prefix The column prefix.
      *
-     * @return Nothing, column array is altered in place
+     * @return Nothing, column array is altered in place.
      */
     public static function addStandardFieldsToTableDefinition(&$columns, $col_prefix)
     {
@@ -45,9 +45,9 @@ class ObjectUtil
     }
 
     /**
-     * Generate the SQL to create the standard PN architecture fields
+     * Generate the SQL to create the standard PN architecture fields.
      *
-     * @param columns The column list from the PNTables structure for the current table
+     * @param array $columns The column list from the PNTables structure for the current table.
      *
      * @return The generated SQL string
      */
@@ -63,11 +63,11 @@ class ObjectUtil
     }
 
     /**
-     * Generate the ADODB DD field descruptors for the standard PN architecture fields
+     * Generate the ADODB DD field descruptors for the standard PN architecture fields.
      *
-     * @param columns The column list from the PNTables structure for the current table
+     * @param array &$columns The column list from the PNTables structure for the current table.
      *
-     * @return The modified list of ADODB DD strings
+     * @return void
      */
     public static function addStandardFieldsToTableDataDefinition(&$columns)
     {
@@ -81,9 +81,9 @@ class ObjectUtil
     }
 
     /**
-     * Generate the ADODB datadict entries to create the standard PN architecture fields
+     * Generate the ADODB datadict entries to create the standard PN architecture fields.
      *
-     * @param $table  The table to add standard fields using ADODB dictionary method
+     * @param string $table The table to add standard fields using ADODB dictionary method.
      *
      * @return The generated SQL string
      */
@@ -102,11 +102,11 @@ class ObjectUtil
     }
 
     /**
-     * Set the standard PN architecture fields for object creation/insert
+     * Set the standard PN architecture fields for object creation/insert.
      *
-     * @param object         The object we need to set the standard fields on
-     * @param preserveValues whether or not to preserve value fields which have a valid value set (optional) (default=false)
-     * @param idcolumn       The column name of the primary key column (optional) (default='id')
+     * @param array   &$obj           The object we need to set the standard fields on.
+     * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false).
+     * @param string  $idcolumn       The column name of the primary key column (optional) (default='id').
      *
      * @return Nothing, object is altered in place
      */
@@ -134,10 +134,10 @@ class ObjectUtil
     }
 
     /**
-     * Set the standard PN architecture fields to sane values for an object update
+     * Set the standard PN architecture fields to sane values for an object update.
      *
-     * @param object         The object we need to set the standard fields on
-     * @param preserveValues whether or not to preserve value fields which have a valid value set (optional) (default=false)
+     * @param array   &$obj           The object we need to set the standard fields on.
+     * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false).
      *
      * @return Nothing, object is altered in place
      */
@@ -159,9 +159,9 @@ class ObjectUtil
     }
 
     /**
-     * Remove the standard fields from the given object
+     * Remove the standard fields from the given object.
      *
-     * @param object    The object to operate on
+     * @param array &$obj The object to operate on.
      *
      * @return Nothing, object is altered in place
      */
@@ -177,11 +177,11 @@ class ObjectUtil
     }
 
     /**
-     * If the specified field is set return it, otherwise return default
+     * If the specified field is set return it, otherwise return default.
      *
-     * @param object     The object to get the field from
-     * @param field      The field to get
-     * @param default     The default value to return if the field is not set on the object (default=null) (optional)
+     * @param array  $obj     The object to get the field from.
+     * @param string $field   The field to get.
+     * @param mixed  $default The default value to return if the field is not set on the object (default=null) (optional).
      *
      * @return The object field value or the default
      */
@@ -197,7 +197,7 @@ class ObjectUtil
     /**
      * Create an object of the reuqested type and set the cr_date and cr_uid fields.
      *
-     * @param $type     The type of the object to create
+     * @param string $type The type of the object to create.
      *
      * @return The newly created object
      */
@@ -217,10 +217,10 @@ class ObjectUtil
     }
 
     /**
-     * Diff 2 objects/arrays
+     * Diff 2 objects/arrays.
      *
-     * @param object1     The first array/object
-     * @param object2     The second object/array
+     * @param array $obj1 The first array/object.
+     * @param array $obj2 The second object/array.
      *
      * @return The difference between the two objects
      */
@@ -237,12 +237,12 @@ class ObjectUtil
     }
 
     /**
-     * Provide an informative extended diff array when comparing 2 arrays
+     * Provide an informative extended diff array when comparing 2 arrays.
      *
-     * @param a1        Array 1
-     * @param a2        Array 2
-     * @param detail    whether or not to give detailed update info (optional (default=false)
-     * @param recurse   whether or not to recurse (optional) (default=true)
+     * @param array   $a1      Array 1.
+     * @param array   $a2      Array 2.
+     * @param boolean $detail  Whether or not to give detailed update info (optional (default=false).
+     * @param boolean $recurse Whether or not to recurse (optional) (default=true).
      *
      * @return A data array containing the diff results
      */
@@ -287,13 +287,14 @@ class ObjectUtil
 
     /**
      * Fixes the sequence numbers (column position) in a given table.
+     * 
      * Needed, if an object was added or deleted in a table using the
      * arrow up/down feature.
      *
-     * @param tablename   The tablename key for the PNTables structure
-     * @param field       The name of the field we wish to resequence (optional) (default='position')
-     * @param float       whether or not to use a float (optional) (default=false (uses integer))
-     * @param idcolumn    The column which contains the unique ID
+     * @param string  $tablename The tablename key for the PNTables structure.
+     * @param string  $field     The name of the field we wish to resequence (optional) (default='position').
+     * @param boolean $float     Whether or not to use a float (optional) (default=false (uses integer)).
+     * @param string  $idcolumn  The column which contains the unique ID.
      *
      * @return nothing
      */
@@ -324,16 +325,17 @@ class ObjectUtil
     }
 
     /**
-     * Increments or decremnts a sequence number (column position) in a table for
-     * a given ID. If exists, it swaps the sequence of the field above or down.
+     * Increments or decremnts a sequence number (column position) in a table for a given ID.
      *
-     * @param object     The object we wish to increment or decrement
-     * @param tablename  The tablename key for the PNTables structure
-     * @param direction  whether we want to increment or decrement the position of the object. Possible values are 'up' (default) and 'down'
-     * @param field      The name of the field we wish to resequence
-     * @param idcolumn   The column which contains the unique ID
-     * @param field2     An additional field to consider in the where-clause
-     * @param value2     An additional value to consider in the where-clause
+     * If exists, it swaps the sequence of the field above or down.
+     *
+     * @param array  $obj       The object we wish to increment or decrement.
+     * @param string $tablename The tablename key for the PNTables structure.
+     * @param string $direction Whether we want to increment or decrement the position of the object. Possible values are 'up' (default) and 'down'.
+     * @param string $field     The name of the field we wish to resequence.
+     * @param string $idcolumn  The column which contains the unique ID.
+     * @param string $field2    An additional field to consider in the where-clause.
+     * @param string $value2    An additional value to consider in the where-clause.
      *
      * @return true/false on success/failure
      */
@@ -398,11 +400,11 @@ class ObjectUtil
     }
 
     /**
-     * Retrieve the attribute maps for the specified object
+     * Retrieve the attribute maps for the specified object.
      *
-     * @param object     The object whose attribute we wish to retrieve
-     * @param type       The type of the given object
-     * @param idcolumn   The column which holds the ID value (optional) (default='id')
+     * @param array  $obj      The object whose attribute we wish to retrieve.
+     * @param string $type     The type of the given object.
+     * @param string $idcolumn The column which holds the ID value (optional) (default='id').
      *
      * @return The object attribute (array)
      */
@@ -433,11 +435,11 @@ class ObjectUtil
     }
 
     /**
-     * Expand the given object with it's attributes
+     * Expand the given object with it's attributes.
      *
-     * @param object     The object whose attribute we wish to retrieve
-     * @param type       The type of the given object
-     * @param idcolumn   The column which holds the ID value (optional) (default='id')
+     * @param array  &$obj     The object whose attribute we wish to retrieve.
+     * @param string $type     The type of the given object.
+     * @param string $idcolumn The column which holds the ID value (optional) (default='id').
      *
      * @return The object which has been altered in place
      */
@@ -460,11 +462,12 @@ class ObjectUtil
     }
 
     /**
-     * Store the attributes for the given objects.
+     * Store the attributes for the given object.
      *
-     * @param object     The object whose attributes we wish to store
-     * @param type       The type of the given object
-     * @param idcolumn   The idcolumn of the object (optional) (default='id')
+     * @param array   $obj            The object whose attributes we wish to store.
+     * @param string  $type           The type of the given object.
+     * @param string  $idcolumn       The idcolumn of the object (optional) (default='id').
+     * @param boolean $wasUpdateQuery True after an update and false after an insert.
      *
      * @return true/false on success/failure
      */
@@ -525,14 +528,14 @@ class ObjectUtil
     }
 
     /**
-     * update the attributes for the given objects.
+     * Update the attributes for the given objects.
+     *
+     * @param array   $obj      The object whose attributes we wish to store.
+     * @param string  $type     The type of the given object.
+     * @param string  $idcolumn The idcolumn of the object (optional) (default='id').
+     * @param boolean $force    Flag to force the attribute update.
      *
      * @todo: check if the function can supersede storeObjectAttributes()
-     *
-     * @param obj        The object whose attributes we wish to store
-     * @param type       The type of the given object
-     * @param idcolumn   The idcolumn of the object (optional) (default='id')
-     * @param force      Flag to force the attribute update
      *
      * @return true/false on success/failure
      */
@@ -587,9 +590,9 @@ class ObjectUtil
     /**
      * Delete the attributes for the given object.
      *
-     * @param object     The object whose attributes we wish to store
-     * @param type       The type of the given object
-     * @param idcolumn   The idcolumn of the object (optional) (default='id')
+     * @param array  &$obj     The object whose attributes we wish to store.
+     * @param string $type     The type of the given object.
+     * @param string $idcolumn The idcolumn of the object (optional) (default='id').
      *
      * @return the SQL result of the delete operation
      */
@@ -630,9 +633,9 @@ class ObjectUtil
     /**
      * Delete a single attribute for the given object.
      *
-     * @param object     The object whose attributes we wish to store
-     * @param type       The type of the given object
-     * @param idcolumn   The idcolumn of the object (optional) (default='id')
+     * @param integer $objID         The object whose attributes we wish to store.
+     * @param string  $type          The type of the given object.
+     * @param string  $attributename The name of the attribute to delete.
      *
      * @return the SQL result of the delete operation
      */
@@ -663,13 +666,13 @@ class ObjectUtil
                                                    . $column['object_type'] . ' = \'' . DataUtil::formatForStore($type) . '\' AND '
                                                    . $column['object_id'] . ' = \'' . DataUtil::formatForStore($objID) . '\'';
 
-        return (bool) DBUtil::executeSQL($sql);
+        return (bool)DBUtil::executeSQL($sql);
     }
 
     /**
-     * Delete the all attributes for the given tab
+     * Delete the all attributes for the given tab.
      *
-     * @param type       The type/tablename we wish to delete attributes for
+     * @param string $type The type/tablename we wish to delete attributes for.
      *
      * @return the SQL result of the delete operation
      */
@@ -686,9 +689,9 @@ class ObjectUtil
     }
 
     /**
-     * Retrieve a list of attributes defined in the system
+     * Retrieve a list of attributes defined in the system.
      *
-     * @param sort         The column to sort by (optional) (default='attribute_name')
+     * @param string $sort The column to sort by (optional) (default='attribute_name').
      *
      * @return the system attributes field array
      */
@@ -708,9 +711,9 @@ class ObjectUtil
     }
 
     /**
-     * Retrieve the count for a given attribute name
+     * Retrieve the count for a given attribute name.
      *
-     * @param atrName     The name of the attribute
+     * @param string $atrName The name of the attribute.
      *
      * @return The count for the given attribute
      */
@@ -724,11 +727,11 @@ class ObjectUtil
     }
 
     /**
-     * Ensure that a meta-data object has reasonable default values
+     * Ensure that a meta-data object has reasonable default values.
      *
-     * @param obj        The object we wish to store metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array  &$obj      The object we wish to store metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
      *
      * @return Altered meta object (meta object is also altered in place)
      */
@@ -754,11 +757,11 @@ class ObjectUtil
     }
 
     /**
-     * Insert a meta data object
+     * Insert a meta data object.
      *
-     * @param obj        The object we wish to store metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array  &$obj      The object we wish to store metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
      *
      * @return The result from the metadata insert operation
      */
@@ -775,11 +778,11 @@ class ObjectUtil
     }
 
     /**
-     * Update a meta data object
+     * Update a meta data object.
      *
-     * @param obj        The object we wish to store metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array  &$obj      The object we wish to store metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
      *
      * @return The result from the metadata insert operation
      */
@@ -798,11 +801,11 @@ class ObjectUtil
     }
 
     /**
-     * Delete a meta data object
+     * Delete a meta data object.
      *
-     * @param obj        The object we wish to delete metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array  &$obj      The object we wish to delete metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
      *
      * @return The result from the metadata insert operation
      */
@@ -826,15 +829,15 @@ class ObjectUtil
             $rc = DBUtil::deleteObject(array(), 'objectdata_meta', $where);
         }
 
-        return (boolean) $rc;
+        return (boolean)$rc;
     }
 
     /**
-     * Retrieve object meta data
+     * Retrieve object meta data.
      *
-     * @param obj        The object we wish to retrieve metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array  &$obj      The object we wish to retrieve metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
      *
      * @return The object with the meta data filled in
      */
@@ -857,11 +860,11 @@ class ObjectUtil
     }
 
     /**
-     * Expand an object with it's Meta data
+     * Expand an object with it's Meta data.
      *
-     * @param obj        The object we wish to get the metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array  &$obj      The object we wish to get the metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
      *
      * @return The object with the meta data filled in. The object passed in is altered in place
      */
@@ -881,11 +884,12 @@ class ObjectUtil
     }
 
     /**
-     * Insert a categorization data object
+     * Insert a categorization data object.
      *
-     * @param obj        The object we wish to store categorization data for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array   $obj            The object we wish to store categorization data for.
+     * @param string  $tablename      The object's tablename.
+     * @param string  $idcolumn       The object's idcolumn (optional) (default='id').
+     * @param boolean $wasUpdateQuery True after an update and false after an insert.
      *
      * @return The result from the category data insert operation
      */
@@ -956,15 +960,15 @@ class ObjectUtil
             }
         }
 
-        return (boolean) $res;
+        return (boolean)$res;
     }
 
     /**
-     * Delete a meta data object
+     * Delete a meta data object.
      *
-     * @param obj        The object we wish to delete categorization data for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='obj_id')
+     * @param array  $obj       The object we wish to delete categorization data for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='obj_id').
      *
      * @return The result from the metadata insert operation
      */
@@ -975,15 +979,15 @@ class ObjectUtil
         }
 
         $where = "cmo_table='" . DataUtil::formatForStore($tablename) . "' AND cmo_obj_id='" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND cmo_obj_idcolumn='" . DataUtil::formatForStore($idcolumn) . "'";
-        return (boolean) DBUtil::deleteWhere('categories_mapobj', $where);
+        return (boolean)DBUtil::deleteWhere('categories_mapobj', $where);
     }
 
     /**
-     * Retrieve object category data
+     * Retrieve object category data.
      *
-     * @param obj        The object we wish to retrieve metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
+     * @param array  $obj       The object we wish to retrieve metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
      *
      * @return The object with the meta data filled in
      */
@@ -1015,12 +1019,13 @@ class ObjectUtil
     }
 
     /**
-     * Retrieve object category data
+     * Retrieve object category data.
      *
-     * @param obj        The object we wish to retrieve metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
-     * @param assocKey   The field to use for the associative array index (optional) (default='id')
+     * @param array   $obj                   The object we wish to retrieve metadata for.
+     * @param string  $tablename             The object's tablename.
+     * @param string  $idcolumn              The object's idcolumn (optional) (default='id').
+     * @param string  $assocKey              The field to use for the associative array index (optional) (default='id').
+     * @param boolean $enablePermissionCheck Whether or not to enable the permission filter (optional) (default=true).
      *
      * @return The object with the meta data filled in
      */
@@ -1046,12 +1051,13 @@ class ObjectUtil
     }
 
     /**
-     * Expand an object array with it's category data
+     * Expand an object array with it's category data.
      *
-     * @param objArray   The object array we wish to get the category for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
-     * @param field      The category field to return the object's category info (optional) (default='id')
+     * @param array  &$objArray The object array we wish to get the category for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
+     * @param string $field     The category field to return the object's category info (optional) (default='id').
+     * @param string $locale    Locale.
      *
      * @return The object with the meta data filled in. The object passed in is altered in place
      */
@@ -1137,13 +1143,12 @@ class ObjectUtil
     }
 
     /**
-     * Expand an object with it's category data
+     * Expand an object with it's category data.
      *
-     * @param obj        The object we wish to get the metadata for
-     * @param tablename  The object's tablename
-     * @param idcolumn   The object's idcolumn (optional) (default='id')
-     * @param field      The category field to return the object's category info (optional) (default='id')
-     * @param assocKey   The field to use for the associative array index (optional) (default='id')
+     * @param array  &$obj      The object we wish to get the metadata for.
+     * @param string $tablename The object's tablename.
+     * @param string $idcolumn  The object's idcolumn (optional) (default='id').
+     * @param string $assocKey  The field to use for the associative array index (optional) (default='id').
      *
      * @return The object with the meta data filled in. The object passed in is altered in place
      */
@@ -1169,11 +1174,11 @@ class ObjectUtil
     }
 
     /**
-     * Post-process an object-array's expanded categories to generate relative paths
+     * Post-process an object-array's expanded categories to generate relative paths.
      *
-     * @param objArray    The object array we wish to post-process
-     * @param rootCatID   The root category ID for the relative path creation
-     * @param includeRoot whether or not to include the root folder in the relative path (optional) (default=false)
+     * @param array   &$objArray   The object array we wish to post-process.
+     * @param array   $rootCats    The root category ID for the relative path creation.
+     * @param boolean $includeRoot Whether or not to include the root folder in the relative path (optional) (default=false).
      *
      * @return The object-array with the additionally expanded category data is altered in place and returned
      */
@@ -1194,11 +1199,11 @@ class ObjectUtil
     }
 
     /**
-     * Post-process an object's expanded category data to generate relative paths
+     * Post-process an object's expanded category data to generate relative paths.
      *
-     * @param obj         The object we wish to post-process
-     * @param rootCat     The root category ID for the relative path creation
-     * @param includeRoot whether or not to include the root folder in the relative path (optional) (default=false)
+     * @param array   &$obj        The object we wish to post-process.
+     * @param array   $rootCatsIDs The root category ID for the relative path creation.
+     * @param boolean $includeRoot Whether or not to include the root folder in the relative path (optional) (default=false).
      *
      * @return The object with the additionally expanded category data is altered in place and returned
      */
