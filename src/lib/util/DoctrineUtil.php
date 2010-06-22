@@ -13,12 +13,12 @@
  */
 
 /**
- * DoctrineUtil helper class
+ * DoctrineUtil helper class.
  */
 class DoctrineUtil
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -30,6 +30,8 @@ class DoctrineUtil
      *
      * @param string $modname Module name.
      * @param string $path Optional force path to Model directory (used by plugins).
+     *
+     * @return void
      */
     public static function createTablesFromModels($modname, $path = null)
     {
@@ -55,6 +57,8 @@ class DoctrineUtil
      * In general, this method is NOT required.
      *
      * @param string Module name to load models for.
+     *
+     * @return void
      */
     public static function loadModels($modname)
     {
@@ -69,6 +73,10 @@ class DoctrineUtil
         $dm->setAttribute(Doctrine::ATTR_MODEL_LOADING, $save);
     }
 
+    /**
+     *
+     * @return <type>
+     */
     public static function clearResultCache()
     {
         if (!(System::getVar('CACHE_ENABLE') && System::getVar('CACHE_RESULT'))) {
@@ -79,6 +87,10 @@ class DoctrineUtil
         $driver->deleteByPrefix($driver->getOption('prefix'));
     }
 
+    /**
+     *
+     * @return <type>
+     */
     public static function clearQueryCache()
     {
         if (!System::getVar('CACHE_ENABLE')) {
@@ -89,6 +101,12 @@ class DoctrineUtil
         $driver->deleteByPrefix($driver->getOption('prefix'));
     }
 
+    /**
+     *
+     * @param <type> $query
+     *
+     * @return <type>
+     */
     public static function useResultsCache($query)
     {
         if (!System::getVar('CACHE_ENABLE')) {
@@ -99,7 +117,7 @@ class DoctrineUtil
     }
 
     /**
-     * Decorates table name with prefix
+     * Decorates table name with prefix.
      *
      * @param <string> $tableName
      * @return <string> decorated table name
@@ -111,7 +129,7 @@ class DoctrineUtil
 
 
     /**
-     * Create table
+     * Create table.
      *
      * @param <string> $tableName
      * @param <array> $columns
@@ -125,7 +143,7 @@ class DoctrineUtil
 
 
     /**
-     * Drop table
+     * Drop table.
      *
      * @param <string> $tableName
      */
@@ -137,7 +155,7 @@ class DoctrineUtil
 
 
     /**
-     * Rename a table
+     * Rename a table.
      *
      * @param <string> $oldTableName
      * @param <string> $newTableName
@@ -152,7 +170,7 @@ class DoctrineUtil
 
 
     /**
-     * Add a column to table
+     * Add a column to table.
      *
      * @param <string> $tableName
      * @param <string> $columnName
@@ -167,11 +185,13 @@ class DoctrineUtil
 
 
     /**
-     * Drop column from table
+     * Drop column from table.
      *
      * @param <string> $tableName
      * @param <string> $columnName
-     * @param <bool> $check default = true verifies request
+     * @param <bool> $check default = true verifies request.
+     *
+     * @return void
      */
     public static function dropColumn($tableName, $columnName, $check=true)
     {
@@ -180,12 +200,14 @@ class DoctrineUtil
     }
 
     /**
-     *  Rename column in table
+     *  Rename column in table.
      *
      * @param <string> $tableName
      * @param <string> $oldColumnName
      * @param <string> $newColumnName
-     * @param <bool> $check default = true verifies request
+     * @param <bool> $check default = true verifies request.
+     *
+     * @return void
      */
     public static function renameColumn($tableName, $oldColumnName, $newColumnName, $check=true)
     {
@@ -200,12 +222,14 @@ class DoctrineUtil
 
 
     /**
-     * Modify a column
+     * Modify a column.
      *
      * @param <string> $tableName
      * @param <string> $columnName
      * @param <array> $options
-     * @param <bool> $check default = true verifies request
+     * @param <bool> $check default = true verifies request.
+     *
+     * @return void
      */
     public static function alterColumn($tableName, $columnName, array $options=array(), $check=true)
     {
@@ -218,11 +242,13 @@ class DoctrineUtil
 
 
     /**
-     * Create index
+     * Create index.
      *
      * @param <string> $tableName
      * @param <string> $index
      * @param <array> $definition
+     *
+     * @return void
      */
     public static function createIndex($tableName, $index, array $definition)
     {
@@ -232,10 +258,12 @@ class DoctrineUtil
 
 
     /**
-     * Drop index
+     * Drop index.
      *
      * @param <string> $tableName
      * @param <string> $indexName
+     *
+     * @return void
      */
     public static function dropIndex($tableName, $indexName)
     {
@@ -245,11 +273,13 @@ class DoctrineUtil
 
 
     /**
-     * Create constraint
+     * Create constraint.
      *
      * @param <string> $tableName
      * @param <string> $constraintName
      * @param <array> $definition
+     *
+     * @return void
      */
     public static function createConstraint($tableName, $constraintName, array $definition)
     {
@@ -259,11 +289,13 @@ class DoctrineUtil
 
 
     /**
-     * Drop constraint
+     * Drop constraint.
      *
      * @param <string> $tableName
      * @param <string> $constraintName
      * @param <array> $definition
+     *
+     * @return void
      */
     public static function dropConstraint($tableName, $constraintName, array $definition)
     {
@@ -273,10 +305,12 @@ class DoctrineUtil
 
 
     /**
-     * Create foreign key
+     * Create foreign key.
      *
-     * @param <string> $tableName
-     * @param <array> $definition
+     * @param string $tableName
+     * @param array  $definition
+     *
+     * @return void
      */
     public static function createForeignKey($tableName, array $definition)
     {
@@ -286,10 +320,12 @@ class DoctrineUtil
 
 
     /**
-     * Drop Foreign Key
+     * Drop Foreign Key.
      *
-     * @param <string> $tableName
-     * @param <array> $definition
+     * @param string $tableName
+     * @param array  $definition
+     *
+     * @return void
      */
     public static function droppedForeignKey($tableName, array $definition)
     {
@@ -306,34 +342,25 @@ class DoctrineUtil
      *
      * @return boolean
      */
-    public static function changeTable($tableName, $definition = null, $tabopt = null)
+    public static function changeTable($className)
     {
         $connection = Doctrine_Manager::connection();
 
-        if (empty($definition) || !is_array($definition)) {
-            $definition = self::getTableDefinition($table);
-            if (!$definition) {
-                throw new Exception(__f('Neither the sql parameter nor the table array contain the dictionary representation of table [%s]', array($table)));
-            }
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException(__f('Class %s cannot be found.', $className));
         }
 
-        if (!isset($tabopt) || empty($tabopt)) {
-            $tabopt = self::getTableOptions();
-        }
-        $tabopt['constraints'] = self::getTableConstraints($table);
+        $reflection = new ReflectionClass($className);
+        $model = $reflection->newInstance();
+        $modelTable = $model->getTable();
+        $modelColumns = $modelTable->getColumns();
+        $tableName = $modelTable->getTableName();
 
-        $tables = System::dbGetTables();
-        $tableName = $tables[$table];
-
-        if (empty($tableName)) {
-            throw new Exception(__f('%s does not point to a valid table definition', $table));
-        }
-
-        $metaColumns = self::metaColumnNames($table);
+        $schemaColumns = $connection->import->listTableColumns($tableName);
 
         // first round - create any missing columns
-        foreach ($definition as $key => $columnDefinition) {
-            if (isset($metaColumns[$key])) {
+        foreach ($modelColumns as $key => $columnDefinition) {
+            if (isset($schemaColumns[$key])) {
                 continue;
             }
             $alterTableDefinition = array('add' => array($key => $columnDefinition));
@@ -345,7 +372,7 @@ class DoctrineUtil
         }
 
         // second round, alter table structures to match new tables definition.
-        foreach ($definition as $key => $columnDefinition) {
+        foreach ($modelColumns as $key => $columnDefinition) {
             $alterTableDefinition = array('change' => array($key => array('definition' => $columnDefinition)));
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
@@ -355,8 +382,8 @@ class DoctrineUtil
         }
 
         // drop all indexes
-        $indexes = self::metaIndexes($table);
-        foreach ($indexes as $index) {
+        $schemaIndexes = $connection->import->listTableIndexes($tableName);
+        foreach ($schemaIndexes as $index) {
             try {
                 $connection->export->dropIndex($tableName, $index);
             } catch (Exception $e) {
@@ -365,13 +392,10 @@ class DoctrineUtil
         }
 
         // create additional indexes
-        $tableIndex = $table . '_column_idx';
-        if (array_key_exists($tableIndex, $tables) && is_array($tables[$tableIndex])) {
-            $indexes = self::metaIndexes($table);
-            foreach ($tables[$tableIndex] as $indexName => $indexDefinition) {
-                if (!isset($indexes[$indexName])) {
-                    self::createIndex($indexName, $table, $indexDefinition);
-                }
+        $modelIndexes = $modelTable->getOption('indexes');
+        if ($modelIndexes) {
+            foreach ($modelIndexes as $indexName => $indexDefinition) {
+                $connection->export->createIndex($tableName, $indexName, $indexDefinition);//array('fields' => $indexDefinition));
             }
         }
     }
