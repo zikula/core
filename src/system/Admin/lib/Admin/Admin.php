@@ -20,7 +20,7 @@ class Admin_Admin extends Zikula_Controller
     protected function postInitialize()
     {
         // In this controller we never want caching.
-        //$this->renderer->setCaching(false);
+        $this->renderer->setCaching(false);
     }
 
     /**
