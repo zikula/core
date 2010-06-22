@@ -547,7 +547,7 @@ class Users_Installer extends Zikula_Installer
         $this->delVar('authmodules');
         $this->setVar('default_authmodule', 'Users');
 
-        $regVerifyEmail = $this->gelVar('reg_verifyemail', UserUtil::VERIFY_NO);
+        $regVerifyEmail = $this->getVar('reg_verifyemail', UserUtil::VERIFY_NO);
         if ($regVerifyEmail == UserUtil::VERIFY_SYSTEMPWD) {
             $this->setVar('reg_verifyemail', UserUtil::VERIFY_USERPWD);
         }
