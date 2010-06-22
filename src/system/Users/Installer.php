@@ -10,6 +10,9 @@
  * @subpackage Users
  */
 
+/**
+ * Provides module installation and upgrade services for the Users module.
+ */
 class Users_Installer extends Zikula_Installer
 {
     /**
@@ -69,9 +72,8 @@ class Users_Installer extends Zikula_Installer
         ModUtil::setVar('Users', 'login_redirect', 1);
         ModUtil::setVar('Users', 'reg_question', '');
         ModUtil::setVar('Users', 'reg_answer', '');
-        ModUtil::setVar('Users', 'idnnames', 1);
         ModUtil::setVar('Users', 'use_password_strength_meter', 0);
-        ModUtil::setVar('Users', 'authmodules', 'Users');
+        ModUtil::setVar('Users', 'default_authmodule', 'Users');
         ModUtil::setVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
 
         // Initialisation successful
@@ -99,7 +101,8 @@ class Users_Installer extends Zikula_Installer
             case '1.12':
                 // upgrade 1.12 to 1.13
                 ModUtil::setVar('Users', 'avatarpath', 'images/avatar');
-                ModUtil::setVar('Users', 'lowercaseuname', 1);
+                // lowercaseuname Removed in 2.0.0
+                //ModUtil::setVar('Users', 'lowercaseuname', 1);
             case '1.13':
                 // upgrade 1.13 to 1.14
                 ModUtil::setVar('Users', 'use_password_strength_meter', 0);
@@ -118,7 +121,8 @@ class Users_Installer extends Zikula_Installer
                 }
             case '1.16':
                 // upgrade 1.16 to 1.17
-                ModUtil::setVar('Users', 'authmodules', 'Users');
+                // authmodules removed in 2.0.0
+                //ModUtil::setVar('Users', 'authmodules', 'Users');
             case '1.17':
                 // upgrade 1.17 to 1.18
                 if (!DBUtil::changeTable('users')
@@ -545,6 +549,8 @@ class Users_Installer extends Zikula_Installer
 
         ModUtil::delVar('Users', 'reg_forcepwdchg');
         ModUtil::delVar('Users', 'lowercaseuname');
+        ModUtil::delVar('Users', 'idnnames');
+        ModUtil::delVar('Users', 'recovery_forcepwdchg');
 
         return true;
     }

@@ -1524,7 +1524,7 @@ class Users_Admin extends Zikula_Controller
         $authmodules = array();
         $modules = ModUtil::getAllMods();
         foreach ($modules as $modinfo) {
-            if (ModUtil::available($modinfo['name']) && ModUtil::loadApi($modinfo['name'], 'auth')) {
+            if (ModUtil::available($modinfo['name']) && ModUtil::hasApi($modinfo['name'], 'auth')) {
                 $authmodules[] = $modinfo;
             }
         }
@@ -1583,28 +1583,11 @@ class Users_Admin extends Zikula_Controller
         ModUtil::setVar('Users', 'login_redirect', $config['login_redirect']);
         ModUtil::setVar('Users', 'reg_question', $config['reg_question']);
         ModUtil::setVar('Users', 'reg_answer', $config['reg_answer']);
-        ModUtil::setVar('Users', 'idnnames', $config['idnnames']);
         ModUtil::setVar('Users', 'use_password_strength_meter', $config['use_password_strength_meter']);
         ModUtil::setVar('Users', 'avatarpath', $config['avatarpath']);
         ModUtil::setVar('Users', 'allowgravatars', $config['allowgravatars']);
         ModUtil::setVar('Users', 'gravatarimage', $config['gravatarimage']);
-        ModUtil::setVar('Users', 'lowercaseuname', $config['lowercaseuname']);
-        ModUtil::setVar('Users', 'recovery_forcepwdchg', $config['recovery_forcepwdchg']);
         ModUtil::setVar('Users', 'default_authmodule', $config['default_authmodule']);
-
-//        if (empty($config['authmodules'])) {
-//            return LogUtil::registerError($this->__('Error! You must specify at least one authentication module, e.g. Users.'));
-//        }
-//        $authmethods = explode(',', $config['authmodules']);
-//        if (!$authmethods) {
-//            return LogUtil::registerError($this->__('Error! You must specify at least one authentication module, e.g. Users.'));
-//        }
-//        foreach ($authmethods as $authmethod) {
-//            if (!ModUtil::available($authmethod)) {
-//                return LogUtil::registerError($this->__f('Error! Module %s is not available.', $authmethod));
-//            }
-//        }
-//        ModUtil::setVar('Users', 'authmodules', $config['authmodules']);
 
         if (ModUtil::available('legal')) {
             ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);

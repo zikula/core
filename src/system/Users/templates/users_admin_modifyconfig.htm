@@ -217,16 +217,6 @@
                 <textarea id="users_reg_Illegaldomains" name="config[reg_Illegaldomains]" cols="45" rows="10">{$config.reg_Illegaldomains|varprephtmldisplay}</textarea>
             </div>
             <div class="z-formrow">
-                <label>{gt text="IDN domains"}</label>
-                <div>
-                    <input id="idnnamesyes" type="radio" name="config[idnnames]" value="1" {if $config.idnnames eq 1}checked="checked" {/if}/>
-                    <label for="idnnamesyes">{gt text="Yes"}</label>
-                    <input id="idnnamesno" type="radio" name="config[idnnames]" value="0" {if $config.idnnames neq 1}checked="checked" {/if}/>
-                    <label for="idnnamesno">{gt text="No"}</label>
-                </div>
-                <em class="z-formnote z-sub">{gt text="Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs."}</em>
-            </div>
-            <div class="z-formrow">
                 <label for="users_reg_question">{gt text="Spam protection question"}</label>
                 <input id="users_reg_question" name="config[reg_question]" value="{$config.reg_question|varprephtmldisplay}" size="50" maxlength="255" />
                 <em class="z-formnote z-sub">{gt text="Notice: You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
@@ -259,21 +249,6 @@
                     <input id="login_redirectno" type="radio" name="config[login_redirect]" value="0" {if $config.login_redirect neq 1}checked="checked" {/if}/>
                     <label for="login_redirectno">{gt text="No"}</label>
                     <em>{gt text="Notice: Uses meta refresh."}</em>
-                </div>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>{gt text="Password recovery settings"}</legend>
-            <div class="z-formrow">
-                <label>{gt text="Force password change after recovery"}</label>
-                <div class="z-formlist">
-                    <input id="recovery_forcepwdchg1" type="radio" name="config[recovery_forcepwdchg]" value="1" {if $config.recovery_forcepwdchg eq 1} checked="checked"{/if} />
-                    <label for="recovery_forcepwdchg1">{gt text="Yes. The user must change the system-generated password before logging in."}</label>
-                </div>
-                <div class="z-formlist">
-                    <input id="recovery_forcepwdchg0" type="radio" name="config[recovery_forcepwdchg]" value="0" {if $config.recovery_forcepwdchg eq 0} checked="checked"{/if} />
-                    <label for="recovery_forcepwdchg0">{gt text="No. The user is allowed to continue using the system-generated password."}</label>
                 </div>
             </div>
         </fieldset>
