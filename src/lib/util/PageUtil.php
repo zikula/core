@@ -47,7 +47,7 @@
 class PageUtil
 {
     /**
-     * registerVar()
+     * Register Var.
      *
      * Registers a new page variable.
      * Zikula doesn't impose any restriction on the page variabl's name except for duplicate
@@ -60,14 +60,12 @@ class PageUtil
      * <li>body</li>
      * </ul>
      *
-     * @param string $varname the name of the new page variable
-     * @param boolean $multivalue to define a single or a multi valued variable
-     * @param string $default to set the default value. This value is assigned to the variable at registration time.
+     * @param string  $varname    The name of the new page variable.
+     * @param boolean $multivalue To define a single or a multi valued variable.
+     * @param string  $default    To set the default value. This value is assigned to the variable at registration time.
+     *
      * @return boolean success or not
-     * @author J?rg Napp
-     * @since Feb 04
-     * @see resetVar
-     **/
+     */
     public static function registerVar($varname, $multivalue = false, $default = null)
     {
         global $_pnPageVars;
@@ -94,18 +92,16 @@ class PageUtil
     }
 
     /**
-     * resetVar()
+     * Reset Var.
      *
      * Resets the pge variable back to its default value.
      * All values assigned by addVar() or setVar()
      * will get lost.
      *
-     * @param string $varname the name of the page variable
-     * @return boolean true on success, false of the page variable is not registered.
-     * @author J?rg Napp
-     * @since Feb 04
-     * @see registerVar
-     **/
+     * @param string $varname The name of the page variable.
+     *
+     * @return boolean true On success, false of the page variable is not registered.
+     */
     public static function resetVar($varname)
     {
         global $_pnPageVars;
@@ -139,19 +135,16 @@ class PageUtil
     }
 
     /**
-     * getVar()
+     * GetVar.
      *
-     * returns the value(s) of a page variable. In the case of
+     * Returns the value(s) of a page variable. In the case of
      * a mulit valued variable, this is an array containing all assigned
-     * values
+     * values.
      *
-     * @param string $varname the name of the page variable
-     * @return mixed the contents of the variable
-     * @author J?rg Napp
-     * @since Feb 04
-     * @see setVar
-     * @see addVar
-     **/
+     * @param string $varname the name of the page variable.
+     *
+     * @return mixed Contents of the variable
+     */
     public static function getVar($varname, $default = null)
     {
         global $_pnPageVars;
@@ -173,20 +166,21 @@ class PageUtil
     }
 
     /**
-     * setVar()
+     * Set var.
      *
      * Sets the page variable to a new value. In the case of
      * a multi valued page variable, all previously added values
      * will get lost. If you want to add a value to a multi valued
      * page variable, use PageUtil::addVar.
      *
-     * @param string $varname the name of the page variable
-     * @param mixed $value the new value
-     * @return boolean true on success, false of the page variable is not registered.
-     * @author J?rg Napp
-     * @since Feb 04
-     * @see addVar
-     **/
+     * @see PageUtil::addVar
+     *
+     * @param string $varname The name of the page variable.
+     * @param mixed  $value   The new value.
+     *
+     * @return boolean true On success, false of the page variable is not registered.
+     * 
+     */
     public static function setVar($varname, $value)
     {
         global $_pnPageVars;
@@ -212,18 +206,18 @@ class PageUtil
     }
 
     /**
-     * addVar()
+     * Add var.
      *
      * Adds a new vaule to a page variable. In the case of a single
      * page variable, this functions acts exactly like PageUtil::setVar.
      *
-     * @param string $varname the name of the page variable
-     * @param mixed $value the new value
-     * @return boolean true on success, false of the page variable is not registered.
-     * @author J?rg Napp
-     * @since Feb 04
-     * @see setVar
-     **/
+     * @see PageUtil::setVar
+     *
+     * @param string $varname The name of the page variable.
+     * @param mixed  $value   The new value.
+     *
+     * @return boolean true On success, false of the page variable is not registered.
+     */
     public static function addVar($varname, $value)
     {
         global $_pnPageVars;
