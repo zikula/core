@@ -43,9 +43,9 @@
             {modfunc modname=$profilemodule type='form' func='search'}
         {/if}
 
-        <div class="z-formbuttons">
-            {button src=button_ok.gif set=icons/small __alt="Search" __title="Search"}
-            <a href="{modurl modname=Users type=admin func=view}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"}</a>
+        <div class="z-formbuttons z-buttons">
+            {button src=button_ok.gif set=icons/small __alt="Search" __title="Search" __text="Search"}
+            <a href="{modurl modname=Users type=admin func=view}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.gif set=icons/small __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>
     </form>
 </div>
