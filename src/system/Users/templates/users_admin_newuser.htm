@@ -20,6 +20,7 @@
     </div>
 
     <form id="users_newuser" class="z-form" action="{modurl modname='Users' type='admin' func='registerNewUser'}" method="post">
+        <div>
         <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
         <input type="hidden" id="users_checkmode" name="checkmode" value="new" />
         <input type="hidden" id="users_reginfo_agreetoterms" name="reginfo[agreetoterms]" value="{if !$userMustAccept}1{else}0{/if}" />
@@ -50,13 +51,13 @@
                 <div class="z-formrow">
                     <label for="users_reginfo_pass">{gt text='Password'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_reginfo_pass"{if isset($errorFields.reginfo_pass) || isset($errorFields.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
-                    <em class="z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.minpass}</em>
+                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.minpass}</em>
                 </div>
                 <div class="z-formrow">
                     <label for="users_passagain">{gt text='Password (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_passagain"{if isset($errorFields.passagain)} class="errorrequired"{/if} type="password" name="passagain" size="21" maxlength="20" />
                 </div>
-                <div id="users_setpass_container" class="z-formrow">
+                <div id="users_sendpass_container" class="z-formrow">
                     <label for="users_sendpass">{gt text="Send password via e-mail?"}</label>
                     <div id="users_sendpass">
                         <input id="users_sendpass_yes" type="radio" name="sendpass" value="1" {if !empty($sendpass)} checked="checked"{/if} />
@@ -93,5 +94,6 @@
                 {img id='ajax_indicator' style='display: none;' modname='core' set='icons/extrasmall' src='indicator_circle.gif' alt=''}
             </div>
         </fieldset>
+    </div>
     </form>
 </div>

@@ -10,7 +10,7 @@
 
     {include file='users_admin_includeregistration.htm'}
 
-    <div class="z-buttons z-formbuttons">
+    <div class="z-buttons z-center" style="margin:0 0 1em; padding:1em 0;">
         {strip}
         {assign var="regactions" value=$actions.list[$reginfo.id]}
         {gt assign='titleIfSent' text='Resend verification code'}
@@ -28,22 +28,21 @@
         {if isset($regactions.modify) && $regactions.modify}
         <a href="{$regactions.modify|safetext}">{img src='xedit.gif' modname='core' set='icons/extrasmall' __title='Edit registration details' __alt='Edit registration details'} {gt text='Edit'}</a>
         {/if}
+
         {if isset($regactions.verify) && $regactions.verify}
-            {if !empty($reginfo.verifycode)}
-                {assign var='actionTitle' value=$titleIfSent}
-            {else}
-                {assign var='actionTitle' value=$titleIfNotSent}
-            {/if}
+        {if !empty($reginfo.verifycode)}
+        {assign var='actionTitle' value=$titleIfSent}
+        {else}
+        {assign var='actionTitle' value=$titleIfNotSent}
+        {/if}
         <a href="{$regactions.verify|safetext}">{img src='mail_send.gif' modname='core' set='icons/extrasmall' title=$actionTitle alt=$actionTitle}{$actionTitle}</a>
         {/if}
-        {/strip}
-    </div>
-    {if isset($regactions.approveForce) && $regactions.approveForce && !$reginfo.isverified}
-    <div class="z-buttons z-formbuttons">
+
+        {if isset($regactions.approveForce) && $regactions.approveForce && !$reginfo.isverified}
         <a href="{$regactions.approveForce|safetext}">{img src='db_update.gif' modname='core' set='icons/extrasmall' __title='Skip verification (approves, and creates a new user account)' __alt='Skip verification (approves, and creates a new user account)'} {gt text='Add user without verification'}</a>
-    </div>
-    {/if}
-    <div class="z-buttons z-formbuttons">
+        {/if}
+
         <a href="{modurl modname='Users' type='admin' func='viewRegistrations' restoreview='true'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall'  __alt="Return to registrations list" __title="Return to registrations list"} {gt text='Return to registrations'}</a>
+        {/strip}
     </div>
 </div>
