@@ -53,7 +53,7 @@
 class Form_Block_ContextMenu extends Form_StyledPlugin
 {
     /**
-     * CSS class name
+     * CSS class name.
      *
      * The class name is applied to the div element that surrounds the entire menu. Defaults to "contextMenu".
      *
@@ -62,7 +62,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     public $cssClass;
 
     /**
-     * Name of command event handler method
+     * Name of command event handler method.
      *
      * Defaults to "handleCommand".
      *
@@ -71,31 +71,59 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     public $onCommand;
 
     /**
-     * Z-index for absolute positioning
+     * Z-index for absolute positioning.
      *
      * No need to change or set this unless there's a conflict with other libraries (for instance prototype).
      *
-     * @var int
+     * @var integer
      */
     public $zIndex;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render)
     {
         $this->styleAttributes['display'] = 'none';
         $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);
     }
 
+    /**
+     * DataBound event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @see    Form_Plugin
+     * @return void
+     */
     function dataBound(&$render)
     {
         PageUtil::AddVar('javascript', 'system/Theme/javascript/form/pnform.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
     }
 
+    /**
+     * RenderBegin event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function renderBegin(&$render)
     {
         if ($this->firstTime(false)) {
@@ -109,6 +137,13 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
         }
     }
 
+    /**
+     * RenderEnd event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function renderEnd(&$render)
     {
         if ($this->firstTime(true)) {
@@ -118,6 +153,13 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
             return '';
     }
 
+    /**
+     * Check if it's the first time.
+     * 
+     * @param boolean $doSet Whether or not to set the check variable.
+     * 
+     * @return boolean
+     */
     function firstTime($doSet = false)
     {
         static $createdMenus = array();

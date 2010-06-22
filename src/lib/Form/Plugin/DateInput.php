@@ -26,15 +26,28 @@
 class Form_Plugin_DateInput extends Form_Plugin_TextInput
 {
     /**
-     * Enable or disable input of time in addition to the date
-     * @var bool
+     * Enable or disable input of time in addition to the date.
+     * 
+     * @var boolean
      */
     public $includeTime;
+    
+    /**
+     * The initial date.
+     * 
+     * @var string
+     */
     public $initDate;
+    
+    /**
+     * Date format in the input field.
+     * 
+     * @var string
+     */
     public $ifFormat;
 
     /**
-     * Default date value
+     * Default date value.
      *
      * This parameter enables the input to be pre-filled with the current date or similar other well defined
      * default values.
@@ -45,21 +58,38 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
      * - monthend: last day in current month
      * - yearstart: first day in the year
      * - yearend: last day in the year
-     * - custom: inital Date
+     * - custom: inital Date.
+     * 
+     * @var string
      */
     public $defaultValue;
 
     /**
-     * Enable or disable selection only mode (with hidden input field), defaults to false
-     * @var bool
+     * Enable or disable selection only mode (with hidden input field), defaults to false.
+     * 
+     * @var boolean
      */
     public $useSelectionMode;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
         $this->includeTime = (array_key_exists('includeTime', $params) ? $params['includeTime'] : 0);
@@ -75,6 +105,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         $this->cssClass .= ' date';
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         static $firstTime = true;
@@ -222,6 +259,14 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         return $result;
     }
 
+    /**
+     * Parses a value.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $text    Text.
+     * 
+     * @return string Parsed Text.
+     */
     function parseValue(&$render, $text)
     {
         if (empty($text)) {
@@ -230,6 +275,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         return $text;
     }
 
+    /**
+     * Validates the input string.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function validate(&$render)
     {
         parent::validate($render);
@@ -253,6 +305,14 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         }
     }
 
+    /**
+     * Format the value to specific format.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $value   The value to format.
+     * 
+     * @return string Formatted value.
+     */
     function formatValue(&$render, $value)
     {
         return DateUtil::formatDatetime($value, ($this->includeTime ? __('%Y-%m-%d %H:%M') : __('%Y-%m-%d')), false);

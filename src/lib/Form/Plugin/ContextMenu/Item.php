@@ -17,13 +17,12 @@
  * Context menu item
  *
  * This plugin represents a menu item.
- *
- * @see pnFormContextMenu
+ * See also pnFormContextMenu.
  */
 class Form_Plugin_ContextMenu_Item extends Form_Plugin
 {
     /**
-     * Menu title
+     * Menu title.
      *
      * Language constants can be used here.
      *
@@ -31,17 +30,22 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      */
     public $title;
 
+    /**
+     * URL to the item's image.
+     * 
+     * @var string
+     */
     public $imageURL;
 
     /**
-     * Command name passed to the event handler
+     * Command name passed to the event handler.
      *
      * @var string
      */
     public $commandName;
 
     /**
-     * JavaScript code to execute when menu item is selected
+     * JavaScript code to execute when menu item is selected.
      *
      * Your script will be wrapped in a function that passes a parameter "commandArgument". This parameter
      * contains the command argument of the pnformcontextmenureference plugin. In this way your script
@@ -62,41 +66,64 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     public $commandScript;
 
     /**
-     * URL to redirect to when menu item is selected
+     * URL to redirect to when menu item is selected.
      *
      * You can place {commandArgument} (including the braces) in your URL. This will get substituted with the
      * command argument value of the pnformcontextmenureference plugin. In this way you can redirect to something
      * depending on data.
+     * 
      * @var string
      */
     public $commandRedirect;
 
     /**
-     * Confirmation message
+     * Confirmation message.
      *
      * If you set a confirmation message then a ok/cancel dialog box pops and asks the user to confirm
      * the menu item click - very usefull for menu selections that deletes items.
      * You can use _XXX language defines directly as the message, no need to call <!--[pnml]--> for
      * translation.
+     * 
      * @var string
      */
     public $confirmMessage;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $contextMenu = & $this->getParentContextMenu();
 
         if (!$contextMenu) {
-            return;
+            return '';
         }
 
         // Avoid creating menu multiple times if included in a repeated template
@@ -133,6 +160,14 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         return $html;
     }
 
+    /**
+     * Renders the confirmation action.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $script  JavaScript code to run.
+     * 
+     * @return string The rendered output.
+     */
     function renderConfirm(&$render, $script)
     {
         if (!empty($this->confirmMessage)) {
@@ -143,7 +178,14 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         }
     }
 
-    // Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above
+    /**
+     * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
+     * 
+     * @param Form_Render &$render       Reference to Form render object.
+     * @param string      $eventArgument The event argument.
+     * 
+     * @return void
+     */
     function raisePostBackEvent(&$render, $eventArgument)
     {
         $contextMenu = & $this->getParentContextMenu();
@@ -157,6 +199,11 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         $render->raiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
     }
 
+    /**
+     * Get parent context menu.
+     * 
+     * @return Form_Block_ContextMenu Parent context menu.
+     */
     function &getParentContextMenu()
     {
         // Locate parent context menu
