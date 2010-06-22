@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {gt text="Verify your e-mail address for %s." tag1=$sitename assign='subject'}
 {modurl modname='Users' type='user' func='verifyRegistration' uname=$reginfo.uname verifycode=$verifycode|urlencode fqurl=true assign='verificationurl'}
 {gt text='Welcome to %1$s!' tag1=$sitename}

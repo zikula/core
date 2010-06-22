@@ -1,4 +1,3 @@
-{*  $Id$  *}
 {* NOTE: This is the plain-text version of this e-mail. If this is modified, ensure that users_userapi_lostunamemail.htm is also modified! *}
 
 {gt text='Hello!'}
