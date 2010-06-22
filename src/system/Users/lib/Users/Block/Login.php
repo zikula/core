@@ -58,14 +58,12 @@ class Users_Block_Login extends Zikula_Block
         }
 
         if (!UserUtil::isLoggedIn()) {
-            // create the output object
-            $renderer = Renderer::getInstance('Users');
             // we don't need a cached id since the content of this block will always
             // be the same
             // check out if the contents are cached.
             // If this is the case, we do not need to make DB queries.
-            if ($renderer->is_cached('users_block_login.htm')) {
-                $row['content'] = $renderer->fetch('users_block_login.htm');
+            if ($this->renderer->is_cached('users_block_login.htm')) {
+                $row['content'] = $this->renderer->fetch('users_block_login.htm');
                 return BlockUtil::themeBlock($row);
             }
 
@@ -73,15 +71,18 @@ class Users_Block_Login extends Zikula_Block
                 $row['title'] = DataUtil::formatForDisplay('Login');
             }
 
-            $renderer->assign('default_authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'));
-            $renderer->assign('authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'));
-            $renderer->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))));
-            $renderer->assign('seclevel', System::getVar('seclevel'));
-            $renderer->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'));
-            $renderer->assign('returnurl', System::getCurrentUri());
+            $this->renderer->assign('default_authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'))
+                           ->assign('authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'))
+                           ->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))))
+                           ->assign('seclevel', System::getVar('seclevel'))
+                           ->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'))
+                           ->assign('returnurl', System::getCurrentUri());
+
             // determine whether to show the rememberme option
-            $renderer->assign('rememberme', System::getVar('seclevel'));
-            $row['content'] = $renderer->fetch('users_block_login.htm');
+            $this->renderer->assign('rememberme', System::getVar('seclevel'));
+            
+            $row['content'] = $this->renderer->fetch('users_block_login.htm');
+
             return BlockUtil::themeBlock($row);
         }
 

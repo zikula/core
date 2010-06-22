@@ -545,7 +545,6 @@ class Users_Api_Registration extends Zikula_Api
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $siteurl   = System::getBaseUrl();
 
-                $renderer = Renderer::getInstance('Users', false);
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = System::getVar('sitename');
                 $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl)-1);
@@ -726,7 +725,6 @@ class Users_Api_Registration extends Zikula_Api
                 $siteurl   = System::getBaseUrl();
                 $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
 
-                $renderer = Renderer::getInstance('Users', false);
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = $sitename;
                 $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl)-1);
@@ -1181,7 +1179,6 @@ class Users_Api_Registration extends Zikula_Api
         if (empty($rendererArgs)) {
             $siteurl   = System::getBaseUrl();
 
-            $renderer = Renderer::getInstance('Users', false);
             $rendererArgs = array();
             $rendererArgs['sitename'] = System::getVar('sitename');
             $rendererArgs['siteurl'] = substr($siteurl, 0, strlen($siteurl)-1);
