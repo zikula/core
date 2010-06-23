@@ -308,7 +308,7 @@ class System
             // if we've got this far an error handler can come into play
             // (except in the installer)
             if (!self::isInstalling()) {
-                set_error_handler('System::errorHandler');
+                set_error_handler(array('System', 'errorHandler'));
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_TABLES);
