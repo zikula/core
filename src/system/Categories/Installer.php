@@ -98,7 +98,7 @@ class Categories_Installer extends Zikula_Installer
         DBUtil::dropTable('categories_mapmeta');
         DBUtil::dropTable('categories_registry');
 
-        ModUtil::delVar('Categories');
+        $this->delVar();
 
         // delete other modules use of categories flag
         $pntable = System::dbGetTables();
