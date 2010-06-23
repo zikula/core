@@ -50,7 +50,7 @@ class System
 {
     const VERSION_NUM = '1.3.0-dev';
     const VERSION_ID = 'Zikula';
-    const VERSION_SUB =  'cinco';
+    const VERSION_SUB =  'vai';
 
     const CORE_STAGES_NONE = 0;
     const CORE_STAGES_CONFIG = 1;
