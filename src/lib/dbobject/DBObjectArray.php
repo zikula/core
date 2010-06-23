@@ -479,7 +479,7 @@ class DBObjectArray
     }
 
     /**
-     * Get the data from the sessiob.
+     * Get the data from the session.
      *
      * @param string  $key                  The access key of the object (optional) (default=null, reverts to $this->_objPath).
      * @param mixed   $default              The default value to return (optional) (default=null).

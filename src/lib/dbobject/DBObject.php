@@ -18,50 +18,137 @@
 class DBObject
 {
     /**
+     * Object type.
+     * 
      * @var string
      */
-    public $_objType = 'DBOBJECT'; // object type
-    public $_objJoin; // object join data
+    public $_objType = 'DBOBJECT';
+    
+    /**
+     * Object join data.
+     * 
+     * @var array
+     */
+    public $_objJoin;
+    
+    /**
+     * Object validation data.
+     * 
+     * @var array
+     */
     public $_objValidation; // object validation data
 
 
     // data + access descriptor
-    public $_objCategoryFilter; // category filter used for select
-    public $_objColumnArray; // columns to select
-    public $_objColumnPrefix; // object column prefix
-    public $_objData; // object data
-    public $_objField; // object key retrieval field
-    public $_objInsertPreserve = false; // DBUtil insertObject preserve flag
-    public $_objInsertForce = false; // DBUtil insertObject force flag
-    public $_objKey; // object key value
-    public $_objPath = 'DBOBJECT_PATH'; // object input path
-    public $_objPermissionFilter; // object permission filter applied
-    public $_objSessionPath; // object session access path
-
     /**
-     * @var string
-     */
-    public $_table; // table name
-
-    /**
+     * Category filter used for select.
+     * 
      * @var array
      */
-    public $_columns; // column array
+    public $_objCategoryFilter;
+    
+    /**
+     * Columns to select.
+     * 
+     * @var array
+     */
+    public $_objColumnArray;
+    
+    /**
+     * Object column prefix.
+     * 
+     * @var string
+     */
+    public $_objColumnPrefix;
+    
+    /**
+     * Object data.
+     * 
+     * @var array
+     */
+    public $_objData;
+    
+    /**
+     * Object key retrieval field.
+     * 
+     * @var string
+     */
+    public $_objField = 'id';
+    
+    /**
+     * DBUtil insertObject preserve flag.
+     * 
+     * @var boolean
+     */
+    public $_objInsertPreserve = false;
+    
+    /**
+     * DBUtil insertObject force flag.
+     * 
+     * @var boolean
+     */
+    public $_objInsertForce = false;
+    
+    /**
+     * Object key value.
+     * 
+     * @var integer
+     */
+    public $_objKey = 0;
+    
+    /**
+     * Object input path.
+     * 
+     * @var string
+     */
+    public $_objPath = 'DBOBJECT_PATH';
+    
+    /**
+     * Object permission filter applied.
+     * 
+     * @var array
+     */
+    public $_objPermissionFilter;
+    
+    /**
+     * Object session access path.
+     *
+     * @var string
+     */
+    public $_objSessionPath;
 
-    const GET_FROM_DB = 'DB'; // get data from DB
-    const GET_FROM_GET = 'GET'; // get data from $_GET
-    const GET_FROM_POST = 'POST'; // get data from $_POST
-    const GET_FROM_REQUEST = 'REQUEST'; // get data from $_REQUEST
-    const GET_FROM_SESSION = 'SESSION'; // get data from $_SESSION
+    // support
+    
+    /**
+     * Table name.
+     * 
+     * @var string
+     */
+    public $_table;
+    
+    /**
+     * Column array.
+     * 
+     * @var array
+     */
+    public $_columns;
+
+
+    // constants
+    const GET_FROM_DB                = 'DB'; // get data from DB
+    const GET_FROM_GET               = 'GET'; // get data from $_GET
+    const GET_FROM_POST              = 'POST'; // get data from $_POST
+    const GET_FROM_REQUEST           = 'REQUEST'; // get data from $_REQUEST
+    const GET_FROM_SESSION           = 'SESSION'; // get data from $_SESSION
     const GET_FROM_VALIDATION_FAILED = 'VALIDATION'; // get data from failed validation
 
 
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
-     * @param mixed  $init  Initialization value (see _init() for details)
-     * @param string $key   The DB key to use to retrieve the object (optional) (default=null)
-     * @param string $field The field containing the key value (optional) (default=null)
+     * @param mixed  $init  Initialization value (see _init() for details).
+     * @param string $key   The DB key to use to retrieve the object (optional) (default=null).
+     * @param string $field The field containing the key value (optional) (default=null).
      */
     public function __construct($init = null, $key = null, $field = null)
     {
@@ -74,13 +161,15 @@ class DBObject
 
     /**
      * Internal intialization routine.
-     *
-     * @param init       Initialization value (can be an object or a string directive).
-     * @param key        The DB key to use to retrieve the object (optional) (default=null).
-     * @param field      The field containing the key value (optional) (default=null).
-     *
+     * 
      * If $_init is an arrary it is set(), otherwise it is interpreted as a string specifying
      * the source from where the data should be retrieved from.
+     *
+     * @param mixed  $init  Initialization value (can be an object or a string directive).
+     * @param string $key   The DB key to use to retrieve the object (optional) (default=null).
+     * @param strubg $field The field containing the key value (optional) (default=null).
+     *
+     * @return void
      */
     public function _init($init = null, $key = null, $field = null)
     {
@@ -135,6 +224,8 @@ class DBObject
 
     /**
      * Generate an empty object with the fields initialized to null.
+     * 
+     * @return array Empty data object.
      */
     public function generateEmptyObject()
     {
@@ -155,9 +246,11 @@ class DBObject
 
     /**
      * Set (and return) the object data.
-     *
-     * @param data        The data to assign
-     * @param cache       Whether or not to cache the data in session (optional) (default=true) - currently unused
+     * 
+     * @param array   $data  The data to assign.
+     * @param boolean $cache Whether or not to cache the data in session (optional) (default=true) - currently unused.
+     * 
+     * @return array Object data.
      */
     public function setData($data, $cache = false)
     {
@@ -172,9 +265,8 @@ class DBObject
     /**
      * Return the current object data. If $key and $field are supplied the object is fetched again from the database.
      *
-     * @param key        The record's key value.
-     * @param field      The field we wish to get (optional) (default=null).
-     * @param force      If false, the system attempts to return the object from the session cache (optional) (default=false) (currently not used).
+     * @param string $key   The record's key value.
+     * @param string $field The field we wish to get (optional) (default=null).
      *
      * @return The object's data value.
      */
@@ -224,7 +316,7 @@ class DBObject
     /**
      * Return/Select the object using the given where clause.
      *
-     * @param where        The where-clause to use.
+     * @param string $where The where-clause to use.
      *
      * @return The object's data value.
      */
@@ -236,7 +328,7 @@ class DBObject
     /**
      * Get the object which failed validation.
      *
-     * @return The object's data value.
+     * @return array The object's data value.
      */
     public function getFailedValidationData()
     {
@@ -247,7 +339,7 @@ class DBObject
     /**
      * Return whether or not this object has a set id field.
      *
-     * @return Boolean
+     * @return boolean
      */
     public function hasID()
     {
@@ -257,11 +349,11 @@ class DBObject
     /**
      * Select the object from the database using the specified key (and field).
      *
-     * @param key        The record's key value (if init is a string directive).
-     * @param field      The key-field we wish to select by (optional) (default=null, reverts to this->_objField).
-     * @param where      The key-field we wish to select by (optional) (default='').
+     * @param string $key   The record's key value (if init is a string directive).
+     * @param string $field The key-field we wish to select by (optional) (default=null, reverts to this->_objField).
+     * @param string $where The key-field we wish to select by (optional) (default='').
      *
-     * @return The object's data value.
+     * @return array The object's data value.
      */
     public function select($key, $field = '', $where = '')
     {
@@ -297,7 +389,8 @@ class DBObject
 
             $this->_key = $where;
             $this->_field = 'WHERE';
-        } else { // generic key=>value lookup
+        } else {
+            // generic key=>value lookup
             if ($this->_objJoin) {
                 $this->_objData = DBUtil::selectExpandedObjectById($this->_objType, $this->_objJoin, $key, $field, $this->_objColumnArray, $this->_objPermissionFilter, $this->_objCategoryFilter);
             } else {
@@ -315,9 +408,9 @@ class DBObject
     /**
      * Post-Process the newly selected object. Subclasses can define appropriate implementations.
      *
-     * @param obj         Override object (needed for selectObjectArray processing) (optional) (default=null).
+     * @param array $obj Override object (needed for selectObjectArray processing) (optional) (default=null).
      *
-     * @return The object's data value.
+     * @return array The object's data value.
      */
     public function selectPostProcess($obj = null)
     {
@@ -327,11 +420,11 @@ class DBObject
     /**
      * Get the data from the various input streams provided.
      *
-     * @param key        The access key of the object (optional) (default=null, reverts to $this->_objPath).
-     * @param default    The default value to return (optional) (default=null).
-     * @param source     Where to get the variable from (optional) (default='REQUEST').
+     * @param string $key     The access key of the object (optional) (default=null, reverts to $this->_objPath).
+     * @param mixed  $default The default value to return (optional) (default=null).
+     * @param string $source  Where to get the variable from (optional) (default='REQUEST').
      *
-     * @return The requested object/value.
+     * @return mixed The requested object/value.
      */
     public function getDataFromInput($key = null, $default = null, $source = 'REQUEST')
     {
@@ -351,13 +444,15 @@ class DBObject
     }
 
     /**
-     * Get the data from the various input streams provided.
+     * Get the data from the session.
      *
-     * @param key        The access key of the object (optional) (default=null, reverts to $this->_objPath).
-     * @param default    The default value to return (optional) (default=null).
-     * @param source     Where to get the variable from (optional) (default=null).
+     * @param string  $key                  The access key of the object (optional) (default=null, reverts to $this->_objPath).
+     * @param mixed   $default              The default value to return (optional) (default=null).
+     * @param string  $path                 The session object input path.
+     * @param boolean $autocreate           The autocreate passed to SessionUtil::setVar.
+     * @param boolean $overwriteExistingVar The overwriteExistingVar variable passed to SessionUtil::setVar.
      *
-     * @return The requested object/value.
+     * @return mixed The requested object/value.
      */
     public function getDataFromSession($key = null, $default = null, $path = '', $autocreate = true, $overwriteExistingVar = false)
     {
@@ -381,10 +476,13 @@ class DBObject
     /**
      * Set the current object data into session.
      *
-     * @param autocreate            The autocreate passed to SessionUtil::setVar.
-     * @param overwriteExistingVar  The overwriteExistingVar variable passed to SessionUtil::setVar.
+     * @param array   $data                 The object data.
+     * @param string  $key                  The session key.
+     * @param string  $path                 The session object input path.
+     * @param boolean $autocreate           The autocreate passed to SessionUtil::setVar.
+     * @param boolean $overwriteExistingVar The overwriteExistingVar variable passed to SessionUtil::setVar.
      *
-     * @return The session data.
+     * @return array The session data.
      */
     public function setDataToSession($data = null, $key = null, $path = '', $autocreate = true, $overwriteExistingVar = false)
     {
@@ -408,7 +506,13 @@ class DBObject
     }
 
     /**
-     * Post-Process the data after getting it from Input. Subclasses can define appropriate implementations.
+     * Post-Process the data after getting it from Input.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function getDataFromInputPostProcess($data = null)
     {
@@ -416,7 +520,13 @@ class DBObject
     }
 
     /**
-     * Post-Process the data after getting it from Session. Subclasses can define appropriate implementations.
+     * Post-Process the data after getting it from Session.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function getDataFromSessionPostProcess($data = null)
     {
@@ -424,7 +534,13 @@ class DBObject
     }
 
     /**
-     * Pre-Process the data before writing it to Session. Subclasses can define appropriate implementations.
+     * Pre-Process the data before writing it to Session.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function setDataToSessionPreProcess($data = null)
     {
@@ -434,12 +550,12 @@ class DBObject
     /**
      * Generic access function to retrieve data from the specified source.
      *
-     * @param source    The source data.
-     * @param key       The access key of the object (optional) (default=null).
-     * @param default   The default value to return (optional) (default=null).
-     * @param clean     Whether or not to clean the acquired data (optional) (default=true).
+     * @param array   $source  The source data.
+     * @param string  $key     The access key of the object (optional) (default=null).
+     * @param boolean $default The default value to return (optional) (default=null).
+     * @param boolean $clean   Whether or not to clean the acquired data (optional) (default=true).
      *
-     * @return The requested object/value.
+     * @return array The requested object/value.
      */
     public function getDataFromSource($source, $key = null, $default = null, $clean = true)
     {
@@ -457,10 +573,10 @@ class DBObject
     /**
      * Generic function to retrieve.
      *
-     * @param key        The access key of the object field.
-     * @param default    The default value to return (optional) (default=null).
-     *
-     * @return The Object Data.
+     * @param string $key     Field key.
+     * @param mixed  $default Default return value.
+     * 
+     * @return mixed The Object Data.
      */
     public function getDataField($key, $default = null)
     {
@@ -475,10 +591,10 @@ class DBObject
     /**
      * Generic function to retrieve.
      *
-     * @param key         The access key of the object field.
-     * @param value       The value to assign to the specified object field.
+     * @param string $key   The access key of the object field.
+     * @param mixed  $value The value to assign to the specified object field.
      *
-     * @return The value which was set into the specified object field.
+     * @return mixed The value which was set into the specified object field.
      */
     public function setDataField($key, $value)
     {
@@ -493,7 +609,7 @@ class DBObject
      * 
      * If the object contains a valid ID, it is updated, otherwise it it inserted.
      *
-     * @return The result set.
+     * @return array|boolean The result set.
      */
     public function save()
     {
@@ -510,7 +626,7 @@ class DBObject
     /**
      * Generic insert handler for an object (ID is inserted into the object data).
      *
-     * @return The Object Data.
+     * @return array|boolean The Object Data.
      */
     public function insert()
     {
@@ -528,7 +644,13 @@ class DBObject
     }
 
     /**
-     * Pre-Process the data prior to an insert. Subclasses can define appropriate implementations.
+     * Pre-Process the data prior to an insert.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function insertPreProcess($data = null)
     {
@@ -537,7 +659,13 @@ class DBObject
     }
 
     /**
-     * Post-Process the data after an insert. Subclasses can define appropriate implementations.
+     * Post-Process the data after an insert.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function insertPostProcess($data = null)
     {
@@ -548,7 +676,7 @@ class DBObject
     /**
      * Generic upate handler for an object.
      *
-     * @return The Object Data.
+     * @return array|boolean The Object Data.
      */
     public function update()
     {
@@ -566,7 +694,13 @@ class DBObject
     }
 
     /**
-     * Pre-Process the data prior to an update. Subclasses can define appropriate implementations.
+     * Pre-Process the data prior to an update.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function updatePreProcess($data = null)
     {
@@ -575,7 +709,13 @@ class DBObject
     }
 
     /**
-     * Post-Process the data after an update. Subclasses can define appropriate implementations.
+     * Post-Process the data after an update.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function updatePostProcess($data = null)
     {
@@ -586,7 +726,7 @@ class DBObject
     /**
      * Generic delete handler for an object.
      *
-     * @return The Object Data.
+     * @return array|boolean The Object Data.
      */
     public function delete()
     {
@@ -605,7 +745,13 @@ class DBObject
     }
 
     /**
-     * Pre-Process the data prior a delete. Subclasses can define appropriate implementations.
+     * Pre-Process the data prior a delete.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function deletePreProcess($data = null)
     {
@@ -614,7 +760,13 @@ class DBObject
     }
 
     /**
-     * Post-Process the data after a delete. Subclasses can define appropriate implementations.
+     * Post-Process the data after a delete.
+     * 
+     * Subclasses can define appropriate implementations.
+     * 
+     * @param array $data Object data.
+     * 
+     * @return array Object data.
      */
     public function deletePostProcess($data = null)
     {
@@ -622,6 +774,11 @@ class DBObject
         return $this->_objData;
     }
 
+    /**
+     * Get the object validation data
+     * 
+     * @return array Object validation data.
+     */
     public function getValidation()
     {
         return $this->_objValidation;
@@ -630,7 +787,7 @@ class DBObject
     /**
      * Generic function to validate an object.
      *
-     * @return Boolean indicating whether validation has passed or failed.
+     * @return boolean indicating whether validation has passed or failed.
      */
     public function validate()
     {
@@ -650,7 +807,12 @@ class DBObject
 
     /**
      * Post-Process the basic object validation with class specific logic.
+     * 
      * Subclasses can define appropriate implementations.
+     * 
+     * @param string $type Controller type.
+     * 
+     * @return boolean
      */
     public function validatePostProcess($type = 'user')
     {
@@ -659,7 +821,12 @@ class DBObject
     }
 
     /**
-     * Get the hashcode for this object data.
+     * Get the hashcode for this object data array.
+     * 
+     * @param boolean $includeStandardFields Wheter or not to include standard fields to hashcode.
+     * @param array   $objData               Object data.
+     * 
+     * @return string Hashcode.
      */
     public function getHash($includeStandardFields = true, $objData = null)
     {
@@ -677,6 +844,8 @@ class DBObject
 
     /**
      * Clear the failed validation errors for this object.
+     * 
+     * @return void
      */
     public function clearValidationErrors()
     {
@@ -685,6 +854,8 @@ class DBObject
 
     /**
      * Clear the failed validation object data for this object.
+     * 
+     * @return void
      */
     public function clearFailedValidationData()
     {
@@ -693,6 +864,10 @@ class DBObject
 
     /**
      * Print HTML-formatted debug output for the object.
+     * 
+     * @param boolean $print Whether to print or to return the debug output.
+     * 
+     * @return string|void Debug output.
      */
     public function prayer($print = true)
     {
@@ -705,6 +880,10 @@ class DBObject
 
     /**
      * Print HTML-formatted debug output for the object data.
+     * 
+     * @param boolean $print Whether to print or to return the object data debug output.
+     * 
+     * @return string|void Debug output.
      */
     public function prayerData($print = true)
     {
