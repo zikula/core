@@ -106,7 +106,7 @@ class System
      */
     public static function setVar($name, $value = '')
     {
-        $name = isset($name) ? (string) $name : '';
+        $name = isset($name) ? (string)$name : '';
 
         // The database parameter are not allowed to change
         if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
@@ -128,7 +128,7 @@ class System
      *
      * @param string $name The name of the variable.
      *
-     * @returns mixed Value of deleted config var or false on failure.
+     * @return mixed Value of deleted config var or false on failure.
      */
     public static function delVar($name)
     {
@@ -161,7 +161,9 @@ class System
      * Carries out a number of initialisation tasks to get Zikula up and
      * running.
      *
-     * @returns boolean True initialisation successful false otherwise.
+     * @param integer $stages Stages to load.
+     *
+     * @return boolean True initialisation successful false otherwise.
      */
     public static function init($stages = self::CORE_STAGES_ALL)
     {
@@ -393,7 +395,7 @@ class System
                 UserUtil::logout();
                 LogUtil::registerStatus(__('You have been logged out.'));
                 $params = ($userstatus == 2) ? array('confirmtou' => 1) : array();
-                System::redirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
+                self::redirect(ModUtil::url('Users', 'user', 'loginscreen', $params));
             }
         }
 
@@ -423,6 +425,7 @@ class System
         }
 
         $dbconn = array($ret);
+
         return $dbconn;
     }
 
@@ -450,6 +453,8 @@ class System
      * e.g. pnDBGetPrefix returns pn_modules for pnDBGetPrefix('modules').
      *
      * @param string $table Table name.
+     *
+     * @return string Table prefix.
      */
     public static function dbGetTablePrefix($table)
     {
@@ -467,6 +472,8 @@ class System
      * Used in conjunction with FormUtil::getPassedValue.
      *
      * @param mixed &$value Variables or arrays to be stripslashed.
+     *
+     * @return void
      */
     public static function stripslashes(&$value)
     {
@@ -497,8 +504,8 @@ class System
         }
 
         // typecasting (might be useless in this function)
-        $var = (string) $var;
-        $type = (string) $type;
+        $var  = (string)$var;
+        $type = (string)$type;
 
         static $maxlength = array(
         'modvar' => 64,
@@ -666,11 +673,11 @@ class System
     /**
      * Carry out a redirect.
      *
-     * @param string  $redirecturl      URL to redirect to.
-     * @param array   $addtionalheaders Array of header strings to send with redirect.
-     * @param integer $type             Number type of the redirect.
+     * @param string  $redirecturl       URL to redirect to.
+     * @param array   $additionalheaders Array of header strings to send with redirect.
+     * @param integer $type              Number type of the redirect.
      *
-     * @returns boolean True if redirect successful, false otherwise.
+     * @return boolean True if redirect successful, false otherwise.
      */
     public static function redirect($redirecturl, $additionalheaders = array(), $type = 302)
     {
@@ -745,8 +752,6 @@ class System
      *
      * E-mail messages should now be send with a ModUtil::apiFunc call to the mailer module.
      *
-     * @deprecated
-     *
      * @param string  $to      Recipient of the email.
      * @param string  $subject Title of the email.
      * @param string  $message Body of the email.
@@ -754,6 +759,8 @@ class System
      * @param integer $html    Message is html formatted.
      * @param integer $debug   If 1, echo mail content.
      * @param string  $altbody Alternative body.
+     *
+     * @deprecated
      *
      * @return boolean True if the email was sent, false if not.
      */
@@ -831,9 +838,9 @@ class System
     /**
      * Get current URI (and optionally add/replace some parameters).
      *
-     * @access public
-     *
      * @param array $args Additional parameters to be added to/replaced in the URI (e.g. theme, ...).
+     *
+     * @access public
      *
      * @return string Current URI.
      */
@@ -922,10 +929,11 @@ class System
     /**
      * Get current URL.
      *
-     * @todo cfr. BaseURI() for other possible ways, or try PHP_SELF
-     * @access public
+     * @todo cfr. BaseURI() for other possible ways, or try PHP_SELF.
      *
      * @param array $args Additional parameters to be added to/replaced in the URL (e.g. theme, ...).
+     *
+     * @access public
      *
      * @return string Current URL.
      */
@@ -987,7 +995,7 @@ class System
                     '/admin.php',
                     '/user.php',
                     '/error.php',
-                    System::getBaseUri());
+                    self::getBaseUri());
 
             // get base path to work out our current url
             $parsedURL = parse_url(self::getCurrentUri());
@@ -1051,12 +1059,15 @@ class System
      * Really the _GET superglobal.
      * This API also adds the variable to the _REQUEST superglobal for consistency.
      *
+     * @param string $name  Name of the variable to set.
+     * @param mixed  $value Value to set.
+     *
      * @return bool True if successful, false otherwise.
      */
     public static function queryStringSetVar($name, $value)
     {
         if (!isset($name)) {
-            return;
+            return false;
         }
 
         // add the variable into the get superglobal
@@ -1181,11 +1192,10 @@ class System
     }
 
     /**
-     * Gracefully shut down the framework (traps all exit and die calls).
+     * Gracefully shut down the framework (traps all exit and die calls),
+     * Function halts execution.
      *
      * @param mixed $exit_param String or integer params to pass to the exit function.
-     *
-     * @return void Function halts execution.
      */
     public static function shutDown($exit_param = '')
     {
