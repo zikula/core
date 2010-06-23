@@ -406,6 +406,10 @@ class Theme_Api_Admin extends Zikula_Api
         return true;
     }
 
+    /**
+     * delete ini file
+     *
+     */
     public function deleteinifile($args)
     {
         if (!isset($args['themename']) || empty($args['themename'])) {
@@ -521,43 +525,15 @@ class Theme_Api_Admin extends Zikula_Api
             }
         }
 
-        // Create output object
-        $renderer = Renderer::getInstance('Theme', false);
-
-        // force the expose template option to off as it'll break this functionality
-        $renderer->expose_template = false;
-
-        // assign the theme info
-        $renderer->assign($themeinfo);
-
-        $versionfile = $renderer->fetch('upgrade/version.htm');
-        $potfile = $renderer->fetch('upgrade/pot.htm');
-        $renderer->assign('palettes', array('palette1' =>  array()));
-        $palettesfile = $renderer->fetch('upgrade/themepalettes.htm');
-        $variablesfile = $renderer->fetch('upgrade/themevariables.htm');
-        $renderer->assign('pageconfigurations', array('master'));
-        $pageconfigurationsfile = $renderer->fetch('upgrade/pageconfigurations.htm');
-        $renderer->assign('pagetemplate', 'master.htm');
-        $renderer->assign('templates', array('left' => 'block.htm', 'right' => 'block.htm', 'center' => 'block.htm'));
-        $pageconfigurationfile = $renderer->fetch('upgrade/pageconfiguration.htm');
-
-        // work out which base page template to use
-        switch ($themeinfo['layout']) {
-            case '2coll':
-                $pagetemplate = 'layout1';
-                break;
-            case '2colr':
-                $pagetemplate = 'layout2';
-                break;
-            case '3col':
-                $pagetemplate = 'layout3';
-                break;
-            default:
-                $pagetemplate = 'emptypage';
-        }
-        $pagetemplatefile = $renderer->fetch("upgrade/$pagetemplate.htm");
-        $cssfile = $renderer->fetch("upgrade/$pagetemplate.css");
-        $blockfile = $renderer->fetch('upgrade/block.htm');
+        $versionfile = $args['versionfile'];
+        $potfile = $args['potfile'];
+        $palettesfile = $args['palettesfile'];
+        $variablesfile = $args['variablesfile'];
+        $pageconfigurationsfile = $args['pageconfigurationsfile'];
+        $pageconfigurationfile = $args['pageconfigurationfile'];
+        $pagetemplatefile = $args['pagetemplatefile'];
+        $cssfile = $args['cssfile'];
+        $blockfile = $args['blockfile'];
 
         $files = array(
                 "themes/$themeinfo[name]/version.php" => 'versionfile',

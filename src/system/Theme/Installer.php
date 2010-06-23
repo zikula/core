@@ -116,7 +116,6 @@ class Theme_Installer extends Zikula_Installer
                         $perm['component'] = 'Theme:Renderblock:';
                         DBUtil::updateObject($perm, 'group_perms', '', 'pid');
                     }
-
                 }
 
                 // Set Module pnRender 'Inactive'
@@ -135,7 +134,6 @@ class Theme_Installer extends Zikula_Installer
                 if (!DBUtil::changeTable('themes')) {
                     return '3.4';
                 }
-
         }
 
         // Update successful

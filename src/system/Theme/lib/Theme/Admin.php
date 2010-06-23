@@ -62,7 +62,43 @@ class Theme_Admin extends Zikula_Controller
         }
 
         // create theme
-        if (!ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo))) {
+        $expose_template = $this->renderer->expose_template;
+
+        $this->renderer->expose_template = false;
+        $this->renderer->assign($themeinfo);
+        $this->renderer->assign('palettes', array('palette1' =>  array()));
+        $this->renderer->assign('pageconfigurations', array('master'));
+        $this->renderer->assign('pagetemplate', 'master.htm');
+        $this->renderer->assign('templates', array('left' => 'block.htm', 'right' => 'block.htm', 'center' => 'block.htm'));
+
+        // work out which base page template to use
+        switch ($themeinfo['layout']) {
+            case '2coll':
+                $pagetemplate = 'layout1';
+                break;
+            case '2colr':
+                $pagetemplate = 'layout2';
+                break;
+            case '3col':
+                $pagetemplate = 'layout3';
+                break;
+            default:
+                $pagetemplate = 'emptypage';
+        }
+        
+        $createdtheme = ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo,
+                                                                           'versionfile' => $this->renderer->fetch('upgrade/version.htm'),
+                                                                           'potfile' => $this->renderer->fetch('upgrade/pot.htm'),
+                                                                           'palettesfile' => $this->renderer->fetch('upgrade/themepalettes.htm'),
+                                                                           'variablesfile' => $this->renderer->fetch('upgrade/themevariables.htm'),
+                                                                           'pageconfigurationsfile' => $this->renderer->fetch('upgrade/pageconfigurations.htm'),
+                                                                           'pageconfigurationfile' => $this->renderer->fetch('upgrade/pageconfiguration.htm'),
+                                                                           'pagetemplatefile' => $this->renderer->fetch('upgrade/'.$pagetemplate.'.htm'),
+                                                                           'cssfile' => $this->renderer->fetch('upgrade/'.$pagetemplate.'.css'),
+                                                                           'blockfile' => $this->renderer->fetch('upgrade/block.htm')));
+        $this->renderer->expose_template = $expose_template;
+
+        if ($createdtheme) {
             LogUtil::registerStatus($this->__f('Done! Theme %s created.', $themeinfo['name']));
         }
 
@@ -320,7 +356,7 @@ class Theme_Admin extends Zikula_Controller
     }
 
     /**
-     * display the themes block positions
+     * display the themes palettes
      *
      */
     public function palettes($args)
@@ -353,7 +389,7 @@ class Theme_Admin extends Zikula_Controller
     }
 
     /**
-     * update the theme settings
+     * update the theme palettes
      *
      */
     public function updatepalettes($args)
@@ -663,12 +699,11 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $ostype = DataUtil::formatForOS($type);
-        $dummy = Renderer::getInstance('Theme');
 
         $filters = explode(',', $filters);
         $newfilters = array();
         foreach ($filters as $filter) {
-            foreach ($dummy->plugins_dir as $plugindir) {
+            foreach ($this->renderer->plugins_dir as $plugindir) {
                 if (file_exists($plugindir .'/'. $ostype .'.'. DataUtil::formatForOS($filter) .'.php')) {
                     $newfilters[] = $filter;
                     break;
@@ -964,84 +999,6 @@ class Theme_Admin extends Zikula_Controller
     }
 
     /**
-     * upgrade theme
-     *
-     */
-    public function upgrade($args)
-    {
-        // get our input
-        $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
-
-        // get the theme info
-        $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-
-        // check the permissions required to upgrade the theme
-        if (!is_writable("themes/$themeinfo[directory]") || !is_writable("themes/$themeinfo[directory]/templates")) {
-            LogUtil::registerError($this->__('Notice: Permissions for the theme directory must be set so that it can be written to.'));
-            return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
-        }
-
-        if (!file_exists("themes/$themeinfo[directory]/xaninit.php") || $themeinfo['type'] != 2) {
-            LogUtil::registerError($this->__("Error! This theme cannot be upgraded because it is not a Xanthia 2 theme."));
-            return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
-        }
-
-        // make the config directory
-        if (!is_dir("themes/$themeinfo[directory]/templates/config") && !mkdir("themes/$themeinfo[directory]/templates/config")) {
-            LogUtil::registerError($this->__('Error! Could not create theme configuration directory.'));
-            return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
-        }
-
-        // initialise the globals used in the upgrade
-        $GLOBALS['palettes'] = $GLOBALS['variables'] = $GLOBALS['templates'] = $GLOBALS['pageconfigurations'] = array();
-
-        // load the xanthia 2.0 init script
-        ModUtil::loadApi('Theme', 'upgrade');
-        require_once "themes/$themeinfo[directory]/xaninit.php";
-        $currentlang = ZLanguage::getLanguageCodeLegacy();
-        if (file_exists($file = "themes/$themeinfo[directory]/lang/$currentlang/xaninit.php")) {
-            require_once $file;
-        }
-        if (function_exists('xanthia_skins_install')) {
-            xanthia_skins_install(array('id' => $themeinfo['name']));
-        }
-
-        // write the upgraded version file
-        ModUtil::apiFunc('Theme', 'upgrade', 'writeversion', array('themename' => $themename));
-
-        // write the upgraded palettes file
-        ModUtil::apiFunc('Theme', 'upgrade', 'writepalettes', array('themename' => $themename));
-
-        // write the upgraded palettes file
-        ModUtil::apiFunc('Theme', 'upgrade', 'writevariables', array('themename' => $themename));
-
-        // write the upgraded page configurations file
-        ModUtil::apiFunc('Theme', 'upgrade', 'writepageconfigurations', array('themename' => $themename));
-        foreach($GLOBALS['pageconfigurations'] as $pageconfiguration) {
-            ModUtil::apiFunc('Theme', 'upgrade', 'writepageconfiguration', array('themename' => $themename, 'pageconfiguration' => $pageconfiguration));
-        }
-
-        // write the upgraded news templates file
-        ModUtil::apiFunc('Theme', 'upgrade', 'rewritenewstemplates', array('themename' => $themename));
-
-        // delete a module var that will have been created
-        ModUtil::delVar('Xanthia', $themename.'newzone');
-
-        // delete old files
-        $files = array("themes/$themeinfo[directory]/xaninit.php", "themes/$themeinfo[directory]/theme.php",
-                "themes/$themeinfo[directory]/xaninfo.php", "themes/$themeinfo[directory]/lang/$currentlang/xaninit.php");
-        foreach ($files as $file) {
-            unlink($file);
-        }
-
-        // now regenerate the theme list to detect the change in type
-        ModUtil::apiFunc('Theme', 'admin', 'regenerate');
-
-        LogUtil::registerStatus($this->__('Done! Upgraded theme.'));
-        return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
-    }
-
-    /**
      * delete a theme
      *
      */
@@ -1248,8 +1205,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $Theme = Theme::getInstance('Theme');
-        $res   = $Theme->clear_compiled();
+        $theme = Theme::getInstance('Theme');
+        $res   = $theme->clear_compiled();
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted theme engine compiled templates.'));
@@ -1278,8 +1235,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','main'));
         }
 
-        $Theme = Theme::getInstance('Theme');
-        $res   = $Theme->clear_all_cache();
+        $theme = Theme::getInstance('Theme');
+        $res   = $theme->clear_all_cache();
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted theme engine cached templates.'));
@@ -1308,8 +1265,8 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $Theme = Theme::getInstance('Theme');
-        $Theme->clear_cssjscombinecache();
+        $theme = Theme::getInstance('Theme');
+        $theme->clear_cssjscombinecache();
 
         LogUtil::registerStatus($this->__('Done! Deleted CSS/JS combination cached files.'));
         return System::redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));
@@ -1333,8 +1290,7 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $Renderer = Renderer::getInstance();
-        $res      = $Renderer->clear_compiled();
+        $res = $this->renderer->clear_compiled();
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted rendering engine compiled templates.'));
@@ -1363,8 +1319,7 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $Renderer = Renderer::getInstance();
-        $res      = $Renderer->clear_all_cache();
+        $res = $this->renderer->clear_all_cache();
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted rendering engine cached pages.'));
