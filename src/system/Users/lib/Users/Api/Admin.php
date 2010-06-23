@@ -151,7 +151,7 @@ class Users_Api_Admin extends Zikula_Api
             $pass  = $args['pass'];
             $vpass = $args['vpass'];
 
-            $minpass = ModUtil::getVar('Users', 'minpass');
+            $minpass = $this->getVar('minpass');
             if (empty($pass) || strlen($pass) < $minpass) {
                 return LogUtil::registerError($this->_fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass, $minpass));
             }

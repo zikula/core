@@ -67,9 +67,8 @@ class Users_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        if (ModUtil::getVar('Users', 'reg_allowreg', false) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            $registrationUnavailableReason = ModUtil::getVar('Users', 'reg_noregreasons',
-                $this->__('Sorry! New user registration is currently disabled.'));
+        if ($this->getVar('reg_allowreg', false) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+            $registrationUnavailableReason = $this->getVar('reg_noregreasons', $this->__('Sorry! New user registration is currently disabled.'));
             return LogUtil::registerError($registrationUnavailableReason, 403, System::getHomepageUrl());
         }
 
@@ -98,7 +97,7 @@ class Users_Admin extends Zikula_Controller
             $errorInfo = ModUtil::apiFunc('Users', 'user', 'processRegistrationErrorsForDisplay', array('registrationErrors' => $registrationErrors));
         }
 
-        $modVars = ModUtil::getVar('Users');
+        $modVars = $this->getVar();
         $profileModName = System::getVar('profilemodule', '');
         $profileModAvailable = !empty($profileModName) && ModUtil::available($profileModName);
 
@@ -204,7 +203,7 @@ class Users_Admin extends Zikula_Controller
         }
 
         $currentUserEmail = UserUtil::getVar('email');
-        $adminNotifyEmail = ModUtil::getVar('Users', 'reg_notifyemail', '');
+        $adminNotifyEmail = $this->getVar('reg_notifyemail', '');
         $adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
 
         $registeredObj = ModUtil::apiFunc('Users', 'registration', 'registerNewUser', array(
@@ -259,7 +258,7 @@ class Users_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // we need this value multiple times, so we keep it
-        $itemsperpage = ModUtil::getVar('Users', 'itemsperpage');
+        $itemsperpage = $this->getVar('itemsperpage');
 
         // Get all users
         $items = ModUtil::apiFunc('Users', 'user', 'getAll', array(
@@ -883,7 +882,7 @@ class Users_Admin extends Zikula_Controller
     {
         $actions = array();
         if (!empty($reglist)) {
-            $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+            $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
             // Don't try to put any visual elements here (images, titles, colors, css classes, etc.). Leave that to
             // the template, so that they can be customized without hacking the core code. In fact, all we really need here
@@ -977,7 +976,7 @@ class Users_Admin extends Zikula_Controller
         }
 
         $regCount = ModUtil::apiFunc('Users', 'registration', 'countAll');
-        $limitNumRows = ModUtil::getVar('Users', 'itemsperpage', 25);
+        $limitNumRows = $this->getVar('itemsperpage', 25);
         if (!is_numeric($limitNumRows) || ((int)$limitNumRows != $limitNumRows) || (($limitNumRows < 1) && ($limitNumRows != -1))) {
             $limitNumRows = 25;
         }
@@ -1172,7 +1171,7 @@ class Users_Admin extends Zikula_Controller
             $cancelUrl = ModUtil::url('Users', 'admin', 'displayRegistration', array('id' => $reginfo['id']));
         }
 
-        $modVars = ModUtil::getVar('Users');
+        $modVars = $this->getVar();
         $profileModName = System::getVar('profilemodule', '');
         $profileModAvailable = !empty($profileModName) && ModUtil::available($profileModName);
 
@@ -1283,7 +1282,7 @@ class Users_Admin extends Zikula_Controller
             $cancelUrl = ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true));
         }
 
-        $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
         if ($reginfo['isverified']) {
             return LogUtil::registerError(
@@ -1370,7 +1369,7 @@ class Users_Admin extends Zikula_Controller
             $cancelUrl = ModUtil::url('Users', 'admin', 'viewRegistrations', array('restoreview' => true));
         }
 
-        $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
         if ($reginfo['isapproved'] && !$forceVerification) {
             return LogUtil::registerError(
@@ -1537,7 +1536,7 @@ class Users_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign the module vars
-        $this->renderer->assign('config', ModUtil::getVar('Users'));
+        $this->renderer->assign('config', $this->getVar());
 
         $profileModule = System::getVar('profilemodule', '');
         $this->renderer->assign('profile', (!empty($profileModule) && ModUtil::available($profileModule)));
@@ -1660,7 +1659,7 @@ class Users_Admin extends Zikula_Controller
         $confirmed     = FormUtil::getPassedValue('confirmed', (isset($args['confirmed']) ? $args['confirmed'] : null), 'POST');
 
         // set default parameters
-        $minpass = ModUtil::getVar('Users', 'minpass');
+        $minpass = $this->getVar('minpass');
         $defaultGroup = ModUtil::getVar('Groups', 'defaultgroup');
 
         if ($confirmed == 1) {
@@ -1917,10 +1916,10 @@ class Users_Admin extends Zikula_Controller
 
         // get needed values
         $is_admin = (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) ? true : false;
-        $minpass = ModUtil::getVar('Users', 'minpass');
+        $minpass = $this->getVar('minpass');
         $defaultGroup = ModUtil::getVar('Groups', 'defaultgroup'); // Create output object;
         // calcs $pregcondition needed to verify illegal usernames
-        $reg_illegalusername = ModUtil::getVar('Users', 'reg_Illegalusername');
+        $reg_illegalusername = $this->getVar('reg_Illegalusername');
         $pregcondition = '';
         if (!empty($reg_illegalusername)) {
             $usernames = explode(" ", $reg_illegalusername);
@@ -1947,7 +1946,7 @@ class Users_Admin extends Zikula_Controller
         }
 
         // check if the user's email must be unique
-        $reg_uniemail = ModUtil::getVar('Users', 'reg_uniemail');
+        $reg_uniemail = $this->getVar('reg_uniemail');
 
         // get the CSV delimiter
         switch ($delimiter) {

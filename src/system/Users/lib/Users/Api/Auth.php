@@ -117,7 +117,7 @@ class Users_Api_Auth extends Zikula_AuthApi
             return false;
         }
 
-        $loginOption = ModUtil::getVar('Users', 'loginviaoption', 0);
+        $loginOption = $this->getVar('loginviaoption', 0);
         $idField = ($loginOption == 0) ? 'uname' : 'email';
 
         $authinfo = array();
@@ -176,7 +176,7 @@ class Users_Api_Auth extends Zikula_AuthApi
         if (isset($loginOptionOverride)) {
             $loginOption = $loginOptionOverride;
         } else {
-            $loginOption = ModUtil::getVar('Users', 'loginviaoption', 0);
+            $loginOption = $this->getVar('loginviaoption', 0);
         }
         if ($loginOption == 1) {
             $idFieldDesc = $this->__('an e-mail address');
@@ -294,7 +294,7 @@ class Users_Api_Auth extends Zikula_AuthApi
         }
 
         if (!UserUtil::passwordsMatch($authinfo['pass'], $currentPasswordHashed)) {
-            if (ModUtil::getVar('Users', 'loginviaoption', 0) == 1) {
+            if ($this->getVar('loginviaoption', 0) == 1) {
                 $idFieldDesc = $this->__('e-mail address');
             } else {
                 $idFieldDesc = $this->__('user name');
@@ -309,7 +309,7 @@ class Users_Api_Auth extends Zikula_AuthApi
             // Note: this is purely specific to the Users module authentication, and has nothing to do with what a custom
             // authmodule might do.
             list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(UserUtil::SALT_DELIM, $currentPasswordHashed);
-            $systemHashMethodCode = UserUtil::getPasswordHashMethodCode(ModUtil::getVar('Users', 'hash_method', 'sha1'));
+            $systemHashMethodCode = UserUtil::getPasswordHashMethodCode($this->getVar('hash_method', 'sha1'));
             if (($systemHashMethodCode != $currentPasswordHashCode) || empty($currentPasswordSaltStr)) {
                 if (!UserUtil::setPassword($authinfo['pass'], $uid)) {
                     LogUtil::log($this->__('Internal Error! Unable to update the user\'s password with the new hashing method and/or salt.'), 'CORE');

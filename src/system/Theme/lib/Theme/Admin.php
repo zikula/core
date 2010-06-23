@@ -136,7 +136,7 @@ class Theme_Admin extends Zikula_Controller
         $startlet = FormUtil::getPassedValue('startlet', isset($args['startlet']) ? $args['startlet'] : null, 'GET');
 
         // we need this value multiple times, so we keep it
-        $itemsperpage = ModUtil::getVar('Theme', 'itemsperpage');
+        $itemsperpage = $this->getVar('itemsperpage');
 
         // call the API to get a list of all themes in the themes dir
         $allthemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ALL, ThemeUtil::STATE_ALL);
@@ -1070,7 +1070,7 @@ class Theme_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign all module vars
-        $this->renderer->assign(ModUtil::getVar('Theme'));
+        $this->renderer->assign($this->getVar());
 
         // assign an authid for the clear cache/compile links
         $this->renderer->assign('authid', SecurityUtil::generateAuthKey('Theme'));
@@ -1087,7 +1087,7 @@ class Theme_Admin extends Zikula_Controller
         $this->renderer->assign('mods', $mods);
 
         // assign an extracted list of non-cached mods
-        $this->renderer->assign('modulesnocache', array_flip(explode(',', ModUtil::getVar('Theme', 'modulesnocache'))));
+        $this->renderer->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))));
 
         // check for a .htaccess file
         if (file_exists('.htaccess')){

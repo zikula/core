@@ -71,11 +71,11 @@ class Users_Block_Login extends Zikula_Block
                 $row['title'] = DataUtil::formatForDisplay('Login');
             }
 
-            $this->renderer->assign('default_authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'))
-                           ->assign('authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'))
+            $this->renderer->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
+                           ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
                            ->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))))
                            ->assign('seclevel', System::getVar('seclevel'))
-                           ->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'))
+                           ->assign('allowregistration', $this->getVar('reg_allowreg'))
                            ->assign('returnurl', System::getCurrentUri());
 
             // determine whether to show the rememberme option

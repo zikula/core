@@ -759,7 +759,7 @@ class Groups_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign the module vars
-        $modvars = ModUtil::getVar('Groups');
+        $modvars = $this->getVar();
         $this->renderer->assign($modvars);
         
         $this->renderer->assign('defaultgroupid', $modvars['defaultgroup']);

@@ -51,7 +51,7 @@ class Search_User extends Zikula_Controller
         $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
         $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
         $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
-        $vars['numlimit'] = ModUtil::getVar('Search', 'itemsperpage', 25);
+        $vars['numlimit'] = $this->getVar('itemsperpage', 25);
         $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'REQUEST');
         $vars['modvar'] = FormUtil::getPassedValue('modvar', SessionUtil::getVar('searchmodvar'), 'REQUEST');
 
@@ -135,7 +135,7 @@ class Search_User extends Zikula_Controller
         $vars['q'] = strip_tags(FormUtil::getPassedValue('q', '', 'REQUEST'));
         $vars['searchtype'] = FormUtil::getPassedValue('searchtype', SessionUtil::getVar('searchtype'), 'REQUEST');
         $vars['searchorder'] = FormUtil::getPassedValue('searchorder', SessionUtil::getVar('searchorder'), 'REQUEST');
-        $vars['numlimit'] = ModUtil::getVar('Search', 'itemsperpage', 25);
+        $vars['numlimit'] = $this->getVar('itemsperpage', 25);
         $vars['page'] = (int)FormUtil::getPassedValue('page', 1, 'REQUEST');
 
         // $firstpage is used to identify the very first result page
@@ -186,14 +186,14 @@ class Search_User extends Zikula_Controller
         $result = ModUtil::apiFunc('Search', 'user', 'search', $vars);
 
         // Get number of chars to display in search summaries
-        $limitsummary = ModUtil::getVar('Search', 'limitsummary');
+        $limitsummary = $this->getVar('limitsummary');
         if (empty($limitsummary)) {
             $limitsummary = 200;
         }
 
         $this->renderer->assign('resultcount', $result['resultCount'])
                        ->assign('results', $result['sqlResult'])
-                       ->assign(ModUtil::getVar('Search'))
+                       ->assign($this->getVar())
                        ->assign($vars)
                        ->assign('limitsummary', $limitsummary);
 
@@ -223,7 +223,7 @@ class Search_User extends Zikula_Controller
         $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
 
         // we need this value multiple times, so we keep it
-        $itemsperpage = ModUtil::getVar('Search', 'itemsperpage');
+        $itemsperpage = $this->getVar('itemsperpage');
 
         // get the
         $items = ModUtil::apiFunc('Search', 'user', 'getall', array('startnum' => $startnum, 'numitems' => $itemsperpage, 'sortorder' => 'date'));

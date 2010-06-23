@@ -898,6 +898,8 @@ class SecurityCenter_Api_User extends Zikula_Api
         if (isset($args['forcedefault']) && $args['forcedefault'] == true) {
             $config = self::_getpurifierdefaultconfig();
         } else {
+            // don't change the following statement to $this->getVar
+            // $this is not allowed in functions declared as static
             $currentconfig = ModUtil::getVar('SecurityCenter', 'htmlpurifierConfig');
 
             if (!is_null($currentconfig) && ($currentconfig !== false)) {

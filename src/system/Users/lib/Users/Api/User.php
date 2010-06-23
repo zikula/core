@@ -702,7 +702,7 @@ class Users_Api_User extends Zikula_Api
     public function getLinks()
     {
 
-        $allowregistration = ModUtil::getVar('Users', 'reg_allowreg');
+        $allowregistration = $this->getVar('reg_allowreg');
 
         $links = array();
 

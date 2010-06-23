@@ -30,7 +30,7 @@ class Users_Api_Account extends Zikula_Api
     {
         $items = array();
 
-        $modvars = ModUtil::getVar('Users');
+        $modvars = $this->getVar();
 
         if ($modvars['changepassword'] == 1) {
             // show edit password link

@@ -63,7 +63,7 @@ class Users_User extends Zikula_Controller
         }
 
         // other vars
-        $this->renderer->assign(ModUtil::getVar('Users'));
+        $this->renderer->assign($this->getVar());
 
         return $this->renderer->fetch('users_user_view.htm');
     }
@@ -100,13 +100,13 @@ class Users_User extends Zikula_Controller
                            ->assign('authmodule', 'Users')
                            ->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))));
         } else {
-            $this->renderer->assign('default_authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'))
-                           ->assign('authmodule', ModUtil::getVar('Users', 'default_authmodule', 'Users'))
+            $this->renderer->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
+                           ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
                            ->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))));
         }
-        $this->renderer->assign('loginviaoption', ModUtil::getVar('Users', 'loginviaoption'))
+        $this->renderer->assign('loginviaoption', $this->getVar('loginviaoption'))
                        ->assign('seclevel', System::getVar('seclevel'))
-                       ->assign('allowregistration', ModUtil::getVar('Users', 'reg_allowreg'))
+                       ->assign('allowregistration', $this->getVar('reg_allowreg'))
                        ->assign('returnurl', $returnurl);
 
         // do we have to show a note about reconfirming the terms of use?
@@ -121,7 +121,7 @@ class Users_User extends Zikula_Controller
         $this->renderer->assign('changepassword', $changepassword)
                        ->assign('confirmtou', $confirmtou)
                        ->assign('passwordtext', $passwordtext)
-                       ->assign('use_password_strength_meter', ModUtil::getVar('Users', 'use_password_strength_meter'));
+                       ->assign('use_password_strength_meter', $this->getVar('use_password_strength_meter'));
 
         return $this->renderer->fetch('users_user_loginscreen.htm');
     }
@@ -133,7 +133,7 @@ class Users_User extends Zikula_Controller
      */
     public function underAge()
     {
-        LogUtil::registerError($this->__f('Sorry! You must be %s or over to register for a user account here.', ModUtil::getVar('Users', 'minage')));
+        LogUtil::registerError($this->__f('Sorry! You must be %s or over to register for a user account here.', $this->getVar('minage')));
         return System::redirect(ModUtil::url('Users', 'user', 'view'));
     }
 
@@ -151,7 +151,7 @@ class Users_User extends Zikula_Controller
 
         $userAgent = System::serverGetVar('HTTP_USER_AGENT');
         // Yes, the capital I in the module var name below is required.
-        $illegalUserAgents = ModUtil::getVar('Users', 'reg_Illegaluseragents', '');
+        $illegalUserAgents = $this->getVar('reg_Illegaluseragents', '');
         $pattern = array('/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D');
         $replace = array('', '|', '');
         $illegalUserAgents = preg_replace($pattern, $replace, preg_quote($illegalUserAgents, '/'));
@@ -166,7 +166,7 @@ class Users_User extends Zikula_Controller
         SessionUtil::delVar('Users_User_register');
 
         $rendererArgs = array();
-        $modVars = ModUtil::getVar('Users');
+        $modVars = $this->getVar();
         $rendererArgs['sitename'] = System::getVar('sitename', System::getHost());
         $rendererArgs['regAllowed'] = (isset($modVars['reg_allowreg']) && !empty($modVars['reg_allowreg']))
             ? $modVars['reg_allowreg']
@@ -176,7 +176,7 @@ class Users_User extends Zikula_Controller
             : $this->__('We will begin accepting new registrations again as quickly as possible. Please check back with us soon!');
 
         // check if we've agreed to the age limit. We have if we just came from there, or $args is set
-        if ((ModUtil::getVar('Users', 'minage', 0) != 0) && !stristr(System::serverGetVar('HTTP_REFERER'), 'register')) {
+        if (($this->getVar('minage', 0) != 0) && !stristr(System::serverGetVar('HTTP_REFERER'), 'register')) {
             $template = 'users_user_checkage.htm';
             
             $rendererArgs['minimumAge'] = (isset($modVars['minage']) && !empty($modVars['minage'])) ? $modVars['minage'] : 13;
@@ -265,7 +265,7 @@ class Users_User extends Zikula_Controller
         }
 
         $currentUserEmail = UserUtil::getVar('email');
-        $adminNotifyEmail = ModUtil::getVar('Users', 'reg_notifyemail', '');
+        $adminNotifyEmail = $this->getVar('reg_notifyemail', '');
         $adminNotification = (strtolower($currentUserEmail) != strtolower($adminNotifyEmail));
 
         $registeredObj = ModUtil::apiFunc('Users', 'registration', 'registerNewUser', array(
@@ -734,7 +734,7 @@ class Users_User extends Zikula_Controller
                         $newPasswordIsValid = false;
                     }
 
-                    $minPasswordLength = ModUtil::getVar('Users', 'minpass');
+                    $minPasswordLength = $this->getVar('minpass');
                     if (!empty($newPassword) && (strlen($newPassword) < $minPasswordLength) && $newPasswordIsValid) {
                         $errorMsg = $this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minPasswordLength, $minPasswordLength);
                         $newPasswordIsValid = false;
@@ -798,7 +798,7 @@ class Users_User extends Zikula_Controller
             // start login hook
             $uid = UserUtil::getVar('uid');
             $this->callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
-            $loginRedirect = ModUtil::getVar('Users', 'login_redirect');
+            $loginRedirect = $this->getVar('login_redirect');
             if ($loginRedirect == 1) {
                 // WCAG compliant login
                 return System::redirect($returnPageUrl);
@@ -813,8 +813,8 @@ class Users_User extends Zikula_Controller
             if (!LogUtil::hasErrors()) {
                 LogUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
             }
-            $moderation = ModUtil::getVar('Users', 'moderation', false);
-            $regVerifyEmail = ModUtil::getVar('Users', 'reg_verifyemail', UserUtil::VERIFY_NO);
+            $moderation = $this->getVar('moderation', false);
+            $regVerifyEmail = $this->getVar('reg_verifyemail', UserUtil::VERIFY_NO);
             if ($moderation && ($regVerifyEmail == UserUtil::VERIFY_USERPWD)) {
                 LogUtil::registerError($this->__('Note: If you have recently registered with us, then your account might be waiting for an administrator\'s approval, or might be waiting for you to verify your e-mail address. Please check your e-mail for a message from us with more information and instructions.'));
             } elseif ($regVerifyEmail == UserUtil::VERIFY_USERPWD) {
@@ -836,7 +836,7 @@ class Users_User extends Zikula_Controller
      */
     public function logout()
     {
-        $login_redirect = ModUtil::getVar('Users', 'login_redirect');
+        $login_redirect = $this->getVar('login_redirect');
 
         // start logout hook
         $uid = UserUtil::getVar('uid');
@@ -1165,7 +1165,7 @@ class Users_User extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $changepassword = ModUtil::getVar('Users', 'changepassword', 1);
+        $changepassword = $this->getVar('changepassword', 1);
         if ($changepassword <> 1) {
             return System::redirect('Users', 'user', 'main');
         }
@@ -1174,7 +1174,7 @@ class Users_User extends Zikula_Controller
         $this->renderer->add_core_data();
 
         // assign vars
-        $this->renderer->assign('use_password_strength_meter', ModUtil::getVar('Users', 'use_password_strength_meter'));
+        $this->renderer->assign('use_password_strength_meter', $this->getVar('use_password_strength_meter'));
 
         // Return the output that has been generated by this function
         return $this->renderer->fetch('users_user_changepassword.htm');
@@ -1200,7 +1200,7 @@ class Users_User extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'changePassword'));
         }
 
-        $uservars = ModUtil::getVar('Users');
+        $uservars = $this->getVar();
         if ($uservars['changepassword'] <> 1) {
             return System::redirect('Users', 'user', 'main');
         }
@@ -1260,7 +1260,7 @@ class Users_User extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $changeemail = ModUtil::getVar('Users', 'changeemail', 1);
+        $changeemail = $this->getVar('changeemail', 1);
         if ($changeemail <> 1) {
             return System::redirect('Users', 'user', 'main');
         }
@@ -1290,7 +1290,7 @@ class Users_User extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'changeEmail'));
         }
 
-        $uservars = ModUtil::getVar('Users');
+        $uservars = $this->getVar();
         if ($uservars['changeemail'] <> 1) {
             return System::redirect('Users', 'user', 'main');
         }

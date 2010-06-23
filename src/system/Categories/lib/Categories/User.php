@@ -146,7 +146,7 @@ class Categories_User extends Zikula_Controller
             return LogUtil::registerError($this->__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
         }
 
-        $allowUserEdit = ModUtil::getVar ('Categories', 'allowusercatedit', 0);
+        $allowUserEdit = $this->getVar('allowusercatedit', 0);
         if (!$allowUserEdit) {
             return LogUtil::registerError($this->__('Error! User-owned category editing has not been enabled. This feature can be enabled by the site administrator.'));
         }
@@ -175,7 +175,7 @@ class Categories_User extends Zikula_Controller
 
         $dr = null;
         if (!$thisUserRootCat) {
-            $autoCreate = ModUtil::getVar ('Categories', 'autocreateusercat', 0);
+            $autoCreate = $this->getVar('autocreateusercat', 0);
             if (!$autoCreate) {
                 return LogUtil::registerError($this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
             }
@@ -198,9 +198,9 @@ class Categories_User extends Zikula_Controller
             $obj->update ();
             $dr = $obj->getID ();
 
-            $autoCreateDefaultUserCat = ModUtil::getVar ('Categories', 'autocreateuserdefaultcat', 0);
+            $autoCreateDefaultUserCat = $this->getVar('autocreateuserdefaultcat', 0);
             if ($autoCreateDefaultUserCat) {
-                $userdefaultcatname = ModUtil::getVar ('Categories', 'userdefaultcatname', $this->__('Default'));
+                $userdefaultcatname = $this->getVar('userdefaultcatname', $this->__('Default'));
                 $cat = array('id'               => '',
                         'parent_id'        => $dr,
                         'name'             => $userdefaultcatname,

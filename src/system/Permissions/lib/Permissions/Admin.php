@@ -76,8 +76,8 @@ class Permissions_Admin extends Zikula_Controller
                        ->assign('testresult', $testresult);
 
         // decide the default view
-        $enableFilter = ModUtil::getVar('Permissions', 'filter', 1);
-        $rowview      = ModUtil::getVar('Permissions', 'rowview', 25);
+        $enableFilter = $this->getVar('filter', 1);
+        $rowview      = $this->getVar('rowview', 25);
 
         // Work out which tables to operate against, and
         // various other bits and pieces
@@ -206,9 +206,9 @@ class Permissions_Admin extends Zikula_Controller
         $this->renderer->assign('permissions', $permissions);
         $this->renderer->assign('components', $components);
 
-        $lockadmin = (ModUtil::getVar('Permissions', 'lockadmin')) ? 1 : 0;
+        $lockadmin = ($this->getVar('lockadmin')) ? 1 : 0;
         $this->renderer->assign('lockadmin', $lockadmin);
-        $this->renderer->assign('adminid', ModUtil::getVar('Permissions', 'adminid'));
+        $this->renderer->assign('adminid', $this->getVar('adminid'));
 
         // Assign the permission levels
         $this->renderer->assign('permissionlevels', SecurityUtil::accesslevelnames());
@@ -321,7 +321,7 @@ class Permissions_Admin extends Zikula_Controller
         $permgrp = FormUtil::getPassedValue('permgrp', null, 'REQUEST');
 
         // decide default view
-        $rowview = is_null(ModUtil::getVar('Permissions', 'rowview')) ? '25' : ModUtil::getVar('Permissions', 'rowview');
+        $rowview = is_null($this->getVar('rowview')) ? '25' : $this->getVar('rowview');
 
         $this->renderer->setCaching(false);
 
@@ -665,7 +665,7 @@ class Permissions_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign the module vars
-        $this->renderer->assign(ModUtil::getVar('Permissions'));
+        $this->renderer->assign($this->getVar());
 
         // return the output
         return $this->renderer->fetch('permissions_admin_modifyconfig.htm');

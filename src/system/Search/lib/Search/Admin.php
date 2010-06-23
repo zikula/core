@@ -59,14 +59,14 @@ class Search_Admin extends Zikula_Controller
         // get the disabled status
         foreach ($plugins as $key => $plugin) {
             if (isset($plugin['title'])) {
-                $plugins[$key]['disabled'] = ModUtil::getVar('Search', "disable_$plugin[title]");
+                $plugins[$key]['disabled'] = $this->getVar("disable_$plugin[title]");
             }
         }
 
         $this->renderer->setCaching(false);
 
         // assign all module vars
-        $this->renderer->assign(ModUtil::getVar('Search'));
+        $this->renderer->assign($this->getVar());
 
         // assign the plugins
         $this->renderer->assign('plugins', $plugins);

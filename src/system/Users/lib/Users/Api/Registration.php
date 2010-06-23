@@ -61,7 +61,7 @@ class Users_Api_Registration extends Zikula_Api
 
         $passwordAgain = isset($args['passagain']) ? $args['passagain'] : '';
 
-        $minPasswordLength = ModUtil::getVar('Users', 'minpass', 5);
+        $minPasswordLength = $this->getVar('minpass', 5);
 
         $passwordErrors = array();
 
@@ -142,7 +142,7 @@ class Users_Api_Registration extends Zikula_Api
             $emailErrors['reginfo_email'][] = $this->__('You must provide an e-mail address.');
         } elseif (!System::varValidate($reginfo['email'], 'email')) {
             $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
-        } elseif (ModUtil::getVar('Users', 'reg_uniemail', false)) {
+        } elseif ($this->getVar('reg_uniemail', false)) {
             // Probably best not to use API calls to countAll
             $ucount = DBUtil::selectObjectCountByID ('users', $reginfo['email'], 'email');
             $rcount = DBUtil::selectObjectCountByID ('users_registration', $reginfo['email'], 'email');
@@ -273,7 +273,7 @@ class Users_Api_Registration extends Zikula_Api
         }
 
         if ($checkMode != 'modify') {
-            $verificationAndPassword = ModUtil::getVar('Users', 'reg_verifyemail', UserUtil::VERIFY_NO);
+            $verificationAndPassword = $this->getVar('reg_verifyemail', UserUtil::VERIFY_NO);
             if ($verificationAndPassword == UserUtil::VERIFY_SYSTEMPWD) {
                 return z_exit($this->__('Internal Error! System-generated passwords are no longer supported!'));
             }
@@ -310,7 +310,7 @@ class Users_Api_Registration extends Zikula_Api
             }
         }
 
-        $showProfile = ModUtil::getVar('Users', 'reg_optitems', false);
+        $showProfile = $this->getVar('reg_optitems', false);
         $profileModule = System::getVar('profilemodule', '');
         if ($showProfile && !empty($profileModule) && ModUtil::available($profileModule)) {
             if (isset($reginfo['dynadata'])) {
@@ -338,8 +338,8 @@ class Users_Api_Registration extends Zikula_Api
         }
 
         if (!$isAdminOrSubAdmin && ($checkMode != 'modify')) {
-            $spamProtectionQuestion = ModUtil::getVar('Users', 'reg_question', '');
-            $spamProtectionCorrectAnswer = ModUtil::getVar('Users', 'reg_answer', '');
+            $spamProtectionQuestion = $this->getVar('reg_question', '');
+            $spamProtectionCorrectAnswer = $this->getVar('reg_answer', '');
             if (!empty($spamProtectionQuestion) && !empty($spamProtectionCorrectAnswer)) {
                 if ($spamProtectionUserAnswer != $spamProtectionCorrectAnswer) {
                     $registrationErrors['antispamanswer'][] = $this->__('You gave the wrong answer to the anti-spam registration question.');
@@ -383,9 +383,8 @@ class Users_Api_Registration extends Zikula_Api
         $isAdmin = $this->currentUserIsAdmin();
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
-        if (!$isAdmin && !ModUtil::getVar('Users', 'reg_allowreg', false)) {
-            $registrationUnavailableReason = ModUtil::getVar('Users', 'reg_noregreasons',
-                $this->__('New user registration is currently disabled.'));
+        if (!$isAdmin && !$this->getVar('reg_allowreg', false)) {
+            $registrationUnavailableReason = $this->getVar('reg_noregreasons', $this->__('New user registration is currently disabled.'));
             return LogUtil::registerError($registrationUnavailableReason, 403, System::getHomepageUrl());
         }
 
@@ -396,9 +395,9 @@ class Users_Api_Registration extends Zikula_Api
 
         $adminWantsVerification = $isAdminOrSubAdmin && ((isset($args['usermustverify']) ? (bool)$args['usermustverify'] : false)
             || !isset($reginfo['pass']) || empty($reginfo['pass']));
-        $reginfo['isverified'] = (ModUtil::getVar('Users', 'reg_verifyemail', UserUtil::VERIFY_NO) == UserUtil::VERIFY_NO)
+        $reginfo['isverified'] = ($this->getVar('reg_verifyemail', UserUtil::VERIFY_NO) == UserUtil::VERIFY_NO)
             && !$adminWantsVerification;
-        $reginfo['isapproved'] = $isAdminOrSubAdmin || !ModUtil::getVar('Users', 'moderation', false);
+        $reginfo['isapproved'] = $isAdminOrSubAdmin || !$this->getVar('moderation', false);
         $createRegistration = !$reginfo['isapproved'] || !$reginfo['isverified'];
 
         // Notification flags
@@ -522,7 +521,7 @@ class Users_Api_Registration extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
         // Set the verification code
         if (!$reginfo['isverified'] && (($approvalOrder != UserUtil::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
@@ -572,7 +571,7 @@ class Users_Api_Registration extends Zikula_Api
 
                 if ($adminNotification) {
                     // mail notify email to inform admin about registration
-                    $notificationEmail = ModUtil::getVar('Users', 'reg_notifyemail', '');
+                    $notificationEmail = $this->getVar('reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
                         ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
                             'toAddress'         => $notificationEmail,
@@ -700,7 +699,7 @@ class Users_Api_Registration extends Zikula_Api
 
             // Process profile data
             $profileModuleName = System::getVar('profilemodule', '');
-            $gatherProfileProperties = ModUtil::getVar('Users', 'reg_optitems', false);
+            $gatherProfileProperties = $this->getVar('reg_optitems', false);
             $profileModuleInUse = $gatherProfileProperties && !empty($profileModuleName) && ModUtil::available($profileModuleName);
 
             if ($profileModuleInUse && !empty($reginfo['dynadata'])) {
@@ -723,7 +722,7 @@ class Users_Api_Registration extends Zikula_Api
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $sitename  = System::getVar('sitename');
                 $siteurl   = System::getBaseUrl();
-                $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+                $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = $sitename;
@@ -743,7 +742,7 @@ class Users_Api_Registration extends Zikula_Api
 
                 if ($adminNotification) {
                     // mail notify email to inform admin about registration
-                    $notificationEmail = ModUtil::getVar('Users', 'reg_notifyemail', '');
+                    $notificationEmail = $this->getVar('reg_notifyemail', '');
                     if (!empty($notificationEmail)) {
                         $subject = $this->__('New registration: %s', $userinfo['uname']);
                         ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
@@ -787,7 +786,7 @@ class Users_Api_Registration extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        $uniqueEmails = ModUtil::getVar('Users', 'reg_uniemail', false);
+        $uniqueEmails = $this->getVar('reg_uniemail', false);
         // Checks the following:
         // - none of the three possible IDs is set
         // - id is set along with either uname or email
@@ -1150,7 +1149,7 @@ class Users_Api_Registration extends Zikula_Api
             $rendererArgs = array();
         }
 
-        $approvalOrder = ModUtil::getVar('Users', 'moderation_order', UserUtil::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', UserUtil::APPROVAL_BEFORE);
 
         // Set the verification code
         if ($reginfo['isverified']) {
@@ -1162,7 +1161,7 @@ class Users_Api_Registration extends Zikula_Api
         $verificationCode = UserUtil::generatePassword();
         $reginfo['verifycode'] = UserUtil::getHashedPassword($verificationCode);
 
-        $regExpireDays = ModUtil::getVar('Users', 'regexpiredays', 0);
+        $regExpireDays = $this->getVar('regexpiredays', 0);
         if (is_numeric($regExpireDays) && ((int)$regExpireDays == $regExpireDays) && ($regExpireDays > 0)) {
             $nowUTC = new DateTime(null, DateTimeZone('UTC'));
             // Do not use DateTimeInterval. It is not defined in PHP 5.2.6

@@ -82,7 +82,7 @@ class Users_Block_Online extends Zikula_Block
         $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] = '0'";
         $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
 
-        $this->renderer->assign('registerallowed', ModUtil::getVar('Users', 'reg_allowreg'))
+        $this->renderer->assign('registerallowed', $this->getVar('reg_allowreg'))
                        ->assign('loggedin', UserUtil::isLoggedIn())
                        ->assign('userscount', $numusers )
                        ->assign('guestcount', $numguests )

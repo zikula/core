@@ -38,7 +38,7 @@ class Search_Api_User extends Zikula_Api
         $vars['q'] = $args['q'];
         $vars['searchtype'] = isset($args['searchtype']) && !empty($args['searchtype']) ? $args['searchtype'] : 'AND';
         $vars['searchorder'] = isset($args['searchorder']) && !empty($args['searchorder']) ? $args['searchorder'] : 'newest';
-        $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : ModUtil::getVar('Search', 'itemsperpage', 25);
+        $vars['numlimit'] = isset($args['numlimit']) && !empty($args['numlimit']) ? $args['numlimit'] : $this->getVar('itemsperpage', 25);
         $vars['page'] = isset($args['page']) && !empty($args['page']) ? (int)$args['page'] : 1;
 
         $firstPage = isset($args['firstPage']) ? $args['firstPage'] : false;
@@ -213,7 +213,7 @@ class Search_Api_User extends Zikula_Api
         // The modules should be determined by a select of the modules table or something like that in the future
         $usermods = ModUtil::getAllMods();
         foreach ($usermods as $usermod) {
-            if ($args['loadall'] || (!ModUtil::getVar('Search', "disable_$usermod[name]") && SecurityUtil::checkPermission('Search::Item', "$usermod[name]::", ACCESS_READ))) {
+            if ($args['loadall'] || (!$this->getVar("disable_$usermod[name]") && SecurityUtil::checkPermission('Search::Item', "$usermod[name]::", ACCESS_READ))) {
                 $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
                 if ($info) {
                     $info['name'] = $usermod['name'];
