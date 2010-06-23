@@ -64,7 +64,7 @@ class ZWorkflow
         $idcolumn = $workflowData['obj_idcolumn'];
         $insertObj = array('obj_table' => $workflowData['obj_table'], 'obj_idcolumn' => $workflowData['obj_idcolumn'], 'obj_id' => $obj[$idcolumn], 'module' => $this->getModule(), 'schemaname' => $this->id, 'state' => $stateID);
 
-        if (!ModUtil::dbInfoLoad('Workflow')) {
+        if (!ModUtil::dbInfoLoad('Settings')) {
             return false;
         }
 
@@ -92,7 +92,7 @@ class ZWorkflow
             $obj['debug'] = $debug;
         }
 
-        if (!ModUtil::dbInfoLoad('Workflow')) {
+        if (!ModUtil::dbInfoLoad('Settings')) {
             return false;
         }
 

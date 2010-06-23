@@ -181,7 +181,7 @@ class WorkflowUtil
             $module = ModUtil::getName();
         }
 
-        if (!ModUtil::dbInfoLoad('Workflow')) {
+        if (!ModUtil::dbInfoLoad('Settings')) {
             return false;
         }
 
@@ -339,7 +339,7 @@ class WorkflowUtil
         }
 
         // get workflow data from DB
-        if (!ModUtil::dbInfoLoad('Workflow')) {
+        if (!ModUtil::dbInfoLoad('Settings')) {
             return false;
         }
 
