@@ -21,7 +21,7 @@
     <dd>
         {$result.text|google_highlight:$q:$limitsummary}
         {if !empty($result.created)}
-        <div class="search_created">{gt text="Created on %s." tag1=$result.created|date_format:"datelong" domain='zikula'}</div>
+        <div class="search_created">{gt text="Created on %s." tag1=$result.created|dateformat:'datelong' domain='zikula'}</div>
         {/if}
     </dd>
     {/foreach}
