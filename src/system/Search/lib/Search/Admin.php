@@ -100,9 +100,9 @@ class Search_Admin extends Zikula_Controller
 
         // Update module variables.
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
-        ModUtil::setVar('Search', 'itemsperpage', $itemsperpage);
+        $this->setVar('itemsperpage', $itemsperpage);
         $limitsummary = (int)FormUtil::getPassedValue('limitsummary', 255, 'POST');
-        ModUtil::setVar('Search', 'limitsummary', $limitsummary);
+        $this->setVar('limitsummary', $limitsummary);
 
         $disable = FormUtil::getPassedValue('disable', null, 'REQUEST');
         // get the list of available plugins
@@ -111,9 +111,9 @@ class Search_Admin extends Zikula_Controller
         foreach ($plugins as $searchplugin) {
             // set the disabled flag
             if (isset($disable[$searchplugin['title']])) {
-                ModUtil::setVar('Search', "disable_$searchplugin[title]", true);
+                $this->setVar("disable_$searchplugin[title]", true);
             } else {
-                ModUtil::setVar('Search', "disable_$searchplugin[title]", false);
+                $this->setVar("disable_$searchplugin[title]", false);
             }
         }
 

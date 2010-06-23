@@ -289,23 +289,23 @@ class Categories_Adminform extends Zikula_Controller
 
         $userrootcat = FormUtil::getPassedValue ('userrootcat', null);
         if ($userrootcat) {
-            ModUtil::setVar ('Categories', 'userrootcat', $userrootcat);
+            $this->setVar('userrootcat', $userrootcat);
         }
 
         $autocreateusercat = (int)FormUtil::getPassedValue ('autocreateusercat', 0);
-        ModUtil::setVar ('Categories', 'autocreateusercat', $autocreateusercat);
+        $this->setVar('autocreateusercat', $autocreateusercat);
 
         $allowusercatedit = (int)FormUtil::getPassedValue ('allowusercatedit', 0);
-        ModUtil::setVar ('Categories', 'allowusercatedit', $allowusercatedit);
+        $this->setVar('allowusercatedit', $allowusercatedit);
 
         $autocreateuserdefaultcat = FormUtil::getPassedValue ('autocreateuserdefaultcat', 0);
-        ModUtil::setVar ('Categories', 'autocreateuserdefaultcat', $autocreateuserdefaultcat);
+        $this->setVar('autocreateuserdefaultcat', $autocreateuserdefaultcat);
 
         $userdefaultcatname = FormUtil::getPassedValue ('userdefaultcatname', 'Default');
-        ModUtil::setVar ('Categories', 'userdefaultcatname', $userdefaultcatname);
+        $this->setVar('userdefaultcatname', $userdefaultcatname);
 
         $permissionsall = (int)FormUtil::getPassedValue ('permissionsall', 0);
-        ModUtil::setVar ('Categories', 'permissionsall', $permissionsall);
+        $this->setVar('permissionsall', $permissionsall);
 
         LogUtil::registerStatus(__('Done! Saved module configuration.'));
         return System::redirect(ModUtil::url('Categories', 'admin', 'preferences'));

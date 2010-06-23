@@ -839,7 +839,7 @@ class Blocks_Admin extends Zikula_Controller
             $collapseable = 0;
         }
 
-        ModUtil::setVar('Blocks', 'collapseable', $collapseable);
+        $this->setVar('collapseable', $collapseable);
 
         // Let any other modules know that the modules configuration has been updated
         $this->callHooks('module','updateconfig','Blocks', array('module' => 'Blocks'));

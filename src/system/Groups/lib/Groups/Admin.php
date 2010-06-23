@@ -801,7 +801,7 @@ class Groups_Admin extends Zikula_Controller
 
         // Update module variables.
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 25, 'POST');
-        ModUtil::setVar('Groups', 'itemsperpage', $itemsperpage);
+        $this->setVar('itemsperpage', $itemsperpage);
 
         $defaultgroupid = (int)FormUtil::getPassedValue('defaultgroupid', 1, 'POST');
         // convert id to name
@@ -810,13 +810,13 @@ class Groups_Admin extends Zikula_Controller
             LogUtil::registerError($this->__('Error! Could not save the module configuration.'));
             return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
         }
-        ModUtil::setVar('Groups', 'defaultgroup', $group['gid']);
+        $this->setVar('defaultgroup', $group['gid']);
 
         $mailwarning = (bool)FormUtil::getPassedValue('mailwarning', false, 'POST');
-        ModUtil::setVar('Groups', 'mailwarning', $mailwarning);
+        $this->setVar('mailwarning', $mailwarning);
 
         $hideclosed = (bool)FormUtil::getPassedValue('hideclosed', false, 'POST');
-        ModUtil::setVar('Groups', 'hideclosed', $hideclosed);
+        $this->setVar('hideclosed', $hideclosed);
 
         // Let any other modules know that the modules configuration has been updated
         $this->callHooks('module','updateconfig','Groups', array('module' => 'Groups'));

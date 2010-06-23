@@ -173,8 +173,8 @@ class Permissions_Ajax extends Zikula_Controller
 
         if (ModUtil::apiFunc('Permissions', 'admin', 'delete', array('pid' => $pid)) == true) {
             if ($pid == $this->getVar('adminid')) {
-                ModUtil::setVar('Permissions', 'adminid', 0);
-                ModUtil::setVar('Permissions', 'lockadmin', false);
+                $this->setVar('adminid', 0);
+                $this->setVar('lockadmin', false);
             }
             return array('pid' => $pid);
         }

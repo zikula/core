@@ -1582,36 +1582,36 @@ class Users_Admin extends Zikula_Controller
             $config['reg_noregreasons'] = '';
         }
 
-        ModUtil::setVar('Users', 'itemsperpage', $config['itemsperpage']);
-        ModUtil::setVar('Users', 'accountdisplaygraphics', $config['accountdisplaygraphics']);
-        ModUtil::setVar('Users', 'accountitemsperpage', $config['accountitemsperpage']);
-        ModUtil::setVar('Users', 'accountitemsperrow', $config['accountitemsperrow']);
-        ModUtil::setVar('Users', 'changepassword', $config['changepassword']);
-        ModUtil::setVar('Users', 'changeemail', $config['changeemail']);
-        ModUtil::setVar('Users', 'userimg', $config['userimg']);
-        ModUtil::setVar('Users', 'reg_uniemail', $config['reg_uniemail']);
-        ModUtil::setVar('Users', 'reg_optitems', $config['reg_optitems']);
-        ModUtil::setVar('Users', 'reg_allowreg', $config['reg_allowreg']);
-        ModUtil::setVar('Users', 'reg_noregreasons', $config['reg_noregreasons']);
-        ModUtil::setVar('Users', 'moderation', $config['moderation']);
-        ModUtil::setVar('Users', 'reg_verifyemail', $config['reg_verifyemail']);
-        ModUtil::setVar('Users', 'reg_notifyemail', $config['reg_notifyemail']);
-        ModUtil::setVar('Users', 'reg_Illegaldomains', $config['reg_Illegaldomains']);
-        ModUtil::setVar('Users', 'reg_Illegalusername', $config['reg_Illegalusername']);
-        ModUtil::setVar('Users', 'reg_Illegaluseragents', $config['reg_Illegaluseragents']);
-        ModUtil::setVar('Users', 'minage', $config['minage']);
-        ModUtil::setVar('Users', 'minpass', $config['minpass']);
-        ModUtil::setVar('Users', 'anonymous', $config['anonymous']);
-        ModUtil::setVar('Users', 'loginviaoption', $config['loginviaoption']);
-        ModUtil::setVar('Users', 'hash_method', $config['hash_method']);
-        ModUtil::setVar('Users', 'login_redirect', $config['login_redirect']);
-        ModUtil::setVar('Users', 'reg_question', $config['reg_question']);
-        ModUtil::setVar('Users', 'reg_answer', $config['reg_answer']);
-        ModUtil::setVar('Users', 'use_password_strength_meter', $config['use_password_strength_meter']);
-        ModUtil::setVar('Users', 'avatarpath', $config['avatarpath']);
-        ModUtil::setVar('Users', 'allowgravatars', $config['allowgravatars']);
-        ModUtil::setVar('Users', 'gravatarimage', $config['gravatarimage']);
-        ModUtil::setVar('Users', 'default_authmodule', $config['default_authmodule']);
+        $this->setVar('itemsperpage', $config['itemsperpage'])
+             ->setVar('accountdisplaygraphics', $config['accountdisplaygraphics'])
+             ->setVar('accountitemsperpage', $config['accountitemsperpage'])
+             ->setVar('accountitemsperrow', $config['accountitemsperrow'])
+             ->setVar('changepassword', $config['changepassword'])
+             ->setVar('changeemail', $config['changeemail'])
+             ->setVar('userimg', $config['userimg'])
+             ->setVar('reg_uniemail', $config['reg_uniemail'])
+             ->setVar('reg_optitems', $config['reg_optitems'])
+             ->setVar('reg_allowreg', $config['reg_allowreg'])
+             ->setVar('reg_noregreasons', $config['reg_noregreasons'])
+             ->setVar('moderation', $config['moderation'])
+             ->setVar('reg_verifyemail', $config['reg_verifyemail'])
+             ->setVar('reg_notifyemail', $config['reg_notifyemail'])
+             ->setVar('reg_Illegaldomains', $config['reg_Illegaldomains'])
+             ->setVar('reg_Illegalusername', $config['reg_Illegalusername'])
+             ->setVar('reg_Illegaluseragents', $config['reg_Illegaluseragents'])
+             ->setVar('minage', $config['minage'])
+             ->setVar('minpass', $config['minpass'])
+             ->setVar('anonymous', $config['anonymous'])
+             ->setVar('loginviaoption', $config['loginviaoption'])
+             ->setVar('hash_method', $config['hash_method'])
+             ->setVar('login_redirect', $config['login_redirect'])
+             ->setVar('reg_question', $config['reg_question'])
+             ->setVar('reg_answer', $config['reg_answer'])
+             ->setVar('use_password_strength_meter', $config['use_password_strength_meter'])
+             ->setVar('avatarpath', $config['avatarpath'])
+             ->setVar('allowgravatars', $config['allowgravatars'])
+             ->setVar('gravatarimage', $config['gravatarimage'])
+             ->setVar('default_authmodule', $config['default_authmodule']);
 
         if (ModUtil::available('legal')) {
             ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);

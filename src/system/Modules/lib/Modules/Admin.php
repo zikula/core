@@ -1045,7 +1045,8 @@ class Modules_Admin extends Zikula_Controller
                 $itemsperpage = 25;
             }
         }
-        ModUtil::setVar('Modules', 'itemsperpage', $itemsperpage);
+        
+        $this->setVar('itemsperpage', $itemsperpage);
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));

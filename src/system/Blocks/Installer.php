@@ -43,7 +43,7 @@ class Blocks_Installer extends Zikula_Installer
         }
 
         // Set a default value for a module variable
-        ModUtil::setVar('Blocks', 'collapseable', 0);
+        $this->setVar('collapseable', 0);
 
         // Initialisation successful
         return true;

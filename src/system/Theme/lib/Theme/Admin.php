@@ -1122,57 +1122,57 @@ class Theme_Admin extends Zikula_Controller
         // set our module variables
         $modulesnocache = FormUtil::getPassedValue('modulesnocache', isset($args['modulesnocache']) ? $args['modulesnocache'] : array(), 'POST');
         $modulesnocache = implode(',', $modulesnocache);
-        ModUtil::setVar('Theme', 'modulesnocache', $modulesnocache);
+        $this->setVar('modulesnocache', $modulesnocache);
 
         $enablecache = (bool)FormUtil::getPassedValue('enablecache', isset($args['enablecache']) ? $args['enablecache'] : false, 'POST');
-        ModUtil::setVar('Theme', 'enablecache', $enablecache);
+        $this->setVar('enablecache', $enablecache);
 
         $compile_check = (bool)FormUtil::getPassedValue('compile_check', isset($args['compile_check']) ? $args['compile_check'] : false, 'POST');
-        ModUtil::setVar('Theme', 'compile_check', $compile_check);
+        $this->setVar('compile_check', $compile_check);
 
         $cache_lifetime = (int)FormUtil::getPassedValue('cache_lifetime', isset($args['cache_lifetime']) ? $args['cache_lifetime'] : 3600, 'POST');
         if ($cache_lifetime < -1) $cache_lifetime = 3600;
-        ModUtil::setVar('Theme', 'cache_lifetime', $cache_lifetime);
+        $this->setVar('cache_lifetime', $cache_lifetime);
 
         $force_compile = (bool)FormUtil::getPassedValue('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false, 'POST');
-        ModUtil::setVar('Theme', 'force_compile', $force_compile);
+        $this->setVar('force_compile', $force_compile);
 
         $trimwhitespace = (bool)FormUtil::getPassedValue('trimwhitespace', isset($args['trimwhitespace']) ? $args['trimwhitespace'] : false, 'POST');
-        ModUtil::setVar('Theme', 'trimwhitespace', $trimwhitespace);
+        $this->setVar('trimwhitespace', $trimwhitespace);
 
         $maxsizeforlinks = (int)FormUtil::getPassedValue('maxsizeforlinks', isset($args['maxsizeforlinks']) ? $args['maxsizeforlinks'] : 30, 'POST');
-        ModUtil::setVar('Theme', 'maxsizeforlinks', $maxsizeforlinks);
+        $this->setVar('maxsizeforlinks', $maxsizeforlinks);
 
         $theme_change = (bool)FormUtil::getPassedValue('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false, 'POST');
         System::setVar('theme_change', $theme_change);
 
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25, 'POST');
         if ($itemsperpage < 1) $itemsperpage = 25;
-        ModUtil::setVar('Theme', 'itemsperpage', $itemsperpage);
+        $this->setVar('itemsperpage', $itemsperpage);
 
         $cssjscombine = (bool)FormUtil::getPassedValue('cssjscombine', isset($args['cssjscombine']) ? $args['cssjscombine'] : false, 'POST');
-        ModUtil::setVar('Theme', 'cssjscombine', $cssjscombine);
+        $this->setVar('cssjscombine', $cssjscombine);
 
         $cssjsminify = (bool)FormUtil::getPassedValue('cssjsminify', isset($args['cssjsminify']) ? $args['cssjsminify'] : false, 'POST');
-        ModUtil::setVar('Theme', 'cssjsminify', $cssjsminify);
+        $this->setVar('cssjsminify', $cssjsminify);
 
         $cssjscompress = (bool)FormUtil::getPassedValue('cssjscompress', isset($args['cssjscompress']) ? $args['cssjscompress'] : false, 'POST');
-        ModUtil::setVar('Theme', 'cssjscompress', $cssjscompress);
+        $this->setVar('cssjscompress', $cssjscompress);
 
         $cssjscombine_lifetime = (int)FormUtil::getPassedValue('cssjscombine_lifetime', isset($args['cssjscombine_lifetime']) ? $args['cssjscombine_lifetime'] : 3600, 'POST');
         if ($cssjscombine_lifetime < -1) $cssjscombine_lifetime = 3600;
-        ModUtil::setVar('Theme', 'cssjscombine_lifetime', $cssjscombine_lifetime);
+        $this->setVar('cssjscombine_lifetime', $cssjscombine_lifetime);
 
 
         // render
         $render_compile_check = (bool)FormUtil::getPassedValue('render_compile_check', isset($args['render_compile_check']) ? $args['render_compile_check'] : false, 'POST');
-        ModUtil::setVar('Theme', 'render_compile_check', $render_compile_check);
+        $this->setVar('render_compile_check', $render_compile_check);
 
         $render_force_compile = (bool)FormUtil::getPassedValue('render_force_compile', isset($args['render_force_compile']) ? $args['render_force_compile'] : false, 'POST');
-        ModUtil::setVar('Theme', 'render_force_compile', $render_force_compile);
+        $this->setVar('render_force_compile', $render_force_compile);
 
         $render_cache = (bool)FormUtil::getPassedValue('render_cache', isset($args['render_cache']) ? $args['render_cache'] : false, 'POST');
-        ModUtil::setVar('Theme', 'render_cache', $render_cache);
+        $this->setVar('render_cache', $render_cache);
 
         $render_lifetime = (int)FormUtil::getPassedValue('render_lifetime', isset($args['render_lifetime']) ? $args['render_lifetime'] : 3600, 'POST');
         if ($render_lifetime < -1) $render_lifetime = 3600;

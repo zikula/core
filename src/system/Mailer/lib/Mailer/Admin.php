@@ -90,43 +90,43 @@ class Mailer_Admin extends Zikula_Controller
 
         // set our new module variable values
         $mailertype = (int)FormUtil::getPassedValue('mailertype', 1, 'POST');
-        ModUtil::setVar('Mailer', 'mailertype', $mailertype);
+        $this->setVar('mailertype', $mailertype);
 
         $charset = (string)FormUtil::getPassedValue('charset', ZLanguage::getEncoding(), 'POST');
-        ModUtil::setVar('Mailer', 'charset', $charset);
+        $this->setVar('charset', $charset);
 
         $encoding = (string)FormUtil::getPassedValue('encoding', '8bit', 'POST');
-        ModUtil::setVar('Mailer', 'encoding', $encoding);
+        $this->setVar('encoding', $encoding);
 
         $html = (bool)FormUtil::getPassedValue('html', false, 'POST');
-        ModUtil::setVar('Mailer', 'html', $html);
+        $this->setVar('html', $html);
 
         $wordwrap = (int)FormUtil::getPassedValue('wordwrap', 50, 'POST');
-        ModUtil::setVar('Mailer', 'wordwrap', $wordwrap);
+        $this->setVar('wordwrap', $wordwrap);
 
         $msmailheaders = (bool)FormUtil::getPassedValue('msmailheaders', false, 'POST');
-        ModUtil::setVar('Mailer', 'msmailheaders', $msmailheaders);
+        $this->setVar('msmailheaders', $msmailheaders);
 
         $sendmailpath = (string)FormUtil::getPassedValue('sendmailpath', '/usr/sbin/sendmail', 'POST');
-        ModUtil::setVar('Mailer', 'sendmailpath', $sendmailpath);
+        $this->setVar('sendmailpath', $sendmailpath);
 
         $smtpauth = (bool)FormUtil::getPassedValue('smtpauth', false, 'POST');
-        ModUtil::setVar('Mailer', 'smtpauth', $smtpauth);
+        $this->setVar('smtpauth', $smtpauth);
 
         $smtpserver = (string)FormUtil::getPassedValue('smtpserver', 'localhost', 'POST');
-        ModUtil::setVar('Mailer', 'smtpserver', $smtpserver);
+        $this->setVar('smtpserver', $smtpserver);
 
         $smtpport = (int)FormUtil::getPassedValue('smtpport', 25, 'POST');
-        ModUtil::setVar('Mailer', 'smtpport', $smtpport);
+        $this->setVar('smtpport', $smtpport);
 
         $smtptimeout = (int)FormUtil::getPassedValue('smtptimeout', 10, 'POST');
-        ModUtil::setVar('Mailer', 'smtptimeout', $smtptimeout);
+        $this->setVar('smtptimeout', $smtptimeout);
 
         $smtpusername = (string)FormUtil::getPassedValue('smtpusername', '', 'POST');
-        ModUtil::setVar('Mailer', 'smtpusername', $smtpusername);
+        $this->setVar('smtpusername', $smtpusername);
 
         $smtppassword = (string)FormUtil::getPassedValue('smtppassword', '', 'POST');
-        ModUtil::setVar('Mailer', 'smtppassword', $smtppassword);
+        $this->setVar('smtppassword', $smtppassword);
 
         // Let any other modules know that the modules configuration has been updated
         $this->callHooks('module', 'updateconfig', 'Mailer', array('module' => 'Mailer'));

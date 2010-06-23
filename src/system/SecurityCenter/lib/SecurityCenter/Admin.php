@@ -249,7 +249,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         System::setVar('enableanticracker', $enableanticracker);
 
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
-        ModUtil::setVar('SecurityCenter', 'itemsperpage', $itemsperpage);
+        $this->setVar('itemsperpage', $itemsperpage);
 
         $emailhackattempt = (int)FormUtil::getPassedValue('emailhackattempt', 0, 'POST');
         System::setVar('emailhackattempt', $emailhackattempt);
@@ -697,7 +697,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         }
 
         //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
-        ModUtil::setVar('SecurityCenter', 'htmlpurifierConfig', serialize($config));
+        $this->setVar('htmlpurifierConfig', serialize($config));
 
         $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
 

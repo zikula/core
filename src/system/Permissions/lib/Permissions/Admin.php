@@ -690,16 +690,16 @@ class Permissions_Admin extends Zikula_Controller
 
         $error = false;
         $filter = (bool)FormUtil::getPassedValue('filter', false, 'POST');
-        ModUtil::setVar('Permissions', 'filter', $filter);
+        $this->setVar('filter', $filter);
 
         $rowview = (int)FormUtil::getPassedValue('rowview', 25, 'POST');
-        ModUtil::setVar('Permissions', 'rowview', $rowview);
+        $this->setVar('rowview', $rowview);
 
         $rowedit = (int)FormUtil::getPassedValue('rowedit', 35, 'POST');
-        ModUtil::setVar('Permissions', 'rowedit', $rowedit);
+        $this->setVar('rowedit', $rowedit);
 
         $lockadmin = (bool)FormUtil::getPassedValue('lockadmin', false, 'POST');
-        ModUtil::setVar('Permissions', 'lockadmin', $lockadmin);
+        $this->setVar('lockadmin', $lockadmin);
 
         $adminid = (int)FormUtil::getPassedValue('adminid', 1, 'POST');
         if ($adminid<>0) {
@@ -709,7 +709,7 @@ class Permissions_Admin extends Zikula_Controller
                 $error = true;
             }
         }
-        ModUtil::setVar('Permissions', 'adminid', $adminid);
+        $this->setVar('adminid', $adminid);
 
         // Let any other modules know that the modules configuration has been updated
         $this->callHooks('module','updateconfig', 'Permissions', array('module' => 'Permissions'));
