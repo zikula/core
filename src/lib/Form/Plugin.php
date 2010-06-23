@@ -247,6 +247,7 @@ class Form_Plugin
      * Default action is to do nothing.
      *
      * @see Form_Plugin
+     *
      * @param Form_Render &$render Reference to pnForm render object
      * @param array &$params Parameters passed from the Smarty plugin function
      * @return void
@@ -261,8 +262,10 @@ class Form_Plugin
      * Default action is to do nothing.
      *
      * @see Form_Plugin
+     *
      * @param Form_Render &$render Reference to pnForm render object
      * @param array &$params Parameters passed from the Smarty plugin function
+     *
      * @return void
      */
     public function load(&$render, &$params)

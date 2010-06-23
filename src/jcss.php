@@ -86,7 +86,7 @@ function is_serialized($string)
 /**
  * Class System fake.
  *
- * This is a  fake System class
+ * This is a fake System class.
  */
 class System
 {
@@ -114,9 +114,9 @@ class System
     }
 
     /**
-     * Fake install running check
+     * Fake install running check.
      * 
-     * This is a fake function
+     * This is a fake function.
      *
      * @return boolean
      */
@@ -129,7 +129,7 @@ class System
 /**
  * Class SecurityUtil fake.
  *
- * This is a fake SecurityUtil class
+ * This is a fake SecurityUtil class.
  */
 class SecurityUtil
 {
@@ -139,7 +139,7 @@ class SecurityUtil
      *
      * This is a fake function.
      *
-     * @return boolean true
+     * @return boolean true.
      */
     function checkPermission()
     {

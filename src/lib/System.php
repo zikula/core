@@ -12,20 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-/**
- * Yes/no integer
- */
+// Yes/no integer.
 define('ZYES', 1);
 define('ZNO', 0);
 
-/**
- * Fake module for config vars
- */
+// Fake module for config vars
 define('CONFIG_MODULE', '/PNConfig');
 
-/*
- *  Defines for access levels
-*/
+// Defines for access levels
 define('ACCESS_INVALID', -1);
 define('ACCESS_NONE', 0);
 define('ACCESS_OVERVIEW', 100);
@@ -44,7 +38,9 @@ mb_regex_encoding('UTF-8');
 include 'lib/api/debug.php';
 
 /**
- * Functions
+ * System class.
+ * 
+ * Core class with the base methods.
  */
 class System
 {
@@ -68,11 +64,12 @@ class System
     const CORE_STAGES_ALL = 4095;
 
     /**
-     * get a configuration variable
+     * Get a configuration variable.
      *
-     * @param name $ the name of the variable
-     * @param default the default value to return if the requested param is not set
-     * @return mixed value of the variable, or false on failure
+     * @param string $name    The name of the variable.
+     * @param mixed  $default The default value to return if the requested param is not set.
+     *
+     * @return mixed Value of the variable, or false on failure.
      */
     public static function getVar($name, $default = null)
     {
@@ -100,11 +97,12 @@ class System
     }
 
     /**
-     * set a configuration variable
+     * Set a configuration variable.
      *
-     * @param name $ the name of the variable
-     * @param value $ the value of the variable
-     * @return bool true on success, false on failure
+     * @param string $name  The name of the variable.
+     * @param mixed  $value The value of the variable.
+     *
+     * @return boolean True on success, false on failure.
      */
     public static function setVar($name, $value = '')
     {
@@ -126,10 +124,11 @@ class System
     }
 
     /**
-     * delete a configuration variable
+     * Delete a configuration variable.
      *
-     * @param name $ the name of the variable
-     * @returns mixed value of deleted config var or false on failure
+     * @param string $name The name of the variable.
+     *
+     * @returns mixed Value of deleted config var or false on failure.
      */
     public static function delVar($name)
     {
@@ -141,8 +140,8 @@ class System
         if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
             return false;
         }
-        
-        // delete the variable
+
+        // Delete the variable
         ModUtil::delVar(ModUtil::CONFIG_MODULE, $name);
 
         // Update my vars
@@ -157,11 +156,12 @@ class System
     }
 
     /**
-     * Initialise Zikula
+     * Initialise Zikula.
+     *
      * Carries out a number of initialisation tasks to get Zikula up and
      * running.
      *
-     * @returns bool true initialisation successful false otherwise
+     * @returns boolean True initialisation successful false otherwise.
      */
     public static function init($stages = self::CORE_STAGES_ALL)
     {
@@ -243,11 +243,9 @@ class System
             require_once 'lib/legacy/Compat.php';
         }
 
-        /**
-         * schemas - holds all component/instance schemas
-         * Should wrap this in a static one day, but the information
-         * isn't critical so we'll do it later
-         */
+        // schemas - holds all component/instance schemas
+        // Should wrap this in a static one day, but the information
+        // isn't critical so we'll do it later
         $GLOBALS['schemas'] = array();
 
         // Check that Zikula is installed before continuing
@@ -272,7 +270,6 @@ class System
         }
 
         if ($stages & self::CORE_STAGES_DB) {
-            $connection = null;
             try {
                 DBConnectionStack::init();
             } catch (PDOException $e) {
@@ -409,11 +406,12 @@ class System
     }
 
     /**
-     * get a list of database connections
+     * Get a list of database connections.
      *
-     * @param bool $pass_by_reference default = false
-     * @param string $fetchmode set ADODB fetchmode ADODB_FETCH_NUM, ADODB_FETCH_ASSOC, ADODB_FETCH_DEFAULT, ADODB_FETCH_BOTH
-     * @return array array of database connections
+     * @param boolean $pass_by_reference Default = false.
+     * @param string  $fetchmode         Set ADODB fetchmode ADODB_FETCH_NUM, ADODB_FETCH_ASSOC, ADODB_FETCH_DEFAULT, ADODB_FETCH_BOTH.
+     *
+     * @return array Array of database connections.
      */
     public static function dbGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE) // TODO A map ADODB fetch modes to Doctrine HYDRATES, e.g. Doctrine::HYDRATE_NONE
     {
@@ -429,9 +427,9 @@ class System
     }
 
     /**
-     * get a list of database tables
+     * Get a list of database tables.
      *
-     * @return array array of database tables
+     * @return array Array of database tables.
      */
     public static function dbGetTables()
     {
@@ -439,19 +437,19 @@ class System
     }
 
     /**
-     * get table prefix
+     * Get table prefix.
      *
-     * get's the database prefix for the current site
+     * Gets the database prefix for the current site.
      *
      * In a non multisite scenario this will be the 'prefix' config var
      * from config/config.php. For a multisite configuration the multistes
-     * module will manage the prefixes for a given table
+     * module will manage the prefixes for a given table.
      *
      * The table name parameter is the table name to get the prefix for
      * minus the prefix and seperating _
-     * e.g. pnDBGetPrefix returns pn_modules for pnDBGetPrefix('modules');
+     * e.g. pnDBGetPrefix returns pn_modules for pnDBGetPrefix('modules').
      *
-     * @param table - table name
+     * @param string $table Table name.
      */
     public static function dbGetTablePrefix($table)
     {
@@ -463,12 +461,12 @@ class System
     }
 
     /**
-     * strip slashes
+     * Strip slashes.
      *
-     * stripslashes on multidimensional arrays.
-     * Used in conjunction with FormUtil::getPassedValue
+     * Stripslashes on multidimensional arrays.
+     * Used in conjunction with FormUtil::getPassedValue.
      *
-     * @param any $ variables or arrays to be stripslashed
+     * @param mixed &$value Variables or arrays to be stripslashed.
      */
     public static function stripslashes(&$value)
     {
@@ -484,12 +482,13 @@ class System
     }
 
     /**
-     * validate a zikula variable
+     * Validate a Zikula variable.
      *
-     * @param $var   the variable to validate
-     * @param $type  the type of the validation to perform (email, url etc.)
-     * @param $args  optional array with validation-specific settings (never used...)
-     * @return bool true if the validation was successful, false otherwise
+     * @param mixed  $var  The variable to validate.
+     * @param string $type The type of the validation to perform (email, url etc.).
+     * @param mixed  $args Optional array with validation-specific settings (deprecated).
+     *
+     * @return boolean True if the validation was successful, false otherwise.
      */
     public static function varValidate($var, $type, $args = 0)
     {
@@ -542,7 +541,7 @@ class System
                     '%0a'), '', $var);
 
             if (self::getVar('idnnames') == 1) {
-            // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
+                // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
                 require_once 'lib/vendor/idn/idna_convert.class.php';
                 $IDN = new idna_convert();
                 $var = $IDN->encode(DataUtil::convertToUTF8($var));
@@ -595,9 +594,9 @@ class System
     }
 
     /**
-     * get base URI for Zikula
+     * Get base URI for Zikula.
      *
-     * @return string base URI for Zikula
+     * @return string Base URI for Zikula.
      */
     public static function getBaseUri()
     {
@@ -607,16 +606,18 @@ class System
             $path = self::serverGetVar('SCRIPT_NAME');
             $path = str_replace(strrchr($path, '/'), '', $path);
         }
+
         if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
             $path = $GLOBALS['ZConfig']['Multisites']['siteDNS'];
         }
+
         return $path;
     }
 
     /**
-     * get base URL for Zikula
+     * Get base URL for Zikula.
      *
-     * @return string base URL for Zikula
+     * @return string Base URL for Zikula.
      */
     public static function getBaseUrl()
     {
@@ -630,15 +631,15 @@ class System
             $proto = 'http://';
         }
 
-        $path = System::getBaseUri();
+        $path = self::getBaseUri();
 
         return "$proto$server$path/";
     }
 
     /**
-     * get homepage URL for Zikula
+     * Get homepage URL for Zikula.
      *
-     * @return string homepage URL for Zikula
+     * @return string Homepage URL for Zikula.
      */
     public static function getHomepageUrl()
     {
@@ -648,11 +649,11 @@ class System
         $langRequired = ZLanguage::isRequiredLangParam();
 
         if ($shorturls && $dirBased) {
-            $result = System::getBaseUrl();
+            $result = self::getBaseUrl();
             if ($langRequired) {
                 $result .= ZLanguage::getLanguageCode();
             }
-        } else  {
+        } else {
             $result = self::getVar('entrypoint', 'index.php');
             if (ZLanguage::isRequiredLangParam()) {
                 $result .= '?lang=' . ZLanguage::getLanguageCode();
@@ -663,11 +664,13 @@ class System
     }
 
     /**
-     * Carry out a redirect
+     * Carry out a redirect.
      *
-     * @param string $redirecturl URL to redirect to
-     * @param array $addtionalheaders array of header strings to send with redirect
-     * @returns bool true if redirect successful, false otherwise
+     * @param string  $redirecturl      URL to redirect to.
+     * @param array   $addtionalheaders Array of header strings to send with redirect.
+     * @param integer $type             Number type of the redirect.
+     *
+     * @returns boolean True if redirect successful, false otherwise.
      */
     public static function redirect($redirecturl, $additionalheaders = array(), $type = 302)
     {
@@ -703,7 +706,7 @@ class System
             // Removing leading slashes from redirect url
             $redirecturl = preg_replace('!^/*!', '', $redirecturl);
             // Get base URL and append it to our redirect url
-            $baseurl = System::getBaseUrl();
+            $baseurl = self::getBaseUrl();
             $redirecturl = $baseurl . $redirecturl;
         }
 
@@ -713,10 +716,11 @@ class System
     }
 
     /**
-     * check to see if this is a local referral
+     * Check to see if this is a local referral.
      *
-     * @param bool strict - strict checking ensures that a referer must be set as well as local
-     * @return bool true if locally referred, false if not
+     * @param boolean $strict Strict checking ensures that a referer must be set as well as local.
+     *
+     * @return boolean True if locally referred, false if not.
      */
     public static function localReferer($strict = false)
     {
@@ -727,6 +731,7 @@ class System
         if (!$strict && empty($referer)) {
             return true;
         }
+
         // check the http referer
         if (preg_match("!^https?://$server/!", $referer)) {
             return true;
@@ -736,18 +741,21 @@ class System
     }
 
     /**
-     * send an email
+     * Send an email.
      *
-     * e-mail messages should now be send with a ModUtil::apiFunc call to the mailer module
+     * E-mail messages should now be send with a ModUtil::apiFunc call to the mailer module.
      *
      * @deprecated
-     * @param to $ - recipient of the email
-     * @param subject $ - title of the email
-     * @param message $ - body of the email
-     * @param headers $ - extra headers for the email
-     * @param html $ - message is html formatted
-     * @param debug $ - if 1, echo mail content
-     * @return bool true if the email was sent, false if not
+     *
+     * @param string  $to      Recipient of the email.
+     * @param string  $subject Title of the email.
+     * @param string  $message Body of the email.
+     * @param string  $headers Extra headers for the email.
+     * @param integer $html    Message is html formatted.
+     * @param integer $debug   If 1, echo mail content.
+     * @param string  $altbody Alternative body.
+     *
+     * @return boolean True if the email was sent, false if not.
      */
     public static function mail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
     {
@@ -774,16 +782,17 @@ class System
     }
 
     /**
-     * Gets a server variable
+     * Gets a server variable.
      *
      * Returns the value of $name from $_SERVER array.
      * Accepted values for $name are exactly the ones described by the
      * {@link http://www.php.net/manual/en/reserved.variables.html#reserved.variables.server PHP manual}.
      * If the server variable doesn't exist void is returned.
      *
-     * @param name string the name of the variable
-     * @param default the default value to return if the requested param is not set
-     * @return mixed value of the variable
+     * @param string $name    The name of the variable.
+     * @param mixed  $default The default value to return if the requested param is not set.
+     *
+     * @return mixed Value of the variable.
      */
     public static function serverGetVar($name, $default = null)
     {
@@ -791,36 +800,42 @@ class System
         if (!empty($name) && isset($_SERVER[$name])) {
             return $_SERVER[$name];
         }
+
         return $default; // nothing found -> return default
     }
 
     /**
-     * Gets the host name
+     * Gets the host name.
      *
      * Returns the server host name fetched from HTTP headers when possible.
      * The host name is in the canonical form (host + : + port) when the port is different than 80.
      *
-     * @return string HTTP host name
+     * @return string HTTP host name.
      */
     public static function getHost()
     {
         $server = self::serverGetVar('HTTP_HOST');
+
         if (empty($server)) {
             // HTTP_HOST is reliable only for HTTP 1.1
             $server = self::serverGetVar('SERVER_NAME');
             $port = self::serverGetVar('SERVER_PORT');
-            if ($port != '80')
+            if ($port != '80') {
                 $server .= ":$port";
+            }
         }
+
         return $server;
     }
 
     /**
-     * Get current URI (and optionally add/replace some parameters)
+     * Get current URI (and optionally add/replace some parameters).
      *
      * @access public
-     * @param args array additional parameters to be added to/replaced in the URI (e.g. theme, ...)
-     * @return string current URI
+     *
+     * @param array $args Additional parameters to be added to/replaced in the URI (e.g. theme, ...).
+     *
+     * @return string Current URI.
      */
     public static function getCurrentUri($args = array())
     {
@@ -886,36 +901,40 @@ class System
     }
 
     /**
-     * Gets the current protocol
+     * Gets the current protocol.
      *
      * Returns the HTTP protocol used by current connection, it could be 'http' or 'https'.
      *
-     * @return string current HTTP protocol
+     * @return string Current HTTP protocol.
      */
     public static function serverGetProtocol()
     {
         if (preg_match('/^http:/', self::getCurrentUri())) {
             return 'http';
         }
+
         $HTTPS = self::serverGetVar('HTTPS');
+
         // IIS seems to set HTTPS = off for some reason
         return (!empty($HTTPS) && $HTTPS != 'off') ? 'https' : 'http';
     }
 
     /**
-     * Get current URL
+     * Get current URL.
      *
-     * @access public
-     * @param args array additional parameters to be added to/replaced in the URL (e.g. theme, ...)
-     * @return string current URL
      * @todo cfr. BaseURI() for other possible ways, or try PHP_SELF
+     * @access public
+     *
+     * @param array $args Additional parameters to be added to/replaced in the URL (e.g. theme, ...).
+     *
+     * @return string Current URL.
      */
     public static function getCurrentUrl($args = array())
     {
-        $server = self::getHost();
+        $server   = self::getHost();
         $protocol = self::serverGetProtocol();
-        $baseurl = "$protocol://$server";
-        $request = self::getCurrentUri($args);
+        $baseurl  = "$protocol://$server";
+        $request  = self::getCurrentUri($args);
 
         if (empty($request)) {
             $scriptname = self::serverGetVar('SCRIPT_NAME');
@@ -938,13 +957,14 @@ class System
     }
 
     /**
-     * Decode the path string into a set of variable/value pairs
+     * Decode the path string into a set of variable/value pairs.
      *
      * This API works in conjunction with the new short urls
      * system to extract a path based variable set into the Get, Post
      * and request superglobals.
-     * A sample path is /modname/function/var1:value1
+     * A sample path is /modname/function/var1:value1.
      *
+     * @return void
      */
     public static function queryStringDecode()
     {
@@ -1026,19 +1046,22 @@ class System
     }
 
     /**
-     * add a variable/value pair into the query string
-     * (really the _GET superglobal
-     * This API also adds the variable to the _REQUEST superglobal for consistentcy
+     * Add a variable/value pair into the query string.
      *
-     * @return bool true if successful, false otherwise
+     * Really the _GET superglobal.
+     * This API also adds the variable to the _REQUEST superglobal for consistency.
+     *
+     * @return bool True if successful, false otherwise.
      */
     public static function queryStringSetVar($name, $value)
     {
         if (!isset($name)) {
             return;
         }
+
         // add the variable into the get superglobal
         $res = preg_match('/(.*)\[(.*)\]/i', $name, $match);
+
         if ($res != 0) {
             // possibly an array entry in the form a[0] or b[c]
             // $match[0] = a[0]
@@ -1052,11 +1075,20 @@ class System
         } else {
             $_REQUEST[$name] = $_GET[$name] = $value;
         }
+
         return true;
     }
 
     /**
+     * Handles an error.
      *
+     * @param integer $errno      Number of the error.
+     * @param string  $errstr     Error message.
+     * @param string  $errfile    Filename where the error occurred.
+     * @param integer $errline    Line of the error.
+     * @param string  $errcontext Context of the error.
+     *
+     * @return void
      */
     public static function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
     {
@@ -1069,6 +1101,7 @@ class System
         }
 
         static $errorlog, $errorlogtype, $errordisplay, $ztemp;
+
         if (!isset($errorlogtype)) {
             $errorlog = self::getVar('errorlog');
             $errorlogtype = self::getVar('errorlogtype');
@@ -1077,7 +1110,8 @@ class System
         }
 
         // What do we want to log?
-        // 1 - Log real errors only.  2 - Log everything
+        // 1 - Log real errors only.
+        // 2 - Log everything.
         $logError = ($errorlog == 2 || ($errorlog == 1 && ($errno != E_WARNING && $errno != E_NOTICE && $errno != E_USER_WARNING && $errno != E_USER_NOTICE)));
         if ($logError == true) {
             // log the error
@@ -1134,21 +1168,24 @@ class System
 
         // display the new output and halt the script
         header('HTTP/1.0 500 System Error');
-        echo ModUtil::func('Errors', 'user', 'system', array(
-        'type' => $errno,
-        'message' => $errstr,
-        'file' => $errfile,
-        'line' => $errline));
+
+        echo ModUtil::func('Errors', 'user', 'system',
+                           array('type' => $errno,
+                                 'message' => $errstr,
+                                 'file' => $errfile,
+                                 'line' => $errline));
+
         Theme::getInstance()->themefooter();
+
         self::shutDown();
     }
 
     /**
-     * Gracefully shut down the framework (traps all exit and die calls)
+     * Gracefully shut down the framework (traps all exit and die calls).
      *
-     * @param $exit_param params to pass to the exit function
-     * @return none - function halts execution
+     * @param mixed $exit_param String or integer params to pass to the exit function.
      *
+     * @return void Function halts execution.
      */
     public static function shutDown($exit_param = '')
     {
@@ -1166,13 +1203,11 @@ class System
     }
 
     /**
-     * When in development mode, perform some checks that might result in a die() upon failure
+     * When in development mode, perform some checks that might result in a die() upon failure.
      *
-     * TODO D: extend this when needed
+     * @todo D: extend this when needed.
      *
-     * @param none
-     * @return none - function halts execution if needed
-     *
+     * @return void Function halts execution if needed.
      */
     public static function _development_checks()
     {
@@ -1204,6 +1239,7 @@ class System
             }
 
             $temp = DataUtil::formatForOS(self::getVar('temp'), true) . '/';
+
             $folders = array(
                     $temp,
                     $temp . 'error_logs',
@@ -1211,6 +1247,7 @@ class System
                     $temp . 'Renderer_cache',
                     $temp . 'Theme_compiled',
                     $temp . 'Theme_cache');
+
             if (ModUtil::available('Feeds')) {
                 $folders[] = $temp . 'feeds';
             }
@@ -1228,27 +1265,49 @@ class System
         }
     }
 
+    /**
+     * Installer running check.
+     *
+     * @return boolean
+     */
     public static function isInstalling()
     {
         return (bool)defined('_ZINSTALLVER');
     }
 
+    /**
+     * Legacy mode enabled check.
+     *
+     * @return boolean
+     */
     public static function isLegacyMode()
     {
         if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
             return false;
         }
+
         return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
     }
 
+    /**
+     * Legacy prefilters check.
+     *
+     * @return boolean
+     */
     public static function hasLegacyTemplates()
     {
         if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
             return false;
         }
+
         return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
     }
 
+    /**
+     * Development mode enabled check.
+     *
+     * @return boolean
+     */
     public static function isDevelopmentMode()
     {
         if (!isset($GLOBALS['ZConfig']['System']['development'])) {
