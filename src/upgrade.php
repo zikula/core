@@ -283,6 +283,11 @@ function _upg_upgrademodules($username, $password)
         echo '<ul class="check"><li class="passed">' . __('No modules required upgrading') . '</li></ul>';
     }
 
+    // wipe out the deprecated moduels from Modules list.
+    $modTable = DBUtil::getLimitedTablename('modules');
+    $sql = "DELETE FROM $modTable WHERE pn_name = 'Header_Footer' OR pn_name = 'AuthPN' OR pn_name = 'pnForm' OR pn_name = 'Workflow' OR pn_name = 'pnRender' OR pn_name = 'Admin_Messages'";
+    DBUtil::executeSQL($sql);
+
     // regenerate the modules list to pick up any final changes
     // suppress warnings because we did some upgrade black magic which will harmless generate an E_NOTICE
     @ModUtil::apiFunc('Modules', 'admin', 'regenerate');
