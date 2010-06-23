@@ -317,8 +317,8 @@ class Theme extends Renderer
 
         // The configuration has been changed, so we clear all caches for this module.
         self::clear_all_cache();
-        $Renderer = Renderer::getInstance();
-        $Renderer->clear_all_cache();
+        $renderer = Renderer::getInstance();
+        $renderer->clear_all_cache();
 
         return true;
     }

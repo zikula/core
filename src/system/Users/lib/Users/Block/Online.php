@@ -60,23 +60,20 @@ class Users_Block_Online extends Zikula_Block
             return;
         }
 
-        // create the output object
-        $pnr = Renderer::getInstance('Users');
-
         // Here we use the user id as the cache id since the block shows user based
         // information; username and number of private messages
-        $pnr->cache_id = UserUtil::getVar('uid');
+        $this->renderer->cache_id = UserUtil::getVar('uid');
 
         // check out if the contents are cached.
         // If this is the case, we do not need to make DB queries.
-        if ($pnr->is_cached('users_block_online.htm')) {
-            $row['content'] = $pnr->fetch('users_block_online.htm');
+        if ($this->renderer->is_cached('users_block_online.htm')) {
+            $row['content'] = $this->renderer->fetch('users_block_online.htm');
             return BlockUtil::themeBlock($row);
         }
 
-        $pntable = System::dbGetTables();
+        $table = System::dbGetTables();
 
-        $sessioninfocolumn = $pntable['session_info_column'];
+        $sessioninfocolumn = $table['session_info_column'];
         $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));
 
         $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] > 0";
@@ -85,25 +82,24 @@ class Users_Block_Online extends Zikula_Block
         $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] = '0'";
         $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
 
-        $pnr->assign('registerallowed', ModUtil::getVar('Users', 'reg_allowreg'));
-        $pnr->assign('loggedin', UserUtil::isLoggedIn());
-        $pnr->assign('userscount', $numusers );
-        $pnr->assign('guestcount', $numguests );
-
-        $pnr->assign('username', UserUtil::getVar('uname'));
+        $this->renderer->assign('registerallowed', ModUtil::getVar('Users', 'reg_allowreg'))
+                       ->assign('loggedin', UserUtil::isLoggedIn())
+                       ->assign('userscount', $numusers )
+                       ->assign('guestcount', $numguests )
+                       ->assign('username', UserUtil::getVar('uname'));
 
         $msgmodule = System::getVar('messagemodule', '');
         if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
             // check if message module is available and add the necessary info
-            $pnr->assign('msgmodule', $msgmodule);
+            $this->renderer->assign('msgmodule', $msgmodule);
             if (ModUtil::available($msgmodule)) {
-                $pnr->assign('messages', ModUtil::apiFunc($msgmodule, 'user', 'getmessagecount'));
+                $this->renderer->assign('messages', ModUtil::apiFunc($msgmodule, 'user', 'getmessagecount'));
             } else {
-                $pnr->assign('messages', array());
+                $this->renderer->assign('messages', array());
             }
         }
 
-        $row['content'] = $pnr->fetch('users_block_online.htm');
+        $row['content'] = $this->renderer->fetch('users_block_online.htm');
         return BlockUtil::themeBlock($row);
     }
 }

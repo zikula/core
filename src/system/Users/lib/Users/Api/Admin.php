@@ -459,15 +459,17 @@ class Users_Api_Admin extends Zikula_Api
         if ($modinfo['state'] == 3) {
             $sitename  = System::getVar('sitename');
             $siteurl   = System::getBaseUrl();
-            $pnRender = Renderer::getInstance('Users', false);
-            $pnRender->assign('sitename', $sitename);
-            $pnRender->assign('siteurl', $siteurl);
+
+            $renderer = Renderer::getInstance('Users', false);
+            $renderer->assign('sitename', $sitename);
+            $renderer->assign('siteurl', $siteurl);
+
             foreach ($importValues as $value) {
                 if ($value['activated'] == UserUtil::ACTIVATED_ACTIVE && $value['sendMail'] == 1) {
-                    $pnRender->assign('email', $value['email']);
-                    $pnRender->assign('uname', $value['uname']);
-                    $pnRender->assign('pass', $value['pass']);
-                    $message = $pnRender->fetch('users_adminapi_notifyemail.htm');
+                    $renderer->assign('email', $value['email']);
+                    $renderer->assign('uname', $value['uname']);
+                    $renderer->assign('pass', $value['pass']);
+                    $message = $renderer->fetch('users_adminapi_notifyemail.htm');
                     $subject = $this->__f('Password for %1$s from %2$s', array($value['uname'], $sitename));
                     if (!ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
                                         array('toaddress' => $value['email'],

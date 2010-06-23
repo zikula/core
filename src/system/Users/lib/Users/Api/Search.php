@@ -44,9 +44,9 @@ class Users_Api_Search extends Zikula_Api
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
-            $pnRender = Renderer::getInstance('Users');
-            $pnRender->assign('active', !isset($args['active']) || isset($args['active']['Users']));
-            return $pnRender->fetch('users_search_options.htm');
+            $renderer = Renderer::getInstance('Users');
+            $renderer->assign('active', !isset($args['active']) || isset($args['active']['Users']));
+            return $renderer->fetch('users_search_options.htm');
         }
 
         return '';

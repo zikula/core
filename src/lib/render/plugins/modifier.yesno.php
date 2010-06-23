@@ -29,8 +29,8 @@ function smarty_modifier_yesno($string, $images = false)
     if ($string != '0' && $string != '1') return $string;
 
     if ($images) {
-        $smarty = Renderer::getInstance();
-        require_once $smarty->_get_plugin_filepath('function','img');
+        $renderer = Renderer::getInstance();
+        require_once $renderer->_get_plugin_filepath('function','img');
         $params = array('modname' => 'core', 'set' => 'icons/extrasmall');
     }
 
@@ -38,7 +38,7 @@ function smarty_modifier_yesno($string, $images = false)
         if ($images) {
             $params['src'] = 'button_ok.gif';
             $params['alt'] = $params['title'] = __('Yes');
-            return smarty_function_img($params, $smarty);
+            return smarty_function_img($params, $renderer);
         } else {
             return __('Yes');
         }
@@ -46,7 +46,7 @@ function smarty_modifier_yesno($string, $images = false)
         if ($images) {
             $params['src'] = 'button_cancel.gif';
             $params['alt'] = $params['title'] = __('No');
-            return smarty_function_img($params, $smarty);
+            return smarty_function_img($params, $renderer);
         } else {
             return __('No');
         }

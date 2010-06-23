@@ -2299,8 +2299,8 @@ function theme_userapi_render_clear_compiled()
     }
 
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_compiled', 'Renderer::clear_compiled()')), 'STRICT');
-    $Renderer = Renderer::getInstance();
-    $res      = $Renderer->clear_compiled();
+    $renderer = Renderer::getInstance();
+    $res      = $renderer->clear_compiled();
     return $res;
 }
 
@@ -2322,11 +2322,11 @@ function theme_userapi_render_clear_cache($args)
 
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_cache', 'Renderer::clear_cache()')), 'STRICT');
     if(isset($args['module']) && !empty($args['module']) && pnModAvailable($args['module'])) {
-        $Renderer = Renderer::getInstance($args['module']);
-        $res      = $Renderer->clear_cache();
+        $renderer = Renderer::getInstance($args['module']);
+        $res      = $renderer->clear_cache();
     } else {
-        $Renderer = Renderer::getInstance();
-        $res      = $Renderer->clear_all_cache();
+        $renderer = Renderer::getInstance();
+        $res      = $renderer->clear_all_cache();
     }
 
     return $res;

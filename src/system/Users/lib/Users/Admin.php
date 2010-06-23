@@ -468,16 +468,15 @@ class Users_Admin extends Zikula_Controller
             LogUtil::registerError($this->__('Sorry! No matching users found.'), 404, ModUtil::url('Users', 'admin', 'search'));
         }
 
-        // create output object
-        $pnRender = Renderer::getInstance('Users', false);
+        $this->renderer->setCaching(false);
 
-        $pnRender->assign('mailusers', SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT));
-        $pnRender->assign('deleteusers', SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN));
+        $this->renderer->assign('mailusers', SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT));
+        $this->renderer->assign('deleteusers', SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN));
 
         // assign the matching results
-        $pnRender->assign('items', $items);
+        $this->renderer->assign('items', $items);
 
-        return $pnRender->fetch('users_admin_listusers.htm');
+        return $this->renderer->fetch('users_admin_listusers.htm');
     }
 
     /**
@@ -1684,14 +1683,15 @@ class Users_Admin extends Zikula_Controller
         $group = ModUtil::apiFunc('Groups','user','get',
                             array('gid' => $defaultGroup));
         $defaultGroup = $defaultGroup . ' (' . $group['name'] . ')';
-        // Create output object
-        $pnRender = Renderer::getInstance('Users', false);
-        $pnRender->assign('importResults', $importResults);
-        $pnRender->assign('post_max_size', $post_max_size);
-        $pnRender->assign('minpass', $minpass);
-        $pnRender->assign('defaultGroup', $defaultGroup);
 
-        return $pnRender->fetch('users_admin_import.htm');
+        $this->renderer->setCaching(false);
+
+        $this->renderer->assign('importResults', $importResults)
+                       ->assign('post_max_size', $post_max_size)
+                       ->assign('minpass', $minpass)
+                       ->assign('defaultGroup', $defaultGroup);
+
+        return $this->renderer->fetch('users_admin_import.htm');
     }
 
     /**
@@ -1770,11 +1770,12 @@ class Users_Admin extends Zikula_Controller
                                             'groups'    => $groups));
         }
 
-        $pnRender = Renderer::getInstance('Users', false);
+        $this->renderer->setCaching(false);
+
         if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
-            $pnRender->assign('groups', '1');
+            $this->renderer->assign('groups', '1');
         }
-        return $pnRender->fetch('users_admin_export.htm');
+        return $this->renderer->fetch('users_admin_export.htm');
     }
 
     /**

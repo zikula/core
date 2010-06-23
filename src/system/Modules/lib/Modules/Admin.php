@@ -697,9 +697,9 @@ class Modules_Admin extends Zikula_Controller
             $Theme->clear_compiled();
             $Theme->clear_all_cache();
             $Theme->clear_cssjscombinecache();
-            $Renderer = Renderer::getInstance();
-            $Renderer->clear_compiled();
-            $Renderer->clear_all_cache();
+
+            $this->renderer->clear_compiled();
+            $this->renderer->clear_all_cache();
 
             return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                     'startnum' => $startnum,

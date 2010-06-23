@@ -56,19 +56,16 @@ class Blocks_Block_Menu extends Zikula_Block
             return;
         }
 
-        // setup the renderer for this block
-        $render = Renderer::getInstance('Blocks');
-
         // Set the cache id
-        $render->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
+        $this->renderer->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
 
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // check out if the contents are cached.
-        if ($render->is_cached('blocks_block_menu.htm')) {
+        if ($this->renderer->is_cached('blocks_block_menu.htm')) {
             // Populate block info and pass to theme
-            $blockinfo['content'] = $render->fetch('blocks_block_menu.htm');
+            $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.htm');
             return BlockUtil::themeBlock($blockinfo);
         }
 
@@ -126,10 +123,10 @@ class Blocks_Block_Menu extends Zikula_Block
         }
 
         // assign the items
-        $render->assign('menuitems', $menuitems);
+        $this->renderer->assign('menuitems', $menuitems);
 
         // get the block content
-        $blockinfo['content'] = $render->fetch('blocks_block_menu.htm');
+        $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.htm');
 
         // add the stylesheet to the header
         if (isset($vars['stylesheet'])) {
@@ -251,12 +248,8 @@ class Blocks_Block_Menu extends Zikula_Block
             $vars['displaymodules'] = false;
         }
 
-        // Create output object - this object will store all of our output so that
-        // we can return it easily when required
-        $render = Renderer::getInstance('Blocks');
-
         // assign the vars
-        $render->assign($vars);
+        $this->renderer->assign($vars);
 
         $menuitems = array();
         if (!empty($vars['content'])) {
@@ -266,10 +259,10 @@ class Blocks_Block_Menu extends Zikula_Block
                 $menuitems[] = $link;
             }
         }
-        $render->assign('menuitems', $menuitems);
+        $this->renderer->assign('menuitems', $menuitems);
 
         // return the output
-        return $render->fetch('blocks_block_menu_modify.htm');
+        return $this->renderer->fetch('blocks_block_menu_modify.htm');
     }
 
     /**
@@ -332,8 +325,7 @@ class Blocks_Block_Menu extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $render = Renderer::getInstance('Blocks');
-        $render->clear_cache('blocks_block_menu.htm');
+        $this->renderer->clear_cache('blocks_block_menu.htm');
 
         return($blockinfo);
     }

@@ -286,12 +286,12 @@ function smarty_function_pager($params, &$smarty)
         $pager['itemEnd'] = $pager['total'];
     }
 
-    $pnr = Renderer::getInstance('Theme');
-    $pnr->cache_id = md5($template . '-' . $pager['firstUrl'] . '-' . $pager['prevUrl'] . $pager['nextUrl'] . '-' . $pager['lastUrl']);
+    $renderer = Renderer::getInstance('Theme');
+    $renderer->cache_id = md5($template . '-' . $pager['firstUrl'] . '-' . $pager['prevUrl'] . $pager['nextUrl'] . '-' . $pager['lastUrl']);
 
-    $pnr->assign('pagerPluginArray', $pager);
-    $pnr->assign('hiddenPageBoxOpened', 0);
-    $pnr->assign('hiddenPageBoxClosed', 0);
+    $renderer->assign('pagerPluginArray', $pager);
+    $renderer->assign('hiddenPageBoxOpened', 0);
+    $renderer->assign('hiddenPageBoxClosed', 0);
 
-    return $pnr->fetch($template);
+    return $renderer->fetch($template);
 }
