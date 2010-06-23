@@ -40,35 +40,52 @@
 class Form_Block_TabbedPanelSet extends Form_Plugin
 {
     /**
-     * CSS class name for styling
+     * CSS class name for styling.
+     * 
      * @var string
      */
     public $cssClass = 'linktabs';
 
     /**
-     * Currently selected tab
-     * @var int
+     * Currently selected tab.
+     * 
+     * @var integer
      */
     public $selectedIndex = 1;
 
     /**
-     * Registered tab titles
-     * @var string-array
+     * Registered tab titles.
+     * 
+     * @var array
      * @internal
      */
     public $titles = array();
 
     /**
-     * Internal tab index counter
-     * @var int
+     * Internal tab index counter.
+     * 
+     * @var integer
      */
     public $registeredTabIndex = 1;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__; // FIXME: may be found in smarty's data???
     }
 
+    /**
+     * RenderContent event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $content The content to handle.
+     *
+     * @return string The (optionally) modified content.
+     */
     function renderContent(&$render, $content)
     {
         // Beware - working on 1-based offset!
@@ -110,7 +127,17 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
         return $html . $content;
     }
 
-    // Called by child panels to register themselves
+    /**
+     * Register a tab panel.
+     * 
+     * Called by child panels to register themselves.
+     * 
+     * @param Form_Render             &$render Reference to Form render object.
+     * @param Form_Plugin_TabbedPanel &$panel  Panel object.
+     * @param string                  $title   Panel title.
+     * 
+     * @return void
+     */
     function registerTabbedPanel(&$render, &$panel, $title)
     {
         $panel->panelSetId = $this->id;
@@ -121,9 +148,16 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
         $panel->selected = ($this->selectedIndex == $panel->index);
     }
 
+    /**
+     * Decode event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return void
+     */
     function decode(&$render)
     {
-        $this->selectedIndex = (int) FormUtil::getPassedValue("{$this->id}SelectedIndex", 1);
+        $this->selectedIndex = (int)FormUtil::getPassedValue("{$this->id}SelectedIndex", 1);
     }
 }
 

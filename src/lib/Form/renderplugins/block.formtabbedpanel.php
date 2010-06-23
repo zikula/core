@@ -13,6 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Smarty function to create a tabbed panel.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param string      $content Content of the block.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
+ */
 function smarty_block_formtabbedpanel($params, $content, &$render)
 {
     return $render->registerBlock('Form_Block_TabbedPanel', $params, $content);

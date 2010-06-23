@@ -21,12 +21,26 @@
  */
 class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
 {
+    /**
+     * Whether or not to show an edit link.
+     * 
+     * @var boolean
+     */
     public $editLink;
+    
+    /**
+     * Base category.
+     * 
+     * May be the id, the category array or the path.
+     * 
+     * @var mixed
+     */
     public $category;
 
     /**
-     * Enable inclusion of an empty null value element
-     * @var bool (default false)
+     * Enable inclusion of an empty null value element.
+     * 
+     * @var boolean (default false)
      */
     public $includeEmptyElement;
 
@@ -43,16 +57,34 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      * '__CATEGORIES__' => array('myCat' => zzz)
      * )
      * </code>
-     * @var bool (default false)
+     * 
+     * @var boolean (default false)
      */
     public $enableDBUtil;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
-    /* Shared by other category plugins */ /* static */    function loadParameters(&$list, $includeEmptyElement, $params)
+    /**
+     * Load the parameters.
+     * 
+     * Shared by other category plugins.
+     * FIXME: Should this method be static?
+     * 
+     * @param object  &$list               The list object (here: $this). 
+     * @param boolean $includeEmptyElement Whether or not to include an empty null item.
+     * @param array   $params              The parameters passed from the Smarty plugin.
+     * 
+     * @return void
+     */
+    function loadParameters(&$list, $includeEmptyElement, $params)
     {
         $list->category = isset($params['category']) ? $params['category'] : 0;
         $path = isset($params['path']) ? $params['path'] : '';
@@ -72,17 +104,17 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
             $list->category = CategoryUtil::getCategoryByPath($path, $pathfield);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
 
-        // check if we have an actual category object with a numeric ID set
         } elseif (is_array($list->category) && isset($list->category['id']) && is_integer($list->category['id'])) {
+            // check if we have an actual category object with a numeric ID set
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
 
-        // check if we have a numeric category
         } elseif (is_numeric($list->category)) {
+            // check if we have a numeric category
             $list->category = CategoryUtil::getCategoryByID($list->category);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
 
-        // check if we have a string/path category
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
+            // check if we have a string/path category
             $list->category = CategoryUtil::getCategoryByPath($list->category, $pathfield);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
         }
@@ -108,6 +140,14 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
 
     }
 
+    /**
+     * Load event handler.
+     *
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @return void
+     */
     function load(&$render, $params)
     {
         $this->includeEmptyElement = (isset($params['includeEmptyElement']) ? $params['includeEmptyElement'] : false);
@@ -116,6 +156,13 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         parent::load($render, $params);
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $result = parent::render($render);
@@ -129,6 +176,17 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         return $result;
     }
 
+    /**
+     * Saves value in data object.
+     * 
+     * Called by the render when doing $render->getValues()
+     * Uses the group parameter to decide where to store data.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$data   Data object.
+     * 
+     * @return void
+     */
     function saveValue(&$render, &$data)
     {
         if ($this->enableDBUtil && $this->dataBased) {
@@ -145,6 +203,17 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         }
     }
 
+    /**
+     * Load values.
+     * 
+     * Called internally by the plugin itself to load values from the render.
+     * Can also by called when some one is calling the render object's pnFormSetValues.
+     * 
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       &$values Values to load.
+     * 
+     * @return void
+     */
     function loadValue(&$render, &$values)
     {
         if ($this->enableDBUtil && $this->dataBased) {

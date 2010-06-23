@@ -59,12 +59,15 @@ class Form_Handler
      * }
      * </code>
      *
+     * @param Form_Render &$render Reference to Form render object.
+     * 
      * @return bool False in case of initialization errors, otherwise true. If false is returned then the
      * framework assumes that {@link pnFormRender::pnFormSetErrorMsg()} has been called with a suitable
      * error message.
      */
     public function initialize(&$render)
     {
+        return true;
     }
 
     /**
@@ -76,8 +79,11 @@ class Form_Handler
      * value indicating the name of the command. The command name is normally specified by the plugin
      * that initiated the command.
      *
-     * @see Form_Plugin_Button
-     * @see Form_Plugin_ImageButton
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$args   Arguments of the command.
+     *
+     * @see    Form_Plugin_Button, Form_Plugin_ImageButton
+     * @return void
      */
     public function handleCommand(&$render, &$args)
     {

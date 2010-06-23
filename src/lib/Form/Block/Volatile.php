@@ -50,13 +50,32 @@
  */
 class Form_Block_Volatile extends Form_Plugin
 {
+    /**
+     * Says that this content is volatile.
+     * 
+     * @var integer
+     */
     public $volatile = 1;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
     }

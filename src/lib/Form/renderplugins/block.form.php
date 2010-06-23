@@ -14,29 +14,32 @@
  */
 
 /**
- * Smarty function to wrap pnFormRender generated form controls
- * with suitable form tags
- *
+ * Smarty function to wrap Form_Render generated form controls with suitable form tags.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param string      $content Content of the block.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_block_form($params, $content, &$render)
 {
-  if ($content)
-  {
-    PageUtil::addVar('stylesheet', 'system/Theme/style/form/style.css');
-    $encodingHtml = (array_key_exists('enctype', $params) ? " enctype=\"$params[enctype]\"" : '');
-    $action = htmlspecialchars(System::getCurrentUri());
-    $classString = '';
-    if (isset($params['cssClass'])) {
-        $classString = "class=\"$params[cssClass]\" ";
-    }
+    if ($content) {
+        PageUtil::addVar('stylesheet', 'system/Theme/style/form/style.css');
+        $encodingHtml = (array_key_exists('enctype', $params) ? " enctype=\"$params[enctype]\"" : '');
+        $action = htmlspecialchars(System::getCurrentUri());
+        $classString = '';
+        if (isset($params['cssClass'])) {
+            $classString = "class=\"$params[cssClass]\" ";
+        }
 
-    $render->postRender();
-
-    $out  =  "<form id=\"pnFormForm\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
-    $out .= $content;
-    $out .= "\n<div>\n" . $render->getStateHTML() . "\n"; // Add <div> for XHTML validation
-    $out .= $render->getIncludesHTML() . "\n";
-    $out .= $render->getAuthKeyHTML() . "
+        $render->postRender();
+    
+        $out  =  "<form id=\"pnFormForm\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
+        $out .= $content;
+        $out .= "\n<div>\n" . $render->getStateHTML() . "\n"; // Add <div> for XHTML validation
+        $out .= $render->getIncludesHTML() . "\n";
+        $out .= $render->getAuthKeyHTML() . "
 <input type=\"hidden\" name=\"pnFormEventTarget\" id=\"pnFormEventTarget\" value=\"\" />
 <input type=\"hidden\" name=\"pnFormEventArgument\" id=\"pnFormEventArgument\" value=\"\" />
 <script type=\"text/javascript\">
@@ -54,7 +57,7 @@ function pnFormDoPostBack(eventTarget, eventArgument)
 // -->
 </script>
 </div>\n";
-    $out .= "</form>\n";
-    return $out;
-  }
+        $out .= "</form>\n";
+        return $out;
+    }
 }

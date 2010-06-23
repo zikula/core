@@ -18,30 +18,105 @@
  */
 class Form_Plugin_UploadInput extends Form_StyledPlugin
 {
+    /**
+     * Input field name.
+     * 
+     * @var string
+     */
     public $inputName;
+    
+    /**
+     * Whether or not this field is read only.
+     * 
+     * @var boolean
+     */
     public $readOnly;
 
+    /**
+     * Field name in data array.
+     * 
+     * @var string
+     */
     public $dataField;
+    
+    /**
+     * Whether or not to save $_FILES data in data array.
+     * 
+     * @var boolean
+     */
     public $dataBased;
+    
+    /**
+     * Group to align data to.
+     * 
+     * @var string
+     */
     public $group;
 
+    /**
+     * Whether or not the field is valid.
+     * 
+     * @var boolean
+     */
     public $isValid;
+    
+    /**
+     * Whether or not the field is mandatory.
+     * 
+     * @var boolean
+     */
     public $mandatory;
+    
+    /**
+     * Holds the error message.
+     * 
+     * @var string
+     */
     public $errorMessage;
+    
+    /**
+     * Holds the field's label.
+     * 
+     * @var string
+     */
     public $myLabel;
 
+    /**
+     * The result of the upload process (from $_FILES).
+     * 
+     * @var array
+     */
     public $result;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Checks whether the field is empty or not.
+     * 
+     * @return boolean
+     */
     function isEmpty()
     {
         return $this->result == null || $this->result['name'] == '';
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, $params)
     {
         $this->inputName = (array_key_exists('inputName', $params) ? $params['inputName'] : $this->id);
@@ -56,11 +131,25 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
         $this->isValid = true;
     }
 
+    /**
+     * Initialize event handler.
+     *
+     * @param FormRender &$render Reference to pnForm render object.
+     *
+     * @return void
+     */
     function initialize(&$render)
     {
         $render->addValidator($this);
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $idHtml = $this->getIdHtml();
@@ -83,11 +172,25 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
         return $result;
     }
 
+    /**
+     * Decode event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return void
+     */
     function decode(&$render)
     {
         $this->result = $_FILES[$this->inputName];
     }
 
+    /**
+     * Validates the input.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function validate(&$render)
     {
         $this->clearValidation($render);
@@ -101,6 +204,13 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
         }
     }
 
+    /**
+     * Sets an error message.
+     * 
+     * @param string $msg Error message.
+     * 
+     * @return void
+     */
     function setError($msg)
     {
         $this->isValid = false;
@@ -108,12 +218,30 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
         $this->toolTip = $msg;
     }
 
+    /**
+     * Clears the validation data.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function clearValidation(&$render)
     {
         $this->isValid = true;
         $this->errorMessage = null;
     }
 
+    /**
+     * Saves value in data object.
+     * 
+     * Called by the render when doing $render->getValues()
+     * Uses the group parameter to decide where to store data.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$data   Data object.
+     * 
+     * @return void
+     */
     function saveValue(&$render, &$data)
     {
         if ($this->dataBased) {

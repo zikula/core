@@ -22,22 +22,38 @@
 class Form_Plugin_FloatInput extends Form_Plugin_TextInput
 {
     /**
-     * Minimum value for validation
+     * Minimum value for validation.
+     * 
      * @var float
      */
     public $minValue;
 
     /**
-     * Maximum value for validation
+     * Maximum value for validation.
+     * 
      * @var float
      */
     public $maxValue;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
         $this->maxLength = 30;
@@ -45,6 +61,13 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
         parent::create($render, $params);
     }
 
+    /**
+     * Validates the input.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function validate(&$render)
     {
         parent::validate($render);
@@ -73,6 +96,14 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
         }
     }
 
+    /**
+     * Parses a value.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $text    Text.
+     * 
+     * @return string Parsed Text.
+     */
     function parseValue(&$render, $text)
     {
         if ($text == '') {
@@ -85,6 +116,14 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
         return $text;
     }
 
+    /**
+     * Format the value to specific format.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $value   The value to format.
+     * 
+     * @return string Formatted value.
+     */
     function formatValue(&$render, $value)
     {
         return DataUtil::formatNumber($value);

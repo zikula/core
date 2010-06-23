@@ -50,8 +50,11 @@
  * at the menu reference. The use of commandArgument makes it easy to identify which $item the menu was
  * activated for.
  *
- * @package pnForm
- * @subpackage Plugins
+ * @param array       $params  Parameters passed in the block tag.
+ * @param string      $content Content of the block.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_block_formcontextmenu($params, $content, &$render)
 {

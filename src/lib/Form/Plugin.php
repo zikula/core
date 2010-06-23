@@ -130,21 +130,21 @@ class Form_Plugin
     public $id;
 
     /**
-     * Specifies whether or not a plugin should be rendered
+     * Specifies whether or not a plugin should be rendered.
      *
-     * @var bool
+     * @var boolean
      */
     public $visible;
 
     /**
-     * Reference to parent plugin if used inside a block
+     * Reference to parent plugin if used inside a block.
      *
      * @var &FormHandler
      */
     public $parentPlugin;
 
     /**
-     * HTML attributes
+     * HTML attributes.
      *
      * Associative array of attributes to add to the plugin. For instance:
      * array('title' => 'A tooltip title', onclick => 'doSomething()')
@@ -154,7 +154,7 @@ class Form_Plugin
     public $attributes;
 
     /**
-     * Name of function to call in form event handler when plugin is loaded
+     * Name of function to call in form event handler when plugin is loaded.
      *
      * If you need to notify the form event handler when the plugin has been loaded then
      * specify the name of this handler here. The prototype of the function must be:
@@ -183,6 +183,8 @@ class Form_Plugin
      * </code>
      *
      * The name "dataBound" was chosen to avoid clashes with the "load" event.
+     * 
+     * @var string
      */
     public $onDataBound;
 
@@ -198,19 +200,25 @@ class Form_Plugin
 
     /**
      * Temporary storage of the output from renderBegin in blocks.
+     * 
+     * @var string
      * @internal
      */
     public $blockBeginOutput;
 
     /**
      * Volatile indicator (disables state management in sub-plugins).
+     * 
+     * @var boolean
      * @internal
-     * @var bool
      */
     public $volatile;
 
     /**
      * Constructor.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
      */
     public function __construct(&$render, &$params)
     {
@@ -225,6 +233,10 @@ class Form_Plugin
      * This is the function that takes care of reading smarty parameters and storing them in the member variables
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
      * @return void
      */
     public function readParameters(&$render, &$params)
@@ -246,10 +258,9 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @see Form_Plugin
-     *
-     * @param Form_Render &$render Reference to pnForm render object
-     * @param array &$params Parameters passed from the Smarty plugin function
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
      * @return void
      */
     public function create(&$render, &$params)
@@ -261,10 +272,8 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @see Form_Plugin
-     *
-     * @param Form_Render &$render Reference to pnForm render object
-     * @param array &$params Parameters passed from the Smarty plugin function
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -277,9 +286,7 @@ class Form_Plugin
      *
      * Default action is to do nothing. Typically used to add self as validator.
      *
-     * @see Form_Plugin
-     *
-     * @param FormRender &$render Reference to pnForm render object.
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return void
      */
@@ -292,10 +299,7 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @see Form_Plugin
-     *
-     * @param Form_Render &$render Reference to Form render object
-     * @param array &$params Parameters passed from the Smarty plugin function
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return void
      */
@@ -309,8 +313,7 @@ class Form_Plugin
      * Default action is to do nothing. Usefull for buttons that should generate events
      * after the plugins have decoded their normal values.
      *
-     * @param Form_Render &$render Reference to pnForm render object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return void
      */
@@ -323,10 +326,8 @@ class Form_Plugin
      *
      * Default action is to call onDataBound handler in form event handler.
      *
-     * @see Form_Plugin
-     *
-     * @param pnFormRender &$render Reference to pnForm render object.
-     * @param array        &$params Parameters passed from the Smarty plugin function.
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
@@ -338,6 +339,15 @@ class Form_Plugin
         }
     }
 
+    /**
+     * RenderAttribut event handler.
+     * 
+     * Default action is to do render all attributes in form name="value".
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output.
+     */
     public function renderAttributes(&$render)
     {
         $attr = '';
@@ -353,10 +363,7 @@ class Form_Plugin
      *
      * Default action is to return an empty string.
      *
-     * @see pnFormPlugin
-     *
-     * @param pnFormRender &$render Reference to pnForm render object.
-     * @param array        &$params Parameters passed from the Smarty plugin function.
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return string The rendered output.
      */
@@ -370,9 +377,7 @@ class Form_Plugin
      *
      * Default action is to return an empty string.
      *
-     * @see pnFormPlugin
-     *
-     * @param pnFormRender &$render Reference to pnForm render object.
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return string The rendered output.
      */
@@ -386,9 +391,8 @@ class Form_Plugin
      *
      * Default action is to return the content unmodified.
      *
-     * @see pnFormPlugin
-     *
-     * @param pnFormRender &$render Reference to pnForm render object.
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */
@@ -402,9 +406,7 @@ class Form_Plugin
      *
      * Default action is to return an empty string.
      *
-     * @see pnFormPlugin
-     *
-     * @param pnFormRender &$render Reference to pnForm render object.
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return string The rendered output.
      */
@@ -418,8 +420,7 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @see pnFormPlugin
-     * @param pnFormRender &$render Reference to pnForm render object.
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return void
      */
@@ -427,6 +428,16 @@ class Form_Plugin
     {
     }
 
+    /**
+     * RegisterPlugin event handler.
+     * 
+     * Default action is to add the plugin to $this->plugins.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_Plugin $plugin  A Form plugin to add.
+     * 
+     * @return void
+     */
     public function registerPlugin(&$render, $plugin)
     {
         $this->plugins[] = $plugin;
@@ -440,7 +451,9 @@ class Form_Plugin
      * This function ignores automatically created IDs (those named "plgNNN") and will
      * return an empty string for these.
      *
-     * @return string
+     * @param string $id The ID of the item.
+     * 
+     * @return string The generated HTML.
      */
     public function getIdHtml($id = null)
     {

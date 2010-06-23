@@ -47,6 +47,12 @@
  *
  * You don't need the volatile block if you can guarantee that the number of elements will
  * be the same always.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param string      $content Content of the block.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_block_formvolatile($params, $content, &$render)
 {

@@ -13,6 +13,17 @@
  * information regarding copyright and licensing.
  */
 
+
+/**
+ * Validation summary.
+ *
+ * This plugin shows a summary of the validation result.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
+ */
 function smarty_function_formvalidationsummary($params, &$render)
 {
     return $render->registerPlugin('Form_Plugin_ValidationSummary', $params);

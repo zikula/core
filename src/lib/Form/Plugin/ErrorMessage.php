@@ -46,22 +46,36 @@
 class Form_Plugin_ErrorMessage extends Form_Plugin
 {
     /**
-     * Displayed error message
+     * Displayed error message.
+     * 
      * @var string
      */
     public $message;
 
     /**
-     * CSS class for styling
+     * CSS class for styling.
+     * 
      * @var string
      */
     public $cssClass;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         if ($this->message != '') {

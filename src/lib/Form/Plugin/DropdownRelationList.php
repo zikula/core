@@ -18,21 +18,90 @@
  */
 class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 {
+    /**
+     * The module of the relation.
+     * 
+     * @var string
+     */
     public $module;
+    
+    /**
+     * Object type.
+     * 
+     * @var string
+     */
     public $objecttype;
-    public $prefix = 'PN'; // TODO B review this prefix.
+    
+    /**
+     * DBObject class prefix.
+     * 
+     * TODO B [review this prefix].
+     * 
+     * @var string
+     */
+    public $prefix = 'PN'; 
+    
+    /**
+     * Where clause.
+     * 
+     * @var string
+     */
     public $where = '';
+    
+    /**
+     * OrderBy clause.
+     * 
+     * @var string
+     */
     public $orderby = '';
+    
+    /**
+     * Row offset.
+     * 
+     * @var integer
+     */
     public $pos = -1;
+    
+    /**
+     * Numbers of rows to catch.
+     * 
+     * @var integer
+     */
     public $num = -1;
+    
+    /**
+     * Field name of the ID field.
+     * 
+     * @var string
+     */
     public $idField = '';
+    
+    /**
+     * Name of the field to display.
+     * 
+     * @var string
+     */
     public $displayField = '';
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
         if (!isset($params['module']) || empty($params['module'])) {
@@ -102,6 +171,14 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
         $this->cssClass .= ' relationlist';
     }
 
+    /**
+     * Load event handler.
+     *
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @return void
+     */
     function load(&$render, $params)
     {
         ModUtil::dbInfoLoad($this->module);

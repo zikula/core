@@ -86,6 +86,11 @@
  * In these plugins you must set the items in the load event handler.
  * See {@link pnFormLanguageSelector} for a good example of how this
  * can be done.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formdropdownlist($params, &$render)
 {

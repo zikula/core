@@ -43,9 +43,7 @@ class Form_StyledPlugin extends Form_Plugin
     /**
      * Render attributes.
      *
-     * @staticvar array $styleElements Elements.
-     *
-     * @param object $render Render object.
+     * @param Form_Render &$render Reference to Form render object.
      *
      * @return string
      */

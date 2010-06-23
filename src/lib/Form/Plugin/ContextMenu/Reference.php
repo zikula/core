@@ -20,15 +20,44 @@
  */
 class Form_Plugin_ContextMenu_Reference extends Form_Plugin
 {
+    /**
+     * URL to the item image.
+     * 
+     * @var string
+     */
     public $imageURL;
+    
+    /**
+     * Menu ID.
+     * 
+     * @var string
+     */
     public $menuId;
+    
+    /**
+     * Context menu command argument.
+     * 
+     * @var string
+     */
     public $commandArgument;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $imageURL = ($this->imageURL == null ? 'images/icons/extrasmall/tab_right.gif' : $this->imageURL);

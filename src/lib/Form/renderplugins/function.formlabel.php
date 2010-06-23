@@ -14,7 +14,8 @@
  */
 
 /**
- * Web form label
+ * Web form label.
+ * 
  * Use this to create labels for your input fields in a web form. Example:
  * <code>
  *   <!--[formlabel text="Title" for="title"]-->:
@@ -25,6 +26,10 @@
  * "myLabel" on the "pointed-to" plugin to the supplied label text. This enables
  * the validation summary to display the label text.
  *
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formlabel($params, &$render)
 {

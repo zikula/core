@@ -13,6 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Context menu seperator
+ *
+ * This plugin creates a seperator in a context menu.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
+ */
 function smarty_function_formcontextmenuseparator($params, &$render)
 {
     return $render->registerPlugin('Form_Plugin_ContextMenu_Separator', $params);

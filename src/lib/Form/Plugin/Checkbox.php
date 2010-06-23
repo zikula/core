@@ -21,55 +21,78 @@
 class Form_Plugin_Checkbox extends Form_StyledPlugin
 {
     /**
-     * Checked value
+     * Checked value.
      *
      * Set to true when checkbox is checked, false otherwise.
-     * @var bool
+     * 
+     * @var boolean
      */
     public $checked;
 
     /**
-     * Enable or disable read only mode
+     * Enable or disable read only mode.
+     * 
+     * @var boolean
      */
     public $readOnly;
 
     /**
-     * Data field name for looking up initial data
+     * Data field name for looking up initial data.
      *
      * The name stored here is used to lookup initial data for the plugin in the render's variables.
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
+     * 
      * @var string
      */
     public $dataField;
 
     /**
-     * Enable or disable use of $dataField
-     * @var bool
+     * Enable or disable use of $dataField.
+     * 
+     * @var boolean
      */
     public $dataBased;
 
     /**
-     * Group name for this input
+     * Group name for this input.
      *
      * The group name is used to locate data in the render (when databased) and to restrict which
      * plugins to do validation on (to be implemented).
-     * @see pnFormRender::pnFormGetValues()
-     * @see pnFormRender::pnFormIsValid()
+     * 
      * @var string
+     * @see   pnFormRender::pnFormGetValues(), pnFormRender::pnFormIsValid()
      */
     public $group;
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
+     * 
      * @var string
      */
     public $inputName;
 
+    /**
+     * Get filename for this plugin.
+     *
+     * A requirement from the framework - must be implemented like this. Used to restore plugins on postback.
+     * 
+     * @internal
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, $params)
     {
         // Load all special and non-string parameters
@@ -85,11 +108,30 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
         $this->dataField = (array_key_exists('dataField', $params) ? $params['dataField'] : $this->id);
     }
 
+    /**
+     * Load event handler.
+     *
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @return void
+     */
     function load(&$render, &$params)
     {
         $this->loadValue($render, $render->get_template_vars());
     }
 
+    /**
+     * Load values.
+     * 
+     * Called internally by the plugin itself to load values from the render.
+     * Can also by called when some one is calling the render object's pnFormSetValues.
+     * 
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       &$values Values to load.
+     * 
+     * @return void
+     */
     function loadValue(&$render, &$values)
     {
         if ($this->dataBased) {
@@ -99,8 +141,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
                 if (array_key_exists($this->dataField, $values)) {
                     if (isset($values[$this->dataField])) {
                         $value = $values[$this->dataField];
-                    }
-                    else {
+                    } else {
                         $value = null;
                     }
                 }
@@ -108,8 +149,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
                 if (array_key_exists($this->group, $values)) {
                     if (isset($values[$this->group][$this->dataField])) {
                         $value = $values[$this->group][$this->dataField];
-                    }
-                    else {
+                    } else {
                         $value = null;
                     }
                 }
@@ -121,6 +161,13 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
         }
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $idHtml = $this->getIdHtml();
@@ -136,6 +183,13 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
         return $result;
     }
 
+    /**
+     * Decode event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return void
+     */
     function decode(&$render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
@@ -144,6 +198,17 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
         }
     }
 
+    /**
+     * Saves value in data object.
+     * 
+     * Called by the render when doing $render->getValues()
+     * Uses the group parameter to decide where to store data.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$data   Data object.
+     * 
+     * @return void
+     */
     function saveValue(&$render, &$data)
     {
         if ($this->dataBased) {

@@ -20,20 +20,53 @@
  */
 class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
 {
+    /**
+     * Whether or not to show an edit link.
+     * 
+     * @var boolean
+     */
     public $editLink;
+    
+    /**
+     * Base category.
+     * 
+     * May be the id, the category array or the path.
+     * 
+     * @var mixed
+     */
     public $category;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Load event handler.
+     *
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @return void
+     */
     function load(&$render, $params)
     {
         pnFormCategorySelector::loadParameters($this, false, $params);
         parent::load($render, $params);
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $result = parent::render($render);

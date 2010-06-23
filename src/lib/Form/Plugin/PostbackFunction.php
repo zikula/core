@@ -30,34 +30,38 @@
 class Form_Plugin_PostBackFunction extends Form_Plugin
 {
     /**
-     * Command name
+     * Command name.
      *
      * This is the "commandName" parameter to pass in the event args of the command handler.
+     * 
      * @var string
      */
     public $commandName;
 
     /**
-     * JavaScript function name to generate
+     * JavaScript function name to generate.
      *
      * This is the name of a JavaScript function you want to be created on the page. By calling this
      * function in your own JavaScript code you can initiate a postback that will call the
      * {@link pnFormPostBackFunction::$onCommand} event handler and pass
      * {@link pnFormPostBackFunction::$commandName} to it.
+     * 
+     * @var string
      */
     public $function;
 
     /**
-     * Name of command event handler method
-     * @var string Default is "handleCommand"
+     * Name of command event handler method.
+     * 
+     * @var string Default is "handleCommand".
      */
     public $onCommand = 'handleCommand';
 
     /**
-     * Get filename for this plugin
+     * Get filename for this plugin.
      *
      * A requirement from the framework - must be implemented like this. Used to restore plugins on postback.
-     * @internal
+     *
      * @return string
      */
     function getFilename()
@@ -65,6 +69,13 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
         return __FILE__;
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $html = '';
@@ -76,6 +87,14 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
         return $html;
     }
 
+    /**
+     * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
+     * 
+     * @param Form_Render &$render       Reference to Form render object.
+     * @param string      $eventArgument The event argument.
+     * 
+     * @return void
+     */
     function raisePostBackEvent(&$render, $eventArgument)
     {
         $args = array(

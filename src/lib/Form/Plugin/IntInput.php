@@ -22,22 +22,38 @@
 class Form_Plugin_IntInput extends Form_Plugin_TextInput
 {
     /**
-     * Minimum value for validation
-     * @var int
+     * Minimum value for validation.
+     * 
+     * @var integer
      */
     public $minValue;
 
     /**
-     * Maximum value for validation
-     * @var int
+     * Maximum value for validation.
+     * 
+     * @var integer
      */
     public $maxValue;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
         $this->maxLength = 20;
@@ -47,6 +63,13 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
         $this->regexValidationMessage = __('Error! Invalid integer.');
     }
 
+    /**
+     * Validates the input.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function validate(&$render)
     {
         parent::validate($render);
@@ -55,7 +78,7 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
         }
 
         if ($this->text != '') {
-            $i = (int) $this->text;
+            $i = (int)$this->text;
             if ($this->minValue != null && $i < $this->minValue || $this->maxValue != null && $i > $this->maxValue) {
                 if ($this->minValue != null && $this->maxValue != null) {
                     $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.', array(
@@ -70,11 +93,19 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
         }
     }
 
+    /**
+     * Parses a value.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $text    Text.
+     * 
+     * @return string Parsed Text.
+     */
     function parseValue(&$render, $text)
     {
         if ($text == '') {
             return null;
         }
-        return (int) $text;
+        return (int)$text;
     }
 }

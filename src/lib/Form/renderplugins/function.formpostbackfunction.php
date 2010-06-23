@@ -26,6 +26,11 @@
  * This generates a JavaScript function named startMyPostBack() that you can call from your own JavaScript.
  * When called it will generate a postback and fire an event to be handled by the $onCommand
  * method in the form event handler.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formpostbackfunction($params, &$render)
 {

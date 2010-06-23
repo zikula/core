@@ -23,11 +23,25 @@
  */
 class Form_Plugin_EMailInput extends Form_Plugin_TextInput
 {
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
         $this->maxLength = 100;
@@ -37,6 +51,13 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
         $this->cssClass .= ' email';
     }
 
+    /**
+     * Validates the input.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function validate(&$render)
     {
         parent::validate($render);

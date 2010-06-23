@@ -47,58 +47,75 @@
 class Form_Plugin_LinkButton extends Form_StyledPlugin
 {
     /**
-     * Displayed text in the link
+     * Displayed text in the link.
      *
      * @var string
      */
     public $text;
 
     /**
-     * Name of command event handler method
-     * @var string Default is "handleCommand"
+     * Name of command event handler method.
+     * 
+     * @var string Default is "handleCommand".
      */
     public $onCommand = 'handleCommand';
 
     /**
-     * Command name
+     * Command name.
      *
      * This is the "commandName" parameter to pass in the event args of the command handler.
+     * 
      * @var string
      */
     public $commandName;
 
     /**
-     * Command argument
+     * Command argument.
      *
      * This value is passed in the event arguments to the form event handler as the commandArgument value.
+     * 
      * @var string
      */
     public $commandArgument;
 
     /**
-     * Confirmation message
+     * Confirmation message.
      *
      * If you set a confirmation message then a ok/cancel dialog box pops and asks the user to confirm
      * the button click - very usefull for buttons that deletes items.
      * You can use _XXX language defines directly as the message, no need to call <!--[pnml]--> for
      * translation.
+     * 
      * @var string
      */
     public $confirmMessage;
 
     /**
-     * CSS styling
+     * CSS styling.
      *
      * Please ignore - to be changed.
-     * @internal
+     * 
+     * @var string
      */
     public $styleHtml;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $idHtml = $this->getIdHtml();
@@ -126,6 +143,14 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
         return $result;
     }
 
+    /**
+     * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
+     * 
+     * @param Form_Render &$render       Reference to Form render object.
+     * @param string      $eventArgument The event argument.
+     * 
+     * @return void
+     */
     function raisePostBackEvent(&$render, $eventArgument)
     {
         $carg = unserialize($eventArgument);

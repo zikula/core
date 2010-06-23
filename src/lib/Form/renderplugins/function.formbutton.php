@@ -39,6 +39,11 @@
  *
  * The command arguments ($args) passed to the handler contains 'commandName' and
  * 'commandArgument' with the values you passed to the button in the template.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formbutton($params, &$render)
 {

@@ -30,7 +30,7 @@
 class Form_Plugin_TextInput extends Form_StyledPlugin
 {
     /**
-     * Displayed text in the text input
+     * Displayed text in the text input.
      *
      * This variable contains the text to be displayed in the input.
      * At first page display this variable contains whatever set in the template. At postback it contains
@@ -41,7 +41,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     public $text = '';
 
     /**
-     * Text input mode
+     * Text input mode.
      *
      * The text mode defines what kind of HTML element to render. The possible values are:
      * - <b>Singleline</b>: renders a normal input element (default).
@@ -53,61 +53,68 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     public $textMode = 'singleline';
 
     /**
-     * Enable or disable read only mode
+     * Enable or disable read only mode.
      *
      * A text input in read only mode do *not* decode posted data, since the user cannot
      * enter anything in the read only input.
-     * @var bool
+     * 
+     * @var boolean
      */
     public $readOnly;
 
     /**
-     * Text to show as tool tip for the input
+     * Text to show as tool tip for the input.
+     * 
      * @var string
      */
     public $toolTip;
 
     /**
-     * CSS class to use
+     * CSS class to use.
+     * 
      * @var string
      */
     public $cssClass;
 
     /**
-     * Number of columns for multiline input
-     * @var int
+     * Number of columns for multiline input.
+     * 
+     * @var integer
      */
     public $cols;
 
     /**
-     * Number of rows for multiline input
-     * @var int
+     * Number of rows for multiline input.
+     * 
+     * @var integer
      */
     public $rows;
 
     /**
-     * Data field name for looking up initial data
+     * Data field name for looking up initial data.
      *
      * The name stored here is used to lookup initial data for the plugin in the render's variables.
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
+     * 
      * @var string
      */
     public $dataField;
 
     /**
-     * Enable or disable use of $dataField
-     * @var bool
+     * Enable or disable use of $dataField.
+     * 
+     * @var boolean
      */
     public $dataBased;
 
     /**
-     * Group name for this input
+     * Group name for this input.
      *
      * The group name is used to locate data in the render (when databased) and to restrict which
      * plugins to do validation on (to be implemented).
-     * @see pnFormRender::pnFormGetValues()
-     * @see pnFormRender::pnFormIsValid()
+     * 
      * @var string
+     * @see   pnFormRender::pnFormGetValues(), pnFormRender::pnFormIsValid()
      */
     public $group;
 
@@ -118,80 +125,91 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * (a valid input satisfies the mandatory requirement and regex validation pattern).
      * Use {@link pnFormTextInput::setError()} and {@link pnFormTextInput::clearValidation()}
      * to change the value.
-     * @var bool
+     * 
+     * @var boolean
      */
     public $isValid = true;
 
     /**
-     * Enable or disable mandatory check
+     * Enable or disable mandatory check.
      *
      * By enabling mandatory checking you force the user to enter something in the text input.
-     * @var bool
+     * 
+     * @var boolean
      */
     public $mandatory;
 
     /**
-     * Enable or disable mandatory asterisk
-     * @var bool
+     * Enable or disable mandatory asterisk.
+     * 
+     * @var boolean
      */
     public $mandatorysym;
 
     /**
-     * Error message to display when input does not validate
+     * Error message to display when input does not validate.
      *
      * Use {@link pnFormTextInput::setError()} and {@link pnFormTextInput::clearValidation()}
      * to change the value.
+     * 
      * @var string
      */
     public $errorMessage;
 
     /**
-     * Text label for this plugin
+     * Text label for this plugin.
      *
      * This variable contains the label text for the input. The {@link pnFormLabel} plugin will set
      * this text automatically when it is a label for this input.
+     * 
      * @var string
      */
     public $myLabel;
 
     /**
-     * Size of HTML input (number of characters)
-     * @var int
+     * Size of HTML input (number of characters).
+     * 
+     * @var integer
      */
     public $size;
 
     /**
-     * Maximum number of characters allowed in the text input
-     * @var int
+     * Maximum number of characters allowed in the text input.
+     * 
+     * @var integer
      */
     public $maxLength;
 
     /**
-     * Regular expression to match input against
+     * Regular expression to match input against.
      *
      * User input must match this pattern. Uses PHP preg_match() to match the input and pattern.
+     * 
      * @var string
      */
     public $regexValidationPattern;
 
     /**
-     * Regular expression error message
+     * Regular expression error message.
      *
      * Error message to display when the regex validation pattern does not match input.
+     * 
      * @var string
      */
     public $regexValidationMessage;
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
+     * 
      * @var string
      */
     public $inputName;
 
     /**
-     * Get filename for this plugin
+     * Get filename for this plugin.
      *
      * A requirement from the framework - must be implemented like this. Used to restore plugins on postback.
+     * 
      * @internal
      * @return string
      */
@@ -201,15 +219,24 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     }
 
     /**
-     * Indicates whether or not the input is empty
+     * Indicates whether or not the input is empty.
      *
-     * @return bool
+     * @return boolean
      */
     function isEmpty()
     {
         return $this->text == '';
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, $params)
     {
         // All member variables are fetched automatically before create (as strings)
@@ -227,6 +254,14 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         }
     }
 
+    /**
+     * Load event handler.
+     *
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @return void
+     */
     function load(&$render, &$params)
     {
         // The load function expects the plugin to read values from the render.
@@ -235,11 +270,25 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         $this->loadValue($render, $render->get_template_vars());
     }
 
+    /**
+     * Initialize event handler.
+     *
+     * @param FormRender &$render Reference to pnForm render object.
+     *
+     * @return void
+     */
     function initialize(&$render)
     {
         $render->addValidator($this);
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $idHtml = $this->getIdHtml();
@@ -308,6 +357,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         return $result;
     }
 
+    /**
+     * Decode event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return void
+     */
     function decode(&$render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
@@ -325,6 +381,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         }
     }
 
+    /**
+     * Validates the input.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function validate(&$render)
     {
         $this->clearValidation($render);
@@ -338,6 +401,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         }
     }
 
+    /**
+     * Sets an error message.
+     * 
+     * @param string $msg Error message.
+     * 
+     * @return void
+     */
     function setError($msg)
     {
         $this->isValid = false;
@@ -345,6 +415,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         $this->toolTip = $msg;
     }
 
+    /**
+     * Clears the validation data.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function clearValidation(&$render)
     {
         $this->isValid = true;
@@ -352,8 +429,17 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         $this->toolTip = null;
     }
 
-    // Called by the render when doing $render->getValues()
-    // Uses the group parameter to decide where to store data.
+    /**
+     * Saves value in data object.
+     * 
+     * Called by the render when doing $render->getValues()
+     * Uses the group parameter to decide where to store data.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$data   Data object.
+     * 
+     * @return void
+     */
     function saveValue(&$render, &$data)
     {
         if ($this->dataBased) {
@@ -370,14 +456,32 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         }
     }
 
-    // Override this function in inherited plugins if other format is needed
+    /**
+     * Parses a value.
+     * 
+     * Override this function in inherited plugins if other format is needed.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $text    Text.
+     * 
+     * @return string Parsed Text.
+     */
     function parseValue(&$render, $text)
     {
         return $text;
     }
 
-    // Called internally by the plugin itself to load values from the render.
-    // Can also by called when some one is calling the render object's pnFormSetValues
+    /**
+     * Load values.
+     * 
+     * Called internally by the plugin itself to load values from the render.
+     * Can also by called when some one is calling the render object's pnFormSetValues.
+     * 
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       &$values Values to load.
+     * 
+     * @return void
+     */
     function loadValue(&$render, &$values)
     {
         if ($this->dataBased) {
@@ -401,7 +505,16 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         }
     }
 
-    // Override this function in inherited plugins if other format is needed
+    /**
+     * Format the value to specific format.
+     * 
+     * Override this function in inherited plugins if other format is needed.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * @param string      $value   The value to format.
+     * 
+     * @return string Formatted value.
+     */
     function formatValue(&$render, $value)
     {
         return $value;

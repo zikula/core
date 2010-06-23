@@ -96,7 +96,7 @@
 class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 {
     /**
-     * Selected value
+     * Selected value.
      *
      * You can assign to this in your templates like:
      * <code>
@@ -106,12 +106,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * and {@link pnFormDropdownList::getSelectedValue()}.
      *
      * Selected value is an array of values if you have set selectionMode=multiple.
+     * 
      * @var mixed
      */
     public $selectedValue;
 
     /**
-     * Selected item index
+     * Selected item index.
      *
      * You can assign to this in your templates like:
      * <code>
@@ -121,71 +122,99 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * and {@link pnFormDropdownList::getSelectedIndex()}.
      *
      * Select index is not valid when selectionMode=multiple.
-     * @var int Zero based index
+     * 
+     * @var integer Zero based index
      */
     public $selectedIndex;
 
     /**
-     * Enable or disable auto postback
+     * Enable or disable auto postback.
      *
      * Auto postback means "generate a server side event when selected index changes".
      * If enabled then the event handler named in $onSelectedIndexChanged will be fired
      * in the main form event handler.
-     * @var bool
+     *
+     * @var boolean
      */
     public $autoPostBack;
 
     /**
-     * Enable or disable mandatory asterisk
-     * @var bool
+     * Enable or disable mandatory asterisk.
+     * 
+     * @var boolean
      */
     public $mandatorysym;
 
     /**
-     * Selection mode
+     * Selection mode.
      *
      * Sets selection mode to either single item selection (standard dropdown) or
      * multiple item selection.
+     * 
      * @var string Possible values are 'single' and 'multiple'
      */
     public $selectionMode = 'single';
 
     /**
-     * Size of dropdown
+     * Size of dropdown.
      *
      * This corresponds to the "size" attribute of the HTML <select> element.
-     * @var int
+     * 
+     * @var integer
      */
     public $size = null;
 
     /**
-     * Enable saving of multiple selected values as a colon delimited string
+     * Enable saving of multiple selected values as a colon delimited string.
      *
      * Enable this to save the selected values as a single string instead of
      * an array of selected values. The result is a colon separated string
      * like ":10:20:30".
-     * @var bool
+     * 
+     * @var boolean
      */
     public $saveAsString;
 
     /**
-     * Name of selected index changed method
+     * Name of selected index changed method.
      *
      * @var string Default is "handleSelectedIndexChanged"
      */
     public $onSelectedIndexChanged = 'handleSelectedIndexChanged';
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, $params)
     {
         parent::create($render, $params);
         $this->selectedIndex = -1;
     }
 
+    /**
+     * Load event handler.
+     *
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @return void
+     */
     function load(&$render, &$params)
     {
         parent::load($render, $params);
@@ -201,6 +230,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $idHtml = $this->getIdHtml();
@@ -280,6 +316,14 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         return $result;
     }
 
+    /**
+     * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
+     * 
+     * @param Form_Render &$render       Reference to Form render object.
+     * @param string      $eventArgument The event argument.
+     * 
+     * @return void
+     */
     function raisePostBackEvent(&$render, $eventArgument)
     {
         $args = array(
@@ -290,6 +334,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
     }
 
+    /**
+     * Decode event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return void
+     */
     function decode(&$render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
@@ -316,6 +367,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
     }
 
+    /**
+     * Validates the input.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function validate(&$render)
     {
         $this->clearValidation($render);
@@ -327,6 +385,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
     }
 
+    /**
+     * Set the selected value.
+     * 
+     * @param mixed $value Selected value.
+     *
+     * @return void
+     */
     function setSelectedValue($value)
     {
         if ($this->selectionMode == 'single') {
@@ -366,6 +431,11 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
     }
 
+    /**
+     * Get the selected value.
+     * 
+     * @return mixed The selected value.
+     */
     function getSelectedValue()
     {
         if ($this->saveAsString) {
@@ -379,6 +449,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         return $this->selectedValue;
     }
 
+    /**
+     * Set the selected item by index.
+     * 
+     * @param int $index Selected index.
+     *
+     * @return void
+     */
     function setSelectedIndex($index)
     {
         if ($index >= 0 && $index < count($this->items)) {
@@ -387,6 +464,11 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
     }
 
+    /**
+     * Get the selected index.
+     * 
+     * @return integer The selected index.
+     */
     function getSelectedIndex()
     {
         return $this->selectedIndex;

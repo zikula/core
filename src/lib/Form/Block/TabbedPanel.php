@@ -21,40 +21,64 @@
 class Form_Block_TabbedPanel extends Form_Plugin
 {
     /**
-     * Panel title
+     * Panel title.
+     * 
      * @var string
      */
     public $title;
 
     /**
-     * Panel selected status
-     * @internal
-     * @var bool
+     * Panel selected status.
+     * 
+     * @var boolean
      */
     public $selected;
 
     /**
-     * ID of parent panel set (don't touch)
-     * @internal
+     * ID of parent panel set (don't touch).
+     * 
+     * @var string
      */
     public $panelSetId;
 
     /**
-     * Panel index (don't touch)
-     * @internal
+     * Panel index (don't touch).
+     * 
+     * @var string
      */
     public $index;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
         $this->selected = false;
     }
 
+    /**
+     * RenderBegin event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return string The rendered output.
+     */
     function renderBegin(&$render)
     {
         // Locate parent panelset and register with it
@@ -73,6 +97,13 @@ class Form_Block_TabbedPanel extends Form_Plugin
         return $html;
     }
 
+    /**
+     * RenderEnd event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return string The rendered output.
+     */
     function renderEnd(&$render)
     {
         $html = "</div>\n";

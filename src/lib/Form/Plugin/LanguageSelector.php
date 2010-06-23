@@ -23,26 +23,40 @@
 class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
 {
     /**
-     * Enable or disable use of installed languages only
+     * Enable or disable use of installed languages only.
      *
      * Normally you can only choose one of the installed languages with the language selector,
      * but by setting onlyInstalledLanguages to false you can get a list of all possible language.
-     * @var bool
+     * 
+     * @var boolean
      */
     protected $onlyInstalledLanguages = true;
 
     /**
-     * Add an option 'All' on top of the language list
+     * Add an option 'All' on top of the language list.
      *
-     * @var bool
+     * @var boolean
      */
     protected $addAllOption = true;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Load event handler.
+     *
+     * @param Form_Render &$render Reference to pnForm render object.
+     * @param array       $params  Parameters passed from the Smarty plugin function.
+     * 
+     * @return void
+     */
     function load(&$render, $params)
     {
         if ($this->mandatory)

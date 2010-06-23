@@ -17,22 +17,33 @@
  * Context menu separator
  *
  * This plugin represents a menu item.
- *
- * @see Form_Plugin_ContextMenu
+ * See Form_Plugin_ContextMenu.
  */
 class Form_Plugin_ContextMenu_Separator extends Form_Plugin
 {
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $contextMenu =& $this->getParentContextMenu();
 
         if (!$contextMenu) {
-            return;
+            return '';
         }
 
         // Avoid creating menu multiple times if included in a repeated template
@@ -43,7 +54,12 @@ class Form_Plugin_ContextMenu_Separator extends Form_Plugin
         return "<li class=\"separator\">&nbsp;</li>";
     }
 
-    function & getParentContextMenu()
+    /**
+     * Get the parent content menu.
+     * 
+     * @return Form_Block_ContextMenu
+     */
+    function &getParentContextMenu()
     {
         // Locate parent context menu
         $contextMenu = &$this->parentPlugin;

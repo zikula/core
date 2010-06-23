@@ -13,7 +13,16 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Context menu reference
+ *
+ * This plugin creates a context menu reference.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
+ */
 function smarty_function_formcontextmenureference($params, &$render)
 {
     $output = $render->registerPlugin('Form_Plugin_ContextMenu_Reference', $params);

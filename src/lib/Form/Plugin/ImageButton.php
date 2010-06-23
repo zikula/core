@@ -14,7 +14,8 @@
  */
 
 /**
- * Image button
+ * Image button.
+ * 
  * This button works like a normal {@link pnFormButton} with the exception
  * that it displays a clickable image instead of a text button. It further
  * more returns the X and Y coordinate of the click position in the image.
@@ -28,17 +29,31 @@
 class Form_Plugin_ImageButton extends Form_Plugin_Button
 {
     /**
-     * Image URL
+     * Image URL.
+     * 
      * The URL pointing to the image for the button.
+     * 
      * @var string
      */
     public $imageUrl;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__; // FIXME: may be found in smarty's data???
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $idHtml = $this->getIdHtml();
@@ -61,6 +76,13 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
         return $result;
     }
 
+    /**
+     * Decode event handler for actions that generate a postback event.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return boolean
+     */
     function decodePostBackEvent(&$render)
     {
         $fullNameX = $this->id . '_' . $this->commandName . '_x';
@@ -70,12 +92,13 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
             $args = array(
                 'commandName' => $this->commandName,
                 'commandArgument' => $this->commandArgument,
-                'posX' => (int) $_POST[$fullNameX],
-                'posY' => (int) $_POST[$fullNameY]);
-            if (!empty($this->onCommand))
+                'posX' => (int)$_POST[$fullNameX],
+                'posY' => (int)$_POST[$fullNameY]);
+            if (!empty($this->onCommand)) {
                 if ($render->raiseEvent($this->onCommand, $args) === false) {
                     return false;
                 }
+            }
         }
 
         return true;

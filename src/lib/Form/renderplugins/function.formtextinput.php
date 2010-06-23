@@ -26,6 +26,11 @@
  *
  * The pnFormTextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
  * {@link pnFormStyledPlugin} for more info.
+ * 
+ * @param array       $params  Parameters passed in the block tag.
+ * @param Form_Render &$render Reference to Form render object.
+ * 
+ * @return string The rendered output.
  */
 function smarty_function_formtextinput($params, &$render)
 {

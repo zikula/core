@@ -14,7 +14,8 @@
  */
 
 /**
- * Web form label
+ * Web form label.
+ * 
  * Use this to create labels for your input fields in a web form. Example:
  * <code>
  * <!--[formlabel text="Title" for="title"]-->:
@@ -28,44 +29,70 @@
 class Form_Plugin_Label extends Form_StyledPlugin
 {
     /**
-     * Text to show as label
+     * Text to show as label.
+     * 
      * @var string
      */
     public $text;
 
     /**
-     * Allow HTML in label? 1=yes, otherwise no
-     * @var int
+     * Allow HTML in label? 1=yes, otherwise no.
+     * 
+     * @var integer
      */
     public $html;
 
     /**
-     * Labelled plugin's ID
+     * Labelled plugin's ID.
+     * 
      * @var string
      */
     public $for;
 
     /**
-     * CSS class to use
+     * CSS class to use.
+     * 
      * @var string
      */
     public $cssClass;
 
     /**
-     * Enable or disable the mandatory asterisk
-     * @var bool
+     * Enable or disable the mandatory asterisk.
+     * 
+     * @var boolean
      */
     public $mandatorysym;
 
+    /**
+     * Get filename of this file.
+     * 
+     * @return string
+     */
     function getFilename()
     {
         return __FILE__;
     }
 
+    /**
+     * Create event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * 
+     * @see    Form_Plugin
+     * @return void
+     */
     function create(&$render, &$params)
     {
     }
 
+    /**
+     * Render event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return string The rendered output
+     */
     function render(&$render)
     {
         $idHtml = $this->getIdHtml();
@@ -90,6 +117,14 @@ class Form_Plugin_Label extends Form_StyledPlugin
         return $result;
     }
 
+    
+    /**
+     * PostRender event handler.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
     function postRender(&$render)
     {
         $plugin = & $render->getPluginById($this->for);
