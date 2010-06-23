@@ -132,7 +132,7 @@ class Theme_Installer extends Zikula_Installer
                 }
 
             case '3.4':
-                if (!DBUtil::changeTable('Themes')) {
+                if (!DBUtil::changeTable('themes')) {
                     return '3.4';
                 }
 

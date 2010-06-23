@@ -14,7 +14,7 @@
 
 
 /**
- * Populate pntables array for modules module.
+ * Populate tables array for modules module.
  *
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.
