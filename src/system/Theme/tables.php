@@ -25,16 +25,10 @@
 function theme_tables()
 {
     // Initialise table array
-    $pntable = array();
+    $dbtables = array();
 
-    $prefix = System::getVar('prefix');
-
-    // note: we can't share the themes table since a module function can be overriden in the theme
-    // so ModUtil::funcExec gets the current active theme. This needs the theme table info so we've a
-    // catch 22....
-    $themes = $prefix . '_themes';
-    $pntable['themes'] = $themes;
-    $pntable['themes_column'] = array ('id'             => 'pn_id',
+    $dbtables['themes'] = DBUtil::getLimitedTablename('themes');
+    $dbtables['themes_column'] = array ('id'             => 'pn_id',
                                        'name'           => 'pn_name',
                                        'type'           => 'pn_type',
                                        'displayname'    => 'pn_displayname',
@@ -55,7 +49,7 @@ function theme_tables()
                                        'license'        => 'pn_license',
                                        'xhtml'          => 'pn_xhtml');
 
-    $pntable['themes_column_def'] = array('id'          => "I PRIMARY AUTO",
+    $dbtables['themes_column_def'] = array('id'          => "I PRIMARY AUTO",
                                           'name'        => "C(64) NOTNULL DEFAULT ''",
                                           'type'        => "I1 NOTNULL DEFAULT 0",
                                           'displayname' => "C(64) NOTNULL DEFAULT ''",
@@ -76,18 +70,5 @@ function theme_tables()
                                           'license'     => "C(255) NOTNULL DEFAULT ''",
                                           'xhtml'       => "I1 NOTNULL DEFAULT 1");
 
-    // legacy tables for upgrade
-    // like the themes table these cannot defined using DBUtil::getLimitedTableName
-    $pntable['theme_config'] = $prefix . '_theme_config';
-    $pntable['theme_layout'] = $prefix . '_theme_layout';
-    $pntable['theme_skins'] = $prefix . '_theme_skins';
-    $pntable['theme_palette'] = $prefix . '_theme_palette';
-    $pntable['theme_zones'] = $prefix . '_theme_zones';
-    $pntable['theme_cache'] = $prefix . '_theme_cache';
-    $pntable['theme_blcontrol'] = $prefix . '_theme_blcontrol';
-    $pntable['theme_addons'] = $prefix . '_theme_addons';
-    $pntable['theme_tplfile'] = $prefix . '_theme_tplfile';
-    $pntable['theme_tplsource'] = $prefix . '_theme_tplsource';
-
-    return $pntable;
+    return $dbtables;
 }
