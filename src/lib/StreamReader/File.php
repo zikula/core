@@ -11,16 +11,37 @@
  */
 
 /**
- * File reader with seek capability
- * reads file as required
+ * File reader with seek capability.
  *
+ * Reads file as required.
  */
 class StreamReader_File extends StreamReader_Abstract
 {
+    /**
+     * Position.
+     *
+     * @var integer
+     */
     private $_pos;
+
+    /**
+     *
+     * @var <type>
+     */
     private $_fd;
+
+    /**
+     * Length.
+     *
+     * @var integer
+     */
     private $_length;
 
+    /**
+     * Constructor.
+     *
+     * @param string $filename Filename.
+     */
     public function __construct($filename)
     {
         if (file_exists($filename)) {
@@ -36,6 +57,9 @@ class StreamReader_File extends StreamReader_Abstract
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function read($bytes)
     {
         if ($bytes) {
@@ -56,6 +80,9 @@ class StreamReader_File extends StreamReader_Abstract
             return '';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function seekto($pos)
     {
         fseek($this->_fd, $pos);
@@ -63,16 +90,25 @@ class StreamReader_File extends StreamReader_Abstract
         return $this->_pos;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function currentpos()
     {
         return $this->_pos;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function length()
     {
         return $this->_length;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function close()
     {
         fclose($this->_fd);

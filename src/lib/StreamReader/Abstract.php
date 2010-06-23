@@ -1,6 +1,6 @@
 <?php
 /**
- * Zikula Application Framework
+ * Zikula Application Framework.
  *
  * @Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
  * @copyright (c) 2009, Zikula Development Team
@@ -11,43 +11,75 @@
  */
 
  /**
- * StreamReader Base
+ * StreamReader Base.
  */
 abstract class StreamReader_Abstract
 {
+    /**
+     * Error.
+     *
+     * @var string
+     */
     private $error;
 
+    /**
+     * Constructor.
+     */
     public function __construct() {}
 
-    // should return a string [perhaps return array of bytes?]
-    public function read($bytes)
-    {
-        return false;
-    }
+    /**
+     * Read.
+     *
+     * @param string $bytes Bytes.
+     *
+     * @return string Of bytes.
+     */
+    abstract public function read($bytes);
 
-    // should return new position
-    public function seekto($position)
-    {
-        return false;
-    }
+    /**
+     * Seek to.
+     *
+     * Should return new position
+     *
+     * @param integer $position Position.
+     *
+     * @return integer Position.
+     */
+    abstract public function seekto($position);
 
-    // returns current position
-    public function currentpos()
-    {
-        return false;
-    }
+    /**
+     * Return the current position.
+     *
+     * @return integer
+     */
+    abstract public function currentpos();
 
-    // returns length of entire stream (limit for seekto()s)
-    public function length()
-    {
-        return false;
-    }
+    /**
+     * Length.
+     *
+     * Returns length of entire stream (limit for seekto()s)
+     *
+     * @return integer
+     */
+    abstract public function length();
 
+    /**
+     * Set error property.
+     *
+     * @param string $error Error.
+     *
+     * @return void
+     */
     final protected function setError($error)
     {
         $this->error = $error;
     }
 
+    /**
+     * Get error.
+     *
+     * @return string
+     */
     final public function getError()
     {
         return $this->error;

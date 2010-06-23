@@ -11,21 +11,40 @@
  */
 
 /**
- * String reader
- * reads buffer as stream
+ * String reader.
  *
+ * Reads buffer as stream.
  */
 class StreamReader_String extends StreamReader_Abstract
 {
+    /**
+     * Position.
+     *
+     * @var integer
+     */
     private $_pos;
+
+    /**
+     * Stream.
+     *
+     * @var string
+     */
     private $_stream;
 
+    /**
+     * Constructor.
+     *
+     * @param string $str Default empty.
+     */
     public function __construct($str = '')
     {
         $this->_stream = $str;
         $this->_pos = 0;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function read($bytes)
     {
         $data = substr($this->_stream, $this->_pos, $bytes);
@@ -36,6 +55,9 @@ class StreamReader_String extends StreamReader_Abstract
         return $data;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function seekto($pos)
     {
         $this->_pos = $pos;
@@ -44,19 +66,27 @@ class StreamReader_String extends StreamReader_Abstract
         return $this->_pos;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function currentpos()
     {
         return $this->_pos;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function length()
     {
         return strlen($this->_stream);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     final public function setStream($stream)
     {
         $this->_stream = $stream;
     }
-
 }

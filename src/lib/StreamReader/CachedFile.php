@@ -1,6 +1,6 @@
 <?php
 /**
- * Zikula Application Framework
+ * Zikula Application Framework.
  *
  * @Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
  * @copyright (c) 2009, Zikula Development Team
@@ -11,12 +11,17 @@
  */
 
 /**
- * File reader with seek ability
- * Reads whole file at once
+ * File reader with seek ability.
  *
+ * Reads whole file at once.
  */
 class StreamReader_CachedFile extends StreamReader_String
 {
+    /**
+     * Constructor.
+     * 
+     * @param string $filename Filename.
+     */
     public function __construct($filename)
     {
         if (is_readable($filename)) {
