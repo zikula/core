@@ -58,7 +58,7 @@ class Zikula_ServiceManager_Service
      * @param Definition $definition Optional instance of Definition class.
      * @param boolean    $shared     True if the service will be single instance only.
      */
-    public function __construct($id, Definition $definition = null, $shared = true)
+    public function __construct($id, Zikula_ServiceManager_Definition $definition = null, $shared = true)
     {
         $this->id = $id;
         $this->definition = $definition;
