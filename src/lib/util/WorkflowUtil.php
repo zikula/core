@@ -181,10 +181,6 @@ class WorkflowUtil
             $module = ModUtil::getName();
         }
 
-        if (!ModUtil::dbInfoLoad('Settings')) {
-            return false;
-        }
-
         // this is a cheat to delete all items in table with value $module
         return (bool) DBUtil::deleteObjectByID('workflows', $module, 'module');
     }
@@ -339,16 +335,13 @@ class WorkflowUtil
         }
 
         // get workflow data from DB
-        if (!ModUtil::dbInfoLoad('Settings')) {
-            return false;
-        }
-
         $pntables = System::dbGetTables();
         $workflows_column = $pntables['workflows_column'];
         $where = "WHERE $workflows_column[module]='" . DataUtil::formatForStore($module) . "'
                     AND $workflows_column[obj_table]='" . DataUtil::formatForStore($dbTable) . "'
                     AND $workflows_column[obj_idcolumn]='" . DataUtil::formatForStore($idcolumn) . "'
                     AND $workflows_column[obj_id]='" . DataUtil::formatForStore($obj[$idcolumn]) . "'";
+
         $workflow = DBUtil::selectObject('workflows', $where);
 
         if (!$workflow) {
