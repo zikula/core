@@ -194,7 +194,7 @@ Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
     var objgroup = $(idgroup);
     var objcont = $(idcontainer);
 
-    check_state = objgroup.select('input[type=radio][value=1]').pluck('checked').any();
+    check_state = objgroup.select('input[type=radio][value="1"]').pluck('checked').any();
 
     if (check_state == state) {
         if (objcont.getStyle('display') == 'none') {
