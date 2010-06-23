@@ -154,7 +154,6 @@ class Settings_Installer extends Zikula_Installer
                 $name = $tables['modules_column']['name'];
                 $sql = "DELETE FROM $modulesTable WHERE $name = 'ObjectData' OR $name = 'Workflow'";
                 DBUtil::executeSQL($sql);
-                DBUtil::createTable('workflows');
             case '2.9.3':
             // future upgrade routines
         }
