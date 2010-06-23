@@ -2,8 +2,9 @@
 /**
  * Zikula Application Framework.
  *
- * @Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
- * @copyright (c) 2009, Zikula Development Team
+ * Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
+ * Copyright (c) 2009, Zikula Development Team.
+ * 
  * @link http://www.zikula.org
  * @license GNU/GPL version 2 (or at your option, any later version).
  *
@@ -11,8 +12,8 @@
  */
 
  /**
- * StreamReader Base.
- */
+  * StreamReader Base.
+  */
 abstract class StreamReader_Abstract
 {
     /**
