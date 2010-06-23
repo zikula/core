@@ -113,6 +113,13 @@ class System
         }
     }
 
+    /**
+     * Fake install running check
+     * 
+     * This is a fake function
+     *
+     * @return boolean
+     */
     public function isInstalling()
     {
         return (bool)defined('_ZINSTALLVER');
@@ -122,7 +129,7 @@ class System
 /**
  * Class SecurityUtil fake.
  *
- * This is a  fake SecurityUtil class
+ * This is a fake SecurityUtil class
  */
 class SecurityUtil
 {
@@ -132,7 +139,7 @@ class SecurityUtil
      *
      * This is a fake function.
      *
-     * @return return true.
+     * @return boolean true
      */
     function checkPermission()
     {
