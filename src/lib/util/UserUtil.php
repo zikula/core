@@ -61,13 +61,14 @@ class UserUtil
     const EXPIRED = '1901-12-13 20:45:52';
 
     /**
-     * Return a user object
+     * Return a user object.
      *
-     * @deprecated        to be removed in 2.0.0
-     * @see               self::getVars()
-     * @param uid         The userID of the user to retrieve
-     * @param getVars     obsolete, we also return the attributes
+     * @param integer $uid     The userID of the user to retrieve.
+     * @param boolean $getVars Obsolete, we also return the attributes.
      *
+     * @deprecated to be removed in 2.0.0
+     * @see    self::getVars()
+     * 
      * @return The resulting user object
      */
     public static function getPNUser($uid, $getVars = false)
@@ -76,28 +77,29 @@ class UserUtil
     }
 
     /**
-     * Return a field from a user object
+     * Return a field from a user object.
      *
-     * @deprecated       to be removed in 2.0.0?
-     * @see               self::getVars()
-     * @param id         The userID of the user to retrieve
-     * @param field      The field from the user object to get
+     * @param integer $id    The userID of the user to retrieve.
+     * @param string  $field The field from the user object to get.
+     *
+     * @deprecated to be removed in 2.0.0?
+     * @see    self::getVars()
      *
      * @return The requested field
      */
     public static function getPNUserField($id, $field)
     {
-        return UserUtil::getVar($field, $id);
+        return self::getVar($field, $id);
     }
 
     /**
-     * Return a hash structure mapping uid to username
+     * Return a hash structure mapping uid to username.
      *
-     * @param where         The where clause to use (optional)
-     * @param orderBy       The order by clause to use (optional)
-     * @param limitOffset   The select-limit offset (optional) (default=-1)
-     * @param limitNumRows  The number of rows to fetch (optional) (default=-1)
-     * @param assocKey      The associative key to apply (optional) (default='gid')
+     * @param string  $where        The where clause to use (optional).
+     * @param string  $orderBy      The order by clause to use (optional).
+     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
+     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
      *
      * @return An array mapping uid to username
      */
@@ -107,9 +109,9 @@ class UserUtil
     }
 
     /**
-     * Return a group object
+     * Return a group object.
      *
-     * @param gid         The groupID to retrieve
+     * @param integer $gid The groupID to retrieve.
      *
      * @return The resulting group object
      */
@@ -119,13 +121,13 @@ class UserUtil
     }
 
     /**
-     * Return a hash structure mapping gid to groupname
+     * Return a hash structure mapping gid to groupname.
      *
-     * @param where          The where clause to use (optional) (default='')
-     * @param orderBy        The order by clause to use (optional) (default='')
-     * @param limitOffset    The select-limit offset (optional) (default=-1)
-     * @param limitNumRows   The number of rows to fetch (optional) (default=-1)
-     * @param assocKey       The associative key to apply (optional) (default='gid')
+     * @param string  $where        The where clause to use (optional) (default='').
+     * @param string  $orderBy      The order by clause to use (optional) (default='').
+     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
+     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
      *
      * @return An array mapping gid to groupname
      */
@@ -135,11 +137,11 @@ class UserUtil
     }
 
     /**
-     * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause
+     * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
      *
-     * @param where       The where clause to use (optional)
-     * @param orderBy     The order by clause to use (optional)
-     * @param separator   The field separator to use (default=",") (optional)
+     * @param string $where     The where clause to use (optional).
+     * @param string $orderBy   The order by clause to use (optional).
+     * @param string $separator The field separator to use (default=",") (optional).
      *
      * @return A string list of user ids
      */
@@ -167,11 +169,11 @@ class UserUtil
     }
 
     /**
-     * Return a (string) list of group-ids which can then be used in a SQL 'IN (...)' clause
+     * Return a (string) list of group-ids which can then be used in a SQL 'IN (...)' clause.
      *
-     * @param where       The where clause to use (optional)
-     * @param orderBy     The order by clause to use (optional)
-     * @param separator   The field separator to use (default=",") (optional)
+     * @param string $where     The where clause to use (optional).
+     * @param string $orderBy   The order by clause to use (optional).
+     * @param string $separator The field separator to use (default=",") (optional).
      *
      * @return A string list of group ids
      */
@@ -195,9 +197,9 @@ class UserUtil
     }
 
     /**
-     * Return an array group-ids for the specified user
+     * Return an array group-ids for the specified user.
      *
-     * @param uid         The user ID for which we want the groups
+     * @param integer $uid The user ID for which we want the groups.
      *
      * @return An array of group IDs
      */
@@ -217,17 +219,17 @@ class UserUtil
     }
 
     /**
-     * Return a string list of group-ids for the specified user
+     * Return a string list of group-ids for the specified user.
      *
-     * @param uid         The user ID for which we want the groups
-     * @param separator   The field separator to use (default=",") (optional)
+     * @param integer $uid       The user ID for which we want the groups.
+     * @param string  $separator The field separator to use (default=",") (optional).
      *
      * @return A string list of group ids
      */
     public static function getGroupListForUser($uid = 0, $separator = ",")
     {
         if (!$uid) {
-            $uid = UserUtil::getVar('uid');
+            $uid = self::getVar('uid');
         }
 
         $gidArray = self::getGroupsForUser($uid);
@@ -250,10 +252,9 @@ class UserUtil
     }
 
     /**
-     * Return a string list of user-ids for the specified group
+     * Return a string list of user-ids for the specified group.
      *
-     * @param gid         The group ID for which we want the users
-     * @param separator   The field separator to use (default=",") (optional)
+     * @param integer $gid The group ID for which we want the users.
      *
      * @return an array of user IDs
      */
@@ -269,7 +270,7 @@ class UserUtil
     }
 
     /**
-     * Return the defined dynamic user data fields
+     * Return the defined dynamic user data fields.
      *
      * @return an array of dynamic data field definitions
      */
@@ -287,15 +288,14 @@ class UserUtil
     }
 
     /**
-     * Return a string list of user-ids for the specified group
+     * Return a string list of user-ids for the specified group.
      *
-     * -> no this is not what this functions does, but what does it do?
-     *    It is not used within the core
-     * @deprecated            ??
+     * @param integer $uid            The user ID for which we want the users.
+     * @param string  $assocKey       The associate Key to use.
+     * @param boolean $standardFields Whether or not to also marshall the standard user properties into the DUD array.
      *
-     * @param uid             The user ID for which we want the users
-     * @param assocKey        The associate Key to use
-     * @param standardFields  Whether or not to also marshall the standard user properties into the DUD array
+     * @todo No this is not what this functions does, but what does it do? It is not used within the core
+     * @deprecated ??
      *
      * @return an array of user IDs
      */
@@ -309,13 +309,13 @@ class UserUtil
     }
 
     /**
-     * Return a PN array structure for the PN user group selector
+     * Return a PN array structure for the PN user group selector.
      *
-     * @param defaultValue    The default value of the selector (default=0) (optional)
-     * @param defaultText     The text of the default value (optional)
-     * @param ignore          An array of keys to ignore (optional)
-     * @param includeAll      whether to include an "All" choice (optional)
-     * @param allText         The text to display for the "All" choice (optional)
+     * @param mixed  $defaultValue The default value of the selector (default=0) (optional).
+     * @param string $defaultText  The text of the default value (optional).
+     * @param array  $ignore       An array of keys to ignore (optional).
+     * @param mixed  $includeAll   Whether to include an "All" choice (optional).
+     * @param string $allText      The text to display for the "All" choice (optional).
      *
      * @return The PN array structure for the user group selector
      */
@@ -350,14 +350,14 @@ class UserUtil
     }
 
     /**
-     * Return a PN array strcuture for the PN user dropdown box
+     * Return a PN array strcuture for the PN user dropdown box.
      *
-     * @param defaultValue    The default value of the selector (optional) (default=0)
-     * @param defaultText     The text of the default value (optional) (default='')
-     * @param ignore          An array of keys to ignore (optional) (default=array())
-     * @param includeAll      whether to include an "All" choice (optional) (default=0)
-     * @param allText         The text to display for the "All" choice (optional) (default='')
-     * @param exclude         An SQL IN-LIST string to exclude specified uids
+     * @param miexed $defaultValue The default value of the selector (optional) (default=0).
+     * @param string $defaultText  The text of the default value (optional) (default='').
+     * @param array  $ignore       An array of keys to ignore (optional) (default=array()).
+     * @param miexed $includeAll   Whether to include an "All" choice (optional) (default=0).
+     * @param string $allText      The text to display for the "All" choice (optional) (default='').
+     * @param string $exclude      An SQL IN-LIST string to exclude specified uids.
      *
      * @return The PN array structure for the user group selector
      */
@@ -505,8 +505,8 @@ class UserUtil
                 // The user needs to confirm acceptance of the terms and/or privacy policy.
                 // First, let's see if the administrator is still using that stuff.
                 if (ModUtil::available('legal')
-                    && (ModUtil::getVar('legal', 'termsofuse', false) || ModUtil::getVar('legal', 'privacypolicy', true)))
-                {
+                    && (ModUtil::getVar('legal', 'termsofuse', false) || ModUtil::getVar('legal', 'privacypolicy', true))) {
+                    
                     // Yes, still in use. Let loginScreen deal with it.
                     if ($checkPassword) {
                         // We logged into the custom authmodule above, log out now.
@@ -514,9 +514,9 @@ class UserUtil
                     }
 
                     if ($mustConfirmTOUPP && $mustChangePassword) {
-                        $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
+                        $errorMsg = __('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
                     } elseif ($mustConfirmTOUPP) {
-                        $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms first.');
+                        $errorMsg = __('Your log-in request was not completed because you must agree to our terms first.');
                     }
                     $callbackURL = ModUtil::url('Users','user','loginScreen', array(
                         'confirmtou'    => $mustConfirmTOUPP,
@@ -542,7 +542,7 @@ class UserUtil
                     self::authApi($authModuleName, 'logout', array('uid' => $uid));
                 }
 
-                $errorMsg = $this->__('Your log-in request was not completed because you must change your account\'s password first.');
+                $errorMsg = __('Your log-in request was not completed because you must change your account\'s password first.');
                 $callbackURL = ModUtil::url('Users','user','loginScreen', array(
                     'confirmtou'    => $mustConfirmTOUPP,
                     'changepassword'=> $mustChangePassword,
@@ -567,7 +567,7 @@ class UserUtil
 
         // Storing Last Login date -- store it in UTC! Do not use date() function!
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        if (!UserUtil::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $uid)) {
+        if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $uid)) {
             // show messages but continue
             LogUtil::registerError(__('Error! Could not save the log-in date.'));
         }
@@ -607,7 +607,9 @@ class UserUtil
     }
 
     /**
-     * Log the user in via the REMOTE_USER SERVER property. This routine simply
+     * Log the user in via the REMOTE_USER SERVER property.
+     *
+     * This routine simply
      * checks if the REMOTE_USER exists in the PN environment: if he does a
      * session is created for him, regardless of the password being used.
      *
@@ -626,9 +628,8 @@ class UserUtil
     }
 
     /**
-     * Log the user out
+     * Log the user out.
      *
-     * @public
      * @return bool true if the user successfully logged out, false otherwise
      */
     public static function logout()
@@ -642,7 +643,7 @@ class UserUtil
                     // TODO -- Really? We want to prevent the user from logging out of Zikula if the authmodule logout fails?  Really?
                     $event = new Zikula_Event('user.logout.failed', null, array(
                         'authmodule'    => $authModuleName,
-                        'user'          => UserUtil::getVar('uid'),
+                        'user'          => self::getVar('uid'),
                     ));
                     EventUtil::notify($event);
                     return false;
@@ -651,7 +652,7 @@ class UserUtil
 
             $event = new Zikula_Event('user.logout', null, array(
                 'authmodule'    => $authModuleName,
-                'user'          => UserUtil::getVar('uid'),
+                'user'          => self::getVar('uid'),
             ));
             EventUtil::notify($event);
 
@@ -668,8 +669,8 @@ class UserUtil
     /**
      * Check user password without logging in (or logging in again).
      *
-     * @param string $authModuleName    The name of the authmodule to use for authentication.
-     * @param array  $authinfo          The information needed by the authmodule for authentication, typically a loginid and pass.
+     * @param string $authModuleName The name of the authmodule to use for authentication.
+     * @param array  $authinfo       The information needed by the authmodule for authentication, typically a loginid and pass.
      *
      * @return bool True if the authinfo authenticates with the authmodule; otherwise false.
      */
@@ -684,10 +685,9 @@ class UserUtil
 
 
     /**
-     * is the user logged in?
+     * Is the user logged in?
      *
-     * @public
-     * @returns bool true if the user is logged in, false if they are not
+     * @return bool true if the user is logged in, false if they are not
      */
     public static function isLoggedIn()
     {
@@ -697,7 +697,10 @@ class UserUtil
     /**
      * Get all user variables, maps new style attributes to old style user data.
      *
-     * @param uid $ the user id of the user
+     * @param integer $id      The user id of the user.
+     * @param boolean $force   True to force loading from database and ignore the cache.
+     * @param string  $idfield Field to use as id (possible values: uid, uname or email).
+     *
      * @return array an associative array with all variables for a user
      */
     public static function getVars($id, $force = false, $idfield = '')
@@ -774,11 +777,12 @@ class UserUtil
     }
 
     /**
-     * get a user variable
+     * Get a user variable.
      *
-     * @param name $ the name of the variable
-     * @param uid $ the user to get the variable for
-     * @param default $ the default value to return if the specified variable doesn't exist
+     * @param string  $name    The name of the variable.
+     * @param integer $uid     The user to get the variable for.
+     * @param mixed   $default The default value to return if the specified variable doesn't exist.
+     * 
      * @return string the value of the user variable if successful, null otherwise
      */
     public static function getVar($name, $uid = -1, $default = false)
@@ -816,7 +820,9 @@ class UserUtil
     }
 
     /**
-     * Set a user variable. This can be
+     * Set a user variable.
+     *
+     * This can be
      * - a field in the users table
      * - or an attribute and in this case either a new style attribute or an old style user information.
      *
@@ -831,9 +837,10 @@ class UserUtil
      *
      * This function does not allow you to set uid or uname.
      *
-     * @param name $ the name of the variable
-     * @param value $ the value of the variable
-     * @param uid $ the user to set the variable for
+     * @param string  $name  The name of the variable.
+     * @param mixed   $value The value of the variable.
+     * @param integer $uid   The user to set the variable for.
+     * 
      * @return bool true if the set was successful, false otherwise
      */
     public static function setVar($name, $value, $uid = -1)
@@ -892,18 +899,18 @@ class UserUtil
         if (self::fieldAlias($name)) {
             // this value comes from the users table
             $obj = array('uid' => $uid, $name => $value);
-            $res = (bool) DBUtil::updateObject($obj, 'users', '', 'uid');
+            $res = (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
         } else if (array_key_exists($name, $mappingarray)) {
             LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), 'STRICT');
             // $name is a former DUD /old style user information now stored as an attribute
             $obj = array('uid' => $uid, '__ATTRIBUTES__' => array($mappingarray[$name] => $value));
-            $res = (bool) ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
+            $res = (bool)ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
 
         } else if (!in_array($name, array('uid', 'uname'))) {
             // $name not in the users table and also not found in the mapping array and also not one of the
             // forbidden names, let's make an attribute out of it
             $obj = array('uid' => $uid, '__ATTRIBUTES__' => array($name => $value));
-            $res = (bool) ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
+            $res = (bool)ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
         }
 
         // force loading of attributes from db
@@ -912,7 +919,9 @@ class UserUtil
     }
 
     /**
-     * Get an array of hash algorithms valid for hashing user passwords; either as an array of
+     * Get an array of hash algorithms valid for hashing user passwords.
+     *
+     * Either as an array of
      * algorithm names index by internal integer code, or as an array of internal integer algorithm
      * codes indexed by algorithm name.
      *
@@ -959,7 +968,7 @@ class UserUtil
      *
      * @param string $hashAlgorithmName The name of a hash algorithm suitable for hashing user passwords.
      *
-     * @return int|bool The internal integer code corresponding to the given algorithm name; false if the name is not valid.
+     * @return integer|bool The internal integer code corresponding to the given algorithm name; false if the name is not valid.
      */
     public static function getPasswordHashMethodCode($hashAlgorithmName)
     {
@@ -970,8 +979,8 @@ class UserUtil
 
         if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName)
             || !isset($hashMethodCodesByName[$hashAlgorithmName]) || empty($hashMethodCodesByName[$hashAlgorithmName])
-            || !is_numeric($hashMethodCodesByName[$hashAlgorithmName]))
-        {
+            || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
+            
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmName ('{$hashAlgorithmName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         }
@@ -994,8 +1003,8 @@ class UserUtil
         }
 
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
-            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode]))
-        {
+            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
+
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmCode ('{$hashAlgorithmCode}'), translates to '{$hashMethodNamesByCode[$hashAlgorithmCode]}'.", 'DEBUG');
             return LogUtil::registerArgsError();
         }
@@ -1097,8 +1106,8 @@ class UserUtil
     /**
      * Change the specified user's password to the one provided, defaulting to the current user if a uid is not specified.
      *
-     * @param string    $unhashedPassword   The new password for the current user.
-     * @param int       $uid                The user ID of the user for whom the password should be set; optional; defaults to current user.
+     * @param string $unhashedPassword The new password for the current user.
+     * @param int    $uid              The user ID of the user for whom the password should be set; optional; defaults to current user.
      *
      * @return bool True if the password was successfully saved; otherwise false if the password is empty,
      *                  invalid (too short), or if the password was not successfully saved.
@@ -1136,10 +1145,8 @@ class UserUtil
      * Note that this is not limited only to use for user login passwords, but can be used where ever a human-readable
      * password-like code is needed.
      *
-     * @param string $unhashedPassword  The password-like code entered by the user.
-     * @param string $hashedPassword    The hashed password-like code that the entered password-like code is to be compared to.
-     * @param int    $hashMethodCode    The internal integer identifier of a hashing algorithm permitted for use with password, and
-     *                                      that has been used to hash $hashedPassword.
+     * @param string $unhashedPassword The password-like code entered by the user.
+     * @param string $hashedPassword   The hashed password-like code that the entered password-like code is to be compared to.
      *
      * @return bool True if the $unhashedPassword matches the $hashedPassword with the given hashing method; false if they do not
      *                  match, or if there was an error (such as an empty password or invalid code).
@@ -1168,7 +1175,9 @@ class UserUtil
     }
 
     /**
-     * Delete the contents of a user variable. This can either be
+     * Delete the contents of a user variable.
+     *
+     * This can either be
      * - a variable stored in the users table or
      * - an attribute to the users table, either a new style sttribute or the old style user information
      *
@@ -1181,8 +1190,9 @@ class UserUtil
      * It does not allow the deletion of uid, email, uname, pass (password), as these are mandatory
      * fields in the users table.
      *
-     * @param name $ the name of the variable
-     * @param uid $ the user to delete the variable for
+     * @param string  $name The name of the variable.
+     * @param integer $uid  The user to delete the variable for.
+     * 
      * @return boolen true on success, false on failure
      */
     public static function delVar($name, $uid = -1)
@@ -1232,7 +1242,7 @@ class UserUtil
         if (self::fieldAlias($name)) {
             // this value comes from the users table
             $obj = array('uid' => $uid, $name => '');
-            return (bool) DBUtil::updateObject($obj, 'users', '', 'uid');
+            return (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
         } else if (array_key_exists($name, $mappingarray)) {
             LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), 'STRICT');
             // $name is a former DUD /old style user information now stored as an attribute
@@ -1246,11 +1256,12 @@ class UserUtil
 
         // force loading of attributes from db
         self::getVars($uid, true);
-        return (bool) $res;
+        return (bool)$res;
     }
 
     /**
-     * get the user's theme
+     * Get the user's theme.
+     *
      * This function will return the current theme for the user.
      * Order of theme priority:
      *  - page-specific
@@ -1258,9 +1269,11 @@ class UserUtil
      *  - user
      *  - system
      *
-     * @public
+     * @param boolean $force True to ignore the cache.
+     *
      * @return string the name of the user's theme
-     **/
+     * @throws RuntimeException If this function was unable to calculate theme name.
+     */
     public static function getTheme($force = false)
     {
         static $theme;
@@ -1310,7 +1323,7 @@ class UserUtil
         // User theme
         if (System::getVar('theme_change')) {
             if ((self::isLoggedIn())) {
-                $usertheme = UserUtil::getVar('theme');
+                $usertheme = self::getVar('theme');
             } else {
                 $usertheme = SessionUtil::getVar('theme');
             }
@@ -1342,10 +1355,10 @@ class UserUtil
     }
 
     /**
-     * get the user's language
+     * Get the user's language.
      *
      * @deprecated
-     * @see ZLanaguage::getLanguageCode()
+     * @see    ZLanaguage::getLanguageCode()
      *
      * This function returns the deprecated 3 digit language codes, you need to switch APIs
      *
@@ -1357,9 +1370,8 @@ class UserUtil
     }
 
     /**
-     * get a list of user information
+     * Get a list of user information.
      *
-     * @public
      * @return array array of user arrays
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
@@ -1405,9 +1417,10 @@ class UserUtil
     }
 
     /**
-     * Get the uid of a user from the username
+     * Get the uid of a user from the username.
      *
-     * @param uname $ the username
+     * @param string $uname The username.
+     * 
      * @return mixed userid if found, false if not
      */
     public static function getIdFromName($uname)
@@ -1417,9 +1430,10 @@ class UserUtil
     }
 
     /**
-     * Get the uid of a user from the email (case for unique emails)
+     * Get the uid of a user from the email (case for unique emails).
      *
-     * @param email $ the user email
+     * @param string $email The user email.
+     * 
      * @return mixed userid if found, false if not
      */
     public static function getIdFromEmail($email)
@@ -1429,11 +1443,12 @@ class UserUtil
     }
 
     /**
-     * Checks the alias and returns if we save the data in the
-     * Profile module's user_data table or the users table.
+     * Checks the alias and returns if we save the data in the Profile module's user_data table or the users table.
+     *
      * This should be removed if we ever go fully dynamic
      *
-     * @param label $ the alias of the field to check
+     * @param string $label The alias of the field to check.
+     *
      * @return true if found, false if not, void upon error
      */
     public static function fieldAlias($label)
@@ -1454,11 +1469,12 @@ class UserUtil
     /**
      * Call authmodle's auth api.
      *
-     * @param <type> $authModuleName
-     * @param <type> $method
-     * @param <type> $args
+     * @param string $authModuleName The name of the module.
+     * @param string $method         The specific function to run.
+     * @param array  $args           The arguments to pass to the function.
      *
-     * @return <type>
+     * @return mixed
+     * @throws Exception If the $authModuleName's api does not subclass Zikula_AuthApi.
      */
     public static function authApi($authModuleName, $method, $args)
     {
