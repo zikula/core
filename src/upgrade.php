@@ -26,7 +26,15 @@ define('_Z_MINUPGVER', '1.2.0');
 require_once 'install/modify_config.php';
 $GLOBALS['ZConfig']['System']['multilingual'] = true;
 $GLOBALS['ZConfig']['System']['language_bc'] = false;
-$_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
+
+include 'config/config.php';
+$connection = Doctrine_Manager::connection($GLOBALS['ZConfig']['DBInfo']['default']['dsn'], 'upgrader');
+$tables = upgrade_getTables($connection);
+
+if (!in_array('users_registration', $tables)) {
+    $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
+}
+
 System::init(System::CORE_STAGES_ALL);
 
 $action = FormUtil::getPassedValue('action', false, 'GETPOST');
@@ -44,7 +52,8 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
     }
 }
 
-switch ($action) {
+switch ($action)
+{
     case 'upgradeinit':
         _upg_upgradeinit();
         break;
@@ -268,7 +277,6 @@ function _upg_upgrademodules($username, $password)
                 echo '<li class="failed">' . DataUtil::formatForDisplay($newmod['name']) . ' ' . __('not upgraded') . '</li>' . "\n";
             }
         }
-
     }
     echo '</ul>' . "\n";
     if ($upgradeCount == 0) {
@@ -357,14 +365,6 @@ function _upg_sanity_check($username, $password)
         $validupgrade = false;
         echo '<h2>' . __('Possible incompatible version found.') . "</h2>\n";
         echo '<p class="z-warningmsg">' . __f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER)) . "</p>\n";
-//    } elseif (!is_writeable('config/config.php')) {
-//        echo '<p class="z-errormsg"><strong>' . __('config/config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
-//        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
-//        $validupgrade = false;
-//    } elseif (file_exists('config/personal_config.php') && !is_writeable('config/config.php')) {
-//        echo '<p class="z-errormsg"><strong>' . __('config/personal_config.php must be writable before this script will run. Please correct this and try again.') . "</strong></p>\n";
-//        echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
-//        $validupgrade = false;
     } elseif (version_compare(PHP_VERSION, '5.3.0', '>=')) {
         if (ini_get('date.timezone') == '') {
             echo '<p class="z-errormsg"><strong>' . __('date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.') . "</strong></p>\n";
@@ -406,4 +406,30 @@ function upgrade_suppressErrors(Zikula_Event $event)
 
     error_reporting(~E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
     $GLOBALS['ZConfig']['System']['development'] = 0;
+}
+
+function upgrade_getCurrentInstalledCoreVersion($connection)
+{
+    $moduleTable = $GLOBALS['ZConfig']['System']['prefix'] . '_module_vars';
+    $stmt = $connection->prepare("SELECT pn_value FROM $moduleTable WHERE pn_modname = '/PNConfig' AND pn_name = 'Version_Num'");
+    if (!$stmt->execute()) {
+        die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
+    }
+
+    $result = $stmt->fetch(PDO::FETCH_NUM);
+    return unserialize($result[0]);
+}
+
+function upgrade_getTables($connection)
+{
+    $tables = $connection->import->listTables();
+    if (!$tables) {
+        die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
+    }
+
+    $prefixLen = strlen($GLOBALS['ZConfig']['System']['prefix'] . '_');
+    foreach ($tables as $key => $value) {
+        $tables[$key] = substr($value, $prefixLen, strlen($value));
+    }
+    return $tables;
 }
