@@ -18,20 +18,23 @@
 class ZL10n
 {
     /**
-     *
-     * @var <type> 
+     * Singleton instance.
+     * 
+     * @var ZL10n 
      */
     private static $instances;
 
     /**
-     *
-     * @var <type>
+     * Translation domain.
+     * 
+     * @var string
      */
     private $translationDomain;
 
     /**
-     *
-     * @param <type> $domain
+     * Constructor.
+     * 
+     * @param string $domain Gettext domain.
      */
     private function __construct($domain=null)
     {
@@ -46,12 +49,13 @@ class ZL10n
     /**
      * One instance per translation domain.
      *
-     * @param $domain
-     * @return instance of ZL10n
+     * @param string $domain Gettext domain.
+     * 
+     * @return ZL10n instance.
      */
     public static function getInstance($domain='null')
     {
-        if(!isset(self::$instances[$domain])) {
+        if (!isset(self::$instances[$domain])) {
             self::$instances[$domain] = new self($domain);
         }
 
@@ -60,6 +64,10 @@ class ZL10n
 
     /**
      * Set the translation domain.
+     * 
+     * @param string $domain Gettext domain.
+     * 
+     * @return void
      */
     protected function setTranslationDomain($domain='null')
     {
@@ -79,7 +87,7 @@ class ZL10n
     /**
      * singular translation for modules.
      *
-     * @param string $msg
+     * @param string $msg Message.
      *
      * @return string
      */
@@ -91,9 +99,10 @@ class ZL10n
     /**
      * Plural translations for modules.
      *
-     * @param singular string $m1
-     * @param plural string $m2
-     * @param count int $n
+     * @param string  $m1 Singular.
+     * @param string  $m2 Plural.
+     * @param integer $n  Count.
+     * 
      * @return string
      */
     public function _n($m1, $m2, $n)
@@ -104,8 +113,8 @@ class ZL10n
     /**
      * Format translations for modules.
      *
-     * @param string $msg
-     * @param string or array $param
+     * @param string       $msg   Message.
+     * @param string|array $param Format parameters.
      *
      * @return string
      */
@@ -117,10 +126,10 @@ class ZL10n
     /**
      * Format pural translations for modules.
      *
-     * @param singular string $m1
-     * @param plural string $m2
-     * @param count int $n
-     * @param string or array $param
+     * @param string       $m1    Singular.
+     * @param string       $m2    Plural.
+     * @param integer      $n     Count.
+     * @param string|array $param Format parameters.
      * 
      * @return string
      */

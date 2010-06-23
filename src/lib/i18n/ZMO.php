@@ -13,8 +13,8 @@
  */
 
 /**
- * Provides a simple gettext replacement that works independently from
- * the system's gettext abilities.
+ * Provides a simple gettext replacement that works independently from the system's gettext abilities.
+ * 
  * It can read MO files and use them for translating strings.
  * The files are passed to gettext_reader as a Stream (see streams.php)
  *
@@ -27,90 +27,109 @@
 class ZMO
 {
     /**
-     *
-     * @var <type>
+     * Public variable that holds error code (0 if no error).
+     * 
+     * @var integer
      */
-    public $error = 0; // public variable that holds error code (0 if no error)
+    public $error = 0;
 
     /**
-     *
-     * @var <type>
+     * Byte order.
+     * 
+     * Possible values:
+     *  0: low endian
+     *  1: big endian.
+     * 
+     * @var integer
      */
-    private $byteorder = 0; // 0: low endian, 1: big endian
+    private $byteorder = 0;
 
     /**
-     *
-     * @var <type>
+     * Stream.
+     * 
+     * @var StreamReader_Abstract
      */
     private $stream = null;
 
     /**
-     *
-     * @var <type>
+     * Short circuit.
+     * 
+     * @var boolean
      */
     private $short_circuit = false;
 
     /**
-     *
-     * @var <type>
+     * Enable cache.
+     * 
+     * @var boolean
      */
     private $enable_cache = false;
 
     /**
-     *
-     * @var <type>
+     * Offset of original table.
+     * 
+     * @var integer
      */
-    private $originals = null; // offset of original table
+    private $originals = null;
 
     /**
-     *
-     * @var <type>
+     * Offset of translation table.
+     * 
+     * @var integer
      */
-    private $translations = null; // offset of translation table
+    private $translations = null;
 
     /**
-     *
-     * @var <type>
+     * Cache header field for plural forms.
+     * 
+     * @var string
      */
-    private $pluralheader = null; // cache header field for plural forms
+    private $pluralheader = null;
 
     /**
-     *
-     * @var <type>
+     * Total string count.
+     * 
+     * @var integer
      */
-    private $total = 0; // total string count
+    private $total = 0;
 
     /**
-     *
-     * @var <type>
+     * Table for original strings (offsets).
+     * 
+     * @var array
      */
-    private $table_originals = null; // table for original strings (offsets)
+    private $table_originals = null;
 
     /**
-     *
-     * @var <type>
+     * Table for translated strings (offsets).
+     * 
+     * @var array
      */
-    private $table_translations = null; // table for translated strings (offsets)
+    private $table_translations = null;
 
     /**
-     *
-     * @var <type>
+     * Cache translations.
+     * 
+     * Original -> translation mapping.
+     * 
+     * @var array
      */
-    private $cache_translations = null; // original -> translation mapping
+    private $cache_translations = null;
 
     /**
-     *
-     * @var <type>
+     * Encoding.
+     * 
+     * @var string
      */
     private $encoding;
 
-    /* Methods */
+    // Methods
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param object Reader the StreamReader object
-     * @param boolean enable_cache Enable or disable caching of strings (default on)
+     * @param StreamReader_Abstract $Reader       The StreamReader object.
+     * @param boolean               $enable_cache Enable or disable caching of strings (default on).
      */
     public function __construct(StreamReader_Abstract $Reader, $enable_cache = true)
     {
@@ -147,8 +166,11 @@ class ZMO
     }
 
     /**
-     *
-     * @param <type> $encoding
+     * Set encoding.
+     * 
+     * @param string $encoding Encoding.
+     * 
+     * @return void
      */
     public function setEncoding($encoding)
     {
@@ -156,9 +178,11 @@ class ZMO
     }
 
     /**
-     *
-     * @param <type> $text
-     * @return <type>
+     * Encodes text.
+     * 
+     * @param string $text Text.
+     * 
+     * @return string
      */
     public function encode($text)
     {
@@ -171,7 +195,7 @@ class ZMO
     }
 
     /**
-     * Reads a 32bit Integer from the Stream
+     * Reads a 32bit Integer from the Stream.
      *
      * @access private
      * @return Integer from the Stream
@@ -188,10 +212,11 @@ class ZMO
     }
 
     /**
-     * Reads an array of Integers from the Stream
+     * Reads an array of Integers from the Stream.
      *
-     * @param int count How many elements should be read
-     * @return Array of Integers
+     * @param integer $count How many elements should be read.
+     * 
+     * @return array Array of Integers.
      */
     public function readintarray($count)
     {
@@ -206,11 +231,13 @@ class ZMO
 
 
     /**
-     * Loads the translation tables from the MO file into the cache
+     * Loads the translation tables from the MO file into the cache.
+     * 
      * If caching is enabled, also loads all strings into a cache
-     * to speed up translation lookups
+     * to speed up translation lookups.
      *
      * @access private
+     * @return void
      */
     private function load_tables()
     {
@@ -218,7 +245,7 @@ class ZMO
             return;
         }
 
-        /* get original and translations tables */
+        // get original and translations tables
         $this->stream->seekto($this->originals);
         $this->table_originals = $this->readintarray($this->total * 2);
         $this->stream->seekto($this->translations);
@@ -226,7 +253,7 @@ class ZMO
 
         if ($this->enable_cache) {
             $this->cache_translations = array();
-            /* read all strings in the cache */
+            // read all strings in the cache
             for ($i = 0; $i < $this->total; $i++) {
                 $this->stream->seekto($this->table_originals[$i * 2 + 2]);
                 $original = $this->stream->read($this->table_originals[$i * 2 + 1]);
@@ -238,11 +265,12 @@ class ZMO
     }
 
     /**
-     * Returns a string from the "originals" table
+     * Returns a string from the "originals" table.
      *
+     * @param integer $num Offset number of original string.
+     * 
      * @access private
-     * @param int num Offset number of original string
-     * @return string Requested string if found, otherwise ''
+     * @return string Requested string if found, otherwise ''.
      */
     private function get_original_string($num)
     {
@@ -253,15 +281,16 @@ class ZMO
         }
         $this->stream->seekto($offset);
         $data = $this->stream->read($length);
-        return (string) $data;
+        return (string)$data;
     }
 
     /**
-     * Returns a string from the "translations" table
+     * Returns a string from the "translations" table.
      *
+     * @param integer $num Offset number of original string.
+     * 
      * @access private
-     * @param int num Offset number of original string
-     * @return string Requested string if found, otherwise ''
+     * @return string Requested string if found, otherwise ''.
      */
     private function get_translation_string($num)
     {
@@ -273,21 +302,22 @@ class ZMO
         $this->stream->seekto($offset);
         $data = $this->stream->read($length);
         $data = $this->encode($data);
-        return (string) $data;
+        return (string)$data;
     }
 
     /**
      * Binary search for string
      *
+     * @param string  $string String.
+     * @param integer $start  Internally used in recursive function.
+     * @param integer $end    Internally used in recursive function.
+     * 
      * @access private
-     * @param string string
-     * @param int start (internally used in recursive function)
-     * @param int end (internally used in recursive function)
-     * @return int string number (offset in originals table)
+     * @return integer String number (offset in originals table).
      */
     private function find_string($string, $start = -1, $end = -1)
     {
-        if (($start == -1) or ($end == -1)) {
+        if (($start == -1) || ($end == -1)) {
             // find_string is called with only one parameter, set start end end
             $start = 0;
             $end = $this->total;
@@ -305,7 +335,7 @@ class ZMO
             return $this->find_string($string, $end, $start);
         } else {
             // Divide table in two parts
-            $half = (int) (($start + $end) / 2);
+            $half = (int)(($start + $end) / 2);
             $cmp = strcmp($string, $this->get_original_string($half));
             if ($cmp == 0) {
                 // string is exactly in the middle => return it
@@ -321,15 +351,16 @@ class ZMO
     }
 
     /**
-     * Translates a string
+     * Translates a string.
      *
+     * @param string $string Strint to be translated.
+     * 
      * @access public
-     * @param string string to be translated
-     * @return string translated string (or original, if not found)
+     * @return string Translated string (or original, if not found).
      */
     public function translate($string)
     {
-        if ($this->short_circuit){
+        if ($this->short_circuit) {
             return $string;
         }
         $this->load_tables();
@@ -353,10 +384,10 @@ class ZMO
     }
 
     /**
-     * Get possible plural forms from MO header
+     * Get possible plural forms from MO header.
      *
      * @access private
-     * @return string plural form header
+     * @return string plural form header.
      */
     private function get_plural_forms()
     {
@@ -384,9 +415,10 @@ class ZMO
     /**
      * Detects which plural form to take
      *
+     * @param integer $n Count.
+     * 
      * @access private
-     * @param n count
-     * @return int array index of the right plural form
+     * @return integer Array index of the right plural form.
      */
     private function select_string($n)
     {
@@ -406,13 +438,14 @@ class ZMO
     }
 
     /**
-     * Plural version of gettext
+     * Plural version of gettext.
      *
+     * @param string $single Single.
+     * @param string $plural Plural.
+     * @param string $number Number.
+     * 
      * @access public
-     * @param string single
-     * @param string plural
-     * @param string number
-     * @return translated plural form
+     * @return string Translated plural form.
      */
     public function ngettext($single, $plural, $number)
     {

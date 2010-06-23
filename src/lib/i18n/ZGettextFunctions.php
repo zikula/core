@@ -12,15 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-if(!defined('LC_MESSAGES')) {
+if (!defined('LC_MESSAGES')) {
     define('LC_MESSAGES', 5);
 }
 
 /**
  * Format _dgettext string.
  *
- * uses sprintf() formatting %s etc, and positional %1$s, %2$s etc.
- * @link http://us.php.net/manual/en/function.sprintf.php
+ * Uses sprintf() formatting %s etc, and positional %1$s, %2$s etc.
+ * {@link http://us.php.net/manual/en/function.sprintf.php
  * %1$s specifies the first occurance in the array of params, %2$s the second
  *
  * Note params must passed either as
@@ -29,6 +29,12 @@ if(!defined('LC_MESSAGES')) {
  * __f('Give me %s with my %s', array(__('some sausages'), __('beer'));
  * __f('%1$s buy me %2$s', array('Drak', __('a beer'));
  *
+ * @param string $msgid  The message.
+ * @param mixed  $params Format parameters or attay of parameters.
+ * @param string $domain Gettext domain.
+ * 
+ * @throws Exception If $domain is an array.
+ * @return string
  */
 function __f($msgid, $params, $domain=null)
 {
@@ -43,8 +49,8 @@ function __f($msgid, $params, $domain=null)
 /**
  * Format _dngettext string.
  *
- * uses sprintf() formatting %s etc, and positional %1$s, %2$s etc.
- * @link http://us.php.net/manual/en/function.sprintf.php
+ * Uses sprintf() formatting %s etc, and positional %1$s, %2$s etc.
+ * {@link: http://us.php.net/manual/en/function.sprintf.php}
  * %1$s specifies the first occurance in the array of params, %2$s the second
  *
  * Note params must passed either as
@@ -52,6 +58,14 @@ function __f($msgid, $params, $domain=null)
  * _fn('apple %s', 'apples %s', __('now'), 4);
  * _fn('apple %s', 'apples %s', $value, 4);
  *
+ * @param string  $sin    Singular form.
+ * @param string  $plu    Plural form.
+ * @param integer $n      Count.
+ * @param mixed   $params Format parameters or attay of parameters.
+ * @param string  $domain Gettext domain.
+ * 
+ * @throws Exception If $domain is an array.
+ * @return string
  */
 function _fn($sin, $plu, $n, $params, $domain=null)
 {
@@ -65,6 +79,12 @@ function _fn($sin, $plu, $n, $params, $domain=null)
 
 /**
  * Alias for gettext.
+ * 
+ * @param string $msgid  The message.
+ * @param string $domain Gettext domain.
+ *
+ * @throws Exception If $domain is an array.
+ * @return string
  */
 function __($msgid, $domain=null)
 {
@@ -75,12 +95,14 @@ function __($msgid, $domain=null)
 }
 
 /**
- * Plural translation
+ * Plural translation.
  *
- * @param string singular  $singular
- * @param string plural $plural
- * @param int count $count
- * @param string domain $domain
+ * @param string  $singular Singular.
+ * @param string  $plural   Plural.
+ * @param integer $count    Count.
+ * @param string  $domain   Gettext domain.
+ * 
+ * @throws Exception If $domain is an array.
  * @return string
  */
 function _n($singular, $plural, $count, $domain=null)
@@ -92,9 +114,10 @@ function _n($singular, $plural, $count, $domain=null)
 }
 
 /**
- * No operation gettext
+ * No operation gettext.
  *
- * @param string $msgid
+ * @param string $msgid The Message.
+ * 
  * @return string
  */
 function no__($msgid)
@@ -104,6 +127,10 @@ function no__($msgid)
 
 /**
  * Lookup a message in the current domain.
+ * 
+ * @param string $msgid The Message.
+ * 
+ * @return string
  */
 function _gettext($msgid)
 {
@@ -112,6 +139,12 @@ function _gettext($msgid)
 
 /**
  * Plural version of gettext.
+ * 
+ * @param string  $single Singular.
+ * @param string  $plural Plural.
+ * @param integer $number Count.
+ * 
+ * @return string
  */
 function _ngettext($single, $plural, $number)
 {
@@ -120,6 +153,11 @@ function _ngettext($single, $plural, $number)
 
 /**
  * Override the current domain.
+ * 
+ * @param string $domain Gettext domain.
+ * @param string $msgid  The message.
+ * 
+ * @return string
  */
 function _dgettext($domain, $msgid)
 {
@@ -127,6 +165,13 @@ function _dgettext($domain, $msgid)
 }
 /**
  * Plural version of dgettext.
+ * 
+ * @param string  $domain Gettext domain.
+ * @param string  $single Singular.
+ * @param string  $plural Plural.
+ * @param integer $number Count.
+ * 
+ * @return string
  */
 function _dngettext($domain, $single, $plural, $number)
 {
@@ -135,6 +180,12 @@ function _dngettext($domain, $single, $plural, $number)
 
 /**
  * Overrides the domain and category for a single lookup.
+ * 
+ * @param string   $domain   Gettext domain.
+ * @param string   $msgid    The message.
+ * @param constant $category LC_CONSTANT.
+ * 
+ * @return string
  */
 function _dcgettext($domain, $msgid, $category)
 {
@@ -143,6 +194,14 @@ function _dcgettext($domain, $msgid, $category)
 
 /**
  * Plural version of dcgettext.
+ * 
+ * @param string   $domain   Gettext domain.
+ * @param string   $single   Singular.
+ * @param string   $plural   Plural.
+ * @param integer  $number   Count.
+ * @param constant $category LC_CONSTANT.
+ * 
+ * @return string
  */
 function _dcngettext($domain, $single, $plural, $number, $category)
 {

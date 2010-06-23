@@ -27,7 +27,7 @@ class ZLanguageBrowser
     /**
      * Constructor.
      *
-     * @param <type> $langList
+     * @param array $langList Available languages.
      */
     public function __construct($langList)
     {
@@ -72,9 +72,9 @@ class ZLanguageBrowser
 
             if (!empty($curLang[1])) {
                 $curLangScore = explode('=', $curLang[1]);
-                $browserLangArray[$curLang[0]] = (float) $curLangScore[1];
+                $browserLangArray[$curLang[0]] = (float)$curLangScore[1];
             } else {
-                $browserLangArray[$curLang[0]] = (float) 1.0;
+                $browserLangArray[$curLang[0]] = (float)1.0;
             }
         }
 

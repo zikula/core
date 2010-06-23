@@ -18,44 +18,51 @@
 class ZI18n
 {
     /**
-     *
-     * @var <type>
+     * Singleton instance.
+     * 
+     * @var ZI18n
      */
     private static $instance;
 
     /**
-     *
-     * @var <type>
+     * Locale.
+     * 
+     * @var array
      */
     public $locale;
 
     /**
-     *
-     * @var <type>
+     * Sign.
+     * 
+     * @var string
      */
     private $sign;
 
     /**
+     * Sign position number.
      *
-     * @var <type>
+     * @var integer.
      */
     private $sign_posn;
 
     /**
-     *
-     * @var <type>
+     * Whether or not to seperate currency symbol and number by space.
+     * 
+     * @var boolean
      */
     private $sep_by_space;
 
     /**
-     *
-     * @var <type>
+     * Whether or not the currency symbol precedes.
+     * 
+     * @var boolean
      */
     private $cs_precedes;
 
     /**
-     *
-     * @param <type> $locale
+     * Constructor.
+     * 
+     * @param string $locale Locale.
      */
     public function __construct($locale)
     {
@@ -63,9 +70,11 @@ class ZI18n
     }
 
     /**
-     *
-     * @param <type> $locale
-     * @return <type>
+     * Get Singleton instance.
+     * 
+     * @param string $locale Locale.
+     * 
+     * @return ZI18n object instance.
      */
     public static function getInstance($locale=null)
     {
@@ -81,7 +90,7 @@ class ZI18n
     /**
      * Transform a given currency into an internal number.
      *
-     * @param $number
+     * @param string $number Number.
      *
      * @return float
      */
@@ -98,7 +107,7 @@ class ZI18n
     /**
      * Transform a number into internal form with . as decimal.
      *
-     * @param $number
+     * @param string $number Number.
      *
      * @return float
      */
@@ -114,9 +123,10 @@ class ZI18n
     /**
      * Format a number for display.
      *
-     * @param $number
-     * @param $decimal_points null=default locale, false=precision, int=precision
-     * @return unknown_type
+     * @param mixed $number         Number.
+     * @param mixed $decimal_points Null=default locale, false=precision, int=precision.
+     * 
+     * @return string
      */
     public function transformNumberDisplay($number, $decimal_points=null)
     {
@@ -155,7 +165,7 @@ class ZI18n
     /**
      * Format a number in monetary terms.
      *
-     * @param $number
+     * @param mixed $number Number.
      *
      * @return integer|string
      */
@@ -193,7 +203,7 @@ class ZI18n
     /**
      * Process the positive or negative sign for a number.
      *
-     * @param $number
+     * @param mixed $number Number.
      *
      * @return void
      */

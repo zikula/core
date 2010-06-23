@@ -16,17 +16,52 @@
  */
 class ZGettext
 {
+    /**
+     * Singleton instance.
+     * 
+     * @var ZGettext
+     * @static
+     */
     private static $instance;
 
+    /**
+     * Locale.
+     * 
+     * @var string
+     */
     public $locale = 'en';
+    
+    /**
+     * Locale category.
+     * 
+     * @var constant
+     */
     public $category = LC_MESSAGES;
+    
+    /**
+     * LC Categories registry.
+     * 
+     * @var array
+     */
     public $LC_CATEGORIES;
+    
+    /**
+     * Default domain.
+     * 
+     * @var string
+     */
     public $defaultDomain;
+    
+    /**
+     * Text domains.
+     * 
+     * @var array
+     */
     public $textDomains = array();
 
 
     /**
-     * private construct for singleton
+     * Private construct for singleton.
      */
     private function __construct()
     {
@@ -34,7 +69,9 @@ class ZGettext
     }
 
     /**
-     * getInstance of ZL10n singleton
+     * GetInstance of ZL10n singleton.
+     * 
+     * @return ZGettext Instance.
      */
     public static function getInstance()
     {
@@ -48,10 +85,10 @@ class ZGettext
     /**
      * setLocale
      *
-     * @param $category
-     * @param $locale
+     * @param constant $category LC_CONSTANT.
+     * @param string   $locale   Locale.
      *
-     * @return $locale
+     * @return string $locale.
      */
     public function setLocale($category=LC_MESSAGES, $locale)
     {
@@ -62,7 +99,9 @@ class ZGettext
 
 
     /**
-     * getLocale
+     * getLocale.
+     * 
+     * @return string
      */
     public function getLocale()
     {
@@ -71,7 +110,9 @@ class ZGettext
 
 
     /**
-     * get LC_CATEGORY
+     * get LC_CATEGORY.
+     * 
+     * @return constant
      */
     public function getCategory()
     {
@@ -80,8 +121,9 @@ class ZGettext
 
 
     /**
-     * Translate LC_CONSTANTS to internal form
-     * @param $lc
+     * Translate LC_CONSTANTS to internal form.
+     * 
+     * @param constant $lc LC_CONSTANT.
      *
      * @return string LC_CONSTANT
      */
@@ -92,10 +134,12 @@ class ZGettext
 
 
     /**
-     * bind text domain
+     * Bind text domain.
      *
-     * @param $domain
-     * @param $path
+     * @param string $domain Text domain.
+     * @param string $path   Domain path.
+     * 
+     * @return void
      */
     public function bindTextDomain($domain, $path)
     {
@@ -105,10 +149,12 @@ class ZGettext
     }
 
     /**
-     * bindTextDomainCodeset
+     * Bind text domain codeset.
      *
-     * @param unknown_type $domain
-     * @param unknown_type $codeset
+     * @param string $domain  Domain.
+     * @param string $codeset Codeset.
+     * 
+     * @return void
      */
     public function bindTextDomainCodeset($domain, $codeset = null)
     {
@@ -118,8 +164,11 @@ class ZGettext
 
 
     /**
-     * set default domain
-     * @param $domain
+     * Set default domain.
+     * 
+     * @param string $domain Default domain.
+     * 
+     * @return void
      */
     public function textDomain($domain)
     {
@@ -130,11 +179,11 @@ class ZGettext
     /**
      * getReader for translation
      *
-     * @param string $domain
-     * @param constant $category (LC_CONSTANT)
-     * @param bool $cache
+     * @param string   $domain   Domain.
+     * @param constant $category A LC_CONSTANT.
+     * @param boolean  $cache    Whether or not to cache the reader.
      *
-     * return object reader
+     * @return ZMO Reader object.
      */
     public static function &getReader($domain = null, $category = null, $cache = true)
     {
@@ -144,7 +193,7 @@ class ZGettext
         $locale = $_this->getLocale();
         $textDomain = & $_this->textDomains[$locale][$category][$domain][$domain];
 
-        if(!$textDomain['reader']) {
+        if (!$textDomain['reader']) {
             $path = realpath($textDomain['path']."$locale/$category/$domain.mo");
             $reader = new StreamReader_CachedFile($path);
             $textDomain['reader'] = new ZMO($reader, $cache);
