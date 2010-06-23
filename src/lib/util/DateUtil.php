@@ -640,8 +640,8 @@ class DateUtil
         } else {
             return null;
         }
-
-        return mktime($hour, $min, $sec, $month, $day, $year, 0);
+        
+        return mktime($hour, $min, $sec, $month, $day, $year);
     }
 
 
