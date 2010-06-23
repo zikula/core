@@ -64,7 +64,47 @@ class Blocks_Installer extends Zikula_Installer
         switch ($oldversion)
         {
             case '3.6':
-            // future upgrade routines
+
+                // Rename 'thelang' block.
+                $table = DBUtil::getLimitedTablename('blocks');
+                $sql = "UPDATE $table SET pn_bkey = 'lang' WHERE pn_bkey = 'thelang'";
+                DBUtil::executeSQL($sql);
+
+                // Migrate any Admin_Messages to blocks
+                $table = DBUtil::getLimitedTablename('message');
+                $result = DBUtil::executeSQL("SELECT * FROM $table");
+                $data = $result->fetchAll(Doctrine::FETCH_ASSOC);
+                if ($data) {
+                    foreach ($data as $key => $value) {
+                        foreach ($data[$key] as $k => $v) {
+                            unset($data[$key][$k]);
+                            $newKey = str_replace('pn_', '', $k);
+                            $data[$key][$newKey] = $v;
+                        }
+                        unset($data[$key]['date']);
+                        unset($data[$key]['expire']);
+                        unset($data[$key]['view']);
+                        unset($data[$key]['mid']);
+                        $data[$key]['bkey'] = 'html';
+                        $data[$key]['position'] = 'center';
+                        $data[$key]['refresh'] = '3600';
+                        $data[$key]['mid'] = ModUtil::getIdFromName('Blocks');
+                        $data[$key] = DBUtil::insertObject($data[$key], 'blocks', 'bid');
+                        $placement = array('pid' => 3, 'bid' => $data[$key]['bid']);
+                        DBUtil::insertObject($placement, 'block_placements', 'pid', true);
+                    }
+                }
+
+                // Remove Admin_Message table.
+                DBUtil::executeSQL("DROP TABLE $table");
+                
+                // Remove any Admin_Message blocks
+                $table = DBUtil::getLimitedTablename('blocks');
+                $sql = "DELETE FROM $table WHERE pn_bkey = 'messages'";
+                DBUtil::executeSQL($sql);
+
+            case '3.7':
+                // future upgrade routines
         }
 
         // Update successful
