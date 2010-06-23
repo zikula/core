@@ -13,28 +13,109 @@
  */
 
 /**
- * ZLanguage class
+ * ZLanguage class.
  */
 class ZLanguage
 {
+    /**
+     *
+     * @var <type>
+     */
     private static $instance;
 
+    /**
+     *
+     * @var <type>
+     */
     public $langRequested;
+
+    /**
+     *
+     * @var <type>
+     */
     public $langSession;
+
+    /**
+     *
+     * @var <type>
+     */
     public $langDetect;
+
+    /**
+     *
+     * @var <type>
+     */
     public $langSystemDefault;
+
+    /**
+     *
+     * @var <type>
+     */
     public $langFixSession;
+
+    /**
+     *
+     * @var <type>
+     */
     public $dbCharset;
+
+    /**
+     *
+     * @var <type>
+     */
     public $encoding;
+
+    /**
+     *
+     * @var <type>
+     */
     public $languageCode;
+
+    /**
+     *
+     * @var <type>
+     */
     public $browserLanguagePref;
+
+    /**
+     *
+     * @var <type>
+     */
     public $domainCache = array();
+
+    /**
+     *
+     * @var <type>
+     */
     public $multiLingualCapable;
+
+    /**
+     *
+     * @var <type>
+     */
     public $langUrlRule;
+
+    /**
+     *
+     * @var <type>
+     */
     public $errors = array();
+
+    /**
+     *
+     * @var <type>
+     */
     public $locale = false;
+
+    /**
+     *
+     * @var ZI18n
+     */
     public $i18n; // object
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->langSession = SessionUtil::getVar('language', null);
@@ -47,6 +128,11 @@ class ZLanguage
         $this->setEncoding();
     }
 
+    /**
+     * Setup.
+     *
+     * @return void
+     */
     public function setup()
     {
         $this->langRequested = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('lang', null, 'GET')); // language for this request
@@ -59,6 +145,10 @@ class ZLanguage
     }
 
 
+    /**
+     *
+     * @return ZLanguage
+     */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
@@ -67,7 +157,11 @@ class ZLanguage
         return self::$instance;
     }
 
-
+    /**
+     *
+     *
+     * @return void
+     */
     private function fixLanguageToSession()
     {
         if ($this->langFixSession) {
@@ -75,7 +169,11 @@ class ZLanguage
         }
     }
 
-
+    /**
+     *
+     *
+     * @return void
+     */
     private function detectLanguage()
     {
         if ($this->langFixSession) {
@@ -111,7 +209,11 @@ class ZLanguage
         }
     }
 
-
+    /**
+     *
+     *
+     * @return void
+     */
     private function validate()
     {
         $available = $this->getInstalledLanguages();
@@ -121,11 +223,21 @@ class ZLanguage
         }
     }
 
+    /**
+     *
+     *
+     * @return vvoid
+     */
     private function registerError($msg)
     {
         $this->errors[] = array($msg);
     }
 
+    /**
+     *
+     *
+     * @return void
+     */
     private function processErrors()
     {
         if (count($this->errors) == 0) {
@@ -139,7 +251,11 @@ class ZLanguage
         }
     }
 
-
+    /**
+     *
+     *
+     * @return void
+     */
     public static function setLocale($locale, $lc = LC_MESSAGES)
     {
         $_this = self::getInstance();
@@ -152,40 +268,65 @@ class ZLanguage
         }
     }
 
-
+    /**
+     *
+     * @return ZLocale
+     */
     public static function getLocale()
     {
         $_this = self::getInstance();
         return $_this->locale;
     }
 
-
+    /**
+     *
+     *
+     * @return void
+     */
     private function setTextDomain()
     {
         ZGettext::getInstance()->textDomain('zikula');
     }
 
 
+    /**
+     *
+     *
+     * @return string
+     */
     public static function getLanguageCode()
     {
         $_this = self::getInstance();
         return $_this->languageCode;
     }
 
+    /**
+     *
+     *
+     * @return string
+     */
     public function getLanguageCodeLegacy()
     {
         $_this = self::getInstance();
         return $_this->languageCodeLegacy;
     }
 
-
+    /**
+     *
+     *
+     * @return string
+     */
     public static function getDBCharset()
     {
         $_this = self::getInstance();
         return $_this->dbCharset;
     }
 
-
+    /**
+     *
+     *
+     * @return string
+     */
     public static function getEncoding()
     {
         $_this = self::getInstance();
@@ -193,6 +334,13 @@ class ZLanguage
     }
 
 
+    /**
+     *
+     * @param <type> $domain
+     * @param <type> $path
+     *
+     * @return <type>
+     */
     public static function bindDomain($domain, $path)
     {
         $_this = self::getInstance();
@@ -215,6 +363,11 @@ class ZLanguage
         return $_this->domainCache[$locale][$domain];
     }
 
+    /**
+     *
+     * @param <type> $modName
+     * @return <type>
+     */
     public static function bindThemeDomain($modName)
     {
         $_this  = self::getInstance();
@@ -223,6 +376,11 @@ class ZLanguage
         return self::bindDomain($domain, $path);
     }
 
+    /**
+     *
+     * @param <type> $modName
+     * @return <type>
+     */
     public static function bindModuleDomain($modName)
     {
         // system modules are in the zikula domain
@@ -237,6 +395,12 @@ class ZLanguage
         return self::bindDomain($domain, $path);
     }
 
+    /**
+     *
+     * @param <type> $moduleName
+     * @param <type> $pluginName
+     * @return <type>
+     */
     public static function bindModulePluginDomain($moduleName, $pluginName)
     {
         // system modules are in the zikula domain
@@ -251,6 +415,11 @@ class ZLanguage
         return self::bindDomain($domain, $path);
     }
 
+    /**
+     *
+     * @param <type> $pluginName
+     * @return <type>
+     */
     public static function bindSystemPluginDomain($pluginName)
     {
         $_this  = self::getInstance();
@@ -259,6 +428,11 @@ class ZLanguage
         return self::bindDomain($domain, $path);
     }
 
+    /**
+     *
+     *
+     * @return void
+     */
     public static function bindCoreDomain()
     {
         $_this = self::getInstance();
@@ -267,6 +441,13 @@ class ZLanguage
     }
 
 
+    /**
+     *
+     * @param <type> $domain
+     * @param <type> $path
+     *
+     * @return <type>
+     */
     private function searchOverrides($domain, $path)
     {
         $lang = self::transformFS($this->languageCode);
@@ -276,33 +457,67 @@ class ZLanguage
     }
 
 
+    /**
+     *
+     * @param <type> $name
+     *
+     * @return <type>
+     */
     public static function getModuleDomain($name)
     {
         return strtolower("module_$name");
     }
 
+    /**
+     *
+     * @param <type> $modName
+     * @param <type> $pluginName
+     *
+     * @return <type>
+     */
     public static function getModulePluginDomain($modName, $pluginName)
     {
         return strtolower("moduleplugin_{$modName}_{$pluginName}");
     }
 
+    /**
+     *
+     * @param <type> $pluginName
+     *
+     * @return <type>
+     */
     public static function getSystemPluginDomain($pluginName)
     {
         return strtolower("systemplugin_$pluginName");
     }
 
+    /**
+     *
+     * @param <type> $name
+     *
+     * @return <type>
+     */
     public static function getThemeDomain($name)
     {
         return strtolower("theme_$name");
     }
 
+    /**
+     *
+     *
+     * @return <type>
+     */
     public static function getLangUrlRule()
     {
         $_this = self::getInstance();
         return $_this->langUrlRule;
     }
 
-
+    /**
+     *
+     *
+     * @return <type>
+     */
     public static function isRequiredLangParam()
     {
         $_this = self::getInstance();
@@ -316,6 +531,11 @@ class ZLanguage
     }
 
 
+    /**
+     *
+     *
+     * @return <type>
+     */
     private function discoverBrowserPrefs()
     {
         $available = $this->getInstalledLanguages();
@@ -326,7 +546,8 @@ class ZLanguage
 
 
     /**
-     * Get array of installed languages by code
+     * Get array of installed languages by code.
+     *
      * @return array
      */
     public static function getInstalledLanguages()
@@ -357,8 +578,9 @@ class ZLanguage
     }
 
     /**
-     * get array of language names by code
-     * @return associative array
+     * Get array of language names by code.
+     *
+     * @return array
      */
     public static function getInstalledLanguageNames()
     {
@@ -373,7 +595,10 @@ class ZLanguage
         return $languagesArray;
     }
 
-
+    /**
+     *
+     * @return void
+     */
     private function setEncoding()
     {
         if (preg_match('#utf([-]{0,1})8#', $this->dbCharset)) {
@@ -389,13 +614,21 @@ class ZLanguage
         }
     }
 
-
+    /**
+     * @return void
+     */
     private function setDBCharset()
     {
         $this->dbCharset = (System::isInstalling() ? 'utf8' : strtolower(DBConnectionStack::getConnectionInfo('default', 'dbcharset')));
     }
 
-
+    /**
+     *
+     *
+     * @param <type> $lang
+     *
+     * @return boolean
+     */
     public static function isLangParam($lang)
     {
         $_this = self::getInstance();
@@ -410,13 +643,24 @@ class ZLanguage
         return false;
     }
 
-
+    /**
+     * Get language direction.
+     *
+     * @return string
+     */
     public static function getDirection()
     {
         $_this = self::getInstance();
         return $_this->i18n->locale['language_direction'];
     }
 
+    /**
+     *
+     *
+     * @param <type> $lookup
+     *
+     * @return <type>
+     */
     public static function lookupLegacyCode($lookup)
     {
         $map = self::_cnvlanguagelist();
@@ -424,10 +668,11 @@ class ZLanguage
     }
 
     /**
-     * translate old lang requests into new code
+     * Translate old lang requests into new code.
      *
      * TODO D [deprecate along with self::hangleLegacy() when language defines deprecate] (drak)
-     * @param string legacy language $code
+     * @param string $code Legacy language $code.
+     *
      * @return string language code
      */
 
@@ -437,13 +682,23 @@ class ZLanguage
         return (isset($map[$code]) ? $map[$code] : false);
     }
 
-
+    /**
+     *
+     * @param <type> $m
+     *
+     * @return <type>
+     */
     public static function transformInternal($m)
     {
         return preg_replace('/_/', '-', strtolower($m));
     }
 
-
+    /**
+     *
+     * @param <type> $m
+     *
+     * @return <type>
+     */
     public static function transformFS($m)
     {
         $lang = substr($m, 0, (strpos($m, '-') ? strpos($m, '-') : strlen($m)));
@@ -451,7 +706,12 @@ class ZLanguage
         return ($country ? "{$lang}_{$country}" : $lang);
     }
 
-
+    /**
+     *
+     * @param <type> $language
+     *
+     * @return <type>
+     */
     public static function getLegacyLanguageName($language)
     {
         $map = self::legacyMap();
@@ -463,6 +723,12 @@ class ZLanguage
         return false;
     }
 
+    /**
+     *
+     * @param <type> $country
+     *
+     * @return <type>
+     */
     public static function getCountryName($country)
     {
         $country = strtolower($country);
@@ -475,7 +741,12 @@ class ZLanguage
         return false;
     }
 
-
+    /**
+     *
+     * @param <type> $language
+     *
+     * @return <type>
+     */
     public static function getLanguageName($language)
     {
         $language = self::transformInternal($language);
@@ -488,7 +759,10 @@ class ZLanguage
         return false;
     }
 
-    // map of l3 legacy code to name
+    /**
+     *
+     * @return array
+     */
     public static function legacyMap()
     {
         return array(
@@ -679,7 +953,11 @@ class ZLanguage
                 'zul' => __('Zulu'));
     }
 
-    // map of l2 country names
+    /**
+     * Map of l2 country names.
+     *
+     * @return array
+     */
     public static function countryMap()
     {
         return array(
@@ -927,7 +1205,11 @@ class ZLanguage
                 'zz' => __('Unknown or unspecified country'));
     }
 
-    // map of language codes
+    /**
+     * Map of language codes.
+     *
+     * @return <type>
+     */
     public static function languageMap()
     {
         // TODO A [make list complete - this is just a start] (drak)
@@ -1099,7 +1381,11 @@ class ZLanguage
                 'zh-tw' => __('Chinese (Taiwan)'));
     }
 
-    // legacy to l2 mapping
+    /**
+     * Legacy to l2 mapping.
+     *
+     * @return array
+     */
     public static function legacyCodeMap()
     {
         return array(
@@ -1290,6 +1576,10 @@ class ZLanguage
                 'zul' => 'zu');
     }
 
+    /**
+     *
+     * @return array
+     */
     private function _cnvlanguagelist()
     {
         $cnvlang = array();

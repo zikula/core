@@ -12,11 +12,27 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * ZL10n class.
+ */
 class ZL10n
 {
+    /**
+     *
+     * @var <type> 
+     */
     private static $instances;
+
+    /**
+     *
+     * @var <type>
+     */
     private $translationDomain;
 
+    /**
+     *
+     * @param <type> $domain
+     */
     private function __construct($domain=null)
     {
         $this->setTranslationDomain($domain);
@@ -28,7 +44,7 @@ class ZL10n
     }
 
     /**
-     * One instance per translation domain
+     * One instance per translation domain.
      *
      * @param $domain
      * @return instance of ZL10n
@@ -43,7 +59,7 @@ class ZL10n
     }
 
     /**
-     * Set the translation domain
+     * Set the translation domain.
      */
     protected function setTranslationDomain($domain='null')
     {
@@ -51,7 +67,7 @@ class ZL10n
     }
 
     /**
-     * Get translation domain
+     * Get translation domain.
      *
      * @return string $this->domain
      */
@@ -61,9 +77,10 @@ class ZL10n
     }
 
     /**
-     * singular translation for modules
+     * singular translation for modules.
      *
      * @param string $msg
+     *
      * @return string
      */
     public function __($msg)
@@ -72,7 +89,7 @@ class ZL10n
     }
 
     /**
-     * plural translations for modules
+     * Plural translations for modules.
      *
      * @param singular string $m1
      * @param plural string $m2
@@ -85,10 +102,11 @@ class ZL10n
     }
 
     /**
-     * format translations for modules
+     * Format translations for modules.
      *
      * @param string $msg
      * @param string or array $param
+     *
      * @return string
      */
     public function __f($msg, $param)
@@ -97,12 +115,13 @@ class ZL10n
     }
 
     /**
-     * Format pural translations for modules
+     * Format pural translations for modules.
      *
      * @param singular string $m1
      * @param plural string $m2
      * @param count int $n
      * @param string or array $param
+     * 
      * @return string
      */
     public function __fn($m1, $m2, $n, $param)

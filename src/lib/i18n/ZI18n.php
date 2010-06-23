@@ -17,20 +17,56 @@
  */
 class ZI18n
 {
+    /**
+     *
+     * @var <type>
+     */
     private static $instance;
 
-    // public properties
+    /**
+     *
+     * @var <type>
+     */
     public $locale;
+
+    /**
+     *
+     * @var <type>
+     */
     private $sign;
+
+    /**
+     *
+     * @var <type>
+     */
     private $sign_posn;
+
+    /**
+     *
+     * @var <type>
+     */
     private $sep_by_space;
+
+    /**
+     *
+     * @var <type>
+     */
     private $cs_precedes;
 
+    /**
+     *
+     * @param <type> $locale
+     */
     public function __construct($locale)
     {
         $this->locale = new ZLocale($locale);
     }
 
+    /**
+     *
+     * @param <type> $locale
+     * @return <type>
+     */
     public static function getInstance($locale=null)
     {
         if (!isset($locale)) {
@@ -43,9 +79,11 @@ class ZI18n
     }
 
     /**
-     * transform a given currency into an internal number
+     * Transform a given currency into an internal number.
+     *
      * @param $number
-     * @return unknown_type
+     *
+     * @return float
      */
     public function transformCurrencyInternal($number)
     {
@@ -58,9 +96,10 @@ class ZI18n
     }
 
     /**
-     * transform a number into internal form with . as decimal
+     * Transform a number into internal form with . as decimal.
      *
      * @param $number
+     *
      * @return float
      */
     public function transformNumberInternal($number)
@@ -73,7 +112,7 @@ class ZI18n
     }
 
     /**
-     * Format a number for display
+     * Format a number for display.
      *
      * @param $number
      * @param $decimal_points null=default locale, false=precision, int=precision
@@ -114,9 +153,11 @@ class ZI18n
     }
 
     /**
-     * format a number in monetary terms
+     * Format a number in monetary terms.
+     *
      * @param $number
-     * @return unknown_type
+     *
+     * @return integer|string
      */
     public function transformCurrencyDisplay($number)
     {
@@ -150,9 +191,11 @@ class ZI18n
 
 
     /**
-     * Process the positive or negative sign for a number
+     * Process the positive or negative sign for a number.
+     *
      * @param $number
-     * @return unknown_type
+     *
+     * @return void
      */
     public function processSign($number)
     {

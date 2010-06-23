@@ -1,9 +1,10 @@
 <?php
 /**
- * Zikula Application Framework
+ * Zikula Application Framework.
  *
- * @copyright (c) 2005 Steven Armstrong <sa at c-area dot ch>
- * @copyright (c) 2009, Zikula Development Team
+ * Copyright (c) 2005 Steven Armstrong <sa at c-area dot ch>.
+ * Copyright (c) 2009, Zikula Development Team.
+ *
  * @link http://www.zikula.org
  * @license GNU/GPL version 2 (or at your option, any later version).
  *
@@ -11,7 +12,7 @@
  */
 
 /**
- * ZL10n Translation class
+ * ZL10n Translation class.
  */
 class ZGettext
 {

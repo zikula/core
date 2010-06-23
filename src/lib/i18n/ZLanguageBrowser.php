@@ -12,20 +12,43 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * ZLanguageBrowser class.
+ */
 class ZLanguageBrowser
 {
+    /**
+     * Available languages.
+     *
+     * @var array
+     */
     private $available;
 
+    /**
+     * Constructor.
+     *
+     * @param <type> $langList
+     */
     public function __construct($langList)
     {
         $this->available = $langList;
     }
 
+    /**
+     * Discover preferred language.
+     *
+     * @return string|false
+     */
     public function discover()
     {
         return $this->getPreferredLanguage();
     }
 
+    /**
+     * Get preferred language from list of available + browser.
+     *
+     * @return string|false
+     */
     private function getPreferredLanguage()
     {
         // Get system languages

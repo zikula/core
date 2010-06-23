@@ -1,10 +1,12 @@
 <?php
 /**
- * Zikula Application Framework
- * @copyright (c) 2003 Danilo Segan <danilo@kvota.net>
- * @copyright (c) 2005 Nico Kaiser <nico@siriux.net>
- * @copyright (c) 2009 Zikula Development Team
- * @link       http://www.zikula.org
+ * Zikula Application Framework.
+ *
+ * Copyright (c) 2003 Danilo Segan <danilo@kvota.net>
+ * Copyright (c) 2005 Nico Kaiser <nico@siriux.net>
+ * Copyright (c) 2009 Zikula Development Team
+ * 
+ * @link http://www.zikula.org
  * @license GNU/GPL version 2 (or at your option, any later version).
  *
  * @package I18n
@@ -24,21 +26,82 @@
  */
 class ZMO
 {
-    //public:
+    /**
+     *
+     * @var <type>
+     */
     public $error = 0; // public variable that holds error code (0 if no error)
 
-    //private:
+    /**
+     *
+     * @var <type>
+     */
     private $byteorder = 0; // 0: low endian, 1: big endian
+
+    /**
+     *
+     * @var <type>
+     */
     private $stream = null;
+
+    /**
+     *
+     * @var <type>
+     */
     private $short_circuit = false;
+
+    /**
+     *
+     * @var <type>
+     */
     private $enable_cache = false;
+
+    /**
+     *
+     * @var <type>
+     */
     private $originals = null; // offset of original table
+
+    /**
+     *
+     * @var <type>
+     */
     private $translations = null; // offset of translation table
+
+    /**
+     *
+     * @var <type>
+     */
     private $pluralheader = null; // cache header field for plural forms
+
+    /**
+     *
+     * @var <type>
+     */
     private $total = 0; // total string count
+
+    /**
+     *
+     * @var <type>
+     */
     private $table_originals = null; // table for original strings (offsets)
+
+    /**
+     *
+     * @var <type>
+     */
     private $table_translations = null; // table for translated strings (offsets)
+
+    /**
+     *
+     * @var <type>
+     */
     private $cache_translations = null; // original -> translation mapping
+
+    /**
+     *
+     * @var <type>
+     */
     private $encoding;
 
     /* Methods */
@@ -83,11 +146,20 @@ class ZMO
         $this->encoding = ini_get('mbstring.internal_encoding');
     }
 
+    /**
+     *
+     * @param <type> $encoding
+     */
     public function setEncoding($encoding)
     {
         $this->encoding = $encoding;
     }
 
+    /**
+     *
+     * @param <type> $text
+     * @return <type>
+     */
     public function encode($text)
     {
         $source_encoding = mb_detect_encoding($text);
@@ -377,5 +449,4 @@ class ZMO
             }
         }
     }
-
 }
