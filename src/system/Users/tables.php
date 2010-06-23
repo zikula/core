@@ -340,18 +340,16 @@ function Users_tables_for_118()
         'uname'           => 'pn_uname',
         'email'           => 'pn_email',
         'user_regdate'    => 'pn_user_regdate',
+        'user_viewemail'  => 'pn_user_viewemail',
+        'user_theme'      => 'pn_user_theme',
         'pass'            => 'pn_pass',
+        'storynum'        => 'pn_storynum',
         'ublockon'        => 'pn_ublockon',
         'ublock'          => 'pn_ublock',
         'theme'           => 'pn_theme',
+        'counter'         => 'pn_counter',
         'activated'       => 'pn_activated',
         'lastlogin'       => 'pn_lastlogin',
-        'validfrom'       => 'pn_validfrom',
-        'validuntil'      => 'pn_validuntil',
-        'user_theme'      => 'pn_user_theme',
-        'user_viewemail'  => 'pn_user_viewemail',
-        'storynum'        => 'pn_storynum',
-        'counter'         => 'pn_counter',
         'validfrom'       => 'pn_validfrom',
         'validuntil'      => 'pn_validuntil',
         'hash_method'     => 'pn_hash_method',
@@ -373,7 +371,7 @@ function Users_tables_for_118()
         'lastlogin'       => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
         'validfrom'       => "I4 NOTNULL DEFAULT '0'",
         'validuntil'      => "I4 NOTNULL DEFAULT '0'",
-        'hash_method'     => "I1 NOTNULL DEFAULT '8'"
+        'hash_method'     => "I1 NOTNULL DEFAULT '8'",
     );
 
     $dbinfo['users_column_idx'] = array(

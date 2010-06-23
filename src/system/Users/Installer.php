@@ -396,9 +396,10 @@ class Users_Installer extends Zikula_Installer
             return false;
         }
 
+        $obaColumn = $dbinfoSystem['objectdata_attributes_column'];
+
         if ($oldversion == '1.18') {
             // Gather any password_reminder fields set as attributes in 1.18
-            $obaColumn = $dbinfoSystem['objectdata_attributes_column'];
             $urColumn = $dbinfo200['users_column'];
             $sql = "UPDATE {$dbinfo200['users']} AS u
                     INNER JOIN {$dbinfoSystem['objectdata_attributes']} AS oba
