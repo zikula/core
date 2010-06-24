@@ -13,17 +13,18 @@
  */
 
 /**
- * WorkflowUtil Class
+ * WorkflowUtil Class.
+ * 
  * From a developers standpoint, we only use this class to address workflows
  * as the rest is for internal use by the workflow engine.
  */
 class WorkflowUtil
 {
     /**
-     * load xml workflow
+     * Load xml workflow.
      *
-     * @param string $schema name of workflow scheme
-     * @param string $module name of module
+     * @param string $schema Name of workflow scheme.
+     * @param string $module Name of module.
      *
      * @return mixed string of XML, or false
      */
@@ -75,11 +76,11 @@ class WorkflowUtil
     }
 
     /**
-     * Find the path of the file by searching overrides and the module location
+     * Find the path of the file by searching overrides and the module location.
      *
-     * @access private
-     * @param string $file name of file to find (can include relative path)
-     * @param string $module
+     * @param string $file   Name of file to find (can include relative path).
+     * @param string $module Module name.
+     * 
      * @return mixed string of path or bool false
      */
     public static function _findpath($file, $module = null)
@@ -98,9 +99,11 @@ class WorkflowUtil
         $moduledir = $modinfo['directory'];
 
         // determine which folder to look in (system or modules)
-        if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) { // system module
+        if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+            // system module
             $modulepath = "system/$moduledir";
-        } else if ($modinfo['type'] == ModUtil::TYPE_MODULE) { // non system module
+        } else if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
+            // non system module
             $modulepath = "modules/$moduledir";
         } else {
             return z_exit(__f('%s: Unsupported module type.', 'WorkflowUtil'));
@@ -129,14 +132,15 @@ class WorkflowUtil
     }
 
     /**
-     * Execute action
+     * Execute action.
      *
-     * @param string $schema name of workflow schema
-     * @param array $obj data object
-     * @param string $actionID action to perform
-     * @param string $table table where data will be stored (default = null)
-     * @param string $module name of module (defaults calling module)
-     * @param int $id ID column of table
+     * @param string $schema   Name of workflow schema.
+     * @param array  &$obj     Data object.
+     * @param string $actionID Action to perform.
+     * @param string $table    Table where data will be stored (default = null).
+     * @param string $module   Name of module (defaults calling module).
+     * @param string $idcolumn ID column of table.
+     * 
      * @return mixed
      */
     public static function executeAction($schema, &$obj, $actionID, $table = null, $module = null, $idcolumn = 'id')
@@ -170,10 +174,11 @@ class WorkflowUtil
     }
 
     /**
-     * delete workflows for module (used module uninstall time)
+     * Delete workflows for module (used module uninstall time).
      *
-     * @param string $module
-     * @return bool
+     * @param string $module Module name.
+     * 
+     * @return boolean
      */
     public static function deleteWorkflowsForModule($module)
     {
@@ -182,14 +187,15 @@ class WorkflowUtil
         }
 
         // this is a cheat to delete all items in table with value $module
-        return (bool) DBUtil::deleteObjectByID('workflows', $module, 'module');
+        return (bool)DBUtil::deleteObjectByID('workflows', $module, 'module');
     }
 
     /**
-     * delete a workflow and associated data
+     * Delete a workflow and associated data.
      *
-     * @param array $obj
-     * @return bool
+     * @param array $obj Data object.
+     * 
+     * @return boolean
      */
     public static function deleteWorkflow($obj)
     {
@@ -199,19 +205,20 @@ class WorkflowUtil
             return false;
         }
 
-        return (bool) DBUtil::deleteObjectByID('workflows', $workflow['id']);
+        return (bool)DBUtil::deleteObjectByID('workflows', $workflow['id']);
     }
 
     /**
-     * get Actions by State
+     * Get actions by state.
      *
-     * Returns allowed action data for given state
+     * Returns allowed action data for given state.
      *
-     * @param string $schemaName
-     * @param string $module
-     * @param string $state default = 'initial'
-     * @param array $obj
-     * @return mixed array($action.id => $action) or bool false
+     * @param string $schemaName Schema name.
+     * @param string $module     Module name.
+     * @param string $state      State name, default = 'initial'.
+     * @param array  $obj        Data object.
+     * 
+     * @return mixed Array $action.id => $action or bool false.
      */
     public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = array())
     {
@@ -237,15 +244,16 @@ class WorkflowUtil
     }
 
     /**
-     * get Actions Titles by State
+     * Get Actions Titles by State.
      *
-     * Returns allowed action ids and titles only, for given state
+     * Returns allowed action ids and titles only, for given state.
      *
-     * @param string $schemaName
-     * @param string $module
-     * @param string $state default = 'initial'
-     * @param array $obj
-     * @return mixed array($action.id => $action.title) or bool false
+     * @param string $schemaName Schema name.
+     * @param string $module     Module name.
+     * @param string $state      State, default = 'initial'.
+     * @param array  $obj        Array object.
+     * 
+     * @return mixed Array $action.id => $action.title or bool false.
      */
     public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = array())
     {
@@ -261,17 +269,17 @@ class WorkflowUtil
     }
 
     /**
-     * getActionsByStateArray
+     * getActionsByStateArray.
      *
-     * Returns allowed action data for given state
+     * Returns allowed action data for given state.
      *
+     * @param string $schemaName Schema name.
+     * @param string $module     Module name.
+     * @param string $state      State, default = 'initial'.
+     * @param array  $obj        Array object.
+     * 
      * @deprecated 1.3.0
-     *
-     * @param string $schemaName
-     * @param string $module
-     * @param string $state default = 'initial'
-     * @param array $obj
-     * @return mixed array or bool false
+     * @return mixed Array or bool false.
      */
     public static function getActionsByStateArray($schemaName, $module = null, $state = 'initial', $obj = array())
     {
@@ -279,14 +287,14 @@ class WorkflowUtil
     }
 
     /**
-     * get possible actions for a given item of data in it's current workflow state
+     * Get possible actions for a given item of data in it's current workflow state.
      *
-     * @param array $obj
-     * @param string $dbTable
-     * @param mixed $idcolumn id field default = 'id'
-     * @param string $module module name (defaults to current module)
+     * @param array  &$obj     Array object.
+     * @param string $dbTable  Database table.
+     * @param string $idcolumn Id field, default = 'id'.
+     * @param string $module   Module name (defaults to current module).
      *
-     * @return mixed array of actions or bool false
+     * @return mixed Array of actions or bool false.
      */
     public static function getActionsForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
@@ -311,14 +319,16 @@ class WorkflowUtil
     }
 
     /**
-     * Load workflow for object
-     * will attach array '__WORKFLOW__' to the object
+     * Load workflow for object.
+     * 
+     * Will attach array '__WORKFLOW__' to the object.
      *
-     * @param array $obj
-     * @param string $dbTable name of table where object is or will be stored
-     * @param string $id name of ID column of object
-     * @param string $module module name (defaults to current module)
-     * @return bool
+     * @param array  &$obj     Array object.
+     * @param string $dbTable  Database table.
+     * @param string $idcolumn Id field, default = 'id'.
+     * @param string $module   Module name (defaults to current module).
+     * 
+     * @return boolean
      */
     public static function getWorkflowForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
     {
@@ -356,12 +366,12 @@ class WorkflowUtil
     /**
      * get workflow state of object
      *
-     * @param array $obj
-     * @param string $table
-     * @param string $idcolumn name of ID column
-     * @param string $module module name (defaults to current module)
+     * @param array  &$obj     Array object.
+     * @param string $table    Table name.
+     * @param string $idcolumn Id field, default = 'id'.
+     * @param string $module   Module name (defaults to current module).
      *
-     * @return mixed string workflow state name or false
+     * @return mixed String workflow state name or false.
      */
     public static function getWorkflowState(&$obj, $table, $idcolumn = 'id', $module = null)
     {
@@ -382,12 +392,13 @@ class WorkflowUtil
     /**
      * Check permission of action
      *
-     * @param string $module
-     * @param string $schema
-     * @param array $obj
-     * @param int $permLevel
-     * @param int $actionId
-     * @return bool
+     * @param string  $module    Module name.
+     * @param string  $schema    Schema name.
+     * @param array   $obj       Array object.
+     * @param string  $permLevel Permission level.
+     * @param integer $actionId  Action Id.
+     * 
+     * @return boolean
      */
     public static function permissionCheck($module, $schema, $obj = array(), $permLevel, $actionId = null)
     {
@@ -431,8 +442,9 @@ class WorkflowUtil
     /**
      * translates workflow permission to pn permission define
      *
-     * @param string $permission
-     * @return mixed int or false
+     * @param string $permission Permission string.
+     * 
+     * @return mixed Permission constant or false.
      */
     public static function translatePermission($permission)
     {

@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Module Util.
+ */
 class ModUtil
 {
     // States
@@ -30,14 +33,23 @@ class ModUtil
     const TYPE_SYSTEM = 3;
     const TYPE_CORE = 4;
 
-    /**
-     * Module dependency states
-     */
+    // Module dependency states
     const DEPENDENCY_REQUIRED = 1;
     const DEPENDENCY_RECOMMENDED = 2;
     const DEPENDENCY_CONFLICTS = 3;
 
+    /**
+     * Memory of object oriented modules.
+     * 
+     * @var array
+     */
     protected static $ooModules = array();
+    
+    /**
+     * Module info cache.
+     * 
+     * @var array
+     */
     protected static $modinfo;
 
     /**
@@ -61,7 +73,7 @@ class ModUtil
             $pnmodvar = array();
             $tables   = System::dbGetTables();
             $col      = $tables['module_vars_column'];
-            $where =   "$col[modname] = '" . ModUtil::CONFIG_MODULE ."'
+            $where =   "$col[modname] = '" . self::CONFIG_MODULE ."'
                      OR $col[modname] = '" . PluginUtil::CONFIG ."'
                      OR $col[modname] = 'Theme'
                      OR $col[modname] = 'Blocks'
@@ -468,7 +480,7 @@ class ModUtil
         if (empty($modsarray)) {
             $tables  = System::dbGetTables();
             $cols    = $tables['modules_column'];
-            $where   = "WHERE $cols[state] = " . ModUtil::STATE_ACTIVE . "
+            $where   = "WHERE $cols[state] = " . self::STATE_ACTIVE . "
                            OR $cols[name] = 'Modules'";
             $orderBy = "ORDER BY $cols[displayname]";
 
@@ -517,7 +529,7 @@ class ModUtil
             $modinfo = self::getInfo(self::getIdFromName($modname));
             $directory = $modinfo['directory'];
 
-            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         } else {
             $modpath = is_dir("system/$directory") ? 'system' : 'modules';
         }
@@ -546,7 +558,7 @@ class ModUtil
             }
 
             // Generate _column automatically from _column_def if it is not present.
-            foreach($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $table_col = substr($key, 0, -4);
                 if (substr($key, -11) == "_column_def" && !$data[$table_col]) {
                     foreach ($value as $fieldname => $def) {
@@ -644,7 +656,7 @@ class ModUtil
         }
 
         // create variables for the OS preped version of the directory
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // if class is loadable or has been loaded exit here.
         if (self::isIntialized($modname)) {
@@ -678,7 +690,7 @@ class ModUtil
 
         $loaded[$modtype] = $modname;
 
-        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
+        if ($modinfo['type'] == self::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modname);
         }
 
@@ -693,13 +705,23 @@ class ModUtil
         return $modname;
     }
 
+    /**
+     * Add stylesheet to the page vars.
+     * 
+     * This makes the modulestylesheet plugin obsolete,
+     * but only for non-api loads as we would pollute the stylesheets
+     * not during installation as the Theme engine may not be available yet and not for system themes
+     * TODO: figure out how to determine if a userapi belongs to a hook module and load the
+     *       corresponding css, perhaps with a new entry in modules table?
+     *       
+     * @param string  $modname Module name.
+     * @param boolean $api     Whether or not it's a api load.
+     * @param string  $type    Type.
+     * 
+     * @return void
+     */
     private static function _loadStyleSheets($modname, $api, $type)
     {
-        // add stylesheet to the page vars, this makes the modulestylesheet plugin obsolete,
-        // but only for non-api loads as we would pollute the stylesheets
-        // not during installation as the Theme engine may not be available yet and not for system themes
-        // TODO: figure out how to determine if a userapi belongs to a hook module and load the
-        //       corresponding css, perhaps with a new entry in modules table?
         if (!System::isInstalling() && !$api) {
             PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
             if ($type == 'admin') {
@@ -709,6 +731,16 @@ class ModUtil
         }
     }
 
+    /**
+     * Get module class.
+     * 
+     * @param string  $modname Module name.
+     * @param string  $type    Type.
+     * @param boolean $api     Whether or not to get the api class.
+     * @param boolean $force   Whether or not to force load.
+     * 
+     * @return boolean|string Class name.
+     */
     public static function getClass($modname, $type, $api = false, $force = false)
     {
         // do not cache this process - drak
@@ -749,16 +781,40 @@ class ModUtil
         return false;
     }
 
+    /**
+     * Checks if module has the given controller.
+     * 
+     * @param string $modname Module name.
+     * @param string $type    Controller type.
+     * 
+     * @return boolean
+     */
     public static function hasController($modname, $type)
     {
         return (bool)self::getClass($modname, $type);
     }
 
+    /**
+     * Checks if module has the given API class.
+     * 
+     * @param string $modname Module name.
+     * @param string $type    API type.
+     * 
+     * @return boolean
+     */
     public static function hasApi($modname, $type)
     {
         return (bool)self::getClass($modname, $type, true);
     }
 
+    /**
+     * Get class object.
+     * 
+     * @param string $className Class name.
+     * 
+     * @throws LogicException If $className is neither a Zikula_API nor a Zikula_Controller.
+     * @return object Module object.
+     */
     public static function getObject($className)
     {
         if (!$className) {
@@ -794,6 +850,17 @@ class ModUtil
         return $object;
     }
 
+    /**
+     * Get info if callable.
+     * 
+     * @param string  $modname Module name.
+     * @param string  $type    Type.
+     * @param string  $func    Function.
+     * @param boolean $api     Whether or not this is an api call.
+     * @param boolean $force   Whether or not force load.
+     * 
+     * @return mixed
+     */
     public static function getCallable($modname, $type, $func, $api = false, $force = false)
     {
         $className = self::getClass($modname, $type, $api, $force);
@@ -818,6 +885,7 @@ class ModUtil
      * @param array   $args    The arguments to pass to the function.
      * @param boolean $api     Whether or not to execute an API (or regular) function.
      *
+     * @throws Zikula_Exception_NotFound If method was not found.
      * @return mixed.
      */
     public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
@@ -833,7 +901,7 @@ class ModUtil
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
-        $path = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
+        $path = ($modinfo['type'] == self::TYPE_SYSTEM ? 'system' : 'modules');
 
         $controller = null;
         $modfunc = null;
@@ -1061,7 +1129,7 @@ class ModUtil
                 unset($args['theme']);
             }
             // Module-specific Short URLs
-            $url = ModUtil::apiFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
+            $url = self::apiFunc($modinfo['name'], 'user', 'encodeurl', array('modname' => $modname, 'type' => $type, 'func' => $func, 'args' => $args));
             if (empty($url)) {
                 // depending on the settings, we have generic directory based short URLs:
                 // [language]/[module]/[function]/[param1]/[value1]/[param2]/[value2]
@@ -1179,12 +1247,12 @@ class ModUtil
         }
  
         if ($force == true) {
-            $modstate[$modname] = ModUtil::STATE_ACTIVE;
+            $modstate[$modname] = self::STATE_ACTIVE;
         }
        
         if ((isset($modstate[$modname]) &&
-                        $modstate[$modname] == ModUtil::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
-                        (isset($modstate[$modname]) && ($modstate[$modname] == ModUtil::STATE_UPGRADED || $modstate[$modname] == ModUtil::STATE_INACTIVE)))) {
+                        $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
+                        (isset($modstate[$modname]) && ($modstate[$modname] == self::STATE_UPGRADED || $modstate[$modname] == self::STATE_INACTIVE)))) {
             return true;
         }
 
@@ -1213,7 +1281,7 @@ class ModUtil
             $modinfo = self::getInfo(self::getIdFromName($module));
             if (isset($modinfo['name'])) {
                 $module = $modinfo['name'];
-                if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !ModUtil::available($module)) {
+                if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !self::available($module)) {
                     $module = System::getVar('startpage');
                 }
             }
@@ -1311,7 +1379,7 @@ class ModUtil
         if (isset($extrainfo['module']) && (self::available($extrainfo['module']) || strtolower($hookobject) == 'module' || strtolower($extrainfo['module']) == 'zikula')) {
             $modname = $extrainfo['module'];
         } else {
-            $modname = ModUtil::getName();
+            $modname = self::getName();
         }
 
         $lModname = strtolower($modname);
@@ -1495,14 +1563,15 @@ class ModUtil
     }
 
     /**
-     * Generic modules select function. Only modules in the module
-     * table are returned which means that new/unscanned modules
-     * will not be returned
+     * Generic modules select function.
+     * 
+     * Only modules in the module table are returned
+     * which means that new/unscanned modules will not be returned.
      *
-     * @param where The where clause to use for the select
-     * @param sort  The sort to use
+     * @param string $where The where clause to use for the select.
+     * @param string $sort  The sort to use.
      *
-     * @return The resulting module object array
+     * @return array The resulting module object array.
      */
     public static function getModules($where='', $sort='displayname')
     {
@@ -1511,14 +1580,15 @@ class ModUtil
 
 
     /**
-     * Return an array of modules in the specified state, only modules in
-     * the module table are returned which means that new/unscanned modules
-     * will not be returned
+     * Return an array of modules in the specified state.
+     * 
+     * Only modules in the module table are returned
+     * which means that new/unscanned modules will not be returned.
      *
-     * @param state The module state (optional) (defaults = active state)
-     * @param sort  The sort to use
+     * @param constant $state The module state (optional) (defaults = active state).
+     * @param string   $sort  The sort to use.
      *
-     * @return The resulting module object array
+     * @return array The resulting module object array.
      */
     public static function getModulesByState($state = self::STATE_ACTIVE, $sort='displayname')
     {
@@ -1530,6 +1600,13 @@ class ModUtil
         return DBUtil::selectObjectArray ('modules', $where, $sort);
     }
 
+    /**
+     * Initialize object oriented module.
+     * 
+     * @param string $moduleName Module name.
+     * 
+     * @return boolean
+     */
     public static function initOOModule($moduleName)
     {
         if (self::isIntialized($moduleName)) {
@@ -1541,7 +1618,7 @@ class ModUtil
             return false;
         }
 
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
         ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"));
         // load optional bootstrap
@@ -1561,11 +1638,25 @@ class ModUtil
         return true;
     }
 
+    /**
+     * Checks whether a OO module is initialized.
+     * 
+     * @param string $moduleName Module name.
+     * 
+     * @return boolean
+     */
     public static function isIntialized($moduleName)
     {
         return (self::isOO($moduleName) && self::$ooModules[$moduleName]['initialized']);
     }
 
+    /**
+     * Checks whether a module is object oriented.
+     * 
+     * @param string $moduleName Module name.
+     * 
+     * @return boolean
+     */
     public static function isOO($moduleName)
     {
         if (!isset(self::$ooModules[$moduleName])) {
@@ -1573,7 +1664,7 @@ class ModUtil
             self::$ooModules[$moduleName]['initialized'] = false;
             self::$ooModules[$moduleName]['oo'] = false;
             $modinfo = self::getInfo(self::getIdFromName($moduleName));
-            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
             $osdir   = DataUtil::formatForOS($modinfo['directory']);
 
             if (!$modinfo) {

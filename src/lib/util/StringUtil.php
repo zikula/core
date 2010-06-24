@@ -23,10 +23,10 @@ class StringUtil
      * Why is this function here? PHP has a builtin substr_count()
      * to do the same.
      *
-     * @param haystack  the string to search
-     * @param needle    the needle to search for and count
+     * @param string $haystack The string to search.
+     * @param string $needle   The needle to search for and count.
      *
-     * @return The numer of instances of needle in string
+     * @return integer The numer of instances of needle in string
      */
     public static function countInstances($haystack, $needle)
     {
@@ -36,11 +36,11 @@ class StringUtil
     /**
      * Truncate a string to a certain length
      *
-     * @param string       the string to operate on
-     * @param limit        the maximum number of characters displayed (optional) (default=80)
-     * @param appendDots   whether or not to append '...' to the maximum number of characters displayed (optional) (default=80)
+     * @param string  $string     The string to operate on.
+     * @param integer $limit      The maximum number of characters displayed (optional) (default=80).
+     * @param boolean $appendDots Whether or not to append '...' to the maximum number of characters displayed (optional) (default=80).
      *
-     * @return The potentially truncated string
+     * @return string The potentially truncated string.
      */
     public static function getTruncatedString($string, $limit = 80, $appendDots = true)
     {
@@ -58,12 +58,13 @@ class StringUtil
 
     /**
      * Translate html input newlines to <br /> sequences.
+     * 
      * This function is necessary as inputted strings will contain
-     * "\n\r" instead of just "\n"
+     * "\n\r" instead of just "\n".
      *
-     * @param string    the string to operate on
+     * @param string $string The string to operate on.
      *
-     * @return The converted string
+     * @return string The converted string.
      */
     public static function nl2html($string)
     {
@@ -75,13 +76,14 @@ class StringUtil
 
     /**
      * Tokenize a string according to the given parameters.
-     * This function just wraps explode to provide a more java-similar syntax
+     * 
+     * This function just wraps explode to provide a more java-similar syntax.
      *
-     * @param string     the string to tokenize
-     * @param delimeter  the delimeter to use
-     * @param max        the maximal number of tokens to generate (optional) (default=999999)
+     * @param string  $string    The string to tokenize.
+     * @param string  $delimeter The delimeter to use.
+     * @param integer $max       The maximal number of tokens to generate (optional) (default=999999).
      *
-     * @return The token array
+     * @return array The token array.
      */
     public static function tokenize($string, $delimeter, $max = 999999)
     {
@@ -91,11 +93,11 @@ class StringUtil
     /**
      * Case-Insensitive version of strpos (standard only available in PHP 5)
      *
-     * @param haystack  the string to search
-     * @param needle    the string to search for
-     * @param offset    the search start offset position (optional) (default=0)
+     * @param string  $haystack The string to search.
+     * @param string  $needle   The string to search for.
+     * @param integer $offset   The search start offset position (optional) (default=0).
      *
-     * @return The token array
+     * @return array The token array.
      */
     public static function stripos($haystack, $needle, $offset = 0)
     {
@@ -103,13 +105,14 @@ class StringUtil
     }
 
     /**
-     * Returns the left x chars of a string. If the string is longer than x,
-     * the whole string is returned
+     * Returns the left x chars of a string.
+     * 
+     * If the string is longer than x, the whole string is returned.
      *
-     * @param string       the string to operate on
-     * @param left         the number of chars to return
+     * @param string  $string The string to operate on.
+     * @param integer $left   The number of chars to return.
      *
-     * @return a part of the supplied string
+     * @return string A part of the supplied string.
      */
     public static function left($string, $left = 0)
     {
@@ -121,13 +124,14 @@ class StringUtil
     }
 
     /**
-     * Returns the right x chars of a string. If the string is longer than x,
-     * the whole string is returned
+     * Returns the right x chars of a string.
+     * 
+     * If the string is longer than x, the whole string is returned.
      *
-     * @param string       the string to operate on
-     * @param right        the number of chars to return
+     * @param string  $string The string to operate on.
+     * @param integer $right  The number of chars to return.
      *
-     * @return a part of the supplied string
+     * @return string A part of the supplied string.
      */
     public static function right($string, $right = 0)
     {
@@ -140,13 +144,14 @@ class StringUtil
 
     /**
      * Markup text with highlight tags around search phrases.
+     * 
      * Shorten text appropriate to view in hitlist.
      *
-     * @param text         the string to operate on
-     * @param wordStr      the search phrase
-     * @param contextSize  the number of chars shown as context around the search phrase
+     * @param string  $text        The string to operate on.
+     * @param string  $wordStr     The search phrase.
+     * @param integer $contextSize The number of chars shown as context around the search phrase.
      *
-     * @return a part of the supplied string
+     * @return string A part of the supplied string.
      */
     public static function highlightWords($text, $wordStr, $contextSize = 200)
     {
@@ -192,7 +197,8 @@ class StringUtil
             // Setup section 
             $section = mb_strcut($text, $startPos, $endPos-$startPos);
 
-        } else { // Text is shorter than $contextSize
+        } else {
+            // Text is shorter than $contextSize
             $section = $text;
         }
 
@@ -207,6 +213,14 @@ class StringUtil
         return $section;
     }
 
+    /**
+     * Camelize string.
+     * 
+     * @param string $string    String to operate on.
+     * @param string $separator Seperator.
+     * 
+     * @return string
+     */
     public static function camelize($string, $separator = '_')
     {
         if (strpos($string, $separator) !== false) {

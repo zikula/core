@@ -18,8 +18,9 @@
 class SessionUtil
 {
     /**
-     * Set up session handling
-     * Set all PHP options for Zikula session handling
+     * Set up session handling.
+     * 
+     * Set all PHP options for Zikula session handling.
      *
      * @return void
      */
@@ -94,15 +95,15 @@ class SessionUtil
             register_shutdown_function('session_write_close');
         }
         // Do not call any of these functions directly.  Marked as private with _
-        session_set_save_handler('_SessionUtil__Start', '_SessionUtil__Close', '_SessionUtil__Read', '_SessionUtil__Write',   /* use session_write_close(); */
-                                 '_SessionUtil__Destroy', /* use session_destroy(); */
+        session_set_save_handler('_SessionUtil__Start', '_SessionUtil__Close', '_SessionUtil__Read', '_SessionUtil__Write', //use session_write_close();
+                                 '_SessionUtil__Destroy', // use session_destroy();
                                  '_SessionUtil__GC');
     }
 
     /**
-     * Initialise session
+     * Initialise session.
      *
-     * @return bool
+     * @return boolean
      */
     public static function initialize()
     {
@@ -124,30 +125,32 @@ class SessionUtil
         $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
 
         if (System::getVar('sessionipcheck')) {
-            /* -- feature for after 0.8 release - drak
-            // todo - add dropdown option for sessionipcheckmask for /32, /24, /16 CIDR
+            /*
+                Feature for after 0.8 release - drak
+                // todo - add dropdown option for sessionipcheckmask for /32, /24, /16 CIDR
 
-            $ipmask = System::getVar('sessionipcheckmask');
-            if ($ipmask <> 32) {
-                // since we're not a /32 we need to handle in case multiple ips returned
-                if ($_HTTP_X_FORWARDED_FOR && strstr($_HTTP_X_FORWARDED_FOR, ', ')) {
-                    $_ips = explode(', ', $_HTTP_X_FORWARDED_FOR);
-                    $_HTTP_X_FORWARDED_FOR = $_ips[0];
+                $ipmask = System::getVar('sessionipcheckmask');
+                if ($ipmask <> 32) {
+                    // since we're not a /32 we need to handle in case multiple ips returned
+                    if ($_HTTP_X_FORWARDED_FOR && strstr($_HTTP_X_FORWARDED_FOR, ', ')) {
+                        $_ips = explode(', ', $_HTTP_X_FORWARDED_FOR);
+                        $_HTTP_X_FORWARDED_FOR = $_ips[0];
+                    }
+    
+                    // apply CIDR mask to allow IP checks on clients assigned
+                    // dynamic IP addresses - e.g. A O *cough* L
+                    if ($ipmask == 24) {
+                        $_REMOTE_ADDR = preg_replace('/[^.]+.$/', '*', $_REMOTE_ADDR);
+                        $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[^.]+.$/', '*', $_HTTP_X_FORWARDED_FOR) : '');
+                    } else if ($ipmask == 16) {
+                        $_REMOTE_ADDR = preg_replace('/[0-9]*.\.[^.]+.$/', '*', $_REMOTE_ADDR);
+                        $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[0-9]*.\.[^.]+.$/', '*', $fullhost) : '');
+                    } else { // must be a /32 CIDR
+                        null; // nothing to do
+                    }
                 }
-
-                // apply CIDR mask to allow IP checks on clients assigned
-                // dynamic IP addresses - e.g. A O *cough* L
-                if ($ipmask == 24) {
-                    $_REMOTE_ADDR = preg_replace('/[^.]+.$/', '*', $_REMOTE_ADDR);
-                    $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[^.]+.$/', '*', $_HTTP_X_FORWARDED_FOR) : '');
-                } else if ($ipmask == 16) {
-                    $_REMOTE_ADDR = preg_replace('/[0-9]*.\.[^.]+.$/', '*', $_REMOTE_ADDR);
-                    $_HTTP_X_FORWARDED_FOR = ($_HTTP_X_FORWARDED_FOR ? preg_replace('/[0-9]*.\.[^.]+.$/', '*', $fullhost) : '');
-                } else { // must be a /32 CIDR
-                    null; // nothing to do
-                }
-            }
             */
+            
         }
 
         // create the ip fingerprint
@@ -157,8 +160,8 @@ class SessionUtil
         if (session_start() && isset($GLOBALS['_ZSession']['obj']) && $GLOBALS['_ZSession']['obj']) {
             // check if session has expired or not
             $now = time();
-            $inactive = ($now - (int) (System::getVar('secinactivemins') * 60));
-            $daysold = ($now - (int) (System::getVar('secmeddays') * 86400));
+            $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
+            $daysold = ($now - (int)(System::getVar('secmeddays') * 86400));
             $lastused = strtotime($GLOBALS['_ZSession']['obj']['lastused']);
             $rememberme = self::getVar('rememberme');
             $uid = $GLOBALS['_ZSession']['obj']['uid'];
@@ -209,13 +212,12 @@ class SessionUtil
     }
 
     /**
-     * Create a new session
+     * Create a new session.
      *
-     * @access private
-     * @param sessid $ the session ID
-     * @param ipaddr $ the IP address of the host with this session
+     * @param string $sessid The session ID.
+     * @param string $ipaddr The IP address of the host with this session.
      *
-     * @return bool
+     * @return boolean
      */
     public static function _createNew($sessid, $ipaddr)
     {
@@ -240,18 +242,20 @@ class SessionUtil
     /**
      * Get a session variable
      *
-     * @param sring $name of the session variable to get
-     * @param string $default the default value to return if the requested session variable is not set
-     * @param autocreate $autocreate whether or not to autocreate the supplied path (optional) (default=true)
-     * @param overwriteExistingVar $overwriteExistingVar whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false)
-     * @return string session variable requested
+     * @param string  $name                 Name of the session variable to get.
+     * @param string  $default              The default value to return if the requested session variable is not set.
+     * @param string  $path                 Path.
+     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true).
+     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false).
+     * 
+     * @return string Session variable requested.
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
-        /* Legacy Handling
-         * $lang in session has deprecated and code should use ZLanguage::getLanguageCodeLegacy();
-         * if you need the current language code use ZLanguage::getLanguageCode();
-         */
+        // Legacy Handling
+        // $lang in session has deprecated and code should use ZLanguage::getLanguageCodeLegacy();
+        // if you need the current language code use ZLanguage::getLanguageCode();
+        
         if ($name == 'lang') {
             return ZLanguage::getLanguageCodeLegacy();
         }
@@ -262,7 +266,8 @@ class SessionUtil
             }
         } else {
             $parent = & self::_resolvePath($path, $autocreate, $overwriteExistingVar);
-            if ($parent === false) { // path + autocreate or overwriteExistingVar Error
+            if ($parent === false) {
+                // path + autocreate or overwriteExistingVar Error
                 return false;
             }
 
@@ -277,14 +282,15 @@ class SessionUtil
     }
 
     /**
-     * Set a session variable
+     * Set a session variable.
      *
-     * @param string $name of the session variable to set
-     * @param value $value to set the named session variable
-     * @param path $path to traverse to reach the element we wish to return (optional) (default='/')
-     * @param autocreate $autocreate whether or not to autocreate the supplied path (optional) (default=true)
-     * @param overwriteExistingVar $overwriteExistingVar whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false)
-     * @return bool true upon success, false upon failure
+     * @param string  $name                 Name of the session variable to set.
+     * @param string  $value                Value to set the named session variable.
+     * @param string  $path                 Path to traverse to reach the element we wish to return (optional) (default='/').
+     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true).
+     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false).
+     * 
+     * @return boolean true upon success, false upon failure.
      */
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
@@ -315,7 +321,8 @@ class SessionUtil
             $_SESSION['ZSV' . $name] = $value;
         } else {
             $parent = & self::_resolvePath($path, $autocreate, $overwriteExistingVar);
-            if ($parent === false) { // path + autocreate or overwriteExistingVar Error
+            if ($parent === false) {
+                // path + autocreate or overwriteExistingVar Error
                 return false;
             }
 
@@ -326,12 +333,13 @@ class SessionUtil
     }
 
     /**
-     * Delete a session variable
+     * Delete a session variable.
      *
-     * @param string $name of the session variable to delete
-     * @param string $default the default value to return if the requested session variable is not set
-     * @param path $path to traverse to reach the element we wish to return (optional) (default='/')
-     * @return bool true
+     * @param string $name    Name of the session variable to delete.
+     * @param string $default The default value to return if the requested session variable is not set.
+     * @param string $path    Path to traverse to reach the element we wish to return (optional) (default='/').
+     * 
+     * @return boolean true
      */
     public static function delVar($name, $default = false, $path = '/')
     {
@@ -346,7 +354,8 @@ class SessionUtil
             }
         } else {
             $parent = & self::_resolvePath($path, false, false);
-            if ($parent === false) { // path + autocreate or overwriteExistingVar Error
+            if ($parent === false) {
+                // path + autocreate or overwriteExistingVar Error
                 return false;
             }
 
@@ -365,13 +374,13 @@ class SessionUtil
     }
 
     /**
-     * Traverse the session data structure according to the path given and return a reference to last object in the path
+     * Traverse the session data structure according to the path given and return a reference to last object in the path.
      *
-     * @access private
-     * @param path $path to traverse to reach the element we wish to return
-     * @param autocreate $autocreate whether or not to autocreate the supplied path (optional) (default=true)
-     * @param overwriteExistingVar $overwriteExistingVar whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false)
-     * @return mixed array upon successful location/creation of path element(s), false upon failure
+     * @param string  $path                 Path to traverse to reach the element we wish to return.
+     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true).
+     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false).
+     * 
+     * @return mixed Array upon successful location/creation of path element(s), false upon failure.
      */
     public static function &_resolvePath($path, $autocreate = true, $overwriteExistingVar = false)
     {
@@ -416,9 +425,11 @@ class SessionUtil
     }
 
     /**
-     * Session required
+     * Session required.
+     * 
      * Starts a session or terminates loading.
      *
+     * @return void
      */
     public static function requireSession()
     {
@@ -470,7 +481,7 @@ class SessionUtil
     /**
      * Check if a session has expired or not
      *
-     * @return bool
+     * @return boolean
      */
     public static function hasExpired()
     {
@@ -483,11 +494,11 @@ class SessionUtil
     }
 
     /**
-     * regerate session id
+     * Regerate session id.
      *
-     * @param bool $force default false force regeneration
+     * @param boolean $force Force regeneration, default: false.
+     * 
      * @return void
-     *
      */
     public static function regenerate($force = false)
     {
@@ -517,8 +528,9 @@ class SessionUtil
     }
 
     /**
-     * Regenerate session according to probability set by admin
+     * Regenerate session according to probability set by admin.
      *
+     * @return void
      */
     public static function random_regenerate()
     {
@@ -535,9 +547,10 @@ class SessionUtil
     }
 
     /**
-     * Define the name of our session cookie
+     * Define the name of our session cookie.
      *
      * @access private
+     * @return string
      */
     public static function getCookieName()
     {
@@ -549,11 +562,14 @@ class SessionUtil
     }
 }
 
-/* Following _Session__* API are for internal class use.  Do not call directly */
+// Following _Session__* API are for internal class use.  Do not call directly
 
 /**
- * PHP function to start the session
+ * PHP function to start the session.
  *
+ * @param string $path Session path.
+ * @param string $name Session name.
+ * 
  * @access private
  * @return bool true
  */
@@ -576,11 +592,11 @@ function _SessionUtil__Close()
 }
 
 /**
- * PHP function to read a set of session variables
+ * PHP function to read a set of session variables.
  *
- * @access private
- * @param string $sessid session id
- * @return mixed bool of false or string session variable if true
+ * @param string $sessid Session Id.
+ * 
+ * @return mixed bool of false or string session variable if true.
  */
 function _SessionUtil__Read($sessid)
 {
@@ -610,14 +626,14 @@ function _SessionUtil__Read($sessid)
 }
 
 /**
- * PHP function to write a set of session variables
+ * PHP function to write a set of session variables.
  *
- * DO NOT CALL THIS DIRECTLY use session_write_close()
+ * DO NOT CALL THIS DIRECTLY use session_write_close().
  *
- * @access private
- * @param string $sessid session id
- * @param string $vars session variables
- * @return bool
+ * @param string $sessid Session Id.
+ * @param string $vars   Session variables.
+ * 
+ * @return boolean
  */
 function _SessionUtil__Write($sessid, $vars)
 {
@@ -659,17 +675,17 @@ function _SessionUtil__Write($sessid, $vars)
         }
     }
 
-    return (bool) $res;
+    return (bool)$res;
 }
 
 /**
- * PHP function to destroy a session
+ * PHP function to destroy a session.
  *
- * DO NOT CALL THIS FUNCTION DIRECTLY use session_destory();
+ * DO NOT CALL THIS FUNCTION DIRECTLY use session_destroy();
  *
- * @access private
- * @param string $sessid session id
- * @return bool
+ * @param string $sessid Session Id.
+ * 
+ * @return boolean
  */
 function _SessionUtil__Destroy($sessid)
 {
@@ -692,22 +708,22 @@ function _SessionUtil__Destroy($sessid)
         return unlink("$path/$sessid");
     } else {
         $res = DBUtil::deleteObjectByID('session_info', $sessid, 'sessid');
-        return (bool) $res;
+        return (bool)$res;
     }
 }
 
 /**
- * PHP function to garbage collect session information
+ * PHP function to garbage collect session information.
  *
- * @access private
- * @param int $maxlifetime maxlifetime of the session
- * @return bool
+ * @param integer $maxlifetime Maxlifetime of the session.
+ * 
+ * @return boolean
  */
 function _SessionUtil__GC($maxlifetime)
 {
     $now = time();
-    $inactive = ($now - (int) (System::getVar('secinactivemins') * 60));
-    $daysold = ($now - (int) (System::getVar('secmeddays') * 86400));
+    $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
+    $daysold = ($now - (int)(System::getVar('secmeddays') * 86400));
 
     // find the hash length dynamically
     $hash = ini_get('session.hash_function');
@@ -810,7 +826,7 @@ function _SessionUtil__GC($maxlifetime)
         }
 
         $res = DBUtil::deleteWhere('session_info', $where);
-        return (bool) $res;
+        return (bool)$res;
     }
 }
 

@@ -20,15 +20,15 @@ class ValidationUtil
     /**
      * Validate a specific field using the supplied control parameters
      *
-     * @param objectType    The string object type
-     * @param object        The object to validate
-     * @param field         The field to validate
-     * @param required      whether or not the field is required
-     * @param cmp_op        The compare operation to perform
-     * @param cmp_value     The value to compare the supplied field value to. If the value starts with a ':', the argument is used as an object access key.
-     * @param err_msg       The error message to use if the validation fails
+     * @param string  $objectType The string object type.
+     * @param array   $object     The object to validate.
+     * @param string  $field      The field to validate.
+     * @param boolean $required   Whether or not the field is required.
+     * @param string  $cmp_op     The compare operation to perform.
+     * @param string  $cmp_value  The value to compare the supplied field value to. If the value starts with a ':', the argument is used as an object access key.
+     * @param string  $err_msg    The error message to use if the validation fails.
      *
-     * @return A true/false value indicating whether the field validation passed or failed
+     * @return boolean A true/false value indicating whether the field validation passed or failed.
      */
     public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg)
     {
@@ -109,10 +109,7 @@ class ValidationUtil
     }
 
     /**
-     * Validate a specific field using the supplied control parameters
-     *
-     * @param object            The object to validate
-     * @param validationControl The structured validation control array
+     * Validate a specific field using the supplied control parameters.
      *
      * The expected structure for the validation array is as follows:
      * $validationControl[] = array ('field'         =>  $fieldname,
@@ -121,9 +118,12 @@ class ValidationUtil
      *                               'cmp_value'     =>  $value
      *                               'err_msg'       =>  $errorMessage);
      *
-     * The noop value for the cmp_op field is only valid if the field is not required
+     * The noop value for the cmp_op field is only valid if the field is not required.
      *
-     * @return A true/false value indicating whether the field validation passed or failed
+     * @param array $object            The object to validate.
+     * @param array $validationControl The structured validation control array.
+     *
+     * @return boolean A true/false value indicating whether the field validation passed or failed.
      */
     public static function validateFieldByArray($object, $validationControl)
     {
@@ -138,11 +138,7 @@ class ValidationUtil
     }
 
     /**
-     * Validate a specific field using the supplied control parameters
-     *
-     * @param objectType         The string object type
-     * @param object             The object to validate
-     * @param validationControls The array of structured validation control arrays
+     * Validate a specific field using the supplied control parameters.
      *
      * The expected structure for the validation array is as follows:
      * $validationControls[] = array ('field'         =>  $fieldname,
@@ -151,16 +147,19 @@ class ValidationUtil
      *                                'cmp_value'     =>  $value
      *                                'err_msg'       =>  $errorMessage), ...);
      *
-     * The noop value for the cmp_op field is only valid if the field is not required
+     * The noop value for the cmp_op field is only valid if the field is not required.
      *
-     * @return A true/false value indicating whether the object validation passed or resulted in errors.
+     * @param string $objectType         The string object type.
+     * @param array  $object             The object to validate.
+     * @param array  $validationControls The array of structured validation control arrays.
+     *
+     * @return boolean A true/false value indicating whether the object validation passed or resulted in errors.
      */
     public static function validateObject($objectType, $object, $validationControls)
     {
         $rc = true;
 
-        foreach ($validationControls as $vc)
-        {
+        foreach ($validationControls as $vc) {
             $t = self::validateFieldByArray($object, $vc);
             if ($t === false) {
                 $rc = false;
@@ -175,27 +174,28 @@ class ValidationUtil
     }
 
     /**
-     * Validate a specific field using the supplied plain validation array. This function converts
-     * the plain validation array into a structured validation array and then calls ValidationUtil::validateObject().
-     *
-     * @param objectType       The string object type
-     * @param object           The object to validate
-     * @param validationArray  The plain (numerically indexed) validation array
+     * Validate a specific field using the supplied plain validation array.
+     * 
+     * This function converts the plain validation array into a structured
+     * validation array and then calls ValidationUtil::validateObject().
      *
      * The expected structure for the validation array is as follows:
      * $validationArray[] = array ($fieldname, true/false, eq/neq/lt/lte/gt/gte/noop, $value, $errorMessage);
      *
-     * The noop value for the cmp_op field is only valid if the field is not required
+     * The noop value for the cmp_op field is only valid if the field is not required.
      *
-     * @return A true/false value indicating whether the object validation passed or failed
+     * @param string $objectType      The string object type.
+     * @param array  $object          The object to validate.
+     * @param array  $validationArray The plain (numerically indexed) validation array.
+     *
+     * @return boolean A true/false value indicating whether the object validation passed or failed.
      */
     public static function validateObjectPlain($objectType, $object, $validationArray)
     {
         $validationControls = array();
 
         $vc = array();
-        foreach ($validationArray as $va)
-        {
+        foreach ($validationArray as $va) {
             $size = count($va);
             if ($size < 5) {
                 return z_exit(__f('%1$s: invalid validationArray supplied: expected 5 fields but found %2$s.', array('ValidationUtil::validateObjectPlain', $size)));
