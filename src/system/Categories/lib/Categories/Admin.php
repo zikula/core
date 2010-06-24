@@ -51,7 +51,7 @@ class Categories_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
         
         $this->renderer->assign('menuTxt', $menuTxt);
-        return $this->renderer->fetch('categories_admin_view.htm');
+        return $this->renderer->fetch('categories_admin_view.tpl');
     }
 
     /**
@@ -65,7 +65,7 @@ class Categories_Admin extends Zikula_Controller
 
         $this->renderer->setCaching(false);
 
-        return $this->renderer->fetch('categories_admin_config.htm');
+        return $this->renderer->fetch('categories_admin_config.tpl');
     }
 
     /**
@@ -157,7 +157,7 @@ class Categories_Admin extends Zikula_Controller
                            ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories ($cid, false, true));
         }
 
-        return $this->renderer->fetch('categories_admin_edit.htm');
+        return $this->renderer->fetch('categories_admin_edit.tpl');
     }
 
     public function editregistry ()
@@ -195,7 +195,7 @@ class Categories_Admin extends Zikula_Controller
                        ->assign('id', $id)
                        ->assign('validation', $obj->_objValidation);
 
-        return $this->renderer->fetch('categories_admin_registry_edit.htm');
+        return $this->renderer->fetch('categories_admin_registry_edit.tpl');
     }
 
     /**
@@ -254,7 +254,7 @@ class Categories_Admin extends Zikula_Controller
                        ->assign ('userdefaultcatname', $this->getVar('userdefaultcatname', 0))
                        ->assign ('permissionsall', $this->getVar('permissionsall', 0));
 
-        return $this->renderer->fetch('categories_admin_preferences.htm');
+        return $this->renderer->fetch('categories_admin_preferences.tpl');
     }
 
 }

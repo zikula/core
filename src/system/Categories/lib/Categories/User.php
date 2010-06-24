@@ -33,7 +33,7 @@ class Categories_User extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         $this->renderer->assign('allowusercatedit', $this->getVar('allowusercatedit', 0));
-        return $this->renderer->fetch('categories_user_editcategories.htm');
+        return $this->renderer->fetch('categories_user_editcategories.tpl');
     }
 
     /**
@@ -130,7 +130,7 @@ class Categories_User extends Zikula_Controller
                        ->assign('userlanguage', ZLanguage::getLanguageCode())
                        ->assign('referer', SessionUtil::getVar('categories_referer'));
 
-        return $this->renderer->fetch('categories_user_edit.htm');
+        return $this->renderer->fetch('categories_user_edit.tpl');
     }
 
     /**
