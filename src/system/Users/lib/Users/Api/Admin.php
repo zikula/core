@@ -388,24 +388,13 @@ class Users_Api_Admin extends Zikula_Api
             return false;
         }
 
-        $pntable = System::dbGetTables();
-        $userstable = $pntable['users'];
-        $userscolumn = $pntable['users_column'];
-
-        $createUsersSQL = "INSERT INTO " . $userstable . "($userscolumn[uname],$userscolumn[email],$userscolumn[activated],$userscolumn[pass],$userscolumn[hash_method]) VALUES ";
-
         // construct a sql statement with all the inserts to avoid to much database connections
         foreach ($importValues as $value) {
-            $value = DataUtil::formatForStore($value);
-            $passwordHashinfo = UserUtil::getHashedPassword($value['pass']);
-            $createUsersSQL .= "('" . trim(mb_strtolower($value['uname'])) . "','" . trim($value['email']) . "', {$value['activated']}, '{$passwordHashinfo['hash']}', {$passwordHashinfo['hashMethodCode']}),";
             $usersArray[] = $value['uname'];
         }
 
-        $createUsersSQL = substr($createUsersSQL, 0 , -1) . ';';
-
         // execute sql to create users
-        $result = DBUtil::executeSQL($createUsersSQL);
+        $result = DBUtil::insertObjectArray($importValues, 'users', 'uid');
         if (!$result) {
             return false;
         }
@@ -415,12 +404,11 @@ class Users_Api_Admin extends Zikula_Api
                                       array('valuesArray' => $usersArray,
                                             'key' => 'uname'));
         if (!$usersInDB) {
-            return LogUtil::registerError($this->__('Error! The users have been created but something has failed trying to get them from the database. '
-                . 'Now all these users do not have group.'));
+            return LogUtil::registerError($this->__('Error! The users have been created but something has failed trying to get them from the database. Now all these users do not have group.'));
         }
 
         // get available groups
-        $allGroups = ModUtil::apiFunc('Groups','user','getAll');
+        $allGroups = ModUtil::apiFunc('Groups', 'user', 'getAll');
 
         // create an array with the groups identities where the user can add other users
         $allGroupsArray = array();
@@ -430,33 +418,24 @@ class Users_Api_Admin extends Zikula_Api
             }
         }
 
-        $groupstable = $pntable['group_membership'];
-        $groupscolumn = $pntable['group_membership_column'];
-
-        $addUsersToGroupsSQL = "INSERT INTO " . $groupstable . "({$groupscolumn['uid']},{$groupscolumn['gid']}) VALUES ";
-
+        $groups = array();
         // construct a sql statement with all the inserts to avoid to much database connections
         foreach ($importValues as $value) {
             $groupsArray = explode('|', $value['groups']);
             foreach ($groupsArray as $group) {
-                if (in_array(trim($group), $allGroupsArray)) {
-                    $addUsersToGroupsSQL .= "(" . $usersInDB[$value['uname']]['uid'] . "," . $group . "),";
-                }
+                $groups[] = array('uid' => $usersInDB[$value['uname']]['uid'], 'gid' => $group);
             }
         }
 
-        $addUsersToGroupsSQL = substr($addUsersToGroupsSQL, 0 , -1) . ';';
-
         // execute sql to create users
-        $result = DBUtil::executeSQL($addUsersToGroupsSQL);
+        $result = DBUtil::insertObjectArray($groups, 'group_membership', 'gid', true);
         if (!$result) {
-            return LogUtil::registerError($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. '
-                . 'Now all these users do not have group.'));
+            return LogUtil::registerError($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. These users are not assigned to a group.'));
         }
 
         // check if module Mailer is active
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Mailer'));
-        if ($modinfo['state'] == 3) {
+        if ($modinfo['state'] == ModUtil::TYPE_SYSTEM) {
             $sitename  = System::getVar('sitename');
             $siteurl   = System::getBaseUrl();
 
@@ -477,8 +456,7 @@ class Users_Api_Admin extends Zikula_Api
                                               'body' => $message,
                                               'html' => true)))
                     {
-                        LogUtil::registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. '
-                            . 'After this error, no more messages were sent.', $value['uname']));
+                        LogUtil::registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
                         break;
                     }
                 }
@@ -596,5 +574,6 @@ class Users_Api_Admin extends Zikula_Api
         fclose($out);
         // the users have been exported successfully
         LogUtil::registerStatus($this->__('Done! Users exported successfully.'));
+        exit;
     }
 }

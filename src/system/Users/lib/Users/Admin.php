@@ -1868,17 +1868,18 @@ class Users_Admin extends Zikula_Controller
         if (!$lines = file($importFile['tmp_name'])) {
             return $this->__("Error! It has not been possible to read the import file.");
         }
-        $expectedFields = array('uname', 'pass', 'email', 'activated', 'sendMail', 'groups');
+        $expectedFields = array('uname', 'pass', 'email', 'activated', 'sendmail', 'groups');
         $counter = 0;
         $importValues = array();
         // read the lines and create an array with the values. Check if the values passed are correct and set the default values if it is necessary
         foreach ($lines as $line_num => $line) {
+            $line = str_replace('"', '', trim($line));
             if ($counter == 0) {
                 // check the fields defined in the first row
-                $firstLineArray = DataUtil::formatForOS(explode($delimiterChar, trim($line)));
+                $firstLineArray = explode($delimiterChar, $line);
                 foreach ($firstLineArray as $field) {
                     if (!in_array(trim($field), $expectedFields)) {
-                        return $this->__("Error! The import file does not have the expected fields in the first row. Please check your import file.");
+                        return $this->__f("Error! The import file does not have the expected field %s in the first row. Please check your import file.", array($field));
                     }
                 }
                 $counter++;
@@ -1886,7 +1887,7 @@ class Users_Admin extends Zikula_Controller
             }
             // get and check the second and following lines
             $lineArray = array();
-            $lineArray = DataUtil::formatForOS(explode($delimiterChar, str_replace('"','',$line)));
+            $lineArray = DataUtil::formatForOS(explode($delimiterChar, $line));
 
             // check if the line have all the needed values
             if (count($lineArray) != count($firstLineArray)) {
@@ -1924,7 +1925,7 @@ class Users_Admin extends Zikula_Controller
             $usersArray[] = $uname;
 
             // check password
-            $pass = trim($importValues[$counter - 1]['pass']);
+            $pass = (string)trim($importValues[$counter - 1]['pass']);
             if ($pass == '') {
                 return $this->__f('Sorry! You did not provide a password in line %s. Please check your import file.', $counter);
             }
