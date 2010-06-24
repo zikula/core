@@ -12,8 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * System listeners util.
+ */
 class SystemListenersUtil
 {
+    /**
+     * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
+     * 
+     * @param Zikula_Event $event The event handler.
+     * 
+     * @return void
+     */
     public static function sessionLogging(Zikula_Event $event)
     {
         if ($event['stage'] == System::CORE_STAGES_SESSIONS) {
@@ -26,6 +36,13 @@ class SystemListenersUtil
         }
     }
 
+    /**
+     * Call system hooks.
+     * 
+     * @param Zikula_Event $event The event handler.
+     * 
+     * @return void
+     */
     public static function systemHooks(Zikula_Event $event)
     {
         if (!System::isInstalling()) {
@@ -43,6 +60,13 @@ class SystemListenersUtil
         }
     }
 
+    /**
+     * Load system plugins.
+     * 
+     * @param Zikula_Event $event The event handler.
+     * 
+     * @return void
+     */
     public static function systemPlugins(Zikula_Event $event)
     {
         if (!System::isInstalling()) {

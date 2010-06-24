@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * Zikula page variables functions
  *
@@ -141,7 +140,8 @@ class PageUtil
      * a mulit valued variable, this is an array containing all assigned
      * values.
      *
-     * @param string $varname the name of the page variable.
+     * @param string $varname The name of the page variable.
+     * @param mixed  $default Default return value.
      *
      * @return mixed Contents of the variable
      */
@@ -173,11 +173,10 @@ class PageUtil
      * will get lost. If you want to add a value to a multi valued
      * page variable, use PageUtil::addVar.
      *
-     * @see PageUtil::addVar
-     *
      * @param string $varname The name of the page variable.
      * @param mixed  $value   The new value.
-     *
+     * 
+     * @see    PageUtil::addVar
      * @return boolean true On success, false of the page variable is not registered.
      * 
      */
@@ -211,11 +210,10 @@ class PageUtil
      * Adds a new vaule to a page variable. In the case of a single
      * page variable, this functions acts exactly like PageUtil::setVar.
      *
-     * @see PageUtil::setVar
-     *
      * @param string $varname The name of the page variable.
      * @param mixed  $value   The new value.
-     *
+     * 
+     * @see    PageUtil::setVar
      * @return boolean true On success, false of the page variable is not registered.
      */
     public static function addVar($varname, $value)

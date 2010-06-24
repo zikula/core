@@ -126,6 +126,29 @@ class HtmlUtil
         return $html;
     }
 
+    /**
+     * Creates an object array selector.
+     * 
+     * @param string  $modname        Module name.
+     * @param string  $objectType     Object type.
+     * @param string  $name           Select field name.
+     * @param string  $field          Value field.
+     * @param string  $displayField   Display field.
+     * @param string  $where          Where clause.
+     * @param string  $sort           Sort clause.
+     * @param string  $selectedValue  Selected value.
+     * @param string  $defaultValue   Value for "default" option.
+     * @param string  $defaultText    Text for "default" option.
+     * @param string  $allValue       Value for "all" option.
+     * @param string  $allText        Text for "all" option.
+     * @param string  $displayField2  Second display field.
+     * @param boolean $submit         Submit on choose.
+     * @param boolean $disabled       Add Disabled attribute to select.
+     * @param string  $fieldSeparator Field seperator if $displayField2 is given.
+     * @param integer $multipleSize   Size for multiple selects.
+     * 
+     * @return string The rendered output.
+     */
     public static function getSelector_ObjectArray($modname, $objectType, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
     {
         if (!$modname) {
@@ -178,6 +201,29 @@ class HtmlUtil
         return self::getSelector_Generic($name, $data2, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
     }
 
+    /**
+     * Get selector by table field.
+     * 
+     * @param string  $modname       Module name.
+     * @param string  $tablekey      Table name.
+     * @param string  $name          Select field name.
+     * @param string  $field         Field name.
+     * @param string  $where         Where clause.
+     * @param string  $sort          Sort clause.
+     * @param string  $selectedValue Selected value.
+     * @param string  $defaultValue  Value for "default" option.
+     * @param string  $defaultText   Text for "default" option.
+     * @param string  $allValue      Value for "all" option.
+     * @param string  $allText       Text for "all" option.
+     * @param string  $assocKey      Key for associative array.
+     * @param boolean $distinct      Use distinct for selection.
+     * @param boolean $submit        Submit on choose.
+     * @param boolean $disabled      Add Disabled attribute to select.
+     * @param integer $truncate      Truncate field to given length.
+     * @param integer $multipleSize  Size for multiple selects.
+     * 
+     * @return string The rendered output.
+     */
     public static function getSelector_FieldArray($modname, $tablekey, $name, $field = 'id', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $assocKey = '', $distinct = false, $submit = true, $disabled = false, $truncate = 0, $multipleSize = 1)
     {
         if (!$tablekey) {
@@ -275,6 +321,22 @@ class HtmlUtil
         return $html;
     }
 
+    /**
+     * Selector for a module's tables.
+     * 
+     * @param string  $modname       Module name.
+     * @param string  $name          Select field name.
+     * @param string  $selectedValue Selected value.
+     * @param string  $defaultValue  Value for "default" option.
+     * @param string  $defaultText   Text for "default" option.
+     * @param boolean $submit        Submit on choose.
+     * @param string  $remove        Remove string from table name.
+     * @param boolean $disabled      Add Disabled attribute to select.
+     * @param integer $nStripChars   Strip the first n characters.
+     * @param integer $multipleSize  Size for multiple selects.
+     * 
+     * @return string The rendered output.
+     */
     public static function getSelector_ModuleTables($modname, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $remove = '', $disabled = false, $nStripChars = 0, $multipleSize = 1)
     {
         if (!$modname) {
@@ -315,7 +377,23 @@ class HtmlUtil
 
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
     }
-
+   
+    /**
+     * Selector for a module's tables.
+     * 
+     * @param string  $modname           Module name.
+     * @param string  $tablename         Table name.
+     * @param string  $name              Select field name.
+     * @param string  $selectedValue     Selected value.
+     * @param string  $defaultValue      Value for "default" option.
+     * @param string  $defaultText       Text for "default" option.
+     * @param boolean $submit            Submit on choose.
+     * @param boolean $showSystemColumns Whether or not to show the system columns.
+     * @param boolean $disabled          Add Disabled attribute to select.
+     * @param integer $multipleSize      Size for multiple selects.
+     * 
+     * @return string The rendered output.
+     */
     public static function getSelector_TableFields($modname, $tablename, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $showSystemColumns = false, $disabled = false, $multipleSize = 1)
     {
         if (!$modname) {
@@ -564,21 +642,22 @@ class HtmlUtil
      * @param boolean $submit        Whether or not to auto-submit the selector.
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     * @param string  $field         The field to use for value.
      *
      * @return The string for the user group selector.
      */
-     public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
-     {
-         $data = array();
-         $modules = ModuleUtil::getModulesByState(3, 'displayname');
-         foreach ($modules as $module) {
-             $value        = $module[$field];
-             $displayname  = $module['displayname'];
-             $data[$value] = $displayname;
-         }
+    public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
+    {
+        $data = array();
+        $modules = ModuleUtil::getModulesByState(3, 'displayname');
+        foreach ($modules as $module) {
+            $value        = $module[$field];
+            $displayname  = $module['displayname'];
+            $data[$value] = $displayname;
+        }
 
-         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
-     }
+        return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
+    }
 
     /**
      * Return the HTML for the date day selector.
@@ -662,11 +741,11 @@ class HtmlUtil
      * Return the HTML for the date month selector.
      *
      * @param integer $selected     The value which should be selected (default=0) (optional).
-     * @param string  $name          The name of the generated selector (default='month') (optional).
-     * @param boolean $submit        Whether or not to auto-submit the selector.
-     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
-     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
-     * @param boolean $text Text to print.
+     * @param string  $name         The name of the generated selector (default='month') (optional).
+     * @param boolean $submit       Whether or not to auto-submit the selector.
+     * @param boolean $disabled     Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     * @param string  $text         Text to print.
      *
      * @return The generated HTML for the selector.
      */
@@ -753,11 +832,21 @@ class HtmlUtil
 
     /**
      * Same as PN HTMLApi function but adds javascript form submit code to selector.
+     * 
+     * @param string  $fieldname Field name.
+     * @param array   $data      Data array.
+     * @param integer $multiple  Whether or not this is a multiple select.
+     * @param integer $size      Size for multiple selects.
+     * @param string  $selected  Selected value.
+     * @param string  $accesskey Access key.
+     * @param string  $onchange  OnChange event.
+     * 
+     * @return string The rendered output.
      */
     public static function FormSelectMultipleSubmit($fieldname, $data, $multiple = 0, $size = 1, $selected = '', $accesskey = '', $onchange = '')
     {
         if (empty($fieldname)) {
-            return;
+            return '';
         }
 
         // Set up selected if required

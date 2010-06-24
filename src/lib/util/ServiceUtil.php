@@ -20,12 +20,25 @@
  */
 class ServiceUtil
 {
+    /**
+     * Service manager instance.
+     * 
+     * @var Zikula_ServiceManager
+     */
     private static $serviceManager;
 
+    /**
+     * Constructor.
+     */
     private function __construct()
     {
     }
 
+    /**
+     * Get manager instance.
+     * 
+     * @return Zikula_ServiceManager
+     */
     public static function getManager()
     {
         if (self::$serviceManager) {

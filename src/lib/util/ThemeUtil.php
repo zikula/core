@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
  * ThemeUtil
  */
@@ -29,10 +28,14 @@ class ThemeUtil
     const FILTER_USER = 1;
     const FILTER_SYSTEM = 2;
     const FILTER_ADMIN = 3;
+    
     /**
-     * return a theme variable
+     * Return a theme variable.
+     * 
+     * @param string $name    Variable name.
+     * @param mixed  $default Default return value.
      *
-     * @return mixed theme variable value
+     * @return mixed Theme variable value.
      */
     public static function getVar($name = null, $default = null)
     {
@@ -57,24 +60,25 @@ class ThemeUtil
     }
 
     /**
-     * getAllThemes
+     * List all available themes.
      *
-     * list all available themes
-     *
-     * possible values of filter are
+     * Possible values of filter are
      * self::FILTER_ALL - get all themes (default)
      * self::FILTER_USER - get user themes
      * self::FILTER_SYSTEM - get system themes
      * self::FILTER_ADMIN - get admin themes
      *
-     * @param filter - filter list of returned themes by type
-     * @return array of available themes
+     * @param constant $filter Filter list of returned themes by type.
+     * @param constant $state  Theme state.
+     * @param constant $type   Theme type.
+     * 
+     * @return array Available themes.
      **/
     public static function getAllThemes($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
     {
         static $themesarray = array();
 
-        $key = md5((string) $filter . (string) $state . (string) $type);
+        $key = md5((string)$filter . (string)$state . (string)$type);
 
         if (empty($themesarray[$key])) {
             $pntable = System::dbGetTables();
@@ -84,7 +88,7 @@ class ThemeUtil
                 $whereargs[] = "$themescolumn[state] = '" . DataUtil::formatForStore($state) . "'";
             }
             if ($type != self::TYPE_ALL) {
-                $whereargs[] = "$themescolumn[type] = '" . (int) DataUtil::formatForStore($type) . "'";
+                $whereargs[] = "$themescolumn[type] = '" . (int)DataUtil::formatForStore($type) . "'";
             }
             if ($filter == self::FILTER_USER) {
                 $whereargs[] = "$themescolumn[user] = '1'";
@@ -112,19 +116,16 @@ class ThemeUtil
 
 
     /**
-     * getIDFromName
+     * Get themeID given its name.
      *
-     * get themeID given its name
-     *
-     * @author Mark West
-     * @link http://www.markwest.me.uk
-     * @param 'theme' the name of the theme
-     * @return int theme ID
+     * @param string $theme The name of the theme.
+     * 
+     * @return integer Theme ID.
      */
     public static function getIDFromName($theme)
     {
         // define input, all numbers and booleans to strings
-        $theme = (isset($theme) ? strtolower((string) $theme) : '');
+        $theme = (isset($theme) ? strtolower((string)$theme) : '');
 
         // validate
         if (!System::varValidate($theme, 'theme')) {
@@ -163,13 +164,11 @@ class ThemeUtil
     }
 
     /**
-     * getInfo
-     *
      * Returns information about a theme.
      *
-     * @author Mark West
-     * @param string $themeid Id of the theme
-     * @return array the theme information
+     * @param string $themeid Id of the theme.
+     * 
+     * @return array The theme information.
      **/
     public static function getInfo($themeid)
     {
@@ -196,11 +195,12 @@ class ThemeUtil
     }
 
     /**
-     * gets the themes table
+     * Gets the themes table.
      *
-     * small wrapper function to avoid duplicate sql
+     * Small wrapper function to avoid duplicate sql.
+     * 
      * @access private
-     * @return array modules table
+     * @return array Modules table.
      */
     public static function getThemesTable()
     {
@@ -217,12 +217,12 @@ class ThemeUtil
     }
 
     /**
-     * get the modules stylesheet from several possible sources
+     * Get the modules stylesheet from several possible sources.
      *
-     *@access public
-     *@param string $modname    the modules name (optional, defaults to top level module)
-     *@param string $stylesheet the stylesheet file (optional)
-     *@return string path of the stylesheet file, relative to PN root folder
+     * @param string $modname    The modules name (optional, defaults to top level module).
+     * @param string $stylesheet The stylesheet file (optional).
+     *
+     * @return string Path of the stylesheet file, relative to PN root folder.
      */
     public static function getModuleStylesheet($modname = '', $stylesheet = '')
     {

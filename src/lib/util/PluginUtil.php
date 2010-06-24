@@ -22,23 +22,56 @@ class PluginUtil
     const NOTINSTALLED = 2;
     const CONFIG = '/Plugin';
 
+    /**
+     * Default state.
+     * 
+     * @var constant
+     */
     protected static $defaultState = array('state' => self::NOTINSTALLED, 'version' => 0);
 
+    /**
+     * Get plugin state.
+     * 
+     * @param string $name    Plugin name.
+     * @param mixed  $default Default return value.
+     * 
+     * @return mixed
+     */
     public static function getState($name, $default = null)
     {
         return ModUtil::getVar(self::CONFIG, $name, $default);
     }
 
+    /**
+     * Delete plugin state.
+     * 
+     * @param string $name Plugin name.
+     * 
+     * @return boolean
+     */
     public static function delState($name)
     {
         return ModUtil::delVar(self::CONFIG, $name);
     }
 
+    /**
+     * Set plugin state.
+     * 
+     * @param string   $name  Plugin name.
+     * @param constant $value Plugin state.
+     * 
+     * @return boolean
+     */
     public static function setState($name, $value)
     {
         return ModUtil::setVar(self::CONFIG, $name, $value);
     }
 
+    /**
+     * Get default state.
+     * 
+     * @return constant
+     */
     public static function getDefaultState()
     {
         return self::$defaultState;
@@ -47,10 +80,11 @@ class PluginUtil
     /**
      * Load all plugins in path.
      * 
-     * @staticvar <type> $loaded
-     * @param <type> $path
-     * @param <type> $namespace
-     * @return <type>
+     * @param string $path      Path.
+     * @param string $namespace Namespace.
+     * 
+     * @throws RuntimeException If file does not exist.
+     * @return void
      */
     public static function loadPlugins($path, $namespace)
     {
@@ -87,9 +121,10 @@ class PluginUtil
     /**
      * Load an initialise plugin.
      *
-     * @param string $className
+     * @param string $className Class name.
      * 
-     * @return object Plugin class.
+     * @throws LogicException If Plugin class is not a Zikula_plugin.
+     * @return Zikula_Plugin Plugin class.
      */
     public static function loadPlugin($className)
     {
@@ -119,6 +154,13 @@ class PluginUtil
         return $sm->attachService($serviceId, $plugin);
     }
 
+    /**
+     * Get plugin object.
+     * 
+     * @param string $className Class name.
+     * 
+     * @return Zikula_Plugin
+     */
     public static function getPlugin($className)
     {
         $sm = ServiceUtil::getManager();
@@ -128,17 +170,20 @@ class PluginUtil
         }
     }
 
+    /**
+     * Discover all plugins.
+     * 
+     * @return array
+     */
     public static function getAllPlugins()
     {
         return array_merge(self::getAllSystemPlugins(), self::getAllModulePlugins());
     }
 
     /**
-     * Discover all plugins.
+     * Discover all module plugins.
      *
-     * @param boolean $modulesOnly False to include system plugins.
-     *
-     * @return array Of plugins paths.
+     * @return array Array of plugins paths.
      */
     public static function getAllModulePlugins()
     {
@@ -158,16 +203,31 @@ class PluginUtil
         return $pluginsArray;
     }
 
+    /**
+     * Discover all system plugins.
+     * 
+     * @return array Array of plugin paths.
+     */
     public static function getAllSystemPlugins()
     {
         return FileUtil::getFiles('plugins', false, false, null, 'd');
     }
 
+    /**
+     * Load all plugins.
+     * 
+     * @return array Array of class names.
+     */
     public static function loadAllPlugins()
     {
         return array_merge(self::loadAllSystemPlugins(), self::loadAllModulePlugins());
     }
 
+    /**
+     * Load all system plugins.
+     * 
+     * @return array Array of class names.
+     */
     public static function loadAllSystemPlugins()
     {
         $classNames = array();
@@ -185,6 +245,11 @@ class PluginUtil
         return $classNames;
     }
 
+    /**
+     * Load all module plugins.
+     * 
+     * @return array Array of class names.
+     */
     public static function loadAllModulePlugins()
     {
         $classNames = array();
@@ -204,6 +269,14 @@ class PluginUtil
         return $classNames;
     }
 
+    /**
+     * Include plugin file.
+     * 
+     * @param string $plugin Plugin path.
+     * 
+     * @throws RuntimeException If plugin file does not exist.
+     * @return void
+     */
     private static function _includeFile($plugin)
     {
         $file = $plugin . DIRECTORY_SEPARATOR . "Plugin.php";
@@ -217,7 +290,7 @@ class PluginUtil
     /**
      * Check's if a module has plugins or not.
      * 
-     * @param string $modulename Name of an module
+     * @param string $modulename Name of an module.
      *
      * @return boolean true when the module has plugins
      */
@@ -225,10 +298,10 @@ class PluginUtil
         $pluginClasses = self::loadAllPlugins();
         $hasPlugins = false;
 
-        foreach($pluginClasses as $pluginClass) {
+        foreach ($pluginClasses as $pluginClass) {
             $parts = explode('_', $pluginClass);
 
-            if($parts[0] == 'ModulePlugin' && $parts[1] == $modulename) {
+            if ($parts[0] == 'ModulePlugin' && $parts[1] == $modulename) {
                 $hasPlugins = true;
                 break;
             }
@@ -237,6 +310,14 @@ class PluginUtil
         return $hasPlugins;
     }
 
+    /**
+     * Install plugin.
+     * 
+     * @param string $className Plugin class name.
+     * 
+     * @throws LogicException If plugin is already installed.
+     * @return boolean
+     */
     public static function install($className)
     {
         $plugin = self::loadPlugin($className);
@@ -254,6 +335,15 @@ class PluginUtil
         return true;
     }
 
+    /**
+     * Upgrade plugin.
+     * 
+     * @param string $className Plugin class name.
+     * 
+     * @throws LogicException If plugin is not installed.
+     * @throws LogicException If installed version and plugin version are equal.
+     * @return boolean
+     */
     public static function upgrade($className)
     {
         $plugin = self::loadPlugin($className);
@@ -276,6 +366,14 @@ class PluginUtil
         return false;
     }
 
+    /**
+     * Uninstall plugin.
+     * 
+     * @param string $className Plugin class name.
+     * 
+     * @throws LogicException If plugin is not installed.
+     * @return boolean
+     */
     public static function uninstall($className)
     {
         $plugin = self::loadPlugin($className);
@@ -293,6 +391,14 @@ class PluginUtil
         return false;
     }
 
+    /**
+     * Disable plugin.
+     * 
+     * @param string $className Plugin class name.
+     * 
+     * @throws LogicException If plugin is not installed.
+     * @return boolean
+     */
     public static function disable($className)
     {
         $plugin = self::loadPlugin($className);
@@ -307,6 +413,14 @@ class PluginUtil
         return true;
     }
 
+    /**
+     * Enable plugin.
+     * 
+     * @param string $className Plugin class name.
+     * 
+     * @throws LogicException If plugin is not installed.
+     * @return boolean
+     */
     public static function enable($className)
     {
         $plugin = self::loadPlugin($className);

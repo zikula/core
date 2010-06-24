@@ -23,7 +23,7 @@ class ObjectUtil
      * @param array  &$columns   The column list from the PNTables structure for the current table.
      * @param string $col_prefix The column prefix.
      *
-     * @return Nothing, column array is altered in place.
+     * @return void
      */
     public static function addStandardFieldsToTableDefinition(&$columns, $col_prefix)
     {
@@ -108,7 +108,7 @@ class ObjectUtil
      * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false).
      * @param string  $idcolumn       The column name of the primary key column (optional) (default='id').
      *
-     * @return Nothing, object is altered in place
+     * @return void
      */
     public static function setStandardFieldsOnObjectCreate(&$obj, $preserveValues = false, $idcolumn = 'id')
     {
@@ -139,7 +139,7 @@ class ObjectUtil
      * @param array   &$obj           The object we need to set the standard fields on.
      * @param boolean $preserveValues Whether or not to preserve value fields which have a valid value set (optional) (default=false).
      *
-     * @return Nothing, object is altered in place
+     * @return void
      */
     public static function setStandardFieldsOnObjectUpdate(&$obj, $preserveValues = false)
     {
@@ -163,7 +163,7 @@ class ObjectUtil
      *
      * @param array &$obj The object to operate on.
      *
-     * @return Nothing, object is altered in place
+     * @return void
      */
     public static function removeStandardFieldsFromObject(&$obj)
     {

@@ -396,6 +396,16 @@ class UserUtil
         return $dropdown;
     }
 
+    /**
+     * Login.
+     * 
+     * @param string  $loginID             Login Id.
+     * @param string  $userEnteredPassword The Password.
+     * @param boolean $rememberme          Whether or not to remember login.
+     * @param boolean $checkPassword       Whether or not to check the password.
+     * 
+     * @return boolean
+     */
     public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)
     {
         LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . __f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'UserUtil::loginUsing()')), 'STRICT');
@@ -406,6 +416,16 @@ class UserUtil
         return self::loginUsing('Users', $authinfo, $rememberme, $checkPassword);
     }
 
+    /**
+     * Login using a specific auth module.
+     * 
+     * @param string  $authModuleName Auth module name.
+     * @param array   $authinfo       Auth info array.
+     * @param boolean $rememberMe     Whether or not to remember login.
+     * @param boolean $checkPassword  Whether or not to check the password.
+     * 
+     * @return boolean
+     */
     public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
     {
         // If the user is already logged in, then there's no point in loggin in again, nor is there a point in erroring.
@@ -1347,6 +1367,13 @@ class UserUtil
         }
     }
 
+    /**
+     * Call theme event.
+     * 
+     * @param string $themeName Theme name.
+     * 
+     * @return string Event name.
+     */
     private static function _themeEvent($themeName)
     {
         $event = new Zikula_Event('user.gettheme', null, array('name' => $themeName));
@@ -1371,8 +1398,17 @@ class UserUtil
 
     /**
      * Get a list of user information.
-     *
-     * @return array array of user arrays
+     * 
+     * @param string  $sortbyfield   Sort by field.
+     * @param string  $sortorder     Sort by order.
+     * @param integer $limit         Select limit.
+     * @param integer $startnum      Select offset.
+     * @param string  $activated     Activated value.
+     * @param string  $regexpfield   Field for regexfilter.
+     * @param string  $regexpression Regex expression.
+     * @param string  $where         Where clause.
+     * 
+     * @return array Array of users.
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
     {

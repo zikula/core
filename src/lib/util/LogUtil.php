@@ -508,7 +508,7 @@ class LogUtil
     /**
      * Check the log file is writable and not full.
      *
-     * returns unwritable The file or directory cannot be written to
+     * Returns unwritable The file or directory cannot be written to.
      * returns toobig The log file size is bigger than $log_length in logging.conf.php.
      *
      * @param string|boolean $logfile The logfile to check or false to use $level.

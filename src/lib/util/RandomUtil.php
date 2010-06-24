@@ -149,12 +149,13 @@ class RandomUtil
     }
 
     /**
-     * Return a random string suitable for use as a password or password-like code. The string should conform
-     * to the constraints of the current password requirements: suitable for human use (readable and unambiguous),
-     * within the specified minimum and maximum lengths.
+     * Return a random string suitable for use as a password or password-like code.
+     * 
+     * The string should conform to the constraints of the current password requirements:
+     * suitable for human use (readable and unambiguous), within the specified minimum and maximum lengths.
      *
-     * @param int   $minLength  The minimum length of the string to return; optional; default = 5; constrained to 1 <= $minLength <= 25.
-     * @param int   $maxLength  The maximum length of the string to return; optional; default = $minLength; constrained to $minLength <= $maxLength <= 25.
+     * @param integer $minLength The minimum length of the string to return; optional; default = 5; constrained to 1 <= $minLength <= 25.
+     * @param integer $maxLength The maximum length of the string to return; optional; default = $minLength; constrained to $minLength <= $maxLength <= 25.
      *
      * @return string|bool A random string suitable for human-use as a password or password-like code; false on error.
      */
