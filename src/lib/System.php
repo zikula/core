@@ -929,11 +929,10 @@ class System
     /**
      * Get current URL.
      *
-     * @todo cfr. BaseURI() for other possible ways, or try PHP_SELF.
-     *
      * @param array $args Additional parameters to be added to/replaced in the URL (e.g. theme, ...).
      *
      * @access public
+     * @todo cfr. BaseURI() for other possible ways, or try PHP_SELF.
      *
      * @return string Current URL.
      */
@@ -1192,10 +1191,14 @@ class System
     }
 
     /**
+     * Shutdown.
+     * 
      * Gracefully shut down the framework (traps all exit and die calls),
      * Function halts execution.
      *
      * @param mixed $exit_param String or integer params to pass to the exit function.
+     * 
+     * @return void
      */
     public static function shutDown($exit_param = '')
     {
@@ -1217,7 +1220,7 @@ class System
      *
      * @todo D: extend this when needed.
      *
-     * @return void Function halts execution if needed.
+     * @return void
      */
     public static function _development_checks()
     {
