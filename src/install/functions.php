@@ -337,7 +337,7 @@ function install()
     $smarty->assign('maincontent', $_includecontents);
 
     // get and evaluate the page template
-    $template = file_get_contents('install/templates/installer_page.htm');
+    $template = file_get_contents('install/templates/installer_page.tpl');
     $smarty->_compile_source('evaluated template', $template, $_var_compiled);
     ob_start();
     @$smarty->_eval('?>' . $_var_compiled);
