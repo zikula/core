@@ -44,7 +44,7 @@ class PageLock_Api_User extends Zikula_Api
             if (!$hasLock) {
                 $renderer = Renderer::getInstance('PageLock');
                 $renderer->assign('lockedBy', $lockInfo['lockedBy']);
-                $lockedHtml = $renderer->fetch('PageLock_lockedwindow.html');
+                $lockedHtml = $renderer->fetch('PageLock_lockedwindow.tpl');
             }
         } else {
             $hasLock = true;

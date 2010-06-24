@@ -60,7 +60,7 @@ class Errors_User extends Zikula_Controller
         $this->renderer->assign('messages', LogUtil::getErrorMessages());
 
         // return the template output
-        if ($this->renderer->template_exists($template = "errors_user_{$type}.htm")) {
+        if ($this->renderer->template_exists($template = "errors_user_{$type}.tpl")) {
             return $this->renderer->fetch($template);
         } else {
             return $this->renderer->fetch('errors_user_main.tpl');

@@ -63,7 +63,7 @@ class Blocks_Block_Menu extends Zikula_Block
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // check out if the contents are cached.
-        if ($this->renderer->is_cached('blocks_block_menu.htm')) {
+        if ($this->renderer->is_cached('blocks_block_menu.tpl')) {
             // Populate block info and pass to theme
             $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.tpl');
             return BlockUtil::themeBlock($blockinfo);

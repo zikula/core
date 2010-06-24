@@ -100,10 +100,10 @@ class Groups_User extends Zikula_Controller
 
                 if ($islogged == true && SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_READ)) {
                     // The right to apply
-                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_read.htm', $group['gid']);
+                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_read.tpl', $group['gid']);
                 } else {
                     // No right to apply
-                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_overview.htm', $group['gid']);
+                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_overview.tpl', $group['gid']);
                 }
             }
         }

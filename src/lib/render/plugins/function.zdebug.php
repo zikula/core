@@ -29,7 +29,7 @@
  *
  * Parameters:
  *  output   If html, show debug in rendered page, otherwise open popup window
- *  template Specify different debug template, default pndebug.html,
+ *  template Specify different debug template, default zdebug.tpl,
  *                                        must be stored in Theme/pntemplates.
  * 
  * @param array  $params  All attributes passed to this function from the template.
@@ -63,7 +63,7 @@ function smarty_function_zdebug($params, &$smarty)
                 $smarty->debug_tpl = $params['template'];
             }
         } else {
-            $smarty->debug_tpl = 'zdebug.html';
+            $smarty->debug_tpl = 'zdebug.tpl';
         }
 
         if ($smarty->security && is_file($smarty->debug_tpl)) {

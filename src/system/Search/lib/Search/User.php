@@ -179,7 +179,7 @@ class Search_User extends Zikula_Controller
         $this->renderer->cache_id = md5($vars['q'] . $vars['searchtype'] . $vars['searchorder'] . UserUtil::getVar('uid')) . $vars['page'];
         
         // check if the contents are cached.
-        if ($this->renderer->is_cached('search_user_results.htm')) {
+        if ($this->renderer->is_cached('search_user_results.tpl')) {
             return $this->renderer->fetch('search_user_results.tpl');
         }
 

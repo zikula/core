@@ -126,11 +126,11 @@ and store templates there.  You will need to specify the location directly:
 e.g.
     // module plugin
     $view = Renderer::getModulePluginInstance($this->moduleName, );
-    $view->fetch($this->baseDir . 'myview.htm');
+    $view->fetch($this->baseDir . 'myview.tpl');
 
     // system plugin
     $view = Renderer::getSystemPluginInstance($this->pluginName);
-    $view->fetch($this->baseDir . 'myview.htm');
+    $view->fetch($this->baseDir . 'myview.tpl');
 
     Please note this will set the correct domain, in templates you
     DO NOT NEED domain= inside gettext calls.

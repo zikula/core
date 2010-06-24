@@ -85,7 +85,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
 
         $view = Renderer::getModulePluginInstance($this->moduleName, $this->pluginName);
 
-        $event->setData($view->fetch('anotherfunction.htm'));
+        $event->setData($view->fetch('anotherfunction.tpl'));
         $event->setNotified();
     }
 }

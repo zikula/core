@@ -1,4 +1,4 @@
-{* $Id: pndebug.html 27300 2009-10-31 11:33:27Z mateo $ *}
+{* $Id: zdebug.tpl 27300 2009-10-31 11:33:27Z mateo $ *}
 
 {* zdebug.tpl, based on debug.tpl, last updated version 2.0.1 *}
 

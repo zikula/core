@@ -18,15 +18,15 @@
  *
  * Examples (see also the demo page)
  *   {pager rowcount="400" limit="50"}
- *   {pager rowcount="400" limit="35" template="pageritems.html"}
- *   {pager rowcount="480" limit="90" template="pagerintervals.html" posvar="myposvar"}
- *   {pager rowcount="500" limit="47" template="pagerimage.html"}
- *   {pager rowcount="432" limit="25" template="pagercss.html"}
+ *   {pager rowcount="400" limit="35" template="pageritems.tpl"}
+ *   {pager rowcount="480" limit="90" template="pagerintervals.tpl" posvar="myposvar"}
+ *   {pager rowcount="500" limit="47" template="pagerimage.tpl"}
+ *   {pager rowcount="432" limit="25" template="pagercss.tpl"}
  *   {pager rowcount="1200" limit="40" maxpages="10"}
- *   {pager rowcount="1200" limit="40" template="pagercss.html" maxpages="7"}
- *   {pager rowcount="1200" limit="40" template="pagerjs.html" maxpages="10"}
- *   {pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20"}
- *   {pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20" optimize=true}
+ *   {pager rowcount="1200" limit="40" template="pagercss.tpl" maxpages="7"}
+ *   {pager rowcount="1200" limit="40" template="pagerjs.tpl" maxpages="10"}
+ *   {pager rowcount="1200" limit="40" template="pagercss2.tpl" maxpages="20"}
+ *   {pager rowcount="1200" limit="40" template="pagercss2.tpl" maxpages="20" optimize=true}
  *
  * Available parameters:
  *  modname            Fixed name of the module to page (optional)
@@ -43,7 +43,7 @@
  *                       (default: 0 = show all pages)
  *  display            Optional choice between 'page' or 'startnum'. Show links using page number or starting item number (default is startnum)
  *  class              Optional class to apply to the pager container (default : z-pager)
- *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.html, otherwise true)
+ *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.tpl, otherwise true)
  *  optimize           Only deliver page links which are actually displayed to the template (default: false)
  * 
  * @param array  $params  All attributes passed to this function from the template.
@@ -123,7 +123,7 @@ function smarty_function_pager($params, &$smarty)
         $pager['currentPage'] = $pager['countPages'];
     }
 
-    $template = (isset($params['template'])) ? $params['template'] : 'pagerimage.html';
+    $template = (isset($params['template'])) ? $params['template'] : 'pagerimage.tpl';
     $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
     $anchorText = (isset($params['anchorText']) ? '#' . $params['anchorText'] : '');
     $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 0);
@@ -227,7 +227,7 @@ function smarty_function_pager($params, &$smarty)
         }
     }
 
-    $pager['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($template != 'pagerimage.html');
+    $pager['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($template != 'pagerimage.tpl');
     if ($pager['processDetailLinks']) {
         for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
             if ($pager['maxPages'] > 0 &&

@@ -1,4 +1,4 @@
-{include file="theme_admin_menu.tpl"}
+{include file='theme_admin_menu.tpl'}
 {gt text="Edit page configuration" assign=templatetitle}
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}

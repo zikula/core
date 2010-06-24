@@ -14,9 +14,9 @@
 
 <h1>{gt text="Administration" domain="zikula"} ({version})</h1>
 
-{include file=admin_admin_securityanalyzer.tpl}
-{include file=admin_admin_developernotices.tpl}
-{nocache}{include file=admin_admin_updatechecker.tpl}{/nocache}
+{include file='admin_admin_securityanalyzer.tpl'}
+{include file='admin_admin_developernotices.tpl'}
+{nocache}{include file='admin_admin_updatechecker.tpl'}{/nocache}
 {insert name="getstatusmsg"}
 
 <div class="admintabs-container" id="admintabs-container">
@@ -50,7 +50,7 @@
         </li>
     </ul>
     {adminonlinemanual}
-    {include file=admin_admin_ajaxAddCategory.tpl}
+    {include file='admin_admin_ajaxAddCategory.tpl'}
 </div>
 
 <div class="z-hide" id="admintabs-none">

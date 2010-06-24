@@ -1,4 +1,4 @@
-{include file=theme_admin_menu.tpl}
+{include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="Credits"}</div>
     <h2>{gt text="Theme credits"}</h2>

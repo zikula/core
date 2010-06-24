@@ -88,7 +88,7 @@
             </fieldset>
             <fieldset>
                 <legend>{gt text="Attributes"}</legend>
-                {include file=categories_include_editattributes.html}
+                {include file=categories_include_editattributes.tpl}
             </fieldset>
             {if $mode == "edit"}
             <fieldset>

@@ -542,8 +542,8 @@ class Theme_Api_Admin extends Zikula_Api
                 "themes/$themeinfo[name]/templates/config/themevariables.ini" => 'variablesfile',
                 "themes/$themeinfo[name]/templates/config/pageconfigurations.ini" => 'pageconfigurationsfile',
                 "themes/$themeinfo[name]/templates/config/master.ini" => 'pageconfigurationfile',
-                "themes/$themeinfo[name]/templates/master.htm" => 'pagetemplatefile',
-                "themes/$themeinfo[name]/templates/blocks/block.htm" => 'blockfile',
+                "themes/$themeinfo[name]/templates/master.tpl" => 'pagetemplatefile',
+                "themes/$themeinfo[name]/templates/blocks/block.tpl" => 'blockfile',
                 "themes/$themeinfo[name]/style/style.css" => 'cssfile'
         );
 

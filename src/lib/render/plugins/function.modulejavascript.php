@@ -32,7 +32,7 @@
  *      $myjs.scriptfile = "modules/foobar/javascript/openwindow.js"
  *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/foobar/javascript/openwindow.js\"></script>"
  *      $myjs.onload = "onLoad=\"dosomething()\"";
- *      Possible code in master.htm would be:
+ *      Possible code in master.tpl would be:
  *
  *      ...
  *      { $myjs.tag }

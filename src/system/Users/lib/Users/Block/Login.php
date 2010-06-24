@@ -62,7 +62,7 @@ class Users_Block_Login extends Zikula_Block
             // be the same
             // check out if the contents are cached.
             // If this is the case, we do not need to make DB queries.
-            if ($this->renderer->is_cached('users_block_login.htm')) {
+            if ($this->renderer->is_cached('users_block_login.tpl')) {
                 $row['content'] = $this->renderer->fetch('users_block_login.tpl');
                 return BlockUtil::themeBlock($row);
             }

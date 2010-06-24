@@ -1,5 +1,5 @@
 {*  $Id$  *}
-{include file="theme_admin_menu.tpl"}
+{include file='theme_admin_menu.tpl'}
 <div class="z-admincontainer">
     {include file="theme_admin_modifymenu.tpl"}
     <h2>{gt text="Colour palettes"}</h2>

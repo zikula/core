@@ -677,7 +677,7 @@ abstract class Zikula_Base
     }
 
     /**
-     * Convenience Module DetVar.
+     * Convenience Module DelVar.
      *
      * @param string $key   Key.  Empty for all.
      *

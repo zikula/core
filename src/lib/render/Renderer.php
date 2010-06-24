@@ -200,7 +200,7 @@ class Renderer extends Smarty
         $this->register_block('nocache', 'Renderer_block_nocache', false);
 
         // register resource type 'z' this defines the way templates are searched
-        // during {include file='my_template.html'} this enables us to store selected module
+        // during {include file='my_template.tpl'} this enables us to store selected module
         // templates in the theme while others can be kept in the module itself.
         $this->register_resource('z', array(
                 'z_get_template',
@@ -415,7 +415,7 @@ class Renderer extends Smarty
             $os_theme = DataUtil::formatForOS($this->theme);
             $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
 
-            $ostemplate = DataUtil::formatForOS($template); //.'.htm';
+            $ostemplate = DataUtil::formatForOS($template); //.'.tpl';
 
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for

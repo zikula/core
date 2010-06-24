@@ -103,7 +103,7 @@
             </div>
             <hr />
             <h4>{gt text="Attributes"}</h4>
-            {include file=categories_include_editattributes.html}
+            {include file=categories_include_editattributes.tpl}
             {if ($catID)}
             <hr />
             <h4>{gt text="Category system information"}</h4>

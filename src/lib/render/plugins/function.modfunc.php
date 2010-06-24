@@ -73,7 +73,7 @@ function smarty_function_modfunc($params, &$smarty)
             $modname = strtolower($modname);
             $type = strtolower($type);
             $func = strtolower($func);
-            $result = $renderer->fetch("{$modname}_{$type}_{$func}.htm");
+            $result = $renderer->fetch("{$modname}_{$type}_{$func}.tpl");
         }
     }
 

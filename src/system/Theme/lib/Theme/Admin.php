@@ -69,7 +69,7 @@ class Theme_Admin extends Zikula_Controller
         $this->renderer->assign('palettes', array('palette1' =>  array()));
         $this->renderer->assign('pageconfigurations', array('master'));
         $this->renderer->assign('pagetemplate', 'master.tpl');
-        $this->renderer->assign('templates', array('left' => 'block.htm', 'right' => 'block.htm', 'center' => 'block.htm'));
+        $this->renderer->assign('templates', array('left' => 'block.tpl', 'right' => 'block.tpl', 'center' => 'block.tpl'));
 
         // work out which base page template to use
         switch ($themeinfo['layout']) {
@@ -87,15 +87,15 @@ class Theme_Admin extends Zikula_Controller
         }
         
         $createdtheme = ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo,
-                                                                           'versionfile' => $this->renderer->fetch('upgrade/version.htm'),
-                                                                           'potfile' => $this->renderer->fetch('upgrade/pot.htm'),
-                                                                           'palettesfile' => $this->renderer->fetch('upgrade/themepalettes.htm'),
-                                                                           'variablesfile' => $this->renderer->fetch('upgrade/themevariables.htm'),
-                                                                           'pageconfigurationsfile' => $this->renderer->fetch('upgrade/pageconfigurations.htm'),
-                                                                           'pageconfigurationfile' => $this->renderer->fetch('upgrade/pageconfiguration.htm'),
-                                                                           'pagetemplatefile' => $this->renderer->fetch('upgrade/'.$pagetemplate.'.htm'),
+                                                                           'versionfile' => $this->renderer->fetch('upgrade/version.tpl'),
+                                                                           'potfile' => $this->renderer->fetch('upgrade/pot.tpl'),
+                                                                           'palettesfile' => $this->renderer->fetch('upgrade/themepalettes.tpl'),
+                                                                           'variablesfile' => $this->renderer->fetch('upgrade/themevariables.tpl'),
+                                                                           'pageconfigurationsfile' => $this->renderer->fetch('upgrade/pageconfigurations.tpl'),
+                                                                           'pageconfigurationfile' => $this->renderer->fetch('upgrade/pageconfiguration.tpl'),
+                                                                           'pagetemplatefile' => $this->renderer->fetch('upgrade/'.$pagetemplate.'.tpl'),
                                                                            'cssfile' => $this->renderer->fetch('upgrade/'.$pagetemplate.'.css'),
-                                                                           'blockfile' => $this->renderer->fetch('upgrade/block.htm')));
+                                                                           'blockfile' => $this->renderer->fetch('upgrade/block.tpl')));
         $this->renderer->expose_template = $expose_template;
 
         if ($createdtheme) {
