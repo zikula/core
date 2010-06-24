@@ -1,5 +1,5 @@
 {gt text='Password changer' assign='templatetitle'}
-{include file='users_user_menu.htm'}
+{include file='users_user_menu.tpl'}
 
 <p class="z-informationmsg">{gt text="To change your password, please enter your current password, and then enter a new password (you must enter it twice identically, to ensure that you have entered it correctly)."}</p>
 

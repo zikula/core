@@ -1,12 +1,12 @@
 {gt text='Confirm verification code is to be sent to \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='Users' src='admin.gif' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
-    {include file='users_admin_includeregistration.htm'}
+    {include file='users_admin_includeregistration.tpl'}
 
     <form id="users_verifyregistration" class="z-form" action="{modurl modname='Users' type='admin' func='verifyRegistration'}" method="post">
         <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />

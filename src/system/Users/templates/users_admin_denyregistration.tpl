@@ -1,5 +1,5 @@
 {gt text='Deny registration request of \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='Users' src='admin.gif' alt=$templatetitle}</div>
@@ -10,7 +10,7 @@
         <p>{gt text="Warning! This will delete the registration from the database. It cannot be undone."}</p>
     </div>
 
-    {include file='users_admin_includeregistration.htm'}
+    {include file='users_admin_includeregistration.tpl'}
 
     <form id="users_denyregistration" class="z-form" action="{modurl modname='Users' type='admin' func='denyRegistration'}" method="post">
         <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />

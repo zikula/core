@@ -1,7 +1,7 @@
 {ajaxheader modname='Users' filename='users.js'}
 {gt text='User log-in' assign='templatetitle'}
 {modulelinks modname='Users' type='user'}
-{include file='users_user_menu.htm'}
+{include file='users_user_menu.tpl'}
 
 <form id="users_loginscreen_form" class="z-form" action="{modurl modname="Users" type="user" func="login"}" method="post">
     <div>

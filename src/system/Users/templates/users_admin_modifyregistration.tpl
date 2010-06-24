@@ -1,7 +1,7 @@
 {ajaxheader modname='Users' filename='users_admin_modifyregistration.js' noscriptaculous=true effects=true}
 {gt text='Edit registration for \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
 
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 <a id="users_formtop"></a>
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>

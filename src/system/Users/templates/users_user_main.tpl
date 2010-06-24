@@ -1,5 +1,5 @@
 {gt text='My account' assign='templatetitle'}
-{include file='users_user_menu.htm'}
+{include file='users_user_menu.tpl'}
 
 {foreach item='accountlink' from=$accountlinks}
 <div class="z-accountlink" style="width:{math equation='100/x' x=$pncore.Users.accountitemsperrow format='%.0d'}%;">

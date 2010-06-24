@@ -1,14 +1,14 @@
 {strip}
 {gt text='Registration for \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
 {/strip}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='Users' src='admin.gif' alt=$templatetitle}</div>
 
     <h2>{$templatetitle}</h2>
 
-    {include file='users_admin_includeregistration.htm'}
+    {include file='users_admin_includeregistration.tpl'}
 
     <div class="z-buttons z-center" style="margin:0 0 1em; padding:1em 0;">
         {strip}

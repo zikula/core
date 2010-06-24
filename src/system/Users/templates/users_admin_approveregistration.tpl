@@ -1,5 +1,5 @@
 {gt text='Approve registration of \'%1$s\'' tag1=$reginfo.uname assign='templatetitle'}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='Users' src='admin.gif' alt=$templatetitle}</div>
@@ -10,7 +10,7 @@
         <p>{gt text="Warning! The e-mail address for this registration has not been verified. Approving this registration will create a new user record without completing the e-mail verification process."}</p>
     </div>{/if}
 
-    {include file='users_admin_includeregistration.htm'}
+    {include file='users_admin_includeregistration.tpl'}
 
     <form id="users_approveregistration" class="z-form" action="{modurl modname='Users' type='admin' func='approveRegistration'}" method="post">
         <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />

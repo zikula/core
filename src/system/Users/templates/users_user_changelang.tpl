@@ -1,5 +1,5 @@
 {gt text='Language switcher' assign='templatetitle'}
-{include file='users_user_menu.htm'}
+{include file='users_user_menu.tpl'}
 
 <form id="changelang" class="z-form" action="{modurl modname='Users' type='user' func='main'}" method="post">
     <fieldset>

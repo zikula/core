@@ -1,5 +1,5 @@
 {gt text='Delete user account' assign=templatetitle}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='core' src='editdelete.gif' set='icons/large' alt=$templatetitle}</div>

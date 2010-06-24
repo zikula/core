@@ -1,5 +1,5 @@
 {gt text='New account registration' assign='templatetitle'}
-{include file='users_user_menu.htm'}
+{include file='users_user_menu.tpl'}
 
 {if !$regAllowed}
     <h3>{gt text="Sorry! New user registration is currently disabled."}</h3>

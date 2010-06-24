@@ -1,6 +1,6 @@
 {gt text='Enter verification code' assign='templatetitle'}
 {modulelinks modname='Users' type='user'}
-{include file='users_user_menu.htm'}
+{include file='users_user_menu.tpl'}
 
 {if !empty($errormessages)}
 <div id="users_errormessages_div" class="z-errormsg">

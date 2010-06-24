@@ -1,5 +1,5 @@
 {gt text='Export users' assign='templatetitle'}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=db_update.gif set=icons/large alt=$templatetitle}</div>

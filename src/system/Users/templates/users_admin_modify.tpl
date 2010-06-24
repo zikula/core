@@ -1,5 +1,5 @@
 {gt text='Edit user account of %s' tag1=$userinfo._UREALNAME|default:$userinfo.uname assign='templatetitle'}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 {if $legal}
 {gt text="'Terms of use'" assign=touString}

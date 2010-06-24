@@ -1,6 +1,6 @@
 {gt text='Enter confirmation code' assign='templatetitle'}
 {modulelinks modname='Users' type='user'}
-{include file='users_user_menu.htm'}
+{include file='users_user_menu.tpl'}
 
 <p class="z-informationmsg">{gt text="Please enter and EITHER your user name OR your e-mail address, and also enter the confirmation code you received. Once you enter this information and click the 'Submit' button you will receive a new password via e-mail."}</p>
 

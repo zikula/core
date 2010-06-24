@@ -1,5 +1,5 @@
 {ajaxheader modname='Users' filename='users_admin_modifyconfig.js' noscriptaculous=true effects=true}
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=configure.gif set=icons/large __alt='Settings'}</div>

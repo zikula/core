@@ -2,7 +2,7 @@
 {ajaxheader modname='Users' filename='users_admin_newuser.js' noscriptaculous=true effects=true}
 {gt text='Create new user' assign='templatetitle'}
 
-{include file='users_admin_menu.htm'}
+{include file='users_admin_menu.tpl'}
 <a id="users_formtop"></a>
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$templatetitle}</div>
