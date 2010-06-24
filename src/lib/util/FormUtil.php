@@ -34,7 +34,7 @@ class FormUtil
     public static function getPassedValue($key, $default = null, $source = null, $filter = null, $args = array(), $objectType=null)
     {
         if (!$key) {
-            return z_exit(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValueSafe')));
+            return z_exit(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValue')));
         }
 
         $source = strtoupper($source);
@@ -44,6 +44,7 @@ class FormUtil
 
         $args   = array();
         $failed = null;
+        
         switch (true)
         {
             case (isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || $source == 'R' || $source == 'REQUEST')):
@@ -61,49 +62,50 @@ class FormUtil
                     }
                 }
                 $value  = filter_input ($src, $key, $filter, $args);
-                $failed = $value === false ? $_REQUEST : null;
+                $failed = ($value === false) ? $_REQUEST : null;
                 break;
             case isset($_GET[$key]) && (!$source || $source == 'G' || $source == 'GET'):
                 if (is_array($_GET[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
-                $value  = filter_input (INPUT_GET, $key, $filter, $args);
-                $failed = $value === false ? $_GET: null;
+                $value  = filter_input(INPUT_GET, $key, $filter, $args);
+                $failed = ($value === false) ? $_GET : null;
                 break;
             case isset($_POST[$key]) && (!$source || $source == 'P' || $source == 'POST'):
                 if (is_array($_POST[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
-                $value  = filter_input (INPUT_POST, $key, $filter, $args);
-                $failed = $value === false ? $_POST: null;
+                $value  = filter_input(INPUT_POST, $key, $filter, $args);
+                $failed = ($value === false) ? $_POST: null;
                 break;
             case isset($_COOKIE[$key]) && (!$source || $source == 'C' || $source == 'COOKIE'):
                 if (is_array($_COOKIE[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
-                $value  = filter_input (INPUT_COOKIE, $key, $filter, $args);
-                $failed = $value === false ? $_COOKIE: null;
+                $value  = filter_input(INPUT_COOKIE, $key, $filter, $args);
+                $failed = ($value === false) ? $_COOKIE : null;
                 break;
             case isset($_FILES[$key]) && ($source == 'F' || $source == 'FILES'):
                 if (is_array($_FILES[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
                 $value  = $_FILES[$key];
-                $failed = $value === false ? $_COOKIE: null;
+                $failed = ($value === false) ? $_COOKIE : null;
                 break;
             case (isset($_GET[$key]) || isset($_POST[$key])) && ($source == 'GP' || $source == 'GETPOST'):
                 if (isset($_GET[$key])) {
                     if (is_array($_GET[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
                     }
-                    $value  = filter_input (INPUT_GET, $key, $filter, $args);
-                    $failed = $value === false ? $_GET: null;
-                } elseif (isset($_POST[$key]) && is_array($_POST[$key])) {
-                    if (is_array($_GET[$key])) {
+                    $value  = filter_input(INPUT_GET, $key, $filter, $args);
+                    $failed = ($value === false) ? $_GET : null;
+                }
+                if (isset($_POST[$key])) {
+                    if (is_array($_POST[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
                     } 
-                    $value  = filter_input (INPUT_POST, $key, $filter, $args);
-                    $failed = $value === false ? $_POST: null;
+                    $value  = filter_input(INPUT_POST, $key, $filter, $args);
+                    $failed = ($value === false) ? $_POST : null;
                 }
                 break;
             default:
