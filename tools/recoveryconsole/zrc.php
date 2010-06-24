@@ -254,7 +254,6 @@ class RecoveryConsole
         define('_ZRC_ERR_CMS_FAILED',                    '<strong>Zikula COULD NOT BE INITIALIZED</strong><br />No further information is available.');
         define('_ZRC_ERR_INCOMPATIBLE',                  '<strong>THIS APPLICATION IS INCOMPATIBLE WITH YOUR SITE<br />This application works only with Zikula 1.x+.<br />When stil using PostNuke .764 consider the <a href="http://community.zikula.org/Downloads-req-viewdownload-cid-7.htm" title="PostNuke Swiss Army Knife">PostNuke Swiss Army Knife</a> (PSAK) utility.');
         define('_ZRC_ERR_APP_LOCKED',                    '<strong>THIS APPLICATION HAS EXPIRED</strong><br />Re-upload the file to reset the timer.');
-        define('_ZRC_ERR_DBA_REQUIRED',                  '<strong>This feature requires database access!</strong>  As a first course of action, please ensure that your database server is up and running and then refresh this page.  If this message persists, use the <a href="'. $_SERVER['PHP_SELF'].'?op=recover&amp;utility=dba" title="Database Access Recovery">Database Access Recovery</a> utility to assist you in repairing your database configuration settings.');
         define('_ZRC_ERR_CONFIRM_REQUIRED',              'Confirmation Required');
         define('_ZRC_ERR_DUPED_SETTING',                 'This particular aspect of your site does not appear to be broken in its current state.  No changes were made.');
         define('_ZRC_ERR_FORM_INCOMPLETE',               'All Fields Required');
