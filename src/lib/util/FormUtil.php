@@ -30,45 +30,80 @@ class FormUtil
      *
      * @return The requested input key or the specified default
      */
-    public static function getPassedValue($key, $default = null, $source = null)
+    public static function getPassedValue($key, $default = null, $source = null, $filter = null, $args = array(), $objectType=null)
     {
         if (!$key) {
             return z_exit(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValueSafe')));
         }
 
         $source = strtoupper($source);
-        $src = ($source ? $source : 'REQUEST') . '_' . ($default != null ? $default : 'null');
+	if (!$filter) {
+	    $filter = FILTER_SANITIZE_STRING;
+	}
 
-        $doClean = false;
+        $args   = array();
+        $failed = null;
         switch (true)
         {
             case (isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || $source == 'R' || $source == 'REQUEST')):
-                $value = $_REQUEST[$key];
-                $doClean = true;
+                $src = INPUT_REQUEST;
+                if (isset($_GET[$key])) {
+                    $src = INPUT_GET;
+                    if (is_array($_POST[$key])) {
+                        $args['flags'] = FILTER_REQUIRE_ARRAY;
+		    } 
+		} 
+                if (isset($_POST[$key])) {
+                    $src = INPUT_POST;
+                    if (is_array($_POST[$key])) {
+                        $args['flags'] = FILTER_REQUIRE_ARRAY;
+		    } 
+		} 
+                $value  = filter_input ($src, $key, $filter, $args);
+                $failed = $value === false ? $_REQUEST : null;
                 break;
             case isset($_GET[$key]) && (!$source || $source == 'G' || $source == 'GET'):
-                $value = $_GET[$key];
-                $doClean = true;
+                if (is_array($_GET[$key])) {
+                    $args['flags'] = FILTER_REQUIRE_ARRAY;
+		} 
+                $value  = filter_input (INPUT_GET, $key, $filter, $args);
+                $failed = $value === false ? $_GET: null;
                 break;
             case isset($_POST[$key]) && (!$source || $source == 'P' || $source == 'POST'):
-                $value = $_POST[$key];
-                $doClean = true;
+                if (is_array($_POST[$key])) {
+                    $args['flags'] = FILTER_REQUIRE_ARRAY;
+		} 
+                $value  = filter_input (INPUT_POST, $key, $filter, $args);
+                $failed = $value === false ? $_POST: null;
                 break;
             case isset($_COOKIE[$key]) && (!$source || $source == 'C' || $source == 'COOKIE'):
-                $value = $_COOKIE[$key];
-                $doClean = true;
+                if (is_array($_COOKIE[$key])) {
+                    $args['flags'] = FILTER_REQUIRE_ARRAY;
+		} 
+                $value  = filter_input (INPUT_COOKIE, $key, $filter, $args);
+                $failed = $value === false ? $_COOKIE: null;
                 break;
             case isset($_FILES[$key]) && ($source == 'F' || $source == 'FILES'):
-                $value = $_FILES[$key];
+                if (is_array($_FILES[$key])) {
+                    $args['flags'] = FILTER_REQUIRE_ARRAY;
+		} 
+                $value  = $_FILES[$key];
+                $failed = $value === false ? $_COOKIE: null;
                 break;
             case (isset($_GET[$key]) || isset($_POST[$key])) && ($source == 'GP' || $source == 'GETPOST'):
                 if (isset($_GET[$key])) {
-                    $value = $_GET[$key];
-                }
-                if (isset($_POST[$key])) {
-                    $value = $_POST[$key];
-                }
-                $doClean = true;
+		    if (is_array($_GET[$key])) {
+                        $args['flags'] = FILTER_REQUIRE_ARRAY;
+		    } 
+                    $value  = filter_input (INPUT_GET, $key, $filter, $args);
+                    $failed = $value === false ? $_GET: null;
+		} elseif (isset($_POST[$key]) && is_array($_POST[$key])) {
+		    if (is_array($_GET[$key])) {
+                        $args['flags'] = FILTER_REQUIRE_ARRAY;
+		    } 
+                    $value  = filter_input (INPUT_POST, $key, $filter, $args);
+                    $failed = $value === false ? $_POST: null;
+		} 
                 break;
             default:
                 if ($source) {
@@ -78,88 +113,17 @@ class FormUtil
                         return $default;
                     }
                 }
+                $value = $default;
         }
 
-        if (isset($value) && !is_null($value)) {
-            if (is_array($value)) {
-                self::cleanArray($value);
-            } else {
-                static $alwaysclean = array('name', 'module', 'type', 'file', 'authid');
-                if (in_array($key, $alwaysclean)) {
-                    $doClean = true;
-                }
-                if ($doClean && !System::isInstalling()) {
-                    self::cleanValue($value);
-                }
-            }
+        if ($failed && $objectType) {
+            //SessionUtil::setVar ($key, $failed[$key], "/validationErrors/$objectType");
+            SessionUtil::setVar ($objectType, $failed[$key], '/validationFailedObjects');
+	}
 
-            return $value;
-        }
-
-        return $default;
-    }
-
-    /**
-     * Clean an array acquired from input. This method is safe to use for recursive arrays
-     * and cleans the array in place as well as returning it.
-     *
-     * @param array     The array to clean up
-     *
-     * @return The the altered/cleaned data array.
-     */
-    public static function cleanArray(&$array)
-    {
-        if (!is_array($array)) {
-            return z_exit(__f('Non-array passed to %s.', 'FormUtil::cleanArray'));
-        }
-
-        $ak = array_keys($array);
-        $kc = count($ak);
-
-        for ($i = 0; $i < $kc; $i++) {
-            $key = $ak[$i];
-            if (is_array($array[$key])) {
-                self::cleanArray($array[$key]);
-            } else {
-                self::cleanValue($array[$key]);
-            }
-        }
-
-        return $array;
-    }
-
-    /**
-     * Clean an individual data element in place; cleans the array in place
-     * as well as returning it.
-     *
-     * @param value     The value to clean
-     *
-     * @return A reference to the original (altered/cleaned) data array
-     */
-    public static function cleanValue(&$value)
-    {
-        static $isAdmin = null;
-        if ($isAdmin === null)
-            $isAdmin = SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN);
-
-        if (!$value) {
-            return $value;
-        }
-
-        if (get_magic_quotes_gpc()) {
-            System::stripslashes($value);
-        }
-
-        if (!$isAdmin) {
-            static $replace = array();
-            static $search = array('|</?\s*SCRIPT.*?>|si', '|</?\s*FRAME.*?>|si', '|</?\s*OBJECT.*?>|si', '|</?\s*META.*?>|si', '|</?\s*APPLET.*?>|si', '|</?\s*LINK.*?>|si', '|</?\s*IFRAME.*?>|si', '|STYLE\s*=\s*"[^"]*"|si');
-
-            $value = preg_replace($search, $replace, $value);
-        }
-
-        $value = trim($value);
         return $value;
     }
+
 
     /**
      * Return a boolean indicating whether the specified field is required

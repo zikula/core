@@ -461,13 +461,13 @@ class DBObjectArray
      *
      * @return array The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST')
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter=null, $args=array())
     {
         if (!$key) {
             $key = $this->_objPath;
         }
 
-        $objectArray = FormUtil::getPassedValue($key, $default, $source);
+        $objectArray = FormUtil::getPassedValue($key, $default, $source, $filter, $args, $this->_objPath);
 
         if ($objectArray) {
             $this->_objData = $objectArray;

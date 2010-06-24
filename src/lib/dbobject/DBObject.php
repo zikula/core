@@ -426,13 +426,13 @@ class DBObject
      *
      * @return mixed The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST')
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter=null, $args=array())
     {
         if (!$key) {
             $key = $this->_objPath;
         }
 
-        $obj = FormUtil::getPassedValue($key, $default, $source);
+        $obj = FormUtil::getPassedValue($key, $default, $source, $filter, $args, $this->_objPath);
 
         if ($obj) {
             $this->_objData = $obj;
