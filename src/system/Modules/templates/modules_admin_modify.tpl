@@ -1,4 +1,4 @@
-{include file="modules_admin_menu.htm"}
+{include file="modules_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large __alt="Edit module"}</div>
     <h2>{gt text="Edit module"} - {modgetinfo modid=$id info=displayname}</h2>

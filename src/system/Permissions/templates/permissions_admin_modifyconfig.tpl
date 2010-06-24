@@ -1,5 +1,5 @@
 {gt text="Settings" assign=templatetitle}
-{include file="permissions_admin_menu.htm"}
+{include file="permissions_admin_menu.tpl"}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=configure.gif set=icons/large alt=$templatetitle}</div>

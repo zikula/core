@@ -1,5 +1,5 @@
 {gt text="Create new module category" assign=templatetitle}
-{include file="admin_admin_menu.htm"}
+{include file="admin_admin_menu.tpl"}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=filenew.gif set=icons/large alt=$templatetitle}</div>

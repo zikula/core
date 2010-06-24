@@ -1,4 +1,4 @@
-{include file="blocks_admin_menu.htm"}
+{include file="blocks_admin_menu.tpl"}
 {ajaxheader modname=Blocks filename=blocks_admin_modify.js}
 {gt text="Edit block" assign=templatetitle}
 <div class="z-admincontainer">

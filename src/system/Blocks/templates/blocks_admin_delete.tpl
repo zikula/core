@@ -1,5 +1,5 @@
 {gt text="Delete block" assign=templatetitle}
-{include file="blocks_admin_menu.htm"}
+{include file="blocks_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=editdelete.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$blockname|safetext}</h2>

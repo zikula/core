@@ -1,7 +1,7 @@
 {modgetvar module='Users' name='avatarpath' assign='avatarpath'}
 {gt text="Memberships" assign=templatetitle}
 
-{include file="groups_user_menu.htm"}
+{include file="groups_user_menu.tpl"}
 
 <table class="z-datatable">
     <thead>

@@ -18,7 +18,7 @@
 </ul>
 
 {insert name="getstatusmsg"}
-{include file="categories_user_list.htm"}
+{include file="categories_user_list.tpl"}
 
 <h3>{$templatetitle}</h3>
 

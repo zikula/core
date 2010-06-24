@@ -1,4 +1,4 @@
-{include file="theme_admin_menu.htm"}
+{include file="theme_admin_menu.tpl"}
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions.htm\">`$extdbtitle`</a></strong>" var=extdblink}
 <div class="z-admincontainer">

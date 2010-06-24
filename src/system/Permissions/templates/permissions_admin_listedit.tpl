@@ -1,4 +1,4 @@
-{include file="permissions_admin_menu.htm"}
+{include file="permissions_admin_menu.tpl"}
 {include file="componentinstance.js"}
 <div class="z-admincontainer">
     {if $action eq "add"}

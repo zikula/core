@@ -1,4 +1,4 @@
-{include file="admin_admin_menu.htm"}
+{include file="admin_admin_menu.tpl"}
 {modurl modname="SysInfo" type="admin" assign="system_summary_link"}
 <div class="z-admincontainer z-form">
     <h2>{gt text="Help"}</h2>

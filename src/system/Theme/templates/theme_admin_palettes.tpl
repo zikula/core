@@ -1,7 +1,7 @@
 {*  $Id$  *}
-{include file="theme_admin_menu.htm"}
+{include file="theme_admin_menu.tpl"}
 <div class="z-admincontainer">
-    {include file="theme_admin_modifymenu.htm"}
+    {include file="theme_admin_modifymenu.tpl"}
     <h2>{gt text="Colour palettes"}</h2>
     {pageaddvar name="javascript" value="system/Theme/includes/picker.js"}
     <form class="z-form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">

@@ -1,5 +1,5 @@
 {gt text="Settings" assign=templatetitle}
-{include file="admin_admin_menu.htm"}
+{include file="admin_admin_menu.tpl"}
 {ajaxheader modname=Admin filename=admin_admin_modifyconfig.js noscriptaculous=true effects=true}
 
 <div class="z-admincontainer">

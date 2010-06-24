@@ -1,4 +1,4 @@
-{include file="securitycenter_admin_menu.htm"}
+{include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     {gt text="Delete hacking attempt" assign=templatetitle}
     <div class="z-adminpageicon">{img modname=core src=editdelete.gif set=icons/large alt=$templatetitle}</div>

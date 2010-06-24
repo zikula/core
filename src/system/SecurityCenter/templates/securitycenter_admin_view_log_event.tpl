@@ -1,4 +1,4 @@
-{include file="securitycenter_admin_menu.htm"}
+{include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View Logged Events"}</div>
     {gt text="All" assign=lblAll}

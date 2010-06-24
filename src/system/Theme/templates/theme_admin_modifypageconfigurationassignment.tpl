@@ -1,6 +1,6 @@
-{include file="theme_admin_menu.htm"}
+{include file="theme_admin_menu.tpl"}
 <div class="z-admincontainer">
-    {include file="theme_admin_modifymenu.htm"}
+    {include file="theme_admin_modifymenu.tpl"}
     {gt text="Edit page configuration assignment" assign=templatetitle}
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>

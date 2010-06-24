@@ -1,7 +1,7 @@
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js"}
 {pageaddvar name="javascript" value="system/SecurityCenter/javascript/securitycenter_admin_allowedhtm.js"}
 
-{include file="securitycenter_admin_menu.htm"}
+{include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=file_locked.gif set=icons/large __alt='Settings' }</div>
     <h2>{gt text="Allowed HTML settings"}</h2>

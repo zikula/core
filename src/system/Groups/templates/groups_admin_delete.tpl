@@ -1,4 +1,4 @@
-{include file="groups_admin_menu.htm"}
+{include file="groups_admin_menu.tpl"}
 {gt text="Delete" assign=templatetitle}
 
 <div class="z-admincontainer">

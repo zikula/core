@@ -1,4 +1,4 @@
-{include file="settings_admin_menu.htm"}
+{include file="settings_admin_menu.tpl"}
 {ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
 {pageaddvar name="javascript" value="javascript/helpers/texpand.js"}
 <div class="z-admincontainer">

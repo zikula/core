@@ -1,5 +1,5 @@
 {*  $Id$  *}
-{include file="theme_admin_menu.htm"}
+{include file="theme_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=xedit.gif set=icons/large __alt="Set default theme"}</div>
     <h2>{gt text="Theme confirmation prompt"}</h2>

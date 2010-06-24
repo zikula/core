@@ -1,4 +1,4 @@
-{include file="sysinfo_admin_menu.htm"}
+{include file="sysinfo_admin_menu.tpl"}
 {gt text="Zikula extensions" assign=templatetitle}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=info.gif set=icons/large alt=$templatetitle}</div>

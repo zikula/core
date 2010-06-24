@@ -1,5 +1,5 @@
 {gt text="Category registry" assign=templatetitle}
-{include file="categories_admin_menu.htm"}
+{include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
     <div class="z-adminpageicon">{img modname=core src=kcmdf.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>

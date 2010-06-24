@@ -5,7 +5,7 @@
 {elseif $action eq "cancel"}
 {gt text="Membership application cancellation" assign="templatetitle"}
 {/if}
-{include file="groups_user_menu.htm"}
+{include file="groups_user_menu.tpl"}
 
 {if $action != "subscribe" and $action != "unsubscribe" and $action != "cancel"}
 <p>{gt text="Error! Could not load data."}</p>

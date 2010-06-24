@@ -1,5 +1,5 @@
 {ajaxheader modname=Blocks filename=blocks.js}
-{include file="blocks_admin_menu.htm"}
+{include file="blocks_admin_menu.tpl"}
 {gt text="Edit block position" assign=templatetitle}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=edit.gif set=icons/large alt=$templatetitle}</div>

@@ -1,5 +1,5 @@
 {gt text="Delete category" assign=templatetitle}
-{include file="categories_admin_menu.htm"}
+{include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=editdelete.gif set=icons/large alt=$templatetitle}</div>
     <h2>{$templatetitle}</h2>

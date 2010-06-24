@@ -1,4 +1,4 @@
-{include file="blocks_admin_menu.htm"}
+{include file="blocks_admin_menu.tpl"}
 {ajaxheader modname=Blocks filename=blocks.js}
 {gt text="Click to activate this block" assign=activate}
 {gt text="Click to deactivate this block" assign=deactivate}

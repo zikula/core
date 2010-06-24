@@ -2,7 +2,7 @@
 <div class="z-warningmsg">{gt text="There are currently no groups that can be joined."}</div>
 {else}
 {gt text="Groups manager" assign=templatetitle}
-{include file="groups_user_menu.htm"}
+{include file="groups_user_menu.tpl"}
 <table class="z-datatable">
     <thead>
         <tr>

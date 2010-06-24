@@ -1,4 +1,4 @@
-{include file="mailer_admin_menu.htm"}
+{include file="mailer_admin_menu.tpl"}
 {ajaxheader modname=Mailer filename=mailer_admin_modifyconfig.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=configure.gif set=icons/large __alt="Settings"}</div>

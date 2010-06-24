@@ -1,6 +1,6 @@
 {ajaxheader}
 
-{include file="categories_admin_menu.htm"}
+{include file="categories_admin_menu.tpl"}
 <div class="z-admincontainer" id="top">
     {if $mode == "edit"}
     {gt text="Edit category" assign=templatetitle}

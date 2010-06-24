@@ -1,4 +1,4 @@
-{include file="blocks_admin_menu.htm"}
+{include file="blocks_admin_menu.tpl"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=configure.gif set=icons/large __alt='Settings' }</div>
     <h2>{gt text="Settings"}</h2>

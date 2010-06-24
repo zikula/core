@@ -1,4 +1,4 @@
-{include file="modules_admin_menu.htm"}
+{include file="modules_admin_menu.tpl"}
 {ajaxheader modname="Modules" filename="hooks.js"}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=package.gif set=icons/large __alt="Hooks to enable for this module"}</div>

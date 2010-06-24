@@ -1,4 +1,4 @@
-{include file="theme_admin_menu.htm"}
+{include file="theme_admin_menu.tpl"}
 {gt text="Delete theme" assign=templatetitle}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=editdelete.gif set=icons/large alt=$templatetitle}</div>
