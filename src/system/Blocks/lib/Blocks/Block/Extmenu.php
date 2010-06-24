@@ -408,7 +408,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
                        ->assign('blockinfo', $blockinfo);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_extmenu_modify.htm');
+        return $this->renderer->fetch('blocks_block_extmenu_modify.tpl');
     }
 
     /**

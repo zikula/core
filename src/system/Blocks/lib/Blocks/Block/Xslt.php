@@ -103,7 +103,7 @@ class Blocks_Block_Xslt extends Zikula_Block
         $this->renderer->assign($vars);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_xslt_modify.htm');
+        return $this->renderer->fetch('blocks_block_xslt_modify.tpl');
     }
 
     /**

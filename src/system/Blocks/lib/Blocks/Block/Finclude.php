@@ -119,7 +119,7 @@ class Blocks_Block_Finclude extends Zikula_Block
         $this->renderer->assign($vars);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_finclude_modify.htm');
+        return $this->renderer->fetch('blocks_block_finclude_modify.tpl');
     }
 
     /**

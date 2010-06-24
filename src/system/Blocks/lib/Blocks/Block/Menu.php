@@ -65,7 +65,7 @@ class Blocks_Block_Menu extends Zikula_Block
         // check out if the contents are cached.
         if ($this->renderer->is_cached('blocks_block_menu.htm')) {
             // Populate block info and pass to theme
-            $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.htm');
+            $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.tpl');
             return BlockUtil::themeBlock($blockinfo);
         }
 
@@ -126,7 +126,7 @@ class Blocks_Block_Menu extends Zikula_Block
         $this->renderer->assign('menuitems', $menuitems);
 
         // get the block content
-        $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.htm');
+        $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.tpl');
 
         // add the stylesheet to the header
         if (isset($vars['stylesheet'])) {
@@ -262,7 +262,7 @@ class Blocks_Block_Menu extends Zikula_Block
         $this->renderer->assign('menuitems', $menuitems);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_menu_modify.htm');
+        return $this->renderer->fetch('blocks_block_menu_modify.tpl');
     }
 
     /**
@@ -325,7 +325,7 @@ class Blocks_Block_Menu extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->renderer->clear_cache('blocks_block_menu.htm');
+        $this->renderer->clear_cache('blocks_block_menu.tpl');
 
         return($blockinfo);
     }
