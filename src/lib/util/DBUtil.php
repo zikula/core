@@ -1466,11 +1466,6 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'objectColumns'));
         }
 
-        if ($assocKey && !in_array($assocKey, $objectColumns)) {
-            throw new Exception(__f('Unable to find assocKey [%1$s] in objectColumns for table [%2$s]', array(
-                $assocKey, $tablename)));
-        }
-
         // since the single-object selects don't need to init
         // the paging logic, we ensure values are set here
         // in order to avoid E_ALL issues
@@ -1480,11 +1475,14 @@ class DBUtil
 
         $object = array();
         $objectArray = array();
-        $cSize = count($objectColumns);
         $fetchedObjectCount = 0;
         $resultRows = $result->fetchAll(Doctrine::FETCH_ASSOC);
         if ($resultRows && $objectColumns && count($resultRows[0]) != count($objectColumns)) {
             throw new Exception('$objectColumn field count must match the resultset');
+        }
+
+        if ($assocKey && $resultRows && !array_key_exists($assocKey, $resultRows[0])) {
+            throw new Exception(__f('Unable to find assocKey [%1$s] in objectColumns for resultset.', array($assocKey)));
         }
 
         foreach ($resultRows as $resultRow) {
@@ -1930,7 +1928,7 @@ class DBUtil
             return $res;
         }
 
-        $ca = self::getColumnsArray($table, $columnArray);
+        $ca = null;//Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227 //self::getColumnsArray($table, $columnArray);
         $objArr = self::marshallObjects($res, $ca, true, '', true, $permissionFilter);
 
         if (count($objArr) > 0) {
@@ -2045,7 +2043,7 @@ class DBUtil
         $orderby = self::_checkOrderByClause($orderby, $table);
 
         $objects = array();
-        $ca = self::getColumnsArray($table, $columnArray);
+        $ca = null;// Not required since Zikula 1.3.0 because of 'PDO::fetchAll()' #2227// self::getColumnsArray($table, $columnArray);
         $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray);
 
         do {
@@ -2126,7 +2124,7 @@ class DBUtil
 
         $objects = array();
         $fetchedObjectCount = 0;
-        $ca = self::getColumnsArray($table, $columnArray);
+        $ca = null;//Note required since Zikula 1.3.0 because of PDO::fetchAll() see #2227 //self::getColumnsArray($table, $columnArray);
         $sql = self::_getSelectAllColumnsFrom($table, $where, $orderby, $columnArray);
 
         do {
@@ -2678,7 +2676,7 @@ class DBUtil
             return $res;
         }
 
-        $ca = self::getColumnsArray($table, $columnArray);
+        $ca = null;//Note required since Zikula 1.3.0 because of PDO::fetchAll() see #2227 //self::getColumnsArray($table, $columnArray);
         $objArr = self::marshallObjects($res, $ca, true, '', true, $permissionFilter);
         self::setCache($table, $key, $objArr);
 
