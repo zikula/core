@@ -16,8 +16,10 @@
 /**
  * Smarty outputfilter to add a title to all admin pages
  *
- * @param     string
- * @param     Smarty
+ * @param string $source  Output source.
+ * @param Smarty &$smarty Reference to Smarty instance.
+ * 
+ * @return string
  */
 function smarty_outputfilter_admintitle($source, &$smarty)
 {

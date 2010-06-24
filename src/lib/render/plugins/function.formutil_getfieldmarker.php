@@ -14,10 +14,17 @@
  */
 
 /**
+ * Get field marker.
+ * 
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *   - field:    The field for which we wish to get the field marker
  *   - validationErrors: the validation errors
+ *   
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 function smarty_function_formutil_getfieldmarker($params, &$smarty)
 {

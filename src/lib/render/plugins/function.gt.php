@@ -39,9 +39,10 @@
  * String replacement follows the rules at http://php.net/sprintf but please note Smarty seems to pass
  * all variables as strings so %s and %n$s are mostly used.
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      translation if it was available
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string Translation if it was available.
  */
 function smarty_function_gt($params, &$smarty)
 {

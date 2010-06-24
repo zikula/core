@@ -27,9 +27,10 @@
  * Example
  *   {modgetname|varprepfordisplay}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The module variable
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The module variable.
  */
 function smarty_function_modgetname ($params, &$smarty)
 {

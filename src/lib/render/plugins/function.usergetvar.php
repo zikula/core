@@ -30,11 +30,10 @@
  * Example
  *   {usergetvar name='user_icq' uid=1|varprepfordisplay}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $name        The name of the parameter being requested
- * @param        integer     $uid         The user id to obtain the variable for - this parameter is optional
- * @return       string      The user variable
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The user variable.
  */
 function smarty_function_usergetvar($params, &$smarty)
 {

@@ -19,10 +19,11 @@
  * Example
  * {userwelcome}
  *
- * @see          function.userwelcome.php::smarty_function_userwelcome()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the welcome message
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.userwelcome.php::smarty_function_userwelcome()
+ * @return string The welcome message.
  */
 function smarty_function_userwelcome($params, &$smarty)
 {

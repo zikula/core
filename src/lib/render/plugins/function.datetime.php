@@ -40,18 +40,19 @@
  *
  * http://www.php.net/manual/en/function.strftime.php
  *
- * @see          function.datetime.php::smarty_function_datetime()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      format       Date and time format
- * @return       string      current date and time
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.datetime.php::smarty_function_datetime()
+ * @return string
  */
 function smarty_function_datetime($params, &$smarty)
 {
     // set some defaults
     $format = isset($params['format']) ? $params['format'] : __('%b %d, %Y - %I:%M %p');
 
-    if (strpos($format, '%') !== false) { // allow the use of conversion specifiers
+    if (strpos($format, '%') !== false) {
+        // allow the use of conversion specifiers
         return DateUtil::formatDatetime('', $format);
     }
 

@@ -41,9 +41,10 @@
  * ssl - set to constant null,true,false NOTE: $ssl = true not $ssl = 'true'  null - leave the current status untouched, true - create a ssl url, false - create a non-ssl url
  *   <a href="{modurl modname='News' type='user' func='display' sid='3' ssl=true}">Link</a>
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The URL
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The URL.
  */
 function smarty_function_modurl($params, &$smarty)
 {

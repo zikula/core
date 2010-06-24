@@ -32,10 +32,11 @@
  * Example
  * {modfunc modname='News' type='user' func='view'}
  *
- * @see          function.ModUtil::apiFunc.php::smarty_function_modapifunc()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the results of the module function
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.ModUtil::apiFunc.php::smarty_function_modapifunc()
+ * @return string The results of the module function.
  */
 function smarty_function_modfunc($params, &$smarty)
 {

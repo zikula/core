@@ -14,22 +14,28 @@
  */
 
 /**
- * pnml: same as pnml() but with the added option to assign the result to a smarty variable
+ * FormUtil::getPassedValue().
  *
- * @author   Robert Gasch
- * @version  $Id: function.formutil_getpassedvalue.php 27368 2009-11-02 20:19:51Z mateo $
- * @param    assign      The smarty variable to assign the retrieved value to
- * @param    html        Wether or not to DataUtil::formatForDisplayHTML'ize the ML value
- * @param    key         The key to retrieve from the input vector
- * @param    default     The default value to return if the key is not set
- * @param    source      The input source to retrieve the key from 
- * @param    noprocess   If set, no processing is applied to the constant value
+ * Available parameters:
+ *   assign    The smarty variable to assign the retrieved value to.
+ *   html      Wether or not to DataUtil::formatForDisplayHTML'ize the ML value.
+ *   key       The key to retrieve from the input vector.
+ *   name      Alias for key.
+ *   default   The default value to return if the key is not set.
+ *   source    The input source to retrieve the key from .
+ *   noprocess If set, no processing is applied to the constant value.
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  *
  */
 function smarty_function_formutil_getpassedvalue ($params, &$smarty)
 {
     if ((!isset($params['key']) || !$params['key']) && 
-        (!isset($params['name']) || !$params['name'])) { // use name as an alias for key for programmer convenience
+        (!isset($params['name']) || !$params['name'])) {
+        // use name as an alias for key for programmer convenience
         $smarty->trigger_error('formutil_getpassedvalue: attribute key (or name) required');
         return false;
     }

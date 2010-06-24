@@ -22,26 +22,26 @@
  * modulename::debug     .*     ACCESS_ADMIN
  * permission to see this.
  *
+ * This plugin is basing on the original debug plugin written by Monte Ohrt <monte@ispi.net>
  *
  * Example
  *   { pndebug }
  *
- *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $output      if html, show debug in rendered page, otherwise open popup window
- * @param        string      $template    specify different debug template, default pndebug.html,
- *                                        must be stored in Theme/pntemplates
- * @return       string      debug output
- *
- * This plugin is basing on the original debug plugin written by Monte Ohrt <monte@ispi.net>
+ * Parameters:
+ *  output   If html, show debug in rendered page, otherwise open popup window
+ *  template Specify different debug template, default pndebug.html,
+ *                                        must be stored in Theme/pntemplates.
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string debug output
  */
 function smarty_function_zdebug($params, &$smarty)
 {
     $out = '';
     $thismodule = ModUtil::getName();
-    if (SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN))
-    {
+    if (SecurityUtil::checkPermission($thismodule.'::debug', '::', ACCESS_ADMIN)) {
         if (isset($params['output']) && !empty($params['output'])) {
             $smarty->assign('_smarty_debug_output', $params['output']);
         }

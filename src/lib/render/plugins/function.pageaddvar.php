@@ -39,11 +39,10 @@
  *   {pageaddvar name='javascript' value='path/to/myscript.js'}
  *   {pageaddvar name='javascript' value='path/to/myscript.js,path/to/another/script.js'}
  *
- *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $name        Name of the page variable to set
- * @param        string      $value        Value of  he page variable to set
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 function smarty_function_pageaddvar($params, &$smarty)
 {

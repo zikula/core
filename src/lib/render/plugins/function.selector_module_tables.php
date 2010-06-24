@@ -16,18 +16,22 @@
 /**
  * selector_module_tables: generate a PN Module table selector
  *
- * @author  Robert Gasch
- * @param   modname        The module name we wish to get tables for
- * @param   name           The name of the selector tag
- * @param   selectedValue  The currently selected value
- * @param   defaultValue   The default value (only used if no selectedValue is supplied)
- * @param   defaultText    Text to go with the default value
- * @param   remove         Text to go with the default value
- * @param   nStripChars    Number of characters to remove (to remove pn database table prefix)
- * @param   submit         Wether or not to auto-submit after selection
- * @param   disabled       Wether or not disable the selector
- * @param   multipleSize   The size of the selector to create (default=1)
+ * Parameter:
+ *  modname       The module name we wish to get tables for
+ *  name          The name of the selector tag
+ *  selectedValue The currently selected value
+ *  defaultValue  The default value (only used if no selectedValue is supplied)
+ *  defaultText   Text to go with the default value
+ *  remove        Text to go with the default value
+ *  nStripChars   Number of characters to remove (to remove pn database table prefix)
+ *  submit        Wether or not to auto-submit after selection
+ *  disabled      Wether or not disable the selector
+ *  multipleSize  The size of the selector to create (default=1)
  *
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 function smarty_function_selector_module_tables ($params, &$smarty)
 {

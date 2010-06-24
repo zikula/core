@@ -27,9 +27,10 @@
  * Example
  *   {html_select_locales name=locale selected=en}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the value of the last status message posted, or void if no status message exists
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The value of the last status message posted, or void if no status message exists.
  */
 function smarty_function_html_select_locales($params, &$smarty)
 {

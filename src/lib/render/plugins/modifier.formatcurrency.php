@@ -13,12 +13,14 @@
  * information regarding copyright and licensing.
  */
 /**
- * Example
- *
+ * Format currency.
+ * 
+ * Example:
  *   {$MyVar|formatcurrency}
  *
- * @param        array    $string     the contents to transform
- * @return       string   the modified output
+ * @param string $string The contents to transform.
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_formatCurrency ($string)
 {

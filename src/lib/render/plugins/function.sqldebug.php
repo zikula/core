@@ -16,7 +16,7 @@
 /**
  * Smarty function to get the site's page render time
  *
- * available parameters:
+ * Available parameters:
  *  - assign      if set, the messages will be assigned to this variable
  *  - round       if the, the time will be rounded to this number of decimal places
  *                (optional: default 2)
@@ -24,10 +24,10 @@
  * Example
  * {sqldebug}
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
- * @param    string   $round      format to apply to the number (based on the round php function)
- * @return   string   the page render time in seconds
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The page render time in seconds.
  */
 function smarty_function_sqldebug ($params, &$smarty)
 {
@@ -48,8 +48,7 @@ function smarty_function_sqldebug ($params, &$smarty)
         $count      = (int)$ZRuntime['sql_count_request'];
         if ($logDest == 'PRINT') {
             $messages[] = '<div class="z-sub" style="text-align:center;">' . "Count: $count SQL statements" . '</div>';
-        }
-        else {
+        } else {
             $messages[] = "Count: $count SQL statements";
         }
     }
@@ -75,15 +74,14 @@ function smarty_function_sqldebug ($params, &$smarty)
         $br = ($logDest == 'PRINT' ? '<br />' : '');
         $c  = 1;
 
-        foreach ($ZRuntime['sql'] as $sql)
-        {
+        foreach ($ZRuntime['sql'] as $sql) {
             $clean = str_replace ("\n", '', $sql['stmt']);
             $clean = str_replace ('  ', ' ', $clean);
             $line .= "SQL Stmt #$c $br\n";
             $line .= "- $clean $br\n";
 
             if (isset($sql['limit'])) {
-              $line .= "-- Limit: $sql[limit]$br\n";
+                $line .= "-- Limit: $sql[limit]$br\n";
             }
 
             $line .= "-- Rows Affected: $sql[rows_affected] $br\n";
@@ -95,7 +93,7 @@ function smarty_function_sqldebug ($params, &$smarty)
 
             if (isset($sql['rows'])) {
                 $ct = 1;
-                foreach($sql['rows'] as $row) {
+                foreach ($sql['rows'] as $row) {
                     $line .= "--- Row $ct: " . implode ('|', $row) . "$br\n";
                     $ct++;
                 }

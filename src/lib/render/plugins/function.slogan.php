@@ -19,10 +19,11 @@
  * Example
  * {slogan}
  *
- * @see          function.slogan.php::smarty_function_slogan()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the slogan
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.slogan.php::smarty_function_slogan()
+ * @return string The slogan.
  */
 function smarty_function_slogan($params, &$smarty)
 {

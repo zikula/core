@@ -21,9 +21,10 @@
  * Available parameters:
  *   - none
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the value of the config var entrypoint
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The value of the config var entrypoint.
  */
 function smarty_function_entrypoint($params, &$smarty)
 {

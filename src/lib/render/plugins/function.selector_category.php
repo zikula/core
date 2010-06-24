@@ -13,6 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Category selector.
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
+ */
 function smarty_function_selector_category ($params, &$smarty)
 {
     $categoryRegistryModule   = isset($params['categoryRegistryModule'])   ? $params['categoryRegistryModule']   : '';
@@ -62,12 +70,12 @@ function smarty_function_selector_category ($params, &$smarty)
     if (!$category && $path) {
         $category = CategoryUtil::getCategoryByPath ($path, $pathfield);
 
-    // check if we have a numeric category
     } elseif (is_numeric($category)) {
+        // check if we have a numeric category
         $category = CategoryUtil::getCategoryByID ($category);
 
-    // check if we have a string/path category
     } elseif (is_string($category) && strpos($category, '/')===0) {
+        // check if we have a string/path category
         $category = CategoryUtil::getCategoryByPath ($category, $pathfield);
     }
 

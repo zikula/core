@@ -16,16 +16,17 @@
 /**
  * Smarty function to display the sitename
  *
- * available parameters:
+ * Available parameters:
  *  - assign     if set, the title will be assigned to this variable
  *
  * Example
  * {sitename}
  *
- * @see          function.sitename.php::smarty_function_sitename()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the sitename
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.sitename.php::smarty_function_sitename()
+ * @return string The sitename.
  */
 function smarty_function_sitename($params, &$smarty)
 {

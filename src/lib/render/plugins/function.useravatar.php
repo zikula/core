@@ -19,9 +19,10 @@
  * Example
  * {useravatar uid="2"}
  *
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        integer     $uid         user-id
- * @return       string      a formatted string containing the avatar image
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string A formatted string containing the avatar image.
  */
 
 function smarty_function_useravatar($params, &$smarty)
@@ -48,7 +49,8 @@ function smarty_function_useravatar($params, &$smarty)
         if (isset($params['rating']) && !empty($params['rating'])) $avatarURL .= "&rating=".$params['rating'];
         if (isset($params['size']) && !empty($params['size'])) $avatarURL .="&size=".$params['size'];
         $avatarURL .= "&default=".urlencode(System::getBaseUrl() . $avatarpath . '/' . $gravatarimage);
-    } else { // e.g. blank.gif or empty avatars
+    } else {
+        // e.g. blank.gif or empty avatars
         return false;
     }
 

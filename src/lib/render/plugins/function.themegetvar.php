@@ -26,9 +26,10 @@
  * Example
  * {themegetvar name='bgcolor'}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the colour definition
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The colour definition.
  */
 function smarty_function_themegetvar($params, &$smarty)
 {

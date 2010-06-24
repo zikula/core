@@ -14,13 +14,16 @@
  */
 
 /**
- * Smarty short urls outputfilter plugin
+ * Smarty short urls outputfilter plugin.
  *
  * File:      outputfilter.shorturls.php
  * Type:      outputfilter
  * Name:      shorturls
- * @param     string
- * @param     Smarty
+ * 
+ * @param string $source  Output source.
+ * @param Smarty &$smarty Reference to Smarty instance.
+ * 
+ * @return string
  */
 function smarty_outputfilter_shorturls($source, &$smarty)
 {

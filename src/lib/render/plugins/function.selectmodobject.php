@@ -20,11 +20,17 @@
  *   {selectmodobject module="AutoCustomer" objecttype="customer" id=4 assign="myCustomer"}
  *   {selectmodobject module="AutoCocktails" objecttype="recipe" id=12 assign="myRecipe"}
  *
- * @param    module     string              name of the module storing the desired object
- * @param    objecttype string              name of object type
- * @param    id         int                 identifier of desired object
- * @param    prefix     string              optional prefix for class names (defaults to PN)
- * @param    assign     string              name of the returned object
+ * Parameters:
+ *  module     Name of the module storing the desired object
+ *  objecttype Name of object type
+ *  id         Identifier of desired object
+ *  prefix     Optional prefix for class names (defaults to PN)
+ *  assign     Name of the returned object
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return void
  */
 function smarty_function_selectmodobject($params, &$smarty)
 {

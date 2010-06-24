@@ -16,10 +16,10 @@
 /**
  * Smarty function to display the available workflow actions for the current item state.
  *
- * @param array $params All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
- *
- * @return string HTML code with the available workflow actions for the current item state.
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return stringHTML code with the available workflow actions for the current item state.
  */
 function smarty_function_workflow_getactionsbystate($params, &$smarty)
 {

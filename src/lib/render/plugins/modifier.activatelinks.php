@@ -14,12 +14,11 @@
  */
 
 /**
- * Smarty Plugin
- * -------------------------------------------------------------
- * Type:    modifier
- * Name:    activatelinks
- * Purpose: Plugin to replace URLs found within a string into HTML links.
+ * Plugin to replace URLs found within a string into HTML links.
  *
+ * @param string $text Text to apply modifier on.
+ * 
+ * @return string
  */
 function smarty_modifier_activatelinks($text)
 {

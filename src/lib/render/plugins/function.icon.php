@@ -52,9 +52,10 @@
  * 261
  * <img src="modules/Example/images/eng/heading.gif" alt="" width="261" height="69"  />
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The img tag
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The img tag.
  */
 function smarty_function_icon($params, &$smarty)
 {
@@ -120,10 +121,12 @@ function smarty_function_icon($params, &$smarty)
     unset($params['type']);
     $assign = $params['assign'];
     unset($params['assign']);
-    if (isset($params['altml'])) { // legacy
+    if (isset($params['altml'])) {
+        // legacy
         unset($params['altml']);
     }
-    if (isset($params['titleml'])) { // legacy
+    if (isset($params['titleml'])) {
+        // legacy
         unset($params['titleml']);
     }
     unset($params['optional']);

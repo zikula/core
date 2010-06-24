@@ -14,8 +14,9 @@
  */
 
 /**
- * Smarty function to display a list box with a list of active modules
- * either user or admin capable or all modules
+ * Smarty function to display a list box with a list of active modules.
+ * 
+ * Either user or admin capable or all modules.
  *
  * Available parameters:
  *   - name:     Name for the control (optional) if not present then only the option tags are output
@@ -33,10 +34,11 @@
  *         {html_select_modules selected=$mythemechoice}
  *     </select>
  *
- * @see          function.html_select_modules.php::smarty_function_html_select_modules()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      a drop down containing a list of modules
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.html_select_modules.php::smarty_function_html_select_modules()
+ * @return string A drop down containing a list of modules.
  */
 function smarty_function_html_select_modules($params, &$smarty)
 {

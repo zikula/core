@@ -16,7 +16,7 @@
 /**
  * Smarty function to include module specific javascripts
  *
- * available parameters:
+ * Available parameters:
  *  - modname     module name (if not set, the current module is assumed)
  *                if modname="" than we will look into the main javascript folder
  *  - script      name of the external javascript file (mandatory)
@@ -50,9 +50,10 @@
  *
  *      if foobar is the current module.
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The tag
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The tag.
  */
 function smarty_function_modulejavascript($params, &$smarty)
 {
@@ -101,7 +102,7 @@ function smarty_function_modulejavascript($params, &$smarty)
 
     // search for the javascript
     $scriptsrc = '';
-    foreach($searchpaths as $path) {
+    foreach ($searchpaths as $path) {
         if (is_readable("$path/$osscript")) {
             $scriptsrc = "$path/$osscript";
             break;

@@ -34,8 +34,9 @@
  *   {insert name="getstatusmsg" style="color:red;"}
  *   {insert name="getstatusmsg" class="statusmessage" tag="span"}
  *
- * @param $params
- * @param $smarty
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
  * @return string
  */
 function smarty_insert_getstatusmsg($params, &$smarty)

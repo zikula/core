@@ -21,8 +21,10 @@
  * the HTML comment <!-- pagevars --> to the page template. Note that this must always be in
  * the header for the output to function correctly.
  *
- * @param     string
- * @param     Smarty
+ * @param string $source  Output source.
+ * @param Smarty &$smarty Reference to Smarty instance.
+ * 
+ * @return string
  */
 function smarty_outputfilter_pagevars($source, &$smarty)
 {
@@ -55,16 +57,16 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     // check if we need to perform ligthbox replacement -- javascript
     if (is_array($javascripts) && !empty($javascripts)) {
         $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-        if($key && !is_readable('javascript/ajax/lightbox.js')) {
+        if ($key && !is_readable('javascript/ajax/lightbox.js')) {
             $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
             $replaceLightbox = true;
         }
     }
 
     // check if we need to perform ligthbox replacement -- css
-    if(isset($replaceLightbox) && $replaceLightbox === true) {
+    if (isset($replaceLightbox) && $replaceLightbox === true) {
         $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
-        if($key) {
+        if ($key) {
             $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
         }
     }
@@ -135,7 +137,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
         // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in ajax.js
         $ajaxtimeout = System::getVar('ajaxtimeout', 5000);
         if ($ajaxtimeout != 5000) {
-            $return .= 'document.location.ajaxtimeout=' . (int) DataUtil::formatForDisplay($ajaxtimeout). ';';
+            $return .= 'document.location.ajaxtimeout=' . (int)DataUtil::formatForDisplay($ajaxtimeout). ';';
         }
         $return .= ' /* ]]> */</script>' . "\n";
         foreach ($javascripts as $j => $javascript) {
@@ -192,6 +194,14 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     return $source;
 }
 
+/**
+ * Clean additional header.
+ * 
+ * @param array  &$additional_header Additional header.
+ * @param string $pagevar            Pagevar.
+ * 
+ * @return void
+ */
 function _smarty_outputfilter_pagevars_clean_additional_header(&$additional_header, $pagevar)
 {
     $ahcount = count($additional_header);
@@ -204,8 +214,8 @@ function _smarty_outputfilter_pagevars_clean_additional_header(&$additional_head
         if (!empty($additional_header[$i])) {
             if (stristr($additional_header[$i], $pagevar) != false) {
                 // gotcha -found pagevar in additional_header string
-            // skip this
             } else {
+                // skip this
                 // not found, keep the additional_header for later checks or output
                 $new_header[] = $additional_header[$i];
             }
@@ -215,6 +225,15 @@ function _smarty_outputfilter_pagevars_clean_additional_header(&$additional_head
     return;
 }
 
+/**
+ * Save combined pagevars.
+ * 
+ * @param array  $files     Files.
+ * @param string $ext       Extention.
+ * @param string $cache_dir Cache directory.
+ * 
+ * @return string Combined pagevars file.
+ */
 function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
 {
     $themevars = ModUtil::getVar('Theme');
@@ -224,7 +243,7 @@ function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
 
     $cachedFile    = "{$cache_dir}/{$hash}_{$ext}.php";
     $cachedFileUri = "{$hash}_{$ext}.php";
-    if(is_readable($cachedFile) && (filemtime($cachedFile) + $lifetime) > time()) {
+    if (is_readable($cachedFile) && (filemtime($cachedFile) + $lifetime) > time()) {
         return "jcss.php?f=$cachedFileUri";
     }
 
@@ -244,7 +263,7 @@ function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
     $dest = fopen($cachedFile, 'w');
 
     $contents[] = "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n";
-    foreach($files as $file) {
+    foreach ($files as $file) {
         _smarty_outputfilter_pagevars_readfile($contents, $file, $ext);
     }
     
@@ -275,14 +294,16 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
      *
      * This function includes the content of all @import statements (recursive).
      *
-     * @param array $contents array to save content to
-     * @param string $file path to file
-     * @param string $ext 'css' or 'js'
+     * @param array  &$contents Array to save content to.
+     * @param string $file      Path to file.
+     * @param string $ext       Can be 'css' or 'js'.
+     * 
+     * @return void
      */
     function _smarty_outputfilter_pagevars_readfile(&$contents, $file, $ext)
     {
         $source = fopen($file, 'r');
-        if($source) {
+        if ($source) {
             $filepath = explode('/', dirname($file));
             $contents[] = "/* --- Source file: {$file} */\n\n";
             $inMultilineComment = false;
@@ -290,54 +311,54 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
             $wasCommentHack = false;
 
             while (!feof($source)) {
-                if($ext == 'css') {
+                if ($ext == 'css') {
                     $line = fgets($source, 4096);
                     $lineParse = trim($line);
                     $newLine = "";
 
                     // parse line char by char
-                    for($i = 0; $i < strlen($lineParse); $i++) {
+                    for ($i = 0; $i < strlen($lineParse); $i++) {
                         $char = $lineParse{$i};
                         $nextchar = $i < strlen($lineParse)? $lineParse{$i+1} : "";
                         
-                        if(!$inMultilineComment && $char == '/' && $nextchar == '*') {
+                        if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
                             // a multiline comment starts here
                             $inMultilineComment = true;
                             $wasCommentHack = false;
                             $newLine .= $char.$nextchar;
                             $i++;
 
-                        } else if($inMultilineComment && $char == '*' && $nextchar == '/') {
+                        } else if ($inMultilineComment && $char == '*' && $nextchar == '/') {
                             // a multiline comment stops here
                             $inMultilineComment = false;
                             $newLine .= $char.$nextchar;
-                            if(substr($lineParse, $i-3, 8) == '/*\*//*/') {
+                            if (substr($lineParse, $i-3, 8) == '/*\*//*/') {
                                 $wasCommentHack = true;
                                 $i += 3; // move to end of hack process hack as it where
                                 $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
                             }
                             $i++;
 
-                        } else if($importsAllowd && $char == '@' && substr($lineParse, $i, 7) == '@import') {
+                        } else if ($importsAllowd && $char == '@' && substr($lineParse, $i, 7) == '@import') {
                             // an @import starts here
                             $lineParseRest = trim(substr($lineParse, $i + 7));
-                            if(strtolower(substr($lineParseRest, 0, 3)) == 'url') {
+                            if (strtolower(substr($lineParseRest, 0, 3)) == 'url') {
                                 // the @import uses url to specify the path
                                 $posEnd = strpos($lineParse, ';', $i);
                                 $charsEnd = substr($lineParse, $posEnd - 1, 2);
-                                if($charsEnd == ');') {
+                                if ($charsEnd == ');') {
                                     // used url() without media
                                     $start = strpos($lineParseRest, '(')+1;
                                     $end = strpos($lineParseRest, ')');
                                     $url = substr($lineParseRest, $start, $end - $start);
-                                    if($url{0} == '"' | $url{0} == "'") {
+                                    if ($url{0} == '"' | $url{0} == "'") {
                                         $url = substr($url, 1, strlen($url)-2);
                                     }
 
                                     // fix url
                                     $url = dirname($file) . '/' .$url;
 
-                                    if(!$wasCommentHack) {
+                                    if (!$wasCommentHack) {
                                         // clear buffer
                                         $contents[] = $newLine;
                                         $newLine = "";
@@ -356,7 +377,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                                     $start = strpos($lineParseRest, '(')+1;
                                     $end = strpos($lineParseRest, ')');
                                     $url = substr($lineParseRest, $start, $end - $start);
-                                    if($url{0} == '"' | $url{0} == "'") {
+                                    if ($url{0} == '"' | $url{0} == "'") {
                                         $url = substr($url, 1, strlen($url)-2);
                                     }
 
@@ -369,7 +390,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                                     // skip @import statement
                                     $i += $posEnd - $i;
                                 }
-                            } else if(substr($lineParseRest, 0, 1) == '"' || substr($lineParseRest, 0, 1) == '\'') {
+                            } else if (substr($lineParseRest, 0, 1) == '"' || substr($lineParseRest, 0, 1) == '\'') {
                                 // the @import uses an normal string to specify the path
                                 $posEnd = strpos($lineParseRest, ';');
                                 $url = substr($lineParseRest, 1, $posEnd-2);
@@ -378,7 +399,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                                 // fix url
                                 $url = dirname($file) . '/' .$url;
 
-                                if(!$wasCommentHack) {
+                                if (!$wasCommentHack) {
                                     // clear buffer
                                     $contents[] = $newLine;
                                     $newLine = "";
@@ -392,7 +413,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                                 $i += $posEnd - $i;
                             }
 
-                        } else if(!$inMultilineComment && $char != ' ' && $char != "\n" && $char != "\r\n" && $char != "\r") {
+                        } else if (!$inMultilineComment && $char != ' ' && $char != "\n" && $char != "\r\n" && $char != "\r") {
                             // css rule found -> stop processing of @import statements
                             $importsAllowd = false;
                             $newLine .= $char;
@@ -403,7 +424,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                     }
 
                     // fix other paths after @import processing
-                    if(!$importsAllowd) {
+                    if (!$importsAllowd) {
                         $newLine = _smarty_outputfilter_pagevars_cssfixPath($newLine, explode('/', dirname($file)));
                     }
 
@@ -419,13 +440,21 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
 }
 
 if (!function_exists('_smarty_outputfilter_pagevars_cssfixPath')) {
+    /**
+     * Fix paths in CSS files.
+     * 
+     * @param string $line     CSS file line.
+     * @param string $filepath Path to original file.
+     * 
+     * @return tring
+     */
     function _smarty_outputfilter_pagevars_cssfixPath($line, $filepath)
     {
         $regexpurl = '/url\([\'"]?([\.\/]*)(.*?)[\'"]?\)/i';
-        if(strpos($line,'url') !== false) {
+        if (strpos($line,'url') !== false) {
             preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
-            foreach($matches as $match) {
-                if(strpos($match[1], '/') !== 0) {
+            foreach ($matches as $match) {
+                if (strpos($match[1], '/') !== 0) {
                     $depth = substr_count($match[1],'../') * -1;
                     $path = $depth < 0 ? array_slice($filepath, 0, $depth) : $filepath;
                     $path = implode('/', $path);

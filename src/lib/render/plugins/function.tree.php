@@ -16,9 +16,10 @@
 /**
  * Smarty function to include the relevant files for the phpLayersMenu and pass a previously generated menu string to phpLayersMenu
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the results of the module function
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The results of the module function
  */
 function smarty_function_tree ($params, &$smarty)
 {
@@ -26,7 +27,7 @@ function smarty_function_tree ($params, &$smarty)
     $menuArray = isset($params['menuarray']) ? $params['menuarray'] : null;
     $config    = isset($params['config'])    ? $params['config']    : array();
 
-    if(!isset($menuString) && !isset($menuArray)) {
+    if (!isset($menuString) && !isset($menuArray)) {
         $smarty->trigger_error(__f('Error! in %1$s: %2$s or %3$s parameter must be specified.', array('smarty_function_tree', 'menustring', 'menuarray')));
         return false;
     }
@@ -36,7 +37,7 @@ function smarty_function_tree ($params, &$smarty)
     $config = array_merge($config,(array)$params);
 
     $tree = new Zikula_Tree($config);
-    if(isset($menuArray)) {
+    if (isset($menuArray)) {
         $tree->loadArrayData($menuArray);
     } else {
         $tree->loadStringData($menuString);

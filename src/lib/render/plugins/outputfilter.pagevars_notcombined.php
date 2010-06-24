@@ -21,8 +21,10 @@
  * the HTML comment <!-- pagevars --> to the page template. Note that this must always be in
  * the header for the output to function correctly.
  *
- * @param     string
- * @param     Smarty
+ * @param string $source  Output source.
+ * @param Smarty &$smarty Reference to Smarty instance.
+ * 
+ * @return string
  */
 function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
 {
@@ -55,16 +57,16 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     // check if we need to perform ligthbox replacement -- javascript
     if (is_array($javascripts) && !empty($javascripts)) {
         $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-        if($key && !is_readable('javascript/ajax/lightbox.js')) {
+        if ($key && !is_readable('javascript/ajax/lightbox.js')) {
             $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
             $replaceLightbox = true;
         }
     }
 
     // check if we need to perform ligthbox replacement -- css
-    if(isset($replaceLightbox) && $replaceLightbox === true) {
+    if (isset($replaceLightbox) && $replaceLightbox === true) {
         $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
-        if($key) {
+        if ($key) {
             $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
         }
     }
@@ -105,7 +107,7 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
         // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in ajax.js
         $ajaxtimeout = System::getVar('ajaxtimeout', 5000);
         if ($ajaxtimeout != 5000) {
-            $return .= 'document.location.ajaxtimeout=' . (int) DataUtil::formatForDisplay($ajaxtimeout) . ';';
+            $return .= 'document.location.ajaxtimeout=' . (int)DataUtil::formatForDisplay($ajaxtimeout) . ';';
         }
         $return .= ' /* ]]> */</script>' . "\n";
         foreach ($javascripts as $javascript) {
@@ -160,6 +162,14 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
     return $source;
 }
 
+/**
+ * Clean additional header.
+ * 
+ * @param array  &$additional_header Additional header.
+ * @param string $pagevar            Pagevar.
+ * 
+ * @return void
+ */
 function _smarty_outputfilter_pagevars_notcombined_clean_additional_header(&$additional_header, $pagevar)
 {
     $ahcount = count($additional_header);
@@ -172,8 +182,8 @@ function _smarty_outputfilter_pagevars_notcombined_clean_additional_header(&$add
         if (!empty($additional_header[$i])) {
             if (stristr($additional_header[$i], $pagevar) != false) {
                 // gotcha -found pagevar in additional_header string
-            // skip this
             } else {
+                // skip this
                 // not found, keep the additional_header for later checks or output
                 $new_header[] = $additional_header[$i];
             }

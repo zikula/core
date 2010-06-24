@@ -16,7 +16,7 @@
 /**
  * Smarty function to get the site's page render time
  *
- * available parameters:
+ * Available parameters:
  *  - assign      if set, the message will be assigned to this variable
  *  - round       if the, the time will be rounded to this number of decimal places
  *                (optional: default 2)
@@ -26,15 +26,15 @@
  *
  * {pagerendertime round=2} outputs 'Page created in 0.18 seconds.'
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
- * @param    string   $round      format to apply to the number (based on the round php function)
- * @return   string   the page render time in seconds
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The page render time in seconds.
  */
 function smarty_function_pagerendertime($params, &$smarty)
 {
     // show time to render
-    if ($GLOBALS['ZConfig']['Debug']['pagerendertime']){
+    if ($GLOBALS['ZConfig']['Debug']['pagerendertime']) {
         // calcultate time to render
         $mtime = explode(' ',microtime());
         $dbg_endtime = $mtime[1] + $mtime[0];

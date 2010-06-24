@@ -16,12 +16,18 @@
 /**
  * selector_table_fields: generate a table-fields selector
  *
- * @param   name        The name of the selector tag
- * @param   selectedValue   The currently selected value
- * @param   defaultValue    The default value (only used if no selectedValue is supplied)
- * @param   defaultText Text to go with the default value
- * @param   includeAll  Wether or not to include an 'All' selector
- * @param   allText     Text to go with the 'All' select value
+ * Parameter:
+ *  name          The name of the selector tag
+ *  selectedValue The currently selected value
+ *  defaultValue  The default value (only used if no selectedValue is supplied)
+ *  defaultText   Text to go with the default value
+ *  includeAll    Wether or not to include an 'All' selector
+ *  allText       Text to go with the 'All' select value
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 function smarty_function_selector_table_fields ($params, &$smarty)
 {

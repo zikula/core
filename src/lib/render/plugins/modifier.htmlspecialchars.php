@@ -14,15 +14,15 @@
  */
 
 /**
- * Smarty modifier to prepare a variable for display
- * by converting special characters to HTML entities
+ * Smarty modifier to prepare a variable for display by converting special characters to HTML entities.
  *
  * Example
  *
  *   {$MyVar|htmlspecialchars}
  *
- * @param        array    $string     the contents to transform
- * @return       string   the modified output
+ * @param mixed $string The contents to transform.
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_htmlspecialchars($string)
 {

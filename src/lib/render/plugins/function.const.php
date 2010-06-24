@@ -14,18 +14,20 @@
  */
 
 /**
- * Smarty plugin to convert string to PHP constant (required to support
- * class constants
+ * Smarty plugin to convert string to PHP constant (required to support class constants).
  *
- * Example
- *
+ * Example:
  *   {const name="ModUtil::TYPE_SYSTEM"}
+ *   
+ * Argument $params may contain:
+ *   name      The constant name.
+ *   assign    The smarty variable to assign the resulting menu HTML to.
+ *   noprocess If set the resulting string constant is not processed.
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      assign       The smarty variable to assign the resulting menu HTML to
- * @param        string      noprocess    If set the resulting string constant is not processed
- * @return       string      the language constant
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The language constant.
  */
 function smarty_function_const($params, &$smarty)
 {

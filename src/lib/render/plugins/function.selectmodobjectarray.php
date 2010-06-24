@@ -20,14 +20,20 @@
  *   {selectmodobjectarray module="AutoCustomer" objecttype="customer" assign="myCustomers"}
  *   {selectmodobjectarray module="AutoCocktails" objecttype="recipe" orderby="name desc" assign="myRecipes"}
  *
- * @param    module     string              name of the module storing the desired object
- * @param    objecttype string              name of object type
- * @param    where      string              filter value
- * @param    orderby    string              sorting field and direction
- * @param    pos        int                 start offset
- * @param    num        int                 amount of selected objects
- * @param    prefix     string              optional prefix for class names (defaults to PN)
- * @param    assign     string              name of the returned object
+ * Parameters:
+ *  module     Name of the module storing the desired object
+ *  objecttype Name of object type
+ *  where      Filter value
+ *  orderby    Sorting field and direction
+ *  pos        Start offset
+ *  num        Amount of selected objects
+ *  prefix     Optional prefix for class names (defaults to PN)
+ *  assign     Name of the returned object
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return void
  */
 function smarty_function_selectmodobjectarray($params, &$smarty)
 {

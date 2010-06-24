@@ -35,10 +35,11 @@
  * Example
  * {modcallhooks hookobject='item' hookaction='modify' hookid=$tid $modname='ThisModule' $objectid=$tid}
  *
- * @see          function.modcallhooks.php::smarty_function_modcallhooks()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the results of the module function
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.modcallhooks.php::smarty_function_modcallhooks()
+ * @return string The results of the module function.
  */
 function smarty_function_modcallhooks($params, &$smarty)
 {

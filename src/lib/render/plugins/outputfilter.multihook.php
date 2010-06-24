@@ -14,11 +14,14 @@
  */
 
 /**
- * Smarty outputfilter to add the invisible MultiHook divs just before the
- * closing </body> tag. Security check is done in the MultiHook function called here
+ * Smarty outputfilter to add the invisible MultiHook divs just before the closing </body> tag.
+ * 
+ * Security check is done in the MultiHook function called here.
  *
- * @param     string
- * @param     Smarty
+ * @param string $text    Output source.
+ * @param Smarty &$smarty Reference to Smarty instance.
+ * 
+ * @return string
  */
 function smarty_outputfilter_multihook($text, &$smarty)
 {

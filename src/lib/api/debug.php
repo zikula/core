@@ -183,8 +183,6 @@ if (!class_exists('Timer')) {
      * You can take multiple snapshots by calling the snap() function.
      * For multiple measurements with 1 Timer, some basic statistics
      * are computed.
-     *
-     * @package Debug
      */
     class Timer
     {

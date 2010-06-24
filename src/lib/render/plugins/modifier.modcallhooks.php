@@ -26,8 +26,10 @@
  *
  *   {$MyVar|modcallhooks}
  *
- * @param        array    $string     the contents to transform
- * @return       string   the modified output
+ * @param mixed  $string  The contents to transform.
+ * @param string $modname Module name.
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_modcallhooks($string, $modname = '')
 {

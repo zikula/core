@@ -17,26 +17,96 @@
  */
 class Renderer extends Smarty
 {
+    /**
+     * Module name.
+     * 
+     * @var string
+     */
     public $module;
+    
+    /**
+     * Top level module.
+     * 
+     * @var string
+     */
     public $toplevelmodule;
+    
+    /**
+     * Module info.
+     * 
+     * @var array
+     */
     public $modinfo;
+    
+    /**
+     * Theme name.
+     * 
+     * @var string
+     */
     public $theme;
+    
+    /**
+     * Theme info.
+     * 
+     * @var array
+     */
     public $themeinfo;
+    
+    /**
+     * Language.
+     * 
+     * @var string
+     */
     public $language;
+    
+    /**
+     * Base Url.
+     * 
+     * @var string
+     */
     public $baseurl;
+    
+    /**
+     * Base Uri.
+     * 
+     * @var string
+     */
     public $baseuri;
+    
+    /**
+     * Cache Id.
+     * 
+     * @var string
+     */
     public $cache_id;
 
     /**
-     * Set if Theme is an active module and templates stored in database
+     * Set if Theme is an active module and templates stored in database.
+     * 
+     * @var boolean
      */
     public $userdb;
 
+    /**
+     * Whether or not to expose template.
+     * 
+     * @var boolean
+     */
     public $expose_template;
 
-    // translation domain of the calling module
+    /**
+     * Translation domain of the calling module.
+     * 
+     * @var string
+     */
     public $renderDomain;
 
+    /**
+     * Constructor.
+     * 
+     * @param string       $module  Module name ("zikula" for system plugins).
+     * @param boolean|null $caching Whether or not to cache (boolean) or use config variable (null).
+     */
     public function __construct($module = '', $caching = null)
     {
         parent::__construct();
@@ -200,7 +270,14 @@ class Renderer extends Smarty
     }
 
     /**
-     * setup the current instance of the Renderer class and return it back to the module
+     * Setup the current instance of the Renderer class and return it back to the module.
+     * 
+     * @param string       $module        Module name.
+     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id      Cache Id.
+     * @param boolean      $add_core_data Add core data to render data.
+     * 
+     * @return Renderer
      */
     public static function getInstance($module = null, $caching = null, $cache_id = null, $add_core_data = false)
     {
@@ -267,11 +344,32 @@ class Renderer extends Smarty
         return $render;
     }
 
+    /**
+     * Get module plugin renderer instance.
+     * 
+     * @param string       $modName       Module name.
+     * @param string       $pluginName    Plugin name.
+     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id      Cache Id.
+     * @param boolean      $add_core_data Add core data to render data.
+     * 
+     * @return PluginRender
+     */
     public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
         return PluginRender::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
     }
 
+    /**
+     * Get system plugin renderer instance.
+     * 
+     * @param string       $pluginName    Plugin name.
+     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id      Cache Id.
+     * @param boolean      $add_core_data Add core data to render data.
+     * 
+     * @return PluginRender
+     */
     public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
         $modName = 'zikula';
@@ -281,17 +379,21 @@ class Renderer extends Smarty
     /**
      * Checks whether requested template exists.
      *
-     * @param string $template
+     * @param string $template Template name.
+     * 
+     * @return boolean
      */
     public function template_exists($template)
     {
-        return (bool) $this->get_template_path($template);
+        return (bool)$this->get_template_path($template);
     }
 
     /**
-     * Checks which path to use for required template
+     * Checks which path to use for required template.
      *
-     * @param string $template
+     * @param string $template Template name.
+     * 
+     * @return string Template path.
      */
     public function get_template_path($template)
     {
@@ -350,19 +452,20 @@ class Renderer extends Smarty
     }
 
     /**
-     * executes & returns the template results
+     * Executes & returns the template results.
      *
      * This returns the template output instead of displaying it.
      * Supply a valid template name.
      * As an optional second parameter, you can pass a cache id.
      * As an optional third parameter, you can pass a compile id.
      *
-     * @param   string   $template    the name of the template
-     * @param   string   $cache_id    (optional) the cache ID
-     * @param   string   $compile_id  (optional) the compile ID
-     * @param   boolean  $display
-     * @param   boolean  $reset (optional) reset singleton defaults
-     * @return  string   the template output
+     * @param string  $template   The name of the template.
+     * @param string  $cache_id   The cache ID (optional).
+     * @param string  $compile_id The compile ID (optional).
+     * @param boolean $display    Whether or not to display directly (optional).
+     * @param boolean $reset      Reset singleton defaults (optional).
+     * 
+     * @return string The template output.
      */
     public function fetch($template, $cache_id = null, $compile_id = null, $display = false, $reset = true)
     {
@@ -390,17 +493,18 @@ class Renderer extends Smarty
     }
 
     /**
-     * executes & displays the template results
+     * Executes & displays the template results.
      *
      * This displays the template.
      * Supply a valid template name.
      * As an optional second parameter, you can pass a cache id.
      * As an optional third parameter, you can pass a compile id.
      *
-     * @param   string   $template    the name of the template
-     * @param   string   $cache_id    (optional) the cache ID
-     * @param   string   $compile_id  (optional) the compile ID
-     * @return  void
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     * 
+     * @return boolean
      */
     public function display($template, $cache_id = null, $compile_id = null)
     {
@@ -409,16 +513,18 @@ class Renderer extends Smarty
     }
 
     /**
-     * finds out if a template is already cached
+     * Finds out if a template is already cached.
      *
      * This returns true if there is a valid cache for this template.
      * Right now, we are just passing it to the original Smarty function.
      * We might introduce a function to decide if the cache is in need
      * to be refreshed...
      *
-     * @param   string   $template    the name of the template
-     * @param   string   $cache_id    (optional) the cache ID
-     * @return  boolean
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     * 
+     * @return boolean
      */
     public function is_cached($template, $cache_id = null, $compile_id = null)
     {
@@ -442,17 +548,18 @@ class Renderer extends Smarty
     }
 
     /**
-     * clears the cache for a specific template
+     * Clears the cache for a specific template.
      *
      * This returns true if there is a valid cache for this template.
      * Right now, we are just passing it to the original Smarty function.
      * We might introduce a function to decide if the cache is in need
      * to be refreshed...
      *
-     * @param   string   $template    the name of the template
-     * @param   string   $cache_id    (optional) the cache ID
-     * @param   string   $compile_id  (optional) the compile ID
-     * @param   string   $expire      (optional) minimum age in sec. the cache file must be before it will get cleared.
+     * @param string $template   The name of the template.
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     * @param string $expire     Minimum age in sec. the cache file must be before it will get cleared (optional).
+     * 
      * @return  boolean
      */
     public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
@@ -467,10 +574,11 @@ class Renderer extends Smarty
     }
 
     /**
-     * clear all cached templates
+     * Clear all cached templates.
      *
-     * @param string $exp_time expire time
-     * @return boolean results of {@link smarty_core_rm_auto()}
+     * @param string $exp_time Expire time.
+     * 
+     * @return boolean Results of {@link smarty_core_rm_auto()}.
      */
     public function clear_all_cache($exp_time = null)
     {
@@ -481,10 +589,11 @@ class Renderer extends Smarty
     }
 
     /**
-     * clear all compiled templates
+     * Clear all compiled templates.
      *
-     * @param string $exp_time expire time
-     * @return boolean results of {@link smarty_core_rm_auto()}
+     * @param string $exp_time Expire time.
+     * 
+     * @return boolean Results of {@link smarty_core_rm_auto()}.
      */
     public function clear_compiled($exp_time = null)
     {
@@ -523,13 +632,15 @@ class Renderer extends Smarty
     }
 
     /**
-     * set up paths for the template
+     * Set up paths for the template.
      *
      * This function sets the template and the config path according
      * to where the template is found (Theme or Module directory)
      *
-     * @param   string   $template   the template name
-     * @access  private
+     * @param string $template The template name.
+     * 
+     * @access private
+     * @return void
      */
     public function _setup_template($template)
     {
@@ -545,8 +656,10 @@ class Renderer extends Smarty
      * This function takes  module name and adds two path two the plugins_dir array
      * when existing
      *
-     * @param   string   $module    well known module name
-     * @access  private
+     * @param string $module Well known module name.
+     * 
+     * @access private
+     * @return void
      */
     private function _add_plugins_dir($module)
     {
@@ -578,10 +691,8 @@ class Renderer extends Smarty
      * This function adds some basic data to the template depending on the
      * current user and the PN settings.
      *
-     * @param   list of module names. all mod vars of these modules will be included too
-     *          The mod vars of the current module will always be included
-     * @return  boolean true if ok, otherwise false
-     * @access  public
+     * @access public
+     * @return boolean True if ok, otherwise false.
      */
     public function add_core_data()
     {
@@ -630,9 +741,10 @@ class Renderer extends Smarty
 /**
  * Smarty block function to prevent template parts from being cached
  *
- * @param $param
- * @param $content
- * @param $smarty
+ * @param array  $param   Tag parameters.
+ * @param string $content Block content.
+ * @param Smarty &$smarty Reference to smarty instance.
+ * 
  * @return string
  **/
 function Renderer_block_nocache($param, $content, &$smarty)
@@ -641,11 +753,16 @@ function Renderer_block_nocache($param, $content, &$smarty)
 }
 
 /**
- * Smarty resource function to determine correct path for template inclusion
+ * Smarty resource function to determine correct path for template inclusion.
  *
- * For more information about parameters see http://smarty.php.net/manual/en/template.resources.php
+ * For more information about parameters see http://smarty.php.net/manual/en/template.resources.php.
+ * 
+ * @param string $tpl_name    Template name.
+ * @param string &$tpl_source Template source.
+ * @param Smarty &$smarty     Reference to Smarty instance.
  *
- * @access  private
+ * @access private
+ * @return boolean
  */
 function z_get_template($tpl_name, &$tpl_source, &$smarty)
 {
@@ -668,9 +785,17 @@ function z_get_template($tpl_name, &$tpl_source, &$smarty)
             $smarty->toplevelmodule)));
 }
 
+/**
+ * Get the timestamp of the last change of the $tpl_name file.
+ * 
+ * @param string $tpl_name       Template name.
+ * @param string &$tpl_timestamp Template timestamp.
+ * @param Smarty &$smarty        Reference to Smarty instance.
+ * 
+ * @return boolean
+ */
 function z_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty)
 {
-    // get the timestamp of the last change of the $tpl_name file
     // get path, checks also if tpl_name file_exists and is_readable
     $tpl_path = $smarty->get_template_path($tpl_name);
 
@@ -684,12 +809,28 @@ function z_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty)
     return false;
 }
 
+/**
+ * Checks whether or not a template is secure.
+ * 
+ * @param string $tpl_name Template name.
+ * @param Smarty &$smarty  Reference to Smarty instance.
+ * 
+ * @return boolean
+ */
 function z_get_secure($tpl_name, &$smarty)
 {
     // assume all templates are secure
     return true;
 }
 
+/**
+ * Whether or not the template is trusted.
+ * 
+ * @param string $tpl_name Template name.
+ * @param Smarty &$smarty  Reference to Smarty instance.
+ * 
+ * @return void
+ */
 function z_get_trusted($tpl_name, &$smarty)
 {
     // not used for templates
@@ -697,12 +838,14 @@ function z_get_trusted($tpl_name, &$smarty)
 }
 
 /**
- * Callback function for preg_replace_callback. Allows the use of {{ and }} as
- * delimiters within certain tags, even if they use { and } as block delimiters.
+ * Callback function for preg_replace_callback.
+ * 
+ * Allows the use of {{ and }} as delimiters within certain tags,
+ * even if they use { and } as block delimiters.
  *
- * @param   array   $matches    The $matches array from preg_replace_callback,
- *                              containing the matched groups.
- * @return  string  The replacement string for the match.
+ * @param array $matches The $matches array from preg_replace_callback, containing the matched groups.
+ * 
+ * @return string The replacement string for the match.
  */
 function z_prefilter_add_literal_callback($matches)
 {
@@ -719,23 +862,33 @@ function z_prefilter_add_literal_callback($matches)
 }
 
 /**
- * Prefilter for tags that might contain { or } as block delimiters, such as
- * <script> or <style>. Allows the use of {{ and }} as smarty delimiters,
+ * Prefilter for tags that might contain { or } as block delimiters.
+ * 
+ * Such as <script> or <style>. Allows the use of {{ and }} as smarty delimiters,
  * even if the language uses { and } as block delimters. Adds {literal} and
  * {/literal} to the specified opening and closing tags, and converts
  * {{ and }} to {/literal}{ and }{literal}.
  *
- * Tags affected: <script> and <style>
+ * Tags affected: <script> and <style>.
  *
- * @param   string  $tpl_source The template's source prior to prefiltering.
- * @param   Smarty  $smarty     A reference to the renderer object.
- * @return  string  The prefiltered template contents.
+ * @param string $tpl_source The template's source prior to prefiltering.
+ * @param Smarty &$smarty    A reference to the renderer object.
+ * 
+ * @return string The prefiltered template contents.
  */
 function z_prefilter_add_literal($tpl_source, &$smarty)
 {
     return preg_replace_callback('`(<(script|style)[^>]*>)(.*?)(</\2>)`s', 'z_prefilter_add_literal_callback', $tpl_source);
 }
 
+/**
+ * Prefilter for gettext parameters.
+ * 
+ * @param string $tpl_source The template's source prior to prefiltering.
+ * @param Smarty &$smarty    A reference to the renderer object.
+ * 
+ * @return string The prefiltered template contents.
+ */
 function z_prefilter_gettext_params($tpl_source, &$smarty)
 {
     $tpl_source = (preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_gettext_params_callback($m);'), $tpl_source));
@@ -743,6 +896,13 @@ function z_prefilter_gettext_params($tpl_source, &$smarty)
     return $tpl_source;
 }
 
+/**
+ * Callback function for self::z_prefilter_gettext_params().
+ * 
+ * @param string $m Tag token.
+ * 
+ * @return string
+ */
 function z_prefilter_gettext_params_callback($m)
 {
     $m[1] = preg_replace('#__([a-zA-Z0-9]+=".*?(?<!\\\)")#', '$1|gt:$renderObject', $m[1]);
@@ -750,6 +910,14 @@ function z_prefilter_gettext_params_callback($m)
     return '{' . $m[1] . '}';
 }
 
+/**
+ * Prefilter for legacy tag delemitters.
+ * 
+ * @param string $source  The template's source prior to prefiltering.
+ * @param Smarty &$smarty A reference to the renderer object.
+ * 
+ * @return string The prefiltered template contents.
+ */
 function z_prefilter_legacy($source, &$smarty)
 {
     // rewrite the old delimiters to new.
@@ -759,6 +927,13 @@ function z_prefilter_legacy($source, &$smarty)
     return preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
 }
 
+/**
+ * Callback function for self::z_prefilter_legacy().
+ * 
+ * @param string $m Tag token.
+ * 
+ * @return string
+ */
 function z_prefilter_legacy_callback($m)
 {
     $m[1] = str_replace('|pndate_format', '|dateformat', $m[1]);

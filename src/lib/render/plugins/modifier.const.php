@@ -14,16 +14,16 @@
  */
 
 /**
- * Smarty modifier to convert string to PHP constant (required to support
- * class constants
+ * Smarty modifier to convert string to PHP constant (required to support class constants).
  *
  * Example
  *
  *   {'ModUtil::TYPE_MODULE'|const}
  *
- * @see          modifier.varprepfordisplay.php::smarty_modifier_varprepfordisplay()
- * @param        array    $string     the contents to transform
- * @return       string   the modified output
+ * @param string $string The contents to transform.
+ * 
+ * @see    modifier.varprepfordisplay.php::smarty_modifier_varprepfordisplay()
+ * @return string The modified output.
  */
 function smarty_modifier_const($string)
 {

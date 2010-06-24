@@ -28,22 +28,28 @@
  *   {pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20"}
  *   {pager rowcount="1200" limit="40" template="pagercss2.html" maxpages="20" optimize=true}
  *
- * @param    string    $modname                 - fixed name of the module to page (optional)
- * @param    string    $type                    - fixed value of the type url parameter (optional)
- * @param    string    $func                    - fixed value of the function url parameter (optional)
- * @param    int       $rowcount                - total number of items to page in between
- *                                                (if an array is assigned, it's count will be used)
- * @param    int       $limit                   - number of items on a page (if <0 unlimited)
- * @param    string    $posvar                  - name of the variable that contains the position data, eg "offset"
- * @param    string    $template                - optional name of a template file
- * @param    string    $includeStylesheet       - use predefined stylesheet file? Default is yes.
- * @param    string    $anchorText              - optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
- * @param    string    $maxpages                - optional maximum number of displayed pages, others will be hidden / suppressed
- *                                                   (default: 0 = show all pages)
- * @param    string    $display                 - optional choice between 'page' or 'startnum'. Show links using page number or starting item number (default is startnum)
- * @param    string    $class                   - optional class to apply to the pager container (default : z-pager)
- * @param    bool      $processDetailLinks      - should the single page links be processed? (default: false if using pagerimage.html, otherwise true)
- * @param    bool      $optimize                - only deliver page links which are actually displayed to the template (default: false)
+ * Available parameters:
+ *  modname            Fixed name of the module to page (optional)
+ *  type               Fixed value of the type url parameter (optional)
+ *  func               Fixed value of the function url parameter (optional)
+ *  rowcount           Total number of items to page in between
+ *                       (if an array is assigned, it's count will be used)
+ *  limit              Number of items on a page (if <0 unlimited)
+ *  posvar             Name of the variable that contains the position data, eg "offset"
+ *  template           Optional name of a template file
+ *  includeStylesheet  Use predefined stylesheet file? Default is yes.
+ *  anchorText         Optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
+ *  maxpages           Optional maximum number of displayed pages, others will be hidden / suppressed
+ *                       (default: 0 = show all pages)
+ *  display            Optional choice between 'page' or 'startnum'. Show links using page number or starting item number (default is startnum)
+ *  class              Optional class to apply to the pager container (default : z-pager)
+ *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.html, otherwise true)
+ *  optimize           Only deliver page links which are actually displayed to the template (default: false)
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 function smarty_function_pager($params, &$smarty)
 {
@@ -155,8 +161,7 @@ function smarty_function_pager($params, &$smarty)
 
     //also $_POST vars have to be considered, i.e. for search results
     $allVars = array_merge($_POST, $_GET);
-    foreach ($allVars as $k => $v)
-    {
+    foreach ($allVars as $k => $v) {
         if ($k != $pager['posvar'] && !is_null($v)) {
             switch ($k)
             {
@@ -177,16 +182,15 @@ function smarty_function_pager($params, &$smarty)
                     break;
                 default:
                     if (is_array($v)) {
-                        foreach ($v as $kk=>$vv) {
+                        foreach ($v as $kk => $vv) {
                             if (is_array($vv)) {
-                                foreach ($vv as $kkk=>$vvv) {
+                                foreach ($vv as $kkk => $vvv) {
                                     if (strlen($vvv)) {
                                         $tkey = $k . '[' . $kk . '][' . $kkk . ']';
                                         $pager['args'][$tkey] = $vvv;
                                     }
                                 }
-                            }
-                            else if (strlen($vv)) {
+                            } elseif (strlen($vv)) {
                                 $tkey = $k . '[' . $kk . ']';
                                 $pager['args'][$tkey] =  $vv;
                             }
@@ -223,7 +227,7 @@ function smarty_function_pager($params, &$smarty)
         }
     }
 
-    $pager['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool) $params['processDetailLinks'] : ($template != 'pagerimage.html');
+    $pager['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($template != 'pagerimage.html');
     if ($pager['processDetailLinks']) {
         for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
             if ($pager['maxPages'] > 0 &&

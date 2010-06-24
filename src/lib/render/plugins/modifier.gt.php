@@ -14,16 +14,16 @@
  */
 
 /**
- * Smarty modifier to parse gettext string
- *
+ * Smarty modifier to parse gettext string.
  *
  * Example
  *
  *   {$var|gt:$renderObject}
  *
- * @param        string   $string   the contents to transform
- * @param        object   $smarty   this smarty object (available as $renderObject in templates)
- * @return       string   the modified output
+ * @param string   $string  The contents to transform.
+ * @param Renderer &$smarty This smarty object (available as $renderObject in templates).
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_gt($string, &$smarty)
 {

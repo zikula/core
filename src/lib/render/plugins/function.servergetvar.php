@@ -24,15 +24,16 @@
  *
  * Available parameters:
  *   - name:     The name of the module variable to obtain
+ *   - assign:   (optional) If set then result will be assigned to this template variable
+ *   - default:  (optional) The default value to return if the server variable is not set
  *
  * Example
  *   {servergetvar name='PHP_SELF'}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $assign      (optional) If set then result will be assigned to this template variable
- * @param        string      $default     (optional) The default value to return if the server variable is not set
- * @return       string      The module variable
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The module variable.
  */
 function smarty_function_servergetvar($params, &$smarty)
 {

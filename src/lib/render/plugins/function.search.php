@@ -49,7 +49,7 @@
  * @param array  $params  All attributes passed to this function from the template.
  * @param object &$smarty Reference to the Smarty object.
  *
- * @return       string      the search box
+ * @return string The search box.
  */
 function smarty_function_search($params, &$smarty)
 {
@@ -75,7 +75,7 @@ function smarty_function_search($params, &$smarty)
     // Loop through the active modules and assign them
     if (isset($params['active'])) {
         $active_modules = explode(',', $params['active']);
-        foreach($active_modules as $active_module) {
+        foreach ($active_modules as $active_module) {
             $active_module = trim($active_module);
             $searchbox .= '  <input type="hidden" name="active_'.DataUtil::formatForDisplay($active_module).'" value="1" />'."\n";
         }

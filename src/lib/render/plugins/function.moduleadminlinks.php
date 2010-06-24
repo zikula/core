@@ -14,19 +14,22 @@
  */
 
 /**
- * Smarty function to display admin links for a module
+ * Smarty function to display admin links for a module.
  *
- * Example
+ * Example:
  * {moduleadminlinks modname=Example start="[" end="]" seperator="|" class="z-menuitem-title"}
+ * 
+ * Available parameters:
+ *   - modname   Module name to display links for.
+ *   - start     Start string (optional).
+ *   - end       End string (optional).
+ *   - seperator Link seperator (optional).
+ *   - class     CSS class (optional).
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $modname     module name to display links for
- * @param        string      $start       start string (optional)
- * @param        string      $end         end string (optional)
- * @param        string      $seperator   link seperator (optional)
- * @param        string      $class       CSS class (optional)
- * @return       string      a formatted string containing navigation for the module admin panel
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string A formatted string containing navigation for the module admin panel.
  */
 function smarty_function_moduleadminlinks($params, &$smarty)
 {

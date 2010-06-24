@@ -22,12 +22,14 @@
  *         - string: input block of text
  *         - br: change single \n to 'br' or not
  *
- * @param        array    $string     the contents to transform
- * @return       string   the modified output
+ * @param string  $string The contents to transform.
+ * @param integer $br     Change single \n to 'br' or not.
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_paragraph($string,$br = 0) {
 
-    if($string != '') {
+    if ($string != '') {
         $string = $string . "\n"; // just to make things a little easier, pad the end
         $string = preg_replace('|<br />\s*<br />|', "\n\n", $string);
         $string = preg_replace('!(<(?:table|ul|ol|li|pre|form|blockquote|h[1-6])[^>]*>)!', "\n$1", $string); // Space things out a little

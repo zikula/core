@@ -31,9 +31,10 @@
  * Example
  * {manuallink newwindow=1 width=400 height=300 title=rtfm }
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the link or assign an array( 'url', 'link' ) if assign is set
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 
 function smarty_function_manuallink($params, &$smarty)
@@ -55,7 +56,7 @@ function smarty_function_manuallink($params, &$smarty)
                              "modules/$modname/pndocs/lang/$userlang/$manual",
                              "modules/$modname/pndocs/lang/$stdlang/$manual",
                              "modules/$modname/pndocs/lang/en/$manual" );
-    foreach( $possibleplaces as $possibleplace ) {
+    foreach ($possibleplaces as $possibleplace) {
         if (file_exists($possibleplace)) {
             $url = $possibleplace.$chapter;
             break;

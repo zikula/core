@@ -16,7 +16,7 @@
 /**
  * Smarty function to generate the title for the page
  *
- * available parameters:
+ * Available parameters:
  *  - assign     if set, the title will be assigned to this variable
  *  - separator  if set, the title elements will be seperated using this string
  *               (optional: default '::')
@@ -27,10 +27,11 @@
  * {title}
  * {title separator='/'}
  *
- * @see          function.title.php::smarty_function_title()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the title
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.title.php::smarty_function_title()
+ * @return string The title.
  */
 function smarty_function_title($params, &$smarty)
 {

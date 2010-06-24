@@ -31,10 +31,11 @@
  *   {modishooked tmodname='bar' smodname='foo' assign='barishookedtofoo'}
  *   {if $barishookedtofoo}.....{/if}
  *
- * @see          function.modishooked.php::smarty_function_modishooked()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       bool        true if the module is available; false otherwise
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.modishooked.php::smarty_function_modishooked()
+ * @return boolean True if the module is available; false otherwise.
  */
 function smarty_function_modishooked($params, &$smarty)
 {

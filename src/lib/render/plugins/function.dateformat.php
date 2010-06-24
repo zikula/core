@@ -14,11 +14,17 @@
  */
 
 /**
- * DateFormat
- *
- * @param      format          The date format we wish to convert to (optional) (default='Y-m-d')
- * @param      datetime        The datetime we wish to convert
- * @param      assign          The smarty variable we wish to assign the result to (optional)
+ * DateFormat.
+ * 
+ * Params can be:
+ *  format   The date format we wish to convert to (optional) (default='Y-m-d').
+ *  datetime The datetime we wish to convert.
+ *  assign   The smarty variable we wish to assign the result to (optional).
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 function smarty_function_dateformat($params, &$smarty)
 {

@@ -13,6 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Object array selector.
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
+ */
 function smarty_function_selector_object_array ($params, &$smarty)
 {
     $selectedValue  = (isset($params['selectedValue'])  ? $params['selectedValue']  : 0);

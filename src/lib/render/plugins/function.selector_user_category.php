@@ -14,6 +14,8 @@
  */
 
 /**
+ * User category selector.
+ * 
  * Available parameters:
  *   - btnText:  If set, the results are assigned to the corresponding variable instead of printed out
  *   - cid:      category ID
@@ -21,9 +23,9 @@
  * Example
  * {selector_user_category cid="1" assign="category"}
  *
- * @param array $params All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
- *
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
  * @return string HTML code of the selector.
  */
 

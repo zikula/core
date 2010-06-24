@@ -23,8 +23,9 @@
  * Example
  * <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users" }" />
  *
- * @param $params
- * @param $smarty
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
  * @return string
  */
 function smarty_insert_generateauthkey($params, &$smarty)

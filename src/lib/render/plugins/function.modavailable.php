@@ -30,11 +30,11 @@
  *   {modavailable modname="foobar" assign="myfoo"}
  *   {if $myfoo}.....{/if}
  *
- *
- * @see          function.ModUtil::available.php::smarty_function_modavailable()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       bool        true if the module is available; false otherwise
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.ModUtil::available.php::smarty_function_modavailable()
+ * @return boolean True if the module is available; false otherwise.
  */
 function smarty_function_modavailable ($params, &$smarty)
 {
@@ -49,7 +49,7 @@ function smarty_function_modavailable ($params, &$smarty)
 
     $result = ModUtil::available($modname);
 
-    if ($assign)  {
+    if ($assign) {
          $smarty->assign($assign, $result);
     } else {
          return $result;

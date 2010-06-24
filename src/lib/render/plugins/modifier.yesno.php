@@ -20,9 +20,10 @@
  *
  *   {$myvar|yesno|varprepfordisplay} returns Yes if $myvar = 1 and No if $myvar = 0
  *
- * @param        string    $string     the contents to transform
- * @param        string    $images    display the yes/no response as tick/cross
- * @return       string   the modified output
+ * @param string  $string The contents to transform.
+ * @param boolean $images Display the yes/no response as tick/cross.
+ * 
+ * @return string Rhe modified output.
  */
 function smarty_modifier_yesno($string, $images = false)
 {

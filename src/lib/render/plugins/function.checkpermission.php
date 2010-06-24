@@ -14,15 +14,19 @@
  */
 
 /**
+ * Check permission.
+ * 
  * Example:
  * {checkpermission comp="News::" inst=".*" level="ACCESS_ADMIN" assign="auth"}
  *
- * true/false will be returned.
+ * True/false will be returned.
  *
- * This file is a plugin for Renderer, the Zikula implementation of Smarty
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       boolean     authorized?
+ * This file is a plugin for Renderer, the Zikula implementation of Smarty.
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return boolean Authorized?
  */
 function smarty_function_checkpermission($params, &$smarty)
 {

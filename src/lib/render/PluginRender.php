@@ -12,11 +12,25 @@
  * information regarding copyright and licensing.
  */
 
-
+/**
+ * Renderer for plugin system.
+ */
 class PluginRender extends Renderer
 {
+    /**
+     * The plugin name.
+     * 
+     * @var string
+     */
     public $pluginName;
 
+    /**
+     * Constructor.
+     * 
+     * @param string       $module     Module name ("zikula" for system plugins).
+     * @param string       $pluginName Plugin name.
+     * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
+     */
     public function __construct($module = 'zikula', $pluginName, $caching = null)
     {
         parent::__construct($module, $caching);
@@ -34,7 +48,15 @@ class PluginRender extends Renderer
 
 
     /**
-     * setup the current instance of the Renderer class and return it back to the module
+     * Setup the current instance of the Renderer class and return it back to the module.
+     * 
+     * @param string       $moduleName    Module name.
+     * @param string       $pluginName    Plugin name.
+     * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
+     * @param string       $cache_id      Cache Id.
+     * @param boolean      $add_core_data Add core data to render data.
+     * 
+     * @return PluginRender instance.
      */
     public static function getInstance($moduleName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
@@ -80,13 +102,16 @@ class PluginRender extends Renderer
     }
 
     /**
-     * add a plugins dir to _plugin_dir array
+     * Add a plugins dir to _plugin_dir array.
      *
      * This function takes  module name and adds two path two the plugins_dir array
-     * when existing
+     * when existing.
      *
-     * @param   string   $module    well known module name
-     * @access  private
+     * @param string $module Module name.
+     * @param string $plugin Plugin name.
+     * 
+     * @access private
+     * @return void
      */
     private function _add_plugins_dir($module, $plugin)
     {
@@ -119,9 +144,11 @@ class PluginRender extends Renderer
     }
 
     /**
-     * Checks which path to use for required template
+     * Checks which path to use for required template.
      *
-     * @param string $template
+     * @param string $template Template name.
+     * 
+     * @return string Template path.
      */
     public function get_template_path($template)
     {

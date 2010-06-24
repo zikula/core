@@ -19,16 +19,19 @@
  * Example
  * {userlogin size=14 maxlength=25 maxlengthpass=20}
  *
- * @see          function.userlogin.php::smarty_function_userlogin()
- * @param        array       $params         All attributes passed to this function from the template
- * @param        object      &$smarty        Reference to the Smarty object
- * @param        integer     $size           Size of text boxes (default=14)
- * @param        integer     $maxlength      Maximum length of text box for unamees (default=25)
- * @param        integer     $maxlengthpass  Maximum length of text box for password (default=20)
- * @param        string      $class          Name of class  assigned to the login form
- * @param        string      $value          The default value of the username input box
- * @param        bool        $js             Use javascript to automatically clear the default value (defaults to true)
- * @return       string      the welcome message
+ * Parameters:
+ *  size           Size of text boxes (default=14)
+ *  maxlength      Maximum length of text box for unamees (default=25)
+ *  maxlengthpass  Maximum length of text box for password (default=20)
+ *  class          Name of class  assigned to the login form
+ *  value          The default value of the username input box
+ *  js             Use javascript to automatically clear the default value (defaults to true)
+ *  
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.userlogin.php::smarty_function_userlogin()
+ * @return string The welcome message.
  */
 function smarty_function_userlogin($params, &$smarty)
 {
@@ -38,7 +41,7 @@ function smarty_function_userlogin($params, &$smarty)
         $maxlength     = isset($params['maxlength'])     ? $params['maxlength']    : 25;
         $maxlengthpass = isset($params['maxlenthpass'])  ? $params['maxlenthpass'] : 20;
         $class         = isset($params['class'])         ? ' class="'.$params['class'].'"' : '';
-        if(ModUtil::getVar('Users','loginviaoption') == 0) {
+        if (ModUtil::getVar('Users','loginviaoption') == 0) {
             $value = isset($params['value']) ? DataUtil::formatForDisplay($params['value']) : __('User name');
             $userNameLabel = __('User name');
             $inputName = 'uname';

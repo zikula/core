@@ -20,6 +20,7 @@
  *
  * Available parameters:
  *   - name:     The name of the page variable to obtain
+ *   - html:     If true then result will be treated as html content.
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Zikula doesn't impose any restriction on the page variabl's name except for duplicate
@@ -38,12 +39,10 @@
  * Example
  *   {pagegetvar name='title'}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $name        Name of  the page variable to get
- * @param        bool         $html        (optional) If true then result will be treated as html content
- * @param        string      $assign      (optional) If set then result will be assigned to this template variable
- * @return       string      The module variable
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The module variable.
  */
 function smarty_function_pagegetvar($params, &$smarty)
 {

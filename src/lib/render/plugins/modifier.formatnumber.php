@@ -14,12 +14,15 @@
  */
 
 /**
- * Example
- *
+ * Format number.
+ * 
+ * Example:
  *   {$MyVar|formatnumber}
  *
- * @param        array    $string     the contents to transform
- * @return       string   the modified output
+ * @param string $string         The contents to transform.
+ * @param mixed  $decimal_points Desc : null=default locale, false=precision, int=precision.
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_formatNumber($string, $decimal_points=null)
 {

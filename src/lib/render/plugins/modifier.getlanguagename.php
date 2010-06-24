@@ -16,12 +16,12 @@
 /**
  * Smarty modifier to retrieve a language name from its l2 code
  *
- * Example
- *
+ * Example:
  *   {$language|getlanguagename}
  *
- * @param        string   $langcode   the language to process
- * @return       string   the language name
+ * @param string $langcode The language to process.
+ * 
+ * @return string The language name.
  */
 function smarty_modifier_getlanguagename($langcode)
 {

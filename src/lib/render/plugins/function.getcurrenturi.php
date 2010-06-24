@@ -28,9 +28,10 @@
  *   {getcurrenturi}
  *   {getcurrenturi lang='de'}
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the current URI
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The current URI.
  */
 function smarty_function_getcurrenturi($params, &$smarty)
 {

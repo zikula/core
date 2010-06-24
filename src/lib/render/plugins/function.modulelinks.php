@@ -18,20 +18,23 @@
  *
  * Example
  * {modulelinks data=$links id='listid' class='z-menulinks' itemclass='z-ml-item' first='z-ml-first' last='z-ml-last'}
- *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $links       array with menulinks (text, url, title, id, class, disabled) (optional)
- * @param        string      $modname     module name to display links for (optional)
- * @param        string      $type        function type where the getlinks-function is located (optional)
- * @param        string      $menuid      ID for the unordered list (optional)
- * @param        string      $menuclass   class for the unordered list (optional)
- * @param        string      $itemclass   array with menulinks (text, url, title, class, disabled) (optional)
- * @param        string      $first       class for the first element (optional)
- * @param        string      $last        class for the last element (optional)
- * @param        string      $seperator   link seperator (optional)
- * @param        string      $class       CSS class (optional)
- * @return       string      a formatted string containing navigation for the module admin panel
+ * 
+ * Available parameters:
+ *  links     Array with menulinks (text, url, title, id, class, disabled) (optional)
+ *  modname   Module name to display links for (optional)
+ *  type      Function type where the getlinks-function is located (optional)
+ *  menuid    ID for the unordered list (optional)
+ *  menuclass Class for the unordered list (optional)
+ *  itemclass Array with menulinks (text, url, title, class, disabled) (optional)
+ *  first     Class for the first element (optional)
+ *  last      Class for the last element (optional)
+ *  seperator Link seperator (optional)
+ *  class     CSS class (optional).
+ *  
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string A formatted string containing navigation for the module admin panel.
  */
 
 function smarty_function_modulelinks($params, &$smarty)

@@ -39,12 +39,12 @@
  *   {getstatusmsg style="color:red;" |varprephtmldisplay}
  *   {getstatusmsg class="statusmessage" tag="span"|varprephtmldisplay}
  *
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
  *
- * @todo         prevent this function from being cached (Smarty 2.6.0)
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the value of the last status message posted, or void if no status message exists
+ * @todo prevent this function from being cached (Smarty 2.6.0)
  * @deprecated
+ * @return string The value of the last status message posted, or void if no status message exists.
  */
 function smarty_function_getstatusmsg($params, &$smarty)
 {

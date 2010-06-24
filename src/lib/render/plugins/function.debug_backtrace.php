@@ -18,11 +18,12 @@
  *
  * Available parameters:
  *   - fulltrace        include parts of stack trace after the call to the error handler -
- *                        by default these are excluded as they're not relevant
+ *                        by default these are excluded as they're not relevant.
  *
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      The URL
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The URL.
  */
 function smarty_function_debug_backtrace($params, &$smarty)
 {

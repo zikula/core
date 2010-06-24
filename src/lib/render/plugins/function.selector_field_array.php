@@ -13,9 +13,13 @@
  * information regarding copyright and licensing.
  */
 
-/** ----------------------------------------------------------------------
- * @package Zikula_Template_Plugins
- * @subpackage Functions
+/**
+ * Field array selector.
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
  */
 function smarty_function_selector_field_array ($params, &$smarty)
 {

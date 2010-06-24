@@ -19,14 +19,16 @@
  * Example
  * {userlinks start="[" end="]" seperator="|"}
  *
- *
- * @see          function.userlinks.php::smarty_function_userlinks()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @param        string      $start       start delimiter
- * @param        string      $end         end delimiter
- * @param        string      $seperator   seperator
- * @return       string      user links
+ * Parameters:
+ *  start     Start delimiter
+ *  end       End delimiter
+ *  seperator Seperator
+ *  
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.userlinks.php::smarty_function_userlinks()
+ * @return string User links.
  */
 function smarty_function_userlinks($params, &$smarty)
 {

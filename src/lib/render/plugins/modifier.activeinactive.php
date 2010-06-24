@@ -20,8 +20,9 @@
  *
  *   {$myvar|activeinactive|varprepfordisplay} returns Active if $myvar = 1 and Inactive if $myvar = 0
  *
- * @param        string    $string     the contents to transform
- * @return       string   the modified output
+ * @param string $string The contents to transform.
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_activeinactive($string)
 {

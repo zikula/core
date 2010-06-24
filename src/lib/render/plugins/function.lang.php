@@ -14,17 +14,18 @@
  */
 
 /**
- * Smarty function to get the site's language
+ * Smarty function to get the site's language.
  *
- * available parameters:
+ * Available parameters:
  *  - assign      if set, the language will be assigned to this variable
  *
  * Example
  * <html lang="{lang}">
  *
- * @param    array    $params     All attributes passed to this function from the template
- * @param    object   $smarty     Reference to the Smarty object
- * @return   string   the language
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string The language.
  */
 function smarty_function_lang($params, &$smarty)
 {

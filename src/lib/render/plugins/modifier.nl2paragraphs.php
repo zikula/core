@@ -26,8 +26,9 @@
  *
  *   {$myvar|nl2paragraphs}
  *
- * @param        array    $string     the contents to transform
- * @return       string   the modified output
+ * @param mixed $string The contents to transform.
+ * 
+ * @return string The modified output.
  */
 function smarty_modifier_nl2paragraphs($string)
 {

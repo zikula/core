@@ -35,10 +35,11 @@
  *   {modapifunc modname='foobar' type='user' func='getfoo' id='1' assign='myfoo'}
  *   {$myfoo.title}
  *
- * @see          function.modfunc.php::smarty_function_modfunc()
- * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
- * @return       string      the results of the module API function
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.modfunc.php::smarty_function_modfunc()
+ * @return string The results of the module API function.
  */
 function smarty_function_modapifunc($params, &$smarty)
 {

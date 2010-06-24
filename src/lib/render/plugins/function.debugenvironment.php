@@ -23,8 +23,9 @@
  *   {debugenvironment}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
- *
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return void
  */
 function smarty_function_debugenvironment($params, &$smarty)
 {

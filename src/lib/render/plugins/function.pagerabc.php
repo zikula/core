@@ -14,44 +14,48 @@
  */
 
 /**
-* Smarty plugin
-* -------------------------------------------------------------
-* Author:   Peter Dudas <duda at bigfish dot hu>
-* -------------------------------------------------------------
-*
-*  Examples:
-*    code:
-*    {pagerabc posvar='letter' class='abcpager' class_num='abclink' class_numon='abclink_on' separator=' - ' names='A,B;C,D;E,F;G,H;I,J;K,L;M,N,O;P,Q,R;S,T;U,V,W,X,Y,Z'}
-*
-*    result
-* <span class="abcpager">
-* <a class="abclink_on" href="index.php?module=Example&amp;letter=A,B">&nbspA,B</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=C,D">&nbspC,D</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=E,F">&nbspE,F</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=G,H">&nbspG,H</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=I,J">&nbspI,J</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=K,L">&nbspK,L</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=M,N,O">&nbspM,N,O</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=P,Q,R">&nbspP,Q,R</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=S,T">&nbspS,T</a>
-*  - <a class="abclink" href="index.php?module=Example&amp;letter=U,V,W,X,Y,Z">&nbspU,V,W,X,Y,Z</a>
-* </span>
-*
-*
-* Parameters
-*     @param    string     $posvar           - name of the variable that contains the position data, eg "letter"
-*     @param    cvs        $forwardvars      - comma- semicolon- or space-delimited list of POST and GET variables to forward in the pager links. If unset, all vars are forwarded.
-*     @param    cvs        $additionalvars   - comma- semicolon- or space-delimited list of additional variable and value pairs to forward in the links. eg "foo=2,bar=4"
-*     @param    string     $class            - class for the pager
-*     @param    string     $class_num        - class for the pager links (<a> tags)
-*     @param    string     $class_numon      - class for the active page
-*     @param    string     $separator        - string to put between the letters, eg "|" makes | A | B | C | D |
-*     @param    string     $printempty       - print empty sel ('-')
-*     @param    string     $lang             - language
-*     @param    mixed      $names            - string or array of names to select from (array or csv)
-*     @param    mixed      $values           - optional parameter for the previous names (array or cvs)
-*     @param    string     $skin             - use predefined values (hu - hungarian ABC)
-*/
+ * Smarty plugin.
+ * 
+ * Author:   Peter Dudas <duda at bigfish dot hu>
+ *
+ *  Examples:
+ *    code:
+ *    {pagerabc posvar='letter' class='abcpager' class_num='abclink' class_numon='abclink_on' separator=' - ' names='A,B;C,D;E,F;G,H;I,J;K,L;M,N,O;P,Q,R;S,T;U,V,W,X,Y,Z'}
+ *
+ *    result
+ * <span class="abcpager">
+ * <a class="abclink_on" href="index.php?module=Example&amp;letter=A,B">&nbspA,B</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=C,D">&nbspC,D</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=E,F">&nbspE,F</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=G,H">&nbspG,H</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=I,J">&nbspI,J</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=K,L">&nbspK,L</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=M,N,O">&nbspM,N,O</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=P,Q,R">&nbspP,Q,R</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=S,T">&nbspS,T</a>
+ *  - <a class="abclink" href="index.php?module=Example&amp;letter=U,V,W,X,Y,Z">&nbspU,V,W,X,Y,Z</a>
+ * </span>
+ *
+ *
+ * Parameters:
+ *  posvar         Name of the variable that contains the position data, eg "letter"
+ *  forwardvars    Comma- semicolon- or space-delimited list of POST and GET variables to forward in the pager links. If unset, all vars are forwarded.
+ *  additionalvars Comma- semicolon- or space-delimited list of additional variable and value pairs to forward in the links. eg "foo=2,bar=4"
+ *  class          Class for the pager
+ *  class_num      Class for the pager links (<a> tags)
+ *  class_numon    Class for the active page
+ *  separator      String to put between the letters, eg "|" makes | A | B | C | D |
+ *  printempty     Print empty sel ('-')
+ *  lang           Language
+ *  names          String or array of names to select from (array or csv)
+ *  values         Optional parameter for the previous names (array or cvs)
+ *  skin           Use predefined values (hu - hungarian ABC)
+ * 
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @return string
+ */
 function smarty_function_pagerabc($params, &$smarty)
 {
     if (!isset($params['posvar'])) {
@@ -93,7 +97,7 @@ function smarty_function_pagerabc($params, &$smarty)
             $pager['names'] = $params['names'];
         }
         if (!empty($params['values'])) {
-            if (!is_array($params['values']))    {
+            if (!is_array($params['values'])) {
                 $pager['values'] = explode(';', $params['values']);
             } else {
                 $pager['values'] = $params['values'];
@@ -107,10 +111,11 @@ function smarty_function_pagerabc($params, &$smarty)
         }
     } else {
         // predefined abc
-        if (strtolower($params['skin']) == 'hu') { // Hungarian
+        if (strtolower($params['skin']) == 'hu') {
+            // Hungarian
             $pager['names']  = $pager['values'] = array('A','?','B','C','D','E','?','F','G','H','I','?','J','K','L','M','N','O','?','?','O','P','Q','R','S','T','U','?','?','U','V','W','X','Y','Z');
-          //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
-          //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
+            //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
+            //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
         } else {
             $alphabet = (defined('_ALPHABET')) ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
             $pager['names'] = $pager['values'] = explode(',', $alphabet);
@@ -198,11 +203,11 @@ function smarty_function_pagerabc($params, &$smarty)
     }
 
     $style = '';
-    foreach(array_keys($pager['names']) as $i) {
-        if (!empty($params['class_numon']))    {
-            if (isset($allVars[$pager['posvar']]) && $allVars[$pager['posvar']] == $pager['values'][$i])  {
+    foreach (array_keys($pager['names']) as $i) {
+        if (!empty($params['class_numon'])) {
+            if (isset($allVars[$pager['posvar']]) && $allVars[$pager['posvar']] == $pager['values'][$i]) {
                 $style = ' class="'.$params['class_numon'].'"';
-            } elseif (!empty($params['class_num']))    {
+            } elseif (!empty($params['class_num'])) {
                 $style = ' class="'.$params['class_num'].'"';
             } else {
                 $style = '';

@@ -16,7 +16,7 @@
 /**
  * Smarty function to display a preview image from a theme
  *
- * available parameters:
+ * Available parameters:
  *  - name       name of the theme to display the preview image for
  *  - name       if set, the id assigned to the image
  *  - size         if set, the size of the image to use from small, medium, large (optional: default 'medium')
@@ -25,10 +25,11 @@
  * Example
  * {previewimage name=andreas08 size=large}
  *
- * @see           function.title.php::smarty_function_previewimage()
- * @param      array       $params      All attributes passed to this function from the template
- * @param      object      &$smarty     Reference to the Smarty object
- * @return      string      the markup to display the theme image
+ * @param array  $params  All attributes passed to this function from the template.
+ * @param Smarty &$smarty Reference to the Smarty object.
+ * 
+ * @see    function.title.php::smarty_function_previewimage()
+ * @return string The markup to display the theme image.
  */
 function smarty_function_previewimage($params, &$smarty)
 {
