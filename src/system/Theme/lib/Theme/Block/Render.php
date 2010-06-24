@@ -133,6 +133,6 @@ class Theme_Block_Render extends Zikula_Block
 
         $this->renderer->assign($vars);
 
-        return $this->renderer->fetch('theme_block_render.htm');
+        return $this->renderer->fetch('theme_block_render.tpl');
     }
 }

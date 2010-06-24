@@ -75,7 +75,7 @@ class Search_Block_Search extends Zikula_Block
         }
 
         // return the rendered block
-        $blockinfo['content'] = $this->renderer->fetch('search_block_search.htm');
+        $blockinfo['content'] = $this->renderer->fetch('search_block_search.tpl');
         return BlockUtil::themeBlock($blockinfo);
     }
 
@@ -112,7 +112,7 @@ class Search_Block_Search extends Zikula_Block
         $this->renderer->assign('searchvars', $vars)
                        ->assign('searchmodules', $searchmodules);
 
-        return $this->renderer->fetch('search_block_search_modify.htm');
+        return $this->renderer->fetch('search_block_search_modify.tpl');
     }
 
     /**
@@ -142,7 +142,7 @@ class Search_Block_Search extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->renderer->clear_cache('search_block_search.htm');
+        $this->renderer->clear_cache('search_block_search.tpl');
 
         return($blockinfo);
     }

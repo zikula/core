@@ -123,7 +123,7 @@ class SysInfo_Admin extends Zikula_Controller
                       ->assign('php_disable_functions', DataUtil::getBooleanIniValue('disable_functions'))
                       ->assign('mod_security', (bool)$mod_security);
 
-        return $this->renderer->fetch('sysinfo_admin_main.htm');
+        return $this->renderer->fetch('sysinfo_admin_main.tpl');
     }
 
     /**
@@ -179,7 +179,7 @@ class SysInfo_Admin extends Zikula_Controller
         
         $this->renderer->assign('phpinfo', $phpinfo);
 
-        return $this->renderer->fetch('sysinfo_admin_phpinfo.htm');
+        return $this->renderer->fetch('sysinfo_admin_phpinfo.tpl');
     }
 
     /**
@@ -200,7 +200,7 @@ class SysInfo_Admin extends Zikula_Controller
         $this->renderer->assign('filelist', $filelist)
                        ->assign('ztemp', $ztemp);
 
-        return $this->renderer->fetch('sysinfo_admin_filesystem.htm');
+        return $this->renderer->fetch('sysinfo_admin_filesystem.tpl');
     }
 
     /**
@@ -223,7 +223,7 @@ class SysInfo_Admin extends Zikula_Controller
         
         $this->renderer->assign('ztemp', $ztemp);
 
-        return $this->renderer->fetch('sysinfo_admin_filesystem.htm');
+        return $this->renderer->fetch('sysinfo_admin_filesystem.tpl');
     }
 
     /**
@@ -240,7 +240,7 @@ class SysInfo_Admin extends Zikula_Controller
         
         return $this->renderer->assign('mods', ModuleUtil::getModules())
                               ->assign('themes', ThemeUtil::getAllThemes())
-                              ->fetch('sysinfo_admin_extensions.htm');
+                              ->fetch('sysinfo_admin_extensions.tpl');
     }
 }
 

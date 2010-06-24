@@ -51,7 +51,7 @@ class Settings_Admin extends Zikula_Controller
 
         $this->renderer->assign('settings', $configvars);
 
-        return $this->renderer->fetch('settings_admin_modifyconfig.htm');
+        return $this->renderer->fetch('settings_admin_modifyconfig.tpl');
     }
 
     /**
@@ -164,7 +164,7 @@ class Settings_Admin extends Zikula_Controller
         $configvars['timezone_server_abbr'] = DateUtil::getTimezoneAbbr();
         $this->renderer->assign($configvars);
 
-        return $this->renderer->fetch('settings_admin_multilingual.htm');
+        return $this->renderer->fetch('settings_admin_multilingual.tpl');
     }
 
     /**
@@ -268,7 +268,7 @@ class Settings_Admin extends Zikula_Controller
         $configvars['development'] = System::getVar('development');
         $this->renderer->assign($configvars);
 
-        return $this->renderer->fetch('settings_admin_errorhandling.htm');
+        return $this->renderer->fetch('settings_admin_errorhandling.tpl');
     }
 
     /**
