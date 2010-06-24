@@ -291,6 +291,18 @@ class ModUtil
     }
 
     /**
+     * Get Module meta info.
+     *
+     * @param string $module Module name.
+     *
+     * @return array|boolean Module information array or false.
+     */
+    public static function getInfoFromName($module)
+    {
+        return self::getInfo(self::getIdFromName($module));
+    }
+
+    /**
      * The getIdFromName method gets module ID given its name.
      *
      * @param string $module The name of the module.
