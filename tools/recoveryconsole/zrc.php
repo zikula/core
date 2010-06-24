@@ -1,109 +1,64 @@
 <?php
-
-/*
+/**
  * The Zikula Recovery Console
  * ------------------------------------------
  * A warehouse of utilities that are designed
  * to fix many common issues a Zikula website
- * might face. Designed for Zikula 1.0.0 only.
+ * might face. Designed for Zikula 1.3.0 only.
  * ------------------------------------------
  * Developed by John Alarcon
  * Copyright 2007-2008
  * http://www.johnalarcon.com
  * ------------------------------------------
  * Licensed under the General Public License.
- * 
- * $Id: zrc.php 25901 2009-06-28 06:52:23Z Landseer $
  */
 
-/*
- * DONE 12/12/07
- *     1) Fixed cap/spelling in permissions texts.
- *     2) Commented out Modules-module repair utility.
- *     3) Added version info to 'about' page; general cleanup.
- *     4) Commented out disabled-site recovery utility.
- *     5) Changed versioning info throughout.
- * 
- * DONE 07/06/08
- *     1) Removed all instances of "PostNuke".
- *     2) Updated ZRC name and version.
- *     3) Updated search box to search Zikula site.
- *     4) Updated footer link to point to Zikula download page.
- *     5) Updated perm-reset utility to use new default schema.
- *          5a) Re-updated to truncate table, instead of deleting the
- *              entries themselves.  This is required to avoid breaking
- *              the ajax drag-drop feature, since that relies on the
- *              permissions starting with an entry that has an id of 1.
- *     6) Updated various texts throughout application.
- *     7) Removed 135 lines of deprecated code.
- *     8) Added all these comments.
- * 
- * DONE 22/11/08
- *     0) Received file from John for further maintenance. Thanks!
- *     1) improved markup (lists where content is listed), 
- *     2) fixed validation errors in javascript
- *     3) fixed detection of Zikula version
- *     4) added more infos to themes and modules overview
- *     5) Re-implemented option to enable a disabled site
- *
- * DONE 22/06/09
- *     0) Fixed bug #973 (zrc is php5-only) 
- 
- * KNOWN BUGS (22/11/08)
- *     1) After disabling a block the 'disable block' option should show N/A. Atm this
- *        needs another reload.
- *     2) 'PHP Version' shows the version number only, not the intended output of phpinfo(1). 
-          This is a workaround. 
- *
- * */
-
 // Instantiate a Zikula Recovery Console object.
-$zrc = new recoveryConsole();
+$zrc = new RecoveryConsole();
 
 // Render the object.
 $zrc->renderRecoveryConsole();
 
-
-// 
-// the class
-//
-class recoveryConsole
+/**
+ * Recovery Console class.
+ */
+class RecoveryConsole
 {
-    var $blocks         = array();
-    var $themes         = array();
-    var $modules        = array();
-    var $siteInactive   = false;
-    
+    protected $blocks         = array();
+    protected $themes         = array();
+    protected $modules        = array();
+    protected $siteInactive   = false;
+
     // Setup.
-    function recoveryConsole()
+    public function __construct()
     {
         // Set strict error reporting.
         error_reporting(2047);
         // Initialize Recovery Console config and texts.
         $this->initRecoveryConsole();
         // Initialize Zikula.
-        $this->initZikula(); 
+        $this->initZikula();
         // Initialize lockdown mechanism.
-        $this->initLockMechanism();        
+        $this->initLockMechanism();
         // Sets cleaned user input to object.
         $this->cleanUserInput();
         // load basic data from site
         $this->loadInformation();
     }
     // Initialize the recovery console config and texts.
-    function initRecoveryConsole()
+    public function initRecoveryConsole()
     {
         // Define config settings; will be used in text defines to some degree.
         $this->initAppConfigDefines();
         // Define all Recovery Console texts.
         $this->initAppLangDefines();
     }
-    // Define Recovery Console's main config settings.    
-    function initAppConfigDefines()
+    // Define Recovery Console's main config settings.
+    public function initAppConfigDefines()
     {
         // Main configuration settings.
         define('_ZRC_APP_TITLE',     'Zikula Recovery Console');
-        define('_ZRC_APP_VERSION',   '1.1.0');        
+        define('_ZRC_APP_VERSION',   '1.3.0');
         define('_ZRC_APP_SCRIPT',    basename($_SERVER['PHP_SELF']));
         define('_ZRC_APP_EXPIRES',   1200);
 
@@ -111,19 +66,19 @@ class recoveryConsole
         $dir = explode('/', $_SERVER['PHP_SELF']);
         $this->siteConfigFile = $this->getServerProtocol().'://'.$this->getHost().'/'.$dir[1].'/config/config.php';
     }
-    
+
     // load all information needed
-    function loadInformation() 
+    public function loadInformation()
     {
         // Check for failed database connection.
         if (!$this->dbEnabled) {
             return false;
         }
-        
+
         //
         // load all blocks.
         //
-        $this->blocks = pnModAPIFunc('Blocks', 'user', 'getall', array('inactive'=>true));
+        $this->blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('inactive'=>true));
 
         //
         // load all themes
@@ -157,7 +112,7 @@ class recoveryConsole
                 $themeid = ThemeUtil::getIDFromName($theme);
                 if ($themeid <> false) {
                     $this->themes['corethemes'][$theme] = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
-                } else { 
+                } else {
                     $this->themes['corethemes'][$theme] = array('name' => $theme, 'state' => 0);
                 }
             }
@@ -168,7 +123,7 @@ class recoveryConsole
         //
         // get site status
         //
-        $this->siteInactive = (pnConfigGetVar('siteoff') == 1);
+        $this->siteInactive = (System::getVar('siteoff') == 1);
 
         //
         // load all modules.
@@ -184,17 +139,16 @@ class recoveryConsole
         }
         ksort($this->modules['sys_mods']);
         ksort($this->modules['usr_mods']);
-        
+
         return true;
     }
-    
+
     // Texts for the Recovery Console.
-    function initAppLangDefines()
-    {       
+    public function initAppLangDefines()
+    {
         // Navigational texts.
         define('_ZRC_TXT_NAV_MAIN_SHORT',                'Main');
         define('_ZRC_TXT_NAV_MAIN_LONG',                 'Configuration Overview');
-        define('_ZRC_TXT_NAV_DBA',                       'Database Access Recovery');
         define('_ZRC_TXT_NAV_THEME',                     'Theme Recovery');
         define('_ZRC_TXT_NAV_PERMISSION',                'Permission Recovery');
         define('_ZRC_TXT_NAV_DISABLEDSITE',              'Disabled Site Recovery');
@@ -207,7 +161,6 @@ class recoveryConsole
         define('_ZRC_TXT_NAV_PHPINFO_ENVIRONMENT',       'PHP Environment');
         define('_ZRC_TXT_NAV_PHPINFO_VARIABLES',         'PHP Variables');
         define('_ZRC_TXT_NAV_PHPINFO_LICENSE',           'PHP License');
-        define('_ZRC_TXT_NAV_DBA_ASTERISK',              '*Requires Database Access');
         // General texts.
         define('_ZRC_TXT_CLICK_TO_CONFIRM',              'Click To Confirm');
         define('_ZRC_TXT_RUN_UTILITY',                   'Run Utility');
@@ -253,9 +206,6 @@ class recoveryConsole
         define('_ZRC_TXT_OVERVIEW_DEFAULT_THEME',        'set as default');
         // Texts for current settings.
         define('_ZRC_TXT_CURRENT_SETTING',               'Current Setting:');
-        define('_ZRC_TXT_DBA_CONNECTED',                 'Database Is Connected');
-        define('_ZRC_TXT_DBA_NOT_CONNECTED',             'Database Not Connected');
-        define('_ZRC_TXT_DBA_COPY_TO_CONFIG_FILE',       'The 2 lines highlighted below should be copied and then pasted into the <a href="#" title="LOCATION: '.$this->siteConfigFile.'">config file</a>, overwriting the 2 similar lines that are already contained therein.');
         define('_ZRC_TXT_SITE_DISABLED',                 'Site Is Off/Disabled');
         define('_ZRC_TXT_SITE_ENABLED',                  'Site Is On/Enabled');
         define('_ZRC_TXT_NOTHING_TO_REPORT',             'Nothing To Report');
@@ -264,10 +214,6 @@ class recoveryConsole
         define('_ZRC_TXT_NONE_DETECTED',                 'None Detected');
         // Texts specific to site recovery.
         define('_ZRC_TXT_SITE_TURNITON',                 'Set the following checkbox to re-enable your site.');
-        // Texts specific to DBA recovery.
-        define('_ZRC_TXT_DATABASE_USERNAME',             'Database Username');
-        define('_ZRC_TXT_DATABASE_PASSWORD',             'Database Password');
-        define('_ZRC_TXT_DATABASE_REPEAT',               'Repeat Password');
         // Texts specific to block recovery.
         define('_ZRC_TXT_BLOCK_BID',                     'BID');
         define('_ZRC_TXT_BLOCK_MID',                     'MID');
@@ -294,13 +240,12 @@ class recoveryConsole
         define('_ZRC_TXT_THEME_AUTOTHEMES',              'AutoThemes');
         // Explanatory texts.
         define('_ZRC_EXP_MAIN',                          'The information shown below reflects the current configuration settings detected by the '._ZRC_APP_TITLE.'. Using the navigation at left, make use of the various site recovery utilities available. If the '._ZRC_APP_TITLE.' cannot resolve the issues your site is experiencing, try the search box at the bottom of any page to search the <a href="http://community.zikula.org/index.php?module=Forum" title="Zikula Support Forum">Zikula Support Forum</a> for answers.');
-        define('_ZRC_EXP_DBA',                           '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to encode database login credentials that can be used in your site\'s config file. This will require further action on your part; please follow the additional instructions after successfully running this utility.');
         define('_ZRC_EXP_THEME',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to recover from theme-related fatal errors or to reset user-specified themes. Note that no AutoThemes will be available in the drop-down menu unless you have the AutoTheme module installed and active.');
         define('_ZRC_EXP_PERMISSION',                    '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to reset your site permissions to the default state that was set when you originally installed the site.  Carefully review the chart below as an example of how your permissions will be setup after running this utility.');
         define('_ZRC_EXP_BLOCK',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to disable or delete blocks that you believe are causing issues for your site. Blocks that you disable can still be accessed by the system, but a deleted block is gone for good; double-check your choices before running this utility.  If there are no blocks present on your site, this utility will be disabled.');
         define('_ZRC_EXP_SITE',                          '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to turn on your previously disabled site.');
         // About page texts.
-        define('_ZRC_EXP_ABOUT_TXT_VERSION',             '<strong>VERSION</strong><br />This is <strong>Version '._ZRC_APP_VERSION.'</strong> of the <strong>'._ZRC_APP_TITLE.'</strong>.  This application is recommended only for recovery of <a href="http://code.zikula.org/core/downloads" title="Zikula 1.x">Zikula 1.x</a> websites.<br /><br />');
+        define('_ZRC_EXP_ABOUT_TXT_VERSION',             '<strong>VERSION</strong><br />This is <strong>Version '._ZRC_APP_VERSION.'</strong> of the <strong>'._ZRC_APP_TITLE.'</strong><br /><br />');
         define('_ZRC_EXP_ABOUT_TXT_INFO',                '<strong>GENERAL</strong><br />The '._ZRC_APP_TITLE.' provides the tools necessary to resolve and recover from the most common issues that a Zikula site might experience over its lifetime.  Contained within this application are a variety of powerful recovery utilities that are designed to be self-explanatory, simple to use, and consistently delivered through an aesthetic layout.<br /><br />');
         define('_ZRC_EXP_ABOUT_TXT_LICENSE',             '<strong>LICENSE</strong><br /><a href="http://www.gnu.org/copyleft/gpl.html" title="General Public License">General Public License</a><br /><br />');
         define('_ZRC_EXP_ABOUT_TXT_CREDITS',             '<strong>CREDITS</strong><br />Maintained and enhanced by the Zikula CoreDev team. Originally developed by <a href="http://www.alarconcepts.com/" title="John Alarcon">John Alarcon</a>.  Greatly inspired by the ideas and work of <a href="http://www.snowjournal.com" title="Christopher S. Bradford">Christopher S. Bradford</a> and the additional supportive efforts of <a href="http://users.tpg.com.au/staer/" title="Martin Andersen">Martin Andersen</a>, <a href="http://www.landseer-stuttgart.de/" title="Frank Schummertz">Frank Schummertz</a>, <a href="http://pahlscomputers.com/" title="David Pahl">David Pahl</a> and <a href="http://www.itbegins.co.uk/" title="Simon Birtwistle">Simon Birtwistle</a>. Thanks guys!');
@@ -333,56 +278,58 @@ class recoveryConsole
         define('_ZRC_ERR_RESETTING_USER_THEMES',     'Error Resetting User Themes');
     }
     // Initialize Zikula and set relevant properties.
-    function initZikula()
+    public function initZikula()
     {
-        // Assign path/pnAPI file.
-        $file = 'includes/pnAPI.php';
+        // Assign path/System file.
+        $file = 'lib/ZLoader.php';
         // Before inclusion, ensure the API file can be accessed.
         if (!file_exists($file) && !is_readable($file)) {
             $this->fatalError(_ZRC_ERR_WRONG_DIRECTORY);
         }
         // Include the API file.
-        require_once($file);
-        // Before PNinit, avoid error; ensure the function exists.
-        if (!function_exists('pninit')) {
+        require_once 'lib/ZLoader.php';
+        ZLoader::register();
+        // Before init, avoid error; ensure the function exists.
+        if (!is_callable(array('System', 'init'))) {
             $this->fatalError(_ZRC_ERR_CMS_FAILED);
         }
         // Initialize Zikula.
-        pninit();
+
+        System::init();
         // Setting various site properties.
         $this->dbEnabled        = $this->initDatabase();
-        $this->siteLang         = pnConfigGetVar('language');
-        $this->siteVersion      = PN_VERSION_NUM;
-        $this->siteCodebase     = PN_VERSION_ID;
-        $this->siteInactive     = pnConfigGetVar('siteoff');
-        $this->siteTheme        = pnConfigGetVar('Default_Theme');
+        $this->siteLang         = ZLanguage::getLanguageCode();
+        $this->siteVersion      = System::VERSION_NUM;
+        $this->siteCodebase     = System::VERSION_ID;
+        $this->siteInactive     = System::getVar('siteoff');
+        $this->siteTheme        = System::getVar('Default_Theme');
         $this->operation        = null;
         $this->utility          = null;
     }
     // Check if lockdown is engaged.
-    function initLockMechanism()
+    public function initLockMechanism()
     {
         // Kill app if app is expired or force-locked by the system.
         if ($this->appIsExpired() || $this->appForceLocked) {
-            $this->fatalError(_ZRC_ERR_APP_LOCKED);
+            //$this->fatalError(_ZRC_ERR_APP_LOCKED);
         }
     }
     // Database connection.
-    function initDatabase() 
+    public function initDatabase()
     {
         // Establish database connection or return false.
         if (!$this->dbConnection = DBConnectionStack::getConnection()) {
             return false;
         }
         // Get Zikula table data or return false.
-        if (!$this->pnTables = pnDBGetTables()) {
+        if (!$this->dbTables = System::dbGetTables()) {
             return false;
         }
         // Return success.
         return true;
     }
     // Clean any input and set to object.
-    function cleanUserInput($input=false)
+    public function cleanUserInput($input=false)
     {
         // Ensure input exists.
         if (!$input) {
@@ -434,14 +381,14 @@ class recoveryConsole
     }
 
     // Check if Recovery Console is compatible with site version.
-    function appCompatible()
+    public function appCompatible()
     {
         // Return false if site version is not from Zikula 1.x series.
-        return ((int)substr(PN_VERSION_NUM, 0, 1) == 1);
+        return ((int)substr(System::VERSION_NUM, 0, 1) == 1);
     }
-    
+
     // Check if application is expired, thus warranting lockdown.
-    function appIsExpired()
+    public function appIsExpired()
     {
         // Check if app is expired.
         if (time() > $this->appExpirationTime()) {
@@ -451,23 +398,23 @@ class recoveryConsole
         return false;
     }
     // Return the unix time this file was created.
-    function appCreationTime()
+    public function appCreationTime()
     {
         return filemtime(_ZRC_APP_SCRIPT);
     }
     // Return the unix time that this file should lockdown.
-    function appExpirationTime()
+    public function appExpirationTime()
     {
-        return $this->appCreationTime() + _ZRC_APP_EXPIRES;        
+        return $this->appCreationTime() + _ZRC_APP_EXPIRES;
     }
     // Return the seconds left until file lockdown.
-    function appTimeElapser()
+    public function appTimeElapser()
     {
         return $this->appExpirationTime() - time();
     }
 
     // Markup the Recovery Console page header.
-    function markupHeader() 
+    public function markupHeader()
     {
         // Handles everything through the opening <body> tag, inclusive.
         $head  = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"'."\n";
@@ -485,14 +432,14 @@ class recoveryConsole
         $head .= '<div id="container">'."\n\n";
         $head .= '    <div id="app_title">'._ZRC_APP_TITLE.'</div>'."\n\n";
         // Return the string.
-        return $head; 
+        return $head;
     }
     // Markup the Recovery Console page script.
-    function markupJavascript()
+    public function markupJavascript()
     {
         $js  = '<script type="text/javascript">'."\n";
         $js .= '<!--'."\n";
-        $js .= '    function countDown(n) {'."\n";
+        $js .= '    public function countDown(n) {'."\n";
         $js .= '        if(document.getElementById("timer_container")) {';
         $js .= '            mins = Math.floor(n/60);'."\n";
         $js .= '            if(mins < 10) {'."\n";
@@ -517,9 +464,9 @@ class recoveryConsole
         return $js;
     }
     // Markup the Recovery Console page CSS.
-    function markupStyles()
+    public function markupStyles()
     {
-        // Markup the styles as a long HTML string.      
+        // Markup the styles as a long HTML string.
         $css = '<style type="text/css">
     /* --- BASE CLASSES --- */
     body {
@@ -529,7 +476,7 @@ class recoveryConsole
         font: normal 10pt verdana;
         color: #000;
         }
-    td, 
+    td,
     th {
         vertical-align: top;
         text-align: left;
@@ -544,7 +491,7 @@ class recoveryConsole
         line-height: 1.5em;
         }
     label,
-    input, 
+    input,
     select {
         margin: 0 0 10px 0;
         font-size: 11pt;
@@ -566,19 +513,19 @@ class recoveryConsole
     img {
         border: 0;
         }
-    a:link, 
+    a:link,
     a:visited {
         text-decoration: none;
         color: #00f;
-        }        
+        }
     a:hover {
         text-decoration: underline;
         color: #f00;
-        }        
+        }
     del {
         color: #ccc;
         }
-    #container, 
+    #container,
     .bar {
         background: #eee;
         }
@@ -609,7 +556,7 @@ class recoveryConsole
         text-align: right;
         font-size: 8pt;
         }
-    #navblock a:link, 
+    #navblock a:link,
     #navblock a:visited {
         display: block;
         padding: 5px;
@@ -623,7 +570,7 @@ class recoveryConsole
         background: #f2f2f2;
         color: #1e74cb;
         }
-    #navblock a.selected:link, 
+    #navblock a.selected:link,
     #navblock a.selected:visited {
         border-right: 5px solid #1e74cb;
         background: #85b7ea;
@@ -652,7 +599,7 @@ class recoveryConsole
         font-size: 8pt;
         font-weight: normal;
         }
-    #status, 
+    #status,
     #error {
         margin: 0 0 10px 0;
         padding: 10px;
@@ -662,13 +609,13 @@ class recoveryConsole
     #error {
         background: #ffffd8;
         }
-    #fatal {    
-        width: 100%;    
-        text-align: center;    
-        margin: 100px 0 200px 0;    
-        font-size: 10pt;    
-        color: #f00;    
-    }    
+    #fatal {
+        width: 100%;
+        text-align: center;
+        margin: 100px 0 200px 0;
+        font-size: 10pt;
+        color: #f00;
+    }
     #body_column {
         display: inline;
         float: left;
@@ -747,7 +694,7 @@ class recoveryConsole
         }
     #search_b { /* Search button */
         border: 1px solid #1e74cb;
-        background: #85b7ea;    
+        background: #85b7ea;
         font-weight: bold;
         color: #fff;
         }
@@ -762,7 +709,7 @@ class recoveryConsole
         font: bold 6pt tahoma;
         color: #85b7ea;
         }
-    #footer a:link, 
+    #footer a:link,
     #footer a:visited {
         text-decoration: none;
         color: #85b7ea;
@@ -797,7 +744,7 @@ class recoveryConsole
         return $css;
     }
     // Markup the Recovery Console main menu.
-    function markupMenu() 
+    public function markupMenu()
     {
         // Open the left column container.
         $menu  = '    <div id="left_column">'."\n\n";
@@ -806,7 +753,6 @@ class recoveryConsole
         // Main link.
         $menu .= '<strong>'.$this->markupMenuLink('','',            _ZRC_TXT_NAV_MAIN_SHORT, _ZRC_TXT_NAV_MAIN_LONG).'</strong>';
         // Additional links.
-        $menu .= $this->markupMenuLink('recover',   'dba',          _ZRC_TXT_NAV_DBA);
         $menu .= $this->markupMenuLink('recover',   'theme',        _ZRC_TXT_NAV_THEME);
         $menu .= $this->markupMenuLink('recover',   'permission',   _ZRC_TXT_NAV_PERMISSION);
         $menu .= $this->markupMenuLink('recover',   'block',        _ZRC_TXT_NAV_BLOCK);
@@ -815,8 +761,6 @@ class recoveryConsole
         $menu .= $this->markupMenuLink('about',     '',             _ZRC_TXT_NAV_ABOUT);
         // Closing the navigation block container.
         $menu .= '</div>'."\n\n";
-        // Asterisked note of database requirements.
-        $menu .= '        <div id="navblock_asterisk">'._ZRC_TXT_NAV_DBA_ASTERISK.'</div>'."\n\n";
         // Add the lockdown timer.
         $menu .= '        <div id="timer_container"></div>'."\n\n";
         // Close the left column container.
@@ -825,7 +769,7 @@ class recoveryConsole
         return $menu;
     }
     // Markup the Recovery Console main menu links.
-    function markupMenuLink($op=false, $utility=false, $text, $title=false)
+    public function markupMenuLink($op=false, $utility=false, $text, $title=false)
     {
         // Check if this link is a database-requiring utility.
         $dba_reqd = (in_array($utility, $this->getAllDatabaseUtilities())) ? true : false;
@@ -852,7 +796,7 @@ class recoveryConsole
         // Attach operation to action string.
         $action .= '?op='.$op;
         // Re-assign the selected style based on $op.
-        $style = ($op === $this->operation) ? 'class="selected"' : null;            
+        $style = ($op === $this->operation) ? 'class="selected"' : null;
         // LINK RETURN POINT: Link has $op arg only (ie, about, phpinfo).
         // -----
         if (!$utility) {
@@ -875,8 +819,8 @@ class recoveryConsole
         // LINK RETURN POINT: Link with $op and $utility, requires no database access. (ie, dba credential encoding utility.)
         return $anchor = '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.'</a>';
     }
-    // Markup the Recovery Console content area.    
-    function markupBodyContent() 
+    // Markup the Recovery Console content area.
+    public function markupBodyContent()
     {
         // Open the body-column container.
         $content = '    <div id="body_column">';
@@ -889,7 +833,7 @@ class recoveryConsole
                 return $content;
             }
         }
-        // This will help keep source markup neat. =)           
+        // This will help keep source markup neat. =)
         $content .= "\n\n";
         // Check if operation is invalid. (empty IS valid)
         if (!empty($this->operation) && !in_array($this->operation, $this->getAllOperations())) {
@@ -910,7 +854,7 @@ class recoveryConsole
                 $content .= '        <div id="explain_disabled">'._ZRC_ERR_DBA_REQUIRED.'</div>'."\n\n";
                 $content .= '    </div>'."\n\n";
                 return $content;
-            }      
+            }
         }
         // A switch calls the methods that gather the page/utility content.
         switch($this->operation) {
@@ -926,7 +870,7 @@ class recoveryConsole
                     // Set message and escape early since utility is not valid.
                     $content .= '        <div id="explain">'._ZRC_ERR_INVALID_UTILITY.'</div>'."\n\n";
                     break;
-                }                
+                }
                 // Add utility explanation.
                 $content .= '        <div id="explain">'.$this->getExplanation().'</div>'."\n\n";
                 // Check if form was submitted.
@@ -937,26 +881,26 @@ class recoveryConsole
                     $content .= $this->markupNotices();
                 }
                 // Add current setting here (as it may have just changed).
-                $content .= '        <div id="current">'.$this->getCurrentSetting().'</div>'."\n\n";        
+                $content .= '        <div id="current">'.$this->getCurrentSetting().'</div>'."\n\n";
                 // Add the utility content to the output.
                 $content .= '        <div id="utility">'."\n\n".$this->getUtility().'        </div>'."\n\n";
                 break;
-            default: 
+            default:
                 // Default cases will show the main overview explanation.
                 $content .= '        <div id="explain">'.$this->getExplanation().'</div>'."\n\n";
                 // Default cases will show the prepared overview.
                 $content .= '        <div id="utility">'."\n\n".$this->getUtility().'        </div>'."\n\n";
                 break;
-        }    
+        }
         // On all pages, append Zikula site-search feature.
         $content .= '    <div id="search">'.$this->markupSearchBox().'</div>';
         // Closing the body-column container.
         $content .= '    </div>'."\n\n";
         // Return the content string.
-        return $content;        
+        return $content;
     }
     // Markup Zikula site-search.
-    function markupSearchBox()
+    public function markupSearchBox()
     {
         // Markup a form to search the PN site.
         $search  = '<div><strong class="blue">'._ZRC_TXT_STILL_NEED_HELP.'</strong> '._ZRC_TXT_SEARCH_THE_DOTCOM.'</div>'."\n\n";
@@ -991,13 +935,13 @@ class recoveryConsole
         return $search;
     }
     // Markup the Recovery Console page footer.
-    function markupFooter()
+    public function markupFooter()
     {
         // Footer container and anchors.
         $footer  = '    <div id="footer">';
         $footer .= '<a href="http://code.zikula.org/core" title="'._ZRC_APP_TITLE.' v.'._ZRC_APP_VERSION.'">'._ZRC_APP_TITLE.' v.'._ZRC_APP_VERSION.'</a>';
         $footer .= '<br /><br />';
-        $footer .= '<img src="images/powered/small/cms_zikula.png" alt="Zikula-logo" />&nbsp;<img src="images/powered/small/php_powered.png" alt="PHP-Logo" />&nbsp;<img src="images/powered/small/adodb_powered.png" alt="Adodb-Logo" />';
+        $footer .= '<img src="images/powered/small/cms_zikula.png" alt="Zikula-logo" />&nbsp;<img src="images/powered/small/php_powered.png" alt="PHP-Logo"  />';
         // Closing the footer container.
         $footer .= '</div>'."\n\n";
         // Closing the main container.
@@ -1008,7 +952,7 @@ class recoveryConsole
         return $footer;
     }
     // Markup notices, which consist of status and error messages and recovery output (if any).
-    function markupNotices()
+    public function markupNotices()
     {
         if (!$this->INPUT['submit']) {
             return;
@@ -1082,22 +1026,22 @@ class recoveryConsole
             $markup .= '        </div>'."\n\n";
         }
         // Return the markup.
-        return $markup;        
+        return $markup;
     }
     // Rendering the Recovery Console.
-    function renderRecoveryConsole() 
+    public function renderRecoveryConsole()
     {
         // Assemble the markup.
         $console = $this->markupHeader()
                  . $this->markupMenu()
                  . $this->markupBodyContent()
-                 . $this->markupFooter();        
+                 . $this->markupFooter();
         // A single print is used in the class.
         return print $console;
-    }    
+    }
 
     // Return host name.
-    function getHost()
+    public function getHost()
     {
         // Assign default host.
         $host = $_SERVER['HTTP_HOST'];
@@ -1114,7 +1058,7 @@ class recoveryConsole
         return $host;
     }
     // Return server protocol: http or https.
-    function getServerProtocol()
+    public function getServerProtocol()
     {
         // Check if protocol is basic http.
         if (preg_match('/^http:/', $_SERVER['REQUEST_URI'])) {
@@ -1129,45 +1073,43 @@ class recoveryConsole
                 return 'https';
             }
         }
-        // Generic return.        
+        // Generic return.
         return 'http';
     }
     // Get title of Recovery Console page/operation.
-    function getTitle()
+    public function getTitle()
     {
         // Return main console (long) title if no operation or utility present.
         if (!$this->operation && !$this->utility) {
             return $title = _ZRC_TXT_NAV_MAIN_LONG;
         }
         // Array of titles, keyed by operations.
-        $titles = array('about'         => _ZRC_TXT_NAV_ABOUT,        
-                        'dba'           => _ZRC_TXT_NAV_DBA, 
-                        'theme'         => _ZRC_TXT_NAV_THEME,         
-                        'permission'    => _ZRC_TXT_NAV_PERMISSION,    
+        $titles = array('about'         => _ZRC_TXT_NAV_ABOUT,
+                        'theme'         => _ZRC_TXT_NAV_THEME,
+                        'permission'    => _ZRC_TXT_NAV_PERMISSION,
                         'block'         => _ZRC_TXT_NAV_BLOCK,
                         'phpinfo'       => _ZRC_TXT_NAV_PHPINFO,
-                        'site'          => _ZRC_TXT_NAV_DISABLEDSITE,        
+                        'site'          => _ZRC_TXT_NAV_DISABLEDSITE,
                         );
         // Return title based on operation if utility not present.
         if (!$this->utility) {
             return $title = $titles[$this->operation];
-        }        
+        }
         // Utility present, return title based on utility.
-        return $title = $titles[$this->utility];            
+        return $title = $titles[$this->utility];
     }
     // Get any explanatory texts.
-    function getExplanation()
+    public function getExplanation()
     {
         // Array of explanatoty defines, keyed by operations.
-        $explanations = array('dba'           => _ZRC_EXP_DBA, 
-                              'theme'         => _ZRC_EXP_THEME,         
-                              'permission'    => _ZRC_EXP_PERMISSION,    
+        $explanations = array('theme'         => _ZRC_EXP_THEME,
+                              'permission'    => _ZRC_EXP_PERMISSION,
                               'block'         => _ZRC_EXP_BLOCK,
                               'site'          => _ZRC_EXP_SITE,
                               'about'         => _ZRC_EXP_ABOUT_TXT_INFO
                                                 ._ZRC_EXP_ABOUT_TXT_VERSION
                                                 ._ZRC_EXP_ABOUT_TXT_LICENSE
-                                                ._ZRC_EXP_ABOUT_TXT_CREDITS,                                                         
+                                                ._ZRC_EXP_ABOUT_TXT_CREDITS,
                               );
         // Initialization.
         $explanation = '';
@@ -1181,7 +1123,7 @@ class recoveryConsole
             return $explanation;
         }
         // ...if op and util are set and valid, get explanation based on utility instead.
-        if (in_array($this->operation, $this->getAllOperations()) && 
+        if (in_array($this->operation, $this->getAllOperations()) &&
             in_array($this->utility, $this->getAllUtilities())) {
             $explanation .= $explanations[$this->utility];
         }
@@ -1189,22 +1131,19 @@ class recoveryConsole
         return $explanation;
     }
     // Get a current setting for a given recovery item.
-    function getCurrentSetting()
+    public function getCurrentSetting()
     {
         // A short descriptive title.
         $setting = '<strong>'._ZRC_TXT_CURRENT_SETTING.'</strong> ';
         // Switch to get proper text.
         switch($this->utility) {
-            case 'dba':
-                $setting .= ($this->dbEnabled) ? _ZRC_TXT_DBA_CONNECTED : _ZRC_TXT_DBA_NOT_CONNECTED;
-                break;
             case 'theme':
                 $setting .= $this->siteTheme;
                 break;
             case 'permission':
                 $setting .= _ZRC_TXT_NOTHING_TO_REPORT;
                 break;
-                    case 'block':  
+                    case 'block':
                 $setting .= (count($this->blocks) == 0) ? _ZRC_TXT_BLOCKS_NOT_FOUND : _ZRC_TXT_BLOCKS_OUTLINED_BELOW;
                 break;
             case 'site':
@@ -1216,16 +1155,16 @@ class recoveryConsole
     }
 
     // Hub to get utilities.
-    function getUtility()
+    public function getUtility()
     {
         // A so-called "main" page clause if no op exists.
         if (!$this->operation) {
             return $form = $this->getMarkedUpOverview();
-        } 
+        }
         // PHPinfo needs no form, return marked-up PHPinfo instead.
         if ($this->operation === 'phpinfo') {
             return $form = $this->getMarkedUpPHPInfo();
-        }                
+        }
 
         // Check if this utility should be disabled.
         if ($this->getUtilityState() == false) {
@@ -1236,7 +1175,7 @@ class recoveryConsole
             // If no recovery output, return here.
             if (empty($output)) {
                 return $form;
-            }    
+            }
             // Loop through recovery output.
             foreach ($output as $line) {
                 $form .= ' '.$line;
@@ -1250,7 +1189,7 @@ class recoveryConsole
         // If any additional inputs/markup are available for this utility, get them.
         if (method_exists($this, $method='getUtilityInputs'.$this->utility)) {
             $form .= $this->$method();
-        }        
+        }
         // Confirmation and submit inputs.
         $form .= '                <div class="row"><div class="row_left"><label for="confirm">'._ZRC_TXT_CLICK_TO_CONFIRM.'</label></div><div class="row_right"><input id="confirm" type="checkbox" name="confirm" value="1" /></div></div>'."\n\n";
         $form .= '                <div class="row"><div class="row_left"><label for="submit">&nbsp;</label></div><div class="row_right"><input class="submit" type="submit" name="submit" id="submit" value="'._ZRC_TXT_RUN_UTILITY.'" /></div></div>'."\n\n";
@@ -1259,15 +1198,15 @@ class recoveryConsole
         $form .= '            </form>'."\n\n";
         // Return the form.
         return $form;
-    }    
-    // Determine if a utility should be disabled.    
-    function getUtilityState()
+    }
+    // Determine if a utility should be disabled.
+    public function getUtilityState()
     {
         // Default the utility state to 'enabled' = true.
         $state = true;
         // Utilities for non-broken items can be disabled here.
         switch($this->utility) {
-            case 'block':  
+            case 'block':
                 // If site has no blocks, disable this utility.
                 if (count($this->blocks) == 0) {
                     $this->setRecoveryOutput(_ZRC_TXT_UTILITY_DISABLED_BLOCK);
@@ -1276,35 +1215,25 @@ class recoveryConsole
                 break;
             case 'site':
                 // if site is enabled, disable this utility
-                if(pnConfigGetVar('siteoff') ==0) {
+                if(System::getVar('siteoff') ==0) {
                     $this->setRecoveryOutput(_ZRC_TXT_UTILITY_DISABLED_SITE);
                     $state = false;
                 }
-            default: 
+            default:
                 break;
         }
         // Return the state of this utility.
         return $state;
     }
-    
+
     // enable site
-    function getUtilityInputsSite()
+    public function getUtilityInputsSite()
     {
         return '<p>'._ZRC_TXT_SITE_TURNITON.'</p>';
-    }    
-    
-    // Get inputs for DBA recovery.    
-    function getUtilityInputsDBA()
-    {
-        // Create the "utility" portion of the form and return it.
-        $form  = '                <div><input type="hidden" name="validate" value="1" /></div>'."\n\n";
-        $form .= '                <div class="row"><div class="row_left"><label for="username">'._ZRC_TXT_DATABASE_USERNAME.'</label></div><div class="row_right"><input id="username" type="text" name="dbuname" value="'.(($this->INPUT['dbuname'] && $this->getErrors()) ? $this->INPUT['dbuname'] : null).'" maxlength="25" /></div></div>'."\n";
-        $form .= '                <div class="row"><div class="row_left"><label for="password1">'._ZRC_TXT_DATABASE_PASSWORD.'</label></div><div class="row_right"><input id="password1" type="password" name="dbpass1" value="" maxlength="20" /></div></div>'."\n";
-        $form .= '                <div class="row"><div class="row_left"><label for="password2">'._ZRC_TXT_DATABASE_REPEAT.'</label></div><div class="row_right"><input id="password2" type="password" name="dbpass2" value="" maxlength="20" /></div></div>'."\n";
-        return $form;
     }
-    // Get inputs for theme recovery.    
-    function getUtilityInputsTheme()
+
+    // Get inputs for theme recovery.
+    public function getUtilityInputsTheme()
     {
         // First, create a dynamic selector.
         $selector = '<select name="theme" id="theme" size="1">'."\n";
@@ -1340,14 +1269,14 @@ class recoveryConsole
             $selector .= '</optgroup>'."\n";
         }
         // Ending the selector.
-        $selector .= '</select>'."\n";        
+        $selector .= '</select>'."\n";
         // Create the "utility" portion of the form and return it.
         $form  = '                <div class="row"><div class="row_left"><label for="themes">'._ZRC_TXT_THEME_AVAILABLE.'</label></div><div class="row_right">'.$selector.'</div></div>'."\n";
         $form .= '                <div class="row"><div class="row_left"><label for="resetusers">'._ZRC_TXT_THEME_RESET_USERS.'</label></div><div class="row_right"><input id="resetusers" type="checkbox" name="resetusers" value="1"'.(($this->INPUT['resetusers'] && $this->getErrors()) ? ' checked="checked"' : null).'  /></div></div>'."\n";
         return $form;
     }
-    // Get additional inputs for permission recovery.    
-    function getUtilityInputsPermission()
+    // Get additional inputs for permission recovery.
+    public function getUtilityInputsPermission()
     {
         // Cheating a little; there are no actual inputs here.
         $form  = '<pre style="font-size:7.25pt;">';
@@ -1361,10 +1290,10 @@ class recoveryConsole
         $form .= '</pre>';
         return $form;
     }
-    // Get additional inputs for block recovery.    
-    function getUtilityInputsBlock()
+    // Get additional inputs for block recovery.
+    public function getUtilityInputsBlock()
     {
-        $form  = '<table width="100%" border="1" style="border-collapse:collapse;" cellpadding="3" cellspacing="0">';        
+        $form  = '<table width="100%" border="1" style="border-collapse:collapse;" cellpadding="3" cellspacing="0">';
         $form .= '<tr style="background:#f2f2f2;">'."\n\n";
         $form .= '<th>'._ZRC_TXT_BLOCK_BID.'</th>'."\n\n";
         $form .= '<th>'._ZRC_TXT_BLOCK_KEY.'</th>'."\n\n";
@@ -1374,7 +1303,7 @@ class recoveryConsole
         $form .= '<th>'._ZRC_TXT_BLOCK_NOCHANGE.'</th>'."\n\n";
         $form .= '<th>'._ZRC_TXT_BLOCK_DEACTIVE.'</th>'."\n\n";
         $form .= '<th>'._ZRC_TXT_BLOCK_DELETE.'</th>'."\n\n";
-        $form .= '</tr>'."\n\n";        
+        $form .= '</tr>'."\n\n";
         $row=0;
         foreach ($this->blocks as $block) {
             $class = ($row++ & 1) ? ' style="background:#fafafa;"' : null;
@@ -1387,19 +1316,19 @@ class recoveryConsole
             $form .= '<td class="center"><input type="radio" name="blocks['.$block['bid'].']" value="0"'.((empty($this->INPUT['blocks'][$block['bid']])) ? ' checked="checked"' : null).' /></td>'."\n\n";
             if ($block['active'] != 0) {
                 $form .= '<td class="center"><input type="radio" name="blocks['.$block['bid'].']" value="1"'.(($this->INPUT['blocks'][$block['bid']]==1) ? ' checked="checked"' : null).' /></td>'."\n\n";
-            } else { 
+            } else {
                 $form .= '<td class="center">'._ZRC_TXT_NOT_APPLICABLE_ABBR.'</td>';
             }
             $form .= '<td class="center"><input type="radio" name="blocks['.$block['bid'].']" value="2"'.(($this->INPUT['blocks'][$block['bid']]==2) ? ' checked="checked"' : null).' /></td>'."\n\n";
             $form .= '</tr>'."\n\n";
-        }        
+        }
         $form .= '</table><br />'."\n\n";
         //$form .= '                <div class="row"><div class="row_left"><label for="resetblocks">'._ZRC_TXT_BLOCK_RESET.'</label></div><div class="row_right"><input id="resetblocks" type="checkbox" name="resetblocks" value="1" /></div></div>'."\n";
         return $form;
     }
 
     // Get formatted PHP info.
-    function getMarkedUpPHPInfo()
+    public function getMarkedUpPHPInfo()
     {
         // Get chosen PHP view or default it.
         $view = (isset($this->INPUT['view'])) ? (int)$this->INPUT['view'] : 64;
@@ -1439,7 +1368,7 @@ class recoveryConsole
         return $form;
     }
     // Get formatted overview.
-    function getMarkedUpOverview()
+    public function getMarkedUpOverview()
     {
         // Assemble and return the form markup.
         $form  = '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_VERSION.'</div><div class="row_right">'.$this->siteCodebase.' '.$this->siteVersion.'</div></div>'."\n\n";
@@ -1454,14 +1383,14 @@ class recoveryConsole
         return $form;
     }
     // Get marked up theme list for overview page.
-    function getMarkedUpOverviewThemeList()
+    public function getMarkedUpOverviewThemeList()
     {
         // Initialization.
         $list = '';
         // Clause for when no themes came back.
         if (!isset($this->themes['corethemes']) && !isset($this->themes['autothemes'])) {
             return $list = _ZRC_TXT_NONE_DETECTED;
-        }        
+        }
 
         if (!empty($this->themes['corethemes'])) {
             $list .= '<strong>'._ZRC_TXT_OVERVIEW_CORETHEMES.'</strong>';
@@ -1474,7 +1403,7 @@ class recoveryConsole
         return $list;
     }
 
-    function getMarkedUpOverviewThemeListReal($themesarray)
+    public function getMarkedUpOverviewThemeListReal($themesarray)
     {
         // Looping through core themes.
         $list .= '<ul>';
@@ -1493,9 +1422,9 @@ class recoveryConsole
         // Return markup string.
         return $list;
     }
-        
+
     // Get marked up module list for overview page.
-    function getMarkedUpOverviewModuleList()
+    public function getMarkedUpOverviewModuleList()
     {
         // Initialization.
         $list = '';
@@ -1503,15 +1432,15 @@ class recoveryConsole
         if (!isset($this->modules['sys_mods']) && !isset($this->modules['usr_mods'])) {
             return $list = _ZRC_TXT_NONE_DETECTED;
         }
-        
+
         $list .= '<strong>'._ZRC_TXT_OVERVIEW_SYSTEM_MODS.'</strong>';
         $list .= $this->getMarkedUpOverviewModuleListReal($this->modules['sys_mods']);
         $list .= '<strong>'._ZRC_TXT_OVERVIEW_3RDPARTY_MODS.'</strong>';
         $list .= $this->getMarkedUpOverviewModuleListReal($this->modules['usr_mods']);
         return $list;
     }
-    
-    function getMarkedUpOverviewModuleListReal($modsarray)
+
+    public function getMarkedUpOverviewModuleListReal($modsarray)
     {
         $list = '';
         // Check if any modules exist.
@@ -1538,9 +1467,9 @@ class recoveryConsole
                         $list .= '<img src="images/icons/extrasmall/agt_update-product.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_UPGRADED.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_UPGRADED.'" />';
                         break;
                     case PNMODULE_STATE_INVALID:
-                    default: 
+                    default:
                         $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_INVALID.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_INVALID.'" />';
-                }                       
+                }
                 // Append module name.
                 $list .= ' '.$mod['name'].'</li>';
             }
@@ -1549,9 +1478,9 @@ class recoveryConsole
         // Return markup string.
         return $list;
     }
-    
+
     // Get marked up theme list for overview page.
-    function getMarkedUpOverviewBlockList()
+    public function getMarkedUpOverviewBlockList()
     {
         // Clause for when no blocks came back.
         if (empty($this->blocks)) {
@@ -1565,7 +1494,7 @@ class recoveryConsole
                 $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_ACTIVE.'" title="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_ACTIVE.'" />';
             } else {
                 $list .= '<li><img src="images/icons/extrasmall/yellowled.gif" alt="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" title="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" />';
-            } 
+            }
             // Append block title.
             $list .= ' '.$block['title'].'</li>';
         }
@@ -1575,7 +1504,7 @@ class recoveryConsole
     }
 
     // Processing hub.
-    function processRecovery()
+    public function processRecovery()
     {
         // Check if utility is valid.
         if (!in_array($this->utility, $this->getAllUtilities())) {
@@ -1590,20 +1519,17 @@ class recoveryConsole
         }
         // Call a recovery method based on $this->utility.
         switch($this->utility) {
-            case 'dba':         
-                $success = $this->processRecoveryDBA();            
+            case 'theme':
+                $success = $this->processRecoveryTheme();
                 break;
-            case 'theme':       
-                $success = $this->processRecoveryTheme();          
+            case 'permission':
+                $success = $this->processRecoveryPermission();
                 break;
-            case 'permission':  
-                $success = $this->processRecoveryPermission();     
+            case 'block':
+                $success = $this->processRecoveryBlock();
                 break;
-            case 'block':       
-                $success = $this->processRecoveryBlock();          
-                break;
-            case 'site':       
-                $success = $this->processRecoverySite();          
+            case 'site':
+                $success = $this->processRecoverySite();
                 break;
             default: break;
         }
@@ -1616,10 +1542,10 @@ class recoveryConsole
     }
 
     // Process site recovery
-    function processRecoverySite()
+    public function processRecoverySite()
     {
         // Check if form was submitted.
-        if (!pnConfigSetVar('siteoff', (int)0)) {
+        if (!System::setVar('siteoff', (int)0)) {
             $this->setError(_ZRC_ERR_SITE_ENABLING);
             return false;
         }
@@ -1628,38 +1554,9 @@ class recoveryConsole
         $this->setStatus(_ZRC_TXT_RECOVERY_SUCCESS);
         return true;
     }
-    // Process recovery from database access corruption.
-    function processRecoveryDBA()
-    {
-        // Check for blank fields.
-        foreach ($this->INPUT as $key=>$value) {
-            if (!$value) {
-                $this->setError(_ZRC_ERR_ALL_FIELDS_REQUIRED);
-            }
-        }
-        // Check that passwords match.
-        if ($this->INPUT['dbpass1'] !== $this->INPUT['dbpass2']) {
-            $this->setError(_ZRC_ERR_PASSWORD_MISMATCH);
-        }
-        // If any errors, recovery failed.
-        if ($this->getErrors()) {
-            return false;
-        }
-        // Set a status message.
-        $this->setStatus(_ZRC_TXT_RECOVERY_SUCCESS);
-        // This recovery requires further user action, set a text of such.
-        $this->setStatus(_ZRC_TXT_DBA_COPY_TO_CONFIG_FILE);
-        // Post-recovery output strings to be displayed with status messages.
-        $user_val = '$PNConfig[\'DBInfo\'][\'default\'][\'dbuname\'] = \''.base64_encode($this->INPUT['dbuname']).'\';';
-        $pass_val = '$PNConfig[\'DBInfo\'][\'default\'][\'dbpass\']  = \''.base64_encode($this->INPUT['dbpass1']).'\';';
-        // Set output strings to object as recovery output for formatting purposes.
-        $this->setRecoveryOutput($user_val);
-        $this->setRecoveryOutput($pass_val);
-        // Recovery successful.
-        return true;
-    }
+    
     // Process recovery from theme errors.
-    function processRecoveryTheme()
+    public function processRecoveryTheme()
     {
         // Get the new theme chosen.
         $theme = $this->INPUT['theme'];
@@ -1669,9 +1566,9 @@ class recoveryConsole
             return false;
         }
         // Set the new theme as default.
-        pnConfigSetVar('Default_Theme', $theme);
+        System::setVar('Default_Theme', $theme);
         // Set the new theme to the object.
-        $this->siteTheme = pnConfigGetVar('Default_Theme');
+        $this->siteTheme = System::getVar('Default_Theme');
         // Check if user themes are to be reset too.
         if ($this->INPUT['resetusers']) {
             // Reset user themes.
@@ -1687,7 +1584,7 @@ class recoveryConsole
         return true;
     }
     // Process recovery from bad permissions.
-    function processRecoveryPermission()
+    public function processRecoveryPermission()
     {
         // Reset permissions to default.
         $this->resetPermissions();
@@ -1700,16 +1597,16 @@ class recoveryConsole
         return true;
     }
     // Process recovery from bad sideblocks.
-    function processRecoveryBlock()
+    public function processRecoveryBlock()
     {
         // Determine if any action is required; default value.
         $action_required = false;
-        
+
         // Ensure that block data is an array.
         if (!is_array($this->INPUT['blocks'])) {
             return false;
         }
-        
+
         // Loop through blocks daga.
         foreach($this->INPUT['blocks'] as $bid=>$action) {
             // Skip to next block if no action specified.
@@ -1719,38 +1616,38 @@ class recoveryConsole
             // Set action as true; default, if here.
             $action_required = true;
             // Break out of the loop.
-            break;            
+            break;
         }
         // Check if no action is required.
         if (!$action_required) {
             // Set status message and return false.
             $this->setStatus(_ZRC_ERR_NO_DATA_NO_CHANGE);
             return false;
-        }        
-        
+        }
+
         // Loop through all blocks.
         foreach($this->INPUT['blocks'] as $bid => $action) {
             // Get information about the block.
-            $block = pnModAPIFunc('Blocks', 'user', 'get', array('bid'=>$bid));
+            $block = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid'=>$bid));
             // Check which action should be performed.
             if ($action == 1) { // 1 = disable block
                 // Attempt block disable.
                 if (!$this->disableBlock($bid)) {
                     // Set error.
                     $this->setError(_ZRC_TXT_BLOCK_DISABLE_FAILED.': '.$block['title']);
-                    continue;               
+                    continue;
                 }
                 // Set status message.
-                $this->setStatus(_ZRC_TXT_BLOCK_DISABLED.': '.$block['title']);                
+                $this->setStatus(_ZRC_TXT_BLOCK_DISABLED.': '.$block['title']);
             } else if ($action == 2) { // 2 = delete block
                 // Attempt block deletion.
                 if (!$this->deleteBlock($bid)) {
                     // Set error.
                     $this->setError(_ZRC_TXT_BLOCK_DELETE_FAILED.': '.$block['title']);
-                    continue;               
+                    continue;
                 }
                 // Set status message.
-                $this->setStatus(_ZRC_TXT_BLOCK_DELETED.': '.$block['title']);                
+                $this->setStatus(_ZRC_TXT_BLOCK_DELETED.': '.$block['title']);
             }
         }
         // Return false if any errors.
@@ -1764,123 +1661,123 @@ class recoveryConsole
     }
 
     // Set a status message.
-    function setStatus($msg)
+    public function setStatus($msg)
     {
         $this->statusMessages[] = $msg;
     }
     // Set an error message.
-    function setError($msg)
+    public function setError($msg)
     {
         $this->errorMessages[] = $msg;
     }
     // Set any recovery utility output message.
-    function setRecoveryOutput($msg)
+    public function setRecoveryOutput($msg)
     {
         $this->recoveryOutput[] = $msg;
     }
 
     // Return all status messages.
-    function getStatus()
+    public function getStatus()
     {
         return $status = $this->statusMessages;
     }
     // Return all error messages.
-    function getErrors()
+    public function getErrors()
     {
         return $errors = $this->errorMessages;
     }
     // Return any utility output texts.
-    function getRecoveryOutput()
+    public function getRecoveryOutput()
     {
         return $output = $this->recoveryOutput;
     }
 
     // Return an array of all possible operations.
-    function getAllOperations()
+    public function getAllOperations()
     {
         return $valid = array('about', 'recover', 'phpinfo');
     }
     // Return an array of all possible utilities.
-    function getAllUtilities()
+    public function getAllUtilities()
     {
-        return $valid = array('dba', 'theme', 'permission', 'block', 'site');
+        return $valid = array('theme', 'permission', 'block', 'site');
     }
     // Return an array of database-requiring utilities.
-    function getAllDatabaseUtilities()
+    public function getAllDatabaseUtilities()
     {
         return $valid = array('theme', 'permission', 'block', 'site');
     }
 
     // Disable a sideblock.
-    function disableBlock($bid)
+    public function disableBlock($bid)
     {
         // Ensure that $bid is 1 or higher.
         if ($bid < 1) {
             $this->setError(_ZRC_ERR_BLOCK_INVALID_BID);
             return false;
         }
-        
+
         // Verify that block information was obtained.
-        if (!pnBlockGetInfo($bid)) {
+        if (!BlockUtil::getBlockInfo($bid)) {
             $this->setError(_ZRC_ERR_BLOCK_NO_SUCH_BLOCK);
             return false;
         }
-        
+
         // To be sure none more than active-state is changed.
         $obj = array('bid'=>$bid, 'active'=>0);
-        
+
         // Attempt to disable the block.
         if (!DBUtil::updateObject ($obj, 'blocks', '', 'bid')) {
             $this->setError(_ZRC_ERR_BLOCK_NOT_DISABLED);
             return false;
         }
-        
+
         // Success.
         return true;
     }
     // Delete a sideblock.
-    function deleteBlock($bid)
+    public function deleteBlock($bid)
     {
         // Ensure that $bid is 1 or higher.
         if (!is_numeric($bid) || $bid < 1) {
             $this->setError(_ZRC_ERR_BLOCK_INVALID_BID);
             return false;
         }
-        
+
         // Ensure block exists.
-        if (!pnBlockGetInfo($bid)) {
+        if (!BlockUtil::getBlockInfo($bid)) {
             $this->setError(_ZRC_ERR_BLOCK_NO_SUCH_BLOCK);
             return false;
-        }        
+        }
 
         // Delete block placements for this block.
         if (!DBUtil::deleteObjectByID('block_placements', $bid, 'bid')) {
             $this->setError(_ZRC_ERR_BLOCK_NOT_DISPLACED);
             return false;
         }
-    
+
         // Delete the block itself.
         if (!DBUtil::deleteObjectByID ('blocks', $bid, 'bid')) {
             $this->setError(_ZRC_ERR_BLOCK_NOT_DELETED);
             return false;
         }
-    
+
         // Let other modules know we have deleted an item.
-        pnModCallHooks('item', 'delete', $bid, array('module'=>'Blocks'));
+        ModUtil::callHooks('item', 'delete', $bid, array('module'=>'Blocks'));
 
         // Success.
         return true;
     }
 
     // Reset site permissions.
-    function resetPermissions()
+    public function resetPermissions()
     {
         // Delete all current permission entries.
         if (!DBUtil::truncateTable('group_perms')) {
             $this->setError(_ZRC_ERR_PERMISSION_NOT_DELETED);
             return false;
         }
-        
+
         // Array of permission objects to insert.
         $perms = array();
         $perms[] = array('pid'=>1, 'gid'=>2,  'sequence'=>1, 'realm'=>0, 'component'=>'.*',                     'instance'=>'.*',           'level'=>800,   'bond'=>0);
@@ -1894,15 +1791,15 @@ class recoveryConsole
             $this->setError(_ZRC_ERR_PERMISSION_INSERTION_FAILURE);
             return false;
         }
-        
+
         // Success.
         return true;
     }
     // Reset user themes.
-    function resetUserThemes()
+    public function resetUserThemes()
     {
         // Get all users.
-        $users = pnModAPIFunc('Users', 'user', 'getall');
+        $users = ModUtil::apiFunc('Users', 'user', 'getall');
         // Loop through users.
         foreach ($users as $user) {
             // Create an update object.
@@ -1918,11 +1815,11 @@ class recoveryConsole
     }
 
     // Handle a fatal error scenario.
-    function fatalError($msg)
+    public function fatalError($msg)
     {
         // Header, error content, footer.
         $fatal  = $this->markupHeader();
-        $fatal .= '<div id="fatal">'.(string)$msg.'</div>';    
+        $fatal .= '<div id="fatal">'.(string)$msg.'</div>';
         $fatal .= $this->markupFooter();
         // Kill application.
         die ($fatal);
