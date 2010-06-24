@@ -1,5 +1,5 @@
 {gt text="Find and e-mail users" assign=templatetitle}
-{include file="users_admin_menu.htm"}
+{include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname='Users' src='admin.gif' alt=$templatetitle}</div>

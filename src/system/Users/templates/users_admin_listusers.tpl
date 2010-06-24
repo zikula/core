@@ -1,6 +1,6 @@
 {configgetvar name='profilemodule' assign='profilemodule'}
 {gt text="Search results" assign=templatetitle}
-{include file="users_admin_menu.htm"}
+{include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
 

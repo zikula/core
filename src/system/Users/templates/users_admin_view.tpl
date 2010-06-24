@@ -1,6 +1,6 @@
 {gt text="Users list" assign=templatetitle}
 {ajaxheader modname='Users'}
-{include file="users_admin_menu.htm"}
+{include file="users_admin_menu.tpl"}
 
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large alt=$templatetitle}</div>

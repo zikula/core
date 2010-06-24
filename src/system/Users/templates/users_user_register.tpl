@@ -2,7 +2,7 @@
 {ajaxheader modname='Users' filename='users.js'}
 {ajaxheader modname='Users' filename='users_newuser.js'}
 
-{include file="users_user_menu.htm"}
+{include file="users_user_menu.tpl"}
 
 {if !$regAllowed}
 <h3>{gt text="Sorry! New user registration is currently disabled."}</h3>
