@@ -1564,7 +1564,7 @@ class Users_Admin extends Zikula_Controller
      * Available Post Parameters:
      * - config (array) An associative array of configuration settings for the Users module.
      *
-     * @see    function settings_admin_main()
+     * @see Setting_Admin::main()
      *
      * @return bool True if configuration saved; false if permission error.
      */

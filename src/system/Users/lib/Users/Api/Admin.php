@@ -522,12 +522,15 @@ class Users_Api_Admin extends Zikula_Api
         header('Content-Disposition: attachment; filename="'.$args['exportFile'].'"');
         header("Content-Transfer-Encoding: binary");
 
-        //get all user fields
-        $userfields = ModUtil::apiFunc('Profile', 'user', 'getallactive');
-
         $colnames=array();
-        foreach ($userfields as $item) {
-          $colnames[] = $item['prop_attribute_name'];
+
+        //get all user fields
+        if (ModUtil::available('Profile')) {
+            $userfields = ModUtil::apiFunc('Profile', 'user', 'getallactive');
+
+            foreach ($userfields as $item) {
+                $colnames[] = $item['prop_attribute_name'];
+            }
         }
 
         //get all users

@@ -23,7 +23,7 @@
 // The following define some global settings for the application
 // ----------------------------------------------------------------------
 global $ZConfig;
-$ZConfig['System']['installed'] = 0;        // installer will change this during installation
+$ZConfig['System']['installed'] = 1;        // installer will change this during installation
 $ZConfig['System']['temp'] = 'ztemp';       // installer will change this during installation
 $ZConfig['System']['prefix'] = 'z';         // installer will change this during installation
 $ZConfig['System']['development'] = 0;      // should be set to 0/false when cutting a release for production use
@@ -48,7 +48,7 @@ $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
 // This is the definition for the default Zikula system database.
 // It must be named 'default'
 // ----------------------------------------------------------------------
-$ZConfig['DBInfo']['default']['dsn'] = 'mysql://user:password@localhost/test';
+$ZConfig['DBInfo']['default']['dsn'] = 'mysql://root:@localhost/q123a';
 $ZConfig['DBInfo']['default']['dbtabletype'] = 'myisam';
 $ZConfig['DBInfo']['default']['dbcharset'] = 'utf8';
 $ZConfig['DBInfo']['default']['dbcollate'] = 'utf8_general_ci';
@@ -59,8 +59,8 @@ $ZConfig['DBInfo']['default']['dbcollate'] = 'utf8_general_ci';
 // can define as many as you like provided you give each one a unique
 // name (the key value following the DBInfo array element)
 // ----------------------------------------------------------------------
-$ZConfig['DBInfo']['external1']['dsn'] = 'mysql://user:password@localhost/test2';
-$ZConfig['DBInfo']['external1']['dbtabletype'] = 'innodb';
+$ZConfig['DBInfo']['external1']['dsn'] = 'mysql://root:@localhost/q123a';
+$ZConfig['DBInfo']['external1']['dbtabletype'] = 'myisam';
 $ZConfig['DBInfo']['external1']['dbcharset'] = 'utf8';
 $ZConfig['DBInfo']['external1']['dbcollate'] = 'utf8_general_ci';
 
