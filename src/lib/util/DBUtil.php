@@ -1446,7 +1446,7 @@ class DBUtil
      * Transform a SQL query result set into an object/array, optionally applying an permission filter.
      *
      * @param mixed   $result           The result set we wish to marshall.
-     * @param array   $objectColumns    The column array to map onto the result set.
+     * @param array   $objectColumns    The column array to map onto the result set, default null = don't use.
      * @param boolean $closeResultSet   Whether or not to close the supplied result set (optional) (default=true).
      * @param string  $assocKey         The key field to use to build the associative index (optional) (default='').
      * @param boolean $clean            Whether or not to clean up the marshalled data (optional) (default=true).
@@ -1456,13 +1456,13 @@ class DBUtil
      * @return array The marshalled array of objects.
      * @throws Exception If empty parameters. or if permissionfilter is not an array.
      */
-    public static function marshallObjects($result, $objectColumns, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null, $tablename = null)
+    public static function marshallObjects($result, $objectColumns = null, $closeResultSet = true, $assocKey = '', $clean = true, $permissionFilter = null, $tablename = null)
     {
         if (!$result) {
             throw new Exception(__f('The parameter %s must not be empty', 'result'));
         }
 
-        if (!$objectColumns) {
+        if (!is_null($objectColumns) && !$objectColumns) {
             throw new Exception(__f('The parameter %s must not be empty', 'objectColumns'));
         }
 
@@ -1482,11 +1482,18 @@ class DBUtil
         $objectArray = array();
         $cSize = count($objectColumns);
         $fetchedObjectCount = 0;
-
         $resultRows = $result->fetchAll(Doctrine::FETCH_ASSOC);
+        if ($resultRows && $objectColumns && count($resultRows[0]) != count($objectColumns)) {
+            throw new Exception('$objectColumn field count must match the resultset');
+        }
+
         foreach ($resultRows as $resultRow) {
             $fetchedObjectCount++;
-            $object = $resultRow;
+            if ($objectColumns) {
+                $object = array_combine($objectColumns, $resultRow);
+            } else {
+                $object = $resultRow;
+            }
 
             $havePerm = true;
             if ($permissionFilter) {
