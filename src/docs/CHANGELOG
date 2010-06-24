@@ -164,7 +164,9 @@ Issue #1838 (DataUtil::formatForOS() not Windows file path compatible).
 New location for core stylesheet in /styles/core.css (Issue #2211).
 Deprecated ZFeed and SimplePie from the core.
 Added @import handling to css combiner (Issue #1801).
-New button styling (Issue #1574)
+New button styling (Issue #1574).
+Relocated system fatal error templates (siteoff.tpl, notinstalled.tpl, dbconnectionerror.tpl and sessionfailed.tpl) to system/Theme/templates/system.
+Changed core module templates to use .tpl
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------

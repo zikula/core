@@ -38,7 +38,7 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
     if (file_exists('config/templates/siteoff.tpl')) {
         require_once 'config/templates/siteoff.tpl';
     } else {
-        require_once 'system/Theme/templates/siteoff.tpl';
+        require_once 'system/Theme/templates/system/siteoff.tpl';
     }
     System::shutdown();
 }

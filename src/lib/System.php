@@ -256,7 +256,7 @@ class System
             if (file_exists('config/templates/notinstalled.tpl')) {
                 require_once 'config/templates/notinstalled.tpl';
             } else {
-                require_once 'system/Theme/templates/notinstalled.tpl';
+                require_once 'system/Theme/templates/system/notinstalled.tpl';
             }
             self::shutDown();
         }
@@ -277,11 +277,11 @@ class System
             } catch (PDOException $e) {
                 if (!self::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
-                    $templateFile = '/templates/dbconnectionerror.tpl';
-                    if (file_exists('config' . $templateFile)) {
-                        include 'config' . $templateFile;
+                    $templateFile = 'dbconnectionerror.tpl';
+                    if (file_exists('config/templates/' . $templateFile)) {
+                        include 'config/templates/' . $templateFile;
                     } else {
-                        include 'system/Theme' . $templateFile;
+                        include 'system/Theme/templates/system/' . $templateFile;
                     }
                     self::shutDown();
                 } else {

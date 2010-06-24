@@ -432,7 +432,7 @@ class SessionUtil
                 if (file_exists('config/templates/sessionfailed.tpl')) {
                     require_once 'config/templates/sessionfailed.tpl';
                 } else {
-                    require_once 'system/Theme/templates/sessionfailed.tpl';
+                    require_once 'system/Theme/templates/system/sessionfailed.tpl';
                 }
                 // terminate execution
                 System::shutdown();
