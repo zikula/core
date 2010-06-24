@@ -311,12 +311,12 @@ function install()
 
     // check our action template exists
     $action = DataUtil::formatForOS($action);
-    if ($smarty->template_exists("installer_$action.htm")) {
+    if ($smarty->template_exists("installer_$action.tpl")) {
         $smarty->assign('action', $action);
-        $templatename = "install/templates/installer_$action.htm";
+        $templatename = "install/templates/installer_$action.tpl";
     } else {
         $smarty->assign('action', 'error');
-        $templatename = 'install/templates/installer_error.htm';
+        $templatename = 'install/templates/installer_error.tpl';
     }
 
     // at this point we now have all the information requried to display
