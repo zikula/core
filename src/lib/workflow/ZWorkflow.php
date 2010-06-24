@@ -17,24 +17,60 @@
  */
 class ZWorkflow
 {
+    /**
+     * Module name.
+     * 
+     * @var string
+     */
     protected $module;
+    
+    /**
+     * Workflow Id.
+     * 
+     * @var integer
+     */
     protected $id;
+    
+    /**
+     * Workflow title.
+     * 
+     * @var string
+     */
     protected $title;
+    
+    /**
+     * Workflow description.
+     * 
+     * @var string
+     */
     protected $description;
+    
+    /**
+     * State map.
+     * 
+     * @var array
+     */
     protected $stateMap;
+    
+    /**
+     * Action map.
+     * 
+     * @var array
+     */
     protected $actionMap;
+    
+    /**
+     * Workflow data.
+     * 
+     * @var array
+     */
     protected $workflowData;
 
     /**
-     * Enter description here...
+     * Constructor.
      *
-     * @param $id
-     * @param $title
-     * @param $description
-     * @param $states
-     * @param $actions
-     * @param $configurations
-     * @return object ZWorkflow
+     * @param string $schema Schema.
+     * @param string $module Module name.
      */
     public function __construct($schema, $module)
     {
@@ -51,12 +87,12 @@ class ZWorkflow
     }
 
     /**
-     * register workflow by $metaId
+     * Register workflow by $metaId.
      *
-     * @param object $workflow
-     * @param array $data
-     * @param string $state default=null;
-     * @return bool
+     * @param array  &$obj    Data object.
+     * @param string $stateID State Id.
+     * 
+     * @return boolean
      */
     public function registerWorkflow(&$obj, $stateID = null)
     {
@@ -74,11 +110,12 @@ class ZWorkflow
     }
 
     /**
-     * update workflow state
+     * Update workflow state.
      *
-     * @param string $stateID
-     * @param string $debug
-     * @return bool
+     * @param string $stateID State Id.
+     * @param string $debug   Debug string.
+     * 
+     * @return boolean
      */
     public function updateWorkflowState($stateID, $debug = null)
     {
@@ -88,16 +125,17 @@ class ZWorkflow
             $obj['debug'] = $debug;
         }
 
-        return (bool) DBUtil::updateObject($obj, 'workflows');
+        return (bool)DBUtil::updateObject($obj, 'workflows');
     }
 
     /**
-     * execute workflow action
+     * Execute workflow action.
      *
-     * @param string $actionID
-     * @param array $obj
-     * @param string $stateID
-     * @return mixed array or false
+     * @param string $actionID Action Id.
+     * @param array  &$obj     Data object.
+     * @param string $stateID  State Id.
+     * 
+     * @return mixed Array or false.
      */
     public function executeAction($actionID, &$obj, $stateID = 'initial')
     {
@@ -153,11 +191,13 @@ class ZWorkflow
     }
 
     /**
-     * execute workflow operation within action
+     * Execute workflow operation within action.
      *
-     * @param  string $operation
-     * @param  array $data
-     * @return mixed or false
+     * @param string $operation Operation name.
+     * @param array  &$obj      Data object.
+     * @param string $nextState Next state.
+     * 
+     * @return mixed|false
      */
     public function executeOperation($operation, &$obj, $nextState)
     {

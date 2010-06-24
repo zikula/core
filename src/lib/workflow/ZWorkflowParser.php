@@ -13,18 +13,29 @@
  */
 
 /**
- * Workflow Parser
- * Parse workflow schema into associative arrays
+ * Workflow Parser.
+ * 
+ * Parse workflow schema into associative arrays.
  */
 class ZWorkflowParser
 {
     // Declare object variables;
+    /**
+     * XML parser object.
+     * 
+     * @var object
+     */
     protected $parser;
+    
+    /**
+     * Workflow data.
+     * 
+     * @var array
+     */
     protected $workflow;
 
     /**
-     * parse workflow into array format
-     *
+     * Parse workflow into array format.
      */
     public function __construct()
     {
@@ -40,11 +51,11 @@ class ZWorkflowParser
     /**
      * parse xml
      *
-     * @param string $xmldata
-     * @param string $schemaName
-     * @param string $module
-     * @param string $schemaPath
-     * @return mixed associative array of workflow or false
+     * @param string $xmldata    XML data.
+     * @param string $schemaName Schema name.
+     * @param string $module     Module name.
+     * 
+     * @return mixed Associative array of workflow or false.
      */
     public function parse($xmldata, $schemaName, $module)
     {
@@ -78,9 +89,11 @@ class ZWorkflowParser
     }
 
     /**
-     * Map workflow
-     * marshall data in to meaningful associative arrays
+     * Map workflow.
+     * 
+     * Marshall data in to meaningful associative arrays.
      *
+     * @return void
      */
     public function mapWorkflow()
     {
@@ -122,8 +135,9 @@ class ZWorkflowParser
     }
 
     /**
-     * validate workflow actions
+     * Validate workflow actions.
      *
+     * @return boolean
      */
     public function validate()
     {
@@ -162,12 +176,13 @@ class ZWorkflowParser
     }
 
     /**
-     * XML start element handler
+     * XML start element handler.
      *
-     * @access private
-     * @param  object $parser
-     * @param  string $name
-     * @param  array $attribs
+     * @param object $parser  Parser object.
+     * @param string $name    Element name.
+     * @param array  $attribs Element attributes.
+     * 
+     * @return void
      */
     public function startElement($parser, $name, $attribs)
     {
@@ -243,11 +258,12 @@ class ZWorkflowParser
     }
 
     /**
-     * XML end element handler
+     * XML end element handler.
      *
-     * @access private
-     * @param  object $parser
-     * @param  string $name
+     * @param object $parser Parser object.
+     * @param string $name   Element name.
+     * 
+     * @return void
      */
     public function endElement($parser, $name)
     {
@@ -301,11 +317,12 @@ class ZWorkflowParser
     }
 
     /**
-     * XML data element handler
+     * XML data element handler.
      *
-     * @access private
-     * @param  object $parser parser object
-     * @param  string $data
+     * @param object $parser Parser object.
+     * @param string $data   Character data.
+     * 
+     * @return void
      */
     public function characterData($parser, $data)
     {
@@ -314,10 +331,11 @@ class ZWorkflowParser
     }
 
     /**
-     * hander for unexpected XML errors
+     * Hander for unexpected XML errors.
      *
-     * @param string $name
-     * @param string $state
+     * @param string $name  Tag name.
+     * @param string $state Workflow state.
+     * 
      * @return string
      */
     public function unexpectedXMLError($name, $state)
