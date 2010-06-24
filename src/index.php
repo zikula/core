@@ -35,10 +35,10 @@ if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'S
         UserUtil::logout();
     }
     header('HTTP/1.1 503 Service Unavailable');
-    if (file_exists('config/templates/siteoff.htm')) {
-        require_once 'config/templates/siteoff.htm';
+    if (file_exists('config/templates/siteoff.tpl')) {
+        require_once 'config/templates/siteoff.tpl';
     } else {
-        require_once 'system/Theme/templates/siteoff.htm';
+        require_once 'system/Theme/templates/siteoff.tpl';
     }
     System::shutdown();
 }

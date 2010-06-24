@@ -429,10 +429,10 @@ class SessionUtil
             if (!self::initialize()) {
                 // session initialization failed so display templated error
                 header('HTTP/1.1 503 Service Unavailable');
-                if (file_exists('config/templates/sessionfailed.htm')) {
-                    require_once 'config/templates/sessionfailed.htm';
+                if (file_exists('config/templates/sessionfailed.tpl')) {
+                    require_once 'config/templates/sessionfailed.tpl';
                 } else {
-                    require_once 'lib/templates/sessionfailed.htm';
+                    require_once 'system/Theme/templates/sessionfailed.tpl';
                 }
                 // terminate execution
                 System::shutdown();
