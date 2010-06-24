@@ -232,7 +232,7 @@ class Categories_Admin extends Zikula_Controller
                        ->assign('numSubcats', count($subCats))
                        ->assign('categorySelector', $selector);
 
-        $tplName = 'categories_admin_' . $op . '.htm';
+        $tplName = 'categories_admin_' . $op . '.tpl';
         return $this->renderer->fetch($tplName);
     }
 

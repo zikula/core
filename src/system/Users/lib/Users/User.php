@@ -177,11 +177,11 @@ class Users_User extends Zikula_Controller
 
         // check if we've agreed to the age limit. We have if we just came from there, or $args is set
         if (($this->getVar('minage', 0) != 0) && !stristr(System::serverGetVar('HTTP_REFERER'), 'register')) {
-            $template = 'users_user_checkage.htm';
+            $template = 'users_user_checkage.tpl';
             
             $rendererArgs['minimumAge'] = (isset($modVars['minage']) && !empty($modVars['minage'])) ? $modVars['minage'] : 13;
         } else {
-            $template = 'users_user_register.htm';
+            $template = 'users_user_register.tpl';
 
             $registrationErrors = isset($args['registrationErrors']) ? $args['registrationErrors'] : array();
             // For now do it this way. Later maybe show the messages with the field--and if that's

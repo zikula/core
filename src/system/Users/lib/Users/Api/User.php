@@ -232,7 +232,7 @@ class Users_Api_User extends Zikula_Api
      * @param array $args All parameters passed to this function.
      *                      string  toAddress           The destination e-mail address.
      *                      string  notificationType    The type of notification, converted to the name of a template
-     *                                                      in the form users_userapi_{type}mail.htm and/or .txt
+     *                                                      in the form users_userapi_{type}mail.tpl and/or .txt
      *                      array   templateArgs        One or more arguments to pass to the renderer for use in the
      *                                                      template.
      *                      string  subject             The e-mail subject, overriding the template's subject.
@@ -252,7 +252,7 @@ class Users_Api_User extends Zikula_Api
 
         $renderer->assign($templateArgs);
 
-        $templateName = "users_userapi_{$notificationType}email.htm";
+        $templateName = "users_userapi_{$notificationType}email.tpl";
         if ($renderer->template_exists($templateName)) {
             $mailerArgs['html'] = true;
             $mailerArgs['body'] = $renderer->fetch($templateName);
