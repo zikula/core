@@ -297,7 +297,7 @@ class Users_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'import'), 'text' => $this->__('Import users'), 'class' => 'z-icon-es-import');
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Users', 'admin', 'export'), 'text' => $this->__('Export users'), 'class' => 'z-icon-es-export');
+            $links[] = array('url' => ModUtil::url('Users', 'admin', 'exporter'), 'text' => $this->__('Export users'), 'class' => 'z-icon-es-export');
         }
         if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url('Users', 'admin', 'search'), 'text' => $this->__('Find and e-mail users'), 'class' => 'z-icon-es-mail');
@@ -486,5 +486,112 @@ class Users_Api_Admin extends Zikula_Api
         }
 
         return true;
+    }
+
+    /**
+     * This function does the actual export of the csv file.
+     * the args array contains all information needed to export the csv file.
+     * the options for the args array are:
+     *  - exportFile (string)  Filename for the new csv file.
+     *  - delimiter  (string)  The delimiter to use in the csv file.
+     *  - email      (boolean) Flag, true to export emails.
+     *  - titles     (boolean) Flag true to export a title row.
+     *  - LastLogin  (boolean) Flag to export the users last login.
+     *  - regDate    (boolean) Flag to export the users registration date.
+     *
+     * @param array $args all arguments sent to this function.
+     *
+     * @return displays download to user then exits.
+     */
+    public function exportCsv($args)
+    {
+        //make sure we have a delimiter
+        if (!isset($args['delimiter']) || $args['delimiter'] == '') {
+            $args['delimiter'] = ',';
+        }
+        //Security check
+        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)){
+            return LogUtil::registerPermissionError();
+        }
+
+        //disable compression and set headers
+        ob_end_clean();
+        ini_set('zlib.output_compression', 0);
+        header('Cache-Control: no-store, no-cache');
+        header("Content-type: text/csv");
+        header('Content-Disposition: attachment; filename="'.$args['exportFile'].'"');
+        header("Content-Transfer-Encoding: binary");
+
+        //get all user fields
+        $userfields = ModUtil::apiFunc('Profile', 'user', 'getallactive');
+
+        $colnames=array();
+        foreach ($userfields as $item) {
+          $colnames[] = $item['prop_attribute_name'];
+        }
+
+        //get all users
+        $users = ModUtil::apiFunc('Users', 'user', 'getAll');
+
+        //open a file for csv writing
+        $out = fopen("php://output", 'w');
+
+        //write out title row if asked for
+        if ($args['titles']) {
+            $titles = array('id','uname');
+            //titles for optional data
+            if ($args['email']) {
+                array_push($titles, 'email');
+            }
+            if ($args['regDate']) {
+                array_push($titles, 'user_regdate');
+            }
+            if ($args['lastLogin']) {
+                array_push($titles, 'lastlogin');
+            }
+            if ($args['groups']) {
+                array_push($titles, 'groups');
+            }
+            array_merge($titles, $colnames);
+            fputcsv($out, $titles, $args['delimiter']);
+        }
+
+        //loop every user gettin user id and username and all user fields and push onto result array.
+        foreach ($users as $user) {
+            $uservars = UserUtil::getVars($user['uid']);
+            $result = array();
+            array_push($result,$uservars['uid'],$uservars['uname']);
+            //checks for optional data
+            if ($args['email']) {
+                array_push($result,$uservars['email']);
+            }
+            if ($args['regDate']) {
+                array_push($result, $uservars['user_regdate']);
+            }
+            if ($args['lastLogin']) {
+                array_push($result, $uservars['lastlogin']);
+            }
+            if ($args['groups']) {
+                $groups = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
+                   array(  'uid'   => $uservars['uid'],
+                           'clean' => true));
+                $groupstring = "";
+                foreach ($groups as $group) {
+                    $groupstring .= $group . chr(124);
+                }
+                $groupstring = rtrim($groupstring, chr(124));
+                array_push($result,$groupstring);
+            }
+            foreach ($colnames as $colname) {
+                array_push($result,$uservars['__ATTRIBUTES__'][$colname]);
+            }
+          //csv write the result array to the out file
+          fputcsv($out, $result, $args['delimiter']);
+        }
+        //close the out file
+        $length = filesize($out);
+        fclose($out);
+        // the users have been exported successfully
+        LogUtil::registerStatus($this->__('Done! Users exported successfully.'));
     }
 }
