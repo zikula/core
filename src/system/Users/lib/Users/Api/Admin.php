@@ -387,10 +387,11 @@ class Users_Api_Admin extends Zikula_Api
         if (empty($importValues)) {
             return false;
         }
-
-        // construct a sql statement with all the inserts to avoid to much database connections
-        foreach ($importValues as $value) {
+        
+        // Prepare arrays.
+        foreach ($importValues as $key => $value) {
             $usersArray[] = $value['uname'];
+            $importValues[$key]['pass'] = UserUtil::getHashedPassword($importValues[$key]['pass']);
         }
 
         // execute sql to create users
