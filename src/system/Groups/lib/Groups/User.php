@@ -74,7 +74,7 @@ class Groups_User extends Zikula_Controller
         // failed then an appropriate message is posted.
         if ($groups == false) {
             $this->renderer->assign('nogroups', true);
-            return $this->renderer->fetch('groups_user_view.htm');
+            return $this->renderer->fetch('groups_user_view.tpl');
         }
 
         $groupitems = array();
@@ -115,7 +115,7 @@ class Groups_User extends Zikula_Controller
         $this->renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
                                                'itemsperpage' => $itemsperpage));
 
-        return $this->renderer->fetch('groups_user_view.htm');
+        return $this->renderer->fetch('groups_user_view.tpl');
     }
 
     /**
@@ -181,7 +181,7 @@ class Groups_User extends Zikula_Controller
                        ->assign('action',       $action)
                        ->assign('description',  $group['description']);
 
-        return $this->renderer->fetch('groups_user_membership.htm');
+        return $this->renderer->fetch('groups_user_membership.tpl');
     }
 
     /*
@@ -220,7 +220,7 @@ class Groups_User extends Zikula_Controller
             LogUtil::registerStatus($this->__('Done! Saved the action.'));
         }
 
-        $this->renderer->clear_cache('groups_user_memberslist.htm');
+        $this->renderer->clear_cache('groups_user_memberslist.tpl');
 
         return System::redirect(ModUtil::url('Groups', 'user', 'main'));
     }
@@ -328,6 +328,6 @@ class Groups_User extends Zikula_Controller
         $profileModule = System::getVar('profilemodule', '');
         $this->renderer->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 
-        return $this->renderer->fetch('groups_user_memberslist.htm');
+        return $this->renderer->fetch('groups_user_memberslist.tpl');
     }
 }

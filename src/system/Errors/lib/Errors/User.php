@@ -63,7 +63,7 @@ class Errors_User extends Zikula_Controller
         if ($this->renderer->template_exists($template = "errors_user_{$type}.htm")) {
             return $this->renderer->fetch($template);
         } else {
-            return $this->renderer->fetch('errors_user_main.htm');
+            return $this->renderer->fetch('errors_user_main.tpl');
         }
     }
 
@@ -76,6 +76,6 @@ class Errors_User extends Zikula_Controller
     {
         $this->renderer->setCaching(false);
         $this->renderer->assign($args);
-        return $this->renderer->fetch('errors_user_system.htm');
+        return $this->renderer->fetch('errors_user_system.tpl');
     }
 }
