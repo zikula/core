@@ -11,9 +11,9 @@
  * @package StreamReader
  */
 
- /**
-  * StreamReader Base.
-  */
+/**
+ * StreamReader Base.
+ */
 abstract class StreamReader_Abstract
 {
     /**

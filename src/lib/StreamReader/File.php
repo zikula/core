@@ -25,8 +25,9 @@ class StreamReader_File extends StreamReader_Abstract
     private $_pos;
 
     /**
-     *
-     * @var <type>
+     * File handler.
+     * 
+     * @var Filehandler
      */
     private $_fd;
 
@@ -58,7 +59,11 @@ class StreamReader_File extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Read file.
+     * 
+     * @param integer $bytes Num of bytes to read.
+     * 
+     * @return string
      */
     public function read($bytes)
     {
@@ -81,7 +86,11 @@ class StreamReader_File extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Seek to position.
+     * 
+     * @param integer $pos Position.
+     * 
+     * @return integer Position.
      */
     public function seekto($pos)
     {
@@ -91,7 +100,9 @@ class StreamReader_File extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Get current position.
+     * 
+     * @return integer
      */
     public function currentpos()
     {
@@ -99,7 +110,9 @@ class StreamReader_File extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Get length.
+     * 
+     * @return integer
      */
     public function length()
     {
@@ -107,7 +120,9 @@ class StreamReader_File extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Close file.
+     * 
+     * @return void
      */
     public function close()
     {

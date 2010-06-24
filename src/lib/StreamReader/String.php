@@ -43,7 +43,11 @@ class StreamReader_String extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Read from string.
+     * 
+     * @param integer $bytes Bytes to read.
+     *
+     * @return string
      */
     public function read($bytes)
     {
@@ -56,7 +60,11 @@ class StreamReader_String extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Seek to position.
+     * 
+     * @param integer $pos Position.
+     * 
+     * @return integer Position.
      */
     public function seekto($pos)
     {
@@ -67,7 +75,9 @@ class StreamReader_String extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Get current position.
+     * 
+     * @return integer
      */
     public function currentpos()
     {
@@ -75,7 +85,9 @@ class StreamReader_String extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Get length.
+     * 
+     * @return integer
      */
     public function length()
     {
@@ -83,7 +95,11 @@ class StreamReader_String extends StreamReader_Abstract
     }
 
     /**
-     * {@inheritdoc}
+     * Set stream.
+     * 
+     * @param string $stream Stream.
+     * 
+     * @return void
      */
     final public function setStream($stream)
     {
