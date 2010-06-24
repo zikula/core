@@ -37,7 +37,7 @@
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
  * 
- * @return string
+ * @return string|void
  */
 function smarty_insert_getstatusmsg($params, &$smarty)
 {

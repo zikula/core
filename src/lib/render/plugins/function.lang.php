@@ -25,7 +25,7 @@
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
  * 
- * @return string The language.
+ * @return string|void The language, null if params['assign'] is true.
  */
 function smarty_function_lang($params, &$smarty)
 {

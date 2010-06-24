@@ -803,7 +803,7 @@ class UserUtil
      * @param integer $uid     The user to get the variable for.
      * @param mixed   $default The default value to return if the specified variable doesn't exist.
      * 
-     * @return string the value of the user variable if successful, null otherwise
+     * @return string|void the value of the user variable if successful, null otherwise
      */
     public static function getVar($name, $uid = -1, $default = false)
     {

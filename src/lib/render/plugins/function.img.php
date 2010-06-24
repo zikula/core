@@ -62,7 +62,7 @@
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
  * 
- * @return string The img tag.
+ * @return string|void The img tag, null if $params['nostoponerror'] true and there is an error.
  */
 function smarty_function_img($params, &$smarty)
 {

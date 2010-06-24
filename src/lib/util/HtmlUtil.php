@@ -181,7 +181,8 @@ class HtmlUtil
             }
 
             $class = new $classname();
-            $dataArray = $class->get($where, $sort, -1, -1, '', false/*, $distinct*/);
+            //$dataArray = $class->get($where, $sort, -1, -1, '', false, $distinct);
+            $dataArray = $class->get($where, $sort, -1, -1, '', false);
             $cache[$cacheKey] = $dataArray;
             if (!$field) {
                 $field = $class->_objField;

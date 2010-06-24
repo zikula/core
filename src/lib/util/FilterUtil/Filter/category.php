@@ -98,7 +98,8 @@ class FilterUtil_Filter_category extends FilterUtil_PluginCommon implements Filt
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && /*!$this->fieldExists($fields) &&*/ array_search($fields, $this->fields) === false) {
+        //} elseif (!empty($fields) && !$this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && array_search($fields, $this->fields) === false) {
             $this->fields[] = $fields;
         }
     }
