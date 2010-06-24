@@ -18,17 +18,18 @@
 class FormUtil
 {
     /**
-     * Return the requested key from input in a safe way. This function
-     * is safe to use for recursive arrays and either returns a non-empty
-     * string or the (optional) default.
+     * Return the requested key from input in a safe way.
+     * 
+     * This function is safe to use for recursive arrays and either
+     * returns a non-empty string or the (optional) default.
      *
      * This method is based on FormUtil::getPassedValue but array-safe.
      *
-     * @param key        The field to return
-     * @param default    The value to return if the requested field is not found (optional) (default=false)
-     * @param source     The sourc field to get a parameter from
+     * @param string $key     The field to return.
+     * @param mixed  $default The value to return if the requested field is not found (optional) (default=false).
+     * @param string $source  The source field to get a parameter from.
      *
-     * @return The requested input key or the specified default
+     * @return mixed The requested input key or the specified default.
      */
     public static function getPassedValue($key, $default = null, $source = null, $filter = null, $args = array(), $objectType=null)
     {
@@ -37,9 +38,9 @@ class FormUtil
         }
 
         $source = strtoupper($source);
-	if (!$filter) {
-	    $filter = FILTER_SANITIZE_STRING;
-	}
+        if (!$filter) {
+            $filter = FILTER_SANITIZE_STRING;
+        }
 
         $args   = array();
         $failed = null;
@@ -51,59 +52,59 @@ class FormUtil
                     $src = INPUT_GET;
                     if (is_array($_POST[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
-		    } 
-		} 
+                    }
+                }
                 if (isset($_POST[$key])) {
                     $src = INPUT_POST;
                     if (is_array($_POST[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
-		    } 
-		} 
+                    }
+                }
                 $value  = filter_input ($src, $key, $filter, $args);
                 $failed = $value === false ? $_REQUEST : null;
                 break;
             case isset($_GET[$key]) && (!$source || $source == 'G' || $source == 'GET'):
                 if (is_array($_GET[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
-		} 
+                }
                 $value  = filter_input (INPUT_GET, $key, $filter, $args);
                 $failed = $value === false ? $_GET: null;
                 break;
             case isset($_POST[$key]) && (!$source || $source == 'P' || $source == 'POST'):
                 if (is_array($_POST[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
-		} 
+                }
                 $value  = filter_input (INPUT_POST, $key, $filter, $args);
                 $failed = $value === false ? $_POST: null;
                 break;
             case isset($_COOKIE[$key]) && (!$source || $source == 'C' || $source == 'COOKIE'):
                 if (is_array($_COOKIE[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
-		} 
+                }
                 $value  = filter_input (INPUT_COOKIE, $key, $filter, $args);
                 $failed = $value === false ? $_COOKIE: null;
                 break;
             case isset($_FILES[$key]) && ($source == 'F' || $source == 'FILES'):
                 if (is_array($_FILES[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
-		} 
+                }
                 $value  = $_FILES[$key];
                 $failed = $value === false ? $_COOKIE: null;
                 break;
             case (isset($_GET[$key]) || isset($_POST[$key])) && ($source == 'GP' || $source == 'GETPOST'):
                 if (isset($_GET[$key])) {
-		    if (is_array($_GET[$key])) {
+                    if (is_array($_GET[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
-		    } 
+                    }
                     $value  = filter_input (INPUT_GET, $key, $filter, $args);
                     $failed = $value === false ? $_GET: null;
-		} elseif (isset($_POST[$key]) && is_array($_POST[$key])) {
-		    if (is_array($_GET[$key])) {
+                } elseif (isset($_POST[$key]) && is_array($_POST[$key])) {
+                    if (is_array($_GET[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
-		    } 
+                    } 
                     $value  = filter_input (INPUT_POST, $key, $filter, $args);
                     $failed = $value === false ? $_POST: null;
-		} 
+                }
                 break;
             default:
                 if ($source) {
@@ -119,19 +120,19 @@ class FormUtil
         if ($failed && $objectType) {
             //SessionUtil::setVar ($key, $failed[$key], "/validationErrors/$objectType");
             SessionUtil::setVar ($objectType, $failed[$key], '/validationFailedObjects');
-	}
+        }
 
         return $value;
     }
 
 
     /**
-     * Return a boolean indicating whether the specified field is required
+     * Return a boolean indicating whether the specified field is required.
      *
-     * @param validationInfo   The plain (non-structured) validation array
-     * @param field            The fieldname
+     * @param array  $validationInfo The plain (non-structured) validation array.
+     * @param string $field          The fieldname.
      *
-     * @return A boolean indicating whether or not the specified field is required
+     * @return boolean A boolean indicating whether or not the specified field is required.
      */
     public static function isRequiredField($validationInfo, $field)
     {
@@ -153,12 +154,12 @@ class FormUtil
     }
 
     /**
-     * Get the required field marker (or nothing) for the specified field
+     * Get the required field marker (or nothing) for the specified field.
      *
-     * @param validationInfo   The plain (non-structured) validation array
-     * @param field            The fieldname
+     * @param array  $validationInfo The plain (non-structured) validation array.
+     * @param string $field          The fieldname.
      *
-     * @return The required field marker or an empty string
+     * @return string The required field marker or an empty string.
      */
     public static function getRequiredFieldMarker($validationInfo, $field)
     {
@@ -170,11 +171,11 @@ class FormUtil
     }
 
     /**
-     * Clear the validation error array
+     * Clear the validation error array.
      *
-     * @param objectType       The (string) object type
+     * @param string $objectType The (string) object type.
      *
-     * @return nothing
+     * @return void
      */
     public static function clearValidationErrors($objectType = null)
     {
@@ -190,11 +191,11 @@ class FormUtil
     }
 
     /**
-     * Clear the objects which failed validation
+     * Clear the objects which failed validation.
      *
-     * @param objectType       The (string) object type
+     * @param string $objectType The (string) object type.
      *
-     * @return nothing
+     * @return void
      */
     public static function clearValidationFailedObjects($objectType = null)
     {
@@ -210,9 +211,9 @@ class FormUtil
     }
 
     /**
-     * Get the validation errors
+     * Get the validation errors.
      *
-     * @return The validation error array or null
+     * @return array The validation error array or null.
      */
     public static function getValidationErrors()
     {
@@ -228,9 +229,11 @@ class FormUtil
     }
 
     /**
-     * Return the objects which failed validation
+     * Return the objects which failed validation.
      *
-     * @return The validation error array or null
+     * @param string $objectType The object type.
+     * 
+     * @return array The validation error array or null.
      */
     public static function getFailedValidationObjects($objectType = null)
     {
@@ -251,12 +254,12 @@ class FormUtil
     }
 
     /**
-     * Return a boolean indicating whether or not the specified field failed validation
+     * Return a boolean indicating whether or not the specified field failed validation.
      *
-     * @param objectType       The (string) object type
-     * @param field            The fieldname
+     * @param string $objectType The (string) object type.
+     * @param string $field      The fieldname.
      *
-     * @return A boolean indicating whether or not the specified field failed validation
+     * @return boolean A boolean indicating whether or not the specified field failed validation.
      */
     public static function hasValidationErrors($objectType, $field = null)
     {
@@ -277,12 +280,12 @@ class FormUtil
     }
 
     /**
-     * Get the required field marker (or nothing) for the specified field
+     * Get the required field marker (or nothing) for the specified field.
      *
-     * @param objectType       The (string) object type
-     * @param field            The fieldname
+     * @param string $objectType The (string) object type.
+     * @param string $field      The fieldname.
      *
-     * @return The validation error marker or an empty string
+     * @return string The validation error marker or an empty string.
      */
     public static function getValidationFieldMarker($objectType, $field)
     {
@@ -294,12 +297,12 @@ class FormUtil
     }
 
     /**
-     * Get the validation error for the specified field
+     * Get the validation error for the specified field.
      *
-     * @param objectType       The (string) object type
-     * @param field            The fieldname to get the error for
+     * @param string $objectType The (string) object type.
+     * @param string $field      The fieldname to get the error for.
      *
-     * @return The validation error or an empty string
+     * @return string The validation error or an empty string.
      */
     public static function getValidationError($objectType, $field)
     {
@@ -317,13 +320,13 @@ class FormUtil
     }
 
     /**
-     * Get the appropriate field marker
+     * Get the appropriate field marker.
      *
-     * @param objectType       The (string) object type
-     * @param validationInfo   The plain (non-structured) validation array
-     * @param field            The fieldname
+     * @param string $objectType     The (string) object type.
+     * @param array  $validationInfo The plain (non-structured) validation array.
+     * @param string $field          The fieldname.
      *
-     * @return The a marker string or an 'nbsp';
+     * @return string The a marker string or an '&nbsp;'.
      */
     public static function getFieldMarker($objectType, $validationInfo, $field)
     {
@@ -339,9 +342,11 @@ class FormUtil
     /**
      * Return a newly created pnFormRender instance with the given name
      *
+     * @param string $name Module name.
+     * 
      * @deprecated
-     * @see FormUtil::newForm()
-     * @return The newly created pnFormRender instance.
+     * @see    FormUtil::newForm()
+     * @return Form_Render The newly created Form_Render instance.
      */
     public static function newPNForm($name)
     {
@@ -349,10 +354,12 @@ class FormUtil
         return new pnFormRender($name);
     }
 
-/**
-     * Return a newly created pormRender instance with the given name
+    /**
+     * Return a newly created pormRender instance with the given name.
      *
-     * @return The newly created FormRender instance.
+     * @param string $name Module name.
+     * 
+     * @return Form_Render The newly created Form_Render instance.
      */
     public static function newForm($name)
     {

@@ -18,17 +18,17 @@
 class CookieUtil
 {
     /**
-     * Set a cookie value
+     * Set a cookie value.
      *
-     * @author Drak
-     * @param string $name name of cookie
-     * @param string $value
-     * @param int $expires unix epoch dat for expiry
-     * @param string $path
-     * @param string $domain domain must be at least .domain.tld
-     * @param bool $secure to set if cookie must only be set over existing https connection
-     * @param bool $signed override system setting to use signatures
-     * @return bool
+     * @param string  $name    Name of cookie.
+     * @param string  $value   Value.
+     * @param integer $expires Unix epoch date for expiry.
+     * @param string  $path    Cookie path.
+     * @param string  $domain  Domain must be at least .domain.tld.
+     * @param boolean $secure  To set if cookie must only be set over existing https connection.
+     * @param boolean $signed  Override system setting to use signatures.
+     * 
+     * @return boolean
      */
     public static function setCookie($name, $value='', $expires=null, $path=null, $domain=null, $secure=null, $signed = true)
     {
@@ -40,7 +40,8 @@ class CookieUtil
             return z_exit('setCookie: ' . DataUtil::formatForDisplay($value) . ' must be a string');
         }
 
-        if (System::getVar('signcookies') && (!$signed==false)){ // sign the cookie
+        if (System::getVar('signcookies') && (!$signed==false)) {
+            // sign the cookie
             $value = SecurityUtil::signData($value);
         }
 
@@ -48,18 +49,18 @@ class CookieUtil
     }
 
     /**
-     * Get a cookie
+     * Get a cookie.
      *
-     * @author Drak
-     * @param string $name name of cookie
-     * @param bool $signed override system setting to use signatures
-     * @param bool $default default value
-     * @return mixed cookie value as string or bool false
+     * @param string  $name    Name of cookie.
+     * @param boolean $signed  Override system setting to use signatures.
+     * @param boolean $default Default value.
+     * 
+     * @return mixed Cookie value as string or bool false.
      */
     public static function getCookie($name, $signed=true, $default='')
     {
         $cookie = FormUtil::getPassedValue($name, $default, 'COOKIE');
-        if (System::getVar('signcookies') && (!$signed==false)){
+        if (System::getVar('signcookies') && (!$signed==false)) {
             return SecurityUtil::checkSignedData($cookie);
         }
 
@@ -67,13 +68,14 @@ class CookieUtil
     }
 
     /**
-     * Delete given cookie
+     * Delete given cookie.
+     * 
      * Can be called multiple times, but must be called before any output
      * is sent to browser or it wont work.
      *
      * @param string $name Name of cookie.
      *
-     * @return bool
+     * @return boolean
      */
     public static function deleteCookie($name)
     {

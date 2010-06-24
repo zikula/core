@@ -61,7 +61,7 @@ class DataUtil
      * @param boolean $urldecode Whether to urldecode the NVP fields.
      *
      * @return array Assoc is associative array.
-    */
+     */
     public static function decodeNVP ($nvpstr, $separator='&', $urldecode=true)
     {
         $assoc = array();
@@ -78,6 +78,7 @@ class DataUtil
 
     /**
      * Decrypt the given value using the mcrypt library function.
+     * 
      * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
@@ -126,7 +127,7 @@ class DataUtil
      * @param boolean $includeEmpty Whether to also include empty values.
      *
      * @return string String-encoded NVP or an empty string.
-    */
+     */
     public static function encodeNVP ($key, $value, $separator='&', $includeEmpty=true)
     {
         if (!$key) {
@@ -148,7 +149,7 @@ class DataUtil
      * @param boolean $includeEmpty Whether to also include empty values.
      *
      * @return string String-encoded NVP or an empty string.
-    */
+     */
     public static function encodeNVPArray ($nvps, $separator='&', $includeEmpty=true)
     {
         if (!is_array($nvps)) {
@@ -165,6 +166,7 @@ class DataUtil
 
     /**
      * Encrypt the given value using the mcrypt library function.
+     * 
      * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
@@ -471,7 +473,7 @@ class DataUtil
         $permareplace = explode(',', System::getVar('permareplace'));
 
         // replace all chars $permasearch with the one in $permareplace
-        foreach($permasearch as $key => $value) {
+        foreach ($permasearch as $key => $value) {
              $var = mb_ereg_replace("[$value]", $permareplace[$key], $var);
         }
 
@@ -513,15 +515,14 @@ class DataUtil
 
     /**
      * Hash function.
+     * 
      * Perform SHA1 or SHA256 hashing on a string using native PHP functions if available and if not uses own classes.
      *
      * @param string $string String to be hashed.
      * @param string $type   String element of hash_algos() (default=sha1).
      *
-     * @author Drak
      * @deprecated
-     * @see hash()
-     *
+     * @see    hash()
      * @return string hex hash
      */
     public static function hash($string, $type = 'sha1')
@@ -539,8 +540,6 @@ class DataUtil
      * If the ini_value doesn't match any of those, the value is returned as-is.
      *
      * @param string $ini_key The ini_key you need the value of.
-     *
-     * @author Ed Finkler
      *
      * @return boolean|mixed
      */
@@ -616,7 +615,7 @@ class DataUtil
      * @param string $match String to use.
      *
      * @access private
-     *
+     * @return string
      */
     public static function _mb_unserialize_callback($match)
     {
@@ -632,9 +631,6 @@ class DataUtil
      * @param mixed $input String or array to convert to utf-8.
      *
      * @return mixed Converted string or array.
-     *
-     * @author Frank Schummertz
-     *
      */
     public static function convertToUTF8($input = '')
     {
@@ -661,9 +657,6 @@ class DataUtil
      * @param mixed $input String or array to convert from utf-8.
      *
      * @return mixed Converted string.
-     *
-     * @author Frank Schummertz
-     *
      */
     public static function convertFromUTF8($input = '')
     {

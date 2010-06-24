@@ -20,12 +20,10 @@ class CategoryRegistryUtil
     /**
      * Delete a category registry entry
      *
-     * @param modname    The module to create a property for
-     * @param table      The module table to create a property for
-     * @param property   The property name
-     * @param categoryID The category-id to bind this property to
+     * @param string  $modname The module to create a property for.
+     * @param integer $entryID The category-id to bind this property to.
      *
-     * @return boolean The DB insert operation result code cast to a boolean
+     * @return boolean The DB insert operation result code cast to a boolean.
      */
     public static function deleteEntry ($modname, $entryID=null)
     {
@@ -42,16 +40,16 @@ class CategoryRegistryUtil
             $where .= " AND crg_id=$entryID";
         }
 
-        return (boolean) DBUtil::deleteWhere ('categories_registry', $where);
+        return (boolean)DBUtil::deleteWhere ('categories_registry', $where);
     }
 
     /**
      * Create a category registry entry
      *
-     * @param modname    The module to create a property for
-     * @param table      The module table to create a property for
-     * @param property   The property name
-     * @param categoryID The category-id to bind this property to
+     * @param string  $modname    The module to create a property for.
+     * @param string  $table      The module table to create a property for.
+     * @param string  $property   The property name.
+     * @param integer $categoryID The category-id to bind this property to.
      *
      * @return boolean The DB insert operation result code cast to a boolean
      */
@@ -61,15 +59,15 @@ class CategoryRegistryUtil
     }
 
     /**
-     * Update a category registry entry
+     * Update a category registry entry.
      *
-     * @param entryID    The id of the existing entry we wish to update
-     * @param modname    The module to create a property for
-     * @param table      The module table to create a property for
-     * @param property   The property name
-     * @param categoryID The category-id to bind this property to
+     * @param integer $entryID    The id of the existing entry we wish to update.
+     * @param string  $modname    The module to create a property for.
+     * @param string  $table      The module table to create a property for.
+     * @param string  $property   The property name.
+     * @param integer $categoryID The category-id to bind this property to.
      *
-     * @return boolean The DB insert operation result code cast to a boolean
+     * @return boolean The DB insert operation result code cast to a boolean.
      */
     public static function updateEntry ($entryID, $modname, $table, $property, $categoryID)
     {
@@ -81,15 +79,15 @@ class CategoryRegistryUtil
     }
 
     /**
-     * Create or update a category registry entry
+     * Create or update a category registry entry.
      *
-     * @param modname    The module to create a property for
-     * @param table      The module table to create a property for
-     * @param property   The property name
-     * @param categoryID The category-id to bind this property to
-     * @param entryID    The id of the existing entry we wish to update (optional) (default=null)
+     * @param string  $modname    The module to create a property for.
+     * @param string  $table      The module table to create a property for.
+     * @param string  $property   The property name.
+     * @param integer $categoryID The category-id to bind this property to.
+     * @param integer $entryID    The id of the existing entry we wish to update (optional) (default=null).
      *
-     * @return boolean The DB insert operation result code cast to a boolean
+     * @return boolean The DB insert operation result code cast to a boolean.
      */
     private static function _processEntry ($modname, $table, $property, $categoryID, $entryID=null)
     {
@@ -122,11 +120,11 @@ class CategoryRegistryUtil
     }
 
     /**
-     * Register a module category
+     * Register a module category.
      *
-     * @param catreg    The array of category map data objects
+     * @param array $catreg The array of category map data objects.
      *
-     * @return boolean The DB insert operation result code cast to a boolean
+     * @return boolean The DB insert operation result code cast to a boolean.
      */
     public static function registerModuleCategory($catreg)
     {
@@ -143,13 +141,13 @@ class CategoryRegistryUtil
             $res = DBUtil::insertObject($catreg, 'categories_registry');
         }
 
-        return (boolean) $res;
+        return (boolean)$res;
     }
 
     /**
-     * Register module categories
+     * Register module categories.
      *
-     * @param catregs    The array of category map data objects
+     * @param array $catregs The array of category map data objects.
      *
      * @return true
      */
@@ -175,12 +173,12 @@ class CategoryRegistryUtil
     }
 
     /**
-     * Get registered Categories for a module
+     * Get registered Categories for a module.
      *
-     * @param modname    The module name
-     * @param tablename  The tablename for which we wish to get the property for
+     * @param string $modname   The module name.
+     * @param string $tablename The tablename for which we wish to get the property for.
      *
-     * @return The associative field array of registered categories for the specified module
+     * @return array The associative field array of registered categories for the specified module.
      */
     public static function getRegisteredModuleCategories($modname, $tablename)
     {
@@ -211,14 +209,14 @@ class CategoryRegistryUtil
     }
 
     /**
-     * Get registered category for module property
+     * Get registered category for module property.
      *
-     * @param modname    The module we wish to get the property for
-     * @param tablename  The tablename for which we wish to get the property for
-     * @param property   The property name
-     * @param default    The default value to return if the requested value is not set (optional) (default=null)
+     * @param string $modname   The module we wish to get the property for.
+     * @param string $tablename The tablename for which we wish to get the property for.
+     * @param string $property  The property name.
+     * @param string $default   The default value to return if the requested value is not set (optional) (default=null).
      *
-     * @return The associative field array of registered categories for the specified module
+     * @return array The associative field array of registered categories for the specified module.
      */
     public static function getRegisteredModuleCategory($modname, $tablename, $property, $default = null)
     {
@@ -244,12 +242,12 @@ class CategoryRegistryUtil
     }
 
     /**
-     * Get the IDs of the property registers
+     * Get the IDs of the property registers.
      *
-     * @param modname    The module name
-     * @param tablename  The tablename for which we wish to get the property for
+     * @param string $modname   The module name.
+     * @param string $tablename The tablename for which we wish to get the property for.
      *
-     * @return The associative field array of register ids for the specified module
+     * @return array The associative field array of register ids for the specified module.
      */
     public static function getRegisteredModuleCategoriesIds($modname, $tablename)
     {

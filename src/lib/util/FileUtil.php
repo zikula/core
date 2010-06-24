@@ -242,7 +242,7 @@ class FileUtil
      * @param boolean $absolute Allow absolute paths (default=false) (optional).
      *
      * @deprecated since 1.3.0
-     * @see http://php.net/mkdir
+     * @see    http://php.net/mkdir
      *
      * @return boolean TRUE on success, FALSE on failure.
      */
@@ -345,7 +345,8 @@ class FileUtil
 
         if (!$filename) {
             $filename = self::generateRandomFilename(10, 15, true, true);
-        } else if (strrchr($filename, '.') !== false) { // do we have an extension?
+        } else if (strrchr($filename, '.') !== false) {
+            // do we have an extension?
             $ext = self::getExtension($filename);
             $filename = self::stripExtension($filename);
         }
@@ -381,7 +382,7 @@ class FileUtil
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
-    return file_put_contents($fName, $data);
+        return file_put_contents($fName, $data);
     }
 
     /**

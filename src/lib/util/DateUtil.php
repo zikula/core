@@ -115,7 +115,7 @@ class DateUtil
      *
      * @param string  $datetime The (string) datetime to reformat.
      * @param string  $format   The format to use when formatting the date (optional).
-     * @param boolean $TZAdjust Adjust the output according to Timezone, default true.
+     * @param boolean $TZadjust Adjust the output according to Timezone, default true.
      *
      * @return string The datetime formatted according to the specified format.
      */
@@ -173,8 +173,11 @@ class DateUtil
     /**
      * Return a formatted datetime at the end of the business day n days from now.
      *
-     * @param integer $days   The number of days to advance (optional) (default=1).
+     * @param integer $num    The number of days to advance (optional) (default=1).
      * @param string  $format The format to use when formatting the date (optional).
+     * @param integer $year   The year of the target date to set (optional) (default=null, means params is taken from now).
+     * @param integer $month  The month of the target date to set (optional) (default=null, means params is taken from now).
+     * @param integer $day    The day of the target date to set (optional) (default=null, means params is taken from now).
      * @param integer $hour   The hour of the target time to set (optional) (default=null, means params is taken from now).
      * @param integer $minute The minute of the target time to set (optional) (default=null, means params is taken from now).
      * @param integer $second The second of the target time to set (optional) (default=null, means params is taken from now).
@@ -281,7 +284,7 @@ class DateUtil
      *
      * @param string $datetime The date to parse (optional) (default=='', reverts to now).
      * @param string $format   The format to use when formatting the date (optional).
-
+     *
      * @return string The Date portion of the specified datetime.
      */
     public static function getDatetime_Date($datetime='', $format=DATEFORMAT_FIXED)
@@ -423,8 +426,8 @@ class DateUtil
      *   Field 5    ->     Minute<br />
      *   Field 6    ->     Second<br />
      *
-     * @param string $date1  The first date.
-     * @param string $date2  The second date.
+     * @param string  $date1 The first date.
+     * @param string  $date2 The second date.
      * @param integer $field The field (unit) in which we want the different (optional) (default=5).
      *
      * @return float The difference in units of the specified field.
@@ -467,6 +470,7 @@ class DateUtil
 
     /**
      * Calculate day-x of KW in a YEAR.
+     * 
      * @param integer $day  Values :0 for monday, 6 for sunday,....
      * @param integer $kw   Week of the year.
      * @param integer $year Year.
@@ -582,8 +586,8 @@ class DateUtil
     /**
      * Parses a user interface date string (excluding time) into a timestamp.
      *
-     * @param string $text   The UI date string
-     * @param string $format The format date string
+     * @param string $text   The UI date string.
+     * @param string $format The format date string.
      *
      * @return string The timestamp or null in case of errors.
      */
@@ -647,6 +651,7 @@ class DateUtil
 
     /**
      * Create a unix timestamp from either a unix timestamp (sic!), a MySQL timestamp or a string.
+     * 
      * This code is taken from smarty_make_timestamp.php, credits go to Monte Ohrt <monte at ohrt dot com>.
      *
      * We use a copy of the code here due to performance reasons.
@@ -685,6 +690,7 @@ class DateUtil
 
     /**
      * Identify timezone using the date PHP function.
+     * 
      * Does not use the strftime because it varies depending of the operative system.
      *
      * @return string timezone integer (hour value).
@@ -708,6 +714,8 @@ class DateUtil
     /**
      * Return the translated name of a specific timezone if exists.
      *
+     * @param integer $tz Timezone identifier.
+     * 
      * @return string Timezone translation (hour value).
      */
     public static function getTimezoneText($tz=null)
@@ -776,6 +784,7 @@ class DateUtil
 
     /**
      * Identify timezone abbreviation using the date PHP function.
+     * 
      * Does not use the strftime because it varies depending of the operative system.
      *
      * @return string Timezone abbreviation.
@@ -804,7 +813,6 @@ class DateUtil
 
     /**
      * Multilingual format time method.
-     * @author Fred B (fredb86)
      *
      * @param string $format    Format date.
      * @param string $timestamp Timestamp.
@@ -857,14 +865,16 @@ class DateUtil
 
 
     /**
-     * Parses strftime formatted __('%Y-%m-%d),  __('%Y-%m-%d %H:%M') or __('%Y-%m-%d %H:%M:%S').
-     * into meaning data that can be used to process a date string
+     * Get dateformat data.
+     * 
+     * Parses strftime formatted __('%Y-%m-%d),  __('%Y-%m-%d %H:%M') or __('%Y-%m-%d %H:%M:%S')
+     * into meaning data that can be used to process a date string.
      *
      * format strings can contain %d, %e, %y, %Y, %g, %G, %H, %I, %l, %M and %S.
      *
-     * @param string $dateformat (strftime formatted) default current language default.
+     * @param string $dateformat Default current language default (strftime formatted).
      *
-     * @return array of the meaning of each match
+     * @return array Array of the meaning of each match.
      */
     public function getDateFormatData($dateformat=null)
     {

@@ -33,8 +33,10 @@ class EventUtil
 
     /**
      * Get EventManager instance.
+     * 
+     * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
      *
-     * @return object EventManager.
+     * @return EventManager
      */
     static public function getManager(Zikula_ServiceManager $serviceManager = null)
     {
@@ -54,7 +56,9 @@ class EventUtil
     /**
      * Notify event.
      *
-     * @param Event $event Event.
+     * @param Zikula_Event $event Event.
+     * 
+     * @return Zikula_Event
      */
     static public function notify(Zikula_Event $event)
     {
@@ -64,7 +68,9 @@ class EventUtil
     /**
      * NotifyUntil event.
      *
-     * @param Event $event Event.
+     * @param Zikula_Event $event Event.
+     * 
+     * @return Zikula_Event
      */
     static public function notifyUntil(Zikula_Event $event)
     {
@@ -74,8 +80,10 @@ class EventUtil
     /**
      * Attach listener.
      *
-     * @param string $name Name of event.
+     * @param string       $name    Name of event.
      * @param array|string $handler PHP Callable.
+     * 
+     * @return void
      */
     static public function attach($name, $handler)
     {
@@ -87,6 +95,8 @@ class EventUtil
      *
      * @param string       $name    Name of listener.
      * @param array|string $handler PHP callable.
+     * 
+     * @return void
      */
     static public function detach($name, $handler)
     {
@@ -97,6 +107,9 @@ class EventUtil
      * Loader for custom handlers.
      *
      * @param string $dir Path to the folder holding the eventhandler classes.
+     * 
+     * @throws LogicException If the created handler isn't a Zikula_Event.
+     * @return void
      */
     static public function attachCustomHandlers($dir = null)
     {

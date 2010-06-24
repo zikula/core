@@ -18,7 +18,7 @@
 class CacheUtil
 {
     /**
-     * get the location of the local cache directory
+     * get the location of the local cache directory.
      *
      * @return string location of the cache directory
      */
@@ -28,12 +28,12 @@ class CacheUtil
     }
 
     /**
-     * Create a directory below zikula's local cache directory
+     * Create a directory below zikula's local cache directory.
      *
-     * @param dir The name of the directory to create
-     * @param mode The (UNIX) mode we wish to create the files with
+     * @param string $dir  The name of the directory to create.
+     * @param strinf $mode The (UNIX) mode we wish to create the files with.
      *
-     * @return bool true if successful, false otherwise
+     * @return boolean true if successful, false otherwise.
      */
     public static function createLocalDir($dir, $mode = null)
     {
@@ -46,11 +46,11 @@ class CacheUtil
     }
 
     /**
-     * Remove a directory from zikula's local cache directory
+     * Remove a directory from zikula's local cache directory.
      *
-     * @param dir The name of the directory to remove
+     * @param string $dir The name of the directory to remove.
      *
-     * @return bool true if successful, false otherwise
+     * @return boolean true if successful, false otherwise.
      */
     public static function removeLocalDir($dir)
     {
@@ -59,13 +59,15 @@ class CacheUtil
     }
 
     /**
-     * Clear the contents of a directory from zikula's local cache directory
+     * Clear the contents of a directory from zikula's local cache directory.
      *
      * THIS DOES WORK ONLY ONCE ON SOME CONFIGURATIONS, A SECOND CLEARING OF COMPILED TEMPLATES
      * FAILS. SO BETTER DO NOT USE THIS ATM.
      * ToDo: Check why and fix this.
      *
-     * @param dir The name of the directory to remove
+     * @param string $dir The name of the directory to remove.
+     * 
+     * @return void
      */
     public static function clearLocalDir($dir)
     {

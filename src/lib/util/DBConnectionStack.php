@@ -13,39 +13,53 @@
  */
 
 /**
- * This class maintains a stack of database connections. Getting a connection
- * will always return the connection object which is currently on top of the
- * connections stack (ie: the latest added connection).
+ * This class maintains a stack of database connections.
+ * 
+ * Getting a connection will always return the connection object which is
+ * currently on top of the connections stack (ie: the latest added connection).
  */
 class DBConnectionStack
 {
     /**
      * Reference to Doctrine_Manager instance.
+     * 
      * The DBConnectionStack acts only as a forwarder, as it is more limited in its use cases.
      *
      * @var Doctrine_Manager
      */
     private static $manager;
 
+    /**
+     * Cache driver.
+     * 
+     * @var ReflectionClass
+     */
     protected static $cacheDriver;
 
     /**
-     * Contains additional connection configuration arrays,
-     * taken from config.php
+     * Contains additional connection configuration arrays.
+     * 
+     * Taken from config.php.
      *
      * @var array
      */
     private static $connectionInfo = null;
 
+    /**
+     * Constructor.
+     */
     private function __construct()
     {
     }
 
     /**
-     * Initialize a DBConnection and place it on the connection stack
+     * Initialize a DBConnection and place it on the connection stack.
      *
-     * @param name The database alias name in the DBInfo configuration array (optional) (default=null which then defaults to 'default')
-     * @return Doctrine_Connection desired database connection reference
+     * @param string  $name        The database alias name in the DBInfo configuration array (optional) (default=null which then defaults to 'default').
+     * @param boolean $lazyConnect Whether or not to connect lazy.
+     * 
+     * @throws PDOException If database connection failed.
+     * @return Doctrine_Connection Desired database connection reference.
      */
     public static function init($name = 'default', $lazyConnect = false)
     {
@@ -143,12 +157,17 @@ class DBConnectionStack
 
     /**
      * Get the DB connection info structure for a connection as defined in config.php.
+     * 
      * If $field is supplied, the value of the specified field is retuerned, otherwise
      * the entire connection info array is returned.
      *
-     * @param  name   the name of the connection info to get. Passing null returns the current (ie: top) connection (optional) (default=null)
-     * @param  field  the field of the connection info record to return
-     * @return string The connection info array or the specified field value
+     * @param string $name  The name of the connection info to get. Passing null returns the current (ie: top) connection (optional) (default=null).
+     * @param string $field The field of the connection info record to return.
+     * 
+     * @throws Exception If no connection is available.
+     * @throws Exception If the given connection does not exist.
+     * @throws Exception If the given field does not exist.
+     * @return string The connection info array or the specified field value.
      */
     public static function getConnectionInfo($name = null, $field = null)
     {
@@ -241,6 +260,7 @@ class DBConnectionStack
 
     /**
      * Get the DB driver of the currently active connection.
+     * 
      * This is not necessarily the same as the DB Type and
      * should be used to distinguish between different database types.
      *
@@ -302,10 +322,12 @@ class DBConnectionStack
     }
 
     /**
-     * Get the currently active connection (the connection on top of the connection stack)
+     * Get the currently active connection (the connection on top of the connection stack).
      *
-     * @param fetchmode        The fetchmode to set for the connection
-     * @return the connection object
+     * @param constant $fetchmode The fetchmode to set for the connection.
+     * 
+     * @throws Exception If no connection is available.
+     * @return Doctrine_Connection The connection object.
      */
     public static function getConnection($fetchmode = Doctrine::HYDRATE_NONE)
     {
@@ -327,8 +349,9 @@ class DBConnectionStack
     /**
      * Push a new database connection onto the connection stack
      *
-     * @param name        The database alias name in the DBInfo configuration array
-     * @return The database connection
+     * @param string $name The database alias name in the DBInfo configuration array.
+     * 
+     * @return Doctrine_Connection The database connection.
      */
     public static function pushConnection($name)
     {
@@ -342,8 +365,10 @@ class DBConnectionStack
     /**
      * Pop the currently active connection off the stack.
      *
-     * @param close       Whether or not to close the connection (optional) (default=false)
-     * @return boolean The newly active connection
+     * @param boolean $close Whether or not to close the connection (optional) (default=false).
+     * 
+     * @throws Exception If no connection is available.
+     * @return Doctrine_Connection The newly active connection.
      */
     public static function popConnection($close = false)
     {
@@ -367,14 +392,17 @@ class DBConnectionStack
     }
 
     /**
-     * Sets configuration attributes for Doctrine
+     * Sets configuration attributes for Doctrine.
+     * 
+     * Doctrine can set every attribute on every level.
      *
-     * @param mixed object The object which is being configured. This can be:
+     * @param mixed $object The object which is being configured. This can be:
      *      - on global level (Doctrine_Manager instance)
      *      - on connection level (Doctrine_Connection instance)
-     *      - on table level (Doctrine_Table instance)
-     *
-     * Doctrine can set every attribute on every level.
+     *      - on table level (Doctrine_Table instance).
+     *      
+     * @throws Exception If $object is not valid.
+     * @return void
      */
     public static function configureDoctrine($object)
     {
@@ -442,18 +470,18 @@ class DBConnectionStack
 
 
             // default column options
-            /*            $object->setAttribute(Doctrine::ATTR_DEFAULT_COLUMN_OPTIONS,
-                                                        array('type' => 'string',
-                                                              'length' => 255,
-                                                              'notnull' => true));
-*/
+            //            $object->setAttribute(Doctrine::ATTR_DEFAULT_COLUMN_OPTIONS,
+            //                                            array('type' => 'string',
+            //                                                  'length' => 255,
+            //                                                  'notnull' => true));
+
             // properties of default added primary key in models
             // %s is replaced with the table name
-            /*            $object->setAttribute(Doctrine::ATTR_DEFAULT_IDENTIFIER_OPTIONS,
-                                                        array('name' => '%s_id',
-                                                              'type' => 'string',
-                                                              'length' => 16));
-*/
+            //            $object->setAttribute(Doctrine::ATTR_DEFAULT_IDENTIFIER_OPTIONS,
+            //                                            array('name' => '%s_id',
+            //                                                  'type' => 'string',
+            //                                                  'length' => 16));
+            
             return;
         } elseif ($object instanceof Doctrine_Table) {
             // set table options

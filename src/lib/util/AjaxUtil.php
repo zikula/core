@@ -13,24 +13,21 @@
  */
 
 /**
- * AjaxUtil
- * @author Frank Schummertz
+ * AjaxUtil.
  */
 class AjaxUtil
 {
     /**
-     * error()
+     * Immediately stops execution and returns an error message.
      *
-     * Immediately stops execution and returns an error message
-     *
-     * @param error - error text
-     * @param code - optional error code, default '400 Bad data'
-     * @author Frank Schummertz
-     *
+     * @param string $error Error text.
+     * @param string $code  Optional error code, default '400 Bad data'.
+     * 
+     * @return void
      */
     public static function error($error='', $code='400 Bad data')
     {
-        if(empty($error)) {
+        if (empty($error)) {
             $type = LogUtil::getErrorType();
             $code = $type ? $type : $code;
             $error = LogUtil::getErrorMessagesText("\n");
@@ -43,7 +40,8 @@ class AjaxUtil
     }
 
     /**
-     * encode data in JSON and return
+     * Encode data in JSON and return.
+     * 
      * This functions can add a new authid if requested to do so (default).
      * If the supplied args is not an array, it will be converted to an
      * array with 'data' as key.
@@ -51,12 +49,12 @@ class AjaxUtil
      * will be overwritten!
      * Script execution stops here
      *
-     * @param args - string or array of data
-     * @param createauthid - create a new authid and send it back to the calling javascript
-     * @param xjsonheader - send result in X-JSON: header for prototype.js
-     * @param statusmsg - include statusmsg in output
-     * @author Frank Schummertz
-     *
+     * @param mixed   $args         String or array of data.
+     * @param boolean $createauthid Create a new authid and send it back to the calling javascript.
+     * @param boolean $xjsonheader  Send result in X-JSON: header for prototype.js.
+     * @param boolean $statusmsg    Include statusmsg in output.
+     * 
+     * @return void
      */
     public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true)
     {

@@ -865,7 +865,7 @@ class CategoryUtil
             if (FormUtil::getPassedValue('type') == 'admin') {
                 $url .= '#top';
             }
-            if($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
+            if ($doReplaceRootCat && $c['id'] == 1 && $c['name'] == '__SYSTEM__') {
                 $c['name'] =  __('Root category');
             }
 
@@ -928,6 +928,7 @@ class CategoryUtil
      * @param array $tree  Nested array from _tree_insert.
      * @param array &$cats List of categories (initially empty array).
      * 
+     * @return void
      */
     public static function _tree_sort($tree, &$cats)
     {
@@ -939,8 +940,7 @@ class CategoryUtil
             } else {
                 if (isset($v['_/_'][$_catSortField])) {
                     $sorted[$k] = $v['_/_'][$_catSortField];
-                }
-                else {
+                } else {
                     $sorted[$k] = null;
                 }
             }
@@ -1185,7 +1185,7 @@ class CategoryUtil
      * @param array  &$cats The categories array.
      * @param string $func  Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
      *
-     * @return void.
+     * @return void
      */
     public static function sortByLocale(&$cats, $func = 'cmpName')
     {
@@ -1345,8 +1345,9 @@ class CategoryUtil
      *
      * @param string  $field       The field which we wish to populate (optional) (default='path').
      * @param string  $sourceField The field we use to build the path with (optional) (default='name').
-     * @param intiger $leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0).
+     * @param integer $leaf_id     The leaf-category category-id (ie: we'll rebuild the path of this category and all it's parents) (optional) (default=0).
      *
+     * @return void
      */
     public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
     {
