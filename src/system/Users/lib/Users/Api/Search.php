@@ -46,7 +46,7 @@ class Users_Api_Search extends Zikula_Api
             // we can return it easily when required
             $renderer = Renderer::getInstance('Users');
             $renderer->assign('active', !isset($args['active']) || isset($args['active']['Users']));
-            return $renderer->fetch('users_search_options.htm');
+            return $renderer->fetch('users_search_options.tpl');
         }
 
         return '';

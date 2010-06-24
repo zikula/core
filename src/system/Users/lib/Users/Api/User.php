@@ -352,7 +352,7 @@ class Users_Api_User extends Zikula_Api
             $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
             $renderer->assign('url',  ModUtil::url('Users', 'user', 'loginScreen', array(), null, null, true));
             $renderer->assign('adminRequested',  $adminRequested);
-            $htmlBody = $renderer->fetch('users_userapi_lostunamemail.htm');
+            $htmlBody = $renderer->fetch('users_userapi_lostunamemail.tpl');
             $plainTextBody = $renderer->fetch('users_userapi_lostunamemail.txt');
 
             $subject = $this->__f('User name for %s', $user['uname']);
@@ -434,7 +434,7 @@ class Users_Api_User extends Zikula_Api
                     $renderer->assign('code', $confirmationCode);
                     $renderer->assign('url',  ModUtil::url('Users', 'user', 'lostPasswordCode', $urlArgs, null, null, true));
                     $renderer->assign('adminRequested',  $adminRequested);
-                    $htmlBody = $renderer->fetch('users_userapi_lostpasscodemail.htm');
+                    $htmlBody = $renderer->fetch('users_userapi_lostpasscodemail.tpl');
                     $plainTextBody = $renderer->fetch('users_userapi_lostpasscodemail.txt');
 
                     $subject = $this->__f('Confirmation code for %s', $user['uname']);
@@ -526,7 +526,7 @@ class Users_Api_User extends Zikula_Api
     public function expiredSession()
     {
         $pnRender = Renderer::getInstance('Users', false);
-        return $pnRender->fetch('users_userapi_expiredsession.htm');
+        return $pnRender->fetch('users_userapi_expiredsession.tpl');
     }
 
     /**
@@ -631,7 +631,7 @@ class Users_Api_User extends Zikula_Api
         $renderer->assign('sitename', System::getVar('sitename'));
         $renderer->assign('url',  ModUtil::url('Users', 'user', 'confirmChEmail', array('confirmcode' => $confirmCode), null, null, true));
 
-        $message = $renderer->fetch('users_userapi_confirmchemail.htm');
+        $message = $renderer->fetch('users_userapi_confirmchemail.tpl');
         $sent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array('toaddress' => $args['newemail'], 'subject' => $subject, 'body' => $message, 'html' => true));
 
         if (!$sent) {

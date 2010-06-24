@@ -67,7 +67,7 @@ class Users_Block_Online extends Zikula_Block
         // check out if the contents are cached.
         // If this is the case, we do not need to make DB queries.
         if ($this->renderer->is_cached('users_block_online.htm')) {
-            $row['content'] = $this->renderer->fetch('users_block_online.htm');
+            $row['content'] = $this->renderer->fetch('users_block_online.tpl');
             return BlockUtil::themeBlock($row);
         }
 
@@ -99,7 +99,7 @@ class Users_Block_Online extends Zikula_Block
             }
         }
 
-        $row['content'] = $this->renderer->fetch('users_block_online.htm');
+        $row['content'] = $this->renderer->fetch('users_block_online.tpl');
         return BlockUtil::themeBlock($row);
     }
 }

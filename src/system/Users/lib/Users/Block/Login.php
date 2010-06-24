@@ -63,7 +63,7 @@ class Users_Block_Login extends Zikula_Block
             // check out if the contents are cached.
             // If this is the case, we do not need to make DB queries.
             if ($this->renderer->is_cached('users_block_login.htm')) {
-                $row['content'] = $this->renderer->fetch('users_block_login.htm');
+                $row['content'] = $this->renderer->fetch('users_block_login.tpl');
                 return BlockUtil::themeBlock($row);
             }
 
@@ -81,7 +81,7 @@ class Users_Block_Login extends Zikula_Block
             // determine whether to show the rememberme option
             $this->renderer->assign('rememberme', System::getVar('seclevel'));
             
-            $row['content'] = $this->renderer->fetch('users_block_login.htm');
+            $row['content'] = $this->renderer->fetch('users_block_login.tpl');
 
             return BlockUtil::themeBlock($row);
         }
