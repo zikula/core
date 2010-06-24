@@ -19,6 +19,8 @@
 abstract class Zikula_AuthApi extends Zikula_Api
 {
     /**
+     * Login the user.
+     * 
      * Authenticates the user-entered authinfo with the authenticating source, and (if authenticated)
      * returns the Zikula user ID (uid) of the user associated with the authinfo.
      *
@@ -38,8 +40,8 @@ abstract class Zikula_AuthApi extends Zikula_Api
      * @param array $args All arguments passed to this function.
      *                      array authinfo  The information necessary to authenticate the user, typically a login ID and a password.
      *
-     * @return int|bool If the authinfo authenticates with the source, then the Zikula uid associated with that login ID;
-     *                      otherwise false on authentication failure or error.
+     * @return integer|boolean If the authinfo authenticates with the source, then the Zikula uid associated with that login ID;
+     *                         otherwise false on authentication failure or error.
      */
     abstract public function login($args);
 
@@ -63,8 +65,9 @@ abstract class Zikula_AuthApi extends Zikula_Api
     abstract public function getAuthinfoForUser($args);
 
     /**
-     * Retrieves the Zikula User ID (uid) for the given authinfo, from the mapping maintained by
-     * this authmodule.
+     * Retrieves the Zikula User ID (uid) for the given authinfo
+     * 
+     * From the mapping maintained by this authmodule.
      *
      * Custom authmodules should pay extra special attention to the accurate association of authinfo and user
      * ids (uids). Returning the wrong uid for a given authinfo will potentially expose a user's account to
@@ -74,14 +77,15 @@ abstract class Zikula_AuthApi extends Zikula_Api
      * @param array $args All arguments passed to this function.
      *                      array   authinfo    The authentication information uniquely associated with a user.
      *
-     * @return int|bool The integer Zikula uid uniquely associated with the given authinfo;
-     *                      otherwise false if user not found or error.
+     * @return integer|boolean The integer Zikula uid uniquely associated with the given authinfo;
+     *                         otherwise false if user not found or error.
      */
     abstract public function getUidForAuthinfo($args);
 
     /**
-     * Authenticates authinfo with the authenticating source, and (if authenticated) returns the Zikula
-     * user ID (uid) of the user associated with the login ID.
+     * Authenticates authinfo with the authenticating source.
+     * 
+     * And (if authenticated) returns the Zikula user ID (uid) of the user associated with the login ID.
      *
      * This function may be called to initially authenticate a user during the login process, or may be called
      * for a user already logged in to re-authenticate his password for a security-sensitive operation. This function
@@ -90,8 +94,8 @@ abstract class Zikula_AuthApi extends Zikula_Api
      * @param array $args All arguments passed to this function.
      *                      array   authinfo    The authinfo needed for this authmodule, including any user-entered password.
      *
-     * @return int|bool If the authinfo authenticates with the source, then the Zikula uid associated with that login ID;
-     *                      otherwise false on authentication failure or error.
+     * @return integer|boolean If the authinfo authenticates with the source, then the Zikula uid associated with that login ID;
+     *                         otherwise false on authentication failure or error.
      */
     abstract public function authenticateUser($args);
 

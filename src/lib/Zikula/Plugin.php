@@ -115,8 +115,10 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     /**
      * Constructor.
      *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager
+     * @param Zikula_ServiceManager $serviceManager ServiceManager.
      * @param Zikula_EventManager   $eventManager   EventManager.
+     * 
+     * @throws LogicException If no metadata is defined.
      */
     public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager)
     {
@@ -313,6 +315,11 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     {
     }
 
+    /**
+     * Initialize plugin.
+     * 
+     * @return void
+     */
     public function initialize()
     {
     }
@@ -326,10 +333,20 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     {
     }
 
+    /**
+     * Post enable handler.
+     * 
+     * @return void
+     */
     public function postEnable()
     {
     }
 
+    /**
+     * Post disable handler.
+     * 
+     * @return void
+     */
     public function postDisable()
     {
     }
@@ -354,58 +371,117 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         $this->booted = true;
     }
 
+    /**
+     * Whether or not the plugin is enabled.
+     * 
+     * @return boolean
+     */
     public function isEnabled()
     {
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::ENABLED) ? true : false;
     }
 
+    /**
+     * Whether or not the plugin is installed.
+     * 
+     * @return boolean
+     */
     public function isInstalled()
     {
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
         return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
     }
 
+    /**
+     * Pre install handler.
+     * 
+     * @return boolean
+     */
     public function preInstall()
     {
         return true;
     }
 
+    /**
+     * Install.
+     * 
+     * @return boolean
+     */
     public function install()
     {
         return true;
     }
 
+    /**
+     * Post install handler.
+     * 
+     * @return boolean
+     */
     public function postInstall()
     {
         return true;
     }
 
+    /**
+     * Pre uninstall handler.
+     * 
+     * @return boolean
+     */
     public function preUninstall()
     {
         return true;
     }
 
+    /**
+     * Uninstall.
+     * 
+     * @return boolean
+     */
     public function uninstall()
     {
         return true;
     }
 
+    /**
+     * Post uninstall handler.
+     * 
+     * @return boolean
+     */
     public function postUninstall()
     {
         return true;
     }
 
+    /**
+     * Pre upgrade handler.
+     * 
+     * @param string $oldversion Old version.
+     * 
+     * @return boolean
+     */
     public function preUpgrade($oldversion)
     {
         return true;
     }
 
+    /**
+     * Upgrade
+     * 
+     * @param string $oldversion Old version.
+     * 
+     * @return boolean
+     */
     public function upgrade($oldversion)
     {
         return true;
     }
 
+    /**
+     * Post upgrade handler.
+     * 
+     * @return boolean
+     */
     public function postUpgrade()
     {
         return true;

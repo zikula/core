@@ -60,18 +60,24 @@ abstract class Zikula_Block extends Zikula_Base
 
     /**
      * Initialise interface.
+     * 
+     * @return void
      */
     abstract public function init();
 
     /**
      * Get info interface.
+     * 
+     * @return array Blockinfo.
      */
     abstract public function info();
 
     /**
-     * Displat block.
+     * Display block.
      *
      * @param array $blockinfo Blockinfo.
+     * 
+     * @return array Blockinfo.
      */
     abstract public function display($blockinfo);
 

@@ -25,20 +25,23 @@ class Zikula_Tree
     private $config;
 
     /**
-     *
-     * @var <type>
+     * Data.
+     * 
+     * @var array
      */
     private $data;
 
     /**
-     *
-     * @var <type>
+     * Tree data.
+     * 
+     * @var array
      */
     private $tree;
 
     /**
-     *
-     * @var <type> 
+     * HTML output.
+     * 
+     * @var string 
      */
     private $html;
 
@@ -76,9 +79,12 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @param <type> $key
-     * @param <type> $value
+     * Set option.
+     * 
+     * @param string $key   Key.
+     * @param mixed  $value Value.
+     * 
+     * @return void
      */
     public function setOption($key,$value)
     {
@@ -86,19 +92,25 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @param <type> $array
+     * Set option array.
+     * 
+     * @param array $array Options.
+     * 
+     * @return void
      */
     public function setOptionArray($array)
     {
-        foreach((array)$array as $key => $value) {
+        foreach ((array)$array as $key => $value) {
             $this->setOption($key,$value);
         }
     }
 
     /**
-     *
-     * @param <type> $menuArray
+     * Load array data.
+     * 
+     * @param array $menuArray Array data.
+     * 
+     * @return void
      */
     public function loadArrayData($menuArray)
     {
@@ -107,8 +119,11 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @param <type> $menuString
+     * Load string data.
+     * 
+     * @param string $menuString Data string.
+     * 
+     * @return void
      */
     public function loadStringData($menuString)
     {
@@ -117,8 +132,9 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @return <type>
+     * Get HTML output
+     * 
+     * @return string HTML output.
      */
     public function getHTML()
     {
@@ -127,7 +143,7 @@ class Zikula_Tree
         PageUtil::addVar('javascript', 'javascript/livepipe/livepipe.js');
         PageUtil::addVar('javascript', 'javascript/livepipe/cookie.js');
         PageUtil::addVar('javascript', 'javascript/helpers/Zikula.Tree.js');
-        if($this->config['sortable']) {
+        if ($this->config['sortable']) {
             PageUtil::addVar('javascript', 'javascript/helpers/Zikula.TreeSortable.js');
         }
         $jsClass = $this->config['sortable'] ? 'Zikula.TreeSortable' : 'Zikula.Tree';
@@ -145,16 +161,18 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @param <type> $encode
-     * @return <type>
+     * Get configuration for script.
+     * 
+     * @param boolean $encode Whether or not to json encode the configuration.
+     * 
+     * @return string|array
      */
     public function getConfigForScript($encode=true)
     {
         $jsConfig = $this->config;
         $imagesKeys = array('plus','minus','parent','parentOpen','item');
         $jsConfig['images'] = array();
-        foreach($imagesKeys as $img) {
+        foreach ($imagesKeys as $img) {
             $jsConfig['images'][$img] = $this->config[$img];
             unset($jsConfig[$img]);
         }
@@ -162,9 +180,11 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @param <type> $menuString
-     * @return <type>
+     * Parse string.
+     * 
+     * @param string $menuString Data string.
+     * 
+     * @return array Data array.
      */
     private function _parseString($menuString)
     {
@@ -173,7 +193,7 @@ class Zikula_Tree
         //id parent_id name title icon class active expanded href
         $lines = explode("\n",trim($menuString));
         $levels = array();
-        foreach($lines as $id => $line) {
+        foreach ($lines as $id => $line) {
             $line = array_combine($keys,explode('|',trim($line)));
             $line['id'] = $id+1;
             $line['level'] = strlen($line['level']);
@@ -185,14 +205,15 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @return <type>
+     * Parse data
+     * 
+     * @return array Tree data.
      */
     private function _parseData()
     {
         $this->tree = array();
         $map = array();
-        foreach($this->data as $item) {
+        foreach ($this->data as $item) {
             $item = array(
                 'id' => isset($item['id']) ? $item['id'] : null,
                 'parent_id' => isset($item['parent_id']) ? $item['parent_id'] : $this->config['nullParent'],
@@ -204,11 +225,11 @@ class Zikula_Tree
                 'expanded' => isset($item['expanded']) ? $item['expanded'] : null,
                 'href' => isset($item['href']) ? $item['href'] : '',
             );
-            if(is_null($item['id'])) {
+            if (is_null($item['id'])) {
                 continue;
             }
             $node = array('item' => $item, 'nodes' => array());
-            if((int)$item['parent_id'] === $this->config['nullParent']) {
+            if ((int)$item['parent_id'] === $this->config['nullParent']) {
                 $this->tree[$item['id']] = $node;
                 $path = null;
             } else {
@@ -227,10 +248,12 @@ class Zikula_Tree
     }
 
     /**
-     *
-     * @param <type> $tree
-     * @param <type> $treeId
-     * @return <type> 
+     * Convert tree data to HTML.
+     * 
+     * @param array  $tree   Tree data.
+     * @param string $treeId Tree Id.
+     * 
+     * @return string HTML output. 
      */
     private function _toHTML($tree,$treeId=null)
     {
