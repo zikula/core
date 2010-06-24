@@ -63,7 +63,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
 
         // template to use
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.htm';
+            $vars['template'] = 'blocks_block_extmenu.tpl';
         }
         // template to use
         if (empty($vars['stylesheet'])) {
@@ -302,7 +302,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
 
         // template to use
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.htm';
+            $vars['template'] = 'blocks_block_extmenu.tpl';
         }
 
         // create default block variables
@@ -431,7 +431,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
         }
 
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.htm';
+            $vars['template'] = 'blocks_block_extmenu.tpl';
         }
 
         if (empty($vars['stylesheet'])) {

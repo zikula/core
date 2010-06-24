@@ -97,7 +97,7 @@ class Blocks_Installer extends Zikula_Installer
 
                 // Remove Admin_Message table.
                 DBUtil::executeSQL("DROP TABLE $table");
-                
+
                 // Remove any Admin_Message blocks
                 $table = DBUtil::getLimitedTablename('blocks');
                 $sql = "DELETE FROM $table WHERE pn_bkey = 'messages'";
@@ -154,7 +154,7 @@ class Blocks_Installer extends Zikula_Installer
             ZLanguage::bindCoreDomain();
             $menucontent['displaymodules'] = '0';
             $menucontent['stylesheet'] = 'extmenu.css';
-            $menucontent['template'] = 'blocks_block_extmenu.htm';
+            $menucontent['template'] = 'blocks_block_extmenu.tpl';
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
             // insert the links
             $menucontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
