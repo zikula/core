@@ -1,7 +1,7 @@
 <h2>{gt text="Choose a module for your site's start page"}</h2>
 {gt text="Module extensions database" assign=modulegt1}
 {gt text="Note:" assign=modulegt2}
-{assign value="<a href=\"http://community.zikula.org/module-Extensions.htm\">`$modulegt1`</a>" var=moduleinsert1}
+{assign value="<a href=\"http://community.zikula.org/module-Extensions-view.htm\">`$modulegt1`</a>" var=moduleinsert1}
 {assign value="<strong>`$modulegt2`</strong>" var=moduleinsert2}
 <p>{gt text='Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the Zikula %1$s. Please choose a default module for your new site. %2$s You can easily change this later.' tag1=$moduleinsert1 tag2=$moduleinsert2}</p>
 <form class="z-form" action="install.php?lang={$lang}" method="post">
