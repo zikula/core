@@ -1,4 +1,4 @@
-{include file=settings_admin_menu.htm}
+{include file=settings_admin_menu.tpl}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname="core" src="error.gif" set="icons/large" __alt="Modify Config"}</div>
     <h2>{gt text="Error settings"}</h2>

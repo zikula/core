@@ -1,5 +1,5 @@
 {gt text="Recent searches" assign=templatetitle domain='zikula'}
-{include file=search_user_menu.htm}
+{include file=search_user_menu.tpl}
 
 <h3>{$templatetitle}</h3>
 <table class="z-datatable">

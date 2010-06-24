@@ -1,4 +1,4 @@
-{include file=settings_admin_menu.htm}
+{include file=settings_admin_menu.tpl}
 {ajaxheader modname=Settings filename=settings_admin_multilingual.js noscriptaculous=true effects=true}
 <div class="z-admincontainer">
     <div class="z-adminpageicon">{img modname="core" src="voice-support.gif" set="icons/large" __alt="Settings"}</div>
