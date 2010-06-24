@@ -230,7 +230,7 @@ function changeModuleCategoryResponse(req) {
         pnupdateauthids(aid);
         return;
     }
-    $('z-admincontainer').highlight();
+    $('z-admincontainer').highlight({ startcolor: '#c0c0c0'});
     var aid = json.authid;
     document.getElementById('admintabsauthid').value = aid;
     pnupdateauthids(aid);
