@@ -28,17 +28,23 @@ include 'Smarty/Smarty.class.php';
 class ZLoader
 {
     /**
+     * Map.
+     * 
      * @var array
      */
     private static $map;
 
     /**
+     * Autoloaders.
+     * 
      * @var object
      */
     private static $autoloaders;
 
     /**
      * Base setup.
+     * 
+     * @return void
      */
     public static function register()
     {
@@ -85,7 +91,9 @@ class ZLoader
     /**
      * Simple PEAR autoloader and handling for non-PEAR classes.
      *
-     * @param string $class
+     * @param string $class Class name.
+     * 
+     * @return boolean
      */
     public static function autoload($class)
     {
