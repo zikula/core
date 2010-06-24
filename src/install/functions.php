@@ -124,7 +124,8 @@ function install()
     // perform tasks based on our action
     switch ($action) {
         case 'installtype':
-            // protection again anonymous login's (will connect by install will fail) - drak
+            $dbname = trim($dbname);
+            $dbusername = trim($dbusername);
             if (empty($dbname) || empty($dbusername)) {
                 $action = 'dbinformation';
                 $smarty->assign('dbconnectmissing', true);
@@ -350,10 +351,10 @@ function install()
 /**
  * Creates the DB on new install
  *
- * This function creates the DB on new installs
+ * This function creates the DB on new installs.
  *
- * @param string $dbconn Database connection
- * @param string $dbname Database name
+ * @param string $dbconn Database connection.
+ * @param string $dbname Database name.
  */
 function makedb($dbh, $dbname, $dbtype)
 {
