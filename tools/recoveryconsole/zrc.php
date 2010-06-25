@@ -153,6 +153,7 @@ class RecoveryConsole
         define('_ZRC_TXT_NAV_PERMISSION',                'Permission Recovery');
         define('_ZRC_TXT_NAV_DISABLEDSITE',              'Disabled Site Recovery');
         define('_ZRC_TXT_NAV_BLOCK',                     'Block Recovery');
+        define('_ZRC_TXT_NAV_PASSWORD',                  'Password Reset');
         define('_ZRC_TXT_NAV_ABOUT',                     'About This Application');
         define('_ZRC_TXT_NAV_PHPINFO',                   'PHP Information');
         define('_ZRC_TXT_NAV_PHPINFO_VERSION',           'PHP Version');
@@ -238,12 +239,18 @@ class RecoveryConsole
         define('_ZRC_TXT_THEME_RESET_USERS',             'Reset User Themes');
         define('_ZRC_TXT_THEME_CORETHEMES',              'Core Themes');
         define('_ZRC_TXT_THEME_AUTOTHEMES',              'AutoThemes');
+        // Texts specific to password reset.
+        define('_ZRC_TXT_PASSWORD_UNAME',                'Username');
+        define('_ZRC_TXT_PASSWORD_UPASS',                'New password');
+        define('_ZRC_TXT_PASSWORD_UPASSAGAIN',           'New password again (for verification)');
+        define('_ZRC_TXT_PASSWORD_RESETSUCCESS',         'The password was successfully reset');
         // Explanatory texts.
         define('_ZRC_EXP_MAIN',                          'The information shown below reflects the current configuration settings detected by the '._ZRC_APP_TITLE.'. Using the navigation at left, make use of the various site recovery utilities available. If the '._ZRC_APP_TITLE.' cannot resolve the issues your site is experiencing, try the search box at the bottom of any page to search the <a href="http://community.zikula.org/index.php?module=Forum" title="Zikula Support Forum">Zikula Support Forum</a> for answers.');
         define('_ZRC_EXP_THEME',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to recover from theme-related fatal errors or to reset user-specified themes. Note that no AutoThemes will be available in the drop-down menu unless you have the AutoTheme module installed and active.');
         define('_ZRC_EXP_PERMISSION',                    '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to reset your site permissions to the default state that was set when you originally installed the site.  Carefully review the chart below as an example of how your permissions will be setup after running this utility.');
         define('_ZRC_EXP_BLOCK',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to disable or delete blocks that you believe are causing issues for your site. Blocks that you disable can still be accessed by the system, but a deleted block is gone for good; double-check your choices before running this utility.  If there are no blocks present on your site, this utility will be disabled.');
         define('_ZRC_EXP_SITE',                          '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to turn on your previously disabled site.');
+        define('_ZRC_EXP_PASSWORD',                      '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to reset your admin (or other) password.');
         // About page texts.
         define('_ZRC_EXP_ABOUT_TXT_VERSION',             '<strong>VERSION</strong><br />This is <strong>Version '._ZRC_APP_VERSION.'</strong> of the <strong>'._ZRC_APP_TITLE.'</strong><br /><br />');
         define('_ZRC_EXP_ABOUT_TXT_INFO',                '<strong>GENERAL</strong><br />The '._ZRC_APP_TITLE.' provides the tools necessary to resolve and recover from the most common issues that a Zikula site might experience over its lifetime.  Contained within this application are a variety of powerful recovery utilities that are designed to be self-explanatory, simple to use, and consistently delivered through an aesthetic layout.<br /><br />');
@@ -258,6 +265,9 @@ class RecoveryConsole
         define('_ZRC_ERR_DUPED_SETTING',                 'This particular aspect of your site does not appear to be broken in its current state.  No changes were made.');
         define('_ZRC_ERR_FORM_INCOMPLETE',               'All Fields Required');
         define('_ZRC_ERR_PASSWORD_MISMATCH',             'Passwords Do Not Match');
+        define('_ZRC_ERR_PASSWORD_INVALIDUSERNAME',      'The username you supplied is not valid');
+        define('_ZRC_ERR_PASSWORD_ANONYMOUSUSERNAME',    'You cannot change the password for the anonymous user. Please provide the username of a valid user');
+        define('_ZRC_ERR_PASSWORD_RESETFAILED',          'Error resetting the password');
         define('_ZRC_ERR_RECOVERY_FAILURE',              'Recovery Failed');
         define('_ZRC_ERR_INVALID_UTILITY',               'Invalid Utility');
         define('_ZRC_ERR_INVALID_OPERATION',             'Invalid Operation');
@@ -272,9 +282,9 @@ class RecoveryConsole
         define('_ZRC_ERR_BLOCK_NOT_DELETED',             'Block Not Deleted');
         define('_ZRC_ERR_CAT_MOVE_FAILURE',              'Failed To Move Category');
         define('_ZRC_ERR_NO_DATA_NO_CHANGE',             'No Changes Were Made');
-        define('_ZRC_ERR_PERMISSIONS_NOT_DELETED',   'Error Deleting Current Permissions');
-        define('_ZRC_ERR_PERMISSION_INSERT_FAILURE', 'Error Inserting Default Permissions');
-        define('_ZRC_ERR_RESETTING_USER_THEMES',     'Error Resetting User Themes');
+        define('_ZRC_ERR_PERMISSIONS_NOT_DELETED',       'Error Deleting Current Permissions');
+        define('_ZRC_ERR_PERMISSION_INSERT_FAILURE',     'Error Inserting Default Permissions');
+        define('_ZRC_ERR_RESETTING_USER_THEMES',         'Error Resetting User Themes');
     }
     // Initialize Zikula and set relevant properties.
     public function initZikula()
@@ -756,6 +766,7 @@ class RecoveryConsole
         $menu .= $this->markupMenuLink('recover',   'permission',   _ZRC_TXT_NAV_PERMISSION);
         $menu .= $this->markupMenuLink('recover',   'block',        _ZRC_TXT_NAV_BLOCK);
         $menu .= $this->markupMenuLink('recover',   'site',         _ZRC_TXT_NAV_DISABLEDSITE);
+        $menu .= $this->markupMenuLink('recover',   'password',     _ZRC_TXT_NAV_PASSWORD);
         $menu .= $this->markupMenuLink('phpinfo',   '',             _ZRC_TXT_NAV_PHPINFO);
         $menu .= $this->markupMenuLink('about',     '',             _ZRC_TXT_NAV_ABOUT);
         // Closing the navigation block container.
@@ -843,6 +854,7 @@ class RecoveryConsole
             $content .= _ZRC_ERR_INVALID_OPERATION.'</div>'."\n\n";
             return $content;
         }
+
         // Get and contain the title of the utility.
         $content .= '        <div id="page_title" title="'.$this->getTitle().'">'.$this->getTitle().'</div>'."\n\n";
         // Check if this particular utility requires db access.
@@ -1087,6 +1099,7 @@ class RecoveryConsole
                         'theme'         => _ZRC_TXT_NAV_THEME,
                         'permission'    => _ZRC_TXT_NAV_PERMISSION,
                         'block'         => _ZRC_TXT_NAV_BLOCK,
+                        'password'      => _ZRC_TXT_NAV_PASSWORD,
                         'phpinfo'       => _ZRC_TXT_NAV_PHPINFO,
                         'site'          => _ZRC_TXT_NAV_DISABLEDSITE,
                         );
@@ -1105,6 +1118,7 @@ class RecoveryConsole
                               'permission'    => _ZRC_EXP_PERMISSION,
                               'block'         => _ZRC_EXP_BLOCK,
                               'site'          => _ZRC_EXP_SITE,
+                              'password'      => _ZRC_EXP_PASSWORD,
                               'about'         => _ZRC_EXP_ABOUT_TXT_INFO
                                                 ._ZRC_EXP_ABOUT_TXT_VERSION
                                                 ._ZRC_EXP_ABOUT_TXT_LICENSE
@@ -1142,12 +1156,18 @@ class RecoveryConsole
             case 'permission':
                 $setting .= _ZRC_TXT_NOTHING_TO_REPORT;
                 break;
-                    case 'block':
+            case 'block':
                 $setting .= (count($this->blocks) == 0) ? _ZRC_TXT_BLOCKS_NOT_FOUND : _ZRC_TXT_BLOCKS_OUTLINED_BELOW;
                 break;
             case 'site':
                 $setting .= ($this->siteInactive == false) ? _ZRC_TXT_SITE_ENABLED: _ZRC_TXT_SITE_DISABLED;
-            default: break;
+                break;
+            case 'password':
+                $setting .= _ZRC_TXT_NOTHING_TO_REPORT;
+                break;
+            default:
+                $setting .= _ZRC_TXT_NOTHING_TO_REPORT;
+                break;
         }
         // Return the current setting text.
         return $setting;
@@ -1274,6 +1294,7 @@ class RecoveryConsole
         $form .= '                <div class="row"><div class="row_left"><label for="resetusers">'._ZRC_TXT_THEME_RESET_USERS.'</label></div><div class="row_right"><input id="resetusers" type="checkbox" name="resetusers" value="1"'.(($this->INPUT['resetusers'] && $this->getErrors()) ? ' checked="checked"' : null).'  /></div></div>'."\n";
         return $form;
     }
+
     // Get additional inputs for permission recovery.
     public function getUtilityInputsPermission()
     {
@@ -1289,6 +1310,7 @@ class RecoveryConsole
         $form .= '</pre>';
         return $form;
     }
+
     // Get additional inputs for block recovery.
     public function getUtilityInputsBlock()
     {
@@ -1323,6 +1345,16 @@ class RecoveryConsole
         }
         $form .= '</table><br />'."\n\n";
         //$form .= '                <div class="row"><div class="row_left"><label for="resetblocks">'._ZRC_TXT_BLOCK_RESET.'</label></div><div class="row_right"><input id="resetblocks" type="checkbox" name="resetblocks" value="1" /></div></div>'."\n";
+        return $form;
+    }
+
+    // Get additional inputs for password reset.
+    public function getUtilityInputsPassword()
+    {
+        $form   = '                <div class="row"><div class="row_left"><label for="username">'._ZRC_TXT_PASSWORD_UNAME.'</label></div><div class="row_right"><input type="text" id="username" name="username" value="admin" /></div></div>'."\n";
+        $form  .= '                <div class="row"><div class="row_left"><label for="password1">'._ZRC_TXT_PASSWORD_UPASS.'</label></div><div class="row_right"><input type="password" id="password1" name="password1" /></div></div>'."\n";
+        $form  .= '                <div class="row"><div class="row_left"><label for="password2">'._ZRC_TXT_PASSWORD_UPASSAGAIN.'</label></div><div class="row_right"><input type="password" id="password2" name="password2" /></div></div>'."\n";
+
         return $form;
     }
 
@@ -1516,6 +1548,7 @@ class RecoveryConsole
             $this->setError(_ZRC_ERR_CONFIRM_REQUIRED);
             return false;
         }
+        
         // Call a recovery method based on $this->utility.
         switch($this->utility) {
             case 'theme':
@@ -1530,7 +1563,11 @@ class RecoveryConsole
             case 'site':
                 $success = $this->processRecoverySite();
                 break;
-            default: break;
+            case 'password':
+                $success = $this->processRecoveryPassword();
+                break;
+            default:
+                break;
         }
         // Report error on failure.
         if (!$success) {
@@ -1582,6 +1619,7 @@ class RecoveryConsole
         // Recovery successful.
         return true;
     }
+    
     // Process recovery from bad permissions.
     public function processRecoveryPermission()
     {
@@ -1595,6 +1633,7 @@ class RecoveryConsole
         $this->setStatus(_ZRC_TXT_RECOVERY_SUCCESS);
         return true;
     }
+
     // Process recovery from bad sideblocks.
     public function processRecoveryBlock()
     {
@@ -1659,6 +1698,58 @@ class RecoveryConsole
         return true;
     }
 
+    // Process reset password.
+    public function processRecoveryPassword()
+    {
+        // get variables
+        $username = $this->INPUT['username'];
+        $password1 = $this->INPUT['password1'];
+        $password2 = $this->INPUT['password2'];
+
+        // check that passwords match
+        if ($password1 != $password2) {
+            $this->setError(_ZRC_ERR_PASSWORD_MISMATCH);
+            return false;
+        }
+
+         // check that username is not the anonymous one
+        $anonymous = ModUtil::getVar('Users', 'anonymous');
+        if ($username == $anonymous || $username == strtolower($anonymous)) {
+            $this->setError(_ZRC_ERR_PASSWORD_ANONYMOUSUSERNAME);
+            return false;
+        }
+
+        $table = System::dbGetTables();
+        $userstable  = $table['users'];
+        $userscolumn = $table['users_column'];
+
+        // check that username exists
+        $uid = DBUtil::selectField('users', 'uid', $userscolumn['uname']."='".$username."'");
+        if (!$uid) {
+            $this->setError(_ZRC_ERR_PASSWORD_INVALIDUSERNAME);
+            return false;
+        }
+        
+        // update the password
+        // hash the password
+        $password = UserUtil::getHashedPassword($password1);
+
+        // create the object
+        $obj = array('uid' => $uid, 'pass' => $password);
+
+        // perform update
+        if (!DBUtil::updateObject($obj, 'users', '', 'uid')) {
+            $this->setError(_ZRC_ERR_PASSWORD_RESETFAILED);
+            return false;
+        }
+
+        // Set a status message.
+        $this->setStatus(_ZRC_TXT_PASSWORD_RESETSUCCESS);
+
+        // Recovery successful.
+        return true;
+    }
+
     // Set a status message.
     public function setStatus($msg)
     {
@@ -1699,12 +1790,12 @@ class RecoveryConsole
     // Return an array of all possible utilities.
     public function getAllUtilities()
     {
-        return $valid = array('theme', 'permission', 'block', 'site');
+        return $valid = array('theme', 'permission', 'block', 'site', 'password');
     }
     // Return an array of database-requiring utilities.
     public function getAllDatabaseUtilities()
     {
-        return $valid = array('theme', 'permission', 'block', 'site');
+        return $valid = array('theme', 'permission', 'block', 'site', 'password');
     }
 
     // Disable a sideblock.
