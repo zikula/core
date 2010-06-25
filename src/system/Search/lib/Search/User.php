@@ -177,7 +177,7 @@ class Search_User extends Zikula_Controller
 
         // Create output object and check caching
         $this->renderer->cache_id = md5($vars['q'] . $vars['searchtype'] . $vars['searchorder'] . UserUtil::getVar('uid')) . $vars['page'];
-        
+
         // check if the contents are cached.
         if ($this->renderer->is_cached('search_user_results.tpl')) {
             return $this->renderer->fetch('search_user_results.tpl');
@@ -193,7 +193,7 @@ class Search_User extends Zikula_Controller
 
         $this->renderer->assign('resultcount', $result['resultCount'])
                        ->assign('results', $result['sqlResult'])
-                       ->assign($this->getVar())
+                       ->assign($this->getVars())
                        ->assign($vars)
                        ->assign('limitsummary', $limitsummary);
 

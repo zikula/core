@@ -66,7 +66,7 @@ class Search_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign all module vars
-        $this->renderer->assign($this->getVar());
+        $this->renderer->assign($this->getVars());
 
         // assign the plugins
         $this->renderer->assign('plugins', $plugins);

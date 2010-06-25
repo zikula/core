@@ -77,7 +77,7 @@ class Search_Installer extends Zikula_Installer
         }
 
         // Delete any module variables
-        $this->delVar();
+        $this->delVars();
 
         // Deletion successful
         return true;

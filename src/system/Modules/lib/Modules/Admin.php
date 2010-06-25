@@ -1013,7 +1013,7 @@ class Modules_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign all the module vars and return output
-        return $this->renderer->assign($this->getVar())
+        return $this->renderer->assign($this->getVars())
                               ->fetch('modules_admin_modifyconfig.tpl');
     }
 

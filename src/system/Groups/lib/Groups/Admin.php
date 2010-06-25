@@ -759,9 +759,9 @@ class Groups_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign the module vars
-        $modvars = $this->getVar();
+        $modvars = $this->getVars();
         $this->renderer->assign($modvars);
-        
+
         $this->renderer->assign('defaultgroupid', $modvars['defaultgroup']);
 
         // get all groups from the API

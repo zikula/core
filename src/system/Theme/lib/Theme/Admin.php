@@ -85,7 +85,7 @@ class Theme_Admin extends Zikula_Controller
             default:
                 $pagetemplate = 'emptypage';
         }
-        
+
         $createdtheme = ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo,
                                                                            'versionfile' => $this->renderer->fetch('upgrade/version.tpl'),
                                                                            'potfile' => $this->renderer->fetch('upgrade/pot.tpl'),
@@ -120,7 +120,7 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         if(isset($GLOBALS['ZConfig']['multisites']['multi']) && $GLOBALS['ZConfig']['multisites']['multi'] == 1){
             // only the main site can regenerate the themes list
             if($GLOBALS['ZConfig']['multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET')){
@@ -207,7 +207,7 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         // assign theme name, theme info and return output
         return $this->renderer->assign('themename', $themename)
                               ->assign('themeinfo', $themeinfo)
@@ -288,7 +288,7 @@ class Theme_Admin extends Zikula_Controller
         ZLanguage::bindThemeDomain($themename);
 
         $this->renderer->setCaching(false);
-        
+
         // assign variables, themename, themeinfo and return output
         return $this->renderer->assign('variables', ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true)))
                               ->assign('themename', $themename)
@@ -488,7 +488,7 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         // assign the theme name and theme info
         $this->renderer->assign('themename', $themename)
                        ->assign('themeinfo', $themeinfo);
@@ -549,7 +549,7 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         // assign the base filename, themename, theme info, moduletemplates, blocktemplates and palettes
         $this->renderer->assign('filename', $filename)
                        ->assign('themename', $themename)
@@ -743,7 +743,7 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         // assign the page config assignment name, theme name and theme info
         $this->renderer->assign('pcname', $pcname)
                        ->assign('themename', $themename)
@@ -938,7 +938,7 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         // assign the theme info and return output
         return $this->renderer->assign('themeinfo', ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename)))
                               ->fetch('theme_admin_credits.tpl');
@@ -970,7 +970,7 @@ class Theme_Admin extends Zikula_Controller
         if (empty($confirmation)) {
             // No confirmation yet
             $this->renderer->setCaching(false);
-            
+
             // Add a hidden field for the item ID to the output
             $this->renderer->assign('themename', $themename);
 
@@ -1028,7 +1028,7 @@ class Theme_Admin extends Zikula_Controller
             // No confirmation yet
 
             $this->renderer->setCaching(false);
-            
+
             // Add the message id
             $this->renderer->assign($themeinfo);
 
@@ -1070,7 +1070,7 @@ class Theme_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign all module vars
-        $this->renderer->assign($this->getVar());
+        $this->renderer->assign($this->getVars());
 
         // assign an authid for the clear cache/compile links
         $this->renderer->assign('authid', SecurityUtil::generateAuthKey('Theme'));

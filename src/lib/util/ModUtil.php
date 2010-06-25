@@ -242,7 +242,7 @@ class ModUtil
      *
      * @return boolean True if successful, false otherwise.
      */
-    public static function setVars($modname, $vars)
+    public static function setVars($modname, array $vars)
     {
         $ok = true;
         foreach ($vars as $var => $value) {

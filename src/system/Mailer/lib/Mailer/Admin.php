@@ -51,7 +51,7 @@ class Mailer_Admin extends Zikula_Controller
                 4 => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))));
 
         // assign all module vars
-        $this->renderer->assign($this->getVar());
+        $this->renderer->assign($this->getVars());
 
         return $this->renderer->fetch('mailer_admin_modifyconfig.tpl');
     }

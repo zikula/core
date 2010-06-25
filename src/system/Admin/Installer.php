@@ -99,7 +99,7 @@ class Admin_Installer extends Zikula_Installer
             return false;
         }
 
-        $this->delVar();
+        $this->delVars();
 
         // Deletion successful
         return true;

@@ -653,13 +653,26 @@ abstract class Zikula_Base
      * Convenience Module SetVar.
      *
      * @param string $key   Key.
-     * @param mixed  $value Value.
+     * @param mixed  $value Value, default empty.
      *
      * @return object This.
      */
     public function setVar($key, $value='')
     {
         ModUtil::setVar($this->name, $key, $value);
+        return $this;
+    }
+
+    /**
+     * Convenience Module SetVars.
+     *
+     * @param string $vars Array of key => value.
+     *
+     * @return object This.
+     */
+    public function setVars(array $vars)
+    {
+        ModUtil::setVars($this->name, $vars);
         return $this;
     }
 
@@ -671,21 +684,45 @@ abstract class Zikula_Base
      *
      * @return mixed
      */
-    public function getVar($key='', $default=false)
+    public function getVar($key, $default=false)
     {
         return ModUtil::getVar($this->name, $key, $default);
+    }
+    
+    /**
+     * Convenience Module GetVars for all keys in this module.
+     *
+     * @param string  $key     Key.
+     * @param boolean $default Default, false if not found.
+     *
+     * @return mixed
+     */
+    public function getVars()
+    {
+        return ModUtil::getVar($this->name);
     }
 
     /**
      * Convenience Module DelVar.
      *
-     * @param string $key   Key.  Empty for all.
+     * @param string $key   Key.
      *
      * @return object This.
      */
-    public function delVar($key='')
+    public function delVar($key)
     {
         ModUtil::delVar($this->name, $key);
+        return $this;
+    }
+
+    /**
+     * Convenience Module DelVar for all keys for this module.
+     *
+     * @return object This.
+     */
+    public function delVars()
+    {
+        ModUtil::delVar($this->name);
         return $this;
     }
 

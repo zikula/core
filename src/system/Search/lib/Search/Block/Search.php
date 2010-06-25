@@ -64,7 +64,7 @@ class Search_Block_Search extends Zikula_Block
         }
 
         // add the module vars
-        $vars['modvar'] = $this->getVar();
+        $vars['modvar'] = $this->getVars();
 
         // assign the block vars array
         $this->renderer->assign('vars',$vars);

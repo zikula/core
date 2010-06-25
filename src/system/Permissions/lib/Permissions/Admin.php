@@ -68,7 +68,7 @@ class Permissions_Admin extends Zikula_Controller
                 $testresult = '<span id="permissiontestinfored">' . $this->__('unknown user.') . '</span>';
             }
         }
-        
+
         $this->renderer->assign('testuser', $testuser)
                        ->assign('testcomponent', $testcomponent)
                        ->assign('testinstance', $testinstance)
@@ -645,7 +645,7 @@ class Permissions_Admin extends Zikula_Controller
         // we don't return the output back to the core here since this template is a full page
         // template i.e. we don't want this output wrapped in the theme.
         $this->renderer->display('permissions_admin_viewinstanceinfo.tpl');
-        
+
         return true;
     }
 
@@ -665,7 +665,7 @@ class Permissions_Admin extends Zikula_Controller
         $this->renderer->setCaching(false);
 
         // assign the module vars
-        $this->renderer->assign($this->getVar());
+        $this->renderer->assign($this->getVars());
 
         // return the output
         return $this->renderer->fetch('permissions_admin_modifyconfig.tpl');

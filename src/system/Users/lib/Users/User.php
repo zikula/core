@@ -63,7 +63,7 @@ class Users_User extends Zikula_Controller
         }
 
         // other vars
-        $this->renderer->assign($this->getVar());
+        $this->renderer->assign($this->getVars());
 
         return $this->renderer->fetch('users_user_view.tpl');
     }
@@ -166,7 +166,7 @@ class Users_User extends Zikula_Controller
         SessionUtil::delVar('Users_User_register');
 
         $rendererArgs = array();
-        $modVars = $this->getVar();
+        $modVars = $this->getVars();
         $rendererArgs['sitename'] = System::getVar('sitename', System::getHost());
         $rendererArgs['regAllowed'] = (isset($modVars['reg_allowreg']) && !empty($modVars['reg_allowreg']))
             ? $modVars['reg_allowreg']
@@ -1200,7 +1200,7 @@ class Users_User extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'changePassword'));
         }
 
-        $uservars = $this->getVar();
+        $uservars = $this->getVars();
         if ($uservars['changepassword'] <> 1) {
             return System::redirect('Users', 'user', 'main');
         }
@@ -1290,7 +1290,7 @@ class Users_User extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Users', 'user', 'changeEmail'));
         }
 
-        $uservars = $this->getVar();
+        $uservars = $this->getVars();
         if ($uservars['changeemail'] <> 1) {
             return System::redirect('Users', 'user', 'main');
         }

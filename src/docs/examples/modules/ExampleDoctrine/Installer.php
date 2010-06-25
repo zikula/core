@@ -81,8 +81,8 @@ class ExampleDoctrine_Installer extends Zikula_Installer
         DoctrineUtil::dropTable('exampledoctrine_users');
 
         // remove all module vars
-        $this->delVar();
-        
+        $this->delVars();
+
         // Deletion successful
         return true;
     }

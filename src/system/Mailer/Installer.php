@@ -73,7 +73,7 @@ class Mailer_Installer extends Zikula_Installer
     public function uninstall()
     {
         // Delete any module variables
-        $this->delVar();
+        $this->delVars();
 
         // Deletion successful
         return true;

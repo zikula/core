@@ -346,7 +346,7 @@ class Admin_Admin extends Zikula_Controller
         $this->renderer->assign('category', $category);
 
         // assign all module vars
-        $this->renderer->assign('modvars', $this->getVar());
+        $this->renderer->assign('modvars', $this->getVars());
 
         $displayNameType = $this->getVar('displaynametype', 1);
 
@@ -433,7 +433,7 @@ class Admin_Admin extends Zikula_Controller
         $this->renderer->assign('categories', $categories);
 
         // assign all the module vars
-        $this->renderer->assign('modvars', $this->getVar());
+        $this->renderer->assign('modvars', $this->getVars());
 
         $modulecategories = array();
         foreach ($adminmodules as $adminmodule)
