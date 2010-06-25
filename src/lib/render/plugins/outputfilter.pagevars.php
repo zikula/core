@@ -314,7 +314,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                 if ($ext == 'css') {
                     $line = fgets($source, 4096);
                     $lineParse = trim($line);
-                    $lineParse_length = strlen($lineParse);
+                    $lineParse_length = mb_strlen($lineParse, 'UTF-8');
                     $newLine = "";
 
                     // parse line char by char
