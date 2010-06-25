@@ -167,6 +167,7 @@ Added @import handling to css combiner (Issue #1801).
 New button styling (Issue #1574).
 Relocated system fatal error templates (siteoff.tpl, notinstalled.tpl, dbconnectionerror.tpl and sessionfailed.tpl) to system/Theme/templates/system.
 Changed core module templates to use .tpl
+Issue #2209 Add date in Zikula error log file.
 
 CHANGELOG - ZIKULA 1.2.4
 ------------------------

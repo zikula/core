@@ -1125,7 +1125,7 @@ class System
         $logError = ($errorlog == 2 || ($errorlog == 1 && ($errno != E_WARNING && $errno != E_NOTICE && $errno != E_USER_WARNING && $errno != E_USER_NOTICE)));
         if ($logError == true) {
             // log the error
-            $msg = "Zikula Error: $errstr";
+            $msg = DateUtil::getDatetime() . " Zikula Error: $errstr";
             if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
                 $request = self::getCurrentUri();
                 $msg .= " in $errfile on line $errline for page $request";
