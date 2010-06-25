@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Zikula is not installed!</title>
+        <title>Zikula is already installed!</title>
+        {literal}
         <style type="text/css">
             html, body {
                 height: 100%;
@@ -45,6 +46,7 @@
                 box-shadow: #999 4px 4px 10px;
             }
         </style>
+        {/literal}
     </head>
     <body>
         <div class="container">
@@ -53,7 +55,7 @@
                     <h1>Zikula is already installed!</h1>
                     <p>
                         You are seeing this message because Zikula is already installed so the installer has been disabled.  Click <a href="index.php">here to visit your homepage</a>.
-                        If you need to install Zikula again, you must reset your config/config.php to allow an additional install.
+                        If you are a system administrator you can proceed to the installer <a href="install.php?lang={lang}&action=login">here</a>.
                         Further information can be found in the <a href="http://community.zikula.org/Wiki-UserDocs.htm">online documentation</a>.
                     </p>
                     <p>

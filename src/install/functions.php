@@ -14,9 +14,6 @@
 
 function install()
 {
-    global $pnmodvar;
-    $pnmodvar = array();
-
     // configure our installation environment
     // no time limit since installation might take a while
     // error reporting level for debugging
@@ -69,14 +66,8 @@ function install()
         $$var = strip_tags(stripslashes(FormUtil::getPassedValue($var, '', 'GETPOST')));
     }
 
-    // if the system is already installed, require login
-    if ($GLOBALS['ZConfig']['System']['installed']) { // need auth because Zikula is already installed.
-        $action = _forcelogin($action);
-    }
-
     // check for an empty action - if so then show the first installer  page
     if (empty($action)) {
-        $action = 'lang';
         $lang = 'en';
     }
 
@@ -121,12 +112,38 @@ function install()
     // assign the values from config.php
     $smarty->assign($GLOBALS['ZConfig']['System']);
 
-    if ($GLOBALS['ZConfig']['System']['installed'] && ($action == 'lang' || $action == 'login')) {
-        _installer_alreadyinstalled();
+    // if the system is already installed, require login
+    if ($GLOBALS['ZConfig']['System']['installed']) {
+        $action = _forcelogin($action);
+    }
+    
+    if ($GLOBALS['ZConfig']['System']['installed'] && !isset($_GET['lang'])) { // need auth because Zikula is already installed.
+        _installer_alreadyinstalled($smarty);
+    }
+
+    // check for an empty action - if so then show the first installer  page
+    if (empty($action)) {
+        $action = 'lang';
     }
 
     // perform tasks based on our action
     switch ($action) {
+        case 'login' :
+            if (empty($loginuser) && empty($loginpassword)) {
+            } elseif (UserUtil::loginUsing('Users', array('loginid' => $loginuser, 'pass' => $loginpassword), false)) {
+                if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
+                    // not admin user so boot
+                    UserUtil::logout();
+                    $action = 'login';
+                    $smarty->assign(array('loginstate' => 'notadmin'));
+                } else {
+                    $action = 'lang';
+                }
+            } else {
+                // not a valid user
+                $smarty->assign(array('loginstate' => 'failed'));
+            }
+            break;
         case 'installtype':
             $dbname = trim($dbname);
             $dbusername = trim($dbusername);
@@ -592,8 +609,7 @@ function _forcelogin($action = '')
             $dbh = new PDO("$connInfo[dbtype]:host=$connInfo[dbhost];dbname=$connInfo[dbname]", $dsnParts['user'], $dsnParts['pass']);
         } catch (PDOException $e) {
             header('HTTP/1.1 503 Service Unavailable');
-            $templateFile = 'dbconnectionerror.tpl';
-            include 'system/Theme/templates/system/' . $templateFile;
+            include 'system/Theme/templates/system/dbconnectionerror.tpl';
             self::shutDown();
         }
 
@@ -610,10 +626,10 @@ function _forcelogin($action = '')
     return $action;
 }
 
-
-function _installer_alreadyinstalled()
+function _installer_alreadyinstalled(Smarty $smarty)
 {
-    header('HTTP/1.1 503 Service Unavailable');
-    include 'system/Theme/templates/system/alreadyinstalled.tpl';
-    self::shutDown();
+    header('HTTP/1.1 400 Bad Request');
+    $smarty->display('installer_alreadyinstalled.tpl');
+    System::shutDown();
+    exit;
 }
