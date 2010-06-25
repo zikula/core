@@ -68,7 +68,7 @@ class UserUtil
      *
      * @deprecated to be removed in 2.0.0
      * @see    self::getVars()
-     * 
+     *
      * @return The resulting user object
      */
     public static function getPNUser($uid, $getVars = false)
@@ -398,12 +398,12 @@ class UserUtil
 
     /**
      * Login.
-     * 
+     *
      * @param string  $loginID             Login Id.
      * @param string  $userEnteredPassword The Password.
      * @param boolean $rememberme          Whether or not to remember login.
      * @param boolean $checkPassword       Whether or not to check the password.
-     * 
+     *
      * @return boolean
      */
     public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)
@@ -418,12 +418,12 @@ class UserUtil
 
     /**
      * Login using a specific auth module.
-     * 
+     *
      * @param string  $authModuleName Auth module name.
      * @param array   $authinfo       Auth info array.
      * @param boolean $rememberMe     Whether or not to remember login.
      * @param boolean $checkPassword  Whether or not to check the password.
-     * 
+     *
      * @return boolean
      */
     public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
@@ -432,11 +432,11 @@ class UserUtil
         if (self::isLoggedIn()) {
             return true;
         }
-        
+
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
             return false;
-        } elseif (!ModUtil::getInfo(ModUtil::getIdFromName($authModuleName))) {
+        } elseif (!ModUtil::getInfoFromName($authModuleName)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
             return false;
         } elseif (!ModUtil::available($authModuleName)) {
@@ -526,7 +526,7 @@ class UserUtil
                 // First, let's see if the administrator is still using that stuff.
                 if (ModUtil::available('legal')
                     && (ModUtil::getVar('legal', 'termsofuse', false) || ModUtil::getVar('legal', 'privacypolicy', true))) {
-                    
+
                     // Yes, still in use. Let loginScreen deal with it.
                     if ($checkPassword) {
                         // We logged into the custom authmodule above, log out now.
@@ -598,7 +598,7 @@ class UserUtil
 
         // Set session variables
         SessionUtil::setVar('uid', (int)$uid);
-        
+
         // Remember the authenticating authmodule for logout
         SessionUtil::setVar('authmodule', $authModuleName);
 
@@ -802,7 +802,7 @@ class UserUtil
      * @param string  $name    The name of the variable.
      * @param integer $uid     The user to get the variable for.
      * @param mixed   $default The default value to return if the specified variable doesn't exist.
-     * 
+     *
      * @return string|void the value of the user variable if successful, null otherwise
      */
     public static function getVar($name, $uid = -1, $default = false)
@@ -860,7 +860,7 @@ class UserUtil
      * @param string  $name  The name of the variable.
      * @param mixed   $value The value of the variable.
      * @param integer $uid   The user to set the variable for.
-     * 
+     *
      * @return bool true if the set was successful, false otherwise
      */
     public static function setVar($name, $value, $uid = -1)
@@ -1000,7 +1000,7 @@ class UserUtil
         if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName)
             || !isset($hashMethodCodesByName[$hashAlgorithmName]) || empty($hashMethodCodesByName[$hashAlgorithmName])
             || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
-            
+
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmName ('{$hashAlgorithmName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         }
@@ -1212,7 +1212,7 @@ class UserUtil
      *
      * @param string  $name The name of the variable.
      * @param integer $uid  The user to delete the variable for.
-     * 
+     *
      * @return boolen true on success, false on failure
      */
     public static function delVar($name, $uid = -1)
@@ -1369,9 +1369,9 @@ class UserUtil
 
     /**
      * Call theme event.
-     * 
+     *
      * @param string $themeName Theme name.
-     * 
+     *
      * @return string Event name.
      */
     private static function _themeEvent($themeName)
@@ -1398,7 +1398,7 @@ class UserUtil
 
     /**
      * Get a list of user information.
-     * 
+     *
      * @param string  $sortbyfield   Sort by field.
      * @param string  $sortorder     Sort by order.
      * @param integer $limit         Select limit.
@@ -1407,7 +1407,7 @@ class UserUtil
      * @param string  $regexpfield   Field for regexfilter.
      * @param string  $regexpression Regex expression.
      * @param string  $where         Where clause.
-     * 
+     *
      * @return array Array of users.
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
@@ -1447,7 +1447,7 @@ class UserUtil
             }
         }
 
-        // NOTE: DO NOT use a permission filter here to avoid potential infinite loops (DBUtil calls SecurityUtil 
+        // NOTE: DO NOT use a permission filter here to avoid potential infinite loops (DBUtil calls SecurityUtil
         // which calls back to UserUtil. Do your permission check in the API that uses UserUtil.
         return DBUtil::selectObjectArray('users', $where, $sortby, $startnum, $limit, 'uid');
     }
@@ -1456,7 +1456,7 @@ class UserUtil
      * Get the uid of a user from the username.
      *
      * @param string $uname The username.
-     * 
+     *
      * @return mixed userid if found, false if not
      */
     public static function getIdFromName($uname)
@@ -1469,7 +1469,7 @@ class UserUtil
      * Get the uid of a user from the email (case for unique emails).
      *
      * @param string $email The user email.
-     * 
+     *
      * @return mixed userid if found, false if not
      */
     public static function getIdFromEmail($email)

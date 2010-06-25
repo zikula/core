@@ -19,21 +19,21 @@ class FilterUtil_Plugin extends FilterUtil_Common
 {
     /**
      * Loaded plugins.
-     * 
+     *
      * @var array
      */
     private $plg;
 
     /**
      * Loaded operators.
-     * 
+     *
      * @var array
      */
     private $ops;
 
     /**
      * Loaded replaces.
-     * 
+     *
      * @var array
      */
     private $replaces;
@@ -51,7 +51,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
         if ($plgs !== null && is_array($plgs) && count($plgs) > 0) {
             $ok = $this->loadPlugins($plgs);
         }
-        
+
         if ($ok == false) {
             return false;
         }
@@ -61,7 +61,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * Loads plugins.
      *
      * @param array $plgs Array of plugin informations in form "plugin's name => config array".
-     * 
+     *
      * @return bool true on success, false otherwise.
      */
     public function loadPlugins($plgs)
@@ -80,7 +80,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      *
      * @param string $name   Plugin's name.
      * @param array  $config Plugin's config.
-     * 
+     *
      * @return bool True on success, false otherwise.
      */
     public function loadPlugin($name, $config = array())
@@ -100,7 +100,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
         // Load hierarchy
         $dest = array();
         if ($module != 'core' && ModUtil::available($module)) {
-            $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+            $modinfo = ModUtil::getInfoFromName($module);
             $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
             $directory = $modinfo['directory'];
             $dest[] = "config/filter/$directory/$file";
@@ -128,7 +128,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * Check what type the plugin is from and register it.
      *
      * @param int $k The Plugin's ID -> Key in the $this->plg array.
-     * 
+     *
      * @return void
      */
     private function registerPlugin($k)
@@ -163,7 +163,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * FIXME What's about this function? $name is not unique!
      *
      * @param string $name Plugin's name.
-     * 
+     *
      * @return object Plugin's configuration object.
      */
     public function getConfig($name)
@@ -181,7 +181,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * FIXME What's about this function? $name is not unique!
      *
      * @param string $name Plugin's name.
-     * 
+     *
      * @return bool true if the plugin is loaded, false otherwise.
      */
     public function isLoaded($name)
@@ -199,7 +199,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * @param string $field Fieldname.
      * @param string $op    Operator.
      * @param string $value Value.
-     * 
+     *
      * @return array condition set.
      */
     public function replace($field, $op, $value)
@@ -224,7 +224,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
-     * 
+     *
      * @return array Sql set.
      */
     public function getSQL($field, $op, $value)

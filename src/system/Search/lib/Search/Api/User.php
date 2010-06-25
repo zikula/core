@@ -137,7 +137,7 @@ class Search_Api_User extends Zikula_Api
         // add displayname of modules found
         $cnt = count($sqlResult);
         for ($i=0; $i<$cnt; $i++) {
-            $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($sqlResult[$i]['module']));
+            $modinfo = ModUtil::getInfoFromName($sqlResult[$i]['module']);
             $sqlResult[$i]['displayname'] = $modinfo['displayname'];
         }
 

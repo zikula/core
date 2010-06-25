@@ -39,7 +39,7 @@ include 'lib/api/debug.php';
 
 /**
  * System class.
- * 
+ *
  * Core class with the base methods.
  */
 class System
@@ -1017,7 +1017,7 @@ class System
                 }
 
                 // first try the first argument as a module
-                $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args[1]));
+                $modinfo = ModUtil::getInfoFromName($args[1]);
                 // if that fails it's a theme
                 if (!$modinfo) {
                     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[1]));
@@ -1025,10 +1025,10 @@ class System
                         self::queryStringSetVar('theme', $themeinfo['name']);
                         // now shift the vars and continue as before
                         array_shift($args);
-                        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args[1]));
+                        $modinfo = ModUtil::getInfoFromName($args[1]);
                     } else {
                         // add the default module handler into the code
-                        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName(self::getVar('shorturlsdefaultmodule')));
+                        $modinfo = ModUtil::getInfoFromName(self::getVar('shorturlsdefaultmodule'));
                         array_unshift($args, $modinfo['url']);
                     }
                 }
@@ -1192,12 +1192,12 @@ class System
 
     /**
      * Shutdown.
-     * 
+     *
      * Gracefully shut down the framework (traps all exit and die calls),
      * Function halts execution.
      *
      * @param mixed $exit_param String or integer params to pass to the exit function.
-     * 
+     *
      * @return void
      */
     public static function shutDown($exit_param = '')

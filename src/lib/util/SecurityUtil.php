@@ -37,7 +37,7 @@ class SecurityUtil
      * @param string   $instance  Instance.
      * @param constant $level     Level.
      * @param integer  $user      User Id.
-     * 
+     *
      * @return boolean
      */
     public static function checkPermission($component = null, $instance = null, $level = null, $user = null)
@@ -78,7 +78,7 @@ class SecurityUtil
      *
      * @param string $component Component.
      * @param string $schema    Schema.
-     * 
+     *
      * @return boolean
      */
     public static function registerPermissionSchema($component, $schema)
@@ -112,7 +112,7 @@ class SecurityUtil
         }
 
         // get the module info
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $modinfo = ModUtil::getInfoFromName($modname);
         $modname = strtolower($modinfo['name']);
 
         // get the array of randomed values per module and check if exists
@@ -158,7 +158,7 @@ class SecurityUtil
      * Generate auth key.
      *
      * @param string $modname Module name.
-     * 
+     *
      * @return string An encrypted key for use in authorisation of operations.
      */
     public static function generateAuthKey($modname = '')
@@ -172,7 +172,7 @@ class SecurityUtil
         }
 
         // get the module info
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $modinfo = ModUtil::getInfoFromName($modname);
         $modname = strtolower($modinfo['name']);
 
         // get the array of randomed values per module
@@ -200,7 +200,7 @@ class SecurityUtil
      * Get auth info.
      *
      * @param integer $user User Id.
-     * 
+     *
      * @return array Two element array of user and group permissions.
      */
     public static function getAuthInfo($user = null)
@@ -280,7 +280,7 @@ class SecurityUtil
      * @param array  $perms     Array of permissions.
      * @param string $component Component.
      * @param string $instance  Instance.
-     * 
+     *
      * @return integer Matching security level.
      */
     public static function getSecurityLevel($perms, $component, $instance)
@@ -385,7 +385,7 @@ class SecurityUtil
      * Fix security string.
      *
      * @param string $string String.
-     * 
+     *
      * @return string
      */
     public static function _fixsecuritystring($string)
@@ -407,7 +407,7 @@ class SecurityUtil
      * Sign data object leaving data clearly visible.
      *
      * @param array $data Data object.
-     * 
+     *
      * @return string Serialized string of signed data.
      */
     public static function signData($data)
@@ -424,7 +424,7 @@ class SecurityUtil
      * Verify signed data object.
      *
      * @param string $data String of serialized $data.
-     * 
+     *
      * @return mixed Array or string of data if true or bool false if false.
      */
     public static function checkSignedData($data)
@@ -494,7 +494,7 @@ class SecurityUtil
         $saltStr = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, array($saltDelimeter));
         return self::buildSaltedHash($unhashedData, $hashMethodName, $saltStr, $hashMethodNameToCode, $saltDelimeter);
     }
-    
+
     /**
      * Checks the given data against the given salted hash to see if they match.
      *
@@ -551,11 +551,11 @@ class SecurityUtil
 
     /**
      * Translation functions - avoids globals in external code
-     * 
+     *
      * Translate level -> name
-     * 
+     *
      * @param constant $level Access level.
-     * 
+     *
      * @return string Translated access level name.
      */
     public static function accesslevelname($level)

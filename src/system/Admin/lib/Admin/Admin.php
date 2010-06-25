@@ -116,7 +116,7 @@ class Admin_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('category', $category);
         return $this->renderer->fetch('admin_admin_modify.tpl');
     }
@@ -359,7 +359,7 @@ class Admin_Admin extends Zikula_Controller
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
                 if (($catid == $acid) || (($catid == false) && ($acid == $this->getVar('defaultcategory')))) {
-                    $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
+                    $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
                     $menutexturl = ModUtil::url($modinfo['name'], 'admin');
                     $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 

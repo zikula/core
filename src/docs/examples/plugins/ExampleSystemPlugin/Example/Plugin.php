@@ -54,7 +54,7 @@ class SystemPlugin_Example_Plugin extends Zikula_Plugin
 
         // register output filter to add MultiHook environment if requried
         if (ModUtil::available('MultiHook')) {
-            $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('MultiHook'));
+            $modinfo = ModUtil::getInfoFromName('MultiHook');
             if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
                 $theme->load_filter('output', 'multihook');
                 ModUtil::apiFunc('MultiHook', 'theme', 'preparetheme');

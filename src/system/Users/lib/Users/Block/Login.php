@@ -73,14 +73,14 @@ class Users_Block_Login extends Zikula_Block
 
             $this->renderer->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
                            ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
-                           ->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))))
+                           ->assign('authmodules', array(ModUtil::getInfoFromName('Users')))
                            ->assign('seclevel', System::getVar('seclevel'))
                            ->assign('allowregistration', $this->getVar('reg_allowreg'))
                            ->assign('returnurl', System::getCurrentUri());
 
             // determine whether to show the rememberme option
             $this->renderer->assign('rememberme', System::getVar('seclevel'));
-            
+
             $row['content'] = $this->renderer->fetch('users_block_login.tpl');
 
             return BlockUtil::themeBlock($row);

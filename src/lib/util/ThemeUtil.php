@@ -28,10 +28,10 @@ class ThemeUtil
     const FILTER_USER = 1;
     const FILTER_SYSTEM = 2;
     const FILTER_ADMIN = 3;
-    
+
     /**
      * Return a theme variable.
-     * 
+     *
      * @param string $name    Variable name.
      * @param mixed  $default Default return value.
      *
@@ -71,7 +71,7 @@ class ThemeUtil
      * @param constant $filter Filter list of returned themes by type.
      * @param constant $state  Theme state.
      * @param constant $type   Theme type.
-     * 
+     *
      * @return array Available themes.
      **/
     public static function getAllThemes($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
@@ -119,7 +119,7 @@ class ThemeUtil
      * Get themeID given its name.
      *
      * @param string $theme The name of the theme.
-     * 
+     *
      * @return integer Theme ID.
      */
     public static function getIDFromName($theme)
@@ -167,7 +167,7 @@ class ThemeUtil
      * Returns information about a theme.
      *
      * @param string $themeid Id of the theme.
-     * 
+     *
      * @return array The theme information.
      **/
     public static function getInfo($themeid)
@@ -198,7 +198,7 @@ class ThemeUtil
      * Gets the themes table.
      *
      * Small wrapper function to avoid duplicate sql.
-     * 
+     *
      * @access private
      * @return array Modules table.
      */
@@ -251,7 +251,7 @@ class ThemeUtil
         $themepath = "themes/$theme/style/$osmodname";
 
         // module directory
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $modinfo = ModUtil::getInfoFromName($modname);
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = "modules/$osmoddir/style";
         $syspath = "system/$osmoddir/style";

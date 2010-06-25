@@ -98,11 +98,11 @@ class Users_User extends Zikula_Controller
         if ($confirmtou || $changepassword) {
             $this->renderer->assign('default_authmodule', 'Users')
                            ->assign('authmodule', 'Users')
-                           ->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))));
+                           ->assign('authmodules', array(ModUtil::getInfoFromName('Users')));
         } else {
             $this->renderer->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
                            ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
-                           ->assign('authmodules', array(ModUtil::getInfo(ModUtil::getIdFromName('Users'))));
+                           ->assign('authmodules', array(ModUtil::getInfoFromName('Users')));
         }
         $this->renderer->assign('loginviaoption', $this->getVar('loginviaoption'))
                        ->assign('seclevel', System::getVar('seclevel'))
@@ -178,7 +178,7 @@ class Users_User extends Zikula_Controller
         // check if we've agreed to the age limit. We have if we just came from there, or $args is set
         if (($this->getVar('minage', 0) != 0) && !stristr(System::serverGetVar('HTTP_REFERER'), 'register')) {
             $template = 'users_user_checkage.tpl';
-            
+
             $rendererArgs['minimumAge'] = (isset($modVars['minage']) && !empty($modVars['minage'])) ? $modVars['minage'] : 13;
         } else {
             $template = 'users_user_register.tpl';
@@ -615,7 +615,7 @@ class Users_User extends Zikula_Controller
         );
 
         $this->renderer->setCaching(false);
-        
+
         return $this->renderer->assign($rendererArgs)
                               ->fetch('users_user_passwordreminder.tpl');
     }
@@ -962,7 +962,7 @@ class Users_User extends Zikula_Controller
         );
 
         $this->renderer->setCaching(false);
-        
+
         return $this->renderer->assign($rendererArgs)
                               ->fetch('users_user_verifyregistration.tpl');
     }
@@ -1049,7 +1049,7 @@ class Users_User extends Zikula_Controller
                        ->assign('stylesheet', ThemeUtil::getModuleStylesheet('Users'))
                        ->assign('redirectmessage', $this->__('If you are not automatically re-directed then please click here.'))
                        ->display('users_user_redirectpage.tpl');
-        
+
         return true;
     }
 
@@ -1244,7 +1244,7 @@ class Users_User extends Zikula_Controller
 
         // Force reload of user vars
         $userObj = UserUtil::getVars(UserUtil::getVar('uid'), true);
-        
+
         LogUtil::registerStatus($this->__('Done! Saved your new password.'));
         return System::redirect(ModUtil::url('Users', 'user', 'main'));
     }

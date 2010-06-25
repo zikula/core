@@ -35,7 +35,7 @@ if (empty($func)) {
 }
 
 // get module information
-$modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+$modinfo = ModUtil::getInfoFromName($module);
 if ($modinfo == false) {
     AjaxUtil::error(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
 }
@@ -44,7 +44,7 @@ if (!ModUtil::available($modinfo['name'])) {
     AjaxUtil::error(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
 }
 
-$arguments = array(); // this is entirely ununsed? - drak 
+$arguments = array(); // this is entirely ununsed? - drak
 
 if (ModUtil::load($modinfo['name'], $type)) {
     if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {

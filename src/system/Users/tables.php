@@ -33,10 +33,10 @@ function Users_tables($forVersion = null)
         }
 
         // Remaining cases - this should be deleted.
-        $usersModInfo = ModUtil::getInfo(ModUtil::getIdFromName('Users'));
+        $usersModInfo = ModUtil::getInfoFromName('Users');
         $forVersion = $usersModInfo['version'];
     }
-    
+
     if (version_compare($forVersion, '2.0.0') >= 0) {
         return Users_tables_for_200();
     } else {

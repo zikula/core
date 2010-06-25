@@ -102,7 +102,7 @@ abstract class Zikula_Base
         $this->options = $options;
         $this->_setup();
         $this->_postSetup();
-        
+
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
@@ -120,7 +120,7 @@ abstract class Zikula_Base
         $this->reflection = new ReflectionObject($this);
         $parts = explode('_', $this->reflection->getName());
         $this->name = $parts[0];
-        $this->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($this->name));
+        $this->modinfo = ModUtil::getInfoFromName($this->name);
         $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
         $this->systemBaseDir = realpath("$modbase/..");
         $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/" . $this->modinfo['directory']);
@@ -475,11 +475,11 @@ abstract class Zikula_Base
         }
 
         $msgs = SessionUtil::getVar('_ZStatusMsg', array());
-        
+
         $msgs[] = DataUtil::formatForDisplayHTML((string)$message);
 
         SessionUtil::setVar('_ZStatusMsg', $msgs);
-        
+
         return $this;
     }
 
@@ -539,7 +539,7 @@ abstract class Zikula_Base
         if (!isset($message) || empty($message)) {
             throw new Zikula_Exception($this->__f('Empty [%s] received.', 'message'));
         }
-        
+
         $showDetailInfo = (System::isInstalling() || (System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)));
 
         if ($showDetailInfo) {
@@ -556,7 +556,7 @@ abstract class Zikula_Base
             $func = '';
         }
 
-        $message = DataUtil::formatForDisplayHTML((string)$message);        
+        $message = DataUtil::formatForDisplayHTML((string)$message);
         if (!$showDetailInfo) {
             $msg = $message;
         } else {
@@ -571,17 +571,17 @@ abstract class Zikula_Base
 
             }
         }
-        
+
         $msgs = SessionUtil::getVar('_ZErrorMsg', array());
         $msgs[] = DataUtil::formatForDisplayHTML($message);
 
         SessionUtil::setVar('_ZErrorMsg', $msgs);
-        
+
         // check if we've got an error type
         if (isset($type) && is_numeric($type)) {
             SessionUtil::setVar('_ZErrorMsgType', $type);
         }
-        
+
         return $this;
     }
 

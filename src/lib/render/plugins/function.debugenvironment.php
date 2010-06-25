@@ -24,7 +24,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
- * 
+ *
  * @return void
  */
 function smarty_function_debugenvironment($params, &$smarty)
@@ -33,7 +33,7 @@ function smarty_function_debugenvironment($params, &$smarty)
     $smarty->assign('_ZSession_vals', array_values($_SESSION) );
 
     $smarty->assign('_smartyversion', $smarty->_version);
-    $_theme = ModUtil::getInfo(ModUtil::getIdFromName('Theme'));
+    $_theme = ModUtil::getInfoFromName('Theme');
     $smarty->assign('_themeversion', $_theme['version']);
 
     $smarty->assign('_force_compile', (ModUtil::getVar('Theme', 'force_compile')) ? __('On') : __('Off'));

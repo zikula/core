@@ -49,7 +49,7 @@ class Modules_Api_Admin extends Zikula_Api
         // get the module info for the module being updated
         $moduleinforeal = ModUtil::getInfo($args['id']);
         // validate URL
-        $moduleinfourl = ModUtil::getInfo(ModUtil::getIdFromName($args['url']));
+        $moduleinfourl = ModUtil::getInfoFromName($args['url']);
         // If the two real module name don't match then the new display name can't be used
         if ($moduleinfourl && $moduleinfourl['name'] != $moduleinforeal['name']) {
             return LogUtil::registerError($this->__('Error! Could not save the module URL information. A duplicate module URL was detected.'));

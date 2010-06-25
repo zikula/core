@@ -19,14 +19,14 @@ class PluginRender extends Renderer
 {
     /**
      * The plugin name.
-     * 
+     *
      * @var string
      */
     public $pluginName;
 
     /**
      * Constructor.
-     * 
+     *
      * @param string       $module     Module name ("zikula" for system plugins).
      * @param string       $pluginName Plugin name.
      * @param boolean|null $caching    Whether or not to cache (boolean) or use config variable (null).
@@ -49,13 +49,13 @@ class PluginRender extends Renderer
 
     /**
      * Setup the current instance of the Renderer class and return it back to the module.
-     * 
+     *
      * @param string       $moduleName    Module name.
      * @param string       $pluginName    Plugin name.
      * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
      * @param string       $cache_id      Cache Id.
      * @param boolean      $add_core_data Add core data to render data.
-     * 
+     *
      * @return PluginRender instance.
      */
     public static function getInstance($moduleName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
@@ -82,8 +82,8 @@ class PluginRender extends Renderer
         }
 
         if (!array_key_exists($moduleName, $render->module)) {
-            $render->module[$moduleName] = ModUtil::getInfo(ModUtil::getIdFromName($moduleName));
-            //$instance->modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+            $render->module[$moduleName] = ModUtil::getInfoFromName($moduleName);
+            //$instance->modinfo = ModUtil::getInfoFromName($module);
             $render->_add_plugins_dir($moduleName);
         }
 
@@ -109,7 +109,7 @@ class PluginRender extends Renderer
      *
      * @param string $module Module name.
      * @param string $plugin Plugin name.
-     * 
+     *
      * @access private
      * @return void
      */
@@ -119,7 +119,7 @@ class PluginRender extends Renderer
             return;
         }
 
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+        $modinfo = ModUtil::getInfoFromName($module);
         if (!$modinfo) {
             return;
         }
@@ -147,7 +147,7 @@ class PluginRender extends Renderer
      * Checks which path to use for required template.
      *
      * @param string $template Template name.
-     * 
+     *
      * @return string Template path.
      */
     public function get_template_path($template)

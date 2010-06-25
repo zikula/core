@@ -387,7 +387,7 @@ class Users_Api_Admin extends Zikula_Api
         if (empty($importValues)) {
             return false;
         }
-        
+
         // Prepare arrays.
         foreach ($importValues as $key => $value) {
             $usersArray[] = $value['uname'];
@@ -435,7 +435,7 @@ class Users_Api_Admin extends Zikula_Api
         }
 
         // check if module Mailer is active
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Mailer'));
+        $modinfo = ModUtil::getInfoFromName('Mailer');
         if ($modinfo['state'] == ModUtil::TYPE_SYSTEM) {
             $sitename  = System::getVar('sitename');
             $siteurl   = System::getBaseUrl();

@@ -353,7 +353,7 @@ class Admin_Api_Admin extends Zikula_Api
         // check our input and get the module information
         if (!isset($args['modname']) ||
                 !is_string($args['modname']) ||
-                !is_array($modinfo = ModUtil::getInfo(ModUtil::getIdFromName($args['modname'])))) {
+                !is_array($modinfo = ModUtil::getInfoFromName($args['modname']))) {
             return LogUtil::registerArgsError();
         }
 

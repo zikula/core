@@ -78,7 +78,7 @@ class Admin_Block_Adminnav extends Zikula_Block
                             array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
                     if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == $this->getVar('defaultcategory')))) {
-                        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($adminmodule['name']));
+                        $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
                         $menutexturl = ModUtil::url($modinfo['name'], 'admin');
                         $menutexttitle = $modinfo['displayname'];
                         $adminlinks[] = array('menutexturl' => $menutexturl,
@@ -92,7 +92,7 @@ class Admin_Block_Adminnav extends Zikula_Block
         }
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('admincategories', $admincategories);
 
         // Populate block info and pass to theme

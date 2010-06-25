@@ -19,7 +19,7 @@ class DoctrineUtil
 {
     /**
      * Constructor.
-     * 
+     *
      * @throws Exception DoctrineUtil can't be instanciated directly.
      */
     public function __construct()
@@ -38,7 +38,7 @@ class DoctrineUtil
     public static function createTablesFromModels($modname, $path = null)
     {
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $modinfo = ModUtil::getInfoFromName($modname);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
         $dm = Doctrine_Manager::getInstance();
@@ -65,7 +65,7 @@ class DoctrineUtil
     public static function loadModels($modname)
     {
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
+        $modinfo = ModUtil::getInfoFromName($modname);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
         $dm = Doctrine_Manager::getInstance();
@@ -77,7 +77,7 @@ class DoctrineUtil
 
     /**
      * Clear result cache.
-     * 
+     *
      * @return void
      */
     public static function clearResultCache()
@@ -92,7 +92,7 @@ class DoctrineUtil
 
     /**
      * Clear query cache.
-     * 
+     *
      * @return void
      */
     public static function clearQueryCache()
@@ -107,7 +107,7 @@ class DoctrineUtil
 
     /**
      * Use result cache.
-     * 
+     *
      * @param Doctrine_Query $query Doctrine query object.
      *
      * @return Doctrine_Query
@@ -125,7 +125,7 @@ class DoctrineUtil
      * Decorates table name with prefix.
      *
      * @param string $tableName Table name.
-     * 
+     *
      * @return string decorated table name
      */
     public static function decorateTableName($tableName)
@@ -140,7 +140,7 @@ class DoctrineUtil
      * @param string $tableName Table name.
      * @param array  $columns   Column array.
      * @param array  $options   Options.
-     * 
+     *
      * @return void
      */
     public static function createTable($tableName, array $columns, array $options=array())
@@ -154,7 +154,7 @@ class DoctrineUtil
      * Drop table.
      *
      * @param string $tableName Table name.
-     * 
+     *
      * @return void
      */
     public static function dropTable($tableName)
@@ -170,7 +170,7 @@ class DoctrineUtil
      * @param string  $oldTableName Old table name.
      * @param string  $newTableName New table name.
      * @param boolean $check        Verifies request, default: true.
-     * 
+     *
      * @return void
      */
     public static function renameTable($oldTableName, $newTableName, $check=true)
@@ -188,7 +188,7 @@ class DoctrineUtil
      * @param string  $columnName Column name.
      * @param array   $options    Options.
      * @param boolean $check      Verifies request, default: true.
-     * 
+     *
      * @return void
      */
     public static function createColumn($tableName, $columnName, $options=array(), $check=true)

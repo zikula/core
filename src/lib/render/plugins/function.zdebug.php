@@ -31,10 +31,10 @@
  *  output   If html, show debug in rendered page, otherwise open popup window
  *  template Specify different debug template, default zdebug.tpl,
  *                                        must be stored in Theme/pntemplates.
- * 
+ *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
- * 
+ *
  * @return string debug output
  */
 function smarty_function_zdebug($params, &$smarty)
@@ -46,7 +46,7 @@ function smarty_function_zdebug($params, &$smarty)
             $smarty->assign('_smarty_debug_output', $params['output']);
         }
 
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName('Theme'));
+        $modinfo = ModUtil::getInfoFromName('Theme');
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
 

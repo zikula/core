@@ -68,7 +68,7 @@ if (!$module) {
 }
 
 // get module information
-$modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+$modinfo = ModUtil::getInfoFromName($module);
 
 // we need to force the mod load if we want to call a modules interactive init
 // function because the modules is not active right now

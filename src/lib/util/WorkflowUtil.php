@@ -14,7 +14,7 @@
 
 /**
  * WorkflowUtil Class.
- * 
+ *
  * From a developers standpoint, we only use this class to address workflows
  * as the rest is for internal use by the workflow engine.
  */
@@ -47,7 +47,7 @@ class WorkflowUtil
         }
 
         // Get module info
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+        $modinfo = ModUtil::getInfoFromName($module);
         if (!$modinfo) {
             return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }
@@ -80,7 +80,7 @@ class WorkflowUtil
      *
      * @param string $file   Name of file to find (can include relative path).
      * @param string $module Module name.
-     * 
+     *
      * @return mixed string of path or bool false
      */
     public static function _findpath($file, $module = null)
@@ -91,7 +91,7 @@ class WorkflowUtil
         }
 
         // Get module info
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($module));
+        $modinfo = ModUtil::getInfoFromName($module);
         if (!$modinfo) {
             return z_exit(__f('%1$s: The specified module [%2$s] does not exist.', array('WorkflowUtil', $module)));
         }
@@ -140,7 +140,7 @@ class WorkflowUtil
      * @param string $table    Table where data will be stored (default = null).
      * @param string $module   Name of module (defaults calling module).
      * @param string $idcolumn ID column of table.
-     * 
+     *
      * @return mixed
      */
     public static function executeAction($schema, &$obj, $actionID, $table = null, $module = null, $idcolumn = 'id')
@@ -177,7 +177,7 @@ class WorkflowUtil
      * Delete workflows for module (used module uninstall time).
      *
      * @param string $module Module name.
-     * 
+     *
      * @return boolean
      */
     public static function deleteWorkflowsForModule($module)
@@ -194,7 +194,7 @@ class WorkflowUtil
      * Delete a workflow and associated data.
      *
      * @param array $obj Data object.
-     * 
+     *
      * @return boolean
      */
     public static function deleteWorkflow($obj)
@@ -217,7 +217,7 @@ class WorkflowUtil
      * @param string $module     Module name.
      * @param string $state      State name, default = 'initial'.
      * @param array  $obj        Data object.
-     * 
+     *
      * @return mixed Array $action.id => $action or bool false.
      */
     public static function getActionsByState($schemaName, $module = null, $state = 'initial', $obj = array())
@@ -252,7 +252,7 @@ class WorkflowUtil
      * @param string $module     Module name.
      * @param string $state      State, default = 'initial'.
      * @param array  $obj        Array object.
-     * 
+     *
      * @return mixed Array $action.id => $action.title or bool false.
      */
     public static function getActionTitlesByState($schemaName, $module = null, $state = 'initial', $obj = array())
@@ -277,7 +277,7 @@ class WorkflowUtil
      * @param string $module     Module name.
      * @param string $state      State, default = 'initial'.
      * @param array  $obj        Array object.
-     * 
+     *
      * @deprecated 1.3.0
      * @return mixed Array or bool false.
      */
@@ -320,14 +320,14 @@ class WorkflowUtil
 
     /**
      * Load workflow for object.
-     * 
+     *
      * Will attach array '__WORKFLOW__' to the object.
      *
      * @param array  &$obj     Array object.
      * @param string $dbTable  Database table.
      * @param string $idcolumn Id field, default = 'id'.
      * @param string $module   Module name (defaults to current module).
-     * 
+     *
      * @return boolean
      */
     public static function getWorkflowForObject(&$obj, $dbTable, $idcolumn = 'id', $module = null)
@@ -397,7 +397,7 @@ class WorkflowUtil
      * @param array   $obj       Array object.
      * @param string  $permLevel Permission level.
      * @param integer $actionId  Action Id.
-     * 
+     *
      * @return boolean
      */
     public static function permissionCheck($module, $schema, $obj = array(), $permLevel, $actionId = null)
@@ -443,7 +443,7 @@ class WorkflowUtil
      * translates workflow permission to pn permission define
      *
      * @param string $permission Permission string.
-     * 
+     *
      * @return mixed Permission constant or false.
      */
     public static function translatePermission($permission)

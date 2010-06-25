@@ -52,7 +52,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
- * 
+ *
  * @return string The tag.
  */
 function smarty_function_modulejavascript($params, &$smarty)
@@ -89,7 +89,7 @@ function smarty_function_modulejavascript($params, &$smarty)
         $themepath     = "themes/$theme/javascript/$osmodname";
 
         // module directory
-        $modinfo       = ModUtil::getInfo(ModUtil::getIdFromName($params['modname']));
+        $modinfo       = ModUtil::getInfoFromName($params['modname']);
         $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
         $modpath       = "modules/$osmoddir/javascript";
         $syspath       = "system/$osmoddir/javascript";

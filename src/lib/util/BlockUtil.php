@@ -19,11 +19,11 @@ class BlockUtil
 {
     /**
      * Display all blocks in a block position.
-     * 
+     *
      * @param string  $side    Block position to render.
      * @param boolean $echo    Whether or not to echo output directly.
      * @param boolean $implode Whether or not to implode lines by \n.
-     * 
+     *
      * @return void|string The rendered output.
      */
     public static function displayPosition($side, $echo = true, $implode = true)
@@ -145,7 +145,7 @@ class BlockUtil
      * @param string $modname   Module name.
      * @param string $block     Name of the block.
      * @param array  $blockinfo Information parameters.
-     * 
+     *
      * @return mixed Blockinfo array or null.
      */
     public static function show($modname, $block, $blockinfo = array())
@@ -181,9 +181,9 @@ class BlockUtil
 
     /**
      * Display a block based on the current theme.
-     * 
+     *
      * @param array $row Block info.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function themeBlock($row)
@@ -246,15 +246,15 @@ class BlockUtil
      *
      * @param string $modname Module name.
      * @param string $block   Name of the block.
-     * 
+     *
      * @throws LogicException Uf OO-Block is not a Zikula_Block object.
      * @return bool True on successful load, false otherwise.
      */
     public static function load($modname, $block)
     {
         $sm = ServiceUtil::getManager();
-        $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
-        
+        $modinfo = ModUtil::getInfoFromName($modname);
+
         $serviceId = strtolower('block.' .$modinfo['name'] . '_' . 'Block_' . $block);
         if ($sm->hasService($serviceId)) {
             return $sm->getService($serviceId);
@@ -305,7 +305,7 @@ class BlockUtil
                     return false;
                 }
             }
-            
+
             $sm->attachService($serviceId, $blockInstance);
         }
 
@@ -345,7 +345,7 @@ class BlockUtil
 
     /**
      * Load all blocks.
-     * 
+     *
      * @return array Array of blocks.
      */
     public static function loadAll()
@@ -389,7 +389,7 @@ class BlockUtil
      * Extract an array of config variables out of the content field of a block.
      *
      * @param string $content The content from the db.
-     * 
+     *
      * @return array
      */
     public static function varsFromContent($content)
@@ -421,7 +421,7 @@ class BlockUtil
      * Put an array of config variables in the content field of a block.
      *
      * @param array $vars The config vars array, in key->value form.
-     * 
+     *
      * @return string The config var string.
      */
     public static function varsToContent($vars)
@@ -434,9 +434,9 @@ class BlockUtil
      *
      * Checks if the user has a state set for a current block.
      * Sets the default state for that block if not present.
-     * 
+     *
      * @param array $row Block info.
-     * 
+     *
      * @return boolean
      */
     public static function checkUserBlock($row)
@@ -474,7 +474,7 @@ class BlockUtil
 
     /**
      * Get block information.
-     * 
+     *
      * @return array Array of block information.
      */
     public static function getBlocksInfo()
@@ -485,10 +485,10 @@ class BlockUtil
 
     /**
      * Get block information.
-     * 
+     *
      * @param string $value    The value to search for.
      * @param string $assocKey The field in which we look for the value (optional) (default='bid').
-     * 
+     *
      * @return array Array of block information.
      */
     public static function getBlockInfo($value, $assocKey = 'bid')
@@ -515,9 +515,9 @@ class BlockUtil
 
     /**
      * Get block information.
-     * 
+     *
      * @param string $title The block title.
-     * 
+     *
      * @return array Array of block information.
      */
     public static function getInfoByTitle($title)
@@ -527,9 +527,9 @@ class BlockUtil
 
     /**
      * Alias to pnBlockDisplayPosition.
-     * 
+     *
      * @param string $side Block position to render.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function blocks($side)
@@ -539,9 +539,9 @@ class BlockUtil
 
     /**
      * Alias to pnBlockDisplayPosition.
-     * 
+     *
      * @param array $row Block info.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function themesideblock($row)
