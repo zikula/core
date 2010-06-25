@@ -1070,11 +1070,6 @@ class UserUtil
      */
     public static function getHashedPassword($unhashedPassword, $hashMethodCode = null)
     {
-        if (!self::validatePassword($unhashedPassword)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . 'registerArgsError - password did not validate.', 'DEBUG');
-            return LogUtil::registerArgsError();
-        }
-
         if (isset($hashMethodCode)) {
             if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode != $hashMethodCode)) {
                 LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashMethodCode ('{$hashMethodCode}').", 'DEBUG');
