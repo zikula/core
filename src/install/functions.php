@@ -138,6 +138,7 @@ function install()
                 $smarty->assign('dbinvalidprefix', true);
             } else {
                 update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbtype, $dbtabletype);
+                update_installed_status('0');
 
                 // Must reinitialize the database since settings have changed as a result of the install process.
                 // We do this manually because the API doesn't allow for System::init to be called multiple times with different info in config.php

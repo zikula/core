@@ -106,9 +106,9 @@ function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix
     return modify_file($reg_src, $reg_rep);
 }
 
-function update_installed_status()
+function update_installed_status($state = '1')
 {
     global $reg_src, $reg_rep;
-    add_src_rep('installed', '1');
+    add_src_rep('installed', $state);
     return modify_file($reg_src, $reg_rep);
 }
