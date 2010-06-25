@@ -1,11 +1,19 @@
+GENERAL
+=======
+- The format of config.php has changed, please manually complete the values in
+  the supplied config.php - note that base64 encoding is not supposed any more
+  and everything must be in plain text (this is because base64 encoding is not
+  actually an encryption).
+
+TEMPLATES
+=========
 - Change all module templates plugin delimiters to { and }.  For any template
   plugins inside a <script></script> block or a <style></style> block please
   use {{ and }}.
 
-- Module folders now MUST start with a capital letter.
-
 - All plugins with pn have been renamed without the pn prefix.  The pndebug
-  plugin has been renamed to zdebug. Please adjust your templates accordingly.
+  plugin has been renamed to zdebug. See all deprecated template plugins in
+  lib/legacy/pluginsPlease adjust your templates accordingly.
 
 - To accommodate easy transition to the new templates Zikula runs a prefilter
   that will convert the old delimiters to the new, and also remove the pn prefix
@@ -14,23 +22,180 @@
   workaround you can copy the plugin file and rename it and the function inside
   without the prefix.
 
+- The {gt} plugin now no longer requires domain="", this will be detected automatically.
+
 - You must refactor templates using the 'pndate_format' modifier to 'dateformat'.
-
-- Change all instance is $pnRender = & pnRender::getInstance() to
-  $renderer = Renderer::getInstance().
-
-- All use of pnML() and {ml} are both completely deprecated and will not work
-  any more because Zikula no longer supports define based language packs.
-  Upgrade themes and modules.
-
-- See all deprecated template plugins in lib/legacy/plugins
 
 - Output filtering is now done with safetext, and safehtml modifiers.
 
-- Rename all PNObject* to DBObject*. Change the constructor of your DBObjects
+- All use of pnML() and {ml} are both completely deprecated and will not work
+  any more because Zikula no longer supports define based language packs.
+  Upgrade themes and modules to use Gettext.
+
+- Rename templates from *.htm to *.tpl
+
+- If you need to make browser hack please use the block made for the case, e.g.
+  {browserhack condition="if lte IE 7"}foo{/browserback}
+  This block also takes assign="var" so you can assign rather than display.
+
+- Remove {addition_headers} plugin from any themes, this doesn't work anymore.
+
+- Replace all occurrences of "javascript/style.css" with "styles/core.css"
+
+MODULES
+=======
+- Module folder structure has changed, please create lib/$modname inside the module
+  folder.  e.g. in module MyModule, add lib/MyModule.
+
+    The old ones are still backward compatible but since file scanning is used
+    your modules will be more efficient if you change to this format.
+
+    - Rename pndocs to docs
+    - Rename pnincludes to lib/, or lib/vendor if specifying 3rd party libs
+    - Rename pnstyle to style
+    - Rename pnjavascript to javascript
+    - Rename pntemplates to templates
+
+- Rename pntables.php to tables.php.  Change the function inside to $modulename_tables()
+
+- Rename pnversion.php to version.php.
+
+- Module folders now MUST start with a capital letter.
+
+(Note in the following examples, $type must always start with a capital letter
+ and all remaining characters must be lower case).
+
+- Move module controllers (pnuser.php, pnadmin.php etc) to lib/$modname/$type
+  e.g.
+    pnuser.php => lib/MyModule/User.php
+
+  Refactor the controllers, encapulating all functions inside 
+  class $modname_$type extends Zikula_Controller
+  e.g.
+    class MyModule_Users extends Zikula_Controller
+
+  Make all functions public which should be accessible from the browser.
+  Internal methods which should not be accessible outside the class should be made
+  protected or private.  If you subclass Zikula_Controller, inherited methods
+  will not be accessible even if they are public.
+
+- Move module APIs (pnuserapi.php, pnadminapi.php etc) to lib/$modname/Api/$type
+  e.g.
+    pnuserapi.php => lib/MyModule/Api/User.php
+
+  Refactor the APIs, encapulating all functions inside 
+  class $modname_Api_$type extends Zikula_Api
+  e.g.
+    class MyModule_Api_Users extends Zikula_Api
+
+  Make all functions public which should be accessible from ModUtil::apiFunc().
+  Internal methods which should not be accessible outside the class should be made
+  protected or private.
+
+- Move module blocks (pnblocks/foo.php etc) to lib/$modname/$type
+  e.g.
+    blocks/foo.php => lib/MyModule/Block/Foo.php
+
+  Refactor the Blocks, encapulating all functions inside 
+  class $modname_block_$type extends Zikula_Block
+  e.g.
+    class MyModule_Block_Foo extends Zikula_Block
+
+  Make all functions public which should be accessible from outside the class.
+  Internal methods which should not be accessible outside the class should be made
+  protected or private.
+
+- For all Controllers, APIs and Blocks, change gettext function calls
+  OO modulea now have access to convenience where the domain is calculated
+  automatically.
+
+    $this->__($msgid)
+    $this->__f($msgid, $params)
+    $this->_n($singular, $plural, $count)
+    $this->_fn($sin, $plu, $n, $params)
+
+  Remove any $dom = ZLanguage::getModuleDomain() calls except from version.php
+
+- For all Controllers and Blocks, remove any pnRender::getInstance() calls entirely.
+  $this->renderer is automatically available: $this->renderer->assign(), $this->renderer->fetch()
+  etc.
+
+- Rename pninit.php to Installer.php
+  Encapulate all functions in class $modname extends Zikula_Installer
+  e.g.
+    class MyModule_Installer extends Zikula_Installer
+  
+  Rename init() to install().
+  Rename delete() to uninstall().
+
+  Make all function public except for internal ones which should not be accessible outside the class,
+  in which case make the protected or private.  Generally speaking only
+  install(), upgrade() and uninstall() should be public.
+
+  If there are any interactive install methods, please add these to lib/$modname/Interactiveinstaller.php
+  e.g.
+    lib/MyModule/Interactiveinstaller.php
+    contains class MyModule_Interactiveinstaller extends Zikula_InteractiveInstaller  (notice the casing).
+
+  Basically, if the interactive installers has method install() that will override the install() in
+  the main Installer.php, if it has upgrade() it will override the main upgrade() and if it has
+  uninstall() it will override the uninstall() method.  If your module us 100% interactive install,
+  upgrade and uninstall there is no need to have an Installer.php at all.
+
+- If you need any bootstrapping, like making a library available create bootstrap.php, this is
+  included when the Module is first 'loaded'.
+
+- If you use categorisation please refactor to use the following classes:
+    PNCategory => Categories_DBObject_Category
+    PNCategoryArray => Categories_DBObject_CategoryArray
+    PNCategoryRegistry => Categories_DBObject_Registry
+    PNCategoryRegistryArray => Categories_DBObject_RegistryArray
+
+    Remove all references to Loader::loadClassFromModule, Loader::loadClassFromModuleArray()
+
+- Remove any references to Loader::loadClass() - classes are loaded automatically.
+
+- You may now use the following convenience methods from OO controllers and APIs.
+    (see lib/Zikula/Base.php for details)
+
+    $this->throwNotFound()
+    $this->throwNotFoundIf()
+    $this->throwNotFoundUnless()
+
+    $this->throwForbidden()
+    $this->throwForbiddenIf()
+    $this->throwForbiddenUnless()
+
+    $this->redirect()
+    $this->redirectIf()
+    $this->redirectUnless()
+
+- In OO modules, please refactor ModUtil::callHooks() to $this->callHooks().  This
+  adds $subject and $args to the hook calls.  $subject defaults to $this.
+
+- ModUtil::callHooks(), added $subject and $args params. In non OO modules please
+  add a these to your module/template hook calls where $subject could be the
+  controller for example $this, or inside a template, $controller.
+  The $args that hook methods receive will now contain the extra keys 'subject'
+  and 'args'.  These correspond to the $subject and $args passed to ModUtil::callHooks()
+
+
+DBOBJECT
+========
+- Rename classes to $modname_DBObject_$type and move to lib/$modname/DBObject/$type.php
+  e.g
+    MyModule_DBObject_Payments and move to lib/MyModule/DBObject/Payments.php
+    MyModule_DBObject_PaymentsArray and move to lib/MyModule/DBObject/PaymentsArray.php
+
+- Change the constructor of your DBObjects (was PNObject)
   from ClassName() to __construct() and to invoke parent constructor
   change $this->PNObject() to parent::__construct().
 
+- Do not use Loader::loadClassFromModule to get DBObject class names any more.
+  Simply build the class name or hard code it.
+
+DBUTIL
+======
 - DBUtil::executeSQL used to return a ADODB object but now returns a PHP PDO
   object.  This means any code that previously iterated on the ADODB object
   will now break.  Please use of DBUtil::marshallObjects() after any manual
@@ -44,11 +209,9 @@
   accessing the PDO object is considered API complaint.  PDO documentation is
   available at http://php.net/PDO
 
-- The format of config.php has changed, please manually complete the values in
-  the supplied config.php - note that base64 encoding is not supposed any more
-  and everything must be in plain text (this is because base64 encoding is not
-  actually an encryption).
 
+MISCELLANEOUS
+=============
 - Theme module APIs theme_userapi_clear_compiled(), theme_userapi_clear_cache(),
   and pnrender_userapi_clear_compiled(), pnrender_userapi_clear_cache() are
   deprecated.  Please use Renderer->clear_compiled(), Renderer->clear_cache() and
@@ -76,15 +239,14 @@
        $foo->bar = array($foo, 'bar')
        myfunction() = 'myfunction'
 
-- Added ability to have OO controllers in modules.  Look at system modules for
-  examples. The name of the classes are Modulename_$type (case sensitive).
+- The name of the classes are Modulename_$type (case sensitive).
   The $func argument would be the public methods contained therein.
   Also see the EventHandlers folder which shows how a method can be
   added to the controller via a notifyUntil() events of name
   'controller.method_not_found' and 'controllerapi.method_not_found'
   for APIs.
 
-- OO module controllers will initialise an autoloader for the class so that
+- OO modules will initialise an autoloader for the module automatically so
   a call to a class Example_DBObject_Users would load
   module/Example/lib/Example/DBObject/Users.php - the class contained should be
   Example_DBObject_Users.
@@ -94,34 +256,18 @@
   camel case (ucwords).  E.g. type = adminform means the file *must* be names
   Adminform and NOT AdminForm.  The class name would be Modulename_Adminform.
 
-- You may additionally register autoloaders with
-  ZLoader::addAutoloader($namespace, $path) where
-  $namespace is the first part of the PEAR classname, and $path is
-  the path to the containing folder.
-
 - You may now optionally include bootstrap.php in your module root directory.
   This will be loaded during ModUtil::load/ModUtil::loadGeneric() automatically.
 
-- INSTALLER: If you use OO module type you must additionally refactor the pninit.php
-  Rename to Installer.php
-  Encapsulate in "class $modulename_Installer extends Zikula_Installer" making sure
-  the class name $modulename matches the directory.
-  Remove $modulename_ prefix from function declarations.
-  Rename init() to install, and delete() to uninstall()
-  Remove any interactive_ methods (see below).
+- You may additionally register autoloaders with
+  ZLoader::addAutoloader($namespace, $path) where
+  $namespace is the first part of the PEAR classname, and $path is
+  the path to the containing folder.  Use bootstrap.php.
 
-- INTERACTIVE INSTALLER:
-  You must move the interactive methods to lib/$modulename/Interactiveinstaller.php
-  Encapulate methods in "class $modulename_Interactiveinstaller extends Zikula_InteractiveInstaller"
-  making sure the class name $modulename matches the directory.
-  Remove $modulename_ prefix from function declarations.
-  Rename interactive_init() to install(), interactive_upgrade() to upgrade(),
-  and interactive_delete() to uninstall() - the steps become step1(), step2() etc.
-
-  Basically, if the interactive installers has method install() that will override the install() in
-  the main Installer.php, if it has upgrade() it will override the main upgrade() and if it has
-  uninstall() it will override the uninstall() method.  If your module us 100% interactive install,
-  upgrade and uninstall there is no need to have an Installer.php at all.
+API CHANGES
+===========
+There is a shell script in SVN tool/ to rename all these for you automatically
+and accurately.
 
 - pnMod* now all deprecated see ModUtil::*
 - pnUser* deprecated, see UserUtil::*
@@ -129,33 +275,12 @@
 - pn* deprecated see System::*
 - Legacy APIs for BC are stored in legacy/Compat.php and legacy/Api.php
 
-THE FOLLOWING FILE SPECIFICATION HAS CHANGED
-    The old ones are still backward compatible but since file scanning is used
-    your modules will be more efficient if you change to this format.
-
-    - Rename pntables.php to tables.php and rename internal functions $modName_pntables() to $modName_tables()
-    - Rename pnversion.php to version.php
-    - Rename pndocs to docs
-    - Rename pnincludes to lib/, or lib/vendor if specifying 3rd party libs
-    - Rename pnstyle to style
-    - Rename pnjavascript to javascript
-    - Rename pnblocks to lib/$ModuleName/Block
-    - Rename pntemplates to templates
-
-- OO module controllers now have access to convenience where the domain is calculated
-  automatically.
-    $this->__($msgid)
-    $this->__f($msgid, $params)
-    $this->_n($singular, $plural, $count)
-    $this->_fn($sin, $plu, $n, $params)
-
 - The prefixes are NOT gone for the class function based controllers like pnadmin etc.
   This is deliberate to encourage you to move to OO module controllers.
 
-- If you need to make browser hack please use the block made for the case, e.g.
-  {browserhack condition="if lte IE 7"}foo{/browserback}
-  This block also takes assign="var" so you can assign rather than display.
 
+WORKFLOW CHANGES
+================
 - If you use WorkflowUtil, there are four changes for Zikula 1.3:
    - getActionsByStateArray:
        is not deprecated.
@@ -170,63 +295,3 @@ THE FOLLOWING FILE SPECIFICATION HAS CHANGED
    If you used values, replace them with the result keys, and take advantage
    of the action data now available.
 
-- Refactoring module code:
-  - With the following instruction you need to remove all prefixed from function
-    names, like function Module_admin_foo() becomes public function foo()
-  - Any methods which should not be exposed, ie callable from the URL should be
-    make protected or private.
-
-    - Blocks: refactor blocks into lib/$modname/Block/$name.  e.g.
-      MyMod/blocks/foo.php becomes MyMod/lib/MyMod/Block/Foo.php
-      Encapsulate in class MyMod_Block_Foo extends Zikula_Block
-
-    - Controllers: refactor pnuser.php (etc) to lib/$modname/$name e.g.
-      MyMod/pnuser.php becomes MyMod/lib/MyMod/User.php
-      Encapsulate in class MyMod_User extends Zikula_Controller
-
-    - Apis: refactor pnuserapi.php (etc) to lib/$modname/Api/$name e.g.
-      MyMod/pnuserapi.php becomes MyMod/lib/MyMod/Api/User.php
-      Encapsulate in class MyMod_Api_User extends Zikula_Api
-
-- If you use categorisation please refactor to use the following classes:
-    PNCategory => Categories_DBObject_Category
-    PNCategoryArray => Categories_DBObject_CategoryArray
-    PNCategoryRegistry => Categories_DBObject_Registry
-    PNCategoryRegistryArray => Categories_DBObject_RegistryArray
-
-    Remove all references to Loader::loadClassFromModule, Loader::loadClassFromModuleArray()
-
-- Remove any references to Loader::loadClass() - classes are loaded automatically.
-
-- Remove {addition_headers} plugin from any themes, this doesn't work anymore.
-
-- You may now use the following convenience methods from OO controllers and APIs.
-    (see lib/Zikula/Base.php for details)
-
-    $this->throwNotFound()
-    $this->throwNotFoundIf()
-    $this->throwNotFoundUnless()
-
-    $this->throwForbidden()
-    $this->throwForbiddenIf()
-    $this->throwForbiddenUnless()
-
-    $this->redirect()
-    $this->redirectIf()
-    $this->redirectUnless()
-
-- The gettext plugin now does not need domain= set at all for modules.
-
-- In OO controllers $this->renderer is automatically created on instanciation and
-  assigns $this as 'controller' to the templates.
-
-- In OO modules, please refactor ModUtil::callHooks() to $this->callHooks().  This
-  adds $subject and $args to the hook calls.  $subject defaults to $this.
-
-- ModUtil::callHooks(), added $subject and $args params. In non OO modules please
-  add a these to your module/template hook calls where $subject could be the
-  controller for example $this, or inside a template, $controller.
-  The $args that hook methods receive will now contain the extra keys 'subject'
-  and 'args'.  These correspond to the $subject and $args passed to ModUtil::callHooks()
-
-- Replace all occurrences of "javascript/style.css" with "styles/core.css"
