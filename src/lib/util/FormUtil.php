@@ -48,20 +48,10 @@ class FormUtil
         switch (true)
         {
             case (isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || $source == 'R' || $source == 'REQUEST')):
-                $src = INPUT_REQUEST;
-                if (isset($_GET[$key])) {
-                    $src = INPUT_GET;
-                    if (is_array($_POST[$key])) {
-                        $args['flags'] = FILTER_REQUIRE_ARRAY;
-                    }
+                if (is_array($_REQUEST[$key])) {
+                    $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
-                if (isset($_POST[$key])) {
-                    $src = INPUT_POST;
-                    if (is_array($_POST[$key])) {
-                        $args['flags'] = FILTER_REQUIRE_ARRAY;
-                    }
-                }
-                $value  = filter_input($src, $key, $filter, $args);
+                $value  = filter_var($_REQUEST[$key], $filter, $args);
                 $failed = ($value === false) ? $_REQUEST : null;
                 break;
             case isset($_GET[$key]) && (!$source || $source == 'G' || $source == 'GET'):
