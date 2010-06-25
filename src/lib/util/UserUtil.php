@@ -428,11 +428,6 @@ class UserUtil
      */
     public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
     {
-        // If the user is already logged in, then there's no point in loggin in again, nor is there a point in erroring.
-        if (self::isLoggedIn()) {
-            return true;
-        }
-
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
             return false;
