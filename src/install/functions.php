@@ -121,6 +121,10 @@ function install()
     // assign the values from config.php
     $smarty->assign($GLOBALS['ZConfig']['System']);
 
+    if ($GLOBALS['ZConfig']['System']['installed'] && ($action == 'lang' || $action == 'login')) {
+        _installer_alreadyinstalled();
+    }
+
     // perform tasks based on our action
     switch ($action) {
         case 'installtype':
@@ -215,24 +219,6 @@ function install()
             installmodules('basic', $lang);
             if ($installtype != 'basic') {
                 installmodules($installtype, $lang);
-            }
-            break;
-        case 'login':
-            if (empty($loginuser) && empty($loginpassword)) {
-            } elseif (UserUtil::loginUsing('Users', array('loginid' => $loginuser, 'pass' => $loginpassword), false)) {
-                if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                    // not admin user so boot
-                    UserUtil::logout();
-                    $action = 'login';
-                    $smarty->assign(array(
-                                    'loginstate' => 'notadmin'));
-                } else {
-                    $action = 'lang';
-                }
-            } else {
-                // not a valid user
-                $smarty->assign(array(
-                                'loginstate' => 'failed'));
             }
             break;
         case 'selecttheme':
@@ -594,6 +580,22 @@ function _forcelogin($action = '')
 {
     // login to supplied admin credentials
     if ($GLOBALS['ZConfig']['System']['installed']) { // need auth because Zikula is already installed.
+        $dsnParts = Doctrine_Manager::getInstance()->parseDsn($GLOBALS['ZConfig']['DBInfo']['default']['dsn']);
+        $connInfo = array();
+        $connInfo['dbtype'] = strtolower($dsnParts['scheme']);
+        $connInfo['dbhost'] = $dsnParts['host'];
+        $connInfo['dbname'] = $dsnParts['database'];
+        $connInfo['prefix'] = System::getVar('prefix') . '_';
+
+        try {
+            $dbh = new PDO("$connInfo[dbtype]:host=$connInfo[dbhost];dbname=$connInfo[dbname]", $dsnParts['user'], $dsnParts['pass']);
+        } catch (PDOException $e) {
+            header('HTTP/1.1 503 Service Unavailable');
+            $templateFile = 'dbconnectionerror.tpl';
+            include 'system/Theme/templates/system/' . $templateFile;
+            self::shutDown();
+        }
+
         System::init(System::CORE_STAGES_SESSIONS);
         if (UserUtil::isLoggedIn()) {
             if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
@@ -605,4 +607,12 @@ function _forcelogin($action = '')
         }
     }
     return $action;
+}
+
+
+function _installer_alreadyinstalled()
+{
+    header('HTTP/1.1 503 Service Unavailable');
+    include 'system/Theme/templates/system/alreadyinstalled.tpl';
+    self::shutDown();
 }
