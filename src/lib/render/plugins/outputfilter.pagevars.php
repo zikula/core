@@ -314,12 +314,13 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                 if ($ext == 'css') {
                     $line = fgets($source, 4096);
                     $lineParse = trim($line);
+                    $lineParse_length = strlen($lineParse);
                     $newLine = "";
 
                     // parse line char by char
-                    for ($i = 0; $i < strlen($lineParse); $i++) {
+                    for ($i = 0; $i < $lineParse_length; $i++) {
                         $char = $lineParse{$i};
-                        $nextchar = $i < strlen($lineParse)? $lineParse{$i+1} : "";
+                        $nextchar = $i < ($lineParse_length-1) ? $lineParse{$i+1} : "";
                         
                         if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
                             // a multiline comment starts here
