@@ -264,8 +264,11 @@ class RecoveryConsole
         define('_ZRC_ERR_CONFIRM_REQUIRED',              'Confirmation Required');
         define('_ZRC_ERR_DUPED_SETTING',                 'This particular aspect of your site does not appear to be broken in its current state.  No changes were made.');
         define('_ZRC_ERR_FORM_INCOMPLETE',               'All Fields Required');
-        define('_ZRC_ERR_PASSWORD_MISMATCH',             'Passwords Do Not Match');
+        define('_ZRC_ERR_PASSWORD_EMPTYUNAME',           'Username cannot be empty');
+        define('_ZRC_ERR_PASSWORD_EMPTYPASS',            'Password cannot be empty');
+        define('_ZRC_ERR_PASSWORD_MISMATCH',             'Passwords do not match');
         define('_ZRC_ERR_PASSWORD_INVALIDUSERNAME',      'The username you supplied is not valid');
+        define('_ZRC_ERR_PASSWORD_INVALIDPASSWORD',      'The password you supplied is not valid');
         define('_ZRC_ERR_PASSWORD_ANONYMOUSUSERNAME',    'You cannot change the password for the anonymous user. Please provide the username of a valid user');
         define('_ZRC_ERR_PASSWORD_RESETFAILED',          'Error resetting the password');
         define('_ZRC_ERR_RECOVERY_FAILURE',              'Recovery Failed');
@@ -274,6 +277,8 @@ class RecoveryConsole
         define('_ZRC_ERR_ALL_FIELDS_REQUIRED',           'All Fields Required');
         define('_ZRC_ERR_THEME_INVALID',                 'Invalid Theme Name');
         define('_ZRC_ERR_PERMISSION_DEFAULTING',         'Error Defaulting Permissions');
+        define('_ZRC_ERR_PERMISSION_INSERT_FAILURE',     'Error Inserting Default Permissions');
+        define('_ZRC_ERR_PERMISSIONS_NOT_DELETED',       'Error Deleting Current Permissions');
         define('_ZRC_ERR_SITE_ENABLING',                 'Error Enabling Site');
         define('_ZRC_ERR_BLOCK_INVALID_BID',             'Block ID Invalid');
         define('_ZRC_ERR_BLOCK_NO_SUCH_BLOCK',           'No Such Block Exists');
@@ -282,8 +287,6 @@ class RecoveryConsole
         define('_ZRC_ERR_BLOCK_NOT_DELETED',             'Block Not Deleted');
         define('_ZRC_ERR_CAT_MOVE_FAILURE',              'Failed To Move Category');
         define('_ZRC_ERR_NO_DATA_NO_CHANGE',             'No Changes Were Made');
-        define('_ZRC_ERR_PERMISSIONS_NOT_DELETED',       'Error Deleting Current Permissions');
-        define('_ZRC_ERR_PERMISSION_INSERT_FAILURE',     'Error Inserting Default Permissions');
         define('_ZRC_ERR_RESETTING_USER_THEMES',         'Error Resetting User Themes');
     }
     // Initialize Zikula and set relevant properties.
@@ -1706,6 +1709,18 @@ class RecoveryConsole
         $password1 = $this->INPUT['password1'];
         $password2 = $this->INPUT['password2'];
 
+        // check that username is not empty
+        if (empty($username)) {
+            $this->setError(_ZRC_ERR_PASSWORD_EMPTYUNAME);
+            return false;
+        }
+
+        // check that password is not empty
+        if (empty($password1)) {
+            $this->setError(_ZRC_ERR_PASSWORD_EMPTYPASS);
+            return false;
+        }
+
         // check that passwords match
         if ($password1 != $password2) {
             $this->setError(_ZRC_ERR_PASSWORD_MISMATCH);
@@ -1730,10 +1745,14 @@ class RecoveryConsole
             return false;
         }
         
-        // update the password
-        // hash the password
+        // hash the password and check if it is valid
         $password = UserUtil::getHashedPassword($password1);
+        if (!$password) {
+            $this->setError(_ZRC_ERR_PASSWORD_INVALIDPASSWORD);
+            return false;
+        }
 
+        // update the password
         // create the object
         $obj = array('uid' => $uid, 'pass' => $password);
 
