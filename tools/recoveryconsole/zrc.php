@@ -13,10 +13,6 @@
  * Licensed under the General Public License.
  */
 
-// constants
-define('_ZRC_APP_VERSION',   '1.3.0');
-define('_ZRC_APP_SCRIPT',    basename($_SERVER['PHP_SELF']));
-define('_ZRC_APP_EXPIRES',   1200);
 
 // Instantiate a Zikula Recovery Console object.
 $zrc = new RecoveryConsole();
@@ -29,6 +25,9 @@ $zrc->renderRecoveryConsole();
  */
 class RecoveryConsole
 {
+    const VERSION = '1.3.0';
+    const EXPIRES = 1200;
+
     protected $blocks         = array();
     protected $themes         = array();
     protected $modules        = array();
@@ -50,6 +49,12 @@ class RecoveryConsole
         // load basic data from site
         $this->loadInformation();
     }
+
+    public function getBaseScript()
+    {
+        return basename($_SERVER['PHP_SELF']);
+    }
+
     // Initialize the recovery console config and texts.
     public function initRecoveryConsole()
     {
@@ -257,12 +262,12 @@ class RecoveryConsole
     // Return the unix time this file was created.
     public function appCreationTime()
     {
-        return filemtime(_ZRC_APP_SCRIPT);
+        return filemtime($this->getBaseScript());
     }
     // Return the unix time that this file should lockdown.
     public function appExpirationTime()
     {
-        return $this->appCreationTime() + _ZRC_APP_EXPIRES;
+        return $this->appCreationTime() + self::EXPIRES;
     }
     // Return the seconds left until file lockdown.
     public function appTimeElapser()
@@ -636,7 +641,7 @@ class RecoveryConsole
         // Ensure alt/title text is set and cast.
         $title = ($title) ? (string)$title : (string)$text;
         // Assign the base link target.
-        $action = _ZRC_APP_SCRIPT;
+        $action = $this->getBaseScript();
         // Set style of selected links based on $op's presence.
         $style = (empty($this->operation)) ? 'class="selected" ' : null;
         // LINK RETURN POINT: Link is disabled due to incompatibility.
@@ -710,7 +715,7 @@ class RecoveryConsole
             // If so, check if database is ready.
             if (!$this->dbEnabled) {
                 // If not, set descriptive message, close container & return; go no further.
-                $content .= '        <div id="explain_disabled">'._ZRC_ERR_DBA_REQUIRED.'</div>'."\n\n";
+                $content .= '        <div id="explain_disabled">Database required.</div>'."\n\n";
                 $content .= '    </div>'."\n\n";
                 return $content;
             }
@@ -765,7 +770,7 @@ class RecoveryConsole
         $search  = '<div><strong class="blue">'.__('Still need help?').'</strong> '.__('Search the <em>entire</em> Zikula site here!').'</div>'."\n\n";
         $search .= '<form method="post" action="http://community.zikula.org/index.php" style="display:inline;">
                     <div>
-                        <img src="images/icons/extrasmall/search.gif" style="float:left;margin:2px 5px 0 0;" alt="'._ZRC_TXT_SEARCH.'" />
+                        <img src="images/icons/extrasmall/search.gif" style="float:left;margin:2px 5px 0 0;" alt="search" />
                         <input id="search_q" type="text" name="q" size="50" maxlength="255" />
                         <input type="hidden" name="name" value="Search" />
                         <input type="hidden" name="action" value="search" />
@@ -787,7 +792,7 @@ class RecoveryConsole
                         <input type="hidden" name="total" value="" />
                         <input type="hidden" name="numlimit" value="250" />
                         <input type="hidden" name="bool" value="AND" />
-                        <input type="submit" id="search_b" value="'.__('SEARCH').'" title="'._ZRC_TXT_SEARCH.'" />
+                        <input type="submit" id="search_b" value="'.__('SEARCH').'" title="Search" />
                     </div>
                 </form>';
         // Return search form markup.
@@ -798,7 +803,7 @@ class RecoveryConsole
     {
         // Footer container and anchors.
         $footer  = '    <div id="footer">';
-        $footer .= '<a href="http://code.zikula.org/core" title="'.'Zikula Recovery Console'.' v.'._ZRC_APP_VERSION.'">'.'Zikula Recovery Console'.' v.'._ZRC_APP_VERSION.'</a>';
+        $footer .= '<a href="http://code.zikula.org/core" title="'.'Zikula Recovery Console'.' v.'.self::VERSION.'">'.'Zikula Recovery Console'.' v.'.self::VERSION.'</a>';
         $footer .= '<br /><br />';
         $footer .= '<img src="images/powered/small/cms_zikula.png" alt="Zikula-logo" />&nbsp;<img src="images/powered/small/php_powered.png" alt="PHP-Logo"  />';
         // Closing the footer container.
@@ -967,8 +972,8 @@ class RecoveryConsole
                               'block'         => __('<strong>INSTRUCTIONS:</strong> Use this utility to disable or delete blocks that you believe are causing issues for your site. Blocks that you disable can still be accessed by the system, but a deleted block is gone for good; double-check your choices before running this utility.  If there are no blocks present on your site, this utility will be disabled.'),
                               'site'          => __('<strong>INSTRUCTIONS:</strong> Use this utility to turn on your previously disabled site.'),
                               'password'      => __('<strong>INSTRUCTIONS:</strong> Use this utility to reset your admin (or other) password.'),
-                              'about'         => _ZRC_EXP_ABOUT_TXT_INFO
-                                                .__('<strong>VERSION</strong><br />This is <strong>Version _ZRC_APP_VERSION</strong> of the <strong>Zikula Recovery Console</strong><br /><br />')
+                              'about'         => __('About')
+                                                .__('<strong>VERSION</strong><br />This is <strong>Version '.self::VERSION.'</strong> of the <strong>Zikula Recovery Console</strong><br /><br />')
                                                 .__('<strong>LICENSE</strong><br /><a href="http://www.gnu.org/copyleft/gpl.html" title="General Public License">General Public License</a><br /><br />')
                                                 .__('<strong>CREDITS</strong><br />Maintained and enhanced by the Zikula CoreDev team. Originally developed by <a href="http://www.alarconcepts.com/" title="John Alarcon">John Alarcon</a>.  Greatly inspired by the ideas and work of <a href="http://www.snowjournal.com" title="Christopher S. Bradford">Christopher S. Bradford</a> and the additional supportive efforts of <a href="http://users.tpg.com.au/staer/" title="Martin Andersen">Martin Andersen</a>, <a href="http://www.landseer-stuttgart.de/" title="Frank Schummertz">Frank Schummertz</a>, <a href="http://pahlscomputers.com/" title="David Pahl">David Pahl</a> and <a href="http://www.itbegins.co.uk/" title="Simon Birtwistle">Simon Birtwistle</a>. Thanks guys!'),
                               );
@@ -1005,10 +1010,10 @@ class RecoveryConsole
                 $setting .= __('Nothing To Report');
                 break;
             case 'block':
-                $setting .= (count($this->blocks) == 0) ? _ZRC_TXT_BLOCKS_NOT_FOUND : __('Blocks Are Outlined Below');
+                $setting .= (count($this->blocks) == 0) ? __('Blocks not found') : __('Blocks Are Outlined Below');
                 break;
             case 'site':
-                $setting .= ($this->siteInactive == false) ? _ZRC_TXT_SITE_ENABLED: __('Site Is Off/Disabled');
+                $setting .= ($this->siteInactive == false) ? __('Site enabled') : __('Site Is Off/Disabled');
                 break;
             case 'password':
                 $setting .= __('Nothing To Report');
@@ -1052,7 +1057,7 @@ class RecoveryConsole
         // ...else a site-fixing form should be built.  Every form comes with confirm and submit;
         // any additional inputs are formatted for display in getUtilityInputs* for auto-inclusion.
         // Start the form.
-        $form = '            <form method="post" action="'._ZRC_APP_SCRIPT.'?op='.$this->operation.'&amp;utility='.$this->utility.'" enctype="application/x-www-form-urlencoded">'."\n\n";
+        $form = '            <form method="post" action="'.$this->getBaseScript().'?op='.$this->operation.'&amp;utility='.$this->utility.'" enctype="application/x-www-form-urlencoded">'."\n\n";
         // If any additional inputs/markup are available for this utility, get them.
         if (method_exists($this, $method='getUtilityInputs'.$this->utility)) {
             $form .= $this->$method();
@@ -1192,7 +1197,6 @@ class RecoveryConsole
             $form .= '</tr>'."\n\n";
         }
         $form .= '</table><br />'."\n\n";
-        //$form .= '                <div class="row"><div class="row_left"><label for="resetblocks">'._ZRC_TXT_BLOCK_RESET.'</label></div><div class="row_right"><input id="resetblocks" type="checkbox" name="resetblocks" value="1" /></div></div>'."\n";
         return $form;
     }
 
@@ -1233,13 +1237,13 @@ class RecoveryConsole
         }
         // Create a submenu for filtering PHP information.
         $form  = '<div id="phpinfo_menu" class="center">'."\n";
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=0" title="'.__('PHP Version').'">'.__('PHP Version').'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=4" title="'.__('PHP Core').'">'.__('PHP Core').'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=32" title="'.__('PHP Variables').'">'.__('PHP Variables').'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=64" title="'.__('PHP License').'">'.__('PHP License').'</a> ]'."\n";
+        $form .= '[ <a href="'.$this->getBaseScript().'?op=phpinfo&amp;view=0" title="'.__('PHP Version').'">'.__('PHP Version').'</a> ]';
+        $form .= '[ <a href="'.$this->getBaseScript().'?op=phpinfo&amp;view=4" title="'.__('PHP Core').'">'.__('PHP Core').'</a> ]';
+        $form .= '[ <a href="'.$this->getBaseScript().'?op=phpinfo&amp;view=32" title="'.__('PHP Variables').'">'.__('PHP Variables').'</a> ]';
+        $form .= '[ <a href="'.$this->getBaseScript().'?op=phpinfo&amp;view=64" title="'.__('PHP License').'">'.__('PHP License').'</a> ]'."\n";
         $form .= '<br />';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=16" title="'.__('PHP Environment').'">'.__('PHP Environment').'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=8" title="'.__('Apache Environment').'">'.__('Apache Environment').'</a> ]';
+        $form .= '[ <a href="'.$this->getBaseScript().'?op=phpinfo&amp;view=16" title="'.__('PHP Environment').'">'.__('PHP Environment').'</a> ]';
+        $form .= '[ <a href="'.$this->getBaseScript().'?op=phpinfo&amp;view=8" title="'.__('Apache Environment').'">'.__('Apache Environment').'</a> ]';
         $form .= '</div>'."\n";
         // Add previously resulting string to object's markup here.
         $form .= $phpinfo;
@@ -1725,7 +1729,7 @@ class RecoveryConsole
     {
         // Delete all current permission entries.
         if (!DBUtil::truncateTable('group_perms')) {
-            $this->setError(_ZRC_ERR_PERMISSION_NOT_DELETED);
+            $this->setError(__('Error! Permission not deleted'));
             return false;
         }
 
@@ -1739,7 +1743,7 @@ class RecoveryConsole
 
         // Insert default permissions or fail.
         if (!DBUtil::insertObjectArray($perms, 'group_perms', 'pid')) {
-            $this->setError(_ZRC_ERR_PERMISSION_INSERTION_FAILURE);
+            $this->setError(__('Error inserting permission'));
             return false;
         }
 
