@@ -54,9 +54,9 @@ class Zikula_ServiceManager_Service
      *
      * Setup the identifier of this service.
      *
-     * @param string     $id         Unique identifier.
-     * @param Definition $definition Optional instance of Definition class.
-     * @param boolean    $shared     True if the service will be single instance only.
+     * @param string                           $id         Unique identifier.
+     * @param Zikula_ServiceManager_Definition $definition Optional instance of Definition class.
+     * @param boolean                          $shared     True if the service will be single instance only.
      */
     public function __construct($id, Zikula_ServiceManager_Definition $definition = null, $shared = true)
     {

@@ -666,7 +666,7 @@ abstract class Zikula_Base
     /**
      * Convenience Module SetVars.
      *
-     * @param string $vars Array of key => value.
+     * @param array $vars Array of key => value.
      *
      * @return object This.
      */
@@ -692,9 +692,6 @@ abstract class Zikula_Base
     /**
      * Convenience Module GetVars for all keys in this module.
      *
-     * @param string  $key     Key.
-     * @param boolean $default Default, false if not found.
-     *
      * @return mixed
      */
     public function getVars()
@@ -705,7 +702,7 @@ abstract class Zikula_Base
     /**
      * Convenience Module DelVar.
      *
-     * @param string $key   Key.
+     * @param string $key Key.
      *
      * @return object This.
      */

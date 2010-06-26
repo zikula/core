@@ -219,7 +219,7 @@ function _upg_login($showheader = true)
  * @param string $username Username of the admin user.
  * @param string $password Password of the admin user.
  *
- * @return mixed UI or false if it failed.
+ * @return void
  */
 function _upg_upgrademodules($username, $password)
 {
@@ -403,6 +403,13 @@ function upgrade_clear_caches()
     Renderer::getInstance()->clear_compiled();
 }
 
+/**
+ * Suppress errors event listener.
+ *
+ * @param Zikula_Event $event Event.
+ *
+ * @return void
+ */
 function upgrade_suppressErrors(Zikula_Event $event)
 {
     if (!$event['stage'] == System::CORE_STAGES_CONFIG) {
@@ -413,6 +420,13 @@ function upgrade_suppressErrors(Zikula_Event $event)
     $GLOBALS['ZConfig']['System']['development'] = 0;
 }
 
+/**
+ * Get current intalled version number
+ *
+ * @param object $connection PDO connection.
+ *
+ * @return string
+ */
 function upgrade_getCurrentInstalledCoreVersion($connection)
 {
     $moduleTable = $GLOBALS['ZConfig']['System']['prefix'] . '_module_vars';
@@ -425,6 +439,13 @@ function upgrade_getCurrentInstalledCoreVersion($connection)
     return unserialize($result[0]);
 }
 
+/**
+ * Get tables in database from current connection.
+ *
+ * @param object $connection PDO connection.
+ *
+ * @return array
+ */
 function upgrade_getTables($connection)
 {
     $tables = $connection->import->listTables();

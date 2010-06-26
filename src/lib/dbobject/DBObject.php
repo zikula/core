@@ -420,13 +420,15 @@ class DBObject
     /**
      * Get the data from the various input streams provided.
      *
-     * @param string $key     The access key of the object (optional) (default=null, reverts to $this->_objPath).
-     * @param mixed  $default The default value to return (optional) (default=null).
-     * @param string $source  Where to get the variable from (optional) (default='REQUEST').
+     * @param string  $key     The access key of the object (optional) (default=null, reverts to $this->_objPath).
+     * @param mixed   $default The default value to return (optional) (default=null).
+     * @param string  $source  Where to get the variable from (optional) (default='REQUEST').
+     * @param integer $filter  Filtering directives, use FILTER_* constants from filter_*().
+     * @param array   $args    The filter processing args to apply.
      *
      * @return mixed The requested object/value.
      */
-    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter=null, $args=array())
+    public function getDataFromInput($key = null, $default = null, $source = 'REQUEST', $filter=null, array $args=array())
     {
         if (!$key) {
             $key = $this->_objPath;

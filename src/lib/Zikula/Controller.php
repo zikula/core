@@ -28,7 +28,7 @@ abstract class Zikula_Controller extends Zikula_Base
     /**
      * Post Setup hook.
      *
-     * @return @void
+     * @return void
      */
     protected function _postSetup()
     {
