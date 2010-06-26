@@ -13,6 +13,11 @@
  * Licensed under the General Public License.
  */
 
+// constants
+define('_ZRC_APP_VERSION',   '1.3.0');
+define('_ZRC_APP_SCRIPT',    basename($_SERVER['PHP_SELF']));
+define('_ZRC_APP_EXPIRES',   1200);
+
 // Instantiate a Zikula Recovery Console object.
 $zrc = new RecoveryConsole();
 
@@ -50,18 +55,10 @@ class RecoveryConsole
     {
         // Define config settings; will be used in text defines to some degree.
         $this->initAppConfigDefines();
-        // Define all Recovery Console texts.
-        $this->initAppLangDefines();
     }
     // Define Recovery Console's main config settings.
     public function initAppConfigDefines()
     {
-        // Main configuration settings.
-        define('_ZRC_APP_TITLE',     'Zikula Recovery Console');
-        define('_ZRC_APP_VERSION',   '1.3.0');
-        define('_ZRC_APP_SCRIPT',    basename($_SERVER['PHP_SELF']));
-        define('_ZRC_APP_EXPIRES',   1200);
-
         // Set config file target to object early on, for usage in text defines.
         $dir = explode('/', $_SERVER['PHP_SELF']);
         $this->siteConfigFile = $this->getServerProtocol().'://'.$this->getHost().'/'.$dir[1].'/config/config.php';
@@ -137,11 +134,6 @@ class RecoveryConsole
         return true;
     }
 
-    // Texts for the Recovery Console.
-    public function initAppLangDefines()
-    {
-    }
-    
     // Initialize Zikula and set relevant properties.
     public function initZikula()
     {
@@ -149,14 +141,14 @@ class RecoveryConsole
         $file = 'lib/ZLoader.php';
         // Before inclusion, ensure the API file can be accessed.
         if (!file_exists($file) && !is_readable($file)) {
-            $this->fatalError(__('<strong>THIS APPLICTATION WAS IMPROPERLY UPLOADED</strong><br />Please ensure that you have uploaded this file to<br />the <em>root directory</em> of your site and try again.'));
+            $this->fatalError('<strong>THIS APPLICTATION WAS IMPROPERLY UPLOADED</strong><br />Please ensure that you have uploaded this file to<br />the <em>root directory</em> of your site and try again.');
         }
         // Include the API file.
         require_once 'lib/ZLoader.php';
         ZLoader::register();
         // Before init, avoid error; ensure the function exists.
         if (!is_callable(array('System', 'init'))) {
-            $this->fatalError(__('<strong>Zikula COULD NOT BE INITIALIZED</strong><br />No further information is available.'));
+            $this->fatalError('<strong>Zikula COULD NOT BE INITIALIZED</strong><br />No further information is available.');
         }
         // Initialize Zikula.
 
@@ -176,7 +168,7 @@ class RecoveryConsole
     {
         // Kill app if app is expired or force-locked by the system.
         if ($this->appIsExpired() || $this->appForceLocked) {
-            //$this->fatalError(__('<strong>THIS APPLICATION HAS EXPIRED</strong><br />Re-upload the file to reset the timer.'));
+            $this->fatalError(__('<strong>THIS APPLICATION HAS EXPIRED</strong><br />Re-upload the file to reset the timer.'));
         }
     }
     // Database connection.
@@ -287,7 +279,7 @@ class RecoveryConsole
         $head .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en_US">'."\n\n";
         $head .= '<head>'."\n\n";
         $head .= '<meta http-equiv="content-type" content="text/html; charset=utf-8" />'."\n\n";
-        $head .= '<title>'._ZRC_APP_TITLE.'</title>'."\n\n";
+        $head .= '<title>'.'Zikula Recovery Console'.'</title>'."\n\n";
         // Countdown timer script.  For GUI purposes only; security is not dependent upon Javascript.
         $head .= $this->markupJavascript();
         // All CSS comes via this method.
@@ -295,7 +287,7 @@ class RecoveryConsole
         $head .= '</head>'."\n\n";
         $head .= '<body>'."\n\n";
         $head .= '<div id="container">'."\n\n";
-        $head .= '    <div id="app_title">'._ZRC_APP_TITLE.'</div>'."\n\n";
+        $head .= '    <div id="app_title">'.'Zikula Recovery Console'.'</div>'."\n\n";
         // Return the string.
         return $head;
     }
@@ -315,10 +307,10 @@ class RecoveryConsole
         $js .= '                secs = "0" + secs;'."\n";
         $js .= '            }'."\n";
         $js .= '            if(n > 0) {'."\n";
-        $js .= '                document.getElementById("timer_container").innerHTML = \''.__('LOCKDOWN TIMER').'<div id="timer_digits">\'+mins+\':\' + secs + \'<\/div><div id="timer_reason">'.__('The _ZRC_APP_TITLE will be automatically disabled when the timer expires.  If it expires before you finish your work, simply re-upload the file and refresh your browser.  The timer will be reset.').'<\/div>\';'."\n";
+        $js .= '                document.getElementById("timer_container").innerHTML = \''.__('LOCKDOWN TIMER').'<div id="timer_digits">\'+mins+\':\' + secs + \'<\/div><div id="timer_reason">'.__('The Zikula Recovery Console will be automatically disabled when the timer expires.  If it expires before you finish your work, simply re-upload the file and refresh your browser.  The timer will be reset.').'<\/div>\';'."\n";
         $js .= '                setTimeout(function() { countDown(n - 1) }, 1000)'."\n";
         $js .= '            } else if (n == 0) {'."\n";
-        $js .= '                document.getElementById("timer_container").innerHTML =  \''.__('LOCKDOWN ENGAGED').'<div id="timer_reason" class="red">'.__('The _ZRC_APP_TITLE is now disabled from further use as a security precaution.  You must upload a new copy of this file to reset the lockdown timer.').'<\/div>\';'."\n";
+        $js .= '                document.getElementById("timer_container").innerHTML =  \''.__('LOCKDOWN ENGAGED').'<div id="timer_reason" class="red">'.__('The Zikula Recovery Console is now disabled from further use as a security precaution.  You must upload a new copy of this file to reset the lockdown timer.').'<\/div>\';'."\n";
         $js .= '            }'."\n";
         $js .= '        }'."\n";
         $js .= '    }'."\n";
@@ -806,7 +798,7 @@ class RecoveryConsole
     {
         // Footer container and anchors.
         $footer  = '    <div id="footer">';
-        $footer .= '<a href="http://code.zikula.org/core" title="'._ZRC_APP_TITLE.' v.'._ZRC_APP_VERSION.'">'._ZRC_APP_TITLE.' v.'._ZRC_APP_VERSION.'</a>';
+        $footer .= '<a href="http://code.zikula.org/core" title="'.'Zikula Recovery Console'.' v.'._ZRC_APP_VERSION.'">'.'Zikula Recovery Console'.' v.'._ZRC_APP_VERSION.'</a>';
         $footer .= '<br /><br />';
         $footer .= '<img src="images/powered/small/cms_zikula.png" alt="Zikula-logo" />&nbsp;<img src="images/powered/small/php_powered.png" alt="PHP-Logo"  />';
         // Closing the footer container.
@@ -976,7 +968,7 @@ class RecoveryConsole
                               'site'          => __('<strong>INSTRUCTIONS:</strong> Use this utility to turn on your previously disabled site.'),
                               'password'      => __('<strong>INSTRUCTIONS:</strong> Use this utility to reset your admin (or other) password.'),
                               'about'         => _ZRC_EXP_ABOUT_TXT_INFO
-                                                .__('<strong>VERSION</strong><br />This is <strong>Version _ZRC_APP_VERSION</strong> of the <strong>_ZRC_APP_TITLE</strong><br /><br />')
+                                                .__('<strong>VERSION</strong><br />This is <strong>Version _ZRC_APP_VERSION</strong> of the <strong>Zikula Recovery Console</strong><br /><br />')
                                                 .__('<strong>LICENSE</strong><br /><a href="http://www.gnu.org/copyleft/gpl.html" title="General Public License">General Public License</a><br /><br />')
                                                 .__('<strong>CREDITS</strong><br />Maintained and enhanced by the Zikula CoreDev team. Originally developed by <a href="http://www.alarconcepts.com/" title="John Alarcon">John Alarcon</a>.  Greatly inspired by the ideas and work of <a href="http://www.snowjournal.com" title="Christopher S. Bradford">Christopher S. Bradford</a> and the additional supportive efforts of <a href="http://users.tpg.com.au/staer/" title="Martin Andersen">Martin Andersen</a>, <a href="http://www.landseer-stuttgart.de/" title="Frank Schummertz">Frank Schummertz</a>, <a href="http://pahlscomputers.com/" title="David Pahl">David Pahl</a> and <a href="http://www.itbegins.co.uk/" title="Simon Birtwistle">Simon Birtwistle</a>. Thanks guys!'),
                               );
@@ -984,7 +976,7 @@ class RecoveryConsole
         $explanation = '';
         // If no op or utility, assume main explanation is needed; return such.
         if (!$this->operation && !$this->utility) {
-            return $explanation = __('The information shown below reflects the current configuration settings detected by the _ZRC_APP_TITLE. Using the navigation at left, make use of the various site recovery utilities available. If the _ZRC_APP_TITLE cannot resolve the issues your site is experiencing, try the search box at the bottom of any page to search the <a href="http://community.zikula.org/index.php?module=Forum" title="Zikula Support Forum">Zikula Support Forum</a> for answers.');
+            return $explanation = __('The information shown below reflects the current configuration settings detected by the Zikula Recovery Console. Using the navigation at left, make use of the various site recovery utilities available. If the Zikula Recovery Console cannot resolve the issues your site is experiencing, try the search box at the bottom of any page to search the <a href="http://community.zikula.org/index.php?module=Forum" title="Zikula Support Forum">Zikula Support Forum</a> for answers.');
         }
         // ...or if op exists and utility does not, get explanation based on op.
         if ($this->operation && !$this->utility) {
