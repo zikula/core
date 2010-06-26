@@ -214,7 +214,7 @@ class Theme_Api_Admin extends Zikula_Api
 
         // if chosen reset all user theme selections
         if ($args['resetuserselected']) {
-            $pntables = System::dbGetTables();
+            $pntables = DBUtil::getTables();
             $sql ="UPDATE $pntables[users] SET pn_theme = ''";
             if (!DBUtil::executeSQL($sql)) {
                 return false;
@@ -297,7 +297,7 @@ class Theme_Api_Admin extends Zikula_Api
         }
 
         // reset the theme for any users utilising this theme.
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $sql ="UPDATE $pntables[users] SET pn_theme = '' WHERE pn_theme = '".DataUtil::formatForStore($themeinfo['name']) ."'";
         if (!DBUtil::executeSQL($sql)) {
             return false;

@@ -20,52 +20,52 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
 {
     /**
      * Enabled operators.
-     * 
+     *
      * @var array
      */
     private $ops = array();
-    
+
     /**
      * Field configuration.
-     * 
+     *
      * An array of fields in the relation table in the form name => field.
-     * 
+     *
      * @var array
      */
     private $fields = array();
-    
+
     /**
      * The table names of the relation tables.
-     * 
+     *
      * In the form name => table.
-     * 
+     *
      * @var array
      */
     private $mnpntable = array();
-    
+
     /**
      * The table names in database.
      *
      * In the form name => table.
-     * 
+     *
      * @var aray
      */
     private $mntable = array();
-    
+
     /**
      * The column set of the relation tables.
-     * 
+     *
      * In the form name => columns.
-     * 
+     *
      * @var array
      */
     private $mncolumn = array();
-    
+
     /**
      * The field in table to compare the relationed field with.
-     * 
+     *
      * In the form name => field.
-     * 
+     *
      * @var array
      */
     private $comparefield = array();
@@ -99,7 +99,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
 
     /**
      * Returns the operators the plugin can handle.
-     * 
+     *
      * @return array Operators.
      */
     public function availableOperators()
@@ -109,7 +109,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
 
     /**
      * Adds fields to list in common way.
-     * 
+     *
      * Takes an array in the form
      * name => array(field=>'', table=>'', comparefield=>'').
      * name is the filter field name.
@@ -118,7 +118,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      * comparefield is the field to compare with in the table.
      *
      * @param mixed $fields Fields to add.
-     * 
+     *
      * @return void
      */
     public function addFields($fields)
@@ -134,7 +134,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      * Activates the requested Operators.
      *
      * @param mixed $op Operators to activate.
-     * 
+     *
      * @return void
      */
     public function activateOperators($op)
@@ -152,7 +152,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
 
     /**
      * Returns the fields.
-     * 
+     *
      * @return array List of fields.
      */
     public function getFields()
@@ -183,13 +183,13 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @param string $name  Filter field name.
      * @param string $table Table name.
-     * 
+     *
      * @return void
      */
     public function setListTable($name, $table)
     {
         $this->mnpntable[$name] = $table;
-        $pntable = & System::dbGetTables();
+        $pntable = & DBUtil::getTables();
         $this->mntable[$name] = $pntable[$table];
         $this->mncolumn[$name] = $pntable[$table . '_column'];
     }
@@ -199,7 +199,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      *
      * @param string $name  Filter field name.
      * @param string $field Field name.
-     * 
+     *
      * @return void
      */
     public function setCompareField($name, $field)
@@ -215,7 +215,7 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Test value.
-     * 
+     *
      * @return array SQL code array.
      */
     public function getSQL($field, $op, $value)
@@ -241,6 +241,6 @@ class FilterUtil_Filter_mnlist extends FilterUtil_PluginCommon implements Filter
                 break;
         }
 
-        return array('where' => $where); 
+        return array('where' => $where);
     }
 }

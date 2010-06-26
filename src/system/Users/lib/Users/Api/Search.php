@@ -77,7 +77,7 @@ class Users_Api_Search extends Zikula_Api
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
         // get the db and table info
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $userscolumn = $pntable['users_column'];
 
         $q = DataUtil::formatForStore($args['q']);

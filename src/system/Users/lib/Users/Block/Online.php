@@ -71,7 +71,7 @@ class Users_Block_Online extends Zikula_Block
             return BlockUtil::themeBlock($row);
         }
 
-        $table = System::dbGetTables();
+        $table = DBUtil::getTables();
 
         $sessioninfocolumn = $table['session_info_column'];
         $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));

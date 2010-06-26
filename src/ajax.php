@@ -48,7 +48,7 @@ $arguments = array(); // this is entirely ununsed? - drak
 
 if (ModUtil::load($modinfo['name'], $type)) {
     if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-        $dbConn = System::dbGetConn(true);
+        $dbConn = DBConnectionStack::getConnection();
         $dbConn->beginTransaction();
     }
 

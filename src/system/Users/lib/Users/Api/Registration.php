@@ -125,11 +125,11 @@ class Users_Api_Registration extends Zikula_Api
         if (isset($args['email'])) {
             $reginfo['email'] = $args['email'];
         }
-        
+
         if (isset($args['emailagain'])) {
             $emailAgain = $args['emailagain'];
         }
-        
+
         if (isset($args['checkmode'])) {
             $checkMode = $args['checkMode'];
         } else {
@@ -201,7 +201,7 @@ class Users_Api_Registration extends Zikula_Api
             return z_exit($this->__('Internal Error! Missing required parameter.'));
         }
         $reginfo = $args['reginfo'];
-        
+
         // Easier to to these here....
         if (isset($reginfo['uname'])) {
             $reginfo['uname'] = mb_strtolower($reginfo['uname']);
@@ -448,7 +448,7 @@ class Users_Api_Registration extends Zikula_Api
             return $obj;
         }
 
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $column = $dbinfo[$table.'_column'];
         if (!isset($column) || empty($column)) {
             return $obj;
@@ -651,7 +651,7 @@ class Users_Api_Registration extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $usersColumn = $dbinfo['users_column'];
         foreach ($usersColumn as $field => $dbField) {
             if (isset($reginfo[$field])) {
@@ -760,7 +760,7 @@ class Users_Api_Registration extends Zikula_Api
             return LogUtil::registerError($this->__('Unable to store the new user registration record.'));
         }
     }
-    
+
     /**
      * Retrieve one registration application for a new user account (one registration request). Expired
      * registrations are purged prior to performing the get.
@@ -845,7 +845,7 @@ class Users_Api_Registration extends Zikula_Api
      */
     protected function whereFromFilter(array $filter)
     {
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $regColumn = $dbinfo['users_registration_column'];
 
         $where = array();
@@ -906,7 +906,7 @@ class Users_Api_Registration extends Zikula_Api
             $limitNumRows = -1;
         }
 
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $regColumn = $dbinfo['users_registration_column'];
 
         $where = '';
@@ -982,7 +982,7 @@ class Users_Api_Registration extends Zikula_Api
             return false;
         }
 
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $regColumn = $dbinfo['users_registration_column'];
 
         $where = '';
@@ -1087,7 +1087,7 @@ class Users_Api_Registration extends Zikula_Api
      */
     protected function purgeExpired()
     {
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $regColumn = $dbinfo['users_registration_column'];
 
         // Expiration date/times, as with all date/times in the Users module, are stored as UTC.

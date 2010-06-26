@@ -116,7 +116,7 @@ function install()
     if ($GLOBALS['ZConfig']['System']['installed']) {
         $action = _forcelogin($action);
     }
-    
+
     if ($GLOBALS['ZConfig']['System']['installed'] && !isset($_GET['lang'])) { // need auth because Zikula is already installed.
         _installer_alreadyinstalled($smarty);
     }
@@ -394,7 +394,7 @@ function createuser($username, $password, $email)
     // get the database connection
     ModUtil::dbInfoLoad('Users', 'Users');
     ModUtil::dbInfoLoad('Modules', 'Modules');
-    $pntable = System::dbGetTables();
+    $dbtables = DBUtil::getTables();
 
     // create the password hash
     $password = UserUtil::getHashedPassword($password);
@@ -408,7 +408,7 @@ function createuser($username, $password, $email)
     $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
 
     // create the admin user
-    $sql = "UPDATE {$pntable['users']}
+    $sql = "UPDATE {$dbtables['users']}
             SET    pn_uname        = '{$username}',
                    pn_email        = '{$email}',
                    pn_pass         = '{$password}',

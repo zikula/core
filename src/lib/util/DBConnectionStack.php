@@ -324,12 +324,11 @@ class DBConnectionStack
     /**
      * Get the currently active connection (the connection on top of the connection stack).
      *
-     * @param constant $fetchmode The fetchmode to set for the connection.
-     * 
      * @throws Exception If no connection is available.
+     * 
      * @return Doctrine_Connection The connection object.
      */
-    public static function getConnection($fetchmode = Doctrine::HYDRATE_NONE)
+    public static function getConnection()
     {
         if (!isset(self::$manager)) {
             self::init();
@@ -342,7 +341,6 @@ class DBConnectionStack
             throw new Exception(__('Attempted to get connection from empty connection stack'));
         }
         $connection = self::$manager->getCurrentConnection();
-        //$connection->setHydrationMode(Doctrine::HYDRATE_ARRAY);
         return $connection;
     }
 

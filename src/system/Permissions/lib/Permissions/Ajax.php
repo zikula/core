@@ -98,7 +98,7 @@ class Permissions_Ajax extends Zikula_Controller
 
         $permorder = FormUtil::getPassedValue('permorder');
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
 
         for($cnt=0; $cnt<count($permorder); $cnt++) {

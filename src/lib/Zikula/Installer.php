@@ -85,7 +85,7 @@ abstract class Zikula_Installer extends Zikula_Base
      *
      * @return boolean
      */
-    abstract public function uninstall()
+    public function uninstall()
     {
         return true;
     }

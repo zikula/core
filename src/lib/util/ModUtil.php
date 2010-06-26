@@ -40,14 +40,14 @@ class ModUtil
 
     /**
      * Memory of object oriented modules.
-     * 
+     *
      * @var array
      */
     protected static $ooModules = array();
-    
+
     /**
      * Module info cache.
-     * 
+     *
      * @var array
      */
     protected static $modinfo;
@@ -71,7 +71,7 @@ class ModUtil
         // if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar)) {
             $pnmodvar = array();
-            $tables   = System::dbGetTables();
+            $tables   = DBUtil::getTables();
             $col      = $tables['module_vars_column'];
             $where =   "$col[modname] = '" . self::CONFIG_MODULE ."'
                      OR $col[modname] = '" . PluginUtil::CONFIG ."'
@@ -154,7 +154,7 @@ class ModUtil
 
         // if we haven't got vars for this module yet then lets get them
         if (!isset($pnmodvar[$modname])) {
-            $tables = System::dbGetTables();
+            $tables = DBUtil::getTables();
             $col    = $tables['module_vars_column'];
             $where  = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
             $sort   = ' '; // this is not a mistake, it disables the default sort for DBUtil::selectFieldArray()
@@ -216,7 +216,7 @@ class ModUtil
         $obj['value'] = serialize($value);
 
         if (self::hasVar($modname, $name)) {
-            $tables = System::dbGetTables();
+            $tables = DBUtil::getTables();
             $cols   = $tables['module_vars_column'];
             $where  = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
                          AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
@@ -286,7 +286,7 @@ class ModUtil
             }
         }
 
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
         $cols   = $tables['module_vars_column'];
 
         // check if we're deleting one module var or all module vars
@@ -478,7 +478,7 @@ class ModUtil
         static $modsarray = array();
 
         if (empty($modsarray)) {
-            $tables  = System::dbGetTables();
+            $tables  = DBUtil::getTables();
             $cols    = $tables['modules_column'];
             $where   = "WHERE $cols[state] = " . self::STATE_ACTIVE . "
                            OR $cols[name] = 'Modules'";
@@ -570,7 +570,7 @@ class ModUtil
             $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
             $loaded[$modname] = true;
         }
-        
+
         // return data so we know which tables were loaded by this module
         return $data;
     }
@@ -707,17 +707,17 @@ class ModUtil
 
     /**
      * Add stylesheet to the page vars.
-     * 
+     *
      * This makes the modulestylesheet plugin obsolete,
      * but only for non-api loads as we would pollute the stylesheets
      * not during installation as the Theme engine may not be available yet and not for system themes
      * TODO: figure out how to determine if a userapi belongs to a hook module and load the
      *       corresponding css, perhaps with a new entry in modules table?
-     *       
+     *
      * @param string  $modname Module name.
      * @param boolean $api     Whether or not it's a api load.
      * @param string  $type    Type.
-     * 
+     *
      * @return void
      */
     private static function _loadStyleSheets($modname, $api, $type)
@@ -733,12 +733,12 @@ class ModUtil
 
     /**
      * Get module class.
-     * 
+     *
      * @param string  $modname Module name.
      * @param string  $type    Type.
      * @param boolean $api     Whether or not to get the api class.
      * @param boolean $force   Whether or not to force load.
-     * 
+     *
      * @return boolean|string Class name.
      */
     public static function getClass($modname, $type, $api = false, $force = false)
@@ -783,10 +783,10 @@ class ModUtil
 
     /**
      * Checks if module has the given controller.
-     * 
+     *
      * @param string $modname Module name.
      * @param string $type    Controller type.
-     * 
+     *
      * @return boolean
      */
     public static function hasController($modname, $type)
@@ -796,10 +796,10 @@ class ModUtil
 
     /**
      * Checks if module has the given API class.
-     * 
+     *
      * @param string $modname Module name.
      * @param string $type    API type.
-     * 
+     *
      * @return boolean
      */
     public static function hasApi($modname, $type)
@@ -809,9 +809,9 @@ class ModUtil
 
     /**
      * Get class object.
-     * 
+     *
      * @param string $className Class name.
-     * 
+     *
      * @throws LogicException If $className is neither a Zikula_API nor a Zikula_Controller.
      * @return object Module object.
      */
@@ -852,13 +852,13 @@ class ModUtil
 
     /**
      * Get info if callable.
-     * 
+     *
      * @param string  $modname Module name.
      * @param string  $type    Type.
      * @param string  $func    Function.
      * @param boolean $api     Whether or not this is an api call.
      * @param boolean $force   Whether or not force load.
-     * 
+     *
      * @return mixed
      */
     public static function getCallable($modname, $type, $func, $api = false, $force = false)
@@ -1245,11 +1245,11 @@ class ModUtil
                 $modstate[$modname] = $modinfo['state'];
             }
         }
- 
+
         if ($force == true) {
             $modstate[$modname] = self::STATE_ACTIVE;
         }
-       
+
         if ((isset($modstate[$modname]) &&
                         $modstate[$modname] == self::STATE_ACTIVE) || (preg_match('/(modules|admin|theme|block|groups|permissions|users)/i', $modname) &&
                         (isset($modstate[$modname]) && ($modstate[$modname] == self::STATE_UPGRADED || $modstate[$modname] == self::STATE_INACTIVE)))) {
@@ -1341,7 +1341,7 @@ class ModUtil
         }
 
         // Get database info
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
         $hookscolumn = $tables['hooks_column'];
 
         // Remove hook
@@ -1385,7 +1385,7 @@ class ModUtil
         $lModname = strtolower($modname);
         if (!isset($modulehooks[$lModname])) {
             // Get database info
-            $tables  = System::dbGetTables();
+            $tables  = DBUtil::getTables();
             $cols    = $tables['hooks_column'];
             $where   = "WHERE $cols[smodule] = '" . DataUtil::formatForStore($modname) . "'";
             $orderby = "$cols[sequence] ASC";
@@ -1482,7 +1482,7 @@ class ModUtil
         }
 
         // Get database info
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
         $hookscolumn = $tables['hooks_column'];
 
         // Get applicable hooks
@@ -1564,7 +1564,7 @@ class ModUtil
 
     /**
      * Generic modules select function.
-     * 
+     *
      * Only modules in the module table are returned
      * which means that new/unscanned modules will not be returned.
      *
@@ -1581,7 +1581,7 @@ class ModUtil
 
     /**
      * Return an array of modules in the specified state.
-     * 
+     *
      * Only modules in the module table are returned
      * which means that new/unscanned modules will not be returned.
      *
@@ -1592,7 +1592,7 @@ class ModUtil
      */
     public static function getModulesByState($state = self::STATE_ACTIVE, $sort='displayname')
     {
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
         $cols   = $tables['modules_column'];
 
         $where = "$cols[state] = $state";
@@ -1602,9 +1602,9 @@ class ModUtil
 
     /**
      * Initialize object oriented module.
-     * 
+     *
      * @param string $moduleName Module name.
-     * 
+     *
      * @return boolean
      */
     public static function initOOModule($moduleName)
@@ -1640,9 +1640,9 @@ class ModUtil
 
     /**
      * Checks whether a OO module is initialized.
-     * 
+     *
      * @param string $moduleName Module name.
-     * 
+     *
      * @return boolean
      */
     public static function isIntialized($moduleName)
@@ -1652,9 +1652,9 @@ class ModUtil
 
     /**
      * Checks whether a module is object oriented.
-     * 
+     *
      * @param string $moduleName Module name.
-     * 
+     *
      * @return boolean
      */
     public static function isOO($moduleName)

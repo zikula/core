@@ -78,7 +78,7 @@ class Users_Api_User extends Zikula_Api
             'level'             => ACCESS_READ
         );
 
-        $table = System::dbGetTables();
+        $table = DBUtil::getTables();
         $usersColumn = $table['users_column'];
 
         // form where clause
@@ -152,7 +152,7 @@ class Users_Api_User extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $table = System::dbGetTables();
+        $table = DBUtil::getTables();
         $usersColumn = $table['users_column'];
 
         // form where clause
@@ -191,7 +191,7 @@ class Users_Api_User extends Zikula_Api
             return false;
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $propertycolumn = $pntable['user_property_column'];
 
         $extrawhere = '';
@@ -409,7 +409,7 @@ class Users_Api_User extends Zikula_Api
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($confirmationCodeHash !== false) {
-                $tables = System::dbGetTables();
+                $tables = DBUtil::getTables();
                 $verifychgColumn = $tables['users_verifychg_column'];
                 DBUtil::deleteWhere('users_verifychg',
                     "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")");
@@ -486,7 +486,7 @@ class Users_Api_User extends Zikula_Api
         if (!$user) {
             LogUtil::registerError('Sorry! Could not find any matching user account.');
         } else {
-            $tables = System::dbGetTables();
+            $tables = DBUtil::getTables();
             $verifychgColumn = $tables['users_verifychg_column'];
             $verifychgObj = DBUtil::selectObject('users_verifychg',
                 "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")");
@@ -591,9 +591,9 @@ class Users_Api_User extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $verifychgColumn = $dbinfo['users_verifychg_column'];
-        
+
         $theDatetime = new DateTime(null, new DateTimeZone('UTC'));
         $nowUTCStr = $theDatetime->format(UserUtil::DATETIME_FORMAT);
 
@@ -652,7 +652,7 @@ class Users_Api_User extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $verifychgColumn = $dbinfo['users_verifychg_column'];
 
         // delete all the records from e-mail confirmation that have expired
@@ -686,7 +686,7 @@ class Users_Api_User extends Zikula_Api
 
         $uid = UserUtil::getVar('uid');
 
-        $dbinfo = System::dbGetTables();
+        $dbinfo = DBUtil::getTables();
         $verifychgColumn = $dbinfo['users_verifychg_column'];
         DBUtil::deleteWhere('users_verifychg',
             "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")");

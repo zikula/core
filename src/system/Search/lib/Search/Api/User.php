@@ -51,7 +51,7 @@ class Search_Api_User extends Zikula_Api
 
         // Load database stuff
         ModUtil::dbInfoLoad('Search');
-        $pntable      = System::dbGetTables();
+        $pntable      = DBUtil::getTables();
         $userId       = (int)UserUtil::getVar('uid');
         $searchTable  = $pntable['search_result'];
         $searchColumn = $pntable['search_result_column'];

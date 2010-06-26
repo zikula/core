@@ -250,7 +250,7 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $groupmembershipcolumn = $pntable['group_membership_column'];
 
         // Add item
@@ -285,7 +285,7 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $groupcolumn = $pntable['groups_column'];
 
         // Get item
@@ -323,7 +323,7 @@ class Groups_Api_Admin extends Zikula_Api
             $args['numitems'] = -1;
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $col = $pntable['group_applications_column'];
 
         $orderBy = "ORDER BY $col[app_id] ASC";
@@ -364,7 +364,7 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $col = $pntable['group_applications_column'];
 
         $where = "WHERE  $col[gid] = '".DataUtil::formatForStore($args['gid'])."'
@@ -400,7 +400,7 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $col = $pntable['group_applications_column'];
 
         $where = "WHERE $col[gid] = '".(int)DataUtil::formatForStore($args['gid'])."'

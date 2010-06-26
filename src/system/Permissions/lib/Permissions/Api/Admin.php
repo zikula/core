@@ -36,7 +36,7 @@ class Permissions_Api_Admin extends Zikula_Api
 
         // Work out which tables to operate against, and
         // various other bits and pieces
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
         // MMaes, 2003-06-23; Filter-view
         if (!is_null($args['permgrp']) && ($args['permgrp'] != PNPERMS_ALL)) {
@@ -106,7 +106,7 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         // Work out which tables to operate against
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
         // MMaes, 2003-06-23; Filter-view
         if (!is_null($args['permgrp']) && ($args['permgrp'] != PNPERMS_ALL)) {
@@ -187,7 +187,7 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         // Work out which tables to operate against
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
 
         $obj = array('realm'     => $args['realm'],
@@ -238,7 +238,7 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         // Work out which tables to operate against
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permtable = $pntable['group_perms'];
         $permcolumn = $pntable['group_perms_column'];
 
@@ -302,7 +302,7 @@ class Permissions_Api_Admin extends Zikula_Api
         }
 
         // Work out which tables to operate against
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
 
         $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($args['pid']) . "'";
@@ -350,7 +350,7 @@ class Permissions_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
 
         // Get the information
@@ -402,7 +402,7 @@ class Permissions_Api_Admin extends Zikula_Api
         $oldseq = $args['oldseq'];
         unset ($args);
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
 
         //find out the maximum sequence number

@@ -37,7 +37,7 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $groupcolumn = $pntable['groups_column'];
 
         // Get items
@@ -82,7 +82,7 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $groupmembershipcolumn = $pntable['group_membership_column'];
 
         // Get item
@@ -133,7 +133,7 @@ class Groups_Api_User extends Zikula_Api
      */
     public function countitems()
     {
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $grpcol = $pntable['groups_column'];
 
         $where = "WHERE $grpcol[gtype] >= '1'";
@@ -157,7 +157,7 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $groupmembershipcolumn = $pntable['group_membership_column'];
 
         // Get item
@@ -191,7 +191,7 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $groupmembershipcolumn = $pntable['group_membership_column'];
 
         // Get item
@@ -237,7 +237,7 @@ class Groups_Api_User extends Zikula_Api
             return $items;
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $grpcol = $pntable['groups_column'];
 
         $where = "WHERE $grpcol[gtype] >= '1'";
@@ -390,7 +390,7 @@ class Groups_Api_User extends Zikula_Api
                 'uid' => $args['uid']));
 
         if ($ispending == true) {
-            $pntable = System::dbGetTables();
+            $pntable = DBUtil::getTables();
             $col = $pntable['group_applications_column'];
 
             list($gid, $uid) = DataUtil::formatForStore($gid, $uid);
@@ -418,7 +418,7 @@ class Groups_Api_User extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $col = $pntable['group_applications_column'];
 
         // Check in case the user already applied
@@ -595,7 +595,7 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $groupmembershipcolumn = $pntable['group_membership_column'];
 
         // delete item
@@ -620,7 +620,7 @@ class Groups_Api_User extends Zikula_Api
      */
     public function whosonline($args)
     {
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $col = $pntable['session_info_column'];
         $activetime = time() - (System::getVar('secinactivemins') * 60);
 

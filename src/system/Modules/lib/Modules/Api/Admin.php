@@ -91,7 +91,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
         // Rename operation
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
 
         $modulescolumn = $pntable['modules_column'];
         $hookscolumn = $pntable['hooks_column'];
@@ -146,7 +146,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
         // Rename operation
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
 
         $modulescolumn = $pntable['modules_column'];
         $hookscolumn = $pntable['hooks_column'];
@@ -235,7 +235,7 @@ class Modules_Api_Admin extends Zikula_Api
         SessionUtil::setVar('sort', $sort);
 
         // Obtain information
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $modulescolumn = $pntable['modules_column'];
 
         // filter my first letter of module
@@ -1155,7 +1155,7 @@ class Modules_Api_Admin extends Zikula_Api
      */
     public function countitems($args)
     {
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $modulescolumn = $pntable['modules_column'];
 
         // filter my first letter of module
@@ -1207,7 +1207,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $hookscolumn = $pntable['hooks_column'];
 
         $where = "WHERE $hookscolumn[tmodule]='" . DataUtil::formatForStore($args['hookmodname']) . "'";
@@ -1264,7 +1264,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $hookscolumn = $pntable['hooks_column'];
 
         // Rename operation
@@ -1318,7 +1318,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Rename operation
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $hookscolumn = $pntable['hooks_column'];
 
         // Delete hooks regardless
@@ -1348,7 +1348,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $hookscolumn = $pntable['hooks_column'];
 
         $where = "WHERE $hookscolumn[smodule] = ''
@@ -1401,7 +1401,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $hookscolumn = $pntable['hooks_column'];
 
         $where = "WHERE $hookscolumn[smodule] = ''";

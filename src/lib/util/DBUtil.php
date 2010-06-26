@@ -161,12 +161,11 @@ class DBUtil
     /**
      * Get a list of database tables.
      *
-     * @deprecated
      * @return array array of database tables
      */
     public static function getTables()
     {
-        return System::dbGetTables();
+        return $GLOBALS['dbtables'];
     }
 
     /**
@@ -186,7 +185,7 @@ class DBUtil
     public static function getTableOptions($table = '')
     {
         if ($table != '') {
-            $tables = System::dbGetTables();
+            $tables = self::getTables();
             if (isset($tables[$table . '_def'])) {
                 return $tables[$table . '_def'];
             }
@@ -322,7 +321,7 @@ class DBUtil
      */
     public static function _getAllColumns($table, $columnArray = null)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         if (!$columns) {
             throw new Exception(__f('Invalid table-key [%s] retrieved', $table));
@@ -357,7 +356,7 @@ class DBUtil
         $search  = array('+', '-', '*', '/', '%');
         $replace = array('');
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         if (!$columns) {
             throw new Exception(__f('Invalid table-key [%s] retrieved', $table));
@@ -394,7 +393,7 @@ class DBUtil
     {
         $columnArrayResult = array();
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tkey = $table . '_column';
         if (!isset($tables[$tkey])) {
             return $columnArrayResult;
@@ -442,7 +441,7 @@ class DBUtil
             $a = 'tbl.' . $a;
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         // add fields of all joins
         $alias = 'a';
         foreach ($joinInfo as &$join) {
@@ -486,7 +485,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'newcolumn'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         $oldcolumn = isset($tables["{$table}_column"][$oldcolumn]) ? $tables["{$table}_column"][$oldcolumn] : $oldcolumn;
@@ -536,7 +535,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must be an array of field arrays', 'fields'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         try {
@@ -588,7 +587,7 @@ class DBUtil
             $arrayFields[$field] = array();
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         try {
@@ -643,7 +642,7 @@ class DBUtil
      */
     public static function insertObject(array &$object, $table, $idfield = 'id', $preserve = false, $force = false)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         $sql = "INSERT INTO $tableName ";
@@ -757,7 +756,7 @@ class DBUtil
             throw new Exception(__('Neither object ID nor where parameters are provided'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         $sql = "UPDATE $tableName SET ";
@@ -904,7 +903,7 @@ class DBUtil
      */
     private static function _savePostProcess($object, $table, $idfield, $update = false)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
         if (!$idfield) {
@@ -975,7 +974,7 @@ class DBUtil
      */
     public static function incrementObjectFieldByID($table, $incfield, $id, $idfield = 'id', $inccount = 1)
     {
-        $tables       = System::dbGetTables();
+        $tables       = self::getTables();
         $tableName    = $tables[$table];
         $columns      = $tables["{$table}_column"];
         $idFieldName  = $columns[$idfield];
@@ -1034,7 +1033,7 @@ class DBUtil
             throw new Exception(__('Missing either object or where-clause'));
         }
 
-        $tables    = System::dbGetTables();
+        $tables    = self::getTables();
         $tableName = $tables[$table];
         $columns   = $tables["{$table}_column"];
         $fieldName = $columns[$idfield];
@@ -1082,7 +1081,7 @@ class DBUtil
      */
     public static function deleteObjectsFromKeyArray(array $keyarray, $table, $field = 'id')
     {
-        $tables    = System::dbGetTables();
+        $tables    = self::getTables();
         $tableName = $tables[$table];
         $columns   = $tables["{$table}_column"];
         $fieldName = $columns[$field];
@@ -1131,7 +1130,7 @@ class DBUtil
      */
     public static function deleteWhere($table, $where)
     {
-        $tables    = System::dbGetTables();
+        $tables    = self::getTables();
         $tableName = $tables[$table];
         $where     = self::_checkWhereClause($where);
         $sql       = 'DELETE FROM ' . $tableName . ' ' . $where;
@@ -1156,7 +1155,7 @@ class DBUtil
      */
     private static function _deletePostProcess($object, $table, $idfield)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
         if (($enableAllServices ||
@@ -1235,7 +1234,7 @@ class DBUtil
             return $orderby;
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $dbType = DBConnectionStack::getConnectionDBType();
 
         // given that we use quotes in our generated SQL, oracle requires the same quotes in the order-by
@@ -1313,7 +1312,7 @@ class DBUtil
         }
 
         $dbType = DBConnectionStack::getConnectionDBType();
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         $columnsdef = $tables["{$table}_column_def"];
         $fieldName = $columns[$field];
@@ -1347,7 +1346,7 @@ class DBUtil
      */
     public static function _getSelectAllColumnsFrom($table, $where = '', $orderBy = '', $columnArray = null)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         $query = 'SELECT ' . self::_getAllColumns($table, $columnArray) . " FROM $tableName AS tbl ";
@@ -1652,7 +1651,7 @@ class DBUtil
      */
     public static function selectFieldByID($tableName, $field, $id, $idfield = 'id')
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
@@ -1680,7 +1679,7 @@ class DBUtil
             return $objects;
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         if (!isset($tables["{$table}_column"])) {
             return false;
         }
@@ -1726,7 +1725,7 @@ class DBUtil
      */
     public static function selectFieldArrayByID($tableName, $field, $id, $idfield = 'id')
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
@@ -1747,7 +1746,7 @@ class DBUtil
      */
     public static function selectFieldMax($table, $field, $option = 'MAX', $where = '')
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
@@ -1783,7 +1782,7 @@ class DBUtil
      */
     public static function selectFieldMaxArray($table, $field, $option = 'MAX', $where = '', $assocKey = '')
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
@@ -1889,7 +1888,7 @@ class DBUtil
      */
     public static function generateCategoryFilterWhere($table, $where, $categoryFilter, $returnArray = false, $usesJoin = false)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $idlist = self::_generateCategoryFilter($table, $categoryFilter);
         if ($idlist) {
             $cols = $tables["{$table}_column"];
@@ -1955,7 +1954,7 @@ class DBUtil
             return $objects;
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $sql = self::_getSelectAllColumnsFrom($table, $where, '', $columnArray);
         $object = self::selectObjectSQL($sql, $table, $columnArray, $permissionFilter);
 
@@ -1993,7 +1992,7 @@ class DBUtil
      */
     public static function selectObjectByID($table, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $cacheObject = true, $transformFunc = null)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         if (!$id) {
             throw new Exception(__f('The parameter %s must not be empty', 'id'));
         }
@@ -2071,7 +2070,7 @@ class DBUtil
             return $objects;
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $idFieldName = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
 
         $objects = self::_selectPostProcess($objects, $table, $idFieldName);
@@ -2151,7 +2150,7 @@ class DBUtil
             return $objects;
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $idFieldName = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
         $objects = self::_selectPostProcess($objects, $table, $idFieldName);
 
@@ -2170,7 +2169,7 @@ class DBUtil
      */
     public static function selectObjectSum($table, $column, $where = '', $categoryFilter = null)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$column];
@@ -2206,7 +2205,7 @@ class DBUtil
      */
     public static function selectObjectCount($table, $where = '', $column = '1', $distinct = false, $categoryFilter = null)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
 
@@ -2257,7 +2256,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must be numeric', 'id'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
@@ -2295,7 +2294,7 @@ class DBUtil
 
         self::_setFetchedObjectCount(0);
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
@@ -2362,7 +2361,7 @@ class DBUtil
      */
     public static function selectExpandedObjectByID($table, $joinInfo, $id, $field = 'id', $columnArray = null, $permissionFilter = null, $categoryFilter = null, $transformFunc = null)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
 
@@ -2402,7 +2401,7 @@ class DBUtil
 
         self::_setFetchedObjectCount(0);
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
 
@@ -2473,7 +2472,7 @@ class DBUtil
     {
         self::_setFetchedObjectCount(0);
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
 
@@ -2518,7 +2517,7 @@ class DBUtil
      */
     private static function _processJoinArray($table, $joinInfo, $columnArray = null)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $columns = $tables["{$table}_column"];
 
         $allowedJoinMethods = array('LEFT JOIN', 'RIGHT JOIN', 'INNER JOIN');
@@ -2603,7 +2602,7 @@ class DBUtil
             return $objects;
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
         if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && ModUtil::available('Categories')) {
@@ -2696,7 +2695,7 @@ class DBUtil
      */
     public static function getInsertID($table, $field = 'id', $exitOnError = true, $verbose = true)
     {
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $column = $tables["{$table}_column"];
         $fieldName = $column[$field];
@@ -2750,7 +2749,7 @@ class DBUtil
 
         // try to read table definitions from $table array if present
         $ddict = array();
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tablecol = $table . '_column';
         $tabledef = $table . '_column_def';
 
@@ -2923,7 +2922,7 @@ class DBUtil
         $sql = '';
 
         // try to read table definitions from $table array if present
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tablecol = $table . '_column';
         $tabledef = $table . '_column_def';
         if (array_key_exists($tabledef, $tables) && is_array($tables[$tabledef])) {
@@ -2959,7 +2958,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -2974,7 +2973,7 @@ class DBUtil
        
         $tablecol = $table . '_column';
         $tableopt = $table . '_constraints';
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         if (array_key_exists($tableopt, $tables) && is_array($tables[$tableopt])) {
             foreach ($tables[$tableopt] as $fk_column => $fk_reference) {
                 $reference_table = $tables[$fk_reference['table']];
@@ -3116,7 +3115,7 @@ class DBUtil
         }
         $tabopt['constraints'] = self::getTableConstraints($table);
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3175,7 +3174,7 @@ class DBUtil
         }
         $tabopt['constraints'] = self::getTableConstraints($table);
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3246,7 +3245,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3283,7 +3282,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'newTable'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $newTableName = $tables[$newTable];
 
@@ -3320,7 +3319,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3368,7 +3367,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must be an array', 'idxoptarray'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
         $column = $tables["{$table}_column"];
 
@@ -3428,7 +3427,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3481,7 +3480,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3514,7 +3513,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3540,7 +3539,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {
@@ -3565,7 +3564,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'table'));
         }
 
-        $tables = System::dbGetTables();
+        $tables = self::getTables();
         $tableName = $tables[$table];
 
         if (empty($tableName)) {

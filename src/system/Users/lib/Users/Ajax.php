@@ -38,7 +38,7 @@ class Users_Ajax extends Zikula_Controller
         $fragment = FormUtil::getPassedValue('fragment');
 
         ModUtil::dbInfoLoad('Users');
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
 
         $usersColumn = $tables['users_column'];
 

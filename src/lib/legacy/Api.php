@@ -150,30 +150,30 @@ function pnInit($stages = PN_CORE_ALL)
  * get a list of database connections
  *
  * @deprecated Deprecated since version 1.3.0.
- * @see System::dbGetConn()
+ * @see DBConnectionStack::getConnection()
  *
  * @param bool $pass_by_reference default = false
  * @param string $fetchmode set ADODB fetchmode ADODB_FETCH_NUM, ADODB_FETCH_ASSOC, ADODB_FETCH_DEFAULT, ADODB_FETCH_BOTH
  * @return array array of database connections
  */
-function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE) // TODO A map ADODB fetch modes to Doctrine HYDRATES, e.g. Doctrine::HYDRATE_NONE
+function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE)
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::dbGetConn')), 'STRICT');
-    return System::dbGetConn($pass_by_reference, $fetchmode);
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'DBConnectionStack::getConnection')), 'STRICT');
+    return DBConnectionStack::getConnection();
 }
 
 /**
  * get a list of database tables
  *
  * @deprecated Deprecated since version 1.3.0.
- * @see System::dbGetTables()
+ * @see DBUtil::dbGetTables()
  *
  * @return array array of database tables
  */
 function pnDBGetTables()
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::dbGetTables')), 'STRICT');
-    return System::dbGetTables();
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'DBUtil::getTables')), 'STRICT');
+    return DBUtil::getTables();
 }
 
 /**
@@ -190,13 +190,13 @@ function pnDBGetTables()
  * e.g. pnDBGetPrefix returns pn_modules for pnDBGetPrefix('modules');
  *
  * @deprecated Deprecated since version 1.3.0.
- * @see System::dbGetTablePrefix()
+ * @see DBUtil::getTablePrefix()
  *
  * @param table - table name
  */
 function pnDBGetTablePrefix($table)
 {
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::dbGetTablePrefix')), 'STRICT');
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'DBUtil::getTablePrefix')), 'STRICT');
     return System::dbGetTablePrefix($table);
 }
 

@@ -132,7 +132,7 @@ class CategoryUtil
     {
         ModUtil::dbInfoLoad('Categories');
         if (!$sort) {
-            $pntables = System::dbGetTables();
+            $pntables = DBUtil::getTables();
             $category_column = $pntables['categories_category_column'];
             $sort = "ORDER BY $category_column[sort_value], $category_column[name]";
         }
@@ -181,7 +181,7 @@ class CategoryUtil
     public static function getCategoryByPath($apath, $field = 'path')
     {
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_column = $pntables['categories_category_column'];
         if (!is_array($apath)) {
             $where = "$category_column[$field]='" . DataUtil::formatForStore($apath) . "'";
@@ -214,7 +214,7 @@ class CategoryUtil
             return false;
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_column = $pntables['categories_category_column'];
 
         $where = array();
@@ -255,7 +255,7 @@ class CategoryUtil
         }
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_column = $pntables['categories_category_column'];
 
         $id = (int)$id;
@@ -300,7 +300,7 @@ class CategoryUtil
         }
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_column = $pntables['categories_category_column'];
 
         $cat = self::getCategoryByID($id);
@@ -338,7 +338,7 @@ class CategoryUtil
     public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_column = $pntables['categories_category_column'];
 
         $where = "$category_column[$field] = '" . DataUtil::formatForStore($apath) . "' OR $category_column[$field] LIKE '" . DataUtil::formatForStore($apath) . "/%'";
@@ -520,7 +520,7 @@ class CategoryUtil
     public static function deleteCategoryByID($cid)
     {
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_table = $pntables['categories_category'];
         $category_column = $pntables['categories_category_column'];
 
@@ -546,7 +546,7 @@ class CategoryUtil
         }
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_table = $pntables['categories_category'];
         $category_column = $pntables['categories_category_column'];
 
@@ -632,7 +632,7 @@ class CategoryUtil
         $oldParentPath = $oldParent['path'] . '/';
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         $category_table = $pntables['categories_category'];
         $category_column = $pntables['categories_category_column'];
 
@@ -899,7 +899,7 @@ class CategoryUtil
      * @param array  &$tree       Tree or branch.
      * @param array  $entry       The entry to insert.
      * @param string $currentpath The current path to use (optional) (default=$entry['ipath']).
-     * 
+     *
      * @return array Tree.
      */
     public static function _tree_insert(&$tree, $entry, $currentpath = null)
@@ -927,7 +927,7 @@ class CategoryUtil
      *
      * @param array $tree  Nested array from _tree_insert.
      * @param array &$cats List of categories (initially empty array).
-     * 
+     *
      * @return void
      */
     public static function _tree_sort($tree, &$cats)
@@ -956,7 +956,7 @@ class CategoryUtil
      *
      * @param array  $cats      List of categories (arrays).
      * @param string $sortField Key of category arrays (optional).
-     * 
+     *
      * @return array list of categories, sorted on each level.
      */
     public static function sortCategories($cats, $sortField = '')
@@ -984,7 +984,7 @@ class CategoryUtil
      * Return an array of folders the user has at least access/view rights to.
      *
      * @param array $cats List of categories.
-     * 
+     *
      * @return array The resulting folder path array.
      * @deprecated
      */
@@ -1178,10 +1178,10 @@ class CategoryUtil
     }
 
     /**
-     * Utility function to sort a category array by the current locale of 	either the ML name or description.
+     * Utility function to sort a category array by the current locale of   either the ML name or description.
      *
      *  The resulting sorted category array $cats updated by reference nothing is returned.
-     * 
+     *
      * @param array  &$cats The categories array.
      * @param string $func  Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
      *
@@ -1218,7 +1218,7 @@ class CategoryUtil
 
     /**
      * Builds relative paths.
-     * 
+     *
      * Given an array of categories (with the Property-Names being
      * the keys of the array) and it corresponding Parent categories (indexed
      * with the Property-Names too), return an (identically indexed) array
@@ -1249,7 +1249,7 @@ class CategoryUtil
 
     /**
      * Given a category with its parent category.
-     * 
+     *
      * Return an (idenically indexed) array of category-paths based on the given field (name or id make sense).
      *
      * @param intiger|array $rootCategory The root/parent category.
@@ -1304,7 +1304,7 @@ class CategoryUtil
 
     /**
      * Builds paths.
-     * 
+     *
      * Given an array of categories (with the category-IDs being
      * the keys of the array), return an (idenically indexed) array
      * of category-paths based on the given field (name or id make sense).
@@ -1340,7 +1340,7 @@ class CategoryUtil
 
     /**
      * Rebuild the path field for all categories in the database.
-     * 
+     *
      * Note that field and sourceField go in pairs (that is, if you want sensical results)!.
      *
      * @param string  $field       The field which we wish to populate (optional) (default='path').

@@ -860,7 +860,7 @@ class UserUtil
      */
     public static function setVar($name, $value, $uid = -1)
     {
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
 
         if (empty($name)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - empty(\$name).", 'DEBUG');
@@ -1402,7 +1402,7 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
     {
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $userscolumn = $pntable['users_column'];
 
         if (empty($where)) {
@@ -1488,7 +1488,7 @@ class UserUtil
             return false;
         }
 
-        $pntables = System::dbGetTables();
+        $pntables = DBUtil::getTables();
         return array_key_exists($label, $pntables['users_column']);
     }
 

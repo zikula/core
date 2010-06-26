@@ -84,7 +84,7 @@ $debug = null;
 $return = false;
 
 if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-    $dbConn = System::dbGetConn(true);
+    $dbConn = DBConnectionStack::getConnection();
     $dbConn->beginTransaction();
 }
 

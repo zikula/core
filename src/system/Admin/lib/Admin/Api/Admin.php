@@ -83,7 +83,7 @@ class Admin_Api_Admin extends Zikula_Api
         // move all modules from the category to be deleted into the
         // default category. We can't do this via a simple DBUtil call
         // because it's a non-object based mass update of the key field.
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $column  = $pntable['admin_module_column'];
         $where   = "WHERE $column[cid] = '" . (int)DataUtil::formatForStore($category['cid']) . "'";
 
@@ -185,7 +185,7 @@ class Admin_Api_Admin extends Zikula_Api
 
         // get the necessary db information
         ModUtil::dbInfoLoad('Admin', 'Admin');
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $admincategorycolumn = &$pntable['admin_category_column'];
 
         // get all categories the user has permission to see

@@ -230,7 +230,7 @@ class Users_Installer extends Zikula_Installer
             LogUtil::log("UPG118-200: require_once: 'system/Users/tables.php'", 'DEBUG');
         }
 
-        $dbinfoSystem = System::dbGetTables();
+        $dbinfoSystem = DBUtil::getTables();
         $dbinfo118X = Users_tables('1.18');
         $dbinfo200 = Users_tables('2.0.0');
         $usersOldFields = array('user_theme', 'user_viewemail', 'storynum', 'counter', 'hash_method', 'validfrom', 'validuntil');

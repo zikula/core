@@ -81,7 +81,7 @@ class Permissions_Admin extends Zikula_Controller
 
         // Work out which tables to operate against, and
         // various other bits and pieces
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
         $ids = $this->getGroupsInfo();
 
@@ -330,7 +330,7 @@ class Permissions_Admin extends Zikula_Controller
 
         // Work out which tables to operate against, and
         // various other bits and pieces
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $permcolumn = $pntable['group_perms_column'];
         $mlpermtype = $this->__('Group');
         $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
@@ -605,7 +605,7 @@ class Permissions_Admin extends Zikula_Controller
      */
     function getGroupsInfo()
     {
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
 
         $groupcolumn = $pntable['groups_column'];
 

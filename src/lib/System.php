@@ -52,7 +52,7 @@ class System
     const CORE_STAGES_CONFIG = 1;
     const CORE_STAGES_ADODB = 2; // deprecated
     const CORE_STAGES_DB = 4;
-    const CORE_STAGES_OBJECTLAYER = 8;
+    const CORE_STAGES_OBJECTLAYER = 8; // deprecated
     const CORE_STAGES_TABLES = 16;
     const CORE_STAGES_SESSIONS = 32;
     const CORE_STAGES_LANGS = 64;
@@ -266,11 +266,6 @@ class System
             $GLOBALS['ZRuntime']['dbg_starttime'] = microtime(true);
         }
 
-        if ($stages & self::CORE_STAGES_OBJECTLAYER) {
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_OBJECTLAYER);
-            EventUtil::notify($coreInitEvent);
-        }
-
         if ($stages & self::CORE_STAGES_DB) {
             try {
                 DBConnectionStack::init();
@@ -382,8 +377,9 @@ class System
             PageUtil::registerVar('body', true);
             PageUtil::registerVar('rawtext', true);
             PageUtil::registerVar('footer', true);
-            // Load the theme
+
             Theme::getInstance();
+
             $coreInitEvent->setArg('stage', self::CORE_STAGES_THEME);
             EventUtil::notify($coreInitEvent);
         }
@@ -405,64 +401,6 @@ class System
         LogUtil::_cleanLogFiles();
 
         return true;
-    }
-
-    /**
-     * Get a list of database connections.
-     *
-     * @param boolean $pass_by_reference Default = false.
-     * @param string  $fetchmode         Set ADODB fetchmode ADODB_FETCH_NUM, ADODB_FETCH_ASSOC, ADODB_FETCH_DEFAULT, ADODB_FETCH_BOTH.
-     *
-     * @return array Array of database connections.
-     */
-    public static function dbGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE) // TODO A map ADODB fetch modes to Doctrine HYDRATES, e.g. Doctrine::HYDRATE_NONE
-    {
-        $ret = DBConnectionStack::getConnection($fetchmode);
-
-        // If $pass_by_reference is true, return a reference to the dbconn object
-        if ($pass_by_reference == true) {
-            return $ret;
-        }
-
-        $dbconn = array($ret);
-
-        return $dbconn;
-    }
-
-    /**
-     * Get a list of database tables.
-     *
-     * @return array Array of database tables.
-     */
-    public static function dbGetTables()
-    {
-        return $GLOBALS['dbtables'];
-    }
-
-    /**
-     * Get table prefix.
-     *
-     * Gets the database prefix for the current site.
-     *
-     * In a non multisite scenario this will be the 'prefix' config var
-     * from config/config.php. For a multisite configuration the multistes
-     * module will manage the prefixes for a given table.
-     *
-     * The table name parameter is the table name to get the prefix for
-     * minus the prefix and seperating _
-     * e.g. pnDBGetPrefix returns pn_modules for pnDBGetPrefix('modules').
-     *
-     * @param string $table Table name.
-     *
-     * @return string Table prefix.
-     */
-    public static function dbGetTablePrefix($table)
-    {
-        if (!isset($table)) {
-            return false;
-        }
-
-        return self::getVar('prefix');
     }
 
     /**

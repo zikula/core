@@ -262,7 +262,7 @@ class SecurityCenter_Api_User extends Zikula_Api
      */
     public function loghackattempttodb($args)
     {
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $anticrackerColumn = $pntable['sc_anticracker_column'];
 
         $hacktime = time();
@@ -832,7 +832,7 @@ class SecurityCenter_Api_User extends Zikula_Api
     {
         $purifierDefaultConfig = HTMLPurifier_Config::createDefault();
         $purifierDefaultConfigValues = $purifierDefaultConfig->def->defaults;
-        
+
         $config = array();
 
         foreach($purifierDefaultConfigValues as $key => $val)

@@ -106,7 +106,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $args['lockedBy'] = null;
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $pageLockTable = &$pntable['PageLock'];
         $pageLockColumn = &$pntable['PageLock_column'];
 
@@ -153,7 +153,7 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         $this->_pageLockRequireAccess();
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $pageLockColumn = &$pntable['PageLock_column'];
         $now = time();
 
@@ -175,7 +175,7 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         $this->_pageLockRequireAccess();
 
-        $pntable = System::dbGetTables();
+        $pntable = DBUtil::getTables();
         $pageLockTable = &$pntable['PageLock'];
         $pageLockColumn = &$pntable['PageLock_column'];
 

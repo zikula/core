@@ -26,35 +26,35 @@ class FilterUtil_Common
 
     /**
      * Module's name.
-     * 
+     *
      * @var string
      */
     protected static $module;
 
     /**
      * Table name.
-     * 
+     *
      * @var string
      */
     protected static $table;
 
     /**
      * Table columns.
-     * 
+     *
      * @var array
      */
     protected static $column;
 
     /**
      * Join array.
-     * 
+     *
      * @var array
      */
     protected static $join = array();
 
     /**
      * Constructor.
-     * 
+     *
      * Sets parameters each Class could need.
      * Array $args must hold:
      *   module: The module name.
@@ -87,7 +87,7 @@ class FilterUtil_Common
      * Sets Module.
      *
      * @param string $module Module name.
-     * 
+     *
      * @return bool true on success, false otherwise.
      */
     protected function setModule($module)
@@ -108,12 +108,12 @@ class FilterUtil_Common
      * Sets table.
      *
      * @param string $table Table name.
-     * 
+     *
      * @return bool true on success, false otherwise.
      */
     protected function setTable($table)
     {
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
 
         if (!isset($tables[$table]) || !isset($tables[$table . '_column'])) {
             return false;
@@ -132,7 +132,7 @@ class FilterUtil_Common
      * Sets a reference to a join array for right column names.
      *
      * @param array &$join Join array.
-     * 
+     *
      * @return void
      */
     protected function setJoin(&$join)
@@ -146,7 +146,7 @@ class FilterUtil_Common
      *
      * Edits the column array for use with a join array.
      * We must call it whenever we edited the join information!
-     * 
+     *
      * @return void
      */
     protected function addJoinToColumn()
@@ -155,7 +155,7 @@ class FilterUtil_Common
             return;
         }
 
-        $tables = System::dbGetTables();
+        $tables = DBUtil::getTables();
         $c = & $this->column;
         // reset column array...
         $c = $tables[$this->pntable . '_column'];
@@ -186,7 +186,7 @@ class FilterUtil_Common
      * Field exists?
      *
      * @param string $field Field name.
-     * 
+     *
      * @return bool true if the field exists, else if not.
      */
     protected function fieldExists($field)
@@ -202,7 +202,7 @@ class FilterUtil_Common
      * Adds common config variables to config array.
      *
      * @param array &$config Config array.
-     * 
+     *
      * @return void
      */
     protected function addCommon(&$config)

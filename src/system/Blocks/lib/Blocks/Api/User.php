@@ -34,7 +34,7 @@ class Blocks_Api_User extends Zikula_Api
             return $items;
         }
 
-        $pntable      = System::dbGetTables();
+        $pntable      = DBUtil::getTables();
         $blockstable  = $pntable['blocks'];
         $blockscolumn = $pntable['blocks_column'];
         $sort         = isset($args['sort']) && $args['sort'] ? $args['sort'] : '';
