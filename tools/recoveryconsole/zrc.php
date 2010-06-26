@@ -206,7 +206,7 @@ class RecoveryConsole
         // Looping through array values.
         foreach ($input as $key=>$val) {
             // Special case: dba user/pass can contain more than text chars, do it inline.
-            if ($key=='dbuname' || $key=='dbpass1' || $key=='dbpass2') {
+            if ($key=='zuname' || $key=='zpass1' || $key=='zpass2') {
                 $cleaned[$key] = preg_replace('[!@#$%^_\w]', '', $val);
             } else {
                 // If $val is not an array, clean and add it to the $cleaned array.
@@ -1203,9 +1203,9 @@ class RecoveryConsole
     // Get additional inputs for password reset.
     public function getUtilityInputsPassword()
     {
-        $form   = '                <div class="row"><div class="row_left"><label for="username">'.__('Username').'</label></div><div class="row_right"><input type="text" id="username" name="username" value="admin" /></div></div>'."\n";
-        $form  .= '                <div class="row"><div class="row_left"><label for="password1">'.__('New password').'</label></div><div class="row_right"><input type="password" id="password1" name="password1" /></div></div>'."\n";
-        $form  .= '                <div class="row"><div class="row_left"><label for="password2">'.__('New password again (for verification)').'</label></div><div class="row_right"><input type="password" id="password2" name="password2" /></div></div>'."\n";
+        $form   = '                <div class="row"><div class="row_left"><label for="zuname">'.__('Username').'</label></div><div class="row_right"><input type="text" id="zuname" name="zuname" value="admin" /></div></div>'."\n";
+        $form  .= '                <div class="row"><div class="row_left"><label for="zpass1">'.__('New password').'</label></div><div class="row_right"><input type="password" id="zpass1" name="zpass1" /></div></div>'."\n";
+        $form  .= '                <div class="row"><div class="row_left"><label for="zpass2">'.__('New password again (for verification)').'</label></div><div class="row_right"><input type="password" id="zpass2" name="zpass2" /></div></div>'."\n";
 
         return $form;
     }
@@ -1551,9 +1551,9 @@ class RecoveryConsole
     public function processRecoveryPassword()
     {
         // get variables
-        $username = $this->INPUT['username'];
-        $password1 = $this->INPUT['password1'];
-        $password2 = $this->INPUT['password2'];
+        $username = $this->INPUT['zuname'];
+        $password1 = $this->INPUT['zpass1'];
+        $password2 = $this->INPUT['zpass2'];
 
         // check that username is not empty
         if (empty($username)) {
