@@ -63,7 +63,10 @@ abstract class Zikula_Installer extends Zikula_Base
      *
      * @return boolean
      */
-    abstract public function install();
+    public function install()
+    {
+        return true;
+    }
 
     /**
      * Upgrade interface.
@@ -72,12 +75,18 @@ abstract class Zikula_Installer extends Zikula_Base
      *
      * @return boolean|string $args True, false or last successful version number upgrade.
      */
-    abstract public function upgrade($oldversion);
+    public function upgrade($oldversion)
+    {
+        return true;
+    }
 
     /**
      * Uninstall interface.
      *
      * @return boolean
      */
-    abstract public function uninstall();
+    abstract public function uninstall()
+    {
+        return true;
+    }
 }
