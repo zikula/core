@@ -105,20 +105,14 @@ class RecoveryConsole
 
         // Loop through each theme.
         foreach ($filethemes as $theme) {
-            // check if theme is an autotheme
-            if (file_exists('themes/'.$theme.'/theme.cfg')) {
-                $this->themes['autotheme'][$theme] = array('name' => $theme, 'state' => 1);
+            $themeid = ThemeUtil::getIDFromName($theme);
+            if ($themeid <> false) {
+                $this->themes['corethemes'][$theme] = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
             } else {
-                $themeid = ThemeUtil::getIDFromName($theme);
-                if ($themeid <> false) {
-                    $this->themes['corethemes'][$theme] = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
-                } else {
-                    $this->themes['corethemes'][$theme] = array('name' => $theme, 'state' => 0);
-                }
+                $this->themes['corethemes'][$theme] = array('name' => $theme, 'state' => 0);
             }
         }
         ksort($this->themes['corethemes']);
-        ksort($this->themes['autotheme']);
 
         //
         // get site status
@@ -192,7 +186,6 @@ class RecoveryConsole
         define('_ZRC_TXT_OVERVIEW_NOT_CONNECTED',        'Not Connected');
         define('_ZRC_TXT_OVERVIEW_CONFIG',               'Config File');
         define('_ZRC_TXT_OVERVIEW_CORETHEMES',           'Core Themes');
-        define('_ZRC_TXT_OVERVIEW_AUTOTHEMES',           'AutoThemes');
         define('_ZRC_TXT_OVERVIEW_DETECTED_MODS',        'Detected Modules');
         define('_ZRC_TXT_OVERVIEW_DETECTED_BLOCKS',      'Detected Blocks');
         define('_ZRC_TXT_OVERVIEW_DETECTED_THEMES',      'Detected Themes');
@@ -238,7 +231,6 @@ class RecoveryConsole
         define('_ZRC_TXT_THEME_AVAILABLE',               'Available Themes');
         define('_ZRC_TXT_THEME_RESET_USERS',             'Reset User Themes');
         define('_ZRC_TXT_THEME_CORETHEMES',              'Core Themes');
-        define('_ZRC_TXT_THEME_AUTOTHEMES',              'AutoThemes');
         // Texts specific to password reset.
         define('_ZRC_TXT_PASSWORD_UNAME',                'Username');
         define('_ZRC_TXT_PASSWORD_UPASS',                'New password');
@@ -246,7 +238,7 @@ class RecoveryConsole
         define('_ZRC_TXT_PASSWORD_RESETSUCCESS',         'The password was successfully reset');
         // Explanatory texts.
         define('_ZRC_EXP_MAIN',                          'The information shown below reflects the current configuration settings detected by the '._ZRC_APP_TITLE.'. Using the navigation at left, make use of the various site recovery utilities available. If the '._ZRC_APP_TITLE.' cannot resolve the issues your site is experiencing, try the search box at the bottom of any page to search the <a href="http://community.zikula.org/index.php?module=Forum" title="Zikula Support Forum">Zikula Support Forum</a> for answers.');
-        define('_ZRC_EXP_THEME',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to recover from theme-related fatal errors or to reset user-specified themes. Note that no AutoThemes will be available in the drop-down menu unless you have the AutoTheme module installed and active.');
+        define('_ZRC_EXP_THEME',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to recover from theme-related fatal errors or to reset user-specified themes.');
         define('_ZRC_EXP_PERMISSION',                    '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to reset your site permissions to the default state that was set when you originally installed the site.  Carefully review the chart below as an example of how your permissions will be setup after running this utility.');
         define('_ZRC_EXP_BLOCK',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to disable or delete blocks that you believe are causing issues for your site. Blocks that you disable can still be accessed by the system, but a deleted block is gone for good; double-check your choices before running this utility.  If there are no blocks present on your site, this utility will be disabled.');
         define('_ZRC_EXP_SITE',                          '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to turn on your previously disabled site.');
@@ -1266,7 +1258,7 @@ class RecoveryConsole
                 continue;
             }
             // Assign optgroup text.
-            $label = ($type=='corethemes') ? _ZRC_TXT_THEME_CORETHEMES : _ZRC_TXT_THEME_AUTOTHEMES;
+            $label =_ZRC_TXT_THEME_CORETHEMES;
             // Create an optgroup for the theme type.
             if (count($themes) == 0) {
                 continue;
@@ -1422,7 +1414,7 @@ class RecoveryConsole
         // Initialization.
         $list = '';
         // Clause for when no themes came back.
-        if (!isset($this->themes['corethemes']) && !isset($this->themes['autothemes'])) {
+        if (!isset($this->themes['corethemes'])) {
             return $list = _ZRC_TXT_NONE_DETECTED;
         }
 
@@ -1430,10 +1422,7 @@ class RecoveryConsole
             $list .= '<strong>'._ZRC_TXT_OVERVIEW_CORETHEMES.'</strong>';
             $list .= $this->getMarkedUpOverviewThemeListReal($this->themes['corethemes']);
         }
-        if (!empty($this->themes['autothemes'])) {
-            $list .= '<strong>'._ZRC_TXT_OVERVIEW_AUTOTHEMES.'</strong>';
-            $list .= $this->getMarkedUpOverviewThemeListReal($this->themes['autothemes']);
-        }
+
         return $list;
     }
 
@@ -1599,8 +1588,8 @@ class RecoveryConsole
     {
         // Get the new theme chosen.
         $theme = $this->INPUT['theme'];
-        // If input theme is not a coretheme or AutoTheme, validity fails.
-        if (!array_key_exists($theme, $this->themes['corethemes']) && !array_key_exists($theme, $this->themes['autothemes'])) {
+        // If input theme is not a coretheme validity fails.
+        if (!array_key_exists($theme, $this->themes['corethemes'])) {
             $this->setError(_ZRC_ERR_THEME_INVALID);
             return false;
         }
