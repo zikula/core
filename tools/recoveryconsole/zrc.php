@@ -140,147 +140,8 @@ class RecoveryConsole
     // Texts for the Recovery Console.
     public function initAppLangDefines()
     {
-        // Navigational texts.
-        define('_ZRC_TXT_NAV_MAIN_SHORT',                'Main');
-        define('_ZRC_TXT_NAV_MAIN_LONG',                 'Configuration Overview');
-        define('_ZRC_TXT_NAV_THEME',                     'Theme Recovery');
-        define('_ZRC_TXT_NAV_PERMISSION',                'Permission Recovery');
-        define('_ZRC_TXT_NAV_DISABLEDSITE',              'Disabled Site Recovery');
-        define('_ZRC_TXT_NAV_BLOCK',                     'Block Recovery');
-        define('_ZRC_TXT_NAV_PASSWORD',                  'Password Reset');
-        define('_ZRC_TXT_NAV_ABOUT',                     'About This Application');
-        define('_ZRC_TXT_NAV_PHPINFO',                   'PHP Information');
-        define('_ZRC_TXT_NAV_PHPINFO_VERSION',           'PHP Version');
-        define('_ZRC_TXT_NAV_PHPINFO_CORE',              'PHP Core');
-        define('_ZRC_TXT_NAV_PHPINFO_APACHE',            'Apache Environment');
-        define('_ZRC_TXT_NAV_PHPINFO_ENVIRONMENT',       'PHP Environment');
-        define('_ZRC_TXT_NAV_PHPINFO_VARIABLES',         'PHP Variables');
-        define('_ZRC_TXT_NAV_PHPINFO_LICENSE',           'PHP License');
-        // General texts.
-        define('_ZRC_TXT_CLICK_TO_CONFIRM',              'Click To Confirm');
-        define('_ZRC_TXT_RUN_UTILITY',                   'Run Utility');
-        define('_ZRC_TXT_ERROR',                         'ERROR');
-        define('_ZRC_TXT_STATUS',                        'STATUS');
-        define('_ZRC_TXT_LOCKDOWN_TIMER',                'LOCKDOWN TIMER');
-        define('_ZRC_TXT_LOCKDOWN_ENGAGED',              'LOCKDOWN ENGAGED');
-        define('_ZRC_TXT_LOCKDOWN_REASON',               'The '._ZRC_APP_TITLE.' will be automatically disabled when the timer expires.  If it expires before you finish your work, simply re-upload the file and refresh your browser.  The timer will be reset.');
-        define('_ZRC_TXT_LOCKDOWN_ACTIVE',               'The '._ZRC_APP_TITLE.' is now disabled from further use as a security precaution.  You must upload a new copy of this file to reset the lockdown timer.');
-        define('_ZRC_TXT_RECOVERY_SUCCESS',              'Recovery Successful');
-        define('_ZRC_TXT_UTILITY_DISABLED',              'This utility is now disabled.');
-        define('_ZRC_TXT_UTILITY_DISABLED_BLOCK',        'There are no blocks existing on your site which means that this utility can provide no assistance.');
-        define('_ZRC_TXT_UTILITY_DISABLED_SITE',         'Your site is already enabled.');
-        define('_ZRC_TXT_STILL_NEED_HELP',               'Still need help?');
-        define('_ZRC_TXT_SEARCH_THE_DOTCOM',             'Search the <em>entire</em> Zikula site here!');
-        define('_ZRC_TXT_SEARCH_BTN',                    'SEARCH');
-        define('_ZRC_TXT_INSTRUCTIONS',                  'INSTRUCTIONS');
-        define('_ZRC_TXT_NOT_APPLICABLE_ABBR',           'N/A');
-        // Overview texts.
-        define('_ZRC_TXT_OVERVIEW_VERSION',              'Core Version');
-        define('_ZRC_TXT_OVERVIEW_DATABASE',             'Database');
-        define('_ZRC_TXT_OVERVIEW_THEME',                'Current Theme');
-        define('_ZRC_TXT_OVERVIEW_LANGUAGE',             'Site Language');
-        define('_ZRC_TXT_OVERVIEW_STATUS',               'Site Status');
-        define('_ZRC_TXT_OVERVIEW_SITE_ON',              'On/Enabled');
-        define('_ZRC_TXT_OVERVIEW_SITE_OFF',             'Off/Disabled');
-        define('_ZRC_TXT_OVERVIEW_CONNECTED',            'Connected');
-        define('_ZRC_TXT_OVERVIEW_NOT_CONNECTED',        'Not Connected');
-        define('_ZRC_TXT_OVERVIEW_CONFIG',               'Config File');
-        define('_ZRC_TXT_OVERVIEW_CORETHEMES',           'Core Themes');
-        define('_ZRC_TXT_OVERVIEW_DETECTED_MODS',        'Detected Modules');
-        define('_ZRC_TXT_OVERVIEW_DETECTED_BLOCKS',      'Detected Blocks');
-        define('_ZRC_TXT_OVERVIEW_DETECTED_THEMES',      'Detected Themes');
-        define('_ZRC_TXT_OVERVIEW_SYSTEM_MODS',          'System Modules');
-        define('_ZRC_TXT_OVERVIEW_3RDPARTY_MODS',        'Value Added Modules');
-        define('_ZRC_TXT_OVERVIEW_ACTIVE',               'active');
-        define('_ZRC_TXT_OVERVIEW_INACTIVE',             'inactive');
-        define('_ZRC_TXT_OVERVIEW_UNINITIALIZED',        'uninitialized');
-        define('_ZRC_TXT_OVERVIEW_INVALID',              'invalid');
-        define('_ZRC_TXT_OVERVIEW_FILESMISSING',         'files missing');
-        define('_ZRC_TXT_OVERVIEW_UPGRADED',             'upgraded');
-        define('_ZRC_TXT_OVERVIEW_DEFAULT_THEME',        'set as default');
-        // Texts for current settings.
-        define('_ZRC_TXT_CURRENT_SETTING',               'Current Setting:');
-        define('_ZRC_TXT_SITE_DISABLED',                 'Site Is Off/Disabled');
-        define('_ZRC_TXT_SITE_ENABLED',                  'Site Is On/Enabled');
-        define('_ZRC_TXT_NOTHING_TO_REPORT',             'Nothing To Report');
-        define('_ZRC_TXT_BLOCKS_NOT_FOUND',              'No Blocks Were Found');
-        define('_ZRC_TXT_BLOCKS_OUTLINED_BELOW',         'Blocks Are Outlined Below');
-        define('_ZRC_TXT_NONE_DETECTED',                 'None Detected');
-        // Texts specific to site recovery.
-        define('_ZRC_TXT_SITE_TURNITON',                 'Set the following checkbox to re-enable your site.');
-        // Texts specific to block recovery.
-        define('_ZRC_TXT_BLOCK_BID',                     'BID');
-        define('_ZRC_TXT_BLOCK_MID',                     'MID');
-        define('_ZRC_TXT_BLOCK_KEY',                     'Key');
-        define('_ZRC_TXT_BLOCK_TITLE',                   'Title');
-        define('_ZRC_TXT_BLOCK_STATE',                   'State');
-        define('_ZRC_TXT_BLOCK_ACTIVE',                  'active');
-        define('_ZRC_TXT_BLOCK_INACTIVE',                'inactive');
-        define('_ZRC_TXT_BLOCK_ACTIONS',                 'ACTIONS');
-        define('_ZRC_TXT_BLOCK_NOCHANGE',                'Make No Changes');
-        define('_ZRC_TXT_BLOCK_DEACTIVE',                'Disable Block');
-        define('_ZRC_TXT_BLOCK_DELETE',                  'Delete Block');
-        define('_ZRC_TXT_BLOCK_DISABLE_FAILED',          'Block Not Disabled');
-        define('_ZRC_TXT_BLOCK_DISABLED',                'Block Disabled');
-        define('_ZRC_TXT_BLOCK_DELETE_FAILED',           'Block Not Deleted');
-        define('_ZRC_TXT_BLOCK_DELETED',                 'Block Deleted');
-        define('_ZRC_TXT_BLOCK_NO_BLOCKS_EXIST',         'This utility is disabled.  There are no existing blocks for your site, so this utility can provide no assistance.');
-        // Texts specific to permission recovery.
-        define('_ZRC_TXT_PERMISSION_EXAMPLE',            'Default Permissions');
-        // Texts specific to theme recovery.
-        define('_ZRC_TXT_THEME_AVAILABLE',               'Available Themes');
-        define('_ZRC_TXT_THEME_RESET_USERS',             'Reset User Themes');
-        define('_ZRC_TXT_THEME_CORETHEMES',              'Core Themes');
-        // Texts specific to password reset.
-        define('_ZRC_TXT_PASSWORD_UNAME',                'Username');
-        define('_ZRC_TXT_PASSWORD_UPASS',                'New password');
-        define('_ZRC_TXT_PASSWORD_UPASSAGAIN',           'New password again (for verification)');
-        define('_ZRC_TXT_PASSWORD_RESETSUCCESS',         'The password was successfully reset');
-        // Explanatory texts.
-        define('_ZRC_EXP_MAIN',                          'The information shown below reflects the current configuration settings detected by the '._ZRC_APP_TITLE.'. Using the navigation at left, make use of the various site recovery utilities available. If the '._ZRC_APP_TITLE.' cannot resolve the issues your site is experiencing, try the search box at the bottom of any page to search the <a href="http://community.zikula.org/index.php?module=Forum" title="Zikula Support Forum">Zikula Support Forum</a> for answers.');
-        define('_ZRC_EXP_THEME',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to recover from theme-related fatal errors or to reset user-specified themes.');
-        define('_ZRC_EXP_PERMISSION',                    '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to reset your site permissions to the default state that was set when you originally installed the site.  Carefully review the chart below as an example of how your permissions will be setup after running this utility.');
-        define('_ZRC_EXP_BLOCK',                         '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to disable or delete blocks that you believe are causing issues for your site. Blocks that you disable can still be accessed by the system, but a deleted block is gone for good; double-check your choices before running this utility.  If there are no blocks present on your site, this utility will be disabled.');
-        define('_ZRC_EXP_SITE',                          '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to turn on your previously disabled site.');
-        define('_ZRC_EXP_PASSWORD',                      '<strong>'._ZRC_TXT_INSTRUCTIONS.':</strong> Use this utility to reset your admin (or other) password.');
-        // About page texts.
-        define('_ZRC_EXP_ABOUT_TXT_VERSION',             '<strong>VERSION</strong><br />This is <strong>Version '._ZRC_APP_VERSION.'</strong> of the <strong>'._ZRC_APP_TITLE.'</strong><br /><br />');
-        define('_ZRC_EXP_ABOUT_TXT_INFO',                '<strong>GENERAL</strong><br />The '._ZRC_APP_TITLE.' provides the tools necessary to resolve and recover from the most common issues that a Zikula site might experience over its lifetime.  Contained within this application are a variety of powerful recovery utilities that are designed to be self-explanatory, simple to use, and consistently delivered through an aesthetic layout.<br /><br />');
-        define('_ZRC_EXP_ABOUT_TXT_LICENSE',             '<strong>LICENSE</strong><br /><a href="http://www.gnu.org/copyleft/gpl.html" title="General Public License">General Public License</a><br /><br />');
-        define('_ZRC_EXP_ABOUT_TXT_CREDITS',             '<strong>CREDITS</strong><br />Maintained and enhanced by the Zikula CoreDev team. Originally developed by <a href="http://www.alarconcepts.com/" title="John Alarcon">John Alarcon</a>.  Greatly inspired by the ideas and work of <a href="http://www.snowjournal.com" title="Christopher S. Bradford">Christopher S. Bradford</a> and the additional supportive efforts of <a href="http://users.tpg.com.au/staer/" title="Martin Andersen">Martin Andersen</a>, <a href="http://www.landseer-stuttgart.de/" title="Frank Schummertz">Frank Schummertz</a>, <a href="http://pahlscomputers.com/" title="David Pahl">David Pahl</a> and <a href="http://www.itbegins.co.uk/" title="Simon Birtwistle">Simon Birtwistle</a>. Thanks guys!');
-        // Error texts.
-        define('_ZRC_ERR_WRONG_DIRECTORY',               '<strong>THIS APPLICTATION WAS IMPROPERLY UPLOADED</strong><br />Please ensure that you have uploaded this file to<br />the <em>root directory</em> of your site and try again.');
-        define('_ZRC_ERR_CMS_FAILED',                    '<strong>Zikula COULD NOT BE INITIALIZED</strong><br />No further information is available.');
-        define('_ZRC_ERR_INCOMPATIBLE',                  '<strong>THIS APPLICATION IS INCOMPATIBLE WITH YOUR SITE<br />This application works only with Zikula 1.x+.<br />When stil using PostNuke .764 consider the <a href="http://community.zikula.org/Downloads-req-viewdownload-cid-7.htm" title="PostNuke Swiss Army Knife">PostNuke Swiss Army Knife</a> (PSAK) utility.');
-        define('_ZRC_ERR_APP_LOCKED',                    '<strong>THIS APPLICATION HAS EXPIRED</strong><br />Re-upload the file to reset the timer.');
-        define('_ZRC_ERR_CONFIRM_REQUIRED',              'Confirmation Required');
-        define('_ZRC_ERR_DUPED_SETTING',                 'This particular aspect of your site does not appear to be broken in its current state.  No changes were made.');
-        define('_ZRC_ERR_FORM_INCOMPLETE',               'All Fields Required');
-        define('_ZRC_ERR_PASSWORD_EMPTYUNAME',           'Username cannot be empty');
-        define('_ZRC_ERR_PASSWORD_EMPTYPASS',            'Password cannot be empty');
-        define('_ZRC_ERR_PASSWORD_MISMATCH',             'Passwords do not match');
-        define('_ZRC_ERR_PASSWORD_INVALIDUSERNAME',      'The username you supplied is not valid');
-        define('_ZRC_ERR_PASSWORD_INVALIDPASSWORD',      'The password you supplied is not valid');
-        define('_ZRC_ERR_PASSWORD_ANONYMOUSUSERNAME',    'You cannot change the password for the anonymous user. Please provide the username of a valid user');
-        define('_ZRC_ERR_PASSWORD_RESETFAILED',          'Error resetting the password');
-        define('_ZRC_ERR_RECOVERY_FAILURE',              'Recovery Failed');
-        define('_ZRC_ERR_INVALID_UTILITY',               'Invalid Utility');
-        define('_ZRC_ERR_INVALID_OPERATION',             'Invalid Operation');
-        define('_ZRC_ERR_ALL_FIELDS_REQUIRED',           'All Fields Required');
-        define('_ZRC_ERR_THEME_INVALID',                 'Invalid Theme Name');
-        define('_ZRC_ERR_PERMISSION_DEFAULTING',         'Error Defaulting Permissions');
-        define('_ZRC_ERR_PERMISSION_INSERT_FAILURE',     'Error Inserting Default Permissions');
-        define('_ZRC_ERR_PERMISSIONS_NOT_DELETED',       'Error Deleting Current Permissions');
-        define('_ZRC_ERR_SITE_ENABLING',                 'Error Enabling Site');
-        define('_ZRC_ERR_BLOCK_INVALID_BID',             'Block ID Invalid');
-        define('_ZRC_ERR_BLOCK_NO_SUCH_BLOCK',           'No Such Block Exists');
-        define('_ZRC_ERR_BLOCK_NOT_DISABLED',            'Block Not Disabled');
-        define('_ZRC_ERR_BLOCK_NOT_DISPLACED',           'Block Placements Not Removed');
-        define('_ZRC_ERR_BLOCK_NOT_DELETED',             'Block Not Deleted');
-        define('_ZRC_ERR_CAT_MOVE_FAILURE',              'Failed To Move Category');
-        define('_ZRC_ERR_NO_DATA_NO_CHANGE',             'No Changes Were Made');
-        define('_ZRC_ERR_RESETTING_USER_THEMES',         'Error Resetting User Themes');
     }
+    
     // Initialize Zikula and set relevant properties.
     public function initZikula()
     {
@@ -288,14 +149,14 @@ class RecoveryConsole
         $file = 'lib/ZLoader.php';
         // Before inclusion, ensure the API file can be accessed.
         if (!file_exists($file) && !is_readable($file)) {
-            $this->fatalError(_ZRC_ERR_WRONG_DIRECTORY);
+            $this->fatalError(__('<strong>THIS APPLICTATION WAS IMPROPERLY UPLOADED</strong><br />Please ensure that you have uploaded this file to<br />the <em>root directory</em> of your site and try again.'));
         }
         // Include the API file.
         require_once 'lib/ZLoader.php';
         ZLoader::register();
         // Before init, avoid error; ensure the function exists.
         if (!is_callable(array('System', 'init'))) {
-            $this->fatalError(_ZRC_ERR_CMS_FAILED);
+            $this->fatalError(__('<strong>Zikula COULD NOT BE INITIALIZED</strong><br />No further information is available.'));
         }
         // Initialize Zikula.
 
@@ -315,7 +176,7 @@ class RecoveryConsole
     {
         // Kill app if app is expired or force-locked by the system.
         if ($this->appIsExpired() || $this->appForceLocked) {
-            //$this->fatalError(_ZRC_ERR_APP_LOCKED);
+            //$this->fatalError(__('<strong>THIS APPLICATION HAS EXPIRED</strong><br />Re-upload the file to reset the timer.'));
         }
     }
     // Database connection.
@@ -454,10 +315,10 @@ class RecoveryConsole
         $js .= '                secs = "0" + secs;'."\n";
         $js .= '            }'."\n";
         $js .= '            if(n > 0) {'."\n";
-        $js .= '                document.getElementById("timer_container").innerHTML = \''._ZRC_TXT_LOCKDOWN_TIMER.'<div id="timer_digits">\'+mins+\':\' + secs + \'<\/div><div id="timer_reason">'._ZRC_TXT_LOCKDOWN_REASON.'<\/div>\';'."\n";
+        $js .= '                document.getElementById("timer_container").innerHTML = \''.__('LOCKDOWN TIMER').'<div id="timer_digits">\'+mins+\':\' + secs + \'<\/div><div id="timer_reason">'.__('The _ZRC_APP_TITLE will be automatically disabled when the timer expires.  If it expires before you finish your work, simply re-upload the file and refresh your browser.  The timer will be reset.').'<\/div>\';'."\n";
         $js .= '                setTimeout(function() { countDown(n - 1) }, 1000)'."\n";
         $js .= '            } else if (n == 0) {'."\n";
-        $js .= '                document.getElementById("timer_container").innerHTML =  \''._ZRC_TXT_LOCKDOWN_ENGAGED.'<div id="timer_reason" class="red">'._ZRC_TXT_LOCKDOWN_ACTIVE.'<\/div>\';'."\n";
+        $js .= '                document.getElementById("timer_container").innerHTML =  \''.__('LOCKDOWN ENGAGED').'<div id="timer_reason" class="red">'.__('The _ZRC_APP_TITLE is now disabled from further use as a security precaution.  You must upload a new copy of this file to reset the lockdown timer.').'<\/div>\';'."\n";
         $js .= '            }'."\n";
         $js .= '        }'."\n";
         $js .= '    }'."\n";
@@ -755,15 +616,15 @@ class RecoveryConsole
         // Open the navigation block container.
         $menu .= '        <div id="navblock">';
         // Main link.
-        $menu .= '<strong>'.$this->markupMenuLink('','',            _ZRC_TXT_NAV_MAIN_SHORT, _ZRC_TXT_NAV_MAIN_LONG).'</strong>';
+        $menu .= '<strong>'.$this->markupMenuLink('','',            __('Main'), __('Configuration Overview')).'</strong>';
         // Additional links.
-        $menu .= $this->markupMenuLink('recover',   'theme',        _ZRC_TXT_NAV_THEME);
-        $menu .= $this->markupMenuLink('recover',   'permission',   _ZRC_TXT_NAV_PERMISSION);
-        $menu .= $this->markupMenuLink('recover',   'block',        _ZRC_TXT_NAV_BLOCK);
-        $menu .= $this->markupMenuLink('recover',   'site',         _ZRC_TXT_NAV_DISABLEDSITE);
-        $menu .= $this->markupMenuLink('recover',   'password',     _ZRC_TXT_NAV_PASSWORD);
-        $menu .= $this->markupMenuLink('phpinfo',   '',             _ZRC_TXT_NAV_PHPINFO);
-        $menu .= $this->markupMenuLink('about',     '',             _ZRC_TXT_NAV_ABOUT);
+        $menu .= $this->markupMenuLink('recover',   'theme',        __('Theme Recovery'));
+        $menu .= $this->markupMenuLink('recover',   'permission',   __('Permission Recovery'));
+        $menu .= $this->markupMenuLink('recover',   'block',        __('Block Recovery'));
+        $menu .= $this->markupMenuLink('recover',   'site',         __('Disabled Site Recovery'));
+        $menu .= $this->markupMenuLink('recover',   'password',     __('Password Reset'));
+        $menu .= $this->markupMenuLink('phpinfo',   '',             __('PHP Information'));
+        $menu .= $this->markupMenuLink('about',     '',             __('About This Application'));
         // Closing the navigation block container.
         $menu .= '</div>'."\n\n";
         // Add the lockdown timer.
@@ -834,7 +695,7 @@ class RecoveryConsole
             // Check if app is compatible with site.
             if (!$this->appCompatible()) {
                 // If not, append a message, close container and return; user goes no further.
-                $content .= _ZRC_ERR_INCOMPATIBLE.'</div>'."\n\n";
+                $content .= __('<strong>THIS APPLICATION IS INCOMPATIBLE WITH YOUR SITE<br />This application works only with Zikula 1.x+.<br />When stil using PostNuke .764 consider the <a href="http://community.zikula.org/Downloads-req-viewdownload-cid-7.htm" title="PostNuke Swiss Army Knife">PostNuke Swiss Army Knife</a> (PSAK) utility.').'</div>'."\n\n";
                 return $content;
             }
         }
@@ -846,7 +707,7 @@ class RecoveryConsole
             $this->op      = false;
             $this->utility = false;
             // Append a message, close container and return; user goes no further.
-            $content .= _ZRC_ERR_INVALID_OPERATION.'</div>'."\n\n";
+            $content .= __('Invalid Operation').'</div>'."\n\n";
             return $content;
         }
 
@@ -874,7 +735,7 @@ class RecoveryConsole
                 // Recoveries require explanation, current setting and utility.
                 if (!in_array($this->utility, $this->getAllUtilities())) {
                     // Set message and escape early since utility is not valid.
-                    $content .= '        <div id="explain">'._ZRC_ERR_INVALID_UTILITY.'</div>'."\n\n";
+                    $content .= '        <div id="explain">'.__('Invalid Utility').'</div>'."\n\n";
                     break;
                 }
                 // Add utility explanation.
@@ -909,7 +770,7 @@ class RecoveryConsole
     public function markupSearchBox()
     {
         // Markup a form to search the PN site.
-        $search  = '<div><strong class="blue">'._ZRC_TXT_STILL_NEED_HELP.'</strong> '._ZRC_TXT_SEARCH_THE_DOTCOM.'</div>'."\n\n";
+        $search  = '<div><strong class="blue">'.__('Still need help?').'</strong> '.__('Search the <em>entire</em> Zikula site here!').'</div>'."\n\n";
         $search .= '<form method="post" action="http://community.zikula.org/index.php" style="display:inline;">
                     <div>
                         <img src="images/icons/extrasmall/search.gif" style="float:left;margin:2px 5px 0 0;" alt="'._ZRC_TXT_SEARCH.'" />
@@ -934,7 +795,7 @@ class RecoveryConsole
                         <input type="hidden" name="total" value="" />
                         <input type="hidden" name="numlimit" value="250" />
                         <input type="hidden" name="bool" value="AND" />
-                        <input type="submit" id="search_b" value="'._ZRC_TXT_SEARCH_BTN.'" title="'._ZRC_TXT_SEARCH.'" />
+                        <input type="submit" id="search_b" value="'.__('SEARCH').'" title="'._ZRC_TXT_SEARCH.'" />
                     </div>
                 </form>';
         // Return search form markup.
@@ -985,7 +846,7 @@ class RecoveryConsole
             // Container.
             $markup .= '        <div id="error">'."\n\n";
             // Short text title.
-            $markup .= '<strong>'._ZRC_TXT_ERROR.'</strong><br />'."\n";
+            $markup .= '<strong>'.__('ERROR').'</strong><br />'."\n";
             // Start an unordered list.
             $markup .= '<ul>'."\n";
             // Converting errors into list items.
@@ -1006,7 +867,7 @@ class RecoveryConsole
             // Container.
             $markup .= '        <div id="status">'."\n\n";
             // Short text title.
-            $markup .= '<strong>'._ZRC_TXT_STATUS.'</strong><br />'."\n";
+            $markup .= '<strong>'.__('STATUS').'</strong><br />'."\n";
             // Start an unordered list.
             $markup .= '<ul>'."\n";
             // Converting errors into list items.
@@ -1087,16 +948,16 @@ class RecoveryConsole
     {
         // Return main console (long) title if no operation or utility present.
         if (!$this->operation && !$this->utility) {
-            return $title = _ZRC_TXT_NAV_MAIN_LONG;
+            return $title = __('Configuration Overview');
         }
         // Array of titles, keyed by operations.
-        $titles = array('about'         => _ZRC_TXT_NAV_ABOUT,
-                        'theme'         => _ZRC_TXT_NAV_THEME,
-                        'permission'    => _ZRC_TXT_NAV_PERMISSION,
-                        'block'         => _ZRC_TXT_NAV_BLOCK,
-                        'password'      => _ZRC_TXT_NAV_PASSWORD,
-                        'phpinfo'       => _ZRC_TXT_NAV_PHPINFO,
-                        'site'          => _ZRC_TXT_NAV_DISABLEDSITE,
+        $titles = array('about'         => __('About This Application'),
+                        'theme'         => __('Theme Recovery'),
+                        'permission'    => __('Permission Recovery'),
+                        'block'         => __('Block Recovery'),
+                        'password'      => __('Password Reset'),
+                        'phpinfo'       => __('PHP Information'),
+                        'site'          => __('Disabled Site Recovery'),
                         );
         // Return title based on operation if utility not present.
         if (!$this->utility) {
@@ -1109,21 +970,21 @@ class RecoveryConsole
     public function getExplanation()
     {
         // Array of explanatoty defines, keyed by operations.
-        $explanations = array('theme'         => _ZRC_EXP_THEME,
-                              'permission'    => _ZRC_EXP_PERMISSION,
-                              'block'         => _ZRC_EXP_BLOCK,
-                              'site'          => _ZRC_EXP_SITE,
-                              'password'      => _ZRC_EXP_PASSWORD,
+        $explanations = array('theme'         => __('<strong>INSTRUCTIONS:</strong> Use this utility to recover from theme-related fatal errors or to reset user-specified themes.'),
+                              'permission'    => __('<strong>INSTRUCTIONS:</strong> Use this utility to reset your site permissions to the default state that was set when you originally installed the site.  Carefully review the chart below as an example of how your permissions will be setup after running this utility.'),
+                              'block'         => __('<strong>INSTRUCTIONS:</strong> Use this utility to disable or delete blocks that you believe are causing issues for your site. Blocks that you disable can still be accessed by the system, but a deleted block is gone for good; double-check your choices before running this utility.  If there are no blocks present on your site, this utility will be disabled.'),
+                              'site'          => __('<strong>INSTRUCTIONS:</strong> Use this utility to turn on your previously disabled site.'),
+                              'password'      => __('<strong>INSTRUCTIONS:</strong> Use this utility to reset your admin (or other) password.'),
                               'about'         => _ZRC_EXP_ABOUT_TXT_INFO
-                                                ._ZRC_EXP_ABOUT_TXT_VERSION
-                                                ._ZRC_EXP_ABOUT_TXT_LICENSE
-                                                ._ZRC_EXP_ABOUT_TXT_CREDITS,
+                                                .__('<strong>VERSION</strong><br />This is <strong>Version _ZRC_APP_VERSION</strong> of the <strong>_ZRC_APP_TITLE</strong><br /><br />')
+                                                .__('<strong>LICENSE</strong><br /><a href="http://www.gnu.org/copyleft/gpl.html" title="General Public License">General Public License</a><br /><br />')
+                                                .__('<strong>CREDITS</strong><br />Maintained and enhanced by the Zikula CoreDev team. Originally developed by <a href="http://www.alarconcepts.com/" title="John Alarcon">John Alarcon</a>.  Greatly inspired by the ideas and work of <a href="http://www.snowjournal.com" title="Christopher S. Bradford">Christopher S. Bradford</a> and the additional supportive efforts of <a href="http://users.tpg.com.au/staer/" title="Martin Andersen">Martin Andersen</a>, <a href="http://www.landseer-stuttgart.de/" title="Frank Schummertz">Frank Schummertz</a>, <a href="http://pahlscomputers.com/" title="David Pahl">David Pahl</a> and <a href="http://www.itbegins.co.uk/" title="Simon Birtwistle">Simon Birtwistle</a>. Thanks guys!'),
                               );
         // Initialization.
         $explanation = '';
         // If no op or utility, assume main explanation is needed; return such.
         if (!$this->operation && !$this->utility) {
-            return $explanation = _ZRC_EXP_MAIN;
+            return $explanation = __('The information shown below reflects the current configuration settings detected by the _ZRC_APP_TITLE. Using the navigation at left, make use of the various site recovery utilities available. If the _ZRC_APP_TITLE cannot resolve the issues your site is experiencing, try the search box at the bottom of any page to search the <a href="http://community.zikula.org/index.php?module=Forum" title="Zikula Support Forum">Zikula Support Forum</a> for answers.');
         }
         // ...or if op exists and utility does not, get explanation based on op.
         if ($this->operation && !$this->utility) {
@@ -1142,26 +1003,26 @@ class RecoveryConsole
     public function getCurrentSetting()
     {
         // A short descriptive title.
-        $setting = '<strong>'._ZRC_TXT_CURRENT_SETTING.'</strong> ';
+        $setting = '<strong>'.__('Current Setting:').'</strong> ';
         // Switch to get proper text.
         switch($this->utility) {
             case 'theme':
                 $setting .= $this->siteTheme;
                 break;
             case 'permission':
-                $setting .= _ZRC_TXT_NOTHING_TO_REPORT;
+                $setting .= __('Nothing To Report');
                 break;
             case 'block':
-                $setting .= (count($this->blocks) == 0) ? _ZRC_TXT_BLOCKS_NOT_FOUND : _ZRC_TXT_BLOCKS_OUTLINED_BELOW;
+                $setting .= (count($this->blocks) == 0) ? _ZRC_TXT_BLOCKS_NOT_FOUND : __('Blocks Are Outlined Below');
                 break;
             case 'site':
-                $setting .= ($this->siteInactive == false) ? _ZRC_TXT_SITE_ENABLED: _ZRC_TXT_SITE_DISABLED;
+                $setting .= ($this->siteInactive == false) ? _ZRC_TXT_SITE_ENABLED: __('Site Is Off/Disabled');
                 break;
             case 'password':
-                $setting .= _ZRC_TXT_NOTHING_TO_REPORT;
+                $setting .= __('Nothing To Report');
                 break;
             default:
-                $setting .= _ZRC_TXT_NOTHING_TO_REPORT;
+                $setting .= __('Nothing To Report');
                 break;
         }
         // Return the current setting text.
@@ -1183,7 +1044,7 @@ class RecoveryConsole
         // Check if this utility should be disabled.
         if ($this->getUtilityState() == false) {
             // Start off with an explanatory text.
-            $form = _ZRC_TXT_UTILITY_DISABLED;
+            $form = __('This utility is now disabled.');
             // If utility disabled because it just ran, check for recovery-related output.
             $output = $this->getRecoveryOutput();
             // If no recovery output, return here.
@@ -1205,8 +1066,8 @@ class RecoveryConsole
             $form .= $this->$method();
         }
         // Confirmation and submit inputs.
-        $form .= '                <div class="row"><div class="row_left"><label for="confirm">'._ZRC_TXT_CLICK_TO_CONFIRM.'</label></div><div class="row_right"><input id="confirm" type="checkbox" name="confirm" value="1" /></div></div>'."\n\n";
-        $form .= '                <div class="row"><div class="row_left"><label for="submit">&nbsp;</label></div><div class="row_right"><input class="submit" type="submit" name="submit" id="submit" value="'._ZRC_TXT_RUN_UTILITY.'" /></div></div>'."\n\n";
+        $form .= '                <div class="row"><div class="row_left"><label for="confirm">'.__('Click To Confirm').'</label></div><div class="row_right"><input id="confirm" type="checkbox" name="confirm" value="1" /></div></div>'."\n\n";
+        $form .= '                <div class="row"><div class="row_left"><label for="submit">&nbsp;</label></div><div class="row_right"><input class="submit" type="submit" name="submit" id="submit" value="'.__('Run Utility').'" /></div></div>'."\n\n";
         $form .= '                <div style="clear:both;"></div>'."\n\n";
         // Close the form and container.
         $form .= '            </form>'."\n\n";
@@ -1223,14 +1084,14 @@ class RecoveryConsole
             case 'block':
                 // If site has no blocks, disable this utility.
                 if (count($this->blocks) == 0) {
-                    $this->setRecoveryOutput(_ZRC_TXT_UTILITY_DISABLED_BLOCK);
+                    $this->setRecoveryOutput(__('There are no blocks existing on your site which means that this utility can provide no assistance.'));
                     $state = false;
                 }
                 break;
             case 'site':
                 // if site is enabled, disable this utility
                 if(System::getVar('siteoff') ==0) {
-                    $this->setRecoveryOutput(_ZRC_TXT_UTILITY_DISABLED_SITE);
+                    $this->setRecoveryOutput(__('Your site is already enabled.'));
                     $state = false;
                 }
             default:
@@ -1243,7 +1104,7 @@ class RecoveryConsole
     // enable site
     public function getUtilityInputsSite()
     {
-        return '<p>'._ZRC_TXT_SITE_TURNITON.'</p>';
+        return '<p>'.__('Set the following checkbox to re-enable your site.').'</p>';
     }
 
     // Get inputs for theme recovery.
@@ -1258,7 +1119,7 @@ class RecoveryConsole
                 continue;
             }
             // Assign optgroup text.
-            $label =_ZRC_TXT_THEME_CORETHEMES;
+            $label =__('Core Themes');
             // Create an optgroup for the theme type.
             if (count($themes) == 0) {
                 continue;
@@ -1285,8 +1146,8 @@ class RecoveryConsole
         // Ending the selector.
         $selector .= '</select>'."\n";
         // Create the "utility" portion of the form and return it.
-        $form  = '                <div class="row"><div class="row_left"><label for="themes">'._ZRC_TXT_THEME_AVAILABLE.'</label></div><div class="row_right">'.$selector.'</div></div>'."\n";
-        $form .= '                <div class="row"><div class="row_left"><label for="resetusers">'._ZRC_TXT_THEME_RESET_USERS.'</label></div><div class="row_right"><input id="resetusers" type="checkbox" name="resetusers" value="1"'.(($this->INPUT['resetusers'] && $this->getErrors()) ? ' checked="checked"' : null).'  /></div></div>'."\n";
+        $form  = '                <div class="row"><div class="row_left"><label for="themes">'.__('Available Themes').'</label></div><div class="row_right">'.$selector.'</div></div>'."\n";
+        $form .= '                <div class="row"><div class="row_left"><label for="resetusers">'.__('Reset User Themes').'</label></div><div class="row_right"><input id="resetusers" type="checkbox" name="resetusers" value="1"'.(($this->INPUT['resetusers'] && $this->getErrors()) ? ' checked="checked"' : null).'  /></div></div>'."\n";
         return $form;
     }
 
@@ -1295,7 +1156,7 @@ class RecoveryConsole
     {
         // Cheating a little; there are no actual inputs here.
         $form  = '<pre style="font-size:7.25pt;">';
-        $form .= '<strong style="font-size:9pt;">'._ZRC_TXT_PERMISSION_EXAMPLE.'</strong>'."\n";
+        $form .= '<strong style="font-size:9pt;">'.__('Default Permissions').'</strong>'."\n";
         $form .= '<div class="bar"><strong>     GROUP      |      COMPONENT      |    INSTANCE   |  PERMISSION LEVEL</strong></div>';
         $form .= ' Administrators |        .*           |      .*       |     Admin'."\n";
         $form .= '   All Groups   | ExtendedMenublock:: |      1:2:     |     None'."\n";
@@ -1311,14 +1172,14 @@ class RecoveryConsole
     {
         $form  = '<table width="100%" border="1" style="border-collapse:collapse;" cellpadding="3" cellspacing="0">';
         $form .= '<tr style="background:#f2f2f2;">'."\n\n";
-        $form .= '<th>'._ZRC_TXT_BLOCK_BID.'</th>'."\n\n";
-        $form .= '<th>'._ZRC_TXT_BLOCK_KEY.'</th>'."\n\n";
-        $form .= '<th width="100%">'._ZRC_TXT_BLOCK_TITLE.'</th>'."\n\n";
-        $form .= '<th>'._ZRC_TXT_BLOCK_STATE.'</th>'."\n\n";
-        $form .= '<th>'._ZRC_TXT_BLOCK_MID.'</th>'."\n\n";
-        $form .= '<th>'._ZRC_TXT_BLOCK_NOCHANGE.'</th>'."\n\n";
-        $form .= '<th>'._ZRC_TXT_BLOCK_DEACTIVE.'</th>'."\n\n";
-        $form .= '<th>'._ZRC_TXT_BLOCK_DELETE.'</th>'."\n\n";
+        $form .= '<th>'.__('BID').'</th>'."\n\n";
+        $form .= '<th>'.__('Key').'</th>'."\n\n";
+        $form .= '<th width="100%">'.__('Title').'</th>'."\n\n";
+        $form .= '<th>'.__('State').'</th>'."\n\n";
+        $form .= '<th>'.__('MID').'</th>'."\n\n";
+        $form .= '<th>'.__('Make No Changes').'</th>'."\n\n";
+        $form .= '<th>'.__('Disable Block').'</th>'."\n\n";
+        $form .= '<th>'.__('Delete Block').'</th>'."\n\n";
         $form .= '</tr>'."\n\n";
         $row=0;
         foreach ($this->blocks as $block) {
@@ -1327,13 +1188,13 @@ class RecoveryConsole
             $form .= '<td class="center">'.$block['bid'].'</td>'."\n\n";
             $form .= '<td>'.$block['bkey'].'</td>'."\n\n";
             $form .= '<td>'.$block['title'].'</td>'."\n\n";
-            $form .= '<td class="center">'.(($block['active']) ? '<img src="images/icons/extrasmall/greenled.gif" alt="'.$block['title'].' :: '._ZRC_TXT_BLOCK_ACTIVE.'" title="'.$block['title'].' :: '._ZRC_TXT_BLOCK_ACTIVE.'" />' : '<img src="images/icons/extrasmall/yellowled.gif" alt="'.$block['title'].' :: '._ZRC_TXT_BLOCK_INACTIVE.'" title="'.$block['title'].' :: '._ZRC_TXT_BLOCK_INACTIVE.'" />').'</td>'."\n\n";
+            $form .= '<td class="center">'.(($block['active']) ? '<img src="images/icons/extrasmall/greenled.gif" alt="'.$block['title'].' :: '.__('active').'" title="'.$block['title'].' :: '.__('active').'" />' : '<img src="images/icons/extrasmall/yellowled.gif" alt="'.$block['title'].' :: '.__('inactive').'" title="'.$block['title'].' :: '.__('inactive').'" />').'</td>'."\n\n";
             $form .= '<td class="center">'.$block['mid'].'</td>'."\n\n";
             $form .= '<td class="center"><input type="radio" name="blocks['.$block['bid'].']" value="0"'.((empty($this->INPUT['blocks'][$block['bid']])) ? ' checked="checked"' : null).' /></td>'."\n\n";
             if ($block['active'] != 0) {
                 $form .= '<td class="center"><input type="radio" name="blocks['.$block['bid'].']" value="1"'.(($this->INPUT['blocks'][$block['bid']]==1) ? ' checked="checked"' : null).' /></td>'."\n\n";
             } else {
-                $form .= '<td class="center">'._ZRC_TXT_NOT_APPLICABLE_ABBR.'</td>';
+                $form .= '<td class="center">'.__('N/A').'</td>';
             }
             $form .= '<td class="center"><input type="radio" name="blocks['.$block['bid'].']" value="2"'.(($this->INPUT['blocks'][$block['bid']]==2) ? ' checked="checked"' : null).' /></td>'."\n\n";
             $form .= '</tr>'."\n\n";
@@ -1346,9 +1207,9 @@ class RecoveryConsole
     // Get additional inputs for password reset.
     public function getUtilityInputsPassword()
     {
-        $form   = '                <div class="row"><div class="row_left"><label for="username">'._ZRC_TXT_PASSWORD_UNAME.'</label></div><div class="row_right"><input type="text" id="username" name="username" value="admin" /></div></div>'."\n";
-        $form  .= '                <div class="row"><div class="row_left"><label for="password1">'._ZRC_TXT_PASSWORD_UPASS.'</label></div><div class="row_right"><input type="password" id="password1" name="password1" /></div></div>'."\n";
-        $form  .= '                <div class="row"><div class="row_left"><label for="password2">'._ZRC_TXT_PASSWORD_UPASSAGAIN.'</label></div><div class="row_right"><input type="password" id="password2" name="password2" /></div></div>'."\n";
+        $form   = '                <div class="row"><div class="row_left"><label for="username">'.__('Username').'</label></div><div class="row_right"><input type="text" id="username" name="username" value="admin" /></div></div>'."\n";
+        $form  .= '                <div class="row"><div class="row_left"><label for="password1">'.__('New password').'</label></div><div class="row_right"><input type="password" id="password1" name="password1" /></div></div>'."\n";
+        $form  .= '                <div class="row"><div class="row_left"><label for="password2">'.__('New password again (for verification)').'</label></div><div class="row_right"><input type="password" id="password2" name="password2" /></div></div>'."\n";
 
         return $form;
     }
@@ -1380,13 +1241,13 @@ class RecoveryConsole
         }
         // Create a submenu for filtering PHP information.
         $form  = '<div id="phpinfo_menu" class="center">'."\n";
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=0" title="'._ZRC_TXT_NAV_PHPINFO_VERSION.'">'._ZRC_TXT_NAV_PHPINFO_VERSION.'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=4" title="'._ZRC_TXT_NAV_PHPINFO_CORE.'">'._ZRC_TXT_NAV_PHPINFO_CORE.'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=32" title="'._ZRC_TXT_NAV_PHPINFO_VARIABLES.'">'._ZRC_TXT_NAV_PHPINFO_VARIABLES.'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=64" title="'._ZRC_TXT_NAV_PHPINFO_LICENSE.'">'._ZRC_TXT_NAV_PHPINFO_LICENSE.'</a> ]'."\n";
+        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=0" title="'.__('PHP Version').'">'.__('PHP Version').'</a> ]';
+        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=4" title="'.__('PHP Core').'">'.__('PHP Core').'</a> ]';
+        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=32" title="'.__('PHP Variables').'">'.__('PHP Variables').'</a> ]';
+        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=64" title="'.__('PHP License').'">'.__('PHP License').'</a> ]'."\n";
         $form .= '<br />';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=16" title="'._ZRC_TXT_NAV_PHPINFO_ENVIRONMENT.'">'._ZRC_TXT_NAV_PHPINFO_ENVIRONMENT.'</a> ]';
-        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=8" title="'._ZRC_TXT_NAV_PHPINFO_APACHE.'">'._ZRC_TXT_NAV_PHPINFO_APACHE.'</a> ]';
+        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=16" title="'.__('PHP Environment').'">'.__('PHP Environment').'</a> ]';
+        $form .= '[ <a href="'._ZRC_APP_SCRIPT.'?op=phpinfo&amp;view=8" title="'.__('Apache Environment').'">'.__('Apache Environment').'</a> ]';
         $form .= '</div>'."\n";
         // Add previously resulting string to object's markup here.
         $form .= $phpinfo;
@@ -1397,14 +1258,14 @@ class RecoveryConsole
     public function getMarkedUpOverview()
     {
         // Assemble and return the form markup.
-        $form  = '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_VERSION.'</div><div class="row_right">'.$this->siteCodebase.' '.$this->siteVersion.'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_CONFIG.'</div><div class="row_right">'.$this->siteConfigFile.'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_STATUS.'</div><div class="row_right">'.(($this->siteInactive) ? '<img src="images/icons/extrasmall/redled.gif" />'._ZRC_TXT_OVERVIEW_SITE_OFF :'<img src="images/icons/extrasmall/greenled.gif" />'._ZRC_TXT_OVERVIEW_SITE_ON).'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_DATABASE.'</div><div class="row_right">'.(($this->dbEnabled) ? '<img src="images/icons/extrasmall/greenled.gif" />'._ZRC_TXT_OVERVIEW_CONNECTED : '<img src="images/icons/extrasmall/redled.gif" />'._ZRC_TXT_OVERVIEW_NOT_CONNECTED).'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_LANGUAGE.'</div><div class="row_right">'.$this->siteLang.'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_DETECTED_THEMES.'</div><div class="row_right">'.$this->getMarkedUpOverviewThemeList().'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_DETECTED_MODS.'</div><div class="row_right">'.$this->getMarkedUpOverviewModuleList().'</div></div>'."\n\n";
-        $form .= '            <div class="row"><div class="row_left">'._ZRC_TXT_OVERVIEW_DETECTED_BLOCKS.'</div><div class="row_right">'.$this->getMarkedUpOverviewBlockList().'</div></div>'."\n\n";
+        $form  = '            <div class="row"><div class="row_left">'.__('Core Version').'</div><div class="row_right">'.$this->siteCodebase.' '.$this->siteVersion.'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Config File').'</div><div class="row_right">'.$this->siteConfigFile.'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Site Status').'</div><div class="row_right">'.(($this->siteInactive) ? '<img src="images/icons/extrasmall/redled.gif" />'.__('Off/Disabled') :'<img src="images/icons/extrasmall/greenled.gif" />'.__('On/Enabled')).'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Database').'</div><div class="row_right">'.(($this->dbEnabled) ? '<img src="images/icons/extrasmall/greenled.gif" />'.__('Connected') : '<img src="images/icons/extrasmall/redled.gif" />'.__('Not Connected')).'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Site Language').'</div><div class="row_right">'.$this->siteLang.'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Detected Themes').'</div><div class="row_right">'.$this->getMarkedUpOverviewThemeList().'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Detected Modules').'</div><div class="row_right">'.$this->getMarkedUpOverviewModuleList().'</div></div>'."\n\n";
+        $form .= '            <div class="row"><div class="row_left">'.__('Detected Blocks').'</div><div class="row_right">'.$this->getMarkedUpOverviewBlockList().'</div></div>'."\n\n";
         $form .= '            <div style="clear:both;"></div>'."\n\n";
         return $form;
     }
@@ -1415,11 +1276,11 @@ class RecoveryConsole
         $list = '';
         // Clause for when no themes came back.
         if (!isset($this->themes['corethemes'])) {
-            return $list = _ZRC_TXT_NONE_DETECTED;
+            return $list = __('None Detected');
         }
 
         if (!empty($this->themes['corethemes'])) {
-            $list .= '<strong>'._ZRC_TXT_OVERVIEW_CORETHEMES.'</strong>';
+            $list .= '<strong>'.__('Core Themes').'</strong>';
             $list .= $this->getMarkedUpOverviewThemeListReal($this->themes['corethemes']);
         }
 
@@ -1432,11 +1293,11 @@ class RecoveryConsole
         $list .= '<ul>';
         foreach ($themesarray as $theme) {
             if ($theme['name'] === $this->siteTheme) {
-                $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$theme['name'].' :: '._ZRC_TXT_OVERVIEW_ACTIVE.'" title="'.$theme['name'].' :: '._ZRC_TXT_OVERVIEW_DEFAULT_THEME.'" />';
+                $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$theme['name'].' :: '.__('active').'" title="'.$theme['name'].' :: '.__('set as default').'" />';
             } else if ($theme['state'] == 1){
-                $list .= '<li><img src="images/icons/extrasmall/yellowled.gif" alt="'.$theme['name'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" title="'.$theme['name'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" />';
+                $list .= '<li><img src="images/icons/extrasmall/yellowled.gif" alt="'.$theme['name'].' :: '.__('inactive').'" title="'.$theme['name'].' :: '.__('inactive').'" />';
             } else {
-                $list .= '<li><img src="images/icons/extrasmall/redled.gif" alt="'.$theme['name'].' :: '._ZRC_TXT_OVERVIEW_UNINITIALIZED.'" title="'.$theme['name'].' :: '._ZRC_TXT_OVERVIEW_UNINITIALIZED.'" />';
+                $list .= '<li><img src="images/icons/extrasmall/redled.gif" alt="'.$theme['name'].' :: '.__('uninitialized').'" title="'.$theme['name'].' :: '.__('uninitialized').'" />';
             }
             // Append theme name.
             $list .= $theme['name'] . '</li>';
@@ -1453,12 +1314,12 @@ class RecoveryConsole
         $list = '';
         // Clause for when no modules came back.
         if (!isset($this->modules['sys_mods']) && !isset($this->modules['usr_mods'])) {
-            return $list = _ZRC_TXT_NONE_DETECTED;
+            return $list = __('None Detected');
         }
 
-        $list .= '<strong>'._ZRC_TXT_OVERVIEW_SYSTEM_MODS.'</strong>';
+        $list .= '<strong>'.__('System Modules').'</strong>';
         $list .= $this->getMarkedUpOverviewModuleListReal($this->modules['sys_mods']);
-        $list .= '<strong>'._ZRC_TXT_OVERVIEW_3RDPARTY_MODS.'</strong>';
+        $list .= '<strong>'.__('Value Added Modules').'</strong>';
         $list .= $this->getMarkedUpOverviewModuleListReal($this->modules['usr_mods']);
         return $list;
     }
@@ -1475,23 +1336,23 @@ class RecoveryConsole
                 $list .= '<li>';
                 switch($mod['state']) {
                     case PNMODULE_STATE_UNINITIALISED:
-                        $list .= '<img src="images/icons/extrasmall/redled.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_UNINITIALIZED.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_UNINITIALIZED.'" />';
+                        $list .= '<img src="images/icons/extrasmall/redled.gif" alt="'.$mod['name'].' :: '.__('uninitialized').'" title="'.$mod['name'].' :: '.__('uninitialized').'" />';
                         break;
                     case PNMODULE_STATE_INACTIVE:
-                        $list .= '<img src="images/icons/extrasmall/yellowled.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" />';
+                        $list .= '<img src="images/icons/extrasmall/yellowled.gif" alt="'.$mod['name'].' :: '.__('inactive').'" title="'.$mod['name'].' :: '.__('inactive').'" />';
                         break;
                     case PNMODULE_STATE_ACTIVE:
-                        $list .= '<img src="images/icons/extrasmall/greenled.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_ACTIVE.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_ACTIVE.'" />';
+                        $list .= '<img src="images/icons/extrasmall/greenled.gif" alt="'.$mod['name'].' :: '.__('active').'" title="'.$mod['name'].' :: '.__('active').'" />';
                         break;
                     case PNMODULE_STATE_MISSING:
-                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_FILESMISSING.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_FILESMISSING.'" />';
+                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '.__('files missing').'" title="'.$mod['name'].' :: '.__('files missing').'" />';
                         break;
                     case PNMODULE_STATE_UPGRADED:
-                        $list .= '<img src="images/icons/extrasmall/agt_update-product.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_UPGRADED.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_UPGRADED.'" />';
+                        $list .= '<img src="images/icons/extrasmall/agt_update-product.gif" alt="'.$mod['name'].' :: '.__('upgraded').'" title="'.$mod['name'].' :: '.__('upgraded').'" />';
                         break;
                     case PNMODULE_STATE_INVALID:
                     default:
-                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_INVALID.'" title="'.$mod['name'].' :: '._ZRC_TXT_OVERVIEW_INVALID.'" />';
+                        $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '.__('invalid').'" title="'.$mod['name'].' :: '.__('invalid').'" />';
                 }
                 // Append module name.
                 $list .= ' '.$mod['name'].'</li>';
@@ -1507,16 +1368,16 @@ class RecoveryConsole
     {
         // Clause for when no blocks came back.
         if (empty($this->blocks)) {
-            return $list = _ZRC_TXT_NONE_DETECTED;
+            return $list = __('None Detected');
         }
         $list = '<ul>';
         // Loop through all blocks.
         foreach ($this->blocks as $block) {
             // Append module-state image.
             if ($block['active'] == 1) {
-                $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_ACTIVE.'" title="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_ACTIVE.'" />';
+                $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$block['title'].' :: '.__('active').'" title="'.$block['title'].' :: '.__('active').'" />';
             } else {
-                $list .= '<li><img src="images/icons/extrasmall/yellowled.gif" alt="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" title="'.$block['title'].' :: '._ZRC_TXT_OVERVIEW_INACTIVE.'" />';
+                $list .= '<li><img src="images/icons/extrasmall/yellowled.gif" alt="'.$block['title'].' :: '.__('inactive').'" title="'.$block['title'].' :: '.__('inactive').'" />';
             }
             // Append block title.
             $list .= ' '.$block['title'].'</li>';
@@ -1531,13 +1392,13 @@ class RecoveryConsole
     {
         // Check if utility is valid.
         if (!in_array($this->utility, $this->getAllUtilities())) {
-            $this->setError(_ZRC_ERR_INVALID_UTILITY);
+            $this->setError(__('Invalid Utility'));
             $this->INPUT = false;
             return false;
         }
         // Check for confirmation value.
         if ($this->INPUT['confirm'] != 1) {
-            $this->setError(_ZRC_ERR_CONFIRM_REQUIRED);
+            $this->setError(__('Confirmation Required'));
             return false;
         }
         
@@ -1574,12 +1435,12 @@ class RecoveryConsole
     {
         // Check if form was submitted.
         if (!System::setVar('siteoff', (int)0)) {
-            $this->setError(_ZRC_ERR_SITE_ENABLING);
+            $this->setError(__('Error Enabling Site'));
             return false;
         }
         $this->siteInactive = false;
         // Set a status message.
-        $this->setStatus(_ZRC_TXT_RECOVERY_SUCCESS);
+        $this->setStatus(__('Recovery Successful'));
         return true;
     }
     
@@ -1590,7 +1451,7 @@ class RecoveryConsole
         $theme = $this->INPUT['theme'];
         // If input theme is not a coretheme validity fails.
         if (!array_key_exists($theme, $this->themes['corethemes'])) {
-            $this->setError(_ZRC_ERR_THEME_INVALID);
+            $this->setError(__('Invalid Theme Name'));
             return false;
         }
         // Set the new theme as default.
@@ -1607,7 +1468,7 @@ class RecoveryConsole
             return false;
         }
         // Set a status message.
-        $this->setStatus(_ZRC_TXT_RECOVERY_SUCCESS);
+        $this->setStatus(__('Recovery Successful'));
         // Recovery successful.
         return true;
     }
@@ -1622,7 +1483,7 @@ class RecoveryConsole
             return false;
         }
         // Set a status message.
-        $this->setStatus(_ZRC_TXT_RECOVERY_SUCCESS);
+        $this->setStatus(__('Recovery Successful'));
         return true;
     }
 
@@ -1651,7 +1512,7 @@ class RecoveryConsole
         // Check if no action is required.
         if (!$action_required) {
             // Set status message and return false.
-            $this->setStatus(_ZRC_ERR_NO_DATA_NO_CHANGE);
+            $this->setStatus(__('No Changes Were Made'));
             return false;
         }
 
@@ -1664,20 +1525,20 @@ class RecoveryConsole
                 // Attempt block disable.
                 if (!$this->disableBlock($bid)) {
                     // Set error.
-                    $this->setError(_ZRC_TXT_BLOCK_DISABLE_FAILED.': '.$block['title']);
+                    $this->setError(__('Block Not Disabled').': '.$block['title']);
                     continue;
                 }
                 // Set status message.
-                $this->setStatus(_ZRC_TXT_BLOCK_DISABLED.': '.$block['title']);
+                $this->setStatus(__('Block Disabled').': '.$block['title']);
             } else if ($action == 2) { // 2 = delete block
                 // Attempt block deletion.
                 if (!$this->deleteBlock($bid)) {
                     // Set error.
-                    $this->setError(_ZRC_TXT_BLOCK_DELETE_FAILED.': '.$block['title']);
+                    $this->setError(__('Block Not Deleted').': '.$block['title']);
                     continue;
                 }
                 // Set status message.
-                $this->setStatus(_ZRC_TXT_BLOCK_DELETED.': '.$block['title']);
+                $this->setStatus(__('Block Deleted').': '.$block['title']);
             }
         }
         // Return false if any errors.
@@ -1685,7 +1546,7 @@ class RecoveryConsole
             return false;
         }
         // Set a status message.
-        $this->setStatus(_ZRC_TXT_RECOVERY_SUCCESS);
+        $this->setStatus(__('Recovery Successful'));
         // Return true for success.
         return true;
     }
@@ -1700,26 +1561,26 @@ class RecoveryConsole
 
         // check that username is not empty
         if (empty($username)) {
-            $this->setError(_ZRC_ERR_PASSWORD_EMPTYUNAME);
+            $this->setError(__('Username cannot be empty'));
             return false;
         }
 
         // check that password is not empty
         if (empty($password1)) {
-            $this->setError(_ZRC_ERR_PASSWORD_EMPTYPASS);
+            $this->setError(__('Password cannot be empty'));
             return false;
         }
 
         // check that passwords match
         if ($password1 != $password2) {
-            $this->setError(_ZRC_ERR_PASSWORD_MISMATCH);
+            $this->setError(__('Passwords do not match'));
             return false;
         }
 
          // check that username is not the anonymous one
         $anonymous = ModUtil::getVar('Users', 'anonymous');
         if ($username == $anonymous || $username == strtolower($anonymous)) {
-            $this->setError(_ZRC_ERR_PASSWORD_ANONYMOUSUSERNAME);
+            $this->setError(__('You cannot change the password for the anonymous user. Please provide the username of a valid user'));
             return false;
         }
 
@@ -1730,14 +1591,14 @@ class RecoveryConsole
         // check that username exists
         $uid = DBUtil::selectField('users', 'uid', $userscolumn['uname']."='".$username."'");
         if (!$uid) {
-            $this->setError(_ZRC_ERR_PASSWORD_INVALIDUSERNAME);
+            $this->setError(__('The username you supplied is not valid'));
             return false;
         }
         
         // hash the password and check if it is valid
         $password = UserUtil::getHashedPassword($password1);
         if (!$password) {
-            $this->setError(_ZRC_ERR_PASSWORD_INVALIDPASSWORD);
+            $this->setError(__('The password you supplied is not valid'));
             return false;
         }
 
@@ -1747,12 +1608,12 @@ class RecoveryConsole
 
         // perform update
         if (!DBUtil::updateObject($obj, 'users', '', 'uid')) {
-            $this->setError(_ZRC_ERR_PASSWORD_RESETFAILED);
+            $this->setError(__('Error resetting the password'));
             return false;
         }
 
         // Set a status message.
-        $this->setStatus(_ZRC_TXT_PASSWORD_RESETSUCCESS);
+        $this->setStatus(__('The password was successfully reset'));
 
         // Recovery successful.
         return true;
@@ -1811,13 +1672,13 @@ class RecoveryConsole
     {
         // Ensure that $bid is 1 or higher.
         if ($bid < 1) {
-            $this->setError(_ZRC_ERR_BLOCK_INVALID_BID);
+            $this->setError(__('Block ID Invalid'));
             return false;
         }
 
         // Verify that block information was obtained.
         if (!BlockUtil::getBlockInfo($bid)) {
-            $this->setError(_ZRC_ERR_BLOCK_NO_SUCH_BLOCK);
+            $this->setError(__('No Such Block Exists'));
             return false;
         }
 
@@ -1826,7 +1687,7 @@ class RecoveryConsole
 
         // Attempt to disable the block.
         if (!DBUtil::updateObject ($obj, 'blocks', '', 'bid')) {
-            $this->setError(_ZRC_ERR_BLOCK_NOT_DISABLED);
+            $this->setError(__('Block Not Disabled'));
             return false;
         }
 
@@ -1838,25 +1699,25 @@ class RecoveryConsole
     {
         // Ensure that $bid is 1 or higher.
         if (!is_numeric($bid) || $bid < 1) {
-            $this->setError(_ZRC_ERR_BLOCK_INVALID_BID);
+            $this->setError(__('Block ID Invalid'));
             return false;
         }
 
         // Ensure block exists.
         if (!BlockUtil::getBlockInfo($bid)) {
-            $this->setError(_ZRC_ERR_BLOCK_NO_SUCH_BLOCK);
+            $this->setError(__('No Such Block Exists'));
             return false;
         }
 
         // Delete block placements for this block.
         if (!DBUtil::deleteObjectByID('block_placements', $bid, 'bid')) {
-            $this->setError(_ZRC_ERR_BLOCK_NOT_DISPLACED);
+            $this->setError(__('Block Placements Not Removed'));
             return false;
         }
 
         // Delete the block itself.
         if (!DBUtil::deleteObjectByID ('blocks', $bid, 'bid')) {
-            $this->setError(_ZRC_ERR_BLOCK_NOT_DELETED);
+            $this->setError(__('Block Not Deleted'));
             return false;
         }
 
@@ -1904,7 +1765,7 @@ class RecoveryConsole
             $obj = array('uid'=>$user['uid'], 'theme'=>'');
             // Update the user's record or fail.
             if (!DBUtil::updateObject($obj, 'users', '', 'uid')) {
-                $this->setError(_ZRC_ERR_RESETTING_USER_THEMES);
+                $this->setError(__('Error Resetting User Themes'));
                 return false;
             }
         }
