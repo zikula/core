@@ -706,6 +706,22 @@ class ModUtil
     }
 
     /**
+     * Initialise all modules.
+     *
+     * @return void
+     */
+    public static function loadAll()
+    {
+        $modules = self::getModsTable();
+        unset($modules[0]);
+        foreach ($modules as $module) {
+            if (self::available($module['name'])) {
+                self::loadGeneric($module['name']);
+            }
+        }
+    }
+
+    /**
      * Add stylesheet to the page vars.
      *
      * This makes the modulestylesheet plugin obsolete,
