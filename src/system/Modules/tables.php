@@ -27,13 +27,13 @@
 function Modules_tables()
 {
     // Initialise table array
-    $pntable = array();
+    $dbtable = array();
     $prefix = System::getVar('prefix');
 
     // modules module
     $hooks = $prefix . '_hooks';
-    $pntable['hooks'] = $hooks;
-    $pntable['hooks_column'] = array ('id'        => 'pn_id',
+    $dbtable['hooks'] = $hooks;
+    $dbtable['hooks_column'] = array ('id'        => 'pn_id',
                                       'object'    => 'pn_object',
                                       'action'    => 'pn_action',
                                       'smodule'   => 'pn_smodule',
@@ -45,7 +45,7 @@ function Modules_tables()
                                       'sequence'  => 'pn_sequence');
 
     // column definition
-    $pntable['hooks_column_def'] = array('id'        => 'I AUTO PRIMARY',
+    $dbtable['hooks_column_def'] = array('id'        => 'I AUTO PRIMARY',
                                          'object'    => "C(64) NOTNULL DEFAULT ''",
                                          'action'    => "C(64) NOTNULL DEFAULT ''",
                                          'smodule'   => "C(64) NOTNULL DEFAULT ''",
@@ -57,16 +57,16 @@ function Modules_tables()
                                          'sequence'  => "I NOTNULL DEFAULT 0");
 
     // additional indexes
-    $pntable['hooks_column_idx'] = array ('smodule'         => 'smodule',
+    $dbtable['hooks_column_idx'] = array ('smodule'         => 'smodule',
                                           'smodule_tmodule' => array('smodule', 'tmodule'));
 
     // A bit of magic to handle upgrades from 0.76x to 0.8x
     $modules = $prefix . '_modules';
-    $pntable['modules'] = $modules;
-    $pntable['modules_column'] = Modules_tables_detectversion();
+    $dbtable['modules'] = $modules;
+    $dbtable['modules_column'] = Modules_tables_detectversion();
 
     // column definition
-    $pntable['modules_column_def'] = array ('id'             => "I PRIMARY AUTO",
+    $dbtable['modules_column_def'] = array ('id'             => "I PRIMARY AUTO",
                                             'name'           => "C(64) NOTNULL DEFAULT ''",
                                             'type'           => "I1 NOTNULL DEFAULT 0",
                                             'displayname'    => "C(64) NOTNULL DEFAULT ''",
@@ -90,30 +90,30 @@ function Modules_tables()
                                             'securityschema' => "X NOTNULL DEFAULT ''");
 
     // additional indexes
-    $pntable['modules_column_idx'] = array ('state'        => 'state',
+    $dbtable['modules_column_idx'] = array ('state'        => 'state',
                                             'mod_state'    => array('name', 'state'));
 
     $module_vars = $prefix . '_module_vars';
-    $pntable['module_vars'] = $module_vars;
-    $pntable['module_vars_column'] = array ('id'      => 'pn_id',
+    $dbtable['module_vars'] = $module_vars;
+    $dbtable['module_vars_column'] = array ('id'      => 'pn_id',
                                             'modname' => 'pn_modname',
                                             'name'    => 'pn_name',
                                             'value'   => 'pn_value');
 
     // column definition
-    $pntable['module_vars_column_def'] = array('id'      => "I PRIMARY AUTO",
+    $dbtable['module_vars_column_def'] = array('id'      => "I PRIMARY AUTO",
                                                'modname' => "C(64) NOTNULL DEFAULT ''",
                                                'name'    => "C(64) NOTNULL DEFAULT ''",
                                                'value'   => "XL");
 
     // additional indexes
-    $pntable['module_vars_column_idx'] = array ('mod_var' => array('modname', 'name'));
+    $dbtable['module_vars_column_idx'] = array ('mod_var' => array('modname', 'name'));
 
 
     //$module_dependencies = DBUtil::getLimitedTablename('module_deps');
     $module_deps = $prefix . '_module_deps';
-    $pntable['module_deps'] = $module_deps;
-    $pntable['module_deps_column'] = array ('id'          => 'pn_id',
+    $dbtable['module_deps'] = $module_deps;
+    $dbtable['module_deps_column'] = array ('id'          => 'pn_id',
                                             'modid'       => 'pn_modid',
                                             'modname'     => 'pn_modname',
                                             'minversion'  => 'pn_minversion',
@@ -121,14 +121,14 @@ function Modules_tables()
                                             'status'      => 'pn_status');
 
     // column definition
-    $pntable['module_deps_column_def'] = array('id'         => "I4 PRIMARY AUTO",
+    $dbtable['module_deps_column_def'] = array('id'         => "I4 PRIMARY AUTO",
                                                'modid'      => "I NOTNULL DEFAULT 0",
                                                'modname'    => "C(64) NOTNULL DEFAULT ''",
                                                'minversion' => "C(10) NOTNULL DEFAULT ''",
                                                'maxversion' => "C(10) NOTNULL DEFAULT ''",
                                                'status'     => "I1 NOTNULL DEFAULT 0");
 
-    return $pntable;
+    return $dbtable;
 }
 
 

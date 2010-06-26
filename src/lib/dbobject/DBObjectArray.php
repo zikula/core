@@ -223,11 +223,11 @@ class DBObjectArray
     public function _init($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
         if ($this->_objType != 'DBOBJECTARRAY') {
-            $pntables = DBUtil::getTables();
+            $dbtables = DBUtil::getTables();
             $tkey = $this->_objType;
             $ckey = $tkey . "_column";
-            $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : '';
-            $this->_columns = isset($pntables[$ckey]) ? $pntables[$ckey] : '';
+            $this->_table = isset($dbtables[$tkey]) ? $dbtables[$tkey] : '';
+            $this->_columns = isset($dbtables[$ckey]) ? $dbtables[$ckey] : '';
         }
 
         if (!$init) {
@@ -289,11 +289,11 @@ class DBObjectArray
      */
     public function generateEmptyObjectArray($num = 1)
     {
-        $pntables = DBUtil::getTables();
+        $dbtables = DBUtil::getTables();
         $tkey = $this->_objType;
         $ckey = $this->_objType . "_column";
-        $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : '';
-        $this->_columns = isset($pntables[$ckey]) ? $pntables[$ckey] : '';
+        $this->_table = isset($dbtables[$tkey]) ? $dbtables[$tkey] : '';
+        $this->_columns = isset($dbtables[$ckey]) ? $dbtables[$ckey] : '';
 
         $item = array();
         foreach ($this->_columns as $k => $v) {

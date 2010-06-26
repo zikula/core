@@ -17,26 +17,26 @@
  */
 function Groups_tables()
 {
-    $pntable = array();
+    $dbtable = array();
 
     // get the db driver
     $dbdriver = DBConnectionStack::getConnectionDBDriver();
 
     $group_membership = DBUtil::getLimitedTablename('group_membership') ;
-    $pntable['group_membership'] = $group_membership;
-    $pntable['group_membership_column'] = array ('gid' => 'pn_gid',
+    $dbtable['group_membership'] = $group_membership;
+    $dbtable['group_membership_column'] = array ('gid' => 'pn_gid',
                                                  'uid' => 'pn_uid');
 
     // column definitions
-    $pntable['group_membership_column_def'] = array ('gid' => 'I NOTNULL DEFAULT 0',
+    $dbtable['group_membership_column_def'] = array ('gid' => 'I NOTNULL DEFAULT 0',
                                                      'uid' => 'I NOTNULL DEFAULT 0');
 
     // addtitional indexes
-    $pntable['group_membership_column_idx'] = array ('gid_uid' => array('uid', 'gid'));
+    $dbtable['group_membership_column_idx'] = array ('gid_uid' => array('uid', 'gid'));
 
     $groups = DBUtil::getLimitedTablename('groups') ;
-    $pntable['groups'] = $groups;
-    $pntable['groups_column'] = array ('gid'          => 'pn_gid',
+    $dbtable['groups'] = $groups;
+    $dbtable['groups_column'] = array ('gid'          => 'pn_gid',
                                        'name'         => 'pn_name',
                                        'gtype'        => 'pn_gtype',
                                        'description'  => 'pn_description',
@@ -48,7 +48,7 @@ function Groups_tables()
                                        'uidmaster'    => 'pn_uidmaster');
 
     // column definitions
-    $pntable['groups_column_def'] = array('gid'         => "I AUTO PRIMARY",
+    $dbtable['groups_column_def'] = array('gid'         => "I AUTO PRIMARY",
                                           'name'        => "C(255) NOTNULL DEFAULT ''",
                                           'gtype'       => "I1 NOTNULL DEFAULT 0",
                                           'description' => "C(200) NOTNULL DEFAULT ''",
@@ -61,19 +61,19 @@ function Groups_tables()
 
     // limit table name, see DBUtil::limitTablename() for more information about this
     $group_applications = DBUtil::getLimitedTablename('group_applications') ;
-    $pntable['group_applications'] = $group_applications;
-    $pntable['group_applications_column'] = array ('app_id'      => 'pn_app_id',
+    $dbtable['group_applications'] = $group_applications;
+    $dbtable['group_applications_column'] = array ('app_id'      => 'pn_app_id',
                                                    'uid'         => 'pn_uid',
                                                    'gid'         => 'pn_gid',
                                                    'application' => 'pn_application',
                                                    'status'      => 'pn_status');
 
     // column definition
-    $pntable['group_applications_column_def'] = array ('app_id'      => 'I4 NOTNULL AUTO PRIMARY',
+    $dbtable['group_applications_column_def'] = array ('app_id'      => 'I4 NOTNULL AUTO PRIMARY',
                                                        'uid'         => 'I4 NOTNULL DEFAULT 0',
                                                        'gid'         => 'I4 NOTNULL DEFAULT 0',
                                                        'application' => ($dbdriver=='oci8') ? 'XL NOTNULL' : 'B NOTNULL',
                                                        'status'      => 'I1 NOTNULL DEFAULT 0');
 
-    return $pntable;
+    return $dbtable;
 }

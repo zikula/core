@@ -134,8 +134,8 @@ class Modules_Installer extends Zikula_Installer
     {
         // set the default data for the Modules module
 
-        $pntables = DBUtil::getTables();
-        $modcolumn = $pntables['modules_column'];
+        $dbtables = DBUtil::getTables();
+        $modcolumn = $dbtables['modules_column'];
 
         $where = 'WHERE '.$modcolumn['name'].'=\'Modules\'';
         $modversion = DBUtil::selectObject('modules', $where);

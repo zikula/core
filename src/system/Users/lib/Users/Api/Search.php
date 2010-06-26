@@ -77,8 +77,8 @@ class Users_Api_Search extends Zikula_Api
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
         // get the db and table info
-        $pntable = DBUtil::getTables();
-        $userscolumn = $pntable['users_column'];
+        $dbtable = DBUtil::getTables();
+        $userscolumn = $dbtable['users_column'];
 
         $q = DataUtil::formatForStore($args['q']);
         $q = str_replace('%', '\\%', $q);  // Don't allow user input % as wildcard

@@ -262,8 +262,8 @@ class SecurityCenter_Api_User extends Zikula_Api
      */
     public function loghackattempttodb($args)
     {
-        $pntable = DBUtil::getTables();
-        $anticrackerColumn = $pntable['sc_anticracker_column'];
+        $dbtable = DBUtil::getTables();
+        $anticrackerColumn = $dbtable['sc_anticracker_column'];
 
         $hacktime = time();
 

@@ -26,14 +26,14 @@
 function Blocks_tables()
 {
     // Initialise table array
-    $pntable = array();
+    $dbtable = array();
 
     // get the db driver
     $dbdriver = DBConnectionStack::getConnectionDBDriver();
 
     $blocks = DBUtil::getLimitedTablename('blocks') ;
-    $pntable['blocks'] = $blocks;
-    $pntable['blocks_column'] = array ('bid'         => 'pn_bid',
+    $dbtable['blocks'] = $blocks;
+    $dbtable['blocks_column'] = array ('bid'         => 'pn_bid',
                                        'bkey'        => 'pn_bkey',
                                        'title'       => 'pn_title',
                                        'content'     => 'pn_content',
@@ -48,7 +48,7 @@ function Blocks_tables()
                                        'language'    => 'pn_language');
 
     // column definition
-    $pntable['blocks_column_def'] = array ('bid'          => "I AUTO PRIMARY",
+    $dbtable['blocks_column_def'] = array ('bid'          => "I AUTO PRIMARY",
                                            'bkey'         => "C(255) NOTNULL DEFAULT ''",
                                            'title'        => "C(255) NOTNULL DEFAULT ''",
                                            'content'      => "XL NOTNULL",
@@ -63,53 +63,53 @@ function Blocks_tables()
                                            'defaultstate' => "I NOTNULL DEFAULT 1");
 
     // additional indexes
-    $pntable['blocks_column_idx'] = array ('active_idx' => 'active');
+    $dbtable['blocks_column_idx'] = array ('active_idx' => 'active');
 
     // additional indexes
     $userblocks = DBUtil::getLimitedTablename('userblocks') ;
-    $pntable['userblocks'] = $userblocks;
-    $pntable['userblocks_column'] = array ('uid'         => 'pn_uid',
+    $dbtable['userblocks'] = $userblocks;
+    $dbtable['userblocks_column'] = array ('uid'         => 'pn_uid',
                                            'bid'         => 'pn_bid',
                                            'active'      => 'pn_active',
                                            'lastupdate'  => 'pn_last_update');
 
     // column definition
-    $pntable['userblocks_column_def'] = array ('uid'         => "I NOTNULL DEFAULT 0",
+    $dbtable['userblocks_column_def'] = array ('uid'         => "I NOTNULL DEFAULT 0",
                                                'bid'         => "I NOTNULL DEFAULT 0",
                                                'active'      => "I1 NOTNULL DEFAULT 1",
                                                'lastupdate'  => "T DEFTIMESTAMP");
 
     // additional indexes
-    $pntable['userblocks_column_idx'] = array ('bid_uid_idx'    => array('uid', 'bid'));
+    $dbtable['userblocks_column_idx'] = array ('bid_uid_idx'    => array('uid', 'bid'));
 
     $block_positions = DBUtil::getLimitedTablename('block_positions') ;
-    $pntable['block_positions'] = $block_positions;
-    $pntable['block_positions_column'] = array ('pid'         => 'pn_pid',
+    $dbtable['block_positions'] = $block_positions;
+    $dbtable['block_positions_column'] = array ('pid'         => 'pn_pid',
                                                 'name'        => 'pn_name',
                                                 'description' => 'pn_description');
 
     // column definitions
-    $pntable['block_positions_column_def'] = array('pid'         => "I AUTO PRIMARY",
+    $dbtable['block_positions_column_def'] = array('pid'         => "I AUTO PRIMARY",
                                                    'name'        => "C(255) NOTNULL DEFAULT ''",
                                                    'description' => "C(255) NOTNULL DEFAULT ''");
 
     // additional indexes
-    $pntable['block_positions_column_idx'] = array ('name_idx' => 'name');
+    $dbtable['block_positions_column_idx'] = array ('name_idx' => 'name');
 
     $block_placements = DBUtil::getLimitedTablename('block_placements') ;
-    $pntable['block_placements'] = $block_placements;
-    $pntable['block_placements_column'] = array ('pid'   => 'pn_pid',
+    $dbtable['block_placements'] = $block_placements;
+    $dbtable['block_placements_column'] = array ('pid'   => 'pn_pid',
                                                  'bid'   => 'pn_bid',
                                                  'order' => 'pn_order');
 
     // column definitions
-    $pntable['block_placements_column_def'] = array('pid'    => "I NOTNULL DEFAULT 0",
+    $dbtable['block_placements_column_def'] = array('pid'    => "I NOTNULL DEFAULT 0",
                                                     'bid'    => "I NOTNULL DEFAULT 0",
                                                     'order'  => "I NOTNULL DEFAULT 0");
 
     // additional indexes
-    $pntable['block_placements_column_idx'] = array ('bid_pid_idx'    => array('bid', 'pid'));
+    $dbtable['block_placements_column_idx'] = array ('bid_pid_idx'    => array('bid', 'pid'));
 
     // Return the table information
-    return $pntable;
+    return $dbtable;
 }

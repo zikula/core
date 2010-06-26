@@ -860,7 +860,7 @@ class UserUtil
      */
     public static function setVar($name, $value, $uid = -1)
     {
-        $pntable = DBUtil::getTables();
+        $dbtable = DBUtil::getTables();
 
         if (empty($name)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - empty(\$name).", 'DEBUG');
@@ -1402,8 +1402,8 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
     {
-        $pntable = DBUtil::getTables();
-        $userscolumn = $pntable['users_column'];
+        $dbtable = DBUtil::getTables();
+        $userscolumn = $dbtable['users_column'];
 
         if (empty($where)) {
             $sqlFragments = array();
@@ -1488,8 +1488,8 @@ class UserUtil
             return false;
         }
 
-        $pntables = DBUtil::getTables();
-        return array_key_exists($label, $pntables['users_column']);
+        $dbtables = DBUtil::getTables();
+        return array_key_exists($label, $dbtables['users_column']);
     }
 
     /**

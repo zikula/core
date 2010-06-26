@@ -91,10 +91,10 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
         // Rename operation
-        $pntable = DBUtil::getTables();
+        $dbtable = DBUtil::getTables();
 
-        $modulescolumn = $pntable['modules_column'];
-        $hookscolumn = $pntable['hooks_column'];
+        $modulescolumn = $dbtable['modules_column'];
+        $hookscolumn = $dbtable['hooks_column'];
 
         // Hooks
         // Get module name
@@ -146,10 +146,10 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
         // Rename operation
-        $pntable = DBUtil::getTables();
+        $dbtable = DBUtil::getTables();
 
-        $modulescolumn = $pntable['modules_column'];
-        $hookscolumn = $pntable['hooks_column'];
+        $modulescolumn = $dbtable['modules_column'];
+        $hookscolumn = $dbtable['hooks_column'];
 
         // Hooks
         // Get module information
@@ -235,8 +235,8 @@ class Modules_Api_Admin extends Zikula_Api
         SessionUtil::setVar('sort', $sort);
 
         // Obtain information
-        $pntable = DBUtil::getTables();
-        $modulescolumn = $pntable['modules_column'];
+        $dbtable = DBUtil::getTables();
+        $modulescolumn = $dbtable['modules_column'];
 
         // filter my first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
@@ -1155,8 +1155,8 @@ class Modules_Api_Admin extends Zikula_Api
      */
     public function countitems($args)
     {
-        $pntable = DBUtil::getTables();
-        $modulescolumn = $pntable['modules_column'];
+        $dbtable = DBUtil::getTables();
+        $modulescolumn = $dbtable['modules_column'];
 
         // filter my first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
@@ -1207,8 +1207,8 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = DBUtil::getTables();
-        $hookscolumn = $pntable['hooks_column'];
+        $dbtable = DBUtil::getTables();
+        $hookscolumn = $dbtable['hooks_column'];
 
         $where = "WHERE $hookscolumn[tmodule]='" . DataUtil::formatForStore($args['hookmodname']) . "'";
         if (!empty($args['hookobject'])) {
@@ -1264,8 +1264,8 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = DBUtil::getTables();
-        $hookscolumn = $pntable['hooks_column'];
+        $dbtable = DBUtil::getTables();
+        $hookscolumn = $dbtable['hooks_column'];
 
         // Rename operation
         // Delete hooks regardless
@@ -1318,8 +1318,8 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Rename operation
-        $pntable = DBUtil::getTables();
-        $hookscolumn = $pntable['hooks_column'];
+        $dbtable = DBUtil::getTables();
+        $hookscolumn = $dbtable['hooks_column'];
 
         // Delete hooks regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
@@ -1348,8 +1348,8 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        $pntable = DBUtil::getTables();
-        $hookscolumn = $pntable['hooks_column'];
+        $dbtable = DBUtil::getTables();
+        $hookscolumn = $dbtable['hooks_column'];
 
         $where = "WHERE $hookscolumn[smodule] = ''
                  OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
@@ -1401,8 +1401,8 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        $pntable = DBUtil::getTables();
-        $hookscolumn = $pntable['hooks_column'];
+        $dbtable = DBUtil::getTables();
+        $hookscolumn = $dbtable['hooks_column'];
 
         $where = "WHERE $hookscolumn[smodule] = ''";
         $orderBy = "ORDER BY $hookscolumn[action],

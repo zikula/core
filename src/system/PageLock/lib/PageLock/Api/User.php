@@ -106,9 +106,9 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $args['lockedBy'] = null;
 
-        $pntable = DBUtil::getTables();
-        $pageLockTable = &$pntable['PageLock'];
-        $pageLockColumn = &$pntable['PageLock_column'];
+        $dbtable = DBUtil::getTables();
+        $pageLockTable = &$dbtable['PageLock'];
+        $pageLockColumn = &$dbtable['PageLock_column'];
 
         // Look for existing lock
 
@@ -153,8 +153,8 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         $this->_pageLockRequireAccess();
 
-        $pntable = DBUtil::getTables();
-        $pageLockColumn = &$pntable['PageLock_column'];
+        $dbtable = DBUtil::getTables();
+        $pageLockColumn = &$dbtable['PageLock_column'];
         $now = time();
 
         $where = "{$pageLockColumn['expiresDate']} < '" . DateUtil::getDatetime($now) . "'";
@@ -175,9 +175,9 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         $this->_pageLockRequireAccess();
 
-        $pntable = DBUtil::getTables();
-        $pageLockTable = &$pntable['PageLock'];
-        $pageLockColumn = &$pntable['PageLock_column'];
+        $dbtable = DBUtil::getTables();
+        $pageLockTable = &$dbtable['PageLock'];
+        $pageLockColumn = &$dbtable['PageLock_column'];
 
         $sql = "DELETE FROM $pageLockTable WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
         DBUtil::executeSql($sql);

@@ -51,10 +51,10 @@ class Search_Api_User extends Zikula_Api
 
         // Load database stuff
         ModUtil::dbInfoLoad('Search');
-        $pntable      = DBUtil::getTables();
+        $dbtable      = DBUtil::getTables();
         $userId       = (int)UserUtil::getVar('uid');
-        $searchTable  = $pntable['search_result'];
-        $searchColumn = $pntable['search_result_column'];
+        $searchTable  = $dbtable['search_result'];
+        $searchColumn = $dbtable['search_result_column'];
 
         // Create restriction on result table (so user only sees own results)
         $userResultWhere = "$searchColumn[session] = '" . session_id() . "'";

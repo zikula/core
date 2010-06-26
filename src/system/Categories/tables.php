@@ -21,11 +21,11 @@
 function Categories_tables()
 {
     // Initialise table array
-    $pntable = array();
+    $dbtable = array();
     $prefix = System::getVar('prefix');
 
     $table = DBUtil::getLimitedTablename('categories_category');
-    $pntable['categories_category'] = $table;
+    $dbtable['categories_category'] = $table;
     $columns = array('id'              => 'cat_id',
                      'parent_id'       => 'cat_parent_id',
                      'is_locked'       => 'cat_is_locked',
@@ -39,10 +39,10 @@ function Categories_tables()
                      'ipath'           => 'cat_ipath',
                      'status'          => 'cat_status');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'cat_');
-    $pntable['categories_category_column'] = $columns;
+    $dbtable['categories_category_column'] = $columns;
 
     // Enable attribution services
-    $pntable['categories_category_db_extra_enable_attribution'] = true;
+    $dbtable['categories_category_db_extra_enable_attribution'] = true;
 
     $pathType = 'X';
     $dbType = DBConnectionStack::getConnectionDBType();
@@ -65,24 +65,24 @@ function Categories_tables()
                       'ipath'           => "C(255) NOTNULL DEFAULT ''",
                       'status'          => "C(1) NOTNULL DEFAULT 'A'");
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'cat_');
-    $pntable['categories_category_column_def'] = $tabledef;
+    $dbtable['categories_category_column_def'] = $tabledef;
 
     $table = DBUtil::getLimitedTablename('categories_mapmeta');
-    $pntable['categories_mapmeta'] = $table;
+    $dbtable['categories_mapmeta'] = $table;
     $columns = array('id'          => 'cmm_id',
                      'meta_id'     => 'cmm_meta_id',
                      'category_id' => 'cmm_category_id');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'cmm_');
-    $pntable['categories_mapmeta_column'] = $columns;
+    $dbtable['categories_mapmeta_column'] = $columns;
 
     $tabledef = array('id'          => 'I4 PRIMARY AUTO',
                       'meta_id'     => 'I4 NOTNULL DEFAULT 0',
                       'category_id' => 'I4  NOTNULL DEFAULT 0');
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'cmm_');
-    $pntable['categories_mapmeta_column_def'] = $tabledef;
+    $dbtable['categories_mapmeta_column_def'] = $tabledef;
 
     $table = DBUtil::getLimitedTablename('categories_mapobj');
-    $pntable['categories_mapobj'] = $table;
+    $dbtable['categories_mapobj'] = $table;
     $columns = array('id'           => 'cmo_id',
                      'modname'      => 'cmo_modname',
                      'table'        => 'cmo_table',
@@ -91,7 +91,7 @@ function Categories_tables()
                      'reg_id'       => 'cmo_reg_id',
                      'category_id'  => 'cmo_category_id');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'cmo_');
-    $pntable['categories_mapobj_column'] = $columns;
+    $dbtable['categories_mapobj_column'] = $columns;
 
     $tabledef = array('id'           => 'I4 PRIMARY AUTO',
                       'modname'      => "C(60) NOTNULL DEFAULT ''",
@@ -101,17 +101,17 @@ function Categories_tables()
                       'reg_id'       => 'I4 NOTNULL DEFAULT 0',
                       'category_id'  => 'I4 NOTNULL DEFAULT 0');
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'cmo_');
-    $pntable['categories_mapobj_column_def'] = $tabledef;
+    $dbtable['categories_mapobj_column_def'] = $tabledef;
 
     $table = DBUtil::getLimitedTablename('categories_registry');
-    $pntable['categories_registry'] = $table;
+    $dbtable['categories_registry'] = $table;
     $columns = array('id'           => 'crg_id',
                      'modname'      => 'crg_modname',
                      'table'        => 'crg_table',
                      'property'     => 'crg_property',
                      'category_id'  => 'crg_category_id');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'crg_');
-    $pntable['categories_registry_column'] = $columns;
+    $dbtable['categories_registry_column'] = $columns;
 
     $tabledef = array('id' => 'I4 PRIMARY AUTO',
                       'modname' => "C(60) NOTNULL DEFAULT ''",
@@ -119,6 +119,6 @@ function Categories_tables()
                       'property' => "C(60) NOTNULL DEFAULT ''",
                       'category_id' => 'I4 NOTNULL DEFAULT 0');
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'crg_');
-    $pntable['categories_registry_column_def'] = $tabledef;
-    return $pntable;
+    $dbtable['categories_registry_column_def'] = $tabledef;
+    return $dbtable;
 }

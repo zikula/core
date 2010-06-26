@@ -22,22 +22,22 @@ function Search_tables()
 {
     $search_stat = DBUtil::getLimitedTablename('search_stat');
 
-    $pntable = array();
-    $pntable['search_stat'] = $search_stat;
-    $pntable['search_stat_column'] = array ('id'     => 'pn_id',
+    $dbtable = array();
+    $dbtable['search_stat'] = $search_stat;
+    $dbtable['search_stat_column'] = array ('id'     => 'pn_id',
                                             'search' => 'pn_search',
                                             'count'  => 'pn_count',
                                             'date'   => 'pn_date');
 
     // column definitions
-    $pntable['search_stat_column_def'] = array ('id'     => 'I4 PRIMARY AUTO',
+    $dbtable['search_stat_column_def'] = array ('id'     => 'I4 PRIMARY AUTO',
                                                 'search' => 'C(50) NOTNULL DEFAULT ""',
                                                 'count'  => 'I4    NOTNULL DEFAULT "0"',
                                                 'date'   => 'D     DEFDATE');
 
     $search_result = DBUtil::getLimitedTablename('search_result');
-    $pntable['search_result'] = $search_result;
-    $pntable['search_result_column'] = array ('id'      => 'sres_id',
+    $dbtable['search_result'] = $search_result;
+    $dbtable['search_result_column'] = array ('id'      => 'sres_id',
                                               'title'   => 'sres_title',
                                               'text'    => 'sres_text',
                                               'module'  => 'sres_module',
@@ -47,7 +47,7 @@ function Search_tables()
                                               'session' => 'sres_sesid');
 
     // column definitions
-    $pntable['search_result_column_def'] = array ('id'      => 'I4 PRIMARY AUTO',
+    $dbtable['search_result_column_def'] = array ('id'      => 'I4 PRIMARY AUTO',
                                                   'title'   => 'C(255) NOTNULL DEFAULT ""',
                                                   'text'    => 'XL',
                                                   'module'  => 'C(100)',
@@ -57,9 +57,9 @@ function Search_tables()
                                                   'session' => 'C(50)');
 
     // additional indexes
-    $pntable['search_result_column_idx'] = array ('title'  => 'title',
+    $dbtable['search_result_column_idx'] = array ('title'  => 'title',
                                                   'module' => 'module');
 
 
-    return $pntable;
+    return $dbtable;
 }

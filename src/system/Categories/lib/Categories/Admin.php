@@ -42,14 +42,14 @@ class Categories_Admin extends Zikula_Controller
 
         // disable attribution for performance
         $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = false;
-        $pntables    = System::dbGetTables ();
+        $dbtables    = System::dbGetTables ();
         $columnArray = array ('id', 'name', 'display_name', 'parent_id', 'path', 'ipath', 'status');
         $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true, '', '', null, $columnArray);
         $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);
         $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = true;
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('menuTxt', $menuTxt);
         return $this->renderer->fetch('categories_admin_view.tpl');
     }
@@ -144,7 +144,7 @@ class Categories_Admin extends Zikula_Controller
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('mode', $mode)
                        ->assign('category', $editCat)
                        ->assign('attributes', $attributes)
@@ -227,7 +227,7 @@ class Categories_Admin extends Zikula_Controller
         $selector    = CategoryUtil::getSelector_Categories ($allCats);
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('category', $category)
                        ->assign('numSubcats', count($subCats))
                        ->assign('categorySelector', $selector);

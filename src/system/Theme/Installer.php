@@ -107,8 +107,8 @@ class Theme_Installer extends Zikula_Installer
                 }
 
                 // check and fix permissions
-                $pntable = DBUtil::getTables();
-                $permscolumn = $pntable['group_perms_column'];
+                $dbtable = DBUtil::getTables();
+                $permscolumn = $dbtable['group_perms_column'];
                 $permswhere = "WHERE $permscolumn[component] = 'pnRender:pnRenderblock:'";
                 $perms = DBUtil::selectObjectArray('group_perms', $permswhere);
                 if (!empty($perms)) {

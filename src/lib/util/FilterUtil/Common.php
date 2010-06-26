@@ -22,7 +22,7 @@ class FilterUtil_Common
      *
      * @var string
      */
-    protected static $pntable;
+    protected static $dbtable;
 
     /**
      * Module's name.

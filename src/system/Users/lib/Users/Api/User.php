@@ -191,8 +191,8 @@ class Users_Api_User extends Zikula_Api
             return false;
         }
 
-        $pntable = DBUtil::getTables();
-        $propertycolumn = $pntable['user_property_column'];
+        $dbtable = DBUtil::getTables();
+        $propertycolumn = $dbtable['user_property_column'];
 
         $extrawhere = '';
         if (isset($args['proplabel']) && !empty($args['proplabel'])) {

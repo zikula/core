@@ -37,8 +37,8 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = DBUtil::getTables();
-        $groupcolumn = $pntable['groups_column'];
+        $dbtable = DBUtil::getTables();
+        $groupcolumn = $dbtable['groups_column'];
 
         // Get items
         $orderBy = "ORDER BY $groupcolumn[name]";
@@ -82,8 +82,8 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = DBUtil::getTables();
-        $groupmembershipcolumn = $pntable['group_membership_column'];
+        $dbtable = DBUtil::getTables();
+        $groupmembershipcolumn = $dbtable['group_membership_column'];
 
         // Get item
         $result = DBUtil::selectObjectByID('groups', $args['gid'], 'gid');
@@ -133,8 +133,8 @@ class Groups_Api_User extends Zikula_Api
      */
     public function countitems()
     {
-        $pntable = DBUtil::getTables();
-        $grpcol = $pntable['groups_column'];
+        $dbtable = DBUtil::getTables();
+        $grpcol = $dbtable['groups_column'];
 
         $where = "WHERE $grpcol[gtype] >= '1'";
         if ($this->getVar('hideclosed')) {
@@ -157,8 +157,8 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = DBUtil::getTables();
-        $groupmembershipcolumn = $pntable['group_membership_column'];
+        $dbtable = DBUtil::getTables();
+        $groupmembershipcolumn = $dbtable['group_membership_column'];
 
         // Get item
         $where = "WHERE $groupmembershipcolumn[gid] = '" . (int)DataUtil::formatForStore($args['gid']) ."'";
@@ -191,8 +191,8 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = DBUtil::getTables();
-        $groupmembershipcolumn = $pntable['group_membership_column'];
+        $dbtable = DBUtil::getTables();
+        $groupmembershipcolumn = $dbtable['group_membership_column'];
 
         // Get item
         $where = "WHERE  $groupmembershipcolumn[uid] = '" . (int)DataUtil::formatForStore($args['uid']) ."'";
@@ -237,8 +237,8 @@ class Groups_Api_User extends Zikula_Api
             return $items;
         }
 
-        $pntable = DBUtil::getTables();
-        $grpcol = $pntable['groups_column'];
+        $dbtable = DBUtil::getTables();
+        $grpcol = $dbtable['groups_column'];
 
         $where = "WHERE $grpcol[gtype] >= '1'";
         if ($this->getVar('hideclosed')) {
@@ -390,8 +390,8 @@ class Groups_Api_User extends Zikula_Api
                 'uid' => $args['uid']));
 
         if ($ispending == true) {
-            $pntable = DBUtil::getTables();
-            $col = $pntable['group_applications_column'];
+            $dbtable = DBUtil::getTables();
+            $col = $dbtable['group_applications_column'];
 
             list($gid, $uid) = DataUtil::formatForStore($gid, $uid);
             $where = "WHERE $col[gid] = '".(int)DataUtil::formatForStore($args['gid'])."'
@@ -418,8 +418,8 @@ class Groups_Api_User extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = DBUtil::getTables();
-        $col = $pntable['group_applications_column'];
+        $dbtable = DBUtil::getTables();
+        $col = $dbtable['group_applications_column'];
 
         // Check in case the user already applied
         $where = " WHERE $col[gid] = '".(int)DataUtil::formatForStore($args['gid'])."'
@@ -595,8 +595,8 @@ class Groups_Api_User extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = DBUtil::getTables();
-        $groupmembershipcolumn = $pntable['group_membership_column'];
+        $dbtable = DBUtil::getTables();
+        $groupmembershipcolumn = $dbtable['group_membership_column'];
 
         // delete item
         $where = "WHERE $groupmembershipcolumn[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
@@ -620,8 +620,8 @@ class Groups_Api_User extends Zikula_Api
      */
     public function whosonline($args)
     {
-        $pntable = DBUtil::getTables();
-        $col = $pntable['session_info_column'];
+        $dbtable = DBUtil::getTables();
+        $col = $dbtable['session_info_column'];
         $activetime = time() - (System::getVar('secinactivemins') * 60);
 
         $where = "WHERE    $col[uid]!=0 AND $col[lastused]>$activetime

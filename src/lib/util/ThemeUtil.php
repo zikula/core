@@ -81,8 +81,8 @@ class ThemeUtil
         $key = md5((string)$filter . (string)$state . (string)$type);
 
         if (empty($themesarray[$key])) {
-            $pntable = DBUtil::getTables();
-            $themescolumn = $pntable['themes_column'];
+            $dbtable = DBUtil::getTables();
+            $themescolumn = $dbtable['themes_column'];
             $whereargs = array();
             if ($state != self::STATE_ALL) {
                 $whereargs[] = "$themescolumn[state] = '" . DataUtil::formatForStore($state) . "'";

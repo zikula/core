@@ -206,9 +206,9 @@ class SecurityUtil
     public static function getAuthInfo($user = null)
     {
         // Table columns we use - ModUtil::dbInfoLoad is done in pnInit
-        $pntable = DBUtil::getTables();
-        $groupmembershipcolumn = $pntable['group_membership_column'];
-        $grouppermcolumn = $pntable['group_perms_column'];
+        $dbtable = DBUtil::getTables();
+        $groupmembershipcolumn = $dbtable['group_membership_column'];
+        $grouppermcolumn = $dbtable['group_perms_column'];
 
         // Empty arrays
         $groupperms = array();

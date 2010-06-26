@@ -15,10 +15,10 @@
 function Settings_tables()
 {
     // Initialise table array
-    $pntables = array();
+    $dbtables = array();
 
     $table = DBUtil::getLimitedTablename('objectdata_attributes');
-    $pntables['objectdata_attributes'] = $table;
+    $dbtables['objectdata_attributes'] = $table;
     $columns = array ('id'             => 'oba_id',
                       'attribute_name' => 'oba_attribute_name',
                       'object_id'      => 'oba_object_id',
@@ -26,7 +26,7 @@ function Settings_tables()
                       'value'          => 'oba_value'
                       );
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'oba_');
-    $pntables['objectdata_attributes_column'] = $columns;
+    $dbtables['objectdata_attributes_column'] = $columns;
 
     $tabledef = array('id'             => 'I4 PRIMARY AUTO',
                       'attribute_name' => "C(80) NOTNULL DEFAULT ''",
@@ -34,17 +34,17 @@ function Settings_tables()
                       'object_type'    => "C(80) NOTNULL DEFAULT ''",
                       'value'          => "X NOTNULL DEFAULT ''");
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'oba_');
-    $pntables['objectdata_attributes_column_def'] = $tabledef;
+    $dbtables['objectdata_attributes_column_def'] = $tabledef;
 
     $table = DBUtil::getLimitedTablename('objectdata_log');
-    $pntables['objectdata_log'] = $table;
+    $dbtables['objectdata_log'] = $table;
     $columns = array ('id'           => 'obl_id',
                       'object_type'  => 'obl_object_type',
                       'object_id'    => 'obl_object_id',
                       'op'           => 'obl_op',
                       'diff'         => 'obl_diff');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'obl_');
-    $pntables['objectdata_log_column'] = $columns;
+    $dbtables['objectdata_log_column'] = $columns;
 
     $tabledef = array('id' => 'I4 PRIMARY AUTO',
                       'object_type' => "C(80) NOTNULL DEFAULT ''",
@@ -52,10 +52,10 @@ function Settings_tables()
                       'op' => "C(16) NOTNULL DEFAULT ''",
                       'diff' => "X NOT NULL DEFAULT ''");
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'obl_');
-    $pntables['objectdata_log_column_def'] = $tabledef;
+    $dbtables['objectdata_log_column_def'] = $tabledef;
 
     $table = DBUtil::getLimitedTablename('objectdata_meta');
-    $pntables['objectdata_meta'] = $table;
+    $dbtables['objectdata_meta'] = $table;
     $columns = array ('id'             => 'obm_id',
                       'module'         => 'obm_module',
                       'table'          => 'obm_table',
@@ -82,7 +82,7 @@ function Settings_tables()
                       'dc_comment'     => 'obm_dc_comment',
                       'dc_extra'       => 'obm_dc_extra');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns, 'obm_');
-    $pntables['objectdata_meta_column'] = $columns;
+    $dbtables['objectdata_meta_column'] = $columns;
 
     $tabledef = array('id'             => 'I4 PRIMARY AUTO',
                       'module'         => "C(40) NOTNULL DEFAULT ''",
@@ -110,11 +110,11 @@ function Settings_tables()
                       'dc_comment'     => "C(255) DEFAULT ''",
                       'dc_extra'       => "C(255) DEFAULT ''");
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef, 'obm_');
-    $pntables['objectdata_meta_column_def'] = $tabledef;
+    $dbtables['objectdata_meta_column_def'] = $tabledef;
 
     // workflow
-    $pntables['workflows'] = DBUtil::getLimitedTablename('workflows');
-    $pntables['workflows_column'] = array('id'           => 'id',
+    $dbtables['workflows'] = DBUtil::getLimitedTablename('workflows');
+    $dbtables['workflows_column'] = array('id'           => 'id',
                                           'metaid'       => 'metaid',
                                           'module'       => 'module',
                                           'schemaname'   => 'schemaname',
@@ -126,7 +126,7 @@ function Settings_tables()
                                           'busy'         => 'busy',
                                           'debug'        => 'debug');
 
-    $pntables['workflows_column_def'] = array('id'           => 'I NOTNULL AUTO PRIMARY',
+    $dbtables['workflows_column_def'] = array('id'           => 'I NOTNULL AUTO PRIMARY',
                                               'metaid'       => 'I NOTNULL DEFAULT 0',
                                               'module'       => "C(255) NOTNULL DEFAULT ''",
                                               'schemaname'   => "C(255) NOTNULL DEFAULT ''",
@@ -137,9 +137,9 @@ function Settings_tables()
                                               'obj_id'       => 'I4 NOTNULL DEFAULT 0',
                                               'busy'         => 'I NOTNULL DEFAULT 0',
                                               'debug'        => 'B');
-    
-    // addtitional indexes
-    $pntable['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id', 'module' => 'module');
 
-    return $pntables;
+    // addtitional indexes
+    $dbtable['workflows_column_idx'] = array('obj_table' => 'obj_table', 'obj_idcolumn' => 'obj_idcolumn', 'obj_id' => 'obj_id', 'module' => 'module');
+
+    return $dbtables;
 }

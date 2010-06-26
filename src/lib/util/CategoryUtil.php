@@ -132,8 +132,8 @@ class CategoryUtil
     {
         ModUtil::dbInfoLoad('Categories');
         if (!$sort) {
-            $pntables = DBUtil::getTables();
-            $category_column = $pntables['categories_category_column'];
+            $dbtables = DBUtil::getTables();
+            $category_column = $dbtables['categories_category_column'];
             $sort = "ORDER BY $category_column[sort_value], $category_column[name]";
         }
 
@@ -181,8 +181,8 @@ class CategoryUtil
     public static function getCategoryByPath($apath, $field = 'path')
     {
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_column = $dbtables['categories_category_column'];
         if (!is_array($apath)) {
             $where = "$category_column[$field]='" . DataUtil::formatForStore($apath) . "'";
         } else {
@@ -214,8 +214,8 @@ class CategoryUtil
             return false;
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_column = $dbtables['categories_category_column'];
 
         $where = array();
         foreach ($registry as $property => $catID) {
@@ -255,8 +255,8 @@ class CategoryUtil
         }
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_column = $dbtables['categories_category_column'];
 
         $id = (int)$id;
         $where = "$category_column[parent_id]='" . DataUtil::formatForStore($id) . "'";
@@ -300,8 +300,8 @@ class CategoryUtil
         }
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_column = $dbtables['categories_category_column'];
 
         $cat = self::getCategoryByID($id);
         $cats = array();
@@ -338,8 +338,8 @@ class CategoryUtil
     public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_column = $dbtables['categories_category_column'];
 
         $where = "$category_column[$field] = '" . DataUtil::formatForStore($apath) . "' OR $category_column[$field] LIKE '" . DataUtil::formatForStore($apath) . "/%'";
         if ($exclPath) {
@@ -520,9 +520,9 @@ class CategoryUtil
     public static function deleteCategoryByID($cid)
     {
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_table = $pntables['categories_category'];
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_table = $dbtables['categories_category'];
+        $category_column = $dbtables['categories_category_column'];
 
         $cid = (int)$cid;
         $sql = "DELETE FROM $category_table WHERE $category_column[id] = '" . DataUtil::formatForStore($cid) . "'";
@@ -546,9 +546,9 @@ class CategoryUtil
         }
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_table = $pntables['categories_category'];
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_table = $dbtables['categories_category'];
+        $category_column = $dbtables['categories_category_column'];
 
         $sql = "DELETE FROM $category_table WHERE $category_column[$field] LIKE '" . DataUtil::formatForStore($apath) . "%'";
         $res = DBUtil::executeSQL($sql);
@@ -632,9 +632,9 @@ class CategoryUtil
         $oldParentPath = $oldParent['path'] . '/';
 
         ModUtil::dbInfoLoad('Categories');
-        $pntables = DBUtil::getTables();
-        $category_table = $pntables['categories_category'];
-        $category_column = $pntables['categories_category_column'];
+        $dbtables = DBUtil::getTables();
+        $category_table = $dbtables['categories_category'];
+        $category_column = $dbtables['categories_category_column'];
 
         $pathField = $category_column[$field];
         $fpath = $category_column['path'];

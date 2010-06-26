@@ -797,8 +797,8 @@ function _SessionUtil__GC($maxlifetime)
 
     } else {
         // DB based GC
-        $pntable = DBUtil::getTables();
-        $sessioninfocolumn = $pntable['session_info_column'];
+        $dbtable = DBUtil::getTables();
+        $sessioninfocolumn = $dbtable['session_info_column'];
         $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
         $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));
 

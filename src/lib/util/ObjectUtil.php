@@ -89,8 +89,8 @@ class ObjectUtil
      */
     public static function generateCreateDataDictForStandardFields($table)
     {
-        $pntables = DBUtil::getTables();
-        $columns = $pntables["{$table}_column"];
+        $dbtables = DBUtil::getTables();
+        $columns = $dbtables["{$table}_column"];
         $sql = ",
                 $columns[obj_status] C(1) NOTNULL DEFAULT 'A',
                 $columns[cr_date]    T    NOTNULL DEFAULT '1970-01-01 00:00:00',
@@ -203,8 +203,8 @@ class ObjectUtil
      */
     public static function createObject($type)
     {
-        $pntable = DBUtil::getTables();
-        if (!$pntable[$type]) {
+        $dbtable = DBUtil::getTables();
+        if (!$dbtable[$type]) {
             return z_exit(__f('%1$s: Unable to reference object type [%2$s]', array('ObjectUtil::createObject', $type)));
         }
 
@@ -300,9 +300,9 @@ class ObjectUtil
      */
     public static function resequenceFields($tablename, $field = 'position', $float = false, $idcolumn = 'id')
     {
-        $pntables = DBUtil::getTables();
-        $table    = $pntables[$tablename];
-        $column   = $pntables["{$tablename}_column"];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables[$tablename];
+        $column   = $dbtables["{$tablename}_column"];
 
         if (!$column[$field]) {
             return z_exit(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::resequenceFields', $field, $tablename)));
@@ -349,9 +349,9 @@ class ObjectUtil
             return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($idcolumn, 'ObjectUtil::moveField')));
         }
 
-        $pntables = DBUtil::getTables();
-        $table    = $pntables[$tablename];
-        $column   = $pntables["{$tablename}_column"];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables[$tablename];
+        $column   = $dbtables["{$tablename}_column"];
 
         if (!$column[$field]) {
             return z_exit(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::moveField', $field, $tablename)));
@@ -424,9 +424,9 @@ class ObjectUtil
         }
 
 
-        $pntables = DBUtil::getTables();
-        $table    = $pntables['objectdata_attributes'];
-        $column   = $pntables['objectdata_attributes_column'];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables['objectdata_attributes'];
+        $column   = $dbtables['objectdata_attributes_column'];
 
         $where = "WHERE $column[object_id]= '" . DataUtil::formatForStore($obj[$idcolumn]) . "' AND
                         $column[object_type]='" . DataUtil::formatForStore($type) . "'";
@@ -489,9 +489,9 @@ class ObjectUtil
             return false;
         }
 
-        $pntables = DBUtil::getTables();
-        $table    = $pntables['objectdata_attributes'];
-        $column   = $pntables['objectdata_attributes_column'];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables['objectdata_attributes'];
+        $column   = $dbtables['objectdata_attributes_column'];
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
@@ -558,8 +558,8 @@ class ObjectUtil
             return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
-        $pntables = DBUtil::getTables();
-        $column   = $pntables['objectdata_attributes_column'];
+        $dbtables = DBUtil::getTables();
+        $column   = $dbtables['objectdata_attributes_column'];
 
         // select all attributes so that we can check if we have to update or insert
         // this will be an assoc array of attributes with 'attribute_name' as key
@@ -610,9 +610,9 @@ class ObjectUtil
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__.'::'.__FUNCTION__)));
         }
 
-        $pntables = DBUtil::getTables();
-        $table    = $pntables['objectdata_attributes'];
-        $column   = $pntables['objectdata_attributes_column'];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables['objectdata_attributes'];
+        $column   = $dbtables['objectdata_attributes_column'];
 
         // ensure module was successfully loaded
         if (!$table) {
@@ -653,9 +653,9 @@ class ObjectUtil
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('attributename', __CLASS__.'::'.__FUNCTION__)));
         }
 
-        $pntables = DBUtil::getTables();
-        $table    = $pntables['objectdata_attributes'];
-        $column   = $pntables['objectdata_attributes_column'];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables['objectdata_attributes'];
+        $column   = $dbtables['objectdata_attributes_column'];
 
         // ensure module was successfully loaded
         if (!$table) {
@@ -678,9 +678,9 @@ class ObjectUtil
      */
     public static function deleteAllObjectTypeAttributes($type)
     {
-        $pntables = DBUtil::getTables();
-        $table    = $pntables['objectdata_attributes'];
-        $column   = $pntables['objectdata_attributes_column'];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables['objectdata_attributes'];
+        $column   = $dbtables['objectdata_attributes_column'];
 
         $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "'";
         $res = DBUtil::executeSQL($sql);
@@ -697,9 +697,9 @@ class ObjectUtil
      */
     public static function getSystemAttributes($sort = 'attribute_name')
     {
-        $pntables = DBUtil::getTables();
-        $table    = $pntables['objectdata_attributes'];
-        $column   = $pntables['objectdata_attributes_column'];
+        $dbtables = DBUtil::getTables();
+        $table    = $dbtables['objectdata_attributes'];
+        $column   = $dbtables['objectdata_attributes_column'];
 
         // ensure module was successfully loaded
         if (!$table) {
@@ -719,8 +719,8 @@ class ObjectUtil
      */
     public static function getAttributeCount($atrName)
     {
-        $pntables       = DBUtil::getTables();
-        $column = $pntables['objectdata_attributes_column'];
+        $dbtables       = DBUtil::getTables();
+        $column = $dbtables['objectdata_attributes_column'];
 
         $where = "$column[attribute_name]='" . DataUtil::formatForStore($atrName) . "'";
         return DBUtil::selectObjectCount('objectdata_attributes', $where);
@@ -817,8 +817,8 @@ class ObjectUtil
             $rc = DBUtil::deleteObjectByID($obj['__META__'], 'objectdata_meta');
 
         } elseif (isset($obj['__META__']['idcolumn']) && $obj['__META__']['obj_id']) {
-            $pntables = DBUtil::getTables();
-            $meta_column = $pntables['objectdata_meta_column'];
+            $dbtables = DBUtil::getTables();
+            $meta_column = $dbtables['objectdata_meta_column'];
 
             $meta = $obj['__META__'];
             $where = "WHERE $meta_column[module]='" . DataUtil::formatForStore($meta['module']) . "'
@@ -845,8 +845,8 @@ class ObjectUtil
     {
         $meta = self::fixObjectMetaData($obj, $tablename, $idcolumn);
         if ($meta['obj_id'] > 0) {
-            $pntables = DBUtil::getTables();
-            $meta_column = $pntables['objectdata_meta_column'];
+            $dbtables = DBUtil::getTables();
+            $meta_column = $dbtables['objectdata_meta_column'];
 
             $where = "WHERE $meta_column[module]='" . DataUtil::formatForStore($meta['module']) . "'
                         AND $meta_column[table]='" . DataUtil::formatForStore($meta['table']) . "'

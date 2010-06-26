@@ -290,7 +290,7 @@ class System
 
         if ($stages & self::CORE_STAGES_TABLES) {
             // Initialise dbtables
-            $GLOBALS['dbtables'] = isset($pntable) ? $pntable : null;
+            $GLOBALS['dbtables'] = isset($dbtable) ? $dbtable : null;
             // ensure that the base modules info is available
             ModUtil::dbInfoLoad('Modules', 'Modules');
             ModUtil::dbInfoLoad('Settings', 'Settings');

@@ -42,8 +42,8 @@ class Blocks_User extends Zikula_Controller
         $bid = FormUtil::getPassedValue('bid');
         $uid = UserUtil::getVar('uid');
 
-        $pntable = DBUtil::getTables();
-        $column  = $pntable['userblocks_column'];
+        $dbtable = DBUtil::getTables();
+        $column  = $dbtable['userblocks_column'];
 
         $where  = "WHERE $column[bid]='".DataUtil::formatForStore($bid)."' AND $column[uid]='".DataUtil::formatForStore($uid)."'";
         $active = DBUtil::selectField ('userblocks', 'active', $where);

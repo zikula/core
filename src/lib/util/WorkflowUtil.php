@@ -345,8 +345,8 @@ class WorkflowUtil
         }
 
         // get workflow data from DB
-        $pntables = DBUtil::getTables();
-        $workflows_column = $pntables['workflows_column'];
+        $dbtables = DBUtil::getTables();
+        $workflows_column = $dbtables['workflows_column'];
         $where = "WHERE $workflows_column[module]='" . DataUtil::formatForStore($module) . "'
                     AND $workflows_column[obj_table]='" . DataUtil::formatForStore($dbTable) . "'
                     AND $workflows_column[obj_idcolumn]='" . DataUtil::formatForStore($idcolumn) . "'

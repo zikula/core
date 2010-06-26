@@ -20,15 +20,15 @@
  */
 function PageLock_tables()
 {
-  $pntable = array();
+  $dbtable = array();
   $prefix = System::getVar('prefix');
 
     // Lock table setup
 
   $tableName = DBUtil::getLimitedTablename('pagelock');
-  $pntable['PageLock'] = $tableName;
+  $dbtable['PageLock'] = $tableName;
 
-  $pntable['PageLock_column'] =
+  $dbtable['PageLock_column'] =
     array('id'                => 'plock_id',
           'name'              => 'plock_name',
           'createdDate'       => 'plock_cdate',
@@ -47,8 +47,8 @@ function PageLock_tables()
           'lockedByTitle'     => "C(100) NOTNULL",
           'lockedByIPNo'      => "C(30) NOTNULL");
 
-  $pntable['PageLock_column_def'] = $def;
+  $dbtable['PageLock_column_def'] = $def;
 
-  return $pntable;
+  return $dbtable;
 }
 

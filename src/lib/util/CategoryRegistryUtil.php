@@ -196,8 +196,8 @@ class CategoryRegistryUtil
         }
 
         $wheres = array();
-        $pntables = DBUtil::getTables();
-        $col = $pntables['categories_registry_column'];
+        $dbtables = DBUtil::getTables();
+        $col = $dbtables['categories_registry_column'];
         $wheres[] = "$col[modname]='" . DataUtil::formatForStore($modname) . "'";
         $wheres[] = "$col[table]='" . DataUtil::formatForStore($tablename) . "'";
         $where = implode(' AND ', $wheres);
@@ -260,8 +260,8 @@ class CategoryRegistryUtil
         }
 
         $wheres = array();
-        $pntables = DBUtil::getTables();
-        $col = $pntables['categories_registry_column'];
+        $dbtables = DBUtil::getTables();
+        $col = $dbtables['categories_registry_column'];
         $wheres[] = "$col[modname]='" . DataUtil::formatForStore($modname) . "'";
         $wheres[] = "$col[table]='" . DataUtil::formatForStore($tablename) . "'";
         $where = implode(' AND ', $wheres);

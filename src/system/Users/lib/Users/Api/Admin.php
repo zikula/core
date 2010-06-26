@@ -47,9 +47,9 @@ class Users_Api_Admin extends Zikula_Api
         $profileModule = System::getVar('profilemodule', '');
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
-        $pntable     = DBUtil::getTables();
-        $userstable  = $pntable['users'];
-        $userscolumn = $pntable['users_column'];
+        $dbtable     = DBUtil::getTables();
+        $userstable  = $dbtable['users'];
+        $userscolumn = $dbtable['users_column'];
 
         // Set query conditions (unless some one else sends a hardcoded one)
         if (!isset($args['condition']) || !$args['condition']) {
@@ -345,8 +345,8 @@ class Users_Api_Admin extends Zikula_Api
             return false;
         }
 
-        $pntable = DBUtil::getTables();
-        $userscolumn = $pntable['users_column'];
+        $dbtable = DBUtil::getTables();
+        $userscolumn = $dbtable['users_column'];
 
         $valuesArray = $args['valuesArray'];
         $key = $args['key'];

@@ -250,8 +250,8 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = DBUtil::getTables();
-        $groupmembershipcolumn = $pntable['group_membership_column'];
+        $dbtable = DBUtil::getTables();
+        $groupmembershipcolumn = $dbtable['group_membership_column'];
 
         // Add item
         $where = "WHERE       $groupmembershipcolumn[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
@@ -285,8 +285,8 @@ class Groups_Api_Admin extends Zikula_Api
         }
 
         // Get datbase setup
-        $pntable = DBUtil::getTables();
-        $groupcolumn = $pntable['groups_column'];
+        $dbtable = DBUtil::getTables();
+        $groupcolumn = $dbtable['groups_column'];
 
         // Get item
         $where = "WHERE $groupcolumn[name] = '" . DataUtil::formatForStore($args['name']) . "'";
@@ -323,8 +323,8 @@ class Groups_Api_Admin extends Zikula_Api
             $args['numitems'] = -1;
         }
 
-        $pntable = DBUtil::getTables();
-        $col = $pntable['group_applications_column'];
+        $dbtable = DBUtil::getTables();
+        $col = $dbtable['group_applications_column'];
 
         $orderBy = "ORDER BY $col[app_id] ASC";
         $objArray = DBUtil::selectObjectArray('group_applications', '', $orderBy);
@@ -364,8 +364,8 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = DBUtil::getTables();
-        $col = $pntable['group_applications_column'];
+        $dbtable = DBUtil::getTables();
+        $col = $dbtable['group_applications_column'];
 
         $where = "WHERE  $col[gid] = '".DataUtil::formatForStore($args['gid'])."'
               AND    $col[uid] = '".DataUtil::formatForStore($args['userid'])."'";
@@ -400,8 +400,8 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $pntable = DBUtil::getTables();
-        $col = $pntable['group_applications_column'];
+        $dbtable = DBUtil::getTables();
+        $col = $dbtable['group_applications_column'];
 
         $where = "WHERE $col[gid] = '".(int)DataUtil::formatForStore($args['gid'])."'
               AND   $col[uid] = '".(int)DataUtil::formatForStore($args['userid'])."'";

@@ -174,11 +174,11 @@ class DBObject
     public function _init($init = null, $key = null, $field = null)
     {
         if ($this->_objType != 'DBOBJECT') {
-            $pntables = DBUtil::getTables();
+            $dbtables = DBUtil::getTables();
             $tkey = $this->_objType;
             $ckey = $this->_objType . "_column";
-            $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : null;
-            $this->_columns = isset($pntables[$ckey]) ? $pntables[$ckey] : null;
+            $this->_table = isset($dbtables[$tkey]) ? $dbtables[$tkey] : null;
+            $this->_columns = isset($dbtables[$ckey]) ? $dbtables[$ckey] : null;
             if ($field) {
                 $this->_objField = $field;
             } else {
@@ -229,11 +229,11 @@ class DBObject
      */
     public function generateEmptyObject()
     {
-        $pntables = DBUtil::getTables();
+        $dbtables = DBUtil::getTables();
         $tkey = $this->_objType;
         $ckey = $this->_objType . "_column";
-        $this->_table = isset($pntables[$tkey]) ? $pntables[$tkey] : '';
-        $this->_columns = isset($pntables[$ckey]) ? $pntables[$ckey] : '';
+        $this->_table = isset($dbtables[$tkey]) ? $dbtables[$tkey] : '';
+        $this->_columns = isset($dbtables[$ckey]) ? $dbtables[$ckey] : '';
 
         $data = array();
         foreach ($this->_columns as $k => $v) {

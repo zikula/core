@@ -21,14 +21,14 @@
 function securitycenter_tables()
 {
     // Initialise table array
-    $pntable = array();
+    $dbtable = array();
 
     // Set the table name
-    $pntable['sc_anticracker'] = DBUtil::getLimitedTablename('sc_anticracker');
+    $dbtable['sc_anticracker'] = DBUtil::getLimitedTablename('sc_anticracker');
 
     // Set the column names.  Note that the array has been formatted
     // on-screen to be very easy to read by a user.
-    $pntable['sc_anticracker_column'] = array('hid'       => 'pn_hid',
+    $dbtable['sc_anticracker_column'] = array('hid'       => 'pn_hid',
                                            'hacktime'     => 'pn_hacktime',
                                            'hackfile'     => 'pn_hackfile',
                                            'hackline'     => 'pn_hackline',
@@ -45,7 +45,7 @@ function securitycenter_tables()
                                            'filesarray'   => 'pn_filesarray',
                                            'sessionarray' => 'pn_sessionarray');
 
-    $pntable['sc_anticracker_column_def'] = array('hid'       => 'I PRIMARY AUTO',
+    $dbtable['sc_anticracker_column_def'] = array('hid'       => 'I PRIMARY AUTO',
                                                'hacktime'     => 'C(20) DEFAULT NULL',
                                                'hackfile'     => "C(255) DEFAULT ''",
                                                'hackline'     => 'I DEFAULT NULL',
@@ -64,8 +64,8 @@ function securitycenter_tables()
 
 
     // Log Event Table Name
-    $pntable['sc_logevent'] = DBUtil::getLimitedTablename('sc_log_event');
-    $pntable['sc_logevent_column'] = array('id'             => 'lge_id',
+    $dbtable['sc_logevent'] = DBUtil::getLimitedTablename('sc_log_event');
+    $dbtable['sc_logevent_column'] = array('id'             => 'lge_id',
                                            'date'           => 'lge_date',
                                            'uid'            => 'lge_uid',
                                            'component'      => 'lge_component',
@@ -76,7 +76,7 @@ function securitycenter_tables()
                                            'sec_instance'   => 'lge_sec_instance',
                                            'sec_permission' => 'lge_sec_permission',
                                            'message'        => 'lge_message');
-    $pntable['sc_logevent_column_def'] = array('id'             => 'I PRIMARY AUTO',
+    $dbtable['sc_logevent_column_def'] = array('id'             => 'I PRIMARY AUTO',
                                                'date'           => 'T DEFAULT NULL',
                                                'uid'            => 'I4 DEFAULT NULL',
                                                'component'      => "C(64) DEFAULT NULL",
@@ -90,8 +90,8 @@ function securitycenter_tables()
 
 
     // IDS intrusions table
-    $pntable['sc_intrusion'] = DBUtil::getLimitedTablename('sc_intrusion');
-    $pntable['sc_intrusion_column'] = array('id'     => 'ids_id',
+    $dbtable['sc_intrusion'] = DBUtil::getLimitedTablename('sc_intrusion');
+    $dbtable['sc_intrusion_column'] = array('id'     => 'ids_id',
                                            'name'   => 'ids_name',
                                            'tag'    => 'ids_tag',
                                            'value'  => 'ids_value',
@@ -101,7 +101,7 @@ function securitycenter_tables()
                                            'impact' => 'ids_impact',
                                            'date'   => 'ids_date');
 
-    $pntable['sc_intrusion_column_def'] = array('id'     => 'I PRIMARY AUTO',
+    $dbtable['sc_intrusion_column_def'] = array('id'     => 'I PRIMARY AUTO',
                                                'name'   => 'C(128) NOTNULL DEFAULT \'\'',
                                                'tag'    => 'C(40) DEFAULT NULL',
                                                'value'  => 'X NOTNULL',
@@ -112,5 +112,5 @@ function securitycenter_tables()
                                                'date'   => 'T NOTNULL');
 
     // Return the table information
-    return $pntable;
+    return $dbtable;
 }

@@ -40,9 +40,9 @@ class Categories_Installer extends Zikula_Installer
         // for postgres, we need to explicitly set the sequence value to reflect the inserted data
         $dbType = DBConnectionStack::getConnectionDBType();
         if ($dbType == 'postgres') {
-            $pntables = DBUtil::getTables();
-            $tab = $pntables['categories_category'];
-            $col = $pntables['categories_category_column'];
+            $dbtables = DBUtil::getTables();
+            $tab = $dbtables['categories_category'];
+            $col = $dbtables['categories_category_column'];
             $seq = $tab . '_cat_id_seq';
             $sql = "SELECT setval('$seq', (SELECT MAX($col[id]) + 1 FROM $tab))";
             DBUtil::executeSQL($sql);
@@ -101,8 +101,8 @@ class Categories_Installer extends Zikula_Installer
         $this->delVars();
 
         // delete other modules use of categories flag
-        $pntable = DBUtil::getTables();
-        $cols = $pntable['module_vars_column'];
+        $dbtable = DBUtil::getTables();
+        $cols = $dbtable['module_vars_column'];
         $name = DataUtil::formatForStore('enablecategorization');
         $where = "$cols[name]='$name'";
         $res = (bool) DBUtil::deleteWhere('module_vars', $where);
@@ -573,9 +573,9 @@ class Categories_Installer extends Zikula_Installer
         // Array of the modules to update
         $mods = array('News' => array('stories' => 'Main'), 'Pages' => array('pages' => 'Main'), 'FAQ' => array('faqanswer' => 'Main'), 'Feeds' => array('feeds' => 'Main'), 'Reviews' => array('reviews' => 'Main'), 'Content' => array('page' => 'primary'));
 
-        $pntables = DBUtil::getTables();
-        $regcol = $pntables['categories_registry_column'];
-        $mapcol = $pntables['categories_mapobj_column'];
+        $dbtables = DBUtil::getTables();
+        $regcol = $dbtables['categories_registry_column'];
+        $mapcol = $dbtables['categories_mapobj_column'];
 
         // Update all the items mapped if there's a Register of the module
         foreach ($mods as $module => $data) {
