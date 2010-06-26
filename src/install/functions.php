@@ -302,6 +302,12 @@ function install()
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
 
+            // install all plugins
+            $systemPlugins = PluginUtil::loadAllSystemPlugins();
+            foreach ($systemPlugins as $plugin) {
+                PluginUtil::install($plugin);
+            }
+
             SessionUtil::requireSession();
             if (!UserUtil::isLoggedIn()) {
                 return System::redirect();
