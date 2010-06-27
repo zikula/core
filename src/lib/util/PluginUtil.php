@@ -450,6 +450,10 @@ class PluginUtil
         }
 
         $plugin = $sm->getService($id);
-        return (bool)($plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled());
+        if ($plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled()) {
+            return false;
+        }
+
+        return true;
     }
 }
