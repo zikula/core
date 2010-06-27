@@ -90,7 +90,7 @@ ul#admintabs #ajaxNewCatForm {
     display:block;
     float:left;
     font-weight:bold;
-    padding:5px;
+    padding:5px 5px 4px 5px;
     position:relative;
     text-decoration:none;
     z-index:1000;
