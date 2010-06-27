@@ -417,6 +417,63 @@ class UserUtil
     }
 
     /**
+     * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule
+     * without actually logging the user in.
+     *
+     * @param string  $authModuleName Auth module name.
+     * @param array   $authinfo       Auth info array.
+     *
+     * @return bool True if authinfo authenticates; otherwise false.
+     */
+    public static function checkPasswordUsing($authModuleName, array $authinfo)
+    {
+        if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
+            return LogUtil::registerArgsError();
+        } elseif (!ModUtil::getInfoFromName($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
+            return LogUtil::registerArgsError();
+        } elseif (!ModUtil::available($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not available.", 'DEBUG');
+            return LogUtil::registerArgsError();
+        } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not an authmodule.", 'DEBUG');
+            return LogUtil::registerArgsError();
+        }
+
+        // Authenticate the loginID and userEnteredPassword against the specified authModule.
+        // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
+        return self::authApi($authModuleName, 'checkPassword', array('authinfo' => $authinfo));
+    }
+
+    /**
+     * Check user password without logging in (or logging in again).
+     *
+     * @param string $authModuleName The name of the authmodule to use for authentication.
+     * @param array  $authinfo       The information needed by the authmodule for authentication, typically a loginid and pass.
+     *
+     * @return int|bool Zikula uid if the authinfo authenticates with the authmodule; otherwise false.
+     */
+    public static function authenticateUserUsing($authModuleName, array $authinfo)
+    {
+        if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
+            return LogUtil::registerArgsError();
+        } elseif (!ModUtil::getInfoFromName($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
+            return LogUtil::registerArgsError();
+        } elseif (!ModUtil::available($authModuleName)) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not available.", 'DEBUG');
+            return LogUtil::registerArgsError();
+        } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
+            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not an authmodule.", 'DEBUG');
+            return LogUtil::registerArgsError();
+        }
+
+        return self::authApi($authModuleName, 'authenticateUser', array('authinfo' => $authinfo));
+    }
+
+    /**
      * Login using a specific auth module.
      *
      * @param string  $authModuleName Auth module name.
@@ -689,24 +746,6 @@ class UserUtil
 
         return true;
     }
-
-    /**
-     * Check user password without logging in (or logging in again).
-     *
-     * @param string $authModuleName The name of the authmodule to use for authentication.
-     * @param array  $authinfo       The information needed by the authmodule for authentication, typically a loginid and pass.
-     *
-     * @return bool True if the authinfo authenticates with the authmodule; otherwise false.
-     */
-    public static function authenticateUserUsing($authModuleName, array $authinfo)
-    {
-        if (!empty($authModuleName) && ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'auth')) {
-            return self::authApi($authModuleName, 'authenticateUser', array('authinfo' => $authinfo));
-        } else {
-            return LogUtil::registerArgsError();
-        }
-    }
-
 
     /**
      * Is the user logged in?

@@ -26,59 +26,117 @@
 class Users_Api_Auth extends Zikula_AuthApi
 {
     /**
-     * Authenticates the user-entered authinfo with the authenticating source, and (if authenticated)
-     * returns the Zikula user ID (uid) of the user associated with the authinfo.
+     * Authenticates authinfo with the authenticating source, returning a simple boolean result.
      *
-     * If any actions need to be taken at the authenticating source to indicate that the user is logged in, they are
-     * taken at this point. If the login fails after returning to the Zikula login process, then logout() will be
-     * called.
+     * Note that, despite this function's name, there is no requirement that a password be part of the authinfo.
+     * Merely that enough information be provided in the authinfo array to unequivocally authenticate the user. For
+     * most authenticating authorities this will be the equivalent of a user name and password, but--again--there
+     * is no restriction here. This is not, however, a "user exists in the system" function. It is expected that
+     * the authenticating authority validate what ever is used as a password or the equivalent thereof.
      *
-     * It is likely that this function will call the authenticateUser() function within this same API to actually
-     * determine if the user is valid. The primary job of this function is likely to perform
-     * any authentication-source-specific tasks to indicate the user is logged in, if needed.
+     * This function makes no attempt to match the given authinfo with a Zikula user id (uid). It simply asks the
+     * authenticating authority to authenticate the authinfo provided. No "login" should take place as a result of
+     * this authentication.
      *
-     * NOTE: This function does not change the state of the user in Zikula. In other words, this function does not
-     * actually log the user into Zikula. It merely returns the uid to Zikula, indicating that the user's supplied
-     * credentials were valid. The core Zikula login process that called this function will perform the actual
-     * change of state for the user.
+     * This function may be called to initially authenticate a user during the registration process, or may be called
+     * for a user already logged in to re-authenticate his password for a security-sensitive operation. This function
+     * should merely authenticate the user, and not perform any additional login-related processes.
+     *
+     * This function differs from authenticateUser() in that no attempt is made to match the authinfo with and map to a
+     * Zikula user account. It does not return a Zikula user id (uid).
+     *
+     * This function differs from login()  in that no attempt is made to match the authinfo with and map to a
+     * Zikula user account. It does not return a Zikula user id (uid). In addition this function makes no attempt to
+     * perform any login-related processes on the authenticating system.
      *
      * @param array $args All arguments passed to this function.
-     *                      array authinfo  The information necessary to authenticate the user, typically a login ID and a password.
+     *                      array   authinfo    The authinfo needed for this authmodule, including any user-entered password.
      *
-     * @return int|bool If the authinfo authenticates with the source, then the Zikula uid associated with that login ID;
-     *                      otherwise false on authentication failure or error.
+     * @return boolean True if the authinfo authenticates with the source; otherwise false on authentication failure or error.
      */
-    public function login($args)
+    public function checkPassword($args)
     {
-        // authinfo can contain anything necessary for the authentication method, but most of the time will contain
-        // a login ID of some sort, and a password. Set up authinfo in templates as name="authinfo[fieldname]" to
-        // gather what is needed.
+        // Note that this is a poor example function for external authmodules, because the authenticating
+        // information for the Users module is stored in the users table, necessitating a lookup of the uid.
 
-        // Do any pre-authentication checks here (such as validation of authinfo parameters not directly
-        // handled by authenticateUser(), etc.)
+        if (!isset($args['authinfo']) || !is_array($args['authinfo']) || empty($args['authinfo'])) {
+            LogUtil::registerArgsError();
+            return false;
+        }
 
-        // For the Users module authentication method, we'll simply pass the authinfo along and allow
-        // authenticateUser() to validate them.
-        $authinfo = isset($args['authinfo']) ? $args['authinfo'] : array();
+        $authinfo = $args['authinfo'];
 
-        // Authenticate the user using the authinfo. (authenticateUser just gives a yes or no; it does not actually
-        // perform any login-related actions.)
-        $authenticatedUid = ModUtil::apiFunc('Users', 'auth', 'authenticateUser', array(
+        $uid = ModUtil::apiFunc('Users', 'auth', 'getUidForAuthinfo', array(
             'authinfo'  => $authinfo,
         ));
 
-        // Perform post-authentication actions here related to logging in
-        if ($authenticatedUid) {
-            // Perform any post-authentication actions when authentication was successful.
-            // $fooAuthentication = new FooAuthenticationService($loginID);
-            // $fooAuthentication->login();
+        if (!$uid) {
+            // We count on getUidForAuthinfo to set an appropriate message.
+            return false;
         }
-        // Optionally include an else here and perform any post-authentication actions on a failed authentication.
-        // The Users module authentication method relies on authenticateUser() to set an appropriate message using
-        // LogUtil on failure of authentication.
 
-        // Return the results.
-        return $authenticatedUid;
+        if (!isset($authinfo['pass']) || !is_string($authinfo['pass']) || empty($authinfo['pass'])) {
+            return LogUtil::registerError($this->__f('Sorry! That %1$s is not registered with us, or the %1$s and password do not match our records.', array($idFieldDesc)));
+        }
+
+        // For a custom authmodule, we'd map the authinfo to a uid above, and then execute the custom
+        // authentication process here. On success the uid would be returned, otherwise false is returned. Note that
+        // any "log in" is not done here, but is done up above in the login() function. This is simply authentication
+        // (verification that the authinfo, including the password, is valid as a unit).
+        //
+        // $userEnteredPassword = $authinfo['pass'];
+        //
+        // $fooAuthentication = new FooAuthenticationService($loginID);
+        // if (!$fooAuthentication->isValidPassword($userEnteredPassword) {
+        //     return false;
+        // } else {
+        //     return $uid;
+        // }
+        //
+        // Essentially, what follows is the Users module's "custom" authentication process.
+
+        $userObj = UserUtil::getVars($uid);
+
+        // The following check for non-salted passwords and the old 'hash_method' field is to allow the admin to log in
+        // during an upgrade from 1.2.  It needs to be kept for any version that allows an upgrade from Zikula 1.2.X.
+        $methodSaltDelimPosition = strpos($userObj['pass'], UserUtil::SALT_DELIM);
+        $saltPassDelimPosition = ($methodSaltDelimPosition === false) ? false : strpos($userObj['pass'], UserUtil::SALT_DELIM, ($methodSaltDelimPosition + 1));
+        if ($saltPassDelimPosition !== false) {
+            // New style salted password including hash method code
+            $currentPasswordHashed = $userObj['pass'];
+        } else {
+            // Old style unsalted password with hash_method in separate field
+            if (!isset($userObj['hash_method'])) {
+                return false;
+            }
+            $currentPasswordHashed = $userObj['hash_method'] . '$$' . $userObj['pass'];
+        }
+
+        if (!UserUtil::passwordsMatch($authinfo['pass'], $currentPasswordHashed)) {
+            // Need to check for an override of loginviaoption.
+            if ((isset($authinfo['loginid']) && $this->getVar('loginviaoption', 0) == 1) || (!isset($authinfo['loginid']) && isset($authinfo['email']))) {
+                $idFieldDesc = $this->__('e-mail address');
+            } else {
+                $idFieldDesc = $this->__('user name');
+            }
+            return LogUtil::registerError($this->__f('Sorry! That %1$s is not registered with us, or the %1$s and password do not match our records.', array($idFieldDesc)));
+        } else {
+            // Password in $authinfo['pass'] is good at this point.
+
+            if (version_compare($this->modinfo['version'], '2.0.0') >= 0) {
+                // Check stored hash matches the current system type, if not convert it--but only if the module version is sufficient.
+                // Note: this is purely specific to the Users module authentication. A custom module might do something similar if it
+                // changed the way it stored some piece of data between versions, but in general this would be uncommon.
+                list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(UserUtil::SALT_DELIM, $currentPasswordHashed);
+                $systemHashMethodCode = UserUtil::getPasswordHashMethodCode($this->getVar('hash_method', 'sha256'));
+                if (($systemHashMethodCode != $currentPasswordHashCode) || empty($currentPasswordSaltStr)) {
+                    if (!UserUtil::setPassword($authinfo['pass'], $uid)) {
+                        LogUtil::log($this->__('Internal Error! Unable to update the user\'s password with the new hashing method and/or salt.'), 'CORE');
+                    }
+                }
+            }
+            return true;
+        }
     }
 
     /**
@@ -224,96 +282,74 @@ class Users_Api_Auth extends Zikula_AuthApi
      */
     public function authenticateUser($args)
     {
-        // Custom authmodules can expect whatever they need in authinfo, but by convention if all it needs is a single user
-        // identifier of some sort (user name, e-mail address, whatever), then it might be a good idea for
-        // consistency to expect it in 'loginid'. Likewise if only a typical password is expected, then it might be a good
-        // idea for consistency to expect it as 'pass'.
-        //
-        // For the Users module, we expect 'loginid' and 'pass'. We'll accept either 'uname' or 'email' in place of 'loginid'
-        // for historical reasons, if 'loginid' is not set. Custom authmodules might not need to be this complicated. In our
-        // case the 'loginid' (or 'uname' or 'email') is validated by getUidForAuthInfo() for us.
-        // Validate authinfo
-        if (!isset($args['authinfo']) || !is_array($args['authinfo']) || empty($args['authinfo'])) {
-            LogUtil::registerArgsError();
+        $checkPassword = ModUtil::apiFunc('Users', 'auth', 'checkPassword', $args);
+        if ($checkPassword) {
+            $uid = ModUtil::apiFunc('Users', 'auth', 'getUidForAuthinfo', $args);
+
+            if ($uid) {
+                return $uid;
+            } else {
+                return false;
+            }
+        } else {
             return false;
         }
+    }
 
-        $authinfo = $args['authinfo'];
+    /**
+     * Authenticates the user-entered authinfo with the authenticating source, and (if authenticated)
+     * returns the Zikula user ID (uid) of the user associated with the authinfo.
+     *
+     * If any actions need to be taken at the authenticating source to indicate that the user is logged in, they are
+     * taken at this point. If the login fails after returning to the Zikula login process, then logout() will be
+     * called.
+     *
+     * It is likely that this function will call the authenticateUser() function within this same API to actually
+     * determine if the user is valid. The primary job of this function is likely to perform
+     * any authentication-source-specific tasks to indicate the user is logged in, if needed.
+     *
+     * NOTE: This function does not change the state of the user in Zikula. In other words, this function does not
+     * actually log the user into Zikula. It merely returns the uid to Zikula, indicating that the user's supplied
+     * credentials were valid. The core Zikula login process that called this function will perform the actual
+     * change of state for the user.
+     *
+     * @param array $args All arguments passed to this function.
+     *                      array authinfo  The information necessary to authenticate the user, typically a login ID and a password.
+     *
+     * @return int|bool If the authinfo authenticates with the source, then the Zikula uid associated with that login ID;
+     *                      otherwise false on authentication failure or error.
+     */
+    public function login($args)
+    {
+        // authinfo can contain anything necessary for the authentication method, but most of the time will contain
+        // a login ID of some sort, and a password. Set up authinfo in templates as name="authinfo[fieldname]" to
+        // gather what is needed.
 
-        $uid = ModUtil::apiFunc('Users', 'auth', 'getUidForAuthinfo', array(
+        // Do any pre-authentication checks here (such as validation of authinfo parameters not directly
+        // handled by authenticateUser(), etc.)
+
+        // For the Users module authentication method, we'll simply pass the authinfo along and allow
+        // authenticateUser() to validate them.
+        $authinfo = isset($args['authinfo']) ? $args['authinfo'] : array();
+
+        // Authenticate the user using the authinfo. (authenticateUser just gives a yes or no; it does not actually
+        // perform any login-related actions.)
+        $authenticatedUid = ModUtil::apiFunc('Users', 'auth', 'authenticateUser', array(
             'authinfo'  => $authinfo,
         ));
 
-        if (!$uid) {
-            // We count on getUidForAuthinfo to set an appropriate message.
-            return false;
+        // Perform post-authentication actions here related to logging in
+        if ($authenticatedUid) {
+            // Perform any post-authentication actions when authentication was successful.
+            // $fooAuthentication = new FooAuthenticationService($loginID);
+            // $fooAuthentication->login();
         }
+        // Optionally include an else here and perform any post-authentication actions on a failed authentication.
+        // The Users module authentication method relies on authenticateUser() to set an appropriate message using
+        // LogUtil on failure of authentication.
 
-        if (!isset($authinfo['pass']) || !is_string($authinfo['pass']) || empty($authinfo['pass'])) {
-            return LogUtil::registerError($this->__f('Sorry! That %1$s is not registered with us, or the %1$s and password do not match our records.', array($idFieldDesc)));
-        }
-
-        // For a custom authmodule, we'd map the authinfo to a uid above, and then execute the custom
-        // authentication process here. On success the uid would be returned, otherwise false is returned. Note that
-        // any "log in" is not done here, but is done up above in the login() function. This is simply authentication
-        // (verification that the authinfo, including the password, is valid as a unit).
-        //
-        // $userEnteredPassword = $authinfo['pass'];
-        //
-        // $fooAuthentication = new FooAuthenticationService($loginID);
-        // if (!$fooAuthentication->isValidPassword($userEnteredPassword) {
-        //     return false;
-        // } else {
-        //     return $uid;
-        // }
-        //
-        // Essentially, what follows is the Users module's "custom" authentication process.
-
-        $userObj = UserUtil::getVars($uid);
-
-        // The following check for non-salted passwords and the old 'hash_method' field is to allow the admin to log in
-        // during an upgrade from 1.2.  It needs to be kept for any version that allows an upgrade from Zikula 1.2.X.
-        $methodSaltDelimPosition = strpos($userObj['pass'], UserUtil::SALT_DELIM);
-        $saltPassDelimPosition = ($methodSaltDelimPosition === false) ? false : strpos($userObj['pass'], UserUtil::SALT_DELIM, ($methodSaltDelimPosition + 1));
-        if ($saltPassDelimPosition !== false) {
-            // New style salted password including hash method code
-            $currentPasswordHashed = $userObj['pass'];
-        } else {
-            // Old style unsalted password with hash_method in separate field
-            if (!isset($userObj['hash_method'])) {
-                return false;
-            }
-            $currentPasswordHashed = $userObj['hash_method'] . '$$' . $userObj['pass'];
-        }
-
-        if (!UserUtil::passwordsMatch($authinfo['pass'], $currentPasswordHashed)) {
-            // Need to check for an override of loginviaoption.
-            if ((isset($authinfo['loginid']) && $this->getVar('loginviaoption', 0) == 1) || (!isset($authinfo['loginid']) && isset($authinfo['email']))) {
-                $idFieldDesc = $this->__('e-mail address');
-            } else {
-                $idFieldDesc = $this->__('user name');
-            }
-            return LogUtil::registerError($this->__f('Sorry! That %1$s is not registered with us, or the %1$s and password do not match our records.', array($idFieldDesc)));
-        } else {
-            // Password in $authinfo['pass'] is good at this point.
-
-            if (version_compare($this->modinfo['version'], '2.0.0') >= 0) {
-                // Check stored hash matches the current system type, if not convert it--but only if the module version is sufficient.
-                // Note: this is purely specific to the Users module authentication. A custom module might do something similar if it
-                // changed the way it stored some piece of data between versions, but in general this would be uncommon.
-                list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(UserUtil::SALT_DELIM, $currentPasswordHashed);
-                $systemHashMethodCode = UserUtil::getPasswordHashMethodCode($this->getVar('hash_method', 'sha256'));
-                if (($systemHashMethodCode != $currentPasswordHashCode) || empty($currentPasswordSaltStr)) {
-                    if (!UserUtil::setPassword($authinfo['pass'], $uid)) {
-                        LogUtil::log($this->__('Internal Error! Unable to update the user\'s password with the new hashing method and/or salt.'), 'CORE');
-                    }
-                }
-            }
-
-            // Custom authmodules should take extra special care to not return a valid uid if authentication fails.
-            // If the loginid and password do not authenticate, please ensure that false is returned!
-            return $uid;
-        }
+        // Return the results.
+        return $authenticatedUid;
     }
 
     /**
