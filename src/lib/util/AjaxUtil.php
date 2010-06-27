@@ -25,18 +25,21 @@ class AjaxUtil
      *
      * @return void
      */
-    public static function error($error='', $code='400 Bad data')
+    public static function error($message = '', $other = array(), $createauthid = false, $displayalert = true, $code = '400 Bad data')
     {
-        if (empty($error)) {
+        if (empty($message)) {
             $type = LogUtil::getErrorType();
             $code = $type ? $type : $code;
-            $error = LogUtil::getErrorMessagesText("\n");
+            $message = LogUtil::getErrorMessagesText("\n");
         }
-        if (!empty($error)) {
-            header('HTTP/1.0 ' . $code);
-            echo DataUtil::convertToUTF8($error);
-            System::shutdown();
+        if (!empty($message)) {
+            $data = array('errormessage' => $message);
+            if (is_array($other)) {
+                $data = array_merge($data, $other);
+            }
         }
+        $data['displayalert'] = ($displayalert === true ? '1' : '0');
+        self::output($data, $createauthid, false, true, $code);
     }
 
     /**
@@ -56,7 +59,7 @@ class AjaxUtil
      *
      * @return void
      */
-    public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true)
+    public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true, $code = '200 OK')
     {
         // check if an error message is set
         $msgs = LogUtil::getErrorMessagesText('<br />');
@@ -95,7 +98,7 @@ class AjaxUtil
 
         $output = json_encode($data);
 
-        header('HTTP/1.0 200 OK');
+        header("HTTP/1.0 $code");
         header('Content-type: application/json');
         if ($xjsonheader == true) {
             header('X-JSON:(' . $output . ')');

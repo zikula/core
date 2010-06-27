@@ -124,7 +124,7 @@ class Admin_Ajax extends Zikula_Controller
         //find the category corrisponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')));
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')),array(), true);
         }
 
         //delete the category
@@ -135,7 +135,7 @@ class Admin_Ajax extends Zikula_Controller
             return AjaxUtil::output($output, true);
         }
         //unknown error
-        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not perform the deletion.')));
+        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not perform the deletion.')), array(), true);
     }
 
     /**
@@ -158,7 +158,7 @@ class Admin_Ajax extends Zikula_Controller
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
-            return AjaxUtil::error(LogUtil::registerArgsError());
+            return AjaxUtil::error(LogUtil::registerArgsError(), array(), true);
         }
 
         //check if category with same name exists
@@ -181,7 +181,7 @@ class Admin_Ajax extends Zikula_Controller
         //get the category from the database
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if ($category == false) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')));
+            return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')), array(), true);
         }
 
         //update the category using the info from the database and from the form.
@@ -191,6 +191,6 @@ class Admin_Ajax extends Zikula_Controller
             return AjaxUtil::output($output, true);
         }
         //update failed for some reason
-        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
+        return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')), array(), true);
     }
 }

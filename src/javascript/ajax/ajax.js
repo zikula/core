@@ -71,6 +71,20 @@ Zikula.showajaxerror = function(errortext)
     return;
 }
 
+Zikula.ajaxResponseError = function(transport, supresserror)
+{
+	var json = pndejsonize(transport.responseText);
+	if ("authid" in json) {
+		if (json.authid != '') {
+		    Zikula.updateauthids(json.authid);
+		}
+	}
+	if (json.displayalert == '1' && supresserror != true) {
+		Zikula.showajaxerror(json.errormessage);
+	}
+	return json;
+}
+
 /**
  * Zikula.setselectoption
  * sets a select to a given value

@@ -101,7 +101,8 @@ function addEditor(nid) {
         onComplete: function(transport, element) {
             if(transport.status != 200 ) {
                 this.element.innerHTML = getOrig(element.id);
-                pnshowajaxerror(transport.responseText);
+                json = Zikula.ajaxResponseError(transport);
+                document.getElementById('admintabsauthid').value = json.authid;
                 return;
             }
             var json = pndejsonize(transport.responseText);
@@ -172,7 +173,8 @@ function deleteTab(id) {
  */
 function deleteTabResponse(req) {
     if (req.status != 200) {
-        pnshowajaxerror(req.responseText);
+    	json = Zikula.ajaxResponseError(transport);
+        document.getElementById('admintabsauthid').value = json.authid;
         return false;
     }
     var json = pndejsonize(req.responseText);
@@ -218,7 +220,8 @@ function moveModule(id, cid) {
  */
 function changeModuleCategoryResponse(req) {
     if (req.status != 200) {
-        pnshowajaxerror(req.responseText);
+    	json = Zikula.ajaxResponseError(transport);
+        document.getElementById('admintabsauthid').value = json.authid;
         return;
     }
     var json = pndejsonize(req.responseText);
@@ -313,7 +316,8 @@ function cancelCategory(cat) {
 function addCategoryResponse(req) {
     if (req.status != 200) {
         cancelCategory();
-        pnshowajaxerror(req.responseText);
+        json = Zikula.ajaxResponseError(transport);
+        document.getElementById('admintabsauthid').value = json.authid;
         return false;
     }
     var json = pndejsonize(req.responseText);
