@@ -136,6 +136,40 @@ class RecoveryConsole
         ksort($this->modules['sys_mods']);
         ksort($this->modules['usr_mods']);
 
+        // check temp directory
+        $this->tempdir = System::getVar('temp');
+        $tempdirsubs = array(
+            'error_logs' => 0,
+            'idsTmp' => 0,
+            'purifierCache' => 0,
+            'Renderer_cache' => 0,
+            'Renderer_compiled' => 0,
+            'Theme_cache' => 0,
+            'Theme_compiled' => 0,
+            'Theme_Config' => 0,
+        );
+        $this->tempdirsubsfailed = count($tempdirsubs);
+        // Open the temp directory.
+        $handle = opendir($this->tempdir);
+        if (!$handle){
+            $this->tempdirexists = false;
+        } else {
+            $this->tempdirexists = true;
+            // Read the directory contents.
+            // continue if file starts with . or it isn't a directory
+            while ($dir = readdir($handle)) {
+                if (!array_key_exists($dir, $tempdirsubs)) {
+                    continue;
+                }
+                // Catch the theme name.
+                $tempdirsubs[$dir] = 1;
+                $this->tempdirsubsfailed--;
+            }
+            // Close the directory.
+            closedir($handle);
+        }
+        $this->tempdirsubs = $tempdirsubs;
+        
         return true;
     }
 
@@ -184,7 +218,7 @@ class RecoveryConsole
             return false;
         }
         // Get Zikula table data or return false.
-        if (!$this->dbTables = System::dbGetTables()) {
+        if (!$this->dbTables = DBUtil::getTables()) {
             return false;
         }
         // Return success.
@@ -620,6 +654,7 @@ class RecoveryConsole
         $menu .= $this->markupMenuLink('recover',   'block',        __('Block Recovery'));
         $menu .= $this->markupMenuLink('recover',   'site',         __('Disabled Site Recovery'));
         $menu .= $this->markupMenuLink('recover',   'password',     __('Password Reset'));
+        $menu .= $this->markupMenuLink('recover',   'tempdir',      __('Rebuild Temp Directory'));
         $menu .= $this->markupMenuLink('phpinfo',   '',             __('PHP Information'));
         $menu .= $this->markupMenuLink('about',     '',             __('About This Application'));
         // Closing the navigation block container.
@@ -953,6 +988,7 @@ class RecoveryConsole
                         'permission'    => __('Permission Recovery'),
                         'block'         => __('Block Recovery'),
                         'password'      => __('Password Reset'),
+                        'tempdir'       => __('Rebuild Temp Directory'),
                         'phpinfo'       => __('PHP Information'),
                         'site'          => __('Disabled Site Recovery'),
                         );
@@ -972,6 +1008,7 @@ class RecoveryConsole
                               'block'         => __('<strong>INSTRUCTIONS:</strong> Use this utility to disable or delete blocks that you believe are causing issues for your site. Blocks that you disable can still be accessed by the system, but a deleted block is gone for good; double-check your choices before running this utility.  If there are no blocks present on your site, this utility will be disabled.'),
                               'site'          => __('<strong>INSTRUCTIONS:</strong> Use this utility to turn on your previously disabled site.'),
                               'password'      => __('<strong>INSTRUCTIONS:</strong> Use this utility to reset your admin (or other) password.'),
+                              'tempdir'       => __('<strong>INSTRUCTIONS:</strong> Use this utility to rebuild your temp directory in case you accidentally deleted it or it is corrupted.'),
                               'about'         => __('About')
                                                 .__('<strong>VERSION</strong><br />This is <strong>Version '.self::VERSION.'</strong> of the <strong>Zikula Recovery Console</strong><br /><br />')
                                                 .__('<strong>LICENSE</strong><br /><a href="http://www.gnu.org/copyleft/gpl.html" title="General Public License">General Public License</a><br /><br />')
@@ -1017,6 +1054,9 @@ class RecoveryConsole
                 break;
             case 'password':
                 $setting .= __('Nothing To Report');
+                break;
+            case 'tempdir':
+                $setting .= __f('Your temporary directory (based on your configuration file) is <strong>%s</strong>', $this->tempdir);
                 break;
             default:
                 $setting .= __('Nothing To Report');
@@ -1207,6 +1247,39 @@ class RecoveryConsole
         $form  .= '                <div class="row"><div class="row_left"><label for="zpass1">'.__('New password').'</label></div><div class="row_right"><input type="password" id="zpass1" name="zpass1" /></div></div>'."\n";
         $form  .= '                <div class="row"><div class="row_left"><label for="zpass2">'.__('New password again (for verification)').'</label></div><div class="row_right"><input type="password" id="zpass2" name="zpass2" /></div></div>'."\n";
 
+        return $form;
+    }
+
+     // Get additional inputs for temporary directory rebuild.
+    public function getUtilityInputsTempdir()
+    {
+        if ($this->tempdirexists == false) {
+            $form  = __('Your temporary directory does not seem to exist. It will be built from scratch')."\n";
+        } else {
+            $form  = __('Your temporary directory seems to exist. The status of the subdirectories is as follows:')."\n";
+            $form .= "<br /><br />\n";
+
+            foreach($this->tempdirsubs as $dir => $status) {
+                if ($status == 1) {
+                    $icon = 'button_ok.gif';
+                } else {
+                    $icon = 'button_cancel.gif';
+                }
+                $form .= '<img src="images/icons/extrasmall/'.$icon.'" alt="'.__('directory status').'" /> '.$dir."\n";
+                $form .= "<br />\n";
+            }
+
+            $form .= "<br />\n";
+
+            if ($this->tempdirsubsfailed == 0) {
+                $form .= __('All subdirectories were found. There is nothing wrong with your temporary directory so you don\'t need to rebuild it. However, if you choose to do so, it will be deleted and created again');
+            } else {
+                $form .= _fn('%s directory was not found. Please use the utility to create the deleted directory', '%s directories were not found. Please use the utility to create the deleted directories', $this->tempdirsubsfailed, $this->tempdirsubsfailed);
+            }
+        }
+
+        $form .= "<br /><br />\n";
+       
         return $form;
     }
 
@@ -1415,6 +1488,9 @@ class RecoveryConsole
             case 'password':
                 $success = $this->processRecoveryPassword();
                 break;
+            case 'tempdir':
+                $success = $this->processRecoveryTempdir();
+                break;
             default:
                 break;
         }
@@ -1580,7 +1656,7 @@ class RecoveryConsole
             return false;
         }
 
-        $table = System::dbGetTables();
+        $table = DBUtil::getTables();
         $userstable  = $table['users'];
         $userscolumn = $table['users_column'];
 
@@ -1610,6 +1686,114 @@ class RecoveryConsole
 
         // Set a status message.
         $this->setStatus(__('The password was successfully reset'));
+
+        // Recovery successful.
+        return true;
+    }
+
+    // Process temp directory rebuild
+    public function processRecoveryTempdir()
+    {
+        // some checks
+        if (!isset($this->tempdir)) {
+            $this->setError(__('Temporary directory is not set'));
+            return false;
+        }
+
+        if (empty($this->tempdir)) {
+            $this->setError(__('Temporary directory cannot be empty'));
+            return false;
+        }
+
+        $htaccess_file  = 'SetEnvIf Request_URI "\.css$" object_is_css=css'."\n";
+        $htaccess_file .= 'SetEnvIf Request_URI "\.js$" object_is_js=js'."\n";
+        $htaccess_file .= 'Order deny,allow'."\n";
+        $htaccess_file .= 'Deny from all'."\n";
+        $htaccess_file .= 'Allow from env=object_is_css'."\n";
+        $htaccess_file .= 'Allow from env=object_is_js'."\n";
+
+        // if temp exists
+        if ($this->tempdirexists) {
+
+            // if all subdirectories are ok but user still wants rebuild, remove the entire temp and create it
+            // else just create the missing directory/directories
+            if ($this->tempdirsubsfailed == 0) {
+                $result = FileUtil::deldir($this->tempdir);
+                if ($result === false) {
+                    $this->setError(__('Error deleting temp directory'));
+                    return false;
+                }
+
+                $result = FileUtil::mkdirs($this->tempdir);
+                if ($result === false) {
+                    $this->setError(__('Error creating temp directory'));
+                    return false;
+                }
+
+                $dir_errors = array();
+                foreach($this->tempdirsubs as $dir => $status) {
+                    $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
+                    if ($result === false) {
+                        array_push($dir_errors, $dir);
+                    }
+                }
+                if (count($dir_errors) > 0) {
+                    $this->setError(__f('Error creating temp subdirectories [%s]', implode(",", $dir_errors)));
+                    return false;
+                }
+
+                $result = FileUtil::writeFile($this->tempdir.'/.htaccess', $htaccess_file);
+                if ($result === false) {
+                    $this->setError(__f('Temp directory was created successfully but there was a problem creating .htaccess file. You will have to download it yourself from the <a href="%s">CoZi</a>', 'https://code.zikula.org/svn/core/branches/zikula-1.3/src/ztemp/.htaccess'));
+                    return false;
+                }
+            } else {
+                $dir_errors = array();
+                foreach($this->tempdirsubs as $dir => $status) {
+                    if ($status == 0) {
+                        $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
+                        if ($result === false) {
+                            array_push($dir_errors, $dir);
+                        }
+                    }
+                }
+                if (count($dir_errors) > 0) {
+                    $this->setError(__f('Error creating temp subdirectories [%s]', implode(",", $dir_errors)));
+                    return false;
+                }
+            }
+
+        } else {
+            // create temp directory and subdirectories
+            $result = FileUtil::mkdirs($this->tempdir);
+            if ($result === false) {
+                $this->setError(__('Error creating temp directory'));
+                return false;
+            }
+
+            $dir_errors = array();
+            foreach($this->tempdirsubs as $dir => $status) {
+                $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
+                if ($result === false) {
+                    array_push($dir_errors, $dir);
+                }
+            }
+            if (count($dir_errors) > 0) {
+                $this->setError(__f('Error creating temp subdirectories [%s]', implode(",", $dir_errors)));
+                return false;
+            }
+            
+            $result = FileUtil::writeFile($this->tempdir.'/.htaccess', $htaccess_file);
+            if ($result === false) {
+                $this->setError(__f('Temp directory was created successfully but there was a problem creating .htaccess file. You will have to download it yourself from the <a href="%s">CoZi</a>', 'https://code.zikula.org/svn/core/branches/zikula-1.3/src/ztemp/.htaccess'));
+                return false;
+            }
+        }
+
+        $this->setRecoveryOutput(__('Please keep in mind that you have to reload the utility to see the current status of the temp directory'));
+        
+        // Set a status message.
+        $this->setStatus(__('The temp directory was successfully rebuilt'));
 
         // Recovery successful.
         return true;
@@ -1655,7 +1839,7 @@ class RecoveryConsole
     // Return an array of all possible utilities.
     public function getAllUtilities()
     {
-        return $valid = array('theme', 'permission', 'block', 'site', 'password');
+        return $valid = array('theme', 'permission', 'block', 'site', 'password', 'tempdir');
     }
     // Return an array of database-requiring utilities.
     public function getAllDatabaseUtilities()
