@@ -820,6 +820,17 @@ class Users_Api_Registration extends Zikula_Api
         $idValue = $args[$idField];
 
         $this->purgeExpired();
+
+        if ($idField == 'email') {
+            // If reg_uniemail was ever false, or the admin created one or more users with an existing e-mail address,
+            // then more than one user with the same e-mail address might exists.  The get function should not return the first
+            // one it finds, as that is a security breach. It should return false, because we are not sure which one we want.
+            $rcount = ModUtil::apiFunc('Users', 'registration', 'countAll', array('filter' => array('uname' => $idValue)));
+            if ($rcount > 1) {
+                return false;
+            }
+        }
+
         $reginfo = DBUtil::selectObjectByID('users_registration', $idValue, $idField);
 
         if ($reginfo === false) {
@@ -850,10 +861,13 @@ class Users_Api_Registration extends Zikula_Api
 
         $where = array();
         foreach ($args['filter'] as $field => $value) {
-            if (($field != 'isapproved') && ($field != 'isverified')) {
-                return LogUtil::registerArgsError();
+            if (is_bool($value)) {
+                $dbValue = $value ? '1' : '0';
+            } elseif (is_int($value)) {
+                $dbValue = $value;
+            } else {
+                $dbValue = "'{$value}'";
             }
-            $dbValue = $value ? '1' : '0';
             $where[] = "({$regColumn[$field]} = {$dbValue})";
         }
         $where = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
@@ -867,8 +881,7 @@ class Users_Api_Registration extends Zikula_Api
      *
      * @param array $args All parameters passed to this function.
      *                      array $args['filter']   An array of field/value combinations used to filter the results. Optional, default
-     *                                                  is to return all records. Filterable fields include isapproved and isverified;
-     *                                                  filtering on any other field will result in an error. For example,
+     *                                                  is to return all records. For example,
      *                                                  array('isapproved' => true, 'isverified' => false) will filter and return
      *                                                  only those registrations that are approved and waiting for e-mail verification.
      *                      array $args['orderby']  An array of field name(s) by which to order the results, and the order direction. Example:
@@ -967,8 +980,7 @@ class Users_Api_Registration extends Zikula_Api
      *
      * @param array $args All parameters passed to this function.
      *                      array $args['filter']   An array of field/value combinations used to filter the results. Optional, default
-     *                                                  is to count all records. Filterable fields include isapproved and isverified;
-     *                                                  filtering on any other field will result in an error. For example,
+     *                                                  is to count all records. For example,
      *                                                  array('isapproved' => true, 'isverified' => false) will filter and count
      *                                                  only those registrations that are approved and waiting for e-mail verification.
      *
