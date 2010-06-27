@@ -687,10 +687,10 @@ class Users_User extends Zikula_Controller
                 // here, since those are things for the UI to deal with
                 $userStatus = isset($userObj['activated']) ? $userObj['activated'] : UserUtil::ACTIVATED_INACTIVE;
                 // The status to accept terms and/or privacy policy happens no matter what authmodule is used for this login.
-                $mustConfirmTOUPP = ($userStatus == self::ACTIVATED_INACTIVE_TOUPP) || ($userStatus == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+                $mustConfirmTOUPP = ($userStatus == UserUtil::ACTIVATED_INACTIVE_TOUPP) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP);
                 // The status to force a password change only happens if the current authmodule is 'Users', but we need to know the
                 // status separately from whether it has to happen right now.
-                $mustChangePassword = ($userStatus == self::ACTIVATED_INACTIVE_PWD) || ($userStatus == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+                $mustChangePassword = ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP);
                 $mustChangePasswordRightNow = ($authModuleName == 'Users') && $mustChangePassword;
 
                 if ($mustConfirmTOUPP || $mustChangePasswordRightNow) {
