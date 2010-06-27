@@ -91,6 +91,7 @@
                     <input id="users_loginviaemail" type="radio" name="config[loginviaoption]" value="1" {if $config.loginviaoption neq 0}checked="checked" {/if}/>
                     <label for="users_loginviaemail">{gt text="E-mail address"}</label>
                     <div class="z-formnote z-warningmsg">{gt text="Notice: If the 'Credential required for user log-in' is set to 'E-mail address', then the 'New e-mail addresses must be unique' option below must be set to 'Yes'."}</div>
+                    <div class="z-formnote z-warningmsg">{gt text="Notice: If the 'New e-mail addresses must be unique' option was set to 'no' at some point, then user accounts with duplicate e-mail addresses might exist in the system. The will experience difficulties logging in if this option is set to 'e-mail address'."}</div>
                 </div>
             </div>
             <div class="z-formrow">
@@ -102,7 +103,7 @@
                     <label for="reg_uniemailno">{gt text="No"}</label>
                 </div>
                 <div class="z-formnote z-sub z-italic">{gt text="If set to yes, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration."}</div>
-                <div class="z-formnote z-warningmsg">{gt text="Notice: If this option was set to 'no' at some point, then user accounts or registrations with duplicate e-mail addresses might exist in the system. In addition, administrators are permitted to add accounts or registrations with duplicate e-mail addresses. Setting this option to 'yes' will not affect those accounts or registrations."}</div>
+                <div class="z-formnote z-warningmsg">{gt text="Notice: If this option was set to 'no' at some point, then user accounts or registrations with duplicate e-mail addresses might exist in the system. Setting this option to 'yes' will not affect those accounts or registrations."}</div>
             </div>
             <div class="z-formrow">
                 <label for="users_minpass">{gt text="Minimum length for user passwords"}<span class="z-mandatorysym">{gt text="*"}</span></label>
@@ -181,7 +182,7 @@
             <div class="z-formrow" id="users_reg_verifyemail">
                 <label>{gt text="Verify e-mail address during registration"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <div class="z-formlist">
-                    <input id="users_reg_verifyemail2" type="radio" name="config[reg_verifyemail]" value="2" {if $config.reg_verifyemail eq 2} checked="checked"{/if} />
+                    <input id="users_reg_verifyemail2" type="radio" name="config[reg_verifyemail]" value="2" {if ($config.reg_verifyemail eq 2) || $config.reg_verifyemail eq 1} checked="checked"{/if} />
                     <label for="users_reg_verifyemail2">{gt text="Yes. User chooses password, then activates account via e-mail"}</label>
                 </div>
                 <div class="z-formlist">
