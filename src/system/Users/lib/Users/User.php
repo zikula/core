@@ -92,10 +92,10 @@ class Users_User extends Zikula_Controller
         $returnurl = FormUtil::getPassedValue('returnpage', null, 'GET');
         $confirmtou = (int)FormUtil::getPassedValue('confirmtou', isset($args['confirmtou']) ? $args['confirmtou'] : 0, 'GET');
         $changepassword = (int)FormUtil::getPassedValue('changepassword', isset($args['changepassword']) ? $args['changepassword'] : 0, 'GET');
-        $passwordtext = ($changepassword == 1) ? $this->__('Current password') : $this->__('Password');
+        $passwordtext = $changepassword ? $this->__('Current password') : $this->__('Password');
 
         // assign variables for the template
-        if ($confirmtou || $changepassword) {
+        if ($changepassword) {
             $this->renderer->assign('default_authmodule', 'Users')
                            ->assign('authmodule', 'Users')
                            ->assign('authmodules', array(ModUtil::getInfoFromName('Users')));
@@ -640,44 +640,26 @@ class Users_User extends Zikula_Controller
             return System::redirect(ModUtil::url('Users', 'user', 'main'));
         }
 
+        // We shouldn't get here unless we came through the Users UI
         if (!SecurityUtil::confirmAuthKey('Users')) {
             return LogUtil::registerAuthidError(ModUtil::url('Users','user','loginScreen'));
         }
 
-        $authinfo = FormUtil::getPassedValue('authinfo', array());
+        // Get the authinfo array structure, whatever that may be (usually--but does not have to be--loginid and pass)
+        $authinfo = FormUtil::getPassedValue('authinfo', array(), 'POST');
         if (isset($authinfo) && !is_array($authinfo)) {
             return LogUtil::registerError($this->__('Error! Invalid authentication information.'), null, System::getHomepageUrl());
         }
 
-        $authModuleName = FormUtil::getPassedValue('authmodule', 'Users');
+        // Get the name of the module that will do the actual authentication of the user
+        $authModuleName = FormUtil::getPassedValue('authmodule', 'Users', 'POST');
         if (empty($authModuleName)) {
             $authModuleName = 'Users';
         }
 
-        // Backward compatibility with 1.2
-        if ($authModuleName == 'Users') {
-            if (empty($authinfo['loginid'])) {
-                $uname = FormUtil::getPassedValue('uname', '');
-                if (!empty($uname)) {
-                    $authinfo['loginid'] = $uname;
-                } else {
-                    $email = FormUtil::getPassedValue('email', '');
-                    if (!empty($email)) {
-                        $authinfo['loginid'] = $email;
-                    }
-                }
-            }
-            if (empty($authinfo['pass'])) {
-                $pass = FormUtil::getPassedValue('pass', '');
-                if (!empty($pass)) {
-                    $authinfo['pass'] = $pass;
-                }
-            }
-        }
-
-        $returnPageUrl          = FormUtil::getPassedValue('url');
-        $rememberMe             = FormUtil::getPassedValue('rememberme', '');
-        $passwordReminder       = FormUtil::getPassedValue('passreminder', '');
+        // Get a few other things having to do with logging in
+        $returnPageUrl = FormUtil::getPassedValue('url', '', 'POST');
+        $rememberMe    = FormUtil::getPassedValue('rememberme', '', 'POST');
 
         $tryAgain = false;
 
@@ -698,78 +680,123 @@ class Users_User extends Zikula_Controller
                 $errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
                 $tryAgain = true;
             } else {
+                // Remember that we are not actually logging in here. We are, instead, intercepting based on a few
+                // statuses in order to do some UI stuff before the actual login.
+                // $userStatus == UserUtil::ACTIVATED_INACTIVE is handled in UserUtil::loginUsing(), where the login actually happens.
+                // We really only need to deal with ACTIVATED_INACTIVE_TOUPP, ACTIVATED_INACTIVE_PWD, and ACTIVATED_INACTIVE_PWD_TOUPP
+                // here, since those are things for the UI to deal with
                 $userStatus = isset($userObj['activated']) ? $userObj['activated'] : UserUtil::ACTIVATED_INACTIVE;
+                // The status to accept terms and/or privacy policy happens no matter what authmodule is used for this login.
+                $mustConfirmTOUPP = ($userStatus == self::ACTIVATED_INACTIVE_TOUPP) || ($userStatus == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+                // The status to force a password change only happens if the current authmodule is 'Users', but we need to know the
+                // status separately from whether it has to happen right now.
+                $mustChangePassword = ($userStatus == self::ACTIVATED_INACTIVE_PWD) || ($userStatus == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+                $mustChangePasswordRightNow = ($authModuleName == 'Users') && $mustChangePassword;
 
-                // There is something about handling TOU/PP confirmation and forced password change in UserUtil::loginUsing() too.
-                // That stuff is to catch logins that happen without going through this function. This is where it is really
-                // handled.
-                $mustConfirmTOUPP = 0;
-                $mustChangePassword = 0;
-                if ((($userStatus == UserUtil::ACTIVATED_INACTIVE_TOUPP) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP))
-                    && ModUtil::available('legal')
-                    && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true)))
-                {
-                    $mustConfirmTOUPP = 1;
-                    $touppAccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
-                    if ($touppAccepted != 1) {
-                        // user had to accept the terms of use, but didn't
-                        $tryAgain = true;
-                    }
-                }
+                if ($mustConfirmTOUPP || $mustChangePasswordRightNow) {
+                    // There is something about handling TOU/PP confirmation and forced password change in UserUtil::loginUsing() too.
+                    // That stuff is to catch logins that happen without going through this function. This is where it is really
+                    // handled.
+                    if ($mustConfirmTOUPP) {
+                        if (ModUtil::available('legal')
+                            && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true)))
+                        {
+                            $touppAccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
+                            $mustConfirmTOUPP = !$touppAccepted;
+                            $tryAgain = !$touppAccepted;
+                        } else {
+                            $mustConfirmTOUPP = false;
 
-                if (($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP)) {
-                    $mustChangePassword = 1;
-                    $newPasswordIsValid = true;
-                    $newPassword = FormUtil::getPassedValue('newpass', null, 'POST');
-                    $newPasswordAgain = FormUtil::getPassedValue('confirmnewpass', null, 'POST');
-                    // checks if the new password is valid
-                    // the new password must be different of the current password
-                    if ($passwordEnteredByUser == $newPassword && $newPasswordIsValid) {
-                        $errorMsg = $this->__('Sorry! The new and the current passwords must be different. Please correct your entries and try again.');
-                        $newPasswordIsValid = false;
-                    }
-
-                    // check if the new password satisfy the requirements
-                    if (empty($newPassword)) {
-                        $newPasswordIsValid = false;
+                            if ($mustChangePassword) {
+                                $userObj['activated'] = UserUtil::ACTIVATED_INACTIVE_PWD;
+                            } else {
+                                $userObj['activated'] = UserUtil::ACTIVATED_ACTIVE;
+                            }
+                            UserUtil::setVar('activated', $userObj['activated'], $userObj['uid']);
+                        }
                     }
 
-                    $minPasswordLength = $this->getVar('minpass');
-                    if (!empty($newPassword) && (strlen($newPassword) < $minPasswordLength) && $newPasswordIsValid) {
-                        $errorMsg = $this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minPasswordLength, $minPasswordLength);
-                        $newPasswordIsValid = false;
+                    if ($mustChangePasswordRightNow) {
+                        // See if we are returning back here with a new password
+                        $newPasswordIsValid = true;
+                        $newPassword      = FormUtil::getPassedValue('newpass', null, 'POST');
+                        $newPasswordAgain = FormUtil::getPassedValue('confirmnewpass', null, 'POST');
+                        $passwordReminder = FormUtil::getPassedValue('passreminder', '', 'POST');
+
+                        // checks if the new password is valid
+                        // TODO - Shouldn't this be the same set of checks as getRegistrationErrors?!
+
+                        // the new password must be different from the current password
+                        if ($authinfo['pass'] == $newPassword) {
+                            $errorMsg = $this->__('Sorry! The new and the current passwords must be different. Please correct your entries and try again.');
+                            $newPasswordIsValid = false;
+                        }
+
+                        // check if the new password satisfy the requirements
+                        if ($newPasswordIsValid && empty($newPassword)) {
+                            $newPasswordIsValid = false;
+                        }
+
+                        $minPasswordLength = $this->getVar('minpass');
+                        if ($newPasswordIsValid && (strlen($newPassword) < $minPasswordLength)) {
+                            $errorMsg = $this->_fn('Your password must be at least %s character long.', 'Your password must be at least %s characters long.', $minPasswordLength, $minPasswordLength);
+                            $newPasswordIsValid = false;
+                        }
+
+                        if ($newPasswordIsValid && ($newPassword != $newPasswordAgain)) {
+                            $errorMsg = $this->__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.');
+                            $newPasswordIsValid = false;
+                        }
+
+                        if ($newPasswordIsValid && empty($passwordReminder)) {
+                            $errorMsg = $this->__('Sorry! You must provide a new password reminder word or phrase.');
+                            $newPasswordIsValid = false;
+                        }
+
+                        // true if user password change is incorrect
+                        $mustChangePassword = !$newPasswordIsValid;
+                        $mustChangePasswordRightNow = !$newPasswordIsValid;
+                        $tryAgain = !$newPasswordIsValid;
                     }
 
-                    if (($newPassword != $newPasswordAgain) && $newPasswordIsValid) {
-                        $errorMsg = $this->__('Sorry! The two passwords you entered do not match. Please correct your entries and try again.');
-                        $newPasswordIsValid = false;
-                    }
+                    // If tryAgain is still true, then the user did not complete some of the necessary things on the
+                    // last time through loginScreen, or he did, but incorrectly.
+                    if ($tryAgain) {
+                        if ($mustConfirmTOUPP && $mustChangePasswordRightNow) {
+                            $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
+                        } elseif ($mustConfirmTOUPP) {
+                            $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms first.');
+                        } elseif ($mustChangePasswordRightNow) {
+                            $errorMsg = $this->__('Your log-in request was not completed because you must change your account\'s password first.');
+                        }
+                    } else {
+                        // If $tryAgain is false at this point, then the user has satisfied all of the requirements for either
+                        // accepting the tou and/or pp, for changing his password, or both--or has not changed his password.
 
-                    if (empty($passwordReminder) && $newPasswordIsValid) {
-                        $errorMsg = $this->__('Sorry! You must provide a new password reminder word or phrase.');
-                        $newPasswordIsValid = false;
-                    }
+                        if (($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP)) {
+                            // change the user's password
+                            UserUtil::setPassword($newPassword, $userObj['uid']);
+                            UserUtil::setVar('passreminder', $passwordReminder, $userObj['uid']);
 
-                    if (!$newPasswordIsValid) {
-                        // user password change is incorrect
-                        $tryAgain = true;
+                            // We just changed the password, but the user is not logged in yet, so
+                            // we have to make sure they can actually log in below
+                            $authinfo['pass'] = $newPassword;
+                        }
+
+                        $userStatus = UserUtil::ACTIVATED_ACTIVE;
+                        $userObj['activated'] = $userStatus;
+                        UserUtil::setVar('activated', $userStatus, $userObj['uid']);
                     }
                 }
             }
         }
 
         if ($tryAgain) {
-            // user had to accept the terms of use, but didn't -- or their login ID and/or password were incorrect
-            if (!isset($errorMsg) || empty($errorMsg)) {
-                if ($mustConfirmTOUPP && $mustChangePassword) {
-                    $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
-                } elseif ($mustConfirmTOUPP) {
-                    $errorMsg = $this->__('Your log-in request was not completed because you must agree to our terms first.');
-                } elseif ($mustChangePassword) {
-                    $errorMsg = $this->__('Your log-in request was not completed because you must change your account\'s password first.');
-                } elseif (!LogUtil::hasErrors()) {
-                    $errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
-                }
+            // $tryAgain is true, so there was a problem of some sort. Either the authinfo was bad, or
+            // the user has to complete something in order to log in (like accepting the terms, or changing
+            // his password)
+            if (!LogUtil::hasErrors()) {
+                $errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
             }
 
             $callbackURL = ModUtil::url('Users','user','loginScreen', array(
@@ -783,46 +810,29 @@ class Users_User extends Zikula_Controller
                 return System::redirect($callbackURL);
             }
         } else {
-            if (($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD) || ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP)) {
-                // change the user's password
-                UserUtil::setPassword($newPassword, $userObj['uid']);
-                UserUtil::setVar('passreminder', $passwordReminder, $userObj['uid']);
-                $passwordEnteredByUser = $newPassword;
-            }
-            UserUtil::setVar('activated', UserUtil::ACTIVATED_ACTIVE, $userObj['uid']);
-        }
-
-
-        // Finally, here we actually log in. Note that the UserUtil::loginUsing() function will call the appropriate authmodule function.
-        if (UserUtil::loginUsing($authModuleName, $authinfo, $rememberMe)) {
-            // start login hook
-            $uid = UserUtil::getVar('uid');
-            $this->callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
-            $loginRedirect = $this->getVar('login_redirect');
-            if ($loginRedirect == 1) {
-                // WCAG compliant login
-                return System::redirect($returnPageUrl);
+            // Finally, here we actually log in. Note that the UserUtil::loginUsing() function will call the appropriate authmodule function.
+            // It will also handle any status issues with the login attempt (e.g., user is inactive). Rememeber, too, that it has some
+            // checks for tou and/or pp acceptance, and for forced password changes. Those are over there just in case loginUsing is called
+            // without going through here. It will, in fact, redirect the user back here if there are issues in those areas.
+            if (UserUtil::loginUsing($authModuleName, $authinfo, $rememberMe)) {
+                // start login hook
+                $uid = UserUtil::getVar('uid');
+                $this->callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
+                $loginRedirect = $this->getVar('login_redirect');
+                if ($loginRedirect == 1) {
+                    // WCAG compliant login
+                    return System::redirect($returnPageUrl);
+                } else {
+                    // meta refresh
+                    $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnPageUrl);
+                }
+                return true;
             } else {
-                // meta refresh
-                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnPageUrl);
+                if (!LogUtil::hasErrors()) {
+                    LoginUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
+                }
+                return System::redirect(ModUtil::url('Users','user','loginScreen', array('returnpage' => urlencode($returnPageUrl))));
             }
-            return true;
-        } else {
-            // loginUsing() should set an error message, probably through a call to the authmodule.
-            // Just in case, check and if not, set a generic message
-            if (!LogUtil::hasErrors()) {
-                LogUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
-            }
-            $moderation = $this->getVar('moderation', false);
-            $regVerifyEmail = $this->getVar('reg_verifyemail', UserUtil::VERIFY_NO);
-            if ($moderation && ($regVerifyEmail == UserUtil::VERIFY_USERPWD)) {
-                LogUtil::registerError($this->__('Note: If you have recently registered with us, then your account might be waiting for an administrator\'s approval, or might be waiting for you to verify your e-mail address. Please check your e-mail for a message from us with more information and instructions.'));
-            } elseif ($regVerifyEmail == UserUtil::VERIFY_USERPWD) {
-                LogUtil::registerError($this->__('Note: If you have recently registered with us, then your account might be waiting for you to verify your e-mail address. Please check your e-mail for a message from us, and verify your account before trying to log in.'));
-            } elseif ($moderation) {
-                LogUtil::registerError($this->__('Note: If you have recently registered with us, then your account might be waiting for an administrator\'s approval. Please check your e-mail for a message from us. When you are notified that your registration has been approved, then you will be able to log in.'));
-            }
-            return System::redirect(ModUtil::url('Users','user','loginScreen', array('returnpage' => urlencode($returnPageUrl))));
         }
     }
 

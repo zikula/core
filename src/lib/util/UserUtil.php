@@ -428,80 +428,62 @@ class UserUtil
      */
     public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
     {
+        // For the following, register any errors in the UI function that called this.
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
-            return false;
+            return LogUtil::registerArgsError();
         } elseif (!ModUtil::getInfoFromName($authModuleName)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
-            return false;
+            return LogUtil::registerArgsError();
         } elseif (!ModUtil::available($authModuleName)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not available.", 'DEBUG');
-            return false;
+            return LogUtil::registerArgsError();
         } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not an authmodule.", 'DEBUG');
-            return false;
+            return LogUtil::registerArgsError();
         }
 
         // Authenticate the loginID and userEnteredPassword against the specified authModule.
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
         if ($checkPassword) {
-            $uid = self::authApi($authModuleName, 'login', array('authinfo' => $authinfo));
-            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModule module ('{$authModuleName}') login failure (user not found, or error).", 'DEBUG');
-
-                $event = new Zikula_Event('user.login.failed', null, array(
-                    'authmodule'    => $authModuleName,
-                    'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-                ));
-                EventUtil::notify($event);
-
-                return false;
-            }
-            // At this point, the custom authmodule's login process has been executed. Anything that
-            // prevents this Zikula login process from completing should ensure that the custom authmodule's
-            // logout function is called.
+            $authenticatedUid = self::authApi($authModuleName, 'authenticateUser', array('authinfo' => $authinfo));
         } else {
-            $userObj = self::authApi($authModuleName, 'getUserForAuthinfo', array('authinfo' => $authinfo));
-            if (!$userObj) {
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModule module ('{$authModuleName}') getUserForAuthinfo failure (user not found, or error).", 'DEBUG');
-
-                $event = new Zikula_Event('user.login.failed', null, array(
-                    'authmodule'    => $authModuleName,
-                    'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-                ));
-                EventUtil::notify($event);
-
-                return false;
-            }
-            $uid = $userObj['uid'];
-
-            // At this point, the custom authmodule's login process has NOT been executed (if it is honoring
-            // the API's contract). No need to call the custom logout function if something later on prevents
-            // the Zikula login process from completing.
+            $authenticatedUid = self::authApi($authModuleName, 'getUidForAuthinfo', array('authinfo' => $authinfo));
         }
 
-        if (!$uid) {
+        if (!$authenticatedUid || !is_numeric($authenticatedUid) || ((int)$authenticatedUid != $authenticatedUid)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "UserUtil Internal Error ('{$authModuleName}') Should have uid at this point.", 'DEBUG');
-            // We should call the authmodule's custom logout function here if checkPassword was true, but since we
-            // don't have a $uid that means something horribly wrong, so we cannot.
-            return false;
+
+            // Note that we have not actually logged into anything yet, just authenticated, so no need to
+            // call logout on the authmodule.
+            $event = new Zikula_Event('user.login.failed', null, array(
+                'authmodule'    => $authModuleName,
+                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+            ));
+            EventUtil::notify($event);
+            return LogUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
         }
 
-        // get the database connection
+        // At this point we are authenticated, but not logged in. Check for things that need to be done
+        // prior to login.
+
+        // Need to make sure the Users module stuff is loaded and available, especially if we are logging in during
+        // an upgrade or install.
         ModUtil::dbInfoLoad('Users', 'Users');
         ModUtil::loadApi('Users', 'user', true);
 
-        if (!$userObj) {
-            // We didn't get it above, in $checkPassword == false
-            $userObj = self::getVars($uid);
-        }
-
+        $userObj = self::getVars($authenticatedUid);
         if (!$userObj || !is_array($userObj)) {
             LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "UserUtil Internal Error ('{$authModuleName}') uid should have given us a good user. Is the authmodule's map out of sync?", 'DEBUG');
-            if ($checkPassword) {
-                self::authApi($authModuleName, 'logout', array('uid' => $uid));
-            }
-            return false;
+            // Oops! The authmodule gave us a bad uid! Really should not happen unless that module's uid mapping is out of sync.
+            // Note that we have not actually logged into anything yet, just authenticated, so no need to
+            // call logout on the authmodule.
+            $event = new Zikula_Event('user.login.failed', null, array(
+                'authmodule'    => $authModuleName,
+                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+            ));
+            EventUtil::notify($event);
+            return LoginUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
         }
 
         if (!isset($userObj['activated'])) {
@@ -511,22 +493,25 @@ class UserUtil
 
         // Check if the account is active
         if ($userObj['activated'] != self::ACTIVATED_ACTIVE) {
-            // If we came here through the normal Users module loginScreen/login functions, then we shouldn't
-            // have to deal with terms or password status issues. If we came here from some place else, then
-            // we need to ensure it gets handled.
+            // If we came here through the normal Users module loginScreen/login Users module UI functions, then we shouldn't
+            // have to deal with terms or password status issues. If we came here from some place else, then we need to
+            // ensure they get handled.
+
+            // The status to accept terms and/or privacy policy happens no matter what authmodule is used for this login.
             $mustConfirmTOUPP = ($userObj['activated'] == self::ACTIVATED_INACTIVE_TOUPP) || ($userObj['activated'] == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+
+            // The status to force a password change only happens if the current authmodule is 'Users', but we need to know the
+            // status separately from whether it has to happen right now.
             $mustChangePassword = ($userObj['activated'] == self::ACTIVATED_INACTIVE_PWD) || ($userObj['activated'] == self::ACTIVATED_INACTIVE_PWD_TOUPP);
+            $mustChangePasswordRightNow = ($authModuleName == 'Users') && $mustChangePassword;
+
+            // First, check to see if the user needs to accept the terms, privacy policy, or both. This is done no matter
+            // what authmodule is in use, as it is an account status thing, not an authentication status thing.
             if ($mustConfirmTOUPP) {
                 // The user needs to confirm acceptance of the terms and/or privacy policy.
                 // First, let's see if the administrator is still using that stuff.
                 if (ModUtil::available('legal')
-                    && (ModUtil::getVar('legal', 'termsofuse', false) || ModUtil::getVar('legal', 'privacypolicy', true))) {
-
-                    // Yes, still in use. Let loginScreen deal with it.
-                    if ($checkPassword) {
-                        // We logged into the custom authmodule above, log out now.
-                        self::authApi($authModuleName, 'logout', array('uid' => $uid));
-                    }
+                    && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
 
                     if ($mustConfirmTOUPP && $mustChangePassword) {
                         $errorMsg = __('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
@@ -534,91 +519,118 @@ class UserUtil
                         $errorMsg = __('Your log-in request was not completed because you must agree to our terms first.');
                     }
                     $callbackURL = ModUtil::url('Users','user','loginScreen', array(
+                        'authinfo'      => $authinfo,
+                        'authmodule'    => $authModuleName,
                         'confirmtou'    => $mustConfirmTOUPP,
-                        'changepassword'=> $mustChangePassword,
+                        'changepassword'=> $mustChangePasswordRightNow,
                     ));
+
+                    // Haven't failed login yet, really. We're retrying.
                     return LogUtil::registerError($errorMsg, 403, $callbackURL);
                 } else {
                     // No, the admin must have changed something with respect to the legal module since the
-                    // last time we saw this user log in.
+                    // last time we saw this user log in. Set the new activated status appropriately, depending on whether
+                    // the user's password must change or not. Note that we don't care, here, whether it needs to change right now,
+                    // just that it needs to change at some point.
                     if ($mustChangePassword) {
                         $userObj['activated'] = self::ACTIVATED_INACTIVE_PWD;
-                        self::setVar('activated', self::ACTIVATED_INACTIVE_PWD, $userObj['uid']);
                     } else {
                         $userObj['activated'] = self::ACTIVATED_ACTIVE;
-                        self::setVar('activated', self::ACTIVATED_ACTIVE, $userObj['uid']);
                     }
+                    self::setVar('activated', $userObj['activated'], $userObj['uid']);
+                    $mustConfirmTOUPP = false;
                 }
             }
 
-            if ($mustChangePassword) {
-                if ($checkPassword) {
-                    // We logged into the custom authmodule above, log out now.
-                    self::authApi($authModuleName, 'logout', array('uid' => $uid));
-                }
-
-                $errorMsg = __('Your log-in request was not completed because you must change your account\'s password first.');
+            // We only force a password change if the authmodule for this login is 'Users', hence the difference between
+            // checking $mustChangePasswordRightNow and $mustChangePassword
+            if ($mustChangePasswordRightNow) {
+                $errorMsg = __('Your log-in request was not completed because you must change your web site account\'s password first.');
                 $callbackURL = ModUtil::url('Users','user','loginScreen', array(
+                    'authinfo'      => $authinfo,
+                    'authmodule'    => $authModuleName,
                     'confirmtou'    => $mustConfirmTOUPP,
-                    'changepassword'=> $mustChangePassword,
+                    'changepassword'=> $mustChangePasswordRightNow,
                 ));
+
+                // Haven't failed login yet, really. We're retrying.
                 return LogUtil::registerError($errorMsg, 403, $callbackURL);
             }
 
             // If we get here, then either the account is inactive, or the account was set to confirm the terms,
-            // but that is no longer needed (no more legal module, or the settings changed). Check the status one more time.
-            if ($userObj['activated'] != self::ACTIVATED_ACTIVE) {
-                // account inactive, deny login
-                if ($checkPassword) {
-                    // We logged into the authmodule above, log out now.
-                    self::authApi($authModuleName, 'logout', array('uid' => $uid));
+            // but that is no longer needed (no more legal module, or the settings changed), or the account was set
+            // to force a password change, but we don't want to do it right now because the authmodule is not 'Users'.
+            // Check the status one more time.
+            if (($userObj['activated'] != self::ACTIVATED_ACTIVE) && ($userObj['activated'] != self::ACTIVATED_INACTIVE_PWD)){
+                // account inactive or we have a problem understanding what status the user has, deny login
+                // Note that we have not actually logged into anything yet, just authenticated, so no need to
+                // call logout on the authmodule.
+                $event = new Zikula_Event('user.login.failed', null, array(
+                    'authmodule'    => $authModuleName,
+                    'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                ));
+                EventUtil::notify($event);
+
+                $loginDisplayInactive = ModUtil::getVar('Users', 'login_displayinactive', false);
+                $loginDisplayVerify = ModUtil::getVar('Users', 'login_displayverify', false);
+                if ($loginDisplayVerify && (!isset($userObj['lastlogin']) || empty($userObj['lastlogin']) || ($userObj['lastlogin'] == '1970-01-01 00:00:00'))) {
+                    return  LoginUtil::registerError($this->__('Sorry! Your account pending activation. Please check your e-mail for an activation message or contact an administrator.'));
+                } elseif ($loginDisplayInactive) {
+                    return  LoginUtil::registerError($this->__('Sorry! Your account is not active. Please contact an administrator.'));
+                } else {
+                    return LoginUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
                 }
-                return false;
             }
         }
 
         // BEGIN ACTUAL LOGIN
         // Made it through all the checks. We can actually log in now.
+        $loggedInUid = self::authApi($authModuleName, 'login', array('authinfo' => $authinfo));
+        if ($loggedInUid == $authenticatedUid) {
+            // Storing Last Login date -- store it in UTC! Do not use date() function!
+            $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+            if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $loggedInUid)) {
+                // show messages but continue
+                LogUtil::registerError(__('Error! Could not save the log-in date.'));
+            }
 
-        // Storing Last Login date -- store it in UTC! Do not use date() function!
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $uid)) {
-            // show messages but continue
-            LogUtil::registerError(__('Error! Could not save the log-in date.'));
+            if (!System::isInstalling()) {
+                SessionUtil::requireSession();
+            }
+
+            // Set session variables -- this is what really does the Zikula login
+            SessionUtil::setVar('uid', (int)$loggedInUid);
+
+            // Remember the authenticating authmodule for logout
+            SessionUtil::setVar('authmodule', $authModuleName);
+
+            if (!empty($rememberMe)) {
+                SessionUtil::setVar('rememberme', 1);
+            }
+
+            // now that we've logged in the permissions previously calculated (if any) are invalid
+            $GLOBALS['authinfogathered'][$loggedInUid] = 0;
+
+            $event = new Zikula_Event('user.login', null, array(
+                'authmodule'    => $authModuleName,
+                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+                'user'          => $loggedInUid,
+            ));
+            EventUtil::notify($event);
+
+            return true;
+        } else {
+            // Really should never get here. We authenticated earlier with the same set of authinfo, but
+            // if we got here then the uid returned by login was different than the one returned by
+            // authenticateUser. Strange situation, so deny login.
+            // Note that we have not actually logged into anything, so no need to call logout on the authmodule.
+            $event = new Zikula_Event('user.login.failed', null, array(
+                'authmodule'    => $authModuleName,
+                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+            ));
+            EventUtil::notify($event);
+            return false;
         }
-
-        if (!System::isInstalling()) {
-            SessionUtil::requireSession();
-        }
-
-        // Set session variables
-        SessionUtil::setVar('uid', (int)$uid);
-
-        // Remember the authenticating authmodule for logout
-        SessionUtil::setVar('authmodule', $authModuleName);
-
-        if (!empty($rememberMe)) {
-            SessionUtil::setVar('rememberme', 1);
-        }
-
-        if (isset($confirmTOUPP) && $confirmTOUPP == 1) {
-            // if we get here, the user did accept the terms of use
-            // now update the status
-            self::setVar('activated', 1, (int)$uid);
-            SessionUtil::delVar('confirmtou');
-        }
-
-        // now we've logged in the permissions previously calculated are invalid
-        $GLOBALS['authinfogathered'][$uid] = 0;
-
-        $event = new Zikula_Event('user.login', null, array(
-            'authmodule'    => $authModuleName,
-            'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-            'user'          => $uid,
-        ));
-        EventUtil::notify($event);
-
-        return true;
     }
 
     /**
@@ -671,9 +683,6 @@ class UserUtil
             ));
             EventUtil::notify($event);
 
-            // delete logged-in user session
-            // SessionUtil::delVar('rememberme');
-            // SessionUtil::delVar('uid');
             session_destroy();
 
         }
