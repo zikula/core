@@ -575,7 +575,7 @@ class Users_Api_Registration extends Zikula_Api
                     if (!empty($notificationEmail)) {
                         ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
                             'toAddress'         => $notificationEmail,
-                            'notificationType'  => 'adminnotification',
+                            'notificationType'  => 'regadminnotify',
                             'templateArgs'      => $rendererArgs,
                         ));
                     }
@@ -747,7 +747,7 @@ class Users_Api_Registration extends Zikula_Api
                         $subject = $this->__('New registration: %s', $userinfo['uname']);
                         ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
                             'toAddress'         => $notificationEmail,
-                            'notificationType'  => 'adminnotification',
+                            'notificationType'  => 'regadminnotify',
                             'templateArgs'      => $rendererArgs,
                             'subject'           => $subject,
                         ));
@@ -1188,7 +1188,7 @@ class Users_Api_Registration extends Zikula_Api
 
         $codeSent = ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
             'toAddress'         => $reginfo['email'],
-            'notificationType'  => 'activation',
+            'notificationType'  => 'regverifyemail',
             'templateArgs'      => $rendererArgs
         ));
 

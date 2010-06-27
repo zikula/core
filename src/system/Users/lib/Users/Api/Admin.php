@@ -449,7 +449,7 @@ class Users_Api_Admin extends Zikula_Api
                     $renderer->assign('email', $value['email']);
                     $renderer->assign('uname', $value['uname']);
                     $renderer->assign('pass', $value['pass']);
-                    $message = $renderer->fetch('users_adminapi_notifyemail.tpl');
+                    $message = $renderer->fetch('users_email_importnotify_html.tpl');
                     $subject = $this->__f('Password for %1$s from %2$s', array($value['uname'], $sitename));
                     if (!ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
                                         array('toaddress' => $value['email'],

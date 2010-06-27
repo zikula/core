@@ -1510,7 +1510,7 @@ class Users_Admin extends Zikula_Controller
 
                     $sent = ModUtil::apiFunc('Users', 'user', 'sendNotification', array(
                         'toAddress'         => $reginfo['email'],
-                        'notificationType'  => 'deny',
+                        'notificationType'  => 'regdeny',
                         'templateArgs'      => $rendererArgs
                     ));
                 }
