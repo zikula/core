@@ -91,11 +91,6 @@ function addEditor(nid) {
         callback: function(form, value) {
             var authid = document.getElementById('admintabsauthid').value;
             var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
-            //this check should stop the form from submitting if the catname is the same, it doesnt work
-            //if (getOrig("C" + cid) == value) {
-            //    alert ("cat name the same!");
-            //    return false;
-            //}
             return 'catname='+encodeURIComponent(value)+'&cid='+cid+'&authid='+authid;
         },
         onComplete: function(transport, element) {
@@ -106,12 +101,7 @@ function addEditor(nid) {
                 return;
             }
             var json = pndejsonize(transport.responseText);
-            if (json.alerttext !== '' || json.response == '-1') {
-                this.element.innerHTML = getOrig(element.id);
-                pnshowajaxerror(json.alerttext);
-            } else {
-                this.element.innerHTML = json.response;
-            }
+            this.element.innerHTML = json.response;
             var aid = json.authid;
             if (aid !== '') {
                 document.getElementById('admintabsauthid').value = aid;
@@ -173,17 +163,13 @@ function deleteTab(id) {
  */
 function deleteTabResponse(req) {
     if (req.status != 200) {
-    	json = Zikula.ajaxResponseError(transport);
+    	json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
         return false;
     }
     var json = pndejsonize(req.responseText);
-    if (json.alerttext !== '' || json.response == '-1') {
-        pnshowajaxerror(json.alerttext);
-    } else {
-        var element = $("C" + json.response);
-        element.up('li').remove();
-    }
+    var element = $("C" + json.response);
+    element.up('li').remove();
     var aid = json.authid;
     if (aid !== '') {
         document.getElementById('admintabsauthid').value = aid;
@@ -220,19 +206,12 @@ function moveModule(id, cid) {
  */
 function changeModuleCategoryResponse(req) {
     if (req.status != 200) {
-    	json = Zikula.ajaxResponseError(transport);
+    	json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
         return;
     }
     var json = pndejsonize(req.responseText);
     //console.log(json);
-    if (json.alerttext !== '') {
-        pnshowajaxerror(json.alerttext);
-        var aid = json.authid;
-        document.getElementById('admintabsauthid').value = aid;
-        pnupdateauthids(aid);
-        return;
-    }
     $('z-admincontainer').highlight({ startcolor: '#c0c0c0'});
     var aid = json.authid;
     document.getElementById('admintabsauthid').value = aid;
@@ -316,38 +295,32 @@ function cancelCategory(cat) {
 function addCategoryResponse(req) {
     if (req.status != 200) {
         cancelCategory();
-        json = Zikula.ajaxResponseError(transport);
+        json = Zikula.ajaxResponseError(req);
         document.getElementById('admintabsauthid').value = json.authid;
         return false;
     }
     var json = pndejsonize(req.responseText);
     var aid = json.authid;
-    if (json.alerttext !== '' || json.response == '0') {
-        pnshowajaxerror(json.alerttext);
-        document.getElementById('admintabsauthid').value = aid;
-        pnupdateauthids(aid);
-    } else {
-        newcat = document.getElementById('addcat');
-        newcat.innerHTML = '<a id="C' + json.response + '" href="'
-            + json.url + '">' + catname + '</a><span id="catcontext' 
-            + json.response + '" class="z-admindrop">&nbsp;</span>';
-        newcat.setAttribute("class","");
-        newcat.setAttribute("id", "");
-        eval("context_catcontext" + json.response + " =  new Control.ContextMenu('catcontext' + json.response,{leftClick: true,animation: false });");
+    newcat = document.getElementById('addcat');
+    newcat.innerHTML = '<a id="C' + json.response + '" href="'
+        + json.url + '">' + catname + '</a><span id="catcontext' 
+        + json.response + '" class="z-admindrop">&nbsp;</span>';
+    newcat.setAttribute("class","");
+    newcat.setAttribute("id", "");
+    eval("context_catcontext" + json.response + " =  new Control.ContextMenu('catcontext' + json.response,{leftClick: true,animation: false });");
 
-        var newelement = document.createElement('li');
-        newelement.innerHTML = old;
-        newelement.setAttribute('id', 'addcat');
-        document.getElementById('admintabs').appendChild(newelement);
-        addContext('C'+json.response);
-        addEditor('C'+json.response);
-        document.getElementById('admintabsauthid').value = aid;
-        pnupdateauthids(aid);
-        Droppables.add('C'+json.response, {
-            accept: 'draggable',
-            hoverclass: 'ajaxhover',
-            onDrop: function(drag, drop) {moveModule(drag.id, drop.id);}
-        });
-    }
+    var newelement = document.createElement('li');
+    newelement.innerHTML = old;
+    newelement.setAttribute('id', 'addcat');
+    document.getElementById('admintabs').appendChild(newelement);
+    addContext('C'+json.response);
+    addEditor('C'+json.response);
+    document.getElementById('admintabsauthid').value = aid;
+    pnupdateauthids(aid);
+    Droppables.add('C'+json.response, {
+        accept: 'draggable',
+        hoverclass: 'ajaxhover',
+        onDrop: function(drag, drop) {moveModule(drag.id, drop.id);}
+    });  
     return false;
 }

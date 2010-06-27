@@ -20,8 +20,7 @@ class Admin_Ajax extends Zikula_Controller
      * Change the category a module belongs to by ajax.
      *
      * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          alerttext is a string empty if no problems.
-     *                          response is a string -1 on failure moduleid on sucess.
+     *                          response is a string moduleid on sucess.
      */
     public function changeModuleCategory() {
 
@@ -40,9 +39,8 @@ class Admin_Ajax extends Zikula_Controller
         //get info on the module
         $module = ModUtil::getInfo($moduleID);
         if (!$module) {
-            //deal with couldnt get module info
-            $output['alerttext'] = $this->__f('Error! Could not get module name for id %s.', DataUtil::formatForDisplay($moduleID));
-            return AjaxUtil::output($output, true);
+        	//deal with couldnt get module info
+        	return AjaxUtil::error($this->__f('Error! Could not get module name for id %s.', DataUtil::formatForDisplay($moduleID)), array(), true);
         }
         //get the module name
         $displayname = DataUtil::formatForDisplay($module['displayname']);
@@ -54,7 +52,6 @@ class Admin_Ajax extends Zikula_Controller
         if(!$result) {
             return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not add module to module category.')));
         }
-        $output['alerttext'] = '';
         $output['response'] = $moduleID;
         $output['newParentCat'] = $newParentCat;
         $output['oldcid'] = $oldcid;
@@ -67,8 +64,7 @@ class Admin_Ajax extends Zikula_Controller
      * Add a new admin category by ajax.
      *
      * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          alerttext is a string empty if no problems.
-     *                          response is a string 0 on failure new cid on sucess.
+     *                          response is a string the new cid on sucess.
      *                          url is a formatted url to the new category on success.
      */
     public function addCategory() {
@@ -89,15 +85,16 @@ class Admin_Ajax extends Zikula_Controller
         $cats = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($cats as $cat) {
             if (in_array($catName, $cat)) {
-                $output['alerttext'] = $this->__('Error! A category by this name already exists.');
-                return AjaxUtil::output($output, true);
+            	return AjaxUtil::error($this->__('Error! A category by this name already exists.'), array(), true);
             }
         }
         //create the category
         $result = ModUtil::apiFunc('Admin', 'admin', 'create', array('catname' => $catName,
                 'description' => ''));
-        $output['alerttext'] = '';
-        $output['response'] = (!$result) ? "0" : $result;
+        if (!$result) {
+            return AjaxUtil::error($this->__('The category could not be created.'), array(), true);
+        }
+        $output['response'] = $result;
         $url = ModUtil::url('Admin', 'admin', 'adminpanel', array('acid' => $result));
         $output['url'] = $url;
         AjaxUtil::output($output, true);
@@ -107,19 +104,18 @@ class Admin_Ajax extends Zikula_Controller
      * Delete an admin category by ajax.
      *
      * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          alerttext is a string empty if no problems.
-     *                          response is a string -1 on failure deleted cid on sucess.
+     *                          response is a string cid on sucess.
      */
     public function deleteCategory() {
         //security checks
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            return AjaxUtil::error(LogUtil::registerAuthidError(), array(), false, true, '403 Unauthorized');
         }
         //get passed cid to delete
         $cid = trim(FormUtil::getPassedValue('cid'));
         //check user has permission to delete this
         if (!SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true), array(), false, true, '403 Unauthorized');
         }
         //find the category corrisponding to the cid.
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
@@ -130,7 +126,6 @@ class Admin_Ajax extends Zikula_Controller
         //delete the category
         if (ModUtil::apiFunc('Admin', 'admin', 'delete', array('cid' => $cid))) {
             // Success
-            $output['alerttext'] = '';
             $output['response'] = $cid;
             return AjaxUtil::output($output, true);
         }
@@ -150,10 +145,10 @@ class Admin_Ajax extends Zikula_Controller
 
         //security checks
         if (!SecurityUtil::checkPermission('Admin::Category', "$cat[catname]::$cid", ACCESS_EDIT)) {
-            return AjaxUtil::error(LogUtil::registerPermissionError(null,true));
+            return AjaxUtil::error(LogUtil::registerPermissionError(null,true), array(), false, true, '403 Unauthorized');
         }
         if (!SecurityUtil::confirmAuthKey()) {
-            return AjaxUtil::error(LogUtil::registerAuthidError());
+            return AjaxUtil::error(LogUtil::registerAuthidError(), array(), false, true, '403 Unauthorized');
         }
 
         //make sure cid and category name (cat) are both set
@@ -167,14 +162,11 @@ class Admin_Ajax extends Zikula_Controller
             if (in_array($cat, $catName)) {
                 //check to see if the category with same name is the same category.
                 if ($catName['cid'] == $cid) {
-                    $output['alerttext'] = '';
                     $output['response'] = $cat;
                     return AjaxUtil::output($output, true);
                 }
                 //a different category has the same name, not allowed.
-                $output['alerttext'] = $this->__('Error! A category by this name already exists.');
-                $output['response'] = '-1';
-                return AjaxUtil::output($output, true);
+                return AjaxUtil::error($this->__('Error! A category by this name already exists.'), array(), true);
             }
         }
 
@@ -186,7 +178,6 @@ class Admin_Ajax extends Zikula_Controller
 
         //update the category using the info from the database and from the form.
         if (ModUtil::apiFunc('Admin', 'admin', 'update', array('cid' => $cid, 'catname' => $cat, 'description' => $category['description']))) {
-            $output['alerttext'] = '';
             $output['response'] = $cat;
             return AjaxUtil::output($output, true);
         }
