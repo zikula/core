@@ -1127,10 +1127,17 @@ class RecoveryConsole
                 break;
             case 'site':
                 // if site is enabled, disable this utility
-                if(System::getVar('siteoff') ==0) {
+                if(System::getVar('siteoff') == 0) {
                     $this->setRecoveryOutput(__('Your site is already enabled.'));
                     $state = false;
                 }
+                break;
+             case 'tempdir':
+                if (isset($this->INPUT['confirm']) && $this->INPUT['confirm'] == 1) {
+                    $this->setRecoveryOutput(__('You have to reload the utility to see the current status of the temp directory.'));
+                    $state = false;
+                }
+                break;
             default:
                 break;
         }
@@ -1789,8 +1796,6 @@ class RecoveryConsole
                 return false;
             }
         }
-
-        $this->setRecoveryOutput(__('Please keep in mind that you have to reload the utility to see the current status of the temp directory'));
         
         // Set a status message.
         $this->setStatus(__('The temp directory was successfully rebuilt'));
