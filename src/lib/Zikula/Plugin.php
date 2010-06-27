@@ -154,8 +154,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     private function _setup()
     {
         $this->className = get_class($this);
-        $this->serviceId = $serviceId = PluginUtil::getServiceId($this->className);
-        var_dump($this->serviceId);
+        $this->serviceId = PluginUtil::getServiceId($this->className);
         $this->baseDir = dirname($this->getReflection()->getFileName());
         $p = explode('_', $this->className);
         if (strpos($this->serviceId, 'moduleplugin') === 0) {
