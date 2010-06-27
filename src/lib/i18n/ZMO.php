@@ -7,7 +7,7 @@
  * Copyright (c) 2009 Zikula Development Team
  *
  * @link http://www.zikula.org
- * @license GNU/GPL version 3 (or at your option, any later version).
+ * @license GNU/GPLv3 (or at your option, any later version).
  *
  * @package I18n
  */
