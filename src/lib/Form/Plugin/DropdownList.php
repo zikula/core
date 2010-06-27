@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -106,7 +106,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * and {@link pnFormDropdownList::getSelectedValue()}.
      *
      * Selected value is an array of values if you have set selectionMode=multiple.
-     * 
+     *
      * @var mixed
      */
     public $selectedValue;
@@ -122,7 +122,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * and {@link pnFormDropdownList::getSelectedIndex()}.
      *
      * Select index is not valid when selectionMode=multiple.
-     * 
+     *
      * @var integer Zero based index
      */
     public $selectedIndex;
@@ -140,7 +140,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Enable or disable mandatory asterisk.
-     * 
+     *
      * @var boolean
      */
     public $mandatorysym;
@@ -150,7 +150,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      *
      * Sets selection mode to either single item selection (standard dropdown) or
      * multiple item selection.
-     * 
+     *
      * @var string Possible values are 'single' and 'multiple'
      */
     public $selectionMode = 'single';
@@ -159,7 +159,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * Size of dropdown.
      *
      * This corresponds to the "size" attribute of the HTML <select> element.
-     * 
+     *
      * @var integer
      */
     public $size = null;
@@ -170,7 +170,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * Enable this to save the selected values as a single string instead of
      * an array of selected values. The result is a colon separated string
      * like ":10:20:30".
-     * 
+     *
      * @var boolean
      */
     public $saveAsString;
@@ -184,7 +184,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -197,7 +197,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -212,7 +212,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, &$params)
@@ -232,9 +232,9 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -318,10 +318,10 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
-     * 
+     *
      * @param Form_Render &$render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
-     * 
+     *
      * @return void
      */
     function raisePostBackEvent(&$render, $eventArgument)
@@ -369,9 +369,9 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Validates the input.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function validate(&$render)
@@ -387,7 +387,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Set the selected value.
-     * 
+     *
      * @param mixed $value Selected value.
      *
      * @return void
@@ -433,7 +433,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Get the selected value.
-     * 
+     *
      * @return mixed The selected value.
      */
     function getSelectedValue()
@@ -451,7 +451,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Set the selected item by index.
-     * 
+     *
      * @param int $index Selected index.
      *
      * @return void
@@ -466,7 +466,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
     /**
      * Get the selected index.
-     * 
+     *
      * @return integer The selected index.
      */
     function getSelectedIndex()

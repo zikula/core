@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -23,7 +23,7 @@ class LogUtil
      * @param boolean $delete   Whether to delete error messages (optional) (default=true).
      * @param boolean $override Whether to override status messages with error messages (optional) (default=true).
      * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true).
-     * 
+     *
      * @return array of messages.
      */
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
@@ -54,7 +54,7 @@ class LogUtil
      * @param string  $delimiter The string to use as the delimeter between the array of messages.
      * @param boolean $delete    True to delete.
      * @param boolean $override  Whether to override status messages with error messages.
-     * 
+     *
      * @return string the generated error message.
      */
     public static function getStatusMessagesText($delimiter = '<br />', $delete = true, $override = true)
@@ -65,7 +65,7 @@ class LogUtil
 
     /**
      * Get an array of error messages.
-     * 
+     *
      * @param boolean $delete  True to delete error messages (optional)(default=true).
      * @param boolean $reverse True to reverse error messages (optional)(default=true).
      *
@@ -127,7 +127,7 @@ class LogUtil
      *
      * @param string $message String the error message.
      * @param string $url     The url to redirect to (optional) (default=null).
-     * 
+     *
      * @return true, or redirect if url.
      */
     public static function registerStatus($message, $url = null)
@@ -153,12 +153,12 @@ class LogUtil
     }
 
     /**
-     * Register a failed authid check. 
-     * 
+     * Register a failed authid check.
+     *
      * This method calls registerError and then redirects back to the specified URL.
      *
      * @param string $url The URL to redirect to (optional) (default=null).
-     * 
+     *
      * @return false.
      */
     public static function registerAuthidError($url = null)
@@ -167,13 +167,13 @@ class LogUtil
     }
 
     /**
-     * Register a failed permission check. 
-     * 
+     * Register a failed permission check.
+     *
      * This method calls registerError and then logs the failed permission check so that it can be analyzed later.
      *
      * @param string  $url      The URL to redirect to (optional) (default=null).
      * @param boolean $redirect Whether to redirect not logged in users to the login form (default=true).
-     * 
+     *
      * @return false
      */
     public static function registerPermissionError($url = null, $redirect = true)
@@ -211,15 +211,15 @@ class LogUtil
     }
 
     /**
-     * Set an error message text. 
-     * 
+     * Set an error message text.
+     *
      * Also adds method, file and line where the error occured.
      *
      * @param string  $message The error message.
      * @param intiger $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null).
      * @param string  $url     The url to redirect to (optional) (default=null).
      * @param string  $debug   Debug information.
-     * 
+     *
      * @return false or system redirect if url is set.
      */
     public static function registerError($message, $type = null, $url = null, $debug=null)
@@ -252,7 +252,7 @@ class LogUtil
             // TODO A [do we need to have HTML sanitization] (drak)
             $func = ((!empty($class)) ? "$class::$func" : $func);
             $msg = __f('%1$s The origin of this message was \'%2$s\' at line %3$s in file \'%4$s\'.', array($message, $func, $line, $file));
-            
+
             if (System::isDevelopmentMode()) {
                 $msg .= '<br />';
                 $msg .= _prayer($debug);
@@ -294,17 +294,17 @@ class LogUtil
      * Register a failed method call due to a failed validation on the parameters passed.
      *
      * @param string $url Url to redirect to.
-     * 
+     *
      * @return false.
      */
     public static function registerArgsError($url = null)
     {
         return self::registerError(self::getErrorMsgArgs(), null, $url);
     }
-    
+
     /**
      * Get the default message for an authid error.
-     * 
+     *
      * @return string error message.
      */
     public static function getErrorMsgAuthid() {
@@ -313,16 +313,16 @@ class LogUtil
 
     /**
      * Get the default message for a permission error.
-     * 
+     *
      * @return string error message.
      */
     public static function getErrorMsgPermission() {
         return __('Sorry! You have not been granted access to this page.');
     }
-    
+
     /**
      * Get the default message for an argument error.
-     * 
+     *
      * @return string error message.
      */
     public static function getErrorMsgArgs() {
@@ -334,7 +334,7 @@ class LogUtil
      *
      * @param string $msg   The message to log.
      * @param string $level The log to log this message under(optional)(default='DEFAULT').
-     * 
+     *
      * @return void
      */
     public static function log($msg, $level = 'DEFAULT')
@@ -512,7 +512,7 @@ class LogUtil
      * returns toobig The log file size is bigger than $log_length in logging.conf.php.
      *
      * @param string|boolean $logfile The logfile to check or false to use $level.
-     * @param string         $level   The level to get logfile for if $logfile=false.   
+     * @param string         $level   The level to get logfile for if $logfile=false.
      * @param string         &$reason This should be an empty string updated with reason not ready for writing.
      *
      * @return boolean Whether or not the file is ready for writing.
@@ -554,7 +554,7 @@ class LogUtil
 
     /**
      * Cleans up unneeded old log files.
-     * 
+     *
      * @return void
      */
     public static function _cleanLogFiles()

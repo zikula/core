@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -20,14 +20,14 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 {
     /**
      * Enable or disable read only mode.
-     * 
+     *
      * @var boolean
      */
     public $readOnly;
 
     /**
      * CSS class for styling.
-     * 
+     *
      * @var string
      */
     public $cssClass;
@@ -38,14 +38,14 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * The name stored here is used to lookup initial data for the plugin in the render's variables.
      * The value itself depends on the plugin that extends this base class.
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
-     * 
+     *
      * @var string
      */
     public $dataField;
 
     /**
      * Enable or disable use of $dataField.
-     * 
+     *
      * @var boolean
      */
     public $dataBased;
@@ -67,7 +67,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * The name stored here is used to lookup initial item list in the render's variables.
      * The value should be an array as described for the $items variable.
      * Defaults to the data field name concatenated with "Items". See also tutorials on the Zikula site.
-     * 
+     *
      * @var string
      */
     public $itemsDataField;
@@ -76,7 +76,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Validation indicator used by the framework.
      *
      * The true/false value of this variable indicates whether or not the list selection is valid.
-     * 
+     *
      * @var boolean
      */
     public $isValid = true;
@@ -100,7 +100,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      *
      * This variable contains the label text for the input. The {@link pnFormLabel} plugin will set
      * this text automatically when it is a label for this list.
-     * 
+     *
      * @var string
      */
     public $myLabel;
@@ -112,21 +112,21 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * array( array('text' => 'A', 'value' => '1'),
      * array('text' => 'B', 'value' => '2'),
      * array('text' => 'C', 'value' => '3') )
-     * 
+     *
      * @var array
      */
     public $items = array();
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
-     * 
+     *
      * @var string
      */
     public $inputName;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -139,7 +139,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -174,7 +174,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, &$params)
@@ -187,9 +187,9 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Sets an error message.
-     * 
+     *
      * @param string $msg Error message.
-     * 
+     *
      * @return void
      */
     function setError($msg)
@@ -200,9 +200,9 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Clears the validation data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function clearValidation(&$render)
@@ -213,13 +213,13 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Saves value in data object.
-     * 
+     *
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$data   Data object.
-     * 
+     *
      * @return void
      */
     function saveValue(&$render, &$data)
@@ -237,13 +237,13 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Load values.
-     * 
+     *
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
-     * 
+     *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$values Values to load.
-     * 
+     *
      * @return void
      */
     function loadValue(&$render, &$values)
@@ -279,9 +279,9 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Set the selected value.
-     * 
+     *
      * To be implemented by extending class.
-     * 
+     *
      * @param mixed $value Selected value.
      *
      * @return boolean
@@ -293,9 +293,9 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Get the selected value.
-     * 
+     *
      * To be implemented by extending class.
-     * 
+     *
      * @return mixed The selected value.
      */
     function getSelectedValue()
@@ -305,10 +305,10 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Add item to list.
-     * 
+     *
      * @param string $text  The text of the item.
      * @param string $value The value of the item.
-     * 
+     *
      * @return void
      */
     function addItem($text, $value)
@@ -322,12 +322,12 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
 
     /**
      * Add several items to list.
-     * 
+     *
      * Quicker than copying the items one by one.
      * If addItem() does som special logic in the future then call that for each element in $items.
-     * 
+     *
      * @param array $items List of items.
-     * 
+     *
      * @return void
      */
     function setItems($items)

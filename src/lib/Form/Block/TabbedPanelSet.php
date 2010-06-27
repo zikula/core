@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Block
  *
@@ -41,21 +41,21 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
 {
     /**
      * CSS class name for styling.
-     * 
+     *
      * @var string
      */
     public $cssClass = 'linktabs';
 
     /**
      * Currently selected tab.
-     * 
+     *
      * @var integer
      */
     public $selectedIndex = 1;
 
     /**
      * Registered tab titles.
-     * 
+     *
      * @var array
      * @internal
      */
@@ -63,14 +63,14 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
 
     /**
      * Internal tab index counter.
-     * 
+     *
      * @var integer
      */
     public $registeredTabIndex = 1;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -129,13 +129,13 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
 
     /**
      * Register a tab panel.
-     * 
+     *
      * Called by child panels to register themselves.
-     * 
+     *
      * @param Form_Render             &$render Reference to Form render object.
      * @param Form_Plugin_TabbedPanel &$panel  Panel object.
      * @param string                  $title   Panel title.
-     * 
+     *
      * @return void
      */
     function registerTabbedPanel(&$render, &$panel, $title)

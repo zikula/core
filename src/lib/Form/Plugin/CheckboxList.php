@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -80,28 +80,28 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * </code>
      * But in your code you should use {@link pnFormCheckboxList::setSelectedValue()}
      * and {@link pnFormCheckboxList::getSelectedValue()}.
-     * 
+     *
      * @var array
      */
     public $selectedValue;
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
-     * 
+     *
      * @var string
      */
     public $inputName;
 
     /**
      * Number of columns to display checkboxes in.
-     * 
+     *
      * @var integer
      */
     public $repeatColumns;
 
     /**
      * Width of each checkbox list item (combination of checkbox and label).
-     * 
+     *
      * @var string Width including CSS unit (for instance "200px").
      */
     public $repeatWidth;
@@ -112,14 +112,14 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Enable this to save the selected values as a single string instead of
      * an array of selected values. The result is a colon separated string
      * like ":10:20:30".
-     * 
+     *
      * @var boolean
      */
     public $saveAsString;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -132,7 +132,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -146,7 +146,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, &$params)
@@ -160,9 +160,9 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -276,9 +276,9 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Validates the input.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function validate(&$render)
@@ -292,9 +292,9 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Sets an error message.
-     * 
+     *
      * @param string $msg Error message.
-     * 
+     *
      * @return void
      */
     function setError($msg)
@@ -305,9 +305,9 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Clears the validation data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function clearValidation(&$render)
@@ -318,13 +318,13 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Saves value in data object.
-     * 
+     *
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$data   Data object.
-     * 
+     *
      * @return void
      */
     function saveValue(&$render, &$data)
@@ -343,13 +343,13 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Load values.
-     * 
+     *
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
-     * 
+     *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$values Values to load.
-     * 
+     *
      * @return void
      */
     function loadValue(&$render, &$values)
@@ -387,7 +387,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Set the selected value.
-     * 
+     *
      * @param mixed $value Selected value.
      *
      * @return void
@@ -404,7 +404,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
 
     /**
      * Get the selected value.
-     * 
+     *
      * @return mixed The selected value.
      */
     function getSelectedValue()

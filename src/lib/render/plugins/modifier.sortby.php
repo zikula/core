@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  * @subpackage Template_Plugins
  *
@@ -15,14 +15,14 @@
 
 /**
  * Sorts an array of named arrays by the supplied fields.
- * 
+ *
  * Code by dholmes at jccc d0t net
  * taken from http://au.php.net/function.uasort
  * modified by cablehead, messju and pscs at http://www.phpinsider.com/smarty-forum
- * 
+ *
  * @param array  &$data  The array to sort.
  * @param string $sortby Fields to sort by seperated by comma.
- * 
+ *
  * @return void
  */
 function array_sort_by_fields(&$data, $sortby)
@@ -56,10 +56,10 @@ function array_sort_by_fields(&$data, $sortby)
 
 /**
  * Modifier: sortby - allows arrays of named arrays to be sorted by a given field.
- * 
+ *
  * @param array  $arrData    The array to sort.
  * @param string $sortfields Fields to sort by seperated by comma.
- * 
+ *
  * @return array
  */
 function smarty_modifier_sortby($arrData,$sortfields)

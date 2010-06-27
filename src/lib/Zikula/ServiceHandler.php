@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_EventManager
  *
@@ -19,7 +19,7 @@
  * This is a container for a service managed by ServiceManager (by ID) and
  * a corrisponding method in that service that will handler and event.
  */
-class ServiceHandler
+class Zikula_ServiceHandler
 {
 
     /**

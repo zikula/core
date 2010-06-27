@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_ServiceManager
  *
@@ -286,7 +286,7 @@ class Zikula_ServiceManager implements ArrayAccess
      * Has argument.
      *
      * @param string $id Id.
-     * 
+     *
      * @return boolean
      */
     public function hasArgument($id)
@@ -299,7 +299,7 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id    Argument id.
      * @param string $value Argument value.
-     * 
+     *
      * @return void
      */
     public function setArgument($id, $value)
@@ -313,7 +313,7 @@ class Zikula_ServiceManager implements ArrayAccess
      * @param string $id Argument id.
      *
      * @throws InvalidArgumentException If id is not set.
-     * 
+     *
      * @return mixed
      */
     public function getArgument($id)

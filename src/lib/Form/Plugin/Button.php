@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -51,7 +51,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
 
     /**
      * Name of command event handler method.
-     * 
+     *
      * @var string Default is "handleCommand".
      */
     public $onCommand = 'handleCommand';
@@ -60,7 +60,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
      * Command name.
      *
      * This is the "commandName" parameter to pass in the event args of the command handler.
-     * 
+     *
      * @var string
      */
     public $commandName;
@@ -69,7 +69,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
      * Command argument.
      *
      * This value is passed in the event arguments to the form event handler as the commandArgument value.
-     * 
+     *
      * @var string
      */
     public $commandArgument;
@@ -81,7 +81,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
      * the button click - very usefull for buttons that deletes items.
      * You can use _XXX language defines directly as the message, no need to call <!--[pnml]--> for
      * translation.
-     * 
+     *
      * @var string
      */
     public $confirmMessage;
@@ -90,14 +90,14 @@ class Form_Plugin_Button extends Form_StyledPlugin
      * CSS styling.
      *
      * Please ignore - to be changed.
-     * 
+     *
      * @var string
      */
     public $styleHtml;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -107,9 +107,9 @@ class Form_Plugin_Button extends Form_StyledPlugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)

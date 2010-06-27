@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -251,7 +251,7 @@ class FileUtil
         if (is_dir($path)) {
             return true;
         }
-        
+
         $path = DataUtil::formatForOS($path, $absolute);
         return mkdir($path, $mode, true);
     }

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -24,14 +24,14 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * Checked value.
      *
      * Set to true when checkbox is checked, false otherwise.
-     * 
+     *
      * @var boolean
      */
     public $checked;
 
     /**
      * Enable or disable read only mode.
-     * 
+     *
      * @var boolean
      */
     public $readOnly;
@@ -41,14 +41,14 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      *
      * The name stored here is used to lookup initial data for the plugin in the render's variables.
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
-     * 
+     *
      * @var string
      */
     public $dataField;
 
     /**
      * Enable or disable use of $dataField.
-     * 
+     *
      * @var boolean
      */
     public $dataBased;
@@ -58,7 +58,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      *
      * The group name is used to locate data in the render (when databased) and to restrict which
      * plugins to do validation on (to be implemented).
-     * 
+     *
      * @var string
      * @see   pnFormRender::pnFormGetValues(), pnFormRender::pnFormIsValid()
      */
@@ -66,7 +66,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
-     * 
+     *
      * @var string
      */
     public $inputName;
@@ -75,7 +75,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * Get filename for this plugin.
      *
      * A requirement from the framework - must be implemented like this. Used to restore plugins on postback.
-     * 
+     *
      * @internal
      * @return string
      */
@@ -89,7 +89,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -113,7 +113,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, &$params)
@@ -123,13 +123,13 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
 
     /**
      * Load values.
-     * 
+     *
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
-     * 
+     *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$values Values to load.
-     * 
+     *
      * @return void
      */
     function loadValue(&$render, &$values)
@@ -163,9 +163,9 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -200,13 +200,13 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
 
     /**
      * Saves value in data object.
-     * 
+     *
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$data   Data object.
-     * 
+     *
      * @return void
      */
     function saveValue(&$render, &$data)

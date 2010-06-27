@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Debug
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -138,7 +138,7 @@ if (!function_exists('_prayer')) {
  *
  * @param array   $data The object to serialize.
  * @param boolean $die  Whether to shutdown the process or not.
- * 
+ *
  * @return void
  */
 function z_prayer($data, $die = true)
@@ -188,14 +188,14 @@ if (!class_exists('Timer')) {
     {
         /**
          * The name of the timer.
-         * 
+         *
          * @var string
          */
         public $name;
-        
+
         /**
          * Holds the times when to trigger the timer.
-         * 
+         *
          * @var array
          */
         public $times;
@@ -228,7 +228,7 @@ if (!class_exists('Timer')) {
 
         /**
          * Return the current microtime.
-         * 
+         *
          * @return integer The current microtime.
          */
         public function get_microtime()
@@ -252,7 +252,7 @@ if (!class_exists('Timer')) {
          * Stop the timer.
          *
          * @param boolean $insertNewRecord Whether to insert a new record.
-         * 
+         *
          * @return array Statistics
          */
         public function stop($insertNewRecord = true)
@@ -338,7 +338,7 @@ if (!class_exists('Timer')) {
          * Take a snapshot while continuing the timing run.
          *
          * @param boolean $doStats Whether to return statistics or not.
-         * 
+         *
          * @return array|void
          */
         public function snap($doStats = false)

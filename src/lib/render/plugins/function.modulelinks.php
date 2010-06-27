@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  * @subpackage Template_Plugins
  *
@@ -18,7 +18,7 @@
  *
  * Example
  * {modulelinks data=$links id='listid' class='z-menulinks' itemclass='z-ml-item' first='z-ml-first' last='z-ml-last'}
- * 
+ *
  * Available parameters:
  *  links     Array with menulinks (text, url, title, id, class, disabled) (optional)
  *  modname   Module name to display links for (optional)
@@ -30,10 +30,10 @@
  *  last      Class for the last element (optional)
  *  seperator Link seperator (optional)
  *  class     CSS class (optional).
- *  
+ *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
- * 
+ *
  * @return string A formatted string containing navigation for the module admin panel.
  */
 

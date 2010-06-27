@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -25,17 +25,17 @@ class SysInfo_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('pnversionnum', System::VERSION_NUM)
                        ->assign('pnversionid', System::VERSION_ID)
                        ->assign('pnversionsub', System::VERSION_SUB);
-        
+
         $serversig = System::serverGetVar('SERVER_SIGNATURE');
         if (!isset($serversig) || empty($serversig)) {
             $serversig = System::serverGetVar('SERVER_SOFTWARE');
         }
         $this->renderer->assign('serversig', $serversig);
-        
+
         $this->renderer->assign('phpversion', phpversion());
 
         // Mess around with PHP functions for the various databases
@@ -176,7 +176,7 @@ class SysInfo_Admin extends Zikula_Controller
         $phpinfo = implode('', $phpinfo);
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('phpinfo', $phpinfo);
 
         return $this->renderer->fetch('sysinfo_admin_phpinfo.tpl');
@@ -196,7 +196,7 @@ class SysInfo_Admin extends Zikula_Controller
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist');
 
         $this->renderer->setCaching(false);
-        
+
         $this->renderer->assign('filelist', $filelist)
                        ->assign('ztemp', $ztemp);
 
@@ -214,13 +214,13 @@ class SysInfo_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist',
                 array ('startdir' => $ztemp . '/',
                 'ztemp' => 1));
         $this->renderer->assign('filelist', $filelist);
-        
+
         $this->renderer->assign('ztemp', $ztemp);
 
         return $this->renderer->fetch('sysinfo_admin_filesystem.tpl');
@@ -237,7 +237,7 @@ class SysInfo_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         return $this->renderer->assign('mods', ModuleUtil::getModules())
                               ->assign('themes', ThemeUtil::getAllThemes())
                               ->fetch('sysinfo_admin_extensions.tpl');

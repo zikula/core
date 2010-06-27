@@ -6,7 +6,7 @@
  * Copyright (c) 2009, Zikula Development Team.
  *
  * @link http://www.zikula.org
- * @license GNU/GPL version 2 (or at your option, any later version).
+ * @license GNU/GPL version 3 (or at your option, any later version).
  *
  * @package I18n
  */
@@ -18,7 +18,7 @@ class ZGettext
 {
     /**
      * Singleton instance.
-     * 
+     *
      * @var ZGettext
      * @static
      */
@@ -26,35 +26,35 @@ class ZGettext
 
     /**
      * Locale.
-     * 
+     *
      * @var string
      */
     public $locale = 'en';
-    
+
     /**
      * Locale category.
-     * 
+     *
      * @var constant
      */
     public $category = LC_MESSAGES;
-    
+
     /**
      * LC Categories registry.
-     * 
+     *
      * @var array
      */
     public $LC_CATEGORIES;
-    
+
     /**
      * Default domain.
-     * 
+     *
      * @var string
      */
     public $defaultDomain;
-    
+
     /**
      * Text domains.
-     * 
+     *
      * @var array
      */
     public $textDomains = array();
@@ -70,7 +70,7 @@ class ZGettext
 
     /**
      * GetInstance of ZL10n singleton.
-     * 
+     *
      * @return ZGettext Instance.
      */
     public static function getInstance()
@@ -100,7 +100,7 @@ class ZGettext
 
     /**
      * getLocale.
-     * 
+     *
      * @return string
      */
     public function getLocale()
@@ -111,7 +111,7 @@ class ZGettext
 
     /**
      * get LC_CATEGORY.
-     * 
+     *
      * @return constant
      */
     public function getCategory()
@@ -122,7 +122,7 @@ class ZGettext
 
     /**
      * Translate LC_CONSTANTS to internal form.
-     * 
+     *
      * @param constant $lc LC_CONSTANT.
      *
      * @return string LC_CONSTANT
@@ -138,7 +138,7 @@ class ZGettext
      *
      * @param string $domain Text domain.
      * @param string $path   Domain path.
-     * 
+     *
      * @return void
      */
     public function bindTextDomain($domain, $path)
@@ -153,7 +153,7 @@ class ZGettext
      *
      * @param string $domain  Domain.
      * @param string $codeset Codeset.
-     * 
+     *
      * @return void
      */
     public function bindTextDomainCodeset($domain, $codeset = null)
@@ -165,9 +165,9 @@ class ZGettext
 
     /**
      * Set default domain.
-     * 
+     *
      * @param string $domain Default domain.
-     * 
+     *
      * @return void
      */
     public function textDomain($domain)

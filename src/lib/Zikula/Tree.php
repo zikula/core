@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -19,29 +19,29 @@ class Zikula_Tree
 {
     /**
      * Configuration.
-     * 
+     *
      * @var array
      */
     private $config;
 
     /**
      * Data.
-     * 
+     *
      * @var array
      */
     private $data;
 
     /**
      * Tree data.
-     * 
+     *
      * @var array
      */
     private $tree;
 
     /**
      * HTML output.
-     * 
-     * @var string 
+     *
+     * @var string
      */
     private $html;
 
@@ -80,10 +80,10 @@ class Zikula_Tree
 
     /**
      * Set option.
-     * 
+     *
      * @param string $key   Key.
      * @param mixed  $value Value.
-     * 
+     *
      * @return void
      */
     public function setOption($key,$value)
@@ -93,9 +93,9 @@ class Zikula_Tree
 
     /**
      * Set option array.
-     * 
+     *
      * @param array $array Options.
-     * 
+     *
      * @return void
      */
     public function setOptionArray($array)
@@ -107,9 +107,9 @@ class Zikula_Tree
 
     /**
      * Load array data.
-     * 
+     *
      * @param array $menuArray Array data.
-     * 
+     *
      * @return void
      */
     public function loadArrayData($menuArray)
@@ -120,9 +120,9 @@ class Zikula_Tree
 
     /**
      * Load string data.
-     * 
+     *
      * @param string $menuString Data string.
-     * 
+     *
      * @return void
      */
     public function loadStringData($menuString)
@@ -133,7 +133,7 @@ class Zikula_Tree
 
     /**
      * Get HTML output
-     * 
+     *
      * @return string HTML output.
      */
     public function getHTML()
@@ -162,9 +162,9 @@ class Zikula_Tree
 
     /**
      * Get configuration for script.
-     * 
+     *
      * @param boolean $encode Whether or not to json encode the configuration.
-     * 
+     *
      * @return string|array
      */
     public function getConfigForScript($encode=true)
@@ -181,9 +181,9 @@ class Zikula_Tree
 
     /**
      * Parse string.
-     * 
+     *
      * @param string $menuString Data string.
-     * 
+     *
      * @return array Data array.
      */
     private function _parseString($menuString)
@@ -206,7 +206,7 @@ class Zikula_Tree
 
     /**
      * Parse data
-     * 
+     *
      * @return array Tree data.
      */
     private function _parseData()
@@ -249,11 +249,11 @@ class Zikula_Tree
 
     /**
      * Convert tree data to HTML.
-     * 
+     *
      * @param array  $tree   Tree data.
      * @param string $treeId Tree Id.
-     * 
-     * @return string HTML output. 
+     *
+     * @return string HTML output.
      */
     private function _toHTML($tree,$treeId=null)
     {

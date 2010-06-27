@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -57,35 +57,35 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * A text input in read only mode do *not* decode posted data, since the user cannot
      * enter anything in the read only input.
-     * 
+     *
      * @var boolean
      */
     public $readOnly;
 
     /**
      * Text to show as tool tip for the input.
-     * 
+     *
      * @var string
      */
     public $toolTip;
 
     /**
      * CSS class to use.
-     * 
+     *
      * @var string
      */
     public $cssClass;
 
     /**
      * Number of columns for multiline input.
-     * 
+     *
      * @var integer
      */
     public $cols;
 
     /**
      * Number of rows for multiline input.
-     * 
+     *
      * @var integer
      */
     public $rows;
@@ -95,14 +95,14 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * The name stored here is used to lookup initial data for the plugin in the render's variables.
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
-     * 
+     *
      * @var string
      */
     public $dataField;
 
     /**
      * Enable or disable use of $dataField.
-     * 
+     *
      * @var boolean
      */
     public $dataBased;
@@ -112,7 +112,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * The group name is used to locate data in the render (when databased) and to restrict which
      * plugins to do validation on (to be implemented).
-     * 
+     *
      * @var string
      * @see   pnFormRender::pnFormGetValues(), pnFormRender::pnFormIsValid()
      */
@@ -125,7 +125,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * (a valid input satisfies the mandatory requirement and regex validation pattern).
      * Use {@link pnFormTextInput::setError()} and {@link pnFormTextInput::clearValidation()}
      * to change the value.
-     * 
+     *
      * @var boolean
      */
     public $isValid = true;
@@ -134,14 +134,14 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Enable or disable mandatory check.
      *
      * By enabling mandatory checking you force the user to enter something in the text input.
-     * 
+     *
      * @var boolean
      */
     public $mandatory;
 
     /**
      * Enable or disable mandatory asterisk.
-     * 
+     *
      * @var boolean
      */
     public $mandatorysym;
@@ -151,7 +151,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * Use {@link pnFormTextInput::setError()} and {@link pnFormTextInput::clearValidation()}
      * to change the value.
-     * 
+     *
      * @var string
      */
     public $errorMessage;
@@ -161,21 +161,21 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * This variable contains the label text for the input. The {@link pnFormLabel} plugin will set
      * this text automatically when it is a label for this input.
-     * 
+     *
      * @var string
      */
     public $myLabel;
 
     /**
      * Size of HTML input (number of characters).
-     * 
+     *
      * @var integer
      */
     public $size;
 
     /**
      * Maximum number of characters allowed in the text input.
-     * 
+     *
      * @var integer
      */
     public $maxLength;
@@ -184,7 +184,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Regular expression to match input against.
      *
      * User input must match this pattern. Uses PHP preg_match() to match the input and pattern.
-     * 
+     *
      * @var string
      */
     public $regexValidationPattern;
@@ -193,14 +193,14 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Regular expression error message.
      *
      * Error message to display when the regex validation pattern does not match input.
-     * 
+     *
      * @var string
      */
     public $regexValidationMessage;
 
     /**
      * HTML input name for this plugin. Defaults to the ID of the plugin.
-     * 
+     *
      * @var string
      */
     public $inputName;
@@ -209,7 +209,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Get filename for this plugin.
      *
      * A requirement from the framework - must be implemented like this. Used to restore plugins on postback.
-     * 
+     *
      * @internal
      * @return string
      */
@@ -233,7 +233,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -259,7 +259,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, &$params)
@@ -284,9 +284,9 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -383,9 +383,9 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Validates the input.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function validate(&$render)
@@ -403,9 +403,9 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Sets an error message.
-     * 
+     *
      * @param string $msg Error message.
-     * 
+     *
      * @return void
      */
     function setError($msg)
@@ -417,9 +417,9 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Clears the validation data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function clearValidation(&$render)
@@ -431,13 +431,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Saves value in data object.
-     * 
+     *
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$data   Data object.
-     * 
+     *
      * @return void
      */
     function saveValue(&$render, &$data)
@@ -458,12 +458,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Parses a value.
-     * 
+     *
      * Override this function in inherited plugins if other format is needed.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param string      $text    Text.
-     * 
+     *
      * @return string Parsed Text.
      */
     function parseValue(&$render, $text)
@@ -473,13 +473,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Load values.
-     * 
+     *
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
-     * 
+     *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$values Values to load.
-     * 
+     *
      * @return void
      */
     function loadValue(&$render, &$values)
@@ -507,12 +507,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
     /**
      * Format the value to specific format.
-     * 
+     *
      * Override this function in inherited plugins if other format is needed.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param string      $value   The value to format.
-     * 
+     *
      * @return string Formatted value.
      */
     function formatValue(&$render, $value)

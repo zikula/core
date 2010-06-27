@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -128,7 +128,7 @@ class HtmlUtil
 
     /**
      * Creates an object array selector.
-     * 
+     *
      * @param string  $modname        Module name.
      * @param string  $objectType     Object type.
      * @param string  $name           Select field name.
@@ -146,7 +146,7 @@ class HtmlUtil
      * @param boolean $disabled       Add Disabled attribute to select.
      * @param string  $fieldSeparator Field seperator if $displayField2 is given.
      * @param integer $multipleSize   Size for multiple selects.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function getSelector_ObjectArray($modname, $objectType, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
@@ -204,7 +204,7 @@ class HtmlUtil
 
     /**
      * Get selector by table field.
-     * 
+     *
      * @param string  $modname       Module name.
      * @param string  $tablekey      Table name.
      * @param string  $name          Select field name.
@@ -222,7 +222,7 @@ class HtmlUtil
      * @param boolean $disabled      Add Disabled attribute to select.
      * @param integer $truncate      Truncate field to given length.
      * @param integer $multipleSize  Size for multiple selects.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function getSelector_FieldArray($modname, $tablekey, $name, $field = 'id', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $assocKey = '', $distinct = false, $submit = true, $disabled = false, $truncate = 0, $multipleSize = 1)
@@ -324,7 +324,7 @@ class HtmlUtil
 
     /**
      * Selector for a module's tables.
-     * 
+     *
      * @param string  $modname       Module name.
      * @param string  $name          Select field name.
      * @param string  $selectedValue Selected value.
@@ -335,7 +335,7 @@ class HtmlUtil
      * @param boolean $disabled      Add Disabled attribute to select.
      * @param integer $nStripChars   Strip the first n characters.
      * @param integer $multipleSize  Size for multiple selects.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function getSelector_ModuleTables($modname, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $remove = '', $disabled = false, $nStripChars = 0, $multipleSize = 1)
@@ -378,10 +378,10 @@ class HtmlUtil
 
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
     }
-   
+
     /**
      * Selector for a module's tables.
-     * 
+     *
      * @param string  $modname           Module name.
      * @param string  $tablename         Table name.
      * @param string  $name              Select field name.
@@ -392,7 +392,7 @@ class HtmlUtil
      * @param boolean $showSystemColumns Whether or not to show the system columns.
      * @param boolean $disabled          Add Disabled attribute to select.
      * @param integer $multipleSize      Size for multiple selects.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function getSelector_TableFields($modname, $tablename, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $showSystemColumns = false, $disabled = false, $multipleSize = 1)
@@ -833,7 +833,7 @@ class HtmlUtil
 
     /**
      * Same as PN HTMLApi function but adds javascript form submit code to selector.
-     * 
+     *
      * @param string  $fieldname Field name.
      * @param array   $data      Data array.
      * @param integer $multiple  Whether or not this is a multiple select.
@@ -841,7 +841,7 @@ class HtmlUtil
      * @param string  $selected  Selected value.
      * @param string  $accesskey Access key.
      * @param string  $onchange  OnChange event.
-     * 
+     *
      * @return string The rendered output.
      */
     public static function FormSelectMultipleSubmit($fieldname, $data, $multiple = 0, $size = 1, $selected = '', $accesskey = '', $onchange = '')

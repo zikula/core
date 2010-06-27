@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -22,7 +22,7 @@ class AjaxUtil
      *
      * @param string $error Error text.
      * @param string $code  Optional error code, default '400 Bad data'.
-     * 
+     *
      * @return void
      */
     public static function error($error='', $code='400 Bad data')
@@ -41,7 +41,7 @@ class AjaxUtil
 
     /**
      * Encode data in JSON and return.
-     * 
+     *
      * This functions can add a new authid if requested to do so (default).
      * If the supplied args is not an array, it will be converted to an
      * array with 'data' as key.
@@ -53,7 +53,7 @@ class AjaxUtil
      * @param boolean $createauthid Create a new authid and send it back to the calling javascript.
      * @param boolean $xjsonheader  Send result in X-JSON: header for prototype.js.
      * @param boolean $statusmsg    Include statusmsg in output.
-     * 
+     *
      * @return void
      */
     public static function output($args, $createauthid = false, $xjsonheader = false, $statusmsg = true)

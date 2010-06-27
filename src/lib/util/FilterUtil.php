@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -20,42 +20,42 @@ class FilterUtil extends FilterUtil_Common
 
     /**
      * The Input variable name.
-     * 
+     *
      * @var string
      */
     private $varname;
 
     /**
      * Plugin object.
-     * 
+     *
      * @var array
      */
     private $plugin;
 
     /**
      * Filter object holder.
-     * 
+     *
      * @var array
      */
     private $obj;
 
     /**
      * Filter string holder.
-     * 
+     *
      * @var array
      */
     private $filter;
 
     /**
      * Filter SQL holder.
-     * 
+     *
      * @var array
      */
     private $sql;
 
     /**
      * Constructor.
-     * 
+     *
      * Argument $args may contain:
      *  plugins: Set of plugins to load.
      *  varname: Name of filters in $_REQUEST. Default: filter.
@@ -91,7 +91,7 @@ class FilterUtil extends FilterUtil_Common
      * Set name of input variable of filter.
      *
      * @param string $name Name of input variable.
-     * 
+     *
      * @return bool true on success, false otherwise.
      */
     public function setVarName($name)
@@ -101,7 +101,7 @@ class FilterUtil extends FilterUtil_Common
         }
 
         $this->varname = $name;
-        
+
         return true;
     }
 
@@ -112,7 +112,7 @@ class FilterUtil extends FilterUtil_Common
      * strip brackets around a filterstring.
      *
      * @param string $filter Filterstring.
-     * 
+     *
      * @return string Edited filterstring.
      */
     private function stripBrackets($filter)
@@ -128,7 +128,7 @@ class FilterUtil extends FilterUtil_Common
      * Create a condition object out of a string.
      *
      * @param string $filter Condition string.
-     * 
+     *
      * @return array Condition object.
      */
     private function makeCondition($filter)
@@ -173,7 +173,7 @@ class FilterUtil extends FilterUtil_Common
      * Help function to generate an object out of a string.
      *
      * @param string $filter Filterstring.
-     * 
+     *
      * @return array Filter object.
      */
     private function genObjectRecursive($filter)
@@ -284,7 +284,7 @@ class FilterUtil extends FilterUtil_Common
 
     //---------------- Object handling ---------------------
     //++++++++++++++++ Filter handling +++++++++++++++++++++
-    
+
     /**
      * Get all filters from Input
      *
@@ -342,7 +342,7 @@ class FilterUtil extends FilterUtil_Common
      * Set filterstring.
      *
      * @param mixed $filter Filter string or array.
-     * 
+     *
      * @return void
      */
     public function setFilter($filter)
@@ -366,7 +366,7 @@ class FilterUtil extends FilterUtil_Common
      * Help function for generate the filter SQL from a Filter-object.
      *
      * @param array $obj Object array.
-     * 
+     *
      * @return array Where and Join sql.
      */
     private function genSqlRecursive($obj)

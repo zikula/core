@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package I18n
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -19,21 +19,21 @@ class ZL10n
 {
     /**
      * Singleton instance.
-     * 
-     * @var ZL10n 
+     *
+     * @var ZL10n
      */
     private static $instances;
 
     /**
      * Translation domain.
-     * 
+     *
      * @var string
      */
     private $translationDomain;
 
     /**
      * Constructor.
-     * 
+     *
      * @param string $domain Gettext domain.
      */
     private function __construct($domain=null)
@@ -50,7 +50,7 @@ class ZL10n
      * One instance per translation domain.
      *
      * @param string $domain Gettext domain.
-     * 
+     *
      * @return ZL10n instance.
      */
     public static function getInstance($domain='null')
@@ -64,9 +64,9 @@ class ZL10n
 
     /**
      * Set the translation domain.
-     * 
+     *
      * @param string $domain Gettext domain.
-     * 
+     *
      * @return void
      */
     protected function setTranslationDomain($domain='null')
@@ -102,7 +102,7 @@ class ZL10n
      * @param string  $m1 Singular.
      * @param string  $m2 Plural.
      * @param integer $n  Count.
-     * 
+     *
      * @return string
      */
     public function _n($m1, $m2, $n)
@@ -130,7 +130,7 @@ class ZL10n
      * @param string       $m2    Plural.
      * @param integer      $n     Count.
      * @param string|array $param Format parameters.
-     * 
+     *
      * @return string
      */
     public function __fn($m1, $m2, $n, $param)

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -78,7 +78,7 @@ class DataUtil
 
     /**
      * Decrypt the given value using the mcrypt library function.
-     * 
+     *
      * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
@@ -166,7 +166,7 @@ class DataUtil
 
     /**
      * Encrypt the given value using the mcrypt library function.
-     * 
+     *
      * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
      *
      * @param string  $value   The value we wish to decrypt.
@@ -419,7 +419,7 @@ class DataUtil
 
             // Build the path
             // Rather than use DIRECTORY_SEPARATOR, normalise the $var because we cannot be sure what we got
-            // and since we cannot use realpath() because this will turn paths into absolute - for legacy reasons 
+            // and since we cannot use realpath() because this will turn paths into absolute - for legacy reasons
             // recipient's of the call my not be expecting absolute values (drak).
             $var = str_replace('\\', '/', $var);
             $var = implode('/', $clean_array);
@@ -515,7 +515,7 @@ class DataUtil
 
     /**
      * Hash function.
-     * 
+     *
      * Perform SHA1 or SHA256 hashing on a string using native PHP functions if available and if not uses own classes.
      *
      * @param string $string String to be hashed.

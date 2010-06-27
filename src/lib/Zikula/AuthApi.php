@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_Core
  *
@@ -70,7 +70,7 @@ abstract class Zikula_AuthApi extends Zikula_Api
 
     /**
      * Retrieves the Zikula User ID (uid) for the given authinfo
-     * 
+     *
      * From the mapping maintained by this authmodule.
      *
      * Custom authmodules should pay extra special attention to the accurate association of authinfo and user
@@ -88,7 +88,7 @@ abstract class Zikula_AuthApi extends Zikula_Api
 
     /**
      * Authenticates authinfo with the authenticating source, returning the matching Zikula user id.
-     * 
+     *
      * This function may be called to initially authenticate a user during the login process, or may be called
      * for a user already logged in to re-authenticate his password for a security-sensitive operation. This function
      * should merely authenticate the user, and not perform any additional login-related processes.

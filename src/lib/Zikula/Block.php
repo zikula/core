@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_Core
  *
@@ -20,7 +20,7 @@ abstract class Zikula_Block extends Zikula_Base
 {
     /**
      * Renderer instance.
-     * 
+     *
      * @var Renderer
      */
     protected $renderer;
@@ -60,14 +60,14 @@ abstract class Zikula_Block extends Zikula_Base
 
     /**
      * Initialise interface.
-     * 
+     *
      * @return void
      */
     abstract public function init();
 
     /**
      * Get info interface.
-     * 
+     *
      * @return array Blockinfo.
      */
     abstract public function info();
@@ -76,7 +76,7 @@ abstract class Zikula_Block extends Zikula_Base
      * Display block.
      *
      * @param array $blockinfo Blockinfo.
-     * 
+     *
      * @return array Blockinfo.
      */
     abstract public function display($blockinfo);

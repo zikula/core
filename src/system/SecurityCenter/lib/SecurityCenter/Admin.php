@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -105,7 +105,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         }
 
         $this->renderer->setCaching(false);
-        
+
         $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
 
         // Get all items
@@ -825,7 +825,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         // check for HTML Purifier outputfilter
         $htmlpurifier = (bool) (System::getVar('outputfilter') == 1);
         $this->renderer->assign('htmlpurifier', $htmlpurifier);
-        
+
         $this->renderer->assign('configurl', ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
 
         return $this->renderer->fetch('securitycenter_admin_allowedhtml.tpl');

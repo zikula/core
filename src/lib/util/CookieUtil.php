@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -27,7 +27,7 @@ class CookieUtil
      * @param string  $domain  Domain must be at least .domain.tld.
      * @param boolean $secure  To set if cookie must only be set over existing https connection.
      * @param boolean $signed  Override system setting to use signatures.
-     * 
+     *
      * @return boolean
      */
     public static function setCookie($name, $value='', $expires=null, $path=null, $domain=null, $secure=null, $signed = true)
@@ -54,7 +54,7 @@ class CookieUtil
      * @param string  $name    Name of cookie.
      * @param boolean $signed  Override system setting to use signatures.
      * @param boolean $default Default value.
-     * 
+     *
      * @return mixed Cookie value as string or bool false.
      */
     public static function getCookie($name, $signed=true, $default='')
@@ -69,7 +69,7 @@ class CookieUtil
 
     /**
      * Delete given cookie.
-     * 
+     *
      * Can be called multiple times, but must be called before any output
      * is sent to browser or it wont work.
      *

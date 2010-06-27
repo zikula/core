@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -33,7 +33,7 @@ class EventUtil
 
     /**
      * Get EventManager instance.
-     * 
+     *
      * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
      *
      * @return EventManager
@@ -57,7 +57,7 @@ class EventUtil
      * Notify event.
      *
      * @param Zikula_Event $event Event.
-     * 
+     *
      * @return Zikula_Event
      */
     static public function notify(Zikula_Event $event)
@@ -69,7 +69,7 @@ class EventUtil
      * NotifyUntil event.
      *
      * @param Zikula_Event $event Event.
-     * 
+     *
      * @return Zikula_Event
      */
     static public function notifyUntil(Zikula_Event $event)
@@ -82,7 +82,7 @@ class EventUtil
      *
      * @param string       $name    Name of event.
      * @param array|string $handler PHP Callable.
-     * 
+     *
      * @return void
      */
     static public function attach($name, $handler)
@@ -95,7 +95,7 @@ class EventUtil
      *
      * @param string       $name    Name of listener.
      * @param array|string $handler PHP callable.
-     * 
+     *
      * @return void
      */
     static public function detach($name, $handler)
@@ -107,7 +107,7 @@ class EventUtil
      * Loader for custom handlers.
      *
      * @param string $dir Path to the folder holding the eventhandler classes.
-     * 
+     *
      * @throws LogicException If the created handler isn't a Zikula_Event.
      * @return void
      */

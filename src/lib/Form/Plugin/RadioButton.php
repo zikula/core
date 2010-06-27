@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -48,28 +48,28 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 {
     /**
      * The value returned in pnFormGetValues() when this radio button is checked.
-     * 
+     *
      * @var string
      */
     public $value;
 
     /**
      * The current state of the radio button.
-     * 
+     *
      * @var boolean
      */
     public $checked;
 
     /**
      * Enable or disable read only mode.
-     * 
+     *
      * @var boolean
      */
     public $readOnly;
 
     /**
      * CSS class to use.
-     * 
+     *
      * @var string
      */
     public $cssClass;
@@ -79,14 +79,14 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * The name stored here is used to lookup initial data for the plugin in the render's variables.
      * Defaults to the ID of the plugin. See also tutorials on the Zikula site.
-     * 
+     *
      * @var string
      */
     public $dataField;
 
     /**
      * Enable or disable use of $dataField.
-     * 
+     *
      * @var boolean
      */
     public $dataBased;
@@ -96,7 +96,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * The group name is used to locate data in the render (when databased) and to restrict which
      * plugins to do validation on (to be implemented).
-     * 
+     *
      * @var string
      * @see   pnFormRender::pnFormGetValues(), pnFormRender::pnFormIsValid()
      */
@@ -104,7 +104,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Radiobutton selection group name.
-     * 
+     *
      * @var string
      */
     public $groupName;
@@ -116,7 +116,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * (a valid (set of) radiobuttons satisfies the mandatory requirement).
      * Use {@link pnFormRadioButton::setError()} and {@link pnFormRadioButton::clearValidation()}
      * to change the value.
-     * 
+     *
      * @var boolean
      */
     public $isValid = true;
@@ -126,14 +126,14 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * By enabling mandatory checking you force the user to check one of the radio buttons on the page
      * that shares the same groupName.
-     * 
+     *
      * @var boolean
      */
     public $mandatory;
 
     /**
      * Enable or disable mandatory asterisk.
-     * 
+     *
      * @var boolean
      */
     public $mandatorysym;
@@ -144,7 +144,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * Auto postback means "generate a server side event when selection changes".
      * If enabled then the event handler named in $onSelectedIndexChanged will be fired
      * in the main form event handler.
-     * 
+     *
      * @var boolean
      */
     public $autoPostBack;
@@ -161,7 +161,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * Use {@link pnFormRadioButton::setError()} and {@link pnFormRadioButton::clearValidation()}
      * to change the value.
-     * 
+     *
      * @var string
      */
     public $errorMessage;
@@ -171,21 +171,21 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * This variable contains the label text for the radiobutton. The {@link pnFormLabel} plugin will set
      * this text automatically when it is a label for this input.
-     * 
+     *
      * @var string
      */
     public $myLabel;
 
     /**
      * Whether or not a radio button of the group is checked.
-     * 
+     *
      * @var boolean
      */
     public $validationChecked = false;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -198,7 +198,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -222,7 +222,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, &$params)
@@ -232,10 +232,10 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Load values.
-     * 
+     *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       &$values Values to load.
-     * 
+     *
      * @return void
      */
     function loadValue(&$render, &$values)
@@ -273,9 +273,9 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -314,10 +314,10 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
-     * 
+     *
      * @param Form_Render &$render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
-     * 
+     *
      * @return void
      */
     function raisePostBackEvent(&$render, $eventArgument)
@@ -347,9 +347,9 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Validates the input.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function validate(&$render)
@@ -366,10 +366,10 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Find the checked radio button in group.
-     * 
+     *
      * @param Form_Render             &$render           Reference to Form render object.
      * @param Form_Plugin_RadioButton &$firstRadioButton The first found radio button.
-     * 
+     *
      * @return boolean
      */
     function findCheckedRadioButton(&$render, &$firstRadioButton)
@@ -385,10 +385,10 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Recursive helper method for self::findCheckedRadioButton().
-     * 
+     *
      * @param Form_Plugin_RadioButton &$firstRadioButton The first found radio button.
      * @param Form_Plugin             $plugin            A Form plugin.
-     * 
+     *
      * @return boolean
      */
     function findCheckedRadioButton_rec(&$firstRadioButton, $plugin)
@@ -414,9 +414,9 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Sets an error message.
-     * 
+     *
      * @param string $msg Error message.
-     * 
+     *
      * @return void
      */
     function setError($msg)
@@ -427,9 +427,9 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Clears the validation data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function clearValidation(&$render)
@@ -440,10 +440,10 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
     /**
      * Saves value in data object.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$data   Data object.
-     * 
+     *
      * @return void
      */
     function saveValue(&$render, &$data)

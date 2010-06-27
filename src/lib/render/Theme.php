@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -20,178 +20,178 @@ class Theme extends Renderer
     // base theme info
     /**
      * Theme Id.
-     * 
+     *
      * @var integer
      */
     public $id;
-    
+
     /**
      * Theme name.
-     * 
+     *
      * @var string
      */
     public $name;
-    
+
     /**
      * Display name.
-     * 
+     *
      * @var string
      */
     public $displayname;
-    
+
     /**
      * Description.
-     * 
+     *
      * @var string
      */
     public $description;
-    
+
     /**
      * Registration Id.
-     * 
+     *
      * @var integer
      */
     public $regid;
-    
+
     /**
      * Type.
-     * 
+     *
      * @var integer
      */
     public $type;
-    
+
     /**
      * Directory.
-     * 
+     *
      * @var string
      */
     public $directory;
-    
+
     /**
      * Version.
-     * 
+     *
      * @var string
      */
     public $version;
-    
+
     /**
      * Whether or not the theme is official.
-     * 
+     *
      * @var string
      */
     public $official;
-    
+
     /**
      * Author.
-     * 
+     *
      * @var string
      */
     public $author;
-    
+
     /**
      * Contact.
-     * 
+     *
      * @var string
      */
     public $contact;
-    
+
     /**
      * Admin capable.
-     * 
+     *
      * @var integer
      */
     public $admin;
-    
+
     /**
      * User capable.
-     * 
+     *
      * @var integer
      */
     public $user;
-    
+
     /**
      * System capable.
-     * 
+     *
      * @var integer
      */
     public $system;
-    
+
     /**
      * State.
-     * 
+     *
      * @var integer
      */
     public $state;
-    
+
     /**
      * Credits.
-     * 
+     *
      * @var string
      */
     public $credits;
-    
+
     /**
      * Changelog.
-     * 
+     *
      * @var string
      */
     public $changelog;
-    
+
     /**
      * Help.
-     * 
+     *
      * @var string
      */
     public $help;
-    
+
     /**
      * License.
-     * 
+     *
      * @var string
      */
     public $license;
-    
+
     /**
      * XHTML capable.
-     * 
+     *
      * @var integer
      */
     public $xhtml;
 
 
     // base theme properties
-    
+
     /**
      * Theme base path.
-     * 
+     *
      * @var string
      */
     public $themepath;
-    
+
     /**
      * Theme image path.
-     * 
+     *
      * @var string
      */
     public $imagepath;
-    
+
     /**
      * Theme language image path.
-     * 
+     *
      * @var string
      */
     public $imagelangpath;
-    
+
     /**
      * Theme stylesheet path.
-     * 
+     *
      * @var string
      */
     public $stylepath;
-    
+
     /**
      * Theme script path.
-     * 
+     *
      * @var string
      */
     public $scriptpath;
@@ -199,100 +199,100 @@ class Theme extends Renderer
 
     /**
      * Theme config.
-     * 
+     *
      * @var array
      */
     public $themeconfig;
-    
+
     /**
      * Cache page.
-     * 
+     *
      * @var boolean
      */
     public $cachepage;
-    
+
     /**
      * Home.
-     * 
+     *
      * @var boolean
      */
     public $home;
-    
+
     /**
      * User id.
-     * 
+     *
      * @var integer
      */
     public $uid;
-    
+
     /**
      * Function.
-     * 
+     *
      * @var string
      */
     public $func;
 
     // publics to identify our page
-    
+
     /**
      * Component id.
-     * 
+     *
      * @var integer
      */
     public $componentid;
-    
+
     /**
      * Page id.
-     * 
+     *
      * @var integer
      */
     public $pageid;
-    
+
     /**
      * Page type.
-     * 
+     *
      * @var string
      */
     public $pagetype;
-    
+
     /**
      * Query string.
-     * 
+     *
      * @var string
      */
     public $qstring;
-    
+
     /**
      * Request Uri.
-     * 
+     *
      * @var string
      */
     public $requesturi;
-    
+
     /**
      * Permission level.
-     * 
+     *
      * @var constant
      */
     public $permlevel;
-    
+
     /**
      * Whether or not the user is logged in.
-     * 
+     *
      * @var boolean.
      */
     public $isloggedin;
 
     /**
      * Gettext domain of the theme.
-     * 
+     *
      * @var string
      */
     public $themeDomain;
 
     /**
      * Constructor.
-     * 
+     *
      * @param string  $theme      Theme name.
      * @param boolean $usefilters Whether or not to use output filters.
      */
@@ -384,10 +384,10 @@ class Theme extends Renderer
 
     /**
      * Get Theme instance.
-     * 
+     *
      * @param string  $theme      Theme name.
      * @param boolean $usefilters Whether or not to use output filters.
-     * 
+     *
      * @return Theme
      */
     public static function getInstance($theme = null, $usefilters = true)
@@ -412,7 +412,7 @@ class Theme extends Renderer
 
     /**
      * Display the page output.
-     * 
+     *
      * @access private
      * @return void
      */
@@ -440,7 +440,7 @@ class Theme extends Renderer
 
     /**
      * Display a block.
-     * 
+     *
      * @param array $block Block information.
      *
      * @return string The rendered output.
@@ -505,7 +505,7 @@ class Theme extends Renderer
      * Checks which path to use for required template.
      *
      * @param string $template The template name.
-     * 
+     *
      * @return string Template path.
      */
     public function get_template_path($template)
@@ -547,7 +547,7 @@ class Theme extends Renderer
      *
      * Using this function, the user can clear all CSS/JS combination cached
      * files for the system.
-     * 
+     *
      * @return boolean
      */
     public function clear_cssjscombinecache()
@@ -800,7 +800,7 @@ class Theme extends Renderer
      * @param string $file    Ini file to parse.
      * @param string $section Name of the ini section to include (if null assign all).
      * @param string $assign  Var name to assign in the theme vars.
-     * 
+     *
      * @return boolean
      */
     private function load_vars($file, $section = null, $assign = null)

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -68,10 +68,10 @@ class PNObject extends DBObject
      */
     public function PNObject($init = null, $key = null, $field = null)
     {
-    	$this->_init($init, $key, $field);
+        $this->_init($init, $key, $field);
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObject')), 'STRICT');
     }
-    
+
     public function _init($init = null, $key = null, $field = null)
     {
         static $initTypes = array('D'   => self::GET_FROM_DB,
@@ -113,8 +113,8 @@ class PNObjectArray extends DBObjectArray
         $this->_init($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'DBObjectArray')), 'STRICT');
     }
-    
-    
+
+
     public function _init($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
         static $initTypes = array('D'   => self::GET_FROM_DB,

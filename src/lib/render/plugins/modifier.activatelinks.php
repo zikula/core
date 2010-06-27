@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  * @subpackage Template_Plugins
  *
@@ -17,7 +17,7 @@
  * Plugin to replace URLs found within a string into HTML links.
  *
  * @param string $text Text to apply modifier on.
- * 
+ *
  * @return string
  */
 function smarty_modifier_activatelinks($text)

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -25,7 +25,7 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
 {
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -38,7 +38,7 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -53,9 +53,9 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
 
     /**
      * Validates the input.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function validate(&$render)

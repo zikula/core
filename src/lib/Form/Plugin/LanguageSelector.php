@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -27,7 +27,7 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
      *
      * Normally you can only choose one of the installed languages with the language selector,
      * but by setting onlyInstalledLanguages to false you can get a list of all possible language.
-     * 
+     *
      * @var boolean
      */
     protected $onlyInstalledLanguages = true;
@@ -41,7 +41,7 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -54,7 +54,7 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, $params)

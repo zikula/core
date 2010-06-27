@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -22,23 +22,23 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
 {
     /**
      * Whether or not to show an edit link.
-     * 
+     *
      * @var boolean
      */
     public $editLink;
-    
+
     /**
      * Base category.
-     * 
+     *
      * May be the id, the category array or the path.
-     * 
+     *
      * @var mixed
      */
     public $category;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -51,7 +51,7 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
      *
      * @param Form_Render &$render Reference to pnForm render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     function load(&$render, $params)
@@ -62,9 +62,9 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)

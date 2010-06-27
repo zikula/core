@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  * @subpackage Template_Plugins
  *
@@ -24,7 +24,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Smarty &$smarty Reference to the Smarty object.
- * 
+ *
  * @return string|void The language, null if params['assign'] is true.
  */
 function smarty_function_lang($params, &$smarty)

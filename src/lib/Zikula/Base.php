@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_Core
  *
@@ -688,7 +688,7 @@ abstract class Zikula_Base
     {
         return ModUtil::getVar($this->name, $key, $default);
     }
-    
+
     /**
      * Convenience Module GetVars for all keys in this module.
      *

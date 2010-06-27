@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -27,21 +27,21 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
 {
     /**
      * Enable or disable input of time in addition to the date.
-     * 
+     *
      * @var boolean
      */
     public $includeTime;
-    
+
     /**
      * The initial date.
-     * 
+     *
      * @var string
      */
     public $initDate;
-    
+
     /**
      * Date format in the input field.
-     * 
+     *
      * @var string
      */
     public $ifFormat;
@@ -59,21 +59,21 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
      * - yearstart: first day in the year
      * - yearend: last day in the year
      * - custom: inital Date.
-     * 
+     *
      * @var string
      */
     public $defaultValue;
 
     /**
      * Enable or disable selection only mode (with hidden input field), defaults to false.
-     * 
+     *
      * @var boolean
      */
     public $useSelectionMode;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -86,7 +86,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -107,9 +107,9 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -261,10 +261,10 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
 
     /**
      * Parses a value.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param string      $text    Text.
-     * 
+     *
      * @return string Parsed Text.
      */
     function parseValue(&$render, $text)
@@ -277,9 +277,9 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
 
     /**
      * Validates the input string.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function validate(&$render)
@@ -307,10 +307,10 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
 
     /**
      * Format the value to specific format.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param string      $value   The value to format.
-     * 
+     *
      * @return string Formatted value.
      */
     function formatValue(&$render, $value)

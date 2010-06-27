@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -300,7 +300,7 @@ class SecurityCenter_Installer extends Zikula_Installer
                         'REQUEST.filter.page', 'POST.filter.page',
                         'REQUEST.filter.value', 'POST.filter.value'));
             // fall through
-                
+
             case '1.4.1':
                 System::delVar('htmlpurifierConfig');
                 // HTML Purifier default settings

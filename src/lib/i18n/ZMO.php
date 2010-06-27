@@ -5,16 +5,16 @@
  * Copyright (c) 2003 Danilo Segan <danilo@kvota.net>
  * Copyright (c) 2005 Nico Kaiser <nico@siriux.net>
  * Copyright (c) 2009 Zikula Development Team
- * 
+ *
  * @link http://www.zikula.org
- * @license GNU/GPL version 2 (or at your option, any later version).
+ * @license GNU/GPL version 3 (or at your option, any later version).
  *
  * @package I18n
  */
 
 /**
  * Provides a simple gettext replacement that works independently from the system's gettext abilities.
- * 
+ *
  * It can read MO files and use them for translating strings.
  * The files are passed to gettext_reader as a Stream (see streams.php)
  *
@@ -28,97 +28,97 @@ class ZMO
 {
     /**
      * Public variable that holds error code (0 if no error).
-     * 
+     *
      * @var integer
      */
     public $error = 0;
 
     /**
      * Byte order.
-     * 
+     *
      * Possible values:
      *  0: low endian
      *  1: big endian.
-     * 
+     *
      * @var integer
      */
     private $byteorder = 0;
 
     /**
      * Stream.
-     * 
+     *
      * @var StreamReader_Abstract
      */
     private $stream = null;
 
     /**
      * Short circuit.
-     * 
+     *
      * @var boolean
      */
     private $short_circuit = false;
 
     /**
      * Enable cache.
-     * 
+     *
      * @var boolean
      */
     private $enable_cache = false;
 
     /**
      * Offset of original table.
-     * 
+     *
      * @var integer
      */
     private $originals = null;
 
     /**
      * Offset of translation table.
-     * 
+     *
      * @var integer
      */
     private $translations = null;
 
     /**
      * Cache header field for plural forms.
-     * 
+     *
      * @var string
      */
     private $pluralheader = null;
 
     /**
      * Total string count.
-     * 
+     *
      * @var integer
      */
     private $total = 0;
 
     /**
      * Table for original strings (offsets).
-     * 
+     *
      * @var array
      */
     private $table_originals = null;
 
     /**
      * Table for translated strings (offsets).
-     * 
+     *
      * @var array
      */
     private $table_translations = null;
 
     /**
      * Cache translations.
-     * 
+     *
      * Original -> translation mapping.
-     * 
+     *
      * @var array
      */
     private $cache_translations = null;
 
     /**
      * Encoding.
-     * 
+     *
      * @var string
      */
     private $encoding;
@@ -167,9 +167,9 @@ class ZMO
 
     /**
      * Set encoding.
-     * 
+     *
      * @param string $encoding Encoding.
-     * 
+     *
      * @return void
      */
     public function setEncoding($encoding)
@@ -179,9 +179,9 @@ class ZMO
 
     /**
      * Encodes text.
-     * 
+     *
      * @param string $text Text.
-     * 
+     *
      * @return string
      */
     public function encode($text)
@@ -215,7 +215,7 @@ class ZMO
      * Reads an array of Integers from the Stream.
      *
      * @param integer $count How many elements should be read.
-     * 
+     *
      * @return array Array of Integers.
      */
     public function readintarray($count)
@@ -232,7 +232,7 @@ class ZMO
 
     /**
      * Loads the translation tables from the MO file into the cache.
-     * 
+     *
      * If caching is enabled, also loads all strings into a cache
      * to speed up translation lookups.
      *
@@ -268,7 +268,7 @@ class ZMO
      * Returns a string from the "originals" table.
      *
      * @param integer $num Offset number of original string.
-     * 
+     *
      * @access private
      * @return string Requested string if found, otherwise ''.
      */
@@ -288,7 +288,7 @@ class ZMO
      * Returns a string from the "translations" table.
      *
      * @param integer $num Offset number of original string.
-     * 
+     *
      * @access private
      * @return string Requested string if found, otherwise ''.
      */
@@ -311,7 +311,7 @@ class ZMO
      * @param string  $string String.
      * @param integer $start  Internally used in recursive function.
      * @param integer $end    Internally used in recursive function.
-     * 
+     *
      * @access private
      * @return integer String number (offset in originals table).
      */
@@ -354,7 +354,7 @@ class ZMO
      * Translates a string.
      *
      * @param string $string Strint to be translated.
-     * 
+     *
      * @access public
      * @return string Translated string (or original, if not found).
      */
@@ -416,7 +416,7 @@ class ZMO
      * Detects which plural form to take
      *
      * @param integer $n Count.
-     * 
+     *
      * @access private
      * @return integer Array index of the right plural form.
      */
@@ -443,7 +443,7 @@ class ZMO
      * @param string $single Single.
      * @param string $plural Plural.
      * @param string $number Number.
-     * 
+     *
      * @access public
      * @return string Translated plural form.
      */

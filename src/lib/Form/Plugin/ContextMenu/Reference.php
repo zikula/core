@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin_ContextMenu
  *
@@ -22,28 +22,28 @@ class Form_Plugin_ContextMenu_Reference extends Form_Plugin
 {
     /**
      * URL to the item image.
-     * 
+     *
      * @var string
      */
     public $imageURL;
-    
+
     /**
      * Menu ID.
-     * 
+     *
      * @var string
      */
     public $menuId;
-    
+
     /**
      * Context menu command argument.
-     * 
+     *
      * @var string
      */
     public $commandArgument;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -53,9 +53,9 @@ class Form_Plugin_ContextMenu_Reference extends Form_Plugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)

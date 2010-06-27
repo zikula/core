@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_Core
  *
@@ -62,7 +62,7 @@ abstract class Zikula_EventHandler
         if (!is_array($this->eventNames) || !$this->eventNames) {
             throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
         }
-        
+
         $this->eventManager = $eventManager;
         $this->serviceManager = $serviceManager;
     }

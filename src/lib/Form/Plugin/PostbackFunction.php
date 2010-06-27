@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -33,7 +33,7 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
      * Command name.
      *
      * This is the "commandName" parameter to pass in the event args of the command handler.
-     * 
+     *
      * @var string
      */
     public $commandName;
@@ -45,14 +45,14 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
      * function in your own JavaScript code you can initiate a postback that will call the
      * {@link pnFormPostBackFunction::$onCommand} event handler and pass
      * {@link pnFormPostBackFunction::$commandName} to it.
-     * 
+     *
      * @var string
      */
     public $function;
 
     /**
      * Name of command event handler method.
-     * 
+     *
      * @var string Default is "handleCommand".
      */
     public $onCommand = 'handleCommand';
@@ -71,9 +71,9 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -89,10 +89,10 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
 
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
-     * 
+     *
      * @param Form_Render &$render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
-     * 
+     *
      * @return void
      */
     function raisePostBackEvent(&$render, $eventArgument)

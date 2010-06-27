@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Zikula_Core
  *
@@ -117,7 +117,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
      * @param Zikula_EventManager   $eventManager   EventManager.
-     * 
+     *
      * @throws LogicException If no metadata is defined.
      */
     public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager)
@@ -317,7 +317,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Initialize plugin.
-     * 
+     *
      * @return void
      */
     public function initialize()
@@ -335,7 +335,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Post enable handler.
-     * 
+     *
      * @return void
      */
     public function postEnable()
@@ -344,7 +344,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Post disable handler.
-     * 
+     *
      * @return void
      */
     public function postDisable()
@@ -373,7 +373,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Whether or not the plugin is enabled.
-     * 
+     *
      * @return boolean
      */
     public function isEnabled()
@@ -384,7 +384,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Whether or not the plugin is installed.
-     * 
+     *
      * @return boolean
      */
     public function isInstalled()
@@ -395,7 +395,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Pre install handler.
-     * 
+     *
      * @return boolean
      */
     public function preInstall()
@@ -405,7 +405,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Install.
-     * 
+     *
      * @return boolean
      */
     public function install()
@@ -415,7 +415,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Post install handler.
-     * 
+     *
      * @return boolean
      */
     public function postInstall()
@@ -425,7 +425,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Pre uninstall handler.
-     * 
+     *
      * @return boolean
      */
     public function preUninstall()
@@ -435,7 +435,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Uninstall.
-     * 
+     *
      * @return boolean
      */
     public function uninstall()
@@ -445,7 +445,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Post uninstall handler.
-     * 
+     *
      * @return boolean
      */
     public function postUninstall()
@@ -455,9 +455,9 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Pre upgrade handler.
-     * 
+     *
      * @param string $oldversion Old version.
-     * 
+     *
      * @return boolean
      */
     public function preUpgrade($oldversion)
@@ -467,9 +467,9 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Upgrade
-     * 
+     *
      * @param string $oldversion Old version.
-     * 
+     *
      * @return boolean
      */
     public function upgrade($oldversion)
@@ -479,7 +479,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
 
     /**
      * Post upgrade handler.
-     * 
+     *
      * @return boolean
      */
     public function postUpgrade()
@@ -488,5 +488,5 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     }
 
 
-    
+
 }

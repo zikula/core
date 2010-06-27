@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -20,77 +20,77 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 {
     /**
      * Input field name.
-     * 
+     *
      * @var string
      */
     public $inputName;
-    
+
     /**
      * Whether or not this field is read only.
-     * 
+     *
      * @var boolean
      */
     public $readOnly;
 
     /**
      * Field name in data array.
-     * 
+     *
      * @var string
      */
     public $dataField;
-    
+
     /**
      * Whether or not to save $_FILES data in data array.
-     * 
+     *
      * @var boolean
      */
     public $dataBased;
-    
+
     /**
      * Group to align data to.
-     * 
+     *
      * @var string
      */
     public $group;
 
     /**
      * Whether or not the field is valid.
-     * 
+     *
      * @var boolean
      */
     public $isValid;
-    
+
     /**
      * Whether or not the field is mandatory.
-     * 
+     *
      * @var boolean
      */
     public $mandatory;
-    
+
     /**
      * Holds the error message.
-     * 
+     *
      * @var string
      */
     public $errorMessage;
-    
+
     /**
      * Holds the field's label.
-     * 
+     *
      * @var string
      */
     public $myLabel;
 
     /**
      * The result of the upload process (from $_FILES).
-     * 
+     *
      * @var array
      */
     public $result;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -100,7 +100,7 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 
     /**
      * Checks whether the field is empty or not.
-     * 
+     *
      * @return boolean
      */
     function isEmpty()
@@ -113,7 +113,7 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -145,9 +145,9 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -186,9 +186,9 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 
     /**
      * Validates the input.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function validate(&$render)
@@ -206,9 +206,9 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 
     /**
      * Sets an error message.
-     * 
+     *
      * @param string $msg Error message.
-     * 
+     *
      * @return void
      */
     function setError($msg)
@@ -220,9 +220,9 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 
     /**
      * Clears the validation data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return void
      */
     function clearValidation(&$render)
@@ -233,13 +233,13 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
 
     /**
      * Saves value in data object.
-     * 
+     *
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$data   Data object.
-     * 
+     *
      * @return void
      */
     function saveValue(&$render, &$data)

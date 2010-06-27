@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package I18n
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -32,7 +32,7 @@ if (!defined('LC_MESSAGES')) {
  * @param string $msgid  The message.
  * @param mixed  $params Format parameters or attay of parameters.
  * @param string $domain Gettext domain.
- * 
+ *
  * @throws Exception If $domain is an array.
  * @return string
  */
@@ -63,7 +63,7 @@ function __f($msgid, $params, $domain=null)
  * @param integer $n      Count.
  * @param mixed   $params Format parameters or attay of parameters.
  * @param string  $domain Gettext domain.
- * 
+ *
  * @throws Exception If $domain is an array.
  * @return string
  */
@@ -79,7 +79,7 @@ function _fn($sin, $plu, $n, $params, $domain=null)
 
 /**
  * Alias for gettext.
- * 
+ *
  * @param string $msgid  The message.
  * @param string $domain Gettext domain.
  *
@@ -101,7 +101,7 @@ function __($msgid, $domain=null)
  * @param string  $plural   Plural.
  * @param integer $count    Count.
  * @param string  $domain   Gettext domain.
- * 
+ *
  * @throws Exception If $domain is an array.
  * @return string
  */
@@ -117,7 +117,7 @@ function _n($singular, $plural, $count, $domain=null)
  * No operation gettext.
  *
  * @param string $msgid The Message.
- * 
+ *
  * @return string
  */
 function no__($msgid)
@@ -127,9 +127,9 @@ function no__($msgid)
 
 /**
  * Lookup a message in the current domain.
- * 
+ *
  * @param string $msgid The Message.
- * 
+ *
  * @return string
  */
 function _gettext($msgid)
@@ -139,11 +139,11 @@ function _gettext($msgid)
 
 /**
  * Plural version of gettext.
- * 
+ *
  * @param string  $single Singular.
  * @param string  $plural Plural.
  * @param integer $number Count.
- * 
+ *
  * @return string
  */
 function _ngettext($single, $plural, $number)
@@ -153,10 +153,10 @@ function _ngettext($single, $plural, $number)
 
 /**
  * Override the current domain.
- * 
+ *
  * @param string $domain Gettext domain.
  * @param string $msgid  The message.
- * 
+ *
  * @return string
  */
 function _dgettext($domain, $msgid)
@@ -165,12 +165,12 @@ function _dgettext($domain, $msgid)
 }
 /**
  * Plural version of dgettext.
- * 
+ *
  * @param string  $domain Gettext domain.
  * @param string  $single Singular.
  * @param string  $plural Plural.
  * @param integer $number Count.
- * 
+ *
  * @return string
  */
 function _dngettext($domain, $single, $plural, $number)
@@ -180,11 +180,11 @@ function _dngettext($domain, $single, $plural, $number)
 
 /**
  * Overrides the domain and category for a single lookup.
- * 
+ *
  * @param string   $domain   Gettext domain.
  * @param string   $msgid    The message.
  * @param constant $category LC_CONSTANT.
- * 
+ *
  * @return string
  */
 function _dcgettext($domain, $msgid, $category)
@@ -194,13 +194,13 @@ function _dcgettext($domain, $msgid, $category)
 
 /**
  * Plural version of dcgettext.
- * 
+ *
  * @param string   $domain   Gettext domain.
  * @param string   $single   Singular.
  * @param string   $plural   Plural.
  * @param integer  $number   Count.
  * @param constant $category LC_CONSTANT.
- * 
+ *
  * @return string
  */
 function _dcngettext($domain, $single, $plural, $number, $category)

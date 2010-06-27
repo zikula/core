@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -298,7 +298,7 @@ class DBUtil
         } catch (Exception $e) {
             die('Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />' . nl2br($e->getTraceAsString()));
         }
-        
+
         //if ($verbose) {
         //    print '<br />' . $dbconn->ErrorMsg() . '<br />' . $sql . '<br />';
         //}
@@ -306,7 +306,7 @@ class DBUtil
         //if ($exitOnError) {
         //    throw new Exception(__('Exiting after SQL-error'));
         //}
-        
+
         return false;
     }
 
@@ -886,7 +886,7 @@ class DBUtil
 
     /**
      * Post-processing after this object has beens saved.
-     * 
+     *
      * This routine is responsible for writing the 'extra' data (attributes, categories,
      * and meta data) to the database and the optionally creating an
      * entry in the object-log table.
@@ -1140,7 +1140,7 @@ class DBUtil
 
     /**
      * Post-processing after this object has beens deleted.
-     * 
+     *
      * This routine is responsible for deleting the 'extra' data (attributes, categories,
      * and meta data) from the database and the optionally creating an
      * entry in the object-log table.
@@ -1252,22 +1252,22 @@ class DBUtil
             $tokens = explode(',', $t); // split on comma
             foreach ($tokens as $k => $v) {
                 $v = trim($v);
-                if (strpos($v, ' ') === false) { 
+                if (strpos($v, ' ') === false) {
                     // 1 word
-                    if (strpos($v, '(') === false) { 
+                    if (strpos($v, '(') === false) {
                         // not a function call
-                        if (strpos($v, '"') === false) { 
+                        if (strpos($v, '"') === false) {
                             // not surrounded by quotes already
-                            if (isset($columns[$v])) { 
+                            if (isset($columns[$v])) {
                                 // ensure that token is an alias
                                 $tokens[$k] = '"' . $v . '"'; // surround it by quotes
                             }
                         }
                     }
-                } else { 
+                } else {
                     // multiple words, perform a few basic hecks
                     $ttok = explode(' ', $v); // split on space
-                    if (count($ttok) == 2) { 
+                    if (count($ttok) == 2) {
                         // see if we have 2 tokens
                         $t1 = strtolower(trim($ttok[0]));
                         $t2 = strtolower(trim($ttok[1]));
@@ -1376,7 +1376,7 @@ class DBUtil
     {
         // TODO D [remove PHP4 stuff in DBUtil] (Guite)
         $GLOBALS['DBUtilFetchObjectCount'] = $count;
-        return;	
+        return;
     }
 
     /**
@@ -2502,7 +2502,7 @@ class DBUtil
 
     /**
      * Joining string creation.
-     * 
+     *
      * This method creates the necessary sql information for retrieving
      * fields from joined tables defined by a joinInfo array described
      * at the top of this class.
@@ -2582,7 +2582,7 @@ class DBUtil
 
     /**
      * Post-processing for selected objects.
-     * 
+     *
      * This routine is responsible for reading the 'extra' data
      * (attributes, categories, and meta data) from the database and inserting the relevant sub-objects into the object.
      *
@@ -2736,7 +2736,7 @@ class DBUtil
      *
      * @return array The table definition.
      * @throws Exception                If table parameter is empty.
-     * @throws InvalidArgumentException If error in table definition. 
+     * @throws InvalidArgumentException If error in table definition.
      */
     public static function getTableDefinition($table)
     {
@@ -2970,7 +2970,7 @@ class DBUtil
         //} catch (Exception $e) {
         //    return LogUtil::registerError(__('Error! Table constraints determination failed.') . ' ' . $e->getMessage());
         //}
-       
+
         $tablecol = $table . '_column';
         $tableopt = $table . '_constraints';
         $tables = self::getTables();
@@ -3633,7 +3633,7 @@ class DBUtil
      * Build a Doctrine Model class dynamically to allow pntable based modules to use DQL
      *
      * @param string $table Table to use.
-     * 
+     *
      * @return string The model class.
      */
     public static function buildDoctrineModuleClass($table)
@@ -3680,7 +3680,7 @@ class {$table}_DBUtilRecordTable extends Doctrine_Table {}
      * Include dynamically created Doctrine Model class into runtime environment
      *
      * @param string $table The table.
-     * 
+     *
      * @return void
      */
     public static function loadDBUtilDoctrineModel($table)

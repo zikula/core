@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -19,9 +19,9 @@ class SystemListenersUtil
 {
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
-     * 
+     *
      * @param Zikula_Event $event The event handler.
-     * 
+     *
      * @return void
      */
     public static function sessionLogging(Zikula_Event $event)
@@ -38,9 +38,9 @@ class SystemListenersUtil
 
     /**
      * Call system hooks.
-     * 
+     *
      * @param Zikula_Event $event The event handler.
-     * 
+     *
      * @return void
      */
     public static function systemHooks(Zikula_Event $event)
@@ -62,9 +62,9 @@ class SystemListenersUtil
 
     /**
      * Load system plugins.
-     * 
+     *
      * @param Zikula_Event $event The event handler.
-     * 
+     *
      * @return void
      */
     public static function systemPlugins(Zikula_Event $event)

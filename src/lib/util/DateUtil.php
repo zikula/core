@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -470,7 +470,7 @@ class DateUtil
 
     /**
      * Calculate day-x of KW in a YEAR.
-     * 
+     *
      * @param integer $day  Values :0 for monday, 6 for sunday,....
      * @param integer $kw   Week of the year.
      * @param integer $year Year.
@@ -644,14 +644,14 @@ class DateUtil
         } else {
             return null;
         }
-        
+
         return mktime($hour, $min, $sec, $month, $day, $year);
     }
 
 
     /**
      * Create a unix timestamp from either a unix timestamp (sic!), a MySQL timestamp or a string.
-     * 
+     *
      * This code is taken from smarty_make_timestamp.php, credits go to Monte Ohrt <monte at ohrt dot com>.
      *
      * We use a copy of the code here due to performance reasons.
@@ -690,7 +690,7 @@ class DateUtil
 
     /**
      * Identify timezone using the date PHP function.
-     * 
+     *
      * Does not use the strftime because it varies depending of the operative system.
      *
      * @return string timezone integer (hour value).
@@ -715,7 +715,7 @@ class DateUtil
      * Return the translated name of a specific timezone if exists.
      *
      * @param integer $tz Timezone identifier.
-     * 
+     *
      * @return string Timezone translation (hour value).
      */
     public static function getTimezoneText($tz=null)
@@ -784,7 +784,7 @@ class DateUtil
 
     /**
      * Identify timezone abbreviation using the date PHP function.
-     * 
+     *
      * Does not use the strftime because it varies depending of the operative system.
      *
      * @return string Timezone abbreviation.
@@ -866,7 +866,7 @@ class DateUtil
 
     /**
      * Get dateformat data.
-     * 
+     *
      * Parses strftime formatted __('%Y-%m-%d),  __('%Y-%m-%d %H:%M') or __('%Y-%m-%d %H:%M:%S')
      * into meaning data that can be used to process a date string.
      *

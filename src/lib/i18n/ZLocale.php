@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package I18n
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -20,21 +20,21 @@ class ZLocale implements ArrayAccess
     // public properties
     /**
      * Locale.
-     * 
+     *
      * @var string
      */
     private $locale;
-    
+
     /**
      * Errors.
-     * 
+     *
      * @var array
      */
     private $errors = array();
-    
+
     /**
      * Locale data.
-     * 
+     *
      * @var array
      */
     private $localeData = array(
@@ -62,7 +62,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Constructor.
-     * 
+     *
      * @param string $locale Loacle.
      */
     public function __construct($locale)
@@ -74,7 +74,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Load locale config
-     * 
+     *
      * @return void
      */
     private function loadLocaleConfig()
@@ -103,9 +103,9 @@ class ZLocale implements ArrayAccess
 
     /**
      * Validate the locale.
-     * 
+     *
      * @param string $file Locale file.
-     * 
+     *
      * @return void
      */
     private function validateLocale($file)
@@ -132,9 +132,9 @@ class ZLocale implements ArrayAccess
 
     /**
      * Register an error.
-     * 
+     *
      * @param string $msg Error message.
-     * 
+     *
      * @return void
      */
     private function registerError($msg)
@@ -144,7 +144,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Detect errors.
-     * 
+     *
      * @return boolean
      */
     private function detectErrors()
@@ -166,7 +166,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get n_sign_posn.
-     * 
+     *
      * @return integer The $n_sign_posn.
      */
     public function getN_sign_posn()
@@ -176,7 +176,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get p_sign_posn.
-     * 
+     *
      * @return integer The $p_sign_posn.
      */
     public function getP_sign_posn()
@@ -186,7 +186,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get n_sep_by_space.
-     * 
+     *
      * @return integer The $n_sep_by_space
      */
     public function getN_sep_by_space()
@@ -196,7 +196,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get n_cs_precedes.
-     * 
+     *
      * @return integer The $n_cs_precedes.
      */
     public function getN_cs_precedes()
@@ -206,7 +206,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get p_sep_by_space.
-     * 
+     *
      * @return integer The $p_sep_by_space.
      */
     public function getP_sep_by_space()
@@ -216,7 +216,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get p_cs_precedes.
-     * 
+     *
      * @return integer The $p_cs_precedes.
      */
     public function getP_cs_precedes()
@@ -226,7 +226,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get frac_digets.
-     * 
+     *
      * @return integer The $frac_digits.
      */
     public function getFrac_digits()
@@ -236,7 +236,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get int_frac_digits.
-     * 
+     *
      * @return integer The $int_frac_digits.
      */
     public function getInt_frac_digits()
@@ -246,7 +246,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get negative_sign.
-     *  
+     *
      * @return string The $negative_sign.
      */
     public function getNegative_sign()
@@ -256,7 +256,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get positive_sign.
-     * 
+     *
      * @return string The $positive_sign.
      */
     public function getPositive_sign()
@@ -266,7 +266,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get mon_thousands_sep.
-     * 
+     *
      * @return string The $mon_thousands_sep.
      */
     public function getMon_thousands_sep()
@@ -276,7 +276,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get mon_decimal_point.
-     * 
+     *
      * @return string The $mon_decimal_point.
      */
     public function getMon_decimal_point()
@@ -286,7 +286,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get currency_symbol.
-     * 
+     *
      * @return string The $currency_symbol.
      */
     public function getCurrency_symbol()
@@ -296,7 +296,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get int_curr_symbol.
-     * 
+     *
      * @return string The $int_curr_symbol.
      */
     public function getInt_curr_symbol()
@@ -306,7 +306,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get thousands_sep.
-     * 
+     *
      * @return string The $thousands_sep.
      */
     public function getThousands_sep()
@@ -316,7 +316,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get decimal_point.
-     * 
+     *
      * @return string The $decimal_point.
      */
     public function getDecimal_point()
@@ -326,7 +326,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get language_direction.
-     * 
+     *
      * @return string The $language_direction.
      */
     public function getLanguage_direction()
@@ -336,7 +336,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get firstweekday.
-     * 
+     *
      * @return string The $firstweekday.
      */
     public function getFirstweekday()
@@ -346,7 +346,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get timeformat.
-     * 
+     *
      * @return strng The $timeformat.
      */
     public function getTimeformat()
@@ -356,7 +356,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get grouping.
-     * 
+     *
      * @return string The $grouping.
      */
     public function getGrouping()
@@ -366,7 +366,7 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get mon_grouping.
-     * 
+     *
      * @return string The $mon_grouping.
      */
     public function getMon_grouping()
@@ -378,9 +378,9 @@ class ZLocale implements ArrayAccess
 
     /**
      * Whether or not the offset exists.
-     * 
+     *
      * @param string $offset The offset.
-     * 
+     *
      * @return boolean
      */
     public function offsetExists($offset)
@@ -390,9 +390,9 @@ class ZLocale implements ArrayAccess
 
     /**
      * Get by offset.
-     * 
+     *
      * @param string $offset The offset.
-     * 
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -402,10 +402,10 @@ class ZLocale implements ArrayAccess
 
     /**
      * Set by offset.
-     * 
+     *
      * @param string $offset The offset.
      * @param mixed  $value  The value.
-     * 
+     *
      * @return void
      */
     public function offsetSet($offset, $value)
@@ -415,9 +415,9 @@ class ZLocale implements ArrayAccess
 
     /**
      * Unset by offset.
-     * 
+     *
      * @param string $offset The offset.
-     * 
+     *
      * @return void
      */
     public function offsetUnset($offset)

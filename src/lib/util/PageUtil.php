@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -175,10 +175,10 @@ class PageUtil
      *
      * @param string $varname The name of the page variable.
      * @param mixed  $value   The new value.
-     * 
+     *
      * @see    PageUtil::addVar
      * @return boolean true On success, false of the page variable is not registered.
-     * 
+     *
      */
     public static function setVar($varname, $value)
     {
@@ -212,7 +212,7 @@ class PageUtil
      *
      * @param string $varname The name of the page variable.
      * @param mixed  $value   The new value.
-     * 
+     *
      * @see    PageUtil::setVar
      * @return boolean true On success, false of the page variable is not registered.
      */

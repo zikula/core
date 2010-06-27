@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin_ContextMenu
  *
@@ -32,7 +32,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
 
     /**
      * URL to the item's image.
-     * 
+     *
      * @var string
      */
     public $imageURL;
@@ -71,7 +71,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      * You can place {commandArgument} (including the braces) in your URL. This will get substituted with the
      * command argument value of the pnformcontextmenureference plugin. In this way you can redirect to something
      * depending on data.
-     * 
+     *
      * @var string
      */
     public $commandRedirect;
@@ -83,14 +83,14 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      * the menu item click - very usefull for menu selections that deletes items.
      * You can use _XXX language defines directly as the message, no need to call <!--[pnml]--> for
      * translation.
-     * 
+     *
      * @var string
      */
     public $confirmMessage;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -103,7 +103,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -113,9 +113,9 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)
@@ -162,10 +162,10 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
 
     /**
      * Renders the confirmation action.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param string      $script  JavaScript code to run.
-     * 
+     *
      * @return string The rendered output.
      */
     function renderConfirm(&$render, $script)
@@ -180,10 +180,10 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
 
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
-     * 
+     *
      * @param Form_Render &$render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
-     * 
+     *
      * @return void
      */
     function raisePostBackEvent(&$render, $eventArgument)
@@ -201,7 +201,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
 
     /**
      * Get parent context menu.
-     * 
+     *
      * @return Form_Block_ContextMenu Parent context menu.
      */
     function &getParentContextMenu()

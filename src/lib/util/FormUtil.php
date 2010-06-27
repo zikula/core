@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -19,7 +19,7 @@ class FormUtil
 {
     /**
      * Return the requested key from input in a safe way.
-     * 
+     *
      * This function is safe to use for recursive arrays and either
      * returns a non-empty string or the (optional) default.
      *
@@ -47,7 +47,7 @@ class FormUtil
 
         $args   = array();
         $failed = null;
-        
+
         switch (true)
         {
             case (isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || $source == 'R' || $source == 'REQUEST')):
@@ -96,7 +96,7 @@ class FormUtil
                 if (isset($_POST[$key])) {
                     if (is_array($_POST[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
-                    } 
+                    }
                     $value  = filter_var($_POST[$key], $filter, $args);
                     $failed = ($value === false) ? $_POST : null;
                 }
@@ -227,7 +227,7 @@ class FormUtil
      * Return the objects which failed validation.
      *
      * @param string $objectType The object type.
-     * 
+     *
      * @return array The validation error array or null.
      */
     public static function getFailedValidationObjects($objectType = null)
@@ -338,7 +338,7 @@ class FormUtil
      * Return a newly created pnFormRender instance with the given name
      *
      * @param string $name Module name.
-     * 
+     *
      * @deprecated
      * @see    FormUtil::newForm()
      * @return Form_Render The newly created Form_Render instance.
@@ -353,7 +353,7 @@ class FormUtil
      * Return a newly created pormRender instance with the given name.
      *
      * @param string $name Module name.
-     * 
+     *
      * @return Form_Render The newly created Form_Render instance.
      */
     public static function newForm($name)

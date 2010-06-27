@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Plugin
  *
@@ -15,7 +15,7 @@
 
 /**
  * Image button.
- * 
+ *
  * This button works like a normal {@link pnFormButton} with the exception
  * that it displays a clickable image instead of a text button. It further
  * more returns the X and Y coordinate of the click position in the image.
@@ -30,16 +30,16 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
 {
     /**
      * Image URL.
-     * 
+     *
      * The URL pointing to the image for the button.
-     * 
+     *
      * @var string
      */
     public $imageUrl;
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -49,9 +49,9 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
 
     /**
      * Render event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function render(&$render)

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Form_Block
  *
@@ -81,7 +81,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
 
     /**
      * Get filename of this file.
-     * 
+     *
      * @return string
      */
     function getFilename()
@@ -93,7 +93,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
      * Create event handler.
      *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @see    Form_Plugin
      * @return void
      */
@@ -119,9 +119,9 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
 
     /**
      * RenderBegin event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function renderBegin(&$render)
@@ -139,9 +139,9 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
 
     /**
      * RenderEnd event handler.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output
      */
     function renderEnd(&$render)
@@ -155,9 +155,9 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
 
     /**
      * Check if it's the first time.
-     * 
+     *
      * @param boolean $doSet Whether or not to set the check variable.
-     * 
+     *
      * @return boolean
      */
     function firstTime($doSet = false)

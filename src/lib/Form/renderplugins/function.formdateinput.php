@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  * @subpackage Template_Plugins
  *
@@ -22,10 +22,10 @@
  *
  * You can also use all of the features from the pnFormTextInput plugin since the date input
  * inherits from it.
- * 
+ *
  * @param array       $params  Parameters passed in the block tag.
  * @param Form_Render &$render Reference to Form render object.
- * 
+ *
  * @return string The rendered output.
  */
 function smarty_function_formdateinput($params, &$render)

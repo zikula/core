@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -183,7 +183,7 @@ class Form_Plugin
      * </code>
      *
      * The name "dataBound" was chosen to avoid clashes with the "load" event.
-     * 
+     *
      * @var string
      */
     public $onDataBound;
@@ -200,7 +200,7 @@ class Form_Plugin
 
     /**
      * Temporary storage of the output from renderBegin in blocks.
-     * 
+     *
      * @var string
      * @internal
      */
@@ -208,7 +208,7 @@ class Form_Plugin
 
     /**
      * Volatile indicator (disables state management in sub-plugins).
-     * 
+     *
      * @var boolean
      * @internal
      */
@@ -216,7 +216,7 @@ class Form_Plugin
 
     /**
      * Constructor.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      */
@@ -233,10 +233,10 @@ class Form_Plugin
      * This is the function that takes care of reading smarty parameters and storing them in the member variables
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     public function readParameters(&$render, &$params)
@@ -260,7 +260,7 @@ class Form_Plugin
      *
      * @param Form_Render &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
-     * 
+     *
      * @return void
      */
     public function create(&$render, &$params)
@@ -341,11 +341,11 @@ class Form_Plugin
 
     /**
      * RenderAttribut event handler.
-     * 
+     *
      * Default action is to do render all attributes in form name="value".
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return string The rendered output.
      */
     public function renderAttributes(&$render)
@@ -430,12 +430,12 @@ class Form_Plugin
 
     /**
      * RegisterPlugin event handler.
-     * 
+     *
      * Default action is to add the plugin to $this->plugins.
-     * 
+     *
      * @param Form_Render &$render Reference to Form render object.
      * @param Form_Plugin $plugin  A Form plugin to add.
-     * 
+     *
      * @return void
      */
     public function registerPlugin(&$render, $plugin)
@@ -452,7 +452,7 @@ class Form_Plugin
      * return an empty string for these.
      *
      * @param string $id The ID of the item.
-     * 
+     *
      * @return string The generated HTML.
      */
     public function getIdHtml($id = null)

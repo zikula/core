@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  * @subpackage Template_Plugins
  *
@@ -23,7 +23,7 @@
  *
  * @param string $source  Output source.
  * @param Smarty &$smarty Reference to Smarty instance.
- * 
+ *
  * @return string
  */
 function smarty_outputfilter_pagevars($source, &$smarty)
@@ -196,10 +196,10 @@ function smarty_outputfilter_pagevars($source, &$smarty)
 
 /**
  * Clean additional header.
- * 
+ *
  * @param array  &$additional_header Additional header.
  * @param string $pagevar            Pagevar.
- * 
+ *
  * @return void
  */
 function _smarty_outputfilter_pagevars_clean_additional_header(&$additional_header, $pagevar)
@@ -227,11 +227,11 @@ function _smarty_outputfilter_pagevars_clean_additional_header(&$additional_head
 
 /**
  * Save combined pagevars.
- * 
+ *
  * @param array  $files     Files.
  * @param string $ext       Extention.
  * @param string $cache_dir Cache directory.
- * 
+ *
  * @return string Combined pagevars file.
  */
 function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
@@ -266,7 +266,7 @@ function _smarty_outputfilter_pagevars_save($files, $ext, $cache_dir)
     foreach ($files as $file) {
         _smarty_outputfilter_pagevars_readfile($contents, $file, $ext);
     }
-    
+
     $contents = implode('', $contents);
 
     // optional minify
@@ -297,7 +297,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
      * @param array  &$contents Array to save content to.
      * @param string $file      Path to file.
      * @param string $ext       Can be 'css' or 'js'.
-     * 
+     *
      * @return void
      */
     function _smarty_outputfilter_pagevars_readfile(&$contents, $file, $ext)
@@ -321,7 +321,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                     for ($i = 0; $i < $lineParse_length; $i++) {
                         $char = $lineParse{$i};
                         $nextchar = $i < ($lineParse_length-1) ? $lineParse{$i+1} : "";
-                        
+
                         if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
                             // a multiline comment starts here
                             $inMultilineComment = true;
@@ -418,7 +418,7 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
                             // css rule found -> stop processing of @import statements
                             $importsAllowd = false;
                             $newLine .= $char;
-                            
+
                         } else {
                             $newLine .= $char;
                         }
@@ -443,10 +443,10 @@ if (!function_exists('_smarty_outputfilter_pagevars_readfile')) {
 if (!function_exists('_smarty_outputfilter_pagevars_cssfixPath')) {
     /**
      * Fix paths in CSS files.
-     * 
+     *
      * @param string $line     CSS file line.
      * @param string $filepath Path to original file.
-     * 
+     *
      * @return tring
      */
     function _smarty_outputfilter_pagevars_cssfixPath($line, $filepath)

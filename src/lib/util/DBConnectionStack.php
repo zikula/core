@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -14,7 +14,7 @@
 
 /**
  * This class maintains a stack of database connections.
- * 
+ *
  * Getting a connection will always return the connection object which is
  * currently on top of the connections stack (ie: the latest added connection).
  */
@@ -22,7 +22,7 @@ class DBConnectionStack
 {
     /**
      * Reference to Doctrine_Manager instance.
-     * 
+     *
      * The DBConnectionStack acts only as a forwarder, as it is more limited in its use cases.
      *
      * @var Doctrine_Manager
@@ -31,14 +31,14 @@ class DBConnectionStack
 
     /**
      * Cache driver.
-     * 
+     *
      * @var ReflectionClass
      */
     protected static $cacheDriver;
 
     /**
      * Contains additional connection configuration arrays.
-     * 
+     *
      * Taken from config.php.
      *
      * @var array
@@ -57,7 +57,7 @@ class DBConnectionStack
      *
      * @param string  $name        The database alias name in the DBInfo configuration array (optional) (default=null which then defaults to 'default').
      * @param boolean $lazyConnect Whether or not to connect lazy.
-     * 
+     *
      * @throws PDOException If database connection failed.
      * @return Doctrine_Connection Desired database connection reference.
      */
@@ -157,13 +157,13 @@ class DBConnectionStack
 
     /**
      * Get the DB connection info structure for a connection as defined in config.php.
-     * 
+     *
      * If $field is supplied, the value of the specified field is retuerned, otherwise
      * the entire connection info array is returned.
      *
      * @param string $name  The name of the connection info to get. Passing null returns the current (ie: top) connection (optional) (default=null).
      * @param string $field The field of the connection info record to return.
-     * 
+     *
      * @throws Exception If no connection is available.
      * @throws Exception If the given connection does not exist.
      * @throws Exception If the given field does not exist.
@@ -260,7 +260,7 @@ class DBConnectionStack
 
     /**
      * Get the DB driver of the currently active connection.
-     * 
+     *
      * This is not necessarily the same as the DB Type and
      * should be used to distinguish between different database types.
      *
@@ -325,7 +325,7 @@ class DBConnectionStack
      * Get the currently active connection (the connection on top of the connection stack).
      *
      * @throws Exception If no connection is available.
-     * 
+     *
      * @return Doctrine_Connection The connection object.
      */
     public static function getConnection()
@@ -348,7 +348,7 @@ class DBConnectionStack
      * Push a new database connection onto the connection stack
      *
      * @param string $name The database alias name in the DBInfo configuration array.
-     * 
+     *
      * @return Doctrine_Connection The database connection.
      */
     public static function pushConnection($name)
@@ -364,7 +364,7 @@ class DBConnectionStack
      * Pop the currently active connection off the stack.
      *
      * @param boolean $close Whether or not to close the connection (optional) (default=false).
-     * 
+     *
      * @throws Exception If no connection is available.
      * @return Doctrine_Connection The newly active connection.
      */
@@ -391,14 +391,14 @@ class DBConnectionStack
 
     /**
      * Sets configuration attributes for Doctrine.
-     * 
+     *
      * Doctrine can set every attribute on every level.
      *
      * @param mixed $object The object which is being configured. This can be:
      *      - on global level (Doctrine_Manager instance)
      *      - on connection level (Doctrine_Connection instance)
      *      - on table level (Doctrine_Table instance).
-     *      
+     *
      * @throws Exception If $object is not valid.
      * @return void
      */
@@ -479,7 +479,7 @@ class DBConnectionStack
             //                                            array('name' => '%s_id',
             //                                                  'type' => 'string',
             //                                                  'length' => 16));
-            
+
             return;
         } elseif ($object instanceof Doctrine_Table) {
             // set table options

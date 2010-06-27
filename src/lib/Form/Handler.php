@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Form
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -60,7 +60,7 @@ class Form_Handler
      * </code>
      *
      * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
      * @return bool False in case of initialization errors, otherwise true. If false is returned then the
      * framework assumes that {@link pnFormRender::pnFormSetErrorMsg()} has been called with a suitable
      * error message.

@@ -5,7 +5,7 @@
  * @Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
  * @copyright (c) 2009, Zikula Development Team
  * @link http://www.zikula.org
- * @license GNU/GPL version 2 (or at your option, any later version).
+ * @license GNU/GPL version 3 (or at your option, any later version).
  *
  * @package StreamReader
  */
@@ -26,7 +26,7 @@ class StreamReader_File extends StreamReader_Abstract
 
     /**
      * File handler.
-     * 
+     *
      * @var Filehandler
      */
     private $_fd;
@@ -60,9 +60,9 @@ class StreamReader_File extends StreamReader_Abstract
 
     /**
      * Read file.
-     * 
+     *
      * @param integer $bytes Num of bytes to read.
-     * 
+     *
      * @return string
      */
     public function read($bytes)
@@ -87,9 +87,9 @@ class StreamReader_File extends StreamReader_Abstract
 
     /**
      * Seek to position.
-     * 
+     *
      * @param integer $pos Position.
-     * 
+     *
      * @return integer Position.
      */
     public function seekto($pos)
@@ -101,7 +101,7 @@ class StreamReader_File extends StreamReader_Abstract
 
     /**
      * Get current position.
-     * 
+     *
      * @return integer
      */
     public function currentpos()
@@ -111,7 +111,7 @@ class StreamReader_File extends StreamReader_Abstract
 
     /**
      * Get length.
-     * 
+     *
      * @return integer
      */
     public function length()
@@ -121,7 +121,7 @@ class StreamReader_File extends StreamReader_Abstract
 
     /**
      * Close file.
-     * 
+     *
      * @return void
      */
     public function close()

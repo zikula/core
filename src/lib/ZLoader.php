@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -29,21 +29,21 @@ class ZLoader
 {
     /**
      * Map.
-     * 
+     *
      * @var array
      */
     private static $map;
 
     /**
      * Autoloaders.
-     * 
+     *
      * @var object
      */
     private static $autoloaders;
 
     /**
      * Base setup.
-     * 
+     *
      * @return void
      */
     public static function register()
@@ -92,7 +92,7 @@ class ZLoader
      * Simple PEAR autoloader and handling for non-PEAR classes.
      *
      * @param string $class Class name.
-     * 
+     *
      * @return boolean
      */
     public static function autoload($class)
@@ -124,7 +124,7 @@ class ZLoader
 
     /**
      * Provides map for simple autoloader.
-     * 
+     *
      * @return array Class locations.
      */
     public static function map()

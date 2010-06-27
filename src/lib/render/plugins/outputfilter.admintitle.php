@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  * @subpackage Template_Plugins
  *
@@ -18,7 +18,7 @@
  *
  * @param string $source  Output source.
  * @param Smarty &$smarty Reference to Smarty instance.
- * 
+ *
  * @return string
  */
 function smarty_outputfilter_admintitle($source, &$smarty)

@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -24,17 +24,17 @@ class PluginUtil
 
     /**
      * Default state.
-     * 
+     *
      * @var constant
      */
     protected static $defaultState = array('state' => self::NOTINSTALLED, 'version' => 0);
 
     /**
      * Get plugin state.
-     * 
+     *
      * @param string $name    Plugin name.
      * @param mixed  $default Default return value.
-     * 
+     *
      * @return mixed
      */
     public static function getState($name, $default = null)
@@ -44,9 +44,9 @@ class PluginUtil
 
     /**
      * Delete plugin state.
-     * 
+     *
      * @param string $name Plugin name.
-     * 
+     *
      * @return boolean
      */
     public static function delState($name)
@@ -56,10 +56,10 @@ class PluginUtil
 
     /**
      * Set plugin state.
-     * 
+     *
      * @param string   $name  Plugin name.
      * @param constant $value Plugin state.
-     * 
+     *
      * @return boolean
      */
     public static function setState($name, $value)
@@ -69,7 +69,7 @@ class PluginUtil
 
     /**
      * Get default state.
-     * 
+     *
      * @return constant
      */
     public static function getDefaultState()
@@ -79,10 +79,10 @@ class PluginUtil
 
     /**
      * Load all plugins in path.
-     * 
+     *
      * @param string $path      Path.
      * @param string $namespace Namespace.
-     * 
+     *
      * @throws RuntimeException If file does not exist.
      * @return void
      */
@@ -122,7 +122,7 @@ class PluginUtil
      * Load an initialise plugin.
      *
      * @param string $className Class name.
-     * 
+     *
      * @throws LogicException If Plugin class is not a Zikula_plugin.
      * @return Zikula_Plugin Plugin class.
      */
@@ -150,15 +150,15 @@ class PluginUtil
             }
             $plugin->setBooted();
         }
-        
+
         return $sm->attachService($serviceId, $plugin);
     }
 
     /**
      * Get plugin object.
-     * 
+     *
      * @param string $className Class name.
-     * 
+     *
      * @return Zikula_Plugin
      */
     public static function getPlugin($className)
@@ -172,7 +172,7 @@ class PluginUtil
 
     /**
      * Discover all plugins.
-     * 
+     *
      * @return array
      */
     public static function getAllPlugins()
@@ -188,7 +188,7 @@ class PluginUtil
     public static function getAllModulePlugins()
     {
         $pluginsArray = array();
-       
+
         $dirs = array('system', 'modules');
         foreach ($dirs as $dir) {
             $modules = FileUtil::getFiles($dir, false, false, null, 'd');
@@ -199,13 +199,13 @@ class PluginUtil
                 }
             }
         }
-        
+
         return $pluginsArray;
     }
 
     /**
      * Discover all system plugins.
-     * 
+     *
      * @return array Array of plugin paths.
      */
     public static function getAllSystemPlugins()
@@ -215,7 +215,7 @@ class PluginUtil
 
     /**
      * Load all plugins.
-     * 
+     *
      * @return array Array of class names.
      */
     public static function loadAllPlugins()
@@ -225,7 +225,7 @@ class PluginUtil
 
     /**
      * Load all system plugins.
-     * 
+     *
      * @return array Array of class names.
      */
     public static function loadAllSystemPlugins()
@@ -247,7 +247,7 @@ class PluginUtil
 
     /**
      * Load all module plugins.
-     * 
+     *
      * @return array Array of class names.
      */
     public static function loadAllModulePlugins()
@@ -271,9 +271,9 @@ class PluginUtil
 
     /**
      * Include plugin file.
-     * 
+     *
      * @param string $plugin Plugin path.
-     * 
+     *
      * @throws RuntimeException If plugin file does not exist.
      * @return void
      */
@@ -289,7 +289,7 @@ class PluginUtil
 
     /**
      * Check's if a module has plugins or not.
-     * 
+     *
      * @param string $modulename Name of an module.
      *
      * @return boolean true when the module has plugins
@@ -312,9 +312,9 @@ class PluginUtil
 
     /**
      * Install plugin.
-     * 
+     *
      * @param string $className Plugin class name.
-     * 
+     *
      * @throws LogicException If plugin is already installed.
      * @return boolean
      */
@@ -337,9 +337,9 @@ class PluginUtil
 
     /**
      * Upgrade plugin.
-     * 
+     *
      * @param string $className Plugin class name.
-     * 
+     *
      * @throws LogicException If plugin is not installed.
      * @throws LogicException If installed version and plugin version are equal.
      * @return boolean
@@ -368,9 +368,9 @@ class PluginUtil
 
     /**
      * Uninstall plugin.
-     * 
+     *
      * @param string $className Plugin class name.
-     * 
+     *
      * @throws LogicException If plugin is not installed.
      * @return boolean
      */
@@ -393,9 +393,9 @@ class PluginUtil
 
     /**
      * Disable plugin.
-     * 
+     *
      * @param string $className Plugin class name.
-     * 
+     *
      * @throws LogicException If plugin is not installed.
      * @return boolean
      */
@@ -415,9 +415,9 @@ class PluginUtil
 
     /**
      * Enable plugin.
-     * 
+     *
      * @param string $className Plugin class name.
-     * 
+     *
      * @throws LogicException If plugin is not installed.
      * @return boolean
      */

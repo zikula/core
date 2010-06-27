@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Render
  * @subpackage Template_Plugins
  *
@@ -14,12 +14,12 @@
  */
 /**
  * Format currency.
- * 
+ *
  * Example:
  *   {$MyVar|formatcurrency}
  *
  * @param string $string The contents to transform.
- * 
+ *
  * @return string The modified output.
  */
 function smarty_modifier_formatCurrency ($string)

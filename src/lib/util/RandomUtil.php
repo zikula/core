@@ -5,7 +5,7 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv2.1 (or at your option, any later version).
+ * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Util
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -55,8 +55,8 @@ class RandomUtil
     }
 
     /**
-     * Return a random string of specified length. 
-     * 
+     * Return a random string of specified length.
+     *
      * This function uses md5() to generate the string.
      *
      * @param intiger $length The length of string to generate.
@@ -150,7 +150,7 @@ class RandomUtil
 
     /**
      * Return a random string suitable for use as a password or password-like code.
-     * 
+     *
      * The string should conform to the constraints of the current password requirements:
      * suitable for human use (readable and unambiguous), within the specified minimum and maximum lengths.
      *
