@@ -773,6 +773,19 @@ class UserUtil
         // DBUtil), which will call getVars to find out who you are, which will call checkPermission, etc., etc.
         // Do your permission check in the API that is using UserUtil.
         $user = DBUtil::selectObjectByID('users', $id, $idfield, null, null, null, false);
+
+        // If $idfield is email, make sure that we are getting a unique record.
+        if ($user && ($idfield == 'email')) {
+            $dbTables = System::dbGetTables();
+            $usersColumn = $dbTables['users_column'];
+            $where = "WHERE {$usersColumn['email']} = '{$id}'";
+            $ucount = DBUtil::selectObjectCount('users', $where);
+
+            if ($ucount > 1) {
+                $user = false;
+            }
+        }
+
         // user can be false (error) or empty array (no such user)
         if ($user === false || empty($user)) {
             switch ($idfield)
