@@ -434,4 +434,22 @@ class PluginUtil
         $plugin->postEnable();
         return true;
     }
+
+    /**
+     * Is plugin available (by service id).
+     *
+     * @param string $id Service Id, normalized classname, e.g. systemplugin.zend.plugin
+     *
+     * @return boolean
+     */
+    public static function isAvailable($id)
+    {
+        $sm = ServiceUtil::getManager();
+        if (!$sm->hasService($id)) {
+            return false;
+        }
+
+        $plugin = $sm->getService($id);
+        return (bool)($plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled());
+    }
 }

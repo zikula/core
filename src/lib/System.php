@@ -310,6 +310,25 @@ class System
             EventUtil::notify($coreInitEvent);
         }
 
+        // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
+        // start block
+        if ($stages & self::CORE_STAGES_LANGS) {
+            $lang = ZLanguage::getInstance();
+        }
+
+        if ($stages & self::CORE_STAGES_DECODEURLS) {
+            self::queryStringDecode();
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEURLS);
+            EventUtil::notify($coreInitEvent);
+        }
+
+        if ($stages & self::CORE_STAGES_LANGS) {
+            $lang->setup();
+            $coreInitEvent->setArg('stage', self::CORE_STAGES_LANGS);
+            EventUtil::notify($coreInitEvent);
+        }
+        // end block
+
         if ($stages & self::CORE_STAGES_SESSIONS) {
             // Other includes
             // ensure that the sesssions table info is available
@@ -330,25 +349,6 @@ class System
             $coreInitEvent->setArg('stage', self::CORE_STAGES_SESSIONS);
             EventUtil::notify($coreInitEvent);
         }
-
-        // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
-        // start block
-        if ($stages & self::CORE_STAGES_LANGS) {
-            $lang = ZLanguage::getInstance();
-        }
-
-        if ($stages & self::CORE_STAGES_DECODEURLS) {
-            self::queryStringDecode();
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEURLS);
-            EventUtil::notify($coreInitEvent);
-        }
-
-        if ($stages & self::CORE_STAGES_LANGS) {
-            $lang->setup();
-            $coreInitEvent->setArg('stage', self::CORE_STAGES_LANGS);
-            EventUtil::notify($coreInitEvent);
-        }
-        // end block
 
         // perform some checks that might result in a die() upon failure when we are in development mode
         self::_development_checks();

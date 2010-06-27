@@ -69,8 +69,10 @@ class SystemListenersUtil
      */
     public static function systemPlugins(Zikula_Event $event)
     {
-        if (!System::isInstalling()) {
-            PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
+        if ($event['stage'] == System::CORE_STAGES_LANGS) {
+            if (!System::isInstalling()) {
+                PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
+            }
         }
     }
 

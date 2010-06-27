@@ -58,7 +58,7 @@ class ZLoader
 
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
-        self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
+        //self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
         include ZLOADER_PATH. 'legacy/Loader.php';
 
         // load eventhandlers from config/EventHandlers directory if any.
@@ -66,7 +66,7 @@ class ZLoader
 
         // setup core events.
         EventUtil::attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
-        EventUtil::attach('core.postinit', array('SystemListenersUtil', 'systemPlugins'));
+        EventUtil::attach('core.init', array('SystemListenersUtil', 'systemPlugins'));
         EventUtil::attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
     }
 
