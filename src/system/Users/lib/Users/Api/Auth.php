@@ -160,8 +160,8 @@ class Users_Api_Auth extends Zikula_AuthApi
         // identifier of some sort (user name, e-mail address, whatever), then it might be a good idea for
         // consistency to expect it in 'loginid'.
         //
-        // For the Users module, we expect 'loginid'. We'll accept either 'uname' or 'email' for historical reasons,
-        // if 'loginid' is not set. Custom authmodules might not need to be this complicated.
+        // For the Users module, we expect 'loginid'. We'll accept either 'uname' or 'email' in order to override the 'loginviaoption'
+        // modulevar if 'loginid' is not set. Custom authmodules might not need to be this complicated.
         $authinfo = $args['authinfo'];
         if (isset($authinfo['loginid'])) {
             $loginID = $authinfo['loginid'];
@@ -203,15 +203,6 @@ class Users_Api_Auth extends Zikula_AuthApi
             $uid = UserUtil::getIdFromEmail($loginID);
         } else {
             $uid = UserUtil::getIdFromName($loginID);
-        }
-
-        if (!$uid) {
-            if ($loginOption == 1) {
-                $idFieldDesc = $this->__('e-mail address');
-            } else {
-                $idFieldDesc = $this->__('user name');
-            }
-            return LogUtil::registerError($this->__f('Sorry! That %1$s is not registered with us, or the %1$s and password do not match our records.', $idFieldDesc));
         }
 
         return $uid;
@@ -259,7 +250,7 @@ class Users_Api_Auth extends Zikula_AuthApi
         }
 
         if (!isset($authinfo['pass']) || !is_string($authinfo['pass']) || empty($authinfo['pass'])) {
-            return LogUtil::registerError($this->__('Sorry! Invalid password!'));
+            return LogUtil::registerError($this->__f('Sorry! That %1$s is not registered with us, or the %1$s and password do not match our records.', array($idFieldDesc)));
         }
 
         // For a custom authmodule, we'd map the authinfo to a uid above, and then execute the custom
@@ -280,6 +271,8 @@ class Users_Api_Auth extends Zikula_AuthApi
 
         $userObj = UserUtil::getVars($uid);
 
+        // The following check for non-salted passwords and the old 'hash_method' field is to allow the admin to log in
+        // during an upgrade from 1.2.  It needs to be kept for any version that allows an upgrade from Zikula 1.2.X.
         $methodSaltDelimPosition = strpos($userObj['pass'], UserUtil::SALT_DELIM);
         $saltPassDelimPosition = ($methodSaltDelimPosition === false) ? false : strpos($userObj['pass'], UserUtil::SALT_DELIM, ($methodSaltDelimPosition + 1));
         if ($saltPassDelimPosition !== false) {
@@ -294,32 +287,33 @@ class Users_Api_Auth extends Zikula_AuthApi
         }
 
         if (!UserUtil::passwordsMatch($authinfo['pass'], $currentPasswordHashed)) {
-            if ($this->getVar('loginviaoption', 0) == 1) {
+            // Need to check for an override of loginviaoption.
+            if ((isset($authinfo['loginid']) && $this->getVar('loginviaoption', 0) == 1) || (!isset($authinfo['loginid']) && isset($authinfo['email']))) {
                 $idFieldDesc = $this->__('e-mail address');
             } else {
                 $idFieldDesc = $this->__('user name');
             }
             return LogUtil::registerError($this->__f('Sorry! That %1$s is not registered with us, or the %1$s and password do not match our records.', array($idFieldDesc)));
-        }
+        } else {
+            // Password in $authinfo['pass'] is good at this point.
 
-        // Password in $authinfo['pass'] is good at this point.
-
-        if (version_compare($this->modinfo['version'], '1.19.0') >= 0) {
-            // Check stored hash matches the current system type, if not convert it--but only if the module version is sufficient.
-            // Note: this is purely specific to the Users module authentication, and has nothing to do with what a custom
-            // authmodule might do.
-            list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(UserUtil::SALT_DELIM, $currentPasswordHashed);
-            $systemHashMethodCode = UserUtil::getPasswordHashMethodCode($this->getVar('hash_method', 'sha1'));
-            if (($systemHashMethodCode != $currentPasswordHashCode) || empty($currentPasswordSaltStr)) {
-                if (!UserUtil::setPassword($authinfo['pass'], $uid)) {
-                    LogUtil::log($this->__('Internal Error! Unable to update the user\'s password with the new hashing method and/or salt.'), 'CORE');
+            if (version_compare($this->modinfo['version'], '2.0.0') >= 0) {
+                // Check stored hash matches the current system type, if not convert it--but only if the module version is sufficient.
+                // Note: this is purely specific to the Users module authentication. A custom module might do something similar if it
+                // changed the way it stored some piece of data between versions, but in general this would be uncommon.
+                list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(UserUtil::SALT_DELIM, $currentPasswordHashed);
+                $systemHashMethodCode = UserUtil::getPasswordHashMethodCode($this->getVar('hash_method', 'sha256'));
+                if (($systemHashMethodCode != $currentPasswordHashCode) || empty($currentPasswordSaltStr)) {
+                    if (!UserUtil::setPassword($authinfo['pass'], $uid)) {
+                        LogUtil::log($this->__('Internal Error! Unable to update the user\'s password with the new hashing method and/or salt.'), 'CORE');
+                    }
                 }
             }
-        }
 
-        // Custom authmodules should take extra special care to not return a valid uid if authentication fails.
-        // If the loginid and password do not authenticate, please ensure that false is returned!
-        return $uid;
+            // Custom authmodules should take extra special care to not return a valid uid if authentication fails.
+            // If the loginid and password do not authenticate, please ensure that false is returned!
+            return $uid;
+        }
     }
 
     /**
