@@ -655,6 +655,8 @@ class RecoveryConsole
         $menu .= $this->markupMenuLink('recover',   'site',         __('Disabled Site Recovery'));
         $menu .= $this->markupMenuLink('recover',   'password',     __('Password Reset'));
         $menu .= $this->markupMenuLink('recover',   'tempdir',      __('Rebuild Temp Directory'));
+        $menu .= $this->markupMenuLink('recover',   'outputfilter', __('Reset Output Filter'));
+        $menu .= $this->markupMenuLink('recover',   'phpids',       __('Disable PHPIDS'));
         $menu .= $this->markupMenuLink('phpinfo',   '',             __('PHP Information'));
         $menu .= $this->markupMenuLink('about',     '',             __('About This Application'));
         // Closing the navigation block container.
@@ -989,6 +991,8 @@ class RecoveryConsole
                         'block'         => __('Block Recovery'),
                         'password'      => __('Password Reset'),
                         'tempdir'       => __('Rebuild Temp Directory'),
+                        'outputfilter'  => __('Reset Output Filter'),
+                        'phpids'        => __('Disable PHPIDS'),
                         'phpinfo'       => __('PHP Information'),
                         'site'          => __('Disabled Site Recovery'),
                         );
@@ -1009,6 +1013,8 @@ class RecoveryConsole
                               'site'          => __('<strong>INSTRUCTIONS:</strong> Use this utility to turn on your previously disabled site.'),
                               'password'      => __('<strong>INSTRUCTIONS:</strong> Use this utility to reset your admin (or other) password.'),
                               'tempdir'       => __('<strong>INSTRUCTIONS:</strong> Use this utility to rebuild your temp directory in case you accidentally deleted it or it is corrupted.'),
+                              'outputfilter'  => __('<strong>INSTRUCTIONS:</strong> Use this utility to reset the output filter to \'internal\'. Useful if there is something wrong with the output filters in use (eg. HTMLPurifier).'),
+                              'phpids'        => __('<strong>INSTRUCTIONS:</strong> Use this utility to disable PHPIDS. Useful if your settings in PHPIDS crashed the entire system.'),
                               'about'         => __('About')
                                                 .__('<strong>VERSION</strong><br />This is <strong>Version '.self::VERSION.'</strong> of the <strong>Zikula Recovery Console</strong><br /><br />')
                                                 .__('<strong>LICENSE</strong><br /><a href="http://www.gnu.org/copyleft/gpl.html" title="General Public License">General Public License</a><br /><br />')
@@ -1057,6 +1063,23 @@ class RecoveryConsole
                 break;
             case 'tempdir':
                 $setting .= __f('Your temporary directory (based on your configuration file) is <strong>%s</strong>', $this->tempdir);
+                break;
+            case 'outputfilter':
+                $outputfilter = System::getVar('outputfilter');
+                if ($outputfilter == 0) {
+                    $setting .= 'Your current output filter is set to internal mechanism';
+                } else {
+                    if ($outputfilter == 1) {
+                        $setting .= 'Your current output filter is set to HTML Purifier + internal mechanism';
+                    }
+                    else {
+                        $setting .= 'Unable to determine your current output filter setting';
+                    }
+                }
+                break;
+            case 'phpids':
+                $phpids = System::getVar('useids');
+                $setting .= ($phpids == 0) ? __('PHPIDS is disabled') : __('PHPIDS is enabled');
                 break;
             default:
                 $setting .= __('Nothing To Report');
@@ -1127,7 +1150,7 @@ class RecoveryConsole
                 break;
             case 'site':
                 // if site is enabled, disable this utility
-                if(System::getVar('siteoff') == 0) {
+                if (System::getVar('siteoff') == 0) {
                     $this->setRecoveryOutput(__('Your site is already enabled.'));
                     $state = false;
                 }
@@ -1135,6 +1158,20 @@ class RecoveryConsole
              case 'tempdir':
                 if (isset($this->INPUT['confirm']) && $this->INPUT['confirm'] == 1) {
                     $this->setRecoveryOutput(__('You have to reload the utility to see the current status of the temp directory.'));
+                    $state = false;
+                }
+                break;
+            case 'outputfilter':
+                // if outputfilter is internal, disable this utility
+                if (System::getVar('outputfilter') == 0) {
+                    $this->setRecoveryOutput(__('Output filter is already set to internal mechanism.'));
+                    $state = false;
+                }
+                break;
+            case 'phpids':
+                // if PHPIDS is disabled, disable this utility
+                if (System::getVar('useids') == 0) {
+                    $this->setRecoveryOutput(__('PHPIDS is already disabled.'));
                     $state = false;
                 }
                 break;
@@ -1498,6 +1535,12 @@ class RecoveryConsole
             case 'tempdir':
                 $success = $this->processRecoveryTempdir();
                 break;
+            case 'outputfilter':
+                $success = $this->processRecoveryOutputFilter();
+                break;
+             case 'phpids':
+                $success = $this->processRecoveryPHPIDS();
+                break;
             default:
                 break;
         }
@@ -1804,6 +1847,32 @@ class RecoveryConsole
         return true;
     }
 
+    // Process output filter recovery
+    public function processRecoveryOutputFilter()
+    {
+        if (!System::setVar('outputfilter', '0')) {
+            $this->setError(__('Error setting output filter to internal mechanism'));
+            return false;
+        }
+        
+        // Set a status message.
+        $this->setStatus(__('Recovery Successful'));
+        return true;
+    }
+
+     // Process PHPIDS disable
+    public function processRecoveryPHPIDS()
+    {
+        if (!System::setVar('useids', false)) {
+            $this->setError(__('Error disabling PHPIDS'));
+            return false;
+        }
+
+        // Set a status message.
+        $this->setStatus(__('Recovery Successful'));
+        return true;
+    }
+
     // Set a status message.
     public function setStatus($msg)
     {
@@ -1844,7 +1913,7 @@ class RecoveryConsole
     // Return an array of all possible utilities.
     public function getAllUtilities()
     {
-        return $valid = array('theme', 'permission', 'block', 'site', 'password', 'tempdir');
+        return $valid = array('theme', 'permission', 'block', 'site', 'password', 'tempdir', 'outputfilter', 'phpids');
     }
     // Return an array of database-requiring utilities.
     public function getAllDatabaseUtilities()
