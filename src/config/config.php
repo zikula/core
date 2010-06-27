@@ -30,11 +30,6 @@ $ZConfig['System']['development'] = 0;      // should be set to 0/false when cut
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters
 $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
 
-//  Uncomment this line temporarily if you crash the HTMLPurifier configuration
-//$ZConfig['System']['outputfilter'] = 0;
-//  Uncomment this line temporarily if you crash the PHPIDS configuration
-//$ZConfig['System']['useids'] = 0;
-
 // ----------------------------------------------------------------------
 // Database & System Config
 //      dsn:          Connection details for database in the form
