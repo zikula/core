@@ -1,53 +1,65 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-Event.observe(window, 'load', users_modifyconfig_init, false);
+if (typeof(UsersModifyConfig) == 'undefined') {
+    UsersModifyConfig = {};
+}
 
-function users_modifyconfig_init()
+UsersModifyConfig.init = function()
 {
-    Event.observe('reg_allowregyes', 'click', users_reg_allowreg_onchange, false);
-    Event.observe('reg_allowregno', 'click', users_reg_allowreg_onchange, false);
-    radioswitchdisplaystate('users_reg_allowreg', 'users_reg_allowreg_wrap', false);
-
-    // TODO - the following seems to do exactly the same thing as radioswitchdisplaystate call above
-    if ($('reg_allowregyes').checked) {
-        $('users_reg_allowreg_wrap').hide();
+    if(typeof(document.theActiveElement) == 'undefined') {
+        document.theActiveElement = null;
+        var formElements = $('users_modifyconfig_form').getElements();
+        for (var i = 0, len = formElements.size(); i < len; i++) {
+            formElements[i].observe('focus', function(){document.theActiveElement = this;});
+        }
     }
 
-    Event.observe('moderationyes', 'click', users_moderation_onclick, false);
-    Event.observe('moderationno', 'click', users_moderation_onclick, false);
-    Event.observe('reg_verifyemail2', 'click', users_verification_onclick, false);
-    Event.observe('reg_verifyemail0', 'click', users_verification_onclick, false);
-    users_orderSwitchDisplayState();
+    Event.observe('users_reg_allowregyes', 'click', UsersModifyConfig.users_reg_allowreg_onchange);
+    Event.observe('users_reg_allowregno', 'click', UsersModifyConfig.users_reg_allowreg_onchange);
+    UsersModifyConfig.users_reg_allowreg_onchange();
+    //radioswitchdisplaystate('users_reg_allowreg', 'users_reg_allowreg_wrap', false);
 
+    Event.observe('users_moderationyes', 'click', UsersModifyConfig.users_moderation_onclick);
+    Event.observe('users_moderationno', 'click', UsersModifyConfig.users_moderation_onclick);
+    Event.observe('users_reg_verifyemail2', 'click', UsersModifyConfig.users_verification_onclick);
+    Event.observe('users_reg_verifyemail0', 'click', UsersModifyConfig.users_verification_onclick);
+    UsersModifyConfig.users_moderation_order_switchDisplayState();
+
+    Event.observe('users_reg_question', 'blur', UsersModifyConfig.users_reg_question_onblur);
+    UsersModifyConfig.users_reg_question_onblur();
+
+    Event.observe('users_loginviausername', 'click', UsersModifyConfig.users_loginviaoption_onclick);
+    Event.observe('users_loginviaemail', 'click', UsersModifyConfig.users_loginviaoption_onclick);
+    UsersModifyConfig.users_loginviaoption_onclick();
 }
 
-function users_reg_allowreg_onchange()
+UsersModifyConfig.users_reg_allowreg_onchange = function()
 {
-    radioswitchdisplaystate('users_reg_allowreg', 'users_reg_allowreg_wrap', false);
+    Zikula.radioswitchdisplaystate('users_reg_allowreg', 'users_reg_allowreg_wrap', false);
 }
 
-function users_moderation_onclick()
+UsersModifyConfig.users_moderation_onclick = function()
 {
-    users_orderSwitchDisplayState();
+    UsersModifyConfig.users_moderation_order_switchDisplayState();
 }
 
-function users_verification_onclick()
+UsersModifyConfig.users_verification_onclick = function()
 {
-    users_orderSwitchDisplayState();
+    UsersModifyConfig.users_moderation_order_switchDisplayState();
 }
 
-function users_orderSwitchDisplayState()
+UsersModifyConfig.users_moderation_order_switchDisplayState = function()
 {
     var moderationObjGroup = $('users_moderation');
-    var verificationObjGroup = $('reg_verifyemail');
-    var objCont = $('moderation_order_wrap');
+    var verificationObjGroup = $('users_reg_verifyemail');
+    var objCont = $('users_moderation_order_wrap');
 
     check_state = moderationObjGroup.select('input[type=radio][value="1"]').pluck('checked').any();
     check_state = (check_state && !verificationObjGroup.select('input[type=radio][value="0"]').pluck('checked').any());
 
     if (check_state == true) {
         if (objCont.getStyle('display') == 'none') {
-            if (typeof(Effect) != "undefined") {
+            if (typeof(Effect) != 'undefined') {
                 Effect.BlindDown(objCont);
             } else {
                 objCont.show();
@@ -55,7 +67,7 @@ function users_orderSwitchDisplayState()
         }
     } else {
         if (objCont.getStyle('display') != 'none') {
-            if (typeof(Effect) != "undefined") {
+            if (typeof(Effect) != 'undefined') {
                 Effect.BlindUp(objCont);
             } else {
                 objCont.hide();
@@ -63,3 +75,36 @@ function users_orderSwitchDisplayState()
         }
     }
 }
+
+UsersModifyConfig.users_reg_question_onblur = function()
+{
+    var regAnswerMandatory = $('users_reg_answer_mandatory');
+
+    if ($F('users_reg_question').blank()) {
+        if (!regAnswerMandatory.hasClassName('z-hide')) {
+            regAnswerMandatory.addClassName('z-hide');
+        }
+    } else {
+        if (regAnswerMandatory.hasClassName('z-hide')) {
+            regAnswerMandatory.removeClassName('z-hide');
+        }
+    }
+}
+
+UsersModifyConfig.users_loginviaoption_onclick = function()
+{
+    var loginViaOptionGroup = $('users_loginviaoption');
+    var emailOption = loginViaOptionGroup.select('input[type=radio][value="1"]').pluck('checked').any();
+
+    if (emailOption) {
+        UsersModifyConfig.save_reg_uniemail = $('reg_uniemailyes').checked;
+        $('reg_uniemailyes').checked = true;
+        $('reg_uniemailno').disabled = true;
+    } else {
+        $('reg_uniemailyes').checked = UsersModifyConfig.save_reg_uniemail;
+        $('reg_uniemailno').checked = !UsersModifyConfig.save_reg_uniemail;
+        $('reg_uniemailno').disabled = false;
+    }
+}
+
+document.observe('dom:loaded', UsersModifyConfig.init);
