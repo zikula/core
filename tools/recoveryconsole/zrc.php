@@ -156,12 +156,12 @@ class RecoveryConsole
         } else {
             $this->tempdirexists = true;
             // Read the directory contents.
-            // continue if file starts with . or it isn't a directory
+            // continue if file is not in our wanted array
             while ($dir = readdir($handle)) {
                 if (!array_key_exists($dir, $tempdirsubs)) {
                     continue;
                 }
-                // Catch the theme name.
+                // update the status
                 $tempdirsubs[$dir] = 1;
                 $this->tempdirsubsfailed--;
             }
