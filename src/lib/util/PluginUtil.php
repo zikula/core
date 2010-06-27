@@ -129,7 +129,7 @@ class PluginUtil
     public static function loadPlugin($className)
     {
         $sm = ServiceUtil::getManager();
-        $serviceId = strtolower(str_replace('_', '.', $className));
+        $serviceId = self::getServiceId($className);
         if ($sm->hasService($serviceId)) {
             return $sm->getService($serviceId);
         }
@@ -164,7 +164,7 @@ class PluginUtil
     public static function getPlugin($className)
     {
         $sm = ServiceUtil::getManager();
-        $serviceId = strtolower(str_replace('_', '.', $className));
+        $serviceId = self::getServiceId($className);
         if ($sm->hasService($serviceId)) {
             return $sm->getService($serviceId);
         }
@@ -451,9 +451,21 @@ class PluginUtil
 
         $plugin = $sm->getService($id);
         if ($plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled()) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
+    }
+
+    /**
+     * Calculates plugin service id from Plugin class name.
+     *
+     * @return string ServiceID.
+     */
+    public static function getServiceId($className)
+    {
+        $p = explode('_', $className);
+        $className = "{$p[0]}_{$p[1]}";
+        return strtolower(str_replace('_', '.', $className));
     }
 }
