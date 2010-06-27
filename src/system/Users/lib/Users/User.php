@@ -168,6 +168,9 @@ class Users_User extends Zikula_Controller
         $rendererArgs = array();
         $modVars = $this->getVars();
         $rendererArgs['sitename'] = System::getVar('sitename', System::getHost());
+        $rendererArgs['minpass'] = (isset($modVars['minpass']) && !empty($modVars['minpass']))
+            ? $modVars['minpass']
+            : 5;
         $rendererArgs['regAllowed'] = (isset($modVars['reg_allowreg']) && !empty($modVars['reg_allowreg']))
             ? $modVars['reg_allowreg']
             : false;

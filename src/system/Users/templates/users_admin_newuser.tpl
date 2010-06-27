@@ -51,7 +51,7 @@
                 <div class="z-formrow">
                     <label for="users_reginfo_pass">{gt text='Password'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_reginfo_pass"{if isset($errorFields.reginfo_pass) || isset($errorFields.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
-                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.minpass}</em>
+                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$minpass}</em>
                 </div>
                 <div class="z-formrow">
                     <label for="users_passagain">{gt text='Password (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
