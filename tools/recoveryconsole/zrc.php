@@ -234,10 +234,11 @@ class RecoveryConsole
         }
         // Cleaning single values returns here.
         if (!is_array($input)) {
-            return (string)$cleaned = preg_replace('~\W+~', '', $input);
+            return (string)preg_replace('~\W+~', '', $input);
         }
         // Else dealing with an array.
         // Looping through array values.
+        $cleaned = array();
         foreach ($input as $key=>$val) {
             // Special case: dba user/pass can contain more than text chars, do it inline.
             if ($key=='zuname' || $key=='zpass1' || $key=='zpass2') {
@@ -669,7 +670,7 @@ class RecoveryConsole
         return $menu;
     }
     // Markup the Recovery Console main menu links.
-    public function markupMenuLink($op=false, $utility=false, $text, $title=false)
+    public function markupMenuLink($op=false, $utility=false, $text='', $title=false)
     {
         // Check if this link is a database-requiring utility.
         $dba_reqd = (in_array($utility, $this->getAllDatabaseUtilities())) ? true : false;
@@ -685,13 +686,13 @@ class RecoveryConsole
         // -----
         // Return a dimmed link when incompatibility exists.
         if (!$this->appCompatible()) {
-            return $anchor = '<a '.$style.'href="'.$action.'"><del title="'. $title.'">'.$text.$asterisk.'</del></a>';
+            return '<a '.$style.'href="'.$action.'"><del title="'. $title.'">'.$text.$asterisk.'</del></a>';
         }
         // LINK RETURN POINT: Main un-argumented link
         // -----
         // If no operation present (ie, Main) return link here.
         if (!$op) {
-            return $anchor = '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.'</a>';
+            return '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.'</a>';
         }
         // Attach operation to action string.
         $action .= '?op='.$op;
@@ -700,7 +701,7 @@ class RecoveryConsole
         // LINK RETURN POINT: Link has $op arg only (ie, about, phpinfo).
         // -----
         if (!$utility) {
-            return $anchor = '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.'</a>';
+            return '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.'</a>';
         }
         // Attach utility to action string.
         $action .= '&amp;utility='.$utility;
@@ -711,13 +712,13 @@ class RecoveryConsole
         if ($dba_reqd) {
             // Return a "dimmed" link if the database connection failed.
             if (!$this->dbEnabled) {
-                return $anchor = '<a '.$style.'href="'.$action.'"><del title="'. $title.'">'.$text.$asterisk.'</del></a>';
+                return '<a '.$style.'href="'.$action.'"><del title="'. $title.'">'.$text.$asterisk.'</del></a>';
             }
             // Return a regular link with $op and $utility args if the database connection exists.
-            return $anchor = '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.$asterisk.'</a>';
+            return '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.$asterisk.'</a>';
         }
         // LINK RETURN POINT: Link with $op and $utility, requires no database access. (ie, dba credential encoding utility.)
-        return $anchor = '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.'</a>';
+        return '<a '.$style.'href="'.$action.'" title="'. $title.'">'.$text.'</a>';
     }
     // Markup the Recovery Console content area.
     public function markupBodyContent()
@@ -982,7 +983,7 @@ class RecoveryConsole
     {
         // Return main console (long) title if no operation or utility present.
         if (!$this->operation && !$this->utility) {
-            return $title = __('Configuration Overview');
+            return __('Configuration Overview');
         }
         // Array of titles, keyed by operations.
         $titles = array('about'         => __('About This Application'),
@@ -998,10 +999,10 @@ class RecoveryConsole
                         );
         // Return title based on operation if utility not present.
         if (!$this->utility) {
-            return $title = $titles[$this->operation];
+            return $titles[$this->operation];
         }
         // Utility present, return title based on utility.
-        return $title = $titles[$this->utility];
+        return $titles[$this->utility];
     }
     // Get any explanatory texts.
     public function getExplanation()
@@ -1094,11 +1095,11 @@ class RecoveryConsole
     {
         // A so-called "main" page clause if no op exists.
         if (!$this->operation) {
-            return $form = $this->getMarkedUpOverview();
+            return $this->getMarkedUpOverview();
         }
         // PHPinfo needs no form, return marked-up PHPinfo instead.
         if ($this->operation === 'phpinfo') {
-            return $form = $this->getMarkedUpPHPInfo();
+            return $this->getMarkedUpPHPInfo();
         }
 
         // Check if this utility should be disabled.
@@ -1492,7 +1493,7 @@ class RecoveryConsole
     {
         // Clause for when no blocks came back.
         if (empty($this->blocks)) {
-            return $list = __('None Detected');
+            return __('None Detected');
         }
         $list = '<ul>';
         // Loop through all blocks.
@@ -1772,7 +1773,7 @@ class RecoveryConsole
         if ($this->tempdirexists) {
             foreach($this->tempdirsubs as $dir => $status) {
                 if ($status == 0) {
-                    $result = mkdir($this->tempdir.'/'.$dir, 0755, true);
+                    $result = mkdir($this->tempdir.'/'.$dir, null, true);
                     if ($result == false) {
                         array_push($dir_errors, $dir);
                     }
@@ -1782,7 +1783,7 @@ class RecoveryConsole
        // create all subdirectories
         else {
             foreach($this->tempdirsubs as $dir => $status) {
-                $result = mkdir($this->tempdir.'/'.$dir, 0755, true);
+                $result = mkdir($this->tempdir.'/'.$dir, null, true);
                 if ($result == false) {
                     array_push($dir_errors, $dir);
                 }
@@ -1862,33 +1863,33 @@ class RecoveryConsole
     // Return all status messages.
     public function getStatus()
     {
-        return $status = $this->statusMessages;
+        return $this->statusMessages;
     }
     // Return all error messages.
     public function getErrors()
     {
-        return $errors = $this->errorMessages;
+        return $this->errorMessages;
     }
     // Return any utility output texts.
     public function getRecoveryOutput()
     {
-        return $output = $this->recoveryOutput;
+        return $this->recoveryOutput;
     }
 
     // Return an array of all possible operations.
     public function getAllOperations()
     {
-        return $valid = array('about', 'recover', 'phpinfo');
+        return array('about', 'recover', 'phpinfo');
     }
     // Return an array of all possible utilities.
     public function getAllUtilities()
     {
-        return $valid = array('theme', 'permission', 'block', 'site', 'password', 'tempdir', 'outputfilter', 'phpids');
+        return array('theme', 'permission', 'block', 'site', 'password', 'tempdir', 'outputfilter', 'phpids');
     }
     // Return an array of database-requiring utilities.
     public function getAllDatabaseUtilities()
     {
-        return $valid = array('theme', 'permission', 'block', 'site', 'password');
+        return array('theme', 'permission', 'block', 'site', 'password');
     }
 
     // Disable a sideblock.
