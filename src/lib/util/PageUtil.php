@@ -230,15 +230,16 @@ class PageUtil
         $value = (array)$value;
         if ($varname == 'javascript') {
             // shorthand syntax for some common JS libraries
-            // @deprecated since Zikula 1.3.0
-            $shortJsVars = array('prototype', 'scriptaculous', 'validation');
             foreach ($value as $k => $v) {
-                if (in_array($value[$k], $shortJsVars)) {
+                if (in_array($value[$k], array('prototype', 'scriptaculous', 'validation'))) {
                     // full renames are handled later on.
                     $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
+                } else if ($value[$k] == 'jquery') {
+                    $value[$k] = 'javascript/jquery/jquery.min.js';
+                } else if ($value[$k] == 'livepipe') {
+                    $value[$k] = 'javascript/livepipe/livepipe.combined.min.js';
                 }
             }
-            // end @deprecated since Zikula 1.3.0
 
             foreach ($value as $k => $v) {
                 $value[$k] = DataUtil::formatForOS($value[$k]);
@@ -249,25 +250,23 @@ class PageUtil
                 } else if (strpos($value[$k], 'javascript/ajax/') === 0) {
                     switch ($value[$k])
                     {
-                        case 'javascript/ajax/prototype.js':
-                            $value[$k] = 'javascript/ajax/prototype.min.js';
-                            break;
                         case 'javascript/ajax/validation.js':
                             $value[$k] = 'javascript/ajax/validation.min.js';
                             break;
                         case 'javascript/ajax/unittest.js':
                             $value[$k] = 'javascript/ajax/unittest.min.js';
                             break;
+                        case 'javascript/ajax/prototype.js':
                         case 'javascript/ajax/builder.js':
                         case 'javascript/ajax/controls.js':
                         case 'javascript/ajax/dragdrop.js':
                         case 'javascript/ajax/slider.js':
                         case 'javascript/ajax/sound.js':
-                            $value[$k] = 'javascript/ajax/scriptaculous.combined.min.js';
+                            $value[$k] = 'javascript/ajax/proto_scriptaculous.combined.min.js';
                             break;
                     }
                     if (strpos($value[$k], 'javascript/ajax/scriptaculous') === 0) {
-                        $value[$k] = 'javascript/ajax/scriptaculous.combined.min.js';
+                        $value[$k] = 'javascript/ajax/proto_scriptaculous.combined.min.js';
                     }
                 } else if (strpos($value[$k], 'system/') === 0 || strpos($value[$k], 'modules/') === 0) {
                     // check for customized javascripts
