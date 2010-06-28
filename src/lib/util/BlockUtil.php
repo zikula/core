@@ -268,14 +268,8 @@ class BlockUtil
         $moddir = DataUtil::formatForOS($modinfo['directory']);
         $blockdir = "$basedir/$moddir/lib/$moddir/Block";
         $ooblock = "$blockdir/".ucwords($block). '.php';
+        ModUtil::load($modname);
         $isOO = ModUtil::isOO($modname);
-        if ($isOO) {
-            if (!ModUtil::isIntialized($modname)) {
-                ModUtil::initOOModule($modname);
-            }
-            include_once $ooblock;
-            $isOO = true;
-        }
 
         if (!$isOO) {
             $blockdirOld = $moddir . '/pnblocks';
