@@ -25,12 +25,6 @@
  *  - filename          (string)    (optional) filename to load (default ajax.js)
  *  - noscriptaculous   (mixed)     (optional) does not include scriptaculous.js if set
  *  - validation        (mixed)     (optional) includes validation.js if set
- *  - fabtabulous       (mixed)     (optional) includes fabtabulous.js if set
- *  - builder           (mixed)     (optional) includes builder.js if set. Only effective if noscriptaculous is set
- *  - effects           (mixed)     (optional) includes effects.js if set. Only effective if noscriptaculous is set
- *  - dragdrop          (mixed)     (optional) includes dragdrop.js if set. Only effective if noscriptaculous is set
- *  - controls          (mixed)     (optional) includes controls.js if set. Only effective if noscriptaculous is set
- *  - slider            (mixed)     (optional) includes slider.js if set. Only effective if noscriptaculous is set
  *  - lightbox          (mixed)     (optional) includes lightbox.js if set (loads scriptaculous effects if noscriptaculous is set)
  *  - imageviewer       (mixed)     (optional) includes Zikula.ImageViewer.js if set (loads scriptaculous effects and dragdrop if noscriptaculous is set)
  *  - assign            (string)    (optional) the name of the template variable to which the script tag string is assigned, <i>instead of</i>
@@ -53,50 +47,25 @@ function smarty_function_ajaxheader($params, &$smarty)
     // use supplied modname or top level module
     $modname       = (isset($params['modname']))         ? $params['modname']  : ModUtil::getName();
     // define the default filename
-    $filename      = (isset($params['filename']))        ? $params['filename'] : 'ajax.js';
+    $filename      = (isset($params['filename']))        ? $params['filename'] : 'Zikula.js';
     $scriptaculous = (isset($params['noscriptaculous'])) ? false     : true;
     $validation    = (isset($params['validation']))      ? true      : false;
-    $fabtabulous   = (isset($params['fabtabulous']))     ? true      : false;
     $lightbox      = (isset($params['lightbox']))        ? true      : false;
     $imageviewer   = (isset($params['imageviewer']))     ? true      : false;
-    // script.aculo.us components
-    $builder       = (isset($params['builder']))         ? true      : false;
-    $effects       = (isset($params['effects']))         ? true      : false;
-    $dragdrop      = (isset($params['dragdrop']))        ? true      : false;
-    $controls      = (isset($params['controls']))        ? true      : false;
-    $slider        = (isset($params['slider']))          ? true      : false;
 
     // create an empty return
     $return = '';
 
     // we always need those
-    $scripts = array('javascript/ajax/prototype.js', 'javascript/helpers/Zikula.js');
+    $scripts = array('javascript/ajax/prototype.min.js', 'javascript/helpers/Zikula.js');
 
     if ($scriptaculous == true) {
-        $scripts[] = 'javascript/ajax/scriptaculous.js';
+        $scripts[] = 'javascript/ajax/scriptaculous.combined.min.js';
     }
     if ($validation) {
-        $scripts[] = 'javascript/ajax/validation.js';
+        $scripts[] = 'javascript/ajax/validation.min.js';
     }
-    if ($fabtabulous) {
-        $scripts[] = 'javascript/ajax/fabtabulous.js';
-    }
-    // script.aculo.us components
-    if (!$scriptaculous && $builder) {
-        $scripts[] = 'javascript/ajax/scriptaculous.js?load=builder';
-    }
-    if (!$scriptaculous && ($effects || $lightbox || $imageviewer)) {
-        $scripts[] = 'javascript/ajax/scriptaculous.js?load=effects';
-    }
-    if (!$scriptaculous && ($dragdrop || $lightbox || $imageviewer)) {
-        $scripts[] = 'javascript/ajax/scriptaculous.js?load=dragdrop';
-    }
-    if (!$scriptaculous && $controls) {
-        $scripts[] = 'javascript/ajax/scriptaculous.js?load=controls';
-    }
-    if (!$scriptaculous && $slider) {
-        $scripts[] = 'javascript/ajax/scriptaculous.js?load=slider';
-    }
+
     if ($lightbox) {
         // check if lightbox is present - if not, load ImageViewer instead
         if (is_readable('javascript/ajax/lightbox.js')) {
