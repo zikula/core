@@ -1627,7 +1627,7 @@ class ZLanguage
      *
      * @return array
      */
-    private function _cnvlanguagelist()
+    private static function _cnvlanguagelist()
     {
         $cnvlang = array();
         $cnvlang['KOI8-R'] = 'rus';
