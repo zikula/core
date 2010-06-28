@@ -52,6 +52,10 @@
         <exec command="svn export -r${svn_revision} https://code.zikula.org/svn/core/branches/zikula-1.3/src ${packagepath}" />
         <exec command="svn export --force https://code.zikula.org/svn/tour/trunk/src/Tour ${packagepath}/modules/Tour" />
 
+        <!-- compress JS -->
+        <property name="jslist" value="javascript/helpers/Zikula.js" />
+        <foreach list="${jslist}" param="filename" target="compressownjs" />
+
         <echo msg="Prepare permissions..." />
         <chmod file="${packagepath}/config/config.php" mode="0666" />
         <chmod file="${packagepath}/ztemp/error_logs" mode="0777" />
@@ -164,5 +168,12 @@
     <target name="phpcb">
         <echo msg="PHP_CodeBrowser on XML for voilations..." />
         <exec command="phpcb --log ${builddir}/logs --output ${builddir}/phpcb" />
+    </target>
+
+    <!-- Compress own JS -->
+    <target name="compressownjs">
+        <echo msg="YUI_Compressor for JS files..." />
+        <!-- exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/jar -jar /var/lib/hudson/yuicompressor-2.4.2.jar -type js -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" / -->
+        <exec command="/usr/bin/jar -jar /var/lib/hudson/yuicompressor-2.4.2.jar -type js -o ${packagepath}/${filename} ${packagepath}/${filename}" />
     </target>
 </project>
