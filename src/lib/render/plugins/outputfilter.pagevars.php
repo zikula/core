@@ -90,39 +90,6 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     }
 
     if (is_array($javascripts) && !empty($javascripts)) {
-        // some check for prototype/ajax/scriptaculous
-        $enableSplice = false;
-        $javascriptLinksToCheck = array('javascript/ajax/prototype.js',
-                                        'javascript/ajax/scriptaculous.js',
-                                        'javascript/ajax/scriptaculous.js?load=builder',
-                                        'javascript/ajax/scriptaculous.js?load=effects',
-                                        'javascript/ajax/scriptaculous.js?load=dragdrop',
-                                        'javascript/ajax/scriptaculous.js?load=controls',
-                                        'javascript/ajax/scriptaculous.js?load=slider',
-                                        'javascript/ajax/scriptaculous.js?load=sound',
-                                        'javascript/helpers/Zikula.js');
-
-        $javascriptNewLinks     = array('javascript/ajax/prototype.js',
-                                        'javascript/ajax/scriptaculous.js',
-                                        'javascript/ajax/builder.js',
-                                        'javascript/ajax/effects.js',
-                                        'javascript/ajax/dragdrop.js',
-                                        'javascript/ajax/controls.js',
-                                        'javascript/ajax/slider.js',
-                                        'javascript/ajax/sound.js',
-                                        'javascript/helpers/Zikula.js');
-
-        foreach ($javascripts as $key => $currentJS) {
-            if (in_array($currentJS, $javascriptLinksToCheck)) {
-                unset($javascripts[$key]);
-                $enableSplice = true;
-            }
-        }
-
-        if ($enableSplice) {
-            array_splice($javascripts,0,0,$javascriptNewLinks);
-        }
-
         // Ugly but necessary inline javascript for now: Some javascripts, eg. the lightbox, need to know the path to the system and
         // the entrypoint as well (which can be configured in the settings) otherwise they may fail in case of short urls being
         // enabled. We will now add some inline javascript to extend the DOM:
