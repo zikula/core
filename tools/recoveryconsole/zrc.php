@@ -1755,87 +1755,56 @@ class RecoveryConsole
             return false;
         }
 
-        $htaccess_file  = 'SetEnvIf Request_URI "\.css$" object_is_css=css'."\n";
-        $htaccess_file .= 'SetEnvIf Request_URI "\.js$" object_is_js=js'."\n";
-        $htaccess_file .= 'Order deny,allow'."\n";
-        $htaccess_file .= 'Deny from all'."\n";
-        $htaccess_file .= 'Allow from env=object_is_css'."\n";
-        $htaccess_file .= 'Allow from env=object_is_js'."\n";
+        // if temp directory already exists and all subdirectories are ok
+        // it means that the user wants to rebuild, so remove the entire temp directory
+        if ($this->tempdirexists && $this->tempdirsubsfailed == 0) {
+            $result = FileUtil::deldir($this->tempdir);
+            if ($result === false) {
+                $this->setError(__('Error deleting temp directory'));
+                return false;
+            }
+        }
 
-        // if temp exists
-        if ($this->tempdirexists) {
-
-            // if all subdirectories are ok but user still wants rebuild, remove the entire temp and create it
-            // else just create the missing directory/directories
-            if ($this->tempdirsubsfailed == 0) {
-                $result = FileUtil::deldir($this->tempdir);
-                if ($result === false) {
-                    $this->setError(__('Error deleting temp directory'));
-                    return false;
-                }
-
-                $result = FileUtil::mkdirs($this->tempdir);
-                if ($result === false) {
-                    $this->setError(__('Error creating temp directory'));
-                    return false;
-                }
-
-                $dir_errors = array();
-                foreach($this->tempdirsubs as $dir => $status) {
+        $dir_errors = array();
+        
+        // recreate only the subdirectories that are missing
+        if ($this->tempdirexists && $this->tempdirsubsfailed > 0) {
+            foreach($this->tempdirsubs as $dir => $status) {
+                if ($status == 0) {
                     $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
                     if ($result === false) {
                         array_push($dir_errors, $dir);
                     }
                 }
-                if (count($dir_errors) > 0) {
-                    $this->setError(__f('Error creating temp subdirectories [%s]', implode(",", $dir_errors)));
-                    return false;
-                }
-
-                $result = FileUtil::writeFile($this->tempdir.'/.htaccess', $htaccess_file);
-                if ($result === false) {
-                    $this->setError(__f('Temp directory was created successfully but there was a problem creating .htaccess file. You will have to download it yourself from the <a href="%s">CoZi</a>', 'https://code.zikula.org/svn/core/branches/zikula-1.3/src/ztemp/.htaccess'));
-                    return false;
-                }
-            } else {
-                $dir_errors = array();
-                foreach($this->tempdirsubs as $dir => $status) {
-                    if ($status == 0) {
-                        $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
-                        if ($result === false) {
-                            array_push($dir_errors, $dir);
-                        }
-                    }
-                }
-                if (count($dir_errors) > 0) {
-                    $this->setError(__f('Error creating temp subdirectories [%s]', implode(",", $dir_errors)));
-                    return false;
-                }
             }
-
-        } else {
-            // create temp directory and subdirectories
-            $result = FileUtil::mkdirs($this->tempdir);
-            if ($result === false) {
-                $this->setError(__('Error creating temp directory'));
-                return false;
-            }
-
-            $dir_errors = array();
+        }
+       // create all subdirectories
+        else {
             foreach($this->tempdirsubs as $dir => $status) {
                 $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
                 if ($result === false) {
                     array_push($dir_errors, $dir);
                 }
             }
-            if (count($dir_errors) > 0) {
-                $this->setError(__f('Error creating temp subdirectories [%s]', implode(",", $dir_errors)));
-                return false;
-            }
-            
+        }
+
+        if (count($dir_errors) > 0) {
+            $this->setError(__f('Error creating temp subdirectories [%s]', implode(",", $dir_errors)));
+            return false;
+        }
+
+        // create htaccess only if needed
+        if (!$this->tempdirexists || ($this->tempdirexists && $this->tempdirsubsfailed == 0)) {
+            $htaccess_file  = 'SetEnvIf Request_URI "\.css$" object_is_css=css'."\n";
+            $htaccess_file .= 'SetEnvIf Request_URI "\.js$" object_is_js=js'."\n";
+            $htaccess_file .= 'Order deny,allow'."\n";
+            $htaccess_file .= 'Deny from all'."\n";
+            $htaccess_file .= 'Allow from env=object_is_css'."\n";
+            $htaccess_file .= 'Allow from env=object_is_js'."\n";
+
             $result = FileUtil::writeFile($this->tempdir.'/.htaccess', $htaccess_file);
             if ($result === false) {
-                $this->setError(__f('Temp directory was created successfully but there was a problem creating .htaccess file. You will have to download it yourself from the <a href="%s">CoZi</a>', 'https://code.zikula.org/svn/core/branches/zikula-1.3/src/ztemp/.htaccess'));
+                $this->setError(__f('There was a problem creating .htaccess file. You will have to download it yourself from the <a href="%s">CoZi</a> and place it inside your temp directory', 'https://code.zikula.org/svn/core/branches/zikula-1.3/src/ztemp/.htaccess'));
                 return false;
             }
         }
