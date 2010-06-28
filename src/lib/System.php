@@ -58,7 +58,7 @@ class System
     const CORE_STAGES_LANGS = 64;
     const CORE_STAGES_MODS = 128;
     const CORE_STAGES_TOOLS = 256; // deprecated
-    const CORE_STAGES_AJAX = 512; // deprecated
+    const CORE_STAGES_AJAX = 512;
     const CORE_STAGES_DECODEURLS = 1024;
     const CORE_STAGES_THEME = 2048;
     const CORE_STAGES_ALL = 4095;
@@ -168,6 +168,8 @@ class System
     public static function init($stages = self::CORE_STAGES_ALL)
     {
         $coreInitEvent = new Zikula_Event('core.init');
+        $serviceManager = ServiceUtil::getManager();
+        $eventManager = EventUtil::getManager();
 
         static $globalscleansed = false;
 
@@ -217,7 +219,7 @@ class System
         // store the load stages in a global so other API's can check whats loaded
         $GLOBALS['loadstages'] = $stages;
 
-        EventUtil::notify(new Zikula_Event('core.preinit'));
+        $eventManager->notify(new Zikula_Event('core.preinit'));
 
         // Initialise and load configuration
         if ($stages & self::CORE_STAGES_CONFIG) {
@@ -235,7 +237,7 @@ class System
 
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArg('stage', self::CORE_STAGES_CONFIG);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
         }
 
         // Initialize the (ugly) additional header array
@@ -285,7 +287,7 @@ class System
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_DB);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_TABLES) {
@@ -300,14 +302,21 @@ class System
             ModUtil::dbInfoLoad('Permissions', 'Permissions');
             // load core module vars
             ModUtil::initCoreVars();
-            // if we've got this far an error handler can come into play
-            // (except in the installer)
-            if (!self::isInstalling()) {
-                set_error_handler(array('System', 'errorHandler'));
-            }
-
             $coreInitEvent->setArg('stage', self::CORE_STAGES_TABLES);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
+        }
+
+        // error reporting
+        if (!self::isInstalling()) {
+            if ($stages & self::CORE_STAGES_AJAX) {
+                $handler = 'ajaxHandler';
+            } else {
+                $handler = 'standardHandler';
+            }
+            $errorHandler = new Zikula_ErrorHandler($serviceManager, $eventManager);
+            $serviceManager->attachService('system.errorhandler', $errorHandler);
+
+            set_error_handler(array($errorHandler, $handler));
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
@@ -319,13 +328,13 @@ class System
         if ($stages & self::CORE_STAGES_DECODEURLS) {
             self::queryStringDecode();
             $coreInitEvent->setArg('stage', self::CORE_STAGES_DECODEURLS);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_LANGS) {
             $lang->setup();
             $coreInitEvent->setArg('stage', self::CORE_STAGES_LANGS);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
         }
         // end block
 
@@ -347,7 +356,7 @@ class System
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_SESSIONS);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
         }
 
         // perform some checks that might result in a die() upon failure when we are in development mode
@@ -364,7 +373,7 @@ class System
             }
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_MODS);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
         }
 
         if ($stages & self::CORE_STAGES_THEME) {
@@ -381,7 +390,7 @@ class System
             Theme::getInstance();
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_THEME);
-            EventUtil::notify($coreInitEvent);
+            $eventManager->notify($coreInitEvent);
         }
 
         // check the users status, if not 1 then log him out
@@ -395,7 +404,7 @@ class System
             }
         }
 
-        EventUtil::notify(new Zikula_Event('core.postinit', null, array('stages' => $stages)));
+        $eventManager->notify(new Zikula_Event('core.postinit', null, array('stages' => $stages)));
 
         // remove log files being too old
         LogUtil::_cleanLogFiles();
@@ -1025,107 +1034,6 @@ class System
         }
 
         return true;
-    }
-
-    /**
-     * Handles an error.
-     *
-     * @param integer $errno      Number of the error.
-     * @param string  $errstr     Error message.
-     * @param string  $errfile    Filename where the error occurred.
-     * @param integer $errline    Line of the error.
-     * @param string  $errcontext Context of the error.
-     *
-     * @return void
-     */
-    public static function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
-    {
-        $event = new Zikula_Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
-        EventUtil::notify($event);
-
-        // check for an @ suppression
-        if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED || $errno == E_STRICT)) {
-            return;
-        }
-
-        static $errorlog, $errorlogtype, $errordisplay, $ztemp;
-
-        if (!isset($errorlogtype)) {
-            $errorlog = self::getVar('errorlog');
-            $errorlogtype = self::getVar('errorlogtype');
-            $errordisplay = self::getVar('errordisplay');
-            $ztemp = DataUtil::formatForOS(self::getVar('temp'), true);
-        }
-
-        // What do we want to log?
-        // 1 - Log real errors only.
-        // 2 - Log everything.
-        $logError = ($errorlog == 2 || ($errorlog == 1 && ($errno != E_WARNING && $errno != E_NOTICE && $errno != E_USER_WARNING && $errno != E_USER_NOTICE)));
-        if ($logError == true) {
-            // log the error
-            $msg = DateUtil::getDatetime() . " Zikula Error: $errstr";
-            if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
-                $request = self::getCurrentUri();
-                $msg .= " in $errfile on line $errline for page $request";
-            }
-            switch ($errorlogtype) {
-                // log to the system log (default php handling....)
-                case 0:
-                    error_log($msg);
-                    break;
-                // e-mail the error
-                case 1:
-                    $toaddress = self::getVar('errormailto');
-                    $body = ModUtil::func('Errors', 'user', 'system', array(
-                            'type' => $errno,
-                            'message' => $errstr,
-                            'file' => $errfile,
-                            'line' => $errline));
-                    ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array(
-                            'toaddress' => $toaddress,
-                            'toname' => $toaddress,
-                            'subject' => __('Error! Oh! Wow! An \'unidentified system error\' has occurred.'),
-                            'body' => $body));
-                    break;
-                // log a module specific log (based on top level module)
-                case 2:
-                    $modname = DataUtil::formatForOS(ModUtil::getName());
-                    error_log($msg . "\r\n", 3, $ztemp . '/error_logs/' . $modname . '.log');
-                    break;
-                // log to global error log
-                case 3:
-                    error_log($msg . "\r\n", 3, $ztemp . '/error_logs/error.log');
-                    break;
-            }
-        }
-
-        // should we display the error to the user
-        if ($errordisplay == 0) {
-            return;
-        }
-
-        // check if we want to flag up warnings and notices
-        if ($errordisplay == 1 && ($errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
-            return;
-        }
-
-        // clear the output buffer
-        while (ob_get_level()) {
-            ob_end_clean();
-        }
-
-        // display the new output and halt the script
-        header('HTTP/1.0 500 System Error');
-
-        echo ModUtil::func('Errors', 'user', 'system',
-                           array('type' => $errno,
-                                 'message' => $errstr,
-                                 'file' => $errfile,
-                                 'line' => $errline));
-
-        Theme::getInstance()->themefooter();
-
-        self::shutDown();
     }
 
     /**
