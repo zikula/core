@@ -67,22 +67,22 @@ class PageUtil
      */
     public static function registerVar($varname, $multivalue = false, $default = null)
     {
-        global $_pnPageVars;
+        global $_pageVars;
 
-        // check for $_pnPageVars sanity
-        if (!isset($_pnPageVars)) {
-            $_pnPageVars = array();
-        } elseif (!is_array($_pnPageVars)) {
+        // check for $_pageVars sanity
+        if (!isset($_pageVars)) {
+            $_pageVars = array();
+        } elseif (!is_array($_pageVars)) {
             return false;
         }
 
         // if already registered, stop
-        if (isset($_pnPageVars[$varname])) {
+        if (isset($_pageVars[$varname])) {
             return false;
         }
 
         // define the page variable and it's default value
-        $_pnPageVars[$varname] = compact('multivalue', 'default');
+        $_pageVars[$varname] = compact('multivalue', 'default');
 
         // always make the default value the contents (even if it's null - that will be filtered away)
         self::resetVar($varname);
@@ -103,30 +103,30 @@ class PageUtil
      */
     public static function resetVar($varname)
     {
-        global $_pnPageVars;
+        global $_pageVars;
 
-        // check for $_pnPageVars sanity
-        if (!isset($_pnPageVars)) {
-            $_pnPageVars = array();
-        } elseif (!is_array($_pnPageVars)) {
+        // check for $_pageVars sanity
+        if (!isset($_pageVars)) {
+            $_pageVars = array();
+        } elseif (!is_array($_pageVars)) {
             return false;
         }
 
-        if (!isset($_pnPageVars[$varname])) {
+        if (!isset($_pageVars[$varname])) {
             return false;
         }
 
-        if ($_pnPageVars[$varname]['multivalue']) {
-            if (empty($_pnPageVars[$varname]['default'])) {
-                $_pnPageVars[$varname]['contents'] = array();
+        if ($_pageVars[$varname]['multivalue']) {
+            if (empty($_pageVars[$varname]['default'])) {
+                $_pageVars[$varname]['contents'] = array();
             } else {
-                $_pnPageVars[$varname]['contents'] = array($_pnPageVars[$varname]['default']);
+                $_pageVars[$varname]['contents'] = array($_pageVars[$varname]['default']);
             }
         } else {
-            if (empty($_pnPageVars[$varname]['default'])) {
-                $_pnPageVars[$varname]['contents'] = null;
+            if (empty($_pageVars[$varname]['default'])) {
+                $_pageVars[$varname]['contents'] = null;
             } else {
-                $_pnPageVars[$varname]['contents'] = $_pnPageVars[$varname]['default'];
+                $_pageVars[$varname]['contents'] = $_pageVars[$varname]['default'];
             }
         }
 
@@ -147,19 +147,19 @@ class PageUtil
      */
     public static function getVar($varname, $default = null)
     {
-        global $_pnPageVars;
+        global $_pageVars;
 
-        // check for $_pnPageVars sanity
-        if (!isset($_pnPageVars)) {
-            $_pnPageVars = array();
-        } elseif (!is_array($_pnPageVars)) {
+        // check for $_pageVars sanity
+        if (!isset($_pageVars)) {
+            $_pageVars = array();
+        } elseif (!is_array($_pageVars)) {
             return false;
         }
 
-        if (isset($_pnPageVars[$varname]) && isset($_pnPageVars[$varname]['contents'])) {
-            return $_pnPageVars[$varname]['contents'];
-        } elseif (isset($_pnPageVars[$varname]['default'])) {
-            return $_pnPageVars[$varname]['default'];
+        if (isset($_pageVars[$varname]) && isset($_pageVars[$varname]['contents'])) {
+            return $_pageVars[$varname]['contents'];
+        } elseif (isset($_pageVars[$varname]['default'])) {
+            return $_pageVars[$varname]['default'];
         }
 
         return $default;
@@ -182,23 +182,23 @@ class PageUtil
      */
     public static function setVar($varname, $value)
     {
-        global $_pnPageVars;
+        global $_pageVars;
 
-        // check for $_pnPageVars sanity
-        if (!isset($_pnPageVars)) {
-            $_pnPageVars = array();
-        } elseif (!is_array($_pnPageVars)) {
+        // check for $_pageVars sanity
+        if (!isset($_pageVars)) {
+            $_pageVars = array();
+        } elseif (!is_array($_pageVars)) {
             return false;
         }
 
-        if (!isset($_pnPageVars[$varname])) {
+        if (!isset($_pageVars[$varname])) {
             return false;
         }
 
-        if ($_pnPageVars[$varname]['multivalue']) {
-            $_pnPageVars[$varname]['contents'] = array($value);
+        if ($_pageVars[$varname]['multivalue']) {
+            $_pageVars[$varname]['contents'] = array($value);
         } else {
-            $_pnPageVars[$varname]['contents'] = $value;
+            $_pageVars[$varname]['contents'] = $value;
         }
 
         return true;
@@ -218,12 +218,12 @@ class PageUtil
      */
     public static function addVar($varname, $value)
     {
-        global $_pnPageVars;
+        global $_pageVars;
 
-        // check for $_pnPageVars sanity
-        if (!isset($_pnPageVars)) {
-            $_pnPageVars = array();
-        } elseif (!is_array($_pnPageVars)) {
+        // check for $_pageVars sanity
+        if (!isset($_pageVars)) {
+            $_pageVars = array();
+        } elseif (!is_array($_pageVars)) {
             return false;
         }
 
@@ -242,7 +242,6 @@ class PageUtil
             // end @deprecated since Zikula 1.3.0
 
             foreach ($value as $k => $v) {
-                echo $k;
                 $value[$k] = DataUtil::formatForOS($value[$k]);
                 // Handle legacy references to non-minimised scripts.
                 if (strpos($value[$k], 'javascript/livepipe/') === 0) {
@@ -281,22 +280,21 @@ class PageUtil
                 }
             }
         }
-        $value = array_unique($value);
 
-        if (!isset($_pnPageVars[$varname])) {
+        if (!isset($_pageVars[$varname])) {
             return false;
         }
 
-        if ($_pnPageVars[$varname]['multivalue']) {
+        if ($_pageVars[$varname]['multivalue']) {
             if (is_array($value)) {
-                $_pnPageVars[$varname]['contents'] = array_merge($_pnPageVars[$varname]['contents'], $value);
+                $_pageVars[$varname]['contents'] = array_merge($_pageVars[$varname]['contents'], $value);
             } else {
-                $_pnPageVars[$varname]['contents'][] = $value;
+                $_pageVars[$varname]['contents'][] = $value;
             }
             // make values unique
-            $_pnPageVars[$varname]['contents'] = array_unique($_pnPageVars[$varname]['contents']);
+            $_pageVars[$varname]['contents'] = array_unique($_pageVars[$varname]['contents']);
         } else {
-            $_pnPageVars[$varname]['contents'] = $value;
+            $_pageVars[$varname]['contents'] = $value;
         }
 
         return true;
