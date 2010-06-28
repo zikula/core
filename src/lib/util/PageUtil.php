@@ -227,23 +227,22 @@ class PageUtil
             return false;
         }
 
+        $value = (array)$value;
         if ($varname == 'javascript') {
-            $value = (array)$value;
-
             // shorthand syntax for some common JS libraries
             // @deprecated since Zikula 1.3.0
             $shortJsVars = array('prototype', 'scriptaculous', 'validation');
-            foreach (array_keys($value) as $k) {
+            foreach ($value as $k => $v) {
+                echo $k;
                 if (in_array($value[$k], $shortJsVars)) {
-                    if ($value[$k] == 'prototype') {
-                        $value[$k] = 'prototype.min';
-                    }
+                    // full renames are handled later on.
                     $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
                 }
             }
             // end @deprecated since Zikula 1.3.0
 
-            foreach (array_keys($value) as $k) {
+            foreach ($value as $k => $v) {
+                echo $k;
                 $value[$k] = DataUtil::formatForOS($value[$k]);
                 // Handle legacy references to non-minimised scripts.
                 if (strpos($value[$k], 'javascript/livepipe/') === 0) {
@@ -261,9 +260,16 @@ class PageUtil
                         case 'javascript/ajax/unittest.js':
                             $value[$k] = 'javascript/ajax/unittest.min.js';
                             break;
-                        default:
+                        case 'javascript/ajax/builder.js':
+                        case 'javascript/ajax/controls.js':
+                        case 'javascript/ajax/dragdrop.js':
+                        case 'javascript/ajax/slider.js':
+                        case 'javascript/ajax/sound.js':
                             $value[$k] = 'javascript/ajax/scriptaculous.combined.min.js';
                             break;
+                    }
+                    if (strpos($value[$k], 'javascript/ajax/scriptaculous') === 0) {
+                        $value[$k] = 'javascript/ajax/scriptaculous.combined.min.js';
                     }
                 } else if (strpos($value[$k], 'system/') === 0 || strpos($value[$k], 'modules/') === 0) {
                     // check for customized javascripts
@@ -275,6 +281,7 @@ class PageUtil
                 }
             }
         }
+        $value = array_unique($value);
 
         if (!isset($_pnPageVars[$varname])) {
             return false;
