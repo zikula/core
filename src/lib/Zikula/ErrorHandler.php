@@ -170,4 +170,21 @@ class Zikula_ErrorHandler
 
         self::shutDown();
     }
+
+    /**
+     * ErrorHandler for ajax front controller.
+     *
+     * @param integer $errno      Number of the error.
+     * @param string  $errstr     Error message.
+     * @param string  $errfile    Filename where the error occurred.
+     * @param integer $errline    Line of the error.
+     * @param string  $errcontext Context of the error.
+     *
+     * @return void
+     */
+    public function ajaxError($errno, $errstr, $errfile, $errline, $errcontext)
+    {
+        header('HTTP/1.0 500 System Error');
+        error_log($errstr);
+    }
 }

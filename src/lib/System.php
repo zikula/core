@@ -58,7 +58,7 @@ class System
     const CORE_STAGES_LANGS = 64;
     const CORE_STAGES_MODS = 128;
     const CORE_STAGES_TOOLS = 256; // deprecated
-    const CORE_STAGES_AJAX = 512;
+    const CORE_STAGES_AJAX = 512; // deprecated
     const CORE_STAGES_DECODEURLS = 1024;
     const CORE_STAGES_THEME = 2048;
     const CORE_STAGES_ALL = 4095;
@@ -308,15 +308,9 @@ class System
 
         // error reporting
         if (!self::isInstalling()) {
-            if ($stages & self::CORE_STAGES_AJAX) {
-                $handler = 'ajaxHandler';
-            } else {
-                $handler = 'standardHandler';
-            }
-            $errorHandler = new Zikula_ErrorHandler($serviceManager, $eventManager);
-            $serviceManager->attachService('system.errorhandler', $errorHandler);
-
-            set_error_handler(array($errorHandler, $handler));
+            $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
+            $event = new Zikula_Event('setup.errorreporting');
+            $eventManager->notifyUntil($event);
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)

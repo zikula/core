@@ -76,5 +76,37 @@ class SystemListenersUtil
         }
     }
 
+    /**
+     * Setup default error reporting.
+     *
+     * @param Zikula_Event $event The event.
+     *
+     * @return void
+     */
+    public static function defaultErrorReporting(Zikula_Event $event)
+    {
+        $sm = ServiceUtil::getManager();
+        $errorHandler = new Zikula_ErrorHandler($sm, EventUtil::getManager());
+        $sm->attachService('system.errorreporting', $errorHandler);
+        set_error_handler(array($errorHandler, 'standardHandler'));
+        $event->setNotified();
+    }
+
+    /**
+     * Setup error reporting for ajax.
+     * 
+     * @param Zikula_Event $event The event.
+     * 
+     * @return void
+     */
+    public static function ajaxErrorReporting(Zikula_Event $event)
+    {
+        $sm = ServiceUtil::getManager();
+        $errorHandler = new Zikula_ErrorHandler($sm, EventUtil::getManager());
+        $sm->attachService('system.errorreporting', $errorHandler);
+        set_error_handler(array($errorHandler, 'standardHandler'));
+        $event->setNotified();
+    }
+
 
 }
