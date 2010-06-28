@@ -12,7 +12,7 @@
  * ------------------------------------------
  * Licensed under the General Public License.
  */
-
+ 
 
 // Instantiate a Zikula Recovery Console object.
 $zrc = new RecoveryConsole();
@@ -1159,6 +1159,21 @@ class RecoveryConsole
                 if (isset($this->INPUT['confirm']) && $this->INPUT['confirm'] == 1) {
                     $this->setRecoveryOutput(__('You have to reload the utility to see the current status of the temp directory.'));
                     $state = false;
+                } elseif ($this->tempdirexists && $this->tempdirsubsfailed == 0) {
+                    $output  = "<br /><br />\n";
+                    $output .= __('Your temporary directory seems to exist. The status of the subdirectories is as follows:')."\n";
+                    $output .= "<br /><br />\n";
+
+                    foreach($this->tempdirsubs as $dir => $status) {
+                        $output .= '<img src="images/icons/extrasmall/button_ok.gif" alt="'.__('directory status').'" /> '.$dir."\n";
+                        $output .= "<br />\n";
+                    }
+
+                    $output .= "<br />\n";
+                    $output .= __('There is nothing wrong with your temporary directory so you don\'t need to rebuild it.');
+
+                    $this->setRecoveryOutput($output);
+                    $state = false;
                 }
                 break;
             case 'outputfilter':
@@ -1315,11 +1330,7 @@ class RecoveryConsole
 
             $form .= "<br />\n";
 
-            if ($this->tempdirsubsfailed == 0) {
-                $form .= __('All subdirectories were found. There is nothing wrong with your temporary directory so you don\'t need to rebuild it. However, if you choose to do so, it will be deleted and created again');
-            } else {
-                $form .= _fn('%s directory was not found. Please use the utility to create the deleted directory', '%s directories were not found. Please use the utility to create the deleted directories', $this->tempdirsubsfailed, $this->tempdirsubsfailed);
-            }
+            $form .= _fn('%s directory was not found. Please use the utility to create the deleted directory', '%s directories were not found. Please use the utility to create the deleted directories', $this->tempdirsubsfailed, $this->tempdirsubsfailed);
         }
 
         $form .= "<br /><br />\n";
@@ -1755,24 +1766,14 @@ class RecoveryConsole
             return false;
         }
 
-        // if temp directory already exists and all subdirectories are ok
-        // it means that the user wants to rebuild, so remove the entire temp directory
-        if ($this->tempdirexists && $this->tempdirsubsfailed == 0) {
-            $result = FileUtil::deldir($this->tempdir);
-            if ($result === false) {
-                $this->setError(__('Error deleting temp directory'));
-                return false;
-            }
-        }
-
         $dir_errors = array();
         
         // recreate only the subdirectories that are missing
-        if ($this->tempdirexists && $this->tempdirsubsfailed > 0) {
+        if ($this->tempdirexists) {
             foreach($this->tempdirsubs as $dir => $status) {
                 if ($status == 0) {
-                    $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
-                    if ($result === false) {
+                    $result = mkdir($this->tempdir.'/'.$dir, 0755, true);
+                    if ($result == false) {
                         array_push($dir_errors, $dir);
                     }
                 }
@@ -1781,8 +1782,8 @@ class RecoveryConsole
        // create all subdirectories
         else {
             foreach($this->tempdirsubs as $dir => $status) {
-                $result = FileUtil::mkdirs($this->tempdir.'/'.$dir);
-                if ($result === false) {
+                $result = mkdir($this->tempdir.'/'.$dir, 0755, true);
+                if ($result == false) {
                     array_push($dir_errors, $dir);
                 }
             }
@@ -1794,7 +1795,7 @@ class RecoveryConsole
         }
 
         // create htaccess only if needed
-        if (!$this->tempdirexists || ($this->tempdirexists && $this->tempdirsubsfailed == 0)) {
+        if (!$this->tempdirexists) {
             $htaccess_file  = 'SetEnvIf Request_URI "\.css$" object_is_css=css'."\n";
             $htaccess_file .= 'SetEnvIf Request_URI "\.js$" object_is_js=js'."\n";
             $htaccess_file .= 'Order deny,allow'."\n";
