@@ -233,7 +233,6 @@ class PageUtil
             // @deprecated since Zikula 1.3.0
             $shortJsVars = array('prototype', 'scriptaculous', 'validation');
             foreach ($value as $k => $v) {
-                echo $k;
                 if (in_array($value[$k], $shortJsVars)) {
                     // full renames are handled later on.
                     $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
