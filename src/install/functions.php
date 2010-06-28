@@ -36,7 +36,7 @@ function install()
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     DBConnectionStack::init('default', true);
 
-    System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_THEME & ~System::CORE_STAGES_MODS & ~System::CORE_STAGES_LANGS & ~System::CORE_STAGES_DECODEURLS & ~System::CORE_STAGES_SESSIONS & ~System::CORE_STAGES_TOOLS & ~System::CORE_STAGES_AJAX);
+    System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_THEME & ~System::CORE_STAGES_MODS & ~System::CORE_STAGES_LANGS & ~System::CORE_STAGES_DECODEURLS & ~System::CORE_STAGES_SESSIONS);
 
     // get our input
     $vars = array(
