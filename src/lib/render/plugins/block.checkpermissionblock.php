@@ -23,9 +23,9 @@
  *
  * Example:
  * <pre>
- * {checkpermission component='News::' instance='1::' level=ACCESS_COMMENT}
+ * {checkpermissionblock component='News::' instance='1::' level=ACCESS_COMMENT}
  *   do some stuff now that we have permission
- * {/checkpermission}
+ * {/checkpermissionblock}
  * </pre>.
  *
  * @param array  $params  All attributes passed to this function from the template.
@@ -36,7 +36,7 @@
  *               access level for the component and instance;
  *               otherwise null; false on an error.
  */
-function smarty_block_checkpermission($params, $content, &$smarty)
+function smarty_block_checkpermissionblock($params, $content, &$smarty)
 {
     if (is_null($content)) {
         return;
@@ -44,15 +44,15 @@ function smarty_block_checkpermission($params, $content, &$smarty)
 
     // check our input
     if (!isset($params['component'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermission', 'component')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'component')));
         return false;
     }
     if (!isset($params['instance'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermission', 'instance')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'instance')));
         return false;
     }
     if (!isset($params['level'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermission', 'level')));
+        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'level')));
         return false;
     }
 
