@@ -1,6 +1,5 @@
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js,javascript/ajax/scriptaculous.js"}
 {pageaddvar name="javascript" value="javascript/livepipe/livepipe.js,javascript/livepipe/contextmenu.js"}
-{pageaddvar name="javascript" value="javascript/ajax/controls.js"}
 {ajaxheader modname=Admin filename=admin_admin_ajax.js}
 
 <script type="text/javascript">
