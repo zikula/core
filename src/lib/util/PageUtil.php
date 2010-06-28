@@ -235,6 +235,9 @@ class PageUtil
             $shortJsVars = array('prototype', 'scriptaculous', 'validation');
             foreach (array_keys($value) as $k) {
                 if (in_array($value[$k], $shortJsVars)) {
+                    if ($value[$k] == 'prototype') {
+                        $value[$k] = 'prototype.min';
+                    }
                     $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
                 }
             }
