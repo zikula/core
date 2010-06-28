@@ -70,7 +70,7 @@ function smarty_function_ajaxheader($params, &$smarty)
     $return = '';
 
     // we always need those
-    $scripts = array('javascript/ajax/prototype.js', 'javascript/ajax/ajax.js');
+    $scripts = array('javascript/ajax/prototype.js', 'javascript/helpers/Zikula.js');
 
     if ($scriptaculous == true) {
         $scripts[] = 'javascript/ajax/scriptaculous.js';

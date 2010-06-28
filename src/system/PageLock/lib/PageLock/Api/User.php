@@ -30,7 +30,7 @@ class PageLock_Api_User extends Zikula_Api
         if (!empty($lockName) || !$ignoreEmptyLock) {
             PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
             PageUtil::AddVar('javascript', 'javascript/ajax/scriptaculous.js');
-            PageUtil::AddVar('javascript', 'javascript/ajax/ajax.js');
+            PageUtil::AddVar('javascript', 'javascript/helpers/Zikula.js');
             PageUtil::AddVar('javascript', 'system/PageLock/javascript/pagelock.js');
             PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('PageLock'));
 

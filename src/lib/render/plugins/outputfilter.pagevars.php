@@ -100,7 +100,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
                                         'javascript/ajax/scriptaculous.js?load=controls',
                                         'javascript/ajax/scriptaculous.js?load=slider',
                                         'javascript/ajax/scriptaculous.js?load=sound',
-                                        'javascript/ajax/ajax.js');
+                                        'javascript/helpers/Zikula.js');
 
         $javascriptNewLinks     = array('javascript/ajax/prototype.js',
                                         'javascript/ajax/scriptaculous.js',
@@ -110,7 +110,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
                                         'javascript/ajax/controls.js',
                                         'javascript/ajax/slider.js',
                                         'javascript/ajax/sound.js',
-                                        'javascript/ajax/ajax.js');
+                                        'javascript/helpers/Zikula.js');
 
         foreach ($javascripts as $key => $currentJS) {
             if (in_array($currentJS, $javascriptLinksToCheck)) {

@@ -88,9 +88,9 @@ function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
 
     if (is_array($javascripts) && !empty($javascripts)) {
         // check for prototype and ajax
-        if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/ajax/ajax.js', $javascripts)) {
+        if (in_array('javascript/ajax/prototype.js', $javascripts) && !in_array('javascript/helpers/Zikula.js', $javascripts)) {
             // prototype found, we also load ajax.js now
-            $javascripts[] = 'javascript/ajax/ajax.js';
+            $javascripts[] = 'javascript/helpers/Zikula.js';
         }
 
         // Ugly but necessary inline javascript for now: Some javascripts, eg. the lightbox, need to know the path to the system and
