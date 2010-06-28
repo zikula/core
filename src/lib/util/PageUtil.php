@@ -228,34 +228,38 @@ class PageUtil
         }
 
         if ($varname == 'javascript') {
-            // shorthand syntax for some common JS libraries
-            $shortJsVars = array('behaviour', 'prototype', 'scriptaculous', 'validation');
-            if (is_array($value)) {
-                foreach (array_keys($value) as $k) {
-                    if (in_array($value[$k], $shortJsVars)) {
-                        $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
-                    }
-                }
-            } elseif (in_array($value, $shortJsVars)) {
-                $value = 'javascript/ajax/' . DataUtil::formatForOS($value) . '.js';
-            }
+            $value = (array)$value;
 
-            // check for customized javascripts
-            if (is_array($value)) {
-                foreach (array_keys($value) as $k) {
-                    if (strpos($value[$k], 'system/') !== false || strpos($value[$k], 'modules/') !== false) {
-                        $custom = str_replace(array('javascript/', 'pnjavascript/'), '', DataUtil::formatForOS($value[$k]));
-                        $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
-                        if (file_exists($custom)) {
-                            $value[$k] = $custom;
-                        }
-                    }
+            // shorthand syntax for some common JS libraries
+            // @deprecated since Zikula 1.3.0
+            $shortJsVars = array('prototype', 'scriptaculous', 'validation');
+            foreach (array_keys($value) as $k) {
+                if (in_array($value[$k], $shortJsVars)) {
+                    $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
                 }
-            } elseif (strpos($value, 'system/') !== false || strpos($value, 'modules/') !== false) {
-                $custom = str_replace(array('javascript/', 'pnjavascript/'), '', DataUtil::formatForOS($value));
-                $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
-                if (file_exists($custom)) {
-                    $value[$k] = $custom;
+            }
+            // end @deprecated since Zikula 1.3.0
+
+            foreach (array_keys($value) as $k) {
+                $value[$k] = DataUtil::formatForOS($value[$k]);
+                // Handle legacy references to non-minimised scripts.
+                if (strpos($value[$k], 'javascript/livepipe/') === 0) {
+                    //$value[$k] = str_replace('.js', '.min.js', $value[$k]);
+                    $value[$k] = 'javascript/livepipe/livepipe.combined.min.js';
+                } else if (strpos($value[$k], 'javascript/ajax/') === 0) {
+                    switch ($value[$k])
+                    {
+                        case 'javascript/ajax/prototype.js':
+                            $value[$k] = 'javascript/ajax/prototype.min.js';
+                            break;
+                    }
+                } else if (strpos($value[$k], 'system/') === 0 || strpos($value[$k], 'modules/') === 0) {
+                    // check for customized javascripts
+                    $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $value[$k]);
+                    $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
+                    if (file_exists($custom)) {
+                        $value[$k] = $custom;
+                    }
                 }
             }
         }
