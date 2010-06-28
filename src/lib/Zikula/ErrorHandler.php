@@ -168,7 +168,7 @@ class Zikula_ErrorHandler
 
         Theme::getInstance()->themefooter();
 
-        self::shutDown();
+        System::shutDown();
     }
 
     /**
@@ -182,7 +182,7 @@ class Zikula_ErrorHandler
      *
      * @return void
      */
-    public function ajaxError($errno, $errstr, $errfile, $errline, $errcontext)
+    public function ajaxHandler($errno, $errstr, $errfile, $errline, $errcontext)
     {
         header('HTTP/1.0 500 System Error');
         error_log($errstr);

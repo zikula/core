@@ -14,8 +14,8 @@
 
 include 'lib/ZLoader.php';
 ZLoader::register();
-System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_DECODEURLS | CORE_STAGES_AJAX);
-
+System::init(System::CORE_STAGES_ALL | System::CORE_STAGES_AJAX & ~System::CORE_STAGES_DECODEURLS);
+goo();
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST');
 $type   = FormUtil::getPassedValue('type', 'ajax', 'GETPOST');

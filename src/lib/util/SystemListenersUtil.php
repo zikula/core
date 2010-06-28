@@ -81,13 +81,17 @@ class SystemListenersUtil
      */
     public static function defaultErrorReporting(Zikula_Event $event)
     {
+        $sm = ServiceUtil::getManager();
+        if ($sm->hasService('system.errorreporting')) {
+            $sm->detachService('system.errorreporting');
+        }
+
         if ($event['stage'] & System::CORE_STAGES_AJAX) {
             $handlerMethod = 'ajaxHandler';
         } else {
             $handlerMethod = 'standardHandler';
         }
-
-        $sm = ServiceUtil::getManager();
+        
         $errorHandler = new Zikula_ErrorHandler($sm, EventUtil::getManager());
         $sm->attachService('system.errorreporting', $errorHandler);
         set_error_handler(array($errorHandler, $handlerMethod));
