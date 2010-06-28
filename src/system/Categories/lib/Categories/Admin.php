@@ -42,7 +42,7 @@ class Categories_Admin extends Zikula_Controller
 
         // disable attribution for performance
         $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = false;
-        $dbtables    = System::dbGetTables ();
+        $dbtables    = DBUtil::getTables();
         $columnArray = array ('id', 'name', 'display_name', 'parent_id', 'path', 'ipath', 'status');
         $cats        = CategoryUtil::getSubCategories ($root_id, true, true, true, true, true, '', '', null, $columnArray);
         $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);
