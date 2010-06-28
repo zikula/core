@@ -48,7 +48,6 @@ function smarty_function_ajaxheader($params, &$smarty)
     $modname       = (isset($params['modname']))         ? $params['modname']  : ModUtil::getName();
     // define the default filename
     $filename      = (isset($params['filename']))        ? $params['filename'] : 'Zikula.js';
-    $scriptaculous = (isset($params['noscriptaculous'])) ? false     : true;
     $validation    = (isset($params['validation']))      ? true      : false;
     $lightbox      = (isset($params['lightbox']))        ? true      : false;
     $imageviewer   = (isset($params['imageviewer']))     ? true      : false;
@@ -57,11 +56,8 @@ function smarty_function_ajaxheader($params, &$smarty)
     $return = '';
 
     // we always need those
-    $scripts = array('javascript/ajax/prototype.min.js', 'javascript/helpers/Zikula.js');
+    $scripts = array('prototype', 'javascript/helpers/Zikula.js');
 
-    if ($scriptaculous == true) {
-        $scripts[] = 'javascript/ajax/scriptaculous.combined.min.js';
-    }
     if ($validation) {
         $scripts[] = 'javascript/ajax/validation.min.js';
     }
