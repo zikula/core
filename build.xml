@@ -173,7 +173,7 @@
     <!-- Compress own JS -->
     <target name="compressownjs">
         <echo msg="YUI_Compressor for JS files..." />
-        <!-- exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/jar -jar /var/lib/hudson/yuicompressor-2.4.2.jar --type js -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" / -->
+        <!-- <exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/jar -jar /var/lib/hudson/yuicompressor-2.4.2.jar -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" /> -->
         <exec command="/usr/bin/jar -jar /var/lib/hudson/yuicompressor-2.4.2.jar --type js -o ${packagepath}/${filename} ${packagepath}/${filename}" />
     </target>
 </project>
