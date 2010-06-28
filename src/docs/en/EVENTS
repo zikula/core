@@ -125,3 +125,6 @@ mailer.sendmessage
     Inkoked from Mailer_Api_User#sendmessage. Subject is Mailer_Api_User with $args.
     This is a notifyUntil event so the event must $event->setNotified() and set any
     return data into $event->data, or $event->setData()
+
+setup.errorreporting
+    Invoked during System::init().  Used to activate set_error_handler().  Event must setNotified().
