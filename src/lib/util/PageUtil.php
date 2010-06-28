@@ -255,6 +255,9 @@ class PageUtil
                         case 'javascript/ajax/prototype.js':
                             $value[$k] = 'javascript/ajax/prototype.min.js';
                             break;
+                        default:
+                            $value[$k] = 'javascript/ajax/scriptaculous.combined.min.js';
+                            break;
                     }
                 } else if (strpos($value[$k], 'system/') === 0 || strpos($value[$k], 'modules/') === 0) {
                     // check for customized javascripts
