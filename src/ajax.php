@@ -14,8 +14,7 @@
 
 include 'lib/ZLoader.php';
 ZLoader::register();
-EventUtil::getManager()->attach('setup.errorreporting', array('SystemListenersUtil', 'ajaxErrorReporting'));
-System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_DECODEURLS);
+System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_DECODEURLS | CORE_STAGES_AJAX);
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST');

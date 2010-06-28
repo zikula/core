@@ -50,18 +50,15 @@ class System
 
     const CORE_STAGES_NONE = 0;
     const CORE_STAGES_CONFIG = 1;
-    const CORE_STAGES_ADODB = 2; // deprecated
     const CORE_STAGES_DB = 4;
-    const CORE_STAGES_OBJECTLAYER = 8; // deprecated
     const CORE_STAGES_TABLES = 16;
     const CORE_STAGES_SESSIONS = 32;
     const CORE_STAGES_LANGS = 64;
     const CORE_STAGES_MODS = 128;
-    const CORE_STAGES_TOOLS = 256; // deprecated
-    const CORE_STAGES_AJAX = 512; // deprecated
     const CORE_STAGES_DECODEURLS = 1024;
     const CORE_STAGES_THEME = 2048;
     const CORE_STAGES_ALL = 4095;
+    const CORE_STAGES_AJAX = 4096; // needs to be set explicitly, CORE_STAGES_ALL | CORE_STAGES_AJAX
 
     /**
      * Get a configuration variable.
@@ -308,9 +305,11 @@ class System
 
         // error reporting
         if (!self::isInstalling()) {
-            $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
-            $event = new Zikula_Event('setup.errorreporting');
-            $eventManager->notifyUntil($event);
+            if (!$serviceManager->hasService('system.errorhandler')) {
+                $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
+                $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stages));
+                $eventManager->notifyUntil($event);
+            }
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)

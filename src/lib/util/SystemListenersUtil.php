@@ -26,7 +26,7 @@ class SystemListenersUtil
      */
     public static function sessionLogging(Zikula_Event $event)
     {
-        if ($event['stage'] == System::CORE_STAGES_SESSIONS) {
+        if ($event['stage'] & System::CORE_STAGES_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
             if (isset($GLOBALS['ZConfig']['Log']['log_apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
@@ -52,10 +52,6 @@ class SystemListenersUtil
                 // omit system hooks if requested by an administrator
             } else {
                 ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
-
-                // reset the render domain - system init hooks mess the translation domain for the core
-                //889 $render = Renderer::getInstance();
-                //889 $render->renderDomain = null;
             }
         }
     }
@@ -69,7 +65,7 @@ class SystemListenersUtil
      */
     public static function systemPlugins(Zikula_Event $event)
     {
-        if ($event['stage'] == System::CORE_STAGES_LANGS) {
+        if ($event['stage'] & System::CORE_STAGES_LANGS) {
             if (!System::isInstalling()) {
                 PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
             }
@@ -85,28 +81,16 @@ class SystemListenersUtil
      */
     public static function defaultErrorReporting(Zikula_Event $event)
     {
+        if ($event['stage'] & System::CORE_STAGES_AJAX) {
+            $handlerMethod = 'ajaxHandler';
+        } else {
+            $handlerMethod = 'standardHandler';
+        }
+
         $sm = ServiceUtil::getManager();
         $errorHandler = new Zikula_ErrorHandler($sm, EventUtil::getManager());
         $sm->attachService('system.errorreporting', $errorHandler);
-        set_error_handler(array($errorHandler, 'standardHandler'));
+        set_error_handler(array($errorHandler, $handlerMethod));
         $event->setNotified();
     }
-
-    /**
-     * Setup error reporting for ajax.
-     * 
-     * @param Zikula_Event $event The event.
-     * 
-     * @return void
-     */
-    public static function ajaxErrorReporting(Zikula_Event $event)
-    {
-        $sm = ServiceUtil::getManager();
-        $errorHandler = new Zikula_ErrorHandler($sm, EventUtil::getManager());
-        $sm->attachService('system.errorreporting', $errorHandler);
-        set_error_handler(array($errorHandler, 'standardHandler'));
-        $event->setNotified();
-    }
-
-
 }

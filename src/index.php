@@ -14,7 +14,7 @@
 
 include 'lib/ZLoader.php';
 ZLoader::register();
-System::init(System::CORE_STAGES_ALL & ~System::CORE_STAGES_AJAX);
+System::init();
 
 if (SessionUtil::hasExpired()) {
     // Session has expired, display warning
