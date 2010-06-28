@@ -255,6 +255,12 @@ class PageUtil
                         case 'javascript/ajax/prototype.js':
                             $value[$k] = 'javascript/ajax/prototype.min.js';
                             break;
+                        case 'javascript/ajax/validation.js':
+                            $value[$k] = 'javascript/ajax/validation.min.js';
+                            break;
+                        case 'javascript/ajax/unittest.js':
+                            $value[$k] = 'javascript/ajax/unittest.min.js';
+                            break;
                         default:
                             $value[$k] = 'javascript/ajax/scriptaculous.combined.min.js';
                             break;
