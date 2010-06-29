@@ -180,12 +180,13 @@ class Categories_User extends Zikula_Controller
                 return LogUtil::registerError($this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
             }
 
-            require_once ('system/Categories/init.php'); // need this for Categories_makeDisplayName() && Categories_makeDisplayDesc()
+            require_once ('system/Categories/Installer.php'); // need this for Categories_makeDisplayName() && Categories_makeDisplayDesc()
+            $installer = new Categories_Installer();
             $cat = array('id'               => '',
                     'parent_id'        => $userRootCat['id'],
                     'name'             => $userCatName,
-                    'display_name'     => unserialize(Categories_makeDisplayName($userCatName)),
-                    'display_desc'     => unserialize(Categories_makeDisplayDesc()),
+                    'display_name'     => unserialize($installer->makeDisplayName($userCatName)),
+                    'display_desc'     => unserialize($installer->makeDisplayDesc()),
                     'security_domain'  => 'Categories::',
                     'path'             => $thisUserRootCatPath,
                     'status'           => 'A');
@@ -204,8 +205,8 @@ class Categories_User extends Zikula_Controller
                 $cat = array('id'               => '',
                         'parent_id'        => $dr,
                         'name'             => $userdefaultcatname,
-                        'display_name'     => unserialize(Categories_makeDisplayName($userdefaultcatname)),
-                        'display_desc'     => unserialize(Categories_makeDisplayDesc()),
+                        'display_name'     => unserialize($installer->makeDisplayName($userdefaultcatname)),
+                        'display_desc'     => unserialize($installer->makeDisplayDesc()),
                         'security_domain'  => 'Categories::',
                         'path'             => $thisUserRootCatPath . '/' . $userdefaultcatname,
                         'status'           => 'A');
