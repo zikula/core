@@ -228,7 +228,6 @@ class PageUtil
         }
 
         $value = (array)$value;
-//        $value[] = 'jquery';
         if ($varname == 'javascript') {
             // shorthand syntax for some common JS libraries
             foreach ($value as $k => $v) {
