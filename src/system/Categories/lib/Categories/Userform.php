@@ -66,7 +66,7 @@ class Categories_Userform extends Zikula_Controller
         $ref  = System::serverGetVar('HTTP_REFERER');
 
         $returnfunc = strpos ($ref, "useredit") !== false ? 'useredit' :  'edit';
-        $url = ModUrl::url('Categories', 'user', $returnfunc, array ('dr' => $dr));
+        $url = ModUtil::url('Categories', 'user', $returnfunc, array ('dr' => $dr));
 
         if (!$dr) {
             return LogUtil::registerError($this->__('Error! The document root is invalid.'), null, $url);
