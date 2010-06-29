@@ -98,16 +98,25 @@ abstract class Zikula_Base
     public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager, array $options = array())
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $eventManager;
         $this->options = $options;
         $this->_setup();
         $this->_postSetup();
 
+        $this->_setupLanguageDomain();
+
+        $this->postInitialize();
+    }
+
+    /**
+     * Calculate the translation domain.
+     *
+     * @return void
+     */
+    protected function _setupLanguageDomain()
+    {
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
-
-        $this->postInitialize();
     }
 
     /**
@@ -115,7 +124,7 @@ abstract class Zikula_Base
      *
      * @return void
      */
-    private function _setup()
+    protected function _setup()
     {
         $this->reflection = new ReflectionObject($this);
         $parts = explode('_', $this->reflection->getName());

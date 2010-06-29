@@ -19,32 +19,11 @@
 abstract class Zikula_Installer extends Zikula_Base
 {
     /**
-     * Constructor.
-     *
-     * @param Zikula_ServiceManager $serviceManager ServiceManager.
-     * @param Zikula_EventManager   $eventManager   EventManager.
-     * @param array                 $options        Options.
-     */
-    public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager, array $options = array())
-    {
-        $this->serviceManager = $serviceManager;
-        $this->eventManager = $eventManager;
-        $this->options = $options;
-        $this->_setup();
-
-        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
-            $this->domain = ZLanguage::getModuleDomain($this->name);
-        }
-
-        $this->postInitialize();
-    }
-
-    /**
      * Setup internal properties.
      *
      * @return void
      */
-    private function _setup()
+    protected function _setup()
     {
         $this->reflection = new ReflectionObject($this);
         $parts = explode('_', $this->reflection->getName());

@@ -38,14 +38,14 @@ abstract class Zikula_EventHandler
     /**
      * EventManager instance.
      *
-     * @var object
+     * @var Zikula_EventManager
      */
     protected $eventManager;
 
     /**
      * ServiceManager instance.
      *
-     * @var object
+     * @var Zikula_ServiceManager
      */
     protected $serviceManager;
 
@@ -80,7 +80,7 @@ abstract class Zikula_EventHandler
     /**
      * Get eventManager.
      *
-     * @return object
+     * @return Zikula_EventManager
      */
     public function getEventManager()
     {
@@ -90,7 +90,7 @@ abstract class Zikula_EventHandler
     /**
      * Get servicemanager.
      *
-     * @return object
+     * @return Zikula_ServiceManager
      */
     public function getServiceManager()
     {

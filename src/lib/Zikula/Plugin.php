@@ -18,20 +18,31 @@
  */
 abstract class Zikula_Plugin extends Zikula_EventHandler
 {
+    /**
+     * Module plugin identifier.
+     *
+     * @var constant
+     */
     const TYPE_MODULE = 1;
+
+    /**
+     * Systemwide plugin identifier.
+     *
+     * @var constant
+     */
     const TYPE_SYSTEM = 2;
 
     /**
      * EventManager.
      *
-     * @var object
+     * @var Zikula_EventManager
      */
     protected $eventManager;
 
     /**
      * ServiceManager.
      *
-     * @var object
+     * @var Zikula_ServiceManager
      */
     protected $serviceManager;
 
@@ -108,7 +119,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     /**
      * This object's own reflection.
      *
-     * @var object
+     * @var ReflectionObject
      */
     protected $reflection;
 
