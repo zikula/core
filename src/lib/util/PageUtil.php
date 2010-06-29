@@ -236,10 +236,18 @@ class PageUtil
                     $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
                 } else if ($value[$k] == 'jquery') {
                     $value[$k] = 'javascript/jquery/jquery.min.js';
+                    $value["$k.1"] = 'javascript/jquery/noconflict.js';
                 } else if ($value[$k] == 'livepipe') {
                     $value[$k] = 'javascript/livepipe/livepipe.combined.min.js';
                 }
             }
+
+            // sort back to numeric index
+            $newValue = array();
+            foreach ($value as $k => $v) {
+                $newValue[] = $v;
+            }
+            $value = $newValue;
 
             foreach ($value as $k => $v) {
                 $value[$k] = DataUtil::formatForOS($value[$k]);
