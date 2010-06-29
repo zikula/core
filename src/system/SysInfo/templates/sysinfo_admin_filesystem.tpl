@@ -12,11 +12,11 @@
             </tr>
         </thead>
         <tbody>
-            {foreach from=$filelist item=filelist}
-            {if $filelist.writable}
+            {foreach from=$filelist item=file}
+            {if $file.writable}
             <tr class="{cycle values="z-odd,z-even"}">
-                <td>{$filelist.dir}</td>
-                <td>{$filelist.path}{$filelist.name}</td>
+                <td>{$file.dir}</td>
+                <td>{$file.path}{$file.name}</td>
             </tr>
             {/if}
             {/foreach}

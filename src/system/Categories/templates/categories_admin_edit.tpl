@@ -21,7 +21,7 @@
                 {/if}
                 <legend>{gt text="General settings"}</legend>
                 <div class="z-formrow">
-                    <label for="category_name">{gt text="Name"} {formutil_getfieldmarker objectType="category" field="name" validation=$validation}</label>
+                    <label for="category_name">{gt text="Name"}{formutil_getfieldmarker objectType="category" field="name" validation=$validation}</label>
                     {array_field_isset assign="catName" array=$category field="name" returnValue=1}
                     <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" size="32" maxlength="255" />
                     {formutil_getvalidationerror objectType="category" field="name"}

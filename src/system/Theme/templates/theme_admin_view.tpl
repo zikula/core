@@ -5,7 +5,7 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="Available themes"}</div>
     <h2>{gt text="Themes list"}</h2>
     <p class="z-informationmsg">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
-    <div id="themes-alphafilter" style="padding:1em 0;">[{pagerabc posvar="startlet" forwardvars=''}]</div>
+    <div id="themes-alphafilter" style="padding:1em 0;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>
     <table class="z-admintable">
         <thead>
             <tr>
@@ -38,6 +38,8 @@
                     <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{img modname=core src=info.gif set=icons/extrasmall __alt="Credits" __title="Credits"}</a>
                 </td>
             </tr>
+            {foreachelse}
+            <tr class="z-admintableempty"><td colspan="3">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

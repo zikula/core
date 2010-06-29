@@ -5,7 +5,7 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View"}</div>
     <h2>{gt text="Modules list"}</h2>
     <p class="z-informationmsg">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
-    <div style="padding:1em 0;">[{pagerabc posvar="letter" forwardvars="module,type,func"}]</div>
+    <div style="padding:1em 0;"><strong>[{pagerabc posvar="letter" forwardvars="module,type,func"}]</strong></div>
     <table class="z-admintable">
         <thead>
             <tr>

@@ -11,10 +11,10 @@
 {modurl modname="Categories" type="userform" func="resequence" assign="resq" dr=$dr}
 
 <ul class="z-menulinks">
-    <li><a href="{$resq|safetext}">{gt text="Resequence"}</a></li>
     {if ($referer)}
-    <li><a href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="z-icon-es-list" href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
+    <li><a class="z-icon-es-update" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>
 
 {insert name="getstatusmsg"}
@@ -71,6 +71,14 @@
                 <input id="category_sort_value" name="category[sort_value]" value="{$catSortValue|safetext}" type="text" size="16" maxlength="16" />
             </div>
             <div class="z-formrow">
+                <label for="category_status">{gt text="Active"}</label>
+                {array_field_isset assign="catStatus" array=$category field="status" returnValue=1}
+                <input id="category_status" name="category[status]" value="A" type="checkbox"{if ($catStatus=='A')} checked="checked"{/if} />
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{gt text="Localised output"}</legend>
+            <div class="z-formrow">
                 <label>{gt text="Name"}</label>
                 {array_field_isset assign="displayNames" array=$category field="display_name" returnValue=1}
                 {if ($displayNames || !$catID)}
@@ -96,17 +104,14 @@
                 {/foreach}
                 {/if}
             </div>
-            <div class="z-formrow">
-                <label for="category_status">{gt text="Active"}</label>
-                {array_field_isset assign="catStatus" array=$category field="status" returnValue=1}
-                <input id="category_status" name="category[status]" value="A" type="checkbox"{if ($catStatus=='A')} checked="checked"{/if} />
-            </div>
-            <hr />
-            <h4>{gt text="Attributes"}</h4>
+        </fieldset>
+        <fieldset>
+            <legend>{gt text="Attributes"}</legend>
             {include file=categories_include_editattributes.tpl}
-            {if ($catID)}
-            <hr />
-            <h4>{gt text="Category system information"}</h4>
+        </fieldset>
+        {if ($catID)}
+        <fieldset>
+            <legend>{gt text="Category system information"}</legend>
             <div class="z-formrow">
                 <label for="category_id">{gt text="Internal ID"}</label>
                 <span id="category_id">{$category.id|safetext}</span>
@@ -119,8 +124,8 @@
                 <label for="category_ipath">{gt text="I-path"}</label>
                 <span id="category_ipath">{$category.ipath|safetext}</span>
             </div>
-            {/if}
         </fieldset>
+        {/if}
         <div class="z-buttons z-formbuttons">
             {if ($category)}
             {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}

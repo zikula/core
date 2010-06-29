@@ -60,7 +60,7 @@
                 <td>{img src=$ext.loaded modname=core set=icons/extrasmall alt=$ext.status title=$ext.status}</td>
             </tr>
             {foreachelse}
-            <tr><td colspan="3">{gt text="No required extensions listed."}</td></tr>
+            <tr class="z-admintableempty"><td colspan="3">{gt text="No required extensions listed."}</td></tr>
             {/foreach}
         </tbody>
     </table>
@@ -82,7 +82,7 @@
                 <td>{img src=$ext.loaded modname=core set=icons/extrasmall alt=$ext.status title=$ext.status}</td>
             </tr>
             {foreachelse}
-            <tr><td colspan="3">{gt text="No optional extensions listed."}</td></tr>
+            <tr class="z-admintableempty"><td colspan="3">{gt text="No optional extensions listed."}</td></tr>
             {/foreach}
         </tbody>
     </table>
@@ -104,7 +104,7 @@
                 <td>{img src=$ext.loaded modname=core set=icons/extrasmall alt=$ext.status title=$ext.status}</td>
             </tr>
             {foreachelse}
-            <tr><td colspan="3">{gt text="No optional patches listed."}</td></tr>
+            <tr class="z-admintableempty"><td colspan="3">{gt text="No optional patches listed."}</td></tr>
             {/foreach}
         </tbody>
     </table>

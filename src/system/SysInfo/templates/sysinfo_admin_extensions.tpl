@@ -19,6 +19,8 @@
                 <td>{$mod.displayname}</td>
                 <td>{$mod.version}</td>
             </tr>
+            {foreachelse}
+            <tr class="z-admintableempty"><td colspan="3">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>
@@ -38,6 +40,8 @@
                 <td>{$theme.displayname}</td>
                 <td>{$theme.version}</td>
             </tr>
+            {foreachelse}
+            <tr class="z-admintableempty"><td colspan="3">{gt text="No items found."}</td></tr>
             {/foreach}
         </tbody>
     </table>

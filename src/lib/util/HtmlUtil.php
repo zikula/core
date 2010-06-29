@@ -18,8 +18,8 @@
 class HtmlUtil
 {
     const MARKER_NONE = '&nbsp;&nbsp;';
-    const REQUIRED_MARKER = '<span style="font-size:larger;color:blue"><strong>*</strong></span>';
-    const VALIDATION_MARKER = '<span style="font-size:larger;color:red"><strong>!</strong></span>';
+    const REQUIRED_MARKER = '<span class="z-mandatorysym">*</span>';
+    const VALIDATION_MARKER = '<span class="z-mandatorysym">!</span>';
     /**
      * Return the HTML code for the specified date selector input box.
      *

@@ -19,7 +19,7 @@
                     <label for="blocks_positiondescription">{gt text="Description"}</label>
                     <textarea name="position[description]" id="blocks_positiondescription" rows="5" cols="30">{$description|safehtml}</textarea>
                 </div>
-                <div class="z-formbuttons">
+                <div class="z-formbuttons z-buttons">
                     {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
                     <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
                 </div>
