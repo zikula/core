@@ -74,7 +74,11 @@ class Modules_Plugin extends Zikula_Controller
 
         $this->pluginController = $this->plugin->getController();
         $this->throwNotFoundUnless($this->pluginController->getReflection()->hasMethod($action));
-        var_dump($this, $this->pluginController);
+        //$this->renderer->assign('plugin_content', $this->pluginController->$action());
+        //array_push($this->renderer->plugins_dir, 'system/Admin/templates/plugins');
+        //$this->renderer->load_filter('output', 'admintitle');
+        //return $this->renderer->fetch('modules_plugin_dispatchcontroller.tpl');
+
         return $this->pluginController->$action();
     }
 }
