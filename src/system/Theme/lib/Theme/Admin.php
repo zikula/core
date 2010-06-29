@@ -143,9 +143,11 @@ class Theme_Admin extends Zikula_Controller
 
         // filter by letter if required
         if (isset($startlet) && !empty($startlet)) {
-            $allthemes = array_filter($allthemes, '$this->_filterbyletter');
+            $allthemes = $this->_filterbyletter($allthemes, $startlet);
         }
+        
         $themes = array_slice($allthemes, $startnum-1, $itemsperpage);
+        
         $this->renderer->assign('themes', $themes);
 
         // assign default theme
@@ -164,19 +166,19 @@ class Theme_Admin extends Zikula_Controller
      *
      * @access private
      */
-    private function _filterbyletter($theme)
+    private function _filterbyletter($allthemes, $startlet)
     {
-        static $startlet;
+        $themes = array();
 
-        if (!isset($startlet)) {
-            $startlet = FormUtil::getPassedValue('startlet', isset($args['startlet']) ? $args['startlet'] : null, 'GET');
+        $startlet = strtolower($startlet);
+
+        foreach($allthemes as $key => $theme) {
+            if (strtolower($key[0]) == $startlet) {
+                $themes[$key] = $theme;
+            }
         }
 
-        if (strcasecmp($theme['name'][0], $startlet)) {
-            return false;
-        } else {
-            return true;
-        }
+        return $themes;
     }
 
     /**
