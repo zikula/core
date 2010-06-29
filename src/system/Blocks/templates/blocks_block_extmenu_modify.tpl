@@ -1,6 +1,5 @@
 {ajaxheader modname="Blocks" filename="blocks.js"}
 {pageaddvar name="javascript" value="javascript/helpers/Zikula.itemlist.js"}
-{pageaddvar name="javascript" value="javascript/helpers/Zikula.recursiveSortable.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/extmenu_modify.css"}
 
 {if $redirect neq ''}
