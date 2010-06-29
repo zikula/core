@@ -20,14 +20,30 @@
                     <li>
                         <a href="{homepage}">{gt text='Home'}</a>
                     </li>
-                    <li class={if $module  eq 'Search'}"selected{/if}">
-                        <a href="{modurl modname=Search}">{gt text='Search'}</a>
+                    <li>
+                        <a href="{modurl modname=Settings type=admin}">{gt text="Settings"}</a>
                     </li>
-                    {if $loggedin eq true}
-                    <li class="{if $module eq 'Users'}selected{/if}">
-                        <a href="{modurl modname=Users}">{gt text='My account'}</a>
+                    <li>
+                        <a href="{modurl modname=Modules type=admin}">{gt text="Modules manager"}</a>
                     </li>
-                    {/if}
+                    <li>
+                        <a href="{modurl modname=Blocks type=admin}">{gt text="Blocks manager"}</a>
+                    </li>
+                    <li>
+                        <a href="{modurl modname=Users type=admin}">{gt text="User administration"}</a>
+                    </li>
+                    <li>
+                        <a href="{modurl modname=Groups type=admin}">{gt text="Groups manager"}</a>
+                    </li>
+                    <li>
+                        <a href="{modurl modname=Permissions type=admin}">{gt text="Permission rules manager"}</a>
+                    </li>
+                    <li>
+                        <a href="{modurl modname=Theme type=admin}">{gt text="Themes manager"}</a>
+                    </li>
+                    <li>
+                        <a href="{modurl modname=Categories type=admin}">{gt text="Categories"}</a>
+                    </li>
                 </ul>
             </div>
             <div id="theme_content" style="width:95%">{$maincontent}</div>

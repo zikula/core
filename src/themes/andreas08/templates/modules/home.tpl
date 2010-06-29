@@ -17,14 +17,12 @@
             </div>
             <div id="theme_navigation_bar">
                 <ul>
-                    <li class="selected">
-                        <a href="{homepage}">{gt text='Home'}</a>
-                    </li>
-                    <li class="{if $module eq 'Search'}selected{/if}">
+                    <li class="selected"><a href="{homepage}">{gt text='Home'}</a></li>
+                    <li {if $module  eq 'Search'}class="selected"{/if}>
                         <a href="{modurl modname=Search}">{gt text='Search'}</a>
                     </li>
                     {if $loggedin eq true}
-                    <li class="{if $module eq 'Users'}selected{/if}">
+                    <li {if $module eq 'Users'}class="selected"{/if}>
                         <a href="{modurl modname=Users}">{gt text='My account'}</a>
                     </li>
                     {/if}
