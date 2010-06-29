@@ -241,19 +241,21 @@
                 <label for="users_reg_Illegalusername">{gt text="Reserved user names"}</label>
                 <input id="users_reg_Illegalusername" type="text" name="config[reg_Illegalusername]" value="{$config.reg_Illegalusername|safetext}" size="50" maxlength="255" />
                 <div class="z-formnote z-sub z-italic">{gt text="Separate each user name with a space."}<br />
-                    {gt text="Each user name on this list is not allowed to be chosen by someone registering for a new account."}</div>
+                {gt text="Each user name on this list is not allowed to be chosen by someone registering for a new account."}</div>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_Illegaluseragents">{gt text="Banned user agents"}</label>
                 <textarea id="users_reg_Illegaluseragents" name="config[reg_Illegaluseragents]" cols="45" rows="2">{$config.reg_Illegaluseragents|safehtml}</textarea>
                 <div class="z-formnote z-sub z-italic">{gt text="Separate each user agent string with a comma."}<br />
-                    {gt text="Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process."}</div>
+                {gt text="Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process."}</div>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_Illegaldomains">{gt text="Banned e-mail address domains"}</label>
                 <textarea id="users_reg_Illegaldomains" name="config[reg_Illegaldomains]" cols="45" rows="2">{$config.reg_Illegaldomains|safehtml}</textarea>
-                <div class="z-formnote z-sub z-italic">{gt text="Separate each domain with a comma."}<br />
-                    {gt text="Each item on this list is an e-mail address domain (the part after the '@'). E-mail addresses on new registrations or on an existing user's change of e-mail address requests are not allowed to have any domain on this list."}</div>
+                <div class="z-formnote z-sub z-italic">
+                    {gt text="Separate each domain with a comma."}<br />
+                    {gt text="Each item on this list is an e-mail address domain (the part after the '@'). E-mail addresses on new registrations or on an existing user's change of e-mail address requests are not allowed to have any domain on this list."}
+                </div>
             </div>
         </fieldset>
 
@@ -261,14 +263,12 @@
             <legend>{gt text="User log-in settings"}</legend>
             <div class="z-formrow">
                 <label>{gt text="WCAG-compliant log-in and log-out"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <div class="z-formlist">
+                <div id="login_redirect">
                     <input id="login_redirectyes" type="radio" name="config[login_redirect]" value="1" {if $config.login_redirect eq 1}checked="checked" {/if}/>
                     <label for="login_redirectyes">{gt text="Yes"}</label>
-                </div>
-                <div class="z-formlist">
                     <input id="login_redirectno" type="radio" name="config[login_redirect]" value="0" {if $config.login_redirect neq 1}checked="checked" {/if}/>
                     <label for="login_redirectno">{gt text="No"}</label>
-                    <span class="z-sub z-italic">{gt text="Notice: Uses meta refresh."}</span>
+                    <em class="z-sub">{gt text="Notice: Uses meta refresh."}</em>
                 </div>
             </div>
         </fieldset>
@@ -278,11 +278,11 @@
             <div class="z-formrow">
                 <label for="users_default_authmodule">{gt text="Default user authentication (login) module"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <select id="users_default_authmodule" name="config[default_authmodule]">
-                {foreach from=$authmodules item='authmodule'}
+                    {foreach from=$authmodules item='authmodule'}
                     <option id="users_default_authmodule_{$authmodule.name}" value="{$authmodule.name}"{if $config.default_authmodule == $authmodule.name} selected="selected"{/if}>{$authmodule.displayname}</option>
-                {foreachelse}
+                    {foreachelse}
                     <option id="users_default_authmodule_Users" value="Users" selected="selected">Users manager</option>
-                {/foreach}
+                    {/foreach}
                 </select>
             </div>
         </fieldset>

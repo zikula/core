@@ -17,21 +17,24 @@
 .z-underline { text-decoration: underline !important; }
 .z-line-through { text-decoration: line-through !important; }
 .z-normal { font-weight: normal !important; font-style: normal !important; }
+.z-floatleft { float: left; }
+.z-floatright { float: right; }
 
-.z-floatleft {
+/* IMG Float styles, e.g. for the positioning of images in articles */
+img.z-floatleft {
     display: inline;
     float: left;
     margin-bottom: 0.15em;
     margin-right: 1em;
 }
-.z-floatright {
+img.z-floatright {
     display: inline;
     float: right;
     margin-bottom: 0.15em;
     margin-left: 1em;
 }
 
-/* style for buttons in inline 'ajax' forms */
+/* Style for buttons in inline ajax forms */
 button.z-imagebutton {
     padding: 0;
     margin: 3px 0 0 0;
@@ -41,7 +44,7 @@ button.z-imagebutton {
     cursor: pointer;
 }
 
-/* generic clearfix solution */
+/* Generic clearfix solution */
 .z-clearfix:after {
     content: ".";
     display: block;
@@ -67,12 +70,12 @@ button.z-imagebutton {
     overflow: hidden;
 }
 
-/* generic clearer */
+/* Generic clearer */
 .z-clearer {
     clear: both;
 }
 
-/* generic secondary text */
+/* Generic secondary text */
 .z-sub {
     color: #777;
     font-size: 0.9em;
@@ -117,7 +120,7 @@ button.z-imagebutton {
 }
 
 /*******************************************************************************/
-/* styles for z-menulinks
+/* Styles for z-menulinks
 /*******************************************************************************/
 
 ul.z-menulinks {
@@ -147,7 +150,7 @@ ul.z-menulinks li.z-ml-disabled a,
 ul.z-menulinks li.z-ml-disabled a:hover {
     text-decoration:line-through !important;
 }
-/* styles for span-based module menus */
+/* Styles for span-based module menus */
 .z-menu {
     color: #aaa;
     text-align: left;
@@ -167,9 +170,9 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding: 3px;
 }
 
-/**************************************************
+/******************************************************************************
 * CSS Based Messages
-**************************************************/
+*******************************************************************************/
 
 .z-errormsg {
     background: #F7CBCA url("../images/icons/extrasmall/error.gif") 13px 50% no-repeat;
@@ -232,9 +235,9 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     padding:0 !important;
 }
 
-/*******************************************************************************/
-/* classes to define two colors for alternating rows in views
-/*******************************************************************************/
+/******************************************************************************
+* Classes to define two colors for alternating rows in views
+*******************************************************************************/
 
 .z-even {
     background-color: #fff;
@@ -245,9 +248,9 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     color: inherit;
 }
 
-/*******************************************************************************/
-/* styles for pager plugins
-/*******************************************************************************/
+/******************************************************************************
+* Styles for pager plugins
+*******************************************************************************/
 
 .z-pager {
     color: #999;
@@ -264,9 +267,9 @@ ul.z-menulinks li.z-ml-disabled a:hover {
     font-weight: bold;
 }
 
-/*******************************************************************************/
-/* z-datatable
-/*******************************************************************************/
+/******************************************************************************
+* User-Frontend-Tables: z-datatable
+*******************************************************************************/
 
 table.z-datatable {
     width: 100%;
@@ -310,9 +313,9 @@ table.z-datatable ul {
     margin: 0;
 }
 
-/*******************************************************************************/
-/* z-form style (generic)
-/*******************************************************************************/
+/******************************************************************************
+* Generic Form Style: z-form
+*******************************************************************************/
 
 .z-form {
     margin: 0 0 1em 0;
@@ -404,9 +407,9 @@ div.z-formlist label {
     display: inline;
 }
 
-/*******************************************************************************/
-/* styles for the buttons on a view table
-/*******************************************************************************/
+/******************************************************************************
+* Styles for the buttons on a view table
+*******************************************************************************/
 
 div.z-viewbuttons  {
     text-align: right;
@@ -417,9 +420,9 @@ div.z-viewbuttons img {
     float: right;
 }
 
-/*******************************************************************************/
-/* styles for the buttons in a z-form
-/*******************************************************************************/
+/******************************************************************************
+* Styles for the buttons in a z-form
+*******************************************************************************/
 
 .z-formbuttons {
     text-align: left;
@@ -441,9 +444,9 @@ div.z-viewbuttons img {
     cursor: pointer;
 }
 
-/*******************************************************************************/
-/* z-form style (column-view = default)
-/*******************************************************************************/
+/******************************************************************************
+* z-form style (column-view = default)
+*******************************************************************************/
 
 .z-form label {
     cursor: pointer;
@@ -531,9 +534,9 @@ div.z-viewbuttons img {
     width: auto;
 }
 
-/*******************************************************************************/
-/* z-form style (z-linearize elements / use additional class 'z-linear')
-/*******************************************************************************/
+/******************************************************************************
+* z-form style (z-linearize elements / use additional class 'z-linear')
+*******************************************************************************/
 
 .z-linear div.z-formrow .z-label,
 .z-linear div.z-formrow label {
@@ -565,9 +568,9 @@ div.z-viewbuttons img {
     margin: 0;
 }
 
-/*******************************************************************************/
-/* IE-fixes for Fieldset/Legend
-/*******************************************************************************/
+/******************************************************************************
+* IE-fixes for Fieldset/Legend
+*******************************************************************************/
 
 /* all IE */
 .z-form {
@@ -601,9 +604,9 @@ div.z-viewbuttons img {
 }
 
 
-/*******************************************************************************/
-/* z-itemlist styles
-/*******************************************************************************/
+/******************************************************************************
+* z-itemlist styles
+*******************************************************************************/
 
 .z-itemlist {
     border: 1px solid #ccc;
@@ -677,9 +680,9 @@ div.z-viewbuttons img {
 .z-w02 { width: 2%; }
 
 
-/*******************************************************************************/
-/* Icons-styles (es=extrasmall)
-/*******************************************************************************/
+/******************************************************************************
+* Icons-styles (es=extrasmall)
+*******************************************************************************/
 
 .z-icon-es-ok {
     background:url("../images/icons/extrasmall/button_ok.gif") no-repeat scroll 0 50% transparent;
@@ -795,9 +798,9 @@ div.z-viewbuttons img {
 }
 
 
-/******************************************************************************/
-/* Buttons styles
-/******************************************************************************/
+/******************************************************************************
+* Buttons styles
+*******************************************************************************/
 
 .z-buttons .z-button,
 .z-buttons a,

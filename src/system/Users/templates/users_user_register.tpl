@@ -149,7 +149,7 @@
             <legend>{gt text="Check your entries and submit your registration"}</legend>
             <p id="users_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>
             <p id="users_validmessage" class="z-hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-            <div class="z-formbuttons z-buttons">
+            <div class="z-center z-buttons">
                 {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                 {button id='submitnewuser' type='submit' src='button_ok.gif' set='icons/extrasmall' __alt='Submit new user' __title='Submit registration' __text='Submit registration'}
                 {img id='ajax_indicator' style='display: none;' modname=core set='icons/extrasmall' src='indicator_circle.gif' alt=''}

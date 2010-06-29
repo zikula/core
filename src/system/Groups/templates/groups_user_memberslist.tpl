@@ -1,6 +1,4 @@
-{modgetvar module='Users' name='avatarpath' assign='avatarpath'}
 {gt text="Memberships" assign=templatetitle}
-
 {include file="groups_user_menu.tpl"}
 
 <table class="z-datatable">
@@ -65,7 +63,7 @@
         {section name='members' loop=$members}
         <tr class="{cycle values='z-odd,z-even'}">
             <td>{img modname='core' set='icons/extrasmall' src=$members[members].isonline alt=$members[members].isonlinelbl}</td>
-            <td>{if @isset($members[members]._YOURAVATAR) and $members[members]._YOURAVATAR neq ''}<img src="{$avatarpath}/{$members[members]._YOURAVATAR}" alt="{$members[members]._YOURAVATAR}" />{else}&nbsp;{/if}</td>
+            <td class="z-center">{useravatar uid=$members[members].uid}</td>
             <td><strong>{$members[members].uname|userprofilelink}</strong></td>
             {if $useProfileModule eq true}
             <td>{$members[members]._UREALNAME|default:''}</td>
