@@ -65,7 +65,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
         if (empty($vars['template'])) {
             $vars['template'] = 'blocks_block_extmenu.tpl';
         }
-        // template to use
+        // stylesheet to use
         if (empty($vars['stylesheet'])) {
             $vars['stylesheet'] = 'extmenu.css';
         }
@@ -97,8 +97,8 @@ class Blocks_Block_Extmenu extends Zikula_Block
             $thislang = 'en';
         }
 
-        // block title: copy the ml blocktitle to the original block title
-        if (array_key_exists($thislang, $vars['blocktitles'])) {
+        // if specific blocktitle for selected language exists, use it
+        if (array_key_exists($thislang, $vars['blocktitles']) && !empty($vars['blocktitles'][$thislang])) {
             $blockinfo['title'] = $vars['blocktitles'][$thislang];
         }
 
