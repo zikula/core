@@ -802,7 +802,7 @@ class Users_Admin extends Zikula_Controller
             'adminRequest'  => true,
         ));
 
-        if ($userNameSent) {
+        if ($confirmationCodeSent) {
             LogUtil::registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
         }
 
