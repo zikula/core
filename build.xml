@@ -53,7 +53,7 @@
         <exec command="svn export --force https://code.zikula.org/svn/tour/trunk/src/Tour ${packagepath}/modules/Tour" />
 
         <!-- compress JS -->
-        <property name="jslist" value="javascript/helpers/Zikula.js,javascript/helpers/Zikula.ImageViewer.js,javascript/helpers/Zikula.Tree.js,javascript/helpers/Zikula.TreeSortable.js,javascript/helpers/Zikula.itemlist.js,javascript/helpers/Zikula.recursiveSortable.js" />
+        <property name="jslist" value="javascript/helpers/Zikula.js,javascript/helpers/Zikula.ImageViewer.js,javascript/helpers/Zikula.Tree.js,javascript/helpers/Zikula.itemlist.js" />
         <foreach list="${jslist}" param="filename" target="compressownjs" />
 
         <echo msg="Prepare permissions..." />
