@@ -14,26 +14,27 @@
             </div><input name="usernamehidden" id="usernamehidden" value="{user}" type="hidden" />
             <div class="z-formrow">
                 <label for="newpassword">{gt text="New password"}</label>
+                <input name="newpassword" id="newpassword" type="password" value="" />
                 {if $use_password_strength_meter eq 1}
-                {pageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter/jquery.js'}
-                {pageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter/passwordStrengthMeter.js'}
+                {pageaddvar name='javascript' value='prototype'}
+                {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 
                 <script type="text/javascript">
-
-                    var shortPass = '{{gt text="Too Short Password"}}';
-                    var badPass = '{{gt text="Weak, Use letters & numbers"}}';
-                    var goodPass = '{{gt text="Medium, Use special characters"}}';
-                    var strongPass = '{{gt text="Strong Password"}}';
-                    var sameAsUsername = '{{gt text="Password can not match the username, choose a different password."}}';
-
+                    var passmeter = new Zikula.Users.PassMeter('newpassword',{
+                        username:'usernamehidden',
+                        minLength: '{{$zcore.Users.minpass}}',
+                        messages: {
+                            username: '{{gt text="Password can not match the username, choose a different password."}}',
+                            minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$zcore.Users.minpass}}'
+                        },
+                        verdicts: [
+                            '{{gt text="Weak"}}',
+                            '{{gt text="Normal"}}',
+                            '{{gt text="Strong"}}',
+                            '{{gt text="Very Strong"}}'
+                        ]
+                    });
                 </script>
-                {pageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter_changepassword.js'}
-
-                <input name="newpassword" id="newpassword" type="password" value="" />
-                <div id="colorbar" class="z-formnote"></div>
-                <span id="percent" class="z-formnote">0%</span><span id="result">&nbsp;&nbsp;{gt text='Enter your new password'}</span>
-                {else}
-                <input type="password" id="newpassword" name="newpassword" value="" />
                 {/if}
             </div>
             <div class="z-formrow">

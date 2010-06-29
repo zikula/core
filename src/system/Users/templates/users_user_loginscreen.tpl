@@ -31,10 +31,27 @@
             {if ($changepassword == 1) && ($authmodule == 'Users')}
             <div class="z-formrow">
                 <label for="users_newpass">{gt text="New password"}</label>
-                {if $use_password_strength_meter eq 1}
-                <input type="password" id="users_newpass" name="newpass" size="20" maxlength="20" value="" class="pwsinput" onkeyup="updatePasswordStrength(this.value)" /> <div id="pwscontainer"><div id="pwsmeter"></div></div>
-                {else}
                 <input type="password" id="users_newpass" name="newpass" size="20" maxlength="20" value="" />
+                {if $use_password_strength_meter eq 1}
+                    {pageaddvar name='javascript' value='prototype'}
+                    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+
+                    <script type="text/javascript">
+                        var passmeter = new Zikula.Users.PassMeter('users_newpass',{
+                            username:'users_authinfo_loginid',
+                            minLength: '{{$minpass}}',
+                            messages: {
+                                username: '{{gt text="Password can not match the username, choose a different password."}}',
+                                minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$minpass}}'
+                            },
+                            verdicts: [
+                                '{{gt text="Weak"}}',
+                                '{{gt text="Normal"}}',
+                                '{{gt text="Strong"}}',
+                                '{{gt text="Very Strong"}}'
+                            ]
+                        });
+                    </script>
                 {/if}
             </div>
 

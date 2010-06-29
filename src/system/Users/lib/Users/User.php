@@ -121,7 +121,8 @@ class Users_User extends Zikula_Controller
         $this->renderer->assign('changepassword', $changepassword)
                        ->assign('confirmtou', $confirmtou)
                        ->assign('passwordtext', $passwordtext)
-                       ->assign('use_password_strength_meter', $this->getVar('use_password_strength_meter'));
+                       ->assign('use_password_strength_meter', $this->getVar('use_password_strength_meter'))
+                       ->assign('minpass', $this->getVar('minpass'));
 
         return $this->renderer->fetch('users_user_loginscreen.tpl');
     }

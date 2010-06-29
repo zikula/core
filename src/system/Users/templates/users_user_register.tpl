@@ -61,27 +61,33 @@
             <legend>{gt text="Set a password and enter your e-mail address"}</legend>
             <div class="z-formrow">
                 <label for="users_reginfo_pass">{gt text="Password"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                {if $usePwdStrengthMeter}
-                {pageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter/jquery.js'}
-                {pageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter/passwordStrengthMeter.js'}
-                <script type="text/javascript">
-                    var shortPass = '{{gt text="Too Short Password"}}';
-                    var badPass = '{{gt text="Weak, Use letters & numbers"}}';
-                    var goodPass = '{{gt text="Medium, Use special characters"}}';
-                    var strongPass = '{{gt text="Strong Password"}}';
-                    var sameAsUsername = '{{gt text="Password can not match the username, choose a different password."}}';
-                </script>
-                {pageaddvar name='javascript' value='system/Users/javascript/passwordStrengthMeter_register.js'}
-                {/if}
                 {if $usePwdStrengthMeter && isset($errorFields.reginfo_pass)}{assign var='tempClass' value='class="users_pass errorrequired"'}
                 {elseif $usePwdStrengthMeter}{assign var='tempClass' value='class="users_pass"'}
                 {elseif isset($errorFields.reginfo_pass)}{assign var='tempClass' value='class="errorrequired"'}
                 {else}{assign var='tempClass' value=''}{/if}
                 <input id="users_reginfo_pass" name="reginfo[pass]"{if !empty($tempClass)} {$tempClass}{/if} type="password" size="25" maxlength="60" />
                 {if $usePwdStrengthMeter}
-                <div id="colorbar" class="z-formnote"></div>
-                <span id="percent" class="z-formnote">0%</span><span id="result">&nbsp;&nbsp;{gt text='Enter your new password'}</span>
+                    {pageaddvar name='javascript' value='prototype'}
+                    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+
+                    <script type="text/javascript">
+                        var passmeter = new Zikula.Users.PassMeter('users_reginfo_pass',{
+                            username:'users_reginfo_uname',
+                            minLength: '{{$minpass}}',
+                            messages: {
+                                username: '{{gt text="Password can not match the username, choose a different password."}}',
+                                minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$minpass}}'
+                            },
+                            verdicts: [
+                                '{{gt text="Weak"}}',
+                                '{{gt text="Normal"}}',
+                                '{{gt text="Strong"}}',
+                                '{{gt text="Very Strong"}}'
+                            ]
+                        });
+                    </script>
                 {/if}
+
             </div>
             <div class="z-formrow">
                 <label for="users_passagain">{gt text="Password (repeat for verification)"}<span class="z-mandatorysym">{gt text="*"}</span></label>

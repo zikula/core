@@ -57,11 +57,10 @@ div.z-accountlink {
     height:9em;
 }
 
-#colorbar {
-    margin-top: -6px;
-    width: 1px;
-    background-image: url(../javascript/passwordStrengthMeter/passwordstrength.jpg);
-    height: 3px;
+.passindicatorbar {
+    min-width: 5%;
+    height: 5px;
+    background-image: url(../images/passmeter.png);
 }
 
 #percent {
