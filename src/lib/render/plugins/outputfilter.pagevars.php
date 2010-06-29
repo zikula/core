@@ -48,10 +48,11 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     // get any stylesheet page vars
     $stylesheets = PageUtil::getVar('stylesheet');
     // Add generic stylesheet as the first stylesheet.
+    $coreStyle = (file_exists('config/styles/core.css')) ? 'config/styles/core.css' : 'styles/core.css';
     if (is_array($stylesheets)) {
-        array_unshift($stylesheets, 'styles/core.css');
+        array_unshift($stylesheets, $coreStyle);
     } else {
-        $stylesheets = array('styles/core.css');
+        $stylesheets = array($coreStyle);
     }
 
     // check if we need to perform ligthbox replacement -- javascript
