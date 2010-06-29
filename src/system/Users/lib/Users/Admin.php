@@ -803,7 +803,7 @@ class Users_Admin extends Zikula_Controller
         ));
 
         if ($confirmationCodeSent) {
-            LogUtil::registerStatus($this->__f('Done! The user name for %s has been sent via e-mail.', $user['uname']));
+            LogUtil::registerStatus($this->__f('Done! The password recovery verification code for %s has been sent via e-mail.', $user['uname']));
         }
 
         return System::redirect(ModUtil::url('Users', 'admin', 'view'));
