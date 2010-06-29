@@ -53,7 +53,7 @@
             <legend>{gt text="Choose a user name"}</legend>
             <div class="z-formrow">
                 <label for="users_reginfo_uname">{gt text="User name"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_reginfo_uname" name="reginfo[uname]"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" size="25" maxlength="25" value="{$reginfo.uname}" />
+                <input id="users_reginfo_uname" name="reginfo[uname]"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" size="25" maxlength="25" value="{if isset($reginfo.uname)}{$reginfo.uname}{/if}" />
             </div>
         </fieldset>
 
@@ -96,17 +96,17 @@
             </div>
             <div class="z-formrow">
                 <label for="users_reginfo_passreminder">{gt text="Password reminder"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_reginfo_passreminder" name="reginfo[passreminder]"{if isset($errorFields.reginfo_passreminder)} class="errorrequired"{/if} type="text" size="25" maxlength="128" value="{$reginfo.passreminder}" />
+                <input id="users_reginfo_passreminder" name="reginfo[passreminder]"{if isset($errorFields.reginfo_passreminder)} class="errorrequired"{/if} type="text" size="25" maxlength="128" value="{if isset($reginfo.passreminder)}{$reginfo.passreminder}{/if}" />
                 <div class="z-sub z-formnote">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="z-formnote z-informationmsg">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
             </div>
             <div class="z-formrow">
                 <label for="users_reginfo_email">{gt text="E-mail address"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_reginfo_email" name="reginfo[email]"{if isset($errorFields.reginfo_email)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{$reginfo.email}" />
+                <input id="users_reginfo_email" name="reginfo[email]"{if isset($errorFields.reginfo_email)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{if isset($reginfo.email)}{$reginfo.email}{/if}" />
             </div>
             <div class="z-formrow">
                 <label for="users_emailagain">{gt text="E-mail address (repeat for verification)"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_emailagain" name="emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{$emailagain}" />
+                <input id="users_emailagain" name="emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{if isset($emailagain)}$emailagain}{/if}" />
             </div>
         </fieldset>
 
@@ -116,7 +116,7 @@
             <div class="z-formrow">
                 <label for="users_reginfo_agreetoterms"><span class="z-mandatorysym">{gt text="*"}</span></label>
                 <div>
-                    <input id="users_reginfo_agreetoterms" type="checkbox" name="reginfo[agreetoterms]"{if $reginfo.agreetoterms} checked=checked"{/if} value="1" />
+                    <input id="users_reginfo_agreetoterms" type="checkbox" name="reginfo[agreetoterms]"{if isset($reginfo.agreetoterms)} checked=checked"{/if} value="1" />
                     {if $touActive && $ppActive}
                     <label for="users_reginfo_agreetoterms" id="users_reginfo_agreetoterms_field"{if isset($errorFields.reginfo_agreetoterms)} class="errorrequired"{/if}>{gt text='I agree to be bound by this site\'s %1$s and %2$s' tag1=$touLink tag2=$ppLink}</label>
                     {elseif  $touActive}
@@ -140,7 +140,7 @@
             <legend>{gt text="Answer the security question (this prevents automated sign-ups by bots and scripts)"}</legend>
             <div class="z-formrow">
                 <label for="users_antispamanswer">{$antiSpamQuestion|safehtml}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_antispamanswer" name="antispamanswer"{if isset($errorFields.antispamanswer)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{$antispamanswer}" />
+                <input id="users_antispamanswer" name="antispamanswer"{if isset($errorFields.antispamanswer)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{if isset($antispamanswer)}{$antispamanswer}{/if}" />
             </div>
         </fieldset>
         {/if}
