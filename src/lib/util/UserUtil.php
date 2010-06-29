@@ -428,16 +428,12 @@ class UserUtil
     public static function checkPasswordUsing($authModuleName, array $authinfo)
     {
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::getInfoFromName($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::available($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not available.", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not an authmodule.", 'DEBUG');
             return LogUtil::registerArgsError();
         }
 
@@ -457,16 +453,12 @@ class UserUtil
     public static function authenticateUserUsing($authModuleName, array $authinfo)
     {
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::getInfoFromName($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::available($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not available.", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not an authmodule.", 'DEBUG');
             return LogUtil::registerArgsError();
         }
 
@@ -487,16 +479,12 @@ class UserUtil
     {
         // For the following, register any errors in the UI function that called this.
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid authModuleName ('{$authModuleName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::getInfoFromName($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "authModuleName is not a module ('{$authModuleName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::available($authModuleName)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not available.", 'DEBUG');
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "'{$authModuleName}' module is not an authmodule.", 'DEBUG');
             return LogUtil::registerArgsError();
         }
 
@@ -509,8 +497,6 @@ class UserUtil
         }
 
         if (!$authenticatedUid || !is_numeric($authenticatedUid) || ((int)$authenticatedUid != $authenticatedUid)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "UserUtil Internal Error ('{$authModuleName}') Should have uid at this point.", 'DEBUG');
-
             // Note that we have not actually logged into anything yet, just authenticated, so no need to
             // call logout on the authmodule.
             $event = new Zikula_Event('user.login.failed', null, array(
@@ -531,7 +517,6 @@ class UserUtil
 
         $userObj = self::getVars($authenticatedUid);
         if (!$userObj || !is_array($userObj)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "UserUtil Internal Error ('{$authModuleName}') uid should have given us a good user. Is the authmodule's map out of sync?", 'DEBUG');
             // Oops! The authmodule gave us a bad uid! Really should not happen unless that module's uid mapping is out of sync.
             // Note that we have not actually logged into anything yet, just authenticated, so no need to
             // call logout on the authmodule.
@@ -924,20 +909,16 @@ class UserUtil
         $dbtable = DBUtil::getTables();
 
         if (empty($name)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - empty(\$name).", 'DEBUG');
             return false;
         }
         if (!isset($value)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - !isset(\$value).", 'DEBUG');
             return false;
         }
 
         if ($uid == -1) {
             $uid = SessionUtil::getVar('uid');
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "set \$uid to '{$uid}'.", 'DEBUG');
         }
         if (empty($uid)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "args error - empty(\$uid).", 'DEBUG');
             return false;
         }
 
@@ -1057,7 +1038,6 @@ class UserUtil
             || !isset($hashMethodCodesByName[$hashAlgorithmName]) || empty($hashMethodCodesByName[$hashAlgorithmName])
             || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
 
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmName ('{$hashAlgorithmName}').", 'DEBUG');
             return LogUtil::registerArgsError();
         }
 
@@ -1079,9 +1059,8 @@ class UserUtil
         }
 
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
-            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
-
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmCode ('{$hashAlgorithmCode}'), translates to '{$hashMethodNamesByCode[$hashAlgorithmCode]}'.", 'DEBUG');
+            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode]))
+        {
             return LogUtil::registerArgsError();
         }
 
@@ -1133,19 +1112,16 @@ class UserUtil
     {
         if (isset($hashMethodCode)) {
             if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode != $hashMethodCode)) {
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashMethodCode ('{$hashMethodCode}').", 'DEBUG');
                 return LogUtil::registerArgsError();
             }
             $hashAlgorithmName = self::getPasswordHashMethodName($hashMethodCode);
             if (!$hashAlgorithmName) {
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashAlgorithmName ('{$hashAlgorithmName}').", 'DEBUG');
                 return LogUtil::registerArgsError();
             }
         } else {
             $hashAlgorithmName = ModUtil::getVar('Users', 'hash_method', '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashMethodCode ('{$hashMethodCode}').", 'DEBUG');
                 return LogUtil::registerArgsError();
             }
         }
@@ -1196,15 +1172,8 @@ class UserUtil
             if ($hashedPassword) {
                 // TODO - Important! This needs to be an atomic change to the database. If pass is changed without hash_method, then the user will not be able to log in!
                 $passwordChanged = self::setVar('pass', $hashedPassword, $uid);
-                if (!$passwordChanged) {
-                    LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "setVar('pass') failure.", 'DEBUG');
-                }
-            } else {
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "getHashedPassword failure.", 'DEBUG');
             }
             // TODO - Should we force the change of passreminder here too? If the password is changing, certainly the existing reminder is no longer valid.
-        } else {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "validatePassword failure.", 'DEBUG');
         }
 
         return $passwordChanged;
@@ -1227,20 +1196,14 @@ class UserUtil
         $passwordsMatch = false;
 
         if (!isset($unhashedPassword) || !is_string($unhashedPassword) || empty($unhashedPassword)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$unhashedPassword ('{$unhashedPassword}').", 'DEBUG');
             return LogUtil::registerArgsError();
         }
 
         if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, self::SALT_DELIM) === false)) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "registerArgsError - Invalid \$hashedPassword ('{$hashedPassword}').", 'DEBUG');
             return LogUtil::registerArgsError();
         }
 
         $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), self::SALT_DELIM);
-
-        if (!$passwordsMatch) {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "pwd match failure. unhashed = '{$unhashedPassword}'; hashed = '{$hashedPassword}'", 'DEBUG');
-        }
 
         return $passwordsMatch;
     }

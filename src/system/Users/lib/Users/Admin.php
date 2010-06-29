@@ -223,7 +223,6 @@ class Users_Admin extends Zikula_Controller
             } elseif (isset($registeredObj['id'])) {
                 LogUtil::registerStatus($this->__('Done! Created new registration application.'));
             } else {
-                LogUtil::log($this->__('Internal Warning! Unknown return type from Users_Api_Registration#registerUser().'), 'DEBUG');
                 LogUtil::registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly. Please check with a site administrator before re-registering.'));
             }
         } else {

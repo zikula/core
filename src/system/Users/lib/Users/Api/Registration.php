@@ -448,8 +448,6 @@ class Users_Api_Registration extends Zikula_Api
             $reginfo['pass'] = UserUtil::getHashedPassword($reginfo['pass']);
         }
 
-        LogUtil::log('reginfo = ' . var_export($reginfo, true), 'DEBUG');
-
         // Dispatch to the appropriate function, depending on whether a registration record or a full user record is needed.
         if ($createRegistration) {
             // We need a registration record (users_registration table)
@@ -491,7 +489,6 @@ class Users_Api_Registration extends Zikula_Api
             if (substr($field, 0, 1) == '_') {
                 continue;
             } elseif (!isset($column[$field])) {
-                LogUtil::log(__CLASS__ . '#' . __FUNCTION__ . '[' . __LINE__ . '] ' . "{$table} object: cleaned '{$field}' to ['__ATTRIBUTES__']", 'DEBUG');
                 $obj['__ATTRIBUTES__'][$field] = is_array($value) ? serialize($value) : $value;
                 unset($obj[$field]);
             }
@@ -713,7 +710,6 @@ class Users_Api_Registration extends Zikula_Api
         $userinfo['user_regdate'] = $nowUTC->format(UserUtil::DATETIME_FORMAT);
 
         // Finally, save it.
-        LogUtil::log('Saving userinfo = '.var_export($userinfo, true), 'DEBUG');
         $userinfo = DBUtil::insertObject($userinfo, 'users', 'uid');
 
         if ($userinfo) {

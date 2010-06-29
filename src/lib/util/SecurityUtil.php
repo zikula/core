@@ -510,9 +510,6 @@ class SecurityUtil
      */
     public static function checkSaltedHash($unhashedData, $saltedHash, array $hashMethodCodeToName = array(), $saltDelimeter = self::SALT_DELIM)
     {
-        LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Parameter. unhashedData = '{$unhashedData}'; saltedHash = '{$saltedHash}'", 'DEBUG');
-        LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Parameter. saltDelimeter = '{$saltDelimeter}'; hashMethodCodeToName = ".var_export($hashMethodCodeToName, true), 'DEBUG');
-
         $dataMatches = false;
 
         $algoList = hash_algos();
@@ -533,17 +530,11 @@ class SecurityUtil
             } else {
                 $hashMethodName = $hashMethod;
             }
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Have name. hashMethod = '{$hashMethod}'; hashMethodName = '{$hashMethodName}'", 'DEBUG');
 
             if (array_search($hashMethodName, $algoList) !== false) {
                 $dataHash = hash($hashMethodName, $saltStr . $unhashedData);
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Comparing. dataHash = '{$dataHash}'; correctHash = '{$correctHash}'", 'DEBUG');
                 $dataMatches = is_string($dataHash) ? (int)($dataHash == $correctHash) : false;
-            } else {
-                LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "Invalid aglorithm name. hashMethodName = '{$hashMethodName}'", 'DEBUG');
             }
-        } else {
-            LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . "salted hash match failure. unhashed = '{$unhashedData}'; saltedhash = '{$saltedHash}'", 'DEBUG');
         }
 
         return $dataMatches;

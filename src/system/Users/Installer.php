@@ -220,14 +220,10 @@ class Users_Installer extends Zikula_Installer
      */
     public function upgrade118Xto200($oldversion)
     {
-        LogUtil::log('UPG118-200: Beginning 1.18 to 2.0.0 upgrade.', 'DEBUG');
-
         // Get the dbinfo for the new version
         $funcExists = function_exists('Users_tables');
-        LogUtil::log("UPG118-200: Users_tables is defined: " . ($funcExists ? 'yes' : 'no'), 'DEBUG');
         if (!$funcExists) {
             require_once 'system/Users/tables.php';
-            LogUtil::log("UPG118-200: require_once: 'system/Users/tables.php'", 'DEBUG');
         }
 
         $dbinfoSystem = DBUtil::getTables();
@@ -240,7 +236,6 @@ class Users_Installer extends Zikula_Installer
 
         $tzUTC = new DateTimeZone('UTC');
         $convertTZ = ($tzUTC->getOffset(new DateTime()) != 0);
-        LogUtil::log('UPG118-200: convertTZ = ' . ($convertTZ ? 'yes' : 'no'), 'DEBUG');
 
         // Upgrade the tables
         // First, users table conversion.
@@ -259,17 +254,13 @@ class Users_Installer extends Zikula_Installer
         $GLOBALS['dbtables']['users_verifychg_column_def'] = $dbinfo200['users_verifychg_column_def'];
 
         // Now change the tables
-        //LogUtil::log('UPG118-200: changeTable(users) ' . var_export($GLOBALS['dbtables'], true), 'DEBUG');
         if (!DBUtil::changeTable('users')) {
-            LogUtil::log('UPG118-200: changeTable(users) failed.', 'DEBUG');
             return false;
         }
         if (!DBUtil::createTable('users_registration')) {
-            LogUtil::log('UPG118-200: createTable(users_registration) failed.', 'DEBUG');
             return false;
         }
         if (!DBUtil::createTable('users_verifychg')) {
-            LogUtil::log('UPG118-200: createTable(users_verifychg) failed.', 'DEBUG');
             return false;
         }
 
@@ -286,7 +277,6 @@ class Users_Installer extends Zikula_Installer
             if (!empty($userArray) && is_array($userArray)) {
                 foreach ($userArray as $key => $userObj) {
                     if (isset($userArray[$key]['dynamics']) && !empty($userArray[$key]['dynamics']) && is_numeric($userArray[$key]['dynamics'])) {
-                        LogUtil::log("UPG118-200: theDate ts = @{$userArray[$key]['dynamics']}.", 'DEBUG');
                         $theDate = new DateTime("@{$userArray[$key]['dynamics']}", $tzUTC);
                         $theDate->modify('+5 days');
                         $userArray[$key]['dynamics'] = $theDate->format(UserUtil::DATETIME_FORMAT);
@@ -300,11 +290,8 @@ class Users_Installer extends Zikula_Installer
                 }
             }
             $theCount = count($userArray);
-            if (DBUtil::updateObjectArray($userArray, 'users_temp', 'tid', false)) {
-                LogUtil::log("UPG118-200: Updated {$theCount} users_temp records.", 'DEBUG');
-            } else {
+            if (!DBUtil::updateObjectArray($userArray, 'users_temp', 'tid', false)) {
                 $updated = false;
-                LogUtil::log("UPG118-200: users_temp updateObjectArray returned false - {$theCount} users in the array beginning at offset {$limitOffset}.", 'DEBUG');
                 break;
             }
             $limitOffset += $limitNumRows;
@@ -343,17 +330,14 @@ class Users_Installer extends Zikula_Installer
                 foreach ($userArray as $key => $userObj) {
                     // force user names to lower case
                     $userArray[$key]['uname'] = mb_strtolower($userArray[$key]['uname']);
-                    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; uname: '{$userArray[$key]['uname']}' was '{$userObj['uname']}'", 'DEBUG');
 
                     // force email addresses to lower case
                     $userArray[$key]['email'] = mb_strtolower($userArray[$key]['email']);
-                    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; email: '{$userArray[$key]['email']}' was '{$userObj['email']}'", 'DEBUG');
 
                     // merge hash method for salted passwords
                     if (!empty($userArray[$key]['pass']) && (strpos($userArray[$key]['pass'], '$$') === false)) {
                         $userArray[$key]['pass'] = (isset($userArray[$key]['hash_method']) ? $userArray[$key]['hash_method'] : '') . '$$' . $userArray[$key]['pass'];
                     }
-                    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; hash_method: '{$userObj['hash_method']}'; pass: '{$userArray[$key]['pass']}' was '{$userObj['pass']}'", 'DEBUG');
 
                     // TODO - We probably cannot convert dates like this, especially for users with status inactive who are probably
                     // waiting on activation.
@@ -362,13 +346,11 @@ class Users_Installer extends Zikula_Installer
                     //    $theDate = new DateTime($userArray[$key]['user_regdate']);
                     //    $theDate->setTimezone($tzUTC);
                     //    $userArray[$key]['user_regdate'] = $theDate->format('Y-m-d H:i:s');
-                    //    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; user_regdate: '{$userArray[$key]['user_regdate']}' was '{$userObj['user_regdate']}'", 'DEBUG');
                     //
                     //    // reset last login to UTC
                     //    $theDate = new DateTime($userArray[$key]['lastlogin']);
                     //    $theDate->setTimezone($tzUTC);
                     //    $userArray[$key]['lastlogin'] = $theDate->format('Y-m-d H:i:s');
-                    //    LogUtil::log("UPG118-200: uid: {$userObj['uid']}; lastlogin: '{$userArray[$key]['lastlogin']}' was '{$userObj['lastlogin']}'", 'DEBUG');
                     //}
 
                     // Save some disappearing fields as attributes, just in case someone actually used them for something. But don't overwrite if there already
@@ -383,11 +365,8 @@ class Users_Installer extends Zikula_Installer
                 }
             }
             $theCount = count($userArray);
-            if (DBUtil::updateObjectArray($userArray, 'users', 'uid', false)) {
-                LogUtil::log("UPG118-200: Updated {$theCount} users.", 'DEBUG');
-            } else {
+            if (!DBUtil::updateObjectArray($userArray, 'users', 'uid', false)) {
                 $updated = false;
-                LogUtil::log("UPG118-200: users updateObjectArray returned false - {$theCount} users in the array beginning at offset {$limitOffset}.", 'DEBUG');
                 break;
             }
             $limitOffset += $limitNumRows;
@@ -502,11 +481,8 @@ class Users_Installer extends Zikula_Installer
                 }
             }
             $theCount = count($userArray);
-            if (DBUtil::updateObjectArray($userArray, 'users_registration', 'id', false)) {
-                LogUtil::log("UPG118-200: Updated {$theCount} user_registration records.", 'DEBUG');
-            } else {
+            if (!DBUtil::updateObjectArray($userArray, 'users_registration', 'id', false)) {
                 $updated = false;
-                LogUtil::log("UPG118-200: users_registration updateObjectArray returned false - {$theCount} users in the array beginning at offset {$limitOffset}.", 'DEBUG');
                 break;
             }
             $limitOffset += $limitNumRows;
