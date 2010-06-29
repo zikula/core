@@ -142,31 +142,61 @@ class Users_Api_Registration extends Zikula_Api
             $emailErrors['reginfo_email'][] = $this->__('You must provide an e-mail address.');
         } elseif (!System::varValidate($reginfo['email'], 'email')) {
             $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
-        } elseif ($this->getVar('reg_uniemail', false)) {
-            // Probably best not to use API calls to countAll
-            $ucount = DBUtil::selectObjectCountByID ('users', $reginfo['email'], 'email');
-            $rcount = DBUtil::selectObjectCountByID ('users_registration', $reginfo['email'], 'email');
+        } else {
+            $tempValid = true;
 
-            if ($checkMode == 'modify') {
-                if (isset($reginfo['id']) && ($rcount == 1)) {
-                    // Probably best not to use an API call
-                    $duplicateRecord = DBUtil::selectObjectByID('users_registration', $reginfo['email'], 'email');
-                    if ($reginfo['id'] == $duplicateRecord['id']) {
-                        $rcount = 0;
-                    }
-                } elseif (isset($reginfo['uid']) && ($ucount == 1)) {
-                    // Probably best not to use an API call
-                    $duplicateRecord = DBUtil::selectObjectByID('users', $reginfo['email'], 'email');
-                    if ($reginfo['uid'] == $duplicateRecord['uid']) {
-                        $ucount = 0;
+            $emailDomain = strstr($reginfo['email'], '@');
+            if ($emailDomain) {
+                if (!$this->currentUserIsAdmin()) {
+                    $illegalDomains = $this->getVar('reg_Illegaldomains', '');
+                    $pattern = array('/^((\s*,)*\s*)+/D', '/\b(\s*,\s*)+\b/D', '/((\s*,)*\s*)+$/D');
+                    $replace = array('', '|', '');
+                    $illegalDomains = preg_replace($pattern, $replace, preg_quote($illegalDomains, '/'));
+                    if (!empty($illegalDomains)) {
+                        if (preg_match("/@({$illegalDomains})/iD", $emailDomain)) {
+                            $tempValid = false;
+                            $emailErrors['reginfo_email'][] = $this->__('Sorry! The domain of the e-mail address you specified is banned.');
+                        }
                     }
                 }
+            } else {
+                $tempValid = false;
+                $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered was incorrectly formatted or is unacceptable for other reasons.');
             }
 
-            if ($ucount || $rcount) {
-                $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered has already been registered.');
+
+            if ($tempValid && $this->getVar('reg_uniemail', false)) {
+                // Probably best not to use API calls to countAll
+                $ucount = DBUtil::selectObjectCountByID ('users', $reginfo['email'], 'email');
+                $rcount = DBUtil::selectObjectCountByID ('users_registration', $reginfo['email'], 'email');
+
+                if ($checkMode == 'modify') {
+                    if (isset($reginfo['id']) && ($rcount == 1)) {
+                        // Probably best not to use an API call
+                        $duplicateRecord = DBUtil::selectObjectByID('users_registration', $reginfo['email'], 'email');
+                        if ($reginfo['id'] == $duplicateRecord['id']) {
+                            $rcount = 0;
+                        }
+                    } elseif (isset($reginfo['uid']) && ($ucount == 1)) {
+                        // Probably best not to use an API call
+                        $duplicateRecord = DBUtil::selectObjectByID('users', $reginfo['email'], 'email');
+                        if ($reginfo['uid'] == $duplicateRecord['uid']) {
+                            $ucount = 0;
+                        }
+                    }
+                }
+
+                if ($ucount || $rcount) {
+                    $emailErrors['reginfo_email'][] = $this->__('The e-mail address you entered has already been registered.');
+                    $tempValid = false;
+                }
             }
-        } elseif ($reginfo['email'] !== $emailAgain) {
+        }
+
+        if (!isset($emailAgain) || empty($emailAgain)) {
+            $emailErrors['emailagain'][] = $this->__('You did not repeat the e-mail address for verification. '
+                                . 'Please enter the same e-mail address once in each field.');
+        } elseif (isset($reginfo['email']) && !empty($reginfo['email']) && ($reginfo['email'] !== $emailAgain)) {
             $emailErrors['emailagain'][] = $this->__('You did not enter the same e-mail address in each e-mail address field. '
                                 . 'Please enter the same e-mail address once in each field (this is required for verification).');
         }
@@ -265,7 +295,7 @@ class Users_Api_Registration extends Zikula_Api
         $emailErrors = ModUtil::apiFunc('Users', 'registration', 'getEmailErrors', array(
             'id'         => isset($reginfo['id'])         ? $reginfo['id']         : null,
             'email'      => isset($reginfo['email'])      ? $reginfo['email']      : null,
-            'emailagain' => isset($reginfo['emailagain']) ? $reginfo['emailagain'] : null,
+            'emailagain' => isset($emailAgain)            ? $emailAgain            : null,
             'checkmode'  => isset($checkMode)             ? $checkMode             : null,
         ));
         if (!empty($emailErrors)) {
