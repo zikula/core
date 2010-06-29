@@ -100,12 +100,16 @@ function smarty_outputfilter_pagevars($source, &$smarty)
         // todo: make his more unobtrusive, but how? Dynamic javascript creation might be a performance problem. Any idea here
         // is highly appreciated! [landseer]
         //
-        $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . System::getVar('entrypoint', 'index.php') . '"; document.location.pnbaseURL="' . System::getBaseUrl(). '"; ';
+        $entrypoint =  System::getVar('entrypoint', 'index.php');
+        $baseURL = System::getBaseUrl();
+        $ajaxtimeout = (int)DataUtil::formatForDisplay(System::getVar('ajaxtimeout', 5000));
+        $return .= '<script type="text/javascript">/* <![CDATA[ */ document.location.entrypoint="' . $entrypoint . '"; document.location.pnbaseURL="' .$baseURL . '"; ';
         // check if the ajaxtimeout is configured and not the defsult value of 5000, in this case add the value in the inline js for refernce in ajax.js
-        $ajaxtimeout = System::getVar('ajaxtimeout', 5000);
         if ($ajaxtimeout != 5000) {
-            $return .= 'document.location.ajaxtimeout=' . (int)DataUtil::formatForDisplay($ajaxtimeout). ';';
+            $return .= 'document.location.ajaxtimeout=' . (int)DataUtil::formatForDisplay($ajaxtimeout) . ';';
         }
+        $return .= "if (typeof(Zikula) == 'undefined') {Zikula = {};}\n";
+        $return .= "Zikula.Config = {entrypoint:'{$entrypoint}',baseURL:'{$baseURL}',ajaxtimeout:'{$ajaxtimeout}'};\n";
         $return .= ' /* ]]> */</script>' . "\n";
         foreach ($javascripts as $j => $javascript) {
             if (empty($javascript)) {
