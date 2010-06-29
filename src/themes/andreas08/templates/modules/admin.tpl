@@ -11,32 +11,33 @@
     </head>
     <body>
         <div id="theme_page_container">
-
             <div id="theme_header">
                 <h1>{sitename}</h1>
                 <h2>{slogan}</h2>
             </div>
-
             <div id="theme_navigation_bar">
                 <ul>
-                    <li><a href="{homepage}">{gt text='Home'}</a></li>
-                    <li{if $module eq 'Search'} class="selected"{/if}><a href="{modurl modname=Search}">{gt text='Search'}</a></li>
+                    <li>
+                        <a href="{homepage}">{gt text='Home'}</a>
+                    </li>
+                    <li class={if $module  eq 'Search'}"selected{/if}">
+                        <a href="{modurl modname=Search}">{gt text='Search'}</a>
+                    </li>
                     {if $loggedin eq true}
-                    <li{if $module eq 'Users'} class="selected"{/if}><a href="{modurl modname=Users}">{gt text='My account'}</a></li>
+                    <li class="{if $module eq 'Users'}selected{/if}">
+                        <a href="{modurl modname=Users}">{gt text='My account'}</a>
+                    </li>
                     {/if}
                 </ul>
             </div>
-
-            <div id="theme_content" style="width:95%">
-                {$maincontent}
-            </div>
-
+            <div id="theme_content" style="width:95%">{$maincontent}</div>
             <div id="theme_footer">
-                <p>{gt text="Powered by"} <a href="http://zikula.org">Zikula</a></p>
+                <p>
+                    {gt text="Powered by"} <a href="http://zikula.org">Zikula</a>
+                </p>
                 {nocache}{pagerendertime}{/nocache}
                 {nocache}{sqldebug}{/nocache}
             </div>
-
         </div>
     </body>
 </html>

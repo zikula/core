@@ -7,16 +7,17 @@
 
     <h2>{$templatetitle}</h2>
 
-    <div id="liveusersearch" class="z-hide">
-        {gt text="Search"}:&nbsp;<input size="25" maxlength="25" type="text" id="username" value="" />
-        <a id="modifyuser" href="javascript:void(0);">{img modname=core set=icons/extrasmall src="xedit.gif" __title="Edit" __alt="Edit"}</a>
-        <a id="deleteuser" href="javascript:void(0);">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.gif" __title="Delete" __alt="Delete"}</a>
-        {img id="ajax_indicator" style="display: none;" modname=core set=icons/extrasmall src="indicator_circle.gif" alt=""}
-
-        <div id="username_choices" class="autocomplete_user"></div>
-        <script type="text/javascript">
-            liveusersearch();
-        </script>
+    <div id="liveusersearch" class="z-hide z-form">
+        <fieldset>
+            <label for="username">{gt text="Search"}:</label>&nbsp;<input size="25" maxlength="25" type="text" id="username" value="" />
+            <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="xedit.gif" __title="Edit" __alt="Edit"}</a>
+            <a id="deleteuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.gif" __title="Delete" __alt="Delete"}</a>
+            {img id="ajax_indicator" style="display: none;" modname=core set=icons/extrasmall src="indicator_circle.gif" alt=""}
+            <div id="username_choices" class="autocomplete_user"></div>
+            <script type="text/javascript">
+                liveusersearch();
+            </script>
+        </fieldset>
     </div>
 
     <p id="users-alphafilter">
@@ -33,7 +34,7 @@
                 {if $canSeeGroups}
                 <th>{gt text="User's groups"}</th>
                 {/if}
-                <th>Activation</th>
+                <th>{gt text="Activation"}</th>
                 <th>{gt text="Actions"}</th>
             </tr>
         </thead>
