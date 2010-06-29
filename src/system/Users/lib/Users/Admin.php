@@ -1646,6 +1646,10 @@ class Users_Admin extends Zikula_Controller
                 $config['reg_noregreasons'] = '';
             }
 
+            if (!isset($config['reg_optitems'])) {
+                $config['reg_optitems'] = 0;
+            }
+
             $this->setVar('itemsperpage', $config['itemsperpage'])
                  ->setVar('accountdisplaygraphics', $config['accountdisplaygraphics'])
                  ->setVar('accountitemsperpage', $config['accountitemsperpage'])
