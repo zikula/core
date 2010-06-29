@@ -37,7 +37,7 @@ class ZLoader
     /**
      * Autoloaders.
      *
-     * @var object
+     * @var Zikula_KernelClassLoader
      */
     private static $autoloaders;
 
@@ -101,6 +101,32 @@ class ZLoader
         $map = self::$map;
         if (isset($map[$class])) {
             $path = ZLOADER_PATH . "$map[$class]/$class.php";
+            if (file_exists($path)) {
+                return include $path;
+            }
+        }
+
+        // Classloader for SystemPlugin
+        if (strpos($class, 'SystemPlugin') === 0) {
+            $array = explode('_', $class);
+            $pluginName = $array[1];
+            $base = realpath(ZLOADER_PATH . '/../plugins');
+            $name = substr($class, strlen("SystemPlugin_"), strlen($class));
+            $path = realpath(str_replace('_', '/', "$base/$name.php"));
+            if (file_exists($path)) {
+                return include $path;
+            }
+        }
+
+        // Classloader for ModulePlugin
+        if (strpos($class, 'ModulePlugin') === 0) {
+            $array = explode('_', $class);
+            $moduleName = $array[1];
+            $pluginName = $array[2];
+            $modinfo = ModUtil::getInfoFromName($moduleName);
+            $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
+            $name = substr($class, strlen("ModulePlugin_${moduleName}_${pluginName}") + 1, strlen($class));
+            $path = realpath(str_replace('_', '/', "$base/$moduleName/plugins/$pluginName/$name.php"));
             if (file_exists($path)) {
                 return include $path;
             }

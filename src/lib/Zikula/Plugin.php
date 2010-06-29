@@ -113,6 +113,12 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $reflection;
 
     /**
+     * @var Zikula_Plugin_Controller
+     */
+    protected $controllerClass;
+
+
+    /**
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
