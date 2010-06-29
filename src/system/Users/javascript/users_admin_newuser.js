@@ -1,3 +1,4 @@
+// Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 Event.observe(window, 'load', function(){
     Event.observe('users_setpass_yes', 'click', users_setpass_onclick, false);
     Event.observe('users_setpass_no', 'click', users_setpass_onclick, false);
