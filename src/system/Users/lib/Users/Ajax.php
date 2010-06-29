@@ -125,15 +125,17 @@ class Users_Ajax extends Zikula_Controller
                     $errorMessages = array_merge($errorMessages, $messageList);
                 }
             }
-            return array(
+            $returnValue = array(
                 'fields'    => $errorFields,
                 'messages'  => $errorMessages,
             );
+            AjaxUtil::output($returnValue, true, true);
         } else {
-            return array(
+            $returnValue = array(
                 'fields'    => array(),
                 'messages'  => array(),
             );
+            AjaxUtil::output($returnValue, true, true);
         }
     }
 }

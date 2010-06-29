@@ -58,7 +58,7 @@ function callusercheck()
 function checkuser_response(req)
 {
     if (req.status != 200 ) {
-        Zikula.showajaxerror(req.responseText);
+        Zikula.ajaxResponseError(req);
         return;
     }
     var json = Zikula.dejsonize(req.responseText);
