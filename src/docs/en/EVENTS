@@ -129,3 +129,14 @@ mailer.sendmessage
 
 setup.errorreporting
     Invoked during System::init().  Used to activate set_error_handler().  Event must setNotified().
+
+pageutil.addvar_filter
+    Subject is the $varname, and $event->data an array of values to be modified by the filter.
+    Simply test with something like
+        if ($key = array_search($event->data, 'system/Users/javascript/somescript.js')) {
+            $event->data[$key] = 'config/javascript/myoverride.js';
+        }
+    This single filter can be used to override all css or js scripts or any other var types
+    sent to PageUtil::addVar().
+
+

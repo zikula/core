@@ -276,7 +276,7 @@ class PageUtil
                     if (strpos($value[$k], 'javascript/ajax/scriptaculous') === 0) {
                         $value[$k] = 'javascript/ajax/proto_scriptaculous.combined.min.js';
                     }
-                } else if (strpos($value[$k], 'system/') === 0 || strpos($value[$k], 'modules/') === 0) {
+                } else if (System::isLegacyMode() && (strpos($value[$k], 'system/') === 0 || strpos($value[$k], 'modules/') === 0)) {
                     // check for customized javascripts
                     $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $value[$k]);
                     $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
@@ -287,9 +287,14 @@ class PageUtil
             }
         }
 
+        $value = array_unique($value);
+
         if (!isset($_pageVars[$varname])) {
             return false;
         }
+
+        $event = new Zikula_Event('pageutil.addvar_filter', $varname, array(), $value);
+        $value = EventUtil::getManager()->notify($event)->getData();
 
         if ($_pageVars[$varname]['multivalue']) {
             if (is_array($value)) {

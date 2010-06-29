@@ -47,28 +47,33 @@ function smarty_outputfilter_pagevars($source, &$smarty)
 
     // get any stylesheet page vars
     $stylesheets = PageUtil::getVar('stylesheet');
+    
     // Add generic stylesheet as the first stylesheet.
-    $coreStyle = (file_exists('config/styles/core.css')) ? 'config/styles/core.css' : 'styles/core.css';
+    $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), array('styles/core.css'));
+    $coreStyle = EventUtil::getManager()->notify($event)->getData();
     if (is_array($stylesheets)) {
-        array_unshift($stylesheets, $coreStyle);
+        array_unshift($stylesheets, $coreStyle[0]);
     } else {
-        $stylesheets = array($coreStyle);
+        $stylesheets = array($coreStyle[0]);
     }
 
-    // check if we need to perform ligthbox replacement -- javascript
-    if (is_array($javascripts) && !empty($javascripts)) {
-        $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-        if ($key && !is_readable('javascript/ajax/lightbox.js')) {
-            $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-            $replaceLightbox = true;
+    if (System::isLegacyMode()) {
+        $replaceLightbox = false;
+        // check if we need to perform ligthbox replacement -- javascript
+        if (is_array($javascripts) && !empty($javascripts)) {
+            $key = array_search('javascript/ajax/lightbox.js', $javascripts);
+            if ($key && !is_readable('javascript/ajax/lightbox.js')) {
+                $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
+                $replaceLightbox = true;
+            }
         }
-    }
 
-    // check if we need to perform ligthbox replacement -- css
-    if (isset($replaceLightbox) && $replaceLightbox === true) {
-        $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
-        if ($key) {
-            $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
+        // check if we need to perform ligthbox replacement -- css
+        if ($replaceLightbox) {
+            $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
+            if ($key) {
+                $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
+            }
         }
     }
 
