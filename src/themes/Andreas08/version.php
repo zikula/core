@@ -12,7 +12,7 @@
  * information regarding    copyright and licensing.
  */
 
-$themeversion['name'] = 'andreas08';
+$themeversion['name'] = 'Andreas08';
 $themeversion['displayname'] = __('Andreas08');
 $themeversion['description'] = __("The Andreas08 theme is a very good template for light CSS-compatible browser-oriented themes.");
 $themeversion['regid'] = '0';

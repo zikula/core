@@ -9,7 +9,7 @@
  * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
- * information regarding    copyright and licensing.
+ * information regarding copyright and licensing.
  */
 
 $themeversion['name'] = 'SeaBreeze';
