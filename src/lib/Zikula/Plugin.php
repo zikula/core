@@ -84,7 +84,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     /**
      * Translation domain.
      *
-     * @var string
+     * @var string|null
      */
     protected $domain;
 
@@ -240,6 +240,16 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     }
 
     /**
+     * Get this plugin type.
+     *
+     * @return integer
+     */
+    public function getPluginType()
+    {
+        return $this->pluginType;
+    }
+
+    /**
      * Translate.
      *
      * @param string $msgid String to be translated.
@@ -301,6 +311,16 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     public function getServiceId()
     {
         return $this->serviceId;
+    }
+
+    /**
+     * Return the translation domain property.
+     *
+     * @return string|null
+     */
+    public function getDomain()
+    {
+        return $this->domain;
     }
 
     /**

@@ -18,6 +18,20 @@
 class Modules_Plugin extends Zikula_Controller
 {
     /**
+     * Plugin instance.
+     *
+     * @var Zikula_Plugin
+     */
+    protected $plugin;
+
+    /**
+     * Plugin controller instance.
+     *
+     * @var Zikula_Plugin_Controller
+     */
+    protected $pluginController;
+
+    /**
      * Default action.
      *
      * @return mixed
@@ -33,7 +47,7 @@ class Modules_Plugin extends Zikula_Controller
      * @return mixed
      */
     public function dispatch()
-    {class_exists('ModulePlugin_Modules_Example_Plugin');
+    {
         // Get input.
         $pluginName = $this->getInput('_name', null, 'GET');
         $type = $this->getInput('_type', null, 'GET');
@@ -53,12 +67,14 @@ class Modules_Plugin extends Zikula_Controller
         $serviceId = PluginUtil::getServiceId("${type}_${pluginName}_Plugin");
         $this->throwNotFoundUnless($this->serviceManager->hasService($serviceId));
 
-        $plugin = $this->serviceManager->getService($serviceId);
+        $this->plugin = $this->serviceManager->getService($serviceId);
 
         // Sanity checks.
-        $this->registerErrorUnless($plugin->isInstalled(), __f('Plugin "%s" is not installed', $plugin->getMetaDisplayName()));
-        $this->throwNotFoundUnless($plugin->getReflection()->hasMethod($action));
+        $this->registerErrorUnless($this->plugin->isInstalled(), __f('Plugin "%s" is not installed', $this->plugin->getMetaDisplayName()));
 
-        return $plugin->$action();
+        $this->pluginController = $this->plugin->getController();
+        $this->throwNotFoundUnless($this->pluginController->getReflection()->hasMethod($action));
+        var_dump($this, $this->pluginController);
+        return $this->pluginController->$action();
     }
 }

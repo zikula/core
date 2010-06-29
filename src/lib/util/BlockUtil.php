@@ -286,7 +286,7 @@ class BlockUtil
         if ($isOO) {
             $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
             $r = new ReflectionClass($className);
-            $blockInstance = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
+            $blockInstance = $r->newInstanceArgs(array($sm));
             try {
                 if (!$blockInstance instanceof Zikula_Block) {
                     throw new LogicException(sprintf('Block %s must inherit from Zikula_Block', $className));

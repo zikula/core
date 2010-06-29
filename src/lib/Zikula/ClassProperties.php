@@ -30,7 +30,7 @@
  * $foo = new Foo('data' => 'Hello world);
  * </samp>
  */
-class ClassProperties
+class Zikula_ClassProperties
 {
 
     /**

@@ -99,6 +99,7 @@ abstract class Zikula_Base
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         $this->options = $options;
+        Zikula_ClassProperties::load($this, $options);
         $this->_setup();
         $this->_postSetup();
 

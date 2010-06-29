@@ -111,8 +111,8 @@ class ZLoader
             $array = explode('_', $class);
             $pluginName = $array[1];
             $base = realpath(ZLOADER_PATH . '/../plugins');
-            $name = substr($class, strlen("SystemPlugin_"), strlen($class));
-            $path = realpath(str_replace('_', '/', "$base/$name.php"));
+            $name = substr($class, strlen("SystemPlugin_${$pluginName}"), strlen($class));
+            $path = str_replace('_', '/', "$base/$pluginName/lib/$name.php");
             if (file_exists($path)) {
                 return include $path;
             }
@@ -126,7 +126,7 @@ class ZLoader
             $modinfo = ModUtil::getInfoFromName($moduleName);
             $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
             $name = substr($class, strlen("ModulePlugin_${moduleName}_${pluginName}") + 1, strlen($class));
-            $path = realpath(str_replace('_', '/', "$base/$moduleName/plugins/$pluginName/$name.php"));
+            $path = str_replace('_', '/', "$base/$moduleName/plugins/$pluginName/lib/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
             }
