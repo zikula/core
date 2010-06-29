@@ -240,6 +240,27 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     }
 
     /**
+     * Get module info.
+     *
+     * @return array
+     */
+    public function getModInfo()
+    {
+        return $this->modinfo;
+    }
+
+
+    /**
+     * Return basedir.
+     *
+     * @return string
+     */
+    public function getBaseDir()
+    {
+        return $this->baseDir;
+    }
+
+    /**
      * Get this plugin type.
      *
      * @return integer
