@@ -92,12 +92,12 @@ abstract class Zikula_Base
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
-     * @param Zikula_EventManager   $eventManager   EventManager instance.
      * @param array                 $options        Options (universal constructor).
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager, array $options = array())
+    public function __construct(Zikula_ServiceManager $serviceManager, array $options = array())
     {
         $this->serviceManager = $serviceManager;
+        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         $this->options = $options;
         $this->_setup();
         $this->_postSetup();

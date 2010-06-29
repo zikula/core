@@ -181,7 +181,7 @@ class Categories_User extends Zikula_Controller
             }
 
             require_once ('system/Categories/Installer.php'); // need this for Categories_makeDisplayName() && Categories_makeDisplayDesc()
-            $installer = new Categories_Installer(ServiceUtil::getManager(), EventUtil::getManager());
+            $installer = new Categories_Installer(ServiceUtil::getManager());
             $cat = array('id'               => '',
                     'parent_id'        => $userRootCat['id'],
                     'name'             => $userCatName,

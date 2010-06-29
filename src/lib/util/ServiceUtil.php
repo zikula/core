@@ -45,10 +45,7 @@ class ServiceUtil
             return self::$serviceManager;
         }
 
-        // this looks strange, but it's deliberate (for IDEs to see API - drak)
-        $serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
-        self::$serviceManager = $serviceManager;
-
-        return $serviceManager;
+        self::$serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
+        return self::$serviceManager;
     }
 }

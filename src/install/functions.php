@@ -476,7 +476,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
             ModUtil::dbInfoLoad($coremodule, $coremodule);
             require_once "system/$coremodule/Installer.php";
             $className = "{$coremodule}_Installer";
-            $instance = new $className($sm, $em);
+            $instance = new $className($sm);
             if ($instance->install()) {
                 $results[$coremodule] = true;
             }
@@ -523,7 +523,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                             'category' => $modscat[$category]));
         }
         // create the default blocks.
-        $blockInstance = new Blocks_Installer($sm, $em);
+        $blockInstance = new Blocks_Installer($sm);
         $blockInstance->defaultdata();
     }
 

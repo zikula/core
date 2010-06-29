@@ -845,7 +845,7 @@ class ModUtil
             $object = $sm->getService($serviceId);
         } else {
             $r = new ReflectionClass($className);
-            $object = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
+            $object = $r->newInstanceArgs(array($sm));
             try {
                 if (strrpos($className, 'Api') && !$object instanceof Zikula_Api) {
                     throw new LogicException(sprintf('Api %s must inherit from Zikula_Api', $className));

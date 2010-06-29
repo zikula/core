@@ -36,7 +36,7 @@ class EventUtil
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
      *
-     * @return EventManager
+     * @return Zikula_EventManager
      */
     static public function getManager(Zikula_ServiceManager $serviceManager = null)
     {
@@ -44,13 +44,10 @@ class EventUtil
             return self::$eventManager;
         }
 
-        $eventManager = new Zikula_EventManager($serviceManager);
-        $serviceManager->attachService('zikula.eventmanager', $eventManager);
+        self::$eventManager = new Zikula_EventManager($serviceManager);
+        $serviceManager->attachService('zikula.eventmanager', self::$eventManager);
 
-        // this is a deliberate assign for IDEs to recognise the API (drak).
-        self::$eventManager = $eventManager;
-
-        return $eventManager;
+        return self::$eventManager;
     }
 
     /**
