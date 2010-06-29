@@ -184,7 +184,6 @@ class Zikula_ErrorHandler
      */
     public function ajaxHandler($errno, $errstr, $errfile, $errline, $errcontext)
     {
-        header('HTTP/1.0 500 System Error');
-        error_log($errstr);
+        
     }
 }
