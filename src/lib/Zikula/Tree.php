@@ -140,12 +140,8 @@ class Zikula_Tree
     {
         PageUtil::addVar('stylesheet', $this->config['cssFile']);
         PageUtil::addVar('javascript', 'prototype');
-        PageUtil::addVar('javascript', 'javascript/livepipe/livepipe.js');
-        PageUtil::addVar('javascript', 'javascript/livepipe/cookie.js');
+        PageUtil::addVar('javascript', 'livepipe');
         PageUtil::addVar('javascript', 'javascript/helpers/Zikula.Tree.js');
-        if ($this->config['sortable']) {
-            PageUtil::addVar('javascript', 'javascript/helpers/Zikula.TreeSortable.js');
-        }
         $jsClass = $this->config['sortable'] ? 'Zikula.TreeSortable' : 'Zikula.Tree';
         $initScript = "
         <script type=\"text/javascript\">
