@@ -15,7 +15,7 @@
             <div class="z-formrow">
                 <label for="newpassword">{gt text="New password"}</label>
                 <input name="newpassword" id="newpassword" type="password" value="" />
-                {if $use_password_strength_meter eq 1}
+                {if $zcore.Users.use_password_strength_meter eq 1}
                 {pageaddvar name='javascript' value='prototype'}
                 {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 

@@ -52,11 +52,18 @@ class Users_Api_Registration extends Zikula_Api
     public function getPasswordErrors($args)
     {
         $reginfo = array();
-        if (isset($args['pass'])) {
-            $reginfo['pass'] = $args['pass'];
-        }
-        if (isset($args['passreminder'])) {
-            $reginfo['passreminder'] = $args['passreminder'];
+        if (isset($args['reginfo']) && is_array($args['reginfo'])) {
+            $reginfo = $args['reginfo'];
+        } else {
+            if (isset($args['uname'])) {
+                $reginfo['uname'] = $args['uname'];
+            }
+            if (isset($args['pass'])) {
+                $reginfo['pass'] = $args['pass'];
+            }
+            if (isset($args['passreminder'])) {
+                $reginfo['passreminder'] = $args['passreminder'];
+            }
         }
 
         $passwordAgain = isset($args['passagain']) ? $args['passagain'] : '';
@@ -74,6 +81,8 @@ class Users_Api_Registration extends Zikula_Api
                 $minPasswordLength,
                 $minPasswordLength
             );
+        } elseif (isset($reginfo['uname']) && !empty($reginfo['uname']) && ($reginfo['pass'] == $reginfo['uname'])) {
+            $passwordErrors['reginfo_pass'][] = $this->__('The password cannot be the same as the user name. Please choose a different password.');
         } elseif (!isset($passwordAgain) || empty($passwordAgain) || ($reginfo['pass'] !== $passwordAgain)) {
             $passwordErrors['passagain'][] = $this->__('You did not enter the same password in each password field. '
                                 . 'Please enter the same password once in each password field (this is required for verification).');
@@ -309,9 +318,8 @@ class Users_Api_Registration extends Zikula_Api
             }
             if (($verificationAndPassword != UserUtil::VERIFY_SYSTEMPWD) && (!$isAdminOrSubAdmin || $setPassword)) {
                 $passwordErrors = ModUtil::apiFunc('Users', 'registration', 'getPasswordErrors', array(
-                    'pass'          => isset($reginfo['pass'])          ? $reginfo['pass']          : null,
-                    'passagain'     => isset($passwordAgain)            ? $passwordAgain            : null,
-                    'passreminder'  => isset($reginfo['passreminder'])  ? $reginfo['passreminder']  : null,
+                    'reginfo'       => isset($reginfo)          ? $reginfo          : null,
+                    'passagain'     => isset($passwordAgain)    ? $passwordAgain    : null,
                 ));
 
                 if (!empty($passwordErrors)) {
