@@ -54,6 +54,7 @@
         <!-- ATTN export urls require manual edit -->
         <exec command="svn export -r${svn_revision} https://code.zikula.org/svn/core/branches/zikula-1.3/src ${packagepath}" />
         <exec command="svn export --force https://code.zikula.org/svn/tour/trunk/src/Tour ${packagepath}/modules/Tour" />
+        <exec command="svn export --force https://code.zikula.org/svn/legal/trunk/src/Legal ${packagepath}/modules/Legal" />
 
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
