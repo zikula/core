@@ -29,12 +29,12 @@
             <tr>
                 <th>{gt text="User name"}</th>
                 <th>{gt text="Internal ID"}</th>
-                <th>{gt text="Registration date"}</th>
-                <th>{gt text="Last Login"}</th>
+                <th>{gt text="Registration date"}{gt text="*"}</th>
+                <th>{gt text="Last Login"}{gt text="*"}</th>
                 {if $canSeeGroups}
                 <th>{gt text="User's groups"}</th>
                 {/if}
-                <th>{gt text="Activation"}</th>
+                <th class="z-center">{gt text="Activation"}</th>
                 <th>{gt text="Actions"}</th>
             </tr>
         </thead>
@@ -52,7 +52,7 @@
                     {/foreach}
                 </td>
                 {/if}
-                <td>{img modname=core set=icons/extrasmall src=$usersitems[usersitems].activation.image title=$usersitems[usersitems].activation.title alt=$usersitems[usersitems].activation.title}</td>
+                <td class="z-center">{img modname=core set=icons/extrasmall src=$usersitems[usersitems].activation.image title=$usersitems[usersitems].activation.title alt=$usersitems[usersitems].activation.title}</td>
                 <td>
                     {assign var="options" value=$usersitems[usersitems].options}
                     {section name=options loop=$options}
@@ -63,6 +63,7 @@
             {/section}
         </tbody>
     </table>
+    <p class="z-sub z-italic">{gt text="*"} {gt text="All dates are based on the UTC date and time the user registered or last logged in."}</p>
 
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1 img_prev=images/icons/extrasmall/previous.gif img_next=images/icons/extrasmall/next.gif}
 </div>
