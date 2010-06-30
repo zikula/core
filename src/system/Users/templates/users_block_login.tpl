@@ -1,10 +1,10 @@
 {modgetvar module='Users' name='loginviaoption' assign='loginviaoption'}
 
 <form action="{modurl modname="Users" type="user" func="login"}" method="post">
-    <input type="hidden" name="url" value="{$returnurl|safetext}" />
-    <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
-    <input id="users_authmodule" type="hidden" name="authmodule" value="{$authmodule}" />
     <div style="text-align:left">
+        <input type="hidden" name="url" value="{$returnurl|safetext}" />
+        <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users"}" />
+        <input id="users_authmodule" type="hidden" name="authmodule" value="{$authmodule}" />
 
         {* In the future, somewhere around here we would choose an authmodule from $authmodules, storing it in $authmodule. *}
         {* The prompts for authinfo below would be appropriate for the authmodule, and the form would adjust if a different authmodule was selected. *}

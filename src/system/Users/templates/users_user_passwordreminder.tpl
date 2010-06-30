@@ -25,37 +25,39 @@
 <div id="users_errormessages_div" class="z-errormsg">
     <p class="z-sub">Please correct the following items:</p>
     <ul id="users_errormessages">
-    {foreach from=$errormessages item='message'}
+        {foreach from=$errormessages item='message'}
         <li>{$message}</li>
-    {/foreach}
+        {/foreach}
     </ul>
 </div>
 {/if}
 
 <form class="z-form" action="{modurl modname='Users' type='user' func='resetPassword'}" method="post">
-    <input type="hidden" id="users_authid" name="passwordresetauthid" value="{insert name='generateauthkey' module='Users'}" />
-    <input type="hidden" id="users_uname" name="lostpassword_uname" value="{$lostpassword_uname}" />
-    <input type="hidden" id="users_setpass" name="setpass" value="1" />
-    <fieldset>
-        <legend>{gt text='Reset your password'}</legend>
-        {if !empty($passreminder)}<p class="z-informationmsg">{gt text='If you still do not remember your password, you can create a new one here.'}</p>{/if}
-        <div class="z-formrow">
-            <label for="users_newpass">{gt text='Password'}</label>
-            <input id="users_newpass" type="password" name="newpass" size="25" maxlength="60" value="" />
-        </div>
-        <div class="z-formrow">
-            <label for="users_newpassagain">{gt text='Password (repeat for verification)'}</label>
-            <input id="users_newpassagain" type="password" name="newpassagain" size="25" maxlength="60" value="" />
-        </div>
-        <div class="z-formrow">
-            <label for="users_newpassreminder">{gt text='Password reminder'}</label>
-            <input id="users_newpassreminder" type="text" name="newpassreminder" size="25" maxlength="128" value="{$newpassreminder}" />
-            <div class="z-sub z-formnote">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
-            <div class="z-formnote z-informationmsg">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
-        </div>
-        <div class="z-formbuttons z-buttons">
-            {button src='button_ok.gif' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
-            <a href="{homepage|safetext}" title="{gt text='Cancel'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='cancel.gif' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-        </div>
-    </fieldset>
+    <div>
+        <input type="hidden" id="users_authid" name="passwordresetauthid" value="{insert name='generateauthkey' module='Users'}" />
+        <input type="hidden" id="users_uname" name="lostpassword_uname" value="{$lostpassword_uname}" />
+        <input type="hidden" id="users_setpass" name="setpass" value="1" />
+        <fieldset>
+            <legend>{gt text='Reset your password'}</legend>
+            {if !empty($passreminder)}<p class="z-informationmsg">{gt text='If you still do not remember your password, you can create a new one here.'}</p>{/if}
+            <div class="z-formrow">
+                <label for="users_newpass">{gt text='Password'}</label>
+                <input id="users_newpass" type="password" name="newpass" size="25" maxlength="60" value="" />
+            </div>
+            <div class="z-formrow">
+                <label for="users_newpassagain">{gt text='Password (repeat for verification)'}</label>
+                <input id="users_newpassagain" type="password" name="newpassagain" size="25" maxlength="60" value="" />
+            </div>
+            <div class="z-formrow">
+                <label for="users_newpassreminder">{gt text='Password reminder'}</label>
+                <input id="users_newpassreminder" type="text" name="newpassreminder" size="25" maxlength="128" value="{$newpassreminder}" />
+                <div class="z-sub z-formnote">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
+                <div class="z-formnote z-informationmsg">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
+            </div>
+            <div class="z-formbuttons z-buttons">
+                {button src='button_ok.gif' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
+                <a href="{homepage|safetext}" title="{gt text='Cancel'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='cancel.gif' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            </div>
+        </fieldset>
+    </div>
 </form>

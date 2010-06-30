@@ -32,7 +32,7 @@
 
 <a id="users_formtop"></a>
 <p>{gt text='Registering for a user account is easy. Registration can give you access to content and to features of the site that are not available to anonymous guests.'}
-{if $userMustAccept}{$touppString}{/if}
+    {if $userMustAccept}{$touppString}{/if}
 {gt text='During your visits, you are recommended to set your browser to accept cookies from this site, because various features of the site use cookies.'}</p>
 
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
@@ -40,9 +40,9 @@
 <div id="users_errormessages_div" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
     <p>{gt text="Please correct the following items:"}</p>
     <ul id="users_errormessages">
-    {foreach from=$errorMessages item='message'}
+        {foreach from=$errorMessages item='message'}
         <li>{$message}</li>
-    {/foreach}
+        {/foreach}
     </ul>
 </div>
 
@@ -67,25 +67,25 @@
                 {else}{assign var='tempClass' value=''}{/if}
                 <input id="users_reginfo_pass" name="reginfo[pass]"{if !empty($tempClass)} {$tempClass}{/if} type="password" size="25" maxlength="60" />
                 {if $usePwdStrengthMeter}
-                    {pageaddvar name='javascript' value='prototype'}
-                    {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+                {pageaddvar name='javascript' value='prototype'}
+                {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 
-                    <script type="text/javascript">
-                        var passmeter = new Zikula.Users.PassMeter('users_reginfo_pass',{
-                            username:'users_reginfo_uname',
-                            minLength: '{{$minpass}}',
-                            messages: {
-                                username: '{{gt text="Password can not match the username, choose a different password."}}',
-                                minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$minpass}}'
-                            },
-                            verdicts: [
-                                '{{gt text="Weak"}}',
-                                '{{gt text="Normal"}}',
-                                '{{gt text="Strong"}}',
-                                '{{gt text="Very Strong"}}'
-                            ]
-                        });
-                    </script>
+                <script type="text/javascript">
+                    var passmeter = new Zikula.Users.PassMeter('users_reginfo_pass',{
+                        username:'users_reginfo_uname',
+                        minLength: '{{$minpass}}',
+                        messages: {
+                            username: '{{gt text="Password can not match the username, choose a different password."}}',
+                            minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$minpass}}'
+                        },
+                        verdicts: [
+                        '{{gt text="Weak"}}',
+                        '{{gt text="Normal"}}',
+                        '{{gt text="Strong"}}',
+                        '{{gt text="Very Strong"}}'
+                        ]
+                    });
+                </script>
                 {/if}
 
             </div>
@@ -132,7 +132,7 @@
         {/if}
 
         {if $showProps}
-            {modfunc modname=$profileModName type='form' func='edit' dynadata=$reginfo.dynadata}
+        {modfunc modname=$profileModName type='form' func='edit' dynadata=$reginfo.dynadata}
         {/if}
 
         {if $useAntiSpamQuestion}

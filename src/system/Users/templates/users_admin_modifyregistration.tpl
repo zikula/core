@@ -12,48 +12,50 @@
     <div id="users_errormessages_div" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
         <p class="z-sub">Please correct the following items:</p>
         <ul id="users_errormessages">
-        {foreach from=$errorMessages item='message'}
+            {foreach from=$errorMessages item='message'}
             <li>{$message}</li>
-        {/foreach}
+            {/foreach}
         </ul>
     </div>
 
     <form id="users_modifyregistration" class="z-form" action="{modurl modname='Users' type='admin' func='updateRegistration'}" method="post">
-        <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
-        <input type="hidden" id="users_reginfo_id" name="reginfo[id]" value="{$reginfo.id}" />
-        <input type="hidden" id="users_reginfo_agreetoterms" name="reginfo[agreetoterms]" value="{$reginfo.agreetoterms}" />
-        <input type="hidden" id="users_checkmode" name="checkmode" value="modify" />
-        <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview|default:'view'}" />
-        <fieldset>
-            <legend>{gt text='Registration info'}</legend>
-            <div class="z-formrow">
-                <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_reginfo_uname"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
-            </div>
-            <div class="z-formrow">
-                <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_reginfo_email"{if isset($errorFields.reginfo_email) || isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
-            </div>
-            <div class="z-formrow">
-                <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
-            </div>
-        </fieldset>
+        <div>
+            <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
+            <input type="hidden" id="users_reginfo_id" name="reginfo[id]" value="{$reginfo.id}" />
+            <input type="hidden" id="users_reginfo_agreetoterms" name="reginfo[agreetoterms]" value="{$reginfo.agreetoterms}" />
+            <input type="hidden" id="users_checkmode" name="checkmode" value="modify" />
+            <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview|default:'view'}" />
+            <fieldset>
+                <legend>{gt text='Registration info'}</legend>
+                <div class="z-formrow">
+                    <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <input id="users_reginfo_uname"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
+                </div>
+                <div class="z-formrow">
+                    <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <input id="users_reginfo_email"{if isset($errorFields.reginfo_email) || isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
+                </div>
+                <div class="z-formrow">
+                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                    <input id="users_emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
+                </div>
+            </fieldset>
 
-        {if $showProps}
+            {if $showProps}
             {modfunc modname=$profileModName type='form' func='edit' dynadata=$reginfo.dynadata}
-        {/if}
+            {/if}
 
-        <fieldset>
-            <legend>{gt text="Check your entries and submit the modified registration"}</legend>
-            <p id="users_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit modifications' to continue."}</p>
-            <p id="users_validmessage" class="z-hide z-sub">{gt text="Your entries seem to be OK. Please click on 'Submit modifications' when you are ready to continue."}</p>
-            <div class="z-formbuttons z-buttons">
-                {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                {button id='submitchanges' type='submit' src='button_ok.gif' set='icons/extrasmall' __alt='Submit new user' __title='Submit modifications' __text='Submit modifications'}
-                <a href="{$cancelurl|safetext}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-                {img id='ajax_indicator' style='display: none;' modname='core' set='icons/extrasmall' src='indicator_circle.gif' alt=''}
-            </div>
-        </fieldset>
+            <fieldset>
+                <legend>{gt text="Check your entries and submit the modified registration"}</legend>
+                <p id="users_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit modifications' to continue."}</p>
+                <p id="users_validmessage" class="z-hide z-sub">{gt text="Your entries seem to be OK. Please click on 'Submit modifications' when you are ready to continue."}</p>
+                <div class="z-formbuttons z-buttons">
+                    {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
+                    {button id='submitchanges' type='submit' src='button_ok.gif' set='icons/extrasmall' __alt='Submit new user' __title='Submit modifications' __text='Submit modifications'}
+                    <a href="{$cancelurl|safetext}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                    {img id='ajax_indicator' style='display: none;' modname='core' set='icons/extrasmall' src='indicator_circle.gif' alt=''}
+                </div>
+            </fieldset>
+        </div>
     </form>
 </div>

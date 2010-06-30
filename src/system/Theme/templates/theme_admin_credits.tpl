@@ -10,26 +10,26 @@
             {foreach from=$themeinfo item=field key=key}
             {if $field neq ''}
             <tr class="{cycle values=z-odd,z-even}">
-                {if $key eq 'id'}<td>{gt text="Internal ID"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'name'}<td>{gt text="Name"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'type'}<td>{gt text="Type"}</td><td>{$field|themetype}</td>{/if}
-                {if $key eq 'displayname'}<td>{gt text="Display name"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'description'}<td>{gt text="Description"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'regid'}<td>{gt text="Registration ID"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'directory'}<td>{gt text="Directory"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'version'}<td>{gt text="Version"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'official'}<td>{gt text="Official"}</td><td>{$field|yesno|safetext}</td>{/if}
-                {if $key eq 'author'}<td>{gt text="Author"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'contact'}<td>{gt text="Contact"}</td><td>{$field|safetext|activatelinks}</td>{/if}
-                {if $key eq 'admin'}<td>{gt text="Admin panel theme"}</td><td>{$field|yesno|safetext}</td>{/if}
-                {if $key eq 'user'}<td>{gt text="User theme"}</td><td>{$field|yesno|safetext}</td>{/if}
-                {if $key eq 'system'}<td>{gt text="System theme"}</td><td>{$field|yesno|safetext}</td>{/if}
-                {if $key eq 'state'}<td>{gt text="State"}</td><td>{$field|safetext|activeinactive}</td>{/if}
-                {if $key eq 'credits'}<td>{gt text="Credits"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'changelog'}<td>{gt text="Change log"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'help'}<td>{gt text="Help"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'license'}<td>{gt text="License"}</td><td>{$field|safetext}</td>{/if}
-                {if $key eq 'xhtml'}<td>{gt text="XHTML-capable"}</td><td>{$field|yesno|safetext}</td>{/if}
+                {if $key eq 'id'}<th>{gt text="Internal ID"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'name'}<th>{gt text="Name"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'type'}<th>{gt text="Type"}</th><td>{$field|themetype}</td>{/if}
+                {if $key eq 'displayname'}<th>{gt text="Display name"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'description'}<th>{gt text="Description"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'regid'}<th>{gt text="Registration ID"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'directory'}<th>{gt text="Directory"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'version'}<th>{gt text="Version"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'official'}<th>{gt text="Official"}</th><td>{$field|yesno|safetext}</td>{/if}
+                {if $key eq 'author'}<th>{gt text="Author"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'contact'}<th>{gt text="Contact"}</th><td>{$field|safetext|activatelinks}</td>{/if}
+                {if $key eq 'admin'}<th>{gt text="Admin panel theme"}</th><td>{$field|yesno|safetext}</td>{/if}
+                {if $key eq 'user'}<th>{gt text="User theme"}</th><td>{$field|yesno|safetext}</td>{/if}
+                {if $key eq 'system'}<th>{gt text="System theme"}</th><td>{$field|yesno|safetext}</td>{/if}
+                {if $key eq 'state'}<th>{gt text="State"}</th><td>{$field|safetext|activeinactive}</td>{/if}
+                {if $key eq 'credits'}<th>{gt text="Credits"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'changelog'}<th>{gt text="Change log"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'help'}<th>{gt text="Help"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'license'}<th>{gt text="License"}</th><td>{$field|safetext}</td>{/if}
+                {if $key eq 'xhtml'}<th>{gt text="XHTML-capable"}</th><td>{$field|yesno|safetext}</td>{/if}
             </tr>
             {/if}
             {/foreach}
