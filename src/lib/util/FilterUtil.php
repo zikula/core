@@ -30,7 +30,7 @@ class FilterUtil extends FilterUtil_Common
      *
      * @var array
      */
-    public $plugin;
+    private $plugin;
 
     /**
      * Filter object holder.
@@ -103,6 +103,16 @@ class FilterUtil extends FilterUtil_Common
         $this->varname = $name;
 
         return true;
+    }
+    
+    /**
+     * Get plugin manager class.
+     * 
+     * @return FilterUtil_Plugin
+     */
+    public function getPlugin()
+    {
+        return $this->plugin;
     }
 
 
