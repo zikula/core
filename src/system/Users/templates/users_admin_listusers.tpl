@@ -58,20 +58,20 @@
                 <tbody>
                     {section name=item loop=$items}
                     <tr class="{cycle values='z-odd,z-even'}">
-                        {if $mailusers eq true || $deleteusers eq true}
-                        <td><input type="checkbox" name="userid[]" value="{$items[item].uid}" /></td>
+                        {if (($mailusers eq true) || ($deleteusers eq true))}
+                        <td>{if ($items[item].uid neq 1)}<input type="checkbox" name="userid[]" value="{$items[item].uid}" />{/if}</td>
                         {/if}
                         <td>{$items[item].uname}</td>
                         {if $profilemodule}
                         <td>{usergetvar name='_UREALNAME' uid=$items[item].uid}</td>
                         {/if}
-                        <td>{if $items[item].email neq ''}<input type="hidden" name="sendmail[recipientsname][{$items[item].uid}]" value="{$items[item].uname}" /><input type="hidden" name="sendmail[recipientsemail][{$items[item].uid}]" value="{$items[item].email}" />{$items[item].email}{/if}</td>
-                        <td>
+                        <td>{if ($items[item].email neq '') && ($items[item].uid neq 1)}<input type="hidden" name="sendmail[recipientsname][{$items[item].uid}]" value="{$items[item].uname}" /><input type="hidden" name="sendmail[recipientsemail][{$items[item].uid}]" value="{$items[item].email}" />{$items[item].email}{/if}</td>
+                        <td>{if ($items[item].uid neq 1)}
                             <a href="{modurl modname="Users" type="admin" func="modify" userid=$items[item].uid}">{img modname=core set=icons/extrasmall src=xedit.gif __alt="Edit"}</a>
                             {if $deleteusers eq true}
                             <a href="{modurl modname="Users" type="admin" func="deleteusers" userid=$items[item].uid}">{img modname=core set=icons/extrasmall src=14_layer_deletelayer.gif __alt="Delete"}</a>
                             {/if}
-                        </td>
+                        {/if}</td>
                     </tr>
                     {/section}
                 </tbody>
