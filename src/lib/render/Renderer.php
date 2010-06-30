@@ -270,6 +270,19 @@ class Renderer extends Smarty
     }
 
     /**
+     * Set compile check.
+     *
+     * @param $boolean
+     *
+     * @retrun Renderer
+     */
+    public function setCompile_check($boolean)
+    {
+        $this->compile_check = $boolean;
+        return $this;
+    }
+
+    /**
      * Setup the current instance of the Renderer class and return it back to the module.
      *
      * @param string       $module        Module name.
@@ -632,6 +645,19 @@ class Renderer extends Smarty
     }
 
     /**
+     * Set cache lifetime.
+     *
+     * @param integer $time Lifetime in seconds.
+     *
+     * @return Renderer
+     */
+    public function setCache_lifetime($time)
+    {
+        $this->cache_lifetime = $time;
+        return $this;
+    }
+
+    /**
      * Set up paths for the template.
      *
      * This function sets the template and the config path according
@@ -686,13 +712,12 @@ class Renderer extends Smarty
     }
 
     /**
-     * add core data to the template
+     * Add core data to the template.
      *
      * This function adds some basic data to the template depending on the
      * current user and the PN settings.
      *
-     * @access public
-     * @return boolean True if ok, otherwise false.
+     * @return Renderer
      */
     public function add_core_data()
     {
@@ -734,7 +759,7 @@ class Renderer extends Smarty
         // TODO A [move old pncore assignment into pnRender subclass] (Guite)
         $this->assign('pncore', $core);
         $this->assign('zcore', $core);
-        return true;
+        return $this;
     }
 }
 
