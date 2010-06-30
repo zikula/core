@@ -20,8 +20,11 @@ class AjaxUtil
     /**
      * Immediately stops execution and returns an error message.
      *
-     * @param string $error Error text.
-     * @param string $code  Optional error code, default '400 Bad data'.
+     * @param string  $message      Error text.
+     * @param array   $other        Optional data to attach to the response.
+     * @param boolean $createauthid Flag to create or not a new authkey.
+     * @param boolean $displayalert Flag to display the error as an alert or not.
+     * @param string  $code         Optional error code, default '400 Bad data'.
      *
      * @return void
      */
@@ -32,13 +35,16 @@ class AjaxUtil
             $code = $type ? $type : $code;
             $message = LogUtil::getErrorMessagesText("\n");
         }
+
         if (!empty($message)) {
             $data = array('errormessage' => $message);
             if (is_array($other)) {
                 $data = array_merge($data, $other);
             }
         }
+
         $data['displayalert'] = ($displayalert === true ? '1' : '0');
+
         self::output($data, $createauthid, false, true, $code);
     }
 
@@ -56,6 +62,7 @@ class AjaxUtil
      * @param boolean $createauthid Create a new authid and send it back to the calling javascript.
      * @param boolean $xjsonheader  Send result in X-JSON: header for prototype.js.
      * @param boolean $statusmsg    Include statusmsg in output.
+     * @param string  $code         Optional error code, default '200 OK'.
      *
      * @return void
      */
@@ -63,15 +70,12 @@ class AjaxUtil
     {
         // check if an error message is set
         $msgs = LogUtil::getErrorMessagesText('<br />');
+
         if ($msgs != false && !empty($msgs)) {
             self::error($msgs);
         }
 
-        if (!is_array($args)) {
-            $data = array('data' => $args);
-        } else {
-            $data = $args;
-        }
+        $data = !is_array($args) ? array('data' => $args) : $args;
 
         if ($statusmsg === true) {
             // now check if a status message is set
@@ -106,5 +110,4 @@ class AjaxUtil
         echo $output;
         System::shutdown();
     }
-
 }

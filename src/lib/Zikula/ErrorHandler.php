@@ -33,34 +33,34 @@ class Zikula_ErrorHandler
     protected $eventManager;
 
     /**
+     * Error logging system setting.
      *
-     *
-     * @var <type>
+     * @var integer
      */
     protected $errorlog;
 
     /**
+     * Type of log system setting.
      *
-     *
-     * @var <type>
+     * @var integer
      */
     protected $errorlogtype;
 
     /**
+     * Display to the user flag.
      *
-     *
-     * @var <type>
+     * @var boolean
      */
     protected $errordisplay;
 
     /**
+     * System writable folder.
      *
-     *
-     * @var <type>
+     * @var string
      */
     protected $ztemp;
 
-    
+
     /**
      * Constructor.
      * 

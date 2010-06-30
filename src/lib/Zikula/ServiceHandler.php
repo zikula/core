@@ -21,7 +21,6 @@
  */
 class Zikula_ServiceHandler
 {
-
     /**
      * Id of a service.
      *

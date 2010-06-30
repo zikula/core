@@ -417,11 +417,10 @@ class UserUtil
     }
 
     /**
-     * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule
-     * without actually logging the user in.
+     * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule without actually logging the user in.
      *
-     * @param string  $authModuleName Auth module name.
-     * @param array   $authinfo       Auth info array.
+     * @param string $authModuleName Auth module name.
+     * @param array  $authinfo       Auth info array.
      *
      * @return bool True if authinfo authenticates; otherwise false.
      */
@@ -448,7 +447,7 @@ class UserUtil
      * @param string $authModuleName The name of the authmodule to use for authentication.
      * @param array  $authinfo       The information needed by the authmodule for authentication, typically a loginid and pass.
      *
-     * @return int|bool Zikula uid if the authinfo authenticates with the authmodule; otherwise false.
+     * @return mixed Zikula uid if the authinfo authenticates with the authmodule; otherwise false.
      */
     public static function authenticateUserUsing($authModuleName, array $authinfo)
     {
@@ -475,7 +474,7 @@ class UserUtil
      *
      * @return boolean
      */
-    public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
+    public function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
     {
         // For the following, register any errors in the UI function that called this.
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
@@ -603,7 +602,7 @@ class UserUtil
             // but that is no longer needed (no more legal module, or the settings changed), or the account was set
             // to force a password change, but we don't want to do it right now because the authmodule is not 'Users'.
             // Check the status one more time.
-            if (($userObj['activated'] != self::ACTIVATED_ACTIVE) && ($userObj['activated'] != self::ACTIVATED_INACTIVE_PWD)){
+            if (($userObj['activated'] != self::ACTIVATED_ACTIVE) && ($userObj['activated'] != self::ACTIVATED_INACTIVE_PWD)) {
                 // account inactive or we have a problem understanding what status the user has, deny login
                 // Note that we have not actually logged into anything yet, just authenticated, so no need to
                 // call logout on the authmodule.
@@ -844,7 +843,7 @@ class UserUtil
      * @param integer $uid     The user to get the variable for.
      * @param mixed   $default The default value to return if the specified variable doesn't exist.
      *
-     * @return string|void the value of the user variable if successful, null otherwise
+     * @return mixed the value of the user variable if successful, null otherwise
      */
     public static function getVar($name, $uid = -1, $default = false)
     {
@@ -1059,8 +1058,7 @@ class UserUtil
         }
 
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
-            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode]))
-        {
+            || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
             return LogUtil::registerArgsError();
         }
 

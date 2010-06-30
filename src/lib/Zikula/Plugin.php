@@ -124,6 +124,8 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $reflection;
 
     /**
+     * Plugin controller class.
+     *
      * @var Zikula_Plugin_Controller
      */
     protected $controllerClass;
@@ -173,7 +175,9 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         $this->className = get_class($this);
         $this->serviceId = PluginUtil::getServiceId($this->className);
         $this->baseDir = dirname($this->getReflection()->getFileName());
+
         $p = explode('_', $this->className);
+
         if (strpos($this->serviceId, 'moduleplugin') === 0) {
             $this->moduleName = $p[1];
             $this->pluginName = $p[2];
@@ -193,6 +197,7 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
         } else {
             throw new LogicException(sprintf('This class %s does not appear to be named correctly', $this->className));
         }
+
         $this->meta = $this->getMeta();
     }
 
@@ -203,10 +208,12 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      */
     protected function getMeta()
     {
-        return array('displayname' => '', // implement as $this->__('Display name'),
-                     'description' => '', // implement as $this->__('Description goes here'),
-                     'version' => ''      // implement as 'a.b.c'
+        $meta = array('displayname' => '', // implement as $this->__('Display name'),
+                      'description' => '', // implement as $this->__('Description goes here'),
+                      'version' => ''      // implement as 'a.b.c'
                 );
+
+        return $meta;
     }
 
     /**
@@ -544,7 +551,4 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     {
         return true;
     }
-
-
-
 }

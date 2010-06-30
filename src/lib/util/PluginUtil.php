@@ -117,7 +117,6 @@ class PluginUtil
         $loaded[$path] = true;
     }
 
-
     /**
      * Load an initialise plugin.
      *
@@ -190,6 +189,7 @@ class PluginUtil
         $pluginsArray = array();
 
         $dirs = array('system', 'modules');
+
         foreach ($dirs as $dir) {
             $modules = FileUtil::getFiles($dir, false, false, null, 'd');
             foreach ($modules as $module) {
@@ -286,15 +286,15 @@ class PluginUtil
         include_once $file;
     }
 
-
     /**
      * Check's if a module has plugins or not.
      *
      * @param string $modulename Name of an module.
      *
-     * @return boolean true when the module has plugins
+     * @return boolean true when the module has plugins.
      */
-    public static function hasModulePlugins($modulename) {
+    public static function hasModulePlugins($modulename)
+    {
         $pluginClasses = self::loadAllPlugins();
         $hasPlugins = false;
 
@@ -438,7 +438,7 @@ class PluginUtil
     /**
      * Is plugin available (by service id).
      *
-     * @param string $id Service Id, normalized classname, e.g. systemplugin.zend.plugin
+     * @param string $id Service Id, normalized classname, e.g. systemplugin.zend.plugin.
      *
      * @return boolean
      */
@@ -459,6 +459,8 @@ class PluginUtil
 
     /**
      * Calculates plugin service id from Plugin class name.
+     *
+     * @param string $className Plugin class name.
      *
      * @return string ServiceID.
      */

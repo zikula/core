@@ -21,41 +21,41 @@ class CacheUtil
     /**
      * Get the location of the local cache directory.
      *
-     * @param dir The name of the directory to get.
+     * @param string $dir The name of the directory to get.
      *
      * @return string Location of the cache directory.
      */
     public static function getLocalDir($dir = null)
     {
+        $array = array();
+        $array[] = DataUtil::formatForOS(System::getVar('temp'), true);
+        
+        if (!is_null($dir)) {
+            $array[] = DataUtil::formatForOS($dir);
+        }
 
-		$array = array();
-		$array[] = DataUtil::formatForOS(System::getVar('temp'), true);
-		
-		if (!is_null($dir)) {
-			$array[] = DataUtil::formatForOS($dir);
-		}
+        $path = implode('/', $array);
 
-		$path = implode('/', $array);
-		
-		return $path;
-
+        return $path;
     }
 
     /**
      * Create a directory below zikula's local cache directory.
      *
      * @param string $dir  The name of the directory to create.
-     * @param strinf $mode The (UNIX) mode we wish to create the files with.
+     * @param string $mode The (UNIX) mode we wish to create the files with.
      *
      * @return boolean true if successful, false otherwise.
      */
     public static function createLocalDir($dir, $mode = null)
     {
         $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
+
         if (!FileUtil::mkdirs($path, $mode)) {
             return false;
         }
         touch("{$path}/index.html");
+
         return true;
     }
 
@@ -69,6 +69,7 @@ class CacheUtil
     public static function removeLocalDir($dir)
     {
         $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
+
         return FileUtil::deldir($path);
     }
 

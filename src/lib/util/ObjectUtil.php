@@ -535,9 +535,9 @@ class ObjectUtil
      * @param string  $idcolumn The idcolumn of the object (optional) (default='id').
      * @param boolean $force    Flag to force the attribute update.
      *
-     * TODO: check if the function can supersede storeObjectAttributes()
+     * @todo check if the function can supersede storeObjectAttributes().
      *
-     * @return true/false on success/failure
+     * @return boolean true/false on success/failure.
      */
     public static function updateObjectAttributes($obj, $type, $idcolumn = 'id', $force=false)
     {

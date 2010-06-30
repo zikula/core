@@ -2,7 +2,7 @@
 /**
  * Zikula Application Framework.
  *
- * @Copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
+ * @copyright (c) 2003, 2005 Danilo Segan <danilo@kvota.net>.
  * @copyright (c) 2009, Zikula Development Team
  * @link http://www.zikula.org
  * @license GNU/GPLv3 (or at your option, any later version).
