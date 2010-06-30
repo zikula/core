@@ -459,6 +459,18 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     }
 
     /**
+     * Is configurable.
+     *
+     * Does this plugin have a configuration menu.
+     *
+     * @return boolean
+     */
+    public function isConfigurable()
+    {
+        return false;
+    }
+
+    /**
      * Pre install handler.
      *
      * @return boolean
