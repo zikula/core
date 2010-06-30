@@ -48,6 +48,10 @@ class Modules_Plugin extends Zikula_Controller
      */
     public function dispatch()
     {
+        if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
+            return LogUtil::registerPermissionError();
+        }
+
         // Get input.
         $pluginName = $this->getInput('_name', null, 'GET');
         $type = $this->getInput('_type', null, 'GET');
