@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-24 20:47-0400\n"
+"POT-Creation-Date: 2010-06-30 12:08-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,13 +133,13 @@ msgstr ""
 #: system/Mailer/lib/Mailer/Admin.php:135
 #: system/Blocks/lib/Blocks/Admin.php:848
 #: system/Permissions/lib/Permissions/Admin.php:722
-#: system/Groups/lib/Groups/Admin.php:825 system/Theme/lib/Theme/Admin.php:256
-#: system/Theme/lib/Theme/Admin.php:1185
+#: system/Groups/lib/Groups/Admin.php:825 system/Theme/lib/Theme/Admin.php:258
+#: system/Theme/lib/Theme/Admin.php:1187
 #: system/Settings/lib/Settings/Admin.php:134
 #: system/Settings/lib/Settings/Admin.php:309
 #: system/Modules/lib/Modules/Admin.php:1052
 #: system/Search/lib/Search/Admin.php:124
-#: system/Users/lib/Users/Admin.php:1624
+#: system/Users/lib/Users/Admin.php:1684
 #: system/Categories/lib/Categories/Adminform.php:310
 #: system/SecurityCenter/lib/SecurityCenter/Admin.php:470
 #: system/SecurityCenter/lib/SecurityCenter/Admin.php:873
@@ -189,16 +189,17 @@ msgstr ""
 #: system/Modules/templates/modules_admin_modifyconfig.tpl:4
 #: system/Search/templates/search_admin_modifyconfig.tpl:3
 #: system/Search/templates/search_admin_modifyconfig.tpl:4
+#: system/Search/templates/search_admin_menu.tpl:5
 #: system/Users/templates/users_admin_modifyconfig.tpl:5
 #: system/Users/templates/users_admin_modifyconfig.tpl:7
 #: system/Categories/templates/categories_admin_preferences.tpl:3
 #: system/Categories/templates/categories_admin_preferences.tpl:4
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:6
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:6
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:7
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:6
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:1
 #: system/Admin/templates/admin_admin_help.tpl:29
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:11
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:13
 msgid "Settings"
 msgstr ""
 
@@ -271,6 +272,9 @@ msgstr ""
 #: lib/render/plugins/function.pager.php:61
 #: lib/render/plugins/function.gt.php:65
 #: lib/render/plugins/function.modulejavascript.php:62
+#: lib/render/plugins/block.checkpermissionblock.php:47
+#: lib/render/plugins/block.checkpermissionblock.php:51
+#: lib/render/plugins/block.checkpermissionblock.php:55
 #: lib/render/plugins/function.html_select_modulestylesheets.php:35
 #: lib/render/plugins/function.previewimage.php:37
 #: lib/render/plugins/function.icon.php:63
@@ -323,9 +327,6 @@ msgstr ""
 #: lib/render/plugins/function.pageaddvar.php:58
 #: lib/render/plugins/function.modapifunc.php:59
 #: lib/render/plugins/function.const.php:38
-#: lib/render/plugins/block.checkpermission.php:47
-#: lib/render/plugins/block.checkpermission.php:51
-#: lib/render/plugins/block.checkpermission.php:55
 #: lib/render/plugins/function.category_path.php:69
 #: lib/render/plugins/function.category_path.php:73
 #: lib/render/plugins/function.category_path.php:79
@@ -333,7 +334,7 @@ msgstr ""
 msgid "Error! in %1$s: the %2$s parameter must be specified."
 msgstr ""
 
-#: system/Blocks/lib/Blocks/Admin.php:95 lib/util/HtmlUtil.php:488
+#: system/Blocks/lib/Blocks/Admin.php:95 lib/util/HtmlUtil.php:489
 #: lib/Form/Plugin/LanguageSelector.php:66
 #: lib/render/plugins/function.html_select_languages.php:47
 #: lib/render/plugins/function.html_select_locales.php:47
@@ -365,7 +366,7 @@ msgstr ""
 #: system/Blocks/lib/Blocks/Admin.php:148
 #: system/Groups/lib/Groups/Admin.php:98
 #: system/Modules/lib/Modules/Admin.php:376
-#: system/Users/lib/Users/Admin.php:315 system/Admin/lib/Admin/Admin.php:244
+#: system/Users/lib/Users/Admin.php:306 system/Admin/lib/Admin/Admin.php:244
 #: lib/Form/Plugin/CategorySelector.php:173
 #: lib/Form/Plugin/CategoryCheckboxList.php:76
 #: system/Permissions/templates/permissions_admin_view.tpl:103
@@ -379,7 +380,7 @@ msgstr ""
 #: system/Theme/templates/theme_admin_pageconfigurations.tpl:42
 #: system/Users/templates/users_admin_listusers.tpl:66
 #: system/Users/templates/users_admin_displayregistration.tpl:29
-#: system/Users/templates/users_admin_view.tpl:12
+#: system/Users/templates/users_admin_view.tpl:13
 #: system/Categories/templates/categories_user_list.tpl:16
 #: system/Categories/templates/categories_user_list.tpl:58
 #: system/Categories/templates/categories_admin_registry_edit.tpl:38
@@ -390,12 +391,12 @@ msgstr ""
 
 #: system/Blocks/lib/Blocks/Admin.php:130
 #: system/Blocks/lib/Blocks/Admin.php:152
-#: system/Groups/lib/Groups/Admin.php:104 system/Users/lib/Users/Admin.php:320
+#: system/Groups/lib/Groups/Admin.php:104 system/Users/lib/Users/Admin.php:311
 #: system/SecurityCenter/lib/SecurityCenter/Admin.php:153
 #: system/Admin/lib/Admin/Admin.php:249
 #: system/Blocks/templates/blocks_admin_deleteposition.tpl:16
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:79
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:120
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:78
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:119
 #: system/Blocks/templates/blocks_admin_delete.tpl:15
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:19
 #: system/Permissions/templates/permissions_admin_view.tpl:104
@@ -415,12 +416,12 @@ msgstr ""
 #: system/Users/templates/users_admin_modify.tpl:100
 #: system/Users/templates/users_admin_listusers.tpl:68
 #: system/Users/templates/users_admin_listusers.tpl:119
-#: system/Users/templates/users_admin_view.tpl:13
-#: system/Categories/templates/categories_include_editattributes.html:19
+#: system/Users/templates/users_admin_view.tpl:14
 #: system/Categories/templates/categories_admin_delete.tpl:38
 #: system/Categories/templates/categories_user_list.tpl:17
 #: system/Categories/templates/categories_user_list.tpl:65
 #: system/Categories/templates/categories_admin_registry_edit.tpl:39
+#: system/Categories/templates/categories_include_editattributes.tpl:19
 #: system/Categories/templates/categories_admin_edit.tpl:123
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:55
 #: system/SecurityCenter/templates/securitycenter_admin_view_log_event.tpl:49
@@ -549,7 +550,7 @@ msgstr ""
 #: system/Groups/lib/Groups/Api/Admin.php:170
 #: system/Theme/lib/Theme/Api/Admin.php:189
 #: system/Modules/lib/Modules/Api/Admin.php:72
-#: system/Admin/lib/Admin/Ajax.php:194
+#: system/Admin/lib/Admin/Ajax.php:185
 #: system/Admin/lib/Admin/Api/Admin.php:146
 msgid "Error! Could not save your changes."
 msgstr ""
@@ -679,7 +680,7 @@ msgstr ""
 #: system/Groups/lib/Groups/Api/User.php:401
 #: system/Theme/lib/Theme/Api/Admin.php:307
 #: system/SecurityCenter/lib/SecurityCenter/Api/Admin.php:43
-#: system/Admin/lib/Admin/Ajax.php:138 system/Admin/lib/Admin/Api/Admin.php:94
+#: system/Admin/lib/Admin/Ajax.php:133 system/Admin/lib/Admin/Api/Admin.php:94
 #: system/Admin/lib/Admin/Api/Admin.php:99
 msgid "Error! Could not perform the deletion."
 msgstr ""
@@ -697,7 +698,7 @@ msgstr ""
 #: system/Groups/lib/Groups/Api/User.php:347
 #: system/Groups/lib/Groups/Api/User.php:539
 #: system/Groups/lib/Groups/Api/User.php:589
-#: system/Theme/lib/Theme/Admin.php:879
+#: system/Theme/lib/Theme/Admin.php:881
 #: system/Theme/lib/Theme/Api/Admin.php:291
 #: system/Theme/lib/Theme/Api/Admin.php:456
 #: system/Categories/lib/Categories/Admin.php:98
@@ -736,7 +737,7 @@ msgstr ""
 
 #: system/Blocks/version.php:17
 #: system/Blocks/templates/blocks_admin_menu.tpl:3
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:13
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:19
 msgid "Blocks manager"
 msgstr ""
 
@@ -768,9 +769,6 @@ msgid "Main menu"
 msgstr ""
 
 #: system/Blocks/Installer.php:130
-#: themes/andreas08/templates/modules/home.tpl:22
-#: themes/andreas08/templates/modules/admin.tpl:22
-#: themes/andreas08/templates/master.tpl:22
 #: themes/SeaBreeze/templates/includes/userheader.tpl:10
 #: themes/SeaBreeze/templates/includes/adminheader.tpl:10
 msgid "Home"
@@ -781,7 +779,7 @@ msgid "Go to the site's home page"
 msgstr ""
 
 #: system/Blocks/Installer.php:131
-#: system/Admin/templates/admin_admin_categorymenu.tpl:15
+#: system/Admin/templates/admin_admin_categorymenu.tpl:14
 msgid "Administration"
 msgstr ""
 
@@ -875,8 +873,8 @@ msgstr ""
 msgid "Done! Decremented permission rule."
 msgstr ""
 
-#: system/Permissions/lib/Permissions/Admin.php:335 lib/util/HtmlUtil.php:513
-#: lib/util/HtmlUtil.php:536
+#: system/Permissions/lib/Permissions/Admin.php:335 lib/util/HtmlUtil.php:514
+#: lib/util/HtmlUtil.php:537
 #: system/Permissions/templates/permissions_admin_view.tpl:25
 #: system/Permissions/templates/permissions_admin_view.tpl:50
 #: system/Users/templates/users_admin_modify.tpl:32
@@ -1055,8 +1053,8 @@ msgstr ""
 #: system/Groups/lib/Groups/Admin.php:177
 #: system/Groups/lib/Groups/Admin.php:282 system/Groups/lib/Groups/Ajax.php:81
 #: system/Groups/lib/Groups/Ajax.php:117 system/Groups/lib/Groups/User.php:86
-#: system/Groups/lib/Groups/User.php:262 lib/util/HtmlUtil.php:515
-#: lib/util/HtmlUtil.php:538
+#: system/Groups/lib/Groups/User.php:262 lib/util/HtmlUtil.php:516
+#: lib/util/HtmlUtil.php:539
 msgid "Public"
 msgstr ""
 
@@ -1064,8 +1062,8 @@ msgstr ""
 #: system/Groups/lib/Groups/Admin.php:178
 #: system/Groups/lib/Groups/Admin.php:283 system/Groups/lib/Groups/Ajax.php:82
 #: system/Groups/lib/Groups/Ajax.php:118 system/Groups/lib/Groups/User.php:87
-#: system/Groups/lib/Groups/User.php:263 lib/util/HtmlUtil.php:512
-#: lib/util/HtmlUtil.php:535
+#: system/Groups/lib/Groups/User.php:263 lib/util/HtmlUtil.php:513
+#: lib/util/HtmlUtil.php:536
 msgid "Private"
 msgstr ""
 
@@ -1225,14 +1223,14 @@ msgstr ""
 #: system/Modules/lib/Modules/Api/Admin.php:741
 #: system/Modules/lib/Modules/Api/Admin.php:820
 #: system/Modules/lib/Modules/Api/Admin.php:1187
-#: system/Users/lib/Users/Api/Registration.php:826
-#: system/Users/lib/Users/Api/Registration.php:948
+#: system/Users/lib/Users/Api/Registration.php:871
+#: system/Users/lib/Users/Api/Registration.php:995
 #: system/Users/lib/Users/Api/User.php:94
 #: system/Users/lib/Users/Api/User.php:130
 #: system/Users/lib/Users/Api/User.php:168
 #: system/Users/lib/Users/Api/User.php:210
 #: system/SecurityCenter/lib/SecurityCenter/Api/User.php:60
-#: lib/util/UserUtil.php:787
+#: lib/util/UserUtil.php:828
 #: system/Groups/templates/groups_admin_userpending.tpl:8
 #: system/Groups/templates/groups_user_membership.tpl:11
 #: system/Users/templates/users_admin_pendingaction.tpl:15
@@ -1258,7 +1256,7 @@ msgstr ""
 #: system/Groups/templates/groups_user_menu.tpl:2
 #: system/Groups/templates/groups_user_view.tpl:4
 #: system/Groups/templates/groups_admin_menu.tpl:4
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:15
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:25
 msgid "Groups manager"
 msgstr ""
 
@@ -1274,7 +1272,6 @@ msgid ""
 msgstr ""
 
 #: system/Groups/lib/Groups/Api/User.php:480
-#: themes/rss/templates/master.htm:15 themes/rss/templates/master.htm:16
 msgid "Administrator"
 msgstr ""
 
@@ -1349,8 +1346,8 @@ msgid "groups"
 msgstr ""
 
 #: system/Groups/Installer.php:101 system/Categories/Installer.php:438
-#: system/Admin/Installer.php:122 install/functions.php:496
-#: install/functions.php:497 install/functions.php:499
+#: system/Admin/Installer.php:122 install/functions.php:506
+#: install/functions.php:507 install/functions.php:509
 msgid "Users"
 msgstr ""
 
@@ -1387,76 +1384,76 @@ msgstr ""
 msgid "Done! Theme %s created."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:352 system/Theme/lib/Theme/Admin.php:460
-#: system/Theme/lib/Theme/Admin.php:684 system/Theme/lib/Theme/Admin.php:859
+#: system/Theme/lib/Theme/Admin.php:354 system/Theme/lib/Theme/Admin.php:462
+#: system/Theme/lib/Theme/Admin.php:686 system/Theme/lib/Theme/Admin.php:861
 msgid "Done! Saved your changes."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:452
+#: system/Theme/lib/Theme/Admin.php:454
 msgid ""
 "Notice: Please make sure you type an entry in every field. Your palette "
 "cannot be saved if you do not."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:715
+#: system/Theme/lib/Theme/Admin.php:717
 #, php-format
 msgid "Error! Removed unknown '%1$s': '%2$s'."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:763
+#: system/Theme/lib/Theme/Admin.php:765
 msgid "Error! No such page configuration assignment found."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:913 system/Theme/lib/Theme/Admin.php:1051
+#: system/Theme/lib/Theme/Admin.php:915 system/Theme/lib/Theme/Admin.php:1053
 #: system/SecurityCenter/lib/SecurityCenter/Admin.php:89
 msgid "Done! Deleted it."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:994
+#: system/Theme/lib/Theme/Admin.php:996
 msgid "Done! Changed default theme."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1018
+#: system/Theme/lib/Theme/Admin.php:1020
 msgid "Sorry! No such theme found."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1212
+#: system/Theme/lib/Theme/Admin.php:1214
 msgid "Done! Deleted theme engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1214
+#: system/Theme/lib/Theme/Admin.php:1216
 msgid "Error! Failed to clear theme engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1242
+#: system/Theme/lib/Theme/Admin.php:1244
 msgid "Done! Deleted theme engine cached templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1244
+#: system/Theme/lib/Theme/Admin.php:1246
 msgid "Error! Failed to clear theme engine cached templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1271
+#: system/Theme/lib/Theme/Admin.php:1273
 msgid "Done! Deleted CSS/JS combination cached files."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1296
+#: system/Theme/lib/Theme/Admin.php:1298
 msgid "Done! Deleted rendering engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1298
+#: system/Theme/lib/Theme/Admin.php:1300
 msgid "Error! Failed to clear rendering engine compiled templates."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1325
+#: system/Theme/lib/Theme/Admin.php:1327
 msgid "Done! Deleted rendering engine cached pages."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1327
+#: system/Theme/lib/Theme/Admin.php:1329
 msgid "Error! Failed to clear rendering engine cached pages."
 msgstr ""
 
-#: system/Theme/lib/Theme/Admin.php:1348
+#: system/Theme/lib/Theme/Admin.php:1350
 msgid "Done! Cleared all cache and compile directories."
 msgstr ""
 
@@ -1558,9 +1555,9 @@ msgid "Done! Theme has been reset to the default site theme."
 msgstr ""
 
 #: system/Theme/version.php:18
-#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:29
+#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:31
 #: system/Theme/templates/theme_admin_menu.tpl:3
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:17
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:31
 msgid "Themes manager"
 msgstr ""
 
@@ -1759,7 +1756,7 @@ msgstr ""
 
 #: system/Modules/lib/Modules/Admin.php:382
 #: system/Modules/lib/Modules/Admin.php:1192
-#: system/Users/lib/Users/Admin.php:382 system/Categories/Installer.php:391
+#: system/Users/lib/Users/Admin.php:373 system/Categories/Installer.php:391
 #: lib/render/plugins/modifier.activeinactive.php:34
 #: system/Blocks/templates/blocks_admin_view.tpl:32
 #: system/Blocks/templates/blocks_admin_view.tpl:89
@@ -1781,13 +1778,13 @@ msgstr ""
 
 #: system/Modules/lib/Modules/Admin.php:386
 #: system/Modules/lib/Modules/Admin.php:1166
-#: system/Users/lib/Users/Admin.php:370 system/Categories/Installer.php:379
+#: system/Users/lib/Users/Admin.php:361 system/Categories/Installer.php:379
 #: lib/render/plugins/modifier.activeinactive.php:32
 #: system/Blocks/templates/blocks_admin_view.tpl:31
 #: system/Blocks/templates/blocks_admin_view.tpl:85
 #: system/Blocks/templates/blocks_admin_view.tpl:86
 #: system/Blocks/templates/blocks_admin_view.tpl:138
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:54
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:53
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:45
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:46
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:47
@@ -1799,7 +1796,7 @@ msgstr ""
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:47
 #: system/Modules/templates/modules_admin_view.tpl:25
 #: system/Users/templates/users_admin_modify.tpl:75
-#: system/Categories/templates/categories_user_edit.tpl:99
+#: system/Categories/templates/categories_user_edit.tpl:73
 #: system/Categories/templates/categories_user_list.tpl:9
 #: system/Categories/templates/categories_admin_edit.tpl:59
 msgid "Active"
@@ -1823,7 +1820,7 @@ msgstr ""
 
 #: system/Modules/lib/Modules/Admin.php:402
 #: system/Modules/templates/modules_admin_view.tpl:29
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:35
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:35
 msgid "Not allowed"
 msgstr ""
 
@@ -1929,6 +1926,15 @@ msgstr ""
 msgid "Done! Upgraded plugin."
 msgstr ""
 
+#: system/Modules/lib/Modules/Plugin.php:64
+msgid "Invalid plugin type"
+msgstr ""
+
+#: system/Modules/lib/Modules/Plugin.php:73
+#, php-format
+msgid "Plugin \"%s\" is not installed"
+msgstr ""
+
 #: system/Modules/lib/Modules/Api/Admin.php:55
 msgid ""
 "Error! Could not save the module URL information. A duplicate module URL was "
@@ -2002,7 +2008,7 @@ msgstr ""
 #: system/Modules/version.php:19 system/Modules/Installer.php:111
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:9
 #: system/Modules/templates/modules_admin_menu.tpl:3
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:12
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:16
 msgid "Modules manager"
 msgstr ""
 
@@ -2020,12 +2026,9 @@ msgstr ""
 #: system/Search/lib/Search/Block/Search.php:35
 #: system/Search/lib/Search/Block/Search.php:74
 #: system/Users/templates/users_admin_search.tpl:45
-#: system/Users/templates/users_admin_view.tpl:11
+#: system/Users/templates/users_admin_view.tpl:12
 #: system/Errors/templates/errors_user_404.tpl:15
-#: themes/andreas08/templates/modules/home.tpl:23
-#: themes/andreas08/templates/modules/admin.tpl:23
-#: themes/andreas08/templates/master.tpl:23
-#: themes/SeaBreeze/templates/includes/userheader.tpl:16
+#: themes/SeaBreeze/templates/includes/userheader.tpl:20
 msgid "Search"
 msgstr ""
 
@@ -2073,369 +2076,408 @@ msgstr ""
 msgid "Sorry! New user registration is currently disabled."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:116 system/Users/lib/Users/User.php:176
-msgid ""
-"We will begin accepting new registrations again as quickly as possible. "
-"Please check back with us soon!"
-msgstr ""
-
-#: system/Users/lib/Users/Admin.php:173
+#: system/Users/lib/Users/Admin.php:165
 msgid "(Password provided by site administrator)"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:219 system/Users/lib/Users/User.php:279
+#: system/Users/lib/Users/Admin.php:211 system/Users/lib/Users/User.php:283
 msgid "Done! Created new user account."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:221 system/Users/lib/Users/User.php:281
+#: system/Users/lib/Users/Admin.php:213 system/Users/lib/Users/User.php:285
 msgid "Done! Created new registration application."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:223 system/Users/lib/Users/User.php:283
-msgid ""
-"Internal Warning! Unknown return type from "
-"Users_Api_Registration#registerUser()."
-msgstr ""
-
-#: system/Users/lib/Users/Admin.php:224 system/Users/lib/Users/User.php:284
+#: system/Users/lib/Users/Admin.php:215 system/Users/lib/Users/User.php:288
 msgid ""
 "Warning! New user information has been saved, however there may have been an "
 "issue saving it properly. Please check with a site administrator before re-"
 "registering."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:227 system/Users/lib/Users/User.php:287
+#: system/Users/lib/Users/Admin.php:218 system/Users/lib/Users/User.php:291
 msgid ""
 "Error! Could not create the new user account or registration application. "
 "Please check with a site administrator before re-registering."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:301
+#: system/Users/lib/Users/Admin.php:292
 msgid "View the profile"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:306
+#: system/Users/lib/Users/Admin.php:297
 #: system/Users/templates/users_admin_modify.tpl:101
 msgid "Send user name"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:310
+#: system/Users/lib/Users/Admin.php:301
 #: system/Users/templates/users_admin_modify.tpl:102
 msgid "Send password recovery code"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:343 system/Users/lib/Users/Admin.php:351
+#: system/Users/lib/Users/Admin.php:334 system/Users/lib/Users/Admin.php:342
 msgid "%m-%d-%Y"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:373
+#: system/Users/lib/Users/Admin.php:364
 msgid "Inactive until Legal terms accepted"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:376
+#: system/Users/lib/Users/Admin.php:367
 msgid "Inactive until changing password"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:379
+#: system/Users/lib/Users/Admin.php:370
 msgid "Inactive until change password and accept legal terms"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:467
+#: system/Users/lib/Users/Admin.php:458
 msgid "Sorry! No matching users found."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:541
+#: system/Users/lib/Users/Admin.php:532
 msgid "Done! Saved user's account information."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:556
+#: system/Users/lib/Users/Admin.php:547
 msgid "Done! Deleted user account."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:565
+#: system/Users/lib/Users/Admin.php:556
 msgid ""
 "Error! One or more information items needed to send an e-mail message are "
 "missing."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:593 system/Users/lib/Users/Admin.php:613
+#: system/Users/lib/Users/Admin.php:584 system/Users/lib/Users/Admin.php:604
 msgid "Error! Could not send the e-mail message."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:620
+#: system/Users/lib/Users/Admin.php:611
 #, php-format
 msgid "Done! %1$c e-mail message has been sent to %2$c user."
 msgid_plural "Done! %1$c e-mail messages have been sent to %2$c users."
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Users/lib/Users/Admin.php:628
+#: system/Users/lib/Users/Admin.php:619
 msgid "Error! No users were selected."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:662 system/Users/lib/Users/Admin.php:680
-#: system/Users/lib/Users/Admin.php:838 system/Users/lib/Users/Admin.php:856
+#: system/Users/lib/Users/Admin.php:653 system/Users/lib/Users/Admin.php:671
+#: system/Users/lib/Users/Admin.php:829 system/Users/lib/Users/Admin.php:847
 msgid "Sorry! No such user found."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:673
+#: system/Users/lib/Users/Admin.php:664
 msgid "Error! You can't edit the guest account."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:751 system/Users/lib/Users/Admin.php:790
+#: system/Users/lib/Users/Admin.php:742 system/Users/lib/Users/Admin.php:781
 msgid "Sorry! Unable to retrieve information for that user id."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:765 system/Users/lib/Users/Admin.php:804
-#: system/Users/lib/Users/User.php:359
+#: system/Users/lib/Users/Admin.php:756 system/Users/lib/Users/User.php:363
 #, php-format
 msgid "Done! The user name for %s has been sent via e-mail."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:849
+#: system/Users/lib/Users/Admin.php:795
+#, php-format
+msgid ""
+"Done! The password recovery verification code for %s has been sent via e-"
+"mail."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:840
 msgid "Error! You can't delete the guest account."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1042
+#: system/Users/lib/Users/Admin.php:1033
 msgid "An error occurred while trying to retrieve the registration records."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1094
+#: system/Users/lib/Users/Admin.php:1085
 msgid ""
 "Unable to retrieve registration record. The record with the specified id "
 "might not exist, or you might not have permission to access that record."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1137
+#: system/Users/lib/Users/Admin.php:1128
 msgid "Error! Invalid registration id."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1144
+#: system/Users/lib/Users/Admin.php:1135
 msgid "Error! Unable to load registration record."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1154
+#: system/Users/lib/Users/Admin.php:1145
 msgid ""
 "Error! Invalid registration id, or invalid arguments returned after "
 "validation."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1245
+#: system/Users/lib/Users/Admin.php:1236
 msgid "Done! Updated registration."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1247
+#: system/Users/lib/Users/Admin.php:1238
 msgid "Error! Could not update the registration."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1276 system/Users/lib/Users/Admin.php:1363
-#: system/Users/lib/Users/Admin.php:1457
-#: system/Users/lib/Users/Api/Registration.php:1136
-#: system/Users/lib/Users/Api/Registration.php:1228
-#: system/Users/lib/Users/Api/Registration.php:1294
+#: system/Users/lib/Users/Admin.php:1267 system/Users/lib/Users/Admin.php:1354
+#: system/Users/lib/Users/Admin.php:1448
+#: system/Users/lib/Users/Api/Registration.php:1182
+#: system/Users/lib/Users/Api/Registration.php:1274
+#: system/Users/lib/Users/Api/Registration.php:1340
 #, php-format
 msgid "Error! Unable to retrieve registration record with id '%1$s'"
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1289
+#: system/Users/lib/Users/Admin.php:1280
 #, php-format
 msgid ""
 "Error! A verification code cannot be sent for the registration record with "
 "id '%1$s'. It is already verified."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1294
+#: system/Users/lib/Users/Admin.php:1285
 #, php-format
 msgid ""
 "Error! A verification code cannot be sent for the registration record with "
 "id '%1$s'. It must first be approved."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1331
+#: system/Users/lib/Users/Admin.php:1322
 #, php-format
 msgid "Sorry! There was a problem sending a verification code to '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1333
+#: system/Users/lib/Users/Admin.php:1324
 #, php-format
 msgid "Done! Verification code sent to '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1376
+#: system/Users/lib/Users/Admin.php:1367
 #, php-format
 msgid ""
 "Warning! Nothing to do! The registration record with id '%1$s' is already "
 "approved."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1381
+#: system/Users/lib/Users/Admin.php:1372
 #, php-format
 msgid ""
 "Error! The registration record with id '%1$s' cannot be approved. The "
 "registration's e-mail address must first be verified."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1386
+#: system/Users/lib/Users/Admin.php:1377
 #, php-format
 msgid ""
 "Error! E-mail verification cannot be skipped for '%1$s'. The user must "
 "establish a password as part of the verification process."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1423
+#: system/Users/lib/Users/Admin.php:1414
 #, php-format
 msgid "Sorry! There was a problem approving the registration for '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1426
+#: system/Users/lib/Users/Admin.php:1417
 #, php-format
 msgid ""
 "Done! The registration for '%1$s' has been approved and a new user account "
 "has been created."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1428
+#: system/Users/lib/Users/Admin.php:1419
 #, php-format
 msgid ""
 "Done! The registration for '%1$s' has been approved and is awaiting e-mail "
 "verification."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1500
+#: system/Users/lib/Users/Admin.php:1491
 #, php-format
 msgid "Sorry! There was a problem deleting the registration for '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1517
+#: system/Users/lib/Users/Admin.php:1508
 #, php-format
 msgid "Done! The registration for '%1$s' has been denied and deleted."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1674
+#: system/Users/lib/Users/Admin.php:1579
+msgid "You must provide a display name for anonymous users."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1585
+msgid ""
+"The number of items displayed per page must be a positive integer, or -1 to "
+"display all items."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1589
+msgid "You must provide a path to user's avatar images."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1593
+msgid "You must provide a file name for the default gravatar image."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1597
+msgid "You must provide a path to account page images."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1603
+msgid "The number of links per account page must be a positive integer."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1609
+msgid "The number of links per account page row must be a positive integer."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1615
+msgid "The minimum password length must be a positive integer."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1621
+msgid ""
+"The minimum age permitted to register must be zero (0) or a positive integer."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1626
+msgid ""
+"If a spam protection question is provided, then the corresponding answer "
+"must also be provided."
+msgstr ""
+
+#: system/Users/lib/Users/Admin.php:1735
 msgid "Done! Users imported successfully."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1859
+#: system/Users/lib/Users/Admin.php:1920
 msgid "Error! You have not chosen any file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1864
+#: system/Users/lib/Users/Admin.php:1925
 msgid ""
 "Error! The file extension is incorrect. The only allowed extension is csv."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1869
+#: system/Users/lib/Users/Admin.php:1930
 msgid "Error! It has not been possible to read the import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1882
+#: system/Users/lib/Users/Admin.php:1943
 #, php-format
 msgid ""
 "Error! The import file does not have the expected field %s in the first row. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1894
+#: system/Users/lib/Users/Admin.php:1955
 #, php-format
 msgid ""
 "Error! The number of parameters in line %s is not correct. Please check your "
 "import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1902
+#: system/Users/lib/Users/Admin.php:1963
 #, php-format
 msgid ""
 "Sorry! The user name is not valid in line %s. The user name is mandatory and "
 "the maximum length is 25 characters. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1911
+#: system/Users/lib/Users/Admin.php:1972
 #, php-format
 msgid ""
 "Sorry! The user name %1$s is reserved and cannot be registered in line %2$s. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1917
+#: system/Users/lib/Users/Admin.php:1978
 #, php-format
 msgid ""
 "Sorry! The user name %1$s cannot contain spaces in line %2$s. Please check "
 "your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1922
+#: system/Users/lib/Users/Admin.php:1983
 #, php-format
 msgid ""
 "Sorry! The user name %1$s is repeated in line %2$s, and it cannot be used "
 "twice for creating accounts. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1930
+#: system/Users/lib/Users/Admin.php:1991
 #, php-format
 msgid ""
 "Sorry! You did not provide a password in line %s. Please check your import "
 "file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1935
+#: system/Users/lib/Users/Admin.php:1996
 #, php-format
 msgid ""
 "Sorry! The password must be at least %1$s characters long in line %2$s. "
 "Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1941
+#: system/Users/lib/Users/Admin.php:2002
 #, php-format
 msgid ""
 "Sorry! You did not provide a email in line %s. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1946
+#: system/Users/lib/Users/Admin.php:2007
 #, php-format
 msgid ""
 "Sorry! The e-mail address you entered was incorrectly formatted or is "
 "unacceptable for other reasons in line %s. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1952
+#: system/Users/lib/Users/Admin.php:2013
 #, php-format
 msgid ""
 "Sorry! The %1$s e-mail address is repeated in line %2$s, and it cannot be "
 "used twice for creating accounts. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1979
+#: system/Users/lib/Users/Admin.php:2040
 #, php-format
 msgid ""
 "Sorry! The identity of the group %1$s is not not valid in line %2$s. Perhaps "
 "it do not exist. Please check your import file."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1988
+#: system/Users/lib/Users/Admin.php:2049
 msgid "Error! The import file does not have values."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1996
+#: system/Users/lib/Users/Admin.php:2057
 msgid "Error! Trying to read the existing user names in database."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:1999
+#: system/Users/lib/Users/Admin.php:2060
 msgid ""
 "Sorry! One or more user names really exist in database. The user names must "
 "be uniques."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:2009
+#: system/Users/lib/Users/Admin.php:2070
 msgid "Error! Trying to read the existing users' email addressess in database."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:2012
+#: system/Users/lib/Users/Admin.php:2073
 msgid ""
 "Sorry! One or more users' email addresses exist in the database. Each user's "
 "e-mail address must be unique."
 msgstr ""
 
-#: system/Users/lib/Users/Admin.php:2019
+#: system/Users/lib/Users/Admin.php:2080
 msgid "Error! The creation of users has failed."
 msgstr ""
 
@@ -2457,8 +2499,8 @@ msgstr ""
 msgid "Log-in block"
 msgstr ""
 
-#: system/Users/lib/Users/Block/User.php:41 lib/util/HtmlUtil.php:514
-#: lib/util/HtmlUtil.php:537
+#: system/Users/lib/Users/Block/User.php:41 lib/util/HtmlUtil.php:515
+#: lib/util/HtmlUtil.php:538
 msgid "User"
 msgstr ""
 
@@ -2483,7 +2525,7 @@ msgid ""
 msgstr ""
 
 #: system/Users/lib/Users/Api/Admin.php:156
-#: system/Users/lib/Users/Api/Registration.php:72
+#: system/Users/lib/Users/Api/Registration.php:79
 #, php-format
 msgid "Your password must be at least %s character long"
 msgid_plural "Your password must be at least %s characters long"
@@ -2563,106 +2605,123 @@ msgstr ""
 msgid "Done! Users exported successfully."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:69
+#: system/Users/lib/Users/Api/Registration.php:76
 msgid "Please enter a password."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:78
+#: system/Users/lib/Users/Api/Registration.php:85
+msgid ""
+"The password cannot be the same as the user name. Please choose a different "
+"password."
+msgstr ""
+
+#: system/Users/lib/Users/Api/Registration.php:87
 msgid ""
 "You did not enter the same password in each password field. Please enter the "
 "same password once in each password field (this is required for "
 "verification)."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:84
+#: system/Users/lib/Users/Api/Registration.php:93
 msgid "Please enter a password reminder."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:90
+#: system/Users/lib/Users/Api/Registration.php:99
 msgid "You cannot include your password in your password reminder."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:99
+#: system/Users/lib/Users/Api/Registration.php:108
 msgid "Your password reminder is too similar to your password."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:142
+#: system/Users/lib/Users/Api/Registration.php:151
 msgid "You must provide an e-mail address."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:144
+#: system/Users/lib/Users/Api/Registration.php:153
+#: system/Users/lib/Users/Api/Registration.php:173
 msgid ""
 "The e-mail address you entered was incorrectly formatted or is unacceptable "
 "for other reasons."
 msgstr ""
 
 #: system/Users/lib/Users/Api/Registration.php:167
+msgid "Sorry! The domain of the e-mail address you specified is banned."
+msgstr ""
+
+#: system/Users/lib/Users/Api/Registration.php:199
 msgid "The e-mail address you entered has already been registered."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:170
+#: system/Users/lib/Users/Api/Registration.php:206
+msgid ""
+"You did not repeat the e-mail address for verification. Please enter the "
+"same e-mail address once in each field."
+msgstr ""
+
+#: system/Users/lib/Users/Api/Registration.php:209
 msgid ""
 "You did not enter the same e-mail address in each e-mail address field. "
 "Please enter the same e-mail address once in each field (this is required "
 "for verification)."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:201
+#: system/Users/lib/Users/Api/Registration.php:240
 msgid "Internal Error! Missing required parameter."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:221
+#: system/Users/lib/Users/Api/Registration.php:260
 msgid "You must provide a user name."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:223
+#: system/Users/lib/Users/Api/Registration.php:262
 msgid "A user name cannot contain any space characters."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:225
+#: system/Users/lib/Users/Api/Registration.php:264
 msgid ""
 "The user name you entered is too long. The maximum length is 25 characters."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:227
+#: system/Users/lib/Users/Api/Registration.php:266
 msgid "The user name you entered contains unacceptable characters."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:238
+#: system/Users/lib/Users/Api/Registration.php:277
 msgid "The user name you entered is a reserved name."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:258
+#: system/Users/lib/Users/Api/Registration.php:297
 msgid "The user name you entered has already been registered."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:278
+#: system/Users/lib/Users/Api/Registration.php:317
 msgid "Internal Error! System-generated passwords are no longer supported!"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:299
+#: system/Users/lib/Users/Api/Registration.php:337
 msgid ""
 "The registration record must indicate whether the user agreed to the terms "
 "of use or privacy policy or not."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:302
+#: system/Users/lib/Users/Api/Registration.php:340
 msgid ""
 "You must agree to our terms of use and privacy policy before you can "
 "register a new account."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:304
+#: system/Users/lib/Users/Api/Registration.php:342
 msgid ""
 "You must agree to our terms of use before you can register a new account."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:306
+#: system/Users/lib/Users/Api/Registration.php:344
 msgid ""
 "You must agree to our privacy policy before you can register a new account."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:329
+#: system/Users/lib/Users/Api/Registration.php:367
 #, php-format
 msgid ""
 "You must provide a value for the '%s' field in the 'Personal info' section."
@@ -2672,121 +2731,121 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Users/lib/Users/Api/Registration.php:336
+#: system/Users/lib/Users/Api/Registration.php:374
 msgid ""
 "Internal Error! The profile properties field(s) on the form are not "
 "constructed properly!"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:345
+#: system/Users/lib/Users/Api/Registration.php:383
 msgid "You gave the wrong answer to the anti-spam registration question."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:387
+#: system/Users/lib/Users/Api/Registration.php:425
 msgid "New user registration is currently disabled."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:562
+#: system/Users/lib/Users/Api/Registration.php:597
 msgid ""
 "Warning! The verification code for the new registration could not be sent."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:587
-#: system/Users/lib/Users/Api/Registration.php:760
+#: system/Users/lib/Users/Api/Registration.php:622
+#: system/Users/lib/Users/Api/Registration.php:794
 msgid "Unable to store the new user registration record."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:693
-#: system/Users/lib/Users/Api/Registration.php:697
+#: system/Users/lib/Users/Api/Registration.php:727
+#: system/Users/lib/Users/Api/Registration.php:731
 msgid ""
 "Warning! The user account was created, but there was a problem granting "
 "access to the account."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:718
+#: system/Users/lib/Users/Api/Registration.php:752
 msgid ""
 "Warning! The new user was created, but the additional profile module "
 "properties were not saved."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:747
+#: system/Users/lib/Users/Api/Registration.php:781
 #, php-format
 msgid "New registration: %s"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1027
+#: system/Users/lib/Users/Api/Registration.php:1073
 #, php-format
 msgid ""
 "Error! Unable to update registration with id '%1$s'. That record does not "
 "exist."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1047
+#: system/Users/lib/Users/Api/Registration.php:1093
 #, php-format
 msgid "Sorry! There was an error updating the registration with id '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1128
-#: system/Users/lib/Users/Api/Registration.php:1220
-#: system/Users/lib/Users/Api/Registration.php:1286
+#: system/Users/lib/Users/Api/Registration.php:1174
+#: system/Users/lib/Users/Api/Registration.php:1266
+#: system/Users/lib/Users/Api/Registration.php:1332
 msgid "Error! Invalid registration record."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1156
+#: system/Users/lib/Users/Api/Registration.php:1202
 #, php-format
 msgid ""
 "Error! A verification code cannot be sent for the registration record for '%1"
 "$s'. It is already verified."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1158
+#: system/Users/lib/Users/Api/Registration.php:1204
 #, php-format
 msgid ""
 "Error! A verification code cannot be sent for the registration record for '%1"
 "$s'. It must first be approved."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1175
+#: system/Users/lib/Users/Api/Registration.php:1221
 #, php-format
 msgid ""
 "Error! Unable to save the verification code for the registration for '%1$s'."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1248
-#: system/Users/lib/Users/Api/Registration.php:1318
+#: system/Users/lib/Users/Api/Registration.php:1294
+#: system/Users/lib/Users/Api/Registration.php:1364
 #, php-format
 msgid ""
 "Warning! There was an error removing the registration for '%1$s' from the "
 "database."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1253
+#: system/Users/lib/Users/Api/Registration.php:1299
 msgid ""
 "Sorry! There was an error while creating a new user account from your "
 "registration. Please contact an administrator."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1259
+#: system/Users/lib/Users/Api/Registration.php:1305
 msgid ""
 "Sorry! There was an error while marking your registration as approved. "
 "Please contact an administrator."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1323
+#: system/Users/lib/Users/Api/Registration.php:1369
 #, php-format
 msgid ""
 "Sorry! There was an error while creating a new user account. The "
 "registration for '%1$s' has been restored."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1325
+#: system/Users/lib/Users/Api/Registration.php:1371
 #, php-format
 msgid ""
 "Sorry! The registration for '%1$s' has been marked as approved, however "
 "there was an error while creating a new user account."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Registration.php:1332
+#: system/Users/lib/Users/Api/Registration.php:1378
 #, php-format
 msgid ""
 "Sorry! Unable to approve the registration for '%1$s'. There was an error "
@@ -2821,48 +2880,42 @@ msgstr ""
 msgid "Language switcher"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Auth.php:182
-msgid "an e-mail address"
-msgstr ""
-
-#: system/Users/lib/Users/Api/Auth.php:184
-msgid "a user name"
-msgstr ""
-
-#: system/Users/lib/Users/Api/Auth.php:188
-#, php-format
-msgid "Sorry! You must provide %s."
-msgstr ""
-
-#: system/Users/lib/Users/Api/Auth.php:210
-#: system/Users/lib/Users/Api/Auth.php:298
-msgid "e-mail address"
-msgstr ""
-
-#: system/Users/lib/Users/Api/Auth.php:212
-#: system/Users/lib/Users/Api/Auth.php:300
-msgid "user name"
-msgstr ""
-
-#: system/Users/lib/Users/Api/Auth.php:214
-#: system/Users/lib/Users/Api/Auth.php:302
+#: system/Users/lib/Users/Api/Auth.php:79
+#: system/Users/lib/Users/Api/Auth.php:122
 #, php-format
 msgid ""
 "Sorry! That %1$s is not registered with us, or the %1$s and password do not "
 "match our records."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Auth.php:262
-msgid "Sorry! Invalid password!"
+#: system/Users/lib/Users/Api/Auth.php:118
+msgid "e-mail address"
 msgstr ""
 
-#: system/Users/lib/Users/Api/Auth.php:315
+#: system/Users/lib/Users/Api/Auth.php:120
+msgid "user name"
+msgstr ""
+
+#: system/Users/lib/Users/Api/Auth.php:134
 msgid ""
 "Internal Error! Unable to update the user's password with the new hashing "
 "method and/or salt."
 msgstr ""
 
-#: system/Users/lib/Users/Api/Auth.php:367
+#: system/Users/lib/Users/Api/Auth.php:240
+msgid "an e-mail address"
+msgstr ""
+
+#: system/Users/lib/Users/Api/Auth.php:242
+msgid "a user name"
+msgstr ""
+
+#: system/Users/lib/Users/Api/Auth.php:246
+#, php-format
+msgid "Sorry! You must provide %s."
+msgstr ""
+
+#: system/Users/lib/Users/Api/Auth.php:397
 msgid "Error! No such user registered with this authentication method."
 msgstr ""
 
@@ -2931,7 +2984,7 @@ msgstr ""
 #: system/Theme/templates/system/siteoff.tpl:49
 #: system/Users/templates/users_user_view.tpl:6
 #: system/Users/templates/users_block_login.tpl:21
-#: system/Users/templates/users_user_loginscreen.tpl:96
+#: system/Users/templates/users_user_loginscreen.tpl:112
 msgid "Log in"
 msgstr ""
 
@@ -2968,281 +3021,271 @@ msgstr ""
 #: install/templates/installer_login.tpl:20
 #: install/templates/installer_createadmin.tpl:25
 #: system/Theme/templates/system/siteoff.tpl:47
-#: system/Users/templates/users_userapi_welcomeemail.txt:11
 #: system/Users/templates/users_admin_modify.tpl:57
 #: system/Users/templates/users_user_passwordreminder.tpl:43
+#: system/Users/templates/users_email_welcome_html.tpl:11
+#: system/Users/templates/users_email_welcome_txt.tpl:11
 #: system/Users/templates/users_admin_newuser.tpl:52
 #: system/Users/templates/users_user_register.tpl:63
 #: system/Users/templates/users_block_login.tpl:15
 #: system/Users/templates/users_admin_includeregistration.tpl:30
 #: system/Users/templates/users_user_verifyregistration.tpl:37
-#: system/Users/templates/users_userapi_welcomeemail.tpl:11
 msgid "Password"
 msgstr ""
 
-#: system/Users/lib/Users/User.php:136
+#: system/Users/lib/Users/User.php:137
 #, php-format
 msgid "Sorry! You must be %s or over to register for a user account here."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:160
+#: system/Users/lib/Users/User.php:161
 msgid "Sorry! The user agent specified is banned."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:346
+#: system/Users/lib/Users/User.php:180
+msgid ""
+"We will begin accepting new registrations again as quickly as possible. "
+"Please check back with us soon!"
+msgstr ""
+
+#: system/Users/lib/Users/User.php:287
+msgid ""
+"Internal Warning! Unknown return type from "
+"Users_Api_Registration#registerUser()."
+msgstr ""
+
+#: system/Users/lib/Users/User.php:350
 msgid "Error! E-mail address field is empty."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:361
+#: system/Users/lib/Users/User.php:365
 msgid ""
 "Sorry! We are unable to send a user name reminder for that e-mail address. "
 "Please contact an administrator."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:406 system/Users/lib/Users/User.php:502
+#: system/Users/lib/Users/User.php:410 system/Users/lib/Users/User.php:506
 msgid "Error! User name and e-mail address fields are empty."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:408 system/Users/lib/Users/User.php:504
+#: system/Users/lib/Users/User.php:412 system/Users/lib/Users/User.php:508
 msgid ""
 "Error! Please enter either a user name OR an e-mail address, but not both of "
 "them."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:431
+#: system/Users/lib/Users/User.php:435
 #, php-format
 msgid "Done! The confirmation code for %s has been sent via e-mail."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:434
+#: system/Users/lib/Users/User.php:438
 msgid ""
 "Sorry! We are unable to send a password recovery code for that e-mail "
 "address. Please try your user name, or contact an administrator."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:436
+#: system/Users/lib/Users/User.php:440
 msgid ""
 "Sorry! We are unable to send a password recovery code for that user name. "
 "Please try your e-mail address, contact an administrator."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:527
+#: system/Users/lib/Users/User.php:531
 msgid "Error! The code that you've enter is invalid."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:589
+#: system/Users/lib/Users/User.php:594
 msgid ""
 "Warning! Your new password has been saved, but there was an error while "
 "trying to save your new password reminder."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:592
+#: system/Users/lib/Users/User.php:597
 msgid ""
 "Done! Your password has been reset, and you may now log in. Please keep your "
 "password in a safe place!"
 msgstr ""
 
-#: system/Users/lib/Users/User.php:596
+#: system/Users/lib/Users/User.php:601
 msgid "Error! Your new password could not be saved."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:601
+#: system/Users/lib/Users/User.php:606
 msgid "Sorry! Could not load that user account."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:649
+#: system/Users/lib/Users/User.php:656
 msgid "Error! Invalid authentication information."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:698 system/Users/lib/Users/User.php:771
-#: system/Users/lib/Users/User.php:814
+#: system/Users/lib/Users/User.php:685 system/Users/lib/Users/User.php:804
+#: system/Users/lib/Users/User.php:837 lib/util/UserUtil.php:507
+#: lib/util/UserUtil.php:528 lib/util/UserUtil.php:623
 msgid ""
 "Sorry! Either there is no active user in our system with that information, "
 "or the information you provided does not match the information for your "
 "account. Please correct your entry and try again."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:728
+#: system/Users/lib/Users/User.php:736
 msgid ""
 "Sorry! The new and the current passwords must be different. Please correct "
 "your entries and try again."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:739
+#: system/Users/lib/Users/User.php:747
 #, php-format
 msgid "Your password must be at least %s character long."
 msgid_plural "Your password must be at least %s characters long."
 msgstr[0] ""
 msgstr[1] ""
 
-#: system/Users/lib/Users/User.php:744
+#: system/Users/lib/Users/User.php:752
 msgid ""
 "Sorry! The two passwords you entered do not match. Please correct your "
 "entries and try again."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:749
+#: system/Users/lib/Users/User.php:757
 msgid "Sorry! You must provide a new password reminder word or phrase."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:765 lib/util/UserUtil.php:537
+#: system/Users/lib/Users/User.php:771 lib/util/UserUtil.php:559
 msgid ""
 "Your log-in request was not completed because you must agree to our terms, "
 "and must also change your account's password first."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:767 lib/util/UserUtil.php:539
+#: system/Users/lib/Users/User.php:773 lib/util/UserUtil.php:561
 msgid ""
 "Your log-in request was not completed because you must agree to our terms "
 "first."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:769 lib/util/UserUtil.php:565
+#: system/Users/lib/Users/User.php:775
 msgid ""
 "Your log-in request was not completed because you must change your account's "
 "password first."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:807
+#: system/Users/lib/Users/User.php:832
 msgid "You are being logged-in. Please wait..."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:819
-msgid ""
-"Note: If you have recently registered with us, then your account might be "
-"waiting for an administrator's approval, or might be waiting for you to "
-"verify your e-mail address. Please check your e-mail for a message from us "
-"with more information and instructions."
-msgstr ""
-
-#: system/Users/lib/Users/User.php:821
-msgid ""
-"Note: If you have recently registered with us, then your account might be "
-"waiting for you to verify your e-mail address. Please check your e-mail for "
-"a message from us, and verify your account before trying to log in."
-msgstr ""
-
-#: system/Users/lib/Users/User.php:823
-msgid ""
-"Note: If you have recently registered with us, then your account might be "
-"waiting for an administrator's approval. Please check your e-mail for a "
-"message from us. When you are notified that your registration has been "
-"approved, then you will be able to log in."
-msgstr ""
-
-#: system/Users/lib/Users/User.php:851
+#: system/Users/lib/Users/User.php:866
 msgid "Done! You have been logged out."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:854
+#: system/Users/lib/Users/User.php:869
 msgid "Error! You have not been logged out."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:877
+#: system/Users/lib/Users/User.php:892
 msgid "Sorry! An account cannot be verified while you are logged in."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:911
+#: system/Users/lib/Users/User.php:927
 msgid ""
 "Sorry! There was an error while trying to save your new password and "
 "reminder."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:925
+#: system/Users/lib/Users/User.php:941
 msgid ""
 "Done! Your account has been verified. You may now log in with your user name "
 "and password."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:928
+#: system/Users/lib/Users/User.php:944
 msgid ""
 "Done! Your account has been verified, and is awaiting administrator approval."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:933
+#: system/Users/lib/Users/User.php:949
 msgid ""
 "Sorry! There was an error while marking your registration as verifed. Please "
 "contact an administrator."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:940
+#: system/Users/lib/Users/User.php:956
 msgid ""
 "Sorry! The verification code you provided does not match our records. Please "
 "check the code, and also check your e-mail for a newer verification code "
 "that might have been sent."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:945
+#: system/Users/lib/Users/User.php:961
 msgid ""
 "Sorry! A registration does not exist for the user name you provided. Maybe "
 "your request has expired? Please check the user name, or contact an "
 "administrator."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:990 system/Users/lib/Users/User.php:1011
+#: system/Users/lib/Users/User.php:1006 system/Users/lib/Users/User.php:1027
 msgid ""
 "Error! Could not activate your account. Please contact the site "
 "administrator."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1013
+#: system/Users/lib/Users/User.php:1029
 msgid "Done! Account activated."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1016
+#: system/Users/lib/Users/User.php:1032
 msgid ""
 "Sorry! You entered an invalid confirmation code. Please correct your entry "
 "and try again."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1050
+#: system/Users/lib/Users/User.php:1066
 msgid "If you are not automatically re-directed then please click here."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1153
+#: system/Users/lib/Users/User.php:1169
 msgid "Done! Saved custom block."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1216
+#: system/Users/lib/Users/User.php:1229
 msgid ""
 "Sorry! The current password you entered is not correct. Please correct your "
 "entry and try again."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1238
+#: system/Users/lib/Users/User.php:1252
 msgid ""
 "Warning! Your new password was saved, however there was a problem saving "
 "your new password reminder."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1241
+#: system/Users/lib/Users/User.php:1255
 msgid "Sorry! There was a problem saving your new password."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1248
+#: system/Users/lib/Users/User.php:1262
 msgid "Done! Saved your new password."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1321
+#: system/Users/lib/Users/User.php:1335
 msgid ""
 "Error! There was a problem saving your new e-mail address or sending you a "
 "verification message."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1324
+#: system/Users/lib/Users/User.php:1338
 msgid ""
 "Done! You will receive an e-mail to your new e-mail address to confirm the "
 "change. You must follow the instructions in that message in order to verify "
 "your new address."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1373
+#: system/Users/lib/Users/User.php:1387
 msgid ""
 "Error! Your e-mail has not been found. After your request you have five days "
 "to confirm the new e-mail address."
 msgstr ""
 
-#: system/Users/lib/Users/User.php:1383
+#: system/Users/lib/Users/User.php:1397
 msgid "Done! Changed your e-mail address."
 msgstr ""
 
@@ -3470,7 +3513,7 @@ msgid ""
 "automatic creation flag (autocreate) has not been set."
 msgstr ""
 
-#: system/Categories/lib/Categories/User.php:203
+#: system/Categories/lib/Categories/User.php:204
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:117
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:123
 msgid "Default"
@@ -3506,7 +3549,7 @@ msgstr ""
 
 #: system/Categories/Installer.php:207 system/Categories/Installer.php:414
 #: system/Groups/templates/groups_user_grouprow_read.tpl:14
-#: system/Groups/templates/groups_user_memberslist.tpl:32
+#: system/Groups/templates/groups_user_memberslist.tpl:30
 msgid "Pending"
 msgstr ""
 
@@ -3545,7 +3588,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_modify.tpl:19
 #: system/Blocks/templates/blocks_admin_view.tpl:52
 #: system/Blocks/templates/blocks_admin_newblock.tpl:12
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:53
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:52
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:33
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:62
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:16
@@ -3707,8 +3750,8 @@ msgid "View IDS Log"
 msgstr ""
 
 #: system/SecurityCenter/lib/SecurityCenter/Api/Admin.php:67
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:7
 #: system/SecurityCenter/templates/securitycenter_admin_purifierconfig.tpl:14
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:7
 msgid "Allowed HTML settings"
 msgstr ""
 
@@ -3874,7 +3917,7 @@ msgid "Done! Created new category."
 msgstr ""
 
 #: system/Admin/lib/Admin/Admin.php:111 system/Admin/lib/Admin/Admin.php:186
-#: system/Admin/lib/Admin/Ajax.php:127 system/Admin/lib/Admin/Ajax.php:184
+#: system/Admin/lib/Admin/Ajax.php:123 system/Admin/lib/Admin/Ajax.php:176
 msgid "Error! No such category found."
 msgstr ""
 
@@ -3894,12 +3937,12 @@ msgstr ""
 msgid "Error! You must enter a number for the 'Modules per page' setting."
 msgstr ""
 
-#: system/Admin/lib/Admin/Admin.php:519 system/Admin/lib/Admin/Ajax.php:55
+#: system/Admin/lib/Admin/Admin.php:519 system/Admin/lib/Admin/Ajax.php:53
 msgid "Error! Could not add module to module category."
 msgstr ""
 
 #: system/Admin/lib/Admin/Admin.php:764 system/Admin/lib/Admin/Admin.php:776
-#: system/Theme/templates/zdebug.html:27
+#: system/Theme/templates/zdebug.tpl:27
 msgid "Compile check"
 msgstr ""
 
@@ -3912,13 +3955,17 @@ msgstr ""
 msgid "Caching"
 msgstr ""
 
-#: system/Admin/lib/Admin/Ajax.php:44
+#: system/Admin/lib/Admin/Ajax.php:43
 #, php-format
 msgid "Error! Could not get module name for id %s."
 msgstr ""
 
-#: system/Admin/lib/Admin/Ajax.php:92 system/Admin/lib/Admin/Ajax.php:175
+#: system/Admin/lib/Admin/Ajax.php:88 system/Admin/lib/Admin/Ajax.php:169
 msgid "Error! A category by this name already exists."
+msgstr ""
+
+#: system/Admin/lib/Admin/Ajax.php:95
+msgid "The category could not be created."
 msgstr ""
 
 #: system/Admin/lib/Admin/Block/Adminnav.php:32
@@ -3982,8 +4029,8 @@ msgstr ""
 
 #: system/Admin/Installer.php:118 install/installtypes/basic.php:22
 #: install/installtypes/basic.php:24 install/installtypes/basic.php:30
-#: install/installtypes/basic.php:32 install/functions.php:495
-#: install/functions.php:501 install/functions.php:502
+#: install/installtypes/basic.php:32 install/functions.php:505
+#: install/functions.php:511 install/functions.php:512
 msgid "System"
 msgstr ""
 
@@ -3992,7 +4039,7 @@ msgid "Core modules at the heart of operation of the site."
 msgstr ""
 
 #: system/Admin/Installer.php:120 install/installtypes/basic.php:26
-#: install/functions.php:498 install/functions.php:500
+#: install/functions.php:508 install/functions.php:510
 #: system/Theme/templates/theme_admin_newtheme.tpl:53
 msgid "Layout"
 msgstr ""
@@ -4009,7 +4056,7 @@ msgstr ""
 #: install/installtypes/basic.php:16 install/installtypes/basic.php:18
 #: install/installtypes/basic.php:20 install/installtypes/basic.php:28
 #: system/Blocks/templates/blocks_admin_modify.tpl:88
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:39
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:38
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:12
 msgid "Content"
 msgstr ""
@@ -4427,16 +4474,16 @@ msgstr ""
 msgid "%1$s: Missing %2$s."
 msgstr ""
 
-#: lib/util/HtmlUtil.php:98 lib/util/HtmlUtil.php:230
-#: lib/util/HtmlUtil.php:234 lib/render/plugins/function.modgetinfo.php:65
+#: lib/util/HtmlUtil.php:98 lib/util/HtmlUtil.php:231
+#: lib/util/HtmlUtil.php:235 lib/render/plugins/function.modgetinfo.php:65
 #, php-format
 msgid "Invalid %1$s [%2$s] passed to %3$s."
 msgstr ""
 
 #: lib/util/HtmlUtil.php:155 lib/util/HtmlUtil.php:159
-#: lib/util/HtmlUtil.php:292 lib/util/HtmlUtil.php:343
-#: lib/util/HtmlUtil.php:400 lib/util/HtmlUtil.php:404
-#: lib/util/HtmlUtil.php:408 lib/util/RandomUtil.php:194
+#: lib/util/HtmlUtil.php:293 lib/util/HtmlUtil.php:344
+#: lib/util/HtmlUtil.php:401 lib/util/HtmlUtil.php:405
+#: lib/util/HtmlUtil.php:409 lib/util/RandomUtil.php:194
 #: lib/util/RandomUtil.php:198 lib/util/RandomUtil.php:250
 #: lib/util/RandomUtil.php:254 lib/util/ObjectUtil.php:414
 #: lib/util/ObjectUtil.php:418 lib/util/ObjectUtil.php:477
@@ -4469,12 +4516,12 @@ msgstr ""
 msgid "Unable to load class [%1$s] for module [%2$s]."
 msgstr ""
 
-#: lib/util/HtmlUtil.php:416
+#: lib/util/HtmlUtil.php:417
 #, php-format
 msgid "Invalid %1$s [%2$s] in %3$s."
 msgstr ""
 
-#: lib/util/HtmlUtil.php:453 lib/util/HtmlUtil.php:469
+#: lib/util/HtmlUtil.php:454 lib/util/HtmlUtil.php:470
 #: lib/render/plugins/modifier.yesno.php:49
 #: lib/render/plugins/modifier.yesno.php:52
 #: system/Blocks/templates/blocks_admin_modify.tpl:71
@@ -4489,20 +4536,20 @@ msgstr ""
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:162
 #: system/Users/templates/users_admin_denyregistration.tpl:28
 #: system/Users/templates/users_admin_newuser.tpl:47
-#: system/Users/templates/users_admin_newuser.tpl:66
-#: system/Users/templates/users_admin_modifyconfig.tpl:26
-#: system/Users/templates/users_admin_modifyconfig.tpl:90
-#: system/Users/templates/users_admin_modifyconfig.tpl:99
-#: system/Users/templates/users_admin_modifyconfig.tpl:117
-#: system/Users/templates/users_admin_modifyconfig.tpl:131
-#: system/Users/templates/users_admin_modifyconfig.tpl:141
-#: system/Users/templates/users_admin_modifyconfig.tpl:150
-#: system/Users/templates/users_admin_modifyconfig.tpl:161
-#: system/Users/templates/users_admin_modifyconfig.tpl:187
-#: system/Users/templates/users_admin_modifyconfig.tpl:196
-#: system/Users/templates/users_admin_modifyconfig.tpl:233
-#: system/Users/templates/users_admin_modifyconfig.tpl:248
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:20
+#: system/Users/templates/users_admin_newuser.tpl:86
+#: system/Users/templates/users_admin_modifyconfig.tpl:32
+#: system/Users/templates/users_admin_modifyconfig.tpl:49
+#: system/Users/templates/users_admin_modifyconfig.tpl:70
+#: system/Users/templates/users_admin_modifyconfig.tpl:79
+#: system/Users/templates/users_admin_modifyconfig.tpl:103
+#: system/Users/templates/users_admin_modifyconfig.tpl:127
+#: system/Users/templates/users_admin_modifyconfig.tpl:145
+#: system/Users/templates/users_admin_modifyconfig.tpl:169
+#: system/Users/templates/users_admin_modifyconfig.tpl:179
+#: system/Users/templates/users_admin_modifyconfig.tpl:190
+#: system/Users/templates/users_admin_modifyconfig.tpl:216
+#: system/Users/templates/users_admin_modifyconfig.tpl:225
+#: system/Users/templates/users_admin_modifyconfig.tpl:270
 #: system/SecurityCenter/templates/securitycenter_admin_purifierconfig.tpl:69
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:42
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:66
@@ -4515,10 +4562,11 @@ msgstr ""
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:209
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:218
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:230
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:20
 msgid "No"
 msgstr ""
 
-#: lib/util/HtmlUtil.php:454 lib/util/HtmlUtil.php:470
+#: lib/util/HtmlUtil.php:455 lib/util/HtmlUtil.php:471
 #: lib/render/plugins/modifier.yesno.php:41
 #: lib/render/plugins/modifier.yesno.php:44
 #: system/Blocks/templates/blocks_admin_modify.tpl:70
@@ -4533,19 +4581,19 @@ msgstr ""
 #: system/Settings/templates/settings_admin_modifyconfig.tpl:160
 #: system/Users/templates/users_admin_denyregistration.tpl:26
 #: system/Users/templates/users_admin_newuser.tpl:45
-#: system/Users/templates/users_admin_newuser.tpl:64
-#: system/Users/templates/users_admin_modifyconfig.tpl:24
-#: system/Users/templates/users_admin_modifyconfig.tpl:88
-#: system/Users/templates/users_admin_modifyconfig.tpl:97
-#: system/Users/templates/users_admin_modifyconfig.tpl:115
-#: system/Users/templates/users_admin_modifyconfig.tpl:129
-#: system/Users/templates/users_admin_modifyconfig.tpl:139
-#: system/Users/templates/users_admin_modifyconfig.tpl:148
-#: system/Users/templates/users_admin_modifyconfig.tpl:185
-#: system/Users/templates/users_admin_modifyconfig.tpl:194
-#: system/Users/templates/users_admin_modifyconfig.tpl:231
-#: system/Users/templates/users_admin_modifyconfig.tpl:244
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:18
+#: system/Users/templates/users_admin_newuser.tpl:84
+#: system/Users/templates/users_admin_modifyconfig.tpl:30
+#: system/Users/templates/users_admin_modifyconfig.tpl:47
+#: system/Users/templates/users_admin_modifyconfig.tpl:68
+#: system/Users/templates/users_admin_modifyconfig.tpl:77
+#: system/Users/templates/users_admin_modifyconfig.tpl:101
+#: system/Users/templates/users_admin_modifyconfig.tpl:125
+#: system/Users/templates/users_admin_modifyconfig.tpl:143
+#: system/Users/templates/users_admin_modifyconfig.tpl:167
+#: system/Users/templates/users_admin_modifyconfig.tpl:177
+#: system/Users/templates/users_admin_modifyconfig.tpl:214
+#: system/Users/templates/users_admin_modifyconfig.tpl:223
+#: system/Users/templates/users_admin_modifyconfig.tpl:268
 #: system/SecurityCenter/templates/securitycenter_admin_purifierconfig.tpl:67
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:40
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:64
@@ -4558,22 +4606,23 @@ msgstr ""
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:207
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:216
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:228
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:18
 msgid "Yes"
 msgstr ""
 
-#: lib/util/HtmlUtil.php:554 lib/util/SecurityUtil.php:577
+#: lib/util/HtmlUtil.php:555 lib/util/SecurityUtil.php:568
 msgid "No access"
 msgstr ""
 
-#: lib/util/HtmlUtil.php:555 lib/util/SecurityUtil.php:579
+#: lib/util/HtmlUtil.php:556 lib/util/SecurityUtil.php:570
 msgid "Read access"
 msgstr ""
 
-#: lib/util/HtmlUtil.php:556
+#: lib/util/HtmlUtil.php:557
 msgid "Write access"
 msgstr ""
 
-#: lib/util/HtmlUtil.php:759 lib/util/DateUtil.php:838
+#: lib/util/HtmlUtil.php:760 lib/util/DateUtil.php:838
 msgid ""
 "January February March April May June July August September October November "
 "December"
@@ -4591,25 +4640,25 @@ msgid ""
 "blocks directory."
 msgstr ""
 
-#: lib/util/BlockUtil.php:456 lib/util/BlockUtil.php:463
+#: lib/util/BlockUtil.php:450 lib/util/BlockUtil.php:457
 #, php-format
 msgid "Error! A database error occurred: '%1$s: %2$s'."
 msgstr ""
 
-#: lib/util/FormUtil.php:37 lib/util/FormUtil.php:142
-#: lib/util/FormUtil.php:146 lib/util/FormUtil.php:269
-#: lib/util/FormUtil.php:273
+#: lib/util/FormUtil.php:40 lib/util/FormUtil.php:135
+#: lib/util/FormUtil.php:139 lib/util/FormUtil.php:262
+#: lib/util/FormUtil.php:266
 #, php-format
 msgid "Empty %1$s passed to %2$s."
 msgstr ""
 
-#: lib/util/FormUtil.php:115
+#: lib/util/FormUtil.php:108
 #, php-format
 msgid "Invalid input source [%s] received."
 msgstr ""
 
-#: lib/util/LogUtil.php:136 lib/util/LogUtil.php:228 lib/Zikula/Base.php:474
-#: lib/Zikula/Base.php:540
+#: lib/util/LogUtil.php:136 lib/util/LogUtil.php:228 lib/Zikula/Base.php:484
+#: lib/Zikula/Base.php:550
 #, php-format
 msgid "Empty [%s] received."
 msgstr ""
@@ -4619,7 +4668,7 @@ msgstr ""
 msgid "Sorry! You have not been granted access to this page."
 msgstr ""
 
-#: lib/util/LogUtil.php:254 lib/Zikula/Base.php:565
+#: lib/util/LogUtil.php:254 lib/Zikula/Base.php:575
 #, php-format
 msgid "%1$s The origin of this message was '%2$s' at line %3$s in file '%4$s'."
 msgstr ""
@@ -4704,264 +4753,264 @@ msgstr ""
 msgid "Installed version and plugin version are equal, nothing to do for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:120 lib/util/DBUtil.php:480 lib/util/DBUtil.php:483
-#: lib/util/DBUtil.php:486 lib/util/DBUtil.php:528 lib/util/DBUtil.php:532
-#: lib/util/DBUtil.php:574 lib/util/DBUtil.php:578 lib/util/DBUtil.php:1415
-#: lib/util/DBUtil.php:1462 lib/util/DBUtil.php:1466 lib/util/DBUtil.php:1998
-#: lib/util/DBUtil.php:2253 lib/util/DBUtil.php:2745 lib/util/DBUtil.php:2919
-#: lib/util/DBUtil.php:2959 lib/util/DBUtil.php:3025 lib/util/DBUtil.php:3096
-#: lib/util/DBUtil.php:3155 lib/util/DBUtil.php:3246 lib/util/DBUtil.php:3280
-#: lib/util/DBUtil.php:3283 lib/util/DBUtil.php:3320 lib/util/DBUtil.php:3356
-#: lib/util/DBUtil.php:3360 lib/util/DBUtil.php:3364 lib/util/DBUtil.php:3424
-#: lib/util/DBUtil.php:3428 lib/util/DBUtil.php:3481 lib/util/DBUtil.php:3514
-#: lib/util/DBUtil.php:3540 lib/util/DBUtil.php:3565
+#: lib/util/DBUtil.php:120 lib/util/DBUtil.php:479 lib/util/DBUtil.php:482
+#: lib/util/DBUtil.php:485 lib/util/DBUtil.php:527 lib/util/DBUtil.php:531
+#: lib/util/DBUtil.php:573 lib/util/DBUtil.php:577 lib/util/DBUtil.php:1414
+#: lib/util/DBUtil.php:1461 lib/util/DBUtil.php:1465 lib/util/DBUtil.php:1997
+#: lib/util/DBUtil.php:2252 lib/util/DBUtil.php:2744 lib/util/DBUtil.php:2918
+#: lib/util/DBUtil.php:2958 lib/util/DBUtil.php:3024 lib/util/DBUtil.php:3095
+#: lib/util/DBUtil.php:3154 lib/util/DBUtil.php:3245 lib/util/DBUtil.php:3279
+#: lib/util/DBUtil.php:3282 lib/util/DBUtil.php:3319 lib/util/DBUtil.php:3355
+#: lib/util/DBUtil.php:3359 lib/util/DBUtil.php:3363 lib/util/DBUtil.php:3423
+#: lib/util/DBUtil.php:3427 lib/util/DBUtil.php:3480 lib/util/DBUtil.php:3513
+#: lib/util/DBUtil.php:3539 lib/util/DBUtil.php:3564
 #, php-format
 msgid "The parameter %s must not be empty"
 msgstr ""
 
-#: lib/util/DBUtil.php:223
+#: lib/util/DBUtil.php:222
 msgid "No SQL statement to execute"
 msgstr ""
 
-#: lib/util/DBUtil.php:250
+#: lib/util/DBUtil.php:249
 msgid "Paging parameters can only be used for SELECT statements"
 msgstr ""
 
-#: lib/util/DBUtil.php:328 lib/util/DBUtil.php:363
+#: lib/util/DBUtil.php:327 lib/util/DBUtil.php:362
 #, php-format
 msgid "Invalid table-key [%s] retrieved"
 msgstr ""
 
-#: lib/util/DBUtil.php:339 lib/util/DBUtil.php:378 lib/util/DBUtil.php:414
+#: lib/util/DBUtil.php:338 lib/util/DBUtil.php:377 lib/util/DBUtil.php:413
 #, php-format
 msgid "Empty query generated for [%s] filtered by columnArray"
 msgstr ""
 
-#: lib/util/DBUtil.php:454
+#: lib/util/DBUtil.php:453
 #, php-format
 msgid "Invalid join information retrieved (alias %s already exists)"
 msgstr ""
 
-#: lib/util/DBUtil.php:499 lib/util/DBUtil.php:3110 lib/util/DBUtil.php:3169
+#: lib/util/DBUtil.php:498 lib/util/DBUtil.php:3109 lib/util/DBUtil.php:3168
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table array contain the dictionary "
 "representation of table [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:509
+#: lib/util/DBUtil.php:508
 msgid "Error! Column rename failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:536
+#: lib/util/DBUtil.php:535
 #, php-format
 msgid "The parameter %s must be an array of field arrays"
 msgstr ""
 
-#: lib/util/DBUtil.php:548
+#: lib/util/DBUtil.php:547
 #, php-format
 msgid "%1$s does not exist in table definition for %2$s."
 msgstr ""
 
-#: lib/util/DBUtil.php:555
+#: lib/util/DBUtil.php:554
 msgid "Error! Column creation failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:582
+#: lib/util/DBUtil.php:581
 #, php-format
 msgid "The parameter %s must be an array."
 msgstr ""
 
-#: lib/util/DBUtil.php:597
+#: lib/util/DBUtil.php:596
 msgid "Error! Column deletion failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:657 lib/util/DBUtil.php:771
+#: lib/util/DBUtil.php:656 lib/util/DBUtil.php:770
 #, php-format
 msgid "%s_column is not an array"
 msgstr ""
 
-#: lib/util/DBUtil.php:663 lib/util/DBUtil.php:777
+#: lib/util/DBUtil.php:662 lib/util/DBUtil.php:776
 #, php-format
 msgid "%s_column_def is not an array"
 msgstr ""
 
-#: lib/util/DBUtil.php:710
+#: lib/util/DBUtil.php:709
 msgid "Unable to find anything to insert in supplied object ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:757
+#: lib/util/DBUtil.php:756
 msgid "Neither object ID nor where parameters are provided"
 msgstr ""
 
-#: lib/util/DBUtil.php:911
+#: lib/util/DBUtil.php:910
 msgid "Invalid idfield received"
 msgstr ""
 
-#: lib/util/DBUtil.php:1030
+#: lib/util/DBUtil.php:1029
 msgid "Can't specify both object and where-clause"
 msgstr ""
 
-#: lib/util/DBUtil.php:1034
+#: lib/util/DBUtil.php:1033
 msgid "Missing either object or where-clause"
 msgstr ""
 
-#: lib/util/DBUtil.php:1045
+#: lib/util/DBUtil.php:1044
 msgid "Object does not have an ID"
 msgstr ""
 
-#: lib/util/DBUtil.php:1485
+#: lib/util/DBUtil.php:1484
 #, php-format
 msgid "Unable to find assocKey [%1$s] in objectColumns for resultset."
 msgstr ""
 
-#: lib/util/DBUtil.php:1499 lib/util/DBUtil.php:3368
+#: lib/util/DBUtil.php:1498 lib/util/DBUtil.php:3367
 #, php-format
 msgid "The parameter %s must be an array"
 msgstr ""
 
-#: lib/util/DBUtil.php:1511
+#: lib/util/DBUtil.php:1510
 msgid ""
 "Permission filter iterator did not return an array (must be an array of "
 "arrays)"
 msgstr ""
 
-#: lib/util/DBUtil.php:1538
+#: lib/util/DBUtil.php:1537
 #, php-format
 msgid "Permission filter level is invalid: [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:1606
+#: lib/util/DBUtil.php:1605
 msgid "Got no rows to select from"
 msgstr ""
 
-#: lib/util/DBUtil.php:1614
+#: lib/util/DBUtil.php:1613
 msgid "Got no columns to select from"
 msgstr ""
 
-#: lib/util/DBUtil.php:2002 lib/util/DBUtil.php:2257
+#: lib/util/DBUtil.php:2001 lib/util/DBUtil.php:2256
 #, php-format
 msgid "The parameter %s must be numeric"
 msgstr ""
 
-#: lib/util/DBUtil.php:2705 lib/util/DBUtil.php:2966 lib/util/DBUtil.php:3123
-#: lib/util/DBUtil.php:3182 lib/util/DBUtil.php:3253 lib/util/DBUtil.php:3291
-#: lib/util/DBUtil.php:3295 lib/util/DBUtil.php:3327 lib/util/DBUtil.php:3435
-#: lib/util/DBUtil.php:3488 lib/util/DBUtil.php:3521 lib/util/DBUtil.php:3547
-#: lib/util/DBUtil.php:3572
+#: lib/util/DBUtil.php:2704 lib/util/DBUtil.php:2965 lib/util/DBUtil.php:3122
+#: lib/util/DBUtil.php:3181 lib/util/DBUtil.php:3252 lib/util/DBUtil.php:3290
+#: lib/util/DBUtil.php:3294 lib/util/DBUtil.php:3326 lib/util/DBUtil.php:3434
+#: lib/util/DBUtil.php:3487 lib/util/DBUtil.php:3520 lib/util/DBUtil.php:3546
+#: lib/util/DBUtil.php:3571
 #, php-format
 msgid "%s does not point to a valid table definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2709
+#: lib/util/DBUtil.php:2708
 #, php-format
 msgid "%s does not point to a valid field definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:2720
+#: lib/util/DBUtil.php:2719
 msgid "Exiting after SQL-error"
 msgstr ""
 
-#: lib/util/DBUtil.php:2798 lib/util/DBUtil.php:2934
+#: lib/util/DBUtil.php:2797 lib/util/DBUtil.php:2933
 #, php-format
 msgid "Invalid field pattern detected in table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2818
+#: lib/util/DBUtil.php:2817
 #, php-format
 msgid "Error in table definition for %1$s, column %2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2866
+#: lib/util/DBUtil.php:2865
 #, php-format
 msgid "Missing default value in field datadict specification for %1$s.%2$s"
 msgstr ""
 
-#: lib/util/DBUtil.php:2904
+#: lib/util/DBUtil.php:2903
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the data "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:2944
+#: lib/util/DBUtil.php:2943
 #, php-format
 msgid ""
 "Neither the sql parameter nor the table structure contain the ADODB "
 "dictionary representation of table [%s] ..."
 msgstr ""
 
-#: lib/util/DBUtil.php:3035
+#: lib/util/DBUtil.php:3034
 #, php-format
 msgid "Unable to retrieve table definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3040
+#: lib/util/DBUtil.php:3039
 #, php-format
 msgid "Unable to retrieve table columns definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3045
+#: lib/util/DBUtil.php:3044
 #, php-format
 msgid "Unable to retrieve table columns_def definition for [%s]"
 msgstr ""
 
-#: lib/util/DBUtil.php:3063
+#: lib/util/DBUtil.php:3062
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column [%2$s] has "
 "no counterpart in column_def structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3072
+#: lib/util/DBUtil.php:3071
 #, php-format
 msgid ""
 "Inconsistent table definition detected for table [%1$s]: column_def [%2$s] "
 "has no counterpart in column structure"
 msgstr ""
 
-#: lib/util/DBUtil.php:3101 lib/util/DBUtil.php:3160
+#: lib/util/DBUtil.php:3100 lib/util/DBUtil.php:3159
 #, php-format
 msgid "Table consistency check failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3129
+#: lib/util/DBUtil.php:3128
 #, php-format
 msgid "Error! Table creation failed for %s"
 msgstr ""
 
-#: lib/util/DBUtil.php:3196 lib/util/DBUtil.php:3206 lib/util/DBUtil.php:3216
+#: lib/util/DBUtil.php:3195 lib/util/DBUtil.php:3205 lib/util/DBUtil.php:3215
 #: lib/util/DoctrineUtil.php:383 lib/util/DoctrineUtil.php:393
 #: lib/util/DoctrineUtil.php:403
 msgid "Error! Table update failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3301
+#: lib/util/DBUtil.php:3300
 msgid "Error! Table rename failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3334
+#: lib/util/DBUtil.php:3333
 msgid "Error! Table drop failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3376
+#: lib/util/DBUtil.php:3375
 #, php-format
 msgid "%s does not point to a valid column definition"
 msgstr ""
 
-#: lib/util/DBUtil.php:3408
+#: lib/util/DBUtil.php:3407
 msgid "Error! Index creation failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3442
+#: lib/util/DBUtil.php:3441
 msgid "Error! Index deletion failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3578
+#: lib/util/DBUtil.php:3577
 msgid "Error! Fetching table index list failed."
 msgstr ""
 
-#: lib/util/DBUtil.php:3618
+#: lib/util/DBUtil.php:3617
 #, php-format
 msgid ""
 "%1$s: unable to limit tablename [%2$s] because database prefix is too long "
@@ -5222,11 +5271,11 @@ msgstr ""
 msgid "Unknown field [%s] requested"
 msgstr ""
 
-#: lib/util/DBConnectionStack.php:342
+#: lib/util/DBConnectionStack.php:341
 msgid "Attempted to get connection from empty connection stack"
 msgstr ""
 
-#: lib/util/DBConnectionStack.php:376
+#: lib/util/DBConnectionStack.php:374
 msgid "Attempted to pop connection from empty connection stack"
 msgstr ""
 
@@ -5292,20 +5341,36 @@ msgstr ""
 msgid "Permission check function [%s] not defined."
 msgstr ""
 
-#: lib/util/UserUtil.php:592
+#: lib/util/UserUtil.php:590
+msgid ""
+"Your log-in request was not completed because you must change your web site "
+"account's password first."
+msgstr ""
+
+#: lib/util/UserUtil.php:619
+msgid ""
+"Sorry! Your account pending activation. Please check your e-mail for an "
+"activation message or contact an administrator."
+msgstr ""
+
+#: lib/util/UserUtil.php:621
+msgid "Sorry! Your account is not active. Please contact an administrator."
+msgstr ""
+
+#: lib/util/UserUtil.php:636
 msgid "Error! Could not save the log-in date."
 msgstr ""
 
-#: lib/util/UserUtil.php:924 lib/util/UserUtil.php:1267
+#: lib/util/UserUtil.php:961 lib/util/UserUtil.php:1281
 #, php-format
 msgid "Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead."
 msgstr ""
 
-#: lib/util/UserUtil.php:1366
+#: lib/util/UserUtil.php:1380
 msgid "UserUtil::getTheme: unable to calculate theme name."
 msgstr ""
 
-#: lib/util/UserUtil.php:1519
+#: lib/util/UserUtil.php:1533
 #, php-format
 msgid "%s must be a subclass of Zikula_AuthApi"
 msgstr ""
@@ -5393,31 +5458,31 @@ msgstr ""
 msgid "Invalid security level [%1$s] received in %2$s"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:578
+#: lib/util/SecurityUtil.php:569
 msgid "Overview access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:580
+#: lib/util/SecurityUtil.php:571
 msgid "Comment access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:581
+#: lib/util/SecurityUtil.php:572
 msgid "Moderate access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:582
+#: lib/util/SecurityUtil.php:573
 msgid "Edit access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:583
+#: lib/util/SecurityUtil.php:574
 msgid "Add access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:584
+#: lib/util/SecurityUtil.php:575
 msgid "Delete access"
 msgstr ""
 
-#: lib/util/SecurityUtil.php:585
+#: lib/util/SecurityUtil.php:576
 msgid "Admin access"
 msgstr ""
 
@@ -5431,9 +5496,13 @@ msgstr ""
 msgid "Class %s cannot be found."
 msgstr ""
 
-#: lib/Zikula/Block.php:126 lib/Zikula/Controller.php:85
+#: lib/Zikula/Block.php:86 lib/Zikula/Controller.php:85
 #, php-format
 msgid "%1$s::%2$s() does not exist."
+msgstr ""
+
+#: lib/Zikula/ErrorHandler.php:130
+msgid "Error! Oh! Wow! An 'unidentified system error' has occurred."
 msgstr ""
 
 #: lib/Zikula/Exception/NotFound.php:31
@@ -7704,15 +7773,11 @@ msgstr ""
 msgid "Error! Input text must be no longer than %s characters."
 msgstr ""
 
-#: lib/System.php:396
+#: lib/System.php:394
 msgid "You have been logged out."
 msgstr ""
 
-#: lib/System.php:1149
-msgid "Error! Oh! Wow! An 'unidentified system error' has occurred."
-msgstr ""
-
-#: lib/System.php:1232
+#: lib/System.php:1071
 #, php-format
 msgid ""
 "Error! Stop, please! PHP version 5.2.6 or a newer version is needed. The "
@@ -7720,32 +7785,32 @@ msgid ""
 "to be using version %s."
 msgstr ""
 
-#: lib/System.php:1238
+#: lib/System.php:1077
 msgid ""
 "Error! Stop, please! The PHP function 'token_get_all()' is needed, but is "
 "not available."
 msgstr ""
 
-#: lib/System.php:1244
+#: lib/System.php:1083
 msgid ""
 "Error! Stop, please! The 'mbstring' extension for PHP is needed, but is not "
 "available."
 msgstr ""
 
-#: lib/System.php:1250
+#: lib/System.php:1089
 msgid ""
 "Error! The PHP function 'fsockopen()' is needed within the Zikula mailer "
 "module, but is not available."
 msgstr ""
 
-#: lib/System.php:1270
+#: lib/System.php:1109
 #, php-format
 msgid ""
 "Error! Stop, please! '%s' was not found, or else the server does not have "
 "write permission for it."
 msgstr ""
 
-#: lib/System.php:1276
+#: lib/System.php:1115
 msgid ""
 "This message is shown to you, the Administrator, because the system is in "
 "development mode ($ZConfig['System']['development'] = 1; in config/config."
@@ -7776,30 +7841,30 @@ msgstr ""
 #: install/templates/installer_createadmin.tpl:21
 #: system/Permissions/templates/permissions_admin_view.tpl:168
 #: system/Groups/templates/groups_admin_userpending.tpl:20
-#: system/Groups/templates/groups_user_memberslist.tpl:57
+#: system/Groups/templates/groups_user_memberslist.tpl:55
 #: system/Groups/templates/groups_admin_view.tpl:188
 #: system/Groups/templates/groups_admin_groupmembership.tpl:10
 #: system/Theme/templates/system/siteoff.tpl:46
-#: system/Users/templates/users_userapi_welcomeemail.txt:10
 #: system/Users/templates/users_admin_modify.tpl:49
 #: system/Users/templates/users_user_passwordreminder.tpl:9
 #: system/Users/templates/users_admin_deleteusers.tpl:19
+#: system/Users/templates/users_email_welcome_html.tpl:10
 #: system/Users/templates/users_admin_search.tpl:13
 #: system/Users/templates/users_admin_listusers.tpl:46
-#: system/Users/templates/users_userapi_denyemail.txt:8
-#: system/Users/templates/users_userapi_denyemail.tpl:8
+#: system/Users/templates/users_email_welcome_txt.tpl:10
 #: system/Users/templates/users_admin_newuser.tpl:30
 #: system/Users/templates/users_admin_viewregistrations.tpl:12
 #: system/Users/templates/users_user_lostpassword.tpl:11
 #: system/Users/templates/users_user_register.tpl:55
-#: system/Users/templates/users_admin_view.tpl:29
+#: system/Users/templates/users_email_regdeny_html.tpl:8
+#: system/Users/templates/users_admin_view.tpl:30
+#: system/Users/templates/users_email_regdeny_txt.tpl:8
 #: system/Users/templates/users_block_login.tpl:12
 #: system/Users/templates/users_user_loginscreen.tpl:22
-#: system/Users/templates/users_admin_modifyconfig.tpl:53
+#: system/Users/templates/users_admin_modifyconfig.tpl:90
 #: system/Users/templates/users_admin_includeregistration.tpl:21
 #: system/Users/templates/users_user_lostpasswordcode.tpl:11
 #: system/Users/templates/users_user_verifyregistration.tpl:24
-#: system/Users/templates/users_userapi_welcomeemail.tpl:10
 #: system/Users/templates/users_admin_modifyregistration.tpl:30
 #: system/SecurityCenter/templates/securitycenter_admin_view_log_event.tpl:9
 #: system/SecurityCenter/templates/securitycenter_admin_view_log_event.tpl:27
@@ -7814,10 +7879,10 @@ msgstr ""
 #: system/Users/templates/users_admin_newuser.tpl:34
 #: system/Users/templates/users_admin_viewregistrations.tpl:13
 #: system/Users/templates/users_user_lostpassword.tpl:18
-#: system/Users/templates/users_user_register.tpl:98
+#: system/Users/templates/users_user_register.tpl:103
 #: system/Users/templates/users_block_login.tpl:12
 #: system/Users/templates/users_user_loginscreen.tpl:22
-#: system/Users/templates/users_admin_modifyconfig.tpl:55
+#: system/Users/templates/users_admin_modifyconfig.tpl:92
 #: system/Users/templates/users_user_lostpasswordcode.tpl:18
 #: system/Users/templates/users_user_lostuname.tpl:11
 #: system/Users/templates/users_admin_modifyregistration.tpl:34
@@ -7827,7 +7892,7 @@ msgstr ""
 #: lib/render/plugins/function.userlogin.php:74
 #: system/Theme/templates/system/siteoff.tpl:48
 #: system/Users/templates/users_block_login.tpl:19
-#: system/Users/templates/users_user_loginscreen.tpl:56
+#: system/Users/templates/users_user_loginscreen.tpl:72
 msgid "Remember me"
 msgstr ""
 
@@ -7878,7 +7943,7 @@ msgid "Page generated in %s seconds."
 msgstr ""
 
 #: lib/render/plugins/function.modulelinks.php:56
-#: lib/render/plugins/function.moduleadminlinks.php:51 ajax.php:44
+#: lib/render/plugins/function.moduleadminlinks.php:51 ajax.php:43
 #, php-format
 msgid "Error! The '%s' module is not available."
 msgstr ""
@@ -7955,26 +8020,6 @@ msgstr ""
 msgid "Error! The template [%1$s] is not available in the [%2$s] module."
 msgstr ""
 
-#: themes/andreas08/version.php:16
-msgid "Andreas08"
-msgstr ""
-
-#: themes/andreas08/version.php:17
-msgid ""
-"The Andreas08 theme is a very good template for light CSS-compatible browser-"
-"oriented themes."
-msgstr ""
-
-#: themes/rss/version.php:14
-msgid "RSS"
-msgstr ""
-
-#: themes/rss/version.php:15
-msgid ""
-"The RSS theme is an auxiliary theme designed specially for outputting pages "
-"as an RSS feed."
-msgstr ""
-
 #: themes/Printer/version.php:16
 msgid "Printer"
 msgstr ""
@@ -7995,37 +8040,37 @@ msgid ""
 "release of Zikula 1.0, with revised colours and new graphics."
 msgstr ""
 
-#: themes/Atom/version.php:15
+#: themes/Atom/version.php:16
 msgid "Atom"
 msgstr ""
 
-#: themes/Atom/version.php:16
+#: themes/Atom/version.php:17
 msgid ""
 "The Atom theme is an auxiliary theme specially designed for rendering pages "
 "in Atom mark-up."
 msgstr ""
 
-#: ajax.php:30 system/Theme/templates/system/siteoff.tpl:6
+#: ajax.php:29 system/Theme/templates/system/siteoff.tpl:6
 #: system/Theme/templates/system/siteoff.tpl:39
 #: system/Theme/templates/system/siteoff.tpl:40
 msgid "The site is currently off-line."
 msgstr ""
 
-#: ajax.php:34
+#: ajax.php:33
 #, php-format
 msgid "Missing parameter '%s'"
 msgstr ""
 
-#: ajax.php:40
+#: ajax.php:39
 #, php-format
 msgid "Error! The '%s' module is unknown."
 msgstr ""
 
-#: ajax.php:64 index.php:124
+#: ajax.php:63 index.php:124
 msgid "Error! The transaction failed. Performing rollback."
 msgstr ""
 
-#: ajax.php:83
+#: ajax.php:82
 #, php-format
 msgid "Could not load the '%s' module (at '%s' function)."
 msgstr ""
@@ -8093,7 +8138,7 @@ msgstr ""
 #: system/Users/templates/users_user_lostpassword.tpl:23
 #: system/Users/templates/users_user_lostpasswordcode.tpl:29
 #: system/Users/templates/users_user_lostuname.tpl:16
-#: system/Users/templates/users_user_verifyregistration.tpl:53
+#: system/Users/templates/users_user_verifyregistration.tpl:73
 msgid "Submit"
 msgstr ""
 
@@ -8171,6 +8216,7 @@ msgid ""
 msgstr ""
 
 #: upgrade.php:376 install/templates/installer_requirements.tpl:123
+#: system/PageLock/templates/PageLock_lockedwindow.tpl:14
 msgid "Check again"
 msgstr ""
 
@@ -8178,8 +8224,27 @@ msgstr ""
 msgid "Proceed to upgrade."
 msgstr ""
 
-#: upgrade.php:421 upgrade.php:432
+#: upgrade.php:435 upgrade.php:453
 msgid "FATAL ERROR: Cannot start, unable to determine installed Core version."
+msgstr ""
+
+#: install/templates/installer_alreadyinstalled.tpl:5
+#: install/templates/installer_alreadyinstalled.tpl:53
+msgid "Zikula is already installed!"
+msgstr ""
+
+#: install/templates/installer_alreadyinstalled.tpl:55
+#, php-format
+msgid ""
+"You are seeing this message because Zikula is already installed so the "
+"installer has been disabled.  <a href=\"index.php\">%s</a>."
+msgstr ""
+
+#: install/templates/installer_alreadyinstalled.tpl:57
+#, php-format
+msgid ""
+"Further information can be found in the <a href=\"http://community.zikula."
+"org/Wiki-UserDocs.htm\">%s</a>."
 msgstr ""
 
 #: install/templates/installer_selectmodule.tpl:1
@@ -8223,9 +8288,9 @@ msgstr ""
 #: install/templates/installer_installtype.tpl:13
 #: install/templates/installer_requirements.tpl:120
 #: install/templates/installer_lang.tpl:22
-#: system/Theme/templates/pagercss2.html:46
-#: system/Theme/templates/pagerintervals.html:30
-#: system/Theme/templates/pageritems.html:24
+#: system/Theme/templates/pagerintervals.tpl:30
+#: system/Theme/templates/pageritems.tpl:24
+#: system/Theme/templates/pagercss2.tpl:46
 msgid "Next"
 msgstr ""
 
@@ -8726,14 +8791,14 @@ msgstr ""
 #: system/SysInfo/templates/sysinfo_admin_main.tpl:94
 #: system/Blocks/templates/blocks_admin_view.tpl:60
 #: system/Blocks/templates/blocks_admin_view.tpl:112
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:51
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:50
 #: system/Blocks/templates/blocks_admin_newposition.tpl:12
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:14
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:35
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:64
 #: system/Groups/templates/groups_admin_new.tpl:13
 #: system/Groups/templates/groups_user_view.tpl:9
-#: system/Groups/templates/groups_user_memberslist.tpl:9
+#: system/Groups/templates/groups_user_memberslist.tpl:7
 #: system/Groups/templates/groups_admin_modify.tpl:14
 #: system/Groups/templates/groups_admin_view.tpl:18
 #: system/Groups/templates/groups_admin_view.tpl:189
@@ -8746,12 +8811,12 @@ msgstr ""
 #: system/Theme/templates/theme_admin_variables.tpl:14
 #: system/Theme/templates/theme_admin_variables.tpl:52
 #: system/Modules/templates/modules_admin_regenerate_errors.tpl:12
-#: system/Categories/templates/categories_include_editattributes.html:4
 #: system/Categories/templates/categories_user_edit.tpl:49
-#: system/Categories/templates/categories_user_edit.tpl:73
+#: system/Categories/templates/categories_user_edit.tpl:81
 #: system/Categories/templates/categories_user_list.tpl:7
 #: system/Categories/templates/categories_admin_move.tpl:13
 #: system/Categories/templates/categories_admin_copy.tpl:13
+#: system/Categories/templates/categories_include_editattributes.tpl:4
 #: system/Categories/templates/categories_admin_edit.tpl:24
 #: system/Categories/templates/categories_admin_edit.tpl:67
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:11
@@ -8775,7 +8840,7 @@ msgstr ""
 #: system/SysInfo/templates/sysinfo_admin_main.tpl:52
 #: system/SysInfo/templates/sysinfo_admin_main.tpl:74
 #: system/SysInfo/templates/sysinfo_admin_main.tpl:96
-#: system/Groups/templates/groups_user_memberslist.tpl:55
+#: system/Groups/templates/groups_user_memberslist.tpl:53
 msgid "Status"
 msgstr ""
 
@@ -8814,7 +8879,7 @@ msgstr ""
 #: system/SysInfo/templates/sysinfo_admin_filesystem.tpl:10
 #: system/Groups/templates/groups_admin_new.tpl:17
 #: system/Groups/templates/groups_user_view.tpl:11
-#: system/Groups/templates/groups_user_memberslist.tpl:10
+#: system/Groups/templates/groups_user_memberslist.tpl:8
 #: system/Groups/templates/groups_admin_modify.tpl:18
 #: system/Groups/templates/groups_admin_view.tpl:19
 #: system/Theme/templates/theme_admin_view.tpl:13
@@ -8826,7 +8891,7 @@ msgid "Type"
 msgstr ""
 
 #: system/SysInfo/templates/sysinfo_admin_filesystem.tpl:11
-#: system/Categories/templates/categories_user_edit.tpl:114
+#: system/Categories/templates/categories_user_edit.tpl:119
 #: system/Categories/templates/categories_admin_move.tpl:17
 #: system/Categories/templates/categories_admin_copy.tpl:17
 #: system/Categories/templates/categories_admin_edit.tpl:101
@@ -8856,7 +8921,7 @@ msgid "Module"
 msgstr ""
 
 #: system/SysInfo/templates/sysinfo_admin_extensions.tpl:11
-#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:30
+#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:32
 #: system/Theme/templates/theme_admin_newtheme.tpl:16
 #: system/Theme/templates/theme_admin_modify.tpl:13
 #: system/Theme/templates/theme_admin_credits.tpl:16
@@ -8867,14 +8932,31 @@ msgid "Display name"
 msgstr ""
 
 #: system/SysInfo/templates/sysinfo_admin_extensions.tpl:12
-#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:31
+#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:33
 #: system/Theme/templates/theme_admin_credits.tpl:20
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:34
 #: system/Modules/templates/modules_admin_view.tpl:16
 msgid "Version"
 msgstr ""
 
-#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:25
+#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:23
+#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:44
+#: system/Blocks/templates/blocks_admin_view.tpl:102
+#: system/Blocks/templates/blocks_admin_view.tpl:131
+#: system/Groups/templates/groups_admin_view.tpl:207
+#: system/Groups/templates/groups_admin_groupmembership.tpl:28
+#: system/Theme/templates/theme_admin_view.tpl:42
+#: system/Theme/templates/theme_admin_variables.tpl:45
+#: system/Modules/templates/modules_admin_viewPlugins.tpl:83
+#: system/Modules/templates/modules_admin_view.tpl:72
+#: system/Search/templates/search_user_recent.tpl:21
+#: system/SecurityCenter/templates/securitycenter_admin_view_log_event.tpl:52
+#: system/SecurityCenter/templates/securitycenter_admin_view.tpl:42
+#: system/Admin/templates/admin_admin_view.tpl:26
+msgid "No items found."
+msgstr ""
+
+#: system/SysInfo/templates/sysinfo_admin_extensions.tpl:27
 msgid ""
 "Notice: This is a list of all the themes installed on your site, with the "
 "versions of the themes."
@@ -8982,18 +9064,18 @@ msgstr ""
 #: system/Users/templates/users_admin_export.tpl:53
 #: system/Users/templates/users_user_changepassword.tpl:51
 #: system/Users/templates/users_user_changelang.tpl:21
-#: system/Users/templates/users_admin_modifyconfig.tpl:270
+#: system/Users/templates/users_admin_modifyconfig.tpl:292
 #: system/Users/templates/users_user_usersblock.tpl:11
 #: system/Users/templates/users_admin_import.tpl:33
 #: system/Categories/templates/categories_admin_preferences.tpl:36
-#: system/Categories/templates/categories_user_edit.tpl:125
-#: system/Categories/templates/categories_user_edit.tpl:128
-#: system/Categories/templates/categories_admin_registry_edit.tpl:60
+#: system/Categories/templates/categories_user_edit.tpl:130
+#: system/Categories/templates/categories_user_edit.tpl:133
+#: system/Categories/templates/categories_admin_registry_edit.tpl:61
 #: system/Categories/templates/categories_admin_edit.tpl:120
 #: system/Categories/templates/categories_admin_edit.tpl:129
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:63
 #: system/SecurityCenter/templates/securitycenter_admin_purifierconfig.tpl:81
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:319
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:63
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:115
 #: system/Admin/templates/admin_admin_ajaxAddCategory.tpl:5
 #: system/Admin/templates/admin_admin_ajaxAddCategory.tpl:6
@@ -9019,7 +9101,7 @@ msgstr ""
 #: system/Groups/templates/groups_admin_new.tpl:40
 #: system/Groups/templates/groups_admin_delete.tpl:17
 #: system/Groups/templates/groups_user_grouprow_read.tpl:14
-#: system/Groups/templates/groups_user_memberslist.tpl:32
+#: system/Groups/templates/groups_user_memberslist.tpl:30
 #: system/Groups/templates/groups_admin_modify.tpl:42
 #: system/Groups/templates/groups_admin_view.tpl:100
 #: system/Groups/templates/groups_admin_view.tpl:172
@@ -9055,25 +9137,25 @@ msgstr ""
 #: system/Users/templates/users_user_changepassword.tpl:52
 #: system/Users/templates/users_admin_denyregistration.tpl:39
 #: system/Users/templates/users_user_changelang.tpl:22
-#: system/Users/templates/users_admin_newuser.tpl:93
-#: system/Users/templates/users_admin_modifyconfig.tpl:271
+#: system/Users/templates/users_admin_newuser.tpl:113
+#: system/Users/templates/users_admin_modifyconfig.tpl:293
 #: system/Users/templates/users_admin_verifyregistration.tpl:29
-#: system/Users/templates/users_user_verifyregistration.tpl:54
+#: system/Users/templates/users_user_verifyregistration.tpl:74
 #: system/Users/templates/users_admin_modifyregistration.tpl:54
 #: system/Users/templates/users_admin_import.tpl:34
 #: system/Categories/templates/categories_admin_preferences.tpl:37
-#: system/Categories/templates/categories_user_edit.tpl:126
+#: system/Categories/templates/categories_user_edit.tpl:131
 #: system/Categories/templates/categories_admin_delete.tpl:39
 #: system/Categories/templates/categories_admin_config.tpl:14
 #: system/Categories/templates/categories_admin_move.tpl:27
 #: system/Categories/templates/categories_admin_copy.tpl:27
-#: system/Categories/templates/categories_admin_registry_edit.tpl:61
+#: system/Categories/templates/categories_admin_registry_edit.tpl:62
 #: system/Categories/templates/categories_admin_edit.tpl:127
 #: system/Categories/templates/categories_admin_edit.tpl:130
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:64
 #: system/SecurityCenter/templates/securitycenter_admin_purifierconfig.tpl:82
 #: system/SecurityCenter/templates/securitycenter_admin_delete.tpl:19
 #: system/SecurityCenter/templates/securitycenter_admin_modifyconfig.tpl:320
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:64
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:116
 #: system/Admin/templates/admin_admin_newcat.tpl:24
 #: system/Admin/templates/admin_admin_modify.tpl:25
@@ -9293,7 +9375,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_admin_modifyposition.tpl:65
 #: system/Groups/templates/groups_admin_new.tpl:23
 #: system/Groups/templates/groups_user_view.tpl:12
-#: system/Groups/templates/groups_user_memberslist.tpl:12
+#: system/Groups/templates/groups_user_memberslist.tpl:10
 #: system/Groups/templates/groups_admin_modify.tpl:24
 #: system/Groups/templates/groups_admin_view.tpl:21
 #: system/Theme/templates/theme_admin_credits.tpl:27
@@ -9315,27 +9397,13 @@ msgstr ""
 #: system/Modules/templates/modules_admin_view.tpl:37
 #: system/Users/templates/users_admin_listusers.tpl:51
 #: system/Users/templates/users_admin_viewregistrations.tpl:16
-#: system/Users/templates/users_admin_view.tpl:37
+#: system/Users/templates/users_admin_view.tpl:38
 #: system/Categories/templates/categories_admin_registry_edit.tpl:18
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:40
 #: system/SecurityCenter/templates/securitycenter_admin_view_log_event.tpl:34
 #: system/SecurityCenter/templates/securitycenter_admin_view.tpl:15
 #: system/Admin/templates/admin_admin_view.tpl:11
 msgid "Actions"
-msgstr ""
-
-#: system/Blocks/templates/blocks_admin_view.tpl:102
-#: system/Blocks/templates/blocks_admin_view.tpl:131
-#: system/Groups/templates/groups_admin_view.tpl:207
-#: system/Groups/templates/groups_admin_groupmembership.tpl:28
-#: system/Theme/templates/theme_admin_variables.tpl:45
-#: system/Modules/templates/modules_admin_viewPlugins.tpl:83
-#: system/Modules/templates/modules_admin_view.tpl:72
-#: system/Search/templates/search_user_recent.tpl:21
-#: system/SecurityCenter/templates/securitycenter_admin_view_log_event.tpl:52
-#: system/SecurityCenter/templates/securitycenter_admin_view.tpl:42
-#: system/Admin/templates/admin_admin_view.tpl:26
-msgid "No items found."
 msgstr ""
 
 #: system/Blocks/templates/blocks_admin_view.tpl:107
@@ -9358,7 +9426,7 @@ msgstr ""
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:18
 #: system/Groups/templates/groups_admin_new.tpl:33
 #: system/Groups/templates/groups_user_view.tpl:10
-#: system/Groups/templates/groups_user_memberslist.tpl:11
+#: system/Groups/templates/groups_user_memberslist.tpl:9
 #: system/Groups/templates/groups_admin_modify.tpl:34
 #: system/Groups/templates/groups_admin_view.tpl:20
 #: system/Groups/templates/groups_user_membership.tpl:27
@@ -9367,7 +9435,7 @@ msgstr ""
 #: system/Modules/templates/modules_admin_viewPlugins.tpl:33
 #: system/Modules/templates/modules_admin_view.tpl:15
 #: system/Modules/templates/modules_admin_modify.tpl:20
-#: system/Categories/templates/categories_user_edit.tpl:86
+#: system/Categories/templates/categories_user_edit.tpl:94
 #: system/Categories/templates/categories_admin_edit.tpl:78
 #: system/Admin/templates/admin_admin_help.tpl:26
 #: system/Admin/templates/admin_admin_newcat.tpl:17
@@ -9415,38 +9483,38 @@ msgstr ""
 msgid "Block"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:10
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:9
 msgid "Template"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:12
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:11
 msgid "Template for this block"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:16
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:15
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:2
 msgid "CSS styling"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:18
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:17
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:4
 msgid "Style sheet"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:22
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:21
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:7
 msgid "Visibility within block"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:24
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:23
 msgid "Display links to installed modules"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:28
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:27
 msgid "Block titles"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:29
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:28
 msgid ""
 "These block titles override the title entered in the Blocks/extmenu section "
 "at the top of this page. If you enter titles here, it is these titles here "
@@ -9454,7 +9522,7 @@ msgid ""
 "will be the title seen in the blocks list in the Blocks administration."
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:40
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:39
 msgid ""
 "In the table below, drag and drop the menu items into your desired order. "
 "The item order and the contents of each menu item are saved when you click "
@@ -9463,27 +9531,27 @@ msgid ""
 "access to the menu item."
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:41
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:40
 msgid "Create new menu item"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:50
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:49
 msgid "Image"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:52
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:51
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:17
-#: system/Theme/templates/zdebug.html:33
+#: system/Theme/templates/zdebug.tpl:33
 msgid "URL"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:53
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:52
 #: system/Blocks/templates/blocks_block_menu_modify.tpl:18
 #: system/Modules/templates/modules_admin_remove.tpl:41
 msgid "optional"
 msgstr ""
 
-#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:89
+#: system/Blocks/templates/blocks_block_extmenu_modify.tpl:88
 msgid "Error! Encountered a problem:"
 msgstr ""
 
@@ -9620,7 +9688,7 @@ msgid "Minimum row height for rule editing view (in pixels)"
 msgstr ""
 
 #: system/Permissions/templates/permissions_admin_menu.tpl:4
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:16
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:28
 msgid "Permission rules manager"
 msgstr ""
 
@@ -9743,6 +9811,30 @@ msgstr ""
 msgid "Delete permission rule"
 msgstr ""
 
+#: system/PageLock/templates/PageLock_lockedwindow.tpl:8
+msgid "This page is locked"
+msgstr ""
+
+#: system/PageLock/templates/PageLock_lockedwindow.tpl:9
+msgid ""
+"This page is locked because another user is working on it. Please wait: the "
+"page will be unlocked automatically when the other user has finished, and "
+"you will be informed."
+msgstr ""
+
+#: system/PageLock/templates/PageLock_lockedwindow.tpl:10
+#, php-format
+msgid "Locked by '%s'."
+msgstr ""
+
+#: system/PageLock/templates/PageLock_lockedwindow.tpl:13
+msgid "Ignore lock"
+msgstr ""
+
+#: system/PageLock/templates/PageLock_lockedwindow.tpl:15
+msgid "Back"
+msgstr ""
+
 #: system/Groups/templates/groups_user_menu.tpl:6
 msgid "Go to groups index page"
 msgstr ""
@@ -9797,7 +9889,7 @@ msgstr ""
 
 #: system/Groups/templates/groups_admin_new.tpl:29
 #: system/Groups/templates/groups_user_view.tpl:14
-#: system/Groups/templates/groups_user_memberslist.tpl:14
+#: system/Groups/templates/groups_user_memberslist.tpl:12
 #: system/Groups/templates/groups_admin_modify.tpl:30
 #: system/Groups/templates/groups_admin_view.tpl:23
 msgid "Maximum membership"
@@ -9808,13 +9900,13 @@ msgid "There are currently no groups that can be joined."
 msgstr ""
 
 #: system/Groups/templates/groups_user_view.tpl:13
-#: system/Groups/templates/groups_user_memberslist.tpl:13
+#: system/Groups/templates/groups_user_memberslist.tpl:11
 #: system/Groups/templates/groups_admin_view.tpl:22
 msgid "Members"
 msgstr ""
 
 #: system/Groups/templates/groups_user_view.tpl:15
-#: system/Groups/templates/groups_user_memberslist.tpl:15
+#: system/Groups/templates/groups_user_memberslist.tpl:13
 #: system/Admin/templates/admin_admin_adminpanel_inc1.tpl:22
 msgid "Functions"
 msgstr ""
@@ -9834,14 +9926,14 @@ msgid "Unlimited"
 msgstr ""
 
 #: system/Groups/templates/groups_user_grouprow_overview.tpl:13
-#: system/Groups/templates/groups_user_memberslist.tpl:29
+#: system/Groups/templates/groups_user_memberslist.tpl:27
 msgid ""
 "Sorry! You must register for a user account on this site before you can "
 "apply for membership of a group."
 msgstr ""
 
 #: system/Groups/templates/groups_user_grouprow_overview.tpl:13
-#: system/Groups/templates/groups_user_memberslist.tpl:29
+#: system/Groups/templates/groups_user_memberslist.tpl:27
 msgid "Log in or register"
 msgstr ""
 
@@ -9851,45 +9943,45 @@ msgid "Members list"
 msgstr ""
 
 #: system/Groups/templates/groups_user_grouprow_read.tpl:11
-#: system/Groups/templates/groups_user_memberslist.tpl:27
+#: system/Groups/templates/groups_user_memberslist.tpl:25
 msgid "Unavailable"
 msgstr ""
 
 #: system/Groups/templates/groups_user_grouprow_read.tpl:17
-#: system/Groups/templates/groups_user_memberslist.tpl:37
+#: system/Groups/templates/groups_user_memberslist.tpl:35
 msgid "Resign"
 msgstr ""
 
 #: system/Groups/templates/groups_user_grouprow_read.tpl:20
-#: system/Groups/templates/groups_user_memberslist.tpl:40
+#: system/Groups/templates/groups_user_memberslist.tpl:38
 msgid "Apply"
 msgstr ""
 
 #: system/Groups/templates/groups_user_grouprow_read.tpl:22
-#: system/Groups/templates/groups_user_memberslist.tpl:44
+#: system/Groups/templates/groups_user_memberslist.tpl:42
 msgid "Sorry! This group has reached full membership."
 msgstr ""
 
-#: system/Groups/templates/groups_user_memberslist.tpl:2
+#: system/Groups/templates/groups_user_memberslist.tpl:1
 msgid "Memberships"
 msgstr ""
 
-#: system/Groups/templates/groups_user_memberslist.tpl:56
+#: system/Groups/templates/groups_user_memberslist.tpl:54
 msgid "Avatar"
 msgstr ""
 
-#: system/Groups/templates/groups_user_memberslist.tpl:59
+#: system/Groups/templates/groups_user_memberslist.tpl:57
 #: system/Modules/templates/modules_admin_view.tpl:12
 #: system/Users/templates/users_admin_listusers.tpl:48
 #: system/Admin/templates/admin_admin_modifyconfig.tpl:47
 msgid "Internal name"
 msgstr ""
 
-#: system/Groups/templates/groups_user_memberslist.tpl:60
+#: system/Groups/templates/groups_user_memberslist.tpl:58
 msgid "User's website"
 msgstr ""
 
-#: system/Groups/templates/groups_user_memberslist.tpl:80
+#: system/Groups/templates/groups_user_memberslist.tpl:78
 msgid "No group members found."
 msgstr ""
 
@@ -9899,8 +9991,8 @@ msgstr ""
 
 #: system/Groups/templates/groups_admin_view.tpl:17
 #: system/Theme/templates/theme_admin_credits.tpl:13
-#: system/Users/templates/users_admin_view.tpl:30
-#: system/Categories/templates/categories_user_edit.tpl:110
+#: system/Users/templates/users_admin_view.tpl:31
+#: system/Categories/templates/categories_user_edit.tpl:115
 #: system/Categories/templates/categories_user_list.tpl:6
 #: system/Categories/templates/categories_admin_edit.tpl:97
 #: system/SecurityCenter/templates/securitycenter_admin_view.tpl:9
@@ -9968,7 +10060,7 @@ msgid "Users to add"
 msgstr ""
 
 #: system/Groups/templates/groups_admin_groupmembership.tpl:53
-#: system/Categories/templates/categories_include_editattributes.html:13
+#: system/Categories/templates/categories_include_editattributes.tpl:13
 msgid "Add"
 msgstr ""
 
@@ -9976,22 +10068,6 @@ msgstr ""
 msgid ""
 "Notice: Please select one or more users to add to the group. To select "
 "multiple users, use 'Shift-Click' or 'Control-Click'."
-msgstr ""
-
-#: system/Theme/templates/pagercss.html:8 system/Theme/templates/pager.html:8
-#: system/Theme/templates/pager.html:9
-#: system/Theme/templates/pagerintervals.html:10
-#: system/Theme/templates/pageritems.html:8
-#: system/Theme/templates/pagerjs.html:22
-msgid "Previous page"
-msgstr ""
-
-#: system/Theme/templates/pagercss.html:39
-#: system/Theme/templates/pager.html:42 system/Theme/templates/pager.html:43
-#: system/Theme/templates/pagerintervals.html:29
-#: system/Theme/templates/pageritems.html:23
-#: system/Theme/templates/pagerjs.html:58
-msgid "Next page"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_deletepageconfigurationassignment.tpl:2
@@ -10062,22 +10138,8 @@ msgstr ""
 msgid "Credits"
 msgstr ""
 
-#: system/Theme/templates/theme_admin_view.tpl:44
+#: system/Theme/templates/theme_admin_view.tpl:46
 msgid "Default theme"
-msgstr ""
-
-#: system/Theme/templates/pager.html:4 system/Theme/templates/pager.html:5
-#: system/Theme/templates/pagerintervals.html:4
-#: system/Theme/templates/pageritems.html:4
-#: system/Theme/templates/pagerjs.html:19
-msgid "First page"
-msgstr ""
-
-#: system/Theme/templates/pager.html:47 system/Theme/templates/pager.html:48
-#: system/Theme/templates/pagerintervals.html:35
-#: system/Theme/templates/pageritems.html:28
-#: system/Theme/templates/pagerjs.html:61
-msgid "Last page"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_newtheme.tpl:10
@@ -10155,60 +10217,20 @@ msgid ""
 "com</a>"
 msgstr ""
 
-#: system/Theme/templates/zdebug.html:12
-msgid "Rendering engine debug console"
+#: system/Theme/templates/pagercss.tpl:8
+#: system/Theme/templates/pagerintervals.tpl:10
+#: system/Theme/templates/pager.tpl:8 system/Theme/templates/pager.tpl:9
+#: system/Theme/templates/pageritems.tpl:8
+#: system/Theme/templates/pagerjs.tpl:22
+msgid "Previous page"
 msgstr ""
 
-#: system/Theme/templates/zdebug.html:16
-#, php-format
-msgid ""
-"zdebug plugin found at line <strong>%1$s</strong> in template <strong>%3$s/%2"
-"$s</strong>"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:22
-#: system/Users/templates/users_admin_modify.tpl:82
-msgid "Theme"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:28
-msgid "Force compilation"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:34
-msgid "URI"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:39
-msgid "Included templates and configuration files (load time in seconds)"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:51
-msgid "No templates included"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:57
-msgid "Assigned template variables"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:74
-msgid "No template variables assigned"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:81
-msgid "Zikula session variables"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:96
-msgid "none"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:103
-msgid "Assigned configuration file variables (outer template scope)"
-msgstr ""
-
-#: system/Theme/templates/zdebug.html:118
-msgid "No configuration variables assigned"
+#: system/Theme/templates/pagercss.tpl:39
+#: system/Theme/templates/pagerintervals.tpl:29
+#: system/Theme/templates/pager.tpl:42 system/Theme/templates/pager.tpl:43
+#: system/Theme/templates/pageritems.tpl:23
+#: system/Theme/templates/pagerjs.tpl:58
+msgid "Next page"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_palettes.tpl:5
@@ -10219,9 +10241,9 @@ msgstr ""
 #: system/Theme/templates/theme_admin_palettes.tpl:18
 #: system/Theme/templates/theme_admin_variables.tpl:15
 #: system/Theme/templates/theme_admin_variables.tpl:56
-#: system/Categories/templates/categories_include_editattributes.html:5
 #: system/Categories/templates/categories_user_edit.tpl:63
 #: system/Categories/templates/categories_user_list.tpl:8
+#: system/Categories/templates/categories_include_editattributes.tpl:5
 #: system/Categories/templates/categories_admin_edit.tpl:49
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:15
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:34
@@ -10249,11 +10271,11 @@ msgstr ""
 msgid "Override users' theme settings"
 msgstr ""
 
-#: system/Theme/templates/upgrade/version.htm:14
+#: system/Theme/templates/upgrade/version.tpl:14
 msgid "$displayname"
 msgstr ""
 
-#: system/Theme/templates/upgrade/version.htm:15
+#: system/Theme/templates/upgrade/version.tpl:15
 msgid "$description"
 msgstr ""
 
@@ -10291,6 +10313,36 @@ msgstr ""
 #: system/Theme/templates/theme_admin_modify.tpl:34
 msgid ""
 "Notice: This category is for themes used to display the site admin panel."
+msgstr ""
+
+#: system/Theme/templates/pagerintervals.tpl:4
+#: system/Theme/templates/pager.tpl:4 system/Theme/templates/pager.tpl:5
+#: system/Theme/templates/pageritems.tpl:4
+#: system/Theme/templates/pagerjs.tpl:19
+msgid "First page"
+msgstr ""
+
+#: system/Theme/templates/pagerintervals.tpl:5
+#: system/Theme/templates/pageritems.tpl:5
+msgid "First"
+msgstr ""
+
+#: system/Theme/templates/pagerintervals.tpl:11
+#: system/Theme/templates/pageritems.tpl:9
+#: system/Theme/templates/pagercss2.tpl:9
+msgid "Previous"
+msgstr ""
+
+#: system/Theme/templates/pagerintervals.tpl:35
+#: system/Theme/templates/pager.tpl:47 system/Theme/templates/pager.tpl:48
+#: system/Theme/templates/pageritems.tpl:28
+#: system/Theme/templates/pagerjs.tpl:61
+msgid "Last page"
+msgstr ""
+
+#: system/Theme/templates/pagerintervals.tpl:36
+#: system/Theme/templates/pageritems.tpl:29
+msgid "Last"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_modifypageconfigurationassignment.tpl:4
@@ -10362,30 +10414,6 @@ msgstr ""
 
 #: system/Theme/templates/theme_admin_credits.tpl:32
 msgid "XHTML-capable"
-msgstr ""
-
-#: system/Theme/templates/pagercss2.html:9
-#: system/Theme/templates/pagerintervals.html:11
-#: system/Theme/templates/pageritems.html:9
-msgid "Previous"
-msgstr ""
-
-#: system/Theme/templates/pagercss2.html:9
-#: system/Theme/templates/pagerimage.html:9
-msgid "Previous Page"
-msgstr ""
-
-#: system/Theme/templates/pagercss2.html:13
-msgid "No previous pages"
-msgstr ""
-
-#: system/Theme/templates/pagercss2.html:46
-#: system/Theme/templates/pagerimage.html:21
-msgid "Next Page"
-msgstr ""
-
-#: system/Theme/templates/pagercss2.html:50
-msgid "No further pages"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_modifyconfig.tpl:16
@@ -10533,26 +10561,60 @@ msgstr ""
 msgid "Use 'trimwhitespace' output filter"
 msgstr ""
 
-#: system/Theme/templates/pagerimage.html:4
-msgid "First Page"
+#: system/Theme/templates/zdebug.tpl:12
+msgid "Rendering engine debug console"
 msgstr ""
 
-#: system/Theme/templates/pagerimage.html:16
-#: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:17
-#: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:35
-msgid "Page"
+#: system/Theme/templates/zdebug.tpl:16
+#, php-format
+msgid ""
+"zdebug plugin found at line <strong>%1$s</strong> in template <strong>%3$s/%2"
+"$s</strong>"
 msgstr ""
 
-#: system/Theme/templates/pagerimage.html:16
-msgid "of"
+#: system/Theme/templates/zdebug.tpl:22
+#: system/Users/templates/users_admin_modify.tpl:82
+msgid "Theme"
 msgstr ""
 
-#: system/Theme/templates/pagerimage.html:16
-msgid "Total"
+#: system/Theme/templates/zdebug.tpl:28
+msgid "Force compilation"
 msgstr ""
 
-#: system/Theme/templates/pagerimage.html:26
-msgid "Last Page"
+#: system/Theme/templates/zdebug.tpl:34
+msgid "URI"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:39
+msgid "Included templates and configuration files (load time in seconds)"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:51
+msgid "No templates included"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:57
+msgid "Assigned template variables"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:74
+msgid "No template variables assigned"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:81
+msgid "Zikula session variables"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:96
+msgid "none"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:103
+msgid "Assigned configuration file variables (outer template scope)"
+msgstr ""
+
+#: system/Theme/templates/zdebug.tpl:118
+msgid "No configuration variables assigned"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_modifymenu.tpl:2
@@ -10567,16 +10629,6 @@ msgstr ""
 #: system/Theme/templates/theme_admin_modifymenu.tpl:8
 #: system/Theme/templates/theme_admin_variables.tpl:4
 msgid "Variables"
-msgstr ""
-
-#: system/Theme/templates/pagerintervals.html:5
-#: system/Theme/templates/pageritems.html:5
-msgid "First"
-msgstr ""
-
-#: system/Theme/templates/pagerintervals.html:36
-#: system/Theme/templates/pageritems.html:29
-msgid "Last"
 msgstr ""
 
 #: system/Theme/templates/theme_admin_pageconfigurations.tpl:4
@@ -10686,6 +10738,24 @@ msgstr ""
 msgid "Add new theme variable"
 msgstr ""
 
+#: system/Theme/templates/pagercss2.tpl:9
+#: system/Theme/templates/pagerimage.tpl:9
+msgid "Previous Page"
+msgstr ""
+
+#: system/Theme/templates/pagercss2.tpl:13
+msgid "No previous pages"
+msgstr ""
+
+#: system/Theme/templates/pagercss2.tpl:46
+#: system/Theme/templates/pagerimage.tpl:21
+msgid "Next Page"
+msgstr ""
+
+#: system/Theme/templates/pagercss2.tpl:50
+msgid "No further pages"
+msgstr ""
+
 #: system/Theme/templates/theme_admin_delete.tpl:2
 msgid "Delete theme"
 msgstr ""
@@ -10702,6 +10772,28 @@ msgstr ""
 msgid ""
 "Please delete the Theme folder before pressing OK or the Theme will not be "
 "deleted."
+msgstr ""
+
+#: system/Theme/templates/pagerimage.tpl:4
+msgid "First Page"
+msgstr ""
+
+#: system/Theme/templates/pagerimage.tpl:16
+#: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:17
+#: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:35
+msgid "Page"
+msgstr ""
+
+#: system/Theme/templates/pagerimage.tpl:16
+msgid "of"
+msgstr ""
+
+#: system/Theme/templates/pagerimage.tpl:16
+msgid "Total"
+msgstr ""
+
+#: system/Theme/templates/pagerimage.tpl:26
+msgid "Last Page"
 msgstr ""
 
 #: system/Theme/templates/theme_block_render.tpl:3
@@ -11400,85 +11492,142 @@ msgstr ""
 msgid "De/Select all"
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:1
-#: system/Users/templates/users_userapi_welcomeemail.tpl:1
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:1
+#: system/Users/templates/users_email_regverifyemail_html.tpl:1
 #, php-format
-msgid "Welcome to %1$s, %2$s!"
+msgid "Verify your e-mail address for %s."
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:3
-#: system/Users/templates/users_userapi_activationemail.txt:3
-#: system/Users/templates/users_userapi_activationemail.tpl:3
-#: system/Users/templates/users_userapi_welcomeemail.tpl:3
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:3
+#: system/Users/templates/users_email_welcome_html.tpl:3
+#: system/Users/templates/users_email_regverifyemail_html.tpl:3
+#: system/Users/templates/users_email_welcome_txt.tpl:3
 #, php-format
 msgid "Welcome to %1$s!"
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:5
-#: system/Users/templates/users_userapi_lostunamemail.tpl:3
-#: system/Users/templates/users_userapi_lostunamemail.txt:3
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:3
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:3
-#: system/Users/templates/users_userapi_welcomeemail.tpl:5
-msgid "Hello!"
-msgstr ""
-
-#: system/Users/templates/users_userapi_welcomeemail.txt:7
-#: system/Users/templates/users_userapi_welcomeemail.tpl:7
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:5
+#: system/Users/templates/users_email_regverifyemail_html.tpl:5
 #, php-format
 msgid ""
-"This e-mail address ('%1$s') has been used to register an account on '%2"
-"$s' (%3$s)."
+"Hello! This e-mail address ('%1$s') has been used to register an account on "
+"'%2$s' (%3$s)."
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:8
-#: system/Users/templates/users_userapi_denyemail.txt:6
-#: system/Users/templates/users_userapi_denyemail.tpl:6
-#: system/Users/templates/users_userapi_welcomeemail.tpl:8
-msgid "The information that was registered is as follows:"
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:7
+#: system/Users/templates/users_email_regverifyemail_html.tpl:7
+msgid ""
+"If you did not request a new user account at this web site, please either "
+"contact our site administrator, or simply disregard this message."
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:11
-#: system/Users/templates/users_user_passwordreminder.tpl:13
-#: system/Users/templates/users_user_passwordreminder.tpl:51
-#: system/Users/templates/users_user_register.tpl:92
-#: system/Users/templates/users_user_verifyregistration.tpl:45
-#: system/Users/templates/users_userapi_welcomeemail.tpl:11
-msgid "Password reminder"
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:9
+#: system/Users/templates/users_email_regverifyemail_html.tpl:9
+msgid ""
+"If you did request a new user account, then your request is waiting for you "
+"to verify your e-mail address with us."
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:13
-#: system/Users/templates/users_userapi_activationemail.txt:26
-#: system/Users/templates/users_userapi_activationemail.tpl:25
-#: system/Users/templates/users_userapi_welcomeemail.tpl:13
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:10
+#: system/Users/templates/users_email_regverifyemail_html.tpl:10
+msgid "Your request is also waiting for administrator approval."
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:11
+#: system/Users/templates/users_email_regverifyemail_html.tpl:11
+msgid ""
+"We will not be able to approve your request until after you have completed "
+"this verification step."
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:12
+#: system/Users/templates/users_email_regverifyemail_html.tpl:12
+msgid ""
+"Once both this verification step is complete and an administrator has "
+"approved your request, you will be able to log in with your user name."
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:14
+#: system/Users/templates/users_email_regverifyemail_html.tpl:14
+msgid ""
+"Please click on the following link to complete the e-mail address check: "
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:16
+msgid ""
+"If you are not able to click on the above link, you can copy it into your "
+"browser."
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:18
+#: system/Users/templates/users_email_regverifyemail_html.tpl:18
+msgid "Your verification code is:"
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:20
+#: system/Users/templates/users_email_regverifyemail_html.tpl:20
+msgid ""
+"Once verified and your account has been approved, then you will be able to "
+"log in."
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:20
+#: system/Users/templates/users_email_regverifyemail_html.tpl:20
+msgid "Once verified, you will be able to choose a password and then log in."
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:20
+#: system/Users/templates/users_email_regverifyemail_html.tpl:20
+msgid "Once verified, you will be able to log in."
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:21
+#: system/Users/templates/users_email_importnotify_html.tpl:4
+#: system/Users/templates/users_email_regverifyemail_html.tpl:20
+msgid "Your account details are as follows:"
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:23
+#: system/Users/templates/users_email_importnotify_html.tpl:5
+#: system/Users/templates/users_email_regverifyemail_html.tpl:22
+#, php-format
+msgid "User name: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:24
+#: system/Users/templates/users_email_importnotify_html.tpl:6
+#: system/Users/templates/users_email_regverifyemail_html.tpl:23
+#, php-format
+msgid "Password: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:24
+#: system/Users/templates/users_email_regverifyemail_html.tpl:23
+#, php-format
+msgid "Password reminder: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:26
+#: system/Users/templates/users_email_welcome_html.tpl:13
+#: system/Users/templates/users_email_regverifyemail_html.tpl:25
+#: system/Users/templates/users_email_welcome_txt.tpl:13
 msgid ""
 "(This is the only time you will receive your password. Please keep it in a "
 "safe place.)"
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:15
-#: system/Users/templates/users_userapi_welcomeemail.tpl:15
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:28
+#: system/Users/templates/users_email_regverifyemail_html.tpl:27
 msgid ""
-"Thank you for your application for a new account.  Your application has been "
-"forwarded to the site administrator for review. Please expect a message once "
-"the review process is complete."
+"Remember: both this verification step and approval from an administrator "
+"must be completed before you can log in."
 msgstr ""
 
-#: system/Users/templates/users_userapi_welcomeemail.txt:16
-#: system/Users/templates/users_userapi_welcomeemail.tpl:16
+#: system/Users/templates/users_email_regverifyemail_txt.tpl:28
+#: system/Users/templates/users_email_regverifyemail_html.tpl:27
 msgid ""
-"Your account application has been approved. Thank you for your patience "
-"during the new account application review process."
-msgstr ""
-
-#: system/Users/templates/users_userapi_welcomeemail.txt:17
-#: system/Users/templates/users_userapi_welcomeemail.tpl:17
-msgid "The web site administrator has created this new account for you."
-msgstr ""
-
-#: system/Users/templates/users_userapi_welcomeemail.txt:19
-#: system/Users/templates/users_userapi_welcomeemail.tpl:19
-msgid "You may now log into the web site with your user name and password."
+"You will receive an additional e-mail message once an administrator has "
+"reviewed your request."
 msgstr ""
 
 #: system/Users/templates/users_admin_modify.tpl:1
@@ -11500,9 +11649,9 @@ msgstr ""
 
 #: system/Users/templates/users_admin_modify.tpl:8
 #: system/Users/templates/users_user_register.tpl:23
-#: system/Users/templates/users_user_loginscreen.tpl:72
-#: system/Users/templates/users_user_loginscreen.tpl:73
-#: system/Users/templates/users_user_loginscreen.tpl:74
+#: system/Users/templates/users_user_loginscreen.tpl:88
+#: system/Users/templates/users_user_loginscreen.tpl:89
+#: system/Users/templates/users_user_loginscreen.tpl:90
 #: system/Users/templates/users_admin_includeregistration.tpl:5
 #, php-format
 msgid "%1$s and %2$s"
@@ -11514,9 +11663,9 @@ msgstr ""
 
 #: system/Users/templates/users_admin_modify.tpl:61
 #: system/Users/templates/users_user_passwordreminder.tpl:47
-#: system/Users/templates/users_admin_newuser.tpl:57
-#: system/Users/templates/users_user_register.tpl:87
-#: system/Users/templates/users_user_verifyregistration.tpl:41
+#: system/Users/templates/users_admin_newuser.tpl:77
+#: system/Users/templates/users_user_register.tpl:92
+#: system/Users/templates/users_user_verifyregistration.tpl:61
 msgid "Password (repeat for verification)"
 msgstr ""
 
@@ -11548,71 +11697,6 @@ msgstr ""
 msgid "Site's default theme"
 msgstr ""
 
-#: system/Users/templates/users_userapi_lostunamemail.tpl:6
-#: system/Users/templates/users_userapi_lostunamemail.txt:6
-#, php-format
-msgid ""
-"The administrator at %s requested that you receive your user name via e-mail."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:8
-#: system/Users/templates/users_userapi_lostunamemail.txt:8
-#, php-format
-msgid ""
-"Someone with the IP address %1$s has just requested the user name of the "
-"account at %2$s associated with this e-mail address."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:11
-#: system/Users/templates/users_userapi_lostunamemail.txt:11
-#, php-format
-msgid "The user name for your account is: %1$s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:13
-msgid "You can use this user name to log into your account here:"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:13
-msgid "Log into your account"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:15
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:16
-#, php-format
-msgid ""
-"(If you cannot click on the link, you can copy this URL and paste it into "
-"your browser: %s )"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:17
-#: system/Users/templates/users_userapi_lostunamemail.txt:16
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:18
-msgid ""
-"If the request was not made by you then you don't need to take any action."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:17
-#: system/Users/templates/users_userapi_lostunamemail.txt:16
-msgid ""
-"You are the only recipient of this message, and your user name has not been "
-"sent to any other e-mail address."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.tpl:17
-#: system/Users/templates/users_userapi_lostunamemail.txt:16
-msgid "You can just delete this message."
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationmail.tpl:1
-msgid "New user account registered"
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationmail.tpl:2
-#, php-format
-msgid "A new user account has been registered on the site. User name: %s"
-msgstr ""
-
 #: system/Users/templates/users_admin_approveregistration.tpl:1
 #, php-format
 msgid "Approve registration of '%1$s'"
@@ -11635,8 +11719,106 @@ msgstr ""
 msgid "Approve"
 msgstr ""
 
+#: system/Users/templates/users_email_lostpassword_html.tpl:3
+#: system/Users/templates/users_email_welcome_html.tpl:5
+#: system/Users/templates/users_email_welcome_txt.tpl:5
+#: system/Users/templates/users_email_lostuname_html.tpl:3
+#: system/Users/templates/users_email_lostuname_txt.tpl:3
+#: system/Users/templates/users_email_lostpassword_txt.tpl:3
+msgid "Hello!"
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:5
+#: system/Users/templates/users_email_lostpassword_txt.tpl:5
+#, php-format
+msgid ""
+"The user account '%1$s' at %2$s has this e-mail address associated with it."
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:8
+#: system/Users/templates/users_email_lostpassword_txt.tpl:8
+#, php-format
+msgid ""
+"The administrator at %s requested that you receive a confirmation code that "
+"will allow you to reset your password."
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:10
+#: system/Users/templates/users_email_lostpassword_txt.tpl:10
+#, php-format
+msgid ""
+"Someone with the IP address %s has just requested a confirmation code to "
+"allow the password for your account to be reset."
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:13
+#: system/Users/templates/users_email_lostpassword_txt.tpl:13
+#, php-format
+msgid "The confirmation code is: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:15
+msgid ""
+"With this confirmation code, you can now create a new password by clicking "
+"on this link:"
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:15
+msgid "Reset My Password"
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:16
+#: system/Users/templates/users_email_lostuname_html.tpl:15
+#, php-format
+msgid ""
+"(If you cannot click on the link, you can copy this URL and paste it into "
+"your browser: %s )"
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:18
+#: system/Users/templates/users_email_lostuname_html.tpl:17
+#: system/Users/templates/users_email_lostuname_txt.tpl:16
+msgid ""
+"If the request was not made by you then you don't need to take any action."
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:18
+#: system/Users/templates/users_email_lostpassword_txt.tpl:18
+msgid ""
+"The password won't be changed unless the confirmation code is used, and you "
+"are the only recipient of this message."
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_html.tpl:18
+#: system/Users/templates/users_email_lostpassword_txt.tpl:18
+msgid ""
+"You can just delete the message and log-in with your existing password next "
+"time you visit the site."
+msgstr ""
+
+#: system/Users/templates/users_email_importnotify_html.tpl:1
+#, php-format
+msgid "Welcome to %1$s (%2$s)!"
+msgstr ""
+
+#: system/Users/templates/users_email_importnotify_html.tpl:3
+#, php-format
+msgid ""
+"Hello! This e-mail address ('%1$s') has been used to register an account on "
+"the '%2$s' site."
+msgstr ""
+
 #: system/Users/templates/users_user_passwordreminder.tpl:1
 msgid "Lost password reminder"
+msgstr ""
+
+#: system/Users/templates/users_user_passwordreminder.tpl:13
+#: system/Users/templates/users_user_passwordreminder.tpl:51
+#: system/Users/templates/users_email_welcome_html.tpl:11
+#: system/Users/templates/users_email_welcome_txt.tpl:11
+#: system/Users/templates/users_user_register.tpl:97
+#: system/Users/templates/users_user_verifyregistration.tpl:65
+msgid "Password reminder"
 msgstr ""
 
 #: system/Users/templates/users_user_passwordreminder.tpl:17
@@ -11658,17 +11840,17 @@ msgstr ""
 
 #: system/Users/templates/users_user_passwordreminder.tpl:53
 #: system/Users/templates/users_user_changepassword.tpl:46
-#: system/Users/templates/users_user_register.tpl:94
-#: system/Users/templates/users_user_loginscreen.tpl:49
-#: system/Users/templates/users_user_verifyregistration.tpl:47
+#: system/Users/templates/users_user_register.tpl:99
+#: system/Users/templates/users_user_loginscreen.tpl:65
+#: system/Users/templates/users_user_verifyregistration.tpl:67
 msgid "Enter a word or a phrase that will remind you of your password."
 msgstr ""
 
 #: system/Users/templates/users_user_passwordreminder.tpl:54
 #: system/Users/templates/users_user_changepassword.tpl:47
-#: system/Users/templates/users_user_register.tpl:95
-#: system/Users/templates/users_user_loginscreen.tpl:50
-#: system/Users/templates/users_user_verifyregistration.tpl:48
+#: system/Users/templates/users_user_register.tpl:100
+#: system/Users/templates/users_user_loginscreen.tpl:66
+#: system/Users/templates/users_user_verifyregistration.tpl:68
 msgid ""
 "Notice: Do not use a word or phrase that will allow others to guess your "
 "password! Do not include your password or any part of your password here!"
@@ -11681,6 +11863,52 @@ msgstr ""
 
 #: system/Users/templates/users_admin_deleteusers.tpl:9
 msgid "Do you really want to delete this user account?"
+msgstr ""
+
+#: system/Users/templates/users_email_welcome_html.tpl:1
+#: system/Users/templates/users_email_welcome_txt.tpl:1
+#, php-format
+msgid "Welcome to %1$s, %2$s!"
+msgstr ""
+
+#: system/Users/templates/users_email_welcome_html.tpl:7
+#: system/Users/templates/users_email_welcome_txt.tpl:7
+#, php-format
+msgid ""
+"This e-mail address ('%1$s') has been used to register an account on '%2"
+"$s' (%3$s)."
+msgstr ""
+
+#: system/Users/templates/users_email_welcome_html.tpl:8
+#: system/Users/templates/users_email_welcome_txt.tpl:8
+#: system/Users/templates/users_email_regdeny_html.tpl:6
+#: system/Users/templates/users_email_regdeny_txt.tpl:6
+msgid "The information that was registered is as follows:"
+msgstr ""
+
+#: system/Users/templates/users_email_welcome_html.tpl:15
+#: system/Users/templates/users_email_welcome_txt.tpl:15
+msgid ""
+"Thank you for your application for a new account.  Your application has been "
+"forwarded to the site administrator for review. Please expect a message once "
+"the review process is complete."
+msgstr ""
+
+#: system/Users/templates/users_email_welcome_html.tpl:16
+#: system/Users/templates/users_email_welcome_txt.tpl:16
+msgid ""
+"Your account application has been approved. Thank you for your patience "
+"during the new account application review process."
+msgstr ""
+
+#: system/Users/templates/users_email_welcome_html.tpl:17
+#: system/Users/templates/users_email_welcome_txt.tpl:17
+msgid "The web site administrator has created this new account for you."
+msgstr ""
+
+#: system/Users/templates/users_email_welcome_html.tpl:19
+#: system/Users/templates/users_email_welcome_txt.tpl:19
+msgid "You may now log into the web site with your user name and password."
 msgstr ""
 
 #: system/Users/templates/users_admin_search.tpl:23
@@ -11725,8 +11953,42 @@ msgstr ""
 msgid "Go back to the homepage"
 msgstr ""
 
+#: system/Users/templates/users_email_userverifyemail_html.tpl:1
+#, php-format
+msgid ""
+"Hello! You requested changing your e-mail address for user '%1$s' at %2$s "
+"from %3$s to %4$s. You must confirm the change during the next five days."
+msgstr ""
+
+#: system/Users/templates/users_email_userverifyemail_html.tpl:3
+#, php-format
+msgid "You can confirm the e-mail address change by clicking on this link: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_userverifyemail_html.tpl:5
+msgid ""
+"If the request was not made by yourself, you do not need to take any action."
+msgstr ""
+
+#: system/Users/templates/users_email_userverifyemail_html.tpl:5
+msgid ""
+"The e-mail address wil not be changed unless the confirmation code is used, "
+"and you are the only recipient of this message. You can just delete the "
+"message."
+msgstr ""
+
 #: system/Users/templates/users_search_options.tpl:3
 msgid "Registered users"
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_html.tpl:14
+msgid "Verify my e-mail address"
+msgstr ""
+
+#: system/Users/templates/users_email_regverifyemail_html.tpl:16
+msgid ""
+"If you are not able to click on the above link, you can copy the following "
+"URL into your browser:"
 msgstr ""
 
 #: system/Users/templates/users_admin_listusers.tpl:78
@@ -11819,33 +12081,6 @@ msgstr ""
 msgid "Tab"
 msgstr ""
 
-#: system/Users/templates/users_userapi_denyemail.txt:1
-#: system/Users/templates/users_userapi_denyemail.tpl:1
-#, php-format
-msgid "Your recent request at %1$s."
-msgstr ""
-
-#: system/Users/templates/users_userapi_denyemail.txt:3
-#: system/Users/templates/users_userapi_denyemail.tpl:3
-#, php-format
-msgid "A message from %1$s..."
-msgstr ""
-
-#: system/Users/templates/users_userapi_denyemail.txt:5
-#: system/Users/templates/users_userapi_denyemail.tpl:5
-#, php-format
-msgid ""
-"Recently, this e-mail address ('%1$s') was used to request an account on '%2"
-"$s' (%3$s)."
-msgstr ""
-
-#: system/Users/templates/users_userapi_denyemail.txt:10
-#: system/Users/templates/users_userapi_denyemail.tpl:10
-msgid ""
-"Thank you for your application for a new account. At this time we are unable "
-"to approve your application."
-msgstr ""
-
 #: system/Users/templates/users_user_lostpwduname.tpl:1
 msgid "Lost user name and password recovery"
 msgstr ""
@@ -11882,44 +12117,153 @@ msgstr ""
 msgid "New password"
 msgstr ""
 
-#: system/Users/templates/users_user_changepassword.tpl:23
-#: system/Users/templates/users_user_register.tpl:68
-msgid "Too Short Password"
-msgstr ""
-
-#: system/Users/templates/users_user_changepassword.tpl:24
-#: system/Users/templates/users_user_register.tpl:69
-msgid "Weak, Use letters & numbers"
-msgstr ""
-
-#: system/Users/templates/users_user_changepassword.tpl:25
-#: system/Users/templates/users_user_register.tpl:70
-msgid "Medium, Use special characters"
-msgstr ""
-
-#: system/Users/templates/users_user_changepassword.tpl:26
-#: system/Users/templates/users_user_register.tpl:71
-msgid "Strong Password"
-msgstr ""
-
 #: system/Users/templates/users_user_changepassword.tpl:27
-#: system/Users/templates/users_user_register.tpl:72
-msgid "Password can not match the username, choose a different password."
+#: system/Users/templates/users_admin_newuser.tpl:65
+#: system/Users/templates/users_user_register.tpl:78
+#: system/Users/templates/users_user_loginscreen.tpl:44
+#: system/Users/templates/users_user_verifyregistration.tpl:48
+#, php-format
+msgid "The minimum length for user passwords is %s characters."
 msgstr ""
 
-#: system/Users/templates/users_user_changepassword.tpl:34
+#: system/Users/templates/users_user_changepassword.tpl:30
+#: system/Users/templates/users_admin_newuser.tpl:68
+#: system/Users/templates/users_user_register.tpl:81
+#: system/Users/templates/users_user_loginscreen.tpl:47
+#: system/Users/templates/users_user_verifyregistration.tpl:51
+msgid "Weak"
+msgstr ""
+
+#: system/Users/templates/users_user_changepassword.tpl:31
+#: system/Users/templates/users_admin_newuser.tpl:69
+#: system/Users/templates/users_user_register.tpl:82
+#: system/Users/templates/users_user_loginscreen.tpl:48
+#: system/Users/templates/users_user_verifyregistration.tpl:52
+msgid "Normal"
+msgstr ""
+
+#: system/Users/templates/users_user_changepassword.tpl:32
+#: system/Users/templates/users_admin_newuser.tpl:70
 #: system/Users/templates/users_user_register.tpl:83
-msgid "Enter your new password"
+#: system/Users/templates/users_user_loginscreen.tpl:49
+#: system/Users/templates/users_user_verifyregistration.tpl:53
+msgid "Strong"
+msgstr ""
+
+#: system/Users/templates/users_user_changepassword.tpl:33
+#: system/Users/templates/users_admin_newuser.tpl:71
+#: system/Users/templates/users_user_register.tpl:84
+#: system/Users/templates/users_user_loginscreen.tpl:50
+#: system/Users/templates/users_user_verifyregistration.tpl:54
+msgid "Very Strong"
 msgstr ""
 
 #: system/Users/templates/users_user_changepassword.tpl:40
-#: system/Users/templates/users_user_loginscreen.tpl:42
+#: system/Users/templates/users_user_loginscreen.tpl:58
 msgid "New password (repeat for verification)"
 msgstr ""
 
 #: system/Users/templates/users_user_changepassword.tpl:44
-#: system/Users/templates/users_user_loginscreen.tpl:47
+#: system/Users/templates/users_user_loginscreen.tpl:63
 msgid "New password reminder"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:3
+#: system/Users/templates/users_email_regadminnotify_html.tpl:3
+msgid "New registration pending approval"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:4
+#: system/Users/templates/users_email_regadminnotify_html.tpl:4
+#, php-format
+msgid "New registration pending approval: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:6
+#: system/Users/templates/users_email_regadminnotify_html.tpl:6
+msgid "New registration pending e-mail verification"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:7
+#: system/Users/templates/users_email_regadminnotify_html.tpl:7
+#, php-format
+msgid "New registration pending verification: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:9
+#: system/Users/templates/users_email_regadminnotify_html.tpl:9
+msgid "New user activated"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:10
+#: system/Users/templates/users_email_regadminnotify_html.tpl:10
+#, php-format
+msgid "New user activated: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:14
+#: system/Users/templates/users_email_regadminnotify_html.tpl:15
+#, php-format
+msgid "A new user account has been activated on %1$s."
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:15
+#: system/Users/templates/users_email_regadminnotify_html.tpl:16
+#, php-format
+msgid ""
+"It was created by an administrator or sub-administrator logged in as '%1$s'."
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:16
+#: system/Users/templates/users_email_regadminnotify_html.tpl:17
+msgid "The account details are as follows:"
+msgstr ""
+
+#: system/Users/templates/users_email_regadminnotify_txt.tpl:18
+#: system/Users/templates/users_email_regadminnotify_html.tpl:19
+#, php-format
+msgid "User name: '%s'."
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_html.tpl:6
+#: system/Users/templates/users_email_lostuname_txt.tpl:6
+#, php-format
+msgid ""
+"The administrator at %s requested that you receive your user name via e-mail."
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_html.tpl:8
+#: system/Users/templates/users_email_lostuname_txt.tpl:8
+#, php-format
+msgid ""
+"Someone with the IP address %1$s has just requested the user name of the "
+"account at %2$s associated with this e-mail address."
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_html.tpl:11
+#: system/Users/templates/users_email_lostuname_txt.tpl:11
+#, php-format
+msgid "The user name for your account is: %1$s"
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_html.tpl:13
+msgid "You can use this user name to log into your account here:"
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_html.tpl:13
+msgid "Log into your account"
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_html.tpl:17
+#: system/Users/templates/users_email_lostuname_txt.tpl:16
+msgid ""
+"You are the only recipient of this message, and your user name has not been "
+"sent to any other e-mail address."
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_html.tpl:17
+#: system/Users/templates/users_email_lostuname_txt.tpl:16
+msgid "You can just delete this message."
 msgstr ""
 
 #: system/Users/templates/users_user_checkage.tpl:1
@@ -11996,10 +12340,7 @@ msgstr ""
 
 #: system/Users/templates/users_user_main.tpl:1
 #: system/Users/templates/users_user_menu.tpl:2
-#: themes/andreas08/templates/modules/home.tpl:25
-#: themes/andreas08/templates/modules/admin.tpl:25
-#: themes/andreas08/templates/master.tpl:25
-#: themes/SeaBreeze/templates/includes/userheader.tpl:12
+#: themes/SeaBreeze/templates/includes/userheader.tpl:14
 msgid "My account"
 msgstr ""
 
@@ -12052,18 +12393,6 @@ msgstr ""
 msgid "Recover lost user name or password"
 msgstr ""
 
-#: system/Users/templates/users_userapi_lostunamemail.txt:13
-#, php-format
-msgid "You can use this user name to log into your account at: %1$s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostunamemail.txt:14
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:16
-msgid ""
-"(If you cannot click on the link, you can copy the URL and paste it into "
-"your browser.)"
-msgstr ""
-
 #: system/Users/templates/users_admin_pendingaction.tpl:2
 #, php-format
 msgid "Approve registration application for %s"
@@ -12100,15 +12429,46 @@ msgstr ""
 #: system/Users/templates/users_admin_newuser.tpl:34
 #: system/Users/templates/users_admin_newuser.tpl:38
 #: system/Users/templates/users_admin_newuser.tpl:52
-#: system/Users/templates/users_admin_newuser.tpl:57
+#: system/Users/templates/users_admin_newuser.tpl:77
 #: system/Users/templates/users_user_register.tpl:55
 #: system/Users/templates/users_user_register.tpl:63
-#: system/Users/templates/users_user_register.tpl:87
 #: system/Users/templates/users_user_register.tpl:92
-#: system/Users/templates/users_user_register.tpl:98
-#: system/Users/templates/users_user_register.tpl:102
-#: system/Users/templates/users_user_register.tpl:111
-#: system/Users/templates/users_user_register.tpl:136
+#: system/Users/templates/users_user_register.tpl:97
+#: system/Users/templates/users_user_register.tpl:103
+#: system/Users/templates/users_user_register.tpl:107
+#: system/Users/templates/users_user_register.tpl:116
+#: system/Users/templates/users_user_register.tpl:141
+#: system/Users/templates/users_admin_view.tpl:32
+#: system/Users/templates/users_admin_view.tpl:33
+#: system/Users/templates/users_admin_view.tpl:66
+#: system/Users/templates/users_admin_modifyconfig.tpl:13
+#: system/Users/templates/users_admin_modifyconfig.tpl:18
+#: system/Users/templates/users_admin_modifyconfig.tpl:23
+#: system/Users/templates/users_admin_modifyconfig.tpl:27
+#: system/Users/templates/users_admin_modifyconfig.tpl:36
+#: system/Users/templates/users_admin_modifyconfig.tpl:44
+#: system/Users/templates/users_admin_modifyconfig.tpl:53
+#: system/Users/templates/users_admin_modifyconfig.tpl:57
+#: system/Users/templates/users_admin_modifyconfig.tpl:61
+#: system/Users/templates/users_admin_modifyconfig.tpl:65
+#: system/Users/templates/users_admin_modifyconfig.tpl:74
+#: system/Users/templates/users_admin_modifyconfig.tpl:87
+#: system/Users/templates/users_admin_modifyconfig.tpl:98
+#: system/Users/templates/users_admin_modifyconfig.tpl:109
+#: system/Users/templates/users_admin_modifyconfig.tpl:114
+#: system/Users/templates/users_admin_modifyconfig.tpl:122
+#: system/Users/templates/users_admin_modifyconfig.tpl:140
+#: system/Users/templates/users_admin_modifyconfig.tpl:149
+#: system/Users/templates/users_admin_modifyconfig.tpl:158
+#: system/Users/templates/users_admin_modifyconfig.tpl:164
+#: system/Users/templates/users_admin_modifyconfig.tpl:174
+#: system/Users/templates/users_admin_modifyconfig.tpl:183
+#: system/Users/templates/users_admin_modifyconfig.tpl:194
+#: system/Users/templates/users_admin_modifyconfig.tpl:211
+#: system/Users/templates/users_admin_modifyconfig.tpl:220
+#: system/Users/templates/users_admin_modifyconfig.tpl:236
+#: system/Users/templates/users_admin_modifyconfig.tpl:265
+#: system/Users/templates/users_admin_modifyconfig.tpl:279
 #: system/Users/templates/users_admin_modifyregistration.tpl:30
 #: system/Users/templates/users_admin_modifyregistration.tpl:34
 #: system/Users/templates/users_admin_modifyregistration.tpl:38
@@ -12116,7 +12476,7 @@ msgid "*"
 msgstr ""
 
 #: system/Users/templates/users_admin_newuser.tpl:38
-#: system/Users/templates/users_user_register.tpl:102
+#: system/Users/templates/users_user_register.tpl:107
 #: system/Users/templates/users_admin_modifyregistration.tpl:38
 msgid "E-mail address (repeat for verification)"
 msgstr ""
@@ -12126,59 +12486,59 @@ msgid "Set the user's password now?"
 msgstr ""
 
 #: system/Users/templates/users_admin_newuser.tpl:54
-#: system/Users/templates/users_user_register.tpl:89
+#: system/Users/templates/users_user_register.tpl:94
 #, php-format
 msgid "Notice: The minimum length for user passwords is %s characters."
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:61
+#: system/Users/templates/users_admin_newuser.tpl:81
 msgid "Send password via e-mail?"
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:68
+#: system/Users/templates/users_admin_newuser.tpl:88
 msgid ""
 "Sending a password via e-mail is considered unsafe. It is recommended that "
 "you provide the password to the user using a secure method of communication."
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:72
+#: system/Users/templates/users_admin_newuser.tpl:92
 msgid ""
 "The user's e-mail address will be verified. The user will create a password "
 "at that time."
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:75
+#: system/Users/templates/users_admin_newuser.tpl:95
 msgid "User's e-mail address must be verified (recommended)"
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:87
-#: system/Users/templates/users_user_register.tpl:143
+#: system/Users/templates/users_admin_newuser.tpl:107
+#: system/Users/templates/users_user_register.tpl:148
 msgid "Check your entries and submit your registration"
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:88
-#: system/Users/templates/users_user_register.tpl:144
+#: system/Users/templates/users_admin_newuser.tpl:108
+#: system/Users/templates/users_user_register.tpl:149
 msgid ""
 "Notice: When you are ready, click on 'Check your entries' to have your "
 "entries checked. When your entries are OK, click on 'Submit new user' to "
 "continue."
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:89
-#: system/Users/templates/users_user_register.tpl:145
+#: system/Users/templates/users_admin_newuser.tpl:109
+#: system/Users/templates/users_user_register.tpl:150
 msgid ""
 "Your entries seem to be OK. Please click on 'Submit registration' when you "
 "are ready to continue."
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:91
-#: system/Users/templates/users_user_register.tpl:147
+#: system/Users/templates/users_admin_newuser.tpl:111
+#: system/Users/templates/users_user_register.tpl:152
 #: system/Users/templates/users_admin_modifyregistration.tpl:52
 msgid "Check your entries"
 msgstr ""
 
-#: system/Users/templates/users_admin_newuser.tpl:92
-#: system/Users/templates/users_user_register.tpl:148
+#: system/Users/templates/users_admin_newuser.tpl:112
+#: system/Users/templates/users_user_register.tpl:153
 #: system/Users/templates/users_admin_modifyregistration.tpl:53
 msgid "Submit new user"
 msgstr ""
@@ -12336,159 +12696,95 @@ msgstr ""
 msgid "Set a password and enter your e-mail address"
 msgstr ""
 
-#: system/Users/templates/users_user_register.tpl:109
+#: system/Users/templates/users_user_register.tpl:114
 #, php-format
 msgid "Accept the site's %s"
 msgstr ""
 
-#: system/Users/templates/users_user_register.tpl:115
+#: system/Users/templates/users_user_register.tpl:120
 #, php-format
 msgid "I agree to be bound by this site's %1$s and %2$s"
 msgstr ""
 
-#: system/Users/templates/users_user_register.tpl:117
-#: system/Users/templates/users_user_register.tpl:119
+#: system/Users/templates/users_user_register.tpl:122
+#: system/Users/templates/users_user_register.tpl:124
 #, php-format
 msgid "I agree to be bound by this site's %1$s"
 msgstr ""
 
-#: system/Users/templates/users_user_register.tpl:134
+#: system/Users/templates/users_user_register.tpl:139
 msgid ""
 "Answer the security question (this prevents automated sign-ups by bots and "
 "scripts)"
 msgstr ""
 
-#: system/Users/templates/users_user_register.tpl:148
+#: system/Users/templates/users_user_register.tpl:153
 msgid "Submit registration"
 msgstr ""
 
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:3
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:3
-msgid "New registration pending approval"
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:4
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:4
+#: system/Users/templates/users_email_regdeny_html.tpl:1
+#: system/Users/templates/users_email_regdeny_txt.tpl:1
 #, php-format
-msgid "New registration pending approval: %s"
+msgid "Your recent request at %1$s."
 msgstr ""
 
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:6
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:6
-msgid "New registration pending e-mail verification"
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:7
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:7
+#: system/Users/templates/users_email_regdeny_html.tpl:3
+#: system/Users/templates/users_email_regdeny_txt.tpl:3
 #, php-format
-msgid "New registration pending verification: %s"
+msgid "A message from %1$s..."
 msgstr ""
 
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:9
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:9
-msgid "New user activated"
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:10
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:10
-#, php-format
-msgid "New user activated: %s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:14
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:15
-#, php-format
-msgid "A new user account has been activated on %1$s."
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:15
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:16
+#: system/Users/templates/users_email_regdeny_html.tpl:5
+#: system/Users/templates/users_email_regdeny_txt.tpl:5
 #, php-format
 msgid ""
-"It was created by an administrator or sub-administrator logged in as '%1$s'."
+"Recently, this e-mail address ('%1$s') was used to request an account on '%2"
+"$s' (%3$s)."
 msgstr ""
 
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:16
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:17
-msgid "The account details are as follows:"
-msgstr ""
-
-#: system/Users/templates/users_userapi_adminnotificationemail.txt:18
-#: system/Users/templates/users_userapi_adminnotificationemail.tpl:19
-#, php-format
-msgid "User name: '%s'."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:5
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:5
-#, php-format
+#: system/Users/templates/users_email_regdeny_html.tpl:10
+#: system/Users/templates/users_email_regdeny_txt.tpl:10
 msgid ""
-"The user account '%1$s' at %2$s has this e-mail address associated with it."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:8
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:8
-#, php-format
-msgid ""
-"The administrator at %s requested that you receive a confirmation code that "
-"will allow you to reset your password."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:10
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:10
-#, php-format
-msgid ""
-"Someone with the IP address %s has just requested a confirmation code to "
-"allow the password for your account to be reset."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:13
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:13
-#, php-format
-msgid "The confirmation code is: %s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:15
-#, php-format
-msgid ""
-"With this confirmation code, you can now create a new password by clicking "
-"on this link: %s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:18
-msgid ""
-"If the request was not made by yourself then you don't need to take any "
-"action."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:18
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:18
-msgid ""
-"The password won't be changed unless the confirmation code is used, and you "
-"are the only recipient of this message."
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.txt:18
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:18
-msgid ""
-"You can just delete the message and log-in with your existing password next "
-"time you visit the site."
-msgstr ""
-
-#: system/Users/templates/users_admin_view.tpl:31
-msgid "Registration date"
+"Thank you for your application for a new account. At this time we are unable "
+"to approve your application."
 msgstr ""
 
 #: system/Users/templates/users_admin_view.tpl:32
+msgid "Registration date"
+msgstr ""
+
+#: system/Users/templates/users_admin_view.tpl:33
 msgid "Last Login"
 msgstr ""
 
-#: system/Users/templates/users_admin_view.tpl:34
+#: system/Users/templates/users_admin_view.tpl:35
 msgid "User's groups"
+msgstr ""
+
+#: system/Users/templates/users_admin_view.tpl:37
+msgid "Activation"
+msgstr ""
+
+#: system/Users/templates/users_admin_view.tpl:66
+msgid ""
+"All dates are based on the UTC date and time the user registered or last "
+"logged in."
 msgstr ""
 
 #: system/Users/templates/users_block_login.tpl:26
 msgid "Login problems?"
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_txt.tpl:13
+#, php-format
+msgid "You can use this user name to log into your account at: %1$s"
+msgstr ""
+
+#: system/Users/templates/users_email_lostuname_txt.tpl:14
+#: system/Users/templates/users_email_lostpassword_txt.tpl:16
+msgid ""
+"(If you cannot click on the link, you can copy the URL and paste it into "
+"your browser.)"
 msgstr ""
 
 #: system/Users/templates/users_user_loginscreen.tpl:12
@@ -12501,37 +12797,37 @@ msgid ""
 "can log in. Thank you for your understanding."
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:63
+#: system/Users/templates/users_user_loginscreen.tpl:79
 msgid "terms of use"
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:64
+#: system/Users/templates/users_user_loginscreen.tpl:80
 msgid "privacy policy"
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:65
+#: system/Users/templates/users_user_loginscreen.tpl:81
 msgid "Terms of Use"
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:66
+#: system/Users/templates/users_user_loginscreen.tpl:82
 msgid "Privacy Policy"
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:69
+#: system/Users/templates/users_user_loginscreen.tpl:85
 #, php-format
 msgid ""
 "<a href=\"%1$s\" onclick=\"window.open('%1$s');return false;\">'Terms of "
 "use'</a>"
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:70
+#: system/Users/templates/users_user_loginscreen.tpl:86
 #, php-format
 msgid ""
 "<a href=\"%1$s\" onclick=\"window.open('%1$s');return false;\">'Privacy "
 "policy'</a>"
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:87
+#: system/Users/templates/users_user_loginscreen.tpl:103
 #, php-format
 msgid ""
 "Notice: Please be informed that the site's %1$s have changed. You are asked "
@@ -12540,347 +12836,299 @@ msgid ""
 "your understanding."
 msgstr ""
 
-#: system/Users/templates/users_user_loginscreen.tpl:89
+#: system/Users/templates/users_user_loginscreen.tpl:105
 #, php-format
 msgid "I accept the %s"
 msgstr ""
 
-#: system/Users/templates/users_userapi_activationemail.txt:1
-#: system/Users/templates/users_userapi_activationemail.tpl:1
-#, php-format
-msgid "Verify your e-mail address for %s."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:5
-#: system/Users/templates/users_userapi_activationemail.tpl:5
-#, php-format
-msgid ""
-"Hello! This e-mail address ('%1$s') has been used to register an account on "
-"'%2$s' (%3$s)."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:7
-#: system/Users/templates/users_userapi_activationemail.tpl:7
-msgid ""
-"If you did not request a new user account at this web site, please either "
-"contact our site administrator, or simply disregard this message."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:9
-#: system/Users/templates/users_userapi_activationemail.tpl:9
-msgid ""
-"If you did request a new user account, then your request is waiting for you "
-"to verify your e-mail address with us."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:10
-#: system/Users/templates/users_userapi_activationemail.tpl:10
-msgid "Your request is also waiting for administrator approval."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:11
-#: system/Users/templates/users_userapi_activationemail.tpl:11
-msgid ""
-"We will not be able to approve your request until after you have completed "
-"this verification step."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:12
-#: system/Users/templates/users_userapi_activationemail.tpl:12
-msgid ""
-"Once both this verification step is complete and an administrator has "
-"approved your request, you will be able to log in with your user name."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:14
-#: system/Users/templates/users_userapi_activationemail.tpl:14
-msgid ""
-"Please click on the following link to complete the e-mail address check: "
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:16
-msgid ""
-"If you are not able to click on the above link, you can copy it into your "
-"browser."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:18
-#: system/Users/templates/users_userapi_activationemail.tpl:18
-msgid "Your verification code is:"
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:20
-#: system/Users/templates/users_userapi_activationemail.tpl:20
-msgid ""
-"Once verified and your account has been approved, then you will be able to "
-"log in."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:20
-#: system/Users/templates/users_userapi_activationemail.tpl:20
-msgid "Once verified, you will be able to choose a password and then log in."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:20
-#: system/Users/templates/users_userapi_activationemail.tpl:20
-msgid "Once verified, you will be able to log in."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:21
-#: system/Users/templates/users_adminapi_notifyemail.tpl:4
-#: system/Users/templates/users_userapi_activationemail.tpl:20
-msgid "Your account details are as follows:"
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:23
-#: system/Users/templates/users_adminapi_notifyemail.tpl:5
-#: system/Users/templates/users_userapi_activationemail.tpl:22
-#, php-format
-msgid "User name: %s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:24
-#: system/Users/templates/users_adminapi_notifyemail.tpl:6
-#: system/Users/templates/users_userapi_activationemail.tpl:23
-#, php-format
-msgid "Password: %s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:24
-#: system/Users/templates/users_userapi_activationemail.tpl:23
-#, php-format
-msgid "Password reminder: %s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:28
-#: system/Users/templates/users_userapi_activationemail.tpl:27
-msgid ""
-"Remember: both this verification step and approval from an administrator "
-"must be completed before you can log in."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.txt:28
-#: system/Users/templates/users_userapi_activationemail.tpl:27
-msgid ""
-"You will receive an additional e-mail message once an administrator has "
-"reviewed your request."
-msgstr ""
-
-#: system/Users/templates/users_userapi_confirmchemail.tpl:1
-#, php-format
-msgid ""
-"Hello! You requested changing your e-mail address for user '%1$s' at %2$s "
-"from %3$s to %4$s. You must confirm the change during the next five days."
-msgstr ""
-
-#: system/Users/templates/users_userapi_confirmchemail.tpl:3
-#, php-format
-msgid "You can confirm the e-mail address change by clicking on this link: %s"
-msgstr ""
-
-#: system/Users/templates/users_userapi_confirmchemail.tpl:5
-msgid ""
-"If the request was not made by yourself, you do not need to take any action."
-msgstr ""
-
-#: system/Users/templates/users_userapi_confirmchemail.tpl:5
-msgid ""
-"The e-mail address wil not be changed unless the confirmation code is used, "
-"and you are the only recipient of this message. You can just delete the "
-"message."
-msgstr ""
-
 #: system/Users/templates/users_admin_modifyconfig.tpl:13
-msgid "Path to account panel images"
+msgid "Name displayed for anonymous user"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:17
+#: system/Users/templates/users_admin_modifyconfig.tpl:15
+msgid "Anonymous users are visitors to your site who have not logged in."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:18
+msgid "Number of items displayed per page"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:20
+msgid ""
+"When lists are displayed (for example, lists of users, lists of "
+"registrations) this option controls how many items are displayed at one time."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:23
 msgid "Path to user's avatar images"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:21
+#: system/Users/templates/users_admin_modifyconfig.tpl:27
 msgid "Allow globally recognized avatars"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:30
+#: system/Users/templates/users_admin_modifyconfig.tpl:36
 msgid "Default gravatar image"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:34
-#: system/Users/templates/users_admin_modifyconfig.tpl:77
-msgid "Links per page"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:38
-msgid "Minimum age for new user registration (0 for no age check)"
-msgstr ""
-
 #: system/Users/templates/users_admin_modifyconfig.tpl:42
-msgid "Minimum length for user passwords"
+msgid "Account page settings"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:46
-msgid "Name for anonymous user"
+#: system/Users/templates/users_admin_modifyconfig.tpl:44
+msgid "Display graphics on user's account page"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:50
-msgid "Credential required for user log-in"
+#: system/Users/templates/users_admin_modifyconfig.tpl:53
+msgid "Path to account page images"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:56
-msgid ""
-"Notice: If the 'Credential required for user log-in' is set to 'E-mail "
-"address', then the 'Each e-mail address only registered once' option below "
-"must be set to 'Yes'."
+#: system/Users/templates/users_admin_modifyconfig.tpl:57
+msgid "Number of links per page"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:60
-msgid "Password hashing method (default: SHA256)"
+#: system/Users/templates/users_admin_modifyconfig.tpl:61
+msgid "Number of links per row"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:69
-msgid "User account settings"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:71
-msgid "Display graphics in user's account panel"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:81
-msgid "Links per row"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:85
+#: system/Users/templates/users_admin_modifyconfig.tpl:65
 msgid "Users module handles password maintenance"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:94
+#: system/Users/templates/users_admin_modifyconfig.tpl:74
 msgid "Users module handles e-mail address maintenance"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:105
-msgid "User registration"
+#: system/Users/templates/users_admin_modifyconfig.tpl:85
+msgid "User credential settings"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:108
+#: system/Users/templates/users_admin_modifyconfig.tpl:87
+msgid "Credential required for user log-in"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:93
+msgid ""
+"Notice: If the 'Credential required for user log-in' is set to 'E-mail "
+"address', then the 'New e-mail addresses must be unique' option below must "
+"be set to 'Yes'."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:94
+msgid ""
+"Notice: If the 'New e-mail addresses must be unique' option was set to 'no' "
+"at some point, then user accounts with duplicate e-mail addresses might "
+"exist in the system. The will experience difficulties logging in if this "
+"option is set to 'e-mail address'."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:98
+msgid "New e-mail addresses must be unique"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:105
+msgid ""
+"If set to yes, then e-mail addresses entered for new registrations and for e-"
+"mail address change requests cannot already be in use by another user "
+"account or registration."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:106
+msgid ""
+"Notice: If this option was set to 'no' at some point, then user accounts or "
+"registrations with duplicate e-mail addresses might exist in the system. "
+"Setting this option to 'yes' will not affect those accounts or registrations."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:109
+msgid "Minimum length for user passwords"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:111
+msgid ""
+"This affects both passwords created during registration, as well as "
+"passwords modified by users or administrators."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:111
+msgid "Enter an integer greater than zero."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:114
+msgid "Password hashing method"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:119
+msgid "The default hashing method is 'SHA256'."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:122
+msgid "Show password strength meter"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:133
+msgid "Registration settings"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:136
 msgid ""
 "Attention: It is possible to force users to accept a 'terms of use' and/or a "
 "'privacy policy', but the Legal module must be installed and available."
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:112
+#: system/Users/templates/users_admin_modifyconfig.tpl:140
 msgid "Allow new user account registrations"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:121
+#: system/Users/templates/users_admin_modifyconfig.tpl:149
 msgid "Statement displayed if registration disabled"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:126
+#: system/Users/templates/users_admin_modifyconfig.tpl:153
+msgid "E-mail address to notify of registrations"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:155
+msgid ""
+"A notification is sent to this e-mail address for each registration. Leave "
+"blank for no notifications."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:158
+msgid "Minimum age permitted to register"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:160
+msgid "Enter a positive integer, or 0 for no age check."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:164
 msgid "Show profile module properties"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:136
+#: system/Users/templates/users_admin_modifyconfig.tpl:174
 msgid "User registration is moderated"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:145
-msgid "Each e-mail address can only be registered once"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:154
+#: system/Users/templates/users_admin_modifyconfig.tpl:183
 msgid "Verify e-mail address during registration"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:157
+#: system/Users/templates/users_admin_modifyconfig.tpl:186
 msgid "Yes. User chooses password, then activates account via e-mail"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:165
-msgid "Moderation/verification order"
+#: system/Users/templates/users_admin_modifyconfig.tpl:194
+msgid "Order that approval and verification occur"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:168
+#: system/Users/templates/users_admin_modifyconfig.tpl:197
 msgid ""
 "Registration applications must be approved before users verify their e-mail "
 "address."
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:172
+#: system/Users/templates/users_admin_modifyconfig.tpl:201
 msgid ""
 "Users must verify their e-mail address before their application is approved."
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:176
+#: system/Users/templates/users_admin_modifyconfig.tpl:205
 msgid ""
 "Application approval and e-mail address verification can occur in any order."
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:182
+#: system/Users/templates/users_admin_modifyconfig.tpl:211
 msgid "User has to accept the 'Terms of use'"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:191
+#: system/Users/templates/users_admin_modifyconfig.tpl:220
 msgid "User has to accept the 'Privacy policy'"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:202
-msgid "Reserved user names (space-separated)"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:206
-msgid "E-mail address to notify of new user registrations (blank for none)"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:210
-msgid "Banned user agents (comma-separated)"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:214
-msgid "Banned domains (comma-separated)"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:218
+#: system/Users/templates/users_admin_modifyconfig.tpl:231
 msgid "Spam protection question"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:220
+#: system/Users/templates/users_admin_modifyconfig.tpl:233
 msgid ""
-"Notice: You can set a question to be answered at registration time, to "
-"protect the site against spam automated registrations by bots and scripts."
+"You can set a question to be answered at registration time, to protect the "
+"site against spam automated registrations by bots and scripts."
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:223
+#: system/Users/templates/users_admin_modifyconfig.tpl:236
 msgid "Spam protection answer"
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:225
+#: system/Users/templates/users_admin_modifyconfig.tpl:238
 msgid ""
-"Notice: Registering users will have to provide this response when answering "
-"the spam protection question."
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:228
-msgid "Show password strength meter during registration"
-msgstr ""
-
-#: system/Users/templates/users_admin_modifyconfig.tpl:239
-msgid "User log-in settings"
+"Registering users will have to provide this response when answering the spam "
+"protection question. It is required if a spam protection question is "
+"provided."
 msgstr ""
 
 #: system/Users/templates/users_admin_modifyconfig.tpl:241
-msgid "WCAG-compliant log-in and log-out"
+msgid "Reserved user names"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:243
+msgid "Separate each user name with a space."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:244
+msgid ""
+"Each user name on this list is not allowed to be chosen by someone "
+"registering for a new account."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:247
+msgid "Banned user agents"
 msgstr ""
 
 #: system/Users/templates/users_admin_modifyconfig.tpl:249
-msgid "Notice: Uses meta refresh."
+msgid "Separate each user agent string with a comma."
 msgstr ""
 
-#: system/Users/templates/users_admin_modifyconfig.tpl:255
-msgid "Authentication Module settings"
+#: system/Users/templates/users_admin_modifyconfig.tpl:250
+msgid ""
+"Each item on this list is a browser user agent identification string. If a "
+"user attempts to register a new account using a browser whose user agent "
+"string begins with one on this list, then the user is not allowed to begin "
+"the registration process."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:253
+msgid "Banned e-mail address domains"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:256
+msgid "Separate each domain with a comma."
 msgstr ""
 
 #: system/Users/templates/users_admin_modifyconfig.tpl:257
+msgid ""
+"Each item on this list is an e-mail address domain (the part after the '@'). "
+"E-mail addresses on new registrations or on an existing user's change of e-"
+"mail address requests are not allowed to have any domain on this list."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:263
+msgid "User log-in settings"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:265
+msgid "WCAG-compliant log-in and log-out"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:271
+msgid "Notice: Uses meta refresh."
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:277
+msgid "Authentication Module settings"
+msgstr ""
+
+#: system/Users/templates/users_admin_modifyconfig.tpl:279
 msgid "Default user authentication (login) module"
 msgstr ""
 
@@ -12971,18 +13219,6 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
-#: system/Users/templates/users_adminapi_notifyemail.tpl:1
-#, php-format
-msgid "Welcome to %1$s (%2$s)!"
-msgstr ""
-
-#: system/Users/templates/users_adminapi_notifyemail.tpl:3
-#, php-format
-msgid ""
-"Hello! This e-mail address ('%1$s') has been used to register an account on "
-"the '%2$s' site."
-msgstr ""
-
 #: system/Users/templates/users_admin_verifyregistration.tpl:1
 #, php-format
 msgid "Confirm verification code is to be sent to '%1$s'"
@@ -13022,26 +13258,6 @@ msgid ""
 "they are easily accessible for you. To see this block during your visits, "
 "don't forget to activate the 'Enable your personal custom block' checkbox. "
 "Afterwards, click 'Save' to save your changes."
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.tpl:14
-msgid "Verify my e-mail address"
-msgstr ""
-
-#: system/Users/templates/users_userapi_activationemail.tpl:16
-msgid ""
-"If you are not able to click on the above link, you can copy the following "
-"URL into your browser:"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:15
-msgid ""
-"With this confirmation code, you can now create a new password by clicking "
-"on this link:"
-msgstr ""
-
-#: system/Users/templates/users_userapi_lostpasscodemail.tpl:15
-msgid "Reset My Password"
 msgstr ""
 
 #: system/Users/templates/users_user_lostuname.tpl:1
@@ -13127,6 +13343,19 @@ msgstr ""
 #: system/Users/templates/users_block_online.tpl:25
 #, php-format
 msgid "You can <a href=\"%s\">register here</a>."
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_txt.tpl:15
+#, php-format
+msgid ""
+"With this confirmation code, you can now create a new password by clicking "
+"on this link: %s"
+msgstr ""
+
+#: system/Users/templates/users_email_lostpassword_txt.tpl:18
+msgid ""
+"If the request was not made by yourself then you don't need to take any "
+"action."
 msgstr ""
 
 #: system/Users/templates/users_admin_modifyregistration.tpl:2
@@ -13287,16 +13516,16 @@ msgstr ""
 
 #: system/Categories/templates/categories_user_edit.tpl:3
 #: system/Categories/templates/categories_admin_edit.tpl:6
-#: system/Admin/templates/admin_admin_categorymenu.tpl:9
+#: system/Admin/templates/admin_admin_categorymenu.tpl:8
 msgid "Edit category"
 msgstr ""
 
-#: system/Categories/templates/categories_user_edit.tpl:14
-msgid "Resequence"
+#: system/Categories/templates/categories_user_edit.tpl:15
+msgid "Return to referring page"
 msgstr ""
 
-#: system/Categories/templates/categories_user_edit.tpl:16
-msgid "Return to referring page"
+#: system/Categories/templates/categories_user_edit.tpl:17
+msgid "Resequence"
 msgstr ""
 
 #: system/Categories/templates/categories_user_edit.tpl:31
@@ -13313,17 +13542,22 @@ msgstr ""
 msgid "Sort value"
 msgstr ""
 
-#: system/Categories/templates/categories_user_edit.tpl:104
+#: system/Categories/templates/categories_user_edit.tpl:79
+#: system/Categories/templates/categories_admin_edit.tpl:65
+msgid "Localised output"
+msgstr ""
+
+#: system/Categories/templates/categories_user_edit.tpl:108
 #: system/Categories/templates/categories_user_list.tpl:12
 #: system/Categories/templates/categories_admin_edit.tpl:90
 msgid "Attributes"
 msgstr ""
 
-#: system/Categories/templates/categories_user_edit.tpl:108
+#: system/Categories/templates/categories_user_edit.tpl:113
 msgid "Category system information"
 msgstr ""
 
-#: system/Categories/templates/categories_user_edit.tpl:118
+#: system/Categories/templates/categories_user_edit.tpl:123
 #: system/Categories/templates/categories_admin_edit.tpl:105
 msgid "I-path"
 msgstr ""
@@ -13335,7 +13569,7 @@ msgid ""
 msgstr ""
 
 #: system/Categories/templates/categories_admin_delete.tpl:1
-#: system/Admin/templates/admin_admin_categorymenu.tpl:10
+#: system/Admin/templates/admin_admin_categorymenu.tpl:9
 msgid "Delete category"
 msgstr ""
 
@@ -13439,10 +13673,6 @@ msgstr ""
 msgid "Category is a leaf node"
 msgstr ""
 
-#: system/Categories/templates/categories_admin_edit.tpl:65
-msgid "Localised output"
-msgstr ""
-
 #: system/Categories/templates/categories_admin_edit.tpl:95
 msgid "Meta data"
 msgstr ""
@@ -13469,7 +13699,7 @@ msgstr ""
 
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:13
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:33
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:33
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:33
 msgid "Tag"
 msgstr ""
 
@@ -13498,66 +13728,6 @@ msgstr ""
 
 #: system/SecurityCenter/templates/securitycenter_admin_view_intrusion.tpl:58
 msgid "No logged intrusions found."
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:8
-msgid ""
-"Filtering of allowed HTML occurs when a template string or variable is "
-"modified with the 'safehtml' modifier, or when a module asks for similar "
-"processing from within its functions."
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:13
-msgid "HTML entities"
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:15
-msgid "Translate embedded HTML entities into real characters"
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:25
-msgid "HTML tags"
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:27
-msgid ""
-"Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;"
-"script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases "
-"the opportunity for attacks against your users that might reveal their "
-"personal information. Therefore, you are recommended to keep these tags set "
-"to 'Not allowed' unless you are sure that you really understand the "
-"consequences of enabling them."
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:28
-#, php-format
-msgid ""
-"Warning! Using the <a href=\"%s\">HTML Purifier output filter</a> will "
-"override settings for some HTML tags (such as &lt;object&gt; and &lt;"
-"embed&gt;)."
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:35
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:39
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:43
-msgid "Check all"
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:39
-msgid "Allowed"
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:43
-msgid "Allowed with attributes"
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:46
-msgid "Tag usage (from <a href=\"http://www.w3schools.com\">W3Schools</a>)"
-msgstr ""
-
-#: system/SecurityCenter/templates/securitycenter_admin_allowe.tpll.tpl:56
-#, php-format
-msgid "About \"&lt;%s&gt;\""
 msgstr ""
 
 #: system/SecurityCenter/templates/securitycenter_admin_purifierconfig.tpl:4
@@ -13970,6 +14140,66 @@ msgstr ""
 msgid "Additional content for full e-mail message"
 msgstr ""
 
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:8
+msgid ""
+"Filtering of allowed HTML occurs when a template string or variable is "
+"modified with the 'safehtml' modifier, or when a module asks for similar "
+"processing from within its functions."
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:13
+msgid "HTML entities"
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:15
+msgid "Translate embedded HTML entities into real characters"
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:25
+msgid "HTML tags"
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:27
+msgid ""
+"Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;"
+"script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases "
+"the opportunity for attacks against your users that might reveal their "
+"personal information. Therefore, you are recommended to keep these tags set "
+"to 'Not allowed' unless you are sure that you really understand the "
+"consequences of enabling them."
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:28
+#, php-format
+msgid ""
+"Warning! Using the <a href=\"%s\">HTML Purifier output filter</a> will "
+"override settings for some HTML tags (such as &lt;object&gt; and &lt;"
+"embed&gt;)."
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:35
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:39
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:43
+msgid "Check all"
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:39
+msgid "Allowed"
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:43
+msgid "Allowed with attributes"
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:46
+msgid "Tag usage (from <a href=\"http://www.w3schools.com\">W3Schools</a>)"
+msgstr ""
+
+#: system/SecurityCenter/templates/securitycenter_admin_allowedhtml.tpl:56
+#, php-format
+msgid "About \"&lt;%s&gt;\""
+msgstr ""
+
 #: system/Errors/templates/errors_user_system.tpl:2
 msgid "System error"
 msgstr ""
@@ -14097,15 +14327,15 @@ msgstr ""
 msgid "Default category for newly-added modules"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_categorymenu.tpl:8
+#: system/Admin/templates/admin_admin_categorymenu.tpl:7
 msgid "Right-click to edit module category"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_categorymenu.tpl:11
+#: system/Admin/templates/admin_admin_categorymenu.tpl:10
 msgid "Saving"
 msgstr ""
 
-#: system/Admin/templates/admin_admin_categorymenu.tpl:48
+#: system/Admin/templates/admin_admin_categorymenu.tpl:47
 #: system/Admin/templates/admin_admin_newcat.tpl:11
 msgid "New module category"
 msgstr ""
@@ -14527,41 +14757,38 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#: themes/andreas08/templates/modules/home.tpl:46
-#: themes/andreas08/templates/modules/admin.tpl:35
-#: themes/andreas08/templates/master.tpl:38
-#: themes/SeaBreeze/templates/includes/footer.tpl:3
-msgid "Powered by"
-msgstr ""
-
-#: themes/Printer/templates/master.tpl:15
+#: themes/Printer/templates/master.tpl:16
 msgid "Links"
 msgstr ""
 
-#: themes/SeaBreeze/templates/includes/userheader.tpl:20
+#: themes/SeaBreeze/templates/includes/userheader.tpl:26
 msgid "Forums"
 msgstr ""
 
-#: themes/SeaBreeze/templates/includes/userheader.tpl:24
+#: themes/SeaBreeze/templates/includes/userheader.tpl:32
 msgid "Downloads"
 msgstr ""
 
-#: themes/SeaBreeze/templates/includes/userheader.tpl:28
+#: themes/SeaBreeze/templates/includes/userheader.tpl:38
 msgid "Submit article"
 msgstr ""
 
-#: themes/SeaBreeze/templates/includes/userheader.tpl:32
+#: themes/SeaBreeze/templates/includes/userheader.tpl:44
 msgid "Reviews"
 msgstr ""
 
-#: themes/SeaBreeze/templates/includes/userheader.tpl:36
+#: themes/SeaBreeze/templates/includes/userheader.tpl:50
 msgid "FAQ"
 msgstr ""
 
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:14
+#: themes/SeaBreeze/templates/includes/footer.tpl:4
+msgid "Powered by"
+msgstr ""
+
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:22
 msgid "User administration"
 msgstr ""
 
-#: themes/SeaBreeze/templates/includes/adminheader.tpl:18
+#: themes/SeaBreeze/templates/includes/adminheader.tpl:34
 msgid "Categories"
 msgstr ""
