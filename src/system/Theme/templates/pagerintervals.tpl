@@ -2,13 +2,13 @@
     {if $pagerPluginArray.currentPage > 1}
         {strip}[
         <a href="{$pagerPluginArray.firstUrl}" title="{gt text="First page"}">
-            {gt text="First"}
+            {gt text="First page"}
         </a>
         ]{/strip}
 
         {strip}[
         <a href="{$pagerPluginArray.prevUrl}" title="{gt text="Previous page"}">
-            {gt text="Previous"}
+            {gt text="Previous page"}
         </a>
         ]{/strip}
     {/if}
@@ -27,13 +27,13 @@
     {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
         {strip}[
         <a href="{$pagerPluginArray.nextUrl}" title="{gt text="Next page"}">
-            {gt text="Next"}
+            {gt text="Next page"}
         </a>
         ]{/strip}
 
         {strip}[
         <a href="{$pagerPluginArray.lastUrl}" title="{gt text="Last page"}">
-            {gt text="Last"}
+            {gt text="Last page"}
         </a>
         ]{/strip}
     {/if}

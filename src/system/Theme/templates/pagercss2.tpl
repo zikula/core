@@ -6,7 +6,7 @@
 <div class="{$pagerPluginArray.class}">
     {if $pagerPluginArray.currentPage > 1}
         <a href="{$pagerPluginArray.prevUrl}" class="skip">
-            {img modname=core set=icons/extrasmall src="previous.gif" __alt="Previous" __title="Previous Page"}
+            {img modname=core set=icons/extrasmall src="previous.gif" __alt="Previous page" __title="Previous page"}
         </a>
     {else}
         <span class="skip">
@@ -43,7 +43,7 @@
 
     {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
         <a href="{$pagerPluginArray.nextUrl}" class="skip">
-            {img modname=core set=icons/extrasmall src="next.gif" __alt="Next" __title="Next Page"}
+            {img modname=core set=icons/extrasmall src="next.gif" __alt="Next page" __title="Next page"}
         </a>
     {else}
         <span class="skip">

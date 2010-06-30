@@ -1,41 +1,30 @@
 {if $pagerPluginArray.includeStylesheet}
-{pageaddvar name="stylesheet" value="system/Theme/style/pagercssexample.css"}
+{pageaddvar name="stylesheet" value="system/Theme/style/pagercss.css"}
 {/if}
-{assign var="separator" value=" | "}
+{assign var="separator" value="&ndash;"}
 
-<div class="{$pagerPluginArray.class}">
+<div class="{$pagerPluginArray.class} z-pagercss">
     {if $pagerPluginArray.currentPage > 1}
-        <a href="{$pagerPluginArray.prevUrl}" title="{gt text="Previous page"}" style="font-size: 0.9em">&lt;&lt;</a>
+    <a href="{$pagerPluginArray.firstUrl}" title="{gt text="First page"}" class="z-pagercss-first">&laquo;</a>
+    <a href="{$pagerPluginArray.prevUrl}" title="{gt text="Previous page"}" class="z-pagercss-prev">&lsaquo;</a>
+    {else}
+    <span class="z-pagercss-first" title="{gt text="First page"}">&laquo</span>
+    <span class="z-pagercss-prev" title="{gt text="Previous page"}">&lsaquo;</span>
     {/if}
-    <span>{$separator}</span>
 
     {foreach name="pages" item="currentPage" key="currentItem" from=$pagerPluginArray.pages}
-        {if $currentPage.isVisible eq 1 && $hiddenPageBoxOpened eq 1 && $hiddenPageBoxClosed eq 0}
-                    </span>
-                </span>
-            </span>
-            {assign var="hiddenPageBoxClosed" value="1"}
-            {assign var="hiddenPageBoxOpened" value="0"}
-        {/if}
-
-        {if $currentPage.isVisible eq 0 && $hiddenPageBoxOpened eq 0}
-            <span class="select">
-                <span class="option">
-                    <span class="items">
-            {assign var="hiddenPageBoxOpened" value="1"}
-            {assign var="hiddenPageBoxClosed" value="0"}
-        {/if}
-
-        {if $currentPage.isCurrentPage}
-            <strong>{$currentPage.pagenr}</strong>
-        {else}
-            <a href="{$currentPage.url}">{$currentPage.pagenr}</a>
-        {/if}
-
-        <span>{$separator}</span>
+    {if $currentPage.isCurrentPage}
+    <span class="z-pagercss-current">{$currentItem}</span>
+    {else}
+    <a href="{$currentPage.url}" class="z-pagercss-item">{$currentItem}</a>
+    {/if}
     {/foreach}
 
     {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
-        <a href="{$pagerPluginArray.nextUrl}" title="{gt text="Next page"}" style="font-size: 0.9em">&gt;&gt;</a>
+    <a href="{$pagerPluginArray.nextUrl}" title="{gt text="Next page"}" class="z-pagercss-next">&rsaquo;</a>
+    <a href="{$pagerPluginArray.lastUrl}" title="{gt text="Last page"}" class="z-pagercss-last">&raquo;</a>
+    {else}
+    <span class="z-pagercss-next" title="{gt text="Next page"}">&rsaquo;</span>
+    <span class="z-pagercss-last" title="{gt text="Last page"}">&raquo;</span>
     {/if}
 </div>

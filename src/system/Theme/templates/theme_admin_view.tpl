@@ -44,5 +44,5 @@
         </tbody>
     </table>
     <em>(*) = {gt text="Default theme"}</em>
-    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1 img_prev=images/icons/extrasmall/previous.gif img_next=images/icons/extrasmall/next.gif}
+    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
 </div>

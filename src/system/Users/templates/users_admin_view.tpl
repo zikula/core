@@ -65,5 +65,5 @@
     </table>
     <p class="z-sub z-italic">{gt text="*"} {gt text="All dates are based on the UTC date and time the user registered or last logged in."}</p>
 
-    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1 img_prev=images/icons/extrasmall/previous.gif img_next=images/icons/extrasmall/next.gif}
+    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
 </div>

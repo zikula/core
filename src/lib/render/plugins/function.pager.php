@@ -123,7 +123,7 @@ function smarty_function_pager($params, &$smarty)
         $pager['currentPage'] = $pager['countPages'];
     }
 
-    $template = (isset($params['template'])) ? $params['template'] : 'pagerimage.tpl';
+    $template = (isset($params['template'])) ? $params['template'] : 'pagercss.tpl';
     $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
     $anchorText = (isset($params['anchorText']) ? '#' . $params['anchorText'] : '');
     $pager['maxPages'] = (isset($params['maxpages']) ? $params['maxpages'] : 0);
