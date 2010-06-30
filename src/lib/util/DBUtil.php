@@ -2765,7 +2765,6 @@ class DBUtil
                             'I' => 'integer',
                             'I1' => 'integer',
                             'I2' => 'integer',
-                            'I3' => 'integer',
                             'I4' => 'integer',
                             'I8' => 'integer',
                             'N' => 'number',
@@ -2812,7 +2811,7 @@ class DBUtil
                 $fields = explode(' ', $clean);
 
                 // parse type and length
-                preg_match('#(B|D|C2|I|I1|I2|I3|I4|I8|F|L|T|TS|X|X2|XL)|(C)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))#', $fields[0], $matches);
+                preg_match('#(B|D|C2|I|I1|I2|I4|I8|F|L|T|TS|X|X2|XL)|(C)(?:\()(\d+)(?:\))|(N)(?:\()(\d+|\d+\.\d+)(?:\))#', $fields[0], $matches);
                 if (!$matches) {
                     throw new InvalidArgumentException(__f('Error in table definition for %1$s, column %2$s', array($table, $id)));
                 }
