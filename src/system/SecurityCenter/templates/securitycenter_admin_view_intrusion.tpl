@@ -37,7 +37,7 @@
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="ip"}">{gt text="IP"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="impact"}">{gt text="Impact"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="date DESC"}">{gt text="Date"}</a></th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
                 <td>{$event.ip|safetext}</td>
                 <td>{$event.impact|safetext}</td>
                 <td>{$event.date|safetext}</td>
-                <td><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" ot="intrusion" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
+                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" ot="intrusion" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}
             <tr class="z-admintableempty"><td colspan="9">{gt text="No logged intrusions found."}</td></tr>

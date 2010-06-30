@@ -9,7 +9,7 @@
             <tr>
                 <th>{gt text="User name"}</th>
                 <th>{gt text="User ID"}</th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +17,7 @@
             <tr class="{cycle values="z-odd,z-even"}">
                 <td>{$groupmembers[groupmembers].uname|safetext} {if $groupmembers[groupmembers].name neq ''}({$groupmembers[groupmembers].name|safetext}){/if}</td>
                 <td>{$groupmembers[groupmembers].uid|safetext}</td>
-                <td>
+                <td class="z-right">
                     {assign var="options" value=$groupmembers[groupmembers].options}
                     {section name=options loop=$options}
                     <a href="{$options[options].url|safetext}">{img src=$options[options].imgfile modname=core set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>

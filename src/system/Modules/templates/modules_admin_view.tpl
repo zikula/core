@@ -34,7 +34,7 @@
                         </div>
                     </form>
                 </th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -59,7 +59,7 @@
                     <br />({$modules[modules].modinfo.newversion|safetext})
                     {/if}
                 </td>
-                <td style="white-space:nowrap">
+                <td class="z-right" style="white-space:nowrap">
                     {assign var="options" value=$modules[modules].options}
                     {strip}
                     {section name=options loop=$options}

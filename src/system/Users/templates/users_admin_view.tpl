@@ -35,7 +35,7 @@
                 <th>{gt text="User's groups"}</th>
                 {/if}
                 <th class="z-center">{gt text="Activation"}</th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
                 </td>
                 {/if}
                 <td class="z-center">{img modname=core set=icons/extrasmall src=$usersitems[usersitems].activation.image title=$usersitems[usersitems].activation.title alt=$usersitems[usersitems].activation.title}</td>
-                <td>
+                <td class="z-right">
                     {assign var="options" value=$usersitems[usersitems].options}
                     {section name=options loop=$options}
                     <a href="{$options[options].url|safetext}">{img modname=core set=icons/extrasmall src=$options[options].image title=$options[options].title alt=$options[options].title}</a>

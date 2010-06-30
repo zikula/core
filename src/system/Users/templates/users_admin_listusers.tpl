@@ -45,14 +45,14 @@
                 <thead>
                     <tr>
                         {if $mailusers eq true || $deleteusers eq true}
-                        <th></th>
+                        <th>&nbsp;</th>
                         {/if}
                         <th>{gt text="User name"}</th>
                         {if $profilemodule}
                         <th>{gt text="Internal name"}</th>
                         {/if}
                         <th>{gt text="E-mail address"}</th>
-                        <th>{gt text="Actions"}</th>
+                        <th class="z-right">{gt text="Actions"}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,13 +65,20 @@
                         {if $profilemodule}
                         <td>{usergetvar name='_UREALNAME' uid=$items[item].uid}</td>
                         {/if}
-                        <td>{if ($items[item].email neq '') && ($items[item].uid neq 1)}<input type="hidden" name="sendmail[recipientsname][{$items[item].uid}]" value="{$items[item].uname}" /><input type="hidden" name="sendmail[recipientsemail][{$items[item].uid}]" value="{$items[item].email}" />{$items[item].email}{/if}</td>
-                        <td>{if ($items[item].uid neq 1)}
+                        <td>
+                            {if ($items[item].email neq '') && ($items[item].uid neq 1)}
+                            <input type="hidden" name="sendmail[recipientsname][{$items[item].uid}]" value="{$items[item].uname}" />
+                            <input type="hidden" name="sendmail[recipientsemail][{$items[item].uid}]" value="{$items[item].email}" />
+                            {$items[item].email}{/if}
+                        </td>
+                        <td class="z-right">
+                            {if ($items[item].uid neq 1)}
                             <a href="{modurl modname="Users" type="admin" func="modify" userid=$items[item].uid}">{img modname=core set=icons/extrasmall src=xedit.gif __alt="Edit"}</a>
                             {if $deleteusers eq true}
                             <a href="{modurl modname="Users" type="admin" func="deleteusers" userid=$items[item].uid}">{img modname=core set=icons/extrasmall src=14_layer_deletelayer.gif __alt="Delete"}</a>
                             {/if}
-                        {/if}</td>
+                            {/if}
+                        </td>
                     </tr>
                     {/section}
                 </tbody>

@@ -31,7 +31,7 @@
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="function"}">{gt text="Function name"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="sec_component, sec_instance, sec_permission"}">{gt text="Security"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="message"}">{gt text="Message"}</a></th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@
                 <td>{$event.function|safetext}</td>
                 <td>{$event.sec_component|safetext}&nbsp;|&nbsp;{$event.sec_instance|safetext}&nbsp;|&nbsp;{$event.sec_permission|safetext}</td>
                 <td valign="top">{$event.message|safetext}</td>
-                <td valign="top"><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" ot="log_event" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
+                <td class="z-right" valign="top"><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" ot="log_event" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}
             <tr class="z-admintableempty"><td colspan="9">{gt text="No items found."}</td></tr>

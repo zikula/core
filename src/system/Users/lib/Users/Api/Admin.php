@@ -289,7 +289,7 @@ class Users_Api_Admin extends Zikula_Api
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $pending = ModUtil::apiFunc('Users', 'registration', 'countAll');
             if ($pending) {
-                $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ( '.DataUtil::formatForDisplay($pending).' )');
+                $links[] = array('url' => ModUtil::url('Users', 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'z-icon-es-adduser');
             }
         }
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {

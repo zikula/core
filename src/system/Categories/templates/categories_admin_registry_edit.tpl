@@ -15,7 +15,7 @@
                         <th>{gt text="Table"}</th>
                         <th>{gt text="Property name"}</th>
                         <th>{gt text="Category"}</th>
-                        <th>{gt text="Actions"}</th>
+                        <th class="z-right">{gt text="Actions"}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,7 +34,7 @@
                         <td>{$obj.table}</td>
                         <td>{$obj.property}</td>
                         <td>{category_path id=$obj.category_id html=true}</td>
-                        <td>
+                        <td class="z-right">
                             <a href="{modurl modname="Categories" type="admin" func="editregistry" id=$obj.id}">{img modname=core set=icons/extrasmall src="xedit.gif" __title="Edit" __alt="Edit" }</a>
                             <a href="{modurl modname="Categories" type="adminform" func="editregistry" mode="delete" id=$obj.id}" onclick="return confirm('{gt text="Do you really want to delete this registry entry?"}');" onkeypress="return confirm('{gt text="Do you really want to delete this registry entry?"}');">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.gif" __title="Delete" __alt="Delete" }</a>
                         </td>

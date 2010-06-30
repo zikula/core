@@ -67,7 +67,7 @@
                   $this->_tpl_vars['filter']['sort'] = 'active'
                 {/php}
         <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="State"}</a></th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
                     &nbsp;<span id="activity_{$block.bid}">{gt text="Inactive"}</span>
                     {/if}
                 </td>
-                <td>
+                <td class="z-right">
                     {foreach item=option from=$block.options}
                     {if $option.noscript eq true}<noscript><div>{/if}
                         <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
@@ -112,7 +112,7 @@
                 <th>{gt text="Name"}</th>
                 <th>{gt text="Description"}</th>
                 <th>{gt text="Theme tag"}</th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -121,7 +121,7 @@
                 <td>{$position.name|safehtml}</td>
                 <td>{$position.description|truncate:25|safehtml}</td>
                 <td>&lt;!--[blockposition name={$position.name|safehtml}]--&gt;</td>
-                <td>
+                <td class="z-right">
                     {foreach item=option from=$position.options}
                     <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
                     {/foreach}

@@ -12,7 +12,7 @@
                 <th>{gt text="Type"}</th>
                 <th>{gt text="Time"}</th>
                 <th>{gt text="User ID"}</th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -24,7 +24,7 @@
                 <td>{$hackattempt.hacktype|safetext}</td>
                 <td>{$hackattempt.hacktime|safetext}</td>
                 <td>{$hackattempt.userid|safetext}</td>
-                <td>
+                <td class="z-right">
                     {assign var="options" value=$hackattempt.options}
                     <form action="{modurl modname="SecurityCenter" type="admin" func="main"}" method="get">
                         <div>

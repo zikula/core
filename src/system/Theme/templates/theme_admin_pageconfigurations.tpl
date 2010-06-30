@@ -9,7 +9,7 @@
             <tr>
                 <th>{gt text="Name"}</th>
                 <th>{gt text="Configuration file"}</th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +17,7 @@
             <tr class="{cycle name=pageconfigurations values=z-odd,z-even}">
                 <td>{$name|safetext}</td>
                 <td>{$filesection.file|safetext}</td>
-                <td>
+                <td class="z-right">
                     <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
                     <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.gif set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
                 </td>
@@ -31,7 +31,7 @@
             <tr>
                 <th>{gt text="Configuration file"}</th>
                 <th>{gt text="Configuration file found"}</th>
-                <th>{gt text="Actions"}</th>
+                <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@
             <tr class="{cycle name=pageconfigs values=z-odd,z-even}">
                 <td>{$filename|safetext}</td>
                 <td>{$fileexists|yesno}</td>
-                <td><a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a></td>
+                <td class="z-right"><a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a></td>
             </tr>
             {/foreach}
         </tbody>
