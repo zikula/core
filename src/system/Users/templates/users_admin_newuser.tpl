@@ -51,8 +51,29 @@
                 <div class="z-formrow">
                     <label for="users_reginfo_pass">{gt text='Password'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_reginfo_pass"{if isset($errorFields.reginfo_pass) || isset($errorFields.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
-                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$minpass}</em>
+                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$zcore.Users.minpass}</em>
                 </div>
+                {if $zcore.Users.use_password_strength_meter eq 1}
+                {pageaddvar name='javascript' value='prototype'}
+                {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+
+                <script type="text/javascript">
+                    var passmeter = new Zikula.Users.PassMeter('users_reginfo_pass',{
+                        username:'users_reginfo_uname',
+                        minLength: '{{$zcore.Users.minpass}}',
+                        messages: {
+                            username: '{{gt text="Password can not match the username, choose a different password."}}',
+                            minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$zcore.Users.minpass}}'
+                        },
+                        verdicts: [
+                            '{{gt text="Weak"}}',
+                            '{{gt text="Normal"}}',
+                            '{{gt text="Strong"}}',
+                            '{{gt text="Very Strong"}}'
+                        ]
+                    });
+                </script>
+                {/if}
                 <div class="z-formrow">
                     <label for="users_passagain">{gt text='Password (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_passagain"{if isset($errorFields.passagain)} class="errorrequired"{/if} type="password" name="passagain" size="21" maxlength="20" />
