@@ -65,7 +65,7 @@ class Zikula_Plugin_Controller extends Zikula_Controller
             $this->systemBaseDir = realpath("{$this->baseDir}/../..");
             $this->libBaseDir = realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}");
         } else {
-            $modbase = ($this->modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
+            $modbase = ($this->modinfo['type'] == Zikula_Plugin::TYPE_MODULE) ? 'modules' : 'system';
             $this->systemBaseDir = realpath("{$this->baseDir}/$modbase/..");
             $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
             $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
