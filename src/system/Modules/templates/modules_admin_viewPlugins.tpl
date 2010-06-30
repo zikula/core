@@ -61,7 +61,12 @@
                         {$plugin.instance->getModuleName()|safetext}
                     </td>
                 {/if}
-                <td>{$plugin.instance->getPluginName()|safetext}</td>
+                <td>{if $plugin.instance->isConfigurable()}
+                        <a href="{modurl modname="Modules" type="plugin" func="dispatch" _type=$_type _name=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                    {else}
+                        {$plugin.instance->getPluginName()|safetext}
+                    {/if}
+               </td>
                 <td>{$plugin.instance->getMetaDisplayName()|safetext}</td>
                 <td>{$plugin.instance->getMetaDescription()|safetext}</td>
                 <td>{$plugin.version|safetext}</td>
