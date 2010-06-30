@@ -17,14 +17,28 @@
  */
 class CacheUtil
 {
+
     /**
-     * get the location of the local cache directory.
+     * Get the location of the local cache directory.
      *
-     * @return string location of the cache directory
+     * @param dir The name of the directory to get.
+     *
+     * @return string Location of the cache directory.
      */
-    public static function getLocalDir()
+    public static function getLocalDir($dir = null)
     {
-        return DataUtil::formatForOS(System::getVar('temp'), true);
+
+		$array = array();
+		$array[] = DataUtil::formatForOS(System::getVar('temp'), true);
+		
+		if (!is_null($dir)) {
+			$array[] = DataUtil::formatForOS($dir);
+		}
+
+		$path = implode('/', $array);
+		
+		return $path;
+
     }
 
     /**
