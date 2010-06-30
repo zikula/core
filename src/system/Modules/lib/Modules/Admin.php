@@ -1166,6 +1166,14 @@ class Modules_Admin extends Zikula_Controller
                     $status = $this->__('Active');
                     $statusimage = 'greenled.gif';
 
+                    $actions[] = array('url' => ModUtil::url('Modules', 'plugin', 'dispatch',
+                                                    array('_name' => $instance->getPluginName(),
+                                                          '_type'  => ($systemplugins) ? 'system' : 'module',
+                                                          '_action' => 'configure')
+                                                ),
+                                       'image' => 'configure.gif',
+                                       'title' => $this->__('Configure plugin'));
+
                     $actions[] = array('url' => ModUtil::url('Modules', 'admin', 'deactivatePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,
@@ -1187,6 +1195,7 @@ class Modules_Admin extends Zikula_Controller
                                                 ),
                                        'image' => '14_layer_deletelayer.gif',
                                        'title' => $this->__('Remove plugin'));
+                    
                     break;
                 case PluginUtil::DISABLED:
                     $status = $this->__('Inactive');

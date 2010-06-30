@@ -1,13 +1,4 @@
 <?php
-/**
- * Zikula Application Framework
- *
- * @copyright (c) 2004, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id: config.php 19408 2006-07-13 13:20:58Z markwest $
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula
- */
 
 /**
  * Icon set configuration file
