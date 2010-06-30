@@ -978,9 +978,9 @@ class Users_User extends Zikula_Controller
         );
 
         $this->renderer->setCaching(false);
-
-        return $this->renderer->assign($rendererArgs)
-                              ->fetch('users_user_verifyregistration.tpl');
+        $this->renderer->add_core_data();
+        $this->renderer->assign($rendererArgs);
+        return $this->renderer->fetch('users_user_verifyregistration.tpl');
     }
 
     /**

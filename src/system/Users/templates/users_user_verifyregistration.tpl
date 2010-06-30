@@ -36,6 +36,27 @@
         <div class="z-formrow">
             <label for="users_newpass">{gt text='Password'}</label>
             <input id="users_newpass" type="password" name="newpass" size="25" maxlength="60" value="" />
+                {if $zcore.Users.use_password_strength_meter eq 1}
+                {pageaddvar name='javascript' value='prototype'}
+                {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+
+                <script type="text/javascript">
+                    var passmeter = new Zikula.Users.PassMeter('users_newpass',{
+                        username:'users_uname',
+                        minLength: '{{$zcore.Users.minpass}}',
+                        messages: {
+                            username: '{{gt text="Password can not match the username, choose a different password."}}',
+                            minLength: '{{gt text="The minimum length for user passwords is %s characters." tag1=$zcore.Users.minpass}}'
+                        },
+                        verdicts: [
+                            '{{gt text="Weak"}}',
+                            '{{gt text="Normal"}}',
+                            '{{gt text="Strong"}}',
+                            '{{gt text="Very Strong"}}'
+                        ]
+                    });
+                </script>
+                {/if}
         </div>
         <div class="z-formrow">
             <label for="users_newpassagain">{gt text='Password (repeat for verification)'}</label>
