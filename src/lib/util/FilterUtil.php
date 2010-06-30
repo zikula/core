@@ -30,7 +30,7 @@ class FilterUtil extends FilterUtil_Common
      *
      * @var array
      */
-    private $plugin;
+    public $plugin;
 
     /**
      * Filter object holder.
