@@ -137,6 +137,32 @@ abstract class Zikula_Base
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
     }
 
+	/**
+     * Post _setup() in constructor.
+     *
+     * Intended for base classes.
+     *
+     * @return void
+     */
+    protected function _postSetup()
+    {
+
+    }
+
+	/**
+     * Initialize.
+     *
+     * Post constructor hook.
+     *
+     * Intended for base classes.
+     *
+     * @return void
+     */
+    protected function initialize()
+    {
+
+    }
+
     /**
      * Get reflection of this object.
      *
@@ -282,19 +308,6 @@ abstract class Zikula_Base
     {
 
     }
-
-    /**
-     * Post construct setup.
-     *
-     * Intended for base classes.
-     *
-     * @return void
-     */
-    protected function _postSetup()
-    {
-
-    }
-
 
     /**
      * Throw Zikula_Exception_NotFound exception.
