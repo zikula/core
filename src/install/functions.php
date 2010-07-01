@@ -243,7 +243,23 @@ function install()
             System::setVar('startpage', $defaultmodule);
             break;
         case 'selectmodule':
-            if ($password !== $repeatpassword) {
+            if ((!$username) || !(!preg_match('/[^a-z0-9_]/', $username)) || !System::varValidate($username, 'uname')) {
+                $action = 'createadmin';
+                $smarty->assign('uservalidatefailed', true);
+                $smarty->assign(array(
+                                'username' => $username,
+                                'password' => $password,
+                                'repeatpassword' => $repeatpassword,
+                                'email' => $email));
+            } elseif (strlen($password) < 7) {
+                $action = 'createadmin';
+                $smarty->assign('badpassword', true);
+                $smarty->assign(array(
+                                'username' => $username,
+                                'password' => $password,
+                                'repeatpassword' => $repeatpassword,
+                                'email' => $email));
+            } elseif ($password !== $repeatpassword) {
                 $action = 'createadmin';
                 $smarty->assign('passwordcomparefailed', true);
                 $smarty->assign(array(
@@ -254,14 +270,6 @@ function install()
             } elseif (!System::varValidate($email, 'email')) {
                 $action = 'createadmin';
                 $smarty->assign('emailvalidatefailed', true);
-                $smarty->assign(array(
-                                'username' => $username,
-                                'password' => $password,
-                                'repeatpassword' => $repeatpassword,
-                                'email' => $email));
-            } elseif ((!$username) || !(!preg_match("/[[:space:]]/", $username)) || !System::varValidate($username, 'uname')) {
-                $action = 'createadmin';
-                $smarty->assign('uservalidatefailed', true);
                 $smarty->assign(array(
                                 'username' => $username,
                                 'password' => $password,

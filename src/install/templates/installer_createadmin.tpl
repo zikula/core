@@ -1,12 +1,15 @@
 <h2>{gt text="Create administrator's user account"}</h2>
-{if $passwordcomparefailed or $emailvalidatefailed or $urlvalidatefailed or $uservalidatefailed}
+{if $passwordcomparefailed or $emailvalidatefailed or $urlvalidatefailed or $uservalidatefailed or $badpassword}
 <div class="z-errormsg">
-    {if $passwordcomparefailed}
-    {gt text="Error! Could not create the administrator's user account. Please check your entries and try again."}
+    {if $uservalidatefailed}
+    {gt text="Error! Usernames can only consist of a combination of letters, numbers and _"}
     {elseif $emailvalidatefailed}
     {gt text="Error! The administrator's e-mail address is not correctly formed. Please correct your entry and try again."}
-    {elseif $uservalidatefailed}
-    {gt text="Error! Spaces and special characters are not allowed in a user name. Please correct your entry and try again."}
+    {elseif $passwordcomparefailed}
+    {gt text="Error! Passwords do not match."}
+    {elseif $badpassword}
+    {gt text="Error! Passwords must be at least 7 characters long."}
+    
     {/if}
 </div>
 {/if}
