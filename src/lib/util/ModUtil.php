@@ -1703,6 +1703,9 @@ class ModUtil
      */
     public static function registerAutoloaders()
     {
+        if (System::isInstalling()) {
+            return;
+        }
         static $loaded;
         if ($loaded) {
             return;
