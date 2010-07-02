@@ -299,7 +299,9 @@ class System
             ModUtil::dbInfoLoad('Permissions', 'Permissions');
             // load core module vars
             ModUtil::initCoreVars();
-            ModUtil::registerAutoloaders();
+            if (!System::isInstalling()) {
+                ModUtil::registerAutoloaders();
+            }
             $coreInitEvent->setArg('stage', self::CORE_STAGES_TABLES);
             $eventManager->notify($coreInitEvent);
         }

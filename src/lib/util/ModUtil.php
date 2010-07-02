@@ -1699,18 +1699,12 @@ class ModUtil
     /**
      * Register all autoloaders for all modules.
      *
+     * @internal
+     *
      * @return void
      */
     public static function registerAutoloaders()
     {
-        if (System::isInstalling()) {
-            return;
-        }
-        static $loaded;
-        if ($loaded) {
-            return;
-        }
-        
         $modules = self::getModsTable();
         unset($modules[0]);
         foreach ($modules as $module) {
@@ -1718,6 +1712,5 @@ class ModUtil
             $path = "$base/$module[name]/lib";
             ZLoader::addAutoloader($module['directory'], $path);
         }
-        $loaded = true;
     }
 }
