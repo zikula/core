@@ -1179,6 +1179,8 @@ class Theme_Admin extends Zikula_Controller
         $render_lifetime = (int)FormUtil::getPassedValue('render_lifetime', isset($args['render_lifetime']) ? $args['render_lifetime'] : 3600, 'POST');
         if ($render_lifetime < -1) $render_lifetime = 3600;
 
+        $render_expose_template = (bool)FormUtil::getPassedValue('render_expose_template', isset($args['render_expose_template']) ? $args['render_expose_template'] : false, 'POST');
+        $this->setVar('render_expose_template', $render_expose_template);
 
         // The configuration has been changed, so we clear all caches for this module.
         $this->renderer->clear_all_cache();
