@@ -39,6 +39,32 @@ div#mthemes-alphafilter {
 img.theme_colorpicker_image {
     margin-left: 5px;
 }
-.z-indented { 
+.z-indented {
     margin-left: 2.5em;
+}
+
+/* Theme list in user frontend */
+
+#themes_list dl.theme_item {
+    background:#FFFFFF;
+    border-color:#D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
+    border-style:solid;
+    border-width:1px;
+    float:left;
+    margin:1%;
+    padding:4px;
+    text-align:center;
+    width:30%;
+}
+#themes_list dl.theme_item:hover {
+    border: 1px solid #aaa;
+}
+#themes_list dl.theme_item dt {
+    font-size: 1.2em;
+    padding:0;
+    margin:0.5em 0;
+}
+#themes_list dl.theme_item dd {
+    padding:0;
+    margin:0;
 }

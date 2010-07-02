@@ -1,3 +1,4 @@
+{ajaxheader imageviewer="true"}
 {gt text="Theme switcher" assign=title}
 {pagesetvar name=title value=$title}
 <h2>{$title}</h2>
@@ -10,20 +11,21 @@
     {/if}
 </p>
 <div style="text-align:center; margin:1em 0;"><img src="{$currentthemepic}" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" /></div>
+
 <h3>{gt text="Themes list"}</h3>
-<table class="z-datatable">
+<div id="themes_list" class="z-clearfix">
     {foreach from=$themes item=theme}
     {if $theme.name neq $currenttheme.name}
-    <tr class="{cycle values='z-odd,z-even'}">
-        <td>{$theme.displayname}</td>
-        <td><img src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" /></td>
-        <td>
-            <ul style="list-style:none">
-                <li><a href="?theme={$theme.name}">{gt text="Preview theme"}</a></li>
-                <li><a href="?newtheme={$theme.name}">{gt text="Use theme"}</a></li>
-            </ul>
-        </td>
-    </tr>
+    <dl class="theme_item">
+        <dt><strong>{$theme.displayname}</strong></dt>
+        <dt>
+            <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" rel="imageviewer">
+                <img src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" />
+            </a>
+        </dt>
+        <dd><a href="?theme={$theme.name}">{gt text="Preview theme"}</a></dd>
+        <dd><a href="?newtheme={$theme.name}">{gt text="Use theme"}</a></dd>
+    </dl>
     {/if}
     {/foreach}
-</table>
+</div>
