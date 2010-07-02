@@ -1,7 +1,18 @@
 <?php
+/**
+ * Copyright 2010 Zikula Foundation.
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 /**
- * Icon set configuration file
+ * Icon set configuration file.
  * This file contains a list of actions and associated images
  * Using this file in conjunction with the pnicon plugin allows
  * icon packs to be seamlessly exchanged.
