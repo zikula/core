@@ -104,7 +104,7 @@ To access translation just use the shortcuts `$this->__()` etc.
 So the POT file would be located in the plugin's main folder in
 locale/$domain.pot
 
-Plugins DO NOT support DBUtil or the legacy tables.php based DB modelling.  You must
+Plugins DO NOT support DBUtil or the legacy tables.php based DB modelling.  You MUST
 use Doctrine models if you require persistence.
 
 PLUGIN (modvar) VARIABLES
@@ -125,15 +125,57 @@ and store templates there.  You will need to specify the location directly:
 
 e.g.
     // module plugin
-    $view = Renderer::getModulePluginInstance($this->moduleName, );
-    $view->fetch($this->baseDir . 'myview.tpl');
+    $view = Renderer::getModulePluginInstance($this->moduleName, $this->pluginName);
+    $view->fetch('myview.tpl');
 
     // system plugin
     $view = Renderer::getSystemPluginInstance($this->pluginName);
-    $view->fetch($this->baseDir . 'myview.tpl');
+    $view->fetch('myview.tpl');
 
     Please note this will set the correct domain, in templates you
     DO NOT NEED domain= inside gettext calls.
 
 If you get a render instance, the plugin path will be automatically added as
 templates/plugins inside the plugin directory.
+
+Please note you can also use a Controller.php instance to get the view.  Controllers
+(explained below) has access to all the nice Zikula_Controller conveniences.  The
+controller method would return the renderer output which you can pass back.
+
+instead of:
+    $event->setData($view->fetch('anotherfunction.tpl'));
+    $event->setNotified();
+
+One could do:
+    $controller = new SystemPlugin_Example_Controller($this->serviceManager);
+    $event->setData($controller->someview());
+    $event->setNotified();
+
+This is nice because all renderer domains etc are preconfigured and you have access
+to the same Zikula_Controller conveniences like $this->__().
+
+PLUGIN ADMINISTRATIVE CONFIGURATION
+-----------------------------------
+Sometimes is it necessary to provide a configuration screen for plugins.  This admin
+will be available when clicking the settings icon in the list of plugins available at
+Admin -> Modules -> Module Plugins/System Plugins.
+
+You will need to create a controller an place in the plugins lib/$PluginName/Controller.php
+
+    class SystemPlugin_Example_Controller extends Zikula_Plugin_Controller
+
+or for module plugins something like
+
+    class ModulePlugin_ExampleMod_ExamplePlugin_Controller extends Zikula_Plugin_Controller
+
+The method that will be is 'configure()':
+
+    class SystemPlugin_SwiftMailer_Controller extends Zikula_Plugin_Controller
+    {
+        public function configure()
+        {
+            return $this->renderer->fetch('configure.tpl');
+        }
+    }
+
+
