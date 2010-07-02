@@ -42,7 +42,7 @@ class FormUtil
 
         $source = strtoupper($source);
         if (!$filter) {
-            $filter = FILTER_SANITIZE_STRING;
+            $filter = FILTER_DEFAULT;
         }
 
         $args   = array();
