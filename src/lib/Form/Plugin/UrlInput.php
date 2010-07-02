@@ -14,7 +14,7 @@
  */
 
 /**
- * URL input for pnForms
+ * URL input for Forms
  *
  * The URL input plugin is a text input plugin that only allows URLs to be posted.
  *
@@ -26,6 +26,13 @@
 class Form_Plugin_URLInput extends Form_Plugin_TextInput
 {
     /**
+     * Default text to display instead of empty.
+     * 
+     * @var string
+     */
+    protected $defaultText;
+    
+    /**
      * Get filename of this file.
      *
      * @return string
@@ -33,6 +40,22 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
     function getFilename()
     {
         return __FILE__;
+    }
+    
+    /**
+     * Render event handler.
+     *
+     * @param Form_Render &$render Reference to Form render object.
+     *
+     * @return string The rendered output
+     */
+    function render(&$render)
+    {
+        if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
+            $this->text = $this->defaultText;
+        }
+        
+        return parent::render($render);
     }
 
     /**
@@ -51,6 +74,20 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
         parent::create($render, $params);
 
         $this->cssClass .= ' url';
+    }
+    
+    /**
+     * Decode post back event.
+     * 
+     * @param Form_Render &$render Reference to Form render object.
+     * 
+     * @return void
+     */
+    function decodePostBackEvent(&$render)
+    {
+        if (!empty($this->defaultText) && $this->text == $this->defaultText) {
+            $this->text = null;
+        }
     }
 
     /**
