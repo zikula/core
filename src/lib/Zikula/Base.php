@@ -137,7 +137,7 @@ abstract class Zikula_Base
         $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->modinfo['directory']);
     }
 
-	/**
+    /**
      * Post _setup() in constructor.
      *
      * Intended for base classes.
@@ -149,7 +149,7 @@ abstract class Zikula_Base
 
     }
 
-	/**
+    /**
      * Initialize.
      *
      * Post constructor hook.
