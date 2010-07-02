@@ -51,7 +51,7 @@ class Users_Installer extends Zikula_Installer
              ->setVar('changepassword', 1)
              ->setVar('changeemail', 1)
              ->setVar('reg_allowreg', 1)
-             ->setVar('reg_verifyemail', 1)
+             ->setVar('reg_verifyemail', UserUtil::VERIFY_USERPWD)
              ->setVar('reg_Illegalusername', 'root adm linux webmaster admin god administrator administrador nobody anonymous anonimo')
              ->setVar('reg_Illegaldomains', '')
              ->setVar('reg_Illegaluseragents', '')
