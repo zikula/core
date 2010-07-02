@@ -68,6 +68,7 @@ class SystemListenersUtil
         if ($event['stage'] & System::CORE_STAGES_LANGS) {
             if (!System::isInstalling()) {
                 PluginUtil::loadPlugins(realpath(dirname(__FILE__) . "/../../plugins"), "SystemPlugin");
+                EventUtil::loadPersistentEvents();
             }
         }
     }

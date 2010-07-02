@@ -52,19 +52,19 @@ abstract class Zikula_EventHandler
     /**
      * Constructor.
      *
-     * @param Zikula_EventManager   $eventManager   EventManager.
      * @param Zikula_ServiceManager $serviceManager ServiceManager.
      *
      * @throws InvalidArgumentException If $this->eventNames is invalid.
      */
-    public function __construct(Zikula_EventManager $eventManager, Zikula_ServiceManager $serviceManager)
+    public function __construct(Zikula_ServiceManager $serviceManager)
     {
         if (!is_array($this->eventNames) || !$this->eventNames) {
             throw new InvalidArgumentException(sprintf("%s->eventNames property contain indexed array of 'eventname' => handlerMethod", get_class($this)));
         }
 
-        $this->eventManager = $eventManager;
         $this->serviceManager = $serviceManager;
+        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        
     }
 
     /**

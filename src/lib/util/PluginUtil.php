@@ -385,6 +385,7 @@ class PluginUtil
 
         if ($plugin->uninstall()) {
             self::delState($plugin->getServiceId());
+            EventUtil::unregisterPersistentPluginHandlers($plugin->getModuleName(), $plugin->getPluginName());
             return true;
         }
 

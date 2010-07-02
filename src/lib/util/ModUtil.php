@@ -75,6 +75,7 @@ class ModUtil
             $col      = $tables['module_vars_column'];
             $where =   "$col[modname] = '" . self::CONFIG_MODULE ."'
                      OR $col[modname] = '" . PluginUtil::CONFIG ."'
+                     OR $col[modname] = '" . EventUtil::HANDLERS ."'
                      OR $col[modname] = 'Theme'
                      OR $col[modname] = 'Blocks'
                      OR $col[modname] = 'Users'
@@ -1693,5 +1694,27 @@ class ModUtil
         }
 
         return self::$ooModules[$moduleName]['oo'];
+    }
+
+    /**
+     * Register all autoloaders for all modules.
+     *
+     * @return void
+     */
+    public static function registerAutoloaders()
+    {
+        static $loaded;
+        if ($loaded) {
+            return;
+        }
+        
+        $modules = self::getModsTable();
+        unset($modules[0]);
+        foreach ($modules as $module) {
+            $base = ($module['type'] == self::TYPE_MODULE) ? 'modules' : 'system';
+            $path = "$base/$module[name]/lib";
+            ZLoader::addAutoloader($module['directory'], $path);
+        }
+        $loaded = true;
     }
 }

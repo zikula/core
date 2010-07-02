@@ -25,6 +25,11 @@ class EventUtil
     public static $eventManager;
 
     /**
+     * Event handlers key for persistence.
+     */
+    const HANDLERS = '/EventHandlers';
+
+    /**
      * Singleton constructor.
      */
     private function __construct()
@@ -105,12 +110,12 @@ class EventUtil
      *
      * @param string $dir Path to the folder holding the eventhandler classes.
      *
-     * @throws LogicException If the created handler isn't a Zikula_Event.
      * @return void
      */
     static public function attachCustomHandlers($dir = null)
     {
         static $loaded;
+        static $classes;
 
         $dir = (is_null($dir) ? 'config' . DIRECTORY_SEPARATOR . 'EventHandlers' : $dir);
 
@@ -118,7 +123,6 @@ class EventUtil
             return;
         }
 
-        $eventManager = self::getManager();
         $serviceManager = ServiceUtil::getManager();
 
         $it = FileUtil::getFiles($dir, false, false, 'php', 'f');
@@ -138,15 +142,191 @@ class EventUtil
                 $className = $diff->current();
             }
 
-            $r = new ReflectionClass($className);
-            $handler = $r->newInstanceArgs(array($eventManager, $serviceManager));
-
-            if (!$handler instanceof Zikula_EventHandler) {
-                throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
+            if (!isset($classes[$className])) {
+                self::_attach($className, $serviceManager);
+                $classes[$className] = true;
             }
-            $handler->attach();
         }
 
         $loaded[$dir] = true;
+    }
+
+    /**
+     * Create EventHandler instance and attach handlers.
+     *
+     * @param unknown_type $className
+     * @param unknown_type $serviceManager
+     *
+     * @throws LogicException If class is not instance of Zikula_EventHandler
+     *
+     * @return void
+     */
+    protected static function _attach($className, $serviceManager)
+    {
+        $r = new ReflectionClass($className);
+        $handler = $r->newInstance($serviceManager);
+
+        if (!$handler instanceof Zikula_EventHandler) {
+            throw new LogicException(sprintf('Class %s must be an instance of Zikula_EventHandler', $className));
+        }
+        $handler->attach();
+    }
+
+    /**
+     * Register a persisten event for a module.
+     *
+     * @param string   $moduleName Module name.
+     * @param string   $eventName  Event name.
+     * @param callable $callable   PHP callable. No instanciated callables allowed.
+     *
+     * @throws InvalidArgumentException If the callable given is not callable.
+     *
+     * @return void
+     */
+    public static function registerPersistentModuleHandler($moduleName, $eventName, $callable)
+    {
+        if (!is_callable($callable)) {
+            throw new InvalidArgumentException('$callable is not a valid PHP callable');
+        }
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
+        $handlers[] = array('eventname' => $eventName, 'callable' => $callable);
+        ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
+    }
+
+    /**
+     * Unregister a single persistent event handler for a module.
+     *
+     * @param string   $moduleName Module name.
+     * @param string   $eventName  Event name.
+     * @param callable $callable   PHP callable. No instanciated callables allowed.
+     *
+     * @return void
+     */
+    public static function unregisterPersistentModuleHandler($moduleName, $eventName, $callable)
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
+        if (!$handlers) {
+            return;
+        }
+        $filteredHandlers = array();
+        foreach ($handlers as $handler) {
+            if ($handler !== array('eventname' => $eventName, 'callable' => $callable)) {
+                $filteredHandlers[] = $handler;
+            }
+        }
+        ModUtil::setVar(self::HANDLERS, $moduleName, $filteredHandlers);
+    }
+
+    /**
+     * Unregister all persisten event handlers for a given module.
+     *
+     * @param string $moduleName Module name.
+     *
+     * @return void
+     */
+    public static function unregisterPersistentModuleHandlers($moduleName)
+    {
+        ModUtil::delVar(self::HANDLERS, $moduleName);
+    }
+
+    /**
+     *
+     * @param string   $moduleName Module name.
+     * @param string   $pluginName Plugin name.
+     * @param string   $eventName  Event name.
+     * @param callable $callable   PHP callable. No instanciated callables allowed.
+     *
+     * @throws InvalidArgumentException If callable is not callable.
+     *
+     * @return void
+     */
+    public static function registerPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable)
+    {
+        if (!is_callable($callable)) {
+            throw new InvalidArgumentException('$callable is not a valid PHP callable');
+        }
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
+        $handlers[] = array('plugin' => $pluginName, 'eventname' => $eventName, 'callable' => $callable);
+        ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
+    }
+
+    /**
+     * Unregister a single event handler for a given module plugin.
+     *
+     * @param string   $moduleName Module name.
+     * @param string   $pluginName Plugin name.
+     * @param string   $eventName  Event name.
+     * @param callable $callable   PHP callable. No instanciated callables allowed.
+     *
+     * @return void
+     */
+    public static function unregisterPersistentPluginHandler($moduleName, $pluginName, $eventName, $callable)
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
+        if (!$handlers) {
+            return;
+        }
+        $filteredHandlers = array();
+        foreach ($handlers as $handler) {
+            if ($handler !== array('plugin' => $pluginName, 'eventname' => $eventName, 'callable' => $callable)) {
+                $filteredHandlers[] = $handler;
+            }
+        }
+        ModUtil::setVar(self::HANDLERS, $moduleName, $filteredHandlers);
+    }
+
+    /**
+     * Unregister all persistent events handlers for a given module plugin.
+     *
+     * @param string $moduleName Module name.
+     * @param string $pluginName Plugin name.
+     *
+     * @return void
+     */
+    public static function unregisterPersistentPluginHandlers($moduleName, $pluginName)
+    {
+        $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, false);
+        if (!$handlers) {
+            return;
+        }
+        $filteredHandlers = array();
+        foreach ($handlers as $handler) {
+            if ($handler['plugin'] !== $pluginName) {
+                $filteredHandlers[] = $handler;
+            }
+        }
+        ModUtil::setVar(self::HANDLERS, $moduleName, $filteredHandlers);
+    }
+
+    /**
+     * Load all persistent events handlers into EventManager.
+     *
+     * This loads persistent events registered by modules and module plugins.
+     *
+     * @internal
+     *
+     * @return void
+     */
+    public static function loadPersistentEvents()
+    {
+        $handlerGroup = ModUtil::getVar(self::HANDLERS);
+        foreach ($handlerGroup as $module => $handlers) {
+            if (!$handlers) {
+                continue;
+            }
+            foreach ($handlers as $handler) {
+                if (isset($handler['plugin'])) {
+                    $className = "{$module}_{$handler[plugin]}_Plugin";
+                    $plugin = PluginUtil::loadPlugin($className);
+                    if (!$plugin->hasBooted() || !$plugin->isInstalled() || !$plugin->isEnabled()) {
+                        // don't attach an event if the plugin is disables
+                        continue;
+                    }
+                }
+                if (ModUtil::available($module)) {
+                    EventUtil::attach($handler['eventname'], $handler['callable']);
+                }
+            }
+        }
     }
 }
