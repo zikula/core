@@ -2,7 +2,7 @@
 {if $passwordcomparefailed or $emailvalidatefailed or $urlvalidatefailed or $uservalidatefailed or $badpassword}
 <div class="z-errormsg">
     {if $uservalidatefailed}
-    {gt text="Error! Usernames can only consist of a combination of letters, numbers and _"}
+    {gt text="Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _"}
     {elseif $emailvalidatefailed}
     {gt text="Error! The administrator's e-mail address is not correctly formed. Please correct your entry and try again."}
     {elseif $passwordcomparefailed}

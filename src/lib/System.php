@@ -514,7 +514,7 @@ class System
 
         if ($type == 'uname') {
             // check for invalid characters
-            if (strstr($var, chr(160)) || strstr($var, chr(173))) {
+            if (preg_match('/[^\p{L}\p{N}_\.]/u', $var)) {
                 return false;
             }
         }
@@ -522,12 +522,12 @@ class System
         // variable passed special checks. We now to generic checkings.
 
         // check for maximal length
-        if (isset($maxlength[$type]) && strlen($var) > $maxlength[$type]) {
+        if (isset($maxlength[$type]) && mb_strlen($var) > $maxlength[$type]) {
             return false;
         }
 
         // check for minimal length
-        if (isset($minlength[$type]) && strlen($var) < $minlength[$type]) {
+        if (isset($minlength[$type]) && mb_strlen($var) < $minlength[$type]) {
             return false;
         }
 

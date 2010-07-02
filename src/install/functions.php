@@ -243,7 +243,7 @@ function install()
             System::setVar('startpage', $defaultmodule);
             break;
         case 'selectmodule':
-            if ((!$username) || !(!preg_match('/[^a-z0-9_]/', $username)) || !System::varValidate($username, 'uname')) {
+            if ((!$username) || preg_match('/[^\p{L}\p{N}_\.]/u', $username)) {
                 $action = 'createadmin';
                 $smarty->assign('uservalidatefailed', true);
                 $smarty->assign(array(
@@ -251,7 +251,7 @@ function install()
                                 'password' => $password,
                                 'repeatpassword' => $repeatpassword,
                                 'email' => $email));
-            } elseif (strlen($password) < 7) {
+            } elseif (mb_strlen($password) < 7) {
                 $action = 'createadmin';
                 $smarty->assign('badpassword', true);
                 $smarty->assign(array(
