@@ -1,0 +1,58 @@
+PERSISTENT EVENTHANDLERS
+------------------------
+Zikula normally only loads modules which need to be accessed, so modules would
+not generally register their event listeners  However, there are times when a module
+or module's plugin needs to listen for an event that occured somewhere else in the
+system.  For example, 'user.delete' so a module can handle any reference to a
+delete users ID.  Modules can register persistent event handlers with the
+EventUtil::register*() API.
+
+The only restriction is the handlers must be PHP callables of static class methods.
+
+This methodology can also be used as a better way of providing the legacy
+'API plugins' once seen, like Multihook needles.  Imagine the following alternative
+with MultiHook (this example is fictitous):
+
+Multihook normally scans the entire file system looking for modules that implement
+multihookapis.  Instead of this, Multihook can just issue a 'multihook.get_providers'
+event.  Listeners would simply return an array of class names or callables all of
+which should implement the Mutlihook Needle Interface/Abstract.  Multihook can then
+instanciate these (checking each instance through reflection to ensure it is an
+instanceof Multihook_NeedleApi).
+
+abstract class Multihook_NeedleApi
+{
+    protected $name;
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    abstract public function filter($input);
+}
+
+// the following is registered as a persistent listener for 'multihook.get_providers'
+class MyModule_Listeners
+{
+    public static function getProvider(Zikula_Event $event)
+    {
+        $event->data = array_merge($event->data, array('MyModule_Needles_Foo'));
+    }
+}
+
+
+// Multihook implementation could look something like
+$event = Zikula_Event('multihook.get_providers');
+$classes = $eventManager->notify($event)->getData();
+
+foreach ($classes as $class) {
+    $needle = new $class();
+    if (!$needle instanceof MultiHook_NeedleApi) {
+        //.. error
+    }
+
+    $output = $needle->filter($output);
+}
+
+
