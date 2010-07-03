@@ -50,25 +50,6 @@ abstract class Zikula_AuthApi extends Zikula_Api
     abstract public function checkPassword($args);
 
     /**
-     * Retrieves the authinfo for the authentication source associated with a given Zikula user, not including any password.
-     *
-     * The authinfo will likely only include some sort of login ID for most authentication methods. (Passwords are not returned.)
-     *
-     * Custom authmodules should pay extra special attention to the accurate association of authinfo and user
-     * ids (uids). Returning the wrong authinfo for a given uid will potentially expose a user's account to
-     * unauthorized access. Custom authmodules must also ensure that they keep their mapping table in sync with
-     * the user's account.
-     *
-     * @param array $args All arguments passed to this function.
-     *                      int    uid      The Zikula user ID (uid) of a user.
-     *
-     * @return array|bool The authinfo for the authentication source of the specified Zikula user--not including any password-like information
-     *                      (enough authinfo to uniquely identify the user if passed back along with a user-entered password, such as the
-     *                      user's unique user name); otherwise false if user not found or error.
-     */
-    abstract public function getAuthinfoForUser($args);
-
-    /**
      * Retrieves the Zikula User ID (uid) for the given authinfo
      *
      * From the mapping maintained by this authmodule.
@@ -117,7 +98,9 @@ abstract class Zikula_AuthApi extends Zikula_Api
      *
      * If any actions need to be taken at the authenticating source to indicate that the user is logged in, they are
      * taken at this point. If the login fails after returning to the Zikula login process, then logout() will be
-     * called.
+     * called. If the user also needs to be logged out of the system, then the authmodule should store the authenticated
+     * authinfo as a session variable, but without any password-like information. (The password-like information will not
+     * be secure stored as a session variable.)
      *
      * It is likely that this function will call the authenticateUser() function within this same API to actually
      * determine if the user is valid. The primary job of this function is likely to perform
@@ -149,7 +132,9 @@ abstract class Zikula_AuthApi extends Zikula_Api
      * Logs the user out of the authentication source.
      *
      * If any actions need to be taken at the authenticating source to indicate that the user is logged out, they are
-     * taken at this point.
+     * taken at this point. If the authinfo used to log the user into the system needed to log the user out of the authenticating
+     * system, then the login function should save that authinfo as a session variable, but without the password-like information.
+     * The logout function could then retrieve it and use it to log the user out.
      *
      * NOTE: This function does not change the state of the user in Zikula. In other words, this function does not
      * actually log the user out of The core Zikula logout process that called this function will perform the actual

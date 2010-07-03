@@ -140,46 +140,29 @@ class Users_Api_Auth extends Zikula_AuthApi
     }
 
     /**
-     * Retrieves the authinfo for the authentication source associated with a given Zikula user, not including any password.
+     * Returns a "clean" version of the authinfo used to log in, without any password-like information.
      *
-     * The authinfo will likely only include some sort of login ID for most authentication methods. (Passwords are not returned.)
-     *
-     * Custom authmodules should pay extra special attention to the accurate association of authinfo and user
-     * ids (uids). Returning the wrong authinfo for a given uid will potentially expose a user's account to
-     * unauthorized access. Custom authmodules must also ensure that they keep their mapping table in sync with
-     * the user's account.
+     * This function strips off any password-like information from an authinfo array, leaving only user name-like
+     * identifying information that can later be used to log the user out of the authenticating system. This "clean"
+     * authinfo is intended to be stored along with the session, and the session is not a secure place to retain
+     * password-like information.
      *
      * @param array $args All arguments passed to this function.
-     *                      int    uid      The Zikula user ID (uid) of a user.
+     *                      array   authinfo    The authentication information uniquely associated with a user.
      *
-     * @return array|bool The authinfo for the authentication source of the specified Zikula user--not including any password-like information
-     *                      (enough authinfo to uniquely identify the user if passed back along with a user-entered password, such as the
-     *                      user's unique user name); otherwise false if user not found or error.
+     * @return array A "clean" version of the authinfo passed in, devoid of any password-like fields, but retaining
+     *                  enough information--such as user name-like fields--to identify the account on the authenticating
+     *                  system for later log out operations.
      */
-    public function getAuthinfoForUser($args)
+    public function getAuthinfoForSession($args)
     {
-        // Validate uid
-        if (!isset($args['uid']) || !is_numeric($args['uid']) || empty($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
+        // Validate authinfo
+        if (!isset($args['authinfo']) || !is_array($args['authinfo']) || empty($args['authinfo'])) {
             LogUtil::registerArgsError();
             return false;
         }
-        $uid = $args['uid'];
 
-        // Look up the uid in the authentication-source to/from Zikula uid mapping table.
-        // Note: the following is a bad example for custom modules because there is no mapping necessary.
-        // A custom authentication module would not use UserUtil! It would query its own tables.
-
-        $userObj = UserUtil::getVars($uid);
-        if (!$userObj) {
-            // No register error here. Not an error, simply doesn't exist.
-            return false;
-        }
-
-        $loginOption = $this->getVar('loginviaoption', 0);
-        $idField = ($loginOption == 0) ? 'uname' : 'email';
-
-        $authinfo = array();
-        $authinfo['loginid'] = $userObj[$idField];
+        unset($authinfo['pass']);
 
         return $authinfo;
     }
@@ -343,6 +326,16 @@ class Users_Api_Auth extends Zikula_AuthApi
             // Perform any post-authentication actions when authentication was successful.
             // $fooAuthentication = new FooAuthenticationService($loginID);
             // $fooAuthentication->login();
+
+            // If the user will need to be logged out of the authenticating system as a result of a log-out action,
+            // and the information in authinfo will be required to do this, then the authmodule should store the
+            // authinfo as a session variable, but without any password-like information. (Password-like information
+            // on authinfo is in-the-clear, and would not be secure as a session variable.) For example:
+            //
+            // $sessionAuthinfo = $authinfo;
+            // unset($sessionAuthinfo['pass']);
+            // SessionUtil::setVar('authinfo', $sessionAuthinfo);
+
         }
         // Optionally include an else here and perform any post-authentication actions on a failed authentication.
         // The Users module authentication method relies on authenticateUser() to set an appropriate message using
@@ -373,33 +366,14 @@ class Users_Api_Auth extends Zikula_AuthApi
         // There's really nothing to do here for the Zikula Users module, but a custom authmodule might have to
         // undo something done during login. If not, simply returing true is enough, although some basic
         // validation of parameters and accounts might be in order.
+
+        // If needed, the authinfo used to log the user in can be retrieved from a session variable, if it is stored
+        // by the login function. For example:
         //
-        //  What follows is intended to be an example of what might be done in a custom authmodule.
-
-        // Validate uid
-        if (!isset($args['uid'])) {
-            if (UserUtil::isLoggedIn()) {
-                $uid = UserUtil::getVar('uid');
-            } else {
-                return LogUtil::registerArgsError();
-            }
-        } elseif (!is_numeric($args['uid']) || empty($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-            return LogUtil::registerArgsError();
-        } else {
-            $uid = $args['uid'];
-        }
-
-        // Look up the authentication-source login ID of the user here.
-        $authinfo = ModUtil::apiFunc('Users', 'auth', 'getAuthinfoForUser', array(
-            'uid'   => $uid
-        ));
-        if (!$authinfo) {
-            return LogUtil::registerError($this->__('Error! No such user registered with this authentication method.'));
-        }
-
-        // Do any authentication-source specific log out tasks here, now that we have the login ID.
-        // $fooAuthentication = new FooAuthenticationService($authinfo['loginid']);
-        // return $fooAuthentication->logout();
+        // $authinfo = SessionUtil::getVar('authinfo', array());
+        // if (!empty($authinfo)) {
+        //     -- do custom log out stuff here --
+        // }
 
         return true;
     }
