@@ -1752,7 +1752,7 @@ class DBUtil
         $fieldName = $columns[$field];
 
         $field = isset($columns[$field]) ? $columns[$field] : $field;
-        $sql = "SELECT $option($field) FROM $table AS tbl"
+        $sql = "SELECT $option($field) FROM $table AS tbl";
         $where = self::_checkWhereClause($where);
 
         $sql .= ' ' . $where;
