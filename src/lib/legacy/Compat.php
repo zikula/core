@@ -44,6 +44,12 @@ class pnRender extends Zikula_View
     }
 }
 
+/**
+ * Theme.
+ *
+ * @deprecated
+ * @see Zikula_Theme
+ */
 class Theme extends Zikula_Theme
 {
     public function __construct($theme, $usefilters = true)
@@ -52,6 +58,13 @@ class Theme extends Zikula_Theme
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_Theme')), 'STRICT');
     }
 }
+
+/**
+ * ZWorkflow.
+ *
+ * @deprecated
+ * @see Zikula_Workflow
+ */
 class ZWorkflow extends Zikula_Workflow
 {
     public function __construct($schema, $module)
@@ -60,10 +73,24 @@ class ZWorkflow extends Zikula_Workflow
         LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_Workflow')), 'STRICT');
     }
 }
-class ZWorkflow extends Zikula_Workflow_Parser
+
+/**
+ * ZWorkflowParser.
+ *
+ * @deprecated
+ * @see Zikula_Workflow_Parser
+ */
+class ZWorkflowParser extends Zikula_Workflow_Parser
 {
 
 }
+
+/**
+ * WorkflowUtil.
+ *
+ * @deprecated
+ * @see Zikula_Workflow_Util
+ */
 class WorkflowUtil extends Zikula_Workflow_Util
 {
 
