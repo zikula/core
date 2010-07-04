@@ -114,11 +114,17 @@
             </fieldset>
 
             {modcallhooks hookobject=item hookaction=modify hookid=$bid module=Blocks}
+
+            {if isset($redirect) && $redirect neq ''}
+                {assign var="cancelurl" value=$redirect|urldecode}
+            {else}
+                {modurl modname="Blocks" type="admin" func="view" assign="cancelurl"}
+            {/if}
+
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a href="{$cancelurl}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>
     </form>
 </div>
-
