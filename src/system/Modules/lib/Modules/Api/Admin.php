@@ -1147,6 +1147,42 @@ class Modules_Api_Admin extends Zikula_Api
         return true;
     }
 
+    public function upgradeall()
+    {
+        // regenerate modules list
+        $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+        ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+        // get a list of modules needing upgrading
+        if (ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED))) {
+            $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_SYSTEM));
+            // Crazy sort to make sure the User's module is upgraded first
+            $key = array_search('Users');
+            if (is_integer($key)) {
+                $usersModule[] = $newmods[$key];
+                unset($newmods[$key]);
+            }
+            $newModArray = (isset($usersModule)) ? $usersModule : array();
+            foreach ($newmods as $mod) {
+                $newModArray[] = $mod;
+            }
+
+            $newModArray = array_merge($newModArray, ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
+
+            if (is_array($newModArray) && $newModArray) {
+                foreach ($newModArray as $mod) {
+                    ZLanguage::bindModuleDomain($mod['name']);
+                    ModUtil::apiFunc('Modules', 'admin', 'upgrade', array('id' => $mod['id']));
+                }
+            }
+
+            System::setVar('Version_Num', System::VERSION_NUM);
+
+            // regenerate the themes list
+            ModUtil::apiFunc('Theme', 'admin', 'regenerate');
+        }
+        return true;
+    }
+
     /**
      * utility function to count the number of items held by this module
      * @author Mark West
@@ -1459,6 +1495,13 @@ class Modules_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('System hooks'), 'class' => 'z-icon-es-package');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)), 'text' => $this->__('System Plugins'), 'class' => 'z-icon-es-cubes');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
+            $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+            ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+            // get a list of modules needing upgrading
+            $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
+            if ($newmods) {
+                $links[] = array('url' => ModUtil::url('Modules', 'admin', 'upgradeall'), 'text' => $this->__('Upgrade All'), 'class' => 'z-icon-es-config');
+            }
         }
 
         return $links;

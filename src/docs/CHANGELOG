@@ -163,5 +163,6 @@ Changed core module templates to use .tpl
 Issue #2209 Add date in Zikula error log file.
 Allow override of styles/core.css with config/styles/core.css.
 Provide 'pageutil.addvar_filter' event to override anything added by PageUtil::addVar, or {pageaddvar}.  This allows for complete override freedom.
-New default pager style (Issue #2264)
-Streamlinde user frontend of Themes module (Issue #2279)
+New default pager style (Issue #2264).
+Streamlined user frontend of Themes module (Issue #2279).
+Added Upgrade All options, and Module API to upgrade all modules with one click.  This will work for all non-complicated upgrades of Core also.

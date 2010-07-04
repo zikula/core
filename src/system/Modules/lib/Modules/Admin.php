@@ -24,9 +24,9 @@ class Modules_Admin extends Zikula_Controller
     }
 
     /**
-     * Modules_admin_modify - modify a module
-     * @author Jim McDonald
-     * @return string HTML output string
+     * Modules_admin_modify - modify a module.
+     *
+     * @return string HTML output string.
      */
     public function modify()
     {
@@ -87,7 +87,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * Modules_admin_update - update a module
-     * @author Jim McDonald
      * @return string HTML output string
      * @param int 'id' module id
      * @param string 'newdisplayname' new display name of the module
@@ -123,7 +122,6 @@ class Modules_Admin extends Zikula_Controller
     /**
      * Modules_admin_update hooks
      * update hooks for a module
-     * @author Mark West
      * @param int 'id' module id
      * @return bool true if successful, false otherwise
      */
@@ -149,8 +147,6 @@ class Modules_Admin extends Zikula_Controller
     /**
      * Modules_admin_update hooks, extended version
      * update hooks for a module
-     * @author Mark West
-     * @author Frank Schummertz
      * @param int 'id' module id
      * @return bool true if successful, false otherwise
      */
@@ -175,7 +171,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * Modules_admin_view - list modules and current settings
-     * @author Jim McDonald
      * @return string HTML output string
      */
     public function view()
@@ -449,7 +444,6 @@ class Modules_Admin extends Zikula_Controller
      * This function is an alias to modules_admin_view as pnphpbb calls this
      * function name directly on the install
      *
-     * @author Jim McDonald
      * @see modules_admin_view
      * @return string HTML output string
      */
@@ -593,7 +587,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * Activate a module
-     * @author Jim McDonald
      * @param int 'id' module id
      * @return bool true
      */
@@ -637,7 +630,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * Upgrade a module
-     * @author Jim McDonald
      * @param int 'id' module id
      * @return bool true
      */
@@ -717,7 +709,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * Deactivate a module
-     * @author Jim McDonald
      * @param int 'id' module id
      * @return bool true
      */
@@ -777,7 +768,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * Remove a module
-     * @author Jim McDonald
      * @param int 'id' module id
      * @return bool true if successful
      */
@@ -910,7 +900,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * display available hooks
-     * @author Mark West
      * @param int 'id' module id
      * @return string HTML output string
      */
@@ -954,8 +943,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * display available hooks, extended version
-     * @author Mark West
-     * @author Frank Schummertz
      * @param int 'id' module id
      * @return string HTML output string
      */
@@ -999,8 +986,6 @@ class Modules_Admin extends Zikula_Controller
     /**
      * This is a standard function to modify the configuration parameters of the
      * module
-     * @author Mark West
-     * @since 1.14
      * @return string HTML string
      */
     public function modifyconfig()
@@ -1020,8 +1005,6 @@ class Modules_Admin extends Zikula_Controller
     /**
      * This is a standard function to update the configuration parameters of the
      * module given the information passed back by the modification form
-     * @author Mark West
-     * @since 1.14
      * @return bool true
      */
     public function updateconfig()
@@ -1061,7 +1044,6 @@ class Modules_Admin extends Zikula_Controller
 
     /**
      * Display information of a module compatibility with the version of the core
-     * @author Albert Pérez Monfort
      * @param  int 'id' identity of the module
      * @return string HTML output string
      */
@@ -1485,5 +1467,11 @@ class Modules_Admin extends Zikula_Controller
                                                                               'sort'  => $sort,
                                                                               'bymodule' => $module,
                                                                               'systemplugins' => $systemplugins)));
+    }
+
+    public function upgradeall()
+    {
+        ModUtil::apiFunc('Modules', 'admin', 'upgradeall');
+        $this->redirect(ModUtil::url('Modules', 'admin', 'view'));
     }
 }
