@@ -162,8 +162,6 @@ class ZLoader
             'ZLocale' => 'i18n',
             'ZGettext' => 'i18n',
             'ZMO' => 'i18n',
-            'ZWorkflow' => 'workflow',
-            'ZWorkflowParser' => 'workflow',
             'ZLanguageBrowser' => 'i18n',
             'DBObject' => 'dbobject',
             'DBObjectArray' => 'dbobject',
@@ -196,7 +194,6 @@ class ZLoader
             'ThemeUtil' => 'util',
             'UserUtil' => 'util',
             'ValidationUtil' => 'util',
-            'WorkflowUtil' => 'util',
             'SystemListenersUtil' => 'util',
             'Loader' => 'legacy',
             );

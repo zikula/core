@@ -5,63 +5,63 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPv2.1 (or at your option any later version).
- * @package ZWorkflow
+ * @license GNU/LGPLv3 (or at your option any later version).
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * ZWorkflow class
+ * Zikula_Workflow class.
  */
-class ZWorkflow
+class Zikula_Workflow
 {
     /**
      * Module name.
-     * 
+     *
      * @var string
      */
     protected $module;
-    
+
     /**
      * Workflow Id.
-     * 
+     *
      * @var integer
      */
     protected $id;
-    
+
     /**
      * Workflow title.
-     * 
+     *
      * @var string
      */
     protected $title;
-    
+
     /**
      * Workflow description.
-     * 
+     *
      * @var string
      */
     protected $description;
-    
+
     /**
      * State map.
-     * 
+     *
      * @var array
      */
     protected $stateMap;
-    
+
     /**
      * Action map.
-     * 
+     *
      * @var array
      */
     protected $actionMap;
-    
+
     /**
      * Workflow data.
-     * 
+     *
      * @var array
      */
     protected $workflowData;
@@ -91,7 +91,7 @@ class ZWorkflow
      *
      * @param array  &$obj    Data object.
      * @param string $stateID State Id.
-     * 
+     *
      * @return boolean
      */
     public function registerWorkflow(&$obj, $stateID = null)
@@ -114,7 +114,7 @@ class ZWorkflow
      *
      * @param string $stateID State Id.
      * @param string $debug   Debug string.
-     * 
+     *
      * @return boolean
      */
     public function updateWorkflowState($stateID, $debug = null)
@@ -134,7 +134,7 @@ class ZWorkflow
      * @param string $actionID Action Id.
      * @param array  &$obj     Data object.
      * @param string $stateID  State Id.
-     * 
+     *
      * @return mixed Array or false.
      */
     public function executeAction($actionID, &$obj, $stateID = 'initial')
@@ -196,7 +196,7 @@ class ZWorkflow
      * @param string $operation Operation name.
      * @param array  &$obj      Data object.
      * @param string $nextState Next state.
-     * 
+     *
      * @return mixed|false
      */
     public function executeOperation($operation, &$obj, $nextState)

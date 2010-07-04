@@ -44,7 +44,30 @@ class pnRender extends Zikula_View
     }
 }
 
-class Theme extends Zikula_Theme{}
+class Theme extends Zikula_Theme
+{
+    public function __construct($theme, $usefilters = true)
+    {
+        parent::__construct($theme, $userfilters);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_Theme')), 'STRICT');
+    }
+}
+class ZWorkflow extends Zikula_Workflow
+{
+    public function __construct($schema, $module)
+    {
+        parent::__construct($schema, $module);
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_Workflow')), 'STRICT');
+    }
+}
+class ZWorkflow extends Zikula_Workflow_Parser
+{
+
+}
+class WorkflowUtil extends Zikula_Workflow_Util
+{
+
+}
 
 /**
  * Alias to the DBObject class for backward compatibility to Zikula 1.2.x.

@@ -5,31 +5,31 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPv2.1 (or at your option any later version).
- * @package ZWorkflow
+ * @license GNU/LGPL3 (or at your option any later version).
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * Workflow Parser.
- * 
+ * Zikula_Workflow_Parser.
+ *
  * Parse workflow schema into associative arrays.
  */
-class ZWorkflowParser
+class Zikula_Workflow_Parser
 {
     // Declare object variables;
     /**
      * XML parser object.
-     * 
+     *
      * @var object
      */
     protected $parser;
-    
+
     /**
      * Workflow data.
-     * 
+     *
      * @var array
      */
     protected $workflow;
@@ -54,7 +54,7 @@ class ZWorkflowParser
      * @param string $xmldata    XML data.
      * @param string $schemaName Schema name.
      * @param string $module     Module name.
-     * 
+     *
      * @return mixed Associative array of workflow or false.
      */
     public function parse($xmldata, $schemaName, $module)
@@ -90,7 +90,7 @@ class ZWorkflowParser
 
     /**
      * Map workflow.
-     * 
+     *
      * Marshall data in to meaningful associative arrays.
      *
      * @return void
@@ -181,7 +181,7 @@ class ZWorkflowParser
      * @param object $parser  Parser object.
      * @param string $name    Element name.
      * @param array  $attribs Element attributes.
-     * 
+     *
      * @return void
      */
     public function startElement($parser, $name, $attribs)
@@ -262,7 +262,7 @@ class ZWorkflowParser
      *
      * @param object $parser Parser object.
      * @param string $name   Element name.
-     * 
+     *
      * @return void
      */
     public function endElement($parser, $name)
@@ -321,7 +321,7 @@ class ZWorkflowParser
      *
      * @param object $parser Parser object.
      * @param string $data   Character data.
-     * 
+     *
      * @return void
      */
     public function characterData($parser, $data)
@@ -335,7 +335,7 @@ class ZWorkflowParser
      *
      * @param string $name  Tag name.
      * @param string $state Workflow state.
-     * 
+     *
      * @return string
      */
     public function unexpectedXMLError($name, $state)

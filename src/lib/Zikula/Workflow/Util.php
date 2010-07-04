@@ -5,20 +5,20 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPv2.1 (or at your option any later version).
- * @package Util
+ * @license GNU/LGPLv3 (or at your option any later version).
+ * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
- * WorkflowUtil Class.
+ * Zikula_Workflow_Util Class.
  *
  * From a developers standpoint, we only use this class to address workflows
  * as the rest is for internal use by the workflow engine.
  */
-class WorkflowUtil
+class Zikula_Workflow_Util
 {
     /**
      * Load xml workflow.
@@ -60,7 +60,7 @@ class WorkflowUtil
         }
 
         // instanciate Workflow Parser
-        $parser = new ZWorkflowParser();
+        $parser = new Zikula_Workflow_Parser();
 
         // parse workflow and return workflow object
         $workflowSchema = $parser->parse($workflowXML, $schema, $module);
