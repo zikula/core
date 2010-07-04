@@ -65,14 +65,14 @@ MODULES
 (Note in the following examples, $type must always start with a capital letter
  and all remaining characters must be lower case).
 
-- Move module controllers (pnuser.php, pnadmin.php etc) to lib/$modname/$type
+- Move module controllers (pnuser.php, pnadmin.php etc) to lib/$modname/Controller/$type
   e.g.
-    pnuser.php => lib/MyModule/User.php
+    pnuser.php => lib/MyModule/Controller/User.php
 
   Refactor the controllers, encapulating all functions inside 
-  class $modname_$type extends Zikula_Controller
+  class $modname_Controller_$type extends Zikula_Controller
   e.g.
-    class MyModule_Users extends Zikula_Controller
+    class MyModule_Controller_Users extends Zikula_Controller
 
   Make all functions public which should be accessible from the browser.
   Internal methods which should not be accessible outside the class should be made

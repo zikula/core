@@ -777,7 +777,7 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_'. ucwords($type);
+        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname). '_Controller_'. ucwords($type);
 
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new Zikula_Event('module.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
