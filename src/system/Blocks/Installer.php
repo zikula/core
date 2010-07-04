@@ -73,6 +73,9 @@ class Blocks_Installer extends Zikula_Installer
                 if (in_array(DBUtil::getLimitedTablename('message'), DBUtil::metaTables())) {
                     $this->migrateMessages();
                 }
+
+                $this->migrateExtMenu();
+
             case '3.7':
             // future upgrade routines
         }
@@ -186,5 +189,18 @@ class Blocks_Installer extends Zikula_Installer
         $table = DBUtil::getLimitedTablename('blocks');
         $sql = "DELETE FROM $table WHERE pn_bkey = 'messages'";
         DBUtil::executeSQL($sql);
+    }
+
+    protected function migrateExtMenu()
+    {
+        $blocks = DBUtil::selectObjectArray('blocks');
+        foreach ($blocks as $block) {
+            if ($block['bkey'] == 'extmenu') {
+                $content = unserialize($block['content']);
+                $content['template'] = str_replace('blocks_block_extmenu.htm', 'blocks_block_extmenu.tpl', $content['template']);
+                $block['content'] = serialize($content);
+                DBUtil::updateObject($block, 'blocks', '', 'bid');
+            }
+        }
     }
 }
