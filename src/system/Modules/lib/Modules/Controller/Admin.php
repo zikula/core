@@ -10,7 +10,7 @@
  * @subpackage Modules
  */
 
-class Modules_Admin extends Zikula_Controller
+class Modules_Controller_Admin extends Zikula_Controller
 {
     /**
      * Modules Module main admin function

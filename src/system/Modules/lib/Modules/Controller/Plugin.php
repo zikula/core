@@ -15,7 +15,7 @@
 /**
  * Modules_Plugin controller.
  */
-class Modules_Plugin extends Zikula_Controller
+class Modules_Controller_Plugin extends Zikula_Controller
 {
     /**
      * Plugin instance.

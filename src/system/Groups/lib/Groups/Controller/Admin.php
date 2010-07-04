@@ -10,7 +10,7 @@
  * @subpackage Groups
  */
 
-class Groups_Admin extends Zikula_Controller
+class Groups_Controller_Admin extends Zikula_Controller
 {
     /**
      * Groups Module main administration function
