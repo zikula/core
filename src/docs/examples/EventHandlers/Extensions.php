@@ -44,11 +44,11 @@ class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
         }
 
         // Zikula Modules and Themes versions
-        $renderer = Renderer::getInstance('SysInfo');
-        $renderer->assign('mods', ModuleUtil::getModules());
-        $renderer->assign('themes', ThemeUtil::getAllThemes());
+        $view = Zikula_View::getInstance('SysInfo');
+        $view->assign('mods', ModuleUtil::getModules());
+        $view->assign('themes', ThemeUtil::getAllThemes());
 
-        $event->setData($renderer->fetch('sysinfo_admin_extensions.tpl'));
+        $event->setData($view->fetch('sysinfo_admin_extensions.tpl'));
         $event->setNotified();
     }
 }

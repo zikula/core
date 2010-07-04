@@ -48,7 +48,7 @@ class Permissions_Admin extends Zikula_Controller
         $testinstance = FormUtil::getPassedValue('test_instance', null, 'POST');
         $testlevel = FormUtil::getPassedValue('test_level', null, 'POST');
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         $testresult = '';
         if (!empty($testuser) &&
@@ -69,7 +69,7 @@ class Permissions_Admin extends Zikula_Controller
             }
         }
 
-        $this->renderer->assign('testuser', $testuser)
+        $this->view->assign('testuser', $testuser)
                        ->assign('testcomponent', $testcomponent)
                        ->assign('testinstance', $testinstance)
                        ->assign('testlevel', $testlevel)
@@ -94,7 +94,7 @@ class Permissions_Admin extends Zikula_Controller
                 if (is_array($permgrpparts) && $permgrpparts[1] != PNPERMS_ALL) {
                     $where = "WHERE (".$permcolumn['gid']."='".PNPERMS_ALL."' OR ".$permcolumn['gid']."='".DataUtil::formatForStore($permgrpparts[1])."')";
                     $permgrp = $permgrpparts[1];
-                    $this->renderer->assign('filtertype', 'group');
+                    $this->view->assign('filtertype', 'group');
                 } else {
                     $permgrp = PNPERMS_ALL;
                     $where = '';
@@ -103,21 +103,21 @@ class Permissions_Admin extends Zikula_Controller
                 if (is_array($permgrpparts) && $permgrpparts[1] != PNPERMS_ALL) {
                     $where = "WHERE (".$permcolumn['component']."='.*' OR ".$permcolumn['component']." LIKE '".DataUtil::formatForStore($permgrpparts[1])."%')";
                     $permgrp = $permgrpparts[1];
-                    $this->renderer->assign('filtertype', 'component');
+                    $this->view->assign('filtertype', 'component');
                 } else {
                     $permgrp = PNPERMS_ALL;
                     $where = '';
                 }
             } else {
-                $this->renderer->assign('filtertype', '');
+                $this->view->assign('filtertype', '');
             }
-            $this->renderer->assign('permgrps', $ids);
-            $this->renderer->assign('permgrp', $permgrp);
-            $this->renderer->assign('enablefilter', true);
+            $this->view->assign('permgrps', $ids);
+            $this->view->assign('permgrp', $permgrp);
+            $this->view->assign('enablefilter', true);
         } else {
-            $this->renderer->assign('enablefilter', false);
-            $this->renderer->assign('filtertype', '');
-            $this->renderer->assign('permgrp', PNPERMS_ALL);
+            $this->view->assign('enablefilter', false);
+            $this->view->assign('filtertype', '');
+            $this->view->assign('permgrp', PNPERMS_ALL);
         }
 
         $accesslevels = SecurityUtil::accesslevelnames();
@@ -202,18 +202,18 @@ class Permissions_Admin extends Zikula_Controller
             $components[$compparts[0]] = $compparts[0];
         }
 
-        $this->renderer->assign('groups', $this->getGroupsInfo());
-        $this->renderer->assign('permissions', $permissions);
-        $this->renderer->assign('components', $components);
+        $this->view->assign('groups', $this->getGroupsInfo());
+        $this->view->assign('permissions', $permissions);
+        $this->view->assign('components', $components);
 
         $lockadmin = ($this->getVar('lockadmin')) ? 1 : 0;
-        $this->renderer->assign('lockadmin', $lockadmin);
-        $this->renderer->assign('adminid', $this->getVar('adminid'));
+        $this->view->assign('lockadmin', $lockadmin);
+        $this->view->assign('adminid', $this->getVar('adminid'));
 
         // Assign the permission levels
-        $this->renderer->assign('permissionlevels', SecurityUtil::accesslevelnames());
+        $this->view->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
-        return $this->renderer->fetch('permissions_admin_view.tpl');
+        return $this->view->fetch('permissions_admin_view.tpl');
     }
 
     /**
@@ -323,10 +323,10 @@ class Permissions_Admin extends Zikula_Controller
         // decide default view
         $rowview = is_null($this->getVar('rowview')) ? '25' : $this->getVar('rowview');
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // Assign the permission levels
-        $this->renderer->assign('permissionlevels', SecurityUtil::accesslevelnames());
+        $this->view->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
         // Work out which tables to operate against, and
         // various other bits and pieces
@@ -343,46 +343,46 @@ class Permissions_Admin extends Zikula_Controller
             return System::redirect(ModUtil::url('modules', 'admin', 'main'));
         }
 
-        $this->renderer->assign('title', $viewperms)
+        $this->view->assign('title', $viewperms)
                        ->assign('mlpermtype', $mlpermtype);
 
         $accesslevels = SecurityUtil::accesslevelnames();
         $numrows = count($objArray);
 
-        $this->renderer->assign('idvalues', $ids);
+        $this->view->assign('idvalues', $ids);
 
         if ($action == 'modify') {
             // Form-start
-            $this->renderer->assign('formurl', ModUtil::url('Permissions', 'admin', 'update'))
+            $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'update'))
                            ->assign('permgrp', $permgrp)
                            ->assign('chgpid', $chgpid);
 
             // Realms hard-code4d - jgm
-            $this->renderer->assign('realm', 0)
+            $this->view->assign('realm', 0)
                            ->assign('insseq', $chgpid)
                            ->assign('submit', $this->__('Edit permission rule'));
 
         } else if ($action == 'insert') {
-            $this->renderer->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
+            $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
                            ->assign('permgrp', $permgrp)
                            ->assign('insseq', $insseq);
 
             // Realms hard-coded - jgm
-            $this->renderer->assign('realm', 0)
+            $this->view->assign('realm', 0)
                            ->assign('submit', $this->__('Create new permission rule'));
 
         } else if ($action == 'add') {
             // Form-start
-            $this->renderer->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
+            $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
                            ->assign('permgrp', $permgrp)
                            ->assign('insseq', -1);
 
             // Realms hard-coded - jgm
-            $this->renderer->assign('realm', 0)
+            $this->view->assign('realm', 0)
                            ->assign('submit', $this->__('Create new permission rule'));
         }
 
-        $this->renderer->assign('action', $action);
+        $this->view->assign('action', $action);
 
         $permissions = array();
         $ak = array_keys($objArray);
@@ -399,13 +399,13 @@ class Permissions_Admin extends Zikula_Controller
                     'level'       => $obj['level'],
                     'sequence'    => $obj['sequence']);
             if ($action == 'modify' && $obj['pid'] == $chgpid) {
-                $this->renderer->assign('selectedid', $id);
+                $this->view->assign('selectedid', $id);
             }
 
         }
-        $this->renderer->assign('permissions', $permissions);
+        $this->view->assign('permissions', $permissions);
 
-        return $this->renderer->fetch('permissions_admin_listedit.tpl');
+        return $this->view->fetch('permissions_admin_listedit.tpl');
     }
 
     /**
@@ -565,16 +565,16 @@ class Permissions_Admin extends Zikula_Controller
         if (empty($confirmation)) {
             // No confirmation yet
 
-            $this->renderer->setCaching(false);
+            $this->view->setCaching(false);
 
             // Add a hidden field for the item ID to the output
-            $this->renderer->assign('pid', $pid);
+            $this->view->assign('pid', $pid);
 
             // assign the permission type and group
-            $this->renderer->assign('permgrp', $permgrp);
+            $this->view->assign('permgrp', $permgrp);
 
             // Return the output that has been generated by this function
-            return $this->renderer->fetch('permissions_admin_delete.tpl');
+            return $this->view->fetch('permissions_admin_delete.tpl');
         }
 
         // If we get here it means that the user has confirmed the action
@@ -637,14 +637,14 @@ class Permissions_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // Get all permissions schemas, sort and assign to the template
-        $this->renderer->assign('schemas', ModUtil::apiFunc('Permissions', 'admin', 'getallschemas'));
+        $this->view->assign('schemas', ModUtil::apiFunc('Permissions', 'admin', 'getallschemas'));
 
         // we don't return the output back to the core here since this template is a full page
         // template i.e. we don't want this output wrapped in the theme.
-        $this->renderer->display('permissions_admin_viewinstanceinfo.tpl');
+        $this->view->display('permissions_admin_viewinstanceinfo.tpl');
 
         return true;
     }
@@ -662,13 +662,13 @@ class Permissions_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign the module vars
-        $this->renderer->assign($this->getVars());
+        $this->view->assign($this->getVars());
 
         // return the output
-        return $this->renderer->fetch('permissions_admin_modifyconfig.tpl');
+        return $this->view->fetch('permissions_admin_modifyconfig.tpl');
     }
     /**
      * Save new settings

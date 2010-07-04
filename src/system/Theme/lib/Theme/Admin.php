@@ -31,10 +31,10 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // Return the output that has been generated to the template
-        return $this->renderer->fetch('theme_admin_newtheme.tpl');
+        return $this->view->fetch('theme_admin_newtheme.tpl');
     }
 
     /**
@@ -62,14 +62,14 @@ class Theme_Admin extends Zikula_Controller
         }
 
         // create theme
-        $expose_template = $this->renderer->expose_template;
+        $expose_template = $this->view->expose_template;
 
-        $this->renderer->expose_template = false;
-        $this->renderer->assign($themeinfo);
-        $this->renderer->assign('palettes', array('palette1' =>  array()));
-        $this->renderer->assign('pageconfigurations', array('master'));
-        $this->renderer->assign('pagetemplate', 'master.tpl');
-        $this->renderer->assign('templates', array('left' => 'block.tpl', 'right' => 'block.tpl', 'center' => 'block.tpl'));
+        $this->view->expose_template = false;
+        $this->view->assign($themeinfo);
+        $this->view->assign('palettes', array('palette1' =>  array()));
+        $this->view->assign('pageconfigurations', array('master'));
+        $this->view->assign('pagetemplate', 'master.tpl');
+        $this->view->assign('templates', array('left' => 'block.tpl', 'right' => 'block.tpl', 'center' => 'block.tpl'));
 
         // work out which base page template to use
         switch ($themeinfo['layout']) {
@@ -87,16 +87,16 @@ class Theme_Admin extends Zikula_Controller
         }
 
         $createdtheme = ModUtil::apiFunc('Theme', 'admin', 'create', array('themeinfo' => $themeinfo,
-                                                                           'versionfile' => $this->renderer->fetch('upgrade/version.tpl'),
-                                                                           'potfile' => $this->renderer->fetch('upgrade/pot.tpl'),
-                                                                           'palettesfile' => $this->renderer->fetch('upgrade/themepalettes.tpl'),
-                                                                           'variablesfile' => $this->renderer->fetch('upgrade/themevariables.tpl'),
-                                                                           'pageconfigurationsfile' => $this->renderer->fetch('upgrade/pageconfigurations.tpl'),
-                                                                           'pageconfigurationfile' => $this->renderer->fetch('upgrade/pageconfiguration.tpl'),
-                                                                           'pagetemplatefile' => $this->renderer->fetch('upgrade/'.$pagetemplate.'.tpl'),
-                                                                           'cssfile' => $this->renderer->fetch('upgrade/'.$pagetemplate.'.css'),
-                                                                           'blockfile' => $this->renderer->fetch('upgrade/block.tpl')));
-        $this->renderer->expose_template = $expose_template;
+                                                                           'versionfile' => $this->view->fetch('upgrade/version.tpl'),
+                                                                           'potfile' => $this->view->fetch('upgrade/pot.tpl'),
+                                                                           'palettesfile' => $this->view->fetch('upgrade/themepalettes.tpl'),
+                                                                           'variablesfile' => $this->view->fetch('upgrade/themevariables.tpl'),
+                                                                           'pageconfigurationsfile' => $this->view->fetch('upgrade/pageconfigurations.tpl'),
+                                                                           'pageconfigurationfile' => $this->view->fetch('upgrade/pageconfiguration.tpl'),
+                                                                           'pagetemplatefile' => $this->view->fetch('upgrade/'.$pagetemplate.'.tpl'),
+                                                                           'cssfile' => $this->view->fetch('upgrade/'.$pagetemplate.'.css'),
+                                                                           'blockfile' => $this->view->fetch('upgrade/block.tpl')));
+        $this->view->expose_template = $expose_template;
 
         if ($createdtheme) {
             LogUtil::registerStatus($this->__f('Done! Theme %s created.', $themeinfo['name']));
@@ -119,7 +119,7 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         if(isset($GLOBALS['ZConfig']['multisites']['multi']) && $GLOBALS['ZConfig']['multisites']['multi'] == 1){
             // only the main site can regenerate the themes list
@@ -145,20 +145,20 @@ class Theme_Admin extends Zikula_Controller
         if (isset($startlet) && !empty($startlet)) {
             $allthemes = $this->_filterbyletter($allthemes, $startlet);
         }
-        
+
         $themes = array_slice($allthemes, $startnum-1, $itemsperpage);
-        
-        $this->renderer->assign('themes', $themes);
+
+        $this->view->assign('themes', $themes);
 
         // assign default theme
-        $this->renderer->assign('currenttheme', System::getVar('Default_Theme'));
+        $this->view->assign('currenttheme', System::getVar('Default_Theme'));
 
         // assign the values for the smarty plugin to produce a pager
-        $this->renderer->assign('pager', array('numitems' => sizeof($allthemes),
+        $this->view->assign('pager', array('numitems' => sizeof($allthemes),
                                                'itemsperpage' => $itemsperpage));
 
         // Return the output that has been generated to the template
-        return $this->renderer->fetch('theme_admin_view.tpl');
+        return $this->view->fetch('theme_admin_view.tpl');
     }
 
     /**
@@ -208,10 +208,10 @@ class Theme_Admin extends Zikula_Controller
             ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themename));
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign theme name, theme info and return output
-        return $this->renderer->assign('themename', $themename)
+        return $this->view->assign('themename', $themename)
                               ->assign('themeinfo', $themeinfo)
                               ->fetch('theme_admin_modify.tpl');
     }
@@ -289,10 +289,10 @@ class Theme_Admin extends Zikula_Controller
         // load the language file
         ZLanguage::bindThemeDomain($themename);
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign variables, themename, themeinfo and return output
-        return $this->renderer->assign('variables', ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true)))
+        return $this->view->assign('variables', ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true)))
                               ->assign('themename', $themename)
                               ->assign('themeinfo', $themeinfo)
                               ->fetch('theme_admin_variables.tpl');
@@ -381,10 +381,10 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign palettes, themename, themeinfo and return output
-        return $this->renderer->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename)))
+        return $this->view->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename)))
                               ->assign('themename', $themename)
                               ->assign('themeinfo', $themeinfo)
                               ->fetch('theme_admin_palettes.tpl');
@@ -489,10 +489,10 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign the theme name and theme info
-        $this->renderer->assign('themename', $themename)
+        $this->view->assign('themename', $themename)
                        ->assign('themeinfo', $themeinfo);
 
         // assign an array to populate the modules dropdown
@@ -501,22 +501,22 @@ class Theme_Admin extends Zikula_Controller
         foreach ($allmods as $mod) {
             $mods[$mod['name']] = $mod['displayname'];
         }
-        $this->renderer->assign('modules', $mods);
+        $this->view->assign('modules', $mods);
 
         // assign the page configuration assignments
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
         ksort($pageconfigurations);
-        $this->renderer->assign('pageconfigurations', $pageconfigurations);
+        $this->view->assign('pageconfigurations', $pageconfigurations);
 
         // identify unique page configuration files
         $pageconfigfiles = array();
         foreach ($pageconfigurations as $pageconfiguration) {
             $pageconfigfiles[$pageconfiguration['file']] = file_exists("themes/$themeinfo[directory]/templates/config/$pageconfiguration[file]");
         }
-        $this->renderer->assign('pageconfigs', $pageconfigfiles);
+        $this->view->assign('pageconfigs', $pageconfigfiles);
 
         // Return the output that has been generated by this function
-        return $this->renderer->fetch('theme_admin_pageconfigurations.tpl');
+        return $this->view->fetch('theme_admin_pageconfigurations.tpl');
     }
 
     /**
@@ -550,10 +550,10 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign the base filename, themename, theme info, moduletemplates, blocktemplates and palettes
-        $this->renderer->assign('filename', $filename)
+        $this->view->assign('filename', $filename)
                        ->assign('themename', $themename)
                        ->assign('themeinfo', $themeinfo)
                        ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
@@ -570,10 +570,10 @@ class Theme_Admin extends Zikula_Controller
             }
             $positions[$blockposition['name']] = $blockposition['name'];
         }
-        $this->renderer->assign('blockpositions', $positions);
+        $this->view->assign('blockpositions', $positions);
 
         // call the block API to get a list of all available blocks
-        $this->renderer->assign('allblocks', $allblocks = BlockUtil::loadAll());
+        $this->view->assign('allblocks', $allblocks = BlockUtil::loadAll());
         foreach ($allblocks as $key => $blocks) {
             foreach ($blocks as $block) {
                 // check the page configuration
@@ -584,7 +584,7 @@ class Theme_Admin extends Zikula_Controller
         }
 
         // call the block API to get a list of all defined block instances
-        $this->renderer->assign('blocks', $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall'));
+        $this->view->assign('blocks', $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall'));
         foreach ($blocks as $block) {
             // check the page configuration
             if (!isset($pageconfiguration['blockinstances'][$block['bid']])) {
@@ -620,10 +620,10 @@ class Theme_Admin extends Zikula_Controller
         }
 
         // assign the page configuration array
-        $this->renderer->assign('pageconfiguration', $pageconfiguration);
+        $this->view->assign('pageconfiguration', $pageconfiguration);
 
         // Return the output that has been generated by this function
-        return $this->renderer->fetch('theme_admin_modifypageconfigtemplates.tpl');
+        return $this->view->fetch('theme_admin_modifypageconfigtemplates.tpl');
     }
 
     /**
@@ -705,7 +705,7 @@ class Theme_Admin extends Zikula_Controller
         $filters = explode(',', $filters);
         $newfilters = array();
         foreach ($filters as $filter) {
-            foreach ($this->renderer->plugins_dir as $plugindir) {
+            foreach ($this->view->plugins_dir as $plugindir) {
                 if (file_exists($plugindir .'/'. $ostype .'.'. DataUtil::formatForOS($filter) .'.php')) {
                     $newfilters[] = $filter;
                     break;
@@ -744,10 +744,10 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign the page config assignment name, theme name and theme info
-        $this->renderer->assign('pcname', $pcname)
+        $this->view->assign('pcname', $pcname)
                        ->assign('themename', $themename)
                        ->assign('themeinfo', $themeinfo);
 
@@ -757,7 +757,7 @@ class Theme_Admin extends Zikula_Controller
         foreach ($allmods as $mod) {
             $mods[$mod['name']] = $mod['name'];
         }
-        $this->renderer->assign('modules', $mods);
+        $this->view->assign('modules', $mods);
 
         // get all pageconfigurations
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
@@ -768,7 +768,7 @@ class Theme_Admin extends Zikula_Controller
         $pageconfigparts = explode('/', $pcname);
 
         // assign the config filename
-        $this->renderer->assign('filename', $pageconfigurations[$pcname]['file']);
+        $this->view->assign('filename', $pageconfigurations[$pcname]['file']);
 
         // form the page config assignment array setting some useful key names
         $pageconfigassignment = array('pagemodule' => null, 'pagetype' => null, 'pagefunc' => null, 'pagecustomargs' => null);
@@ -782,10 +782,10 @@ class Theme_Admin extends Zikula_Controller
         if (isset($pageconfigparts[3])) {
             $pageconfigassignment['pagecustomargs'] = $pageconfigparts[3];
         }
-        $this->renderer->assign($pageconfigassignment);
+        $this->view->assign($pageconfigassignment);
 
         // Return the output that has been generated by this function
-        return $this->renderer->fetch('theme_admin_modifypageconfigurationassignment.tpl');
+        return $this->view->fetch('theme_admin_modifypageconfigurationassignment.tpl');
     }
 
     /**
@@ -889,16 +889,16 @@ class Theme_Admin extends Zikula_Controller
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-            $this->renderer->setCaching(false);
+            $this->view->setCaching(false);
 
             // Assign the theme info
-            $this->renderer->assign($themeinfo);
+            $this->view->assign($themeinfo);
 
             // Assign the page configuration name
-            $this->renderer->assign('pcname', $pcname);
+            $this->view->assign('pcname', $pcname);
 
             // Return the output that has been generated by this function
-            return $this->renderer->fetch('theme_admin_deletepageconfigurationassignment.tpl');
+            return $this->view->fetch('theme_admin_deletepageconfigurationassignment.tpl');
         }
 
         // If we get here it means that the user has confirmed the action
@@ -939,10 +939,10 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign the theme info and return output
-        return $this->renderer->assign('themeinfo', ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename)))
+        return $this->view->assign('themeinfo', ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename)))
                               ->fetch('theme_admin_credits.tpl');
     }
 
@@ -971,16 +971,16 @@ class Theme_Admin extends Zikula_Controller
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-            $this->renderer->setCaching(false);
+            $this->view->setCaching(false);
 
             // Add a hidden field for the item ID to the output
-            $this->renderer->assign('themename', $themename);
+            $this->view->assign('themename', $themename);
 
             // assign the var defining if users can change themes
-            $this->renderer->assign('theme_change', System::getVar('theme_change'));
+            $this->view->assign('theme_change', System::getVar('theme_change'));
 
             // Return the output that has been generated by this function
-            return $this->renderer->fetch('theme_admin_setasdefault.tpl');
+            return $this->view->fetch('theme_admin_setasdefault.tpl');
         }
 
         // If we get here it means that the user has confirmed the action
@@ -1029,13 +1029,13 @@ class Theme_Admin extends Zikula_Controller
         if (empty($confirmation)) {
             // No confirmation yet
 
-            $this->renderer->setCaching(false);
+            $this->view->setCaching(false);
 
             // Add the message id
-            $this->renderer->assign($themeinfo);
+            $this->view->assign($themeinfo);
 
             // Return the output that has been generated by this function
-            return $this->renderer->fetch('theme_admin_delete.tpl');
+            return $this->view->fetch('theme_admin_delete.tpl');
         }
 
         // If we get here it means that the user has confirmed the action
@@ -1069,16 +1069,16 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign all module vars
-        $this->renderer->assign($this->getVars());
+        $this->view->assign($this->getVars());
 
         // assign an authid for the clear cache/compile links
-        $this->renderer->assign('authid', SecurityUtil::generateAuthKey('Theme'));
+        $this->view->assign('authid', SecurityUtil::generateAuthKey('Theme'));
 
         // assign the core config var
-        $this->renderer->assign('theme_change', System::getVar('theme_change'));
+        $this->view->assign('theme_change', System::getVar('theme_change'));
 
         // assign a list of modules suitable for html_options
         $usermods = ModUtil::getUserMods();
@@ -1086,23 +1086,23 @@ class Theme_Admin extends Zikula_Controller
         foreach ($usermods as $usermod) {
             $mods[$usermod['name']] = $usermod['displayname'];
         }
-        $this->renderer->assign('mods', $mods);
+        $this->view->assign('mods', $mods);
 
         // assign an extracted list of non-cached mods
-        $this->renderer->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))));
+        $this->view->assign('modulesnocache', array_flip(explode(',', $this->getVar('modulesnocache'))));
 
         // check for a .htaccess file
         if (file_exists('.htaccess')){
-            $this->renderer->assign('htaccess', 1);
+            $this->view->assign('htaccess', 1);
         } else {
-            $this->renderer->assign('htaccess', 0);
+            $this->view->assign('htaccess', 0);
         }
 
         // register the renderer object allow access to various smarty values
-        $this->renderer->register_object('render', $this->renderer);
+        $this->view->register_object('render', $this->view);
 
         // Return the output that has been generated by this function
-        return $this->renderer->fetch('theme_admin_modifyconfig.tpl');
+        return $this->view->fetch('theme_admin_modifyconfig.tpl');
     }
 
     /**
@@ -1183,7 +1183,7 @@ class Theme_Admin extends Zikula_Controller
         $this->setVar('render_expose_template', $render_expose_template);
 
         // The configuration has been changed, so we clear all caches for this module.
-        $this->renderer->clear_all_cache();
+        $this->view->clear_all_cache();
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
@@ -1294,7 +1294,7 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $res = $this->renderer->clear_compiled();
+        $res = $this->view->clear_compiled();
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted rendering engine compiled templates.'));
@@ -1323,7 +1323,7 @@ class Theme_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $res = $this->renderer->clear_all_cache();
+        $res = $this->view->clear_all_cache();
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted rendering engine cached pages.'));

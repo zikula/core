@@ -23,7 +23,7 @@ abstract class Zikula_Controller extends Zikula_Base
      *
      * @var Zikula_View
      */
-    protected $renderer;
+    protected $view;
 
     /**
      * Post Setup hook.
@@ -34,23 +34,23 @@ abstract class Zikula_Controller extends Zikula_Base
     {
         // Create renderer object
         $this->setView();
-        $this->renderer->assign('controller', $this);
+        $this->view->assign('controller', $this);
     }
 
     /**
-     * Set renderer property.
+     * Set view property.
      *
-     * @param Renderer $renderer Default null means new Render instance for this module name.
+     * @param Zikula_View $view Default null means new Render instance for this module name.
      *
      * @return Zikula_Controller
      */
-    protected function setView(Zikula_View $renderer = null)
+    protected function setView(Zikula_View $view = null)
     {
-        if (is_null($renderer)) {
-            $renderer = Zikula_View::getInstance($this->getName());
+        if (is_null($view)) {
+            $view = Zikula_View::getInstance($this->getName());
         }
 
-        $this->renderer = $renderer;
+        $this->view = $view;
         return $this;
     }
 
@@ -61,7 +61,7 @@ abstract class Zikula_Controller extends Zikula_Base
      */
     public function getView()
     {
-        return $this->renderer;
+        return $this->view;
     }
 
     /**

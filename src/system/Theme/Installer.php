@@ -49,7 +49,7 @@ class Theme_Installer extends Zikula_Installer
         $this->setVar('cssjsminify', false);
         $this->setVar('cssjscombine_lifetime', 3600);
 
-        // Renderer
+        // View
         $this->setVar('render_compile_check',  true);
         $this->setVar('render_force_compile',  true);
         $this->setVar('render_cache',          false);

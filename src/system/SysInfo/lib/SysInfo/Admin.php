@@ -24,9 +24,9 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('pnversionnum', System::VERSION_NUM)
+        $this->view->assign('pnversionnum', System::VERSION_NUM)
                        ->assign('pnversionid', System::VERSION_ID)
                        ->assign('pnversionsub', System::VERSION_SUB);
 
@@ -34,9 +34,9 @@ class SysInfo_Admin extends Zikula_Controller
         if (!isset($serversig) || empty($serversig)) {
             $serversig = System::serverGetVar('SERVER_SOFTWARE');
         }
-        $this->renderer->assign('serversig', $serversig);
+        $this->view->assign('serversig', $serversig);
 
-        $this->renderer->assign('phpversion', phpversion());
+        $this->view->assign('phpversion', phpversion());
 
         // Mess around with PHP functions for the various databases
         $serverInfo = DBUtil::serverInfo();
@@ -108,7 +108,7 @@ class SysInfo_Admin extends Zikula_Controller
             }
         }
 
-        $this->renderer->assign('extensions', $extensions)
+        $this->view->assign('extensions', $extensions)
                       ->assign('opt_extensions', $opt_extensions)
                       ->assign('opt_patches', $opt_patches)
                       ->assign('dbinfo', $dbinfo)
@@ -123,7 +123,7 @@ class SysInfo_Admin extends Zikula_Controller
                       ->assign('php_disable_functions', DataUtil::getBooleanIniValue('disable_functions'))
                       ->assign('mod_security', (bool)$mod_security);
 
-        return $this->renderer->fetch('sysinfo_admin_main.tpl');
+        return $this->view->fetch('sysinfo_admin_main.tpl');
     }
 
     /**
@@ -175,11 +175,11 @@ class SysInfo_Admin extends Zikula_Controller
         }
         $phpinfo = implode('', $phpinfo);
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('phpinfo', $phpinfo);
+        $this->view->assign('phpinfo', $phpinfo);
 
-        return $this->renderer->fetch('sysinfo_admin_phpinfo.tpl');
+        return $this->view->fetch('sysinfo_admin_phpinfo.tpl');
     }
 
     /**
@@ -195,12 +195,12 @@ class SysInfo_Admin extends Zikula_Controller
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist');
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('filelist', $filelist)
+        $this->view->assign('filelist', $filelist)
                        ->assign('ztemp', $ztemp);
 
-        return $this->renderer->fetch('sysinfo_admin_filesystem.tpl');
+        return $this->view->fetch('sysinfo_admin_filesystem.tpl');
     }
 
     /**
@@ -213,17 +213,17 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist',
                 array ('startdir' => $ztemp . '/',
                 'ztemp' => 1));
-        $this->renderer->assign('filelist', $filelist);
+        $this->view->assign('filelist', $filelist);
 
-        $this->renderer->assign('ztemp', $ztemp);
+        $this->view->assign('ztemp', $ztemp);
 
-        return $this->renderer->fetch('sysinfo_admin_filesystem.tpl');
+        return $this->view->fetch('sysinfo_admin_filesystem.tpl');
     }
 
     /**
@@ -236,9 +236,9 @@ class SysInfo_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        return $this->renderer->assign('mods', ModuleUtil::getModules())
+        return $this->view->assign('mods', ModuleUtil::getModules())
                               ->assign('themes', ThemeUtil::getAllThemes())
                               ->fetch('sysinfo_admin_extensions.tpl');
     }

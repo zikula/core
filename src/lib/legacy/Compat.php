@@ -44,10 +44,7 @@ class pnRender extends Zikula_View
     }
 }
 
-// temporary legacy remove before release
-class Renderer extends Zikula_View{}
 class Theme extends Zikula_Theme{}
-class PluginRender extends Zikula_View_Plugin{}
 
 /**
  * Alias to the DBObject class for backward compatibility to Zikula 1.2.x.
@@ -2294,7 +2291,7 @@ function theme_userapi_clear_cache()
  *
  * removed since version 1.3.0 of Zikula
  * @deprecated
- * @see Renderer::clear_compiled()
+ * @see Zikula_View::clear_compiled()
  */
 function theme_userapi_render_clear_compiled()
 {
@@ -2303,9 +2300,9 @@ function theme_userapi_render_clear_compiled()
         return LogUtil::registerPermissionError();
     }
 
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_compiled', 'Renderer::clear_compiled()')), 'STRICT');
-    $renderer = Renderer::getInstance();
-    $res      = $renderer->clear_compiled();
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_compiled', 'Zikula_View::clear_compiled()')), 'STRICT');
+    $view = Zikula_View::getInstance();
+    $res      = $view->clear_compiled();
     return $res;
 }
 
@@ -2325,13 +2322,13 @@ function theme_userapi_render_clear_cache($args)
         return LogUtil::registerPermissionError();
     }
 
-    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_cache', 'Renderer::clear_cache()')), 'STRICT');
+    LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_cache', 'Zikula_View::clear_cache()')), 'STRICT');
     if(isset($args['module']) && !empty($args['module']) && pnModAvailable($args['module'])) {
-        $renderer = Renderer::getInstance($args['module']);
-        $res      = $renderer->clear_cache();
+        $view = Zikula_View::getInstance($args['module']);
+        $res      = $view->clear_cache();
     } else {
-        $renderer = Renderer::getInstance();
-        $res      = $renderer->clear_all_cache();
+        $renderer = Zikula_View::getInstance();
+        $res      = $view->clear_all_cache();
     }
 
     return $res;

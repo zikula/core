@@ -48,10 +48,10 @@ class Categories_Admin extends Zikula_Controller
         $menuTxt     = CategoryUtil::getCategoryTreeJS ($cats, true, true);
         $GLOBALS['dbtables']['categories_category_db_extra_enable_attribution'] = true;
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('menuTxt', $menuTxt);
-        return $this->renderer->fetch('categories_admin_view.tpl');
+        $this->view->assign('menuTxt', $menuTxt);
+        return $this->view->fetch('categories_admin_view.tpl');
     }
 
     /**
@@ -63,9 +63,9 @@ class Categories_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        return $this->renderer->fetch('categories_admin_config.tpl');
+        return $this->view->fetch('categories_admin_config.tpl');
     }
 
     /**
@@ -143,9 +143,9 @@ class Categories_Admin extends Zikula_Controller
 
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('mode', $mode)
+        $this->view->assign('mode', $mode)
                        ->assign('category', $editCat)
                        ->assign('attributes', $attributes)
                        ->assign('languages', $languages)
@@ -153,11 +153,11 @@ class Categories_Admin extends Zikula_Controller
                        ->assign('validation', $category->_objValidation);
 
         if ($mode == 'edit') {
-            $this->renderer->assign('haveSubcategories', CategoryUtil::haveDirectSubcategories ($cid))
+            $this->view->assign('haveSubcategories', CategoryUtil::haveDirectSubcategories ($cid))
                            ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories ($cid, false, true));
         }
 
-        return $this->renderer->fetch('categories_admin_edit.tpl');
+        return $this->view->fetch('categories_admin_edit.tpl');
     }
 
     public function editregistry ()
@@ -187,15 +187,15 @@ class Categories_Admin extends Zikula_Controller
         $objArray = new $arrayClass ();
         $dataA    = $objArray->get($where, $sort);
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('objectArray', $dataA)
+        $this->view->assign('objectArray', $dataA)
                        ->assign('newobj', $data)
                        ->assign('root_id', $root_id)
                        ->assign('id', $id)
                        ->assign('validation', $obj->_objValidation);
 
-        return $this->renderer->fetch('categories_admin_registry_edit.tpl');
+        return $this->view->fetch('categories_admin_registry_edit.tpl');
     }
 
     /**
@@ -226,14 +226,14 @@ class Categories_Admin extends Zikula_Controller
         $allCats     = CategoryUtil::getSubCategories ($root_id, true, true, true, false, true, $cid);
         $selector    = CategoryUtil::getSelector_Categories ($allCats);
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('category', $category)
+        $this->view->assign('category', $category)
                        ->assign('numSubcats', count($subCats))
                        ->assign('categorySelector', $selector);
 
         $tplName = 'categories_admin_' . $op . '.tpl';
-        return $this->renderer->fetch($tplName);
+        return $this->view->fetch($tplName);
     }
 
     /**
@@ -245,16 +245,16 @@ class Categories_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign ('userrootcat', $this->getVar('userrootcat', '/__SYSTEM__'))
+        $this->view->assign ('userrootcat', $this->getVar('userrootcat', '/__SYSTEM__'))
                        ->assign ('allowusercatedit', $this->getVar('allowusercatedit', 0))
                        ->assign ('autocreateusercat', $this->getVar('autocreateusercat', 0))
                        ->assign ('autocreateuserdefaultcat', $this->getVar('autocreateuserdefaultcat', 0))
                        ->assign ('userdefaultcatname', $this->getVar('userdefaultcatname', 0))
                        ->assign ('permissionsall', $this->getVar('permissionsall', 0));
 
-        return $this->renderer->fetch('categories_admin_preferences.tpl');
+        return $this->view->fetch('categories_admin_preferences.tpl');
     }
 
 }

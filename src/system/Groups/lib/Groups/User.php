@@ -65,16 +65,16 @@ class Groups_User extends Zikula_Controller
                 'uid'      => UserUtil::getVar('uid'),
                 'islogged' => $islogged));
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->add_core_data();
-        $this->renderer->assign('mainpage', true);
+        $this->view->add_core_data();
+        $this->view->assign('mainpage', true);
 
         // The return value of the function is checked here, and if the function
         // failed then an appropriate message is posted.
         if ($groups == false) {
-            $this->renderer->assign('nogroups', true);
-            return $this->renderer->fetch('groups_user_view.tpl');
+            $this->view->assign('nogroups', true);
+            return $this->view->fetch('groups_user_view.tpl');
         }
 
         $groupitems = array();
@@ -96,26 +96,26 @@ class Groups_User extends Zikula_Controller
                 $group['typelbl']  = $typelabel[$group['gtype']];
                 $group['statelbl'] = $statelabel[$group['state']];
 
-                $this->renderer->assign($group);
+                $this->view->assign($group);
 
                 if ($islogged == true && SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_READ)) {
                     // The right to apply
-                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_read.tpl', $group['gid']);
+                    $groupitems[] = $this->view->fetch('groups_user_grouprow_read.tpl', $group['gid']);
                 } else {
                     // No right to apply
-                    $groupitems[] = $this->renderer->fetch('groups_user_grouprow_overview.tpl', $group['gid']);
+                    $groupitems[] = $this->view->fetch('groups_user_grouprow_overview.tpl', $group['gid']);
                 }
             }
         }
 
-        $this->renderer->add_core_data();
-        $this->renderer->assign('nogroups', false);
-        $this->renderer->assign('items', $groupitems);
+        $this->view->add_core_data();
+        $this->view->assign('nogroups', false);
+        $this->view->assign('items', $groupitems);
 
-        $this->renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
+        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
                                                'itemsperpage' => $itemsperpage));
 
-        return $this->renderer->fetch('groups_user_view.tpl');
+        return $this->view->fetch('groups_user_view.tpl');
     }
 
     /**
@@ -171,9 +171,9 @@ class Groups_User extends Zikula_Controller
             }
         }
 
-        $this->renderer->add_core_data();
+        $this->view->add_core_data();
 
-        $this->renderer->assign('mainpage',     true)
+        $this->view->assign('mainpage',     true)
                        ->assign('hooks',        false)
                        ->assign('gid',          $gid)
                        ->assign('gname',        $group['name'])
@@ -181,7 +181,7 @@ class Groups_User extends Zikula_Controller
                        ->assign('action',       $action)
                        ->assign('description',  $group['description']);
 
-        return $this->renderer->fetch('groups_user_membership.tpl');
+        return $this->view->fetch('groups_user_membership.tpl');
     }
 
     /*
@@ -220,7 +220,7 @@ class Groups_User extends Zikula_Controller
             LogUtil::registerStatus($this->__('Done! Saved the action.'));
         }
 
-        $this->renderer->clear_cache('groups_user_memberslist.tpl');
+        $this->view->clear_cache('groups_user_memberslist.tpl');
 
         return System::redirect(ModUtil::url('Groups', 'user', 'main'));
     }
@@ -268,11 +268,11 @@ class Groups_User extends Zikula_Controller
         $group['typelbl']  = $typelabel[$group['gtype']];
         $group['statelbl'] = $statelabel[$group['state']];
 
-        $this->renderer->assign('mainpage', false);
+        $this->view->assign('mainpage', false);
 
-        $this->renderer->add_core_data();
+        $this->view->add_core_data();
 
-        $this->renderer->assign('group', $group);
+        $this->view->assign('group', $group);
 
         if ($group['members']) {
             $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline', array());
@@ -307,17 +307,17 @@ class Groups_User extends Zikula_Controller
                 }
                 array_multisort($sortAarr, SORT_ASC, $members);
             }
-            $this->renderer->assign('members', $members);
+            $this->view->assign('members', $members);
         } else {
-            $this->renderer->assign('members', false);
+            $this->view->assign('members', false);
         }
 
-        $this->renderer->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+        $this->view->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
 
-        $this->renderer->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
+        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
                                                'itemsperpage' => $itemsperpage));
 
-        $this->renderer->assign('hooks', $this->callHooks('item',
+        $this->view->assign('hooks', $this->callHooks('item',
                 'display',
                 $gid,
                 ModUtil::url('Groups',
@@ -326,8 +326,8 @@ class Groups_User extends Zikula_Controller
                 array('gid' => $gid))));
 
         $profileModule = System::getVar('profilemodule', '');
-        $this->renderer->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
+        $this->view->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 
-        return $this->renderer->fetch('groups_user_memberslist.tpl');
+        return $this->view->fetch('groups_user_memberslist.tpl');
     }
 }

@@ -238,7 +238,7 @@ function _upg_upgrademodules($username, $password)
 
     echo '<h2>' . __('Starting upgrade') . '</h2>' . "\n";
     echo '<ul id="upgradelist" class="check">' . "\n";
-    
+
     // reset for User module
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] == false;
 
@@ -370,11 +370,11 @@ function _upg_sanity_check($username, $password)
  */
 function upgrade_clear_caches()
 {
-    Theme::getInstance()->clear_all_cache();
-    Theme::getInstance()->clear_compiled();
-    Theme::getInstance()->clear_cssjscombinecache();
-    Renderer::getInstance()->clear_all_cache();
-    Renderer::getInstance()->clear_compiled();
+    Zikula_Theme::getInstance()->clear_all_cache();
+    Zikula_Theme::getInstance()->clear_compiled();
+    Zikula_Theme::getInstance()->clear_cssjscombinecache();
+    Zikula_View::getInstance()->clear_all_cache();
+    Zikula_View::getInstance()->clear_compiled();
 }
 
 /**

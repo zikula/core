@@ -91,12 +91,12 @@ class Admin_Block_Adminnav extends Zikula_Block
             }
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign('admincategories', $admincategories);
+        $this->view->assign('admincategories', $admincategories);
 
         // Populate block info and pass to theme
-        $blockinfo['content'] = $this->renderer->fetch('admin_block_adminnav.tpl');
+        $blockinfo['content'] = $this->view->fetch('admin_block_adminnav.tpl');
 
         return BlockUtil::themeBlock($blockinfo);
     }

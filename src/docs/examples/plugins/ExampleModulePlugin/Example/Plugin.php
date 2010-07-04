@@ -83,7 +83,7 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
             return LogUtil::registerPermissionError();
         }
 
-        $view = Renderer::getModulePluginInstance($this->moduleName, $this->pluginName);
+        $view = Zikula_View_plugin::getModulePluginInstance($this->moduleName, $this->pluginName);
 
         $event->setData($view->fetch('anotherfunction.tpl'));
         $event->setNotified();

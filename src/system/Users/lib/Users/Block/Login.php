@@ -62,8 +62,8 @@ class Users_Block_Login extends Zikula_Block
             // be the same
             // check out if the contents are cached.
             // If this is the case, we do not need to make DB queries.
-            if ($this->renderer->is_cached('users_block_login.tpl')) {
-                $row['content'] = $this->renderer->fetch('users_block_login.tpl');
+            if ($this->view->is_cached('users_block_login.tpl')) {
+                $row['content'] = $this->view->fetch('users_block_login.tpl');
                 return BlockUtil::themeBlock($row);
             }
 
@@ -71,7 +71,7 @@ class Users_Block_Login extends Zikula_Block
                 $row['title'] = DataUtil::formatForDisplay('Login');
             }
 
-            $this->renderer->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
+            $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
                            ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
                            ->assign('authmodules', array(ModUtil::getInfoFromName('Users')))
                            ->assign('seclevel', System::getVar('seclevel'))
@@ -79,9 +79,9 @@ class Users_Block_Login extends Zikula_Block
                            ->assign('returnurl', System::getCurrentUri());
 
             // determine whether to show the rememberme option
-            $this->renderer->assign('rememberme', System::getVar('seclevel'));
+            $this->view->assign('rememberme', System::getVar('seclevel'));
 
-            $row['content'] = $this->renderer->fetch('users_block_login.tpl');
+            $row['content'] = $this->view->fetch('users_block_login.tpl');
 
             return BlockUtil::themeBlock($row);
         }

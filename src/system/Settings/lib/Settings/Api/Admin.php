@@ -42,11 +42,11 @@ class Settings_Api_Admin extends Zikula_Api
      */
     public function clearallcompiledcaches()
     {
-        Theme::getInstance()->clear_all_cache();
-        Theme::getInstance()->clear_compiled();
-        Theme::getInstance()->clear_cssjscombinecache();
-        Renderer::getInstance()->clear_all_cache();
-        Renderer::getInstance()->clear_compiled();
+        Zikula_Theme::getInstance()->clear_all_cache();
+        Zikula_Theme::getInstance()->clear_compiled();
+        Zikula_Theme::getInstance()->clear_cssjscombinecache();
+        Zikula_View::getInstance()->clear_all_cache();
+        Zikula_View::getInstance()->clear_compiled();
         return true;
     }
 }

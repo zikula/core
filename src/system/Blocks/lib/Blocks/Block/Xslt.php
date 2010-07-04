@@ -97,13 +97,13 @@ class Blocks_Block_Xslt extends Zikula_Block
         // Get our block vars
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign our block vars
-        $this->renderer->assign($vars);
+        $this->view->assign($vars);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_xslt_modify.tpl');
+        return $this->view->fetch('blocks_block_xslt_modify.tpl');
     }
 
     /**

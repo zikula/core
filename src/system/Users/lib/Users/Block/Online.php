@@ -62,12 +62,12 @@ class Users_Block_Online extends Zikula_Block
 
         // Here we use the user id as the cache id since the block shows user based
         // information; username and number of private messages
-        $this->renderer->cache_id = UserUtil::getVar('uid');
+        $this->view->cache_id = UserUtil::getVar('uid');
 
         // check out if the contents are cached.
         // If this is the case, we do not need to make DB queries.
-        if ($this->renderer->is_cached('users_block_online.tpl')) {
-            $row['content'] = $this->renderer->fetch('users_block_online.tpl');
+        if ($this->view->is_cached('users_block_online.tpl')) {
+            $row['content'] = $this->view->fetch('users_block_online.tpl');
             return BlockUtil::themeBlock($row);
         }
 
@@ -82,7 +82,7 @@ class Users_Block_Online extends Zikula_Block
         $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] = '0'";
         $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
 
-        $this->renderer->assign('registerallowed', $this->getVar('reg_allowreg'))
+        $this->view->assign('registerallowed', $this->getVar('reg_allowreg'))
                        ->assign('loggedin', UserUtil::isLoggedIn())
                        ->assign('userscount', $numusers )
                        ->assign('guestcount', $numguests )
@@ -91,15 +91,15 @@ class Users_Block_Online extends Zikula_Block
         $msgmodule = System::getVar('messagemodule', '');
         if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
             // check if message module is available and add the necessary info
-            $this->renderer->assign('msgmodule', $msgmodule);
+            $this->view->assign('msgmodule', $msgmodule);
             if (ModUtil::available($msgmodule)) {
-                $this->renderer->assign('messages', ModUtil::apiFunc($msgmodule, 'user', 'getmessagecount'));
+                $this->view->assign('messages', ModUtil::apiFunc($msgmodule, 'user', 'getmessagecount'));
             } else {
-                $this->renderer->assign('messages', array());
+                $this->view->assign('messages', array());
             }
         }
 
-        $row['content'] = $this->renderer->fetch('users_block_online.tpl');
+        $row['content'] = $this->view->fetch('users_block_online.tpl');
         return BlockUtil::themeBlock($row);
     }
 }

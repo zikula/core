@@ -43,7 +43,7 @@ class ExampleDoctrine_User extends Zikula_Controller
         }
 
         $users = Doctrine_Core::getTable('ExampleDoctrine_Model_User')->findAll();
-        return $this->renderer->assign('users', $users)
+        return $this->view->assign('users', $users)
                               ->fetch('exampledoctrine_user_view.tpl');
     }
 

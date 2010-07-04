@@ -46,10 +46,10 @@ class Errors_User extends Zikula_Controller
         // load the stylesheet
         PageUtil::addVar('stylesheet', 'system/Errors/style/style.css');
 
-        $this->renderer->setCaching(false);
-        
+        $this->view->setCaching(false);
+
         // assign the document info
-        $this->renderer->assign('reportlevel', System::getVar('reportlevel'))
+        $this->view->assign('reportlevel', System::getVar('reportlevel'))
                        ->assign('currenturi', System::getCurrentUri())
                        ->assign('localreferer', System::localReferer())
                        ->assign('sitename', System::getVar('sitename'))
@@ -57,13 +57,13 @@ class Errors_User extends Zikula_Controller
                        ->assign('funtext', System::getVar('funtext'));
 
         // assign the list of registered errors
-        $this->renderer->assign('messages', LogUtil::getErrorMessages());
+        $this->view->assign('messages', LogUtil::getErrorMessages());
 
         // return the template output
-        if ($this->renderer->template_exists($template = "errors_user_{$type}.tpl")) {
-            return $this->renderer->fetch($template);
+        if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
+            return $this->view->fetch($template);
         } else {
-            return $this->renderer->fetch('errors_user_main.tpl');
+            return $this->view->fetch('errors_user_main.tpl');
         }
     }
 
@@ -74,8 +74,8 @@ class Errors_User extends Zikula_Controller
      */
     public function system($args)
     {
-        $this->renderer->setCaching(false);
-        $this->renderer->assign($args);
-        return $this->renderer->fetch('errors_user_system.tpl');
+        $this->view->setCaching(false);
+        $this->view->assign($args);
+        return $this->view->fetch('errors_user_system.tpl');
     }
 }

@@ -113,13 +113,13 @@ class Blocks_Block_Finclude extends Zikula_Block
             $vars['typo'] = 0;
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign the vars
-        $this->renderer->assign($vars);
+        $this->view->assign($vars);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_finclude_modify.tpl');
+        return $this->view->fetch('blocks_block_finclude_modify.tpl');
     }
 
     /**

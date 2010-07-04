@@ -70,7 +70,7 @@ class Theme_Block_Render extends Zikula_Block
             return BlockUtil::themeBlock($row);
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // Get the additional parameters and assign them
         if (isset($vars['parameters']) && !empty($vars['parameters'])) {
@@ -78,12 +78,12 @@ class Theme_Block_Render extends Zikula_Block
             if (count($params) > 0 ) {
                 foreach($params as $param) {
                     $assign = explode('=', $param);
-                    $this->renderer->assign(trim($assign[0]), trim($assign[1]));
+                    $this->view->assign(trim($assign[0]), trim($assign[1]));
                 }
             }
         }
 
-        $row['content'] = $this->renderer->fetch($vars['template']);
+        $row['content'] = $this->view->fetch($vars['template']);
 
         return BlockUtil::themeBlock($row);
     }
@@ -129,10 +129,10 @@ class Theme_Block_Render extends Zikula_Block
         !isset($vars['template']) ? $vars['template'] = '' : null;
         !isset($vars['parameters']) ? $vars['parameters'] = '' : null;
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
-        $this->renderer->assign($vars);
+        $this->view->assign($vars);
 
-        return $this->renderer->fetch('theme_block_render.tpl');
+        return $this->view->fetch('theme_block_render.tpl');
     }
 }

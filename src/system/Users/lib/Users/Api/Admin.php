@@ -440,7 +440,7 @@ class Users_Api_Admin extends Zikula_Api
             $sitename  = System::getVar('sitename');
             $siteurl   = System::getBaseUrl();
 
-            $renderer = Renderer::getInstance('Users', false);
+            $renderer = Zikula_View::getInstance('Users', false);
             $renderer->assign('sitename', $sitename);
             $renderer->assign('siteurl', $siteurl);
 

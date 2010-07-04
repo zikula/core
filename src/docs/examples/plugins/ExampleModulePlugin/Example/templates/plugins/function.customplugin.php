@@ -16,7 +16,7 @@
  * Example plugin.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
  *
  * @return string Some text.
  */

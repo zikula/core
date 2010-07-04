@@ -57,15 +57,15 @@ class Blocks_Block_Menu extends Zikula_Block
         }
 
         // Set the cache id
-        $this->renderer->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
+        $this->view->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
 
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // check out if the contents are cached.
-        if ($this->renderer->is_cached('blocks_block_menu.tpl')) {
+        if ($this->view->is_cached('blocks_block_menu.tpl')) {
             // Populate block info and pass to theme
-            $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.tpl');
+            $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
             return BlockUtil::themeBlock($blockinfo);
         }
 
@@ -123,10 +123,10 @@ class Blocks_Block_Menu extends Zikula_Block
         }
 
         // assign the items
-        $this->renderer->assign('menuitems', $menuitems);
+        $this->view->assign('menuitems', $menuitems);
 
         // get the block content
-        $blockinfo['content'] = $this->renderer->fetch('blocks_block_menu.tpl');
+        $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
 
         // add the stylesheet to the header
         if (isset($vars['stylesheet'])) {
@@ -249,7 +249,7 @@ class Blocks_Block_Menu extends Zikula_Block
         }
 
         // assign the vars
-        $this->renderer->assign($vars);
+        $this->view->assign($vars);
 
         $menuitems = array();
         if (!empty($vars['content'])) {
@@ -259,10 +259,10 @@ class Blocks_Block_Menu extends Zikula_Block
                 $menuitems[] = $link;
             }
         }
-        $this->renderer->assign('menuitems', $menuitems);
+        $this->view->assign('menuitems', $menuitems);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_menu_modify.tpl');
+        return $this->view->fetch('blocks_block_menu_modify.tpl');
     }
 
     /**
@@ -325,7 +325,7 @@ class Blocks_Block_Menu extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->renderer->clear_cache('blocks_block_menu.tpl');
+        $this->view->clear_cache('blocks_block_menu.tpl');
 
         return($blockinfo);
     }

@@ -38,7 +38,7 @@ class Settings_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -49,9 +49,9 @@ class Settings_Admin extends Zikula_Controller
             $configvars[$key] = $configvar;
         }
 
-        $this->renderer->assign('settings', $configvars);
+        $this->view->assign('settings', $configvars);
 
-        return $this->renderer->fetch('settings_admin_modifyconfig.tpl');
+        return $this->view->fetch('settings_admin_modifyconfig.tpl');
     }
 
     /**
@@ -151,7 +151,7 @@ class Settings_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -162,9 +162,9 @@ class Settings_Admin extends Zikula_Controller
         // get the server timezone - we should not allow to change this
         $configvars['timezone_server'] = DateUtil::getTimezone();
         $configvars['timezone_server_abbr'] = DateUtil::getTimezoneAbbr();
-        $this->renderer->assign($configvars);
+        $this->view->assign($configvars);
 
-        return $this->renderer->fetch('settings_admin_multilingual.tpl');
+        return $this->view->fetch('settings_admin_multilingual.tpl');
     }
 
     /**
@@ -254,7 +254,7 @@ class Settings_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // get all config vars and assign them to the template
         $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
@@ -266,9 +266,9 @@ class Settings_Admin extends Zikula_Controller
         }
         // add the development flag
         $configvars['development'] = System::getVar('development');
-        $this->renderer->assign($configvars);
+        $this->view->assign($configvars);
 
-        return $this->renderer->fetch('settings_admin_errorhandling.tpl');
+        return $this->view->fetch('settings_admin_errorhandling.tpl');
     }
 
     /**

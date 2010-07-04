@@ -18,7 +18,7 @@
  *
  * @param array   $params  All attributes passed to this function from the template.
  * @param string  $content The content between the block tags.
- * @param Smarty  &$smarty Reference to the {@link Renderer} object.
+ * @param Smarty  &$smarty Reference to the {@link Zikula_View} object.
  * @param boolean &$repeat Controls block repetition. See {@link http://www.smarty.net/manual/en/plugins.block.functions.php Smarty - Block Functions}.
  *
  * @return void|string The content of the matching case.

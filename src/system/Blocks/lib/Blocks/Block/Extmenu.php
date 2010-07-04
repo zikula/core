@@ -56,7 +56,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
         }
 
         // Set the cache id
-        $this->renderer->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
+        $this->view->cache_id = $blockinfo['bid'].':'.UserUtil::getVar('uid');
 
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
@@ -71,9 +71,9 @@ class Blocks_Block_Extmenu extends Zikula_Block
         }
 
         // check out if the contents are cached.
-        if ($this->renderer->is_cached($vars['template'])) {
+        if ($this->view->is_cached($vars['template'])) {
             // Populate block info and pass to theme
-            $blockinfo['content'] = $this->renderer->fetch($vars['template']);
+            $blockinfo['content'] = $this->view->fetch($vars['template']);
             return BlockUtil::themeBlock($blockinfo);
         }
 
@@ -193,13 +193,13 @@ class Blocks_Block_Extmenu extends Zikula_Block
         $currenturi = urlencode(str_replace(System::getBaseUri() . '/', '', System::getCurrentUri()));
 
         // assign the items
-        $this->renderer->assign('menuitems', $menuitems)
+        $this->view->assign('menuitems', $menuitems)
                        ->assign('blockinfo', $blockinfo)
                        ->assign('currenturi', $currenturi)
                        ->assign('access_edit', Securityutil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_EDIT));
 
         // get the block content
-        $blockinfo['content'] = $this->renderer->fetch($vars['template']);
+        $blockinfo['content'] = $this->view->fetch($vars['template']);
 
         // add the stylesheet to the header
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Blocks', $vars['stylesheet']));
@@ -398,17 +398,17 @@ class Blocks_Block_Extmenu extends Zikula_Block
         }
         $vars['links'] = $menuitems;
 
-        $this->renderer->setCaching(false);
+        $this->view->setCaching(false);
 
         // assign the vars
-        $this->renderer->assign($vars)
+        $this->view->assign($vars)
                        ->assign('languages', $languages)
                        ->assign('userlanguage', $userlanguage)
                        ->assign('redirect', $redirect)
                        ->assign('blockinfo', $blockinfo);
 
         // return the output
-        return $this->renderer->fetch('blocks_block_extmenu_modify.tpl');
+        return $this->view->fetch('blocks_block_extmenu_modify.tpl');
     }
 
     /**
@@ -459,7 +459,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->renderer->clear_all_cache();
+        $this->view->clear_all_cache();
 
         return $blockinfo;
     }

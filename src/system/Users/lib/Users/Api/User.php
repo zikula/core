@@ -245,7 +245,7 @@ class Users_Api_User extends Zikula_Api
         $notificationType = $args['notificationType'];
         $templateArgs = $args['templateArgs'];
 
-        $renderer = Renderer::getInstance('Users', false);
+        $renderer = Zikula_View::getInstance('Users', false);
 
         $mailerArgs = array();
         $mailerArgs['toaddress'] = $toAddress;
@@ -346,7 +346,7 @@ class Users_Api_User extends Zikula_Api
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
         if ($user) {
-            $renderer = Renderer::getInstance('Users', false);
+            $renderer = Zikula_View::getInstance('Users', false);
             $renderer->assign('uname', $user['uname']);
             $renderer->assign('sitename', System::getVar('sitename'));
             $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
@@ -427,7 +427,7 @@ class Users_Api_User extends Zikula_Api
                     $urlArgs['code'] = urlencode($confirmationCode);
                     $urlArgs[$args['idfield']] = urlencode($args['id']);
 
-                    $renderer = Renderer::getInstance('Users', false);
+                    $renderer = Zikula_View::getInstance('Users', false);
                     $renderer->assign('uname', $user['uname']);
                     $renderer->assign('sitename', System::getVar('sitename'));
                     $renderer->assign('hostname', System::serverGetVar('REMOTE_ADDR'));
@@ -525,8 +525,8 @@ class Users_Api_User extends Zikula_Api
      */
     public function expiredSession()
     {
-        $pnRender = Renderer::getInstance('Users', false);
-        return $pnRender->fetch('users_userapi_expiredsession.tpl');
+        $view = Zikula_View::getInstance('Users', false);
+        return $view->fetch('users_userapi_expiredsession.tpl');
     }
 
     /**
@@ -624,7 +624,7 @@ class Users_Api_User extends Zikula_Api
         // send confirmation e-mail to user with the changing code
         $subject = $this->__f('Confirmation change of e-mail for %s', $uname);
 
-        $renderer = Renderer::getInstance('Users', false);
+        $renderer = Zikula_View::getInstance('Users', false);
         $renderer->assign('uname', $uname);
         $renderer->assign('email', UserUtil::getVar('email'));
         $renderer->assign('newemail', $args['newemail']);
