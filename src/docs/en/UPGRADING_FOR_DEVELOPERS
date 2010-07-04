@@ -297,5 +297,104 @@ WORKFLOW CHANGES
 
 JAVASCRIPT CHANGES
 ==================
+The old way of giving ajax errors was  lacking, it did not use JSON to return
+information to the calling JS. For this reason the AjaxUtil::error() function has
+been re-written. This re-write breaks backwards compatibility so all system/other
+modules which make use of ajax will have to be updated to the method. this sounds
+like a pain but it is really quite easy.
+
+This is the stub for AjaxUtil::error() php function:
+
+    function error($message = '', $other = array(), $createauthid = false, $displayalert = true, $code = '400 Bad data')
+
+The first parameter is $messageis the message that will be displayed in the alert popup to the user.
+
+  - $other is an associative array of other data you may wish to return in json format.
+
+  - $createauthid will update authid's if set to true. This should only be used in cases
+where the error is not being called because of a security/authid issue. If you have
+an error where the data is bad, probably good to update authid's so the user can try
+again. However, if the user failed an authid check in your modules ajax.php do not set
+this to true because it will issue them a new good authid, thus undermining the entire
+CRSF protection.
+
+  - $displayalert triggers an alert to be shown to the user via the JS function which matches up with this php function.
+  - $code is the code to send back in the header of the response, this should match html status codes, check here http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+
+One AjaxUtil::error() has been issued from the php side, the error will need to
+be caught on the javascript side. There is a new javascript library function for
+this purpose called Zikula.ajaxResponseError(transport, supresserror).
+
+This JavaScript function has two parameters, the first is the transport itself,
+do not dejson the transport before handing it to this function, it will do that
+itself. The second is a boolean option to supress error reporting (don't show an
+alert box): Normally showing of an alert box is handled by the php AjaxUtil::error()
+function as detailed above ($displayalert), but the 'supresserror' argument will override
+that. This allows the PHP function to specify if an alert should be shown in the javascript,
+but also allows the javascript to ignore what the php tells it to do. This javascript
+function returns the dejson'd data.
+
+Here is an example of its use taken from the admin panel.
+ajax.php file in admin module, function to edit category name
+
+    public function editCategory()
+    {
+        //get form values
+        $cid = trim(FormUtil::getPassedValue('cid'));
+        $cat = trim(FormUtil::getPassedValue('catname'));
+
+        //security checks
+        if (!SecurityUtil::checkPermission(...)) {
+            LogUtil::registerPermissionError(null,true);
+            return AjaxUtil::error();
+        }
+
+        if (!SecurityUtil::confirmAuthKey()) {
+            LogUtil::registerAuthidError();
+            return AjaxUtil::error();
+        }
+
+        //make sure cid and category name (cat) are both set
+        if (!isset($cid) || $cid == '' || !isset($cat) || $cat == '') {
+            LogUtil::registerArgsError();
+            return AjaxUtil::error(null, array(), true);
+        }
+
+        //... rest of function
+    }
+
+We see that first security checks are made, and an error is called if the checks fail, the authids are not updated because it is a security error. The there is a check to see if the cid and category name are set. If they are not, an error is called, but this time the third parameter to AjaxUtil::error() is set to true, meaning authid's are set.
+The json data sent back to the calling javascript will include:
+
+    "errormessage" => whatever LogUtil::registerArgsError() returned
+    "authid" => a new authid
+    "displayalert" => 1 (because this is the default value)
+
+Now let us look at the admin_admin_ajax.js file: this is the javascript file which
+issued the initial request and handles the response. The following is the callback
+function called when the JS receives its ajax response.
+
+    onComplete: function(transport, element) {
+        // response is not good
+        if(transport.status != 200 ) {
+            // call the ajaxResponseError function and hand it the transport
+            // an alert will be displayed because displayalert => '1' from the php
+            // the authid will be updated because "authid" exists in the json data from the php function
+            json = Zikula.ajaxResponseError(transport);
+
+            // we can now do anything else we want to do
+            // this update to the authid is only here because the admin module
+            // has a special way of dealing with autids... it has been leftonly
+            // to demonstrate that the json data is returned and can be
+            // used after the ajaxResponseError function.
+
+            document.getElementById('admintabsauthid').value = json.authid;
+            return;
+        }
+
+        var json = pndejsonize(transport.responseText);
+        // response is good... do whatever we want
+    }
+
 
 
