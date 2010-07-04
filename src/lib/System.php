@@ -33,7 +33,7 @@ ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
 
-include 'lib/api/debug.php';
+include 'lib/debug.php';
 
 /**
  * System class.
