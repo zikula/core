@@ -117,7 +117,7 @@ MODULES
   Remove any $dom = ZLanguage::getModuleDomain() calls except from version.php
 
 - For all Controllers and Blocks, remove any pnRender::getInstance() calls entirely.
-  $this->renderer is automatically available: $this->renderer->assign(), $this->renderer->fetch()
+  $this->view is automatically available: $this->view->assign(), $this->view->fetch()
   etc.
 
 - Rename pninit.php to Installer.php
@@ -214,8 +214,8 @@ MISCELLANEOUS
 =============
 - Theme module APIs theme_userapi_clear_compiled(), theme_userapi_clear_cache(),
   and pnrender_userapi_clear_compiled(), pnrender_userapi_clear_cache() are
-  deprecated.  Please use Renderer->clear_compiled(), Renderer->clear_cache() and
-  Theme->clear_compiled(), Theme->clear_cache().
+  deprecated.  Please use Zikula_View::clear_compiled(), Zikula_View::clear_cache() and
+  Theme::clear_compiled(), Theme::clear_cache().
 
 - Now you can add a requirement check for your blocks which will display a
   message if it's necessary into the admin panel. eg: the language block will be

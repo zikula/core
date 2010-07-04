@@ -24,12 +24,12 @@ define('_REQUIRED_MARKER',  '<span style="font-size:larger;color:blue"><strong>*
 define('_VALIDATION_MARKER', '<span style="font-size:larger;color:red"><strong>!</strong></span>');
 
 /**
- * Alias to the Renderer class for backward compatibility to Zikula 1.2.x.
+ * Alias to the Zikula_View class for backward compatibility to Zikula 1.2.x.
  *
  * @deprecated
- * @see Renderer::
+ * @see Zikula_View
  */
-class pnRender extends Renderer
+class pnRender extends Zikula_View
 {
     /**
      * Constructs a new instance of pnRender.
@@ -40,9 +40,14 @@ class pnRender extends Renderer
     public function __construct($module = '', $caching = null)
     {
         parent::__construct($module, $caching);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Renderer')), 'STRICT');
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_View')), 'STRICT');
     }
 }
+
+// temporary legacy remove before release
+class Renderer extends Zikula_View{}
+class Theme extends Zikula_Theme{}
+class PluginRender extends Zikula_View_Plugin{}
 
 /**
  * Alias to the DBObject class for backward compatibility to Zikula 1.2.x.
@@ -148,19 +153,19 @@ class PNCategoryRegistryArray extends Categories_DBObject_Registry
 
 
 /**
- * Alias to the Form_Render class for backward compatibility to Zikula 1.2.x.
+ * Alias to the Form_View class for backward compatibility to Zikula 1.2.x.
  *
  * @deprecated
- * @see Form_Render::
+ * @see Form_View::
  */
-class pnFormRender extends Form_Render
+class pnFormRender extends Form_View
 {
     /**
-     * Alias to Form_Render::State for backward compatibility to Zikula 1.2.x.
+     * Alias to Form_View::State for backward compatibility to Zikula 1.2.x.
      *
      * @internal
      * @deprecated
-     * @see Form_Render::State
+     * @see Form_View::State
      */
     public $pnFormState;
 
@@ -169,7 +174,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::Includes
+     * @see Form_View::Includes
      */
     public $pnFormIncludes;
 
@@ -178,7 +183,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::Plugins
+     * @see Form_View::Plugins
      */
     public $pnFormPlugins;
 
@@ -187,7 +192,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::BlockStack
+     * @see Form_View::BlockStack
      */
     public $pnFormBlockStack;
 
@@ -196,7 +201,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::Validators
+     * @see Form_View::Validators
      */
     public $pnFormValidators;
 
@@ -205,7 +210,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::ValidationChecked
+     * @see Form_View::ValidationChecked
      */
     public $pnFormValidationChecked;
 
@@ -214,7 +219,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::_IsValid
+     * @see Form_View::_IsValid
      */
     public $_pnFormIsValid;
 
@@ -223,7 +228,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::IdCount
+     * @see Form_View::IdCount
      */
     public $pnFormIdCount;
 
@@ -232,7 +237,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::EventHandler
+     * @see Form_View::EventHandler
      */
     public $pnFormEventHandler;
 
@@ -241,7 +246,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::ErrorMsgSet
+     * @see Form_View::ErrorMsgSet
      */
     public $pnFormErrorMsgSet;
 
@@ -250,7 +255,7 @@ class pnFormRender extends Form_Render
      *
      * @internal
      * @deprecated
-     * @see Form_Render::Redirected
+     * @see Form_View::Redirected
      */
     public $pnFormRedirected;
 
@@ -258,13 +263,13 @@ class pnFormRender extends Form_Render
      * Constructs a new instance of pnFormRender.
      *
      * @deprecated
-     * @see Form_Render::__construct()
+     * @see Form_View::__construct()
      */
     public function __construct($module)
     {
         parent::__construct($module);
 
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Form_Render')), 'STRICT');
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Form_View')), 'STRICT');
 
         $this->pnFormState = &$this->state;
         $this->pnFormIncludes = &$this->includes;
@@ -280,10 +285,10 @@ class pnFormRender extends Form_Render
     }
 
     /**
-     * Alias to Form_Render::execute for backward compatibility.
+     * Alias to Form_View::execute for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::execute
+     * @see Form_View::execute
      *
      * @param boolean       $template     Name of template file.
      * @param pnFormHandler $eventHandler Instance of object that inherits from pnFormHandler.
@@ -292,15 +297,15 @@ class pnFormRender extends Form_Render
      */
     public function pnFormExecute($template, &$eventHandler)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::execute')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::execute')), 'STRICT');
         return $this->execute($template, $eventHandler);
     }
 
     /**
-     * Alias to Form_Render::registerPlugin for backward compatibility.
+     * Alias to Form_View::registerPlugin for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::registerPlugin
+     * @see Form_View::registerPlugin
      *
      * @param string  $pluginName Full class name of the plugin to register.
      * @param array   &$params    Parameters passed from the Smarty plugin function.
@@ -310,15 +315,15 @@ class pnFormRender extends Form_Render
      */
     public function pnFormRegisterPlugin($pluginName, &$params, $isBlock = false)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::registerPlugin')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerPlugin')), 'STRICT');
         return $this->registerPlugin($pluginName, $params, $isBlock = false);
     }
 
     /**
-     * Alias to Form_Render::registerBlock for backward compatibility.
+     * Alias to Form_View::registerBlock for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::registerBlock
+     * @see Form_View::registerBlock
      *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the Smarty block function.
@@ -326,32 +331,32 @@ class pnFormRender extends Form_Render
      */
     public function pnFormRegisterBlock($pluginName, &$params, &$content)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::registerBlock')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerBlock')), 'STRICT');
         return $this->registerBlock($pluginName, $params, $content);
     }
 
     /**
-     * Alias to Form_Render::registerBlockBegin for backward compatibility.
+     * Alias to Form_View::registerBlockBegin for backward compatibility.
      *
      * @internal
      * @deprecated
-     * @see Form_Render::registerBlockBegin
+     * @see Form_View::registerBlockBegin
      *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the Smarty block function.
      */
     public function pnFormRegisterBlockBegin($pluginName, &$params)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::registerBlockBegin')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerBlockBegin')), 'STRICT');
         $this->registerBlockBegin($pluginName, $params);
     }
 
     /**
-     * Alias to Form_Render::registerBlockEnd for backward compatibility.
+     * Alias to Form_View::registerBlockEnd for backward compatibility.
      *
      * @internal
      * @deprecated
-     * @see Form_Render::registerBlockEnd
+     * @see Form_View::registerBlockEnd
      *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the Smarty block function.
@@ -361,16 +366,16 @@ class pnFormRender extends Form_Render
      */
     public function pnFormRegisterBlockEnd($pluginName, &$params, $content)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::registerBlockEnd')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerBlockEnd')), 'STRICT');
         return $this->registerBlockEnd($pluginName, $params, $content);
     }
 
     /**
-     * Alias to Form_Render::getPluginId for backward compatibility.
+     * Alias to Form_View::getPluginId for backward compatibility.
      *
      * @internal
      * @deprecated
-     * @see Form_Render::getPluginId
+     * @see Form_View::getPluginId
      *
      * @param array  &$params    Parameters passed from the Smarty block function.
      *
@@ -378,43 +383,43 @@ class pnFormRender extends Form_Render
      */
     public function pnFormGetPluginId(&$params)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getPluginId')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginId')), 'STRICT');
         return $this->getPluginId($params);
     }
 
     /**
-     * Alias to Form_Render::isPostBack for backward compatibility.
+     * Alias to Form_View::isPostBack for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::isPostBack
+     * @see Form_View::isPostBack
      *
      * @return bool True if $_POST['__pnFormSTATE'] is set; otherwise false.
      */
     public function pnFormIsPostBack()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::isPostBack')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::isPostBack')), 'STRICT');
         return $this->isPostBack();
     }
 
     /**
-     * Alias to Form_Render::formDie for backward compatibility.
+     * Alias to Form_View::formDie for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::formDie
+     * @see Form_View::formDie
      *
      * @param string $msg The message to display.
      */
     public function pnFormDie($msg)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::formDie')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::formDie')), 'STRICT');
         $this->formDie($msg);
     }
 
     /**
-     * Alias to Form_Render::translateForDisplay for backward compatibility.
+     * Alias to Form_View::translateForDisplay for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::translateForDisplay
+     * @see Form_View::translateForDisplay
      *
      * @param string  $txt      Text to translate for display.
      * @param boolean $doEncode True to formatForDisplay.
@@ -423,467 +428,467 @@ class pnFormRender extends Form_Render
      */
     public function pnFormTranslateForDisplay($txt, $doEncode = true)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::translateForDisplay')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::translateForDisplay')), 'STRICT');
         return $this->translateForDisplay($txt, $doEncode = true);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::addValidator
+     * @see Form_View::addValidator
      *
      * @param validator $validator Validator to add.
      */
     public function pnFormAddValidator(&$validator)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::addValidator')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::addValidator')), 'STRICT');
         $this->addValidator($validator);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::isValid
+     * @see Form_View::isValid
      *
      * @return boolean True if all validators are valid.
      */
     public function pnFormIsValid()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::isValid')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::isValid')), 'STRICT');
         return $this->isValid();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::validate
+     * @see Form_View::validate
      */
     public function pnFormValidate()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::validate')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::validate')), 'STRICT');
         $this->validate();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::clearValidation
+     * @see Form_View::clearValidation
      */
     public function pnFormClearValidation()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::clearValidation')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::clearValidation')), 'STRICT');
         $this->clearValidation();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::setState
+     * @see Form_View::setState
      */
     public function pnFormSetState($region, $varName, &$varValue)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::setState')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setState')), 'STRICT');
         $this->setState($region, $varName, $varValue);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::setErrorMsg
+     * @see Form_View::setErrorMsg
      */
     public function pnFormSetErrorMsg($msg)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::setErrorMsg')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setErrorMsg')), 'STRICT');
         return $this->setErrorMsg($msg);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getErrorMsg
+     * @see Form_View::getErrorMsg
      */
     public function pnFormGetErrorMsg()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getErrorMsg')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getErrorMsg')), 'STRICT');
         return $this->getErrorMsg();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::hasError
+     * @see Form_View::hasError
      */
     public function pnFormHasError()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::hasError')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::hasError')), 'STRICT');
         return $this->hasError();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::registerError
+     * @see Form_View::registerError
      */
     public function pnFormRegisterError($dummy)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::registerError')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::registerError')), 'STRICT');
         return $this->registerError($dummy);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::redirect
+     * @see Form_View::redirect
      */
     public function pnFormRedirect($url)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::redirect')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::redirect')), 'STRICT');
         $this->redirect($url);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getPostBackEventReference
+     * @see Form_View::getPostBackEventReference
      */
     public function pnFormGetPostBackEventReference($plugin, $commandName)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getPostBackEventReference')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPostBackEventReference')), 'STRICT');
         return $this->getPostBackEventReference($plugin, $commandName);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::raiseEvent
+     * @see Form_View::raiseEvent
      */
     public function pnFormRaiseEvent($eventHandlerName, $args)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::raiseEvent')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::raiseEvent')), 'STRICT');
         return $this->raiseEvent($eventHandlerName, $args);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::initializeIncludes
+     * @see Form_View::initializeIncludes
      */
     public function pnFormInitializeIncludes()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::initializeIncludes')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializeIncludes')), 'STRICT');
         $this->initializeIncludes();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getIncludesText
+     * @see Form_View::getIncludesText
      */
     public function pnFormGetIncludesText()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getIncludesText')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getIncludesText')), 'STRICT');
         return $this->getIncludesText();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getIncludesHTML
+     * @see Form_View::getIncludesHTML
      */
     public function pnFormGetIncludesHTML()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getIncludesHTML')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getIncludesHTML')), 'STRICT');
         return $this->getIncludesHTML();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::decodeIncludes
+     * @see Form_View::decodeIncludes
      */
     public function pnFormDecodeIncludes()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::decodeIncludes')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodeIncludes')), 'STRICT');
         return $this->decodeIncludes();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getAuthKeyHTML
+     * @see Form_View::getAuthKeyHTML
      */
     public function pnFormGetAuthKeyHTML()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getAuthKeyHTML')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getAuthKeyHTML')), 'STRICT');
         return $this->getAuthKeyHTML();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::initializeState
+     * @see Form_View::initializeState
      */
     public function pnFormInitializeState()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::initializeState')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializeState')), 'STRICT');
         $this->initializeState();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getStateText
+     * @see Form_View::getStateText
      */
     public function pnFormGetStateText()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getStateText')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getStateText')), 'STRICT');
         $this->getStateText();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getPluginState
+     * @see Form_View::getPluginState
      */
     public function pnFormGetPluginState()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getPluginState')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginState')), 'STRICT');
         return $this->getPluginState();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getPluginById
+     * @see Form_View::getPluginById
      */
     function &pnFormGetPluginById($id)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getPluginById')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginById')), 'STRICT');
         return $this->getPluginById($id);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getPluginState_rec
+     * @see Form_View::getPluginState_rec
      */
     public function pnFormGetPluginState_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getPluginState_rec')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getPluginState_rec')), 'STRICT');
         return $this->getPluginState_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getStateHTML
+     * @see Form_View::getStateHTML
      */
     public function pnFormGetStateHTML()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getStateHTML')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getStateHTML')), 'STRICT');
         return $this->getStateHTML();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::decodeState
+     * @see Form_View::decodeState
      */
     public function pnFormDecodeState()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::decodeState')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodeState')), 'STRICT');
         $this->decodeState();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::decodeEventHandler
+     * @see Form_View::decodeEventHandler
      */
     public function pnFormDecodeEventHandler()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::decodeEventHandler')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodeEventHandler')), 'STRICT');
         $this->decodeEventHandler();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::initializePlugins
+     * @see Form_View::initializePlugins
      */
     public function pnFormInitializePlugins()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::initializePlugins')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializePlugins')), 'STRICT');
         return $this->initializePlugins();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::initializePlugins_rec
+     * @see Form_View::initializePlugins_rec
      */
     public function pnFormInitializePlugins_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::initializePlugins_rec')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::initializePlugins_rec')), 'STRICT');
         $this->initializePlugins_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::decodePlugins
+     * @see Form_View::decodePlugins
      */
     public function pnFormDecodePlugins()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::decodePlugins')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePlugins')), 'STRICT');
         return $this->decodePlugins();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::decodePlugins_rec
+     * @see Form_View::decodePlugins_rec
      */
     public function pnFormDecodePlugins_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::decodePlugins_rec')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePlugins_rec')), 'STRICT');
         $this->decodePlugins_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::decodePostBackEvent
+     * @see Form_View::decodePostBackEvent
      */
     public function pnFormDecodePostBackEvent()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::decodePostBackEvent')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePostBackEvent')), 'STRICT');
         $this->decodePostBackEvent();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::decodePostBackEvent_rec
+     * @see Form_View::decodePostBackEvent_rec
      */
     public function pnFormDecodePostBackEvent_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::decodePostBackEvent_rec')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::decodePostBackEvent_rec')), 'STRICT');
         return $this->decodePostBackEvent_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::postRender
+     * @see Form_View::postRender
      */
     public function pnFormPostRender()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::postRender')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::postRender')), 'STRICT');
         return $this->postRender();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::postRender_rec
+     * @see Form_View::postRender_rec
      */
     public function pnFormPostRender_rec($plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::postRender_rec')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::postRender_rec')), 'STRICT');
         $this->postRender_rec($plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getValues
+     * @see Form_View::getValues
      */
     public function pnFormGetValues()
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getValues')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getValues')), 'STRICT');
         return $this->getValues();
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::getValues_rec
+     * @see Form_View::getValues_rec
      */
     public function pnFormGetValues_rec($plugins, &$result)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::getValues_rec')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::getValues_rec')), 'STRICT');
         $this->getValues_rec($plugins, $result);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::setValues
+     * @see Form_View::setValues
      */
     public function pnFormSetValues(&$values, $group = null)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::setValues')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setValues')), 'STRICT');
         return $this->setValues($values, $group);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::setValues2
+     * @see Form_View::setValues2
      */
     public function pnFormSetValues2(&$values, $group = null, $plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::setValues2')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setValues2')), 'STRICT');
         return $this->setValues2($values, $group, $plugins);
     }
 
     /**
-     * Alias to equivalent function in Form_Render for backward compatibility.
+     * Alias to equivalent function in Form_View for backward compatibility.
      *
      * @deprecated
-     * @see Form_Render::setValues_rec
+     * @see Form_View::setValues_rec
      */
     public function pnFormSetValues_rec(&$values, $group, $plugins)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_Render::setValues_rec')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Form_View::setValues_rec')), 'STRICT');
         $this->setValues_rec($values, $group, $plugins);
     }
 }

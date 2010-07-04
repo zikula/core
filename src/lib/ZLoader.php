@@ -164,9 +164,7 @@ class ZLoader
             'ZMO' => 'i18n',
             'ZWorkflow' => 'workflow',
             'ZWorkflowParser' => 'workflow',
-            'Renderer' => 'render',
-            'Theme' => 'render',
-            'PluginRender' => 'render',
+            'ZLanguageBrowser' => 'i18n',
             'DBObject' => 'dbobject',
             'DBObjectArray' => 'dbobject',
             'DBUtil' => 'util',
@@ -201,7 +199,6 @@ class ZLoader
             'WorkflowUtil' => 'util',
             'SystemListenersUtil' => 'util',
             'Loader' => 'legacy',
-            'ZLanguageBrowser' => 'i18n',
             );
     }
 }

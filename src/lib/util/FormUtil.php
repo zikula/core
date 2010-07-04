@@ -358,7 +358,7 @@ class FormUtil
      */
     public static function newForm($name)
     {
-        return new Form_Render($name);
+        return new Form_View($name);
     }
 }
 

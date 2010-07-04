@@ -125,11 +125,11 @@ and store templates there.  You will need to specify the location directly:
 
 e.g.
     // module plugin
-    $view = Renderer::getModulePluginInstance($this->moduleName, $this->pluginName);
+    $view = Zikula_View_Plugin::getModulePluginInstance($this->moduleName, $this->pluginName);
     $view->fetch('myview.tpl');
 
     // system plugin
-    $view = Renderer::getSystemPluginInstance($this->pluginName);
+    $view = Zikula_View_Plugin::getSystemPluginInstance($this->pluginName);
     $view->fetch('myview.tpl');
 
     Please note this will set the correct domain, in templates you
@@ -174,7 +174,7 @@ The method that will be is 'configure()':
     {
         public function configure()
         {
-            return $this->renderer->fetch('configure.tpl');
+            return $this->view->fetch('configure.tpl');
         }
     }
 

@@ -19,9 +19,9 @@
 abstract class Zikula_Controller extends Zikula_Base
 {
     /**
-     * Instance of Renderer.
+     * Instance of Zikula_View.
      *
-     * @var Renderer
+     * @var Zikula_View
      */
     protected $renderer;
 
@@ -33,7 +33,7 @@ abstract class Zikula_Controller extends Zikula_Base
     protected function _postSetup()
     {
         // Create renderer object
-        $this->setRenderer();
+        $this->setView();
         $this->renderer->assign('controller', $this);
     }
 
@@ -44,10 +44,10 @@ abstract class Zikula_Controller extends Zikula_Base
      *
      * @return Zikula_Controller
      */
-    protected function setRenderer(Renderer $renderer = null)
+    protected function setView(Zikula_View $renderer = null)
     {
         if (is_null($renderer)) {
-            $renderer = Renderer::getInstance($this->getName());
+            $renderer = Zikula_View::getInstance($this->getName());
         }
 
         $this->renderer = $renderer;
@@ -55,11 +55,11 @@ abstract class Zikula_Controller extends Zikula_Base
     }
 
     /**
-     * Get Renderer object for this controller.
+     * Get Zikula_View object for this controller.
      *
-     * @return Renderer
+     * @return Zikula_View
      */
-    public function getRenderer()
+    public function getView()
     {
         return $this->renderer;
     }

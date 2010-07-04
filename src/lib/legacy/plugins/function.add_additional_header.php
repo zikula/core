@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Render
+ * @package Zikula_View
  * @subpackage Template_Plugins
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -30,7 +30,7 @@
  * <samp>{add_additional_header header=$title}</samp>.
  *
  * @param array  $args    All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Renderer} object.
+ * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
  *
  * @return void (The value is added to the <head> section of the document).
  */

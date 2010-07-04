@@ -35,7 +35,7 @@ Theme list now auto regenerates on view.
 Moved includes/ -> lib/.
 Moved classes/ -> vendor/.
 Moved *Util.php -> util/.
-Moved all template plugins to lib/render/plugins.
+Moved all template plugins to lib/view/plugins.
 Added class autoloading.
 Removed MD5 as a valid hash method for user passwords.
 Improved installer requirements.
@@ -66,10 +66,10 @@ Store the hash_method of users who are pending registrations.
 Users can be deleted from edit screen.
 Update hooks is called on user activation.
 Fixed problem in function selectExpandedObjectArray from DBUtil object when categoryFilter argument was null.
-Clear the Renderer cached/compiled files and Themes cached/compiled/cssjs combination files after a module upgrade.
+Clear the Zikula_View cached/compiled files and Themes cached/compiled/cssjs combination files after a module upgrade.
 Removal of unnecessary security check and redirects on some _admin_main functions.
 Functions theme_userapi_clear_compiled(), theme_userapi_clear_cache(), pnrender_userapi_clear_compiled(), pnrender_userapi_clear_cache() are deprecated.
-Added new methods: Renderer->clear_compiled(), Renderer->clear_cache() and Theme->clear_compiled(), Theme->clear_cache().
+Added new methods: Zikula_View->clear_compiled(), Zikula_View->clear_cache() and Theme->clear_compiled(), Theme->clear_cache().
 Fix a php error that occur if there is a parameter with the scriptaculous.js file for combination of js/css.
 Changed permission check for viewtempuserinfo in Users from ACCESS_ADD to ACCESS_EDIT to match viewapplications.
 Removed voodoodolly theme.
@@ -142,7 +142,7 @@ Added const render plugin and modifier to allow class constants in templates.
 Added Zikula_ServiceManager for systemwide dependency injection.
 Added system-wide and module specific event based plugin system.
 Added front controller exception handling.
-Removed Renderer singleton pattern, this is now handled via Zikula_ServiceManager, one instance per module or plugin.
+Removed Zikula_View singleton pattern, this is now handled via Zikula_ServiceManager, one instance per module or plugin.
 Removed need to specify domain= in template {gt} calls.
 Improved StringUtil::highlightWords() (patch by Gabriele Pohl).
 When short URLs are enabled, 3-letter or 2-letters can't be used anymore (issue #1800).  This also fixes issues with the RSS theme.

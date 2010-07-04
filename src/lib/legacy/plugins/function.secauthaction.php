@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Render
+ * @package Zikula_View
  * @subpackage Template_Plugins
  *
  * Please see the NOTICE file distributed with this source code for further
@@ -19,7 +19,7 @@
  *
  * true/false will be returned.
  *
- * This file is a plugin for Renderer, the Zikula implementation of Smarty
+ * This file is a plugin for Zikula_View, the Zikula implementation of Smarty
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object
  * @return       boolean     authorized?

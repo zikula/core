@@ -79,13 +79,13 @@ class Zikula_Plugin_Controller extends Zikula_Controller
      *
      * @return Zikula_Plugin_Controller
      */
-    protected function setRenderer(PluginRender $renderer = null)
+    protected function setRenderer(Zikula_View_Plugin $renderer = null)
     {
         if (is_null($renderer)) {
             if ($this->plugin->getPluginType() == Zikula_Plugin::TYPE_MODULE) {
-                $renderer = PluginRender::getModulePluginInstance($this->moduleName, $this->pluginName);
+                $renderer = Zikula_View_Plugin::getModulePluginInstance($this->moduleName, $this->pluginName);
             } else {
-                $renderer = PluginRender::getSystemPluginInstance($this->pluginName);
+                $renderer = Zikula_View_Plugin::getSystemPluginInstance($this->pluginName);
             }
         }
 
