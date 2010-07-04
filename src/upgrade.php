@@ -238,48 +238,22 @@ function _upg_upgrademodules($username, $password)
 
     echo '<h2>' . __('Starting upgrade') . '</h2>' . "\n";
     echo '<ul id="upgradelist" class="check">' . "\n";
-    $upgradeCount = 0;
-    // regenerate modules list
-    $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-    ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
-    // get a list of modules needing upgrading
-    $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_SYSTEM));
-
-    // Crazy sort to make sure the User's module is upgraded first
-    $users_flag = false;
-    $newmodsArray = array();
-    foreach ($newmods as $mod) {
-        if ($mod['name'] == 'Users') {
-            $usersModule[] = $mod;
-            $users_flag = true;
-        } else {
-            $newmodsArray[] = $mod;
-        }
-    }
-    if ($users_flag) {
-        $newmods = $usersModule;
-        foreach ($newmodsArray as $mod) {
-            $newmods[] = $mod;
-        }
-    }
-
+    
     // reset for User module
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] == false;
 
-    $newmods = array_merge($newmods, ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
-    if (is_array($newmods) && !empty($newmods)) {
-        foreach ($newmods as $newmod) {
-            ZLanguage::bindModuleDomain($newmod['name']);
-            if (ModUtil::apiFunc('Modules', 'admin', 'upgrade', array('id' => $newmod['id']))) {
-                echo '<li class="passed">' . DataUtil::formatForDisplay($newmod['name']) . ' ' . __('upgraded') . '</li>' . "\n";
-                $upgradeCount++;
+    $results = ModUtil::apiFunc('Modules', 'admin', 'upgradeall');
+    if ($results) {
+        foreach ($results as $modname => $result) {
+            if ($result) {
+                echo '<li class="passed">' . DataUtil::formatForDisplay($modname) . ' ' . __('upgraded') . '</li>' . "\n";
             } else {
-                echo '<li class="failed">' . DataUtil::formatForDisplay($newmod['name']) . ' ' . __('not upgraded') . '</li>' . "\n";
+                echo '<li class="failed">' . DataUtil::formatForDisplay($modname) . ' ' . __('not upgraded') . '</li>' . "\n";
             }
         }
     }
     echo '</ul>' . "\n";
-    if ($upgradeCount == 0) {
+    if (!$results) {
         echo '<ul class="check"><li class="passed">' . __('No modules required upgrading') . '</li></ul>';
     }
 
