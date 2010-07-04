@@ -84,7 +84,7 @@ function install()
     $smarty->plugins_dir = array(
                     'plugins',
                     'install/templates/plugins',
-                    'lib/render/plugins');
+                    'lib/view/plugins');
 
     // load the installer language files
     if (empty($lang)) {
