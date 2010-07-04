@@ -442,7 +442,7 @@ class Modules_Api_Admin extends Zikula_Api
 
                 $className = ucwords($modinfo['name']) . '_Installer';
                 $reflectionInstaller = new ReflectionClass($className);
-                if (!$reflectionInstaller->isSubclassOf(Zikula_Installer)) {
+                if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
                 }
                 $installer = $reflectionInstaller->newInstanceArgs(array($sm));
@@ -450,7 +450,7 @@ class Modules_Api_Admin extends Zikula_Api
                 $interactiveController = null;
                 if (class_exists($interactiveClass)) {
                     $reflectionInteractive = new ReflectionClass($interactiveClass);
-                    if (!$reflectionInteractive->isSubclassOf(Zikula_InteractiveInstaller)) {
+                    if (!$reflectionInteractive->isSubclassOf('Zikula_InteractiveInstaller')) {
                         LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
                     }
                     $interactiveController = $reflectionInteractive->newInstanceArgs(array($sm));
@@ -956,7 +956,7 @@ class Modules_Api_Admin extends Zikula_Api
 
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf(Zikula_Installer)) {
+            if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
             }
             $installer = $reflectionInstaller->newInstanceArgs(array($sm));
@@ -964,7 +964,7 @@ class Modules_Api_Admin extends Zikula_Api
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
                 $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf(Zikula_InteractiveInstaller)) {
+                if (!$reflectionInteractive->isSubclassOf('Zikula_InteractiveInstaller')) {
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
                 }
                 $interactiveController = $reflectionInteractive->newInstanceArgs(array($sm));
@@ -1069,7 +1069,7 @@ class Modules_Api_Admin extends Zikula_Api
 
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf(Zikula_Installer)) {
+            if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
             }
             $installer = $reflectionInstaller->newInstanceArgs(array($sm));
@@ -1077,7 +1077,7 @@ class Modules_Api_Admin extends Zikula_Api
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
                 $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf(Zikula_InteractiveInstaller)) {
+                if (!$reflectionInteractive->isSubclassOf('Zikula_InteractiveInstaller')) {
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_Installer", $className));
                 }
                 $interactiveController = $reflectionInteractive->newInstanceArgs(array($sm));
@@ -1162,7 +1162,7 @@ class Modules_Api_Admin extends Zikula_Api
         if (ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED))) {
             $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_SYSTEM));
             // Crazy sort to make sure the User's module is upgraded first
-            $key = array_search('Users');
+            $key = array_search('Users', $newmods);
             if (is_integer($key)) {
                 $usersModule[] = $newmods[$key];
                 unset($newmods[$key]);
@@ -1173,7 +1173,7 @@ class Modules_Api_Admin extends Zikula_Api
             }
 
             $newModArray = array_merge($newModArray, ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
-            
+
             if (is_array($newModArray) && $newModArray) {
                 foreach ($newModArray as $mod) {
                     ZLanguage::bindModuleDomain($mod['name']);
