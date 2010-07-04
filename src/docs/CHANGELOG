@@ -166,3 +166,4 @@ Provide 'pageutil.addvar_filter' event to override anything added by PageUtil::a
 New default pager style (Issue #2264).
 Streamlined user frontend of Themes module (Issue #2279).
 Added Upgrade All options, and Module API to upgrade all modules with one click.  This will work for all non-complicated upgrades of Core also.
+

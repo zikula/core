@@ -1147,8 +1147,14 @@ class Modules_Api_Admin extends Zikula_Api
         return true;
     }
 
+    /**
+     * Upgrade all modules.
+     *
+     * @return
+     */
     public function upgradeall()
     {
+        $upgradeResults = array();
         // regenerate modules list
         $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
         ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
@@ -1167,11 +1173,11 @@ class Modules_Api_Admin extends Zikula_Api
             }
 
             $newModArray = array_merge($newModArray, ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
-
+            
             if (is_array($newModArray) && $newModArray) {
                 foreach ($newModArray as $mod) {
                     ZLanguage::bindModuleDomain($mod['name']);
-                    ModUtil::apiFunc('Modules', 'admin', 'upgrade', array('id' => $mod['id']));
+                    $upgradeResults[$mod['name']] = ModUtil::apiFunc('Modules', 'admin', 'upgrade', array('id' => $mod['id']));
                 }
             }
 
@@ -1180,7 +1186,7 @@ class Modules_Api_Admin extends Zikula_Api
             // regenerate the themes list
             ModUtil::apiFunc('Theme', 'admin', 'regenerate');
         }
-        return true;
+        return $upgradeResults;
     }
 
     /**

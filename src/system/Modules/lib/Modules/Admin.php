@@ -685,10 +685,10 @@ class Modules_Admin extends Zikula_Controller
             }
 
             // Clear the Renderer cached/compiled files and Themes cached/compiled/cssjs combination files
-            $Theme = Theme::getInstance('Theme');
-            $Theme->clear_compiled();
-            $Theme->clear_all_cache();
-            $Theme->clear_cssjscombinecache();
+            $theme = Theme::getInstance('Theme');
+            $theme->clear_compiled();
+            $theme->clear_all_cache();
+            $theme->clear_cssjscombinecache();
 
             $this->renderer->clear_compiled();
             $this->renderer->clear_all_cache();
