@@ -24,8 +24,8 @@ new {browserhack} plugin.
 
 INSTRUCTIONS
 1. Drop all files to zikula root folder.
-2. chmod 755 replace_legacy.sh
+2. chmod 755 replace.sh
 
 Example usage from inside Zikula root.
-./replace_legacy modules/Foo
-./replace_legacy themes/Foo
+./replace.sh modules/Foo
+./replace.sh themes/Foo
