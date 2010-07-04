@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: UnitOfWork.php 7643 2010-06-08 15:02:52Z jwage $
+ *  $Id: UnitOfWork.php 7676 2010-06-09 18:31:14Z jwage $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -33,7 +33,7 @@
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.org
  * @since       1.0
- * @version     $Revision: 7643 $
+ * @version     $Revision: 7676 $
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @author      Roman Borschel <roman@code-factory.org>
  */
@@ -94,6 +94,8 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
                         break;
                 }
 
+                $aliasesUnlinkInDb = array();
+
                 if ($isValid) {
                     // NOTE: what about referential integrity issues?
                     foreach ($record->getPendingDeletes() as $pendingDelete) {
@@ -103,8 +105,10 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
                     foreach ($record->getPendingUnlinks() as $alias => $ids) {
                         if ($ids === false) {
                             $record->unlinkInDb($alias, array());
+                            $aliasesUnlinkInDb[] = $alias;
                         } else if ($ids) {
                             $record->unlinkInDb($alias, array_keys($ids));
+                            $aliasesUnlinkInDb[] = $alias;
                         }
                     }
                     $record->resetPendingUnlinks();
@@ -128,7 +132,8 @@ class Doctrine_Connection_UnitOfWork extends Doctrine_Connection_Module
 
                             // check that the related object is not an instance of Doctrine_Null
                             if ($obj && ! ($obj instanceof Doctrine_Null)) {
-                                $obj->save($conn);
+                                $processDiff = !in_array($alias, $aliasesUnlinkInDb);
+                                $obj->save($conn, $processDiff);
                             }
                         }
                     }
