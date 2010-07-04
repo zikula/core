@@ -68,7 +68,7 @@ class SecurityCenter_Installer extends Zikula_Installer
         }
 
         // HTML Purifier default settings
-        $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
+        $purifierDefaultConfig = SecurityCenter_Util::getpurifierconfig(array('forcedefault' => true));
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage

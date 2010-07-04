@@ -26,5 +26,6 @@ ZLoader::addAutoloader('HTMLPurifier', realpath(dirname(__FILE__) . '/lib/vendor
 ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/lib/vendor'));
 
 // register event handlers
-EventUtil::registerEventHandler('SecurityCenter_EventHandler_Filter');
+EventUtil::attachCustomHandlers('system/SecurityCenter/lib/SecurityCenter/EventHandler');
+//EventUtil::registerEventHandler('SecurityCenter_EventHandler_Filter');
 
