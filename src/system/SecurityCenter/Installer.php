@@ -22,16 +22,6 @@ class SecurityCenter_Installer extends Zikula_Installer
      */
     public function install()
     {
-        // create table
-        if (!DBUtil::createTable('sc_anticracker')) {
-            return false;
-        }
-
-        // create table
-        if (!DBUtil::createTable('sc_logevent')) {
-            return false;
-        }
-
         // create ids intrusions table
         if (!DBUtil::createTable('sc_intrusion')) {
             return false;
@@ -41,11 +31,6 @@ class SecurityCenter_Installer extends Zikula_Installer
         $this->setVar('itemsperpage', 10);
 
         // We use config vars for the rest of the configuration as config vars
-        // are available earlier in the PN initialisation process
-        System::setVar('enableanticracker', 1);
-        System::setVar('emailhackattempt', 1);
-        System::setVar('loghackattempttodb', 1);
-        System::setVar('onlysendsummarybyemail', 1);
         System::setVar('updatecheck', 1);
         System::setVar('updatefrequency', 7);
         System::setVar('updatelastchecked', 0);
@@ -88,6 +73,7 @@ class SecurityCenter_Installer extends Zikula_Installer
 
         // create vars for phpids usage
         System::setVar('useids', 0);
+        System::setVar('idsmail', 0);
         System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
         System::setVar('idsfilter', 'xml');               // filter type
         System::setVar('idsimpactthresholdone', 1);       // db logging
@@ -245,22 +231,11 @@ class SecurityCenter_Installer extends Zikula_Installer
     /**
      * upgrade the SecurityCenter module from an old version
      *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
      * @param        string   $oldVersion   version number string to upgrade from
      * @return       mixed    true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
-        if (!DBUtil::changeTable('sc_anticracker')) {
-            return false;
-        }
-
-        if (!DBUtil::changeTable('sc_logevent')) {
-            return false;
-        }
-
         switch ($oldversion)
         {
             case '1.3':

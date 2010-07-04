@@ -23,46 +23,6 @@ function securitycenter_tables()
     // Initialise table array
     $dbtable = array();
 
-    // Set the table name
-    $dbtable['sc_anticracker'] = DBUtil::getLimitedTablename('sc_anticracker');
-
-    // Set the column names.  Note that the array has been formatted
-    // on-screen to be very easy to read by a user.
-    $dbtable['sc_anticracker_column'] = array('hid'       => 'pn_hid',
-                                           'hacktime'     => 'pn_hacktime',
-                                           'hackfile'     => 'pn_hackfile',
-                                           'hackline'     => 'pn_hackline',
-                                           'hacktype'     => 'pn_hacktype',
-                                           'hackinfo'     => 'pn_hackinfo',
-                                           'userid'       => 'pn_userid',
-                                           'browserinfo'  => 'pn_browserinfo',
-                                           'requestarray' => 'pn_requestarray',
-                                           'getarray'     => 'pn_gettarray',
-                                           'postarray'    => 'pn_postarray',
-                                           'serverarray'  => 'pn_serverarray',
-                                           'envarray'     => 'pn_envarray',
-                                           'cookiearray'  => 'pn_cookiearray',
-                                           'filesarray'   => 'pn_filesarray',
-                                           'sessionarray' => 'pn_sessionarray');
-
-    $dbtable['sc_anticracker_column_def'] = array('hid'       => 'I PRIMARY AUTO',
-                                               'hacktime'     => 'C(20) DEFAULT NULL',
-                                               'hackfile'     => "C(255) DEFAULT ''",
-                                               'hackline'     => 'I DEFAULT NULL',
-                                               'hacktype'     => "C(255) DEFAULT ''",
-                                               'hackinfo'     => "XL",
-                                               'userid'       => 'I DEFAULT NULL',
-                                               'browserinfo'  => 'XL',
-                                               'requestarray' => 'XL',
-                                               'getarray'     => 'XL',
-                                               'postarray'    => 'XL',
-                                               'serverarray'  => 'XL',
-                                               'envarray'     => 'XL',
-                                               'cookiearray'  => 'XL',
-                                               'filesarray'   => 'XL',
-                                               'sessionarray' => 'XL');
-
-
     // Log Event Table Name
     $dbtable['sc_logevent'] = DBUtil::getLimitedTablename('sc_log_event');
     $dbtable['sc_logevent_column'] = array('id'             => 'lge_id',

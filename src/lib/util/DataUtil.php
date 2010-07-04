@@ -241,7 +241,7 @@ class DataUtil
         // this does not break HTML tags that might be around either
         // the username or the domain name
         static $search = array(
-            '/([^\024])@([^\022])/se');
+        '/([^\024])@([^\022])/se');
 
         static $replace = array('"&#" .
                                 sprintf("%03d", ord("\\1")) .
@@ -250,6 +250,10 @@ class DataUtil
 
         static $allowedtags = null;
         static $outputfilter;
+        static $event;
+        if (!$event) {
+            $event = new Zikula_Event('system.outputfilter');
+        }
 
         if (!isset($allowedtags)) {
             $allowedHTML = array();
@@ -268,7 +272,6 @@ class DataUtil
                                 $allowedHTML[] = "/?$k\s*/?";
                                 break;
                             case 2:
-                                // intelligent regex to deal with > in parameters, bug #1782 credits to jln
                                 $allowedHTML[] = "/?\s*$k" . "(\s+[\w:]+\s*=\s*(\"[^\"]*\"|'[^']*'))*" . '\s*/?';
                                 break;
                         }
@@ -277,8 +280,7 @@ class DataUtil
             }
 
             if (count($allowedHTML) > 0) {
-                // 2nd part of bugfix #1782
-                $allowedtags = '~<\s*(' . join('|', $allowedHTML) . ')\s*>~is';
+                $allowedtags = '~<\s*(' . implode('|', $allowedHTML) . ')\s*>~is';
             } else {
                 $allowedtags = '';
             }
@@ -299,7 +301,8 @@ class DataUtil
         } else {
             // Run additional filters
             if ($outputfilter > 0) {
-                $var = ModUtil::apiFunc('SecurityCenter', 'user', 'secureoutput', array('var' => $var, 'filter' => $outputfilter));
+                $event->setData($var)->setArg('filter', $outputfilter);
+                $var = EventUtil::notify($event)->getData();
             }
 
             // Preparse var to mark the HTML that we want
@@ -474,7 +477,7 @@ class DataUtil
 
         // replace all chars $permasearch with the one in $permareplace
         foreach ($permasearch as $key => $value) {
-             $var = mb_ereg_replace("[$value]", $permareplace[$key], $var);
+            $var = mb_ereg_replace("[$value]", $permareplace[$key], $var);
         }
 
         // final clean

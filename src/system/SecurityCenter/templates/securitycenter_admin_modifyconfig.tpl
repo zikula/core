@@ -9,29 +9,6 @@
         <div>
             <input type="hidden" name="authid" value="{insert name="generateauthkey" module="SecurityCenter"}" />
             <fieldset>
-                <legend>{gt text="General settings"}</legend>
-                <div class="z-formrow">
-                    <label for="securitycenter_enableanticracker">{gt text="Enable hacker protection"}</label>
-                    <input id="securitycenter_enableanticracker" name="enableanticracker" type="checkbox" value="1"{if $enableanticracker eq 1} checked="checked"{/if} />
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_itemsperpage">{gt text="Items per page"}</label>
-                    <input id="securitycenter_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|safetext}" />
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_emailhackattempt">{gt text="Notify about hacking attempts via e-mail"}</label>
-                    <input id="securitycenter_emailhackattempt" name="emailhackattempt" type="checkbox" value="1"{if $emailhackattempt eq 1} checked="checked"{/if} />
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_loghackattempttodb">{gt text="Log hacking attempts to database"}</label>
-                    <input id="securitycenter_loghackattempttodb" name="loghackattempttodb" type="checkbox" value="1"{if $loghackattempttodb eq 1} checked="checked"{/if} />
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_onlysendsummarybyemail">{gt text="When logging to database, only send a summary e-mail message"}</label>
-                    <input id="securitycenter_onlysendsummarybyemail" name="onlysendsummarybyemail" type="checkbox" value="1"{if $onlysendsummarybyemail eq 1} checked="checked"{/if} />
-                </div>
-            </fieldset>
-            <fieldset>
                 <legend>{gt text="Automatic update settings"}</legend>
                 <div class="z-formrow">
                     <label for="securitycenter_updatecheck">{gt text="Check for updates"}</label>
@@ -188,37 +165,6 @@
                     <p id="securitycenter_sessionnamewarning_container" class="z-formnote z-warningmsg">{gt text="Notice: If you change the 'Session cookie name' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again."}</p>
                 </div>
             </fieldset>
-            <fieldset>
-                <legend>{gt text="HTTP variable cleansing"}</legend>
-                <div class="z-formrow">
-                    <label for="securitycenter_filtergetvars">{gt text='Sanitise \'$_GET\' variables'}</label>
-
-                    <div id="securitycenter_filtergetvars">
-                        <input id="filtergetvars1" type="radio" name="filtergetvars" value="1"{if $filtergetvars eq 1} checked="checked"{/if} />
-                        <label for="filtergetvars1">{gt text="Yes"}</label>
-                        <input id="filtergetvars0" type="radio" name="filtergetvars" value="0"{if $filtergetvars neq 1} checked="checked"{/if} />
-                        <label for="filtergetvars0">{gt text="No"}</label>
-                    </div>
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_filterpostvars">{gt text='Sanitise \'$_POST\' variables'}</label>
-                    <div id="securitycenter_filterpostvars">
-                        <input id="filterpostvars1" type="radio" name="filterpostvars" value="1"{if $filterpostvars eq 1} checked="checked"{/if} />
-                        <label for="filterpostvars1">{gt text="Yes"}</label>
-                        <input id="filterpostvars0" type="radio" name="filterpostvars" value="0"{if $filterpostvars neq 1} checked="checked"{/if} />
-                        <label for="filterpostvars0">{gt text="No"}</label>
-                    </div>
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_filtercookievars">{gt text='Sanitise \'$_COOKIE\' variables'}</label>
-                    <div id="securitycenter_filtercookievars">
-                        <input id="filtercookievars1" type="radio" name="filtercookievars" value="1"{if $filtercookievars eq 1} checked="checked"{/if} />
-                        <label for="filtercookievars1">{gt text="Yes"}</label>
-                        <input id="filtercookievars0" type="radio" name="filtercookievars" value="0"{if $filtercookievars neq 1} checked="checked"{/if} />
-                        <label for="filtercookievars0">{gt text="No"}</label>
-                    </div>
-                </div>
-            </fieldset>
             <fieldset id="securitycenter_ids">
                 <legend>{gt text="Intrusion Detection System"}</legend>
                 <div class="z-formrow">
@@ -230,20 +176,30 @@
                         <label for="useidsno">{gt text="No"}</label>
                     </div>
                 </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_idssoftblock">{gt text="Block action"}</label>
-                    <div id="securitycenter_idssoftblock">
-                        <input id="idssoftblockyes" type="radio" name="idssoftblock" value="1"{if $idssoftblock eq 1} checked="checked"{/if} />
-                        <label for="idssoftblockyes">{gt text="Warn only"}</label>
-                        <input id="idssoftblockno" type="radio" name="idssoftblock" value="0"{if $idssoftblock neq 1} checked="checked"{/if} />
-                        <label for="idssoftblockno">{gt text="Block"}</label>
-                    </div>
-                </div>
+                
                 <div id="securitycenter_idsfields">
                     <p class="z-formnote z-informationmsg">
                         {gt text="PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected."}
                         {gt text="Read more about this system on the <a href=\"http://phpids.org\" title=\"PHPIDS homepage\">PHPIDS homepage</a>."}
                     </p>
+                <div class="z-formrow">
+                    <label for="securitycenter_idsmail">{gt text="Block action"}</label>
+                    <div id="securitycenter_idsmail">
+                        <input id="idsmailyes" type="radio" name="idsmail" value="1"{if $idsmail eq 1} checked="checked"{/if} />
+                        <label for="idsmailyes">{gt text="Warn only"}</label>
+                        <input id="idsmailno" type="radio" name="idsmail" value="0"{if $idsmail neq 1} checked="checked"{/if} />
+                        <label for="idsmailno">{gt text="Block"}</label>
+                    </div>
+                </div>
+                <div class="z-formrow">
+                    <label for="securitycenter_idssoftblock">{gt text="Send email on block action"}</label>
+                    <div id="securitycenter_idssoftblock">
+                        <input id="idssoftblockyes" type="radio" name="idssoftblock" value="1"{if $idssoftblock eq 1} checked="checked"{/if} />
+                        <label for="idssoftblockyes">{gt text="Yes"}</label>
+                        <input id="idssoftblockno" type="radio" name="idssoftblock" value="0"{if $idssoftblock neq 1} checked="checked"{/if} />
+                        <label for="idssoftblockno">{gt text="No"}</label>
+                    </div>
+                </div>
                     <div class="z-formrow">
                         <label for="securitycenter_idsfilter">{gt text="Select filter rules to use"}</label>
                         <select id="securitycenter_idsfilter" name="idsfilter">
@@ -302,18 +258,6 @@
                     </select>
                 </div>
             </fieldset>
-            <fieldset>
-                <legend>{gt text="E-mail message"}</legend>
-                <div class="z-formrow">
-                    <label for="securitycenter_summarycontent">{gt text="Content of summary e-mail message"}</label>
-                    <textarea id="securitycenter_summarycontent" name="summarycontent" cols="50" rows="14">{$summarycontent|safetext}</textarea>
-                </div>
-                <div class="z-formrow">
-                    <label for="securitycenter_fullcontent">{gt text="Additional content for full e-mail message"}</label>
-                    <textarea id="securitycenter_fullcontent" name="fullcontent" cols="50" rows="14">{$fullcontent|safetext}</textarea>
-                </div>
-            </fieldset>
-
             {modcallhooks hookobject=module hookaction=modifyconfig module=SecurityCenter}
             <div class="z-buttons z-formbuttons">
                 {button src=button_ok.gif set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}

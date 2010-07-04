@@ -28,142 +28,7 @@ class SecurityCenter_Admin extends Zikula_Controller
     public function main()
     {
         // Security check will be done in view()
-        return $this->view(null);
-    }
-
-    /**
-     * delete item
-     * This is a standard function that is called whenever an administrator
-     * wishes to delete a current module item.  Note that this function is
-     * the equivalent of both of the modify() and update() functions above as
-     * it both creates a form and processes its output.  This is fine for
-     * simpler functions, but for more complex operations such as creation and
-     * modification it is generally easier to separate them into separate
-     * functions.  There is no requirement in the Zikula MDG to do one or the
-     * other, so either or both can be used as seen appropriate by the module
-     * developer
-     * @param int $args['hid'] the id of the item to be deleted
-     * @param bool $args['confirmation'] confirmation that this item can be deleted
-     * @return mixed HTML string if no confirmation, true if successful, false otherwise
-     */
-    public function delete($args)
-    {
-        $hid = FormUtil::getPassedValue('hid', isset($args['hid']) ? $args['hid'] : null, 'REQUEST');
-        $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'POST');
-        if (!empty($objectid)) {
-            $hid = $objectid;
-        }
-
-        // Get the current item
-        $item = ModUtil::apiFunc('SecurityCenter', 'user', 'get', array('hid' => $hid));
-
-        if ($item == false) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'), 404);
-        }
-
-        // Security check
-        if (!SecurityUtil::checkPermission('SecurityCenter::', "$item[hid]::$item[hacktime]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        // Check for confirmation.
-        if (empty($confirmation)) {
-            // No confirmation yet - display a suitable form to obtain confirmation
-            // of this action from the user
-            $this->renderer->setCaching(false);
-            $this->renderer->assign('hid', $hid);
-            return $this->renderer->fetch('securitycenter_admin_delete.tpl');
-        }
-
-        // If we get here it means that the user has confirmed the action
-
-        // Confirm authorisation code.
-        if (!SecurityUtil::confirmAuthKey()) {
-            return LogUtil::registerAuthidError(ModUtil::url('SecurityCenter','admin','view'));
-        }
-
-        // Call the API to delete the item
-        if (ModUtil::apiFunc('SecurityCenter', 'admin', 'delete', array('hid' => $hid))) {
-            // Success
-            LogUtil::registerStatus($this->__('Done! Deleted it.'));
-        }
-
-        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'view'));
-    }
-
-    /**
-     * view items in db
-     * @param int $startnum number of item to start view from
-     * @return string HTML string
-     */
-    public function view($args = array())
-    {
-        // Security check
-        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        $this->renderer->setCaching(false);
-
-        $startnum = FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : null, 'GET');
-
-        // Get all items
-        $items = ModUtil::apiFunc('SecurityCenter', 'user', 'getall',
-                array('startnum' => $startnum,
-                      'numitems' => $this->getVar('itemsperpage')));
-
-        $hackattempts = array();
-        if ($items) {
-            foreach ($items as $item) {
-
-                // Get the full item
-                $fullitem = ModUtil::apiFunc('SecurityCenter', 'user', 'get', array('hid' => $item['hid']));
-
-                $fullitem['hacktime'] = DateUtil::strftime($this->__('%b %d, %Y - %I:%M %p'), $fullitem['hacktime']);
-                if ($fullitem['userid'] == 0) {
-                    $fullitem['userid'] = System::getVar('anonymous');
-                } else {
-                    $fullitem['userid'] = UserUtil::getVar('uname', $fullitem['userid']);
-                }
-
-                // Add users options for the item.
-                $options = array();
-                if (SecurityUtil::checkPermission('SecurityCenter::', "$item[hid]::$item[hacktime]", ACCESS_EDIT)) {
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'browserinfo')),
-                            'title' => $this->__('Browser information list'));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'requestarray')),
-                            'title' => $this->__("View 'request' array"));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'getarray')),
-                            'title' => $this->__("View 'get' array"));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'postarray')),
-                            'title' => $this->__("View 'post' array"));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'serverarray')),
-                            'title' => $this->__("View 'server' array"));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'envarray')),
-                            'title' => $this->__("View 'env' array"));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'cookiearray')),
-                            'title' => $this->__("View 'cookie' array"));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'filesarray')),
-                            'title' => $this->__("View 'files' array"));
-                    $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'display', array('hid' => $item['hid'], 'arraytype' => 'sessionarray')),
-                            'title' => $this->__("View 'session' array"));
-                    if (SecurityUtil::checkPermission('SecurityCenter::', "$item[hid]::$item[hacktime]", ACCESS_DELETE)) {
-                        $options[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'delete', array('hid' => $item['hid'])),
-                                'title' => $this->__('Delete'));
-                    }
-                    $fullitem['options'] = $options;
-                }
-                $hackattempts[] = $fullitem;
-            }
-        }
-        $this->renderer->assign('hackattempts', $hackattempts);
-
-        // Assign the values for the smarty plugin to produce a pager.
-        $this->renderer->assign('pager', array('numitems' => ModUtil::apiFunc('SecurityCenter', 'user', 'countitems'),
-                                               'itemsperpage' => $this->getVar('itemsperpage')));
-
-        return $this->renderer->fetch('securitycenter_admin_view.tpl');
+        return $this->modifyconfig(null);
     }
 
     /**
@@ -245,21 +110,6 @@ class SecurityCenter_Admin extends Zikula_Controller
         }
 
         // Update module variables.
-        $enableanticracker = (int)FormUtil::getPassedValue('enableanticracker', 0, 'POST');
-        System::setVar('enableanticracker', $enableanticracker);
-
-        $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
-        $this->setVar('itemsperpage', $itemsperpage);
-
-        $emailhackattempt = (int)FormUtil::getPassedValue('emailhackattempt', 0, 'POST');
-        System::setVar('emailhackattempt', $emailhackattempt);
-
-        $loghackattempttodb = (int)FormUtil::getPassedValue('loghackattempttodb', 0, 'POST');
-        System::setVar('loghackattempttodb', $loghackattempttodb);
-
-        $onlysendsummarybyemail = (int)FormUtil::getPassedValue('onlysendsummarybyemail', 0, 'POST');
-        System::setVar('onlysendsummarybyemail', $onlysendsummarybyemail);
-
         $updatecheck = (int)FormUtil::getPassedValue('updatecheck', 0, 'POST');
         System::setVar('updatecheck', $updatecheck);
 
@@ -374,16 +224,6 @@ class SecurityCenter_Admin extends Zikula_Controller
         System::setVar('sessionname', $sessionname);
         System::setVar('sessionstoretofile', $sessionstoretofile);
 
-
-        $filtergetvars = FormUtil::getPassedValue('filtergetvars', 1, 'POST');
-        System::setVar('filtergetvars', $filtergetvars);
-
-        $filterpostvars = FormUtil::getPassedValue('filterpostvars', 0, 'POST');
-        System::setVar('filterpostvars', $filterpostvars);
-
-        $filtercookievars = FormUtil::getPassedValue('filtercookievars', 1, 'POST');
-        System::setVar('filtercookievars', $filtercookievars);
-
         $outputfilter = FormUtil::getPassedValue('outputfilter', 0, 'POST');
         System::setVar('outputfilter', $outputfilter);
 
@@ -400,6 +240,9 @@ class SecurityCenter_Admin extends Zikula_Controller
 
         $idssoftblock = (bool) FormUtil::getPassedValue('idssoftblock', 1, 'POST');
         System::setVar('idssoftblock', $idssoftblock);
+
+        $idsmail = (bool) FormUtil::getPassedValue('idsmail', 1, 'POST');
+        System::setVar('idsmail', $idssoftblock);
 
         $idsfilter = FormUtil::getPassedValue('idsfilter', 'xml', 'POST');
         System::setVar('idsfilter', $idsfilter);
@@ -452,14 +295,6 @@ class SecurityCenter_Admin extends Zikula_Controller
         }
         System::setVar('idsexceptions', $idsexceptarray);
 
-
-        // to do set some defaults here possibly read default content from file
-        // so it's not repeated in code - markwest
-        $summarycontent = FormUtil::getPassedValue('summarycontent', '', 'POST');
-        System::setVar('summarycontent', $summarycontent);
-        $fullcontent = FormUtil::getPassedValue('fullcontent', '', 'POST');
-        System::setVar('fullcontent', $fullcontent);
-
         // Let any other modules know that the modules configuration has been updated
         $this->callHooks('module','updateconfig', 'SecurityCenter', array('module' => 'SecurityCenter'));
 
@@ -477,7 +312,7 @@ class SecurityCenter_Admin extends Zikula_Controller
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return System::redirect(ModUtil::url('SecurityCenter','admin', 'main'));
+        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'main'));
     }
 
     /**
@@ -496,10 +331,10 @@ class SecurityCenter_Admin extends Zikula_Controller
         $this->renderer->assign('itemsperpage', $this->getVar('itemsperpage'));
 
         if ($reset) {
-            $purifierconfig = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifierconfig', array('forcedefault' => true));
+            $purifierconfig = SecurityCenter_Util::getPurifierConfig(true);
             LogUtil::registerStatus($this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $purifierconfig = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifierconfig');
+            $purifierconfig = SecurityCenter_Util::getPurifierConfig();
         }
 
         $purifier = new HTMLPurifier($purifierconfig);
@@ -607,7 +442,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         }
 
         // Load HTMLPurifier Classes
-        $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier');
+        $purifier = SecurityCenter_Util::getpurifier();
 
         // Update module variables.
         $config = FormUtil::getPassedValue('purifierConfig', null, 'POST');
@@ -699,7 +534,7 @@ class SecurityCenter_Admin extends Zikula_Controller
         //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
         $this->setVar('htmlpurifierConfig', serialize($config));
 
-        $purifier = ModUtil::apiFunc('SecurityCenter', 'user', 'getpurifier', array('force' => true));
+        $purifier = SecurityCenter_Util::getpurifier(true);
 
         // clear all cache and compile directories
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
@@ -710,49 +545,6 @@ class SecurityCenter_Admin extends Zikula_Controller
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
         return System::redirect(ModUtil::url('SecurityCenter','admin', 'main'));
-    }
-
-    /**
-     * output contents of http array
-     * @param int $args['hid'] hack id
-     * @param string $args['arraytype'] type of array to output
-     * @return string HTML output string
-     */
-    public function display($args)
-    {
-        // Security check
-        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
-        }
-
-        $hid = FormUtil::getPassedValue('hid', isset($args['hid']) ? $args['hid'] : null, 'GET');
-        $arraytype = FormUtil::getPassedValue('arraytype', isset($args['arraytype']) ? $args['arraytype'] : null, 'GET');
-
-        if (empty($hid) ||
-                empty($arraytype)) {
-            return LogUtil::registerArgsError();
-        }
-
-        $this->renderer->setCaching(false);
-
-        // assign the page title
-        $this->renderer->assign('title', strtoupper($arraytype));
-
-        // Get the item from our API
-        $item = ModUtil::apiFunc('SecurityCenter', 'user', 'get', array('hid' => $hid));
-        // extract the data we serialised in the db
-        $variablearray = unserialize($item[$arraytype]);
-
-        $arrayvariables = array();
-        if (is_array($variablearray)) {
-            // output the variables into the table
-            while (list ($key, $value) = each($variablearray)) {
-                $arrayvariables[] = array('key' => $key, 'value' => $value);
-            }
-        }
-        $this->renderer->assign('arrayvariables', $arrayvariables);
-
-        return $this->renderer->fetch('securitycenter_admin_display.tpl');
     }
 
     /**

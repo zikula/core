@@ -16,7 +16,15 @@ if (!defined('HTMLPURIFIER_PREFIX')) {
     define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'));
 }
 
+if (!defined('PHPIDS_PATH_PREFIX')) {
+    define('PHPIDS_PATH_PREFIX', realpath(dirname(__FILE__) . '/lib/vendor/IDS'));
+}
+
 // include the PHPIDS and get access to the result object
 set_include_path(get_include_path() . PATH_SEPARATOR . 'system/SecurityCenter/vendor');
 ZLoader::addAutoloader('HTMLPurifier', realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'));
 ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/lib/vendor'));
+
+// register event handlers
+EventUtil::registerEventHandler('SecurityCenter_EventHandler_Filter');
+

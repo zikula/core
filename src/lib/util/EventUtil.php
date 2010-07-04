@@ -112,12 +112,12 @@ class EventUtil
      *
      * @return void
      */
-    static public function attachCustomHandlers($dir = null)
+    static public function attachCustomHandlers($dir)
     {
         static $loaded;
         static $classes;
 
-        $dir = (is_null($dir) ? 'config' . DIRECTORY_SEPARATOR . 'EventHandlers' : $dir);
+        $dir = realpath($dir);
 
         if (isset($loaded[$dir])) {
             return;
@@ -143,7 +143,7 @@ class EventUtil
             }
 
             if (!isset($classes[$className])) {
-                self::_attach($className, $serviceManager);
+                self::registerEventHandler($className, $serviceManager);
                 $classes[$className] = true;
             }
         }
@@ -152,17 +152,22 @@ class EventUtil
     }
 
     /**
-     * Create EventHandler instance and attach handlers.
+     * Load and attach handlers for Zikula_EventHandler listeners.
      *
-     * @param unknown_type $className
-     * @param unknown_type $serviceManager
+     * Loads eventhandlers that extend Zikula_EventHandler
+     *
+     * @param string                $className
+     * @param Zikula_ServiceManager $serviceManager
      *
      * @throws LogicException If class is not instance of Zikula_EventHandler
      *
      * @return void
      */
-    protected static function _attach($className, $serviceManager)
+    public static function registerEventHandler($className, Zikula_ServiceManager $serviceManager = null)
     {
+        if (!$serviceManager) {
+            $serviceManager = ServiceUtil::getManager();
+        }
         $r = new ReflectionClass($className);
         $handler = $r->newInstance($serviceManager);
 

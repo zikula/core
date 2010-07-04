@@ -364,9 +364,7 @@ class System
                 ob_start("ob_gzhandler");
             }
 
-            if (ModUtil::available('SecurityCenter') && self::getVar('enableanticracker') == 1) {
-                ModUtil::apiFunc('SecurityCenter', 'user', 'secureinput');
-            }
+            ModUtil::load('SecurityCenter');
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_MODS);
             $eventManager->notify($coreInitEvent);

@@ -1646,7 +1646,9 @@ class ModUtil
 
         // register any event handlers.
         // module handlers must be attached from the bootstrap.
-        EventUtil::attachCustomHandlers(realpath("config/EventHandlers/$osdir"));
+        if (is_dir("config/EventHandlers/$osdir")) {
+            EventUtil::attachCustomHandlers("config/EventHandlers/$osdir");
+        }
 
         // load any plugins
         PluginUtil::loadPlugins("$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");

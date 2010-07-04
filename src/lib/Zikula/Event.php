@@ -95,11 +95,12 @@ class Zikula_Event implements ArrayAccess
      *
      * @param mixed $data Data to be saved.
      *
-     * @return void
+     * @return Zikula_Event
      */
     public function setData($data)
     {
         $this->data = $data;
+        return $this;
     }
 
     /**
@@ -108,11 +109,12 @@ class Zikula_Event implements ArrayAccess
      * @param string $key   Argument name.
      * @param mixed  $value Value.
      *
-     * @return void
+     * @return Zikula_Event
      */
     public function setArg($key, $value)
     {
         $this->args[$key] = $value;
+        return $this;
     }
 
     /**
