@@ -911,9 +911,9 @@ class System
         }
 
         // get our base parameters to work out if we need to decode the url
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST');
-        $func = FormUtil::getPassedValue('func', null, 'GETPOST');
-        $type = FormUtil::getPassedValue('type', null, 'GETPOST');
+        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $func = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         // check if we need to decode the url
         if ((self::getVar('shorturls') && self::getVar('shorturlstype') == 0 && (empty($module) && empty($type) && empty($func)))) {
@@ -966,7 +966,7 @@ class System
                 self::queryStringSetVar('module', $modinfo['name']);
                 // the function name is the second argument string
                 isset($args[2]) ? self::queryStringSetVar('func', $args[2]) : null;
-                $modname = FormUtil::getPassedValue('module', null, 'GETPOST');
+                $modname = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
             }
 
             // check if there is a custom url handler for this module

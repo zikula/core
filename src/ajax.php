@@ -17,9 +17,9 @@ ZLoader::register();
 System::init(System::CORE_STAGES_ALL | System::CORE_STAGES_AJAX & ~System::CORE_STAGES_DECODEURLS);
 
 // Get variables
-$module = FormUtil::getPassedValue('module', '', 'GETPOST');
-$type   = FormUtil::getPassedValue('type', 'ajax', 'GETPOST');
-$func   = FormUtil::getPassedValue('func', '', 'GETPOST');
+$module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
+$type   = FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRING);
+$func   = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {

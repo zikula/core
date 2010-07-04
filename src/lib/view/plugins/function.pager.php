@@ -134,13 +134,13 @@ function smarty_function_pager($params, &$smarty)
     if (isset($params['modname'])) {
         $pager['module'] = $params['modname'];
     } else {
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST');
-        $name   = FormUtil::getPassedValue('name', null, 'GETPOST');
+        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $name   = FormUtil::getPassedValue('name', null, 'GETPOST', FILTER_SANITIZE_STRING);
         $pager['module'] = !empty($module) ? $module : $name;
     }
 
-    $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'main', 'GETPOST');
-    $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST');
+    $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+    $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
 
     $pager['args'] = array();
     if (empty($pager['module'])) {

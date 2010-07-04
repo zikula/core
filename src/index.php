@@ -25,9 +25,9 @@ if (SessionUtil::hasExpired()) {
 }
 
 // Get variables
-$module = FormUtil::getPassedValue('module', '', 'GET');
-$type   = FormUtil::getPassedValue('type', '', 'GET');
-$func   = FormUtil::getPassedValue('func', '', 'GET');
+$module = FormUtil::getPassedValue('module', '', 'GET', FILTER_SANITIZE_STRING);
+$type   = FormUtil::getPassedValue('type', '', 'GET', FILTER_SANITIZE_STRING);
+$func   = FormUtil::getPassedValue('func', '', 'GET', FILTER_SANITIZE_STRING);
 
 // Check for site closed
 if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (System::VERSION_NUM != System::getVar('Version_Num'))) {

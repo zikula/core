@@ -94,9 +94,9 @@ class Blocks_Block_Lang extends Zikula_Block
 
 
         // prepare vars for ModUtil::url
-        $module = FormUtil::getPassedValue('module', null, 'GET');
-        $type = FormUtil::getPassedValue('type', null, 'GET');
-        $func = FormUtil::getPassedValue('func', null, 'GET');
+        $module = FormUtil::getPassedValue('module', null, 'GET', FILTER_SANITIZE_STRING);
+        $type = FormUtil::getPassedValue('type', null, 'GET', FILTER_SANITIZE_STRING);
+        $func = FormUtil::getPassedValue('func', null, 'GET', FILTER_SANITIZE_STRING);
         $get = $_GET;
         if (isset($get['module'])) {
             unset($get['module']);
