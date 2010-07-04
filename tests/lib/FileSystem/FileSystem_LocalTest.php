@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . '/../../bootstrap.php';
 
 // exclude the following file from code coverage reports.
-PHPUnit_Util_Filter::addFileToFilter(dirname(__FILE__). '/../../../src/lib/FileSystem/Facade/Local.php');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(dirname(__FILE__). '/../../../src/lib/FileSystem/Facade/Local.php');
 
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration.php';
 require_once dirname(__FILE__) . '/../../../src/lib/FileSystem/Configuration/Local.php';
