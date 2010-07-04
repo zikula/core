@@ -19,13 +19,12 @@ RewriteEngine on
 # Environment Variables
 
 RewriteCond %{HTTPS} !=on
-RewriteRule ^(.*)$ - [env=protocol:http]
+RewriteRule ^(.*)$ - [env=PROTOCOL:http]
 
 RewriteCond %{HTTPS} =on
-RewriteRule ^(.*)$ - [env=protocol:https]
+RewriteRule ^(.*)$ - [env=PROTOCOL:https]
 
 # Correcting HTTP authentication with suPHP.
-
 <IfModule mod_suphp.c>
 	RewriteCond %{HTTP:Authorization} ^(.*)
 	RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
@@ -33,15 +32,15 @@ RewriteRule ^(.*)$ - [env=protocol:https]
 
 # Redirect www (commented out, in favor of re-direct non-www).
 # RewriteCond %{HTTP_HOST} ^w{3}\.(.*)$ [NC]
-# RewriteRule ^/?(.*)$ %{ENV:protocol}://%1/$1 [R=301,L]
+# RewriteRule ^/?(.*)$ %{ENV:PROTOCOL}://%1/$1 [R=301,L]
 
 # Redirect non-www top-level domains.
 RewriteCond %{HTTP_HOST} ^[^/.]+\.[a-zA-Z]+$ [NC]
-RewriteRule ^/?(.*)$ %{ENV:protocol}://www.%{HTTP_HOST}/$1 [R=301,L]
+RewriteRule ^/?(.*)$ %{ENV:PROTOCOL}://www.%{HTTP_HOST}/$1 [R=301,L]
 
 # Redirect non-www third-level domains.
 RewriteCond %{HTTP_HOST} ^[^/.]+\.[a-zA-Z]{2,4}\.[a-zA-Z]{2,3}$ [NC]
-RewriteRule ^/?(.*)$ %{ENV:protocol}://www.%{HTTP_HOST}/$1 [R=301,L]
+RewriteRule ^/?(.*)$ %{ENV:PROTOCOL}://www.%{HTTP_HOST}/$1 [R=301,L]
 .
 # Handle the favicon to prevent a full request to the engine
 RewriteRule ^(.*)favicon.ico - [L]
