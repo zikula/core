@@ -318,8 +318,10 @@ again. However, if the user failed an authid check in your modules ajax.php do n
 this to true because it will issue them a new good authid, thus undermining the entire
 CRSF protection.
 
-  - $displayalert triggers an alert to be shown to the user via the JS function which matches up with this php function.
-  - $code is the code to send back in the header of the response, this should match html status codes, check here http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+  - $displayalert triggers an alert to be shown to the user via the JS function
+    which matches up with this php function.
+  - $code is the code to send back in the header of the response, this should
+    match html status codes, check here http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
 One AjaxUtil::error() has been issued from the php side, the error will need to
 be caught on the javascript side. There is a new javascript library function for
@@ -363,7 +365,12 @@ ajax.php file in admin module, function to edit category name
         //... rest of function
     }
 
-We see that first security checks are made, and an error is called if the checks fail, the authids are not updated because it is a security error. The there is a check to see if the cid and category name are set. If they are not, an error is called, but this time the third parameter to AjaxUtil::error() is set to true, meaning authid's are set.
+We see that first security checks are made, and an error is called if the checks
+fail, the authids are not updated because it is a security error. The there is a
+check to see if the cid and category name are set. If they are not, an error is
+called, but this time the third parameter to AjaxUtil::error() is set to true,
+meaning authid's are set.
+
 The json data sent back to the calling javascript will include:
 
     "errormessage" => whatever LogUtil::registerArgsError() returned
