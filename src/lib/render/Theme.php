@@ -604,9 +604,9 @@ class Theme extends Renderer
     private function _base_vars()
     {
         // get variables from input
-        $module = FormUtil::getPassedValue('module', null, 'GETPOST');
-        $type = FormUtil::getPassedValue('type', null, 'GETPOST');
-        $func = FormUtil::getPassedValue('func', null, 'GETPOST');
+        $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
+        $func = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         // set some basic class variables from the PN environemnt
         $this->isloggedin = UserUtil::isLoggedIn();
