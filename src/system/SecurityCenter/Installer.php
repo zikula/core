@@ -74,6 +74,7 @@ class SecurityCenter_Installer extends Zikula_Installer
         // create vars for phpids usage
         System::setVar('useids', 0);
         System::setVar('idsmail', 0);
+        System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
         System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
         System::setVar('idsfilter', 'xml');               // filter type
         System::setVar('idsimpactthresholdone', 1);       // db logging
@@ -267,6 +268,7 @@ class SecurityCenter_Installer extends Zikula_Installer
                 System::setVar('idssoftblock', 0);
                 System::setVar('idshtmlfields', array('POST.__wysiwyg'));
                 System::setVar('idsjsonfields', array('POST.__jsondata'));
+                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
                 System::setVar('idsexceptions', array(  'GET.__utmz',
                         'GET.__utmc',
                         'REQUEST.linksorder', 'POST.linksorder',

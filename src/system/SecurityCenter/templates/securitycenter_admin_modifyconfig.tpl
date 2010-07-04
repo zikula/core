@@ -208,6 +208,11 @@
                         </select>
                     </div>
                     <div class="z-formrow">
+                        {gt text="Default: config/phpids_zikula_default.xml"}
+                        <label for="securitycenter_idsrulepath">{gt text="IDS Rule path"}</label>
+                        <input id="securitycenter_idsrulepath" type="text" name="idsrulepath" size="3" value="{$idsrulepath|safetext}" />
+                    </div>
+                    <div class="z-formrow">
                         <label for="securitycenter_impactthresholdone">{gt text="Minimum impact to log intrusion in the database"}</label>
                         <input id="securitycenter_impactthresholdone" type="text" name="idsimpactthresholdone" size="3" value="{$idsimpactthresholdone|safetext}" />
                     </div>

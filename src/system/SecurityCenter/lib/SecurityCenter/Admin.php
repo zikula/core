@@ -109,6 +109,8 @@ class SecurityCenter_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('SecurityCenter','admin','view'));
         }
 
+        $validates = true;
+
         // Update module variables.
         $updatecheck = (int)FormUtil::getPassedValue('updatecheck', 0, 'POST');
         System::setVar('updatecheck', $updatecheck);
@@ -247,6 +249,15 @@ class SecurityCenter_Admin extends Zikula_Controller
         $idsfilter = FormUtil::getPassedValue('idsfilter', 'xml', 'POST');
         System::setVar('idsfilter', $idsfilter);
 
+        $idsrulepath = FormUtil::getPassedValue('idsrulepath', 'config/zikula_default.xml', 'POST');
+        $idsrulepath = DataUtil::formatForOS($idsrulepath);
+        if (is_readable($idsrulepath)) {
+            System::setVar('idsrulepath', $idsrulepath);
+        } else {
+            LogUtil::registerError($this->__f('Error! PHPIDS rule file %s does not exist or is not readable.', $idsrulepath));
+            $validates = false;
+        }
+            
         $idsimpactthresholdone = (int)FormUtil::getPassedValue('idsimpactthresholdone', 1, 'POST');
         System::setVar('idsimpactthresholdone', $idsimpactthresholdone);
 
@@ -302,7 +313,9 @@ class SecurityCenter_Admin extends Zikula_Controller
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
 
         // the module configuration has been updated successfuly
-        LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+        if ($validates) {
+            LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+        }
 
         // we need to auto logout the user if they changed from DB to FILE
         if ($cause_logout == true) {
