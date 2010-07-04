@@ -26,7 +26,7 @@
     </dd>
     {/foreach}
 </dl>
-{pager display='page' rowcount=$resultcount limit=$numlimit posvar=page}<br/>
+{pager rowcount=$resultcount limit=$numlimit posvar='page' display='page'}<br/>
 
 {else}
 

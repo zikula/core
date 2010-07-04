@@ -30,5 +30,5 @@
     <div class="z-adminviewbuttons">
         <a href="{modurl modname=Admin type=admin func=help fragment=view fqurl=true}">{img modname=core src=agt_support.gif set=icons/small __alt="Help" __title="Help"}</a>
     </div>
-    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
+    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>

@@ -79,5 +79,5 @@
         {/section}
     </tbody>
 </table>
-{pager show="page" rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 {$hooks}

@@ -26,5 +26,5 @@
     </tbody>
     {/if}
 </table>
-{pager display='startnum' rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
+{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 {/if}

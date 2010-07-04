@@ -29,7 +29,7 @@
             {/section}
         </tbody>
     </table>
-    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar=startnum shift=1}
+    {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
     <h2>{gt text="Add users to group"}</h2>
     <div class="group-membership-alphanav">
         [{pagerabc posvar="letter" separator="&nbsp;|&nbsp;" names="*;A;B;C;D;E;F;G;H;I;J;K;L;M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;?" forwardvars="module,type,func,gid"}&nbsp;]

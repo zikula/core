@@ -248,9 +248,9 @@ function smarty_function_pager($params, &$smarty)
             }
 
             if ($params['display'] == 'page') {
-                $pager['args'][$pager['posvar']] = $currItem;
+                $pager['args'][$pager['posvar']] = $currItem + 1;
             } else {
-                $pager['args'][$pager['posvar']] = (($currItem - 1) * $pager['perpage']) + 1;
+                $pager['args'][$pager['posvar']] = ($currItem * $pager['perpage']) + 1;
             }
         }
         unset($pager['args'][$pager['posvar']]);
