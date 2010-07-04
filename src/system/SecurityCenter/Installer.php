@@ -281,7 +281,7 @@ class SecurityCenter_Installer extends Zikula_Installer
             case '1.4.1':
                 System::delVar('htmlpurifierConfig');
                 // HTML Purifier default settings
-                $purifierDefaultConfig = SecurityCenter_Api_User::getpurifierconfig(array('forcedefault' => true));
+                $purifierDefaultConfig = SecurityCenter_Util::getpurifierconfig(array('forcedefault' => true));
                 $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
             // fall through
 
