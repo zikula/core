@@ -13,8 +13,6 @@
  */
 
 // Yes/no integer.
-define('ZYES', 1);
-define('ZNO', 0);
 
 // Fake module for config vars
 define('CONFIG_MODULE', '/PNConfig');

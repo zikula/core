@@ -539,20 +539,20 @@ class Modules_Api_Admin extends Zikula_Api
                     $name = $dir;
                     // Work out if admin-capable
                     if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php") || file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
-                        $adminCapable = ZYES;
+                        $adminCapable = 1;
                         $modtype = $moduletype;
                     } else {
-                        $adminCapable = ZNO;
+                        $adminCapable = 0;
                     }
 
                     // Work out if user-capable
                     if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php") || file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
-                        $userCapable = ZYES;
+                        $userCapable = 1;
                         if (!isset($modtype)) {
                             $modtype = $moduletype;
                         }
                     } else {
-                        $userCapable = ZNO;
+                        $userCapable = 0;
                     }
 
                     if (empty($modtype)) {
