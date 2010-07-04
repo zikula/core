@@ -29,7 +29,7 @@ Doctrine 1.2.2
     Downloaded from: http://www.doctrine-project.org/projects/orm/download
     License: LGPL
     Location in Zikula: lib/vendor/Doctrine
-    Patch details: git master @ June 9th 2010 (pending 1.2.3 release 30th June).
+    Patch details: svn.doctrine-project.org/branches/1.2 revision 7676
 
 RC4Crypt 3.2
     Vendor website: http://rc4crypt.devhome.org (defunct).

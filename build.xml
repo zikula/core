@@ -2,13 +2,13 @@
  <project name="zikula" default="clean">
     <!-- invokation
         phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcb phpcpd phpunit pdepend phpmd phpdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
-        # note phpcb must be the last artifact run in the chain 
+        # note phpcb must be the last artifact run in the chain
     -->
     <!--
         BUILD_NUMBER - The current build number, such as "153"
         BUILD_ID - The current build id, (YYYY-MM-DD_hh-mm-ss)
         JOB_NAME - Name of the project of this build, such as "foo"
-        BUILD_TAG - String of "hudson-${JOBNAME}-${BUILD_NUMBER}". 
+        BUILD_TAG - String of "hudson-${JOBNAME}-${BUILD_NUMBER}".
         WORKSPACE - The absolute path of the workspace.
         SVN_REVISION - The revision this build is based on.
     -->
@@ -23,13 +23,13 @@
     <property name="tmpdir" value="${builddir}/tmp" />
     <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*,themes/*,install/*,lib/legacy" />
 
-    <property name="ownjslist" value="javascript/helpers/Zikula.js,javascript/helpers/Zikula.ImageViewer.js,javascript/helpers/Zikula.Tree.js,javascript/helpers/Zikula.itemlist.js,system/Admin/javascript/admin_admin_ajax.js,system/Admin/javascript/admin_admin_modifyconfig.js,system/Blocks/javascript/blocks.js,system/Blocks/javascript/blocks_admin_modify.js,system/Categories/javascript/ajax.js,system/Categories/javascript/categories_admin_edit.js,system/Categories/javascript/categories_admin_view.js,system/Groups/javascript/groups.js,system/Mailer/javascript/mailer_admin_modifyconfig.js,system/Mailer/javascript/mailer_admin_testconfig.js,system/Modules/javascript/extendedhooks.js,system/Modules/javascript/hooks.js,system/PageLock/javascript/pagelock.js,system/Permissions/javascript/permissions.js,system/Permissions/templates/componentinstance.js,system/Search/javascript/search_user_form.js,system/SecurityCenter/javascript/securitycenter_admin_allowedhtm.js,system/SecurityCenter/javascript/securitycenter_admin_modifyconfig.js,system/SecurityCenter/javascript/securitycenter_admin_purifierconfig.js,system/Settings/javascript/settings_admin_modifyconfig.js,system/Settings/javascript/settings_admin_multilingual.js,system/Theme/includes/picker.js,system/Theme/includes/themeswitcher.js,system/Theme/javascript/form/pnform.js,system/Theme/javascript/form/pnform_tabbedpanelset.js,system/Theme/javascript/theme_admin_modifyconfig.js,system/Theme/templates/pagerjs.tpl,system/Users/javascript/users.js,system/Users/javascript/users_admin_modifyconfig.js,system/Users/javascript/users_admin_modifyregistration.js,system/Users/javascript/users_admin_newuser.js,system/Users/javascript/users_newuser.js" />
+    <property name="ownjslist" value="javascript/helpers/Zikula.js,javascript/helpers/Zikula.ImageViewer.js,javascript/helpers/Zikula.Tree.js,javascript/helpers/Zikula.itemlist.js,system/Admin/javascript/admin_admin_ajax.js,system/Admin/javascript/admin_admin_modifyconfig.js,system/Blocks/javascript/blocks.js,system/Blocks/javascript/blocks_admin_modify.js,system/Categories/javascript/ajax.js,system/Categories/javascript/categories_admin_edit.js,system/Categories/javascript/categories_admin_view.js,system/Groups/javascript/groups.js,system/Mailer/javascript/mailer_admin_modifyconfig.js,system/Mailer/javascript/mailer_admin_testconfig.js,system/Modules/javascript/extendedhooks.js,system/Modules/javascript/hooks.js,system/PageLock/javascript/pagelock.js,system/Permissions/javascript/permissions.js,system/Permissions/templates/componentinstance.js,system/Search/javascript/search_user_form.js,system/SecurityCenter/javascript/securitycenter_admin_allowedhtm.js,system/SecurityCenter/javascript/securitycenter_admin_modifyconfig.js,system/SecurityCenter/javascript/securitycenter_admin_purifierconfig.js,system/SecurityCenter/lib/vendor/htmlpurifier/HTMLPurifier/Printer/ConfigForm.js,system/SecurityCenter/lib/vendor/IDS/default_filter.json,system/Settings/javascript/settings_admin_modifyconfig.js,system/Settings/javascript/settings_admin_multilingual.js,system/Theme/includes/picker.js,system/Theme/includes/themeswitcher.js,system/Theme/javascript/form/pnform.js,system/Theme/javascript/form/pnform_tabbedpanelset.js,system/Theme/javascript/theme_admin_modifyconfig.js,system/Theme/templates/pagerjs.tpl,system/Users/javascript/users.js,system/Users/javascript/users_admin_modifyconfig.js,system/Users/javascript/users_admin_modifyregistration.js,system/Users/javascript/users_admin_newuser.js,system/Users/javascript/users_newuser.js,system/Users/javascript/Zikula.Users.PassMeter.js" />
 
-    
+
     <!-- need a second property since phpdoc doesn't respect wildcard patterns -->
     <property name="phpdocignorepaths" value="lib/vendor/,javascript/,system/" />
     <property name="ignorefiletypes" value="*.css,*.js" />
-    
+
     <target name="clean">
         <echo msg="Clean..." />
         <delete dir="${builddir}" includeemptydirs="true" />
@@ -78,54 +78,54 @@
             </fileset>
         </tar>
         <echo msg="Files copied and compressed in build directory OK!" />
-        
+
         <!-- ATTN phingcall target="build_patch" / -->
         <phingcall target="build_checksums" />
     </target>
-    
+
     <target name="build_delete">
         <!-- clean up export dir, this is not needed (unless we are debugging) -->
         <delete dir="${packagepath}" includeemptydirs="true" />
     </target>
-    
+
     <target name="build_checksums">
         <echo msg="Creating MD5 and SHA1 checksums..." />
         <exec escape="false" command="echo -----------------md5sums----------------- > ${checksumpath}.tmp" />
         <exec escape="false" command="md5sum ${archivedir}/*.tar.gz ${archivedir}/*.zip >> ${checksumpath}.tmp" />
-        
+
         <exec escape="false" command="echo -----------------sha1sums----------------- >> ${checksumpath}.tmp" />
         <exec escape="false" command="sha1sum ${archivedir}/*.tar.gz ${archivedir}/*.zip >> ${checksumpath}.tmp" />
-                
+
         <exec escape="false" command="cat ${checksumpath}.tmp | sed 's!${archivedir}/!!g' > ${checksumpath}.txt" />
         <delete file="${checksumpath}.tmp" />
     </target>
-    
+
     <target name="build_patch">
         <echo msg="Making patches...." />
         <!-- get diffs for releases and save in ${tmpdir}/CHANGES file -->
         <!-- ATTN urls require manual edit -->
         <exec escape="false" command="svn diff https://code.zikula.org/svn/core/tags/Zikula-1.3.0  https://code.zikula.org/svn/core/branches/zikula-1.3/src@${svn_revision} --summarize | sort|uniq > ${tmpdir}/CHANGES" />
-        
+
         <!-- Remove lines that start with space (which means only a property change), or contain paths to deleted files -->
         <exec escape="false" command="cat ${tmpdir}/CHANGES | sed -e '/^[ D]/d' >${tmpdir}/AM" />
-        
+
         <!-- List deleted files -->
         <exec escape="false" command="cat ${tmpdir}/CHANGES |  grep -e '^D' >${tmpdir}/DELETED.tmp" />
-        
+
         <!-- this needs to be the regex escaped of the OLD branch -->
         <!-- ATTN url requires manual edit -->
         <property name="patchregex" value="https://code.zikula.org/svn/core/tags/Zikula-1.3.0/" />
-        
+
         <!-- A or M, ignoring svn-property changes (2nd char), strip the svn-path from the remaining lines, store in ${tmpdir}/FILES -->
         <exec escape="false" command="cat ${tmpdir}/AM | sed -e 's!^[AM]. *${patchregex}!!g'  > ${tmpdir}/FILES" />
         <exec escape="false" command="cat ${tmpdir}/DELETED.tmp | sed -e 's!${patchregex}!!g'  > ${tmpdir}/DELETED" />
-        
+
         <!-- assemble patch -->
         <exec escape="false" command="cd ${packagepath};for FILE in `cat ${tmpdir}/FILES`;do cp --parents $FILE ${patchdir};done" />
 
         <!-- install folder is always required -->
         <exec escape="false" command="svn export --force https://code.zikula.org/svn/core/branches/zikula-1.3/src/install@${svn_revision} ${patchdir}/install" />
-        
+
         <!-- zip's don't play nicely in Phing - using direct command -->
         <exec escape="false" command="cd ${patchdir}; zip -D -r ${archivedir}/${package}.patch.zip ." />
     </target>
@@ -141,7 +141,7 @@
         <echo msg="PHP Copy/Paste..." />
         <exec command="phpcpd --log-pmd ${builddir}/logs/phpcpd.xml --suffixes php --exclude ${ignorepaths} ${sourcedir}/src" escape="false" />
     </target>
-    
+
     <!-- PHP MD analysis -->
     <target name="phpmd">
         <echo msg="PHP_MD..." />
