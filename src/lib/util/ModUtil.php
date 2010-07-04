@@ -1286,8 +1286,8 @@ class ModUtil
         static $module;
 
         if (!isset($module)) {
-            $type   = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
-            $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            $type   = FormUtil::getPassedValue('type', null, 'GETPOST');
+            $module = FormUtil::getPassedValue('module', null, 'GETPOST');
 
             if (empty($module)) {
                 $module = System::getVar('startpage');
