@@ -42,6 +42,8 @@ TEMPLATES
 
 - Replace all occurrences of "javascript/style.css" with "styles/core.css"
 
+- The {pager} plugin  no longer requires the parameter shift 
+
 MODULES
 =======
 - Module folder structure has changed, please create lib/$modname inside the module
