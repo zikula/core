@@ -31,7 +31,9 @@ function replace_pnApi($contents)
 //    'no__' => 'no__',
     '_pntables' => '_tables',
     'pnrender::' => 'Zikula_View::',
-    '& pnrender::' => 'Zikula_View::',
+    '& Zikula_View::' => 'Zikula_View::',
+    'renderer::' => 'Zikula_View::',
+    '& Zikula_View::' => 'Zikula_View::',
     'pnrender' => 'view',
     'pnconfiggetvar' => 'System::getVar',
     'pnconfigsetvar' => 'System::setVar',
@@ -146,6 +148,10 @@ function replace_pnApi($contents)
     'pnthemegetidFromName' => 'ThemeUtil::getIDFromName',
     'pnthemegetinfo' => 'ThemeUtil::getInfo',
     'pnthemegetthemestable' => 'ThemeUtil::getThemesTable',
+    'pncategory' => 'Categories_DBObject_Category',
+    'pncategoryarray' => 'Categories_DBObject_CategoryArray',
+    'pnregistry' => 'Categories_DBObject_Registry',
+    'pnregistryarray' => 'Categories_DBObject_RegistryArray',
 
     );
 

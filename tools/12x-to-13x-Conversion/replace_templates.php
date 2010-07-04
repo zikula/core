@@ -27,7 +27,7 @@ function migrate_templates($content)
      $content = str_replace('|pn', '|', $content);
      $content = str_replace('|date_format', '|dateformat', $content);
      $content = str_replace('|varprepfordisplay', '|safetext', $content);
-     $content = str_replace('|varprepforhtmldisplay', '|safehtml', $content);
+     $content = str_replace('|varprephtmldisplay', '|safehtml', $content);
      return $content;
 }
 
