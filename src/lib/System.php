@@ -12,11 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-// Yes/no integer.
-
-// Fake module for config vars
-define('CONFIG_MODULE', '/PNConfig');
-
 // Defines for access levels
 define('ACCESS_INVALID', -1);
 define('ACCESS_NONE', 0);
@@ -28,12 +23,9 @@ define('ACCESS_EDIT', 500);
 define('ACCESS_ADD', 600);
 define('ACCESS_DELETE', 700);
 define('ACCESS_ADMIN', 800);
-
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
-
-include 'lib/debug.php';
 
 /**
  * System class.
