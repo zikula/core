@@ -124,8 +124,8 @@ Zikula.Users.ModifyConfig = {
         var loginViaOptionGroup = $('users_loginviaoption');
         var emailOption = loginViaOptionGroup.select('input[type=radio][value="1"]').pluck('checked').any();
 
+        Zikula.Users.ModifyConfig.save_reg_uniemail = $('reg_uniemailyes').checked;
         if (emailOption) {
-            Zikula.Users.ModifyConfig.save_reg_uniemail = $('reg_uniemailyes').checked;
             $('reg_uniemailyes').checked = true;
             $('reg_uniemailno').disabled = true;
         } else {
