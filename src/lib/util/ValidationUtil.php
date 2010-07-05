@@ -20,17 +20,18 @@ class ValidationUtil
     /**
      * Validate a specific field using the supplied control parameters
      *
-     * @param string  $objectType The string object type.
-     * @param array   $object     The object to validate.
-     * @param string  $field      The field to validate.
-     * @param boolean $required   Whether or not the field is required.
-     * @param string  $cmp_op     The compare operation to perform.
-     * @param string  $cmp_value  The value to compare the supplied field value to. If the value starts with a ':', the argument is used as an object access key.
-     * @param string  $err_msg    The error message to use if the validation fails.
+     * @param string   $objectType The string object type.
+     * @param array    $object     The object to validate.
+     * @param string   $field      The field to validate.
+     * @param boolean  $required   Whether or not the field is required.
+     * @param string   $cmp_op     The compare operation to perform.
+     * @param string   $cmp_value  The value to compare the supplied field value to. If the value starts with a ':', the argument is used as an object access key.
+     * @param string   $err_msg    The error message to use if the validation fails.
+     * @param callable $callable   Callback, any PHP callable.
      *
      * @return boolean A true/false value indicating whether the field validation passed or failed.
      */
-    public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg)
+    public static function validateField($objectType, $object, $field, $required, $cmp_op, $cmp_value, $err_msg, $callback=null)
     {
         if (!is_array($object)) {
             return z_exit(__f('%1s: %2s is not an array.', array('ValidationUtil::validateField', 'object')));
@@ -64,6 +65,10 @@ class ValidationUtil
                 // denotes an object access key
                 $v2 = substr($testval, 1);
                 $testval = $object[$v2];
+            }
+
+            if ($callback) {
+                $postval = call_user_func($callback, $postval);
             }
 
             switch ($cmp_op) {
@@ -116,7 +121,8 @@ class ValidationUtil
      *                               'required'      =>  true/false,
      *                               'cmp_op'        =>  eq/neq/lt/lte/gt/gte/url/email/valuearray/noop,
      *                               'cmp_value'     =>  $value
-     *                               'err_msg'       =>  $errorMessage);
+     *                               'err_msg'       =>  $errorMessage
+     *                               'callback'      =>  $callback - any valid PHP callable);
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
@@ -133,8 +139,9 @@ class ValidationUtil
         $cmp_op  = $validationControl['cmp_op'];
         $cmp_val = $validationControl['cmp_value'];
         $err_msg = $validationControl['err_msg'];
+        $callback = $validationControl['callback'];
 
-        return self::validateField($objType, $object, $field, $req, $cmp_op, $cmp_val, $err_msg);
+        return self::validateField($objType, $object, $field, $req, $cmp_op, $cmp_val, $err_msg, $callback);
     }
 
     /**
@@ -145,7 +152,8 @@ class ValidationUtil
      *                                'required'      =>  true/false,
      *                                'cmp_op'        =>  eq/neq/lt/lte/gt/gte/noop,
      *                                'cmp_value'     =>  $value
-     *                                'err_msg'       =>  $errorMessage), ...);
+     *                                'err_msg'       =>  $errorMessage
+     *                                'callback'      =>  $callback - any valid PHP callable);
      *
      * The noop value for the cmp_op field is only valid if the field is not required.
      *
@@ -207,6 +215,7 @@ class ValidationUtil
             $vc['cmp_op'] = $va[2];
             $vc['cmp_value'] = $va[3];
             $vc['err_msg'] = $va[4];
+            $vc['callback'] = $va[5];
 
             $validationControls[] = $vc;
         }
