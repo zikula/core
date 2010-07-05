@@ -31,11 +31,11 @@ class CategoryUtil
      */
     public static function createCategory ($rootPath, $name, $value=null, $displayname=null, $description=null, $attributes=null)
     {
-        if (!isset($rootPath) || !$rootpath) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'rootpath'));
+        if (!isset($rootPath) || !$rootPath) {
+            return LogUtil::registerError(__f("Error! Received invalid parameter '%s'", 'rootPath'));
         }
         if (!isset($name) || !$name) {
-            return LogUtil (__f("Error! Received invalid parameter '%s'", 'name'));
+            return LogUtil::registerError(__f("Error! Received invalid parameter '%s'", 'name'));
         }
 
         if (!$displayname) {
@@ -49,7 +49,7 @@ class CategoryUtil
 
         $rootCat = self::getCategoryByPath ($rootPath);
         if (!$rootCat) {
-            return LogUtil (__f("Error! Non-existing root category '%s' received", $rootPath));
+            return LogUtil::registerError(__f("Error! Non-existing root category '%s' received", $rootPath));
         }
 
         $checkCat = self::getCategoryByPath ("$rootPath/$name");
