@@ -435,11 +435,6 @@ class Modules_Api_Admin extends Zikula_Api
             $sm = ServiceUtil::getManager();
             $em = EventUtil::getManager();
             if ($oo) {
-                if (!file_exists($file = "$modpath/$osdir/Installer.php")) {
-                    LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-                }
-                include_once $file;
-
                 $className = ucwords($modinfo['name']) . '_Installer';
                 $reflectionInstaller = new ReflectionClass($className);
                 if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
@@ -949,11 +944,6 @@ class Modules_Api_Admin extends Zikula_Api
         $sm = ServiceUtil::getManager();
         $em = EventUtil::getManager();
         if ($oo) {
-            if (!file_exists($file = "$modpath/$osdir/Installer.php")) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
-            include_once $file;
-
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
@@ -1062,11 +1052,6 @@ class Modules_Api_Admin extends Zikula_Api
         $sm = ServiceUtil::getManager();
         $em = EventUtil::getManager();
         if ($oo) {
-            if (!file_exists($file = "$modpath/$osdir/Installer.php")) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
-            include_once $file;
-
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
