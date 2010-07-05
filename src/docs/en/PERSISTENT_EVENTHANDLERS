@@ -32,27 +32,35 @@ abstract class Multihook_NeedleApi
     abstract public function filter($input);
 }
 
-// the following is registered as a persistent listener for 'multihook.get_providers'
-class MyModule_Listeners
-{
-    public static function getProvider(Zikula_Event $event)
+MyModule should now register a persistent listener for 'module.multihook.get_providers'
+using the following code in Installer.php
+
+    EventUtil::registerPersistentModuleHandler('MyModule', 'module.multihook.get_providers', array('MyModule_Listeners', 'getProvider'));
+
+In a separate file lib/MyModule/Listeners.php you place the following code (this is what receives the $events).
+
+    class MyModule_Listeners
     {
-        $event->data = array_merge($event->data, array('MyModule_Needles_Foo'));
-    }
-}
-
-
-// Multihook implementation could look something like
-$event = Zikula_Event('multihook.get_providers');
-$classes = $eventManager->notify($event)->getData();
-
-foreach ($classes as $class) {
-    $needle = new $class();
-    if (!$needle instanceof MultiHook_NeedleApi) {
-        //.. error
+        public static function getProvider(Zikula_Event $event)
+        {
+            $event->data = array_merge($event->data, array('MyModule_Needles_Foo'));
+        }
     }
 
-    $output = $needle->filter($output);
-}
+Back to the Multihook module.  It's implementation could look something like this:
+
+    // create and dispatch the event
+    $event = Zikula_Event('module.multihook.get_providers');
+    $classes = $eventManager->notify($event)->getData();
+
+    // now we got back any results we can process them like this
+    foreach ($classes as $class) {
+        $needle = new $class();
+        if (!$needle instanceof MultiHook_NeedleApi) {
+            //.. error
+        }
+
+        $output = $needle->filter($output);
+    }
 
 
