@@ -227,13 +227,11 @@ class Timer
     /**
      * Return the current microtime.
      *
-     * @return integer The current microtime.
+     * @return float The current microtime.
      */
     public function get_microtime()
     {
-        $tmp = explode(' ', microtime(true));
-        $rt = $tmp[0] + $tmp[1];
-        return $rt;
+        return microtime(true);
     }
 
     /**
