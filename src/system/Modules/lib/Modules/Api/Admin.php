@@ -402,13 +402,13 @@ class Modules_Api_Admin extends Zikula_Api
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
+        if (is_dir("$modpath/$osdir/lib")) {
+            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        }
+
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
-        }
-
-        if (is_dir("$modpath/$osdir/lib")) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
@@ -917,13 +917,13 @@ class Modules_Api_Admin extends Zikula_Api
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
+        if (is_dir("$modpath/$osdir/lib")) {
+            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        }
+
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
-        }
-
-        if (is_dir("$modpath/$osdir/lib")) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
@@ -1024,13 +1024,13 @@ class Modules_Api_Admin extends Zikula_Api
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
+        if (is_dir("$modpath/$osdir/lib")) {
+            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        }
+
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
-        }
-
-        if (is_dir("$modpath/$osdir/lib")) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {

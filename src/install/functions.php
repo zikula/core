@@ -481,8 +481,17 @@ function installmodules($installtype = 'basic', $lang = 'en')
             if ($coremodule != 'Modules' && ModUtil::available($coremodule)) {
                 continue;
             }
+            $modpath = 'system';
+            if (is_dir("$modpath/$coremodule/lib")) {
+                ZLoader::addAutoloader($coremodule, "$modpath/$coremodule/lib");
+            }
+
+            $bootstrap = "$modpath/$coremodule/bootstrap.php";
+            if (file_exists($bootstrap)) {
+               include_once $bootstrap;
+            }
+
             ModUtil::dbInfoLoad($coremodule, $coremodule);
-            require_once "system/$coremodule/Installer.php";
             $className = "{$coremodule}_Installer";
             $instance = new $className($sm);
             if ($instance->install()) {
@@ -545,6 +554,16 @@ function installmodules($installtype = 'basic', $lang = 'en')
             }
         }
         foreach ($modules as $module) {
+            $modpath = 'modules';
+            if (is_dir("$modpath/$module/lib")) {
+                ZLoader::addAutoloader($module, "$modpath/$module/lib");
+            }
+            $bootstrap = "$modpath/$module/bootstrap.php";
+            if (file_exists($bootstrap)) {
+               include_once $bootstrap;
+            }
+
+            
             ZLanguage::bindModuleDomain($module);
 
             $mid = ModUtil::getIdFromName($module);
@@ -566,11 +585,21 @@ function installmodules($installtype = 'basic', $lang = 'en')
         }
     } else {
         foreach ($modules as $module) {
-            ZLanguage::bindModuleDomain($module);
             // sanity check - check if module is already installed
             if (ModUtil::available($module['module'])) {
                 continue;
             }
+            $modpath = 'modules';
+            if (is_dir("$modpath/$module/lib")) {
+                ZLoader::addAutoloader($module, "$modpath/$module/lib");
+            }
+            $bootstrap = "$modpath/$module/bootstrap.php";
+            if (file_exists($bootstrap)) {
+               include_once $bootstrap;
+            }
+
+            
+            ZLanguage::bindModuleDomain($module);
 
             $results[$module['module']] = false;
 
