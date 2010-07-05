@@ -799,7 +799,7 @@ class UserUtil
 
         // If $idfield is email, make sure that we are getting a unique record.
         if ($user && ($idfield == 'email')) {
-            $dbTables = System::dbGetTables();
+            $dbTables = DBUtil::getTables();
             $usersColumn = $dbTables['users_column'];
             $where = "WHERE {$usersColumn['email']} = '{$id}'";
             $ucount = DBUtil::selectObjectCount('users', $where);
