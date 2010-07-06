@@ -23,32 +23,6 @@ function securitycenter_tables()
     // Initialise table array
     $dbtable = array();
 
-    // Log Event Table Name
-    $dbtable['sc_logevent'] = DBUtil::getLimitedTablename('sc_log_event');
-    $dbtable['sc_logevent_column'] = array('id'             => 'lge_id',
-                                           'date'           => 'lge_date',
-                                           'uid'            => 'lge_uid',
-                                           'component'      => 'lge_component',
-                                           'module'         => 'lge_module',
-                                           'type'           => 'lge_type',
-                                           'function'       => 'lge_function',
-                                           'sec_component'  => 'lge_sec_component',
-                                           'sec_instance'   => 'lge_sec_instance',
-                                           'sec_permission' => 'lge_sec_permission',
-                                           'message'        => 'lge_message');
-    $dbtable['sc_logevent_column_def'] = array('id'             => 'I PRIMARY AUTO',
-                                               'date'           => 'T DEFAULT NULL',
-                                               'uid'            => 'I4 DEFAULT NULL',
-                                               'component'      => "C(64) DEFAULT NULL",
-                                               'module'         => 'C(64) DEFAULT NULL',
-                                               'type'           => 'C(64) DEFAULT NULL',
-                                               'function'       => 'C(64) DEFAULT NULL',
-                                               'sec_component'  => 'C(64) DEFAULT NULL',
-                                               'sec_instance'   => 'C(64) DEFAULT NULL',
-                                               'sec_permission' => 'C(64) DEFAULT NULL',
-                                               'message'        => "C(255) DEFAULT ''");
-
-
     // IDS intrusions table
     $dbtable['sc_intrusion'] = DBUtil::getLimitedTablename('sc_intrusion');
     $dbtable['sc_intrusion_column'] = array('id'     => 'ids_id',

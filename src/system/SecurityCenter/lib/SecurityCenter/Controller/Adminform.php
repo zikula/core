@@ -31,7 +31,6 @@ class SecurityCenter_Controller_Adminform extends Zikula_Controller
         }
 
         // get paramters
-        $ot = FormUtil::getPassedValue('ot', 'log_event', 'GETPOST');
         $id = (int)FormUtil::getPassedValue('id', 0, 'GETPOST');
 
         // sanity checkc
@@ -39,7 +38,7 @@ class SecurityCenter_Controller_Adminform extends Zikula_Controller
             return LogUtil::registerError($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }
 
-        $class = 'SecurityCenter_DBObject_'.StringUtil::camelize($ot);
+        $class = 'SecurityCenter_DBObject_Intrusion';
         $object = new $class();
         $data = $object->get($id);
 
@@ -52,6 +51,6 @@ class SecurityCenter_Controller_Adminform extends Zikula_Controller
         }
 
         // redirect back to view function
-        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'viewobj', array('ot' => $ot)));
+        return System::redirect(ModUtil::url('SecurityCenter', 'admin', 'viewidslog'));
     }
 }

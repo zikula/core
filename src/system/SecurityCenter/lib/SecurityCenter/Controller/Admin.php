@@ -564,28 +564,23 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
      * Generic view function - used for log events
      * @return string HTML output string
      */
-    public function viewobj()
+    public function viewidslog()
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
-        $ot = FormUtil::getPassedValue('ot', 'log_event', 'GETPOST');
-        if ($ot == 'intrusion') {
-            $sort = FormUtil::getPassedValue('sort', 'ids_date DESC', 'GETPOST');
-            $filterdefault = array('uid' => null, 'name' => null, 'tag' => null, 'value' => null, 'page' => null, 'ip' => null, 'impact' => null);
-        } else {
-            $sort = FormUtil::getPassedValue('sort', 'lge_date DESC', 'GETPOST');
-            $filterdefault = array('uid' => null, 'component' => null, 'module' => null, 'type' => null);
-        }
+        $sort = FormUtil::getPassedValue('sort', 'ids_date DESC', 'GETPOST');
+        $filterdefault = array('uid' => null, 'name' => null, 'tag' => null, 'value' => null, 'page' => null, 'ip' => null, 'impact' => null);
+
         $filter   = FormUtil::getPassedValue('filter', $filterdefault, 'GETPOST');
         $startnum = (int)FormUtil::getPassedValue('startnum', 0, 'GET');
         $pagesize = (int)$this->getVar('pagesize', 25);
 
 
         // instantiate object, generate where clause and select
-        $class = 'SecurityCenter_DBObject_'.StringUtil::camelize($ot).'Array';
+        $class = 'SecurityCenter_DBObject_IntrusionArray';
         $objArray = new $class();
         $where = $objArray->genFilter($filter);
         $data  = $objArray->get($where, $sort, $startnum, $pagesize);
@@ -593,9 +588,8 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         // Create output object
         $this->view->setCaching(false);
 
-        $this->view->assign('ot', $ot)
-                       ->assign('filter', $filter)
-                       ->assign('objectArray', $data);
+        $this->view->assign('filter', $filter)
+                   ->assign('objectArray', $data);
 
         // Assign the values for the smarty plugin to produce a pager.
         $pager = array();
@@ -605,7 +599,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
                        ->assign('pager', $pager);
 
         // fetch output from template
-        return $this->view->fetch('securitycenter_admin_view_' . DataUtil::formatForOS($ot) . '.tpl');
+        return $this->view->fetch('securitycenter_admin_viewidslog.tpl');
     }
 
     /**

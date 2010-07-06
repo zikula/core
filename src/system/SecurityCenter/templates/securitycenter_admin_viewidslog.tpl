@@ -3,7 +3,7 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View IDS Log"}</div>
     {gt text="All" assign=lblAll}
     <h2>{gt text="View IDS Log"}</h2>
-    <form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot}" method="post" enctype="application/x-www-form-urlencoded">
+    <form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
             <legend>{gt text="Filter"}</legend>
             <label>{gt text="User Name"}</label>
@@ -21,7 +21,7 @@
             <label>{gt text="Impact"}</label>
             {selector_object_array name="filter[impact]" modname="SecurityCenter" class="intrusion" field="impact" displayField="impact" selectedValue=$filter.impact defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
             {if ($filter.uid || $filter.name || $filter.tag || $filter.value || $filter.page || $filter.ip || $filter.impact)}
-            <a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Clear filter" __title="Clear filter"}</a>
+            <a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Clear filter" __title="Clear filter"}</a>
             {/if}
         </fieldset>
     </form>
@@ -29,14 +29,14 @@
     <table class="z-admintable">
         <thead>
             <tr>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="name"}">{gt text="Name"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="tag"}">{gt text="Tag"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="value"}">{gt text="Value"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="page"}">{gt text="Page"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="username"}">{gt text="User Name"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="ip"}">{gt text="IP"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="impact"}">{gt text="Impact"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewobj" ot=$ot sort="date DESC"}">{gt text="Date"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="tag"}">{gt text="Tag"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="value"}">{gt text="Value"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="page"}">{gt text="Page"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="username"}">{gt text="User Name"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
+                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date DESC"}">{gt text="Date"}</a></th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
@@ -52,7 +52,7 @@
                 <td>{$event.ip|safetext}</td>
                 <td>{$event.impact|safetext}</td>
                 <td>{$event.date|safetext}</td>
-                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" ot="intrusion" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
+                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}
             <tr class="z-admintableempty"><td colspan="9">{gt text="No logged intrusions found."}</td></tr>
