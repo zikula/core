@@ -425,3 +425,102 @@ function checkboxswitchdisplaystate(idcheckbox, idcontainer, state)
 {
     return Zikula.checkboxswitchdisplaystate(idcheckbox, idcontainer, state);
 }
+
+
+//http://github.com/kangax/protolicious/blob/master/element.methods.js
+/**
+* Element.getContentWidth(@element) -> Number
+* returns element's "inner" width - without padding/border dimensions
+*
+* $(someElement).getContentWidth(); // 125
+*
+**/
+Element.Methods.getContentWidth = function(element) {
+  return ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']
+    .inject(Element.getWidth(element), function(total, prop) {
+      return total - parseInt(Element.getStyle(element, prop), 10);
+    });
+};
+
+/**
+* Element.getContentHeight(@element) -> Number
+* returns element's "inner" height - without padding/border dimensions
+*
+* $(someElement).getContentHeight(); // 141
+*
+**/
+Element.Methods.getContentHeight = function(element) {
+  return ['paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth']
+    .inject(Element.getHeight(element), function(total, prop) {
+      return total - parseInt(Element.getStyle(element, prop), 10);
+    });
+};
+
+/**
+* Element.setWidth(@element, width) -> @element
+* sets element's width to a specified value
+* or to a value of its content width (if value was not supplied)
+*
+* $(someElement).setWidth();
+* $(someOtherElement).setWidth(100);
+*
+**/
+Element.Methods.setWidth = function(element, width) {
+  return Element.setStyle(element, {
+    width: (Object.isUndefined(width) ? Element.getContentWidth(element) : width) + 'px'
+  });
+};
+
+/**
+* Element.setHeight(@element, height) -> @element
+* sets element's height to a specified value
+* or to a value of its content height (if value was not supplied)
+*
+* $(someElement).setHeight();
+* $(someOtherElement).setHeight(68);
+*
+**/
+Element.Methods.setHeight = function(element, height) {
+  return Element.setStyle(element, {
+    height: (Object.isUndefined(height) ? Element.getContentHeight(element) : height) + 'px'
+  });
+};
+
+
+Element.Methods.getOutlineSize = function(element, type) {
+  type = type ? type.toLowerCase() : 'vertical';
+  var props;
+  switch(type) {
+      case 'vertical':
+      case 'v':
+          props = ['borderTopWidth','borderBottomWidth','marginTop','marginBottom'];
+          break;
+      case 'horizontal':
+      case 'h':
+          props = ['borderLeftWidth','borderRightWidth','marginLeft','marginRight'];
+          break;
+      default:
+          props = [('margin-'+type).camelize(),('border-'+type+'-Width').camelize()];
+  }
+  return props
+    .inject(0, function(total, prop) {
+      return total + parseInt(Element.getStyle(element, prop), 10);
+    });
+};
+Element.addMethods();
+Object.extend(String.prototype, (function() {
+  function toUnits(unit) {
+    return (parseInt(this) || 0) + (unit || 'px');
+  }
+  return {
+    toUnits:         toUnits
+  };
+})());
+Object.extend(Number.prototype, (function() {
+  function toUnits(unit) {
+    return (this.valueOf() || 0) + (unit || 'px');
+  }
+  return {
+    toUnits:         toUnits
+  };
+})());
