@@ -150,8 +150,8 @@ function replace_pnApi($contents)
     'pnthemegetthemestable' => 'ThemeUtil::getThemesTable',
     'pncategory' => 'Categories_DBObject_Category',
     'pncategoryarray' => 'Categories_DBObject_CategoryArray',
-    'pnregistry' => 'Categories_DBObject_Registry',
-    'pnregistryarray' => 'Categories_DBObject_RegistryArray',
+    'pncategoryregistry' => 'Categories_DBObject_Registry',
+    'pncategoryregistryarray' => 'Categories_DBObject_RegistryArray',
 
     );
 
