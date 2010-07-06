@@ -27,10 +27,9 @@ class Theme_Api_Account extends Zikula_Api
         if (System::getVar('theme_change')) {
             // create an array of links to return
             $items['0'] = array('url' => ModUtil::url('Theme', 'user'),
-                    'module' => 'core',
-                    'set' => 'icons/large',
+                    'module' => 'Theme',
                     'title' => $this->__('Theme switcher'),
-                    'icon' => 'package_graphics.gif');
+                    'icon' => 'admin.png');
         }
 
         // Return the items

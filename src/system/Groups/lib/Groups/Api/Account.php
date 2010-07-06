@@ -30,7 +30,7 @@ class Groups_Api_Account extends Zikula_Api
             $items['0'] = array('url'    => ModUtil::url('Groups', 'user'),
                     'module' => 'Groups',
                     'title'  => $this->__('Groups manager'),
-                    'icon'   => 'admin.gif');
+                    'icon'   => 'admin.png');
         }
 
         // Return the items

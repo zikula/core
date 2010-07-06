@@ -35,10 +35,9 @@ class Users_Api_Account extends Zikula_Api
         if ($modvars['changepassword'] == 1) {
             // show edit password link
             $items['1'] = array('url' => ModUtil::url('Users', 'user', 'changePassword'),
-                                'module' => 'core',
-                                'set' => 'icons/large',
+                                'module' => 'Users',
                                 'title' => $this->__('Password changer'),
-                                'icon' => 'password.gif');
+                                'icon' => 'password.png');
         }
 
         if ($modvars['changeemail'] == 1) {
@@ -46,7 +45,7 @@ class Users_Api_Account extends Zikula_Api
             $items['2'] = array('url' => ModUtil::url('Users', 'user', 'changeEmail'),
                                 'module' => 'Users',
                                 'title' => $this->__('E-mail address manager'),
-                                'icon' => 'changemail.gif');
+                                'icon' => 'message.png');
         }
 
         // check if the users block exists
@@ -62,25 +61,22 @@ class Users_Api_Account extends Zikula_Api
 
         if ($found) {
             $items['3'] = array('url' => ModUtil::url('Users', 'user', 'usersBlock'),
-                                'module' => 'core',
-                                'set' => 'icons/large',
+                                'module' => 'Users',
                                 'title' => $this->__('Personal custom block'),
-                                'icon' => 'folder_home.gif');
+                                'icon' => 'folder_home.png');
         }
 
         if (System::getVar('multilingual')) {
             $items['4'] = array('url' => ModUtil::url('Users', 'user', 'changeLang'),
-                                'module' => 'core',
-                                'set' => 'icons/large',
+                                'module' => 'Users',
                                 'title' => $this->__('Language switcher'),
-                                'icon' => 'fonts.gif');
+                                'icon' => 'locale.png');
         }
 
         $items['5'] = array('url' => ModUtil::url('Users', 'user', 'logout'),
-                            'module' => 'core',
-                            'set' => 'icons/large',
+                            'module' => 'Users',
                             'title' => $this->__('Log out'),
-                            'icon' => 'exit.gif');
+                            'icon' => 'exit.png');
 
         // Return the items
         return $items;

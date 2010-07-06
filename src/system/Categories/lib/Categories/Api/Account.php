@@ -31,10 +31,9 @@ class Categories_Api_Account extends Zikula_Api
                 SessionUtil::setVar('categories_referer', $referer);
             }
             $items['0'] = array('url'     => ModUtil::url('Categories', 'user', 'edituser'),
-                    'module'  => 'core',
-                    'set'     => 'icons/large',
+                    'module'  => 'Categories',
                     'title'   => $this->__('Categories manager'),
-                    'icon'    => 'mydocuments.gif');
+                    'icon'    => 'admin.png');
         }
 
         // Return the items
