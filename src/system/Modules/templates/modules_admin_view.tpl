@@ -41,9 +41,7 @@
             {section name=modules loop=$modules}
             <tr class="{cycle values="z-odd,z-even"}">
                 <td>
-                    {if $modules[modules].modinfo.admin_capable and $modules[modules].modinfo.state eq 3 and $modules[modules].modinfo.type eq 1}
-                    <a title="{gt text="Go to the module's administration panel"}" href="admin.php?module={$modules[modules].modinfo.name|safetext}">{$modules[modules].modinfo.name|safetext}</a>
-                    {elseif $modules[modules].modinfo.admin_capable and $modules[modules].modinfo.state eq 3}
+                    {if isset($modules[modules].modinfo.capabilities.admin) and $modules[modules].modinfo.state eq 3}
                     <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin}">{$modules[modules].modinfo.name|safetext}</a>
                     {else}
                     {$modules[modules].modinfo.name|safetext}

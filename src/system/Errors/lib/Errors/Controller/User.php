@@ -4,7 +4,6 @@
  *
  * @copyright (c) 2001, Zikula Development Team
  * @link http://www.zikula.org
- * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Errors
@@ -16,8 +15,6 @@ class Errors_Controller_User extends Zikula_Controller
      * Display an error
      * This function displays a generic error form
      * The template used is based on the error type passed
-     * @author Brian Lindner
-     * @author Brook Humphrey
      * @param string $args['type'] error type ''404' or 'module'
      * @param string $args['message'] custom error message
      * @return string HTML string
@@ -50,11 +47,11 @@ class Errors_Controller_User extends Zikula_Controller
 
         // assign the document info
         $this->view->assign('reportlevel', System::getVar('reportlevel'))
-                       ->assign('currenturi', System::getCurrentUri())
-                       ->assign('localreferer', System::localReferer())
-                       ->assign('sitename', System::getVar('sitename'))
-                       ->assign('reportlevel', System::getVar('reportlevel'))
-                       ->assign('funtext', System::getVar('funtext'));
+                   ->assign('currenturi', System::getCurrentUri())
+                   ->assign('localreferer', System::localReferer())
+                   ->assign('sitename', System::getVar('sitename'))
+                   ->assign('reportlevel', System::getVar('reportlevel'))
+                   ->assign('funtext', System::getVar('funtext'));
 
         // assign the list of registered errors
         $this->view->assign('messages', LogUtil::getErrorMessages());

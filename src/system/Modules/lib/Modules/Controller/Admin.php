@@ -410,7 +410,7 @@ class Modules_Controller_Admin extends Zikula_Controller
 
                 // get new version number for ModUtil::STATE_UPGRADED
                 if($mod['state'] == ModUtil::STATE_UPGRADED) {
-                    $rootdirs = array(3 => 'system', 2 => 'modules', 7 => 'apps');
+                    $rootdirs = array(ModUtil::TYPE_SYSTEM => 'system', ModUtil::TYPE_MODULE => 'modules');
                     $modkey = $rootdirs[$mod['type']].'/'.$mod['directory'];
                     $mod['newversion'] = $filemodules[$modkey]['version'];
                 }

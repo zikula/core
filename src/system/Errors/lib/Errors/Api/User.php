@@ -4,11 +4,9 @@
  *
  * @copyright (c) 2001, Zikula Development Team
  * @link http://www.zikula.org
- * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
  * @package Zikula_System_Modules
  * @subpackage Errors
- * @license http://www.gnu.org/copyleft/gpl.html
  */
 
 class Errors_Api_User extends Zikula_Api
@@ -33,10 +31,8 @@ class Errors_Api_User extends Zikula_Api
         $headers = "ATTN: Fatal Error at $doc (".System::serverGetVar('REDIRECT_STATUS').")\n";
         $headers .= "From: $sitename Error Tools $adminmail\n";
         $headers .= "X-Sender: <$notify_from>\n";
-        $headers .= "X-Mailer: PHP Error Tools by WebMedic\n";
         $headers .= "X-Mailer-Version: ".System::VERSION_ID." ".System::VERSION_NUM."\n";
         $headers .= "X-Priority: 1\n";
-        $headers .= "Get-Script-At: <http://www.zikula.org>\n";
         $body = "Webmaster, the following item was not found on your website:\n\n";
         $body .= " at ".$errortime;
         $body .= "WEBSITE\n-- ".System::serverGetVar('SERVER_NAME').':'.System::serverGetVar('SERVER_PORT')."\n\n";

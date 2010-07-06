@@ -4,9 +4,7 @@
  *
  * @copyright (c) 2001, Zikula Development Team
  * @link http://www.zikula.org
- * @version $Id$
  * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @author Jim McDonald
  * @package Zikula_System_Modules
  * @subpackage Modules
  */
@@ -25,7 +23,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * update module information
-     * @author Jim McDonald
      * @param int $args ['id'] the id number of the module to update
      * @param string $args ['displayname'] the new display name of the module
      * @param string $args ['description'] the new description of the module
@@ -76,7 +73,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * update module hook information
-     * @author Jim McDonald
      * @param int $args ['id'] the id number of the module to update
      * @return bool true on success, false on failure
      */
@@ -130,8 +126,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * update module hook information, extended version
-     * @author Jim McDonald
-     * @author Frank Schummertz
      * @param int $args ['id'] the id number of the module to update
      * @return bool true on success, false on failure
      */
@@ -205,7 +199,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * obtain list of modules
-     * @author Jim McDonald
      * @return array associative array of known modules
      */
     public function listmodules($args)
@@ -285,12 +278,15 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
 
+        foreach ($objArray as $key => $object) {
+            $objArray[$key]['capabilities'] = unserialize($object['capabilities']);
+        }
+
         return $objArray;
     }
 
     /**
      * set the state of a module
-     * @author Jim McDonald
      * @param int $args ['id'] the module id
      * @param int $args ['state'] the state
      * @return bool true if successful, false otherwise
@@ -369,7 +365,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * remove a module
-     * @author Jim McDonald
      * @param int $args ['id'] the id of the module
      * @param bool $args ['removedependents'] remove any modules dependent on this module (default: false)
      * @param int $args['interactive_remove'] true if in interactive upgrade mode, otherwise false
@@ -507,8 +502,6 @@ class Modules_Api_Admin extends Zikula_Api
      * array with all (potential) modules found.
      * This information is used to regenerate the module list.
      *
-     * @author Jim McDonald
-     * @author J?rg Napp
      * @return array Array of modules found in the file system
      */
     public function getfilemodules($args)
@@ -524,34 +517,16 @@ class Modules_Api_Admin extends Zikula_Api
         $filemodules = array();
 
         // set the paths to search
-        $rootdirs = array('system' => 3, 'modules' => 2);
+        $rootdirs = array('system' => ModUtil::TYPE_SYSTEM, 'modules' => ModUtil::TYPE_MODULE);
 
         foreach ($rootdirs as $rootdir => $moduletype) {
             if (is_dir($rootdir)) {
                 $dirs = FileUtil::getFiles($rootdir, false, true, null, 'd');
 
                 foreach ($dirs as $dir) {
-                    $name = $dir;
-                    // Work out if admin-capable
-                    if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php") || file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
-                        $adminCapable = 1;
-                        $modtype = $moduletype;
-                    } else {
-                        $adminCapable = 0;
-                    }
-
-                    // Work out if user-capable
-                    if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php") || file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
-                        $userCapable = 1;
-                        if (!isset($modtype)) {
-                            $modtype = $moduletype;
-                        }
-                    } else {
-                        $userCapable = 0;
-                    }
-
-                    if (empty($modtype)) {
-                        $modtype = $moduletype;
+                    // register autoloader
+                    if (is_dir("$rootdir/$dir/lib")) {
+                        ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
                     }
 
                     // loads the gettext domain for 3rd party modules
@@ -562,25 +537,60 @@ class Modules_Api_Admin extends Zikula_Api
                         ZLanguage::bindModuleDomain($dir);
                     }
 
-                    $file1 = "$rootdir/$dir/version.php";
-                    $file2 = "$rootdir/$dir/pnversion.php";
-                    if (file_exists($file1)) {
-                        $file = $file1;
-                    } elseif (file_exists($file2)) {
-                        $file = $file2;
+                    $modversion = array();
+                    $modversion['capabilities'] = array();
+                    $class = "{$dir}_Version";
+                    if (class_exists($class)) {
+                        $modversion = new $class();
+                    } else {
+                        require "$rootdir/$dir/pnversion.php";
                     }
 
-                    if (!include ($file)) {
-                        LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-                    }
+                    $name = $dir;
 
                     // Get the module version
-                    $modversion['version'] = '0';
-                    $modversion['description'] = '';
-                    $modversion['name'] = preg_replace('/_/', ' ', $name);
+                    if (!$modversion instanceof Zikula_Version) {
+                        if (isset($modversion['profile']) && $modversion['profile']) {
+                            $modversion['capabilities']['profile'] = '1.0';
+                        }
+                        if (isset($modversion['message']) && $modversion['message']) {
+                            $modversion['capabilities']['message'] = '1.0';
+                        }
+                        // Work out if admin-capable
+                        if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
+                            $modversion['capabilities']['admin'] = '1.0';
+                            $modtype = $moduletype;
+                        }
 
-                    if (!include ($file)) {
-                        LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
+                        // Work out if user-capable
+                        if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
+                            $modversion['capabilities']['user'] = '1.0';
+                            if (!isset($modtype)) {
+                                $modtype = $moduletype;
+                            }
+                        }
+                    } else {
+                        // Work out if admin-capable
+                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
+                            $caps = $modversion['capabilities'];
+                            $caps['admin'] = array('version' => '1.0');
+                            $modversion['capabilities'] = $caps;
+                            $modtype = $moduletype;
+                        }
+
+                        // Work out if user-capable
+                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
+                            $caps = $modversion['capabilities'];
+                            $caps['user'] = array('version' => '1.0');
+                            $modversion['capabilities'] = $caps;
+                            if (!isset($modtype)) {
+                                $modtype = $moduletype;
+                            }
+                        }
+                    }
+
+                    if (empty($modtype)) {
+                        $modtype = $moduletype;
                     }
 
                     $version = $modversion['version'];
@@ -592,35 +602,13 @@ class Modules_Api_Admin extends Zikula_Api
                         $displayname = $modversion['name'];
                     }
 
-                    $profileCapable = (isset($modversion['profile']) && $modversion['profile']);
-                    $messageCapable = (isset($modversion['message']) && $modversion['message']);
-
-                    // get the correct regid
-                    if (isset($modversion['id']) && !empty($modversion['id'])) {
-                        $regid = (int) $modversion['id'];
-                    } else {
-                        $regid = 0;
-                    }
+                    $capabilities = serialize($modversion['capabilities']);
 
                     // bc for urls
                     if (isset($modversion['url']) && !empty($modversion['url'])) {
                         $url = $modversion['url'];
                     } else {
                         $url = $displayname;
-                    }
-
-                    // bc for core_min
-                    if (isset($modversion['core_min']) && !empty($modversion['core_min'])) {
-                        $core_min = $modversion['core_min'];
-                    } else {
-                        $core_min = '';
-                    }
-
-                    // bc for core_max
-                    if (isset($modversion['core_max']) && !empty($modversion['core_max'])) {
-                        $core_max = $modversion['core_max'];
-                    } else {
-                        $core_max = '';
                     }
 
                     if (isset($modversion['securityschema']) && is_array($modversion['securityschema'])) {
@@ -638,63 +626,35 @@ class Modules_Api_Admin extends Zikula_Api
                         $filemodules["$rootdir/$dir"] = array(
                                 'directory'       => $dir,
                                 'name'            => $name,
-                                'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
                                 'type'            => $modtype,
                                 'displayname'     => $displayname,
                                 'url'             => $url,
-                                'regid'           => $regid,
                                 'version'         => $version,
+                                'capabilities'    => $capabilities,
                                 'description'     => $description,
-                                'admin_capable'   => $adminCapable,
-                                'user_capable'    => $userCapable,
-                                'profile_capable' => $profileCapable,
-                                'message_capable' => $messageCapable,
-                                'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
-                                'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
-                                'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
-                                'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
-                                'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
-                                'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
-                                'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
                                 'securityschema'  => $securityschema,
                                 'moddependencies' => $moddependencies,
-                                'core_min'        => $core_min,
-                                'core_max'        => $core_max
                         );
                     } else {
                         if ($name == $args['name']) {
                             $filemodules = array(
                                     'directory'       => $dir,
                                     'name'            => $name,
-                                    'oldnames'        => (isset($modversion['oldnames']) ? $modversion['oldnames'] : array()),
                                     'type'            => $modtype,
                                     'displayname'     => $displayname,
                                     'url'             => $url,
-                                    'regid'           => $regid,
                                     'version'         => $version,
+                                    'capabilities'    => $capabilities,
                                     'description'     => $description,
-                                    'admin_capable'   => $adminCapable,
-                                    'user_capable'    => $userCapable,
-                                    'profile_capable' => $profileCapable,
-                                    'message_capable' => $messageCapable,
-                                    'official'        => (isset($modversion['official']) ? $modversion['official'] : 0),
-                                    'author'          => (isset($modversion['author']) ? $modversion['author'] : ''),
-                                    'contact'         => (isset($modversion['contact']) ? $modversion['contact'] : ''),
-                                    'credits'         => (isset($modversion['credits']) ? $modversion['credits'] : ''),
-                                    'help'            => (isset($modversion['help']) ? $modversion['help'] : ''),
-                                    'changelog'       => (isset($modversion['changelog']) ? $modversion['changelog'] : ''),
-                                    'license'         => (isset($modversion['license']) ? $modversion['license'] : ''),
                                     'securityschema'  => $securityschema,
                                     'moddependencies' => $moddependencies,
-                                    'core_min'        => $core_min,
-                                    'core_max'        => $core_max
                             );
                         }
                     }
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in
-                    // the next pnversion.php files to be read
+                    // the next version files to be read
                     unset($modversion);
                     unset($modtype);
                 }
@@ -787,22 +747,6 @@ class Modules_Api_Admin extends Zikula_Api
 
         // see if we have any module that is not compatible with corrent version of the core. In this case set it as innactive
         $version = str_replace('-dev', '', System::VERSION_NUM);
-        foreach ($filemodules as $modinfo) {
-            if ($modinfo['core_min'] != '' && $modinfo['core_min'] > $version || $modinfo['core_max'] != '' && $modinfo['core_max'] < $version) {
-                if ($dbmodules[$modinfo['name']]['state'] != '' && $dbmodules[$modinfo['name']]['state'] < 10) {
-                    // set the module as invalid version increasing the state value with 10 in order to recover the previous state in case the module files were compatible again
-                    $this->setstate(array('id'   => $dbmodules[$modinfo['name']]['id'],
-                            'state' => $dbmodules[$modinfo['name']]['state'] + 10));
-                }
-            } else {
-                // set the previous state for the module
-                if (isset($dbmodules[$modinfo['name']]) && $dbmodules[$modinfo['name']]['state'] > 10) {
-                    // set the module as valid preserving the previous state
-                    $this->setstate(array('id'   => $dbmodules[$modinfo['name']]['id'],
-                            'state' => $dbmodules[$modinfo['name']]['state'] - 10));
-                }
-            }
-        }
 
         // See if we have lost any modules since last generation
         foreach ($dbmodules as $name => $modinfo) {
@@ -841,11 +785,7 @@ class Modules_Api_Admin extends Zikula_Api
             if (empty($dbmodules[$name])) {
                 // New module
                 // RNG: set state to invalid if we can't determine an ID
-                if ($modinfo['core_min'] != '' && $modinfo['core_min'] > $version || $modinfo['core_max'] != '' && $modinfo['core_max'] < $version) {
-                    $modinfo['state'] = ModUtil::STATE_UNINITIALISED + 10;
-                } else {
-                    $modinfo['state'] = ModUtil::STATE_UNINITIALISED;
-                }
+                $modinfo['state'] = ModUtil::STATE_UNINITIALISED;
                 if (!$modinfo['version']) {
                     $modinfo['state'] = ModUtil::STATE_INVALID;
                 }
@@ -894,7 +834,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * initialise a module
-     * @author Jim McDonald, changed by Frank Schummertz for interactive init
      * @param int args['id'] module ID
      * @param int args['interactive_mode'] boolean that tells us if we are in interactive mode or not
      * @return bool true on success, false on failure or void when we bypassed the installation
@@ -1002,7 +941,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * upgrade a module
-     * @author Jim McDonald
      * @param int $args['id'] module ID
      * @param int $args['interactive_upgrade'] true if in interactive upgrade mode, otherwise false
      * @return bool true on success, false on failure
@@ -1097,15 +1035,14 @@ class Modules_Api_Admin extends Zikula_Api
             }
         }
         $modversion['version'] = '0';
-        $file1 = "$modpath/$osdir/version.php";
-        $file2 = "$modpath/$osdir/pnversion.php";
-        if (file_exists($file1)) {
-            $file = $file1;
-        } elseif (file_exists($file2)) {
-            $file = $file2;
-        }
 
-        include $file;
+        // register autoloader
+        $class = "{$osdir}_Version";
+        if (class_exists($class)) {
+            $modversion = new $class();
+        } else {
+            require "$modpath/$osdir/pnversion.php";
+        }
 
         $version = $modversion['version'];
 
@@ -1176,8 +1113,6 @@ class Modules_Api_Admin extends Zikula_Api
 
     /**
      * utility function to count the number of items held by this module
-     * @author Mark West
-     * @since 1.16
      * @returns integer number of items held by this module
      */
     public function countitems($args)
@@ -1411,7 +1346,6 @@ class Modules_Api_Admin extends Zikula_Api
     /**
      * Get a extended list of hooks for a given module
      *
-     * @author Frank Schummertz
      * @param $args['modid'] the modules id
      * @return array array of hooks attached the module
      */

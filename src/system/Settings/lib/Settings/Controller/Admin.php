@@ -41,15 +41,7 @@ class Settings_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         // get all config vars and assign them to the template
-        $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
-        // since config vars are serialised and module vars aren't we
-        // need to unserialise each config var in turn before assigning
-        // them to the template
-        foreach ($configvars as $key => $configvar) {
-            $configvars[$key] = $configvar;
-        }
-
-        $this->view->assign('settings', $configvars);
+        $this->view->assign('settings', ModUtil::getVar(ModUtil::CONFIG_MODULE));
 
         return $this->view->fetch('settings_admin_modifyconfig.tpl');
     }

@@ -70,7 +70,10 @@ class Modules_Installer extends Zikula_Installer
             case '3.7':
                 // legacy is no longer supported
                 System::delVar('loadlegacy');
+                DBUtil::dropColumn('modules', array('pn_profile_capable', 'pn_message_capable', 'pn_admin_capable', 'pn_user_capable', 'pn_official', 'pn_regid', 'pn_credits', 'pn_changelog', 'pn_help', 'pn_license', 'pn_author'));
+            case '3.7.3':
                 // future upgrade routines
+
         }
 
         // Update successful
