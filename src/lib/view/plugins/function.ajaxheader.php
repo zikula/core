@@ -50,6 +50,7 @@ function smarty_function_ajaxheader($params, &$view)
     $filename      = (isset($params['filename']))        ? $params['filename'] : 'Zikula.js';
     $validation    = (isset($params['validation']))      ? true      : false;
     $lightbox      = (isset($params['lightbox']))        ? true      : false;
+    $ui            = (isset($params['ui']))              ? true      : false;
     $imageviewer   = (isset($params['imageviewer']))     ? true      : false;
 
     // create an empty return
@@ -60,6 +61,10 @@ function smarty_function_ajaxheader($params, &$view)
 
     if ($validation) {
         $scripts[] = 'javascript/ajax/validation.min.js';
+    }
+    if ($ui) {
+        $scripts[] = 'livepipe';
+        $scripts[] = 'javascript/helpers/Zikula.UI.js';
     }
 
     if ($lightbox) {
