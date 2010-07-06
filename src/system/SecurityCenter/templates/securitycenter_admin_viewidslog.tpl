@@ -3,6 +3,7 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View IDS Log"}</div>
     {gt text="All" assign=lblAll}
     <h2>{gt text="View IDS Log"}</h2>
+    
     <form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
             <legend>{gt text="Filter"}</legend>
@@ -46,7 +47,7 @@
             <tr class="{cycle values="z-odd,z-even"}">
                 <td>{$event.name|safetext}</td>
                 <td>{$event.tag|safetext}</td>
-                <td>{$event.value|safetext}</td>
+                <td>{$event.value|htmlentities}</td>
                 <td>{$event.page|safetext}</td>
                 <td>{$event.username|safetext}</td>
                 <td>{$event.ip|safetext}</td>

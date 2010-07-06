@@ -218,12 +218,13 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
 
             // log details to database
             foreach ($result as $event) {
+                
                 $eventName = $event->getName();
-                $malVarName = substr($eventName, 2);
+                $malVar = explode(".", $eventName, 2);
 
                 $newIntrusionItem = array(
                         'name'    => $eventName,
-                        'tag'     => $malVarName,
+                        'tag'     => $malVar[1],
                         'value'   => $event->getValue(),
                         'page'    => $currentPage,
                         'uid'     => $currentUid,
