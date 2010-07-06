@@ -29,8 +29,14 @@ $GLOBALS['ZConfig']['System']['language_bc'] = false;
 
 include 'config/config.php';
 $connection = Doctrine_Manager::connection($GLOBALS['ZConfig']['DBInfo']['default']['dsn'], 'upgrader');
-$tables = upgrade_getTables($connection);
 
+$columns = upgrade_getColumnsForTable($connection, 'modules');
+if (!isset($columns['capabilities'])) {
+    ModUtil::dbInfoLoad('Modules', 'Modules');
+    DBUtil::changeTable('modules');
+}
+
+$tables = upgrade_getTables($connection);
 if (!in_array('users_registration', $tables)) {
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
 }
@@ -432,4 +438,21 @@ function upgrade_getTables($connection)
         $tables[$key] = substr($value, $prefixLen, strlen($value));
     }
     return $tables;
+}
+
+/**
+ * Get tables in database from current connection.
+ *
+ * @param object $connection PDO connection.
+ *
+ * @return array
+ */
+function upgrade_getColumnsForTable($connection, $tableName)
+{
+    $tables = $connection->import->listTables();
+    if (!$tables) {
+        die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
+    }
+
+    return DBConnectionStack::getConnection()->import->listTableColumns($GLOBALS['ZConfig']['System']['prefix'] . "_$tableName");
 }
