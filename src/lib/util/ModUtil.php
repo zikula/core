@@ -442,31 +442,52 @@ class ModUtil
     /**
      * The getTypeMods method gets a list of modules by module type.
      *
-     * @param string $type The module type to get (either 'user' or 'admin') (optional) (default='user').
+     * @param string $capability The module type to get (either 'user' or 'admin') (optional) (default='user').
      *
      * @return array An array of module information arrays.
      */
-    public static function getTypeMods($type = 'user')
+    public static function getModulesCapableOf($capability = 'user')
     {
-        if ($type != 'user' && $type != 'admin' && $type != 'profile' && $type != 'message') {
-            $type = 'user';
-        }
-
         static $modcache = array();
 
-        if (!isset($modcache[$type]) || !$modcache[$type]) {
-            $modcache[$type] = array();
-            $cap  = $type . '_capable';
+        if (!isset($modcache[$capability]) || !$modcache[$capability]) {
+            $modcache[$capability] = array();
             $mods = self::getAllMods();
-            $ak   = array_keys($mods);
-            foreach ($ak as $k) {
-                if ($mods[$k][$cap] == '1') {
-                    $modcache[$type][] = $mods[$k];
+            foreach ($mods as $key => $mod) {
+                if (isset($mod['capabilities'][$capability])) {
+                    $modcache[$capability][] = $mods[$key];
                 }
             }
         }
 
-        return $modcache[$type];
+        return $modcache[$capability];
+    }
+
+    /**
+     * @deprecated
+     * @see ModUtil::getModulesCapableOf()
+     */
+    public static function getTypeMods($type = 'user')
+    {
+        return self::getModulesCapableOf($type);
+    }
+
+    public static function isCapable($module, $capability)
+    {
+        $modinfo = self::getInfoFromName($module);
+        if (!$modinfo) {
+            return false;
+        }
+        return (bool)array_key_exists($capability, $modinfo['capabilities']);
+    }
+
+    public static function getCapabilitiesOf($module)
+    {
+        $modules = self::getAllMods();
+        if (array_key_exists($module, $modules)) {
+            return $module['capabilities'];
+        }
+        return false;
     }
 
     /**
@@ -488,6 +509,10 @@ class ModUtil
             $modsarray = DBUtil::selectObjectArray('modules', $where, $orderBy);
             if ($modsarray === false) {
                 return false;
+            }
+            foreach ($modsarray as $key => $mod) {
+                $capabilities = unserialize($mod['capabilities']);
+                $modsarray[$key]['capabilities'] = $capabilities;
             }
         }
 
