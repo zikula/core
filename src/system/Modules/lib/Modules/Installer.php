@@ -107,7 +107,6 @@ class Modules_Installer extends Zikula_Installer
     public function defaultdata()
     {
         $modversion = array();
-        include 'version.php';
         // modules module
         $modversion['name']          = 'Modules';
         $modversion['type']          = ModUtil::TYPE_SYSTEM;
@@ -115,10 +114,7 @@ class Modules_Installer extends Zikula_Installer
         $modversion['description']   = __('Provides support for modules, and incorporates an interface for adding, removing and administering core system modules and add-on modules.');
         //! module name that appears in URL
         $modversion['url']            = __('modules');
-        $modversion['regid']         = 1;
         $modversion['directory']     = 'Modules';
-        $modversion['admin_capable'] = 1;
-        $modversion['user_capable']  = 0;
         $modversion['state']         = ModUtil::STATE_ACTIVE;
 
         DBUtil::insertObject($modversion, 'modules');
