@@ -167,3 +167,4 @@ New default pager style (Issue #2264).
 Streamlined user frontend of Themes module (Issue #2279).
 Added Upgrade All options, and Module API to upgrade all modules with one click.  This will work for all non-complicated upgrades of Core also.
 Fixed LogUtil errors in CategoryUtil, Issue #2276 (patch by Craig Heydenburg).
+Admin icons update of the system modules (Issue #2300).
