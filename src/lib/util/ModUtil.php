@@ -402,6 +402,9 @@ class ModUtil
     /**
      * The getUserMods method gets a list of user modules.
      *
+     * @deprecated
+     * @see ModUtil::getModulesCapableOf()
+     *
      * @return array An array of module information arrays.
      */
     public static function getUserMods()
@@ -411,6 +414,9 @@ class ModUtil
 
     /**
      * The getProfileMods method gets a list of profile modules.
+     *
+     * @deprecated
+     * @see ModUtil::getModulesCapableOf()
      *
      * @return array An array of module information arrays.
      */
@@ -431,6 +437,9 @@ class ModUtil
 
     /**
      * The getAdminMods method gets a list of administration modules.
+     *
+     * @deprecated
+     * @see ModUtil::getModulesCapableOf()
      *
      * @return array An array of module information arrays.
      */
@@ -464,6 +473,8 @@ class ModUtil
     }
 
     /**
+     * Get mod types.
+     *
      * @deprecated
      * @see ModUtil::getModulesCapableOf()
      */
