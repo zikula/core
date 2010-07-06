@@ -3,7 +3,10 @@
     <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View IDS Log"}</div>
     {gt text="All" assign=lblAll}
     <h2>{gt text="View IDS Log"}</h2>
-    
+    <ul class="z-menulinks">
+        <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}">{gt text="Export log to csv"}</a></li>
+        <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}">{gt text="Purge the log"}</a></li>
+    </ul>
     <form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
             <legend>{gt text="Filter"}</legend>
@@ -53,7 +56,7 @@
                 <td>{$event.ip|safetext}</td>
                 <td>{$event.impact|safetext}</td>
                 <td>{$event.date|safetext}</td>
-                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="delete" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
+                <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
             {foreachelse}
             <tr class="z-admintableempty"><td colspan="9">{gt text="No logged intrusions found."}</td></tr>

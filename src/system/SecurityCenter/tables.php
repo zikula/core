@@ -25,25 +25,25 @@ function securitycenter_tables()
 
     // IDS intrusions table
     $dbtable['sc_intrusion'] = DBUtil::getLimitedTablename('sc_intrusion');
-    $dbtable['sc_intrusion_column'] = array('id'     => 'ids_id',
-                                           'name'   => 'ids_name',
-                                           'tag'    => 'ids_tag',
-                                           'value'  => 'ids_value',
-                                           'page'   => 'ids_page',
-                                           'uid'    => 'ids_uid',
-                                           'ip'     => 'ids_ip',
-                                           'impact' => 'ids_impact',
-                                           'date'   => 'ids_date');
+    $dbtable['sc_intrusion_column'] = array('id'        => 'ids_id',
+                                            'name'      => 'ids_name',
+                                            'tag'       => 'ids_tag',
+                                            'value'     => 'ids_value',
+                                            'page'      => 'ids_page',
+                                            'uid'       => 'ids_uid',
+                                            'ip'        => 'ids_ip',
+                                            'impact'    => 'ids_impact',
+                                            'date'      => 'ids_date');
 
-    $dbtable['sc_intrusion_column_def'] = array('id'     => 'I PRIMARY AUTO',
-                                               'name'   => 'C(128) NOTNULL DEFAULT \'\'',
-                                               'tag'    => 'C(40) DEFAULT NULL',
-                                               'value'  => 'X NOTNULL',
-                                               'page'   => 'X NOTNULL', // C(255)
-                                               'uid'    => 'I4 DEFAULT NULL',
-                                               'ip'     => 'C(40) NOTNULL DEFAULT \'\'', // C(15)
-                                               'impact' => 'I4 NOTNULL DEFAULT \'0\'',
-                                               'date'   => 'T NOTNULL');
+    $dbtable['sc_intrusion_column_def'] = array('id'        => 'I PRIMARY AUTO',
+                                                'name'      => 'C(128) NOTNULL DEFAULT \'\'',
+                                                'tag'       => 'C(40) DEFAULT NULL',
+                                                'value'     => 'X NOTNULL',
+                                                'page'      => 'X NOTNULL', // C(255)
+                                                'uid'       => 'I4 DEFAULT NULL',
+                                                'ip'        => 'C(40) NOTNULL DEFAULT \'\'', // C(15)
+                                                'impact'    => 'I4 NOTNULL DEFAULT \'0\'',
+                                                'date'      => 'T NOTNULL');
 
     // Return the table information
     return $dbtable;

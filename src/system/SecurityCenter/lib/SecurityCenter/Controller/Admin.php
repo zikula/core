@@ -561,7 +561,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Generic view function - used for log events
+     * Function to view ids log events
      * @return string HTML output string
      */
     public function viewidslog()
@@ -577,7 +577,6 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         $filter   = FormUtil::getPassedValue('filter', $filterdefault, 'GETPOST');
         $startnum = (int)FormUtil::getPassedValue('startnum', 0, 'GET');
         $pagesize = (int)$this->getVar('pagesize', 25);
-
 
         // instantiate object, generate where clause and select
         $class = 'SecurityCenter_DBObject_IntrusionArray';
@@ -595,11 +594,62 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         $pager = array();
         $pager['numitems']     = $objArray->getCount($where);
         $pager['itemsperpage'] = $pagesize;
+
         $this->view->assign('startnum', $startnum)
-                       ->assign('pager', $pager);
+                   ->assign('pager', $pager);
 
         // fetch output from template
         return $this->view->fetch('securitycenter_admin_viewidslog.tpl');
+    }
+
+    /**
+     * export ids log
+     *
+     */
+    public function exportidslog()
+    {
+        // Security check
+        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        $sort = 'ids_date DESC';
+
+        // instantiate object, generate where clause and select
+        $class = 'SecurityCenter_DBObject_IntrusionArray';
+        $objArray = new $class();
+
+        $data  = $objArray->get('', $sort);
+
+        // Create output object
+        $this->view->setCaching(false);
+
+        $this->view->assign('objectArray', $data);
+
+        // fetch output from template
+        $output = $this->view->fetch('securitycenter_admin_exportidslog.tpl');
+
+        return $output;
+    }
+
+    /**
+     * export ids log
+     *
+     */
+    public function purgeidslog()
+    {
+        // Security check
+        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError();
+        }
+
+        // Create output object
+        $this->view->setCaching(false);
+
+        // fetch output from template
+        $output = $this->view->fetch('securitycenter_admin_purgeidslog.tpl');
+
+        return $output;
     }
 
     /**

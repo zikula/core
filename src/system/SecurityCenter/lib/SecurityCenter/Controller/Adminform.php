@@ -16,9 +16,9 @@
 class SecurityCenter_Controller_Adminform extends Zikula_Controller
 {
     /**
-     * Generic delete function for object model
+     * Function to delete an ids log entry
      */
-    public function delete()
+    public function deleteidsentry()
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
