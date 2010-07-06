@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function call hooks
+ * Zikula_View function call hooks
  *
  * This function calls a specific module function.  It returns whatever the return
  * value of the resultant function is if it succeeds.
@@ -36,12 +36,12 @@
  * {modcallhooks hookobject='item' hookaction='modify' hookid=$tid $modname='ThisModule' $objectid=$tid}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.modcallhooks.php::smarty_function_modcallhooks()
  * @return string The results of the module function.
  */
-function smarty_function_modcallhooks($params, &$smarty)
+function smarty_function_modcallhooks($params, &$view)
 {
     $assign     = isset($params['assign'])     ? $params['assign']        : null;
     $hookid     = isset($params['hookid'])     ? $params['hookid']        : '';
@@ -61,18 +61,18 @@ function smarty_function_modcallhooks($params, &$smarty)
     unset($params['args']);
 
     if (!$hookobject) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookobject')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookobject')));
         return false;
     }
     if (!$hookaction) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookaction')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookaction')));
         return false;
     }
     if (!$hookid) {
         $hookid = '';
     }
-    if (is_null($subject) && isset($smarty->controller)) {
-        $subject = $smarty->controller;
+    if (is_null($subject) && isset($view->controller)) {
+        $subject = $view->controller;
     }
 
     // create returnurl if not supplied (= this page)
@@ -89,7 +89,7 @@ function smarty_function_modcallhooks($params, &$smarty)
     $result = ModUtil::callHooks($hookobject, $hookaction, $hookid, $params, $implode, $subject, $args);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

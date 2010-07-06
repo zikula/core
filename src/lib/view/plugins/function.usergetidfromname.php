@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get the user id for a given user.
+ * Zikula_View function to get the user id for a given user.
  *
  * This function will return the user ID for a given username.
  *
@@ -23,24 +23,24 @@
  *  - assign      if set, the language will be assigned to this variable
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
+ * @param object &$view Reference to the Zikula_View object.
  *
  * @return   string   the user ID
  */
-function smarty_function_usergetidfromname($params, &$smarty)
+function smarty_function_usergetidfromname($params, &$view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $uname   = isset($params['uname'])   ? $params['uname']    : null;
 
     if (!$uname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('usergetidfromname', 'uname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('usergetidfromname', 'uname')));
         return false;
     }
 
     $return = UserUtil::getIdFromName($uname);
 
     if ($assign) {
-        $smarty->assign($assign, $return);
+        $view->assign($assign, $return);
     } else {
         return $return;
     }

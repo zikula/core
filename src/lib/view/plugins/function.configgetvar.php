@@ -37,11 +37,11 @@
  * <samp><p>Welcome to {$thename|varprepfordisplay}!</p></samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return mixed The value of the configuration variable.
  */
-function smarty_function_configgetvar($params, &$smarty)
+function smarty_function_configgetvar($params, &$view)
 {
     $name      = isset($params['name'])    ? $params['name']    : null;
     $default   = isset($params['default']) ? $params['default'] : null;
@@ -49,14 +49,14 @@ function smarty_function_configgetvar($params, &$smarty)
     $assign    = isset($params['assign'])  ? $params['assign']  : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('configgetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('configgetvar', 'name')));
         return false;
     }
 
     $result = System::getVar($name, $default);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         if (is_bool($html) && $html) {
             return DataUtil::formatForDisplayHTML($result);

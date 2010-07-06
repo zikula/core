@@ -30,11 +30,11 @@
  * <samp>{blockposition name='left'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The rendered ouput of all of the blocks assigned to this position.
  */
-function smarty_function_blockposition($params, &$smarty)
+function smarty_function_blockposition($params, &$view)
 {
     // fix the core positions for a better name
     if ($params['name'] == 'l') $params['name'] = 'left';
@@ -42,7 +42,7 @@ function smarty_function_blockposition($params, &$smarty)
     if ($params['name'] == 'c') $params['name'] = 'center';
 
     if (!isset($params['name'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockposition', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockposition', 'name')));
         return false;
     }
 
@@ -50,7 +50,7 @@ function smarty_function_blockposition($params, &$smarty)
 
     $return = BlockUtil::displayPosition($params['name'], false, $implode);
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $return);
+        $view->assign($params['assign'], $return);
     } else {
         return $return;
     }

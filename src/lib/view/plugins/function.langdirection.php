@@ -14,17 +14,17 @@
  */
 
 /**
- * Smarty function to get the language direction.
+ * Zikula_View function to get the language direction.
  *
  * Example
  * <html dir="{langdirection}">
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
+ * @param object &$view Reference to the Zikula_View object.
  *
  * @return   string   the language direction
  */
-function smarty_function_langdirection($params, &$smarty)
+function smarty_function_langdirection($params, &$view)
 {
     return ZLanguage::getDirection();
 }

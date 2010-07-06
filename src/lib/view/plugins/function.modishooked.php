@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to check for the availability of a module
+ * Zikula_View function to check for the availability of a module
  *
  * This function calls ModUtil::isHooked to determine if two Zikula modules are
  * hooked together. True is returned if the modules are hooked, false otherwise.
@@ -32,31 +32,31 @@
  *   {if $barishookedtofoo}.....{/if}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.modishooked.php::smarty_function_modishooked()
  * @return boolean True if the module is available; false otherwise.
  */
-function smarty_function_modishooked($params, &$smarty)
+function smarty_function_modishooked($params, &$view)
 {
     $assign   = isset($params['assign'])   ? $params['assign']   : null;
     $smodname = isset($params['smodname']) ? $params['smodname'] : null;
     $tmodname = isset($params['tmodname']) ? $params['tmodname'] : null;
 
     if (!$tmodname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'tmodname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'tmodname')));
         return false;
     }
 
     if (!$smodname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'smodname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'smodname')));
         return false;
     }
 
     $result = ModUtil::isHooked($tmodname, $smodname);
 
     if ($assign) {
-        $smarty->assign($params['assign'], $result);
+        $view->assign($params['assign'], $result);
     } else {
         return $result;
     }

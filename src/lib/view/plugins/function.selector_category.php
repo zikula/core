@@ -17,11 +17,11 @@
  * Category selector.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_selector_category ($params, &$smarty)
+function smarty_function_selector_category ($params, &$view)
 {
     $categoryRegistryModule   = isset($params['categoryRegistryModule'])   ? $params['categoryRegistryModule']   : '';
     $categoryRegistryTable    = isset($params['categoryRegistryTable'])    ? $params['categoryRegistryTable']    : '';
@@ -103,7 +103,7 @@ function smarty_function_selector_category ($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $html);
+        $view->assign($assign, $html);
     } else {
         return $html;
     }

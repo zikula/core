@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty insert function to dynamically get current status/error message
+ * Zikula_View insert function to dynamically get current status/error message
  *
  * This function obtains the last status message posted for this session.
  * The status message exists in one of two session variables: '_ZStatusMsg' for a
@@ -35,11 +35,11 @@
  *   {insert name="getstatusmsg" class="statusmessage" tag="span"}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string|void
  */
-function smarty_insert_getstatusmsg($params, &$smarty)
+function smarty_insert_getstatusmsg($params, &$view)
 {
     $assign = isset($params['assign'])  ? $params['assign']  : null;
     $class  = isset($params['class'])   ? $params['class']   : null;
@@ -65,7 +65,7 @@ function smarty_insert_getstatusmsg($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $msgStatus);
+        $view->assign($assign, $msgStatus);
         return;
     }
 

@@ -28,29 +28,29 @@
  *  assign     Name of the returned object
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return void
  */
-function smarty_function_selectmodobject($params, &$smarty)
+function smarty_function_selectmodobject($params, &$view)
 {
     if (!isset($params['module']) || empty($params['module'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'module')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'module')));
     }
     if (!isset($params['objecttype']) || empty($params['objecttype'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'objecttype')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'objecttype')));
     }
     if (!isset($params['id']) || empty($params['id']) || !is_numeric($params['id'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'id')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'id')));
     }
     if (!isset($params['prefix'])) {
         $params['prefix'] = 'PN';
     }
     if (!isset($params['assign']) || empty($params['assign'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'assign')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'assign')));
     }
     if (!ModUtil::available($params['module'])) {
-        $smarty->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobject')));
+        $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobject')));
     }
 
     ModUtil::dbInfoLoad($params['module']);
@@ -73,8 +73,8 @@ function smarty_function_selectmodobject($params, &$smarty)
     // while the result will be saved within the object, we assign it to a local variable for convenience
     $objectData = $object->get(intval($params['id']), $idField);
     if (!is_array($objectData) || !isset($objectData[$idField]) || !is_numeric($objectData[$idField])) {
-        $smarty->trigger_error(__('Sorry! No such item found.'));
+        $view->trigger_error(__('Sorry! No such item found.'));
     }
 
-    $smarty->assign($params['assign'], $objectData);
+    $view->assign($params['assign'], $objectData);
 }

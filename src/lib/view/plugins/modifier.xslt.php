@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to apply a xml stylesheet to a variable
+ * Zikula_View modifier to apply a xml stylesheet to a variable
  *
  * The modifier requires php 5's DOM and XSLT funtionality
  *

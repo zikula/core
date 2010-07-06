@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty insert function to dynamically generated an authorisation key
+ * Zikula_View insert function to dynamically generated an authorisation key
  *
  * Available parameters:
  *   - module:   The well-known name of a module to execute a function from (required)
@@ -24,11 +24,11 @@
  * <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users" }" />
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_insert_generateauthkey($params, &$smarty)
+function smarty_insert_generateauthkey($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $module = isset($params['module']) ? $params['module'] : null;
@@ -40,7 +40,7 @@ function smarty_insert_generateauthkey($params, &$smarty)
     $result = SecurityUtil::generateAuthKey($module);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

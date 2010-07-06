@@ -37,22 +37,22 @@
  * <samp>{calendarinput objectname='myobject' htmlname='from' dateformat='%Y-%m-%d' defaultdate='2005/12/31'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The HTML and Javascript code to display a calendar control.
  */
-function smarty_function_calendarinput($params, &$smarty)
+function smarty_function_calendarinput($params, &$view)
 {
     if (!isset($params['objectname'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'objectname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'objectname')));
         return false;
     }
     if (!isset($params['htmlname'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'htmlname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'htmlname')));
         return false;
     }
     if (!isset($params['dateformat'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'dateformat')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'dateformat')));
         return false;
     }
     $ifformat = isset($params['ifformat']) ? $params['ifformat'] : $params['dateformat'];

@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get the meta keywords
+ * Zikula_View function to get the meta keywords
  *
  * This function will take the contents of the page and transfer it
  * into a keyword list. If stopwords are defined, they are filtered out.
@@ -37,11 +37,11 @@
  * <meta name="KEYWORDS" content="{keywords}">
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The keywords.
  */
-function smarty_function_keywords($params, &$smarty)
+function smarty_function_keywords($params, &$view)
 {
     $keywordsarray = PageUtil::getVar('keywords');
     if (!empty($keywordsarray)) {
@@ -61,7 +61,7 @@ function smarty_function_keywords($params, &$smarty)
     }
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $keywords);
+        $view->assign($params['assign'], $keywords);
     } else {
         return $keywords;
     }

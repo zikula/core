@@ -24,10 +24,10 @@
  * {$timestamp|dateformat:'%a, %d %b %Y':$defaultimestamp}
  * If $timestamp is empty the $defaultimestamp will be used
  */
-require_once $smarty->_get_plugin_filepath('shared', 'make_timestamp');
+require_once $view->_get_plugin_filepath('shared', 'make_timestamp');
 
 /**
- * Smarty modifier to format datestamps via strftime according to locale setting in Zikula.
+ * Zikula_View modifier to format datestamps via strftime according to locale setting in Zikula.
  *
  * @param string $string       Input date string.
  * @param string $format       Strftime format for output.

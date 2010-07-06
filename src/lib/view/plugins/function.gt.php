@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to use the _dgettext() function
+ * Zikula_View function to use the _dgettext() function
  *
  * This function takes a identifier and returns the corresponding language constant.
  *
@@ -40,21 +40,21 @@
  * all variables as strings so %s and %n$s are mostly used.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string Translation if it was available.
  */
-function smarty_function_gt($params, &$smarty)
+function smarty_function_gt($params, &$view)
 {
     // the check order here is important because:
-    // if we are calling from a theme both $smarty->themeDomain and $smarty->renderDomain are set.
-    // if the call was from a template only $smarty->renderDomain is set.
+    // if we are calling from a theme both $view->themeDomain and $view->renderDomain are set.
+    // if the call was from a template only $view->renderDomain is set.
     if (isset($params['domain'])) {
         $domain = (strtolower($params['domain']) == 'zikula' ? null : $params['domain']);
-    } elseif (isset($smarty->themeDomain)) {
-        $domain = $smarty->themeDomain;
-    } elseif (isset($smarty->renderDomain)) {
-        $domain = $smarty->renderDomain;
+    } elseif (isset($view->themeDomain)) {
+        $domain = $view->themeDomain;
+    } elseif (isset($view->renderDomain)) {
+        $domain = $view->renderDomain;
     } else {
         $domain = null; // default domain
     }
@@ -62,14 +62,14 @@ function smarty_function_gt($params, &$smarty)
     $domain = ($domain == 'zikula' ? null : $domain);
 
     if (!isset($params['text'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_gt', 'text')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_gt', 'text')));
         return false;
     }
     $text = $params['text'];
 
     // validate plural settings if applicable
     if ((!isset($params['count']) && isset($params['plural'])) || (isset($params['count']) && !isset($params['plural']))) {
-        $smarty->trigger_error(__('Error! If you use a plural or count in gettext, you must use both parameters together.'));
+        $view->trigger_error(__('Error! If you use a plural or count in gettext, you must use both parameters together.'));
         return false;
     }
 
@@ -95,7 +95,7 @@ function smarty_function_gt($params, &$smarty)
 
     // assign or return
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $result);
+        $view->assign($params['assign'], $result);
     } else {
         return $result;
     }

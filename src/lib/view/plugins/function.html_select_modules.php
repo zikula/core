@@ -14,16 +14,16 @@
  */
 
 /**
- * Smarty function to display a list box with a list of active modules.
+ * Zikula_View function to display a list box with a list of active modules.
  *
  * Either user or admin capable or all modules.
  *
  * Available parameters:
- *   - name:     Name for the control (optional) if not present then only the option tags are output
- *   - id:       ID for the control
- *   - selected: Selected value
- *   - type:     Type of modules to show (all = All modules, user = user capable modules, admin = admin capable modules)
- *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
+ *   - name:       Name for the control (optional) if not present then only the option tags are output
+ *   - id:         ID for the control
+ *   - selected:   Selected value
+ *   - capability: Show modules with this capability, all or $capability.
+ *   - assign:     If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
  *
@@ -35,39 +35,32 @@
  *     </select>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.html_select_modules.php::smarty_function_html_select_modules()
  * @return string A drop down containing a list of modules.
  */
-function smarty_function_html_select_modules($params, &$smarty)
+function smarty_function_html_select_modules($params, &$view)
 {
     // we'll make use of the html_options plugin to simplfiy this plugin
-    require_once $smarty->_get_plugin_filepath('function','html_options');
-
-    $supportedtypes = array('all', 'user', 'admin', 'profile', 'message');
+    require_once $view->_get_plugin_filepath('function', 'html_options');
 
     // set some defaults
-    if (!isset($params['type']) || array_search($params['type'], $supportedtypes) === false) {
-        $params['type'] = 'all';
+    if (isset($params['type'])) {
+        // bc
+        $params['capability'] = $params['type'];
+    }
+    if (!isset($params['capability'])) {
+        $params['capability'] = 'all';
     }
 
     // get the modules
-    switch ($params['type']) {
+    switch ($params['capability']) {
         case 'all' :
             $modules = ModUtil::getAllMods();
             break;
-        case 'admin' :
-            $modules = ModUtil::getAdminMods();
-            break;
-        case 'user' :
-            $modules = ModUtil::getUserMods();
-            break;
-        case 'profile' :
-            $modules = ModUtil::getProfileMods();
-            break;
-        case 'message' :
-            $modules = ModUtil::getMessageMods();
+        default :
+            $modules = ModUtil::getModulesCapableOf($params['capability']);
             break;
     }
 
@@ -88,9 +81,9 @@ function smarty_function_html_select_modules($params, &$smarty)
                                                  'selected'  => isset($params['selected']) ? $params['selected'] : null,
                                                  'name'      => isset($params['name'])     ? $params['name']     : null,
                                                  'id'        => isset($params['id'])       ? $params['id']       : null),
-                                                 $smarty);
+                                                 $view);
     if (isset($params['assign']) && !empty($params['assign'])) {
-        $smarty->assign($params['assign'], $output);
+        $view->assign($params['assign'], $output);
     } else {
         return $output;
     }

@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to prepare variable for display, preserving some HTML tags
+ * Zikula_View modifier to prepare variable for display, preserving some HTML tags
  *
  * This modifier carries out suitable escaping of characters such that when output
  * as part of an HTML page the exact string is displayed, except for a number of

@@ -14,16 +14,16 @@
  */
 
 /**
- * Smarty outputfilter to add the invisible MultiHook divs just before the closing </body> tag.
+ * Zikula_View outputfilter to add the invisible MultiHook divs just before the closing </body> tag.
  *
  * Security check is done in the MultiHook function called here.
  *
  * @param string $text    Output source.
- * @param Smarty &$smarty Reference to Smarty instance.
+ * @param Zikula_View &$view Reference to Zikula_View instance.
  *
  * @return string
  */
-function smarty_outputfilter_multihook($text, &$smarty)
+function smarty_outputfilter_multihook($text, &$view)
 {
     $mhhelper = ModUtil::apiFunc('MultiHook', 'theme', 'helper');
     $mhhelper = $mhhelper . '</body>';

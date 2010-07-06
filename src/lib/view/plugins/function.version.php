@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get the site's charset.
+ * Zikula_View function to get the site's charset.
  *
  * This function will return the Zikula version number
  *
@@ -22,18 +22,18 @@
  *  - assign      if set, the language will be assigned to this variable
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
+ * @param object &$view Reference to the Zikula_View object.
  *
  * @return   string   the version string
  */
-function smarty_function_version($params, &$smarty)
+function smarty_function_version($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
     $return = System::VERSION_NUM;
 
     if ($assign) {
-        $smarty->assign($assign, $return);
+        $view->assign($assign, $return);
     } else {
         return $return;
     }

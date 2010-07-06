@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display a drop down list of themes.
+ * Zikula_View function to display a drop down list of themes.
  *
  * Available parameters:
  *   - name:     Name for the control (optional) if not present then only the option tags are output
@@ -35,11 +35,11 @@
  *     </select>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The value of the last status message posted, or void if no status message exists.
  */
-function smarty_function_html_select_themes($params, &$smarty)
+function smarty_function_html_select_themes($params, &$view)
 {
     if (!isset($params['filter']) || !defined($params['filter'])) {
         $filter = ThemeUtil::FILTER_ALL;
@@ -66,15 +66,15 @@ function smarty_function_html_select_themes($params, &$smarty)
     }
     natcasesort($themelist);
 
-    require_once $smarty->_get_plugin_filepath('function','html_options');
+    require_once $view->_get_plugin_filepath('function','html_options');
     $output = smarty_function_html_options(array('options'  => $themelist,
                                                  'selected' => isset($params['selected']) ? $params['selected'] : null,
                                                  'name'     => isset($params['name'])     ? $params['name']     : null,
                                                  'id'       => isset($params['id'])       ? $params['id']       : null),
-                                                 $smarty);
+                                                 $view);
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $output);
+        $view->assign($params['assign'], $output);
     } else {
         return $output;
     }

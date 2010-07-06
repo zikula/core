@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get a colour definition from the theme
+ * Zikula_View function to get a colour definition from the theme
  *
  * This function returns the corresponding color define from the theme
  *
@@ -27,25 +27,25 @@
  * {themegetvar name='bgcolor'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The colour definition.
  */
-function smarty_function_themegetvar($params, &$smarty)
+function smarty_function_themegetvar($params, &$view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $default = isset($params['default']) ? $params['default'] : null;
     $name    = isset($params['name'])    ? $params['name']    : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnthemegetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnthemegetvar', 'name')));
         return false;
     }
 
     $result = ThemeUtil::getVar($name, $default);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

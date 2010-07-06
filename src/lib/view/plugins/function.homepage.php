@@ -23,18 +23,18 @@
  *   {homepage}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
+ * @param object &$view Reference to the Zikula_View object.
  *
  * @return string The base URL of the site.
  */
-function smarty_function_homepage($params, &$smarty)
+function smarty_function_homepage($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
     $result = htmlspecialchars(System::getHomepageUrl());
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

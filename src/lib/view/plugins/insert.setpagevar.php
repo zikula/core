@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to set a single value page variable
+ * Zikula_View function to set a single value page variable
  *
  * This function sets a page-specific variable from the Zikula system. Only single value pagevars are supported by
  * this insert!
@@ -34,21 +34,21 @@
  *   {insert name='setpagevar' var='title' value='mytitle'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_insert_setpagevar($params, &$smarty)
+function smarty_insert_setpagevar($params, &$view)
 {
     $var   = isset($params['var'])  ? $params['var']  : null;
     $value = isset($params['value']) ? $params['value'] : null;
 
     if (!$var) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('setpagevar', 'var')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('setpagevar', 'var')));
         return false;
     }
     if (!$value) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('setpagevar', 'value')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('setpagevar', 'value')));
         return false;
     }
 

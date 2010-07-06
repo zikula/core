@@ -22,16 +22,16 @@
  *   - indent:   Wether or not to indent the validation error
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_formutil_getvalidationerror($params, &$smarty)
+function smarty_function_formutil_getvalidationerror($params, &$view)
 {
     $error = FormUtil::getValidationError($params['objectType'], $params['field']);
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $error);
+        $view->assign($params['assign'], $error);
     } else {
         return $error;
     }

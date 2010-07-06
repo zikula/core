@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display the sitename
+ * Zikula_View function to display the sitename
  *
  * Available parameters:
  *  - assign     if set, the title will be assigned to this variable
@@ -23,17 +23,17 @@
  * {sitename}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.sitename.php::smarty_function_sitename()
  * @return string The sitename.
  */
-function smarty_function_sitename($params, &$smarty)
+function smarty_function_sitename($params, &$view)
 {
     $sitename = System::getVar('sitename');
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $sitename);
+        $view->assign($params['assign'], $sitename);
     } else {
         return $sitename;
     }

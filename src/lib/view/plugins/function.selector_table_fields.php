@@ -25,11 +25,11 @@
  *  allText       Text to go with the 'All' select value
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_selector_table_fields ($params, &$smarty)
+function smarty_function_selector_table_fields ($params, &$view)
 {
     $modname        = (isset($params['modname'])        ? $params['modname']        : '');
     $tablename      = (isset($params['tablename'])      ? $params['tablename']      : '');

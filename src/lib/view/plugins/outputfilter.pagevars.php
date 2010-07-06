@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty outputfilter to add page variables and additional header global into page header
+ * Zikula_View outputfilter to add page variables and additional header global into page header
  *
  * By default this output filter places page variable output immediately prior to the closing
  * head tag (</head>). The output can, optionally, be placed anywhere in the template by adding
@@ -22,11 +22,11 @@
  * the header for the output to function correctly.
  *
  * @param string $source  Output source.
- * @param Smarty &$smarty Reference to Smarty instance.
+ * @param Zikula_View &$view Reference to Zikula_View instance.
  *
  * @return string
  */
-function smarty_outputfilter_pagevars($source, &$smarty)
+function smarty_outputfilter_pagevars($source, &$view)
 {
     $return = '';
 
@@ -88,7 +88,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
     }
     $stylesheets = array_unique(array_values($stylesheets));
     // Perform a check on import and expand those for packing later on
-    $stylesheetFile = _smarty_outputfilter_pagevars_save($stylesheets,'css',$smarty->cache_dir);
+    $stylesheetFile = _smarty_outputfilter_pagevars_save($stylesheets,'css',$view->cache_dir);
     if ($themeinfo['xhtml']) {
         $return .= '<link rel="stylesheet" href="'.DataUtil::formatForDisplay($stylesheetFile).'" type="text/css" />'."\n";
     } else {
@@ -126,7 +126,7 @@ function smarty_outputfilter_pagevars($source, &$smarty)
             _smarty_outputfilter_pagevars_clean_additional_header($additional_header, $javascript);
         }
         $javascripts = array_unique(array_values($javascripts));
-        $javascriptFile = _smarty_outputfilter_pagevars_save($javascripts, 'js', $smarty->cache_dir);
+        $javascriptFile = _smarty_outputfilter_pagevars_save($javascripts, 'js', $view->cache_dir);
         $return .= '<script type="text/javascript" src="'.DataUtil::formatForDisplay($javascriptFile).'"></script>'."\n";
     }
 

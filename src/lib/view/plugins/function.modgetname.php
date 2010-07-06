@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to the topmost module name
+ * Zikula_View function to the topmost module name
  *
  * This function currently returns the name of the current top-level
  * module, false if not in a module.
@@ -28,18 +28,18 @@
  *   {modgetname|varprepfordisplay}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The module variable.
  */
-function smarty_function_modgetname ($params, &$smarty)
+function smarty_function_modgetname ($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
     $result = ModUtil::getName();
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

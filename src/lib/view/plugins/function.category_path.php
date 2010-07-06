@@ -53,11 +53,11 @@
  * <samp>{category_path id=$page.categoryId field='sort_value' assign='catsortvalue'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The value of the specified category field.
  */
-function smarty_function_category_path($params, &$smarty)
+function smarty_function_category_path($params, &$view)
 {
     $assign    = isset($params['assign'])   ? $params['assign']   : null;
     $id        = isset($params['id'])       ? $params['id']       : 0;
@@ -66,17 +66,17 @@ function smarty_function_category_path($params, &$smarty)
     $html      = isset($params['html'])     ? $params['html']     : false;
 
     if (!$id) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'id')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'id')));
     }
 
     if (!$idcolumn) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'idcolumn')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'idcolumn')));
     } elseif (($idcolumn != 'id') && ($idcolumn != 'path') && ($idcolumn != 'ipath')) {
-        $smarty->trigger_error(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', array('category_path', 'idcolumn', $idcolumn)));
+        $view->trigger_error(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', array('category_path', 'idcolumn', $idcolumn)));
     }
 
     if (!$field) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'field')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('category_path', 'field')));
     }
 
     $result = null;
@@ -90,16 +90,16 @@ function smarty_function_category_path($params, &$smarty)
         if (isset($cat[$field])) {
             $result = $cat[$field];
         } else {
-            $smarty->trigger_error(__f('Error! Category [%1$s] does not have the field [%2$s] set.', array($id, $field)));
+            $view->trigger_error(__f('Error! Category [%1$s] does not have the field [%2$s] set.', array($id, $field)));
             return;
         }
     } else {
-        $smarty->trigger_error(__f('Error! Cannot retrieve category with ID %s.', DataUtil::formatForDisplay($id)));
+        $view->trigger_error(__f('Error! Cannot retrieve category with ID %s.', DataUtil::formatForDisplay($id)));
         return;
     }
 
     if ($assign) {
-        $smarty->assign($params['assign'], $result);
+        $view->assign($params['assign'], $result);
     } else {
         if (isset($html) && is_bool($html) && $html) {
             return DataUtil::formatForDisplayHTML($result);

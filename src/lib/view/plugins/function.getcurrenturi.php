@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to obtain current URI
+ * Zikula_View function to obtain current URI
  *
  * This function obtains the current request URI.
  * Unlike the API function getcurrenturi, the results of this function are already
@@ -29,11 +29,11 @@
  *   {getcurrenturi lang='de'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The current URI.
  */
-function smarty_function_getcurrenturi($params, &$smarty)
+function smarty_function_getcurrenturi($params, &$view)
 {
     $assign = null;
     if (isset($params['assign'])) {
@@ -44,7 +44,7 @@ function smarty_function_getcurrenturi($params, &$smarty)
     $result = htmlspecialchars(System::getCurrentUri($params));
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

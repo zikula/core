@@ -47,18 +47,18 @@
  *  optimize           Only deliver page links which are actually displayed to the template (default: false)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_pager($params, &$smarty)
+function smarty_function_pager($params, &$view)
 {
     if (!isset($params['rowcount'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'rowcount')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'rowcount')));
     }
 
     if (!isset($params['limit'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'limit')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'limit')));
     }
 
     if (is_array($params['rowcount'])) {

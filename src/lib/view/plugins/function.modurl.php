@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to create a zikula.orgpatible URL for a specific module function.
+ * Zikula_View function to create a zikula.orgpatible URL for a specific module function.
  *
  * This function returns a module URL string if successful. Unlike the API
  * function ModURL, this is already sanitized to display, so it should not be
@@ -42,11 +42,11 @@
  *   <a href="{modurl modname='News' type='user' func='display' sid='3' ssl=true}">Link</a>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The URL.
  */
-function smarty_function_modurl($params, &$smarty)
+function smarty_function_modurl($params, &$view)
 {
     $assign       = isset($params['assign'])                  ? $params['assign']    : null;
     $append       = isset($params['append'])                  ? $params['append']    : '';
@@ -72,7 +72,7 @@ function smarty_function_modurl($params, &$smarty)
     unset($params['forcelongurl']);
 
     if (!$modname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modurl', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modurl', 'modname')));
         return false;
     }
 
@@ -83,7 +83,7 @@ function smarty_function_modurl($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return DataUtil::formatForDisplay($result);
     }

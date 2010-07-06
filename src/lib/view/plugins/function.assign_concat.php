@@ -37,14 +37,14 @@
  *  <samp>{assign_concat name='myString' 1=$myVar1 2=$myVar2 3=$myVar3 html=true}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return Void
  */
-function smarty_function_assign_concat($params, &$smarty)
+function smarty_function_assign_concat($params, &$view)
 {
     if (!$params['name']) {
-        $smarty->trigger_error(__f('Invalid %1$s passed to %2$s.', array('name', 'assign_concat')));
+        $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('name', 'assign_concat')));
         return false;
     }
 
@@ -54,9 +54,9 @@ function smarty_function_assign_concat($params, &$smarty)
     }
 
     if (isset($params['html']) && $params['html']) {
-        $smarty->assign($params['name'], DataUtil::formatForDisplayHTML($txt));
+        $view->assign($params['name'], DataUtil::formatForDisplayHTML($txt));
     } else {
-        $smarty->assign($params['name'], $txt);
+        $view->assign($params['name'], $txt);
     }
     return;
 }

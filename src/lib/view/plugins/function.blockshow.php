@@ -24,11 +24,11 @@
  *                          template variable instead of being returned to the template (optional)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The rendered output of the specified block.
  */
-function smarty_function_blockshow($params, &$smarty)
+function smarty_function_blockshow($params, &$view)
 {
     $module    = isset($params['module'])    ? $params['module']    : null;
     $blockname = isset($params['blockname']) ? $params['blockname'] : null;
@@ -36,17 +36,17 @@ function smarty_function_blockshow($params, &$smarty)
     $assign    = isset($params['assign'])    ? $params['assign']    : null;
 
     if (!$module) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'module')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'module')));
         return;
     }
 
     if (!$blockname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'blockname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'blockname')));
         return;
     }
 
     if (!$block) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'id/info')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'id/info')));
         return;
     }
 
@@ -58,7 +58,7 @@ function smarty_function_blockshow($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $output);
+        $view->assign($assign, $output);
     } else {
         return $output;
     }

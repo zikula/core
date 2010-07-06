@@ -31,19 +31,19 @@
  *                          required)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return mixed the value of the block variable specified by the name attribute,
  *               or an array containing the full block information.
  */
-function smarty_function_blockgetinfo($params, &$smarty)
+function smarty_function_blockgetinfo($params, &$view)
 {
     $bid    = isset($params['bid'])    ? (int)$params['bid'] : 0;
     $name   = isset($params['name'])   ? $params['name']     : null;
     $assign = isset($params['assign']) ? $params['assign']   : null;
 
     if (!$bid) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockgetinfo', 'bid')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockgetinfo', 'bid')));
     }
 
     // get the block info array
@@ -51,16 +51,16 @@ function smarty_function_blockgetinfo($params, &$smarty)
 
     if ($name) {
         if ($assign) {
-            $smarty->assign($assign, $blockinfo[$name]);
+            $view->assign($assign, $blockinfo[$name]);
         } else {
             return $blockinfo[$name];
         }
     } else {
         // handle the full blockinfo array
         if ($assign) {
-            $smarty->assign($assign, $blockinfo);
+            $view->assign($assign, $blockinfo);
         } else {
-            $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the full block information.', array('pnblockgetinfo', 'assign')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the full block information.', array('pnblockgetinfo', 'assign')));
         }
     }
 

@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to check for the availability of a module
+ * Zikula_View function to check for the availability of a module
  *
  * This function calls ModUtil::available to determine if a Zikula module is
  * is available. True is returned if the module is available, false otherwise.
@@ -31,12 +31,12 @@
  *   {if $myfoo}.....{/if}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.ModUtil::available.php::smarty_function_modavailable()
  * @return boolean True if the module is available; false otherwise.
  */
-function smarty_function_modavailable ($params, &$smarty)
+function smarty_function_modavailable ($params, &$view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $mod     = isset($params['mod'])     ? $params['mod']     : null;
@@ -50,7 +50,7 @@ function smarty_function_modavailable ($params, &$smarty)
     $result = ModUtil::available($modname);
 
     if ($assign) {
-         $smarty->assign($assign, $result);
+         $view->assign($assign, $result);
     } else {
          return $result;
     }

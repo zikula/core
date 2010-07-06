@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty plugin.
+ * Zikula_View plugin.
  *
  * Author:   Peter Dudas <duda at bigfish dot hu>
  *
@@ -52,11 +52,11 @@
  *  skin           Use predefined values (hu - hungarian ABC)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_pagerabc($params, &$smarty)
+function smarty_function_pagerabc($params, &$view)
 {
     if (!isset($params['posvar'])) {
         $params['posvar'] = 'letter';

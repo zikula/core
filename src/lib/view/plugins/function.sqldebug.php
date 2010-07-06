@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get the site's page render time
+ * Zikula_View function to get the site's page render time
  *
  * Available parameters:
  *  - assign      if set, the messages will be assigned to this variable
@@ -25,11 +25,11 @@
  * {sqldebug}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The page render time in seconds.
  */
-function smarty_function_sqldebug ($params, &$smarty)
+function smarty_function_sqldebug ($params, &$view)
 {
     // show time to render
     $messages = array();

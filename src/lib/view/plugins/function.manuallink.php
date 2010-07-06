@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to create  manual link.
+ * Zikula_View function to create  manual link.
  *
  * This function creates a manual link from some parameters.
  *
@@ -32,12 +32,12 @@
  * {manuallink newwindow=1 width=400 height=300 title=rtfm }
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string|void
  */
 
-function smarty_function_manuallink($params, &$smarty)
+function smarty_function_manuallink($params, &$view)
 {
     $userlang= ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $stdlang = System::getVar( 'language' );
@@ -70,7 +70,7 @@ function smarty_function_manuallink($params, &$smarty)
 
     if (isset($params['assign'])) {
         $ret = array( 'url' => $url, 'link' => $link );
-        $smarty->assign( $params['assign'], $ret );
+        $view->assign( $params['assign'], $ret );
         return;
     } else {
         return $link;

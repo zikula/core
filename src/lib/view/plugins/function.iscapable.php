@@ -14,24 +14,30 @@
  */
 
 /**
- * Zikula_View function to display the welcome message
+ * Wrapper for ModUtil::isCapable().
  *
- * Example
- * {userwelcome}
+ * param takes 'modules' and 'capability' keys.
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Zikula_View &$view Reference to the Zikula_View object.
  *
- * @see    function.userwelcome.php::smarty_function_userwelcome()
- * @return string The welcome message.
+ * @return string Translation if it was available.
  */
-function smarty_function_userwelcome($params, &$view)
+function smarty_function_iscapable($params, &$view)
 {
-    if (UserUtil::isLoggedIn()) {
-        $username = UserUtil::getVar('uname');
-    } else {
-        $username = __('anonymous guest');
+    if (!isset($params['module'])) {
+        $view->trigger_error(__('Error! "module" parameter must be specified.'));
+    }
+    if (!isset($params['capability'])) {
+        $view->trigger_error(__('Error! "module" parameter must be specified.'));
     }
 
-    return __f('Welcome, %s!', $username);
+    $result = ModUtil::isCapable($module, $params['capability']);
+
+    // assign or return
+    if (isset($params['assign'])) {
+        $view->assign($params['assign'], $result);
+    } else {
+        return $result;
+    }
 }

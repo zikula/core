@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty outputfilter to add page variables and additional header global into page header
+ * Zikula_View outputfilter to add page variables and additional header global into page header
  *
  * By default this output filter places page variable output immediately prior to the closing
  * head tag (</head>). The output can, optionally, be placed anywhere in the template by adding
@@ -22,11 +22,11 @@
  * the header for the output to function correctly.
  *
  * @param string $source  Output source.
- * @param Smarty &$smarty Reference to Smarty instance.
+ * @param Zikula_View &$view Reference to Zikula_View instance.
  *
  * @return string
  */
-function smarty_outputfilter_pagevars_notcombined($source, &$smarty)
+function smarty_outputfilter_pagevars_notcombined($source, &$view)
 {
     $return = '';
 

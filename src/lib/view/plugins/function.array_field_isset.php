@@ -48,14 +48,14 @@
  *  <samp>{array_field_isset array=$myarray field='arraykey' returnValue=1 assign='myValue'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return boolean|mixed if returnValue is not set, then returns true if the array
  *                       element is set, otherwise false; if returnValue is set,
  *                       then returns the value of the array element if it is set,
  *                       otherwise false.
  */
-function smarty_function_array_field_isset($params, &$smarty)
+function smarty_function_array_field_isset($params, &$view)
 {
     $array       = isset($params['array'])       ? $params['array']        : null;
     $field       = isset($params['field'])       ? $params['field']        : null;
@@ -63,12 +63,12 @@ function smarty_function_array_field_isset($params, &$smarty)
     $assign      = isset($params['assign'])      ? $params['assign']       : null;
 
     if ($array === null) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_isset', 'array')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_isset', 'array')));
         return false;
     }
 
     if ($field === null) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_isset', 'field')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_isset', 'field')));
         return false;
     }
 
@@ -78,7 +78,7 @@ function smarty_function_array_field_isset($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

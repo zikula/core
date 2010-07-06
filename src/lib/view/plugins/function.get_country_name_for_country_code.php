@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get a country name from a given country name.
+ * Zikula_View function to get a country name from a given country name.
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
@@ -24,11 +24,11 @@
  *   {get_country_name_for_country_code  code=ZZ}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
+ * @param object &$view Reference to the Zikula_View object.
  *
  * @return      string      the value of the last status message posted, or void if no status message exists
  */
-function smarty_function_get_country_name_for_country_code ($params, &$smarty)
+function smarty_function_get_country_name_for_country_code ($params, &$view)
 {
     $code   = strtolower(isset($params['code']) ? $params['code'] : 'ZZ');
     $assign = isset($params['assign']) ? $params['assign'] : null;
@@ -41,7 +41,7 @@ function smarty_function_get_country_name_for_country_code ($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign ($assign, $result);
+        $view->assign ($assign, $result);
     } else {
         return $result;
     }

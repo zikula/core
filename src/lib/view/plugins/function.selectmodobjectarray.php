@@ -31,26 +31,26 @@
  *  assign     Name of the returned object
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return void
  */
-function smarty_function_selectmodobjectarray($params, &$smarty)
+function smarty_function_selectmodobjectarray($params, &$view)
 {
     if (!isset($params['module']) || empty($params['module'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'module')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'module')));
     }
     if (!isset($params['objecttype']) || empty($params['objecttype'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'objecttype')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'objecttype')));
     }
     if (!isset($params['prefix'])) {
         $params['prefix'] = 'PN';
     }
     if (!isset($params['assign'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'assign')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobjectarray', 'assign')));
     }
     if (!ModUtil::available($params['module'])) {
-        $smarty->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobjectarray')));
+        $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobjectarray')));
     }
 
     ModUtil::dbInfoLoad($params['module']);
@@ -92,5 +92,5 @@ function smarty_function_selectmodobjectarray($params, &$smarty)
     // while the result will be saved in the object, we assign in to a local variable for convenience.
     $objectData = $objectArray->get($where, $sort, $pos-1, $num);
 
-    $smarty->assign($params['assign'], $objectData);
+    $view->assign($params['assign'], $objectData);
 }

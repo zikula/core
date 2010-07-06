@@ -29,11 +29,11 @@
  *  multipleSize  The size of the selector to create (default=1)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_selector_module_tables ($params, &$smarty)
+function smarty_function_selector_module_tables ($params, &$view)
 {
     $modname       = isset($params['modname'])       ? $params['modname']        : null;
     $name          = isset($params['name'])          ? $params['name']           : null;

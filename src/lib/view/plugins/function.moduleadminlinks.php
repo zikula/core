@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display admin links for a module.
+ * Zikula_View function to display admin links for a module.
  *
  * Example:
  * {moduleadminlinks modname=Example start="[" end="]" seperator="|" class="z-menuitem-title"}
@@ -27,11 +27,11 @@
  *   - class     CSS class (optional).
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string A formatted string containing navigation for the module admin panel.
  */
-function smarty_function_moduleadminlinks($params, &$smarty)
+function smarty_function_moduleadminlinks($params, &$view)
 {
     // set some defaults
     $start     = isset($params['start'])    ? $params['start']    : '[';
@@ -48,7 +48,7 @@ function smarty_function_moduleadminlinks($params, &$smarty)
 
     // check our module name
     if (!ModUtil::available($modname)) {
-        $smarty->trigger_error('moduleadminlinks: '.__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($modname)));
+        $view->trigger_error('moduleadminlinks: '.__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($modname)));
         return false;
     }
 

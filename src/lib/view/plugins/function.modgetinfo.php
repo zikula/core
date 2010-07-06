@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to retrieve module information
+ * Zikula_View function to retrieve module information
  *
  * This function retrieves module information from the database and returns them
  * or assigns them to a variable for later use
@@ -34,11 +34,11 @@
  *   {modgetinfo modname='anyymodname' info='all' assign='gimmeeverything'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The module variable.
  */
-function smarty_function_modgetinfo($params, &$smarty)
+function smarty_function_modgetinfo($params, &$view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']     : null;
     $info    = isset($params['info'])    ? $params['info']       : null;
@@ -50,10 +50,10 @@ function smarty_function_modgetinfo($params, &$smarty)
         $modname = $modname ? $modname : ModUtil::getName();
         if (!ModUtil::available($modname)) {
             if ($assign) {
-                $smarty->assign($assign, $default);
+                $view->assign($assign, $default);
                 return false;
             }
-            $smarty->assign($assign, $default);
+            $view->assign($assign, $default);
             return;
         }
         $modid = ModUtil::getIdFromName($modname);
@@ -62,16 +62,16 @@ function smarty_function_modgetinfo($params, &$smarty)
 
     $info = strtolower($info);
     if ($info != 'all' && !isset($modinfo[$info])) {
-        $smarty->trigger_error(__f('Invalid %1$s [%2$s] passed to %3$s.', array('info', $info, 'modgetinfo')));
+        $view->trigger_error(__f('Invalid %1$s [%2$s] passed to %3$s.', array('info', $info, 'modgetinfo')));
         return false;
     }
 
     if ($info == 'all') {
         $assign = ($assign ? $assign : 'modinfo');
-        $smarty->assign($assign, $modinfo);
+        $view->assign($assign, $modinfo);
     } else {
         if ($assign) {
-            $smarty->assign($assign, $modinfo[$info]);
+            $view->assign($assign, $modinfo[$info]);
         } else {
             return DataUtil::formatForDisplay($modinfo[$info]);
         }

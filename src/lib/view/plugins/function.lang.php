@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get the site's language.
+ * Zikula_View function to get the site's language.
  *
  * Available parameters:
  *  - assign      if set, the language will be assigned to this variable
@@ -23,11 +23,11 @@
  * <html lang="{lang}">
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string|void The language, null if params['assign'] is true.
  */
-function smarty_function_lang($params, &$smarty)
+function smarty_function_lang($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign']  : null;
     $fs     = isset($params['fs']) ? $params['fs'] : false;
@@ -35,7 +35,7 @@ function smarty_function_lang($params, &$smarty)
     $result = ($fs ? ZLanguage::transformFS(ZLanguage::getLanguageCode()) : ZLanguage::getLanguageCode());
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
         return;
     }
 

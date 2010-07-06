@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to apply transform hooks
+ * Zikula_View modifier to apply transform hooks
  *
  * This modifier will run the transform hooks that are enabled for the
  * corresponding module (like Autolinks, bbclick and others).

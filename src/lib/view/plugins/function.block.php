@@ -48,14 +48,14 @@
  * <samp>{block id=6 assign='myBlockContents'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The block.
  *
  * @todo the attribute 'name' is not used.
  *
  */
-function smarty_function_block($params, &$smarty)
+function smarty_function_block($params, &$view)
 {
     $bid      = isset($params['bid'])      ? (int)$params['bid'] : 0;
     $name     = isset($params['name'])     ? $params['name']     : null;
@@ -71,7 +71,7 @@ function smarty_function_block($params, &$smarty)
     unset($params['assign']);
 
     if (!$bid) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnblock', 'bid')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnblock', 'bid')));
         return false;
     }
 
@@ -107,7 +107,7 @@ function smarty_function_block($params, &$smarty)
     $content = BlockUtil::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
 
     if ($assign) {
-        $smarty->assign($assign, $content);
+        $view->assign($assign, $content);
     } else {
         return $content;
     }

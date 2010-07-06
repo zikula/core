@@ -26,17 +26,17 @@
  *   noprocess If set, no processing is applied to the constant value.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  *
  */
-function smarty_function_formutil_getpassedvalue ($params, &$smarty)
+function smarty_function_formutil_getpassedvalue ($params, &$view)
 {
     if ((!isset($params['key']) || !$params['key']) &&
         (!isset($params['name']) || !$params['name'])) {
         // use name as an alias for key for programmer convenience
-        $smarty->trigger_error('formutil_getpassedvalue: attribute key (or name) required');
+        $view->trigger_error('formutil_getpassedvalue: attribute key (or name) required');
         return false;
     }
 
@@ -62,7 +62,7 @@ function smarty_function_formutil_getpassedvalue ($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign ($assign, $val);
+        $view->assign ($assign, $val);
     } else {
         return $val;
     }

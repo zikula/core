@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display a drop down list of module stylesheets.
+ * Zikula_View function to display a drop down list of module stylesheets.
  *
  * Available parameters:
  *   - modname   The module name to show the styles for
@@ -25,14 +25,14 @@
  *   - selected: Selected value
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The value of the last status message posted, or void if no status message exists.
  */
-function smarty_function_html_select_modulestylesheets($params, &$smarty)
+function smarty_function_html_select_modulestylesheets($params, &$view)
 {
     if (!isset($params['modname'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('html_select_modulestylesheets', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('html_select_modulestylesheets', 'modname')));
         return false;
     }
 
@@ -44,16 +44,16 @@ function smarty_function_html_select_modulestylesheets($params, &$smarty)
 
     $modstyleslist = ModUtil::apiFunc('Admin', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
 
-    require_once $smarty->_get_plugin_filepath('function','html_options');
+    require_once $view->_get_plugin_filepath('function','html_options');
     $output = smarty_function_html_options(array('values'  => $modstyleslist,
                                                  'output'  => $modstyleslist,
                                                  'selected' => isset($params['selected']) ? $params['selected'] : null,
                                                  'name'     => isset($params['name'])     ? $params['name']     : null,
                                                  'id'       => isset($params['id'])       ? $params['id']       : null),
-                                                 $smarty);
+                                                 $view);
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $output);
+        $view->assign($params['assign'], $output);
     } else {
         return $output;
     }

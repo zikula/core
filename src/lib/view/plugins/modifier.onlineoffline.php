@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to turn a boolean value into a suitable language string
+ * Zikula_View modifier to turn a boolean value into a suitable language string
  *
  * Example
  *

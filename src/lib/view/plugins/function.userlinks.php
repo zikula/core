@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display some user links
+ * Zikula_View function to display some user links
  *
  * Example
  * {userlinks start="[" end="]" seperator="|"}
@@ -25,12 +25,12 @@
  *  seperator Seperator
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.userlinks.php::smarty_function_userlinks()
  * @return string User links.
  */
-function smarty_function_userlinks($params, &$smarty)
+function smarty_function_userlinks($params, &$view)
 {
     $start     = isset($params['start'])     ? $params['start']    : '[';
     $end       = isset($params['end'])       ? $params['end']      : ']';

@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to retrieve a language name from its l2 code
+ * Zikula_View modifier to retrieve a language name from its l2 code
  *
  * Example:
  *   {$language|getlanguagename}

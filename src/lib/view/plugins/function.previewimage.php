@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display a preview image from a theme
+ * Zikula_View function to display a preview image from a theme
  *
  * Available parameters:
  *  - name       name of the theme to display the preview image for
@@ -26,15 +26,15 @@
  * {previewimage name=andreas08 size=large}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.title.php::smarty_function_previewimage()
  * @return string The markup to display the theme image.
  */
-function smarty_function_previewimage($params, &$smarty)
+function smarty_function_previewimage($params, &$view)
 {
     if (!isset($params['name'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('previewimage', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('previewimage', 'name')));
         return false;
     }
 
@@ -59,7 +59,7 @@ function smarty_function_previewimage($params, &$smarty)
     $markup = "<img{$idstring} src=\"{$filesrc}\" alt=\"\" />";
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $markup);
+        $view->assign($params['assign'], $markup);
     } else {
         return $markup;
     }

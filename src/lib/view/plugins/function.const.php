@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty plugin to convert string to PHP constant (required to support class constants).
+ * Zikula_View plugin to convert string to PHP constant (required to support class constants).
  *
  * Example:
  *   {const name="ModUtil::TYPE_SYSTEM"}
@@ -25,24 +25,24 @@
  *   noprocess If set the resulting string constant is not processed.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The language constant.
  */
-function smarty_function_const($params, &$smarty)
+function smarty_function_const($params, &$view)
 {
     $assign          = isset($params['assign'])          ? $params['assign']          : null;
     $name            = isset($params['name'])            ? $params['name']            : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('const', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('const', 'name')));
         return false;
     }
 
     $result = constant($name);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

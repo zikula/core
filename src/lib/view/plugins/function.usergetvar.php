@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get a user variable
+ * Zikula_View function to get a user variable
  *
  * This function obtains a user-specific variable from the Zikula system.
  *
@@ -31,11 +31,11 @@
  *   {usergetvar name='user_icq' uid=1|varprepfordisplay}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The user variable.
  */
-function smarty_function_usergetvar($params, &$smarty)
+function smarty_function_usergetvar($params, &$view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']   : null;
     $default = isset($params['default']) ? $params['default']  : null;
@@ -43,7 +43,7 @@ function smarty_function_usergetvar($params, &$smarty)
     $uid     = isset($params['uid'])     ? (int)$params['uid'] : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('usergetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('usergetvar', 'name')));
         return false;
     }
 
@@ -54,7 +54,7 @@ function smarty_function_usergetvar($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

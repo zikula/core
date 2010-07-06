@@ -14,24 +14,24 @@
  */
 
 /**
- * Smarty function to the current users theme
+ * Zikula_View function to the current users theme
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The variables content.
  */
-function smarty_function_usergettheme($params, &$smarty)
+function smarty_function_usergettheme($params, &$view)
 {
     $assign = isset($params['assign'])  ? $params['assign']  : null;
 
     $result = UserUtil::getTheme();
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

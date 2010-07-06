@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to provide easy access to an image
+ * Zikula_View function to provide easy access to an image
  *
  * This function provides an easy way to include an image. The function will return the
  * full source path to the image. It will as well provite the width and height attributes
@@ -60,16 +60,16 @@
  * <img src="modules/Example/images/en/heading.gif" alt="" width="261" height="69"  />
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string|void The img tag, null if $params['nostoponerror'] true and there is an error.
  */
-function smarty_function_img($params, &$smarty)
+function smarty_function_img($params, &$view)
 {
     $nostoponerror = (isset($params['nostoponerror'])) ? true : false;
 
     if (!isset($params['src'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnimg', 'src')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnimg', 'src')));
         if ($nostoponerror == true) {
             return;
         } else {
@@ -78,12 +78,12 @@ function smarty_function_img($params, &$smarty)
     }
 
     // default for the module
-    $modname = isset($params['modname']) ? $params['modname'] : $smarty->toplevelmodule;
+    $modname = isset($params['modname']) ? $params['modname'] : $view->toplevelmodule;
 
     // if the module name is 'core' then we require an image set
     if ($modname == 'core') {
         if (!isset($params['set'])) {
-            $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnimg', 'set')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnimg', 'set')));
             if ($nostoponerror == true) {
                 return;
             } else {
@@ -155,7 +155,7 @@ function smarty_function_img($params, &$smarty)
 
     if ($imgsrc == '') {
         if ($optional) {
-            $smarty->trigger_error(__f("%s: Image '%s' not found", array('img', DataUtil::formatForDisplay($params['src']))));
+            $view->trigger_error(__f("%s: Image '%s' not found", array('img', DataUtil::formatForDisplay($params['src']))));
             if ($nostoponerror == true) {
                 return;
             } else {
@@ -170,7 +170,7 @@ function smarty_function_img($params, &$smarty)
     // This way it is easy to scale the image to a certain dimension.
     if (!isset($params['width']) && !isset($params['height'])) {
         if (!($_image_data = @getimagesize($imgsrc))) {
-            $smarty->trigger_error(__f("%s: Image '%s' is not a valid image file", array('pnimg', DataUtil::formatForDisplay($params['src']))));
+            $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('pnimg', DataUtil::formatForDisplay($params['src']))));
             if ($nostoponerror == true) {
                 return;
             } else {
@@ -214,7 +214,7 @@ function smarty_function_img($params, &$smarty)
         return $params[$retval];
     } else if (!empty($assign)) {
         $params['imgtag'] = $imgtag;
-        $smarty->assign($assign, $params);
+        $view->assign($assign, $params);
     } else {
         return $imgtag;
     }

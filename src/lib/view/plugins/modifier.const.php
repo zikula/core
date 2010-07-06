@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to convert string to PHP constant (required to support class constants).
+ * Zikula_View modifier to convert string to PHP constant (required to support class constants).
  *
  * Example
  *

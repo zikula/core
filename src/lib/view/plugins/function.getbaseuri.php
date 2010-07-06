@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to obtain base URL for this site
+ * Zikula_View function to obtain base URL for this site
  *
  * This function obtains the base URL for the site. The base url is defined as the
  * full URL for the site minus any file information  i.e. everything before the
@@ -29,18 +29,18 @@
  *   {getbaseurl}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The base URL of the site.
  */
-function smarty_function_getbaseuri ($params, &$smarty)
+function smarty_function_getbaseuri ($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 
     $result = htmlspecialchars(System::getBaseUri());
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

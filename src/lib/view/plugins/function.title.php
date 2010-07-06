@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to generate the title for the page
+ * Zikula_View function to generate the title for the page
  *
  * Available parameters:
  *  - assign     if set, the title will be assigned to this variable
@@ -28,12 +28,12 @@
  * {title separator='/'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.title.php::smarty_function_title()
  * @return string The title.
  */
-function smarty_function_title($params, &$smarty)
+function smarty_function_title($params, &$view)
 {
     if (!isset($params['separator'])) {
         $separator = ' :: ';
@@ -80,7 +80,7 @@ function smarty_function_title($params, &$smarty)
     $title = strip_tags(implode($separator, $titleargs));
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $title);
+        $view->assign($params['assign'], $title);
     } else {
         return $title;
     }

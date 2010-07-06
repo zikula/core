@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty case block to implement switchs in a template.
+ * Zikula_View case block to implement switchs in a template.
  *
  * Available attributes:
  *  - expr (string|numeric) the value to be tested against the expr provided in
@@ -37,7 +37,7 @@
  *
  * @param array   $params  All attributes passed to this function from the template.
  * @param string  $content The content between the block tags.
- * @param Smarty  &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View  &$view Reference to the {@link Zikula_View} object.
  * @param boolean &$repeat Controls block repetition. See {@link http://www.smarty.net/manual/en/plugins.block.functions.php Smarty - Block Functions}.
  *
  * @author messju mohr <messju@lammfellpuschen.de>
@@ -45,21 +45,21 @@
  * @see    smarty_block_switch
  * @return void|string The content of the matching case.
  */
-function smarty_block_case($params, $content, &$smarty, &$repeat)
+function smarty_block_case($params, $content, &$view, &$repeat)
 {
     if (is_null($content)) {
         // handle block open tag
 
         // find corresponding switch block
-        for ($i = count($smarty->_tag_stack) - 1; $i >= 0; $i--) {
-            list ($tag_name, $tag_params) = $smarty->_tag_stack[$i];
+        for ($i = count($view->_tag_stack) - 1; $i >= 0; $i--) {
+            list ($tag_name, $tag_params) = $view->_tag_stack[$i];
             if ($tag_name == 'switch')
                 break;
         }
 
         if ($i < 0) {
             // switch block not found
-            $smarty->tigger_error(__('smarty_block_case: case not inside a switch block'));
+            $view->tigger_error(__('smarty_block_case: case not inside a switch block'));
             return;
         }
 
@@ -79,7 +79,7 @@ function smarty_block_case($params, $content, &$smarty, &$repeat)
         }
 
         // page found
-        $smarty->_tag_stack[$i][1]['_done'] = true;
+        $view->_tag_stack[$i][1]['_done'] = true;
         return;
 
     } else {

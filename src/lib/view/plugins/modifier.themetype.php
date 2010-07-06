@@ -1,22 +1,6 @@
 <?php
 /**
- * Zikula Application Framework
- *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- *
- * renderer plugin
- *
- * This file is a plugin for renderer, the Zikula implementation of Smarty
- *
- * @package      Zikula_System_Modules
- * @subpackage   renderer
- */
-
-/**
- * Smarty modifier to convert theme type into a language string
+ * Zikula_View modifier to convert theme type into a language string
  *
  * Example
  *

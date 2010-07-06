@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to include module specific javascripts
+ * Zikula_View function to include module specific javascripts
  *
  * Available parameters:
  *  - modname     module name (if not set, the current module is assumed)
@@ -51,15 +51,15 @@
  *      if foobar is the current module.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The tag.
  */
-function smarty_function_modulejavascript($params, &$smarty)
+function smarty_function_modulejavascript($params, &$view)
 {
     // check if script is set (mandatory)
     if (!isset($params['script'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modulejavascript', 'script')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modulejavascript', 'script')));
         return false;
     }
 
@@ -67,7 +67,7 @@ function smarty_function_modulejavascript($params, &$smarty)
     if (!isset($params['modname'])) {
         if (isset($params['modonly'])) {
             // error - we want $modonly only with $modname
-            $smarty->trigger_error(__f('Error! in %1$s: parameter \'%2$s\' only supported together with \'%3$s\' set.', array('modulejavascript', 'modonly', 'modname')));
+            $view->trigger_error(__f('Error! in %1$s: parameter \'%2$s\' only supported together with \'%3$s\' set.', array('modulejavascript', 'modonly', 'modname')));
             return;
         }
         // we use the current module name
@@ -120,7 +120,7 @@ function smarty_function_modulejavascript($params, &$smarty)
         $return['scriptfile'] = $scriptsrc;
         $return['tag']        = $tag;
         $return['onload']     = $onload;
-        $smarty->assign($params['assign'], $return);
+        $view->assign($params['assign'], $return);
     } else {
         return $tag;
     }

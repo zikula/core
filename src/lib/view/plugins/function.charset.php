@@ -25,16 +25,16 @@
  * <samp><meta http-equiv="Content-Type" content="text/html; charset={charset}"></samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The value of the charset.
  */
-function smarty_function_charset($params, &$smarty)
+function smarty_function_charset($params, &$view)
 {
     $return = ZLanguage::getEncoding();
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $return);
+        $view->assign($params['assign'], $return);
     } else {
         return $return;
     }

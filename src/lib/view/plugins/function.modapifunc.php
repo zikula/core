@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to to execute a module API function
+ * Zikula_View function to to execute a module API function
  *
  * This function calls a calls a specific module API function. It returns whatever the return
  * value of the resultant function is if it succeeds.
@@ -36,14 +36,14 @@
  *   {$myfoo.title}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.modfunc.php::smarty_function_modfunc()
  * @return string The results of the module API function.
  */
-function smarty_function_modapifunc($params, &$smarty)
+function smarty_function_modapifunc($params, &$view)
 {
-    //889$saveDomain = $smarty->renderDomain;
+    //889$saveDomain = $view->renderDomain;
     $assign  = isset($params['assign'])                  ? $params['assign']  : null;
     $func    = isset($params['func']) && $params['func'] ? $params['func']    : 'main';
     $modname = isset($params['modname'])                 ? $params['modname'] : null;
@@ -56,7 +56,7 @@ function smarty_function_modapifunc($params, &$smarty)
     unset($params['assign']);
 
     if (!$modname) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modapifunc', 'modname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modapifunc', 'modname')));
         return false;
     }
 
@@ -68,10 +68,10 @@ function smarty_function_modapifunc($params, &$smarty)
     $result = ModUtil::apiFunc($modname, $type, $func, $params);
 
     // ensure the renderDomain wasnt overwritten
-    //889$smarty->renderDomain = $saveDomain;
+    //889$view->renderDomain = $saveDomain;
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

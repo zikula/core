@@ -21,14 +21,12 @@
  *
  * True/false will be returned.
  *
- * This file is a plugin for Zikula_View, the Zikula implementation of Smarty.
- *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return boolean Authorized?
  */
-function smarty_function_checkpermission($params, &$smarty)
+function smarty_function_checkpermission($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $comp   = isset($params['comp'])   ? $params['comp']   : null;
@@ -36,24 +34,24 @@ function smarty_function_checkpermission($params, &$smarty)
     $level  = isset($params['level'])  ? $params['level']  : null;
 
     if (!$comp) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'comp')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'comp')));
         return false;
     }
 
     if (!$inst) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'inst')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'inst')));
         return false;
     }
 
     if (!$level) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'level')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'level')));
         return false;
     }
 
     $result = SecurityUtil::checkPermission($comp, $inst, constant($level));
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         return $result;
     }

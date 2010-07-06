@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display the current date and time
+ * Zikula_View function to display the current date and time
  *
  * Example
  * {datetime}
@@ -41,12 +41,12 @@
  * http://www.php.net/manual/en/function.strftime.php
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.datetime.php::smarty_function_datetime()
  * @return string
  */
-function smarty_function_datetime($params, &$smarty)
+function smarty_function_datetime($params, &$view)
 {
     // set some defaults
     $format = isset($params['format']) ? $params['format'] : __('%b %d, %Y - %I:%M %p');

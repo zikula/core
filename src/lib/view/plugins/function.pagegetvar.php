@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get page variable
+ * Zikula_View function to get page variable
  *
  * This function obtains a page-specific variable from the Zikula system.
  *
@@ -40,25 +40,25 @@
  *   {pagegetvar name='title'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The module variable.
  */
-function smarty_function_pagegetvar($params, &$smarty)
+function smarty_function_pagegetvar($params, &$view)
 {
     $assign = isset($params['assign']) ? $params['assign']     : null;
     $html   = isset($params['html'])   ? (bool)$params['html'] : false;
     $name   = isset($params['name'])   ? $params['name']       : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagegetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagegetvar', 'name')));
         return false;
     }
 
     $result = PageUtil::getVar($name);
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
         if ($html) {
             return DataUtil::formatForDisplayHTML($result);

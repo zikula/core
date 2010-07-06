@@ -22,11 +22,11 @@
  *   - validationErrors: the validation errors
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_formutil_getfieldmarker($params, &$smarty)
+function smarty_function_formutil_getfieldmarker($params, &$view)
 {
     // allow empty validation info -> return nothing
     if (!isset($params['validation'])) {
@@ -36,7 +36,7 @@ function smarty_function_formutil_getfieldmarker($params, &$smarty)
     $marker = FormUtil::getFieldMarker($params['objectType'], $params['validation'], $params['field']);
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $marker);
+        $view->assign($params['assign'], $marker);
     } else {
         return $marker;
     }

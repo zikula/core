@@ -30,13 +30,13 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param string $content The content between the block tags.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return mixed The content of the block, if the user has the specified
  *               access level for the component and instance;
  *               otherwise null; false on an error.
  */
-function smarty_block_checkpermissionblock($params, $content, &$smarty)
+function smarty_block_checkpermissionblock($params, $content, &$view)
 {
     if (is_null($content)) {
         return;
@@ -44,15 +44,15 @@ function smarty_block_checkpermissionblock($params, $content, &$smarty)
 
     // check our input
     if (!isset($params['component'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'component')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'component')));
         return false;
     }
     if (!isset($params['instance'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'instance')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'instance')));
         return false;
     }
     if (!isset($params['level'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'level')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'level')));
         return false;
     }
 

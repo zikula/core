@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to obtain status message
+ * Zikula_View function to obtain status message
  *
  * This function obtains the last status message posted for this session.
  * The status message exists in one of two session variables: '_ZStatusMsg' for a
@@ -36,17 +36,17 @@
  *
  * Example
  *   {getstatusmsg|varprephtmldisplay}
- *   {getstatusmsg style="color:red;" |varprephtmldisplay}
- *   {getstatusmsg class="statusmessage" tag="span"|varprephtmldisplay}
+ *   {getstatusmsg style="color:red;" |safehtml}
+ *   {getstatusmsg class="statusmessage" tag="span"|safehtml}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
- * @todo prevent this function from being cached (Smarty 2.6.0)
+ * @todo prevent this function from being cached
  * @deprecated
  * @return string The value of the last status message posted, or void if no status message exists.
  */
-function smarty_function_getstatusmsg($params, &$smarty)
+function smarty_function_getstatusmsg($params, &$view)
 {
     $assign = isset($params['assign'])  ? $params['assign']  : null;
     $class  = isset($params['class'])   ? $params['class']   : null;
@@ -72,7 +72,7 @@ function smarty_function_getstatusmsg($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $msgStatus);
+        $view->assign($assign, $msgStatus);
         return;
     }
 

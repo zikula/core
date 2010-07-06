@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to create a link to a users profile
+ * Zikula_View modifier to create a link to a users profile
  *
  * Example
  *

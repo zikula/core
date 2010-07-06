@@ -14,18 +14,18 @@
  */
 
 /**
- * Smarty function to display the user name
+ * Zikula_View function to display the user name
  *
  * Example
  * {user}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.userwelcome.php::smarty_function_user()
  * @return string The username.
  */
-function smarty_function_user($params, &$smarty)
+function smarty_function_user($params, &$view)
 {
     if (UserUtil::isLoggedIn()) {
         $username = UserUtil::getVar('uname');

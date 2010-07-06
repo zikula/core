@@ -24,12 +24,12 @@
  * {selector_user_category cid="1" assign="category"}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string HTML code of the selector.
  */
 
-function smarty_function_selector_user_category($params, &$smarty)
+function smarty_function_selector_user_category($params, &$view)
 {
     $field            = isset($params['field'])            ? $params['field']            : 'id';
     $selectedValue    = isset($params['selectedValue'])    ? $params['selectedValue']    : 0;
@@ -61,7 +61,7 @@ function smarty_function_selector_user_category($params, &$smarty)
     }
 
     if ($assign) {
-        $smarty->assign($assign, $html);
+        $view->assign($assign, $html);
     } else {
         return $html;
     }

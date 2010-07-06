@@ -14,18 +14,18 @@
  */
 
 /**
- * Smarty short urls outputfilter plugin.
+ * Zikula_View short urls outputfilter plugin.
  *
  * File:      outputfilter.shorturls.php
  * Type:      outputfilter
  * Name:      shorturls
  *
  * @param string $source  Output source.
- * @param Smarty &$smarty Reference to Smarty instance.
+ * @param Zikula_View &$view Reference to Zikula_View instance.
  *
  * @return string
  */
-function smarty_outputfilter_shorturls($source, &$smarty)
+function smarty_outputfilter_shorturls($source, &$view)
 {
     // If you control the server, it is preferable for better performance to put rewrite rules
     // from the htaccess file into main configuration file, httpd.conf.

@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier to prepare a variable for display by converting special characters to HTML entities.
+ * Zikula_View modifier to prepare a variable for display by converting special characters to HTML entities.
  *
  * Example
  *

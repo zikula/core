@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display a search form.
+ * Zikula_View function to display a search form.
  *
  * Available parameters:
  *  - active            a comma-separated list of modules to be searched.
@@ -47,11 +47,11 @@
  * to this class in your style sheet.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$smarty Reference to the Smarty object.
+ * @param object &$view Reference to the Zikula_View object.
  *
  * @return string The search box.
  */
-function smarty_function_search($params, &$smarty)
+function smarty_function_search($params, &$view)
 {
     // set some defaults
     $class            = (!isset($params['class']) || empty($params['class'])) ? '' : 'class="' . DataUtil::formatForDisplay($params['class']) .'"';

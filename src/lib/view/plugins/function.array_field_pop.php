@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function return and unset an array field if set.
+ * Zikula_View function return and unset an array field if set.
  *
  * Available attributes:
  *  - array     (string)    The name of an array template variable
@@ -39,46 +39,46 @@
  *  <samp>{array_field_pop array='myarray' field='arraykey' unset=1 assign='myValue'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return null The value of the specified array element is return
  *              in the specified template variable if it is set,
  *              otherwise the template variable is set to false; no output to the template.
  */
-function smarty_function_array_field_pop($params, &$smarty)
+function smarty_function_array_field_pop($params, &$view)
 {
-    $array       = isset($smarty->_tpl_vars[$params['array']]);
+    $array       = isset($view->_tpl_vars[$params['array']]);
     $field       = isset($params['field'])   ? $params['field']   : null;
     $unset       = isset($params['unset'])   ? $params['unset']   : false;
     $assign      = isset($params['assign'])  ? $params['assign']  : null;
 
     if (!$array) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_pop', 'array')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_pop', 'array')));
         return false;
     }
 
-    if (!is_array($smarty->_tpl_vars[$params['array']])) {
-        $smarty->trigger_error(__f('Non-array passed to %s.', 'array_field_pop'));
+    if (!is_array($view->_tpl_vars[$params['array']])) {
+        $view->trigger_error(__f('Non-array passed to %s.', 'array_field_pop'));
         return false;
     }
 
     if ($field === null) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_pop', 'field')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_pop', 'field')));
         return false;
     }
 
     $result = false;
-    if (isset($smarty->_tpl_vars[$params['array']][$field])) {
-        $result = $smarty->_tpl_vars[$params['array']][$field];
+    if (isset($view->_tpl_vars[$params['array']][$field])) {
+        $result = $view->_tpl_vars[$params['array']][$field];
         if ($unset) {
-            unset($smarty->_tpl_vars[$params['array']][$field]);
+            unset($view->_tpl_vars[$params['array']][$field]);
         }
     }
 
     if ($assign) {
-        $smarty->assign($assign, $result);
+        $view->assign($assign, $result);
     } else {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the required field.', array('array_field_pop', 'assign')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the required field.', array('array_field_pop', 'assign')));
         return false;
     }
 }

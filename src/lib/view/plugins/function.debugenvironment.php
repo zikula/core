@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to get all session variables.
+ * Zikula_View function to get all session variables.
  *
  * This function gets all session vars from the Zikula system assigns the names and
  * values to two array. This is being used in pndebug to show them.
@@ -23,26 +23,26 @@
  *   {debugenvironment}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return void
  */
-function smarty_function_debugenvironment($params, &$smarty)
+function smarty_function_debugenvironment($params, &$view)
 {
-    $smarty->assign('_ZSession_keys', array_keys($_SESSION) );
-    $smarty->assign('_ZSession_vals', array_values($_SESSION) );
+    $view->assign('_ZSession_keys', array_keys($_SESSION) );
+    $view->assign('_ZSession_vals', array_values($_SESSION) );
 
-    $smarty->assign('_smartyversion', $smarty->_version);
+    $view->assign('_smartyversion', $view->_version);
     $_theme = ModUtil::getInfoFromName('Theme');
-    $smarty->assign('_themeversion', $_theme['version']);
+    $view->assign('_themeversion', $_theme['version']);
 
-    $smarty->assign('_force_compile', (ModUtil::getVar('Theme', 'force_compile')) ? __('On') : __('Off'));
-    $smarty->assign('_compile_check', (ModUtil::getVar('Theme', 'compile_check')) ? __('On') : __('Off'));
+    $view->assign('_force_compile', (ModUtil::getVar('Theme', 'force_compile')) ? __('On') : __('Off'));
+    $view->assign('_compile_check', (ModUtil::getVar('Theme', 'compile_check')) ? __('On') : __('Off'));
 
-    $smarty->assign('_baseurl', System::getBaseUrl());
-    $smarty->assign('_baseuri', System::getBaseUri());
+    $view->assign('_baseurl', System::getBaseUrl());
+    $view->assign('_baseuri', System::getBaseUri());
 
-    $smarty->assign('_template', $smarty->_plugins['function']['zdebug'][1]);
-    $smarty->assign('_path',    $smarty->get_template_path($smarty->_plugins['function']['zdebug'][1]));
-    $smarty->assign('_line',    $smarty->_plugins['function']['zdebug'][2]);
+    $view->assign('_template', $view->_plugins['function']['zdebug'][1]);
+    $view->assign('_path',    $view->get_template_path($view->_plugins['function']['zdebug'][1]));
+    $view->assign('_line',    $view->_plugins['function']['zdebug'][2]);
 }

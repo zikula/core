@@ -26,17 +26,17 @@
  * <samp>{assignedcategorieslist item=$myVar}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The HTML code for an unordered list containing the item's
  *                assigned categories. If no categories are assigned to the
  *                item, then the list will contain a single list-item (<li>)
  *                with a message to that effect.
  */
-function smarty_function_assignedcategorieslist($params, &$smarty)
+function smarty_function_assignedcategorieslist($params, &$view)
 {
     if (!isset($params['item'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'item')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'item')));
         return false;
     }
 

@@ -72,22 +72,22 @@
  * <samp>{button src='button_cancel.gif' set='medium' mode='input' value='cancel' id='cancelbutton'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return string The rendered <button ...><img ...></button> or <input ...>
  *                element for the form button.
  */
-function smarty_function_button($params, &$smarty)
+function smarty_function_button($params, &$view)
 {
     // we're going to make use of pnimg for path searching
-    require_once $smarty->_get_plugin_filepath('function', 'img');
+    require_once $view->_get_plugin_filepath('function', 'img');
 
     if (!isset($params['src'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'src')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'src')));
         return false;
     }
     if (!isset($params['set'])) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'set')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'set')));
         return false;
     }
     $type = isset($params['type'])    ? $params['type'] : 'submit';
@@ -122,8 +122,8 @@ function smarty_function_button($params, &$smarty)
     $alt = (isset($params['alt']) ? $params['alt'] : '');
 
     // call the pnimg plugin and work out the src from the assigned template vars
-    smarty_function_img(array('assign' => 'buttonsrc', 'src' => $params['src'], 'set' => $params['set'], 'modname' => 'core'), $smarty);
-    $imgvars = $smarty->get_template_vars('buttonsrc');
+    smarty_function_img(array('assign' => 'buttonsrc', 'src' => $params['src'], 'set' => $params['set'], 'modname' => 'core'), $view);
+    $imgvars = $view->get_template_vars('buttonsrc');
     $imgsrc = $imgvars['src'];
 
     // form the button html
@@ -139,7 +139,7 @@ function smarty_function_button($params, &$smarty)
     }
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $return);
+        $view->assign($params['assign'], $return);
     } else {
         return $return;
     }

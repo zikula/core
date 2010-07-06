@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to set page variable
+ * Zikula_View function to set page variable
  *
  * This function obtains a page-specific variable from the Zikula system.
  *
@@ -39,21 +39,21 @@
  *   {pagesetvar name="title" value="mytitle"}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_pagesetvar($params, &$smarty)
+function smarty_function_pagesetvar($params, &$view)
 {
     $name  = isset($params['name'])  ? $params['name']  : null;
     $value = isset($params['value']) ? $params['value'] : null;
 
     if (!$name) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagesetvar', 'name')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagesetvar', 'name')));
         return false;
     }
     if (!$value) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagesetvar', 'value')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpagesetvar', 'value')));
         return false;
     }
 

@@ -22,11 +22,11 @@
  *  assign   The smarty variable we wish to assign the result to (optional).
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_dateformat($params, &$smarty)
+function smarty_function_dateformat($params, &$view)
 {
     if (!isset($params['datetime'])) {
         $params['datetime'] = null;
@@ -39,7 +39,7 @@ function smarty_function_dateformat($params, &$smarty)
     $res = DateUtil::getDatetime($params['datetime'], $params['format']);
 
     if (isset($params['assign']) && $params['assign']) {
-        $smarty->assign($params['assign'], $res);
+        $view->assign($params['assign'], $res);
     } else {
         return $res;
     }

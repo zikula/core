@@ -38,11 +38,11 @@
  * <samp>{ajaxheader modname='Example' noscriptaculous=1}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  *
  * @return void
  */
-function smarty_function_ajaxheader($params, &$smarty)
+function smarty_function_ajaxheader($params, &$view)
 {
     // use supplied modname or top level module
     $modname       = (isset($params['modname']))         ? $params['modname']  : ModUtil::getName();
@@ -100,7 +100,7 @@ function smarty_function_ajaxheader($params, &$smarty)
         foreach ($scripts as $script) {
             $return .= '<script type="text/javascript" src="' . $script . '"></script' . "\n";
         }
-        $smarty->assign($params['assign'], $return);
+        $view->assign($params['assign'], $return);
     } else {
         PageUtil::addVar('javascript', $scripts);
     }

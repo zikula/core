@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty switch block.
+ * Zikula_View switch block.
  *
  * Available attributes:
  *  - expr (string|numeric) The variable to be tested against each of the
@@ -37,7 +37,7 @@
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param string $content The content between the block tags.
- * @param Smarty &$smarty Reference to the {@link Zikula_View} object.
+ * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
  * @param mixed  &$pages  Pages?.
  *
  * @author messju mohr <messju@lammfellpuschen.de>.
@@ -47,10 +47,10 @@
  * @todo   Document the &$pages parameter, or correct it (possibly &$repeat?).
  * @return string The content of the matching case.
  */
-function smarty_block_switch($params, $content, &$smarty, &$pages)
+function smarty_block_switch($params, $content, &$view, &$pages)
 {
     if (is_null($content) && !array_key_exists('expr', $params)) {
-        $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_switch', 'expr')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_switch', 'expr')));
     }
 
     return $content;

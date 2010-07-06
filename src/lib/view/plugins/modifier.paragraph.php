@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty paragraph modifier plugin
+ * Zikula_View paragraph modifier plugin
  *
  * Purpose:  convert \n and other newline chars to HTML paragraphs
  * Note:     Uses code from WordPress by Matthew Mullenweg (http://www.photomatt.net; http://www.wordpress.org)

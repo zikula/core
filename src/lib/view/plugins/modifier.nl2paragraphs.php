@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty modifier format the output of a comment
+ * Zikula_View modifier format the output of a comment
  *
  * The plugin compares the comment against the comment with all tags stipped
  * to determine of there is html content. If no html content is found then

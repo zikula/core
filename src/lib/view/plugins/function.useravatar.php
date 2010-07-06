@@ -14,21 +14,21 @@
  */
 
 /**
- * Smarty function to display the avatar of a user
+ * Zikula_View function to display the avatar of a user
  *
  * Example
  * {useravatar uid="2"}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string A formatted string containing the avatar image.
  */
 
-function smarty_function_useravatar($params, &$smarty)
+function smarty_function_useravatar($params, &$view)
 {
     if (!isset($params['uid'])) {
-        $smarty->trigger_error("Error! Missing 'uid' attribute for useravatar.");
+        $view->trigger_error("Error! Missing 'uid' attribute for useravatar.");
         return false;
     }
 
@@ -62,7 +62,7 @@ function smarty_function_useravatar($params, &$smarty)
     $html = '<img ' . $classString . ' src="' . DataUtil::formatForDisplay($avatarURL) . '" title="' . DataUtil::formatForDisplay($uname) . '" alt="' . DataUtil::formatForDisplay($uname) . '" />';
 
     if (isset($params['assign'])) {
-        $smarty->assign($params['assign'], $avatarURL);
+        $view->assign($params['assign'], $avatarURL);
     } else {
         return $html;
     }

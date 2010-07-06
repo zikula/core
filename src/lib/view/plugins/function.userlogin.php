@@ -14,7 +14,7 @@
  */
 
 /**
- * Smarty function to display the login box
+ * Zikula_View function to display the login box
  *
  * Example
  * {userlogin size=14 maxlength=25 maxlengthpass=20}
@@ -28,12 +28,12 @@
  *  js             Use javascript to automatically clear the default value (defaults to true)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @see    function.userlogin.php::smarty_function_userlogin()
  * @return string The welcome message.
  */
-function smarty_function_userlogin($params, &$smarty)
+function smarty_function_userlogin($params, &$view)
 {
     if (!UserUtil::isLoggedIn()) {
         // set some defaults

@@ -14,18 +14,18 @@
  */
 
 /**
- * Smarty function to generate a backtrace for debugging purposes.
+ * Zikula_View function to generate a backtrace for debugging purposes.
  *
  * Available parameters:
  *   - fulltrace        include parts of stack trace after the call to the error handler -
  *                        by default these are excluded as they're not relevant.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Smarty &$smarty Reference to the Smarty object.
+ * @param Zikula_View &$view Reference to the Zikula_View object.
  *
  * @return string The URL.
  */
-function smarty_function_debug_backtrace($params, &$smarty)
+function smarty_function_debug_backtrace($params, &$view)
 {
     if (!isset($params['fulltrace'])) {
         return prayer(array_slice(debug_backtrace(), 8));
