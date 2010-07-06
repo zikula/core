@@ -60,9 +60,33 @@ MODULES
 
 - Rename pntables.php to tables.php.  Change the function inside to $modulename_tables()
 
-- Rename pnversion.php to version.php.
-
 - Module folders now MUST start with a capital letter.
+
+- Rename pnversion.php to lib/MyModule/Version.php
+  Edit the contents like so:
+
+    class MyModule_Version extends Zikula_Version
+    {
+        public function getMetaData()
+        {
+            $meta = array();
+            $meta['displayname']    = $this->__('MyModule example');
+            $meta['description']    = $this->__("Example MyModule description.");
+            //! module name that appears in URL
+            $meta['url']            = $this->__('mymodule');
+            $meta['version']        = '1.5.3';
+            $meta['capabilities']   = array('profile' => array('version' => '1.0'));
+            $meta['contact']        = 'http://zikula.org/';
+
+            $meta['securityschema'] = array('MyModule::' => '::');
+            return $meta;
+        }
+    }
+
+  Notice the new capabilities key.  This is an indexed array of arrays.
+  array('profile' => array('version' => '1.0', 'anotherkey' => 'anothervalue')
+        'message' => array('version' => '1.0', 'anotherkey' => 'anothervalue'));
+
 
 (Note in the following examples, $type must always start with a capital letter
  and all remaining characters must be lower case).
