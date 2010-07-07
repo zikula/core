@@ -21,7 +21,7 @@ class PageLock_Version extends Zikula_Version
         $meta['description']    = $this->__('Provides the ability to lock pages when they are in use, for content and access control.');
         //! module name that appears in URL
         $meta['url']            = $this->__('pagelock');
-        $meta['version']        = '1.1';
+        $meta['version']        = '1.1.1';
         $meta['contact']        = 'http://zikula.org/';
 
         $meta['securityschema'] = array('PageLock::' => '::');

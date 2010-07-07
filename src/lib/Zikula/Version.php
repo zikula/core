@@ -24,17 +24,16 @@ class Zikula_Version implements ArrayAccess
     protected $version = 0;
     protected $contact;
     protected $securityschema;
-    protected $moddependencies;
+    protected $dependencies = array();
     protected $capabilities = array();
-
     protected $domain;
     protected $type;
+    protected $state;
     protected $directory;
 
     protected $baseDir;
     protected $libBaseDir;
     protected $systemBaseDir;
-
     protected $reflection;
 
 //    abstract public function getMetaData();
@@ -42,7 +41,6 @@ class Zikula_Version implements ArrayAccess
     public function __construct()
     {
         $this->reflection = new ReflectionObject($this);
-        Zikula_ClassProperties::load($this, $this->getMetaData());
         $p = explode('_', get_class($this));
         $this->name = $p[0];
         $this->directory = $this->name; // legacy handling
@@ -54,11 +52,34 @@ class Zikula_Version implements ArrayAccess
         if ($this->type == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
+        Zikula_ClassProperties::load($this, $this->getMetaData());
+    }
+
+    public function toArray()
+    {
+        $meta = array();
+        $meta['name'] = $this->name;
+        $meta['description'] = $this->description;
+        $meta['displayname'] = $this->displayname;
+        $meta['url'] = $this->url;
+        $meta['version'] = $this->version;
+        $meta['contact'] = $this->contact;
+        $meta['capabilities'] = $this->capabilities;
+        $meta['dependencies'] = $this->dependencies;
+        $meta['type'] = $this->type;
+        $meta['directory'] = $this->directory;
+        $meta['securityschema'] = $this->securityschema;
+        return $meta;
     }
 
     public function __($msgid)
     {
         return __($msgid, $this->domain);
+    }
+
+    public function __f($msgid, $params)
+    {
+        return __f($msgid, $params, $this->domain);
     }
 
     public function getBaseDir()
@@ -118,6 +139,9 @@ class Zikula_Version implements ArrayAccess
 
     public function setVersion($version)
     {
+        if (!preg_match('#\d+\.\d+\.\d+#', $version)) {
+            throw new InvalidArgumentException($this->__f('Version numbers must be in the format "a.b.c" in class %s', get_class($this)));
+        }
         $this->version = $version;
     }
 
@@ -141,14 +165,14 @@ class Zikula_Version implements ArrayAccess
         $this->securityschema = $securitySchema;
     }
 
-    public function getModDependencies()
+    public function getDependencies()
     {
-        return $this->moddependencies;
+        return $this->dependencies;
     }
 
-    public function setModDependencies($dependencies)
+    public function setDependencies($dependencies)
     {
-        $this->moddependencies = $dependencies;
+        $this->dependencies = $dependencies;
     }
 
     public function getCapabilities()
@@ -158,7 +182,30 @@ class Zikula_Version implements ArrayAccess
 
     public function setCapabilities($capabilities)
     {
+        if (!is_array($capabilities) || !$capabilities) {
+            throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
+        }
+        foreach ($capabilities as $key => $capability) {
+            if (is_integer($key) || !is_array($capability) || !$capability) {
+                throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
+            }
+            foreach ($capability as $capkey => $cap) {
+                if (is_integer($capkey)) {
+                    throw new InvalidArgumentException(__f('Capabilities properties must be an array in the form array(capability => array(version => string, ... => ... in %s', get_class($this)));
+                }
+            }
+        }
         $this->capabilities = $capabilities;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 
     public function offsetGet($key)

@@ -22,7 +22,7 @@ class Categories_Version extends Zikula_Version
         $meta['description']    = $this->__('Provides support for categorisation of content in other modules, and an interface for adding, removing and administering categories.');
         //! module name that appears in URL
         $meta['url']            = $this->__('categories');
-        $meta['version']        = '1.2';
+        $meta['version']        = '1.2.0';
         $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Categories::Category' => 'Category ID:Category Path:Category IPath');
 

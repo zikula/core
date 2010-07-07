@@ -21,7 +21,7 @@ class Theme_Version extends Zikula_Version
         $meta['description']    = $this->__("Provides the site's theming system, and an interface for managing themes, to control the site's presentation and appearance.");
         //! module name that appears in URL
         $meta['url']            = $this->__('theme');
-        $meta['version']        = '3.4';
+        $meta['version']        = '3.4.1';
         $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Theme::' => 'Theme name::');
         return $meta;

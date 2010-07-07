@@ -83,6 +83,8 @@ MODULES
         }
     }
 
+  NOTE: Version numbers must be in the form 'a.b.c' e.g '1.0.0'
+
   Notice the new capabilities key.  This is an indexed array of arrays.
   array('profile' => array('version' => '1.0', 'anotherkey' => 'anothervalue')
         'message' => array('version' => '1.0', 'anotherkey' => 'anothervalue'));

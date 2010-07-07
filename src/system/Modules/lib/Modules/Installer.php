@@ -106,44 +106,9 @@ class Modules_Installer extends Zikula_Installer
      */
     public function defaultdata()
     {
-        $modversion = array();
-        // modules module
-        $modversion['name']          = 'Modules';
-        $modversion['type']          = ModUtil::TYPE_SYSTEM;
-        $modversion['displayname']   = __('Modules manager') ;
-        $modversion['description']   = __('Provides support for modules, and incorporates an interface for adding, removing and administering core system modules and add-on modules.');
-        //! module name that appears in URL
-        $modversion['url']            = __('modules');
-        $modversion['directory']     = 'Modules';
-        $modversion['state']         = ModUtil::STATE_ACTIVE;
-
-        DBUtil::insertObject($modversion, 'modules');
-    }
-
-    /**
-     * update the default data for the Modules module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @author       Frank Schummertz
-     * @return       none
-     */
-    public function updatedefaultdata($lang)
-    {
-        // set the default data for the Modules module
-
-        $dbtables = DBUtil::getTables();
-        $modcolumn = $dbtables['modules_column'];
-
-        $where = 'WHERE '.$modcolumn['name'].'=\'Modules\'';
-        $modversion = DBUtil::selectObject('modules', $where);
-        include 'version.php';
-        $modversion['admin_capable']   = 1;
-        $modversion['user_capable']    = 0;
-        $modversion['profile_capable'] = 0;
-        $modversion['message_capable'] = 0;
-        $modversion['state']           = 3;
-        DBUtil::updateObject($record, 'modules');
+        $version = new Modules_Version();
+        $meta = $version->toArray();
+        $meta['state'] = ModUtil::STATE_ACTIVE;
+        DBUtil::insertObject($meta, 'modules');
     }
 }

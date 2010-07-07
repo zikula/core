@@ -21,7 +21,7 @@ class Errors_Version extends Zikula_Version
         $meta['description']    = $this->__('Provides the core system of the site with error-logging capability.');
         //! module name that appears in URL
         $meta['url']            = $this->__('errors');
-        $meta['version']        = '1.1';
+        $meta['version']        = '1.1.1';
         $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Errors::' => '::');
         return $meta;

@@ -536,9 +536,11 @@ class Modules_Api_Admin extends Zikula_Api
                 $dirs = FileUtil::getFiles($rootdir, false, true, null, 'd');
 
                 foreach ($dirs as $dir) {
+                    $oo = false;
                     // register autoloader
                     if (is_dir("$rootdir/$dir/lib")) {
                         ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
+                        $oo = true;
                     }
 
                     // loads the gettext domain for 3rd party modules
@@ -549,13 +551,9 @@ class Modules_Api_Admin extends Zikula_Api
                         ZLanguage::bindModuleDomain($dir);
                     }
 
-                    $modversion = array();
-                    $modversion['capabilities'] = array();
-                    $class = "{$dir}_Version";
-                    if (class_exists($class)) {
-                        $modversion = new $class();
-                    } else {
-                        require "$rootdir/$dir/pnversion.php";
+                    $modversion = self::getVersionMeta($dir, "$rootdir/$dir/pnversion.php");
+                    if (!isset($modversion['capabilities'])) {
+                        $modversion['capabilities'] = array();
                     }
 
                     $name = $dir;
@@ -629,8 +627,8 @@ class Modules_Api_Admin extends Zikula_Api
                         $securityschema = serialize(array());
                     }
 
-                    if (isset($modversion['moddependencies']) && is_array($modversion['moddependencies'])) {
-                        $moddependencies = serialize($modversion['moddependencies']);
+                    if (isset($modversion['dependencies']) && is_array($modversion['dependencies'])) {
+                        $moddependencies = serialize($modversion['dependencies']);
                     } else {
                         $moddependencies = serialize(array());
                     }
@@ -646,7 +644,7 @@ class Modules_Api_Admin extends Zikula_Api
                                 'capabilities'    => $capabilities,
                                 'description'     => $description,
                                 'securityschema'  => $securityschema,
-                                'moddependencies' => $moddependencies,
+                                'dependencies'    => $moddependencies,
                         );
                     } else {
                         if ($name == $args['name']) {
@@ -661,7 +659,7 @@ class Modules_Api_Admin extends Zikula_Api
                                     'capabilities'    => $capabilities,
                                     'description'     => $description,
                                     'securityschema'  => $securityschema,
-                                    'moddependencies' => $moddependencies,
+                                    'dependencies' => $moddependencies,
                             );
                         }
                     }
@@ -715,8 +713,8 @@ class Modules_Api_Admin extends Zikula_Api
         $moddependencies = array();
         foreach ($filemodules as $modinfo) {
             $module_names[] = $modinfo['name'];
-            if (isset($modinfo['moddependencies']) && !empty($modinfo['moddependencies'])) {
-                $moddependencies[$modinfo['name']] = unserialize($modinfo['moddependencies']);
+            if (isset($modinfo['dependencies']) && !empty($modinfo['dependencies'])) {
+                $moddependencies[$modinfo['name']] = unserialize($modinfo['dependencies']);
             }
         }
 
@@ -1074,14 +1072,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
         $modversion['version'] = '0';
 
-        // register autoloader
-        $class = "{$osdir}_Version";
-        if (class_exists($class)) {
-            $modversion = new $class();
-        } else {
-            require "$modpath/$osdir/pnversion.php";
-        }
-
+        $modversion = self::getVersionMeta($osdir, "$modpath/$osdir/pnversion.php");
         $version = $modversion['version'];
 
         // Update state of module
@@ -1572,5 +1563,35 @@ class Modules_Api_Admin extends Zikula_Api
         return array('errors_modulenames'  => $errors_modulenames,
                 'errors_displaynames' => $errors_displaynames);
 
+    }
+
+    /**
+     * Get version metadata for a module.
+     *
+     * @param string $moduleName        Module Name.
+     * @param string $legacyVersionPath Path to legacy version file (default empty).
+     *
+     * @return Zikula_Version|array
+     */
+    public static function getVersionMeta($moduleName, $legacyVersionPath = '')
+    {
+        $modversion = array();
+        $class = "{$moduleName}_Version";
+        if (class_exists($class)) {
+            $modversion = new $class();
+            if (!$modversion instanceof Zikula_Version) {
+                LogUtil::registerError(__f('%s is not an instance of Zikula_Version', get_class($modversion)));
+            }
+        } elseif (is_dir("modules/$moduleName/lib") || is_dir("system/$moduleName/lib")) {
+            LogUtil::registerError(__f('Coule not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
+        } else {
+            if (!file_exists($legacyVersionPath)) {
+                LogUtil::registerError(__f('Cannot %1$s for module %2$s', $legacyVersionPath, $dir));
+            } else {
+                include $legacyVersionPath;
+            }
+        }
+
+        return $modversion;
     }
 }

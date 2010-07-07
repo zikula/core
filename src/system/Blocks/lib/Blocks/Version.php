@@ -21,7 +21,7 @@ class Blocks_Version extends Zikula_Version
         $meta['description']    = $this->__("Provides an interface for adding, removing and administering the site's side and center blocks.");
         //! module name that appears in URL
         $meta['url']            = $this->__('blocks');
-        $meta['version']        = '3.7';
+        $meta['version']        = '3.7.0';
         $meta['contact']        = 'http://zikula.org/';
 
         $meta['securityschema'] = array('Blocks::' => 'Block key:Block title:Block ID',
