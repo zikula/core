@@ -120,7 +120,7 @@
             <tr class="{cycle values="z-odd,z-even" name=blockpositions}">
                 <td>{$position.name|safehtml}</td>
                 <td>{$position.description|truncate:25|safehtml}</td>
-                <td>&lt;!--[blockposition name={$position.name|safehtml}]--&gt;</td>
+                <td>&#123blockposition name={$position.name|safehtml}&#125</td>
                 <td class="z-right">
                     {foreach item=option from=$position.options}
                     <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title}</a>&nbsp;
