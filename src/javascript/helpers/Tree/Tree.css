@@ -2,18 +2,20 @@ div.treewraper * {
     margin: 0;
     padding: 0;
 }
-div.treewraper ul ul,
-div.treewraper ul li {
+
+div.treewraper ul ul, div.treewraper ul li {
     zoom: 1;
     min-height: 5px;
 }
+
 div.treewraper ul {
     margin: 0 0 0 15px !important;
     padding: 0;
-    text-indent:0;
+    text-indent: 0;
 }
+
 div.treewraper ul li {
-    list-style-type:none;
+    list-style-type: none;
     background-image: url(pion.gif);
     background-position: left top;
     background-repeat: repeat-y;
@@ -21,43 +23,49 @@ div.treewraper ul li {
     padding: 0;
     line-height: 2em;
 }
-div.treewraper ul li.leaf {
+
+div.treewraper ul li.z-tree-leaf {
     background-image: url(node.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }
-div.treewraper ul li.last,
-div.treewraper ul li.single {
+
+div.treewraper ul li.z-tree-last, div.treewraper ul li.z-tree-single {
     background-image: url(lnode.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }
-div.treewraper img.toggle,
-div.treewraper li.parent > span {
+
+div.treewraper img.z-tree-toggle, div.treewraper li.z-tree-parent > span {
     cursor: pointer;
 }
-div.treewraper img.icon {
+
+div.treewraper img.z-tree-icon {
     margin: 0 5px 0 0;
     width: 16px;
     height: 16px;
     vertical-align: text-bottom;
 }
-div.treewraper ul.sortable li.draggable > img.icon {
-    cursor: pointer;
+
+div.treewraper ul.z-tree-sortable li.z-tree-draggable > img.z-tree-icon {
+    cursor: move;
 }
-div.treewraper ul li.leaf img.toggle {
+
+div.treewraper ul li.z-tree-leaf img.z-tree-toggle {
     visibility: hidden;
 }
 
-div.treewraper ul.sortable .dropOnClass {
+div.treewraper ul.z-tree-sortable .z-tree-dropOnClass {
     background: #BBBBBB;
 }
-div.treewraper ul.sortable .dropAfterClass {
+
+div.treewraper ul.z-tree-sortable .z-tree-dropAfterClass {
     border-bottom: 2px solid #646464;
     margin-bottom: -2px;
     background: transparent;
 }
-div.treewraper ul.sortable .dropBeforeClass {
+
+div.treewraper ul.z-tree-sortable .z-tree-dropBeforeClass {
     border-top: 2px solid #646464;
     margin-top: -2px;
     background: transparent;

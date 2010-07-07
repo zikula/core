@@ -13,17 +13,17 @@ Zikula._Tree = Class.create({
         config = this.decodeConfig(config);
         this.config = Object.extend({
             nodeIdPattern:       /^[^_\-](?:[A-Za-z0-9\-\_]*)[_](.*)$/,
-            toggler:            'toggle',
-            icon:               'icon',
+            toggler:            'z-tree-toggle',
+            icon:               'z-tree-icon',
             imagesDir:          'javascript/helpers/Tree/',
             images:             {}
         }, config || { });
         this.config.images = Object.extend({
             plus:               'plus.gif',
             minus:              'minus.gif',
-            parent:             'folder.gif',
-            parentOpen:         'folder_open.gif',
-            item:               'filenew.gif'
+            parent:             'folder.png',
+            parentOpen:         'folder_open.png',
+            item:               'filenew.png'
         },this.config.images);
         // extend each image with base url and images dir
         for (var item in this.config.images) {
@@ -34,7 +34,7 @@ Zikula._Tree = Class.create({
         // bind toggle action
         this.tree.select('.'+this.config.toggler).invoke('observe','click',this.toggleNode.bindAsEventListener(this));
         // bind also empty spans
-        this.tree.select('li.parent > span').invoke('observe','click',this.toggleNode.bindAsEventListener(this));
+        this.tree.select('li.z-tree-parent > span').invoke('observe','click',this.toggleNode.bindAsEventListener(this));
         // initialy hide childnodes
         this.getStatus();
         this.tree.select('ul').each(function(u) {
@@ -111,24 +111,24 @@ Zikula._TreeSortable = Class.create(Zikula._Tree, {
     initialize: function($super, element, config) {
         config = this.decodeConfig(config);
         config = Object.extend({
-            nodeLeaf:           'leaf',
-            nodeLast:           'last',
+            nodeLeaf:           'z-tree-leaf',
+            nodeLast:           'z-tree-last',
             disabled:           [],
             disabledForDrag:    [],
             disabledForDrop:    [],
-            draggableClass:     'draggable',
-            droppableClass:     'droppable',
-            onDragClass:        'onDragClass',
-            dropOnClass:        'dropOnClass',
-            dropAfterClass:     'dropAfterClass',
-            dropBeforeClass:    'dropBeforeClass',
+            draggableClass:     'z-tree-draggable',
+            droppableClass:     'z-tree-droppable',
+            onDragClass:        'z-tree-onDragClass',
+            dropOnClass:        'z-tree-dropOnClass',
+            dropAfterClass:     'z-tree-dropAfterClass',
+            dropBeforeClass:    'z-tree-dropBeforeClass',
             dropAfterOverlap:   [0.3, 0.7],
             expandTimeout:      1500,
             maxDepth:           0,
             onSave:             null
         }, config || { });
         $super(element,config);
-        this.tree.addClassName('sortable');
+        this.tree.addClassName('z-tree-sortable');
         this.tree.select('li').each(this.initNode.bind(this));
     },
     initNode: function(node) {

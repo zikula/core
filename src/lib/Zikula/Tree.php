@@ -58,22 +58,22 @@ class Zikula_Tree
             'imagesDir'     => 'javascript/helpers/Tree/',
             'plus'          => 'plus.gif',
             'minus'         => 'minus.gif',
-            'parent'        => 'folder.gif',
-            'parentOpen'    => 'folder_open.gif',
-            'item'          => 'filenew.gif',
+            'parent'        => 'folder.png',
+            'parentOpen'    => 'folder_open.png',
+            'item'          => 'filenew.png',
             'id'            => 'zikulatree',
             'wraperClass'   => 'treewraper',
             'treeClass'     => 'tree',
             'nodePrefix'    => 'node_',
             'nullParent'    => 0,
-            'toggler'       => 'toggle',
-            'icon'          => 'icon',
-            'nodeUnactive'  => 'unactive',
-            'nodeSingle'    => 'single',
-            'nodeFirst'     => 'first',
-            'nodeLast'      => 'last',
-            'nodeParent'    => 'parent',
-            'nodeLeaf'      => 'leaf'
+            'toggler'       => 'z-tree-toggle',
+            'icon'          => 'z-tree-icon',
+            'nodeUnactive'  => 'z-tree-unactive',
+            'nodeSingle'    => 'z-tree-single',
+            'nodeFirst'     => 'z-tree-first',
+            'nodeLast'      => 'z-tree-last',
+            'nodeParent'    => 'z-tree-parent',
+            'nodeLeaf'      => 'z-tree-leaf'
         );
         $this->setOptionArray($config);
     }

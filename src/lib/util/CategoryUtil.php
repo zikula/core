@@ -883,7 +883,7 @@ class CategoryUtil
         $tree = new Zikula_Tree();
         $tree->setOption('id','categoriesTree');
         $tree->setOption('sortable',$sortable);
-        // disable darg and drop for root category
+        // disable drag and drop for root category
         $tree->setOption('disabled',array(1));
         $tree->loadArrayData($cats);
         return $tree->getHTML();
