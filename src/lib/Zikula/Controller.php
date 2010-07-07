@@ -84,4 +84,13 @@ abstract class Zikula_Controller extends Zikula_Base
 
         throw new Zikula_Exception_NotFound(__f('%1$s::%2$s() does not exist.', array(get_class($this), $method)));
     }
+
+    /**
+     * This is a hook to execute before ModUtil::exec() executes any controller method.
+     *
+     * @return void
+     */
+    public function preInvokeMethod()
+    {
+    }
 }

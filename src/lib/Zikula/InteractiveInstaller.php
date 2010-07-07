@@ -18,6 +18,29 @@
  */
 abstract class Zikula_InteractiveInstaller extends Zikula_Controller
 {
+    /**
+     * Post Setup hook.
+     *
+     * @return void
+     */
+    protected function _postSetup()
+    {
+        // Create renderer object
+        $this->setView();
+        $this->view->assign('controller', $this);
+        $this->view->setCaching(false);
+        $this->view->add_core_data();
+        $this->view->clear_compiled();
+        $this->view->clear_cache();
+    }
+
+    /**
+     * Dont allow any overrides for this base class.
+     *
+     * @throws BadMethodCallException If called.
+     *
+     * @return void
+     */
     public function __call($method, $arguments)
     {
         throw new BadMethodCallException(sprintf('%1$s not found in %2$s', $method, get_class($this)));
@@ -34,6 +57,15 @@ abstract class Zikula_InteractiveInstaller extends Zikula_Controller
     public function postInitialize()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->getName . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
-        $this->throwForbiddenUnless(SessionUtil::getVar('interactive_process'));
+    }
+
+    /**
+     * Ensure we are in an interactive session.
+     *
+     * @return void
+     */
+    public function preInvokeMethod()
+    {
+        $this->throwForbiddenUnless(SessionUtil::getVar('interactive_process'), $this->__('This doesnt appear to be an interactive session.'));
     }
 }
