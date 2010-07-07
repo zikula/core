@@ -5,6 +5,22 @@ if (typeof(Zikula) == 'undefined') {
 }
 
 /**
+ * Zikula.define
+ * Creates namespace in Zikula scope through nested chain of objects, based on the given path
+ * Example:
+ * Zikula.define('Module.Component') will create object chain: Zikula.Module.Component
+ * If object in chain already exists it will be extended, not overwritten
+ *
+ * @param  path dot separated path to define
+ * @return object
+ */
+Zikula.define = function(path) {
+    return path.split('.').inject(Zikula, function(object, prop) {
+        return object[prop] = object[prop] || { };
+    })
+}
+
+/**
  * Zikula.init
  * Load what's needed on dom loaded
  *
