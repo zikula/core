@@ -45,6 +45,7 @@ function permissioninit()
                 // adminpermission found, locking required
                 $('permission_' + thispermid).title = permissionlocked;
                 Element.update('permdrag_' + thispermid, '(' + thispermid + ')');
+                Element.addClassName('permission_' + thispermid, 'permlocked');
                 Element.removeClassName('permission_' + thispermid, 'z-sortable');
             } else {
                 // not adminpermission
