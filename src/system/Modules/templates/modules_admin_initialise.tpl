@@ -22,7 +22,7 @@
                     </thead>
                     <tbody>
                         {foreach from=$dependencies item=dependency}
-                        <tr>
+                        <tr class="{cycle values="z-odd,z-even"}">
                             <td>{$dependency.modname}</td>
                             <td>
                                 {if $dependency.insystem neq true and $dependency.status eq 1}
