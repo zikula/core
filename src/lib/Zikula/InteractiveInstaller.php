@@ -18,6 +18,11 @@
  */
 abstract class Zikula_InteractiveInstaller extends Zikula_Controller
 {
+    public function __call($method, $arguments)
+    {
+        throw new BadMethodCallException(sprintf('%1$s not found in %2$s', $method, get_class($this)));
+    }
+
     /**
      * Post inialise method hook.
      *
