@@ -140,7 +140,7 @@ class Users_Api_Registration extends Zikula_Api
         }
 
         if (isset($args['checkmode'])) {
-            $checkMode = $args['checkMode'];
+            $checkMode = $args['checkmode'];
         } else {
             $checkMode = 'new';
         }
