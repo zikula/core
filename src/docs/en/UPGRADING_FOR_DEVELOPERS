@@ -158,15 +158,25 @@ MODULES
   in which case make the protected or private.  Generally speaking only
   install(), upgrade() and uninstall() should be public.
 
-  If there are any interactive install methods, please add these to lib/$modname/Interactiveinstaller.php
+- Interactive install/upgrade/uninstall
+  If there are any interactive install methods, please add these to lib/$modname/Controller/Interactiveinstaller.php
   e.g.
-    lib/MyModule/Interactiveinstaller.php
-    contains class MyModule_Interactiveinstaller extends Zikula_InteractiveInstaller  (notice the casing).
+    lib/MyModule/Controller/Interactiveinstaller.php
+    contains class MyModule_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller  (notice the casing).
 
   Basically, if the interactive installers has method install() that will override the install() in
   the main Installer.php, if it has upgrade() it will override the main upgrade() and if it has
   uninstall() it will override the uninstall() method.  If your module us 100% interactive install,
   upgrade and uninstall there is no need to have an Installer.php at all.
+
+  Subsequent steps can be named arbitarily in the interactive installer controller class.  For example you might have
+  upgrade_step1()
+  upgrade_step2()
+  etc.
+
+  For security reasons, when an interactive process starts, a session variable is set called 'interactive_process'.
+  When the interactive installer process finishes, either successfully, or because of an error please make sure
+  to delete this with SessionUtil::delVar('interactive_process');
 
 - If you need any bootstrapping, like making a library available create bootstrap.php, this is
   included when the Module is first 'loaded'.

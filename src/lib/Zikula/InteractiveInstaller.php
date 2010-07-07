@@ -34,5 +34,6 @@ abstract class Zikula_InteractiveInstaller extends Zikula_Controller
     public function postInitialize()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->getName . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SessionUtil::getVar('interactive_process'));
     }
 }
