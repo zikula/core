@@ -218,10 +218,20 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
 
             // log details to database
             foreach ($result as $event) {
-                
+
                 $eventName = $event->getName();
                 $malVar = explode(".", $eventName, 2);
 
+                $filters = array();
+                foreach($event as $filter) {
+                    array_push($filters, array(
+                                            'id' => $filter->getId(),
+                                            'description' => $filter->getDescription(),
+                                            'impact' => $filter->getImpact(),
+                                            'tags' => $filter->getTags(),
+                                            'rule' => $filter->getRule()));
+                }
+                
                 $newIntrusionItem = array(
                         'name'    => $eventName,
                         'tag'     => $malVar[1],
@@ -230,6 +240,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
                         'uid'     => $currentUid,
                         'ip'      => $ipAddress,
                         'impact'  => $result->getImpact(),
+                        'filters' => serialize($filters),
                         'date'    => DateUtil::getDatetime()
                 );
 

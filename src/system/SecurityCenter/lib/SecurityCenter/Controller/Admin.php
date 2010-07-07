@@ -584,6 +584,11 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
         $where = $objArray->genFilter($filter);
         $data  = $objArray->get($where, $sort, $startnum, $pagesize);
 
+        // unserialize filters data
+        foreach($data as $key => $idsdata) {
+            $data[$key]['filters'] = unserialize($data[$key]['filters']);
+        }
+
         // Create output object
         $this->view->setCaching(false);
 
@@ -633,7 +638,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * export ids log
+     * purge ids log
      *
      */
     public function purgeidslog()

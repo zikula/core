@@ -285,6 +285,12 @@ class SecurityCenter_Installer extends Zikula_Installer
                 $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
             // fall through
 
+            case '1.4.2':
+                if (!DBUtil::changeTable('sc_intrusion')) {
+                    return false;
+                }
+            // fall through
+
             case '1.6':
             // future upgrade routines
         }

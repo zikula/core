@@ -33,6 +33,7 @@ function securitycenter_tables()
                                             'uid'       => 'ids_uid',
                                             'ip'        => 'ids_ip',
                                             'impact'    => 'ids_impact',
+                                            'filters'   => 'ids_filters',
                                             'date'      => 'ids_date');
 
     $dbtable['sc_intrusion_column_def'] = array('id'        => 'I PRIMARY AUTO',
@@ -43,6 +44,7 @@ function securitycenter_tables()
                                                 'uid'       => 'I4 DEFAULT NULL',
                                                 'ip'        => 'C(40) NOTNULL DEFAULT \'\'', // C(15)
                                                 'impact'    => 'I4 NOTNULL DEFAULT \'0\'',
+                                                'filters'   => 'X NOTNULL',
                                                 'date'      => 'T NOTNULL');
 
     // Return the table information

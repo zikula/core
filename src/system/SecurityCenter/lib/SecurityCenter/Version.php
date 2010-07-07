@@ -21,7 +21,7 @@ class SecurityCenter_Version extends Zikula_Version
         $meta['description']    = $this->__('Provides the ability to manage site security. It logs attempted hacks and similar events, and incorporates a user interface for customising alerting and security settings.');
         //! module name that appears in URL
         $meta['url']            = $this->__('securitycenter');
-        $meta['version']        = '1.4.2';
+        $meta['version']        = '1.4.3';
         $meta['contact']        = 'http://www.zikula.org';
         $meta['securityschema'] = array('SecurityCenter::' => '::');
         return $meta;

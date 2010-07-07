@@ -40,6 +40,7 @@
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="username"}">{gt text="User Name"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
+                <th>{gt text="PHPIDS Filters used"}</th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date DESC"}">{gt text="Date"}</a></th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
@@ -55,6 +56,12 @@
                 <td>{$event.username|safetext}</td>
                 <td>{$event.ip|safetext}</td>
                 <td>{$event.impact|safetext}</td>
+                <td>
+                {foreach from=$event.filters item=filter}
+                {$filter.id} - {$filter.description}
+                <br />
+                {/foreach}
+                </td>
                 <td>{$event.date|safetext}</td>
                 <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id authid=$authkey}">{img src=cancel.gif modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</a></td>
             </tr>
