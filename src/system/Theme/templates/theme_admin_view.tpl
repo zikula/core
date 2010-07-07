@@ -1,3 +1,4 @@
+{ajaxheader ui=true}
 {include file='theme_admin_menu.tpl'}
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://community.zikula.org/module-Extensions.htm\">`$extdbtitle`</a></strong>" var=extdblink}
@@ -18,8 +19,8 @@
             {foreach from=$themes item=theme}
             <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
                 <td>
-                    {$theme.displayname|safetext}
-                    {if $theme.name|strtolower eq $currenttheme|strtolower} (*) {/if}
+                    <span title="{$theme.description|default:$theme.displayname}" class="tooltips">{$theme.displayname|safetext}</span>
+                    {if $theme.name|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips"> (*) </span>{/if}
                 </td>
                 <td>{$theme.type|themetype}</td>
                 <td>
@@ -46,3 +47,7 @@
     <em>(*) = {gt text="Default theme"}</em>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
+
+<script type="text/javascript">
+    Zikula.UI.Tooltips($$('.tooltips'));
+</script>
