@@ -932,16 +932,17 @@ class ModUtil
     /**
      * Run a module function.
      *
-     * @param string  $modname The name of the module.
-     * @param string  $type    The type of function to run.
-     * @param string  $func    The specific function to run.
-     * @param array   $args    The arguments to pass to the function.
-     * @param boolean $api     Whether or not to execute an API (or regular) function.
+     * @param string  $modname    The name of the module.
+     * @param string  $type       The type of function to run.
+     * @param string  $func       The specific function to run.
+     * @param array   $args       The arguments to pass to the function.
+     * @param boolean $api        Whether or not to execute an API (or regular) function.
+     * @param string  $instanceof Perform instanceof checking of target class.
      *
      * @throws Zikula_Exception_NotFound If method was not found.
      * @return mixed.
      */
-    public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
+    public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false, $instanceof = null)
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
@@ -964,6 +965,12 @@ class ModUtil
             if ($result) {
                 $modfunc = $result['callable'];
                 $controller = $modfunc[0];
+                if (!is_null($instanceof)) {
+                    if (!$controller instanceof $instanceof) {
+                        throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', array(get_class($controller), $instanceof)));
+                    }
+                }
+                
             }
         }
 
@@ -982,7 +989,7 @@ class ModUtil
                         $reflection = call_user_func(array($modfunc[0], 'getReflection'));
                         $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
                         if ($subclassOfReflection->hasMethod($modfunc[1])) {
-                            // Don't allow front controller to access any public methods inside the controller parents
+                            // Don't allow front controller to access any public methods inside the controller's parents
                             throw new Zikula_Exception_NotFound();
                         }
                     }
@@ -1050,29 +1057,31 @@ class ModUtil
     /**
      * Run a module function.
      *
-     * @param string $modname The name of the module.
-     * @param string $type    The type of function to run.
-     * @param string $func    The specific function to run.
-     * @param array  $args    The arguments to pass to the function.
+     * @param string  $modname    The name of the module.
+     * @param string  $type       The type of function to run.
+     * @param string  $func       The specific function to run.
+     * @param array   $args       The arguments to pass to the function.
+     * @param string  $instanceof Perform instanceof checking of target class.
      *
      * @return mixed.
      */
-    public static function func($modname, $type = 'user', $func = 'main', $args = array())
+    public static function func($modname, $type = 'user', $func = 'main', $args = array(), $instanceof = null)
     {
-        return self::exec($modname, $type, $func, $args);
+        return self::exec($modname, $type, $func, $args, false, $instanceof);
     }
 
     /**
      * Run an module API function.
      *
-     * @param string $modname The name of the module.
-     * @param string $type    The type of function to run.
-     * @param string $func    The specific function to run.
-     * @param array  $args    The arguments to pass to the function.
+     * @param string  $modname    The name of the module.
+     * @param string  $type       The type of function to run.
+     * @param string  $func       The specific function to run.
+     * @param array   $args       The arguments to pass to the function.
+     * @param string  $instanceof Perform instanceof checking of target class.
      *
      * @return mixed.
      */
-    public static function apiFunc($modname, $type = 'user', $func = 'main', $args = array())
+    public static function apiFunc($modname, $type = 'user', $func = 'main', $args = array(), $instanceof = null)
     {
         if (empty($type)) {
             $type = 'user';
@@ -1084,7 +1093,7 @@ class ModUtil
             $func = 'main';
         }
 
-        return self::exec($modname, $type, $func, $args, true);
+        return self::exec($modname, $type, $func, $args, true, $instanceof);
     }
 
 
