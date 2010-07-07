@@ -475,7 +475,7 @@ class UserUtil
      *
      * @return boolean
      */
-    public function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
+    public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
     {
         // For the following, register any errors in the UI function that called this.
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
