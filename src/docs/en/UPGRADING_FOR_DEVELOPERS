@@ -98,7 +98,7 @@ MODULES
   Refactor the controllers, encapulating all functions inside 
   class $modname_Controller_$type extends Zikula_Controller
   e.g.
-    class MyModule_Controller_Users extends Zikula_Controller
+    class MyModule_Controller_User extends Zikula_Controller
 
   Make all functions public which should be accessible from the browser.
   Internal methods which should not be accessible outside the class should be made
@@ -112,7 +112,7 @@ MODULES
   Refactor the APIs, encapulating all functions inside 
   class $modname_Api_$type extends Zikula_Api
   e.g.
-    class MyModule_Api_Users extends Zikula_Api
+    class MyModule_Api_User extends Zikula_Api
 
   Make all functions public which should be accessible from ModUtil::apiFunc().
   Internal methods which should not be accessible outside the class should be made
@@ -146,7 +146,7 @@ MODULES
   $this->view is automatically available: $this->view->assign(), $this->view->fetch()
   etc.
 
-- Rename pninit.php to Installer.php
+- Rename and move pninit.php to lib/MyModule/Installer.php
   Encapulate all functions in class $modname extends Zikula_Installer
   e.g.
     class MyModule_Installer extends Zikula_Installer
