@@ -417,7 +417,8 @@ class UserUtil
     }
 
     /**
-     * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule without actually logging the user in.
+     * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule
+     * without actually logging the user in.
      *
      * @param string $authModuleName Auth module name.
      * @param array  $authinfo       Auth info array.
@@ -438,7 +439,7 @@ class UserUtil
 
         // Authenticate the loginID and userEnteredPassword against the specified authModule.
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
-        return self::authApi($authModuleName, 'checkPassword', array('authinfo' => $authinfo));
+        return ModUtil::apiFunc($authModuleName, 'auth', 'checkPassword', array('authinfo' => $authinfo), 'Zikula_AuthApi');
     }
 
     /**
@@ -461,7 +462,7 @@ class UserUtil
             return LogUtil::registerArgsError();
         }
 
-        return self::authApi($authModuleName, 'authenticateUser', array('authinfo' => $authinfo));
+        return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array('authinfo' => $authinfo), 'Zikula_AuthApi');
     }
 
     /**
@@ -490,9 +491,9 @@ class UserUtil
         // Authenticate the loginID and userEnteredPassword against the specified authModule.
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
         if ($checkPassword) {
-            $authenticatedUid = self::authApi($authModuleName, 'authenticateUser', array('authinfo' => $authinfo));
+            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array('authinfo' => $authinfo), 'Zikula_AuthApi');
         } else {
-            $authenticatedUid = self::authApi($authModuleName, 'getUidForAuthinfo', array('authinfo' => $authinfo));
+            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'getUidForAuthinfo', array('authinfo' => $authinfo), 'Zikula_AuthApi');
         }
 
         if (!$authenticatedUid || !is_numeric($authenticatedUid) || ((int)$authenticatedUid != $authenticatedUid)) {
@@ -626,7 +627,7 @@ class UserUtil
 
         // BEGIN ACTUAL LOGIN
         // Made it through all the checks. We can actually log in now.
-        $loggedInUid = self::authApi($authModuleName, 'login', array('authinfo' => $authinfo));
+        $loggedInUid = ModUtil::apiFunc($authModuleName, 'auth', 'login', array('authinfo' => $authinfo), 'Zikula_AuthApi');
         if ($loggedInUid == $authenticatedUid) {
             // Storing Last Login date -- store it in UTC! Do not use date() function!
             $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
@@ -706,7 +707,7 @@ class UserUtil
             $authModuleName = SessionUtil::getVar('authmodule', '');
 
             if (!empty($authModuleName) && ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'auth')) {
-                $authModuleLoggedOut = self::authApi($authModuleName, 'logout');
+                $authModuleLoggedOut = ModUtil::apiFunc($authModuleName, 'auth', 'logout', null, 'Zikula_AuthApi');
                 if (!$authModuleLoggedOut) {
                     // TODO -- Really? We want to prevent the user from logging out of Zikula if the authmodule logout fails?  Really?
                     $event = new Zikula_Event('user.logout.failed', null, array(
@@ -1512,26 +1513,6 @@ class UserUtil
 
         $dbtables = DBUtil::getTables();
         return array_key_exists($label, $dbtables['users_column']);
-    }
-
-    /**
-     * Call authmodle's auth api.
-     *
-     * @param string $authModuleName The name of the module.
-     * @param string $method         The specific function to run.
-     * @param array  $args           The arguments to pass to the function.
-     *
-     * @return mixed
-     * @throws Exception If the $authModuleName's api does not subclass Zikula_AuthApi.
-     */
-    public static function authApi($authModuleName, $method, $args)
-    {
-        $object = ModUtil::getObject(ModUtil::getClass($authModuleName, 'auth', true));
-        if (!$object->getReflection()->isSubClassOf('Zikula_AuthApi')) {
-            throw new Exception(__f('%s must be a subclass of Zikula_AuthApi', $className));
-        }
-
-        return ModUtil::apiFunc($authModuleName, 'auth', $method, $args);
     }
 
 }
