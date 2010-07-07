@@ -152,7 +152,15 @@ function replace_pnApi($contents)
     'pncategoryarray' => 'Categories_DBObject_CategoryArray',
     'pncategoryregistry' => 'Categories_DBObject_Registry',
     'pncategoryregistryarray' => 'Categories_DBObject_RegistryArray',
-
+    'pnmodule_dependency_' => 'ModUtil::DEPENDENCY_',
+    'PN_VERSION_NUM' => 'System::VERSION_NUM',
+    'PN_VERSION_ID' => 'System::VERSION_ID',
+    'PN_VERSION_SUB' => 'System::VERSION_SUB',
+    'PNMODULE_STATE_' => 'ModUtil::STATE_',
+    'MODULE_TYPE_' => 'ModUtil::TYPE_',
+    'PNTHEME_FILTER_' => 'ThemeUtil::FILTER_',
+    'PNTHEME_TYPE_' => 'ThemeUtil::TYPE_',
+    'PNTHEME_STATE_' => 'ThemeUtil::STATE_',
     );
 
     $replaceArray = array_values($array);
