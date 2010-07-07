@@ -1,14 +1,7 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-// Create the Zikula object if needed
-if (typeof(Zikula) == 'undefined') {
-    Zikula = {};
-}
-
 // Create the Zikula.Users object if needed
-if (typeof(Zikula.Users) == 'undefined') {
-    Zikula.Users = {};
-}
+Zikula.define('Users');
 
 // Create the Zikula.Users.ModifyConfig object
 Zikula.Users.NewUser = {

@@ -1,10 +1,5 @@
 // Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).
-if (typeof(Zikula) == 'undefined') {
-    Zikula = {};
-}
-if (typeof(Zikula.Users) == 'undefined') {
-    Zikula.Users = {};
-}
+Zikula.define('Users');
 
 Zikula.Users._PassMeter = Class.create({
     initialize: function(options) {

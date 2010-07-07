@@ -1,8 +1,6 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv2.1 (or at your option, any later version).
 
-if (typeof(Zikula.UI) == 'undefined') {
-    Zikula.UI = {};
-}
+Zikula.define('UI');
 
 Zikula.UI.Key = Class.create(HotKey, {
     initialize: function($super,letter,callback,options) {
