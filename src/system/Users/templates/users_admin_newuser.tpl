@@ -10,10 +10,10 @@
     <h2>{$templatetitle}</h2>
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-    <div id="users_errormessages_div" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
+    <div id="users_errormsgs_div" class="z-errormsg{if empty($errormsgs)} z-hide{/if}">
         <p class="z-sub">Please correct the following items:</p>
-        <ul id="users_errormessages">
-            {foreach from=$errorMessages item='message'}
+        <ul id="users_errormsgs">
+            {foreach from=$errormsgs item='message'}
             <li>{$message}</li>
             {/foreach}
         </ul>
@@ -23,35 +23,35 @@
         <div>
             <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
             <input type="hidden" id="users_checkmode" name="checkmode" value="new" />
-            <input type="hidden" id="users_reginfo_agreetoterms" name="reginfo[agreetoterms]" value="{if !$userMustAccept}1{else}0{/if}" />
+            <input type="hidden" id="users_reginfo_agreetoterms" name="reginfo[agreetoterms]" value="{if !$usermustaccept}1{else}0{/if}" />
             <fieldset>
                 <legend>{gt text='New user account'}</legend>
                 <div class="z-formrow">
                     <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                    <input id="users_reginfo_uname"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
+                    <input id="users_reginfo_uname"{if isset($errorflds.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                    <input id="users_reginfo_email"{if isset($errorFields.reginfo_email) || isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
+                    <input id="users_reginfo_email"{if isset($errorflds.reginfo_email) || isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="reginfo[email]" size="21" maxlength="60" value="{$reginfo.email|default:''}" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                    <input id="users_emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
+                    <input id="users_emailagain"{if isset($errorflds.emailagain)} class="errorrequired"{/if} type="text" name="emailagain" size="21" maxlength="60" value="{$emailagain|default:''}" />
                 </div>
-                <div id="users_setpass_container" class="z-formrow{if empty($reginfo.pass) && !isset($errorFields.reginfo_pass) && !isset($errorFields.passagain)} z-hide{/if}">
+                <div id="users_setpass_container" class="z-formrow{if empty($reginfo.pass) && !isset($errorflds.reginfo_pass) && !isset($errorflds.passagain)} z-hide{/if}">
                     <label for="users_setpass">{gt text="Set the user's password now?"}</label>
                     <div id="users_setpass">
-                        <input id="users_setpass_yes" type="radio" name="setpass" value="1" {if !empty($reginfo.pass) || isset($errorFields.reginfo_pass) || isset($errorFields.passagain)} checked="checked"{/if} />
+                        <input id="users_setpass_yes" type="radio" name="setpass" value="1" {if !empty($reginfo.pass) || isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} checked="checked"{/if} />
                         <label for="users_setpass_yes">{gt text="Yes"}</label>
-                        <input id="users_setpass_no" type="radio" name="setpass" value="0" {if empty($reginfo.pass) && !isset($errorFields.reginfo_pass) && !isset($errorFields.passagain)} checked="checked"{/if} />
+                        <input id="users_setpass_no" type="radio" name="setpass" value="0" {if empty($reginfo.pass) && !isset($errorflds.reginfo_pass) && !isset($errorflds.passagain)} checked="checked"{/if} />
                         <label for="users_setpass_no">{gt text="No"}</label>
                     </div>
                 </div>
                 <div id="users_setpass_yes_wrap">
                     <div class="z-formrow">
                         <label for="users_reginfo_pass">{gt text='Password'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                        <input id="users_reginfo_pass"{if isset($errorFields.reginfo_pass) || isset($errorFields.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
-                        <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$zcore.Users.minpass}</em>
+                        <input id="users_reginfo_pass"{if isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
+                        <p class="z-sub z-formnote z-italic">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$zcore.Users.minpass}</p>
                     </div>
                     {if $zcore.Users.use_password_strength_meter eq 1}
                     {pageaddvar name='javascript' value='prototype'}
@@ -76,7 +76,7 @@
                     {/if}
                     <div class="z-formrow">
                         <label for="users_passagain">{gt text='Password (repeat for verification)'}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                        <input id="users_passagain"{if isset($errorFields.passagain)} class="errorrequired"{/if} type="password" name="passagain" size="21" maxlength="20" />
+                        <input id="users_passagain"{if isset($errorflds.passagain)} class="errorrequired"{/if} type="password" name="passagain" size="21" maxlength="20" />
                     </div>
                     <div id="users_sendpass_container" class="z-formrow">
                         <label for="users_sendpass">{gt text="Send password via e-mail?"}</label>
@@ -90,11 +90,16 @@
                     </div>
                 </div>
                 <div id="users_setpass_no_wrap" class="z-formrow z-hide">
+                    {if $zcore.Users.reg_verifyemail == 'UserUtil::VERIFY_NO'|constant}
+                    <p class="z-formnote z-warningmsg">{gt text="The user's e-mail address will be verified, even though e-mail address verification is turned off in 'Settings'. This is necessary because the user will create a password during the verification process."}</p>
+                    {else}
                     <p class="z-formnote z-informationmsg">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>
+                    {/if}
                 </div>
                 <div id="users_usermustverify_wrap" class="z-formrow">
                     <label for="users_usermustverify">{gt text="User's e-mail address must be verified (recommended)"}</label>
                     <input id="users_usermustverify" type="checkbox" name="usermustverify"{if $usermustverify} checked="checked"{/if} />
+                    <p class="z-sub z-formnote z-italic">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</p>
                 </div>
             </fieldset>
 
