@@ -21,13 +21,11 @@ a {
     color: #467aa7;
     font-weight: bold;
     text-decoration: none;
-    background-color: inherit;
 }
 
 a:hover {
     color: #2a5a8a;
     text-decoration: none;
-    background-color: inherit;
 }
 
 a img {
