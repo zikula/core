@@ -51,10 +51,10 @@
     <thead>
         <tr>
             <th>{gt text="Status"}</th>
-            <th>{gt text="Avatar"}</th>
             <th>{gt text="User name"}</th>
             {if $useProfileModule eq true}
-            <th> {gt text="Internal name"}</th>
+            <th>{gt text="Avatar"}</th>
+            <th>{gt text="Internal name"}</th>
             <th>{gt text="User's website"}</th>
             {/if}
         </tr>
@@ -63,11 +63,12 @@
         {section name='members' loop=$members}
         <tr class="{cycle values='z-odd,z-even'}">
             <td>{img modname='core' set='icons/extrasmall' src=$members[members].isonline alt=$members[members].isonlinelbl}</td>
-            <td class="z-center">{useravatar uid=$members[members].uid}</td>
             <td><strong>{$members[members].uname|userprofilelink}</strong></td>
             {if $useProfileModule eq true}
+            <td class="z-center">{useravatar uid=$members[members].uid}</td>
             <td>{$members[members]._UREALNAME|default:''}</td>
-            <td>{if $members[members]._YOURHOMEPAGE|default:''  eq ''}&nbsp;
+            <td>
+                {if $members[members]._YOURHOMEPAGE|default:'' eq ''}&nbsp;
                 {else}
                 <a href="{$members[members]._YOURHOMEPAGE|safetext}" title="{$members[members]._YOURHOMEPAGE}">{img src="agt_internet.gif" modname='core' set='icons/small' alt=$members[members]._YOURHOMEPAGE}</a>
                 {/if}
@@ -75,7 +76,7 @@
             {/if}
         </tr>
         {sectionelse}
-        <tr class="z-datatableempty"><td colspan="{if $useProfileModule eq true}5{else}3{/if}">{gt text="No group members found."}</td></tr>
+        <tr class="z-datatableempty"><td colspan="{if $useProfileModule eq true}5{else}2{/if}">{gt text="No group members found."}</td></tr>
         {/section}
     </tbody>
 </table>
