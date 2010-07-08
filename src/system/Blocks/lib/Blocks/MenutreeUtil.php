@@ -25,7 +25,7 @@ class Blocks_MenutreeUtil
         $templates = array();
         $tpls = array();
         // restricted templates, array for possible future changes
-        $sysTpls = array('blocks_block_menutree_modify.tpl');
+        $sysTpls = array('blocks_block_menutree_modify.tpl', 'blocks_block_menutree_include_help.tpl');
         // module templates
         $modulesTpls = FileUtil::getFiles('system/Blocks/templates/menutree', false, true, 'tpl', false);
         $configTpls = FileUtil::getFiles('config/templates/Blocks/menutree', false, true, 'tpl', false);
