@@ -83,16 +83,19 @@ class Blocks_Block_Menutree extends Zikula_Block
                     $blocked[] = $item['id'];
                 } else {
                     // dynamic components
-                    if(strpos($item['href'],'{menutree:ext:') === 0) {
+                    if(strpos($item['href'],'{ext:') === 0) {
                         $dynamic = explode(':', substr($item['href'], 1,  - 1));
-                        if(!empty($dynamic[1]) && !empty($dynamic[2])) {
+                        $modname = $dynamic[1];
+                        $func = $dynamic[2]; // plugin
+                        $extrainfo = (isset($dynamic[3]) && !empty($dynamic[3])) ? $dynamic[3] : null;
+                        if(!empty($modname) && !empty($func)) {
                             $args = array(
                                     'item' => $item,
                                     'lang' => $lang,
                                     'bid' => $blockinfo['bid'],
-                                    'extrainfo' => isset($dynamic[3]) && !empty($dynamic[3]) ? $dynamic[3] : null
+                                    'extrainfo' => $extrainfo,
                             );
-                            $node = ModUtil::apiFunc('menutree', 'Menutree', $dynamic[2], $args);
+                            $node = ModUtil::apiFunc($modname, 'menutree', $func, $args);
                             if(!is_array($node)) {
                                 $node = array(array($lang => $item));
                             }

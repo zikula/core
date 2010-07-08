@@ -19,6 +19,22 @@ core.init
 core.postinit
     Occurs just before System::init() exists from normal execution.
 
+api.method_not_found called in instances of Zikula_Api from __call()
+    Receives arguments from __call($method, argument) as $args
+    $event['method'] = the method which didnt exist in the main class.
+    $event['args'] = the arguments that were passes
+    The event subject is the class where the method was not found.
+    Must exit if $event['method'] does not match whatever the handler expects.
+    Modify $event->data and $event->setNotify().
+
+controller.method_not_found called in instances of Zikula_Controller from __call()
+    Receives arguments from __call($method, argument) as $args
+    $event['method'] = the method which didnt exist in the main class.
+    $event['args'] = the arguments that were passes
+    The event subject is the class where the method was not found.
+    Must exit if $event['method'] does not match whatever the handler expects.
+    Modify $event->data and $event->setNotify().
+
 user.login
     Occurs right after login, $event['user'] is the UID of the logged in user.
     $event['authmodule'] with the name of the module that authenticated.
