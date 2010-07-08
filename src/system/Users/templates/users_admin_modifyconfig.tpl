@@ -201,7 +201,7 @@
                     <label for="users_moderation_order1">{gt text="Users must verify their e-mail address before their application is approved."}</label>
                 </div>
                 <div class="z-formlist">
-                    <input id="users_moderation_order2" type="radio" name="config[moderation_order]" value="1" {if $config.moderation_order eq 2} checked="checked"{/if} />
+                    <input id="users_moderation_order2" type="radio" name="config[moderation_order]" value="2" {if $config.moderation_order eq 2} checked="checked"{/if} />
                     <label for="users_moderation_order2">{gt text="Application approval and e-mail address verification can occur in any order."}</label>
                 </div>
             </div>

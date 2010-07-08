@@ -1653,6 +1653,7 @@ class Users_Controller_Admin extends Zikula_Controller
                  ->setVar('reg_allowreg', $config['reg_allowreg'])
                  ->setVar('reg_noregreasons', $config['reg_noregreasons'])
                  ->setVar('moderation', $config['moderation'])
+                 ->setVar('moderation_order', $config['moderation_order'])
                  ->setVar('reg_verifyemail', $config['reg_verifyemail'])
                  ->setVar('reg_notifyemail', $config['reg_notifyemail'])
                  ->setVar('reg_Illegaldomains', $config['reg_Illegaldomains'])
