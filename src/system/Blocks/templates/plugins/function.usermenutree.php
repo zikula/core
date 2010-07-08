@@ -128,12 +128,7 @@ function _userTreeHtmlListExt($tree,$treeNodePrefix,$treeClassPrefix,$ext,$depth
     return $html;
 }
 
-/**
- * do a simple check .. to see if the current URL is the menu item
- *
- * @copyright (c) 2001, Zikula Development Team
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- */
+
 function menutree_is_recent_page($url)
 {
     if (!empty($url)) {

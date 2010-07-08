@@ -201,8 +201,8 @@ class Blocks_Block_Menutree extends Zikula_Block
         $this->view->setCaching(false);
 
         // get all templates and stylesheets.
-        $vars['tpls'] = ModUtil::apiFunc('menutree','admin','gettemplates');
-        $vars['styles'] = ModUtil::apiFunc('menutree','admin','getstylesheets');
+        $vars['tpls'] = Blocks_MenutreeUtil::getTemplates();
+        $vars['styles'] =  Blocks_MenutreeUtil::getStylesheets();
         $someThemes = $this->__('Only in some themes');
         $vars['somethemes'] = isset($vars['tpls'][$someThemes]) || isset($vars['styles'][$someThemes]) ? true : false;
 
