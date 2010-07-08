@@ -33,7 +33,7 @@
 <a id="users_formtop"></a>
 <p>{gt text='Registering for a user account is easy. Registration can give you access to content and to features of the site that are not available to anonymous guests.'}
     {if $userMustAccept}{$touppString}{/if}
-{gt text='During your visits, you are recommended to set your browser to accept cookies from this site, because various features of the site use cookies.'}</p>
+    {gt text='During your visits, you are recommended to set your browser to accept cookies from this site, because various features of the site use cookies.'}</p>
 
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
@@ -158,3 +158,4 @@
     </div>
 </form>
 {/if}
+{zdebug}
