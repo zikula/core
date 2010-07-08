@@ -20,14 +20,14 @@
 class Users_Controller_User extends Zikula_Controller
 {
     /**
-     * Post Setup hook.
+     * Post initialise.
+     *
+     * Run after construction.
      *
      * @return void
      */
-    protected function _postSetup()
+    protected function postInitialize()
     {
-        parent::_postSetup();
-
         // Set caching to false by default.
         $this->view->setCaching(false);
     }
