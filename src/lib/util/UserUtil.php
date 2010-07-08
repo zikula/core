@@ -525,7 +525,7 @@ class UserUtil
                 'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
             ));
             EventUtil::notify($event);
-            return LoginUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
+            return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
         }
 
         if (!isset($userObj['activated'])) {
@@ -616,11 +616,11 @@ class UserUtil
                 $loginDisplayInactive = ModUtil::getVar('Users', 'login_displayinactive', false);
                 $loginDisplayVerify = ModUtil::getVar('Users', 'login_displayverify', false);
                 if ($loginDisplayVerify && (!isset($userObj['lastlogin']) || empty($userObj['lastlogin']) || ($userObj['lastlogin'] == '1970-01-01 00:00:00'))) {
-                    return  LoginUtil::registerError(__('Sorry! Your account pending activation. Please check your e-mail for an activation message or contact an administrator.'));
+                    return  LogUtil::registerError(__('Sorry! Your account pending activation. Please check your e-mail for an activation message or contact an administrator.'));
                 } elseif ($loginDisplayInactive) {
-                    return  LoginUtil::registerError(__('Sorry! Your account is not active. Please contact an administrator.'));
+                    return  LogUtil::registerError(__('Sorry! Your account is not active. Please contact an administrator.'));
                 } else {
-                    return LoginUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
+                    return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
                 }
             }
         }
