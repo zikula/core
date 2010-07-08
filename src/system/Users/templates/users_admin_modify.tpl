@@ -20,7 +20,7 @@
 
     <form class="z-form" id="form_users_modify" action="{modurl modname='Users' type='admin' func='processusers' op=$op}" method="post">
         <div>
-            {securityutil_generateauthkey module='Users' assign='usersModifyFormAuthId'}
+            {capture name='authid' assign='usersModifyFormAuthId'}{insert name='generateauthkey' module='Users'}{/capture}
             <input type="hidden" name="authid" value="{$usersModifyFormAuthId}" />
             <input type="hidden" name="userid" value="{$userid}" />
             <input type="hidden" name="do"     value="yes" />

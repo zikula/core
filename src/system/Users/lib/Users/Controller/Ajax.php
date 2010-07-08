@@ -20,6 +20,19 @@
 class Users_Controller_Ajax extends Zikula_Controller
 {
     /**
+     * Post Setup hook.
+     *
+     * @return void
+     */
+    protected function _postSetup()
+    {
+        parent::_postSetup();
+
+        // Set caching to false by default.
+        $this->view->setCaching(false);
+    }
+
+    /**
      * Performs a user search based on the user name fragment entered so far.
      *
      * Sends output directly via echo.
