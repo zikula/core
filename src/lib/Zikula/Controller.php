@@ -28,6 +28,8 @@ abstract class Zikula_Controller extends Zikula_Base
     /**
      * Post Setup hook.
      *
+     * If you want to add to this configuration generally use the postInitialize() hook instead.
+     *
      * @return void
      */
     protected function _postSetup()
