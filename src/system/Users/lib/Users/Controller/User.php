@@ -280,18 +280,38 @@ class Users_Controller_User extends Zikula_Controller
 
         if ($registeredObj) {
             if (isset($registeredObj['uid'])) {
-                LogUtil::registerStatus($this->__('Done! Created new user account.'));
+                LogUtil::registerStatus($this->__('Done! Your account has been created and you may now log in.'));
+                return System::redirect(ModUtil::url('Users', 'user', 'loginScreen'));
             } elseif (isset($registeredObj['id'])) {
-                LogUtil::registerStatus($this->__('Done! Created new registration application.'));
+                $moderation = $this->getVar('moderation');
+                $moderationOrder = $this->getVar('moderation_order');
+                $verifyEmail = $this->getVar('reg_verifyemail');
+
+                if ($moderation && ($verifyEmail != UserUtil::VERIFY_NO)) {
+                    if ($moderationOrder == UserUtil::APPROVAL_AFTER) {
+                        LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message. Your account will not be approved until after the verification process is completed.'));
+                    } elseif ($moderationOrder == UserUtil::APPROVAL_BEFORE) {
+                        LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Remember that your request must be approved and your e-mail address must be verified before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
+                    } else {
+                        LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified and your request must be approved before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
+                    }
+                } elseif ($moderation) {
+                    LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Remember that your request must be approved before you will be able to log in. Please check your e-mail periodically for a message from us. You will receive a message after we have reviewed your request.'));
+                } elseif ($verifyEmail != UserUtil::VERIFY_NO) {
+                    LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Remember that your e-mail address must be verified before you will be able to log in. Please check your e-mail for an e-mail address verification message.'));
+                } else {
+                    // Some unknown state! Should never get here, but just in case...
+                    LogUtil::registerStatus($this->__('Done! Your registration request has been saved. Please conact the site administrator regarding the status of yor registration request.'));
+                }
             } else {
                 LogUtil::log($this->__('Internal Warning! Unknown return type from Users_Api_Registration#registerUser().'), 'WARNING');
                 LogUtil::registerError($this->__('Warning! New user information has been saved, however there may have been an issue saving it properly. Please check with a site administrator before re-registering.'));
             }
+            return $this->view->fetch('users_user_registrationfinished.tpl');
         } else {
             LogUtil::registerError($this->__('Error! Could not create the new user account or registration application. Please check with a site administrator before re-registering.'));
+            return $this->view->fetch('users_user_registrationfinished.tpl');
         }
-
-        return System::redirect(ModUtil::url('Users', 'admin', 'view'));
     }
 
     /**
