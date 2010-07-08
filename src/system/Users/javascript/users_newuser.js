@@ -102,7 +102,7 @@ Zikula.Users.NewUser = {
         }
 
         var errorMessagesList = $('users_errormsgs');
-        var errorMessagesDiv = $('users_errormmsgs_div');
+        var errorMessagesDiv = $('users_errormsgs_div');
         var submitButton = $('submitnewuser');
         if (errorMessagesList.childElementCount > 0) {
             errorMessagesList.childElements().each(function(item){item.remove()});
