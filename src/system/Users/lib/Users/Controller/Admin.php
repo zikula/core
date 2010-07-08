@@ -468,11 +468,27 @@ class Users_Controller_Admin extends Zikula_Controller
             LogUtil::registerError($this->__('Sorry! No matching users found.'), 404, ModUtil::url('Users', 'admin', 'search'));
         }
 
-        $this->view->assign('mailusers', SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT));
-        $this->view->assign('deleteusers', SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN));
+        $actions = array();
+        foreach ($items as $key => $userinfo) {
+            $actions[$key] = array(
+                'modifyUrl'    => false,
+                'deleteUrl'    => false,
+            );
+            if ($userinfo['uid'] != 1) {
+                if (SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_EDIT)){
+                    $actions[$key]['modifyUrl'] = ModUtil::url($this->getName(), 'admin', 'modify', array('userid' => $userinfo['uid']));
+                }
+                if (SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_DELETE)){
+                    $actions[$key]['deleteUrl'] = ModUtil::url($this->getName(), 'admin', 'deleteusers', array('userid' => $userinfo['uid']));
+                }
+            }
+        }
 
         // assign the matching results
-        $this->view->assign('items', $items);
+        $this->view->assign('items', $items)
+                    ->assign('actions', $actions)
+                    ->assign('mailusers', SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT))
+                    ->assign('deleteusers', SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN));
 
         return $this->view->fetch('users_admin_listusers.tpl');
     }

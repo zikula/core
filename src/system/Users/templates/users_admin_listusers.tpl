@@ -72,12 +72,8 @@
                             {$items[item].email}{/if}
                         </td>
                         <td class="z-right">
-                            {if ($items[item].uid neq 1)}
-                            <a href="{modurl modname="Users" type="admin" func="modify" userid=$items[item].uid}">{img modname=core set=icons/extrasmall src=xedit.gif __alt="Edit"}</a>
-                            {if $deleteusers eq true}
-                            <a href="{modurl modname="Users" type="admin" func="deleteusers" userid=$items[item].uid}">{img modname=core set=icons/extrasmall src=14_layer_deletelayer.gif __alt="Delete"}</a>
-                            {/if}
-                            {/if}
+                            {if $actions[item].modifyUrl}<a href="{$actions[item].modifyUrl}">{img modname=core set=icons/extrasmall src=xedit.gif __alt="Edit"}</a>{/if}
+                            {if $actions[item].deleteUrl}<a href="{$actions[item].deleteUrl}">{img modname=core set=icons/extrasmall src=14_layer_deletelayer.gif __alt="Delete"}</a>{/if}
                         </td>
                     </tr>
                     {/section}
