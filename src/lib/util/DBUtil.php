@@ -3142,7 +3142,15 @@ class DBUtil
         $tableIndex = $table . '_column_idx';
         if (array_key_exists($tableIndex, $tables) && is_array($tables[$tableIndex])) {
             foreach ($tables[$tableIndex] as $indexName => $indexDefinition) {
-                self::createIndex($indexName, $table, $indexDefinition);
+                if (is_array($indexDefinition) && isset($indexDefinition['columns'])) {
+                    if (isset($indexDefinition['options'])) {
+                        self::createIndex($indexName, $table, $indexDefinition['columns'], $indexDefinition['options']);
+                    } else {
+                        self::createIndex($indexName, $table, $indexDefinition['columns']);
+                    }
+                } else {
+                    self::createIndex($indexName, $table, $indexDefinition);
+                }
             }
         }
         return true;
@@ -3232,7 +3240,15 @@ class DBUtil
             $indexes = self::metaIndexes($table);
             foreach ($tables[$tableIndex] as $indexName => $indexDefinition) {
                 if (!isset($indexes[$indexName])) {
-                    self::createIndex($indexName, $table, $indexDefinition);
+                    if (is_array($indexDefinition) && isset($indexDefinition['columns'])) {
+                        if (isset($indexDefinition['options'])) {
+                            self::createIndex($indexName, $table, $indexDefinition['columns'], $indexDefinition['options']);
+                        } else {
+                            self::createIndex($indexName, $table, $indexDefinition['columns']);
+                        }
+                    } else {
+                        self::createIndex($indexName, $table, $indexDefinition);
+                    }
                 }
             }
         }
