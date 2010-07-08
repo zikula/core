@@ -386,7 +386,7 @@ class Blocks_Block_Menutree extends Zikula_Block
                 if ($_parseURL) {
                     $item[$lang]['href'] = $this->_parseUrl($item[$lang]['href']);
                 }
-                $item[$lang]['dynamic'] = strpos($item[$lang]['href'],'{menutree:') === 0;
+                $item[$lang]['dynamic'] = strpos($item[$lang]['href'],'{ext:') === 0;
             }
             if($langs['flat']) {
                 $_node = array('item' => $item[$reflang], 'nodes' => array());

@@ -38,7 +38,7 @@ myTree.prototype = {
             baseurl:            '',
             cookieName:         'menutree',
             dynamicClass:       'dynamic',
-            dynamicPattern:     function(str) {return str ? str.startsWith('{menutree:ext:') : false;},
+            dynamicPattern:     function(str) {return str ? str.startsWith('{ext:') : false;},
             langLabels: {},
             images: {},
             menuConfig: {}

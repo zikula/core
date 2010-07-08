@@ -18,7 +18,7 @@ class Blocks_Api_Menutree extends Zikula_Api
      * Return list of admin modules
      *
      * Syntax used in menutree
-     * {menutree:ext:adminlinks[:[flat,category]]}
+     * {ext:adminlinks[:[flat,category]]}
      * Last param is optional.  It can be flat and/or category separated by a comma.
      * 'flat' will add the admin links in the current menu.  Without 'flat' the links are grouped one level down
      * 'category' additionally groups the admin links by their category.
@@ -181,7 +181,7 @@ class Blocks_Api_Menutree extends Zikula_Api
          *         (
          *             [id] => 999
          *             [name] => Name given in menutree form
-         *             [href] => {menutree:ext:blank:foo=1&bar=2}
+         *             [href] => {ext:blank:foo=1&bar=2}
          *             [title] => Some title
          *             [className] => important
          *             [state] => 1
@@ -273,7 +273,7 @@ class Blocks_Api_Menutree extends Zikula_Api
      * Return content pages
      *
      * Syntax used in menutree
-     * {menutree:ext:content[:groupby=page&parent=1]}
+     * {ext:content[:groupby=page&parent=1]}
      * Params in [] are optional and
      *      groupby = menuitem (default) or page, all other values stands for none
      *      parent - id of parent node - this allows to get specified node of content pages
@@ -372,7 +372,7 @@ class Blocks_Api_Menutree extends Zikula_Api
      * Return list of user modules
      *
      * Syntax used in menutree
-     * {menutree:ext:modules[:flat]}
+     * {ext:modules[:flat]}
      * Last param is optional
      *
      * @param array $args['item'] menu node to be replaced
@@ -442,7 +442,7 @@ class Blocks_Api_Menutree extends Zikula_Api
      * Return some useful News links
      *
      * Syntax used in menutree
-     * {menutree:ext:news[:flat=BOOL&links=view,add,cat,arch|ALL]}
+     * {ext:news[:flat=BOOL&links=view,add,cat,arch|ALL]}
      * Params in [] are optional and
      *      flat - true or false, if set to true links are ungrouped (default is false)
      *      links - list of elements, default is ALL, avaiable items:
@@ -637,11 +637,11 @@ class Blocks_Api_Menutree extends Zikula_Api
      * Pagesetter plugin - returns pagesetter internal categories list for given publication type
      *
      * Syntax:
-     * {menutree:ext:pagesetter:tid=x&fieldname=y[&level=z]}
+     * {ext:pagesetter:tid=x&fieldname=y[&level=z]}
      * where x (required) is the pagesetter id for the Publication Type to display
      * and   y (required) is the tid Publication Type Field Name that is defined to point to the pagesetter Category Title
      * and   z (optional) is the number of levels to show
-     * example {menutree:ext:adminlinks:tid=1&fieldname=ArticleType&level=3}
+     * example {ext:adminlinks:tid=1&fieldname=ArticleType&level=3}
      * To work, the publication definition must have a field (specified with 'fieldname' above, that points to a Category.
      * The corresponding Category must be defined.  The menu created will mirror the Category structure that is defined there.
      *
@@ -769,7 +769,7 @@ class Blocks_Api_Menutree extends Zikula_Api
      * Return some common user links
      *
      * Syntax used in menutree
-     * {menutree:ext:userlinks[:flat]}
+     * {ext:userlinks[:flat]}
      * Last param is optional
      *
      * This plugin generates a list of  some common user links. The list looks as follows:
