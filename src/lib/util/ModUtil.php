@@ -1006,7 +1006,7 @@ class ModUtil
             // get the theme
             if ($GLOBALS['loadstages'] & System::CORE_STAGES_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
+                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     include_once $file;
                     if (function_exists($modfunc)) {
                         EventUtil::notify($preExecuteEvent);
@@ -1016,7 +1016,7 @@ class ModUtil
                 }
             }
 
-            if (file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
+            if (file_exists($file = "config/functions/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
                 include_once $file;
                 if (is_callable($modfunc)) {
                     EventUtil::notify($preExecuteEvent);
@@ -1025,7 +1025,7 @@ class ModUtil
                 }
             }
 
-            if (file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
+            if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
                 include_once $file;
                 if (is_callable($modfunc)) {
                     EventUtil::notify($preExecuteEvent);
