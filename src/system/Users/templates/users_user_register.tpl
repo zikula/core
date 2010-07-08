@@ -35,6 +35,18 @@
     {if $userMustAccept}{$touppString}{/if}
     {gt text='During your visits, you are recommended to set your browser to accept cookies from this site, because various features of the site use cookies.'}</p>
 
+{if $zcore.Users.moderation && ($zcore.Users.reg_verifyemail != 'UserUtil::VERIFY_NO'|constant)}
+{if $zcore.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|constant}
+<p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request and you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after an administrator has approved your request."}</p>
+{else}
+<p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address and an administrator must approve your registration request. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}{if $zcore.Users.moderation_order == 'UserUtil::APPROVAL_AFTER'|constant} {gt text="You must verify your e-mail address before an administrator will approve your registration request."}{/if}</p>
+{/if}
+{elseif $zcore.Users.moderation}
+<p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below."}</p>
+{elseif $zcore.Users.reg_verifyemail != 'UserUtil::VERIFY_NO'|constant}
+<p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}</p>
+{/if}
+
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
 <div id="users_errormsgs_div" class="z-errormsg{if empty($errormsgs)} z-hide{/if}">
@@ -158,4 +170,3 @@
     </div>
 </form>
 {/if}
-{zdebug}

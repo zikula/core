@@ -212,7 +212,7 @@ class Users_Controller_User extends Zikula_Controller
         }
 
         $this->view->setCaching(false);
-
+        $this->view->add_core_data();
         return $this->view->assign($rendererArgs)
                               ->fetch($template);
     }
