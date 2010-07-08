@@ -169,6 +169,28 @@ class DBUtil
     }
 
     /**
+     * Get a list of default dbms specific table options.
+     *
+     * This allows the default table options to be set in a modules's tables.php without
+     * causing a circular dependency.
+     *
+     * @return array Return the default table options.
+     */
+    public static function getDefaultTableOptions()
+    {
+        $tableoptions= array();
+        $dbType = DBConnectionStack::getConnectionDBType();
+        if ($dbType == 'mysql' || $dbType == 'mysqli') {
+            $tableoptions['type'] = DBConnectionStack::getConnectionDBTableType();
+        }
+
+        $tableoptions['charset'] = DBConnectionStack::getConnectionDBCharset();
+        $tableoptions['collate'] = DBConnectionStack::getConnectionDBCollate();
+
+        return $tableoptions;
+    }
+
+    /**
      * Get a list of dbms specific table options.
      *
      * For use by ADODB's data dictionary
@@ -190,19 +212,8 @@ class DBUtil
                 return $tables[$table . '_def'];
             }
         }
-
-        $tableoptions= array();
-        $dbType = DBConnectionStack::getConnectionDBType();
-        if ($dbType == 'mysql' || $dbType == 'mysqli') {
-            $tableoptions['type'] = DBConnectionStack::getConnectionDBTableType();
-        }
-
-        $tableoptions['charset'] = DBConnectionStack::getConnectionDBCharset();
-        $tableoptions['collate'] = DBConnectionStack::getConnectionDBCollate();
-
-        return $tableoptions;
+        return self::getDefaultTableOptions();
     }
-
 
     /**
      * Execute SQL, check for errors and return result. Uses Doctrine's DBAL to generate DB-portable paging code.
