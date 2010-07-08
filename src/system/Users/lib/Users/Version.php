@@ -17,10 +17,11 @@ class Users_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('Users manager');
-        $meta['description']    = $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.');
+        $meta['displayname'] = $this->__('Users manager');
+        $meta['description'] = $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.');
         //! module name that appears in URL
-        $meta['url']            = $this->__('users');
+        $meta['url']  = $this->__('users');
+        $meta['capabilities'] = array('authentication' => array('version' => '1.0'));
 
         // Be careful about version numbers. version_compare() is used to handle special situations.
         // 0.9 < 0.9.0 < 1 < 1.0 < 1.0.1 < 1.2 < 1.18 < 1.20 < 2.0 < 2.0.0 < 2.0.1

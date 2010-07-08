@@ -1531,9 +1531,9 @@ class Users_Controller_Admin extends Zikula_Controller
         SessionUtil::delVar('Users_Admin_modifyConfig');
 
         $authmodules = array();
-        $modules = ModUtil::getAllMods();
+        $modules = ModUtil::getModulesCapableOf('authentication');
         foreach ($modules as $modinfo) {
-            if (ModUtil::available($modinfo['name']) && ModUtil::hasApi($modinfo['name'], 'auth')) {
+            if (ModUtil::available($modinfo['name'])) {
                 $authmodules[] = $modinfo;
             }
         }
