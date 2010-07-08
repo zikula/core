@@ -27,8 +27,8 @@ class Blocks_MenutreeUtil
         // restricted templates, array for possible future changes
         $sysTpls = array('blocks_block_menutree_modify.tpl');
         // module templates
-        $modulesTpls = FileUtil::getFiles('system/Blocks/templates', false, true, 'tpl', false);
-        $configTpls = FileUtil::getFiles('config/templates/menutree', false, true, 'tpl', false);
+        $modulesTpls = FileUtil::getFiles('system/Blocks/templates/menutree', false, true, 'tpl', false);
+        $configTpls = FileUtil::getFiles('config/templates/Blocks/menutree', false, true, 'tpl', false);
         $tpls['modules'] = array_merge($modulesTpls,$configTpls);
 
         // themes templates - get user and admin themes
@@ -36,11 +36,11 @@ class Blocks_MenutreeUtil
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesTpls = array();
         foreach($userThemes as $ut) {
-            $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/Blocks/', false, true, 'tpl', false);
+            $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
         }
         foreach($adminThemes as $at) {
             if(!array_key_exists($at['name'],$themesTpls)) {
-                $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/Blocks/', false, true, 'tpl', false);
+                $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
             }
         }
 
@@ -62,8 +62,8 @@ class Blocks_MenutreeUtil
             sort($tpls['themes']['some']);
             $templates[$someThemes] = array_combine($tpls['themes']['some'],$tpls['themes']['some']);
         }
-
-        return $templates;
+        
+        return self::normalize($templates);
     }
 
     public static function getStylesheets()
@@ -73,8 +73,8 @@ class Blocks_MenutreeUtil
         // restricted stylesheets, array for possible future changes
         $sysStyles = array('adminstyle.css','contextmenu.css','style.css');
         // module stylesheets
-        $modulesStyles = FileUtil::getFiles('system/Blocks/style', false, false, 'css', false);
-        $configStyles = FileUtil::getFiles('config/styles/Blocks', false, false, 'css', false);
+        $modulesStyles = FileUtil::getFiles('system/Blocks/style/menutree', false, false, 'css', false);
+        $configStyles = FileUtil::getFiles('config/styles/Blocks/menutree', false, false, 'css', false);
         $styles['modules'] = array_merge($modulesStyles,$configStyles);
 
         // themes stylesheets - get user and admin themes
@@ -82,11 +82,11 @@ class Blocks_MenutreeUtil
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesStyles = array();
         foreach($userThemes as $ut) {
-            $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/style/Blocks', false, false, 'css', false);
+            $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/style/Blocks/menutree', false, false, 'css', false);
         }
         foreach($adminThemes as $at) {
             if(!array_key_exists($at['name'],$themesStyles)) {
-                $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/Blocks', false, false, 'css', false);
+                $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/Blocks/menutree', false, false, 'css', false);
             }
         }
 
@@ -108,7 +108,20 @@ class Blocks_MenutreeUtil
             sort($styles['themes']['some']);
             $stylesheets[$someThemes] = array_combine($styles['themes']['some'],$styles['themes']['some']);
         }
+        
+        return self::normalize($stylesheets);
+    }
 
-        return $stylesheets;
+    protected function normalize($array)
+    {
+        $normalizedArray = array();
+        foreach ($array as $k => $v) {
+            $k = str_replace('\\', '/', $k);
+            $v = str_replace('\\', '/', $v);
+            $normalizedArray[$k] = $v;
+        }
+
+        return $normalizedArray;
+
     }
 }

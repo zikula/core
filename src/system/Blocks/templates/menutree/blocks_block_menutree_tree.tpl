@@ -1,7 +1,7 @@
 {pageaddvar name="javascript" value="prototype"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/cookiejar.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/usermenutree.js"}
-{pageaddvar name="stylesheet" value="system/Blocks/style/tree.css"}
+{pageaddvar name="stylesheet" value="system/Blocks/style/menutree/tree.css"}
 
 <div class="usermenutree">
     {usermenutree data=$menutree_content id='usermenutree'|cat:$blockinfo.bid class='usermenutree' nodeprefix='b'|cat:$blockinfo.bid|cat:'n'}

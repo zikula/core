@@ -2,8 +2,8 @@
 {pageaddvar name="javascript" value="system/Blocks/javascript/cookiejar.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
-{pageaddvar name="stylesheet" value="system/Blocks/style/adminstyle.css"}
-{pageaddvar name="stylesheet" value="system/Blocks/style/contextmenu.css"}
+{pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
+{pageaddvar name="stylesheet" value="system/Blocks/style/menutree/contextmenu.css"}
 
 {if !empty($redirect)}
 <input type="hidden" name="redirect" value="{$redirect}" />
