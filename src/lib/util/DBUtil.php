@@ -3389,7 +3389,6 @@ class DBUtil
         if (!is_array($flds)) {
             $idxDef[$column[$flds]] = array();
         } else {
-            $newflds = array();
             foreach ($flds as $fld) {
                 if (is_array($fld)) {
                     // this adds support to specifying index lengths in your pntables. So you can say
