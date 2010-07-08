@@ -1,0 +1,50 @@
+div.usermenutree ul ul,
+div.usermenutree ul li {
+    zoom: 1;
+    min-height: 5px;
+}
+div.usermenutree ul ul {
+    margin: 0 0 0 15px;
+    padding: 0;
+    text-indent:0;
+}
+div.usermenutree ul li {
+    list-style-type:none;
+    background-image: url(../pnimages/pion.gif);
+    background-position: left top;
+    background-repeat: repeat-y;
+    margin: 0 0 0 5px;
+    padding: 0;
+}
+div.usermenutree ul li.childless {
+    background-image: url(../pnimages/node.gif);
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+div.usermenutree ul li.last,
+div.usermenutree ul li.single {
+    background-image: url(../pnimages/lnode.gif);
+    background-position: left top;
+    background-repeat: no-repeat;
+}
+div.usermenutree img.toggle,
+div.usermenutree li.parent > span {
+    cursor: pointer;
+}
+div.usermenutree img.folder {
+    margin: 0 5px 0 0;
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+div.usermenutree ul li.childless img.toggle {
+    visibility: hidden;
+}
+div.usermenutree li.active > a {
+    text-decoration: underline;
+}
+/*
+div.usermenutree li.active li a {
+    text-decoration: none;
+}
+*/

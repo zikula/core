@@ -1,0 +1,60 @@
+body { behavior:url("system/Blocks/javascript/csshover.htc"); } 
+.menutree_vertical ul,
+.menutree_vertical li {
+    zoom: 1;
+}
+
+.menutree_vertical ul {
+    list-style: none;
+    margin: 0;
+    padding: 2px;
+    background-color: #FFFFFF;
+    border:1px solid #9D9DA1;
+}
+.menutree_vertical li a,
+.menutree_vertical li span
+{
+    display: block;
+    width: auto;
+    line-height: 19px;
+}
+.menutree_vertical li {
+    position: relative;
+    height: 19px;
+    margin: 0;
+    background-color: transparent;
+}
+.menutree_vertical li:hover {
+    background-color: #B2B4BF;
+}
+.menutree_vertical ul ul,
+.menutree_vertical ul ul ul,
+.menutree_vertical ul ul ul ul,
+.menutree_vertical ul ul ul ul ul {
+    position: absolute;
+    top: -3px;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    margin-right: 1px;
+}
+
+div.menutree_vertical ul ul,
+div.menutree_vertical ul li:hover ul ul ,
+div.menutree_vertical ul ul ul,
+div.menutree_vertical ul ul li:hover ul ul,
+div.menutree_vertical ul ul ul ul,
+div.menutree_vertical ul ul ul li:hover ul ul,
+div.menutree_vertical ul ul ul ul ul,
+div.menutree_vertical ul ul ul ul li:hover ul ul {
+    display: none;
+}
+
+div.menutree_vertical ul li:hover ul,
+div.menutree_vertical ul ul li:hover ul,
+div.menutree_vertical ul ul ul li:hover ul,
+div.menutree_vertical ul ul ul ul li:hover ul {
+    display: block;
+    z-index: 1000;
+}
+
