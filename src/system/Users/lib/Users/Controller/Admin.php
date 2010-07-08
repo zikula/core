@@ -1616,7 +1616,7 @@ class Users_Controller_Admin extends Zikula_Controller
             $errorFields['users_minpass'] = true;
             $this->registerError($this->__('The minimum password length must be a positive integer.'));
         }
-        if (!isset($config['minage']) || empty($config['minage']) || !is_numeric($config['minage'])
+        if (!isset($config['minage']) || !is_numeric($config['minage'])
             || ((int)$config['minage'] != $config['minage']) || ($config['minage'] < 0))
         {
             $errorFields['users_minage'] = true;
