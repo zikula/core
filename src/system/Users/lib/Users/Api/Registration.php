@@ -433,7 +433,7 @@ class Users_Api_Registration extends Zikula_Api
 
         $adminWantsVerification = $isAdminOrSubAdmin && ((isset($args['usermustverify']) ? (bool)$args['usermustverify'] : false)
             || !isset($reginfo['pass']) || empty($reginfo['pass']));
-        $reginfo['isverified'] = !$adminWantsVerification;
+        $reginfo['isverified'] = ($isAdminOrSubAdmin && !$adminWantsVerification) || (!$isAdminOrSubAdmin && ($this->getVar('reg_verifyemail') == UserUtil::VERIFY_NO));
         $reginfo['isapproved'] = $isAdminOrSubAdmin || !$this->getVar('moderation', false);
         $createRegistration = !$reginfo['isapproved'] || !$reginfo['isverified'];
 
