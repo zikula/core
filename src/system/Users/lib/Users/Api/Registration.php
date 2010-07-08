@@ -752,6 +752,11 @@ class Users_Api_Registration extends Zikula_Api
                 }
             }
 
+            // TODO - The point at which this hook is triggered may change in an upcomming commit, and it may change
+            // meaning from "a user has been created" to "an account has been created which might be a pending registration or
+            // it might be an approved and verified user".
+            $this->callHooks('item', 'create', $userinfo['uid'], array('module' => 'Users'));
+
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $sitename  = System::getVar('sitename');
                 $siteurl   = System::getBaseUrl();
