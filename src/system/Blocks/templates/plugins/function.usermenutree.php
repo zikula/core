@@ -57,7 +57,7 @@ function smarty_function_usermenutree($params, &$smarty)
     $treeClass          = isset($params['class'])      ? $params['class'] : '';
     $treeNodePrefix     = isset($params['nodeprefix']) ? $params['nodeprefix'] : '';
     $treeClassPrefix    = isset($params['classprefix']) ? $params['classprefix'] : '';
-    $imgdir             = isset($params['imgdir'])     ? $params['imgdir'] : 'modules/menutree/pnimages';
+    $imgdir             = isset($params['imgdir'])     ? $params['imgdir'] : 'system/Blocks/images';
     $folder             = isset($params['folder'])     ? $params['folder'] : 'folder.gif';
     $plus               = isset($params['plus'])       ? $params['plus'] : 'plus.gif';
     $minus              = isset($params['minus'])      ? $params['minus'] : 'minus.gif';
@@ -72,7 +72,7 @@ function smarty_function_usermenutree($params, &$smarty)
     $ext['childless']   = !empty($ext_tmp[4]) ? $ext_tmp[4] : 'childless';
     $ext['level']       = !empty($ext_tmp[5]) ? $ext_tmp[5] : 'level';
     $ext['active']      = !empty($ext_tmp[6]) ? $ext_tmp[6] : 'active';
-    $ext['imgdir']      = isset($params['imgdir'])     ? $params['imgdir'] : 'modules/menutree/pnimages'; 
+    $ext['imgdir']      = isset($params['imgdir'])     ? $params['imgdir'] : 'system/Blocks/images'; 
     $ext['folder']      = '<img class="folder" src="'.$imgdir.'/'.$folder.'" alt=""/>';
     $ext['plus']        = '<img class="toggle" src="'.$imgdir.'/'.$plus.'" alt=""/>';
     $ext['minus']       = '<img class="toggle" src="'.$imgdir.'/'.$minus.'" alt=""/>';

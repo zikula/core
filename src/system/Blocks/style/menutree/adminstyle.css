@@ -1,79 +1,91 @@
-/*  $Id: adminstyle.css 166 2009-11-03 20:49:23Z jusuff $  */
-
 div#menuTreeContainer {
     margin: 5px;
     padding: 5px;
     border: 1px solid #DCDCDC;
     background-color: #FAFAFA;
 }
+
 div.menuTreeOptions, div#menutree_tabhelp div {
     margin: 5px;
     padding: 5px;
     border: 1px solid #DCDCDC;
     background-color: #FAFAFA;
 }
+
 ul#adm-menutree {
-    padding-top: 6px; 
+    padding-top: 6px;
     padding-bottom: 6px;
     margin: 0 0 0 15px;
     zoom: 1;
 }
-ul#adm-menutree a{
+
+ul#adm-menutree a {
     color: #000000;
     text-decoration: none;
 }
+
 ul#adm-menutree ul, ul#adm-menutree li {
     zoom: 1;
     min-height: 5px;
 }
+
 ul#adm-menutree ul {
     margin: 0 0 0 15px;
     padding: 0;
-    text-indent:0;
+    text-indent: 0;
 }
+
 ul#adm-menutree li {
-    list-style-type:none;
-    background-image: url(../pnimages/pion.gif);
+    list-style-type: none;
+    background-image: url(../images/pion.gif);
     background-position: left top;
     background-repeat: repeat-y;
     margin: 0 0 0 5px;
     padding: 0;
 }
+
 ul#adm-menutree li.noC {
-    background-image: url(../pnimages/node.gif);
+    background-image: url(../images/node.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }
+
 ul#adm-menutree li.last {
-    background-image: url(../pnimages/lnode.gif);
+    background-image: url(../images/lnode.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }
+
 ul#adm-menutree img.toggle {
     cursor: pointer;
 }
+
 ul#adm-menutree img.handle {
     cursor: move;
     margin: 0 5px 0 0;
     width: 16px;
     height: 16px;
 }
+
 ul#adm-menutree li.noC img.toggle {
     visibility: hidden;
 }
-form#nodeBuilder div{
+
+form#nodeBuilder div {
     border: 1px solid #C0C0C0;
     background-color: #FAFAFA;
     padding: 5px;
     margin: 5px 0;
     text-align: left;
 }
+
 #nodeBuilder div.formrow {
     clear: both;
     padding: 2px;
     margin: 2px;
     border: none;
 }
+
 #nodeBuilder div.formsubrow {
     padding: 0px;
     margin: 0px;
@@ -81,11 +93,13 @@ form#nodeBuilder div{
     float: left;
     width: 55%;
 }
+
 #nodeBuilder div.formsubrow div.formrow {
     margin: 0;
     padding: 0;
     font-size: 0.8em;
 }
+
 #nodeBuilder label {
     display: block;
     float: left;
@@ -93,65 +107,79 @@ form#nodeBuilder div{
     width: 35%;
     margin: 0 5px;
 }
+
 #nodeBuilder div.formsubrow label {
     clear: none;
     width: auto;
     margin: 0px;
 }
+
 #nodeBuilder input {
     display: block;
     float: left;
     margin: 0 5px;
     width: 55%;
 }
-#nodeBuilder input[type="hidden"] {
+
+#nodeBuilder input[type =
+"hidden"] {
     visibility: hidden;
 }
+
 #nodeBuilder div.formsubrow input {
     width: 100%;
 }
+
 #nodeBuilder select {
     display: block;
     float: left;
     margin: 0 5px;
 }
+
 #nodeBuilder input.checkbox {
     width: auto;
-    margin-top:3px;
+    margin-top: 3px;
 }
+
 #nodeBuilder div.formsubrow input.checkbox {
     width: auto;
     margin-top: 1px;
 }
+
 #nodeBuilder input.submit {
     width: auto;
     padding: 0 10px;
 }
+
 #nodeBuilder input.required {
     border: 1px solid #FF0000;
 }
 
-#nodeBuilder input:focus,
-#nodeBuilder select:focus {
+#nodeBuilder input:focus, #nodeBuilder select:focus {
     background: #FFFFE1;
 }
-#nodeBuilder input[type="checkbox"]:focus {
+
+#nodeBuilder input[type =
+"checkbox"]:focus {
     outline: 1px dashed #FFFFE1;
 }
+
 div#overlay {
-    background-color:#000000;
-    left:0;
-    top:0;
-    height:100%;
-    width:100%;
-    opacity:0.5;
-    filter:alpha(opacity=50);
-    position:absolute;
-    z-index:999;
+    background-color: #000000;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+    position: absolute;
+    z-index: 999;
 }
+
 #overlay[id] {
-    position:fixed;
+    position: fixed;
 }
+
 div#formbox {
     position: absolute;
     top: 50%;
@@ -163,53 +191,67 @@ div#formbox {
     padding: 5px;
     width: 500px;
 }
+
 #formbox[id] {
-    position:fixed;
+    position: fixed;
 }
+
 p#forminfo, p#requiredInfo {
     border: 1px solid #C0C0C0;
     padding: 5px;
     margin: 5px 0;
 }
-p#requiredInfo  {
+
+p#requiredInfo {
     color: #FF0000;
 }
+
 ul#adm-menutree .dropOnClass {
     background: #BBBBBB;
 }
+
 ul#adm-menutree .dropAfterClass {
     border-bottom: 2px solid #646464;
     margin-bottom: -2px;
     background: transparent;
 }
+
 ul#adm-menutree .dropBeforeClass {
     border-top: 2px solid #646464;
     margin-top: -2px;
     background: transparent;
 }
+
 ul#adm-menutree li {
     position: static !important;
 }
+
 ul#adm-menutree li.onDragClass {
     position: relative !important;
 }
-ul#adm-menutree a.unactive  {
+
+ul#adm-menutree a.unactive {
     color: #BBBBBB;
 }
+
 ul#adm-menutree li.dynamic a {
-    background:#FCF2C8;
-    border:1px solid #D98A33;
+    background: #FCF2C8;
+    border: 1px solid #D98A33;
 }
+
 ul#adm-menutree a {
     cursor: pointer;
 }
+
 #menutree_linkclasses_list {
     list-style: none;
     margin: 0;
 }
+
 #menutree_linkclasses_list li {
     margin: 5px 0;
 }
+
 #menutree_linkclasses_list li.head span {
     display: block;
     float: left;
@@ -217,29 +259,36 @@ ul#adm-menutree a {
     text-align: center;
     margin-right: 8px;
 }
+
 #menutree_linkclasses_list li input {
     width: 250px;
 }
+
 #menutree_linkclasses_list li.head {
     font-weight: bold;
 }
+
 #menutree_linkclasses_list li a img {
     vertical-align: middle;
 }
+
 a.activelang {
-    text-decoration:underline;
+    text-decoration: underline;
     padding-left: 20px;
     background-image: url(../../../images/icons/extrasmall/ok.gif);
     background-position: left center;
     background-repeat: no-repeat;
 }
+
 ul#menutree_tabs {
     padding-left: 10px;
     margin-left: 0px;
 }
+
 .hideSelectsFromIE {
     visibility: hidden;
 }
+
 #nodeBuilder select {
     visibility: visible;
 }

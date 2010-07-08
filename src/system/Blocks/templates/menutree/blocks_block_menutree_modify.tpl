@@ -2,6 +2,7 @@
 {pageaddvar name="javascript" value="system/Blocks/javascript/cookiejar.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
+{pageaddvar name="stylesheet" value="system/Admin/style/minitabs.css"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/contextmenu.css"}
 
@@ -179,7 +180,7 @@
                 treeElement:    'adm-menutree'
                 ,formToObserve: 'blockupdateform'
                 ,formElement:   'menutree_content'
-                ,imagesDir:     'modules/menutree/pnimages/'
+                ,imagesDir:     'system/Blocks/images/'
                 {{*if $multilingual*}}
                 ,langs:         ['{{$languages|@array_keys|@implode:"','"}}']
                 {{*/if*}}

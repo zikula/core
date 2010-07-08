@@ -14,8 +14,8 @@ var MenuTree = Class.create({
         this.menu = $(menu);
         this.id = menu.identify();
         this.toggler = 'img.toggle';
-        this.plus = document.location.pnbaseURL+'modules/menutree/pnimages/plus.gif';
-        this.minus = document.location.pnbaseURL+'modules/menutree/pnimages/minus.gif';
+        this.plus = document.location.pnbaseURL+'system/Blocks/images/plus.gif';
+        this.minus = document.location.pnbaseURL+'system/Blocks/images/minus.gif';
         // bind toggle action
         this.menu.select(this.toggler).invoke('observe','click',this.toggleNode.bindAsEventListener(this));
         // bind also empty spans
