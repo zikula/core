@@ -1,8 +1,7 @@
-{ajaxheader modname="blocks" filename="menutree.js" effects=1 dragdrop=1}
+{ajaxheader modname="blocks" filename="menutree.js" effects=1 dragdrop=1 ui=true}
 {pageaddvar name="javascript" value="system/Blocks/javascript/cookiejar.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
-{pageaddvar name="stylesheet" value="system/Admin/style/minitabs.css"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/contextmenu.css"}
 
@@ -12,12 +11,12 @@
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
 {/if}
 
-<ul id="menutree_tabs" class="minitabs">
-    <li><a href="#menutree_tabmenu" id="menutree_tabmenu_control" class="menutree_tabcontrol">{gt text="Block content"}</a></li>
+<ul id="menutree_tabs" class="z-tabs">
+    <li class="tab"><a href="#menutree_tabmenu" id="menutree_tabmenu_control" class="menutree_tabcontrol">{gt text="Block content"}</a></li>
     {if $menutree_anysettingsaccess}
-    <li><a href="#menutree_tabsettings" id="menutree_tabsettings_control" class="menutree_tabcontrol">{gt text="Block settings"}</a></li>
+    <li class="tab"><a href="#menutree_tabsettings" id="menutree_tabsettings_control" class="menutree_tabcontrol">{gt text="Block settings"}</a></li>
     {/if}
-    <li><a href="#menutree_tabhelp" id="menutree_tabhelp_control" class="menutree_tabcontrol">{gt text="Help"}</a></li>
+    <li class="tab"><a href="#menutree_tabhelp" id="menutree_tabhelp_control" class="menutree_tabcontrol">{gt text="Help"}</a></li>
 </ul>
 
 {if $menutree_anysettingsaccess}
@@ -146,22 +145,25 @@
 
 <div id="menutree_tabmenu" class="menutree_tabcontent">
     <div class="z-formrow">
-        <div class="menuTreeOptions">
-            <p>[ <a href="#" id="menutree_newnode">{gt text="Add"}</a> | <a href="#" id="menutree_expandall">{gt text="Expand all"}</a> | <a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a> ]</p>
+        <ul class="z-menulinks">
+            <li><a href="#" id="menutree_newnode">{gt text="Add"}</a></li>
+            <li><a href="#" id="menutree_expandall">{gt text="Expand all"}</a></li>
+            <li><a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a></li>
             {if $multilingual}
-            <p>[ {gt text="Change active language: "}
+            <li>
+                {gt text="Change active language:"}
                 {foreach from=$languages key=code item=name name=langloop}
-                <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last}|{/if}
+                <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
                 {/foreach}
-            ]</p>
-            {/if}
-        </div>
+                {/if}
+            </li>
+        </ul>
 
         {if !empty($menutree_menus)}
         <div class="menuTreeOptions">
             <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
             <select id="menutree_menus" name="menutree_menus">
-                <option value="null">{gt text="choose menu"}</option>
+                <option value="null">{gt text="Choose menu"}</option>
                 {html_options options=$menutree_menus}
             </select>
         </div>
@@ -242,3 +244,7 @@
 <div id="menutree_tabhelp" class="menutree_tabcontent">
     {include file="menutree/blocks_block_menutree_include_help.tpl"}
 </div>
+
+<script type="text/javascript">
+    var tabs = new Zikula.UI.Tabs('menutree_tabs');
+</script>

@@ -275,7 +275,7 @@ ul#adm-menutree a {
 a.activelang {
     text-decoration: underline;
     padding-left: 20px;
-    background-image: url(../../../images/icons/extrasmall/ok.gif);
+    background-image: url(../../../../images/icons/extrasmall/ok.gif);
     background-position: left center;
     background-repeat: no-repeat;
 }
@@ -291,4 +291,11 @@ ul#menutree_tabs {
 
 #nodeBuilder select {
     visibility: visible;
+}
+
+.menutree_tabcontent {
+    border-bottom:1px solid #CCCCCC;
+    border-left:1px solid #CCCCCC;
+    border-right:1px solid #CCCCCC;
+    padding:5px;
 }
