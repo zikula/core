@@ -12,6 +12,11 @@
 
 class Blocks_Controller_Ajax extends Zikula_Controller
 {
+    public function _postSetup()
+    {
+        // no need for a Zikula_View so override it.
+    }
+    
     /**
      * changeblockorder
      *
