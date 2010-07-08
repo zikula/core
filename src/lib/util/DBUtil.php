@@ -3354,7 +3354,7 @@ class DBUtil
      * @param string       $idxname     Name of index.
      * @param string       $table       The treated table reference.
      * @param array|string $flds        String field name, or non-associative array of field names.
-     * @param array        $idxoptarray Array of UNIQUE=true and/or PRIMARY=true.
+     * @param array        $idxoptarray Array of UNIQUE=true.
      *
      * @return boolean
      * @throws Exception If $idxname, $table, or $flds paramters are empty.
@@ -3385,9 +3385,9 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid column definition', $column));
         }
 
-        $idxDef = array();
+        $indexFields = array();
         if (!is_array($flds)) {
-            $idxDef[$column[$flds]] = array();
+            $indexFields[$column[$flds]] = array();
         } else {
             foreach ($flds as $fld) {
                 if (is_array($fld)) {
@@ -3396,21 +3396,26 @@ class DBUtil
                     // $flds[] = array('name', 10);
                     // $idxoptarray['UNIQUE'] = true;
                     // self::createIndex($idxname, $table, $flds, $idxoptarray);
-                    $idxDef[$column[$fld]] = array();
-                    if (isset($idxoptarray[$fld])) {
-                        if (strtoupper($idxoptarray[$fld]) == 'UNIQUE') {
-                            $idxDef[$column[$fld]]['unique'] = true;
-                        }
-                    }
+                    $indexFields[$column[$fld]] = array();
+                    // TODO - implement what is described in the above comment!
                 } else {
-                    $idxDef[$column[$fld]] = array();
+                    $indexFields[$column[$fld]] = array();
                 }
+            }
+        }
+        
+        $indexDefinition = array(
+            'fields' => $indexFields,
+        );
+
+        if (!empty($idxoptarray) && is_array($idxoptarray)) {
+            if (isset($idxoptarray['UNIQUE']) && $idxoptarray['UNIQUE']) {
+                $indexDefinition['type'] = 'unique';
             }
         }
 
         try {
-            DBConnectionStack::getConnection()->export->createIndex($tableName, $idxname, array(
-                            'fields' => $idxDef));
+            DBConnectionStack::getConnection()->export->createIndex($tableName, $idxname, $indexDefinition);
             return true;
         } catch (Exception $e) {
             return LogUtil::registerError(__('Error! Index creation failed.') . ' ' . $e->getMessage());
