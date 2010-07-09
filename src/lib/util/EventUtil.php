@@ -315,6 +315,9 @@ class EventUtil
     public static function loadPersistentEvents()
     {
         $handlerGroup = ModUtil::getVar(self::HANDLERS);
+        if (!$handlerGroup) {
+            return;
+        }
         foreach ($handlerGroup as $module => $handlers) {
             if (!$handlers) {
                 continue;
