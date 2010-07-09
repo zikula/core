@@ -9,8 +9,6 @@ function menutree_init()
     menutree_treecontrols_onload();
     //hide link classes
     menutree_linkclasses_onload();
-    //init tabs
-    menutree_tabs_onload();
     //init tpl and style select observer
     menutree_stylehelper_onload();
 }
@@ -22,40 +20,6 @@ function menutree_treecontrols_onload()
     $('menutree_collapseall').observe('click', function(e) {e.stop(); tree.collapseAll()});
     //controls for lang changing
     $$('.menutree_langcontrols').invoke('observe','click',menutree_onlangchange)
-}
-function menutree_tabs_onload()
-{
-    var cookie = new CookieJar({expires:'',path:'/'}),
-        status = cookie.get(MTConfig.cookieName) ? $H(cookie.get(MTConfig.cookieName)) : new Hash(),
-        activetab = status.get('activetab') || 'menutree_tabmenu';
-    //hide tabs
-    if($('menutree_tabsettings') && activetab != 'menutree_tabsettings') {
-        $('menutree_tabsettings').hide();
-    }
-    if(activetab != 'menutree_tabhelp') {
-        $('menutree_tabhelp').hide();
-    }
-    if(activetab != 'menutree_tabmenu') {
-        $('menutree_tabmenu').hide();
-    }
-    // hightlight active tab control
-    $(activetab+'_control').addClassName('active');
-    // observe tabs controls
-    $$('.menutree_tabcontrol').invoke('observe','click', menutree_tabs_change);
-}
-//menutree_tabcontent
-function menutree_tabs_change(event)
-{
-    event.stop();
-    var referer = event.element();
-    $$('.menutree_tabcontent').invoke('hide');
-    $(referer.id.replace('_control','')).show();
-    $$('.menutree_tabcontrol').invoke('removeClassName','active');
-    referer.addClassName('active');
-    var cookie = new CookieJar({expires:'',path:'/'}),
-        status = cookie.get(MTConfig.cookieName) ? $H(cookie.get(MTConfig.cookieName)) : new Hash();
-    status.set('activetab',referer.id.replace('_control',''));
-    cookie.put(MTConfig.cookieName,status);
 }
 function menutree_linkclasses_onload()
 {

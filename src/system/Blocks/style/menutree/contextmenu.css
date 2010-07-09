@@ -91,14 +91,11 @@ div.ContextMenu li.separator {
     margin: 4px 1px 0px;
     *margin-top: 0px;
     cursor: auto;
-    height:
-    1px;
-    padding:
-    0;
+    height: 1px;
+    padding: 0;
     overflow: hidden;
     display: block;
-    font-size:
-    1px;
+    font-size: 1px;
 }
 
 div.ContextMenu iframe {
