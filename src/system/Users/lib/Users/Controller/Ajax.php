@@ -21,24 +21,16 @@
  */
 class Users_Controller_Ajax extends Zikula_Controller
 {
+    /**
+     * Post setup.
+     *
+     * @return void
+     */
     public function _postSetup()
     {
         // no need for a Zikula_View so override it.
     }
     
-    /**
-     * Post initialise.
-     *
-     * Run after construction.
-     *
-     * @return void
-     */
-    protected function postInitialize()
-    {
-        // Set caching to false by default.
-        $this->view->setCaching(false);
-    }
-
     /**
      * Performs a user search based on the user name fragment entered so far.
      *
