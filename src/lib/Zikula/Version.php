@@ -30,6 +30,9 @@ class Zikula_Version implements ArrayAccess
     protected $type;
     protected $state;
     protected $directory;
+    protected $core_min;
+    protected $core_max;
+    protected $oldnames;
 
     protected $baseDir;
     protected $libBaseDir;
@@ -198,6 +201,36 @@ class Zikula_Version implements ArrayAccess
         $this->capabilities = $capabilities;
     }
 
+    public function getCore_min()
+    {
+        return $this->core_min;
+    }
+
+    public function setCore_min($core_min)
+    {
+        $this->core_min = $core_min;
+    }
+
+    public function getCore_max()
+    {
+        return $this->core_max;
+    }
+
+    public function setCore_max($core_max)
+    {
+        $this->core_max = $core_max;
+    }
+
+    public function getOldnames()
+    {
+        return $this->oldnames;
+    }
+
+    public function setOldnames($oldnames)
+    {
+        $this->oldnames = $oldnames;
+    }
+    
     public function getState()
     {
         return $this->state;

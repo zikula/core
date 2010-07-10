@@ -29,15 +29,6 @@ function smarty_function_admincategorymenu($params, &$smarty)
 {
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin'));
 
-    // check version number
-    // fix for bug #2121
-    $modinfo = ModUtil::getInfoFromName('Admin');
-    if (version_compare($modinfo['version'], '1.0') == -1) {
-        return;
-    }
-
     $acid = SessionUtil::getVar('lastacid', ModUtil::getVar('Admin', 'startcategory'));
-    $result = ModUtil::func('Admin', 'admin', 'categorymenu', array('cid' => $acid));
-
-    return $result;
+    return ModUtil::func('Admin', 'admin', 'categorymenu', array('cid' => $acid));
 }

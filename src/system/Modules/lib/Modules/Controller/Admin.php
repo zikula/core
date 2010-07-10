@@ -1,20 +1,26 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 class Modules_Controller_Admin extends Zikula_Controller
 {
+    public function postInitialize()
+    {
+        $this->view->setCaching(false);
+    }
+
     /**
      * Modules Module main admin function
-     * @author Jim McDonald
      * @return string HTML output string
      */
     public function main()
@@ -76,8 +82,6 @@ class Modules_Controller_Admin extends Zikula_Controller
                     'url' => $url,
                     'description' => $description);
         }
-
-        $this->view->setCaching(false);
 
         $this->view->assign($obj);
 
@@ -180,8 +184,6 @@ class Modules_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
         // Get parameters from whatever input we need.
         $startnum = (int) FormUtil::getPassedValue('startnum', null, 'GET');
         $letter = FormUtil::getPassedValue('letter', null, 'GET');
@@ -189,6 +191,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sort', null), 'GET');
 
         // do some clean up
+        SessionUtil::delVar('interactive_process');
         SessionUtil::delVar('interactive_init');
         SessionUtil::delVar('interactive_remove');
         SessionUtil::delVar('interactive_upgrade');
@@ -196,12 +199,11 @@ class Modules_Controller_Admin extends Zikula_Controller
         if ($GLOBALS['ZConfig']['Multisites']['multi'] != 1 || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) {
             // always regenerate modules list
             $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-            $inconsistencies = ModUtil::apiFunc('Modules', 'admin', 'checkconsistency', array(
-                    'filemodules' => $filemodules));
+            $inconsistencies = ModUtil::apiFunc('Modules', 'admin', 'checkconsistency', array('filemodules' => $filemodules));
 
             if (!(empty($inconsistencies['errors_modulenames']) && empty($inconsistencies['errors_displaynames']))) {
                 $this->view->assign('errors_modulenames', $inconsistencies['errors_modulenames'])
-                               ->assign('errors_displaynames', $inconsistencies['errors_displaynames']);
+                           ->assign('errors_displaynames', $inconsistencies['errors_displaynames']);
 
                 return $this->view->fetch('modules_admin_regenerate_errors.tpl');
             }
@@ -358,7 +360,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'info.gif',
-                                        'title' => $this->__('Incompatibility information'));
+                                        'title' => $this->__('Incompatible version'));
                             }
                             break;
                     }
@@ -395,16 +397,17 @@ class Modules_Controller_Admin extends Zikula_Controller
                         break;
                     case ModUtil::STATE_NOTALLOWED:
                         $status = $this->__('Not allowed');
-                        $statusimage = 'redled.gif';
+                        $statusimage = 'button_cancel.gif';
                         break;
                     case ModUtil::STATE_UNINITIALISED:
                     default:
-                        if ($mod['state'] < 10) {
-                            $status = $this->__('Not installed');
+                        if ($mod['state'] > 10) {
+                            $status = $this->__('Incompatible');
+                            $statusimage = 'button_cancel.gif';
                         } else {
-                            $status = $this->__('Incompatible version');
+                            $status = $this->__('Not installed');
+                            $statusimage = 'redled.gif';
                         }
-                        $statusimage = 'redled.gif';
                         break;
                 }
 
@@ -476,26 +479,49 @@ class Modules_Controller_Admin extends Zikula_Controller
             $id = $objectid;
         }
 
+        $fataldependency = false;
+        
         // assign any dependencies - filtering out non-active module dependents
         // when getting here without a valid id we are in interactive init mode and then
         // the dependencies checks have been done before already
         if ($id != 0) {
-            $dependencies = ModUtil::apiFunc('Modules', 'admin', 'getdependencies', array(
-                    'modid' => $id));
+            $dependencies = ModUtil::apiFunc('Modules', 'admin', 'getdependencies', array('modid' => $id));
             $modulenotfound = false;
             if (empty($confirmation) && $dependencies) {
                 foreach ($dependencies as $key => $dependency) {
                     $dependencies[$key]['insystem'] = true;
                     $modinfo = ModUtil::getInfoFromName($dependency['modname']);
-                    if (ModUtil::available($dependency['modname'])) {
-                        unset($dependencies[$key]);
+                    $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
+                    if (is_dir("$base/$dependency[modname]")) {
+                        $minok = 0;
+                        $maxok = 0;
+                        $modversion = ModUtil::getVersionMeta($dependency['modname'], "$base/$dependency[modname]/pnversion.php");
+
+                        if (!empty($dependency['minversion'])) {
+                            $minok = version_compare($modversion['version'], $dependency['minversion']);
+                        }
+                        
+                        if (!empty($dependency['maxversion'])) {
+                            $minok = version_compare($dependency['maxversion'], $modversion['version']);
+                        }
+
+                        if ($minok == -1 || $maxok == -1) {
+                            $fataldependency = true;
+                        } else {
+                            unset($dependencies[$key]);
+                        }
                     } elseif (!empty($modinfo)) {
                         $dependencies[$key] = array_merge($dependencies[$key], $modinfo);
                     } else {
                         $dependencies[$key]['insystem'] = false;
                         $modulenotfound = true;
+                        if ($dependency['status'] == ModUtil::DEPENDENCY_REQUIRED) {
+                            $fataldependency = true;
+                        }
                     }
                 }
+
+                $this->view->assign('fataldependency', $fataldependency);
 
                 // we have some dependencies so let's warn the user about these
                 if (!empty($dependencies)) {
@@ -808,8 +834,6 @@ class Modules_Controller_Admin extends Zikula_Controller
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-           $this->view->setCaching(false);
-
             // Add a hidden field for the item ID to the output
             $this->view->assign('id', $id);
 
@@ -923,8 +947,6 @@ class Modules_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
         // assign the modinfo to the template
         $this->view->assign('modinfo', $modinfo);
 
@@ -966,8 +988,6 @@ class Modules_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $this->view->setCaching(false);
-
         // assign the modinfo to the template
         $this->view->assign('modinfo', $modinfo);
 
@@ -994,8 +1014,6 @@ class Modules_Controller_Admin extends Zikula_Controller
         if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        $this->view->setCaching(false);
 
         // assign all the module vars and return output
         return $this->view->assign($this->getVars())
@@ -1074,8 +1092,6 @@ class Modules_Controller_Admin extends Zikula_Controller
         $moduleInfo = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules',
                 array('name' => $modinfo['name']));
 
-        $this->view->setCaching(false);
-
         // assign the module information and other variables to the template
         $this->view->assign('moduleInfo', $moduleInfo)
                        ->assign('id', $id)
@@ -1097,8 +1113,6 @@ class Modules_Controller_Admin extends Zikula_Controller
         if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        $this->view->setCaching(false);
 
         $state = FormUtil::getPassedValue('state', -1, 'GETPOST');
         $sort = FormUtil::getPassedValue('sort', null, 'GETPOST');

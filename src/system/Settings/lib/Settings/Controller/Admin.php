@@ -112,7 +112,7 @@ class Settings_Controller_Admin extends Zikula_Controller
         }
 
         // Write the vars
-        $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
+        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach($settings as $key => $value) {
             $oldvalue = System::getVar($key);
             if ($value != $oldvalue) {
@@ -146,7 +146,7 @@ class Settings_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         // get all config vars and assign them to the template
-        $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
+        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach ($configvars as $key => $configvar) {
             $configvars[$key] = $configvar;
         }
@@ -216,7 +216,7 @@ class Settings_Controller_Admin extends Zikula_Controller
         }
 
         // Write the vars
-        $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
+        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach($settings as $formname => $varname) {
             $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
             $oldvalue = System::getVar($varname);
@@ -249,7 +249,7 @@ class Settings_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         // get all config vars and assign them to the template
-        $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
+        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         // since config vars are serialised and module vars aren't we
         // need to unserialise each config var in turn before assigning
         // them to the template
@@ -285,7 +285,7 @@ class Settings_Controller_Admin extends Zikula_Controller
                 'errorsettings_errormailto'  => 'errormailto',
                 'errorsettings_errorlogtype' => 'errorlogtype');
         // Write the vars
-        $configvars = ModUtil::getVar(PN_CONFIG_MODULE);
+        $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);
         foreach($settings as $formname => $varname) {
             $newvalue = FormUtil::getPassedValue($formname, null, 'POST');
             $oldvalue = System::getVar($varname);

@@ -393,11 +393,11 @@ function Users_tables_for_118()
     //                      first date and time the code is invalid for use).
     $dbinfo['users_shadow'] = DBUtil::getLimitedTablename('users_shadow');;
     $dbinfo['users_shadow_column'] = array (
-        'id'                => 'z_sid',
-        'uid'               => 'z_uid',
-        'code'              => 'z_code',
-        'code_hash_method'  => 'z_hash_method',
-        'code_expires'      => 'z_expires',
+        'id'                => 'pn_sid',
+        'uid'               => 'pn_uid',
+        'code'              => 'pn_code',
+        'code_hash_method'  => 'pn_hash_method',
+        'code_expires'      => 'pn_expires',
     );
     $dbinfo['users_shadow_column_def'] = array(
         'id'                => "I4 PRIMARY AUTO",

@@ -12,8 +12,13 @@
  * information regarding copyright and licensing.
  */
 
+ini_set('mbstring.internal_encoding', 'UTF-8');
+ini_set('default_charset', 'UTF-8');
+mb_regex_encoding('UTF-8');
+
 include 'lib/ZLoader.php';
 ZLoader::register();
+
 EventUtil::attach('core.init', 'upgrade_suppressErrors');
 
 ini_set('max_execution_time', 86400);
@@ -29,14 +34,23 @@ $GLOBALS['ZConfig']['System']['language_bc'] = false;
 
 include 'config/config.php';
 $connection = Doctrine_Manager::connection($GLOBALS['ZConfig']['DBInfo']['default']['dsn'], 'upgrader');
+//$connection->setCharset('utf8');
+//$connection->setCollate('utf8_general_ci');
+//$stmt = $connection->prepare("SET NAMES 'utf8'");// COLLATE 'utf8_general_ci'");
+//$stmt->execute();
 
-$columns = upgrade_getColumnsForTable($connection, 'modules');
-if (!isset($columns['capabilities'])) {
+//$columns = upgrade_getColumnsForTable($connection, 'modules');
+//if (in_array('pn_id', array_keys($columns))) {
+//    upgrade_columns($connection);
+//}
+
+if (!isset($columns['capabilities']) || !isset($columns['min_version'])) {
     ModUtil::dbInfoLoad('Modules', 'Modules');
     DBUtil::changeTable('modules');
 }
 
 $tables = upgrade_getTables($connection);
+$_SESSION['_ZikulaUpgrader'] = array();
 if (!in_array('users_registration', $tables)) {
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
 }
@@ -246,7 +260,7 @@ function _upg_upgrademodules($username, $password)
     echo '<ul id="upgradelist" class="check">' . "\n";
 
     // reset for User module
-    $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] == false;
+    //$_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = false;
 
     $results = ModUtil::apiFunc('Modules', 'admin', 'upgradeall');
     if ($results) {
@@ -267,10 +281,6 @@ function _upg_upgrademodules($username, $password)
     $modTable = DBUtil::getLimitedTablename('modules');
     $sql = "DELETE FROM $modTable WHERE pn_name = 'Header_Footer' OR pn_name = 'AuthPN' OR pn_name = 'pnForm' OR pn_name = 'Workflow' OR pn_name = 'pnRender' OR pn_name = 'Admin_Messages'";
     DBUtil::executeSQL($sql);
-
-    // regenerate the modules list to pick up any final changes
-    // suppress warnings because we did some upgrade black magic which will harmless generate an E_NOTICE
-    @ModUtil::apiFunc('Modules', 'admin', 'regenerate');
 
     // regenerate the themes list
     ModUtil::apiFunc('Theme', 'admin', 'regenerate');
@@ -409,7 +419,9 @@ function upgrade_suppressErrors(Zikula_Event $event)
  */
 function upgrade_getCurrentInstalledCoreVersion($connection)
 {
-    $moduleTable = $GLOBALS['ZConfig']['System']['prefix'] . '_module_vars';
+    $prefix = $GLOBALS['ZConfig']['System']['prefix'];
+    $moduleTable = $prefix . 'module_vars';
+
     $stmt = $connection->prepare("SELECT pn_value FROM $moduleTable WHERE pn_modname = '/PNConfig' AND pn_name = 'Version_Num'");
     if (!$stmt->execute()) {
         die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
@@ -454,5 +466,40 @@ function upgrade_getColumnsForTable($connection, $tableName)
         die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
     }
 
-    return DBConnectionStack::getConnection()->import->listTableColumns($GLOBALS['ZConfig']['System']['prefix'] . "_$tableName");
+    try {
+        return $connection->import->listTableColumns($GLOBALS['ZConfig']['System']['prefix'] . "_$tableName");
+    } catch (Exception $e) {
+        
+    }
+}
+
+/**
+ * Evil.
+ *
+ * @param PDOConnection $connection
+ */
+function upgrade_columns($connection)
+{
+    $prefix = $GLOBALS['ZConfig']['System']['prefix'];
+    $tables = array('admin_category', 'admin_module', 'block_placements', 'block_positions', 'blocks', 'categories_category', 'categories_mapmeta', 'categories_mapobj', 'categories_registry', 'group_applications', 'group_membership', 'group_perms', 'groups', 'hooks', 'message', 'module_deps', 'module_vars', 'modules', 'objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'pagelock', 'search_result', 'search_stat', 'session_info', 'themes', 'userblocks', 'users', 'users_registration', 'users_verifychg', 'workflows');
+    foreach ($tables as $table) {
+        $columns = upgrade_getColumnsForTable($connection, $table);
+        if (!$columns) {
+            continue;
+        }
+        foreach ($columns as $columnDef) {
+            $newName = preg_replace('#^pn_(.*)#', '$1', $columnDef['name']);
+            if ($newName == $columnDef['name']) {
+                echo '.';
+                continue;
+            }
+            $renameColumnArray = array($columnDef['name'] => array('name' => "z_$newName", 'definition' => $columnDef));
+            try {
+                $connection->export->alterTable($prefix.'_'.$table, array('rename' => $renameColumnArray));
+            } catch (Exception $e) {
+                echo $e->getMessage() .'<br />';
+            }
+        }
+    }
+
 }

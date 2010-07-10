@@ -76,7 +76,10 @@ function Modules_tables()
             'contact'        => 'pn_contact',
             'capabilities'   => 'capabilities',
             'state'          => 'pn_state',
-            'securityschema' => 'pn_securityschema');
+            'securityschema' => 'pn_securityschema',
+            'core_min'       => 'core_min',
+            'core_max'       => 'core_max',
+        );
 
     // column definition
     $dbtable['modules_column_def'] = array (
@@ -91,7 +94,10 @@ function Modules_tables()
             'contact'        => "C(255) NOTNULL DEFAULT ''",
             'capabilities'   => "X NOTNULL DEFAULT ''",
             'state'          => "I2 NOTNULL DEFAULT 0",
-            'securityschema' => "X NOTNULL DEFAULT ''");
+            'securityschema' => "X NOTNULL DEFAULT ''",
+            'core_min'       => "C(9) NOTNULL DEFAULT ''",
+            'core_max'       => "C(9) NOTNULL DEFAULT ''",
+        );
 
     // additional indexes
     $dbtable['modules_column_idx'] = array ('state'        => 'state',

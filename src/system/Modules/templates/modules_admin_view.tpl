@@ -28,7 +28,7 @@
                                 {if $multi}
                                 <option value="{const name="ModUtil::STATE_NOTALLOWED}"{if $state eq 6} selected="selected"{/if}>{gt text="Not allowed"}</option>
                                 {/if}
-                                <option value="10"{if $state eq 10} selected="selected"{/if}>{gt text="Incompatible version"}</option>
+                                <option value="10"{if $state eq 10} selected="selected"{/if}>{gt text="Incompatible"}</option>
                                 <option value="{const name="ModUtil::STATE_INVALID"}"{if $state eq -1} selected="selected"{/if}>{gt text="Invalid structure"}</option>
                             </select>
                         </div>

@@ -8,7 +8,7 @@
             <input type="hidden" name="confirmation" value="1" />
             <input type="hidden" name="id" value="{$id|safetext}" />
             <div class="z-formrow">
-                <p class="z-warningmsg">{gt text="Error! This module has dependencies that are currently not met by the system."}</p>
+                <p class="z-informationmsg">{gt text="Notice! This module either requires other modules recommends modules be installed.  The report below details these requirements and/or recommendations."}</p>
             </div>
             {if $dependencies}
             <div class="z-formrow">
@@ -35,10 +35,10 @@
                             </td>
                             <td>
                                 {if $dependency.insystem neq true and ($dependency.status eq 1 or $dependency.status eq 2)}
-                                {gt text="Please ensure that this module is present in the file system (remember to regenerate the modules list)."}
+                                {* gt text="If you wish to install this module pleas." *}
                                 {elseif $dependency.status eq 1}
                                 <input type="hidden" name="dependencies[]" value="{$dependency.id}" />
-                                <input type="checkbox" name="dummy[]" value="{$dependency.id}" checked="checked" disabled="disabled" />
+                                <input type="checkbox" name="dummy[]" value="{$dependency.id}" disabled="disabled" />
                                 {elseif $dependency.status eq 2}
                                 <input type="checkbox" name="dependencies[]" value="{$dependency.id}" />
                                 {/if}
@@ -49,9 +49,16 @@
                 </table>
             </div>
             {/if}
-            <p class="z-informationmsg">{gt text="Do you really want to initialise this module?"}</p>
+            {if !$fataldependency}
+                <p class="z-informationmsg">{gt text="Do you really want to initialise this module?"}</p>
+            {else}
+                <p class="z-errormsg">{gt text="Error! Required dependencies are not present.  This module cannot be installed with them."}</p>
+            {/if}
+            
             <div class="z-buttons z-formbuttons">
+                {if !$fataldependency}
                 {button src=button_ok.gif set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
+                {/if}
                 <a href="{modurl modname=Modules type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.gif set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </div>

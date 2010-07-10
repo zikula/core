@@ -1,12 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 class Modules_Api_Admin extends Zikula_Api
@@ -88,8 +91,6 @@ class Modules_Api_Admin extends Zikula_Api
         }
         // Rename operation
         $dbtable = DBUtil::getTables();
-
-        $modulescolumn = $dbtable['modules_column'];
         $hookscolumn = $dbtable['hooks_column'];
 
         // Hooks
@@ -142,7 +143,6 @@ class Modules_Api_Admin extends Zikula_Api
         // Rename operation
         $dbtable = DBUtil::getTables();
 
-        $modulescolumn = $dbtable['modules_column'];
         $hookscolumn = $dbtable['hooks_column'];
 
         // Hooks
@@ -214,14 +214,14 @@ class Modules_Api_Admin extends Zikula_Api
         $startnum = (empty($args['startnum']) || $args['startnum'] < 0) ? 1 : (int) $args['startnum'];
         $numitems = (empty($args['numitems']) || $args['numitems'] < 0) ? -1 : (int) $args['numitems'];
         if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
-            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > 6) ? 0 : (int) $args['state'];
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int) $args['state'];
         } else {
-            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > 5) ? 0 : (int) $args['state'];
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int) $args['state'];
         }
         // for incompatible versions of the modules with the core
-        $state = ($args['state'] == 10) ? 10 : $state;
+        $state = $args['state'];
 
-        $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > 3) ? 0 : (int) $args['type'];
+        $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int) $args['type'];
         $sort = empty($args['sort']) ? null : (string) $args['sort'];
 
         SessionUtil::setVar('state', $state);
@@ -234,9 +234,6 @@ class Modules_Api_Admin extends Zikula_Api
         // filter my first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
             $where[] = "$modulescolumn[name] LIKE '" . DataUtil::formatForStore($args['letter']) . "%' OR " . "$modulescolumn[name] LIKE '" . DataUtil::formatForStore(strtolower($args['letter'])) . "%'";
-            // why reset startnum here? This prevents moving to a second page within
-            // a lettered filter - markwest
-            //$startnum = 1;
         }
 
         if ($type != 0) {
@@ -291,7 +288,7 @@ class Modules_Api_Admin extends Zikula_Api
      * @param int $args ['state'] the state
      * @return bool true if successful, false otherwise
      */
-    public function setstate($args)
+    public function setState($args)
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id']) || !isset($args['state'])) {
@@ -315,9 +312,9 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        list($name, $directory, $oldstate) = array($result['name'],
-                $result['directory'],
-                $result['state']);
+        $name = $result['name'];
+        $directory = $result['directory'];
+        $oldstate = $result['state'];
 
         $modinfo = ModUtil::getInfo($args['id']);
         // Check valid state transition
@@ -327,20 +324,14 @@ class Modules_Api_Admin extends Zikula_Api
                     if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
                         return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                     }
-                } else {
-                    if ($args['state'] > 10) {
-                        return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
-                    }
                 }
                 break;
             case ModUtil::STATE_INACTIVE:
                 break;
             case ModUtil::STATE_ACTIVE:
-            // allow new style modules to transition ditectly from upgraded to active state
-                if ((($oldstate == ModUtil::STATE_UNINITIALISED) ||
-                                ($oldstate == ModUtil::STATE_MISSING) ||
-                                ($oldstate == ModUtil::STATE_UPGRADED)) && $modinfo['type'] == 1) {
-                    return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
+                // allow new style modules to transition ditectly from upgraded to active state
+                if (($oldstate == ModUtil::STATE_UNINITIALISED) || ($oldstate == ModUtil::STATE_MISSING)) {
+                    //return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                 }
                 break;
             case ModUtil::STATE_MISSING:
@@ -350,6 +341,7 @@ class Modules_Api_Admin extends Zikula_Api
                     return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                 }
                 break;
+
         }
 
         $obj = array('id' => $args['id'], 'state' => $args['state']);
@@ -392,6 +384,13 @@ class Modules_Api_Admin extends Zikula_Api
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
+        }
+
+        switch ($modinfo['state'])
+        {
+            case ModUtil::STATE_NOTALLOWED:
+                return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
+                break;
         }
 
         $osdir = DataUtil::formatForOS($modinfo['directory']);
@@ -516,7 +515,7 @@ class Modules_Api_Admin extends Zikula_Api
      *
      * @return array Array of modules found in the file system
      */
-    public function getfilemodules($args)
+    public function getfilemodules()
     {
         // Security check
         if (!System::isInstalling()) {
@@ -569,15 +568,11 @@ class Modules_Api_Admin extends Zikula_Api
                         // Work out if admin-capable
                         if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
                             $modversion['capabilities']['admin'] = '1.0';
-                            $modtype = $moduletype;
                         }
 
                         // Work out if user-capable
                         if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
                             $modversion['capabilities']['user'] = '1.0';
-                            if (!isset($modtype)) {
-                                $modtype = $moduletype;
-                            }
                         }
                     } else {
                         // Work out if admin-capable
@@ -585,7 +580,6 @@ class Modules_Api_Admin extends Zikula_Api
                             $caps = $modversion['capabilities'];
                             $caps['admin'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
-                            $modtype = $moduletype;
                         }
 
                         // Work out if user-capable
@@ -593,14 +587,7 @@ class Modules_Api_Admin extends Zikula_Api
                             $caps = $modversion['capabilities'];
                             $caps['user'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
-                            if (!isset($modtype)) {
-                                $modtype = $moduletype;
-                            }
                         }
-                    }
-
-                    if (empty($modtype)) {
-                        $modtype = $moduletype;
                     }
 
                     $version = $modversion['version'];
@@ -627,42 +614,50 @@ class Modules_Api_Admin extends Zikula_Api
                         $securityschema = serialize(array());
                     }
 
+                    $core_min = isset($modversion['core_min']) ? $modversion['core_min'] : '';
+                    $core_max = isset($modversion['core_max']) ? $modversion['core_max'] : '';
+                    $contact = isset($modversion['contact']) ? $modversion['contact'] : '';
+
                     if (isset($modversion['dependencies']) && is_array($modversion['dependencies'])) {
                         $moddependencies = serialize($modversion['dependencies']);
                     } else {
                         $moddependencies = serialize(array());
                     }
-                    if (!isset($args['name'])) {
-                        $filemodules["$rootdir/$dir"] = array(
+//                    if (!isset($args['name'])) {
+                        $filemodules[$name] = array(
                                 'directory'       => $dir,
                                 'name'            => $name,
-                                'type'            => $modtype,
+                                'type'            => $moduletype,
                                 'displayname'     => $displayname,
                                 'url'             => $url,
-                                'contact'         => $modversion['contact'],
+                                'contact'         => $contact,
                                 'version'         => $version,
                                 'capabilities'    => $capabilities,
                                 'description'     => $description,
                                 'securityschema'  => $securityschema,
                                 'dependencies'    => $moddependencies,
+                                'core_min'        => $core_min,
+                                'core_max'        => $core_max,
                         );
-                    } else {
-                        if ($name == $args['name']) {
-                            $filemodules = array(
-                                    'directory'       => $dir,
-                                    'name'            => $name,
-                                    'type'            => $modtype,
-                                    'displayname'     => $displayname,
-                                    'url'             => $url,
-                                    'contact'         => $modversion['contact'],
-                                    'version'         => $version,
-                                    'capabilities'    => $capabilities,
-                                    'description'     => $description,
-                                    'securityschema'  => $securityschema,
-                                    'dependencies' => $moddependencies,
-                            );
-                        }
-                    }
+//                    } else {
+//                        if ($name == $args['name']) {
+//                            $filemodules = array(
+//                                    'directory'       => $dir,
+//                                    'name'            => $name,
+//                                    'type'            => $moduletype,
+//                                    'displayname'     => $displayname,
+//                                    'url'             => $url,
+//                                    'contact'         => $modversion['contact'],
+//                                    'version'         => $version,
+//                                    'capabilities'    => $capabilities,
+//                                    'description'     => $description,
+//                                    'securityschema'  => $securityschema,
+//                                    'dependencies'    => $moddependencies,
+//                                    'core_min'        => $core_min,
+//                                    'core_max'        => $core_max,
+//                            );
+//                        }
+//                    }
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in
@@ -677,8 +672,7 @@ class Modules_Api_Admin extends Zikula_Api
     }
 
     /**
-     * regenerate modules list
-     * @author Jim McDonald
+     * Regenerate modules list
      * @param array args['filemodules'] array of modules in the filesystem, as returned by $this->getfilemodules defaults to $this->getfilemodules()
      * @return bool true on success, false on failure
      * @see $this->getfilemodules()
@@ -693,12 +687,12 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Argument check
-        if (isset($args['filemodules']) && !is_array($args['filemodules'])) {
+        if (!isset($args['filemodules']) || !is_array($args['filemodules'])) {
             return LogUtil::registerArgsError();
         }
 
         // default action
-        $filemodules = (isset($args['filemodules']) ? $args['filemodules'] : $this->getfilemodules());
+        $filemodules = $args['filemodules'];
         $defaults = (isset($args['defaults']) ? $args['defaults'] : false);
 
         // Get all modules in DB
@@ -719,8 +713,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // see if any modules have changed name since last generation
-        foreach ($filemodules as $modinfo) {
-            $name = $modinfo['name'];
+        foreach ($filemodules as $name => $modinfo) {
             if (isset($modinfo['oldnames']) || !empty($modinfo['oldnames'])) {
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
                     if (in_array($dbmodinfo['name'], $modinfo['oldnames'])) {
@@ -732,8 +725,8 @@ class Modules_Api_Admin extends Zikula_Api
                         $dbmodules[$dbmodinfo['name']]['version'] = $dbmodules[$dbname]['version'];
                         // ensure the old module name doesn't get listed as missing and the new name as uninitialised
                         unset($dbmodules[$dbname]);
-                        if ($dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_UNINITIALISED &&
-                                $dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_INVALID) {
+
+                        if ($dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_UNINITIALISED && $dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_INVALID) {
                             unset($dbmodinfo['version']);
                         }
                         // update the db with the new module info
@@ -742,10 +735,14 @@ class Modules_Api_Admin extends Zikula_Api
                 }
             }
 
+            if (isset($dbmodules[$name]) && $dbmodules[$name]['state'] > 10) {
+                $dbmodules[$name]['state'] = $dbmodules[$name]['state'] - 20;
+                $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
+            }
+
             if (isset($dbmodules[$name]['id'])) {
                 $modinfo['id'] = $dbmodules[$name]['id'];
-                if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
-                        $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
+                if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED && $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
                     unset($modinfo['version']);
                 }
                 if (!$defaults) {
@@ -755,23 +752,37 @@ class Modules_Api_Admin extends Zikula_Api
                 }
                 DBUtil::updateObject($modinfo, 'modules');
             }
-        }
 
-        // see if we have any module that is not compatible with corrent version of the core. In this case set it as innactive
-        $version = str_replace('-dev', '', System::VERSION_NUM);
+            // check core version is compatible with current
+            $minok = 0;
+            $maxok = 0;
+            // strip any -dev, -rcN etc from version number
+            $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', System::VERSION_NUM);
+            if (!empty($filemodules[$name]['core_min'])) {
+                $minok = version_compare($coreVersion, $filemodules[$name]['core_min']);
+            }
+            if (!empty($filemodules[$name]['core_max'])) {
+                $minok = version_compare($filemodules[$name]['core_max'], $coreVersion);
+            }
+
+            if ($minok == -1 || $maxok == -1) {
+                $dbmodules[$name]['state'] = $dbmodules[$name]['state'] + 20;
+                $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
+            }
+            if (isset($dbmodules[$name]['state'])) {
+                $filemodules[$name]['state'] = $dbmodules[$name]['state'];
+            }
+        }
 
         // See if we have lost any modules since last generation
         foreach ($dbmodules as $name => $modinfo) {
             if (!in_array($name, $module_names)) {
-                // Old module
-                // Get module ID
                 $result = DBUtil::selectObjectByID('modules', $name, 'name');
 
                 if ($result === false) {
                     return LogUtil::registerError($this->__('Error! Could not load data.'));
                 }
 
-                // Ouch! jn
                 if (empty($result)) {
                     die($this->__('Error! Could not retrieve module ID.'));
                 }
@@ -784,7 +795,7 @@ class Modules_Api_Admin extends Zikula_Api
                     $this->remove(array('id'   => $dbmodules[$name]['id']));
                 } else {
                     // Set state of module to 'missing'
-                    $this->setstate(array('id' => $result['id'], 'state' => ModUtil::STATE_MISSING));
+                    $this->setState(array('id' => $result['id'], 'state' => ModUtil::STATE_MISSING));
                 }
                 unset($dbmodules[$name]);
             }
@@ -792,8 +803,7 @@ class Modules_Api_Admin extends Zikula_Api
 
         // See if we have gained any modules since last generation,
         // or if any current modules have been upgraded
-        foreach ($filemodules as $modinfo) {
-            $name = $modinfo['name'];
+        foreach ($filemodules as $name => $modinfo) {
             if (empty($dbmodules[$name])) {
                 // New module
                 // RNG: set state to invalid if we can't determine an ID
@@ -813,14 +823,12 @@ class Modules_Api_Admin extends Zikula_Api
                 // module is in the db already
                 if ($dbmodules[$name]['state'] == ModUtil::STATE_MISSING) {
                     // module was lost, now it is here again
-                    $this->setstate(array('id'   => $dbmodules[$name]['id'],
-                            'state' => ModUtil::STATE_INACTIVE));
+                    $this->setState(array('id'   => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_INACTIVE));
                 }
                 if ($dbmodules[$name]['version'] != $modinfo['version']) {
                     if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
                             $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
-                        $this->setstate(array('id'   => $dbmodules[$name]['id'],
-                                'state' => ModUtil::STATE_UPGRADED));
+                        $this->setState(array('id'   => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UPGRADED));
                     }
                 }
             }
@@ -861,6 +869,17 @@ class Modules_Api_Admin extends Zikula_Api
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
+        }
+
+        switch ($modinfo['state'])
+        {
+            case ModUtil::STATE_NOTALLOWED:
+                return LogUtil::registerError($this->__f('Error! No permission to install %s.', $modinfo['name']));
+                break;
+            default:
+                if ($modinfo['state'] > 10) {
+                    return LogUtil::registerError($this->__f('Error! %s is not compatible with this version of Zikula.', $modinfo['name']));
+                }
         }
 
         // Get module database info
@@ -946,7 +965,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Update state of module
-        if (!$this->setstate(array('id' => $args['id'],
+        if (!$this->setState(array('id' => $args['id'],
         'state' => ModUtil::STATE_ACTIVE))) {
             return LogUtil::registerError($this->__('Error! Could not change module state.'));
         }
@@ -980,6 +999,17 @@ class Modules_Api_Admin extends Zikula_Api
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
+        }
+
+        switch ($modinfo['state'])
+        {
+            case ModUtil::STATE_NOTALLOWED:
+                return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
+                break;
+            default:
+                if ($modinfo['state'] > 10) {
+                    return LogUtil::registerError($this->__f('Error! %s is not compatible with this version of Zikula.', $modinfo['name']));
+                }
         }
 
         $osdir = DataUtil::formatForOS($modinfo['directory']);
@@ -1076,7 +1106,7 @@ class Modules_Api_Admin extends Zikula_Api
         $version = $modversion['version'];
 
         // Update state of module
-        $result = $this->setstate(array('id' => $args['id'], 'state' => ModUtil::STATE_ACTIVE));
+        $result = $this->setState(array('id' => $args['id'], 'state' => ModUtil::STATE_ACTIVE));
         if ($result) {
             LogUtil::registerStatus($this->__("Done! Module has been upgraded. Its status is now 'Active'."));
         } else {
@@ -1106,12 +1136,14 @@ class Modules_Api_Admin extends Zikula_Api
     public function upgradeall()
     {
         $upgradeResults = array();
+        $usersModule = array();
         // regenerate modules list
-        $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-        ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+        $filemodules = $this->getfilemodules();
+        $this->regenerate(array('filemodules' => $filemodules));
         // get a list of modules needing upgrading
-        if (ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED))) {
-            $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_SYSTEM));
+        if ($this->listmodules(array('state' => ModUtil::STATE_UPGRADED))) {
+            $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_SYSTEM));
+
             // Crazy sort to make sure the User's module is upgraded first
             $key = array_search('Users', $newmods);
             if (is_integer($key)) {
@@ -1123,19 +1155,19 @@ class Modules_Api_Admin extends Zikula_Api
                 $newModArray[] = $mod;
             }
 
-            $newModArray = array_merge($newModArray, ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
+            $newModArray = array_merge($newModArray, $this->listmodules(array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_MODULE)));
 
             if (is_array($newModArray) && $newModArray) {
                 foreach ($newModArray as $mod) {
-                    ZLanguage::bindModuleDomain($mod['name']);
-                    $upgradeResults[$mod['name']] = ModUtil::apiFunc('Modules', 'admin', 'upgrade', array('id' => $mod['id']));
+                    $upgradeResults[$mod['name']] = $this->upgrade(array('id' => $mod['id']));
                 }
             }
 
             System::setVar('Version_Num', System::VERSION_NUM);
 
             // regenerate the themes list
-            ModUtil::apiFunc('Theme', 'admin', 'regenerate');
+//            $filemodules = $this->getfilemodules();
+//            $this->regenerate(array('filemodules' => $filemodules));
         }
         return $upgradeResults;
     }
@@ -1152,7 +1184,6 @@ class Modules_Api_Admin extends Zikula_Api
         // filter my first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
             $where[] = "$modulescolumn[name] LIKE '" . DataUtil::formatForStore($args['letter']) . "%'";
-            $startnum = 1;
         }
 
         // filter by module state
@@ -1165,6 +1196,10 @@ class Modules_Api_Admin extends Zikula_Api
             case ModUtil::STATE_INVALID:
                 $where[] = "$modulescolumn[state] = '" . DataUtil::formatForStore($args['state']) . "'";
                 break;
+            default:
+                if ($args['state'] > 10) {
+                    $where[] = "$modulescolumn[state] > 10 ";
+                }
         }
 
         // generate where clause
@@ -1449,8 +1484,8 @@ class Modules_Api_Admin extends Zikula_Api
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'hooks', array('id' => 0)), 'text' => $this->__('System hooks'), 'class' => 'z-icon-es-package');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array('systemplugins' => true)), 'text' => $this->__('System Plugins'), 'class' => 'z-icon-es-cubes');
             $links[] = array('url' => ModUtil::url('Modules', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
-            $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
-            ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
+//            $filemodules = ModUtil::apiFunc('Modules', 'admin', 'getfilemodules');
+//            ModUtil::apiFunc('Modules', 'admin', 'regenerate', array('filemodules' => $filemodules));
             // get a list of modules needing upgrading
             $newmods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
             if ($newmods) {

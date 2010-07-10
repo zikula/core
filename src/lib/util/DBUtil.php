@@ -2766,7 +2766,7 @@ class DBUtil
         $tabledef = $table . '_column_def';
 
         if (array_key_exists($tabledef, $tables) && is_array($tables[$tabledef])) {
-            // we have a {$tablename}_column_def array as defined in pntables.php. This is a real array, not a string.
+            // we have a {$tablename}_column_def array as defined in tables.php. This is a real array, not a string.
             // The format is like "C(24) NOTNULL DEFAULT ''" which means we have to prepend the field name now
             $typemap = array(
                             'B' => 'blob',

@@ -597,13 +597,14 @@ class ModUtil
             // Generate _column automatically from _column_def if it is not present.
             foreach ($data as $key => $value) {
                 $table_col = substr($key, 0, -4);
-                if (substr($key, -11) == "_column_def" && !$data[$table_col]) {
+                if (substr($key, -11) == "_column_def" && !isset($data[$table_col])) {
                     foreach ($value as $fieldname => $def) {
                         $data[$table_col][$fieldname] = $fieldname;
                     }
                 }
             }
 
+            $GLOBALS['dbtables'] = isset($GLOBALS['dbtables']) ? $GLOBALS['dbtables'] : array();
             $GLOBALS['dbtables'] = array_merge((array)$GLOBALS['dbtables'], (array)$data);
             $loaded[$modname] = true;
         }
@@ -970,7 +971,7 @@ class ModUtil
                         throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', array(get_class($controller), $instanceof)));
                     }
                 }
-                
+
             }
         }
 
@@ -1620,7 +1621,7 @@ class ModUtil
         }
 
         // add Core module (hack).
-        $modstable[0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . System::VERSION_NUM);
+        $modstable[0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . System::VERSION_NUM, 'version' => System::VERSION_NUM, 'state' => self::STATE_ACTIVE);
 
         return $modstable;
     }
