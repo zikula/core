@@ -393,6 +393,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
         } else {
 
             // save renderer delimiters
+            $dummy = new Zikula_View('SecurityCenter');
             $event->data = str_replace($dummy->left_delimiter,  '%RENDERER_LEFT_DELIMITER%',  $event->data);
             $event->data = str_replace($dummy->right_delimiter, '%RENDERER_RIGHT_DELIMITER%', $event->data);
             $event->data = $purifier->purify($event->data);
@@ -402,7 +403,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
             $event->data = str_replace('%RENDERER_RIGHT_DELIMITER%', $dummy->right_delimiter, $event->data);
 
             // cache the value
-            $safecache[$sha] = $event->data;
+            $safecache[$md5] = $event->data;
         }
 
         return $event->data;
