@@ -39,8 +39,8 @@
  * String replacement follows the rules at http://php.net/sprintf but please note Smarty seems to pass
  * all variables as strings so %s and %n$s are mostly used.
  *
- * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param array       $params  All attributes passed to this function from the template.
+ * @param Zikula_View $view    Reference to the Zikula_View object.
  *
  * @return string Translation if it was available.
  */
@@ -51,15 +51,9 @@ function smarty_function_gt($params, &$view)
     // if the call was from a template only $view->renderDomain is set.
     if (isset($params['domain'])) {
         $domain = (strtolower($params['domain']) == 'zikula' ? null : $params['domain']);
-    } elseif (isset($view->themeDomain)) {
-        $domain = $view->themeDomain;
-    } elseif (isset($view->renderDomain)) {
-        $domain = $view->renderDomain;
     } else {
-        $domain = null; // default domain
+        $domain = $view->getDomain(); // default domain
     }
-
-    $domain = ($domain == 'zikula' ? null : $domain);
 
     if (!isset($params['text'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_gt', 'text')));

@@ -99,7 +99,17 @@ class Zikula_View extends Smarty
      *
      * @var string
      */
-    public $renderDomain;
+    public $domain;
+
+    /**
+     * @var Zikula_ServiceManager
+     */
+    protected $serviceManager;
+
+    /**
+     * @var Zikula_EventManager
+     */
+    protected $eventManager;
 
     /**
      * Constructor.
@@ -110,6 +120,9 @@ class Zikula_View extends Smarty
     public function __construct($module = '', $caching = null)
     {
         parent::__construct();
+
+        $this->serviceManager = ServiceUtil::getManager();
+        $this->eventManager = EventUtil::getManager();
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
@@ -237,15 +250,15 @@ class Zikula_View extends Smarty
 
         // for {gt} template plugin to detect gettext domain
         if ($this->module[$module]['type'] == ModUtil::TYPE_MODULE) {
-            $this->renderDomain = ZLanguage::getModuleDomain($this->module[$module]['name']);
+            $this->domain = ZLanguage::getModuleDomain($this->module[$module]['name']);
         }
 
         // make render object available to modifiers
-        $this->assign('renderObject', $this);
+        $this->assign('zikula_view', $this);
 
         // Add ServiceManager and EventManager to all templates
-        $this->assign('serviceManager', ServiceUtil::getManager());
-        $this->assign('eventManager', EventUtil::getManager());
+        $this->assign('serviceManager', $this->serviceManager);
+        $this->assign('eventManager', $this->eventManager);
 
         // add some useful data
         $this->assign(array('module' => $module, 'modinfo' => $this->modinfo, 'themeinfo' => $this->themeinfo));
@@ -253,7 +266,76 @@ class Zikula_View extends Smarty
         // This event sends $this as the subject so you can modify as required:
         // e.g.  $event->getSubject()->register_prefilter('foo');
         $event = new Zikula_Event('render.init', $this);
-        EventUtil::notify($event);
+        $this->eventManager->notify($event);
+    }
+
+    public function getModule()
+    {
+        return $this->module;
+    }
+
+    public function getToplevelmodule()
+    {
+        return $this->toplevelmodule;
+    }
+
+    public function getModinfo()
+    {
+        return $this->modinfo;
+    }
+
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    public function getThemeinfo()
+    {
+        return $this->themeinfo;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    public function getBaseurl() {
+        return $this->baseurl;
+    }
+
+    public function getBaseuri()
+    {
+        return $this->baseuri;
+    }
+
+    public function getCache_id()
+    {
+        return $this->cache_id;
+    }
+
+    public function getUserdb()
+    {
+        return $this->userdb;
+    }
+
+    public function getExpose_template()
+    {
+        return $this->expose_template;
+    }
+
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    public function getServiceManager()
+    {
+        return $this->serviceManager;
+    }
+
+    public function getEventManager()
+    {
+        return $this->eventManager;
     }
 
     /**
@@ -331,7 +413,7 @@ class Zikula_View extends Smarty
 
         // for {gt} template plugin to detect gettext domain
         if ($render->module[$module]['type'] == ModUtil::TYPE_MODULE) {
-            $render->renderDomain = ZLanguage::getModuleDomain($render->module[$module]['name']);
+            $render->domain = ZLanguage::getModuleDomain($render->module[$module]['name']);
         }
 
         // load the usemodules configuration if exists
@@ -930,8 +1012,8 @@ function z_prefilter_gettext_params($tpl_source, &$smarty)
  */
 function z_prefilter_gettext_params_callback($m)
 {
-    $m[1] = preg_replace('#__([a-zA-Z0-9]+=".*?(?<!\\\)")#', '$1|gt:$renderObject', $m[1]);
-    $m[1] = preg_replace('#__([a-zA-Z0-9]+=\'.*?(?<!\\\)\')#', '$1|gt:$renderObject', $m[1]);
+    $m[1] = preg_replace('#__([a-zA-Z0-9]+=".*?(?<!\\\)")#', '$1|gt:$zikula_view', $m[1]);
+    $m[1] = preg_replace('#__([a-zA-Z0-9]+=\'.*?(?<!\\\)\')#', '$1|gt:$zikula_view', $m[1]);
     return '{' . $m[1] . '}';
 }
 

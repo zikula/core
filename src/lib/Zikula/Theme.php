@@ -47,13 +47,6 @@ class Zikula_Theme extends Zikula_View
     public $description;
 
     /**
-     * Registration Id.
-     *
-     * @var integer
-     */
-    public $regid;
-
-    /**
      * Type.
      *
      * @var integer
@@ -75,20 +68,6 @@ class Zikula_Theme extends Zikula_View
     public $version;
 
     /**
-     * Whether or not the theme is official.
-     *
-     * @var string
-     */
-    public $official;
-
-    /**
-     * Author.
-     *
-     * @var string
-     */
-    public $author;
-
-    /**
      * Contact.
      *
      * @var string
@@ -96,60 +75,11 @@ class Zikula_Theme extends Zikula_View
     public $contact;
 
     /**
-     * Admin capable.
-     *
-     * @var integer
-     */
-    public $admin;
-
-    /**
-     * User capable.
-     *
-     * @var integer
-     */
-    public $user;
-
-    /**
-     * System capable.
-     *
-     * @var integer
-     */
-    public $system;
-
-    /**
      * State.
      *
      * @var integer
      */
     public $state;
-
-    /**
-     * Credits.
-     *
-     * @var string
-     */
-    public $credits;
-
-    /**
-     * Changelog.
-     *
-     * @var string
-     */
-    public $changelog;
-
-    /**
-     * Help.
-     *
-     * @var string
-     */
-    public $help;
-
-    /**
-     * License.
-     *
-     * @var string
-     */
-    public $license;
 
     /**
      * XHTML capable.
@@ -284,13 +214,6 @@ class Zikula_Theme extends Zikula_View
     public $isloggedin;
 
     /**
-     * Gettext domain of the theme.
-     *
-     * @var string
-     */
-    public $themeDomain;
-
-    /**
      * Constructor.
      *
      * @param string  $theme      Theme name.
@@ -309,9 +232,9 @@ class Zikula_Theme extends Zikula_View
         if ($themeinfo['i18n']) {
             ZLanguage::bindThemeDomain($this->name);
             // property for {gt} template plugin to detect language domain
-            $this->themeDomain = ZLanguage::getThemeDomain($this->name);
+            $this->domain = ZLanguage::getThemeDomain($this->name);
         } else {
-            $this->themeDomain = 'zikula';
+            $this->domain = null;
         }
 
         // change some base settings from our parent class
@@ -376,12 +299,147 @@ class Zikula_Theme extends Zikula_View
         // This event sends $this as the subject so you can modify as required:
         // e.g.  $event->getSubject()->load_filter('output', 'multihook');
         $event = new Zikula_Event('theme.init', $this, array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo));
-        EventUtil::notify($event);
+        $this->eventManager->notify($event);
 
         // Start the output buffering to capture module output
         ob_start();
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getDisplayname()
+    {
+        return $this->displayname;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
+
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function getXhtml()
+    {
+        return $this->xhtml;
+    }
+
+    public function getThemepath()
+    {
+        return $this->themepath;
+    }
+
+    public function getImagepath()
+    {
+        return $this->imagepath;
+    }
+
+    public function getImagelangpath()
+    {
+        return $this->imagelangpath;
+    }
+
+    public function getStylepath()
+    {
+        return $this->stylepath;
+    }
+
+    public function getScriptpath()
+    {
+        return $this->scriptpath;
+    }
+
+    public function getThemeconfig()
+    {
+        return $this->themeconfig;
+    }
+
+    public function getCachepage()
+    {
+        return $this->cachepage;
+    }
+
+    public function getHome()
+    {
+        return $this->home;
+    }
+
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    public function getFunc()
+    {
+        return $this->func;
+    }
+
+    public function getComponentid()
+    {
+        return $this->componentid;
+    }
+
+    public function getPageid()
+    {
+        return $this->pageid;
+    }
+
+    public function getPagetype()
+    {
+        return $this->pagetype;
+    }
+
+    public function getQstring()
+    {
+        return $this->qstring;
+    }
+
+    public function getRequesturi()
+    {
+        return $this->requesturi;
+    }
+
+    public function getPermlevel()
+    {
+        return $this->permlevel;
+    }
+
+    public function getIsloggedin()
+    {
+        return $this->isloggedin;
+    }
+    
     /**
      * Get Theme instance.
      *
