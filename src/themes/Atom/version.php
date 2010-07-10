@@ -28,3 +28,6 @@ $themeversion['help'] = '';
 $themeversion['changelog'] = '';
 $themeversion['license'] = '';
 $themeversion['xhtml'] = false;
+
+/* themevariables.ini gettext strings*/
+no__('Show item descriptions');

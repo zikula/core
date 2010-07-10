@@ -27,3 +27,8 @@ $themeversion['admin']          = 0;
 $themeversion['user']           = 0;
 $themeversion['system']         = 1;
 $themeversion['xhtml']          = false;
+
+/* themevariables.ini gettext strings*/
+no__('Show item descriptions');
+no__('RSS v0.91,RSS v0.20');
+no__('RSS Version');

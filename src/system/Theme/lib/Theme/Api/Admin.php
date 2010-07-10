@@ -253,12 +253,15 @@ class Theme_Api_Admin extends Zikula_Api
 
         // get the theme settings and write them back to the running config directory
         $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename));
-        $variables = array('variables' => $variables);
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables['variables'], 'has_sections' => true, 'file' => 'themevariables.ini'));
+        if (is_array($variables)) {
+            ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => 'themevariables.ini'));
+        }
 
         // get the theme palettes and write them back to the running config directory
         $palettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename));
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
+        if (is_array($palettes)) {
+            ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
+        }
 
         // get the theme page configurations and write them back to the running config directory
         $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
@@ -273,7 +276,6 @@ class Theme_Api_Admin extends Zikula_Api
 
     /**
      * delete a theme
-     *
      */
     public function delete($args)
     {
@@ -332,7 +334,6 @@ class Theme_Api_Admin extends Zikula_Api
 
     /**
      * delete theme files from the file system if possible
-     *
      */
     public function deletefiles($args)
     {
@@ -362,13 +363,13 @@ class Theme_Api_Admin extends Zikula_Api
             }
             return LogUtil::registerError(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
         }
+
         LogUtil::registerStatus(__f('Notice: Theme files cannot be deleted because Zikula does not have write permissions for the themes folder and/or themes/%s folder.', DataUtil::formatForDisplay($args['themedirectory'])));
         return false;
     }
 
     /**
      * delete a running configuration
-     *
      */
     public function deleterunningconfig($args)
     {
@@ -408,7 +409,6 @@ class Theme_Api_Admin extends Zikula_Api
 
     /**
      * delete ini file
-     *
      */
     public function deleteinifile($args)
     {
@@ -438,7 +438,6 @@ class Theme_Api_Admin extends Zikula_Api
 
     /**
      * delete a page configuration assignment
-     *
      */
     public function deletepageconfigurationassignment($args)
     {
@@ -475,7 +474,6 @@ class Theme_Api_Admin extends Zikula_Api
 
     /**
      * create theme
-     *
      */
     public function create($args)
     {

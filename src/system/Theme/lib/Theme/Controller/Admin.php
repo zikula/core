@@ -277,6 +277,7 @@ class Theme_Controller_Admin extends Zikula_Controller
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
+
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
@@ -293,9 +294,9 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign variables, themename, themeinfo and return output
         return $this->view->assign('variables', ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true)))
-                              ->assign('themename', $themename)
-                              ->assign('themeinfo', $themeinfo)
-                              ->fetch('theme_admin_variables.tpl');
+                          ->assign('themename', $themename)
+                          ->assign('themeinfo', $themeinfo)
+                          ->fetch('theme_admin_variables.tpl');
     }
 
     /**
@@ -385,9 +386,9 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign palettes, themename, themeinfo and return output
         return $this->view->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename)))
-                              ->assign('themename', $themename)
-                              ->assign('themeinfo', $themeinfo)
-                              ->fetch('theme_admin_palettes.tpl');
+                          ->assign('themename', $themename)
+                          ->assign('themeinfo', $themeinfo)
+                          ->fetch('theme_admin_palettes.tpl');
     }
 
     /**
@@ -554,11 +555,11 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign the base filename, themename, theme info, moduletemplates, blocktemplates and palettes
         $this->view->assign('filename', $filename)
-                       ->assign('themename', $themename)
-                       ->assign('themeinfo', $themeinfo)
-                       ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
-                       ->assign('blocktemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
-                       ->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettenames', array('theme' => $themename)));
+                   ->assign('themename', $themename)
+                   ->assign('themeinfo', $themeinfo)
+                   ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
+                   ->assign('blocktemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
+                   ->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettenames', array('theme' => $themename)));
 
         // get all block positions
         $blockpositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
@@ -748,8 +749,8 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign the page config assignment name, theme name and theme info
         $this->view->assign('pcname', $pcname)
-                       ->assign('themename', $themename)
-                       ->assign('themeinfo', $themeinfo);
+                   ->assign('themename', $themename)
+                   ->assign('themeinfo', $themeinfo);
 
         // assign all modules
         $allmods = ModUtil::getAllMods();
@@ -943,7 +944,7 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign the theme info and return output
         return $this->view->assign('themeinfo', ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename)))
-                              ->fetch('theme_admin_credits.tpl');
+                          ->fetch('theme_admin_credits.tpl');
     }
 
 

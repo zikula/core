@@ -23,30 +23,27 @@ class Theme_Api_User extends Zikula_Api
         }
 
         $variables = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
+
         if (isset($args['formatting']) && is_bool($args['formatting']) && $args['formatting']) {
-            foreach ($variables['variables'] as $key => $value) {
+            $dom = $this->_getthemedomain($args['theme']);
+
+            foreach (array_keys($variables['variables']) as $var) {
                 if (!isset($args['explode']) || $args['explode'] != false) {
-                    if (isset($variables[$key]) && $variables[$key]['type'] == 'select') {
-                        $variables[$key]['values'] = explode(',', $variables[$key]['values']);
-                        $variables[$key]['output'] = explode(',', $variables[$key]['output']);
-                        foreach ($variables[$key]['output'] as $outputkey => $outputvalue) {
-                            if (defined($outputvalue)) {
-                                $variables[$key]['output'][$outputkey] = constant($outputvalue);
-                            }
-                        }
+                    if (isset($variables[$var]['type']) && $variables[$var]['type'] == 'select') {
+                        $variables[$var]['values'] = explode(',', __($variables[$var]['values'], $dom));
+                        $variables[$var]['output'] = explode(',', __($variables[$var]['output'], $dom));
                     }
                 }
-                if (!isset($variables[$key])) {
-                    $variables[$key] = array('editable' => true, 'type' => 'text');
+                if (isset($variables[$var]['language'])) {
+                    $variables[$var]['language'] = __($variables[$var]['language'], $dom);
+                }
+                if (!isset($variables[$var])) {
+                    $variables[$var] = array('editable' => true, 'type' => 'text');
                 }
             }
-            return $variables;
-
-        } elseif (isset($variables['variables'])) {
-            return $variables['variables'];
         }
 
-        return false;
+        return $variables;
     }
 
     /**
@@ -233,7 +230,6 @@ class Theme_Api_User extends Zikula_Api
 
     /**
      * get a list of palettes available for a theme
-     *
      */
     public function getpalettenames($args)
     {
@@ -244,7 +240,7 @@ class Theme_Api_User extends Zikula_Api
 
         $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
         $palettes = array();
-        foreach ($allpalettes as $name => $colors) {
+        foreach (array_keys($allpalettes) as $name) {
             $palettes[$name] = $name;
         }
 
@@ -285,6 +281,7 @@ class Theme_Api_User extends Zikula_Api
     {
         $output = array();
         $contents = file($filename);
+
         foreach ($contents as $line) {
             $line = trim($line);
             $length = strlen($line);
@@ -301,6 +298,21 @@ class Theme_Api_User extends Zikula_Api
                 }
             }
         }
+
         return $output;
+    }
+
+    /**
+     * Retrieves the theme domain
+     *
+     * @param string $themename Name of the theme to parse
+     */
+    function _getthemedomain($themename)
+    {
+        if (in_array($themename, array('Andreas08', 'Atom', 'Printer', 'RSS', 'SeaBreeze'))) {
+            return 'zikula';
+        }
+
+        return ZLanguage::getThemeDomain($themename);
     }
 }

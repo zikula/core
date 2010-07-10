@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {foreach from=$variables.variables item=value key=name}
+                    {foreach from=$variables.variables key=name item=value}
                     <tr class="{cycle values=z-odd,z-even}">
                         <td>
                             {if $variables.$name.editable}
@@ -24,7 +24,7 @@
                             {else}
                             <input type="hidden" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
                             {if $variables.$name.language}
-                            {gt text=$variables.$name.language}
+                            {$variables.$name.language}
                             {else}
                             {$name|safetext}
                             {/if}
