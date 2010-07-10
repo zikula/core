@@ -25,14 +25,6 @@ class Categories_Version extends Zikula_Version
         $meta['version']        = '1.2.0';
         $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Categories::Category' => 'Category ID:Category Path:Category IPath');
-
-        $meta['dependencies']   = array(
-                array('modname'    => 'ObjectData',
-                        'minversion' => '1.0',
-                        'maxversion' => '',
-                        'status'     => ModUtil::DEPENDENCY_REQUIRED
-                )
-        );
         return $meta;
     }
 }
