@@ -73,9 +73,9 @@ class Zikula_Plugin_Controller extends Zikula_Controller
     }
 
     /**
-     * Set renderer property.
+     * Set view property.
      *
-     * @param PluginRender $renderer Default null means new Render instance for this module name.
+     * @param Zikula_View_Plugin $view Default null means new Render instance for this module name.
      *
      * @return Zikula_Plugin_Controller
      */
