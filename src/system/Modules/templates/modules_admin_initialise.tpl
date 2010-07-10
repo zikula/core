@@ -26,7 +26,7 @@
                             <td>{$dependency.modname}</td>
                             <td>
                                 {if $dependency.insystem neq true and $dependency.status eq 1}
-                                {gt text="Not found in file system"}
+                                {gt text="Not present"}
                                 {elseif $dependency.status eq 1}
                                 {gt text="Required"}
                                 {elseif $dependency.status eq 2}
@@ -35,11 +35,11 @@
                             </td>
                             <td>
                                 {if $dependency.insystem neq true and ($dependency.status eq 1 or $dependency.status eq 2)}
-                                {* gt text="If you wish to install this module pleas." *}
-                                {elseif $dependency.status eq 1}
+                                {gt text="Not present."}
+                                {elseif $dependency.status eq 1}{* required *}
                                 <input type="hidden" name="dependencies[]" value="{$dependency.id}" />
                                 <input type="checkbox" name="dummy[]" value="{$dependency.id}" disabled="disabled" />
-                                {elseif $dependency.status eq 2}
+                                {elseif $dependency.status eq 2}{* recommended *}
                                 <input type="checkbox" name="dependencies[]" value="{$dependency.id}" />
                                 {/if}
                             </td>
@@ -52,7 +52,7 @@
             {if !$fataldependency}
                 <p class="z-informationmsg">{gt text="Do you really want to initialise this module?"}</p>
             {else}
-                <p class="z-errormsg">{gt text="Error! Required dependencies are not present.  This module cannot be installed with them."}</p>
+                <p class="z-errormsg">{gt text="Error! Required dependencies are not present.  To install this module, please upload the dependencies."}</p>
             {/if}
             
             <div class="z-buttons z-formbuttons">

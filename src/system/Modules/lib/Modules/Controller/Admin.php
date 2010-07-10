@@ -478,12 +478,11 @@ class Modules_Controller_Admin extends Zikula_Controller
         if ($objectid) {
             $id = $objectid;
         }
-
-        $fataldependency = false;
         
         // assign any dependencies - filtering out non-active module dependents
         // when getting here without a valid id we are in interactive init mode and then
         // the dependencies checks have been done before already
+        $fataldependency = false;
         if ($id != 0) {
             $dependencies = ModUtil::apiFunc('Modules', 'admin', 'getdependencies', array('modid' => $id));
             $modulenotfound = false;
@@ -495,7 +494,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                     if (is_dir("$base/$dependency[modname]")) {
                         $minok = 0;
                         $maxok = 0;
-                        $modversion = ModUtil::getVersionMeta($dependency['modname'], "$base/$dependency[modname]/pnversion.php");
+                        $modversion = Modules_Util::getVersionMeta($dependency['modname'], "$base/$dependency[modname]/pnversion.php");
 
                         if (!empty($dependency['minversion'])) {
                             $minok = version_compare($modversion['version'], $dependency['minversion']);

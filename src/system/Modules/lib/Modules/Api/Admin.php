@@ -331,7 +331,7 @@ class Modules_Api_Admin extends Zikula_Api
             case ModUtil::STATE_ACTIVE:
                 // allow new style modules to transition ditectly from upgraded to active state
                 if (($oldstate == ModUtil::STATE_UNINITIALISED) || ($oldstate == ModUtil::STATE_MISSING)) {
-                    //return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
+                    return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                 }
                 break;
             case ModUtil::STATE_MISSING:
@@ -550,7 +550,7 @@ class Modules_Api_Admin extends Zikula_Api
                         ZLanguage::bindModuleDomain($dir);
                     }
 
-                    $modversion = self::getVersionMeta($dir, "$rootdir/$dir/pnversion.php");
+                    $modversion = Modules_Util::getVersionMeta($dir, "$rootdir/$dir/pnversion.php");
                     if (!isset($modversion['capabilities'])) {
                         $modversion['capabilities'] = array();
                     }
@@ -1102,7 +1102,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
         $modversion['version'] = '0';
 
-        $modversion = self::getVersionMeta($osdir, "$modpath/$osdir/pnversion.php");
+        $modversion = Modules_Util::getVersionMeta($osdir, "$modpath/$osdir/pnversion.php");
         $version = $modversion['version'];
 
         // Update state of module
@@ -1600,33 +1600,4 @@ class Modules_Api_Admin extends Zikula_Api
 
     }
 
-    /**
-     * Get version metadata for a module.
-     *
-     * @param string $moduleName        Module Name.
-     * @param string $legacyVersionPath Path to legacy version file (default empty).
-     *
-     * @return Zikula_Version|array
-     */
-    public static function getVersionMeta($moduleName, $legacyVersionPath = '')
-    {
-        $modversion = array();
-        $class = "{$moduleName}_Version";
-        if (class_exists($class)) {
-            $modversion = new $class();
-            if (!$modversion instanceof Zikula_Version) {
-                LogUtil::registerError(__f('%s is not an instance of Zikula_Version', get_class($modversion)));
-            }
-        } elseif (is_dir("modules/$moduleName/lib") || is_dir("system/$moduleName/lib")) {
-            LogUtil::registerError(__f('Coule not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
-        } else {
-            if (!file_exists($legacyVersionPath)) {
-                LogUtil::registerError(__f('Cannot %1$s for module %2$s', $legacyVersionPath, $dir));
-            } else {
-                include $legacyVersionPath;
-            }
-        }
-
-        return $modversion;
-    }
 }
