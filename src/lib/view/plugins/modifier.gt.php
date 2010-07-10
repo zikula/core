@@ -18,29 +18,18 @@
  *
  * Example
  *
- *   {$var|gt:$renderObject}
+ *   {$var|gt:$zikula_view}
  *
- * @param string   $string  The contents to transform.
- * @param Zikula_View &$view This Zikula_View object (available as $renderObject in templates).
+ * @param string      $string The contents to transform.
+ * @param Zikula_View $view   This Zikula_View object (available as $renderObject in templates).
  *
  * @return string The modified output.
  */
 function smarty_modifier_gt($string, &$view)
 {
-    if (!is_object($view)) {
-        return __('Error! With modifier_gt, you must use the following form for the gettext modifier (\'gt\'): $var|gt:$renderObject.');
+    if (!$view instanceof Zikula_View) {
+        return __('Error! With modifier_gt, you must use the following form for the gettext modifier (\'gt\'): $var|gt:$zikula_view');
     }
 
-    // the check order here is important because:
-    // if we are calling from a theme both $view->themeDomain and $view->renderDomain are set.
-    // if the call was from a template only $view->renderDomain is set.
-    if (isset($view->renderDomain) && !isset($view->themeDomain)) {
-        $domain = $view->renderDomain;
-    } elseif (isset($view->themeDomain)) {
-        $domain = $view->themeDomain;
-    } else {
-        $domain = 'zikula'; // default domain
-    }
-
-    return __($string, $domain);
+    return __($string, $view->getDomain());
 }
