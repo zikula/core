@@ -618,23 +618,101 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $sort = 'ids_date DESC';
+        // get input values
+        $confirmed = (int)FormUtil::getPassedValue('confirmed', (isset($args['confirmed']) ? $args['confirmed'] : 0), 'POST');
 
-        // instantiate object, generate where clause and select
-        $class = 'SecurityCenter_DBObject_IntrusionArray';
-        $objArray = new $class();
+        if ($confirmed == 1) {
 
-        $data  = $objArray->get('', $sort);
+            // export the titles ?
+            $exportTitles = FormUtil::getPassedValue('exportTitles', (isset($args['exportTitles']) ? $args['exportTitles'] : null), 'POST');
+            $exportTitles = (!isset($exportTitles) || $exportTitles !== '1') ? false : true;
+
+            // name of the exported file
+            $exportFile = FormUtil::getPassedValue('exportFile', (isset($args['exportFile']) ? $args['exportFile'] : null), 'POST');
+            if (!isset($exportFile) || $exportFile == '') {
+                $exportFile = 'idslog.csv';
+            }
+            if (!strrpos($exportFile, '.csv')) {
+                $exportFile .= '.csv';
+            }
+
+            // delimeter
+            $delimiter = FormUtil::getPassedValue('delimiter', (isset($args['delimiter']) ? $args['delimiter'] : null), 'POST');
+            if (!isset($delimiter) || $delimiter == '') {
+                $delimiter = 1;
+            }
+            switch ($delimiter) {
+                case 1:
+                    $delimiter = ",";
+                    break;
+                case 2:
+                    $delimiter = ";";
+                    break;
+                case 3:
+                    $delimiter = ":";
+                    break;
+                case 4:
+                    $delimiter = chr(9);
+            }
+
+            // titles
+            $titles = array(
+                $this->__('Name'),
+                $this->__('Tag'),
+                $this->__('Value'),
+                $this->__('Page'),
+                $this->__('User Name'),
+                $this->__('IP'),
+                $this->__('Impact'),
+                $this->__('PHPIDS filters used'),
+                $this->__('Date')
+            );
+
+            // actual data
+            $sort = 'ids_date DESC';
+            $class = 'SecurityCenter_DBObject_IntrusionArray';
+            $objArray = new $class();
+            $objData  = $objArray->get('', $sort);
+
+            $data = array();
+
+            foreach($objData as $key => $idsdata) {
+                $objData[$key]['filters'] = unserialize($objData[$key]['filters']);
+
+                $filtersused = '';
+                foreach($objData[$key]['filters'] as $filter) {
+                    $filtersused .= $filter['id']." ".$filter['description'].", ";
+                }
+                
+                $datarow = array(
+                    $objData[$key]['name'],
+                    $objData[$key]['tag'],
+                    $objData[$key]['value'],
+                    $objData[$key]['page'],
+                    $objData[$key]['username'],
+                    $objData[$key]['ip'],
+                    $objData[$key]['impact'],
+                    $filtersused,
+                    $objData[$key]['date']
+                );
+
+                array_push($data, $datarow);
+            }
+
+            // export the csv file
+            ModUtil::apiFunc('SecurityCenter', 'admin', 'exportCSV',
+                                   array('exportTitles'  => $exportTitles,
+                                         'exportFile'    => $exportFile,
+                                         'delimiter'     => $delimiter,
+                                         'titles'        => $titles,
+                                         'data'          => $data));
+        }
 
         // Create output object
         $this->view->setCaching(false);
 
-        $this->view->assign('objectArray', $data);
-
         // fetch output from template
-        $output = $this->view->fetch('securitycenter_admin_exportidslog.tpl');
-
-        return $output;
+        return $this->view->fetch('securitycenter_admin_exportidslog.tpl');
     }
 
     /**
@@ -644,17 +722,34 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
     public function purgeidslog()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
-        // Create output object
-        $this->view->setCaching(false);
+        $confirmation = FormUtil::getPassedValue('confirmation');
 
-        // fetch output from template
-        $output = $this->view->fetch('securitycenter_admin_purgeidslog.tpl');
+        // Check for confirmation
+        if (empty($confirmation)) {
+            // No confirmation yet - get one
+            $this->view->setCaching(false);
 
-        return $output;
+            // Return the output that has been generated by this function
+            return $this->view->fetch('securitycenter_admin_purgeidslog.tpl');
+        }
+
+        $redirect_url = ModUtil::url('SecurityCenter','admin','viewidslog');
+
+        // Confirm authorisation code
+        if (!SecurityUtil::confirmAuthKey()) {
+            return LogUtil::registerAuthidError($redirect_url);
+        }
+
+        // delete all entries
+        if (ModUtil::apiFunc('SecurityCenter', 'admin', 'purgeidslog')) {
+            LogUtil::registerStatus($this->__('Done! Purged IDS Log.'));
+        }
+
+        return System::redirect($redirect_url);
     }
 
     /**

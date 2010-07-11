@@ -4,8 +4,8 @@
     {gt text="All" assign=lblAll}
     <h2>{gt text="View IDS Log"}</h2>
     <ul class="z-menulinks">
-        <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}">{gt text="Export log to csv"}</a></li>
-        <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}">{gt text="Purge the log"}</a></li>
+        <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}">{gt text="Export IDS Log"}</a></li>
+        <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}">{gt text="Purge IDS Log"}</a></li>
     </ul>
     <form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
@@ -40,7 +40,7 @@
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="username"}">{gt text="User Name"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
-                <th>{gt text="PHPIDS Filters used"}</th>
+                <th>{gt text="PHPIDS filters used"}</th>
                 <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date DESC"}">{gt text="Date"}</a></th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>

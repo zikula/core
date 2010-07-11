@@ -1,41 +1,37 @@
 {include file="securitycenter_admin_menu.tpl"}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="Export IDS Log"}</div>
+    <div class="z-adminpageicon">{img modname=core src=db_update.gif set=icons/large __alt="Export IDS Log"}</div>
     
     <h2>{gt text="Export IDS Log"}</h2>
 
-    TO-DO
-    
-    <table class="z-admintable">
-        <thead>
-            <tr>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="tag"}">{gt text="Tag"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="value"}">{gt text="Value"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="page"}">{gt text="Page"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="username"}">{gt text="User Name"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="ip"}">{gt text="IP"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
-                <th><a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date DESC"}">{gt text="Date"}</a></th>
-            </tr>
-        </thead>
-        <tbody>
-            {secgenauthkey module="SecurityCenter" assign="authkey"}
-            {foreach from=$objectArray item=event}
-            <tr class="{cycle values="z-odd,z-even"}">
-                <td>{$event.name|safetext}</td>
-                <td>{$event.tag|safetext}</td>
-                <td>{$event.value|htmlentities}</td>
-                <td>{$event.page|safetext}</td>
-                <td>{$event.username|safetext}</td>
-                <td>{$event.ip|safetext}</td>
-                <td>{$event.impact|safetext}</td>
-                <td>{$event.date|safetext}</td>
-            </tr>
-            {foreachelse}
-            <tr class="z-admintableempty"><td colspan="9">{gt text="No logged intrusions found."}</td></tr>
-            {/foreach}
-        </tbody>
-    </table>
+    <form class="z-form" action="{modurl modname='SecurityCenter' type='admin' func='exportidslog'}" method="post" enctype="multipart/form-data">
+        <div>
+            <input type="hidden" name="confirmed" value="1" />
+            <fieldset>
+                <legend>{gt text="Export Options"}</legend>
+                <div class="z-formrow">
+                    <label for="securitycenter_export_titles">{gt text="Export Title Row"}</label>
+                    <input id="securitycenter_export_titles" type="checkbox" name="exportTitles" value="1" checked="checked" />
+                </div>
+                <div class="z-formrow">
+                    <label for="securitycenter_export_file">{gt text="CSV filename"}</label>
+                    <input id="securitycenter_export_file" type="text" name="exportFile" size="30" />
+                </div>
+                <div class="z-formrow">
+                    <label for="securitycenter_export_delimiter">{gt text="CSV delimiter"}</label>
+                    <select id="securitycenter_export_delimiter" name="delimiter">
+                        <option value="1">{gt text="Comma"} (,)</option>
+                        <option value="2">{gt text="Semicolon"} (;)</option>
+                        <option value="3">{gt text="Colon"} (:)</option>
+                        <option value="4">{gt text="Tab"}</option>
+                    </select>
+                </div>
+            </fieldset>
+            <div class="z-formbuttons z-buttons">
+                {button src='button_ok.gif' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
+                <a href="{modurl modname='SecurityCenter' type='admin' func='viewidslog'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            </div>
+        </div>
+    </form>
     
 </div>
