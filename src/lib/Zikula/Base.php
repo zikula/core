@@ -757,13 +757,13 @@ abstract class Zikula_Base
      * @param string $key        The field to return.
      * @param mixed  $default    The value to return if the requested field is not found (optional) (default=false).
      * @param string $source     The source field to get a parameter from.
-     * @param string $filter     The filter directive to apply.
+     * @param string $filter     The filter directive to apply, default FILTER_SANITIZE_STRING.
      * @param array  $args       The filter processing args to apply.
      * @param string $objectType The object access path we're getting; used to assign validation errors .
      *
      * @return mixed The requested input key or the specified default.
      */
-    public function getInput($key, $default = null, $source = null, $filter = null, array $args = array(), $objectType=null)
+    public function getInput($key, $default = null, $source = null, $filter = FILTER_SANITIZE_STRING, array $args = array(), $objectType=null)
     {
         return FormUtil::getPassedValue($key, $args, $source, $filter, $args, $objectType);
     }

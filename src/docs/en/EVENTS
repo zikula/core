@@ -118,6 +118,9 @@ theme.init
     Occurs just before Theme#__construct() exits.  Subject is $this, args are 
     array('theme' => $theme, 'usefilters' => $usefilters, 'themeinfo' => $themeinfo)
 
+theme.load_config
+   Runs just before Theme#_load_config() completed.  Subject is the Theme instance.
+
 theme.prefooter
     Occurs in Theme::themefooter() just after getting the $maincontent.  The
     event subject is $this (Theme instance) and has event data which you can modify

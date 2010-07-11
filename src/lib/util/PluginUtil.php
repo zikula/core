@@ -468,7 +468,11 @@ class PluginUtil
     public static function getServiceId($className)
     {
         $p = explode('_', $className);
-        $className = "{$p[0]}_{$p[1]}";
+        if (count($p) == 3) {
+            $className = "{$p[0]}_{$p[1]}";
+        } elseif (count($p) == 4) {
+            $className = "{$p[0]}_{$p[1]}_{$p[2]}";
+        }
         return strtolower(str_replace('_', '.', $className));
     }
 }

@@ -1123,7 +1123,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         // generate an auth key to use in urls
         $authid = SecurityUtil::generateAuthKey();
         $plugins = array();
-        $pluginClasses = $systemplugins? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
+        $pluginClasses = ($systemplugins) ? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
 
         foreach ($pluginClasses as $className) {
             $instance = PluginUtil::loadPlugin($className);
@@ -1160,12 +1160,14 @@ class Modules_Controller_Admin extends Zikula_Controller
                 case PluginUtil::ENABLED:
                     $status = $this->__('Active');
                     $statusimage = 'greenled.gif';
-
-                    $actions[] = array('url' => ModUtil::url('Modules', 'plugin', 'dispatch',
-                                                    array('_name' => $instance->getPluginName(),
-                                                          '_type'  => ($systemplugins) ? 'system' : 'module',
-                                                          '_action' => 'configure')
-                                                ),
+                    $pluginLink = array();
+                    if (!$systemplugins) {
+                        $pluginLink['_module'] = $instance->getModuleName();
+                    }
+                    $pluginLink['_plugin'] = $instance->getPluginName();
+                    $pluginLink['_action'] = 'configure';
+                    
+                    $actions[] = array('url' => ModUtil::url('Modules', 'adminplugin', 'dispatch', $pluginLink),
                                        'image' => 'configure.gif',
                                        'title' => $this->__('Configure plugin'));
 

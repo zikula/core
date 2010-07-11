@@ -160,7 +160,12 @@ Sometimes is it necessary to provide a configuration screen for plugins.  This a
 will be available when clicking the settings icon in the list of plugins available at
 Admin -> Modules -> Module Plugins/System Plugins.
 
-You will need to create a controller an place in the plugins lib/$PluginName/Controller.php
+Firstly, in order to make your plugin configurable, you must implement the
+Zikula_Plugin_Configurable interface which will requires one method called
+getConfigurationController() which should return an instance of the controller
+there is an example in the DocBlock of the interface.
+
+Next create a controller an place in the plugins lib/$PluginName/Controller.php
 
     class SystemPlugin_Example_Controller extends Zikula_Plugin_Controller
 
@@ -178,4 +183,12 @@ The method that will be is 'configure()':
         }
     }
 
+There is no need for a security check here because this is only accessible from inside the
+administration interface in the first place.
+
+If you need multiple administration screens this can be accomplished by creating links:
+For System Plugins:
+ ?module=Modules&type=adminplugin&func=dispatch&_plugin=<PLUGINNAME>&_action=<ACTIONNAME>
+For Module Plugins:
+ ?module=Modules&type=adminplugin&func=dispatch&_module=<MODULENAME>&_plugin=<PLUGINNAME>&_action=<ACTIONNAME>
 

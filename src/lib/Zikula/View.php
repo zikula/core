@@ -452,7 +452,7 @@ class Zikula_View extends Smarty
      */
     public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
-        return PluginRender::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
+        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
     }
 
     /**
@@ -468,7 +468,7 @@ class Zikula_View extends Smarty
     public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
         $modName = 'zikula';
-        return PluginRender::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
+        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id, $add_core_data);
     }
 
     /**

@@ -15,7 +15,7 @@
 /**
  * Modules_Plugin controller.
  */
-class Modules_Controller_Plugin extends Zikula_Controller
+class Modules_Controller_AdminPlugin extends Zikula_Controller
 {
     /**
      * Plugin instance.
@@ -32,16 +32,6 @@ class Modules_Controller_Plugin extends Zikula_Controller
     protected $pluginController;
 
     /**
-     * Default action.
-     *
-     * @return mixed
-     */
-    public function main()
-    {
-        return $this->dispatch();
-    }
-
-    /**
      * Dispatch a module view request.
      *
      * @return mixed
@@ -53,35 +43,35 @@ class Modules_Controller_Plugin extends Zikula_Controller
         }
 
         // Get input.
-        $pluginName = $this->getInput('_name', null, 'GET');
-        $type = $this->getInput('_type', null, 'GET');
-        $action = $this->getInput('_action', null, 'GET');
+        $moduleName = $this->getInput('_module', null, 'GET', FILTER_SANITIZE_STRING);
+        $pluginName = $this->getInput('_plugin', null, 'GET', FILTER_SANITIZE_STRING);
+        $action = $this->getInput('_action', null, 'GET', FILTER_SANITIZE_STRING);
 
         // Load plugins.
-        if ($type == 'system') {
+        if (!$moduleName) {
             $type = 'SystemPlugin';
             PluginUtil::loadAllSystemPlugins();
-        } else if ($type == 'module') {
+        } else {
             $type = 'ModulePlugin';
             PluginUtil::loadAllModulePlugins();
-        } else {
-            $this->throwNotFound($this->__('Invalid plugin type'));
         }
-
-        $serviceId = PluginUtil::getServiceId("${type}_${pluginName}_Plugin");
+        
+        if ($moduleName) {
+            $serviceId = PluginUtil::getServiceId("{$type}_{$moduleName}_{$pluginName}_Plugin");
+        } else {
+            $serviceId = PluginUtil::getServiceId("{$type}_{$pluginName}_Plugin");
+        }
+        
         $this->throwNotFoundUnless($this->serviceManager->hasService($serviceId));
 
         $this->plugin = $this->serviceManager->getService($serviceId);
 
         // Sanity checks.
-        $this->registerErrorUnless($this->plugin->isInstalled(), __f('Plugin "%s" is not installed', $this->plugin->getMetaDisplayName()));
+        $this->throwNotFoundUnless($this->plugin->isInstalled(), __f('Plugin "%s" is not installed', $this->plugin->getMetaDisplayName()));
+        $this->throwForbiddenUnless($this->plugin instanceof Zikula_Plugin_Configurable, __f('Plugin "%s" is not configurable', $this->plugin->getMetaDisplayName()));
 
-        $this->pluginController = $this->plugin->getController();
+        $this->pluginController = $this->plugin->getConfigurationController();
         $this->throwNotFoundUnless($this->pluginController->getReflection()->hasMethod($action));
-        //$this->view->assign('plugin_content', $this->pluginController->$action());
-        //array_push($this->view->plugins_dir, 'system/Admin/templates/plugins');
-        //$this->view->load_filter('output', 'admintitle');
-        //return $this->view->fetch('modules_plugin_dispatchcontroller.tpl');
 
         return $this->pluginController->$action();
     }

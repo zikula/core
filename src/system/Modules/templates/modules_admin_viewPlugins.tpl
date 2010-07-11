@@ -61,8 +61,10 @@
                         {$plugin.instance->getModuleName()|safetext}
                     </td>
                 {/if}
-                <td>{if $plugin.instance->isConfigurable()}
-                        <a href="{modurl modname="Modules" type="plugin" func="dispatch" _type=$_type _name=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                <td>{if $plugin.instance instanceof Zikula_Plugin_Configurable and $plugin.instance->isInstalled() and $_type eq 'system'}
+                        <a href="{modurl modname="Modules" type="adminplugin" func="dispatch" _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                    {elseif $plugin.instance instanceof Zikula_Plugin_Configurable and $plugin.instance->isInstalled() and $_type eq 'module'}
+                        <a href="{modurl modname="Modules" type="adminplugin" func="dispatch" _module=$plugin.instance->getModuleName() _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
                     {else}
                         {$plugin.instance->getPluginName()|safetext}
                     {/if}

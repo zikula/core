@@ -697,13 +697,13 @@ class Zikula_Theme extends Zikula_View
         // set vars based on the module structures
         $this->type = !empty($type) ? $type : 'user';
         $this->func = !empty($func) ? $func : 'main';
-        $this->home = (empty($module) && empty($name)) ? true : false;
+        $this->home = (empty($module)) ? true : false;
 
         // identify and assign the page type
         $this->pagetype = 'module';
         if ((stristr($_SERVER['PHP_SELF'], 'admin.php') || strtolower($this->type) == 'admin')) {
             $this->pagetype = 'admin';
-        } else if (empty($name) && empty($module)) {
+        } else if (empty($module)) {
             $this->pagetype = 'home';
         }
         $this->assign('pagetype', $this->pagetype);
@@ -767,7 +767,7 @@ class Zikula_Theme extends Zikula_View
             $queryparts = explode('&', $this->qstring);
             $customargs = '';
             foreach ($queryparts as $querypart) {
-                if (!stristr($querypart, 'module=') && !stristr($querypart, 'name=') && !stristr($querypart, 'type=') && !stristr($querypart, 'func=') && !stristr($querypart, 'theme=') && !stristr($querypart, 'authid=')) {
+                if (!stristr($querypart, 'module=') && !stristr($querypart, 'type=') && !stristr($querypart, 'func=') && !stristr($querypart, 'theme=') && !stristr($querypart, 'authid=')) {
                     $customargs .= '/' . $querypart;
                 }
             }
@@ -775,11 +775,11 @@ class Zikula_Theme extends Zikula_View
 
         // identify and load the correct module configuration
         $this->cachepage = true;
-        if (stristr($_SERVER['PHP_SELF'], 'user') && isset($pageconfigurations['*user'])) {
+        if ($this->type == 'user' && isset($pageconfigurations['*user'])) {
             $file = $pageconfigurations['*user']['file'];
-        } else if (!stristr($_SERVER['PHP_SELF'], 'user') && !stristr($_SERVER['PHP_SELF'], 'admin.php') && $this->home && isset($pageconfigurations['*home'])) {
+        } else if ($this->home && isset($pageconfigurations['*home'])) {
             $file = $pageconfigurations['*home']['file'];
-        } else if (stristr($_SERVER['PHP_SELF'], 'admin.php') && isset($pageconfigurations['*admin'])) {
+        } else if (($this->type == 'admin' || $this->type == 'adminplugin') && isset($pageconfigurations['*admin'])) {
             $this->cachepage = false;
             $file = $pageconfigurations['*admin']['file'];
         } else {
@@ -847,6 +847,9 @@ class Zikula_Theme extends Zikula_View
             $inifile = $this->themepath . '/templates/config/themepalettes.ini';
             $this->load_vars($inifile, $this->themeconfig['palette'], 'palette');
         }
+
+        $event = new Zikula_Event('theme.load_config', $this);
+        $this->eventManager->notify($event);
 
         // assign the palette
         $this->assign('palette', isset($this->themeconfig['palette']) ? $this->themeconfig['palette'] : null);
