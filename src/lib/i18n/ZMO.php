@@ -165,6 +165,43 @@ class ZMO
         $this->encoding = ini_get('mbstring.internal_encoding');
     }
 
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    public function getOriginals()
+    {
+        return $this->originals;
+    }
+
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    public function getPluralheader()
+    {
+        return $this->pluralheader;
+    }
+
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    public function getCache_translations()
+    {
+        return $this->cache_translations;
+    }
+
+    public function getEncoding()
+    {
+        return $this->encoding;
+    }
+
+
+
     /**
      * Set encoding.
      *
@@ -197,7 +234,6 @@ class ZMO
     /**
      * Reads a 32bit Integer from the Stream.
      *
-     * @access private
      * @return Integer from the Stream
      */
     private function readint()
@@ -236,7 +272,6 @@ class ZMO
      * If caching is enabled, also loads all strings into a cache
      * to speed up translation lookups.
      *
-     * @access private
      * @return void
      */
     private function load_tables()
@@ -269,7 +304,6 @@ class ZMO
      *
      * @param integer $num Offset number of original string.
      *
-     * @access private
      * @return string Requested string if found, otherwise ''.
      */
     private function get_original_string($num)
@@ -289,7 +323,6 @@ class ZMO
      *
      * @param integer $num Offset number of original string.
      *
-     * @access private
      * @return string Requested string if found, otherwise ''.
      */
     private function get_translation_string($num)
@@ -312,7 +345,6 @@ class ZMO
      * @param integer $start  Internally used in recursive function.
      * @param integer $end    Internally used in recursive function.
      *
-     * @access private
      * @return integer String number (offset in originals table).
      */
     private function find_string($string, $start = -1, $end = -1)
@@ -355,7 +387,6 @@ class ZMO
      *
      * @param string $string Strint to be translated.
      *
-     * @access public
      * @return string Translated string (or original, if not found).
      */
     public function translate($string)
@@ -386,7 +417,6 @@ class ZMO
     /**
      * Get possible plural forms from MO header.
      *
-     * @access private
      * @return string plural form header.
      */
     private function get_plural_forms()
@@ -417,7 +447,6 @@ class ZMO
      *
      * @param integer $n Count.
      *
-     * @access private
      * @return integer Array index of the right plural form.
      */
     private function select_string($n)
@@ -430,7 +459,7 @@ class ZMO
         $total = 0;
         $plural = 0;
 
-        eval("$string");
+        eval($string);
         if ($plural >= $total) {
             $plural = $total - 1;
         }
@@ -444,7 +473,6 @@ class ZMO
      * @param string $plural Plural.
      * @param string $number Number.
      *
-     * @access public
      * @return string Translated plural form.
      */
     public function ngettext($single, $plural, $number)

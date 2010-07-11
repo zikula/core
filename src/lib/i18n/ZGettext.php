@@ -159,7 +159,7 @@ class ZGettext
     public function bindTextDomainCodeset($domain, $codeset = null)
     {
         $codeset = ini_get('mbstring.internal_encoding');
-        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain]['codeset'] = $codeset;
+        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain][$domain]['codeset'] = $codeset;
     }
 
 
@@ -185,7 +185,7 @@ class ZGettext
      *
      * @return ZMO Reader object.
      */
-    public static function &getReader($domain = null, $category = null, $cache = true)
+    public static function getReader($domain = null, $category = null, $cache = true)
     {
         $_this = self::getInstance();
         $domain = (isset($domain) ? $domain : $_this->defaultDomain);
