@@ -329,10 +329,6 @@ class Modules_Api_Admin extends Zikula_Api
             case ModUtil::STATE_INACTIVE:
                 break;
             case ModUtil::STATE_ACTIVE:
-                // allow new style modules to transition ditectly from upgraded to active state
-                if (($oldstate == ModUtil::STATE_UNINITIALISED) || ($oldstate == ModUtil::STATE_MISSING)) {
-                    return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
-                }
                 break;
             case ModUtil::STATE_MISSING:
                 break;
@@ -341,7 +337,6 @@ class Modules_Api_Admin extends Zikula_Api
                     return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                 }
                 break;
-
         }
 
         $obj = array('id' => $args['id'], 'state' => $args['state']);
