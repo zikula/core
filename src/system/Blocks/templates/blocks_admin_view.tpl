@@ -51,6 +51,10 @@
                 {/php}
         <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Title"}</a></th>
                 {php}
+                  $this->_tpl_vars['filter']['sort'] = 'description';
+                {/php}
+        <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Description"}</a></th>
+                {php}
                   $this->_tpl_vars['filter']['sort'] = 'module_name';
                 {/php}
         <th><a href="{modurl modname="Blocks" type="admin" func="view" filter=$filter}">{gt text="Module"}</a></th>
@@ -75,6 +79,7 @@
             <tr class="{cycle values="z-odd,z-even" name=blocks}">
                 <td>{$block.bid|safetext}</td>
                 <td>{$block.title|safetext}</td>
+                <td>{$block.description|safetext}</td>
                 <td>{$block.modname|safetext}</td>
                 <td>{$block.bkey|safetext}</td>
                 <td>{$block.positions|safetext}</td>

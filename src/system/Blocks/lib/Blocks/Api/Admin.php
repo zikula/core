@@ -17,6 +17,7 @@ class Blocks_Api_Admin extends Zikula_Api
      * @author Robert Gasch
      * @param int $args ['bid'] the ID of the block to update
      * @param string $args ['title'] the new title of the block
+     * @param string $args ['description'] the new description of the block
      * @param string $args ['positions'] the new positions of the block
      * @param string $args ['url'] the new URL of the block
      * @param string $args ['language'] the new language of the block
@@ -35,12 +36,13 @@ class Blocks_Api_Admin extends Zikula_Api
 
         // Argument check
         if (!isset($args['bid'])          ||
-                !is_numeric($args['bid'])     ||
-                !isset($args['content'])      ||
-                !isset($args['title'])        ||
-                !isset($args['language'])     ||
-                !isset($args['collapsable'])  ||
-                !isset($args['defaultstate'])) {
+            !is_numeric($args['bid'])     ||
+            !isset($args['content'])      ||
+            !isset($args['title'])        ||
+            !isset($args['description'])  ||
+            !isset($args['language'])     ||
+            !isset($args['collapsable'])  ||
+            !isset($args['defaultstate'])) {
             return LogUtil::registerArgsError();
         }
 
@@ -53,15 +55,18 @@ class Blocks_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        $item = array('bid' => isset($args['bid']) ? $args['bid'] : $block['bid'],
-                'content' => isset($args['content']) ? $args['content'] : $block['content'],
-                'title' => isset($args['title']) ? $args['title'] : $block['title'],
-                'filter' => isset($args['filter']) ? serialize($args['filter']) : $block['filter'],
-                'url' => isset($args['url']) ? $args['url'] : $block['url'],
-                'refresh' => isset($args['refresh']) ? $args['refresh'] : $block['refresh'],
-                'language' => isset($args['language']) ? $args['language'] : $block['language'],
-                'collapsable' => isset($args['collapsable']) ? $args['collapsable'] : $block['collapsable'],
-                'defaultstate' => isset($args['defaultstate']) ? $args['defaultstate'] : $block['defaultstate']);
+        $item = array(
+            'bid' => isset($args['bid']) ? $args['bid'] : $block['bid'],
+            'content' => isset($args['content']) ? $args['content'] : $block['content'],
+            'title' => isset($args['title']) ? $args['title'] : $block['title'],
+            'description' => isset($args['description']) ? $args['description'] : $block['description'],
+            'filter' => isset($args['filter']) ? serialize($args['filter']) : $block['filter'],
+            'url' => isset($args['url']) ? $args['url'] : $block['url'],
+            'refresh' => isset($args['refresh']) ? $args['refresh'] : $block['refresh'],
+            'language' => isset($args['language']) ? $args['language'] : $block['language'],
+            'collapsable' => isset($args['collapsable']) ? $args['collapsable'] : $block['collapsable'],
+            'defaultstate' => isset($args['defaultstate']) ? $args['defaultstate'] : $block['defaultstate']
+        );
 
         $res = DBUtil::updateObject ($item, 'blocks', '', 'bid');
         if (!$res) {
@@ -114,6 +119,7 @@ class Blocks_Api_Admin extends Zikula_Api
      * @author Jim McDonald
      * @author Robert Gasch
      * @param string $block ['title'] the title of the block
+     * @param string $block ['description'] the description of the block
      * @param int $block ['mid'] the module ID of the block
      * @param string $block ['language'] the language of the block
      * @param int $block ['bkey'] the key of the block
@@ -123,11 +129,12 @@ class Blocks_Api_Admin extends Zikula_Api
     {
         // Argument check
         if ((!isset($args['title']))        ||
-                (!isset($args['mid']))          ||
-                (!isset($args['language']))     ||
-                (!isset($args['collapsable']))  ||
-                (!isset($args['defaultstate'])) ||
-                (!isset($args['bkey']))) {
+            (!isset($args['description']))  ||
+            (!isset($args['mid']))          ||
+            (!isset($args['language']))     ||
+            (!isset($args['collapsable']))  ||
+            (!isset($args['defaultstate'])) ||
+            (!isset($args['bkey']))) {
             return LogUtil::registerArgsError();
         }
 
@@ -141,9 +148,16 @@ class Blocks_Api_Admin extends Zikula_Api
             $args['content'] = '';
         }
 
-        $block = array('title' => $args['title'], 'language' => $args['language'], 'collapsable' => $args['collapsable'],
-                'mid' => $args['mid'], 'defaultstate' => $args['defaultstate'], 'bkey' => $args['bkey'],
-                'content' => $args['content']);
+        $block = array(
+            'title' => $args['title'],
+            'description' => $args['description'],
+            'language' => $args['language'],
+            'collapsable' => $args['collapsable'],
+            'mid' => $args['mid'],
+            'defaultstate' => $args['defaultstate'],
+            'bkey' => $args['bkey'],
+            'content' => $args['content']
+        );
 
         $block['url']         = '';
         $block['filter']      = '';
@@ -151,6 +165,7 @@ class Blocks_Api_Admin extends Zikula_Api
         $block['refresh']     = 3600;
         $block['last_update'] = DateUtil::getDatetime();
         $block['active']      = 1;
+        
         $res = DBUtil::insertObject ($block, 'blocks', 'bid');
 
         if (!$res) {

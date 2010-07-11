@@ -20,6 +20,10 @@
                     <input id="blocks_title" name="title" type="text" size="40" maxlength="255" value="{$title|safetext}" />
                 </div>
                 <div class="z-formrow">
+                    <label for="blocks_description">{gt text="Description"}</label>
+                    <input id="blocks_description" name="description" type="text" size="40" maxlength="255" value="{$description|safetext}" />
+                </div>
+                <div class="z-formrow">
                     <label for="blocks_language">{gt text="Language"}</label>
                     {html_select_locales id=blocks_language name=language selected=$language installed=true all=true}
                 </div>

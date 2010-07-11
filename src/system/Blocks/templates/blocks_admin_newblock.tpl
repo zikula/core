@@ -13,6 +13,10 @@
                     <input id="blocks_title" name="title" type="text" size="40" maxlength="255" />
                 </div>
                 <div class="z-formrow">
+                    <label for="blocks_description">{gt text="Description"}</label>
+                    <input id="blocks_description" name="description" type="text" size="40" maxlength="255" />
+                </div>
+                <div class="z-formrow">
                     <label for="blocks_blockid">{gt text="Block"}</label>
                     <select id="blocks_blockid" name="blockid">
                         {html_options options=$blockids}

@@ -359,6 +359,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
      * @see blocks_admin_modify()
      * @param int $bid block id to update
      * @param string $title the new title of the block
+     * @param string $description the new description of the block
      * @param array $positions the new position(s) of the block
      * @param array $modules the modules to display the block on
      * @param string $url the new URL of the block
@@ -371,6 +372,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // Get parameters
         $bid           = FormUtil::getPassedValue('bid');
         $title         = FormUtil::getPassedValue('title');
+        $description   = FormUtil::getPassedValue('description');
         $language      = FormUtil::getPassedValue('language');
         $collapsable   = FormUtil::getPassedValue('collapsable', 0);
         $defaultstate  = FormUtil::getPassedValue('defaultstate', 1);
@@ -379,9 +381,11 @@ class Blocks_Controller_Admin extends Zikula_Controller
         $positions     = FormUtil::getPassedValue('positions');
         $filter        = FormUtil::getPassedValue('filter', array());
         $returntoblock = FormUtil::getPassedValue('returntoblock');
+
         // not stored in a block
         $redirect      = FormUtil::getPassedValue('redirect', null);
         $cancel        = FormUtil::getPassedValue('cancel', null);
+
         if (isset($cancel)) {
             if (isset($redirect) && !empty($redirect)) {
                 return System::redirect(urldecode($redirect));
@@ -403,6 +407,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
         // Get and update block info
         $blockinfo = BlockUtil::getBlockInfo($bid);
         $blockinfo['title'] = $title;
+        $blockinfo['description'] = $description;
         $blockinfo['bid'] = $bid;
         $blockinfo['language'] = $language;
         $blockinfo['collapsable'] = $collapsable;
@@ -501,6 +506,7 @@ class Blocks_Controller_Admin extends Zikula_Controller
      * @author Jim McDonald
      * @see blocks_admin_new()
      * @param string $title the new title of the block
+     * @param string $description the new description of the block
      * @param int $blockid block id to create
      * @param string $language the language to assign to the block
      * @param string $position the position of the block
@@ -510,11 +516,12 @@ class Blocks_Controller_Admin extends Zikula_Controller
     {
         // Get parameters
         $title        = FormUtil::getPassedValue('title');
+        $description  = FormUtil::getPassedValue('description');
         $blockid      = FormUtil::getPassedValue('blockid');
         $language     = FormUtil::getPassedValue('language');
-        $collapsable   = FormUtil::getPassedValue('collapsable', 0);
-        $defaultstate  = FormUtil::getPassedValue('defaultstate', 1);
-        $positions     = FormUtil::getPassedValue('positions');
+        $collapsable  = FormUtil::getPassedValue('collapsable', 0);
+        $defaultstate = FormUtil::getPassedValue('defaultstate', 1);
+        $positions    = FormUtil::getPassedValue('positions');
 
         list($mid, $bkey) = explode(':', $blockid);
 
@@ -528,13 +535,16 @@ class Blocks_Controller_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Blocks','admin','view'));
         }
 
-        $blockinfo = array('bkey'         => $bkey,
-                'title'        => $title,
-                'positions'    => $positions,
-                'mid'          => $mid,
-                'language'     => $language,
-                'collapsable'  => $collapsable,
-                'defaultstate' => $defaultstate);
+        $blockinfo = array(
+            'bkey'         => $bkey,
+            'title'        => $title,
+            'description'  => $description,
+            'positions'    => $positions,
+            'mid'          => $mid,
+            'language'     => $language,
+            'collapsable'  => $collapsable,
+            'defaultstate' => $defaultstate
+        );
 
         // Pass to API
         $bid = ModUtil::apiFunc('Blocks', 'admin', 'create', $blockinfo);
