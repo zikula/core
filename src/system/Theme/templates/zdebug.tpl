@@ -58,7 +58,7 @@
 	    </td>
 	</tr>
 	{section name=vars loop=$_debug_keys}
-		{if $_debug_keys[vars] neq 'renderObject'}
+		{if $_debug_keys[vars] neq 'zikula_view'}
 		<tr bgcolor="{cycle values='#eeeeee,#fafafa'}">
 		    <td valign="top">
 		        <tt style="color: blue;">{ldelim}${$_debug_keys[vars]}{rdelim}</tt>
