@@ -145,7 +145,7 @@ class ZGettext
     {
         $codeset = ini_get('mbstring.internal_encoding');
 
-        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = array($domain => array('path' => $path.DIRECTORY_SEPARATOR, 'codeset' => $codeset, 'reader' => null));
+        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain] = array('path' => "$path/", 'codeset' => $codeset, 'reader' => null);
     }
 
     /**
@@ -159,7 +159,7 @@ class ZGettext
     public function bindTextDomainCodeset($domain, $codeset = null)
     {
         $codeset = ini_get('mbstring.internal_encoding');
-        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain][$domain]['codeset'] = $codeset;
+        $this->textDomains[$this->getLocale()][$this->getCategory()][$domain]['codeset'] = $codeset;
     }
 
 
@@ -177,7 +177,7 @@ class ZGettext
 
 
     /**
-     * getReader for translation
+     * Get reader for translation
      *
      * @param string   $domain   Domain.
      * @param constant $category A LC_CONSTANT.
@@ -185,13 +185,13 @@ class ZGettext
      *
      * @return ZMO Reader object.
      */
-    public static function getReader($domain = null, $category = null, $cache = true)
+    public static function getReader($domain, $category = null, $cache = true)
     {
         $_this = self::getInstance();
         $domain = (isset($domain) ? $domain : $_this->defaultDomain);
         $category = (isset($category) ? $_this->translateCategory($category) : $_this->getCategory());
         $locale = $_this->getLocale();
-        $textDomain = & $_this->textDomains[$locale][$category][$domain][$domain];
+        $textDomain = & $_this->textDomains[$locale][$category][$domain];
 
         if (!$textDomain['reader']) {
             $path = realpath($textDomain['path']."$locale/$category/$domain.mo");

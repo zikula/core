@@ -53,8 +53,9 @@ class StreamReader_String extends StreamReader_Abstract
     {
         $data = substr($this->_stream, $this->_pos, $bytes);
         $this->_pos += $bytes;
-        if (strlen($this->_stream) < $this->_pos)
+        if (strlen($this->_stream) < $this->_pos) {
             $this->_pos = strlen($this->_stream);
+        }
 
         return $data;
     }
@@ -69,8 +70,9 @@ class StreamReader_String extends StreamReader_Abstract
     public function seekto($pos)
     {
         $this->_pos = $pos;
-        if (strlen($this->_stream) < $this->_pos)
+        if (strlen($this->_stream) < $this->_pos) {
             $this->_pos = strlen($this->_stream);
+        }
         return $this->_pos;
     }
 
