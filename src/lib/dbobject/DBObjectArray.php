@@ -890,17 +890,35 @@ class DBObjectArray
     }
 
     /**
+     * Pre-Process the basic object validation with class specific logic.
+     *
+     * Subclasses can define appropriate implementations.
+     *
+     * @param string $type Controller type.
+     * @param array  $data Data to be used for validation
+     *
+     * @return boolean
+     */
+    public function validatePreProcess($type = 'user', $data = null)
+    {
+        EventUtil::notify(new Zikula_Event('dbobject.validatepreprocess', $this));
+        return true;
+    }
+
+    /**
      * Post-Process the basic object validation with class specific logic.
      *
      * Subclasses can define appropriate implementations.
      *
      * @param string $type Controller type.
+     * @param array  $data Data to be used for validation
      *
      * @return boolean
      */
-    public function validatePostProcess($type = 'user')
+    public function validatePostProcess($type = 'user', $data = null)
     {
         // empty function, should be implemented by child classes.
+        EventUtil::notify(new Zikula_Event('dbobject.validatepostprocess', $this));
         return true;
     }
 
@@ -911,14 +929,28 @@ class DBObjectArray
      */
     public function validate()
     {
-        $res1 = ValidationUtil::validateObjectPlain($this->_objPath, $this->_objData, $this->_objValidation); // FIXME!!!, handle array
-        $res2 = $this->validatePostProcess();
+        if (!$this->_objValidation) {
+            return true;
+        }
 
-        if (!$res1 || !$res2) {
+        if (!$this->_objData) {
             return false;
         }
 
-        return true;
+        $res = $this->validatePreProcess();
+        if ($res) {
+            foreach ($this->_objData as $k=>$v) {
+                $res = $res && ValidationUtil::validateObjectPlain($this->_objPath, $v, $this->_objValidation);
+                if (!$res) {
+                    break;
+                } 
+            } 
+            if ($res) {
+                $res = $res && $this->validatePostProcess();
+            } 
+        } 
+
+        return $res;
     }
 
     /**

@@ -801,10 +801,31 @@ class DBObject
             return false;
         }
 
-        $res1 = ValidationUtil::validateObjectPlain($this->_objPath, $this->_objData, $this->_objValidation);
-        $res2 = $this->validatePostProcess();
+        $res = $this->validatePreProcess();
+        if ($res) {
+            $res = $res && ValidationUtil::validateObjectPlain($this->_objPath, $this->_objData, $this->_objValidation);
+            if ($res) {
+                $res = $res && $this->validatePostProcess();
+            } 
+        } 
 
-        return ($res1 && $res2);
+        return $res;
+    }
+
+    /**
+     * Pre-Process the basic object validation with class specific logic.
+     *
+     * Subclasses can define appropriate implementations.
+     *
+     * @param string $type Controller type.
+     * @param array  $data Data to be used for validation
+     *
+     * @return boolean
+     */
+    public function validatePreProcess($type = 'user', $data = null)
+    {
+        EventUtil::notify(new Zikula_Event('dbobject.validatepreprocess', $this));
+        return true;
     }
 
     /**
@@ -813,12 +834,13 @@ class DBObject
      * Subclasses can define appropriate implementations.
      *
      * @param string $type Controller type.
+     * @param array  $data Data to be used for validation
      *
      * @return boolean
      */
-    public function validatePostProcess($type = 'user')
+    public function validatePostProcess($type = 'user', $data = null)
     {
-        // empty function, should be implemented by child classes
+        EventUtil::notify(new Zikula_Event('dbobject.validatepostprocess', $this));
         return true;
     }
 
