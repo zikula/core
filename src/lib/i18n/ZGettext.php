@@ -185,7 +185,7 @@ class ZGettext
      *
      * @return ZMO Reader object.
      */
-    public static function getReader($domain, $category = null, $cache = true)
+    public static function getReader($domain=null, $category = null, $cache = true)
     {
         $_this = self::getInstance();
         $domain = (isset($domain) ? $domain : $_this->defaultDomain);
