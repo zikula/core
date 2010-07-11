@@ -678,7 +678,7 @@ class DBObjectArray
      */
     public function insertPreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.insertpreprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.insertpreprocess', $this));
         return $this->_objData;
     }
 
@@ -693,7 +693,7 @@ class DBObjectArray
      */
     public function insertPostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.insertpostprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.insertpostprocess', $this));
         return $this->_objData;
     }
 
@@ -732,7 +732,7 @@ class DBObjectArray
      */
     public function updatePreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.updatepreprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.updatepreprocess', $this));
         return $this->_objData;
     }
 
@@ -747,7 +747,7 @@ class DBObjectArray
      */
     public function updatePostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.updatepostprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.updatepostprocess', $this));
         return $this->_objData;
     }
 
@@ -786,7 +786,7 @@ class DBObjectArray
      */
     public function deletePreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.deletepreprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.deletepreprocess', $this));
         return $this->_objData;
     }
 
@@ -801,7 +801,7 @@ class DBObjectArray
      */
     public function deletePostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.deletepostprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.deletepostprocess', $this));
         return $this->_objData;
     }
 
@@ -901,7 +901,7 @@ class DBObjectArray
      */
     public function validatePreProcess($type = 'user', $data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.validatepreprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.validatepreprocess', $this));
         return true;
     }
 
@@ -918,7 +918,7 @@ class DBObjectArray
     public function validatePostProcess($type = 'user', $data = null)
     {
         // empty function, should be implemented by child classes.
-        EventUtil::notify(new Zikula_Event('dbobject.validatepostprocess', $this));
+        EventUtil::notify(new Zikula_Event('dbobjectarray.validatepostprocess', $this));
         return true;
     }
 
