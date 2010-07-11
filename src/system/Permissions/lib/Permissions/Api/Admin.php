@@ -225,15 +225,15 @@ class Permissions_Api_Admin extends Zikula_Api
         if (!SecurityUtil::checkPermission('Permissions::', "group::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
+        
         // Argument check
         // MMaes, 2003-06-20: Insert Capability: added $insseq
         if ((!isset($args['realm'])) ||
-                (!isset($args['id'])) ||
-                (!isset($args['component'])) ||
-                (!isset($args['instance'])) ||
-                (!isset($args['level'])) ||
-                (!isset($args['insseq']))) {
+            (!isset($args['id'])) ||
+            (!isset($args['component'])) ||
+            (!isset($args['instance'])) ||
+            (!isset($args['level'])) ||
+            (!isset($args['insseq']))) {
             return LogUtil::registerArgsError();
         }
 

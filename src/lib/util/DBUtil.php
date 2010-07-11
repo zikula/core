@@ -1756,14 +1756,15 @@ class DBUtil
      * @return mixed The resulting min/max value.
      */
     public static function selectFieldMax($table, $field, $option = 'MAX', $where = '')
-    {
+    {   
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
 
-        $field = isset($columns[$field]) ? $columns[$field] : $field;
-        $sql = "SELECT $option($field) FROM $table AS tbl";
+        $field = isset($fieldName) ? $fieldName : $field;
+        
+        $sql = "SELECT $option($field) FROM $tableName AS tbl";
         $where = self::_checkWhereClause($where);
 
         $sql .= ' ' . $where;
