@@ -1327,7 +1327,7 @@ class UserUtil
         }
 
         // check for an admin theme
-        if (($type == 'admin') && SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
+        if (($type == 'admin' || $type == 'adminplugin') && SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             $admintheme = ModUtil::getVar('Admin', 'admintheme');
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
