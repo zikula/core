@@ -237,6 +237,8 @@ class Zikula_Theme extends Zikula_View
             $this->domain = null;
         }
 
+        EventUtil::attachCustomHandlers("themes/$theme/EventHandlers");
+
         // change some base settings from our parent class
         // template compilation
         $this->compile_dir = CacheUtil::getLocalDir() . '/Theme_compiled';
@@ -458,8 +460,7 @@ class Zikula_Theme extends Zikula_View
         $sm = ServiceUtil::getManager();
 
         if (!$sm->hasService($serviceId)) {
-            $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($theme));
-            $themeInstance = new self($themeinfo['name'], $usefilters);
+            $themeInstance = new self($theme, $usefilters);
             $sm->attachService($serviceId, $themeInstance);
         } else {
             $themeInstance = $sm->getService($serviceId);
