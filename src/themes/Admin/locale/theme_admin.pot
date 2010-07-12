@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-12 19:27+0000\n"
+"POT-Creation-Date: 2010-07-12 21:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,11 +97,43 @@ msgid "Quick n clean"
 msgstr ""
 
 #: templates/includes/routinetab.tpl:3
-msgid "Clear Cache"
+msgid "Compilation"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:11
+#: templates/includes/routinetab.tpl:5
+msgid "Delete compiled theme templates"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:6
+msgid "Delete compiled render templates"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:10
+msgid "Caching"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:12
+msgid "Delete cached theme pages"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:13
+msgid "Delete cached render pages"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:17
+msgid "JS/CSS"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:19
+msgid "Delete combination cache"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:23 templates/includes/routinetab.tpl:26
 msgid "Check Folders"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:25
+msgid "Check Z-Temp"
 msgstr ""
 
 #: templates/includes/helptab.tpl:3
@@ -136,39 +168,39 @@ msgstr ""
 msgid "New module category"
 msgstr ""
 
-#: templates/modules/admin.tpl:35
+#: templates/modules/admin.tpl:34
 msgid "Welcome"
 msgstr ""
 
-#: templates/modules/admin.tpl:37
+#: templates/modules/admin.tpl:40
 msgid "switch Style"
 msgstr ""
 
-#: templates/modules/admin.tpl:39
+#: templates/modules/admin.tpl:42
 msgid "Logout"
 msgstr ""
 
-#: templates/modules/admin.tpl:40
+#: templates/modules/admin.tpl:43
 msgid "My Profile"
 msgstr ""
 
-#: templates/modules/admin.tpl:60
+#: templates/modules/admin.tpl:63
 msgid "Main Administration"
 msgstr ""
 
-#: templates/modules/admin.tpl:62
+#: templates/modules/admin.tpl:65
 msgid "Dashboard"
 msgstr ""
 
-#: templates/modules/admin.tpl:63
+#: templates/modules/admin.tpl:66
 msgid "Routines"
 msgstr ""
 
-#: templates/modules/admin.tpl:64
+#: templates/modules/admin.tpl:67
 msgid "Help"
 msgstr ""
 
-#: templates/modules/admin.tpl:65
+#: templates/modules/admin.tpl:68
 msgid "Info"
 msgstr ""
 
