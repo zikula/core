@@ -1,0 +1,5 @@
+body {text-align:center;}
+.zk-container {text-align:left;}
+.clearfix, .zk-container {display:inline-block;}
+* html .clearfix, * html .zk-container {height:1%;}
+

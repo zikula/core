@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Zikula 1.2.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-12 19:27+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: version.php:16
+msgid "Admin"
+msgstr ""
+
+#: version.php:17
+msgid "AdminTheme"
+msgstr ""
+
+#: templates/includes/infotab.tpl:2
+msgid "Informations"
+msgstr ""
+
+#: templates/includes/infotab.tpl:3
+msgid "Zikula version:"
+msgstr ""
+
+#: templates/includes/infotab.tpl:4
+msgid "Server information:"
+msgstr ""
+
+#: templates/includes/infotab.tpl:5
+msgid "PHP version:"
+msgstr ""
+
+#: templates/includes/infotab.tpl:6
+msgid "Database version"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:28
+msgid "Stay in Touch"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:32
+msgid "Community"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:37
+msgid "Extensions"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:41
+msgid "Blog"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:53
+msgid "Fast Tasks"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:55
+msgid "Themes"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:56
+msgid "Blocks"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:57
+msgid "Users"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:58
+msgid "Categories"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:59
+msgid "Permissions"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:60
+msgid "Security"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:61
+msgid "Settings"
+msgstr ""
+
+#: templates/includes/dashboard.tpl:66
+msgid "Quick n clean"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:3
+msgid "Clear Cache"
+msgstr ""
+
+#: templates/includes/routinetab.tpl:11
+msgid "Check Folders"
+msgstr ""
+
+#: templates/includes/helptab.tpl:3
+msgid "General"
+msgstr ""
+
+#: templates/includes/helptab.tpl:9
+msgid "Modules"
+msgstr ""
+
+#: templates/includes/helptab.tpl:11
+msgid "Admin Panel"
+msgstr ""
+
+#: templates/modules/Admin/admin_admin_categorymenu.tpl:7
+msgid "Right-click to edit module category"
+msgstr ""
+
+#: templates/modules/Admin/admin_admin_categorymenu.tpl:8
+msgid "Edit category"
+msgstr ""
+
+#: templates/modules/Admin/admin_admin_categorymenu.tpl:9
+msgid "Delete category"
+msgstr ""
+
+#: templates/modules/Admin/admin_admin_categorymenu.tpl:10
+msgid "Saving"
+msgstr ""
+
+#: templates/modules/Admin/admin_admin_categorymenu.tpl:44
+msgid "New module category"
+msgstr ""
+
+#: templates/modules/admin.tpl:35
+msgid "Welcome"
+msgstr ""
+
+#: templates/modules/admin.tpl:37
+msgid "switch Style"
+msgstr ""
+
+#: templates/modules/admin.tpl:39
+msgid "Logout"
+msgstr ""
+
+#: templates/modules/admin.tpl:40
+msgid "My Profile"
+msgstr ""
+
+#: templates/modules/admin.tpl:60
+msgid "Main Administration"
+msgstr ""
+
+#: templates/modules/admin.tpl:62
+msgid "Dashboard"
+msgstr ""
+
+#: templates/modules/admin.tpl:63
+msgid "Routines"
+msgstr ""
+
+#: templates/modules/admin.tpl:64
+msgid "Help"
+msgstr ""
+
+#: templates/modules/admin.tpl:65
+msgid "Info"
+msgstr ""
+
+#: templates/modules/Users/users_block_online.tpl:3
+#: templates/modules/Users/users_block_online.tpl:9
+#, php-format
+msgid "%s user"
+msgid_plural "%s users"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/modules/Users/users_block_online.tpl:4
+#: templates/modules/Users/users_block_online.tpl:7
+#, php-format
+msgid "%s on-line."
+msgstr ""
+
+#: templates/modules/Users/users_block_online.tpl:6
+#: templates/modules/Users/users_block_online.tpl:10
+#, php-format
+msgid "%s anonymous"
+msgid_plural "%s anonymous guests"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/modules/Users/users_block_online.tpl:11
+#, php-format
+msgid "%1$s and %2$s"
+msgstr ""
+
+#: templates/modules/Users/users_block_online.tpl:17
+msgid "You have no new messages."
+msgstr ""
+
+#: templates/modules/Users/users_block_online.tpl:17
+#, php-format
+msgid "You have <a href=\"%1$s\">%2$s</a> new message."
+msgid_plural "You have <a href=\"%1$s\">%2$s</a> new messages."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/modules/Users/users_block_online.tpl:19
+#, php-format
+msgid "You are logged-in as <strong>%s</strong>."
+msgstr ""
+
+#: templates/modules/Users/users_block_online.tpl:23
+msgid "You are an anonymous guest."
+msgstr ""
+
+#: templates/modules/Users/users_block_online.tpl:25
+#, php-format
+msgid "You can <a href=\"%s\">register here</a>."
+msgstr ""
