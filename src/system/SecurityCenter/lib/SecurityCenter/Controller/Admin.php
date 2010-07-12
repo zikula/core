@@ -675,20 +675,22 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             $objData  = $objArray->get('', $sort);
 
             $data = array();
+            $find = array("\r\n", "\n");
+            $relace = array("", "");
 
             foreach($objData as $key => $idsdata) {
                 $objData[$key]['filters'] = unserialize($objData[$key]['filters']);
 
                 $filtersused = '';
                 foreach($objData[$key]['filters'] as $filter) {
-                    $filtersused .= $filter['id'].", ";
+                    $filtersused .= $filter['id']." ";
                 }
                 
                 $datarow = array(
                     $objData[$key]['name'],
                     $objData[$key]['tag'],
-                    $objData[$key]['value'],
-                    $objData[$key]['page'],
+                    htmlspecialchars(str_replace($find, $replace, $objData[$key]['value']), ENT_COMPAT, 'UTF_8', false),
+                    htmlspecialchars($objData[$key]['page'], ENT_COMPAT, 'UTF_8', false),
                     $objData[$key]['username'],
                     $objData[$key]['ip'],
                     $objData[$key]['impact'],
