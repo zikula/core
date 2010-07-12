@@ -4,6 +4,11 @@
     
     <h2>{gt text="Export IDS Log"}</h2>
 
+    <ul class="z-menulinks">
+        <li><span class="z-icon-es-export">{gt text="Export IDS Log"}</span></li>
+        <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
+    </ul>
+
     <form class="z-form" action="{modurl modname='SecurityCenter' type='admin' func='exportidslog'}" method="post" enctype="multipart/form-data">
         <div>
             <input type="hidden" name="confirmed" value="1" />

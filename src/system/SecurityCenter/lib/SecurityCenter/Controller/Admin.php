@@ -681,7 +681,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
 
                 $filtersused = '';
                 foreach($objData[$key]['filters'] as $filter) {
-                    $filtersused .= $filter['id']." ".$filter['description'].", ";
+                    $filtersused .= $filter['id'].", ";
                 }
                 
                 $datarow = array(

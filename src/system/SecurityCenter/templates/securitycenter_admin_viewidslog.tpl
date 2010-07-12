@@ -1,11 +1,12 @@
 {include file="securitycenter_admin_menu.tpl"}
+{ajaxheader ui=true}
 <div class="z-admincontainer">
-    <div class="z-adminpageicon">{img modname=core src=windowlist.gif set=icons/large __alt="View IDS Log"}</div>
+    <div class="z-adminpageicon">{img modname=core src=easymoblog.gif set=icons/large __alt="View IDS Log"}</div>
     {gt text="All" assign=lblAll}
     <h2>{gt text="View IDS Log"}</h2>
     <ul class="z-menulinks">
-        <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}">{gt text="Export IDS Log"}</a></li>
-        <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}">{gt text="Purge IDS Log"}</a></li>
+        <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="z-icon-es-export">{gt text="Export IDS Log"}</a></li>
+        <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
     </ul>
     <form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
         <fieldset>
@@ -57,9 +58,13 @@
                 <td>{$event.ip|safetext}</td>
                 <td>{$event.impact|safetext}</td>
                 <td>
-                {foreach from=$event.filters item=filter}
-                {$filter.id} - {$filter.description}
-                <br />
+                {foreach from=$event.filters item=filter name=filterloop}
+                <a id="f_{$event.id}_{$smarty.foreach.filterloop.iteration}" href="#f_{$event.id}_{$smarty.foreach.filterloop.iteration}_content" title="{gt text="PHPIDS filter %s" tag1=$filter.id}" class="eventfilter">{$filter.id}</a>{if $smarty.foreach.filterloop.iteration < $smarty.foreach.filterloop.total}, {/if}
+                <div id="f_{$event.id}_{$smarty.foreach.filterloop.iteration}_content" style="display: none;">
+                    <p><strong>{gt text="Impact"}:</strong> {$filter.impact}</p>
+                    <p><strong>{gt text="Description"}:</strong> {$filter.description}</p>
+                    <p><strong>{gt text="Rule"}:</strong> {$filter.rule}</p>
+                </div>
                 {/foreach}
                 </td>
                 <td>{$event.date|safetext}</td>
@@ -72,3 +77,9 @@
     </table>
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>
+
+<script type="text/javascript">
+    $$('.eventfilter').each(function(element) {
+        new Zikula.UI.Window(element);
+    })
+</script>

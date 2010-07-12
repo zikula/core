@@ -100,7 +100,7 @@ class SecurityCenter_Api_Admin extends Zikula_Api
         if (SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
             $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'), 'text' => $this->__('Allowed HTML settings'), 'class' => 'z-icon-es-config');
-            $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'viewidslog'), 'text' => $this->__('View IDS Log'), 'class' => 'z-icon-es-locked');
+            $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'viewidslog'), 'text' => $this->__('View IDS Log'), 'class' => 'z-icon-es-log');
 
             $outputfilter = System::getVar('outputfilter');
             if ($outputfilter == 1) {
