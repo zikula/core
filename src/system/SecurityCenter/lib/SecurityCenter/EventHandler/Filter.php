@@ -216,7 +216,8 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
             $currentPage = System::getCurrentUri();
             $currentUid = UserUtil::getVar('uid');
 
-            // log details to database
+            $intrusionItems = array();
+            
             foreach ($result as $event) {
 
                 $eventName = $event->getName();
@@ -231,10 +232,12 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
                                             'tags' => $filter->getTags(),
                                             'rule' => $filter->getRule()));
                 }
+
+                $tagVal = $malVar[1];
                 
                 $newIntrusionItem = array(
-                        'name'    => $eventName,
-                        'tag'     => $malVar[1],
+                        'name'    => array($eventName),
+                        'tag'     => $tagVal,
                         'value'   => $event->getValue(),
                         'page'    => $currentPage,
                         'uid'     => $currentUid,
@@ -244,10 +247,21 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
                         'date'    => DateUtil::getDatetime()
                 );
 
+                if (array_key_exists($tagVal, $intrusionItems)) {
+                    $intrusionItems[$tagVal]['name'][] = $newIntrusionItem['name'][0];
+                } else {
+                    $intrusionItems[$tagVal] = $newIntrusionItem;
+                }
+            }
+
+            // log details to database
+            foreach ($intrusionItems as $tag => $intrusionItem) {
+                $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
+
                 // create new ZIntrusion instance
                 $obj = new SecurityCenter_DBObject_Intrusion();
                 // set data
-                $obj->setData($newIntrusionItem);
+                $obj->setData($intrusionItem);
                 // save object to db
                 $obj->save();
             }
