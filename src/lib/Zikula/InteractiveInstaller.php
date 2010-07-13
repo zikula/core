@@ -66,6 +66,7 @@ abstract class Zikula_InteractiveInstaller extends Zikula_Controller
      */
     public function preInvokeMethod()
     {
-        $this->throwForbiddenUnless(SessionUtil::getVar('interactive_process'), $this->__('This doesnt appear to be an interactive session.'));
+        $check = (bool)(SessionUtil::getVar('interactive_init') || SessionUtil::getVar('interactive_upgrade') || SessionUtil::getVar('interactive_remove'));
+        $this->throwForbiddenUnless($check, $this->__('This doesnt appear to be an interactive session.'));
     }
 }

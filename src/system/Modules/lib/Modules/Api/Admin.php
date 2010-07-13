@@ -456,7 +456,7 @@ class Modules_Api_Admin extends Zikula_Api
                     // Because interactive installers extend the Zikula_Controller, is_callable will always return true because of the __call()
                     // so we must check if the method actually exists by reflection - drak
                     if ($reflectionInteractive->hasMethod('upgrade')) {
-                        SessionUtil::setVar('interactive_process', true);
+                        SessionUtil::setVar('interactive_remove', true);
                         return call_user_func($interactive_func);
                     }
                 } else {
@@ -942,7 +942,7 @@ class Modules_Api_Admin extends Zikula_Api
                 // Because interactive installers extend the Zikula_Controller, is_callable will always return true because of the __call()
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('install')) {
-                    SessionUtil::setVar('interactive_process', true);
+                    SessionUtil::setVar('interactive_init', true);
                     return call_user_func($interactive_func);
                 }
             } else {
@@ -1071,7 +1071,7 @@ class Modules_Api_Admin extends Zikula_Api
                 // Because interactive installers extend the Zikula_Controller, is_callable will always return true because of the __call()
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('upgrade')) {
-                    SessionUtil::setVar('interactive_process', true);
+                    SessionUtil::setVar('interactive_upgrade', true);
                     return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
                 }
             } else {

@@ -191,7 +191,6 @@ class Modules_Controller_Admin extends Zikula_Controller
         $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module=Modules')) ? null : SessionUtil::getVar('sort', null), 'GET');
 
         // do some clean up
-        SessionUtil::delVar('interactive_process');
         SessionUtil::delVar('interactive_init');
         SessionUtil::delVar('interactive_remove');
         SessionUtil::delVar('interactive_upgrade');
