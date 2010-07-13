@@ -2424,7 +2424,7 @@ class DBUtil
         $sqlJoinArray = self::_processJoinArray($table, $joinInfo, $columnArray);
         $sqlJoin = $sqlJoinArray[0];
         $sqlJoinFieldList = $sqlJoinArray[1];
-        $ca = $sqlJoinArray[2];
+        $ca = null;//$sqlJoinArray[2]; -- edited by Drak, this causes errors if set.
 
         $usesJoin = (count($joinInfo) > 0) ? true : false;
 
