@@ -35,7 +35,7 @@ class SysInfo_EventHandlers_Extensions extends Zikula_EventHandler
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'extensions' && $subject instanceof SysInfo_admin)) {
+        if (!($event['method'] == 'extensions' && $subject instanceof SysInfo_Controller_Admin)) {
             return;
         }
 
