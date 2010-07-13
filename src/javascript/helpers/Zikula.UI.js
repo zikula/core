@@ -526,7 +526,7 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog, {
 });
 Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
     initialize: function($super, select, options) {
-        if(options.afterChange) {
+        if(options && options.afterChange) {
             this.origAfterChange = options.afterChange;
         }
         options = Object.extend({
