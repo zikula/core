@@ -86,37 +86,38 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      */
     function loadParameters(&$list, $includeEmptyElement, $params)
     {
-        $list->category = isset($params['category']) ? $params['category'] : 0;
-        $path = isset($params['path']) ? $params['path'] : '';
-        $pathfield = isset($params['pathfield']) ? $params['pathfield'] : 'path';
-        $lang = isset($params['lang']) ? $params['lang'] : ZLanguage::getLanguageCode();
-        $recurse = isset($params['recurse']) ? $params['recurse'] : true;
-        $relative = isset($params['relative']) ? $params['relative'] : true;
-        $includeRoot = isset($params['includeRoot']) ? $params['includeRoot'] : false;
-        $includeLeaf = isset($params['includeLeaf']) ? $params['includeLeaf'] : true;
-        $all = isset($params['all']) ? $params['all'] : false;
-        $list->editLink = isset($params['editLink']) ? $params['editLink'] : true;
+        $all            = isset($params['all'])         ? $params['all']         : false;
+        $lang           = isset($params['lang'])        ? $params['lang']        : ZLanguage::getLanguageCode();
+        $list->category = isset($params['category'])    ? $params['category']    : 0;
+        $list->editLink = isset($params['editLink'])    ? $params['editLink']    : true;
+        $includeLeaf    = isset($params['includeLeaf']) ? $params['includeLeaf'] : true;
+        $includeRoot    = isset($params['includeRoot']) ? $params['includeRoot'] : false;
+        $path           = isset($params['path'])        ? $params['path']        : '';
+        $pathfield      = isset($params['pathfield'])   ? $params['pathfield']   : 'path';
+        $recurse        = isset($params['recurse'])     ? $params['recurse']     : true;
+        $relative       = isset($params['relative'])    ? $params['relative']    : true;
+        $sortField      = isset($params['sortField'])   ? $params['sortField']   : 'sort_value'
 
         $allCats = array();
 
         // if we don't have a category-id we see if we can get a category by path
         if (!$list->category && $path) {
             $list->category = CategoryUtil::getCategoryByPath($path, $pathfield);
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
 
         } elseif (is_array($list->category) && isset($list->category['id']) && is_integer($list->category['id'])) {
             // check if we have an actual category object with a numeric ID set
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
 
         } elseif (is_numeric($list->category)) {
             // check if we have a numeric category
             $list->category = CategoryUtil::getCategoryByID($list->category);
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
 
         } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
             // check if we have a string/path category
             $list->category = CategoryUtil::getCategoryByPath($list->category, $pathfield);
-            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all);
+            $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, '', '', null, $sortField);
         }
 
         if ($list->mandatory)
