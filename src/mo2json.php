@@ -22,56 +22,85 @@ include 'lib/StreamReader/CachedFile.php';
 include 'lib/i18n/ZGettext.php';
 include 'lib/i18n/ZMO.php';
 
-$domain = filter_input(INPUT_GET, 'domain', FILTER_SANITIZE_STRING);
-$lang = filter_input(INPUT_GET, 'lang', FILTER_SANITIZE_STRING);
-$name = filter_input(INPUT_GET, 'name', FILTER_SANITIZE_STRING);
-$modplugin = filter_input(INPUT_GET, 'modplugin', FILTER_SANITIZE_STRING);
-$p = explode('_', $domain);
-$type = $p[0];
-
-switch ($type)
-{
-    case 'module':
-        $type = "modules/$name/";
-        break;
-    case 'theme':
-        $type = "themes/$name/";
-        break;
-    case 'moduleplugin':
-        $type = "modules/$name/plugins/$modplugin/";
-        break;
-    case 'systemplugin':
-        $type = "plugins/$name/";
-        break;
-    case 'zikula':
-        $type = '';
-        break;
+if (!isset($_GET['lang']) || count($_GET) < 2) {
+    badRequest();
 }
 
-$override = "config/$lang/LC_MESSAGES/{$domain}.mo";
-
-if (file_exists($override)) {
-    $path = 'config/locale';
-} else {
-    $path = "{$type}locale";
+$lang = $_GET['lang'];
+validate($lang);
+if (!preg_match('#(^[a-z]{2,3}$)|(^[a-z]{2,3}-[a-z]{2,3}$)|(^[a-z]{2,3}-[a-z]{2,3}-[a-z]{2,3}$)#', $lang)) {
+    badRequest();
 }
 
 $gettext = ZGettext::getInstance();
 $gettext->setLocale(LC_MESSAGES, $lang);
-$gettext->bindTextDomain($domain, $path);
-$gettext->bindTextDomainCodeset($domain, 'utf-8');
-$reader = $gettext->getReader($domain);
-$reader->ngettext(1,2,3);
-$data = $reader->getCache_translations();
-unset($data['']);
-$array = array('plural-forms' => $reader->getPluralheader(), 'translations' => $data);
+$translations = array();
+$translations[$lang] = array();
 
-if ($data) {
-    header("HTTP/1.1 200");
-    header('Content-type: application/json');
-    echo json_encode($array);
-} else {
-    header("HTTP/1.1 404");
-    echo "Not Found.";
+foreach ($_GET as $domain => $meta) {
+    if ($domain == 'lang') {
+        continue;
+    }
+
+    validate($domain);
+    validate($meta);
+
+    $p = explode('_', $domain);
+    $type = $p[0];
+
+    $m = explode('|', $meta);
+    $name = $m[0]; // module name or system plugin name.
+    $pluginName = isset($m[1]) ? $m[1] : '';
+
+    switch ($type)
+    {
+        case 'module':
+            $type = "modules/$name/";
+            break;
+        case 'theme':
+            $type = "themes/$name/";
+            break;
+        case 'moduleplugin':
+            $type = "modules/$name/plugins/$pluginName/";
+            break;
+        case 'systemplugin':
+            $type = "plugins/$name/";
+            break;
+        case 'zikula':
+            $type = '';
+            break;
+    }
+
+    $override = "config/$lang/LC_MESSAGES/{$domain}.mo";
+    $path = "{$type}locale";
+    if (file_exists($override)) {
+        $path = 'config/locale';
+    }
+    
+    $gettext->bindTextDomain($domain, $path);
+    $gettext->bindTextDomainCodeset($domain, 'utf-8');
+    $reader = $gettext->getReader($domain);
+    $reader->ngettext(1,2,3);
+    $data = $reader->getCache_translations();
+    unset($data['']);
+    if ($data) {
+        $translations[$lang][$domain] = array('plural-forms' => $reader->getPluralheader(), 'translations' => $data);
+    }
 }
 
+header("HTTP/1.1 200");
+header('Content-type: application/json');
+echo json_encode($translations);
+
+function validate($value)
+{
+    if (preg_match('#[^a-zA-Z0-9_\|]#', $value)) {
+        badRequest();
+    }
+}
+
+function badRequest()
+{
+    header('HTTP/1.1 400');
+    die('Bad request.');
+}
