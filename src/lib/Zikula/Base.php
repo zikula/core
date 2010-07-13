@@ -523,6 +523,8 @@ abstract class Zikula_Base
         if ($condition) {
             return $this->registerStatus($message);
         }
+        
+        return $this;
     }
 
     /**
@@ -542,6 +544,8 @@ abstract class Zikula_Base
         if (!$condition) {
             return $this->registerStatus($message);
         }
+        
+        return $this;
     }
 
     /**
@@ -627,6 +631,8 @@ abstract class Zikula_Base
         if ($condition) {
             return $this->registerError($message, $type, $debug);
         }
+        
+        return $this;
     }
 
     /**
@@ -648,6 +654,8 @@ abstract class Zikula_Base
         if (!$condition) {
             return $this->registerError($message, $type, $debug);
         }
+        
+        return $this;
     }
 
     /**
