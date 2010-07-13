@@ -96,7 +96,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         $pathfield      = isset($params['pathfield'])   ? $params['pathfield']   : 'path';
         $recurse        = isset($params['recurse'])     ? $params['recurse']     : true;
         $relative       = isset($params['relative'])    ? $params['relative']    : true;
-        $sortField      = isset($params['sortField'])   ? $params['sortField']   : 'sort_value'
+        $sortField      = isset($params['sortField'])   ? $params['sortField']   : 'sort_value';
 
         $allCats = array();
 
