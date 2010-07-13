@@ -525,23 +525,31 @@ Zikula.UI.FormDialog = Class.create(Zikula.UI.Dialog, {
     }
 });
 Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
-    initialize: function($super, select, opener, options) {
-        select = $(select);
-        if(options && options.afterChange) {
+    initialize: function($super, select, options) {
+        if(options.afterChange) {
             this.origAfterChange = options.afterChange;
         }
-        var container = this.buildContainer(select,opener);
         options = Object.extend({
             nameSelector: 'label',
+            valueSeparator: ',',
+            opener: null,
             afterChange: this.afterChange.bind(this)
         }, options || { });
+        select = $(select);
+        if(!options.value) {
+            var opts = select.select('option[selected]');
+            options.value = opts.pluck('value').join(options.valueSeparator);
+            opts.invoke('writeAttribute','selected',false);
+        }
+        var container = this.buildContainer(select,options);
         $super(select, container, options);
     },
-    buildContainer: function(select,opener) {
-        var selectId = select.identify(),
+    buildContainer: function(select,options) {
+        var opener = options.opener || null,
+            selectId = select.identify(),
             openerId = selectId+'_opener',
             containerId = selectId+'_options';
-        if(!opener || typeof opener == 'undefined') {
+        if(!opener) {
             opener = new Element('a',{id:openerId,href:'#'+containerId,title:'Select multiple'}).update('Select multiple');
             select.insert({after:opener});
         } else {
