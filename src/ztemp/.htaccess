@@ -1,6 +1,7 @@
-SetEnvIf Request_URI "\.css$" object_is_css=css
-SetEnvIf Request_URI "\.js$" object_is_js=js
+# File: $Id$
+# ----------------------------------------------------------------------
+# Purpose of file: block any web access to files stored under
+#                  the ztemp/ directory
+# ----------------------------------------------------------------------
 Order deny,allow
-Deny from all
-Allow from env=object_is_css
-Allow from env=object_is_js
+deny from all

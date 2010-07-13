@@ -1,6 +1,10 @@
-SetEnvIf Request_URI "\.css$" object_is_css=css
-SetEnvIf Request_URI "\.js$" object_is_js=js
-Order deny,allow
-Deny from all
-Allow from env=object_is_css
-Allow from env=object_is_js
+# File: $Id$
+# ----------------------------------------------------------------------
+# Purpose of file: block any web access to files stored under
+#                  the config/ directory
+# ----------------------------------------------------------------------
+deny from all
+<FilesMatch "\.(css|js)$">
+order allow,deny
+allow from all
+</filesmatch>

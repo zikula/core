@@ -1,3 +1,5 @@
-# File: $Id: .htaccess 19372 2006-07-04 12:47:34Z markwest $
-SetEnvIf Request_URI "\.html$" object_is_html=html
-Allow from env=object_is_html
+deny from all
+<FilesMatch "\.(html|js)$">
+order allow,deny
+allow from all
+</filesmatch>
