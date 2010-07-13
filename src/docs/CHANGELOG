@@ -170,3 +170,4 @@ Admin icons update of the system modules (Issue #2300).
 tables.php now supports index options in the _column_idx array.  array(inxname, array('columns' => array(fld1, fld2..), 'options' => 'unique') Issue #1885.
 Merged the menutree project into the core (Blocks module).
 Added htmlentities modifier to properly convert utf8 chars to html entities
+Replaced SetEnvIf with FilesMatch in .htaccess files (Issue #2334). Removed extensions tif, flv, ico, cur from all .htaccess, swf from all except modules/ and html from all except system/Theme/includes
