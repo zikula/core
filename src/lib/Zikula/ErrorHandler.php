@@ -13,6 +13,11 @@
  * information regarding copyright and licensing.
  */
 
+// For < PHP 5.3
+if (!defined('E_DEPRECATED')) {
+    define('E_DEPRECATED', 8192);
+}
+
 /**
  * Zikula ErrorHandler.
  */
@@ -95,7 +100,7 @@ class Zikula_ErrorHandler
         $this->eventManager->notify($event);
 
         // check for an @ suppression
-        if (error_reporting() == 0 || $errno == 8192 || $errno == E_STRICT) {
+        if (error_reporting() == 0 || $errno == E_DEPRECATED || $errno == E_STRICT) {
             return;
         }
 
@@ -193,7 +198,7 @@ class Zikula_ErrorHandler
         }
 
         // only show fatal 8192 = E_DEPRECATED
-        if ($this->errorlog == 1 && ($errno == E_STRICT || $errno == 8192 || $errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
+        if ($this->errorlog == 1 && ($errno == E_STRICT || $errno == E_DEPRECATED || $errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
             return;
         }
 
