@@ -21,7 +21,7 @@ if (!defined('PHPIDS_PATH_PREFIX')) {
 }
 
 // include the PHPIDS and get access to the result object
-set_include_path(get_include_path() . PATH_SEPARATOR . 'system/SecurityCenter/vendor');
+set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) .'/lib/vendor'));
 ZLoader::addAutoloader('HTMLPurifier', realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'));
 ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/lib/vendor'));
 
