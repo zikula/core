@@ -130,7 +130,7 @@ function install()
     switch ($action) {
         case 'login' :
             if (empty($loginuser) && empty($loginpassword)) {
-            } elseif (UserUtil::loginUsing('Users', array('loginid' => $loginuser, 'pass' => $loginpassword), false)) {
+            } elseif (UserUtil::loginUsing('Users', array('loginid' => $loginuser, 'pass' => $loginpassword), null, false)) {
                 if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                     // not admin user so boot
                     UserUtil::logout();

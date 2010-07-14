@@ -413,19 +413,32 @@ class UserUtil
             'loginid'   => $loginID,
             'pass'      => $userEnteredPassword,
         );
-        return self::loginUsing('Users', $authinfo, $rememberme, $checkPassword);
+        return self::loginUsing('Users', $authinfo, $rememberme, null, $checkPassword);
     }
 
     /**
      * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule
      * without actually logging the user in.
      *
+     * ATTENTION: The authmodule function(s) called during this process may redirect the user to an external server
+     * to perform authorization and/or authentication. The function calling checkPasswordUsing must already have anticipated
+     * the reentrant nature of this process, must already have saved pertinent user state, must have supplied a
+     * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
+     * any save user state immediately following the return of this function.
+     *
      * @param string $authModuleName Auth module name.
      * @param array  $authinfo       Auth info array.
+     * @param string $reentrantURL   If the authmodule needs to redirect to an external authentication server (e.g., OpenID), then
+     *                                  this is the URL to return to in order to re-enter the log-in process. The pertinent user
+     *                                  state must have already been saved by the function calling checkPasswordUsing(), and the URL must
+     *                                  point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                  saved user state, and get the user back to the point where loginUsing is re-executed. This
+     *                                  is only optional if the authmodule identified by $authModuleName reports that it is not
+     *                                  reentrant (e.g., Users is guaranteed to not be reentrant).
      *
      * @return bool True if authinfo authenticates; otherwise false.
      */
-    public static function checkPasswordUsing($authModuleName, array $authinfo)
+    public static function checkPasswordUsing($authModuleName, array $authinfo, $reentrantURL = null)
     {
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
             return LogUtil::registerArgsError();
@@ -434,23 +447,49 @@ class UserUtil
         } elseif (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         } elseif (!ModUtil::loadApi($authModuleName, 'auth')) {
+            return LogUtil::registerArgsError();
+        }
+
+        if (!ModUtil::available($authModuleName)) {
+            return LogUtil::registerArgsError();
+        }
+        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')
+            && (!isset($reentrantURL) || empty($reentrantURL)))
+        {
             return LogUtil::registerArgsError();
         }
 
         // Authenticate the loginID and userEnteredPassword against the specified authModule.
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
-        return ModUtil::apiFunc($authModuleName, 'auth', 'checkPassword', array('authinfo' => $authinfo), 'Zikula_AuthApi');
+        $checkPasswordArgs = array(
+            'authinfo'      => $authinfo,
+            'reentrant_url' => $reentrantURL,
+        );
+        return ModUtil::apiFunc($authModuleName, 'auth', 'checkPassword', $checkPasswordArgs, 'Zikula_AuthApi');
     }
 
     /**
      * Check user password without logging in (or logging in again).
      *
+     * ATTENTION: The authmodule function(s) called during this process may redirect the user to an external server
+     * to perform authorization and/or authentication. The function calling authenticateUserUsing must already have anticipated
+     * the reentrant nature of this process, must already have saved pertinent user state, must have supplied a
+     * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
+     * any save user state immediately following the return of this function.
+     *
      * @param string $authModuleName The name of the authmodule to use for authentication.
      * @param array  $authinfo       The information needed by the authmodule for authentication, typically a loginid and pass.
+     * @param string $reentrantURL   If the authmodule needs to redirect to an external authentication server (e.g., OpenID), then
+     *                                  this is the URL to return to in order to re-enter the log-in process. The pertinent user
+     *                                  state must have already been saved by the function calling authenticateUserUsing(), and the URL must
+     *                                  point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                  saved user state, and get the user back to the point where loginUsing is re-executed. This
+     *                                  is only optional if the authmodule identified by $authModuleName reports that it is not
+     *                                  reentrant (e.g., Users is guaranteed to not be reentrant).
      *
      * @return mixed Zikula uid if the authinfo authenticates with the authmodule; otherwise false.
      */
-    public static function authenticateUserUsing($authModuleName, array $authinfo)
+    public static function authenticateUserUsing($authModuleName, array $authinfo, $reentrantURL = null)
     {
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
             return LogUtil::registerArgsError();
@@ -462,20 +501,50 @@ class UserUtil
             return LogUtil::registerArgsError();
         }
 
-        return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array('authinfo' => $authinfo), 'Zikula_AuthApi');
+        if (!ModUtil::available($authModuleName)) {
+            return LogUtil::registerArgsError();
+        }
+        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')
+            && (!isset($reentrantURL) || empty($reentrantURL)))
+        {
+            return LogUtil::registerArgsError();
+        }
+
+        $authenticateUserArgs = array(
+            'authinfo'      => $authinfo,
+            'reentrant_url' => $reentrantURL,
+        );
+        return ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authenticateUserArgs, 'Zikula_AuthApi');
     }
 
     /**
      * Login using a specific auth module.
      *
-     * @param string  $authModuleName Auth module name.
-     * @param array   $authinfo       Auth info array.
-     * @param boolean $rememberMe     Whether or not to remember login.
-     * @param boolean $checkPassword  Whether or not to check the password.
+     * ATTENTION: The authmodule function(s) called during this process may redirect the user to an external server
+     * to perform authorization and/or authentication. The function calling loginUsing must already have anticipated
+     * the reentrant nature of this process, must already have saved pertinent user state, must have supplied a
+     * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
+     * any save user state immediately following the return of this function.
      *
-     * @return boolean
+     * @param string  $authModuleName       Auth module name.
+     * @param array   $authinfo             Auth info array.
+     * @param boolean $rememberMe           Whether or not to remember login.
+     * @param string  $reentrantURL         If the authmodule needs to redirect to an external authentication server (e.g., OpenID), then
+     *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
+     *                                          state must have already been saved by the function calling loginUsing(), and the URL must
+     *                                          point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
+     *                                          is only optional if the authmodule identified by $authModuleName reports that it is not
+     *                                          reentrant (e.g., Users is guaranteed to not be reentrant), or if $checkPassword is false.
+     * @param boolean $checkPassword        Whether or not to check the password.
+     * @param numeric $preauthenicatedUid   If $checkPassword is false because the user has already been authenticated and a uid has
+     *                                          already been obtained, then the uid can be passed into loginUsing() here. If the
+     *                                          preauthenticated uid is supplied, then $authinfo is not used. This parameter is
+     *                                          ignored if $checkPassword is true.
+     *
+     * @return boolean True if the user is logged in; false if the user is not logged in or an error occurs.
      */
-    public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $checkPassword = true)
+    public static function loginUsing($authModuleName, array $authinfo, $rememberMe = false, $reentrantURL = null, $checkPassword = true, $preauthenicatedUid = false)
     {
         // For the following, register any errors in the UI function that called this.
         if (!isset($authModuleName) || !is_string($authModuleName) || empty($authModuleName)) {
@@ -488,17 +557,31 @@ class UserUtil
             return LogUtil::registerArgsError();
         }
 
+        if (!ModUtil::available($authModuleName)) {
+            return LogUtil::registerArgsError();
+        }
+        if ($checkPassword && ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')
+            && (!isset($reentrantURL) || empty($reentrantURL)))
+        {
+            return LogUtil::registerArgsError();
+        }
+
         // Authenticate the loginID and userEnteredPassword against the specified authModule.
         // This should return the uid of the user logging in. Note that there are two routes here, both get a uid.
         if ($checkPassword) {
-            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array('authinfo' => $authinfo), 'Zikula_AuthApi');
-        } else {
+            $authArgs = array(
+                'authinfo'      => $authinfo,
+                'reentrant_url' => isset($args['reentrant_url']) ? $args['reentrant_url'] : null,
+            );
+            $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', $authArgs, 'Zikula_AuthApi');
+        } elseif (!$preauthenicatedUid) {
             $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'getUidForAuthinfo', array('authinfo' => $authinfo), 'Zikula_AuthApi');
+        } else {
+            $authenticatedUid = $preauthenicatedUid;
         }
 
         if (!$authenticatedUid || !is_numeric($authenticatedUid) || ((int)$authenticatedUid != $authenticatedUid)) {
-            // Note that we have not actually logged into anything yet, just authenticated, so no need to
-            // call logout on the authmodule.
+            // Note that we have not actually logged into anything yet, just authenticated.
             $event = new Zikula_Event('user.login.failed', null, array(
                 'authmodule'    => $authModuleName,
                 'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
@@ -518,8 +601,7 @@ class UserUtil
         $userObj = self::getVars($authenticatedUid);
         if (!$userObj || !is_array($userObj)) {
             // Oops! The authmodule gave us a bad uid! Really should not happen unless that module's uid mapping is out of sync.
-            // Note that we have not actually logged into anything yet, just authenticated, so no need to
-            // call logout on the authmodule.
+            // Note that we have not actually logged into anything yet, just authenticated.
             $event = new Zikula_Event('user.login.failed', null, array(
                 'authmodule'    => $authModuleName,
                 'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
@@ -605,8 +687,7 @@ class UserUtil
             // Check the status one more time.
             if (($userObj['activated'] != self::ACTIVATED_ACTIVE) && ($userObj['activated'] != self::ACTIVATED_INACTIVE_PWD)) {
                 // account inactive or we have a problem understanding what status the user has, deny login
-                // Note that we have not actually logged into anything yet, just authenticated, so no need to
-                // call logout on the authmodule.
+                // Note that we have not actually logged into anything yet, just authenticated.
                 $event = new Zikula_Event('user.login.failed', null, array(
                     'authmodule'    => $authModuleName,
                     'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
@@ -627,11 +708,10 @@ class UserUtil
 
         // BEGIN ACTUAL LOGIN
         // Made it through all the checks. We can actually log in now.
-        $loggedInUid = ModUtil::apiFunc($authModuleName, 'auth', 'login', array('authinfo' => $authinfo), 'Zikula_AuthApi');
-        if ($loggedInUid == $authenticatedUid) {
+        if ($authenticatedUid) {
             // Storing Last Login date -- store it in UTC! Do not use date() function!
             $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-            if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $loggedInUid)) {
+            if (!self::setVar('lastlogin', $nowUTC->format('Y-m-d H:i:s'), $authenticatedUid)) {
                 // show messages but continue
                 LogUtil::registerError(__('Error! Could not save the log-in date.'));
             }
@@ -641,22 +721,19 @@ class UserUtil
             }
 
             // Set session variables -- this is what really does the Zikula login
-            SessionUtil::setVar('uid', (int)$loggedInUid);
-
-            // Remember the authenticating authmodule for logout
-            SessionUtil::setVar('authmodule', $authModuleName);
+            SessionUtil::setVar('uid', (int)$authenticatedUid);
 
             if (!empty($rememberMe)) {
                 SessionUtil::setVar('rememberme', 1);
             }
 
             // now that we've logged in the permissions previously calculated (if any) are invalid
-            $GLOBALS['authinfogathered'][$loggedInUid] = 0;
+            $GLOBALS['authinfogathered'][$authenticatedUid] = 0;
 
             $event = new Zikula_Event('user.login', null, array(
                 'authmodule'    => $authModuleName,
                 'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
-                'user'          => $loggedInUid,
+                'user'          => $authenticatedUid,
             ));
             EventUtil::notify($event);
 
@@ -665,7 +742,7 @@ class UserUtil
             // Really should never get here. We authenticated earlier with the same set of authinfo, but
             // if we got here then the uid returned by login was different than the one returned by
             // authenticateUser. Strange situation, so deny login.
-            // Note that we have not actually logged into anything, so no need to call logout on the authmodule.
+            // Note that we have not actually logged into anything yet.
             $event = new Zikula_Event('user.login.failed', null, array(
                 'authmodule'    => $authModuleName,
                 'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
@@ -704,21 +781,6 @@ class UserUtil
     public static function logout()
     {
         if (self::isLoggedIn()) {
-            $authModuleName = SessionUtil::getVar('authmodule', '');
-
-            if (!empty($authModuleName) && ModUtil::available($authModuleName) && ModUtil::loadApi($authModuleName, 'auth')) {
-                $authModuleLoggedOut = ModUtil::apiFunc($authModuleName, 'auth', 'logout', null, 'Zikula_AuthApi');
-                if (!$authModuleLoggedOut) {
-                    // TODO -- Really? We want to prevent the user from logging out of Zikula if the authmodule logout fails?  Really?
-                    $event = new Zikula_Event('user.logout.failed', null, array(
-                        'authmodule'    => $authModuleName,
-                        'user'          => self::getVar('uid'),
-                    ));
-                    EventUtil::notify($event);
-                    return false;
-                }
-            }
-
             $event = new Zikula_Event('user.logout', null, array(
                 'authmodule'    => $authModuleName,
                 'user'          => self::getVar('uid'),
@@ -726,7 +788,6 @@ class UserUtil
             EventUtil::notify($event);
 
             session_destroy();
-
         }
 
         return true;

@@ -679,29 +679,54 @@ class Users_Controller_User extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Users','user','loginScreen'));
         }
 
-        // Get the authinfo array structure, whatever that may be (usually--but does not have to be--loginid and pass)
-        $authinfo = FormUtil::getPassedValue('authinfo', array(), 'POST');
+        if (System::serverGetVar('REQUEST_METHOD', false) == 'POST') {
+            // Get the authinfo array structure, whatever that may be (usually--but does not have to be--loginid and pass)
+            $authinfo = FormUtil::getPassedValue('authinfo', array(), 'POST');
+            // Get the name of the module that will do the actual authentication of the user
+            $authModuleName = FormUtil::getPassedValue('authmodule', 'Users', 'POST');
+            // Get a few other things having to do with logging in
+            $returnPageUrl = FormUtil::getPassedValue('url', '', 'POST');
+            $rememberMe = FormUtil::getPassedValue('rememberme', '', 'POST');
+        } else {
+            $reentrantState = SessionUtil::getVar('Users_User_login', array(), '/', false, false);
+            if (empty($authinfo) && isset($reentrantState) && !empty($reentrantState)) {
+                // We are reentering the function, likely after redirecting out to an external auth server like OpenID
+                // TODO - Do we need to set a timestamp and check for stale data?
+                $authinfo       = $reentrantState['authinfo'];
+                $authModuleName = $reentrantState['authmodule'];
+                $returnPageUrl  = $reentrantState['url'];
+                $rememberMe     = $reentrantState['rememberme'];
+                SessionUtil::delVar('Users_User_login');
+            }
+        }
+
         if (isset($authinfo) && !is_array($authinfo)) {
             return LogUtil::registerError($this->__('Error! Invalid authentication information.'), null, System::getHomepageUrl());
         }
 
-        // Get the name of the module that will do the actual authentication of the user
-        $authModuleName = FormUtil::getPassedValue('authmodule', 'Users', 'POST');
         if (empty($authModuleName)) {
             $authModuleName = 'Users';
         }
 
-        // Get a few other things having to do with logging in
-        $returnPageUrl = FormUtil::getPassedValue('url', '', 'POST');
-        $rememberMe    = FormUtil::getPassedValue('rememberme', '', 'POST');
-
         $tryAgain = false;
 
+        // ATTENTION: authenticateUser requires that this function be reentrant!
+        SessionUtil::requireSession();
+        SessionUtil::setVar('authinfo', $authinfo, '/Users_User_login', true, true);
+        SessionUtil::setVar('authmodule', $authModuleName, '/Users_User_login', true, true);
+        SessionUtil::setVar('url', $returnPageUrl, '/Users_User_login', true, true);
+        SessionUtil::setVar('rememberme', $rememberMe, '/Users_User_login', true, true);
+        $reentrantURL = System::getBaseUrl() . ModUtil::url('Users', 'user', 'login', array('authid' => SecurityUtil::generateAuthKey('Users')));
         // Just check the password. Do not log in yet. Why? So we can deal with forced password changes and
         // terms/privacy policy accept statuses, but only if the user has given us good login information.
         $authenticatedUid = ModUtil::apiFunc($authModuleName, 'auth', 'authenticateUser', array(
-            'authinfo'  => $authinfo,
+            'authinfo'      => $authinfo,
+            'reentrant_url' => $reentrantURL,
         ));
+
+        // If we get to this point, then we did not redirect out to an external auth server,
+        // so clear the reentrant state
+        SessionUtil::delVar('Users_User_login');
 
         if (!$authenticatedUid || !is_numeric($authenticatedUid)) {
             // Error message set in authenticateUser.
@@ -817,9 +842,15 @@ class Users_Controller_User extends Zikula_Controller
                             $authinfo['pass'] = $newPassword;
                         }
 
-                        $userStatus = UserUtil::ACTIVATED_ACTIVE;
-                        $userObj['activated'] = $userStatus;
-                        UserUtil::setVar('activated', $userStatus, $userObj['uid']);
+                        if ($userStatus != UserUtil::ACTIVATED_INACTIVE_PWD) {
+                            if ($userStatus == UserUtil::ACTIVATED_INACTIVE_PWD_TOUPP) {
+                                $userStatus = UserUtil::ACTIVATED_INACTIVE_PWD;
+                            } else {
+                                $userStatus = UserUtil::ACTIVATED_ACTIVE;
+                            }
+                            $userObj['activated'] = $userStatus;
+                            UserUtil::setVar('activated', $userStatus, $userObj['uid']);
+                        }
                     }
                 }
             }
@@ -844,11 +875,15 @@ class Users_Controller_User extends Zikula_Controller
                 return System::redirect($callbackURL);
             }
         } else {
-            // Finally, here we actually log in. Note that the UserUtil::loginUsing() function will call the appropriate authmodule function.
-            // It will also handle any status issues with the login attempt (e.g., user is inactive). Rememeber, too, that it has some
-            // checks for tou and/or pp acceptance, and for forced password changes. Those are over there just in case loginUsing is called
-            // without going through here. It will, in fact, redirect the user back here if there are issues in those areas.
-            if (UserUtil::loginUsing($authModuleName, $authinfo, $rememberMe)) {
+            // Finally, here we actually log in. Note that the UserUtil::loginUsing() function is called here with the
+            // $checkPassword parameter set to false. This is because we already authenticated the user above. If the
+            // authmodule is one that redirects to an external server for authorization (e.g., OpenID, Facebook Connect,
+            // etc.) then checking the password in loginUsing() would potentially cause a second call out to that
+            // external server requiring the user to re-authorize. Since we don't want the user to have to authorize
+            // or authenticate twice, we'll rely on the earlier authentication.
+            $loggedIn = UserUtil::loginUsing($authModuleName, $authinfo, $rememberMe, null, false, $authenticatedUid);
+
+            if ($loggedIn) {
                 // start login hook
                 $uid = UserUtil::getVar('uid');
                 $this->callHooks('zikula', 'login', $uid, array('module' => 'zikula'));
@@ -862,6 +897,7 @@ class Users_Controller_User extends Zikula_Controller
                 }
                 return true;
             } else {
+                // We really shouldn't get here since the authinfo was already authenticated.  Just in case...
                 if (!LogUtil::hasErrors()) {
                     LoginUtil::registerError($this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
                 }
