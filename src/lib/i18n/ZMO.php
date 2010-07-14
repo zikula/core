@@ -432,7 +432,7 @@ class ZMO
             } else {
                 $header = $this->get_translation_string(0);
             }
-            if (preg_match('#(nplurals=\d+;\s{0,}plural=[\s\d\w\(\)\?:%><&\|=]+)\s{0,};\s{0,}\\n#', $header, $regs)) {
+            if (preg_match('#(nplurals=\d+;\s{0,}plural=[\s\d\w\(\)\?:%><=!&\|]+)\s{0,};\s{0,}\\n#', $header, $regs)) {
                 $expr = $regs[1];
             } else {
                 $expr = "nplurals=2; plural=n == 1 ? 0 : 1;";
