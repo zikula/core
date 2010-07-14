@@ -437,7 +437,7 @@ class ZMO
             } else {
                 $expr = "nplurals=2; plural=n == 1 ? 0 : 1;";
             }
-            $this->pluralheader = $expr;
+            $this->pluralheader = $expr .';';
         }
         return $this->pluralheader;
     }
