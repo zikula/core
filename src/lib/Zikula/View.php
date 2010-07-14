@@ -265,7 +265,7 @@ class Zikula_View extends Smarty
 
         // This event sends $this as the subject so you can modify as required:
         // e.g.  $event->getSubject()->register_prefilter('foo');
-        $event = new Zikula_Event('render.init', $this);
+        $event = new Zikula_Event('view.init', $this);
         $this->eventManager->notify($event);
     }
 
