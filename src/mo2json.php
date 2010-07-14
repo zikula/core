@@ -12,6 +12,10 @@
  * information regarding copyright and licensing.
  */
 
+ini_set('mbstring.internal_encoding', 'UTF-8');
+ini_set('default_charset', 'UTF-8');
+mb_regex_encoding('UTF-8');
+
 if (!defined('LC_MESSAGES')) {
     define('LC_MESSAGES', 5);
 }
@@ -78,7 +82,7 @@ foreach ($_GET as $domain => $meta) {
     }
     
     $gettext->bindTextDomain($domain, $path);
-    $gettext->bindTextDomainCodeset($domain, 'utf-8');
+    $gettext->bindTextDomainCodeset($domain, 'utf8');
     $reader = $gettext->getReader($domain);
     $reader->ngettext(1,2,3);
     $data = $reader->getCache_translations();
