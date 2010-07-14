@@ -25,7 +25,19 @@
  */
 class Users_Api_Auth extends Zikula_AuthApi
 {
-    /**
+     /**
+     * Informs the calling function whether this authmodule is reentrant or not.
+     *
+     * The Users module is guaranteed never to be reentrant.
+     *
+     * @return bool False.
+     */
+    public function isReentrant()
+    {
+        return false;
+    }
+
+   /**
      * Authenticates authinfo with the authenticating source, returning a simple boolean result.
      *
      * Note that, despite this function's name, there is no requirement that a password be part of the authinfo.
@@ -277,105 +289,6 @@ class Users_Api_Auth extends Zikula_AuthApi
         } else {
             return false;
         }
-    }
-
-    /**
-     * Authenticates the user-entered authinfo with the authenticating source, and (if authenticated)
-     * returns the Zikula user ID (uid) of the user associated with the authinfo.
-     *
-     * If any actions need to be taken at the authenticating source to indicate that the user is logged in, they are
-     * taken at this point. If the login fails after returning to the Zikula login process, then logout() will be
-     * called.
-     *
-     * It is likely that this function will call the authenticateUser() function within this same API to actually
-     * determine if the user is valid. The primary job of this function is likely to perform
-     * any authentication-source-specific tasks to indicate the user is logged in, if needed.
-     *
-     * NOTE: This function does not change the state of the user in Zikula. In other words, this function does not
-     * actually log the user into Zikula. It merely returns the uid to Zikula, indicating that the user's supplied
-     * credentials were valid. The core Zikula login process that called this function will perform the actual
-     * change of state for the user.
-     *
-     * @param array $args All arguments passed to this function.
-     *                      array authinfo  The information necessary to authenticate the user, typically a login ID and a password.
-     *
-     * @return int|bool If the authinfo authenticates with the source, then the Zikula uid associated with that login ID;
-     *                      otherwise false on authentication failure or error.
-     */
-    public function login($args)
-    {
-        // authinfo can contain anything necessary for the authentication method, but most of the time will contain
-        // a login ID of some sort, and a password. Set up authinfo in templates as name="authinfo[fieldname]" to
-        // gather what is needed.
-
-        // Do any pre-authentication checks here (such as validation of authinfo parameters not directly
-        // handled by authenticateUser(), etc.)
-
-        // For the Users module authentication method, we'll simply pass the authinfo along and allow
-        // authenticateUser() to validate them.
-        $authinfo = isset($args['authinfo']) ? $args['authinfo'] : array();
-
-        // Authenticate the user using the authinfo. (authenticateUser just gives a yes or no; it does not actually
-        // perform any login-related actions.)
-        $authenticatedUid = ModUtil::apiFunc('Users', 'auth', 'authenticateUser', array(
-            'authinfo'  => $authinfo,
-        ));
-
-        // Perform post-authentication actions here related to logging in
-        if ($authenticatedUid) {
-            // Perform any post-authentication actions when authentication was successful.
-            // $fooAuthentication = new FooAuthenticationService($loginID);
-            // $fooAuthentication->login();
-
-            // If the user will need to be logged out of the authenticating system as a result of a log-out action,
-            // and the information in authinfo will be required to do this, then the authmodule should store the
-            // authinfo as a session variable, but without any password-like information. (Password-like information
-            // on authinfo is in-the-clear, and would not be secure as a session variable.) For example:
-            //
-            // $sessionAuthinfo = $authinfo;
-            // unset($sessionAuthinfo['pass']);
-            // SessionUtil::setVar('authinfo', $sessionAuthinfo);
-
-        }
-        // Optionally include an else here and perform any post-authentication actions on a failed authentication.
-        // The Users module authentication method relies on authenticateUser() to set an appropriate message using
-        // LogUtil on failure of authentication.
-
-        // Return the results.
-        return $authenticatedUid;
-    }
-
-    /**
-     * Logs the user out of the authentication source.
-     *
-     * If any actions need to be taken at the authenticating source to indicate that the user is logged out, they are
-     * taken at this point.
-     *
-     * NOTE: This function does not change the state of the user in Zikula. In other words, this function does not
-     * actually log the user out of The core Zikula logout process that called this function will perform the actual
-     * change of state for the user.
-     *
-     * @param array $args All arguments passed to this function.
-     *                      int uid  The Zikula user ID of the user logging out, used to look up the authentication-source login ID;
-     *                                  optional if UserUtil::isLoggedIn(), otherwise required.
-     *
-     * @return bool True if successfully logged out of the authenticating source; otherwise false.
-     */
-    public function logout($args)
-    {
-        // There's really nothing to do here for the Zikula Users module, but a custom authmodule might have to
-        // undo something done during login. If not, simply returing true is enough, although some basic
-        // validation of parameters and accounts might be in order.
-
-        // If needed, the authinfo used to log the user in can be retrieved from a session variable, if it is stored
-        // by the login function. For example:
-        //
-        // $authinfo = SessionUtil::getVar('authinfo', array());
-        // if (!empty($authinfo)) {
-        //     -- do custom log out stuff here --
-        // }
-
-        return true;
     }
 
 }
