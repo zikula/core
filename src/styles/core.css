@@ -839,6 +839,11 @@ div.z-viewbuttons img {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
 }
 
+.z-buttons .z-buttonsmall {
+    margin:0 1px 0 0;
+    padding:3px 8px 4px;
+}
+
 .z-buttons input[type=image] {
     float: left;
 }

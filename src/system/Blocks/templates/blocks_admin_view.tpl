@@ -32,9 +32,9 @@
                     <option value="2" {if (isset($filter.active_status) && $filter.active_status == 2)}selected="selected"{/if}>{gt text="Inactive"}</option>
                 </select>
             </span>
-            <span class="z-nowrap">
-                <input name="submit" type="submit" value="{gt text='Filter'}" />
-                <input name="clear" type="submit" value="{gt text='Clear'}" />
+            <span class="z-nowrap z-buttons">
+                <input class="z-buttonsmall" name="submit" type="submit" value="{gt text='Filter'}" />
+                <input class="z-buttonsmall" name="clear" type="submit" value="{gt text='Clear'}" />
             </span>
         </fieldset>
     </form>
