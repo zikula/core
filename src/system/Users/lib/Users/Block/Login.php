@@ -58,22 +58,23 @@ class Users_Block_Login extends Zikula_Block
         }
 
         if (!UserUtil::isLoggedIn()) {
-            // we don't need a cached id since the content of this block will always
-            // be the same
-            // check out if the contents are cached.
-            // If this is the case, we do not need to make DB queries.
-            if ($this->view->is_cached('users_block_login.tpl')) {
-                $row['content'] = $this->view->fetch('users_block_login.tpl');
-                return BlockUtil::themeBlock($row);
-            }
-
             if (empty($row['title'])) {
                 $row['title'] = DataUtil::formatForDisplay('Login');
             }
 
+            $authmodules = array();
+            $modules = ModUtil::getModulesCapableOf('authentication');
+            foreach ($modules as $modinfo) {
+                if (ModUtil::available($modinfo['name'])) {
+                    $authmodules[$modinfo['name']] = $modinfo;
+                }
+            }
+
+            $authmodule = FormUtil::getPassedValue('loginwith', $this->getVar('default_authmodule', 'Users'), 'GET');
+
             $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
-                           ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
-                           ->assign('authmodules', array(ModUtil::getInfoFromName('Users')))
+                           ->assign('authmodule', $authmodule)
+                           ->assign('authmodules', $authmodules)
                            ->assign('seclevel', System::getVar('seclevel'))
                            ->assign('allowregistration', $this->getVar('reg_allowreg'))
                            ->assign('returnurl', System::getCurrentUri());
