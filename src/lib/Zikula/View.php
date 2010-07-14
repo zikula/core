@@ -824,9 +824,9 @@ class Zikula_View extends Smarty
         foreach ($modulenames as $modulename) {
             // if the modulename is empty do nothing
             if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
-                // check if user wants to have /PNConfig
-                if ($modulename == PN_CONFIG_MODULE) {
-                    $ZConfig = ModUtil::getVar(PN_CONFIG_MODULE);
+                // check if user wants to have config
+                if ($modulename == ModUtil::CONFIG_MODULE) {
+                    $ZConfig = ModUtil::getVar(ModUtil::CONFIG_MODULE);
                     foreach ($ZConfig as $key => $value) {
                         // gather all config vars
                         $core['ZConfig'][$key] = $value;
@@ -838,9 +838,10 @@ class Zikula_View extends Smarty
         }
 
         // Module vars
-        // TODO A [move old pncore assignment into pnRender subclass] (Guite)
-        $this->assign('pncore', $core);
         $this->assign('zcore', $core);
+        if (System::isLegacyMode()) {
+            $this->assign('pncore', $core);
+        }
         return $this;
     }
 }
