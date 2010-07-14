@@ -98,7 +98,7 @@ class Zikula_ErrorHandler
         if (error_reporting() == 0 || $errno == E_DEPRECATED || $errno == E_STRICT) {
             return;
         }
-var_dump(get_include_path());
+
         // What do we want to log?
         // 1 - Log real errors only.
         // 2 - Log everything.
@@ -197,6 +197,9 @@ var_dump(get_include_path());
             return;
         }
 
+        if (!System::isDevelopmentMode()) {
+            $errfile = str_replace(realpath(dirname(__FILE__) . '/../..') . DIRECTORY_SEPARATOR, '', $errfile);
+        }
         // if we get this far, must be $this->errorlog == 2, so show everything
         AjaxUtil::error(__f("Error %s: %s in %s line %s", array($errno, $errstr, $errfile, $errline)));
     }
