@@ -714,7 +714,6 @@ class Modules_Api_Admin extends Zikula_Api
             if (isset($modinfo['oldnames']) || !empty($modinfo['oldnames'])) {
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
                     if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
-                        var_dump($dbmodinfo, $modinfo);
                         $save = $dbmodules[$dbname];
                         $save['name'] = $modinfo['name'];
                         unset($dbmodules[$dbname]);
