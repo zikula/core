@@ -119,7 +119,7 @@ class Users_Api_User extends Zikula_Api
         } elseif (!isset($args['uname']) || !is_string($args['uname'])) {
             return LogUtil::registerArgsError();
         } else {
-            $key = (int)$args['uname'];
+            $key = $args['uname'];
             $field = 'uname';
         }
 
