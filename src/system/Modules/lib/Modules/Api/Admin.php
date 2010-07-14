@@ -612,6 +612,7 @@ class Modules_Api_Admin extends Zikula_Api
                     $core_min = isset($modversion['core_min']) ? $modversion['core_min'] : '';
                     $core_max = isset($modversion['core_max']) ? $modversion['core_max'] : '';
                     $contact = isset($modversion['contact']) ? $modversion['contact'] : '';
+                    $oldnames = isset($modversion['oldnames']) ? $modversion['oldnames'] : '';
 
                     if (isset($modversion['dependencies']) && is_array($modversion['dependencies'])) {
                         $moddependencies = serialize($modversion['dependencies']);
@@ -626,6 +627,7 @@ class Modules_Api_Admin extends Zikula_Api
                                 'displayname'     => $displayname,
                                 'url'             => $url,
                                 'contact'         => $contact,
+                                'oldnames'        => $oldnames,
                                 'version'         => $version,
                                 'capabilities'    => $capabilities,
                                 'description'     => $description,
@@ -711,21 +713,14 @@ class Modules_Api_Admin extends Zikula_Api
         foreach ($filemodules as $name => $modinfo) {
             if (isset($modinfo['oldnames']) || !empty($modinfo['oldnames'])) {
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
-                    if (in_array($dbmodinfo['name'], $modinfo['oldnames'])) {
-                        // merge the two modinfo arrays overwriting new with old
-                        $dbmodinfo = array_merge($dbmodinfo, $modinfo);
-                        // insert the new module info into the result set so it looks as if the new module name was always there
-                        $dbmodules[$dbmodinfo['name']] = $dbmodinfo;
-                        // use the version number of old module name for upgrade purposes
-                        $dbmodules[$dbmodinfo['name']]['version'] = $dbmodules[$dbname]['version'];
-                        // ensure the old module name doesn't get listed as missing and the new name as uninitialised
+                    if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
+                        var_dump($dbmodinfo, $modinfo);
+                        $save = $dbmodules[$dbname];
+                        $save['name'] = $modinfo['name'];
                         unset($dbmodules[$dbname]);
-
-                        if ($dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_UNINITIALISED && $dbmodules[$dbmodinfo['name']]['state'] != ModUtil::STATE_INVALID) {
-                            unset($dbmodinfo['version']);
-                        }
-                        // update the db with the new module info
-                        DBUtil::updateObject($dbmodinfo, 'modules');
+                        $dbname = $modinfo['name'];
+                        $dbmodules[$dbname] = $save;
+                        DBUtil::updateObject($dbmodules[$dbname], 'modules');
                     }
                 }
             }
