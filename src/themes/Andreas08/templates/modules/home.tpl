@@ -30,10 +30,14 @@
             </div>
             <div id="theme_content">
                 {blockposition name=center}
-                <div id="theme_splitcontentleft">{blockposition name=right}</div>
-                <div id="theme_splitcontentright">{$maincontent}</div>
+                {$maincontent}
+                <div id="theme_splitcontentleft">{blockposition name=homeleft}</div>
+                <div id="theme_splitcontentright">{blockposition name=homeright}</div>
             </div>
-            <div id="theme_subcontent">{blockposition name=left}</div>
+            <div id="theme_subcontent">
+                {blockposition name=left}
+                {blockposition name=right}
+            </div>
             <div id="theme_footer">
                 <p>
                     {gt text="Powered by"} <a href="http://zikula.org">Zikula</a>

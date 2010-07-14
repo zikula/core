@@ -29,7 +29,10 @@
                 </ul>
             </div>
             <div id="theme_content">{$maincontent}</div>
-            <div id="theme_subcontent">{blockposition name=left}</div>
+            <div id="theme_subcontent">
+                {blockposition name=left}
+                {blockposition name=right}
+            </div>
             <div id="theme_footer">
                 <p>
                     {gt text="Powered by"} <a href="http://zikula.org">Zikula</a>

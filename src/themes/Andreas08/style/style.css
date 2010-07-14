@@ -301,12 +301,12 @@ div#navcontainer ul {
 }
 
 /**************** Misc classes and styles ****************/
-.theme_splitcontentleft {
+#theme_splitcontentleft {
     float: left;
     width: 48%;
 }
 
-.theme_splitcontentright {
+#theme_splitcontentright {
     float: right;
     width: 48%;
 }
