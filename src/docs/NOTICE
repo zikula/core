@@ -56,6 +56,9 @@
      Stefano Garuti
      
    -----------------------------------------------------------------------------
+   Zikula.js containts sprinf() which is copyright of Alexandru Marasteanu 
+   <alexaholic [at) gmail (dot] com> and licensed under new BSD.
+   -----------------------------------------------------------------------------
    CONTACT
    
    The Zikula project website can be found at http://zikula.org/
