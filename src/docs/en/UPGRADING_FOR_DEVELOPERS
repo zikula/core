@@ -89,6 +89,11 @@ MODULES
   array('profile' => array('version' => '1.0', 'anotherkey' => 'anothervalue')
         'message' => array('version' => '1.0', 'anotherkey' => 'anothervalue'));
 
+  The following APIs can be used
+    ModUtil::getModulesCapableOf()
+    ModUtil::isCapable()
+    ModUtil::getCapabilitiesOf()
+    {html_select_modules capability='...'}
 
 (Note in the following examples, $type must always start with a capital letter
  and all remaining characters must be lower case).
