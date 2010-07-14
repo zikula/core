@@ -32,7 +32,7 @@ class Modules_Util
                 LogUtil::registerError(__f('%s is not an instance of Zikula_Version', get_class($modversion)));
             }
         } elseif (is_dir("modules/$moduleName/lib") || is_dir("system/$moduleName/lib")) {
-            LogUtil::registerError(__f('Coule not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
+            LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
         } else {
             if (!file_exists($legacyVersionPath)) {
                 LogUtil::registerError(__f('Cannot %1$s for module %2$s', $legacyVersionPath, $dir));
