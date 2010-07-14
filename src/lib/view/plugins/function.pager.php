@@ -229,29 +229,31 @@ function smarty_function_pager($params, &$view)
 
     $pager['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($template != 'pagerimage.tpl');
     if ($pager['processDetailLinks']) {
+
         for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
+
             if ($pager['maxPages'] > 0 &&
                 (($currItem < $leftMargin && $currItem > 1) || ($currItem > $rightMargin && $currItem <= $pager['countPages']))) {
+                
                 if ($pager['optimize']) {
                     continue;
                 } else {
-                    $pager['isVisible'] = false;
+                    $currItemVisible = false;
                 }
+            }
+            
+            if ($params['display'] == 'page') {
+                $pager['args'][$pager['posvar']] = $currItem;
+            } else {
+                $pager['args'][$pager['posvar']] = (($currItem - 1) * $pager['perpage']) + 1;
             }
 
             $pager['pages'][$currItem]['pagenr'] = $currItem;
             $pager['pages'][$currItem]['url'] = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']) . $anchorText);
             $pager['pages'][$currItem]['isCurrentPage'] = ($pager['pages'][$currItem]['pagenr'] == $pager['currentPage']);
 
-            if (!isset($pager['isVisible'])) {
-                $pager['isVisible'] = true;
-            }
-
-            if ($params['display'] == 'page') {
-                $pager['args'][$pager['posvar']] = $currItem + 1;
-            } else {
-                $pager['args'][$pager['posvar']] = ($currItem * $pager['perpage']) + 1;
-            }
+            //$pager['pages'][$currItem]['isVisible'] = (!isset($currItemVisible)) ? true : false;
+            $pager['pages'][$currItem]['isVisible'] = true;
         }
         unset($pager['args'][$pager['posvar']]);
     }

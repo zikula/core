@@ -11,12 +11,15 @@
     {/if}
 
         {foreach name="pages" item="currentPage" key="currentItem" from=$pagerPluginArray.pages}
-            {if $currentItem.isCurrentPage}
+            {if $currentPage.isCurrentPage}
                 <span>{$currentItem}</span>
             {else}
                 <a href="{$currentPage.url}">{$currentItem}</a>
             {/if}
-            {$separator}
+            
+            {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}
+                {$separator}
+            {/if}
         {/foreach}
 
     {if $pagerPluginArray.currentPage < $pagerPluginArray.countPages}

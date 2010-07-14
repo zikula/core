@@ -14,7 +14,16 @@
     {/if}
 
         {foreach name="pages" item="currentPage" key="currentItem" from=$pagerPluginArray.pages}
-            {assign var="interval" value="`$currentItem` - `$currentItem+$pagerPluginArray.perpage-1`"}
+
+            {math equation="((x - y) * z) + w" x=$currentItem y=1 z=$pagerPluginArray.perpage w=1 assign="itemfrom"}
+
+            {if $currentItem eq $pagerPluginArray.countPages}
+                {assign var="itemto" value=$pagerPluginArray.total}
+            {else}
+                 {assign var="itemto" value=$currentItem*$pagerPluginArray.perpage}
+            {/if}
+
+            {assign var="interval" value="`$itemfrom` - `$itemto`"}
             {strip}[
             {if $currentPage.isCurrentPage}
                 <span>{$interval}</span>
