@@ -132,11 +132,12 @@
                 <li id="class_{$classescount}">
                     <input type="text" name="menutree[linkclasses][{$classescount}][name]" size="40" maxlength="255" />
                     <input type="text" name="menutree[linkclasses][{$classescount}][title]" size="40" maxlength="255" />
+                    {gt text="Delete" assign="alt"}
                     <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
                 </li>
             </ul>
             {gt text="Add" assign="alt"}
-            <a href="#" id="menutree_linkclass_add">{img src='insert_table_row.gif' modname='core' set='icons/extrasmall'  alt=$add}{gt text="Add class"}</a>
+            <a href="#" id="menutree_linkclass_add">{img src='insert_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Add class"}</a>
         </fieldset>
     </fieldset>
     {/if}
