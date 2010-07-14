@@ -95,10 +95,10 @@ class Zikula_ErrorHandler
         $this->eventManager->notify($event);
 
         // check for an @ suppression
-        if (error_reporting() == 0 || (defined('E_DEPRECATED') && $errno == E_DEPRECATED || $errno == E_STRICT)) {
+        if (error_reporting() == 0 || $errno == E_DEPRECATED || $errno == E_STRICT) {
             return;
         }
-
+var_dump(get_include_path());
         // What do we want to log?
         // 1 - Log real errors only.
         // 2 - Log everything.
@@ -184,6 +184,20 @@ class Zikula_ErrorHandler
      */
     public function ajaxHandler($errno, $errstr, $errfile, $errline, $errcontext)
     {
+        $event = new Zikula_Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
+        $this->eventManager->notify($event);
         
+        // errors supressed?
+        if (error_reporting() == 0 ||$this->errordisplay == 0) {
+            return;
+        }
+
+        // only show fatal
+        if ($this->errorlog == 1 && ($errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
+            return;
+        }
+
+        // if we get this far, must be $this->errorlog == 2, so show everything
+        AjaxUtil::error(__f("Error %s: %s in %s line %s", array($errno, $errstr, $errfile, $errline)));
     }
 }
