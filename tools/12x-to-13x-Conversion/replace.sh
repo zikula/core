@@ -6,7 +6,7 @@ if [ $# -ne 1 ]; then
 fi
 PWD=`pwd`
 
-find $1/. | grep -v svn | egrep '\.htm*$|\.tpl$' > _temp.txt
+find $1/. | grep -v svn | egrep '\.htm$|\.html|\.tpl$' > _temp.txt
 for c in `cat _temp.txt`
 do
   php -f replace_templates.php $c
