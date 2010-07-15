@@ -1165,11 +1165,13 @@ class Modules_Controller_Admin extends Zikula_Controller
                     }
                     $pluginLink['_plugin'] = $instance->getPluginName();
                     $pluginLink['_action'] = 'configure';
-                    
-                    $actions[] = array('url' => ModUtil::url('Modules', 'adminplugin', 'dispatch', $pluginLink),
-                                       'image' => 'configure.gif',
-                                       'title' => $this->__('Configure plugin'));
 
+                    if ($instance instanceof Zikula_Plugin_Configurable) {
+                        $actions[] = array('url' => ModUtil::url('Modules', 'adminplugin', 'dispatch', $pluginLink),
+                                           'image' => 'configure.gif',
+                                           'title' => $this->__('Configure plugin'));
+                    }
+                    
                     $actions[] = array('url' => ModUtil::url('Modules', 'admin', 'deactivatePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,
