@@ -15,7 +15,7 @@
 /**
  * Plugin definition class.
  */
-class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
+class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable
 {
     /**
      * Gettext enabled flag.
@@ -88,4 +88,11 @@ class ModulePlugin_SysInfo_Example_Plugin extends Zikula_Plugin
         $event->setData($view->fetch('anotherfunction.tpl'));
         $event->setNotified();
     }
+
+    public function getConfigurationController()
+    {
+        return new ModulePlugin_SysInfo_Example_Controller($this->serviceManager, array('plugin' => $this));
+    }
 }
+
+
