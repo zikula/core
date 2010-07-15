@@ -15,7 +15,7 @@
 /**
  * SwiftMailer plugin definition.
  */
-class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin
+class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin implements Zikula_Plugin_Configurable
 {
     /**
      * Get plugin meta data.
@@ -26,7 +26,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin
     {
         return array('displayname' => $this->__('SwiftMailer Plugin'),
                      'description' => $this->__('Provides Swift Mailer.'),
-                     'version'     => '4.0.6'
+                     'version'     => '4.0.7'
                       );
     }
 
@@ -45,4 +45,15 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_Plugin
         // initialize Swift
         require_once realpath($this->baseDir . '/lib/vendor/SwiftMailer/swift_init.php');
     }
+
+    /**
+     * Return controller instance.
+     *
+     * @return Zikula_Plugin_Controller
+     */
+    public function getConfigurationController()
+    {
+        return new SystemPlugin_SwiftMailer_Controller($this->serviceManager, array('plugin' => $this));
+    }
+
 }
