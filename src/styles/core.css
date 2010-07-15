@@ -550,6 +550,7 @@ div.z-viewbuttons img {
 .z-linear div.z-formrow textarea {
     display: block;
     width: 98%;
+    padding: 0.3em 0;
 }
 .z-linear div.z-formrow .z-listselector,
 .z-linear div.z-formrow .z-listselector li {
@@ -840,8 +841,8 @@ div.z-viewbuttons img {
 }
 
 .z-buttons .z-buttonsmall {
-    margin:0 1px 0 0;
-    padding:3px 8px 4px;
+    margin: 0 1px 0 0;
+    padding: 3px 8px 4px !important;
 }
 
 .z-buttons input[type=image] {
@@ -1200,10 +1201,3 @@ div.z-viewbuttons img {
 .z-tabs li.active a:hover {
     border-right:1px solid transparent;
 }
-/*.z-window {
-    opacity: 0.9
-}
-.z-window:focus,
-.z-window.active {
-    opacity: 1;
-}*/

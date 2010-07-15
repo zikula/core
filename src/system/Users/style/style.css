@@ -1,5 +1,3 @@
-/* $Id$ */
-
 #liveusersearch {
     margin: 1em 0 1em 0;
 }
@@ -80,4 +78,31 @@ div.z-accountlink {
 .z-icon-es-export {
     background:url("../../../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
+}
+.users-loginbutton {
+    width: 100% !important;
+}
+
+
+#users_block_loginform {
+    padding:0;
+    margin:0;
+}
+
+.user-icon-adduser {
+    background:url("../../../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+
+.user-icon-lostusername {
+    background:url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll 0 50% transparent;
+    padding:2px 0 2px 20px;
+}
+
+
+ul#user-block-login-tools,
+ul#user-block-login-tools li {
+    list-style:none;
+    margin: 0;
+    padding: 0;
 }

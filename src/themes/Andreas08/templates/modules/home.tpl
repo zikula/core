@@ -18,7 +18,7 @@
             <div id="theme_navigation_bar">
                 <ul>
                     <li class="selected"><a href="{homepage}">{gt text='Home'}</a></li>
-                    <li {if $module  eq 'Search'}class="selected"{/if}>
+                    <li {if $module eq 'Search'}class="selected"{/if}>
                         <a href="{modurl modname=Search}">{gt text='Search'}</a>
                     </li>
                     {if $loggedin eq true}
@@ -26,17 +26,22 @@
                         <a href="{modurl modname=Users}">{gt text='My account'}</a>
                     </li>
                     {/if}
+                    {checkpermissionblock component='.*' instance='.*' level=ACCESS_ADMIN}
+                    <li><a href="{modurl modname=Admin type=admin func=adminpanel}">{gt text='Administration'}</a></li>
+                    {/checkpermissionblock}
                 </ul>
             </div>
             <div id="theme_content">
-                {blockposition name=center}
-                {$maincontent}
-                <div id="theme_splitcontentleft">{blockposition name=homeleft}</div>
-                <div id="theme_splitcontentright">{blockposition name=homeright}</div>
-            </div>
-            <div id="theme_subcontent">
-                {blockposition name=left}
-                {blockposition name=right}
+                <div id="theme_col1">
+                    <div id="theme_maincontent">
+                        {blockposition name=center}
+                        {$maincontent}
+                    </div>
+                </div>
+                <div id="theme_col2">
+                    <div id="theme_col2_left">{blockposition name=right}</div>
+                    <div id="theme_col2_right">{blockposition name=left}</div>
+                </div>
             </div>
             <div id="theme_footer">
                 <p>
