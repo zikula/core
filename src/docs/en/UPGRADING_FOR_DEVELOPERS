@@ -460,5 +460,28 @@ function called when the JS receives its ajax response.
         // response is good... do whatever we want
     }
 
+PAGEADDVAR CHANGES
+==================
+This Api has been updated with several conveniences.  The changes are
+fully BC but you will notice the included sources are changes to the new ones
+despite the old references.
+
+Prototype and Scriptaculous have been combined into a single compressed file for
+convenience.  Only validation.js and unittest.js have not been combined.
+
+Simply including prototype will include the combined version.  There is no need
+to specify ajax, prototype and scriptaculous separately any more,
+simply just specify 'prototype'.
+
+To add Livepipe, simply specify 'livepipe'.  All Livepipe files have been
+compressed into one.
+
+To add jQuery, simply specify 'jquery'.  This will set up jQuery.noConflict()
+automatically.
 
 
+ZIKULA_VIEW / ZIKULA_THEME CLASSES
+==================================
+Dozens of getter and setters have been added to try and encapsulate things more and
+one day, allow a more easy migration away from Smarty 2.  Please desist from
+direct access to properties and use the getter/setters.

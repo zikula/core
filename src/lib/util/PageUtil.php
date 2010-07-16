@@ -253,7 +253,6 @@ class PageUtil
                 $value[$k] = DataUtil::formatForOS($value[$k]);
                 // Handle legacy references to non-minimised scripts.
                 if (strpos($value[$k], 'javascript/livepipe/') === 0) {
-                    //$value[$k] = str_replace('.js', '.min.js', $value[$k]);
                     $value[$k] = 'javascript/livepipe/livepipe.combined.min.js';
                 } else if (strpos($value[$k], 'javascript/ajax/') === 0) {
                     switch ($value[$k])
