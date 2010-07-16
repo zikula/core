@@ -161,3 +161,8 @@ pageutil.addvar_filter
 
 system.outputfilter
     Filter type event for output filter HTML sanitisation
+
+theme.ajax_request
+    Triggered by a native ajax request from a theme.  This occurs when the following call is made
+    ajax.php?module=theme&func=dispatch&.....
+    Handlers should be registered in the theme.
