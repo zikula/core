@@ -464,4 +464,61 @@ class FileUtil
 
         return $msg;
     }
+
+    /**
+     * Export data to a csv file.
+     *
+     * @param array  $datarows  The data to write to the csv file.
+     * @param array  $titlerow  The titles to write to the csv file (default is empty array) (optional).
+     * @param string $delimeter The character to use for field delimeter (default is character ,) (one character only) (optional).
+     * @param string $enclosure The character to use for field enclosure (default is character ") (one character only) (optional).
+     * @param string $filename  The filename of the exported csv file (default is null) (optional).
+     *
+     * @return nothing
+     */
+    public static function exportCSV($datarows, $titlerow = array(), $delimeter = ',', $enclosure = '"', $filename = null)
+    {
+        // check if $datarows is array
+        if (!is_array($datarows)) {
+            return z_exit(__f('%1$s: %2$s is not an array', array('FileUtil::exportCSV', 'datarows')));
+        }
+
+        // check if $datarows is empty
+        if (count($datarows) == 0) {
+            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::exportCSV', 'datarows')));
+        }
+
+        // create random filename if none is given or else format it appropriately
+        if (!isset($filename)) {
+            $filename = 'csv_'.time().'.csv';
+        } else {
+            $filename = DataUtil::formatForOS($filename);
+        }
+
+        //disable compression and set headers
+        ob_end_clean();
+        ini_set('zlib.output_compression', 0);
+        header('Cache-Control: no-store, no-cache');
+        header('Content-type: text/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        header('Content-Transfer-Encoding: binary');
+
+        // open a file for csv writing
+        $out = fopen("php://output", 'w');
+
+        // write out title row if it exists
+        if (isset($titlerow) && is_array($titlerow) && count($titlerow) > 0) {
+            fputcsv($out, $titlerow, $delimeter, $enclosure);
+        }
+
+        // write out data
+        foreach($datarows as $datarow) {
+            fputcsv($out, $datarow, $delimeter, $enclosure);
+        }
+
+         //close the out file
+        fclose($out);
+
+        exit;
+    }
 }
