@@ -23,7 +23,6 @@ class Categories_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('categories');
         $meta['version']        = '1.2.0';
-        $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Categories::Category' => 'Category ID:Category Path:Category IPath');
         return $meta;
     }

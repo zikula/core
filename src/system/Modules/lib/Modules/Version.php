@@ -25,7 +25,6 @@ class Modules_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']  = $this->__('modules');
         $meta['version'] = '3.7.3';
-        $meta['contact'] = 'http://zikula.org';
         $meta['securityschema'] = array('Modules::' => '::');
         return $meta;
     }

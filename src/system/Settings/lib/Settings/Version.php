@@ -23,7 +23,6 @@ class Settings_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('settings');
         $meta['version']        = '2.9.3';
-        $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Settings::' => '::');
         return $meta;
     }

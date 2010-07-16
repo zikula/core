@@ -22,7 +22,6 @@ class SysInfo_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('sysinfo');
         $meta['version']        = '1.1.1';
-        $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('SysInfo::' => '::');
         return $meta;
     }

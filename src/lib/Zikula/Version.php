@@ -22,7 +22,6 @@ class Zikula_Version implements ArrayAccess
     protected $url;
     protected $description;
     protected $version = 0;
-    protected $contact;
     protected $securityschema;
     protected $dependencies = array();
     protected $capabilities = array();
@@ -146,16 +145,6 @@ class Zikula_Version implements ArrayAccess
             throw new InvalidArgumentException($this->__f('Version numbers must be in the format "a.b.c" in class %s', get_class($this)));
         }
         $this->version = $version;
-    }
-
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
     }
 
     public function getSecuritySchema()

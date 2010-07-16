@@ -15,18 +15,10 @@
 $themeversion['name'] = 'Atom';
 $themeversion['displayname'] = __('Atom');
 $themeversion['description'] = __("The Atom theme is an auxiliary theme specially designed for rendering pages in Atom mark-up.");
-$themeversion['regid'] = '0';
 $themeversion['version'] = '1.0';
-$themeversion['official'] = '0';
-$themeversion['author'] = 'Franz Skaaning';
-$themeversion['contact'] = 'http://www.lexebus.net/';
 $themeversion['admin'] = 0;
 $themeversion['user'] = 0;
 $themeversion['system'] = 1;
-$themeversion['credits'] = '';
-$themeversion['help'] = '';
-$themeversion['changelog'] = '';
-$themeversion['license'] = '';
 $themeversion['xhtml'] = false;
 
 /* themevariables.ini gettext strings*/

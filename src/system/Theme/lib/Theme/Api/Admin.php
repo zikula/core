@@ -76,13 +76,7 @@ class Theme_Api_Admin extends Zikula_Api
                         'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
                         'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
                         'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeUtil::STATE_ACTIVE),
-                        'official' => (isset($themeversion['offical']) ? (int)$themeversion['offical'] : '0'),
-                        'author' => (isset($themeversion['author']) ? $themeversion['author'] : ''),
                         'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
-                        'credits' => (isset($themeversion['credits']) ? $themeversion['credits'] : ''),
-                        'help' => (isset($themeversion['help']) ? $themeversion['help'] : ''),
-                        'changelog' => (isset($themeversion['changelog']) ? $themeversion['changelog'] : ''),
-                        'license' => (isset($themeversion['license']) ? $themeversion['license'] : ''),
                         'xhtml' => (isset($themeversion['xhtml']) ? (int)$themeversion['xhtml'] : 1));
 
                 // important: unset themeversion otherwise all following themes will have
@@ -125,13 +119,7 @@ class Theme_Api_Admin extends Zikula_Api
                         ($themeinfo['user']           != $dbthemes[$name]['user']) ||
                         ($themeinfo['system']         != $dbthemes[$name]['system']) ||
                         ($themeinfo['state']          != $dbthemes[$name]['state']) ||
-                        ($themeinfo['official']       != $dbthemes[$name]['official']) ||
-                        ($themeinfo['author']         != $dbthemes[$name]['author']) ||
                         ($themeinfo['contact']        != $dbthemes[$name]['contact']) ||
-                        ($themeinfo['credits']        != $dbthemes[$name]['credits']) ||
-                        ($themeinfo['help']           != $dbthemes[$name]['help']) ||
-                        ($themeinfo['changelog']      != $dbthemes[$name]['changelog']) ||
-                        ($themeinfo['license']        != $dbthemes[$name]['license']) ||
                         ($themeinfo['xhtml']          != $dbthemes[$name]['xhtml'])) {
                     $themeinfo['id'] = $dbthemes[$name]['id'];
                     DBUtil::updateObject($themeinfo, 'themes');

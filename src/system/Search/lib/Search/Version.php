@@ -22,7 +22,6 @@ class Search_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('search');
         $meta['version']        = '1.5.1';
-        $meta['contact']        = 'http://zikula.org/';
 
         $meta['securityschema'] = array('Search::' => 'Module name::');
         return $meta;

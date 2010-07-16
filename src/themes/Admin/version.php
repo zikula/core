@@ -14,18 +14,10 @@
 
 $themeversion['name'] = 'Admin';
 $themeversion['displayname'] = __('Admin');
-$themeversion['description'] = __("AdminTheme");
-$themeversion['regid'] = '0';
+$themeversion['description'] = __("Admin Theme");
 $themeversion['version'] = '1.0';
-$themeversion['official'] = '1';
-$themeversion['author'] = 'DMM';
-$themeversion['contact'] = 'http://community.zikula.org';
 $themeversion['admin'] = 1;
 $themeversion['user'] = 0;
 $themeversion['system'] = 0;
-$themeversion['credits'] = '';
-$themeversion['help'] = '';
-$themeversion['changelog'] = '';
-$themeversion['license'] = '';
 $themeversion['xhtml'] = true;
 

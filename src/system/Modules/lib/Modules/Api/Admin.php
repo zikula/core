@@ -611,7 +611,6 @@ class Modules_Api_Admin extends Zikula_Api
 
                     $core_min = isset($modversion['core_min']) ? $modversion['core_min'] : '';
                     $core_max = isset($modversion['core_max']) ? $modversion['core_max'] : '';
-                    $contact = isset($modversion['contact']) ? $modversion['contact'] : '';
                     $oldnames = isset($modversion['oldnames']) ? $modversion['oldnames'] : '';
 
                     if (isset($modversion['dependencies']) && is_array($modversion['dependencies'])) {
@@ -626,7 +625,6 @@ class Modules_Api_Admin extends Zikula_Api
                                 'type'            => $moduletype,
                                 'displayname'     => $displayname,
                                 'url'             => $url,
-                                'contact'         => $contact,
                                 'oldnames'        => $oldnames,
                                 'version'         => $version,
                                 'capabilities'    => $capabilities,
@@ -644,7 +642,6 @@ class Modules_Api_Admin extends Zikula_Api
 //                                    'type'            => $moduletype,
 //                                    'displayname'     => $displayname,
 //                                    'url'             => $url,
-//                                    'contact'         => $modversion['contact'],
 //                                    'version'         => $version,
 //                                    'capabilities'    => $capabilities,
 //                                    'description'     => $description,

@@ -134,6 +134,12 @@ class Theme_Installer extends Zikula_Installer
                 if (!DBUtil::changeTable('themes')) {
                     return '3.4';
                 }
+            case '3.4.1':
+                if (!DBUtil::changeTable('themes')) {
+                    return '3.4.1';
+                }
+            case '3.4.2':
+                // future upgrade
         }
 
         // Update successful

@@ -22,7 +22,6 @@ class Mailer_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('mailer');
         $meta['version']        = '1.3.1';
-        $meta['contact']        = 'http://zikula.org/';
 
         $meta['securityschema'] = array('Mailer::' => '::');
         return $meta;

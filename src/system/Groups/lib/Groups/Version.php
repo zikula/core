@@ -10,7 +10,6 @@ class Groups_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('groups');
         $meta['version']        = '2.3.1';
-        $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Groups::' => 'Group ID::');
         return $meta;
     }

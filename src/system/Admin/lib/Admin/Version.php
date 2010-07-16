@@ -22,7 +22,6 @@ class Admin_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('adminpanel');
         $meta['version']        = '1.8.0';
-        $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Admin::' => 'Admin Category name::Admin Category ID');
         return $meta;
     }

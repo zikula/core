@@ -22,7 +22,6 @@ class Blocks_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('blocks');
         $meta['version']        = '3.7.1';
-        $meta['contact']        = 'http://zikula.org/';
 
         $meta['securityschema'] = array('Blocks::' => 'Block key:Block title:Block ID',
                 'Blocks::position' => 'Position name::Position ID');

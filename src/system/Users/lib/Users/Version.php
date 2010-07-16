@@ -27,7 +27,6 @@ class Users_Version extends Zikula_Version
         // 0.9 < 0.9.0 < 1 < 1.0 < 1.0.1 < 1.2 < 1.18 < 1.20 < 2.0 < 2.0.0 < 2.0.1
         // From this version forward, please use the major.minor.point format below.
         $meta['version'] = '2.0.0';
-        $meta['contact'] = 'http://zikula.org/';
         $meta['securityschema'] = array('Users::' => 'Uname::User ID',
                                         'Users::MailUsers' => '::');
 

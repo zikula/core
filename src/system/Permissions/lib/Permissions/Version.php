@@ -10,7 +10,6 @@ class Permissions_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('permissions');
         $meta['version']        = '1.1.1';
-        $meta['contact']        = 'http://zikula.org/';
         $meta['securityschema'] = array('Permissions::' => '::');
         return $meta;
     }

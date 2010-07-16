@@ -22,7 +22,6 @@ class SecurityCenter_Version extends Zikula_Version
         //! module name that appears in URL
         $meta['url']            = $this->__('securitycenter');
         $meta['version']        = '1.4.3';
-        $meta['contact']        = 'http://www.zikula.org';
         $meta['securityschema'] = array('SecurityCenter::' => '::');
         return $meta;
     }
