@@ -20,7 +20,7 @@
  * This plugin shows a summary of the validation result.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_Render &$render Reference to Form render object.
+ * @param Form_View &$render Reference to Form render object.
  *
  * @return string The rendered output.
  */

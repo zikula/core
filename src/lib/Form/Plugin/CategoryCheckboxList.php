@@ -49,7 +49,7 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
     /**
      * Load event handler.
      *
-     * @param Form_Render &$render Reference to pnForm render object.
+     * @param Form_View &$render Reference to pnForm render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -63,7 +63,7 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */

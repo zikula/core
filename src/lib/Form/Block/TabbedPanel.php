@@ -61,7 +61,7 @@ class Form_Block_TabbedPanel extends Form_Plugin
     /**
      * Create event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
@@ -75,7 +75,7 @@ class Form_Block_TabbedPanel extends Form_Plugin
     /**
      * RenderBegin event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output.
      */
@@ -100,7 +100,7 @@ class Form_Block_TabbedPanel extends Form_Plugin
     /**
      * RenderEnd event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output.
      */

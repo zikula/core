@@ -130,7 +130,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Create event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
@@ -144,7 +144,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Load event handler.
      *
-     * @param Form_Render &$render Reference to pnForm render object.
+     * @param Form_View &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -161,7 +161,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -253,7 +253,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Decode event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return void
      */
@@ -277,7 +277,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Validates the input.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return void
      */
@@ -306,7 +306,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Clears the validation data.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return void
      */
@@ -322,7 +322,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param array       &$data   Data object.
      *
      * @return void
@@ -347,7 +347,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
      *
-     * @param Form_Render &$render Reference to pnForm render object.
+     * @param Form_View &$render Reference to pnForm render object.
      * @param array       &$values Values to load.
      *
      * @return void

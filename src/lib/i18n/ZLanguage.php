@@ -376,7 +376,6 @@ class ZLanguage
         }
 
         // prevent double loading
-        //if (isset($_this->domainCache[$locale][$domain])) {
         if (array_key_exists($domain, $_this->domainCache[$locale])) {
             return true;
         }

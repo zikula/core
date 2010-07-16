@@ -52,7 +52,7 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
     /**
      * Load event handler.
      *
-     * @param Form_Render &$render Reference to pnForm render object.
+     * @param Form_View &$render Reference to pnForm render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @return void

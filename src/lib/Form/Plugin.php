@@ -114,7 +114,7 @@
  * - A::postRender
  * - B::postRender
  */
-class Form_Plugin
+abstract class Form_Plugin implements Zikula_Translatable
 {
     /**
      * Plugin identifier.
@@ -215,16 +215,34 @@ class Form_Plugin
     public $volatile;
 
     /**
+     * Translation domain.
+     *
+     * @var string
+     */
+    protected $domain;
+
+    /**
      * Constructor.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      */
-    public function __construct(&$render, &$params)
+    public function __construct(&$view, &$params)
     {
         $this->plugins = array();
         $this->attributes = array();
         $this->visible = true;
+        $this->domain = $view->getDomain();
+    }
+
+    /**
+     * Get translation domain.
+     *
+     * @return string $this->domain
+     */
+    public function getDomain()
+    {
+        return $this->domain;
     }
 
     /**
@@ -234,12 +252,12 @@ class Form_Plugin
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$view   Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function readParameters(&$render, &$params)
+    public function readParameters(&$view, &$params)
     {
         $varInfo = get_class_vars(get_class($this));
 
@@ -258,12 +276,12 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @param Form_Render &$render Reference to Form render object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View &$view   Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function create(&$render, &$params)
+    public function create(&$view, &$params)
     {
     }
 
@@ -272,12 +290,12 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @param Form_Render &$render Reference to Form render object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View &$view   Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function load(&$render, &$params)
+    public function load(&$view, &$params)
     {
     }
 
@@ -286,11 +304,11 @@ class Form_Plugin
      *
      * Default action is to do nothing. Typically used to add self as validator.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form_View object.
      *
      * @return void
      */
-    public function initialize(&$render)
+    public function initialize(&$view)
     {
     }
 
@@ -299,11 +317,11 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$view Reference to Form_View object.
      *
      * @return void
      */
-    public function decode(&$render)
+    public function decode(&$view)
     {
     }
 
@@ -313,11 +331,11 @@ class Form_Plugin
      * Default action is to do nothing. Usefull for buttons that should generate events
      * after the plugins have decoded their normal values.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$view Reference to Form_View object.
      *
      * @return void
      */
-    public function decodePostBackEvent(&$render)
+    public function decodePostBackEvent(&$view)
     {
     }
 
@@ -326,16 +344,16 @@ class Form_Plugin
      *
      * Default action is to call onDataBound handler in form event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View &$render Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function dataBound(&$render, &$params)
+    public function dataBound(&$view, &$params)
     {
         if ($this->onDataBound != null) {
             $dataBoundHandlerName = $this->onDataBound;
-            $render->eventHandler->$dataBoundHandlerName($render, $this, $params);
+            $render->eventHandler->$dataBoundHandlerName($view, $this, $params);
         }
     }
 
@@ -344,7 +362,7 @@ class Form_Plugin
      *
      * Default action is to do render all attributes in form name="value".
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$view Reference to Form render object.
      *
      * @return string The rendered output.
      */
@@ -363,11 +381,11 @@ class Form_Plugin
      *
      * Default action is to return an empty string.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    public function render(&$render)
+    public function render(&$view)
     {
         return '';
     }
@@ -377,11 +395,11 @@ class Form_Plugin
      *
      * Default action is to return an empty string.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    public function renderBegin(&$render)
+    public function renderBegin(&$view)
     {
         return '';
     }
@@ -391,12 +409,12 @@ class Form_Plugin
      *
      * Default action is to return the content unmodified.
      *
-     * @param Form_Render &$render Reference to Form render object.
-     * @param string      $content The content to handle.
+     * @param Form_View &$view Reference to Form_View object.
+     * @param string    $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */
-    public function renderContent(&$render, $content)
+    public function renderContent(&$view, $content)
     {
         return $content;
     }
@@ -406,11 +424,11 @@ class Form_Plugin
      *
      * Default action is to return an empty string.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$view Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    public function renderEnd(&$render)
+    public function renderEnd(&$view)
     {
         return '';
     }
@@ -420,11 +438,11 @@ class Form_Plugin
      *
      * Default action is to do nothing.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$view Reference to Form_View object.
      *
      * @return void
      */
-    public function postRender(&$render)
+    public function postRender(&$view)
     {
     }
 
@@ -433,12 +451,12 @@ class Form_Plugin
      *
      * Default action is to add the plugin to $this->plugins.
      *
-     * @param Form_Render &$render Reference to Form render object.
-     * @param Form_Plugin $plugin  A Form plugin to add.
+     * @param Form_View   &$view  Reference to Form_View object.
+     * @param Form_Plugin $plugin A Form plugin to add.
      *
      * @return void
      */
-    public function registerPlugin(&$render, $plugin)
+    public function registerPlugin(&$view, $plugin)
     {
         $this->plugins[] = $plugin;
     }
@@ -466,5 +484,59 @@ class Form_Plugin
         }
 
         return " id=\"$id\"";
+    }
+
+    /**
+     * singular translation for modules.
+     *
+     * @param string $msg Message.
+     *
+     * @return string
+     */
+    public function __($msg)
+    {
+        return __($this->domain, $msg);
+    }
+
+    /**
+     * Plural translations for modules.
+     *
+     * @param string  $m1 Singular.
+     * @param string  $m2 Plural.
+     * @param integer $n  Count.
+     *
+     * @return string
+     */
+    public function _n($m1, $m2, $n)
+    {
+        return _n($this->domain, $m1, $m2, $n);
+    }
+
+    /**
+     * Format translations for modules.
+     *
+     * @param string       $msg   Message.
+     * @param string|array $param Format parameters.
+     *
+     * @return string
+     */
+    public function __f($msg, $param)
+    {
+        return __f($msg, $param, $this->domain);
+    }
+
+    /**
+     * Format pural translations for modules.
+     *
+     * @param string       $m1    Singular.
+     * @param string       $m2    Plural.
+     * @param integer      $n     Count.
+     * @param string|array $param Format parameters.
+     *
+     * @return string
+     */
+    public function __fn($m1, $m2, $n, $param)
+    {
+        return _fn($m1, $m2, $n, $param, $this->domain);
     }
 }

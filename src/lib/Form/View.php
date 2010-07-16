@@ -155,15 +155,15 @@ class Form_View extends Zikula_View
      *
      * This is the function to call instead of the normal $render->fetch(...).
      *
-     * @param boolean       $template      Name of template file.
-     * @param pnFormHandler &$eventHandler Instance of object that inherits from pnFormHandler.
+     * @param boolean      $template     Name of template file.
+     * @param Form_Handler $eventHandler Instance of object that inherits from pnFormHandler.
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
-    public function execute($template, &$eventHandler)
+    public function execute($template, Form_Handler $eventHandler)
     {
         // Save handler for later use
-        $this->eventHandler = &$eventHandler;
+        $this->eventHandler = $eventHandler;
 
         if ($this->isPostBack()) {
             if (!SecurityUtil::confirmAuthKey())

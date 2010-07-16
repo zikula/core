@@ -27,11 +27,11 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
 {
     /**
      * Default text to display instead of empty.
-     * 
+     *
      * @var string
      */
     protected $defaultText;
-    
+
     /**
      * Get filename of this file.
      *
@@ -41,11 +41,11 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
     {
         return __FILE__;
     }
-    
+
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -54,14 +54,14 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
         if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
             $this->text = $this->defaultText;
         }
-        
+
         return parent::render($render);
     }
 
     /**
      * Create event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
@@ -75,12 +75,12 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
 
         $this->cssClass .= ' url';
     }
-    
+
     /**
      * Decode post back event.
-     * 
-     * @param Form_Render &$render Reference to Form render object.
-     * 
+     *
+     * @param Form_View &$render Reference to Form render object.
+     *
      * @return void
      */
     function decodePostBackEvent(&$render)
@@ -93,7 +93,7 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
     /**
      * Validates the input.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return void
      */

@@ -112,7 +112,7 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -146,7 +146,7 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
      *
-     * @param Form_Render &$render       Reference to Form render object.
+     * @param Form_View &$render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
      *
      * @return void

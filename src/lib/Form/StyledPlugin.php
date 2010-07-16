@@ -31,7 +31,7 @@
  * $this->styleAttributes['border-right'] = '1px solid green';
  * </code>
  */
-class Form_StyledPlugin extends Form_Plugin
+abstract class Form_StyledPlugin extends Form_Plugin
 {
     /**
      * Styles added programatically.
@@ -43,11 +43,11 @@ class Form_StyledPlugin extends Form_Plugin
     /**
      * Render attributes.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form_View object.
      *
      * @return string
      */
-    public function renderAttributes(&$render)
+    public function renderAttributes(&$view)
     {
         static $styleElements = array('width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size');
 

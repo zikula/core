@@ -72,7 +72,7 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -90,7 +90,7 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
      *
-     * @param Form_Render &$render       Reference to Form render object.
+     * @param Form_View &$render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
      *
      * @return void

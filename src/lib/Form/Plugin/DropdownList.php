@@ -195,7 +195,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Create event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
@@ -210,7 +210,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Load event handler.
      *
-     * @param Form_Render &$render Reference to pnForm render object.
+     * @param Form_View &$render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -233,7 +233,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -319,7 +319,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
      *
-     * @param Form_Render &$render       Reference to Form render object.
+     * @param Form_View &$render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
      *
      * @return void
@@ -337,7 +337,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Decode event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return void
      */
@@ -370,7 +370,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Validates the input.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return void
      */

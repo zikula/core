@@ -108,7 +108,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -138,7 +138,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
     /**
      * Decode event handler for actions that generate a postback event.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return boolean
      */

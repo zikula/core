@@ -48,7 +48,7 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
@@ -66,7 +66,7 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
     /**
      * Validates the input.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return void
      */
@@ -96,7 +96,7 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
     /**
      * Parses a value.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param string      $text    Text.
      *
      * @return string Parsed Text.

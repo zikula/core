@@ -70,7 +70,7 @@ class Form_Block_Volatile extends Form_Plugin
     /**
      * Create event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin

@@ -14,11 +14,11 @@
  */
 
 /**
- * Smarty function to wrap Form_Render generated form controls with suitable form tags.
+ * Smarty function to wrap Form_View generated form controls with suitable form tags.
  *
  * @param array       $params  Parameters passed in the block tag.
  * @param string      $content Content of the block.
- * @param Form_Render &$render Reference to Form render object.
+ * @param Form_View &$render Reference to Form render object.
  *
  * @return string The rendered output.
  */

@@ -92,7 +92,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @see    Form_Plugin
      * @return void
@@ -106,7 +106,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * DataBound event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @see    Form_Plugin
      * @return void
@@ -120,7 +120,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * RenderBegin event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -140,7 +140,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * RenderEnd event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */

@@ -50,7 +50,7 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
     /**
      * Render event handler.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return string The rendered output
      */
@@ -79,7 +79,7 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
     /**
      * Decode event handler for actions that generate a postback event.
      *
-     * @param Form_Render &$render Reference to Form render object.
+     * @param Form_View &$render Reference to Form render object.
      *
      * @return boolean
      */
