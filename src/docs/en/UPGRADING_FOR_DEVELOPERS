@@ -484,6 +484,12 @@ Dozens of getter and setters have been added to try and encapsulate things more 
 one day, allow a more easy migration away from Smarty 2.  Please desist from
 direct access to properties and use the getter/setters.
 
+Zikula_View (and thus Zikula_Theme, Form_View etc) all now make use of Zikula_Translatable
+which means that translation methods are always available and pre-configured to the
+correct domain.
+
+Inside a template plugin simply use $view->__() etc.
+
 FORMS
 =====
 Please note that form handlers (instances of Form_Handler) must extend the base
@@ -494,3 +500,4 @@ In the case of Form_Handler, the translation domain is set automatically when
 Form_View#execute() is invoked.
 
 In the case of Form_Plugins, the translation domain is set automatically when
+Form_Plugin#registerPlugin() is invoked.
