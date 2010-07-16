@@ -482,8 +482,7 @@ class Zikula_Theme extends Zikula_View
         ob_end_clean();
 
         $event = new Zikula_Event('theme.prefooter', $this, array(), $maincontent);
-        EventUtil::notify($event);
-        $maincontent = $event->getData();
+        $maincontent = $this->eventManager->notify($event)->getData();
 
         // add the module wrapper
         if (!$this->system && (!isset($this->themeconfig['modulewrapper']) || $this->themeconfig['modulewrapper'])) {
