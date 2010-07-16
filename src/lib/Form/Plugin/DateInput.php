@@ -208,7 +208,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
                 $result .= __('Select date');
             }
             $result .= '</span>';
-            if ($this->mandatory) {
+            if ($this->mandatory && $this->mandatorysym) {
                 $result .= '<span class="z-mandatorysym">*</span>';
             }
         } else {
