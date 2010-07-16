@@ -164,6 +164,7 @@ class Form_View extends Zikula_View
     {
         // Save handler for later use
         $this->eventHandler = $eventHandler;
+        $this->eventHandler->setDomain($this->domain);
 
         if ($this->isPostBack()) {
             if (!SecurityUtil::confirmAuthKey())
@@ -219,7 +220,7 @@ class Form_View extends Zikula_View
      * { ... }
      *
      * // Smarty plugin function
-     * function smarty_function_myplugin($params, &$render)
+     * function smarty_function_myplugin($params, $render)
      * {
      *   return $render->registerPlugin('MyPlugin', $params);
      * }
@@ -317,7 +318,7 @@ class Form_View extends Zikula_View
      * { ... }
      *
      * // Smarty block function
-     * function smarty_block_myblock($params, $content, &$render)
+     * function smarty_block_myblock($params, $content, $render)
      * {
      *   return return $render->registerBlock('MyBlock', $params, $content);
      * }
@@ -644,7 +645,7 @@ class Form_View extends Zikula_View
      *
      * Example:
      * <code>
-     * function initialize(&$render)
+     * function initialize($render)
      * {
      *   if (... not has access ...)
      *     return $render->registerError(LogUtil::registerPermissionError());
@@ -683,11 +684,11 @@ class Form_View extends Zikula_View
      *
      * Call this method to get a piece of code that will generate a postback event. The returned JavaScript code can
      * be called at any time to generate the postback. The plugin that receives the postback must implement
-     * a function "raisePostBackEvent(&$render, $eventArgument)" that will handle the event.
+     * a function "raisePostBackEvent($render, $eventArgument)" that will handle the event.
      *
      * Example (taken from the {@link pnFormContextMenuItem} plugin):
      * <code>
-     * function render(&$render)
+     * function render($render)
      * {
      *   $click = $render->getPostBackEventReference($this, $this->commandName);
      *   $url = 'javascript:' . $click;
@@ -697,7 +698,7 @@ class Form_View extends Zikula_View
      *   return $html;
      * }
      *
-     * function raisePostBackEvent(&$render, $eventArgument)
+     * function raisePostBackEvent($render, $eventArgument)
      * {
      *   $args = array('commandName' => $eventArgument, 'commandArgument' => null);
      *   $render->raiseEvent($this->onCommand == null ? 'handleCommand' : $this->onCommand, $args);
