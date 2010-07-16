@@ -46,14 +46,14 @@
  *  <samp>{array_size array=$myvar assign='mycount'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return integer The number of elements in the specified array, or 0 (zero)
  *                 if the array is empty, or 0 (zero) if the specified
  *                 template variable is not an array; returns null if the
  *                 assign parameter is specified.
  */
-function smarty_function_array_size($params, &$view)
+function smarty_function_array_size($params, $view)
 {
     $val = 0;
     if (is_array($params['array'])) {

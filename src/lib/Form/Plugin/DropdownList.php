@@ -32,7 +32,7 @@
  * <code>
  * class mymodule_user_testHandler extends pnFormHandler
  * {
- * function initialize(&$render)
+ * function initialize($render)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -51,7 +51,7 @@
  * <code>
  * class mymodule_user_testHandler extends pnFormHandler
  * {
- * function initialize(&$render)
+ * function initialize($render)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -72,7 +72,7 @@
  * <code>
  * class mymodule_user_testHandler extends pnFormHandler
  * {
- * function initialize(&$render)
+ * function initialize($render)
  * {
  * $items = array( array('text' => 'A', 'value' => '1', 'optgroup' => 'AAA'),
  * array('text' => 'B', 'value' => '2', 'optgroup' => 'BBB'),
@@ -195,13 +195,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, $params)
+    function create($render, $params)
     {
         parent::create($render, $params);
         $this->selectedIndex = -1;
@@ -210,12 +210,12 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Load event handler.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(&$render, &$params)
+    function load($render, &$params)
     {
         parent::load($render, $params);
 
@@ -233,11 +233,11 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
 
@@ -319,12 +319,12 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
      *
-     * @param Form_View &$render       Reference to Form render object.
+     * @param Form_View $render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
      *
      * @return void
      */
-    function raisePostBackEvent(&$render, $eventArgument)
+    function raisePostBackEvent($render, $eventArgument)
     {
         $args = array(
             'commandName' => null,
@@ -337,11 +337,11 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Decode event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function decode(&$render)
+    function decode($render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -370,11 +370,11 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Validates the input.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function validate(&$render)
+    function validate($render)
     {
         $this->clearValidation($render);
 

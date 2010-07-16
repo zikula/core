@@ -48,14 +48,14 @@
  *  <samp>{array_field_isset array=$myarray field='arraykey' returnValue=1 assign='myValue'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return boolean|mixed if returnValue is not set, then returns true if the array
  *                       element is set, otherwise false; if returnValue is set,
  *                       then returns the value of the array element if it is set,
  *                       otherwise false.
  */
-function smarty_function_array_field_isset($params, &$view)
+function smarty_function_array_field_isset($params, $view)
 {
     $array       = isset($params['array'])       ? $params['array']        : null;
     $field       = isset($params['field'])       ? $params['field']        : null;

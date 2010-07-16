@@ -26,12 +26,12 @@
  * {previewimage name=andreas08 size=large}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.title.php::smarty_function_previewimage()
  * @return string The markup to display the theme image.
  */
-function smarty_function_previewimage($params, &$view)
+function smarty_function_previewimage($params, $view)
 {
     if (!isset($params['name'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('previewimage', 'name')));

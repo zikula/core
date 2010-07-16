@@ -20,7 +20,7 @@
  * you want the error message to be displayed. Then, on postback, you can do as shown here to set the
  * error message:
  * <code>
- *  function handleCommand(&$render, &$args)
+ *  function handleCommand($render, &$args)
  *  {
  *    if ($args['commandName'] == 'update')
  *    {
@@ -44,11 +44,11 @@
  * Beware that {@link pnFormRender::pnFormGetPluginById()} only works on postback.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formerrormessage($params, &$render)
+function smarty_function_formerrormessage($params, $render)
 {
     return $render->registerPlugin('Form_Plugin_ErrorMessage', $params);
 }

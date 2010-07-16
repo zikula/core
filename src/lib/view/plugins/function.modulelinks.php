@@ -32,12 +32,12 @@
  *  class     CSS class (optional).
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string A formatted string containing navigation for the module admin panel.
  */
 
-function smarty_function_modulelinks($params, &$view)
+function smarty_function_modulelinks($params, $view)
 {
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
     $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';

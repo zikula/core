@@ -47,11 +47,11 @@
  *  optimize           Only deliver page links which are actually displayed to the template (default: false)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_pager($params, &$view)
+function smarty_function_pager($params, $view)
 {
     if (!isset($params['rowcount'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pager', 'rowcount')));
@@ -234,14 +234,14 @@ function smarty_function_pager($params, &$view)
 
             if ($pager['maxPages'] > 0 &&
                 (($currItem < $leftMargin && $currItem > 1) || ($currItem > $rightMargin && $currItem <= $pager['countPages']))) {
-                
+
                 if ($pager['optimize']) {
                     continue;
                 } else {
                     $currItemVisible = false;
                 }
             }
-            
+
             if ($params['display'] == 'page') {
                 $pager['args'][$pager['posvar']] = $currItem;
             } else {

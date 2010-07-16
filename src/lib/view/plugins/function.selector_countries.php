@@ -23,11 +23,11 @@
  *  defaultText   Text to go with the default value
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_selector_countries($params, &$view)
+function smarty_function_selector_countries($params, $view)
 {
     $allValue         = isset($params['allValue'])         ? $params['allValue']         : 0;
     $allText          = isset($params['allText'])          ? $params['allText']          : '';

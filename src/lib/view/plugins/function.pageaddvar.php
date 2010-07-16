@@ -40,11 +40,11 @@
  *   {pageaddvar name='javascript' value='path/to/myscript.js,path/to/another/script.js'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_pageaddvar($params, &$view)
+function smarty_function_pageaddvar($params, $view)
 {
     $name  = isset($params['name'])  ? $params['name']  : null;
     $value = isset($params['value']) ? $params['value'] : null;

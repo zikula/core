@@ -29,11 +29,11 @@
  *   {getcurrenturi lang='de'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The current URI.
  */
-function smarty_function_getcurrenturi($params, &$view)
+function smarty_function_getcurrenturi($params, $view)
 {
     $assign = null;
     if (isset($params['assign'])) {

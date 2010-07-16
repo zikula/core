@@ -17,11 +17,11 @@
  * User selector.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_selector_user ($params, &$view)
+function smarty_function_selector_user ($params, $view)
 {
     $field            = isset($params['field'])            ? $params['field']            : 'uid';
     $selectedValue    = isset($params['selectedValue'])    ? $params['selectedValue']    : 0;

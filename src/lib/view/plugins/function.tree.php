@@ -17,11 +17,11 @@
  * Zikula_View function to include the relevant files for the phpLayersMenu and pass a previously generated menu string to phpLayersMenu
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The results of the module function
  */
-function smarty_function_tree ($params, &$view)
+function smarty_function_tree ($params, $view)
 {
     $menuString = isset($params['menustring']) ? $params['menustring'] : null;
     $menuArray = isset($params['menuarray']) ? $params['menuarray'] : null;

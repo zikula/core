@@ -39,13 +39,13 @@
  *  <samp>{array_field_pop array='myarray' field='arraykey' unset=1 assign='myValue'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return null The value of the specified array element is return
  *              in the specified template variable if it is set,
  *              otherwise the template variable is set to false; no output to the template.
  */
-function smarty_function_array_field_pop($params, &$view)
+function smarty_function_array_field_pop($params, $view)
 {
     $array       = isset($view->_tpl_vars[$params['array']]);
     $field       = isset($params['field'])   ? $params['field']   : null;

@@ -20,11 +20,11 @@
  * The selected value of the base dropdown list will be set to ID of the selected category.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formcategoryselector($params, &$render)
+function smarty_function_formcategoryselector($params, $render)
 {
     return $render->registerPlugin('Form_Plugin_CategorySelector', $params);
 }

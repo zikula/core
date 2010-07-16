@@ -21,7 +21,7 @@
  * will be sent to the form event handlers handleCommand function.
  * Example:
  * <code>
- * function handleCommand(&$render, &$args)
+ * function handleCommand($render, &$args)
  * {
  * if ($args['commandName'] == 'update')
  * {
@@ -108,11 +108,11 @@ class Form_Plugin_Button extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
 
@@ -138,11 +138,11 @@ class Form_Plugin_Button extends Form_StyledPlugin
     /**
      * Decode event handler for actions that generate a postback event.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return boolean
      */
-    function decodePostBackEvent(&$render)
+    function decodePostBackEvent($render)
     {
         $fullName = $this->id . '_' . $this->commandName;
 

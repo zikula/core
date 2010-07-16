@@ -17,11 +17,11 @@
  * Zikula_View outputfilter to add a title to all admin pages
  *
  * @param string $source  Output source.
- * @param Zikula_View &$view Reference to Zikula_View instance.
+ * @param Zikula_View $view Reference to Zikula_View instance.
  *
  * @return string
  */
-function smarty_outputfilter_admintitle($source, &$view)
+function smarty_outputfilter_admintitle($source, $view)
 {
     // get all the matching H1 tags
     $regex = "/<h1>[^<]*<\/h1>/";

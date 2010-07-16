@@ -41,7 +41,7 @@
  * In your event handler (which defaults to "handleCommand") you should check for both commandName and
  * commandArgument:
  * <code>
- * function handleCommand(&$render, &$args)
+ * function handleCommand($render, &$args)
  * {
  *   echo "Command: $args[commandName], $args[commandArgument]. ";
  * }
@@ -52,11 +52,11 @@
  *
  * @param array       $params  Parameters passed in the block tag.
  * @param string      $content Content of the block.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_block_formcontextmenu($params, $content, &$render)
+function smarty_block_formcontextmenu($params, $content, $render)
 {
     return $render->registerBlock('Form_Block_ContextMenu', $params, $content);
 }

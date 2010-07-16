@@ -28,12 +28,12 @@
  *  js             Use javascript to automatically clear the default value (defaults to true)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.userlogin.php::smarty_function_userlogin()
  * @return string The welcome message.
  */
-function smarty_function_userlogin($params, &$view)
+function smarty_function_userlogin($params, $view)
 {
     if (!UserUtil::isLoggedIn()) {
         // set some defaults

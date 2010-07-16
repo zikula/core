@@ -24,11 +24,11 @@
  * <input type="hidden" name="authid" value="{insert name="generateauthkey" module="Users" }" />
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_insert_generateauthkey($params, &$view)
+function smarty_insert_generateauthkey($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $module = isset($params['module']) ? $params['module'] : null;

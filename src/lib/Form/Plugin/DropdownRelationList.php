@@ -96,13 +96,13 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, &$params)
+    function create($render, &$params)
     {
         if (!isset($params['module']) || empty($params['module'])) {
             $render->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
@@ -174,12 +174,12 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     /**
      * Load event handler.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(&$render, $params)
+    function load($render, $params)
     {
         ModUtil::dbInfoLoad($this->module);
 

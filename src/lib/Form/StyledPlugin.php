@@ -43,11 +43,11 @@ abstract class Form_StyledPlugin extends Form_Plugin
     /**
      * Render attributes.
      *
-     * @param Form_View &$render Reference to Form_View object.
+     * @param Form_View $render Reference to Form_View object.
      *
      * @return string
      */
-    public function renderAttributes(&$view)
+    public function renderAttributes($view)
     {
         static $styleElements = array('width', 'height', 'color', 'background_color', 'border', 'padding', 'margin', 'float', 'display', 'position', 'visibility', 'overflow', 'clip', 'font', 'font_family', 'font_style', 'font_weight', 'font_size');
 

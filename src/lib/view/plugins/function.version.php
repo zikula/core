@@ -22,11 +22,11 @@
  *  - assign      if set, the language will be assigned to this variable
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$view Reference to the Zikula_View object.
+ * @param object $view Reference to the Zikula_View object.
  *
  * @return   string   the version string
  */
-function smarty_function_version($params, &$view)
+function smarty_function_version($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 

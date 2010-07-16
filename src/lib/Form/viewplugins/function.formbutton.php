@@ -21,7 +21,7 @@
  * will be sent to the form event handlers handleCommand function.
  * Example:
  * <code>
- *  function handleCommand(&$render, &$args)
+ *  function handleCommand($render, &$args)
  *  {
  *    if ($args['commandName'] == 'update')
  *    {
@@ -41,11 +41,11 @@
  * 'commandArgument' with the values you passed to the button in the template.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formbutton($params, &$render)
+function smarty_function_formbutton($params, $render)
 {
     return $render->registerPlugin('Form_Plugin_Button', $params);
 }

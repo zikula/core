@@ -22,11 +22,11 @@
  *   - none
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The value of the config var entrypoint.
  */
-function smarty_function_entrypoint($params, &$view)
+function smarty_function_entrypoint($params, $view)
 {
     return System::getVar('entrypoint', 'index.php');
 }

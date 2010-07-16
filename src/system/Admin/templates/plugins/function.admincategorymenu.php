@@ -22,10 +22,10 @@
  * @since        16.01.2005
  * @see          function.admincategorymenu.php::smarty_function_admincategoreymenu()
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @return       string      the results of the module function
  */
-function smarty_function_admincategorymenu($params, &$smarty)
+function smarty_function_admincategorymenu($params, $smarty)
 {
     PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin'));
 

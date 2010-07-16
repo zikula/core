@@ -81,12 +81,12 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
     /**
      * RenderContent event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */
-    function renderContent(&$render, $content)
+    function renderContent($render, $content)
     {
         // Beware - working on 1-based offset!
 
@@ -132,13 +132,13 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
      *
      * Called by child panels to register themselves.
      *
-     * @param Form_View             &$render Reference to Form render object.
+     * @param Form_View             $render Reference to Form render object.
      * @param Form_Plugin_TabbedPanel &$panel  Panel object.
      * @param string                  $title   Panel title.
      *
      * @return void
      */
-    function registerTabbedPanel(&$render, &$panel, $title)
+    function registerTabbedPanel($render, &$panel, $title)
     {
         $panel->panelSetId = $this->id;
         if (!$render->isPostBack()) {
@@ -151,11 +151,11 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
     /**
      * Decode event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function decode(&$render)
+    function decode($render)
     {
         $this->selectedIndex = (int)FormUtil::getPassedValue("{$this->id}SelectedIndex", 1);
     }

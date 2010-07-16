@@ -38,11 +38,11 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $validators = & $render->validators;
         $html = '';

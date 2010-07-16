@@ -32,12 +32,12 @@
  *   {if $barishookedtofoo}.....{/if}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.modishooked.php::smarty_function_modishooked()
  * @return boolean True if the module is available; false otherwise.
  */
-function smarty_function_modishooked($params, &$view)
+function smarty_function_modishooked($params, $view)
 {
     $assign   = isset($params['assign'])   ? $params['assign']   : null;
     $smodname = isset($params['smodname']) ? $params['smodname'] : null;

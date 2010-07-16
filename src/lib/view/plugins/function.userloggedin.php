@@ -22,11 +22,11 @@
  *  - assign      if set, the loggedin status will be assigned to this variable
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$view Reference to the Zikula_View object.
+ * @param object $view Reference to the Zikula_View object.
  *
  * @return   bool   the logged in status
  */
-function smarty_function_userloggedin($params, &$view)
+function smarty_function_userloggedin($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 

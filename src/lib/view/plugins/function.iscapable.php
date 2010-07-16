@@ -19,11 +19,11 @@
  * param takes 'modules' and 'capability' keys.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string Translation if it was available.
  */
-function smarty_function_iscapable($params, &$view)
+function smarty_function_iscapable($params, $view)
 {
     if (!isset($params['module'])) {
         $view->trigger_error(__('Error! "module" parameter must be specified.'));

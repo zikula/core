@@ -23,11 +23,11 @@
  *   {homepage}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$view Reference to the Zikula_View object.
+ * @param object $view Reference to the Zikula_View object.
  *
  * @return string The base URL of the site.
  */
-function smarty_function_homepage($params, &$view)
+function smarty_function_homepage($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 

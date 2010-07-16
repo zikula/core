@@ -38,11 +38,11 @@
  *   {pageregistervar name='title'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The module variable.
  */
-function smarty_function_pageregistervar($params, &$view)
+function smarty_function_pageregistervar($params, $view)
 {
     $name = isset($params['name']) ? $params['name'] : null;
 

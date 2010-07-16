@@ -87,13 +87,13 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, $params)
+    function create($render, $params)
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically
@@ -111,12 +111,12 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(&$render, &$params)
+    function load($render, &$params)
     {
         $this->loadValue($render, $render->get_template_vars());
     }
@@ -127,12 +127,12 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$values Values to load.
      *
      * @return void
      */
-    function loadValue(&$render, &$values)
+    function loadValue($render, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -164,11 +164,11 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
 
@@ -186,11 +186,11 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
     /**
      * Decode event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function decode(&$render)
+    function decode($render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -204,12 +204,12 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$data   Data object.
      *
      * @return void
      */
-    function saveValue(&$render, &$data)
+    function saveValue($render, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

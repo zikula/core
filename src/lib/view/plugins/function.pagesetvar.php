@@ -39,11 +39,11 @@
  *   {pagesetvar name="title" value="mytitle"}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_pagesetvar($params, &$view)
+function smarty_function_pagesetvar($params, $view)
 {
     $name  = isset($params['name'])  ? $params['name']  : null;
     $value = isset($params['value']) ? $params['value'] : null;

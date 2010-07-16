@@ -37,11 +37,11 @@
  * <samp><p>Welcome to {$thename|varprepfordisplay}!</p></samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return mixed The value of the configuration variable.
  */
-function smarty_function_configgetvar($params, &$view)
+function smarty_function_configgetvar($params, $view)
 {
     $name      = isset($params['name'])    ? $params['name']    : null;
     $default   = isset($params['default']) ? $params['default'] : null;

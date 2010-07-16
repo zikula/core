@@ -19,11 +19,11 @@
  * This plugin creates a context menu reference.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formcontextmenureference($params, &$render)
+function smarty_function_formcontextmenureference($params, $render)
 {
     $output = $render->registerPlugin('Form_Plugin_ContextMenu_Reference', $params);
     if (array_key_exists('assign', $params)) {

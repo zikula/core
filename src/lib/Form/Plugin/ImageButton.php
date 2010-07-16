@@ -50,11 +50,11 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
 
@@ -79,11 +79,11 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
     /**
      * Decode event handler for actions that generate a postback event.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return boolean
      */
-    function decodePostBackEvent(&$render)
+    function decodePostBackEvent($render)
     {
         $fullNameX = $this->id . '_' . $this->commandName . '_x';
         $fullNameY = $this->id . '_' . $this->commandName . '_y';

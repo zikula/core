@@ -18,11 +18,11 @@
  *
  * @param array       $params  Parameters passed in the block tag.
  * @param string      $content Content of the block.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_block_form($params, $content, &$render)
+function smarty_block_form($params, $content, $render)
 {
     if ($content) {
         PageUtil::addVar('stylesheet', 'system/Theme/style/form/style.css');

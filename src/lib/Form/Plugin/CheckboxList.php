@@ -27,7 +27,7 @@
  * <code>
  * class mymodule_user_testHandler extends pnFormHandler
  * {
- * function initialize(&$render)
+ * function initialize($render)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -46,7 +46,7 @@
  * <code>
  * class mymodule_user_testHandler extends pnFormHandler
  * {
- * function initialize(&$render)
+ * function initialize($render)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
@@ -130,13 +130,13 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, $params)
+    function create($render, $params)
     {
         parent::create($render, $params);
     }
@@ -144,12 +144,12 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Load event handler.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(&$render, &$params)
+    function load($render, &$params)
     {
         parent::load($render, $params);
 
@@ -161,11 +161,11 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
 
@@ -253,11 +253,11 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Decode event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function decode(&$render)
+    function decode($render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         // Besides that, a disabled checkbox returns nothing at all, so old values are good to keep
@@ -277,11 +277,11 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Validates the input.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function validate(&$render)
+    function validate($render)
     {
         $this->clearValidation($render);
 
@@ -306,11 +306,11 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
     /**
      * Clears the validation data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function clearValidation(&$render)
+    function clearValidation($render)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -322,12 +322,12 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$data   Data object.
      *
      * @return void
      */
-    function saveValue(&$render, &$data)
+    function saveValue($render, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {
@@ -347,12 +347,12 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$values Values to load.
      *
      * @return void
      */
-    function loadValue(&$render, &$values)
+    function loadValue($render, &$values)
     {
         if ($this->dataBased) {
             $items = null;

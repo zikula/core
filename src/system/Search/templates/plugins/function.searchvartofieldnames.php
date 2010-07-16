@@ -26,10 +26,10 @@
  *   <!--[searchvartofieldnames assign='fnames']-->
  *
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @return       boolean false on error
  */
-function smarty_function_searchvartofieldnames($params, &$smarty)
+function smarty_function_searchvartofieldnames($params, $smarty)
 {
     $arr = array();
     if (isset($params['data']) && !empty($params['data'])) {

@@ -22,11 +22,11 @@
  * the header for the output to function correctly.
  *
  * @param string $source  Output source.
- * @param Zikula_View &$view Reference to Zikula_View instance.
+ * @param Zikula_View $view Reference to Zikula_View instance.
  *
  * @return string
  */
-function smarty_outputfilter_pagevars($source, &$view)
+function smarty_outputfilter_pagevars($source, $view)
 {
     $return = '';
 

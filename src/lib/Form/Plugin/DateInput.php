@@ -84,13 +84,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, &$params)
+    function create($render, &$params)
     {
         $this->includeTime = (array_key_exists('includeTime', $params) ? $params['includeTime'] : 0);
         $this->daFormat = (array_key_exists('daFormat', $params) ? $params['daFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
@@ -108,11 +108,11 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         static $firstTime = true;
 
@@ -262,12 +262,12 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Parses a value.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $text    Text.
      *
      * @return string Parsed Text.
      */
-    function parseValue(&$render, $text)
+    function parseValue($render, $text)
     {
         if (empty($text)) {
             return null;
@@ -278,11 +278,11 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Validates the input string.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function validate(&$render)
+    function validate($render)
     {
         parent::validate($render);
         if (!$this->isValid) {
@@ -308,12 +308,12 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Format the value to specific format.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $value   The value to format.
      *
      * @return string Formatted value.
      */
-    function formatValue(&$render, $value)
+    function formatValue($render, $value)
     {
         return DateUtil::formatDatetime($value, ($this->includeTime ? __('%Y-%m-%d %H:%M') : __('%Y-%m-%d')), false);
     }

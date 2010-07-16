@@ -21,11 +21,11 @@
  * @since        16.01.2005
  * @see          function.admincategorymenu.php::smarty_function_admincategoreymenu()
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @param        int         xhtml        if set, the link to the navtabs.css will be xhtml compliant
  * @return       string      the results of the module function
  */
-function smarty_function_adminonlinemanual($params, &$smarty)
+function smarty_function_adminonlinemanual($params, $smarty)
 {
     $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $modinfo = ModUtil::getInfoFromName(ModUtil::getName());

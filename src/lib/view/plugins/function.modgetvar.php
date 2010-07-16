@@ -33,11 +33,11 @@
  *   {modgetvar module='Example' name='foobar' assign='foobarOfExample'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The module variable.
  */
-function smarty_function_modgetvar($params, &$view)
+function smarty_function_modgetvar($params, $view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']     : null;
     $default = isset($params['default']) ? $params['default']    : null;

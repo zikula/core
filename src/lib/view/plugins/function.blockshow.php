@@ -24,11 +24,11 @@
  *                          template variable instead of being returned to the template (optional)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return string The rendered output of the specified block.
  */
-function smarty_function_blockshow($params, &$view)
+function smarty_function_blockshow($params, $view)
 {
     $module    = isset($params['module'])    ? $params['module']    : null;
     $blockname = isset($params['blockname']) ? $params['blockname'] : null;

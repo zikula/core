@@ -46,11 +46,11 @@
  * @author       Jusuff
  * @since        7/08/2008
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @return       string      unordered html list
  */
 
-function smarty_function_usermenutree($params, &$smarty)
+function smarty_function_usermenutree($params, $smarty)
 {
     $treeArray          = isset($params['data'])       ? $params['data'] : '';
     $treeId             = isset($params['id'])         ? $params['id'] : '';
@@ -62,7 +62,7 @@ function smarty_function_usermenutree($params, &$smarty)
     $plus               = isset($params['plus'])       ? $params['plus'] : 'plus.gif';
     $minus              = isset($params['minus'])      ? $params['minus'] : 'minus.gif';
 
-    $extendedOpt    = isset($params['extopt'])     ? $params['extopt'] : ''; 
+    $extendedOpt    = isset($params['extopt'])     ? $params['extopt'] : '';
     $ext_tmp = explode(',', $extendedOpt);
     $ext = array();
     $ext['first']       = !empty($ext_tmp[0]) ? $ext_tmp[0] : 'first';
@@ -72,7 +72,7 @@ function smarty_function_usermenutree($params, &$smarty)
     $ext['childless']   = !empty($ext_tmp[4]) ? $ext_tmp[4] : 'childless';
     $ext['level']       = !empty($ext_tmp[5]) ? $ext_tmp[5] : 'level';
     $ext['active']      = !empty($ext_tmp[6]) ? $ext_tmp[6] : 'active';
-    $ext['imgdir']      = isset($params['imgdir'])     ? $params['imgdir'] : 'system/Blocks/images'; 
+    $ext['imgdir']      = isset($params['imgdir'])     ? $params['imgdir'] : 'system/Blocks/images';
     $ext['folder']      = '<img class="folder" src="'.$imgdir.'/'.$folder.'" alt=""/>';
     $ext['plus']        = '<img class="toggle" src="'.$imgdir.'/'.$plus.'" alt=""/>';
     $ext['minus']       = '<img class="toggle" src="'.$imgdir.'/'.$minus.'" alt=""/>';

@@ -52,11 +52,11 @@
  *  skin           Use predefined values (hu - hungarian ABC)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_pagerabc($params, &$view)
+function smarty_function_pagerabc($params, $view)
 {
     if (!isset($params['posvar'])) {
         $params['posvar'] = 'letter';

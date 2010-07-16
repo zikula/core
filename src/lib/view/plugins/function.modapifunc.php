@@ -36,12 +36,12 @@
  *   {$myfoo.title}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.modfunc.php::smarty_function_modfunc()
  * @return string The results of the module API function.
  */
-function smarty_function_modapifunc($params, &$view)
+function smarty_function_modapifunc($params, $view)
 {
     //889$saveDomain = $view->renderDomain;
     $assign  = isset($params['assign'])                  ? $params['assign']  : null;

@@ -30,11 +30,11 @@
  * <samp>{blockposition name='left'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return string The rendered ouput of all of the blocks assigned to this position.
  */
-function smarty_function_blockposition($params, &$view)
+function smarty_function_blockposition($params, $view)
 {
     // fix the core positions for a better name
     if ($params['name'] == 'l') $params['name'] = 'left';

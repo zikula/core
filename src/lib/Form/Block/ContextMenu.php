@@ -41,7 +41,7 @@
  * In your event handler (which defaults to "handleCommand") you should check for both commandName and
  * commandArgument:
  * <code>
- * function handleCommand(&$render, &$args)
+ * function handleCommand($render, &$args)
  * {
  * echo "Command: $args[commandName], $args[commandArgument]. ";
  * }
@@ -92,12 +92,12 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render)
+    function create($render)
     {
         $this->styleAttributes['display'] = 'none';
         $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);
@@ -106,12 +106,12 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * DataBound event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function dataBound(&$render)
+    function dataBound($render)
     {
         PageUtil::AddVar('javascript', 'system/Theme/javascript/form/pnform.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
@@ -120,11 +120,11 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * RenderBegin event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function renderBegin(&$render)
+    function renderBegin($render)
     {
         if ($this->firstTime(false)) {
             $cssClass = ($this->cssClass == null ? "contextMenu" : $this->cssClass);
@@ -140,11 +140,11 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * RenderEnd event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function renderEnd(&$render)
+    function renderEnd($render)
     {
         if ($this->firstTime(true)) {
             $html = '</ul></div>';

@@ -53,11 +53,11 @@
  * <img src="modules/Example/images/eng/heading.gif" alt="" width="261" height="69"  />
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The img tag.
  */
-function smarty_function_icon($params, &$view)
+function smarty_function_icon($params, $view)
 {
     if (!isset($params['type'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_icon', 'type')));

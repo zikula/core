@@ -137,13 +137,13 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, $params)
+    function create($render, $params)
     {
         $this->inputName = $this->id;
 
@@ -160,11 +160,11 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender &$render Reference to pnForm render object.
+     * @param FormRender $render Reference to pnForm render object.
      *
      * @return void
      */
-    function initialize(&$render)
+    function initialize($render)
     {
         $render->addValidator($this);
     }
@@ -172,12 +172,12 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(&$render, &$params)
+    function load($render, &$params)
     {
         // The load function expects the plugin to read values from the render.
         // This can be done with the loadValue function (which can be called in other situations than
@@ -201,11 +201,11 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Clears the validation data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function clearValidation(&$render)
+    function clearValidation($render)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -217,12 +217,12 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$data   Data object.
      *
      * @return void
      */
-    function saveValue(&$render, &$data)
+    function saveValue($render, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {
@@ -241,12 +241,12 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$values Values to load.
      *
      * @return void
      */
-    function loadValue(&$render, &$values)
+    function loadValue($render, &$values)
     {
         if ($this->dataBased) {
             $items = null;

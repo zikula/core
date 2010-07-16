@@ -17,11 +17,11 @@
  * Object array selector.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_selector_object_array ($params, &$view)
+function smarty_function_selector_object_array ($params, $view)
 {
     $selectedValue  = (isset($params['selectedValue'])  ? $params['selectedValue']  : 0);
     $defaultValue   = (isset($params['defaultValue'])   ? $params['defaultValue']   : 0);

@@ -48,13 +48,13 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, &$params)
+    function create($render, &$params)
     {
         $this->maxLength = 30;
         $params['width'] = '6em';
@@ -64,11 +64,11 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Validates the input.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function validate(&$render)
+    function validate($render)
     {
         parent::validate($render);
         if (!$this->isValid) {
@@ -99,12 +99,12 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Parses a value.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $text    Text.
      *
      * @return string Parsed Text.
      */
-    function parseValue(&$render, $text)
+    function parseValue($render, $text)
     {
         if ($text == '') {
             return null;
@@ -119,12 +119,12 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Format the value to specific format.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $value   The value to format.
      *
      * @return string Formatted value.
      */
-    function formatValue(&$render, $value)
+    function formatValue($render, $value)
     {
         return DataUtil::formatNumber($value);
     }

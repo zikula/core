@@ -196,13 +196,13 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, $params)
+    function create($render, $params)
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically
@@ -220,12 +220,12 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(&$render, &$params)
+    function load($render, &$params)
     {
         $this->loadValue($render, $render->get_template_vars());
     }
@@ -233,12 +233,12 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Load values.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$values Values to load.
      *
      * @return void
      */
-    function loadValue(&$render, &$values)
+    function loadValue($render, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -262,11 +262,11 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender &$render Reference to pnForm render object.
+     * @param FormRender $render Reference to pnForm render object.
      *
      * @return void
      */
-    function initialize(&$render)
+    function initialize($render)
     {
         $render->addValidator($this);
     }
@@ -274,11 +274,11 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
 
@@ -315,12 +315,12 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
      *
-     * @param Form_View &$render       Reference to Form render object.
+     * @param Form_View $render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
      *
      * @return void
      */
-    function raisePostBackEvent(&$render, $eventArgument)
+    function raisePostBackEvent($render, $eventArgument)
     {
         $args = array(
             'commandName' => null,
@@ -333,11 +333,11 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Decode event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function decode(&$render)
+    function decode($render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -348,11 +348,11 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Validates the input.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function validate(&$render)
+    function validate($render)
     {
         $this->clearValidation($render);
 
@@ -367,12 +367,12 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Find the checked radio button in group.
      *
-     * @param Form_View             &$render           Reference to Form render object.
+     * @param Form_View             $render           Reference to Form render object.
      * @param Form_Plugin_RadioButton &$firstRadioButton The first found radio button.
      *
      * @return boolean
      */
-    function findCheckedRadioButton(&$render, &$firstRadioButton)
+    function findCheckedRadioButton($render, &$firstRadioButton)
     {
         $lim = count($render->plugins);
         for ($i = 0; $i < $lim; ++$i) {
@@ -428,11 +428,11 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Clears the validation data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function clearValidation(&$render)
+    function clearValidation($render)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -441,12 +441,12 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     /**
      * Saves value in data object.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$data   Data object.
      *
      * @return void
      */
-    function saveValue(&$render, &$data)
+    function saveValue($render, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

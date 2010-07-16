@@ -53,11 +53,11 @@
  * <samp>{category_path id=$page.categoryId field='sort_value' assign='catsortvalue'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return string The value of the specified category field.
  */
-function smarty_function_category_path($params, &$view)
+function smarty_function_category_path($params, $view)
 {
     $assign    = isset($params['assign'])   ? $params['assign']   : null;
     $id        = isset($params['id'])       ? $params['id']       : 0;

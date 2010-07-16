@@ -29,11 +29,11 @@
  *   {getbaseurl}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The base URL of the site.
  */
-function smarty_function_getbaseuri ($params, &$view)
+function smarty_function_getbaseuri ($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
 

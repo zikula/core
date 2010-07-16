@@ -15,7 +15,7 @@
 /**
  * ZL10n class.
  */
-class ZL10n
+class ZL10n implements Zikula_Translatable
 {
     /**
      * Singleton instance.
@@ -29,7 +29,7 @@ class ZL10n
      *
      * @var string
      */
-    private $translationDomain;
+    private $domain;
 
     /**
      * Constructor.
@@ -38,12 +38,7 @@ class ZL10n
      */
     private function __construct($domain=null)
     {
-        $this->setTranslationDomain($domain);
-        // determine the type of domain
-        $parts = explode('_', $domain);
-        $bindMethod = "bind{$parts[0]}Domain";
-        $name = (count($parts) == 2 ? $parts[1] : "{$parts[1]}_{$parts[2]}");
-        ZLanguage::$bindMethod($name);
+        $this->setDomain($domain);
     }
 
     /**
@@ -53,7 +48,7 @@ class ZL10n
      *
      * @return ZL10n instance.
      */
-    public static function getInstance($domain='null')
+    public static function getInstance($domain=null)
     {
         if (!isset(self::$instances[$domain])) {
             self::$instances[$domain] = new self($domain);
@@ -69,9 +64,9 @@ class ZL10n
      *
      * @return void
      */
-    protected function setTranslationDomain($domain='null')
+    protected function setDomain($domain=null)
     {
-        $this->translationDomain = ($domain == 'null' ? null : $domain);
+        $this->domain = $domain;
     }
 
     /**
@@ -79,9 +74,9 @@ class ZL10n
      *
      * @return string $this->domain
      */
-    public function getTranslationDomain()
+    public function getDomain()
     {
-        return $this->translationDomain;
+        return $this->domain;
     }
 
     /**
@@ -93,7 +88,7 @@ class ZL10n
      */
     public function __($msg)
     {
-        return _dgettext($this->translationDomain, $msg);
+        return __($this->domain, $msg);
     }
 
     /**
@@ -107,7 +102,7 @@ class ZL10n
      */
     public function _n($m1, $m2, $n)
     {
-        return _dngettext($this->translationDomain, $m1, $m2, $n);
+        return _n($this->domain, $m1, $m2, $n);
     }
 
     /**
@@ -120,7 +115,7 @@ class ZL10n
      */
     public function __f($msg, $param)
     {
-        return __f($msg, $param, $this->translationDomain);
+        return __f($msg, $param, $this->domain);
     }
 
     /**
@@ -135,7 +130,7 @@ class ZL10n
      */
     public function __fn($m1, $m2, $n, $param)
     {
-        return _fn($m1, $m2, $n, $param, $this->translationDomain);
+        return _fn($m1, $m2, $n, $param, $this->domain);
     }
 
 }

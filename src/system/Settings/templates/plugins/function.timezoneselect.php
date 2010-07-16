@@ -20,11 +20,11 @@
  *
  * @see          function.timezoneselect.php::smarty_function_timezoneselect()
  * @param        array       $params      All attributes passed to this function from the template
- * @param        object      &$smarty     Reference to the Smarty object
+ * @param        object      $smarty     Reference to the Smarty object
  * @param        string      $selected    The selected timezone
  * @return       string      the results of the module function
  */
-function smarty_function_timezoneselect($params, &$smarty)
+function smarty_function_timezoneselect($params, $smarty)
 {
     // we'll make use of the html_options plugin to simplfiy this plugin
     require_once $smarty->_get_plugin_filepath('function', 'html_options');

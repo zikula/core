@@ -22,11 +22,11 @@
  * True/false will be returned.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return boolean Authorized?
  */
-function smarty_function_checkpermission($params, &$view)
+function smarty_function_checkpermission($params, $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $comp   = isset($params['comp'])   ? $params['comp']   : null;

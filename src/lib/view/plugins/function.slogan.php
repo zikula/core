@@ -20,12 +20,12 @@
  * {slogan}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.slogan.php::smarty_function_slogan()
  * @return string The slogan.
  */
-function smarty_function_slogan($params, &$view)
+function smarty_function_slogan($params, $view)
 {
     $slogan = System::getVar('slogan');
 

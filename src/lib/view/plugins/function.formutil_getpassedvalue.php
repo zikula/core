@@ -26,12 +26,12 @@
  *   noprocess If set, no processing is applied to the constant value.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  *
  */
-function smarty_function_formutil_getpassedvalue ($params, &$view)
+function smarty_function_formutil_getpassedvalue ($params, $view)
 {
     if ((!isset($params['key']) || !$params['key']) &&
         (!isset($params['name']) || !$params['name'])) {

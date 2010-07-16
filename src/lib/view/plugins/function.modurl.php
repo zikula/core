@@ -42,11 +42,11 @@
  *   <a href="{modurl modname='News' type='user' func='display' sid='3' ssl=true}">Link</a>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The URL.
  */
-function smarty_function_modurl($params, &$view)
+function smarty_function_modurl($params, $view)
 {
     $assign       = isset($params['assign'])                  ? $params['assign']    : null;
     $append       = isset($params['append'])                  ? $params['append']    : '';

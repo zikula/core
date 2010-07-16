@@ -21,11 +21,11 @@
  * Name:      shorturls
  *
  * @param string $source  Output source.
- * @param Zikula_View &$view Reference to Zikula_View instance.
+ * @param Zikula_View $view Reference to Zikula_View instance.
  *
  * @return string
  */
-function smarty_outputfilter_shorturls($source, &$view)
+function smarty_outputfilter_shorturls($source, $view)
 {
     // If you control the server, it is preferable for better performance to put rewrite rules
     // from the htaccess file into main configuration file, httpd.conf.

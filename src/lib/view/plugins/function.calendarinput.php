@@ -37,11 +37,11 @@
  * <samp>{calendarinput objectname='myobject' htmlname='from' dateformat='%Y-%m-%d' defaultdate='2005/12/31'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return string The HTML and Javascript code to display a calendar control.
  */
-function smarty_function_calendarinput($params, &$view)
+function smarty_function_calendarinput($params, $view)
 {
     if (!isset($params['objectname'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'objectname')));

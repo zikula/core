@@ -231,13 +231,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, $params)
+    function create($render, $params)
     {
         // All member variables are fetched automatically before create (as strings)
         // Here we afterwards load all special and non-string parameters
@@ -257,12 +257,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(&$render, &$params)
+    function load($render, &$params)
     {
         // The load function expects the plugin to read values from the render.
         // This can be done with the loadValue function (which can be called in other situations than
@@ -273,11 +273,11 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender &$render Reference to pnForm render object.
+     * @param FormRender $render Reference to pnForm render object.
      *
      * @return void
      */
-    function initialize(&$render)
+    function initialize($render)
     {
         $render->addValidator($this);
     }
@@ -285,11 +285,11 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
 
@@ -360,11 +360,11 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Decode event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function decode(&$render)
+    function decode($render)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -384,11 +384,11 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Validates the input.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function validate(&$render)
+    function validate($render)
     {
         $this->clearValidation($render);
 
@@ -418,11 +418,11 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Clears the validation data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function clearValidation(&$render)
+    function clearValidation($render)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -435,12 +435,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$data   Data object.
      *
      * @return void
      */
-    function saveValue(&$render, &$data)
+    function saveValue($render, &$data)
     {
         if ($this->dataBased) {
             $value = $this->parseValue($render, $this->text);
@@ -461,12 +461,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * Override this function in inherited plugins if other format is needed.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $text    Text.
      *
      * @return string Parsed Text.
      */
-    function parseValue(&$render, $text)
+    function parseValue($render, $text)
     {
         return $text;
     }
@@ -477,12 +477,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's pnFormSetValues.
      *
-     * @param Form_View &$render Reference to pnForm render object.
+     * @param Form_View $render Reference to pnForm render object.
      * @param array       &$values Values to load.
      *
      * @return void
      */
-    function loadValue(&$render, &$values)
+    function loadValue($render, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -510,12 +510,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * Override this function in inherited plugins if other format is needed.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $value   The value to format.
      *
      * @return string Formatted value.
      */
-    function formatValue(&$render, $value)
+    function formatValue($render, $value)
     {
         return $value;
     }

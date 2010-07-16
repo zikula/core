@@ -19,11 +19,11 @@
  * Plugin to generate a checkbox for true/false selection.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formcheckbox($params, &$render)
+function smarty_function_formcheckbox($params, $render)
 {
     return $render->registerPlugin('Form_Plugin_Checkbox', $params);
 }

@@ -27,7 +27,7 @@
  * <code>
  * class mymodule_user_testHandler extends pnFormHandler
  * {
- *   function initialize(&$render)
+ *   function initialize($render)
  *   {
  *       $items = array( array('text' => 'A', 'value' => '1'),
  *                       array('text' => 'B', 'value' => '2'),
@@ -46,7 +46,7 @@
  * <code>
  * class mymodule_user_testHandler extends pnFormHandler
  * {
- *   function initialize(&$render)
+ *   function initialize($render)
  *   {
  *       $items = array( array('text' => 'A', 'value' => '1'),
  *                       array('text' => 'B', 'value' => '2'),
@@ -69,11 +69,11 @@
  * </code>
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formcheckboxlist($params, &$render)
+function smarty_function_formcheckboxlist($params, $render)
 {
     return $render->registerPlugin('Form_Plugin_CheckboxList', $params);
 }

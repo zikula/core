@@ -32,12 +32,12 @@
  * {manuallink newwindow=1 width=400 height=300 title=rtfm }
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string|void
  */
 
-function smarty_function_manuallink($params, &$view)
+function smarty_function_manuallink($params, $view)
 {
     $userlang= ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $stdlang = System::getVar( 'language' );

@@ -23,11 +23,11 @@
  *  - assign      if set, the language will be assigned to this variable
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$view Reference to the Zikula_View object.
+ * @param object $view Reference to the Zikula_View object.
  *
  * @return   string   the user ID
  */
-function smarty_function_usergetidfromname($params, &$view)
+function smarty_function_usergetidfromname($params, $view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $uname   = isset($params['uname'])   ? $params['uname']    : null;

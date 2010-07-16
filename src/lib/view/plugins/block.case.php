@@ -37,7 +37,7 @@
  *
  * @param array   $params  All attributes passed to this function from the template.
  * @param string  $content The content between the block tags.
- * @param Zikula_View  &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View  $view Reference to the {@link Zikula_View} object.
  * @param boolean &$repeat Controls block repetition. See {@link http://www.smarty.net/manual/en/plugins.block.functions.php Smarty - Block Functions}.
  *
  * @author messju mohr <messju@lammfellpuschen.de>
@@ -45,7 +45,7 @@
  * @see    smarty_block_switch
  * @return void|string The content of the matching case.
  */
-function smarty_block_case($params, $content, &$view, &$repeat)
+function smarty_block_case($params, $content, $view, &$repeat)
 {
     if (is_null($content)) {
         // handle block open tag

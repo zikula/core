@@ -48,14 +48,14 @@
  * <samp>{block id=6 assign='myBlockContents'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return string The block.
  *
  * @todo the attribute 'name' is not used.
  *
  */
-function smarty_function_block($params, &$view)
+function smarty_function_block($params, $view)
 {
     $bid      = isset($params['bid'])      ? (int)$params['bid'] : 0;
     $name     = isset($params['name'])     ? $params['name']     : null;

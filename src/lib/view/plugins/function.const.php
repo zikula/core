@@ -25,11 +25,11 @@
  *   noprocess If set the resulting string constant is not processed.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The language constant.
  */
-function smarty_function_const($params, &$view)
+function smarty_function_const($params, $view)
 {
     $assign          = isset($params['assign'])          ? $params['assign']          : null;
     $name            = isset($params['name'])            ? $params['name']            : null;

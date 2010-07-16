@@ -31,12 +31,12 @@
  *                          required)
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return mixed the value of the block variable specified by the name attribute,
  *               or an array containing the full block information.
  */
-function smarty_function_blockgetinfo($params, &$view)
+function smarty_function_blockgetinfo($params, $view)
 {
     $bid    = isset($params['bid'])    ? (int)$params['bid'] : 0;
     $name   = isset($params['name'])   ? $params['name']     : null;

@@ -39,11 +39,11 @@
  *  <samp>{assign_arrayval array=$myArray key=4 assign='myVar'}</samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the {@link Zikula_View} object.
+ * @param Zikula_View $view Reference to the {@link Zikula_View} object.
  *
  * @return void
  */
-function smarty_function_assign_arrayval ($params, &$view)
+function smarty_function_assign_arrayval ($params, $view)
 {
     $array  = isset($params['array'])  ? $params['array']  : array();
     $key    = isset($params['key'])    ? $params['key']    : '';

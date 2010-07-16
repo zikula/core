@@ -28,11 +28,11 @@
  *  assign     Name of the returned object
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return void
  */
-function smarty_function_selectmodobject($params, &$view)
+function smarty_function_selectmodobject($params, $view)
 {
     if (!isset($params['module']) || empty($params['module'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'module')));

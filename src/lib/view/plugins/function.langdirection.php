@@ -20,11 +20,11 @@
  * <html dir="{langdirection}">
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$view Reference to the Zikula_View object.
+ * @param object $view Reference to the Zikula_View object.
  *
  * @return   string   the language direction
  */
-function smarty_function_langdirection($params, &$view)
+function smarty_function_langdirection($params, $view)
 {
     return ZLanguage::getDirection();
 }

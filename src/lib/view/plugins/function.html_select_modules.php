@@ -35,12 +35,12 @@
  *     </select>
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.html_select_modules.php::smarty_function_html_select_modules()
  * @return string A drop down containing a list of modules.
  */
-function smarty_function_html_select_modules($params, &$view)
+function smarty_function_html_select_modules($params, $view)
 {
     // we'll make use of the html_options plugin to simplfiy this plugin
     require_once $view->_get_plugin_filepath('function', 'html_options');

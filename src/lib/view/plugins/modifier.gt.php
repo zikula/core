@@ -25,7 +25,7 @@
  *
  * @return string The modified output.
  */
-function smarty_modifier_gt($string, &$view)
+function smarty_modifier_gt($string, $view)
 {
     if (!$view instanceof Zikula_View) {
         return __('Error! With modifier_gt, you must use the following form for the gettext modifier (\'gt\'): $var|gt:$zikula_view');

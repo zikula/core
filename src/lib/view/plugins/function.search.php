@@ -47,11 +47,11 @@
  * to this class in your style sheet.
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param object &$view Reference to the Zikula_View object.
+ * @param object $view Reference to the Zikula_View object.
  *
  * @return string The search box.
  */
-function smarty_function_search($params, &$view)
+function smarty_function_search($params, $view)
 {
     // set some defaults
     $class            = (!isset($params['class']) || empty($params['class'])) ? '' : 'class="' . DataUtil::formatForDisplay($params['class']) .'"';

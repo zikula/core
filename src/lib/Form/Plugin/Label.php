@@ -76,24 +76,24 @@ class Form_Plugin_Label extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, &$params)
+    function create($render, &$params)
     {
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
 
@@ -121,11 +121,11 @@ class Form_Plugin_Label extends Form_StyledPlugin
     /**
      * PostRender event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function postRender(&$render)
+    function postRender($render)
     {
         $plugin = & $render->getPluginById($this->for);
         if ($plugin != null) {

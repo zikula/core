@@ -28,12 +28,12 @@
  * {title separator='/'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.title.php::smarty_function_title()
  * @return string The title.
  */
-function smarty_function_title($params, &$view)
+function smarty_function_title($params, $view)
 {
     if (!isset($params['separator'])) {
         $separator = ' :: ';

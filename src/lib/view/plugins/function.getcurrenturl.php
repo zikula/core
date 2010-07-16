@@ -25,11 +25,11 @@
  *   {getcurrenturl lang='de'}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The current url of the page.
  */
-function smarty_function_getcurrenturl($params, &$view)
+function smarty_function_getcurrenturl($params, $view)
 {
     $assign = null;
     if (isset($params['assign'])) {

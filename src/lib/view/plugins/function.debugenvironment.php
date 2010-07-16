@@ -23,11 +23,11 @@
  *   {debugenvironment}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return void
  */
-function smarty_function_debugenvironment($params, &$view)
+function smarty_function_debugenvironment($params, $view)
 {
     $view->assign('_ZSession_keys', array_keys($_SESSION) );
     $view->assign('_ZSession_vals', array_values($_SESSION) );

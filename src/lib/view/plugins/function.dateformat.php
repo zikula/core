@@ -22,11 +22,11 @@
  *  assign   The smarty variable we wish to assign the result to (optional).
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string
  */
-function smarty_function_dateformat($params, &$view)
+function smarty_function_dateformat($params, $view)
 {
     if (!isset($params['datetime'])) {
         $params['datetime'] = null;

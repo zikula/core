@@ -111,13 +111,13 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, $params)
+    function create($render, $params)
     {
         $this->inputName = (array_key_exists('inputName', $params) ? $params['inputName'] : $this->id);
         $this->readOnly = (array_key_exists('readOnly', $params) ? $params['readOnly'] : false);
@@ -134,11 +134,11 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender &$render Reference to pnForm render object.
+     * @param FormRender $render Reference to pnForm render object.
      *
      * @return void
      */
-    function initialize(&$render)
+    function initialize($render)
     {
         $render->addValidator($this);
     }
@@ -146,11 +146,11 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $idHtml = $this->getIdHtml();
         $nameHtml = " name=\"{$this->inputName}\"";
@@ -175,11 +175,11 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Decode event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function decode(&$render)
+    function decode($render)
     {
         $this->result = $_FILES[$this->inputName];
     }
@@ -187,11 +187,11 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Validates the input.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function validate(&$render)
+    function validate($render)
     {
         $this->clearValidation($render);
 
@@ -221,11 +221,11 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Clears the validation data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
-    function clearValidation(&$render)
+    function clearValidation($render)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -237,12 +237,12 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$data   Data object.
      *
      * @return void
      */
-    function saveValue(&$render, &$data)
+    function saveValue($render, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

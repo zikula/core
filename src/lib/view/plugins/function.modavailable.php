@@ -31,12 +31,12 @@
  *   {if $myfoo}.....{/if}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @see    function.ModUtil::available.php::smarty_function_modavailable()
  * @return boolean True if the module is available; false otherwise.
  */
-function smarty_function_modavailable ($params, &$view)
+function smarty_function_modavailable ($params, $view)
 {
     $assign  = isset($params['assign'])  ? $params['assign']  : null;
     $mod     = isset($params['mod'])     ? $params['mod']     : null;

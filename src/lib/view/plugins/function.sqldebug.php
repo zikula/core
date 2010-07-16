@@ -25,11 +25,11 @@
  * {sqldebug}
  *
  * @param array  $params  All attributes passed to this function from the template.
- * @param Zikula_View &$view Reference to the Zikula_View object.
+ * @param Zikula_View $view Reference to the Zikula_View object.
  *
  * @return string The page render time in seconds.
  */
-function smarty_function_sqldebug ($params, &$view)
+function smarty_function_sqldebug ($params, $view)
 {
     // show time to render
     $messages = array();

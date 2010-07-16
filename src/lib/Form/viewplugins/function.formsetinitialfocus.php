@@ -23,12 +23,12 @@
  * The "PluginId" refers to the plugin that should have focus initially.
  *
  * @param array       $params  All attributes passed to this function from the template.
- * @param Form_View &$render Reference to Form render object.
+ * @param Form_View $render Reference to Form render object.
  *
  * @return string HTML to set the initial focus for a form.
  */
 
-function smarty_function_formsetinitialfocus($params, &$render)
+function smarty_function_formsetinitialfocus($params, $render)
 {
     if (!isset($params['inputId'])) {
         $render->trigger_error('initialFocus: inputId parameter required');

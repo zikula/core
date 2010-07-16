@@ -101,24 +101,24 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Create event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create(&$render, &$params)
+    function create($render, &$params)
     {
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return string The rendered output
      */
-    function render(&$render)
+    function render($render)
     {
         $contextMenu = & $this->getParentContextMenu();
 
@@ -163,12 +163,12 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Renders the confirmation action.
      *
-     * @param Form_View &$render Reference to Form render object.
+     * @param Form_View $render Reference to Form render object.
      * @param string      $script  JavaScript code to run.
      *
      * @return string The rendered output.
      */
-    function renderConfirm(&$render, $script)
+    function renderConfirm($render, $script)
     {
         if (!empty($this->confirmMessage)) {
             $msg = $render->translateForDisplay($this->confirmMessage) . '?';
@@ -181,12 +181,12 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     /**
      * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
      *
-     * @param Form_View &$render       Reference to Form render object.
+     * @param Form_View $render       Reference to Form render object.
      * @param string      $eventArgument The event argument.
      *
      * @return void
      */
-    function raisePostBackEvent(&$render, $eventArgument)
+    function raisePostBackEvent($render, $eventArgument)
     {
         $contextMenu = & $this->getParentContextMenu();
 
