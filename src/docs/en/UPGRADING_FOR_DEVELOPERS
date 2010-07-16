@@ -483,3 +483,14 @@ ZIKULA_VIEW / ZIKULA_THEME CLASSES
 Dozens of getter and setters have been added to try and encapsulate things more and
 one day, allow a more easy migration away from Smarty 2.  Please desist from
 direct access to properties and use the getter/setters.
+
+FORMS
+=====
+Please note that form handlers (instances of Form_Handler) must extend the base
+class Form_Handler or they will not execute.  Form_Handler, Form_Handler and Form_View
+implement Zikula_Translatable giving access to $this->__() etc.
+
+In the case of Form_Handler, the translation domain is set automatically when
+Form_View#execute() is invoked.
+
+In the case of Form_Plugins, the translation domain is set automatically when

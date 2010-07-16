@@ -43,17 +43,6 @@ abstract class Form_Handler implements Zikula_Translatable
      */
     protected $domain;
 
-
-    /**
-     * Constructor.
-     *
-     * @param string $domain
-     */
-    public function __construct($domain=null)
-    {
-        $this->domain = $domain;
-    }
-
     /**
      * Get translation domain.
      *
@@ -65,11 +54,21 @@ abstract class Form_Handler implements Zikula_Translatable
     }
 
     /**
+     * Set domain property.
+     * 
+     * @param string $domain Domain.
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+    }
+
+    /**
      * Initialize form handler.
      *
      * Typical use:
      * <code>
-     * function initialize(&$view)
+     * function initialize($view)
      * {
      *   if (!HasAccess) // your access check here
      *      return $view->setErrorMsg('No access');
@@ -87,13 +86,13 @@ abstract class Form_Handler implements Zikula_Translatable
      * }
      * </code>
      *
-     * @param Form_View &$view Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return bool False in case of initialization errors, otherwise true. If false is returned then the
      * framework assumes that {@link Form_View::setErrorMsg()} has been called with a suitable
      * error message.
      */
-    public function initialize(&$view)
+    public function initialize($view)
     {
         return true;
     }
@@ -107,13 +106,13 @@ abstract class Form_Handler implements Zikula_Translatable
      * value indicating the name of the command. The command name is normally specified by the plugin
      * that initiated the command.
      *
-     * @param Form_View &$view Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      * @param array       &$args   Arguments of the command.
      *
      * @see    Form_Plugin_Button, Form_Plugin_ImageButton
      * @return void
      */
-    public function handleCommand(&$view, &$args)
+    public function handleCommand($view, &$args)
     {
     }
 

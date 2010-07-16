@@ -330,11 +330,21 @@ class Zikula_View extends Smarty
         return $this->domain;
     }
 
+    /**
+     * Get ServiceManager.
+     *
+     * @return Zikula_ServiceManager
+     */
     public function getServiceManager()
     {
         return $this->serviceManager;
     }
 
+    /**
+     * Get EventManager.
+     *
+     * @return Zikula_Eventmanager
+     */
     public function getEventManager()
     {
         return $this->eventManager;
@@ -349,7 +359,7 @@ class Zikula_View extends Smarty
      */
     public function setCache_Id($id)
     {
-        $this->cache_id = $cache_id;
+        $this->cache_id = $id;
         return $this;
     }
 
@@ -364,6 +374,60 @@ class Zikula_View extends Smarty
     {
         $this->compile_check = $boolean;
         return $this;
+    }
+
+    /**
+     * singular translation for modules.
+     *
+     * @param string $msg Message.
+     *
+     * @return string
+     */
+    public function __($msg)
+    {
+        return __($this->domain, $msg);
+    }
+
+    /**
+     * Plural translations for modules.
+     *
+     * @param string  $m1 Singular.
+     * @param string  $m2 Plural.
+     * @param integer $n  Count.
+     *
+     * @return string
+     */
+    public function _n($m1, $m2, $n)
+    {
+        return _n($this->domain, $m1, $m2, $n);
+    }
+
+    /**
+     * Format translations for modules.
+     *
+     * @param string       $msg   Message.
+     * @param string|array $param Format parameters.
+     *
+     * @return string
+     */
+    public function __f($msg, $param)
+    {
+        return __f($msg, $param, $this->domain);
+    }
+
+    /**
+     * Format pural translations for modules.
+     *
+     * @param string       $m1    Singular.
+     * @param string       $m2    Plural.
+     * @param integer      $n     Count.
+     * @param string|array $param Format parameters.
+     *
+     * @return string
+     */
+    public function __fn($m1, $m2, $n, $param)
+    {
+        return _fn($m1, $m2, $n, $param, $this->domain);
     }
 
     /**
@@ -855,11 +919,11 @@ class Zikula_View extends Smarty
  *
  * @param array  $param   Tag parameters.
  * @param string $content Block content.
- * @param Smarty &$smarty Reference to smarty instance.
+ * @param Smarty $smarty Reference to smarty instance.
  *
  * @return string
  **/
-function Zikula_View_block_nocache($param, $content, &$smarty)
+function Zikula_View_block_nocache($param, $content, $smarty)
 {
     return $content;
 }
@@ -871,12 +935,12 @@ function Zikula_View_block_nocache($param, $content, &$smarty)
  *
  * @param string $tpl_name    Template name.
  * @param string &$tpl_source Template source.
- * @param Smarty &$smarty     Reference to Smarty instance.
+ * @param Smarty $smarty     Reference to Smarty instance.
  *
  * @access private
  * @return boolean
  */
-function z_get_template($tpl_name, &$tpl_source, &$smarty)
+function z_get_template($tpl_name, &$tpl_source, $smarty)
 {
     // determine the template path and store the template source
     // in $tpl_source
@@ -902,11 +966,11 @@ function z_get_template($tpl_name, &$tpl_source, &$smarty)
  *
  * @param string $tpl_name       Template name.
  * @param string &$tpl_timestamp Template timestamp.
- * @param Smarty &$smarty        Reference to Smarty instance.
+ * @param Smarty $smarty        Reference to Smarty instance.
  *
  * @return boolean
  */
-function z_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty)
+function z_get_timestamp($tpl_name, &$tpl_timestamp, $smarty)
 {
     // get path, checks also if tpl_name file_exists and is_readable
     $tpl_path = $smarty->get_template_path($tpl_name);
@@ -925,11 +989,11 @@ function z_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty)
  * Checks whether or not a template is secure.
  *
  * @param string $tpl_name Template name.
- * @param Smarty &$smarty  Reference to Smarty instance.
+ * @param Smarty $smarty  Reference to Smarty instance.
  *
  * @return boolean
  */
-function z_get_secure($tpl_name, &$smarty)
+function z_get_secure($tpl_name, $smarty)
 {
     // assume all templates are secure
     return true;
@@ -939,11 +1003,11 @@ function z_get_secure($tpl_name, &$smarty)
  * Whether or not the template is trusted.
  *
  * @param string $tpl_name Template name.
- * @param Smarty &$smarty  Reference to Smarty instance.
+ * @param Smarty $smarty  Reference to Smarty instance.
  *
  * @return void
  */
-function z_get_trusted($tpl_name, &$smarty)
+function z_get_trusted($tpl_name, $smarty)
 {
     // not used for templates
     return;
@@ -984,11 +1048,11 @@ function z_prefilter_add_literal_callback($matches)
  * Tags affected: <script> and <style>.
  *
  * @param string $tpl_source The template's source prior to prefiltering.
- * @param Smarty &$smarty    A reference to the Zikula_View object.
+ * @param Smarty $smarty    A reference to the Zikula_View object.
  *
  * @return string The prefiltered template contents.
  */
-function z_prefilter_add_literal($tpl_source, &$smarty)
+function z_prefilter_add_literal($tpl_source, $smarty)
 {
     return preg_replace_callback('`(<(script|style)[^>]*>)(.*?)(</\2>)`s', 'z_prefilter_add_literal_callback', $tpl_source);
 }
@@ -997,11 +1061,11 @@ function z_prefilter_add_literal($tpl_source, &$smarty)
  * Prefilter for gettext parameters.
  *
  * @param string $tpl_source The template's source prior to prefiltering.
- * @param Smarty &$smarty    A reference to the Zikula_View object.
+ * @param Smarty $smarty    A reference to the Zikula_View object.
  *
  * @return string The prefiltered template contents.
  */
-function z_prefilter_gettext_params($tpl_source, &$smarty)
+function z_prefilter_gettext_params($tpl_source, $smarty)
 {
     $tpl_source = (preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_gettext_params_callback($m);'), $tpl_source));
     return $tpl_source;
@@ -1025,11 +1089,11 @@ function z_prefilter_gettext_params_callback($m)
  * Prefilter for legacy tag delemitters.
  *
  * @param string $source  The template's source prior to prefiltering.
- * @param Smarty &$smarty A reference to the Zikula_View object.
+ * @param Smarty $smarty A reference to the Zikula_View object.
  *
  * @return string The prefiltered template contents.
  */
-function z_prefilter_legacy($source, &$smarty)
+function z_prefilter_legacy($source, $smarty)
 {
     // rewrite the old delimiters to new.
     $source = str_replace('<!--[', '{', str_replace(']-->', '}', $source));
