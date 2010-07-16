@@ -611,7 +611,8 @@ class ZLanguage
                 }
             }
         }
-        return $localeArray;
+
+        return array_unique($localeArray);
     }
 
     /**
