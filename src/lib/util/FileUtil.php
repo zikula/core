@@ -470,13 +470,13 @@ class FileUtil
      *
      * @param array  $datarows  The data to write to the csv file.
      * @param array  $titlerow  The titles to write to the csv file (default is empty array) (optional).
-     * @param string $delimeter The character to use for field delimeter (default is character ,) (one character only) (optional).
+     * @param string $delimiter The character to use for field delimeter (default is character ,) (one character only) (optional).
      * @param string $enclosure The character to use for field enclosure (default is character ") (one character only) (optional).
      * @param string $filename  The filename of the exported csv file (default is null) (optional).
      *
      * @return nothing
      */
-    public static function exportCSV($datarows, $titlerow = array(), $delimeter = ',', $enclosure = '"', $filename = null)
+    public static function exportCSV($datarows, $titlerow = array(), $delimiter = ',', $enclosure = '"', $filename = null)
     {
         // check if $datarows is array
         if (!is_array($datarows)) {
@@ -508,12 +508,12 @@ class FileUtil
 
         // write out title row if it exists
         if (isset($titlerow) && is_array($titlerow) && count($titlerow) > 0) {
-            fputcsv($out, $titlerow, $delimeter, $enclosure);
+            fputcsv($out, $titlerow, $delimiter, $enclosure);
         }
 
         // write out data
         foreach($datarows as $datarow) {
-            fputcsv($out, $datarow, $delimeter, $enclosure);
+            fputcsv($out, $datarow, $delimiter, $enclosure);
         }
 
          //close the out file

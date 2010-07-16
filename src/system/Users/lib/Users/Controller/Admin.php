@@ -1823,21 +1823,105 @@ class Users_Controller_Admin extends Zikula_Controller
             if (!strrpos($exportFile, '.csv')) {
                 $exportFile .= '.csv';
             }
+           
+            $colnames = array();
+
+            //get all user fields
+            if (ModUtil::available('Profile')) {
+                $userfields = ModUtil::apiFunc('Profile', 'user', 'getallactive');
+
+                foreach ($userfields as $item) {
+                    $colnames[] = $item['prop_attribute_name'];
+                }
+            }
+
+            // title fields
+            if ($titles == 1) {
+                $titlerow = array('id', 'uname');
+
+                //titles for optional data
+                if ($email == 1) {
+                    array_push($titlerow, 'email');
+                }
+                if ($regDate == 1) {
+                    array_push($titlerow, 'user_regdate');
+                }
+                if ($lastLogin == 1) {
+                    array_push($titlerow, 'lastlogin');
+                }
+                if ($groups == 1) {
+                    array_push($titlerow, 'groups');
+                }
+                
+                array_merge($titlerow, $colnames);
+            } else {
+                $titlerow = array();
+            }
+
+            //get all users
+            $users = ModUtil::apiFunc('Users', 'user', 'getAll');
+
+            // get all groups
+            $allgroups = ModUtil::apiFunc('Groups', 'user', 'getall');
+            $groupnames = array();
+            foreach ($allgroups as $groupitem) {
+                $groupnames[$groupitem['gid']] = $groupitem['name'];
+            }
+
+            // data for csv
+            $datarows = array();
+            
+            //loop every user gettin user id and username and all user fields and push onto result array.
+            foreach ($users as $user) {
+                $uservars = UserUtil::getVars($user['uid']);
+
+                $result = array();
+
+                array_push($result, $uservars['uid'], $uservars['uname']);
+
+                //checks for optional data
+                if ($email == 1) {
+                    array_push($result, $uservars['email']);
+                }
+                if ($regDate == 1) {
+                    array_push($result, $uservars['user_regdate']);
+                }
+                if ($lastLogin == 1) {
+                    array_push($result, $uservars['lastlogin']);
+                }
+                
+                if ($groups == 1) {
+                    $usergroups = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
+                                            array('uid'   => $uservars['uid'],
+                                                  'clean' => true));
+
+                    $groupstring = "";
+
+                    foreach ($usergroups as $group) {
+                        $groupstring .= $groupnames[$group] . chr(124);
+                    }
+
+                    $groupstring = rtrim($groupstring, chr(124));
+                    
+
+                    array_push($result, $groupstring);
+                }
+                
+                foreach ($colnames as $colname) {
+                    array_push($result, $uservars['__ATTRIBUTES__'][$colname]);
+                }
+
+                array_push($datarows, $result);
+            }
 
             //export the csv file
-            ModUtil::apiFunc('Users', 'admin', 'exportCSV',
-                                   array(   'exportFile'=> $exportFile,
-                                            'delimiter' => $delimiter,
-                                            'email'     => $email,
-                                            'titles'    => $titles,
-                                            'lastLogin' => $lastLogin,
-                                            'regDate'   => $regDate,
-                                            'groups'    => $groups));
+            FileUtil::exportCSV($datarows, $titlerow, $delimiter, '"', $exportFile);
         }
 
         if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
             $this->view->assign('groups', '1');
         }
+        
         return $this->view->fetch('users_admin_export.tpl');
     }
 
