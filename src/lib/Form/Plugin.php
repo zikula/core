@@ -66,7 +66,7 @@
  *   This is also the place where validators should be added to the list of validators.
  *   Example:
  *   <code>
- *   function load(&$render, &$params)
+ *   function load($render, &$params)
  *   {
  *     $this->loadValue($render, $render->get_template_vars());
  *     $render->addValidator($this);
@@ -158,7 +158,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * If you need to notify the form event handler when the plugin has been loaded then
      * specify the name of this handler here. The prototype of the function must be:
-     * function MyOnLoadHandler(&$render, $plugin, $params) where $render is the form render,
+     * function MyOnLoadHandler($render, $plugin, $params) where $render is the form render,
      * $plugin is this plugin, and $params are the Smarty parameters passed to the plugin.
      *
      * The data bound handler is called both on postback and first page render.
@@ -175,7 +175,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * class MyFormHandler extends Form_Handler
      * {
-     *   function MyLoadHandler(&$render, $plugin, $params)
+     *   function MyLoadHandler($render, $plugin, $params)
      *   {
      *     // Do stuff here
      *   }
@@ -224,10 +224,10 @@ abstract class Form_Plugin implements Zikula_Translatable
     /**
      * Constructor.
      *
-     * @param Form_View &$render Reference to Form_View object.
+     * @param Form_View $render Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      */
-    public function __construct(&$view, &$params)
+    public function __construct($view, &$params)
     {
         $this->plugins = array();
         $this->attributes = array();
@@ -252,12 +252,12 @@ abstract class Form_Plugin implements Zikula_Translatable
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
      *
-     * @param Form_View &$view   Reference to Form render object.
+     * @param Form_View $view   Reference to Form render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function readParameters(&$view, &$params)
+    public function readParameters($view, &$params)
     {
         $varInfo = get_class_vars(get_class($this));
 
@@ -276,12 +276,12 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing.
      *
-     * @param Form_View &$view   Reference to Form_View object.
+     * @param Form_View $view   Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function create(&$view, &$params)
+    public function create($view, &$params)
     {
     }
 
@@ -290,12 +290,12 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing.
      *
-     * @param Form_View &$view   Reference to Form_View object.
+     * @param Form_View $view   Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function load(&$view, &$params)
+    public function load($view, &$params)
     {
     }
 
@@ -304,11 +304,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing. Typically used to add self as validator.
      *
-     * @param Form_View &$render Reference to Form_View object.
+     * @param Form_View $render Reference to Form_View object.
      *
      * @return void
      */
-    public function initialize(&$view)
+    public function initialize($view)
     {
     }
 
@@ -317,11 +317,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing.
      *
-     * @param Form_View &$view Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    public function decode(&$view)
+    public function decode($view)
     {
     }
 
@@ -331,11 +331,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      * Default action is to do nothing. Usefull for buttons that should generate events
      * after the plugins have decoded their normal values.
      *
-     * @param Form_View &$view Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    public function decodePostBackEvent(&$view)
+    public function decodePostBackEvent($view)
     {
     }
 
@@ -344,12 +344,12 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to call onDataBound handler in form event handler.
      *
-     * @param Form_View &$render Reference to Form_View object.
+     * @param Form_View $render Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    public function dataBound(&$view, &$params)
+    public function dataBound($view, &$params)
     {
         if ($this->onDataBound != null) {
             $dataBoundHandlerName = $this->onDataBound;
@@ -362,11 +362,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do render all attributes in form name="value".
      *
-     * @param Form_View &$view Reference to Form render object.
+     * @param Form_View $view Reference to Form render object.
      *
      * @return string The rendered output.
      */
-    public function renderAttributes(&$render)
+    public function renderAttributes($render)
     {
         $attr = '';
         foreach ($this->attributes as $name => $value) {
@@ -381,11 +381,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to return an empty string.
      *
-     * @param Form_View &$render Reference to Form_View object.
+     * @param Form_View $render Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    public function render(&$view)
+    public function render($view)
     {
         return '';
     }
@@ -395,11 +395,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to return an empty string.
      *
-     * @param Form_View &$render Reference to Form_View object.
+     * @param Form_View $render Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    public function renderBegin(&$view)
+    public function renderBegin($view)
     {
         return '';
     }
@@ -409,12 +409,12 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to return the content unmodified.
      *
-     * @param Form_View &$view Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string    $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */
-    public function renderContent(&$view, $content)
+    public function renderContent($view, $content)
     {
         return $content;
     }
@@ -424,11 +424,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to return an empty string.
      *
-     * @param Form_View &$view Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    public function renderEnd(&$view)
+    public function renderEnd($view)
     {
         return '';
     }
@@ -438,11 +438,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing.
      *
-     * @param Form_View &$view Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    public function postRender(&$view)
+    public function postRender($view)
     {
     }
 
@@ -451,13 +451,14 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to add the plugin to $this->plugins.
      *
-     * @param Form_View   &$view  Reference to Form_View object.
+     * @param Form_View   $view  Reference to Form_View object.
      * @param Form_Plugin $plugin A Form plugin to add.
      *
      * @return void
      */
-    public function registerPlugin(&$view, $plugin)
+    public function registerPlugin($view, $plugin)
     {
+        $plugin->setDomain($this->domain);
         $this->plugins[] = $plugin;
     }
 
