@@ -165,7 +165,7 @@ abstract class Form_Handler implements Zikula_Translatable
      *
      * @return string
      */
-    public function __fn($m1, $m2, $n, $param)
+    public function _fn($m1, $m2, $n, $param)
     {
         return _fn($m1, $m2, $n, $param, $this->domain);
     }
