@@ -1,11 +1,7 @@
-/* andreas08 - an open source xhtml/css website layout by Andreas Viklund - http://andreasviklund.com .         */
-/* Free to use in any way and for any purpose as long as the proper credits are given to the original designer. */
+/* Based on an open source xhtml/css website layout by Andreas Viklund (http://andreasviklund.com) called Andreas08 */
+/* Free to use in any way and for any purpose as long as the proper credits are given to the original designer.     */
 
 /**************** Body and tag styles ****************/
-* {
-    margin: 0;
-    padding: 0;
-}
 
 body {
     font: 76% Verdana, Tahoma, Arial, sans-serif;
@@ -13,8 +9,8 @@ body {
     text-align: center;
     color: #303030;
     background: #e8eaec;
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
+    margin: 0;
+    padding: 0;
 }
 
 a {
@@ -28,44 +24,50 @@ a:hover {
     text-decoration: none;
 }
 
-a img {
-    border: none;
+hr {
+    border-color: #ccc;
+    border-style: solid;
+    border-width: 1px 0 0;
+    clear: both;
+    height: 0;
 }
 
-p {
-    padding: 0 0 1.6em 0;
-}
+/**************** Headings ****************/
 
-p form {
-    margin-top: 0;
+h1 {font-size: 20px;}
+h2 {font-size: 18px;}
+h3 {font-size: 16px;}
+h4 {font-size: 14px;}
+h5 {font-size: 13px;}
+h6 {font-size: 12px;}
+
+/**************** Spacing ****************/
+
+ol {list-style: decimal;}
+ul {list-style: square;}
+li {margin-left: 30px;}
+
+p,
+dl,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ol,
+ul,
+pre,
+table,
+address,
+fieldset {
     margin-bottom: 20px;
 }
 
-img.left,
-img.center,
-img.right {
-    padding: 4px;
-    border: 1px solid #a0a0a0;
-}
-
-img.left {
-    float: left;
-    margin: 0 12px 5px 0;
-}
-
-img.center {
-    display: block;
-    margin: 0 auto 5px auto;
-}
-
-img.right {
-    float: right;
-    margin: 0 0 5px 12px;
-}
-
 /**************** Header and navigation styles ****************/
+
 #theme_page_container {
-    width: 95%;
     margin: 20px auto;
     padding: 1px 0;
     text-align: left;
@@ -85,9 +87,12 @@ img.right {
 #theme_header h1 {
     padding: 35px 0 0 20px;
     font-size: 2.4em;
-    background-color: inherit;
     color: #ffffff;
     letter-spacing: -2px;
+}
+
+#theme_header h1 a {
+    color: #ffffff;
     font-weight: normal;
 }
 
@@ -113,6 +118,8 @@ img.right {
     list-style-type: none;
     border-right: 1px solid #ffffff;
     white-space: nowrap;
+    margin:0;
+    padding:0;
 }
 
 #theme_navigation_bar li a {
@@ -138,40 +145,12 @@ img.right {
 /**************** Content styles ****************/
 
 #theme_content {
-    font-size:1em;
-    overflow:hidden;
-    clear:both;
-    padding:1em;
-}
-
-#theme_col1 {
-    width:60%;
-    float:left;
-}
-
-#theme_col2 {
-    width:40%;
-    float:right;
-    margin-left:-5px;
-}
-#theme_col2_left {
-    width:50%;
-    float:left;
-}
-
-#theme_col2_right {
-    width:50%;
-    float:right;
-    margin-left:-5px;
-}
-
-#theme_maincontent {
-
+    margin-bottom:10px;
+    margin-top:10px;
 }
 
 #theme_content h1 {
     display: block;
-    margin: 0 0 16px 0;
     font-size: 1.9em;
     font-weight: normal;
     letter-spacing: -1px;
@@ -181,7 +160,6 @@ img.right {
 
 #theme_content h2 {
     display: block;
-    margin: 0 0 16px 0;
     font-size: 1.7em;
     font-weight: normal;
     letter-spacing: -1px;
@@ -194,102 +172,12 @@ img.right {
 }
 
 #theme_content h3 {
-    margin: 0 0 5px 0;
     font-size: 1.4em;
     letter-spacing: -1px;
 }
 
-#theme_content .z-block h4 {
-    margin: 0 0 5px 0;
-    font-size: 1.2em;
-    letter-spacing: -1px;
-}
-
-#theme_content a:hover,
-#subcontent a:hover {
-    text-decoration: underline;
-}
-
-#theme_content ul,
-#theme_content ol {
-    margin: 0 5px 16px 35px;
-}
-
-#theme_content dl {
-    margin: 0 5px 10px 25px;
-}
-
-#theme_content dt {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-#theme_content dd {
-    margin: 0 0 10px 15px;
-}
-
-/**************** Sidebar styles ****************/
-#theme_subcontent {
-    float: right;
-    width: 20%;
-    padding: 20px 10px 10px 0;
-    line-height: 1.4em;
-}
-
-#theme_subcontent h2 {
-    display: block;
-    margin: 0 0 15px 0;
-    font-size: 1.6em;
-    font-weight: normal;
-    text-align: left;
-    letter-spacing: -1px;
-    color: #505050;
-    background-color: inherit;
-}
-
-#theme_subcontent p {
-    margin: 0 0 16px 0;
-    font-size: 1em;
-}
-
-/**************** Menublock styles ****************/
-#theme_content div.navcontainer ul,
-#theme_content div#navcontainer ul {
-    margin: 0 0 20px 20px;
-}
-
-#theme_content .z-bkey-menu li,
-#theme_content .z-bkey-extmenu li {
-    list-style:disc outside none;
-    margin:1px 0;
-    padding:1px;
-}
-
-#theme_content .z-bkey-menu li a,
-#theme_content .z-bkey-extmenu li a {
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#theme_content .z-bkey-menu li a:hover,
-#theme_content .z-bkey-extmenu li a:hover {
-    text-decoration: none;
-}
-
-#theme_content .z-bkey-menu li ul,
-#theme_content .z-bkey-extmenu li ul {
-    margin: 3px 0 3px 15px;
-    font-weight: normal;
-}
-
-#theme_content .z-bkey-menu li ul li,
-#theme_content .z-bkey-extmenu li ul li {
-    margin-bottom: 0;
-}
-
-#theme_content .z-bkey-menu li ul a,
-#theme_content .z-bkey-extmenu li ul a {
-    font-weight: normal;
+#theme_content h4 {
+    font-size: 1.3em;
 }
 
 /**************** Footer styles ****************/
@@ -323,8 +211,9 @@ img.right {
 
 /**************** Misc classes and styles ****************/
 
-img {
-    border: none;
+.z-block {
+    margin-bottom: 1em;
+    font-size:0.9em;
 }
 
 .z-blockposition-center {
@@ -332,26 +221,74 @@ img {
     border:1px solid #C0C0C0;
     color:#505050;
     line-height:1.5em;
-    margin:0 0 20px;
     padding:1em;
 }
 
 .z-blockposition-left {
-    margin:0 0 1em 0.5em;
     padding:0.5em;
-    font-size:0.9em;
 }
 
 .z-blockposition-right {
-    background:none repeat scroll 0 0 #EBF3FA;
+    background:#EBF3FA;
     border:1px solid #B1C9D9;
-    margin:0 0 1em 0.5em;
     padding:0.5em;
-    font-size:0.9em;
 }
 
 .z-blockposition-right.z-bkey-login {
     border: none;
     background:none;
-    margin-bottom: 1em;
+}
+
+/**************** Menu and Extmenu blocks ****************/
+
+ul.navlist {
+    border-top:1px solid #BBBBBB;
+    list-style:none outside none;
+}
+ul.navlist li {
+    margin:0;
+}
+ul.navlist li a {
+    border-bottom:1px solid #B1C9D9;
+    display:block;
+    padding:4px 10px;
+}
+ul.navlist li a:hover  {
+    background: #EBF3FA;
+    color: #454545;
+}
+ul.navlist ul {
+    list-style:none;
+    margin:0;
+}
+ul.navlist ul li a {
+    padding-left:30px;
+}
+
+/**************** Menutree blocks ****************/
+
+ul.menutree {
+    border-top:1px solid #BBBBBB;
+    list-style:none outside none;
+}
+ul.menutree li {
+    margin:0;
+}
+ul.menutree li a {
+    background:#F5F5F5;
+    border-bottom:1px solid #B1C9D9;
+    display:block;
+    padding:4px 10px;
+}
+ul.menutree li a:hover {
+    background: #EBF3FA;
+    color: #454545;
+}
+ul.menutree ul {
+    list-style:none;
+    margin:0;
+}
+ul.menutree ul li a {
+    background:#FAFAFA;
+    padding-left:20px;
 }

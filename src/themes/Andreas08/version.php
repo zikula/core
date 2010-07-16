@@ -14,11 +14,10 @@
 
 $themeversion['name'] = 'Andreas08';
 $themeversion['displayname'] = __('Andreas08');
-$themeversion['description'] = __("The Andreas08 theme is a very good template for light CSS-compatible browser-oriented themes.");
-$themeversion['version'] = '1.1';
+$themeversion['description'] = __("Based on the theme Andreas08 by Andreas Viklund and extended for Zikula with the CSS Framework 'fluid960gs'.");
+$themeversion['version'] = '2.0';
 $themeversion['admin'] = 1;
 $themeversion['user'] = 1;
 $themeversion['system'] = 0;
 $themeversion['license'] = '';
 $themeversion['xhtml'] = true;
-
