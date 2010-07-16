@@ -237,7 +237,7 @@ class Zikula_Theme extends Zikula_View
             $this->domain = null;
         }
 
-        EventUtil::attachCustomHandlers("themes/$theme/EventHandlers");
+        EventUtil::attachCustomHandlers("themes/$theme/lib/$theme/EventHandlers");
 
         // change some base settings from our parent class
         // template compilation
@@ -629,7 +629,6 @@ class Zikula_Theme extends Zikula_View
     /**
      * Define all our plugin directories.
      *
-     * @access private
      * @return void
      */
     private function _plugin_dirs()
@@ -640,14 +639,16 @@ class Zikula_Theme extends Zikula_View
             array_push($this->plugins_dir, $themepath);
         }
 
-        // load the usemodules configuration if exists
-        $usemod_conf = 'themes/' . $this->directory . '/templates/config/usemodules.txt';
-        // load the config file
-        if (is_readable($usemod_conf) && is_file($usemod_conf)) {
-            $additionalmodules = file($usemod_conf);
-            if (is_array($additionalmodules)) {
-                foreach ($additionalmodules as $addmod) {
-                    $this->_add_plugins_dir(trim($addmod));
+        if (System::isLegacyMode()) {
+            // load the usemodules configuration if exists
+            $usemod_conf = 'themes/' . $this->directory . '/templates/config/usemodules.txt';
+            // load the config file
+            if (is_readable($usemod_conf) && is_file($usemod_conf)) {
+                $additionalmodules = file($usemod_conf);
+                if (is_array($additionalmodules)) {
+                    foreach ($additionalmodules as $addmod) {
+                        $this->_add_plugins_dir(trim($addmod));
+                    }
                 }
             }
         }
@@ -656,7 +657,6 @@ class Zikula_Theme extends Zikula_View
     /**
      * Assign template vars for base theme paths and other useful variables.
      *
-     * @access private
      * @return void
      */
     private function _base_vars()
@@ -725,7 +725,6 @@ class Zikula_Theme extends Zikula_View
     /**
      * Load the base theme configuration.
      *
-     * @access private
      * @return void
      */
     private function _load_config()
@@ -882,7 +881,6 @@ class Zikula_Theme extends Zikula_View
     /**
      * Set the config directory for this theme.
      *
-     * @access private
      * @return void
      */
     private function _set_configdir()

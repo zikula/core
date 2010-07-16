@@ -217,7 +217,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
             $currentUid = UserUtil::getVar('uid');
 
             $intrusionItems = array();
-            
+
             foreach ($result as $event) {
 
                 $eventName = $event->getName();
@@ -234,7 +234,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
                 }
 
                 $tagVal = $malVar[1];
-                
+
                 $newIntrusionItem = array(
                         'name'    => array($eventName),
                         'tag'     => $tagVal,
@@ -408,13 +408,13 @@ class SecurityCenter_EventHandler_Filter extends Zikula_EventHandler
 
             // save renderer delimiters
             $dummy = new Zikula_View('SecurityCenter');
-            $event->data = str_replace($dummy->left_delimiter,  '%RENDERER_LEFT_DELIMITER%',  $event->data);
-            $event->data = str_replace($dummy->right_delimiter, '%RENDERER_RIGHT_DELIMITER%', $event->data);
+            $event->data = str_replace($dummy->left_delimiter,  '%VIEW_LEFT_DELIMITER%',  $event->data);
+            $event->data = str_replace($dummy->right_delimiter, '%VIEW_RIGHT_DELIMITER%', $event->data);
             $event->data = $purifier->purify($event->data);
 
             // restore renderer delimiters
-            $event->data = str_replace('%RENDERER_LEFT_DELIMITER%',  $dummy->left_delimiter,  $event->data);
-            $event->data = str_replace('%RENDERER_RIGHT_DELIMITER%', $dummy->right_delimiter, $event->data);
+            $event->data = str_replace('%VIEW_LEFT_DELIMITER%',  $dummy->left_delimiter,  $event->data);
+            $event->data = str_replace('%VIEW_RIGHT_DELIMITER%', $dummy->right_delimiter, $event->data);
 
             // cache the value
             $safecache[$md5] = $event->data;

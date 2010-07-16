@@ -173,7 +173,9 @@ class Zikula_View extends Smarty
         $pluginpaths[] = "themes/$theme/templates/modules/$module/plugins";
         $pluginpaths[] = "themes/$theme/plugins";
         $pluginpaths[] = $mpluginPath;
-        $pluginpaths[] = $mpluginPathOld;
+        if (System::isLegacyMode()) {
+            $pluginpaths[] = $mpluginPathOld;
+        }
 
         foreach ($pluginpaths as $pluginpath) {
             if (file_exists($pluginpath)) {
@@ -182,7 +184,7 @@ class Zikula_View extends Smarty
         }
 
         // check if the recent 'type' parameter in the URL is admin and if yes,
-        // include (modules|system)/Admin/pntemplates/plugins to the plugins_dir array
+        // include system/Admin/templates/plugins to the plugins_dir array
         $type = FormUtil::getPassedValue('type', null, 'GETPOST');
         if ($type === 'admin') {
             array_push($this->plugins_dir, 'system/Admin/templates/plugins');
@@ -201,12 +203,12 @@ class Zikula_View extends Smarty
             $this->caching = false;
         }
 
-        $this->cache_lifetime = ModUtil::getVar('Theme', 'render_lifetime');
-        $this->cache_dir = CacheUtil::getLocalDir() . '/Renderer_cache';
-        $this->compile_check = ModUtil::getVar('Theme', 'render_compile_check');
-        $this->force_compile = ModUtil::getVar('Theme', 'render_force_compile');
+        $this->cache_lifetime = ModUtil::getVar('Theme', 'view_lifetime');
+        $this->cache_dir = CacheUtil::getLocalDir() . '/view_cache';
+        $this->compile_check = ModUtil::getVar('Theme', 'view_compile_check');
+        $this->force_compile = ModUtil::getVar('Theme', 'view_force_compile');
 
-        $this->compile_dir = CacheUtil::getLocalDir() . '/Renderer_compiled';
+        $this->compile_dir = CacheUtil::getLocalDir() . '/view_compiled';
         $this->compile_id = $this->toplevelmodule . '_' . $theme . '_' . Zlanguage::getLanguageCode();
         $this->cache_id = '';
         $this->expose_template = (ModUtil::getVar('Theme', 'render_expose_template') == true) ? true : false;
@@ -383,60 +385,62 @@ class Zikula_View extends Smarty
         $sm = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.render.%s', $module));
         if (!$sm->hasService($serviceId)) {
-            $render = new self($module, $caching);
-            $sm->attachService($serviceId, $render);
+            $view = new self($module, $caching);
+            $sm->attachService($serviceId, $view);
         } else {
-            $render = $sm->getService($serviceId);
+            $view = $sm->getService($serviceId);
         }
 
         if (!is_null($caching)) {
-            $render->caching = $caching;
+            $view->caching = $caching;
         }
 
         if (!is_null($cache_id)) {
-            $render->cache_id = $cache_id;
+            $view->cache_id = $cache_id;
         }
 
         if ($module === null) {
-            $module = $render->toplevelmodule;
+            $module = $view->toplevelmodule;
         }
 
-        if (!array_key_exists($module, $render->module)) {
-            $render->module[$module] = ModUtil::getInfoFromName($module);
+        if (!array_key_exists($module, $view->module)) {
+            $view->module[$module] = ModUtil::getInfoFromName($module);
             //$instance->modinfo = ModUtil::getInfoFromName($module);
-            $render->_add_plugins_dir($module);
+            $view->_add_plugins_dir($module);
         }
 
         if ($add_core_data) {
-            $render->add_core_data();
+            $view->add_core_data();
         }
 
         // for {gt} template plugin to detect gettext domain
-        if ($render->module[$module]['type'] == ModUtil::TYPE_MODULE) {
-            $render->domain = ZLanguage::getModuleDomain($render->module[$module]['name']);
+        if ($view->module[$module]['type'] == ModUtil::TYPE_MODULE) {
+            $view->domain = ZLanguage::getModuleDomain($view->module[$module]['name']);
         }
 
-        // load the usemodules configuration if exists
-        $modpath = ($render->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        $usepath = "$modpath/" . $render->module[$module]['directory'] . '/templates/config';
-        $usepathOld = "$modpath/" . $render->module[$module]['directory'] . '/pntemplates/config';
-        $usemod_confs = array();
-        $usemod_confs[] = "$usepath/usemodules.txt";
-        $usemod_confs[] = "$usepathOld/usemodules.txt";
-        $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
-        // load the config file
-        foreach ($usemod_confs as $usemod_conf) {
-            if (is_readable($usemod_conf) && is_file($usemod_conf)) {
-                $additionalmodules = file($usemod_conf);
-                if (is_array($additionalmodules)) {
-                    foreach ($additionalmodules as $addmod) {
-                        $render->_add_plugins_dir(trim($addmod));
+        if (System::isLegacyMode()) {
+            // load the usemodules configuration if exists
+            $modpath = ($view->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
+            $usepathOld = "$modpath/" . $view->module[$module]['directory'] . '/pntemplates/config';
+            $usemod_confs = array();
+            $usemod_confs[] = "$usepath/usemodules.txt";
+            $usemod_confs[] = "$usepathOld/usemodules.txt";
+            $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
+            // load the config file
+            foreach ($usemod_confs as $usemod_conf) {
+                if (is_readable($usemod_conf) && is_file($usemod_conf)) {
+                    $additionalmodules = file($usemod_conf);
+                    if (is_array($additionalmodules)) {
+                        foreach ($additionalmodules as $addmod) {
+                            $view->_add_plugins_dir(trim($addmod));
+                        }
                     }
                 }
             }
         }
 
-        return $render;
+        return $view;
     }
 
     /**

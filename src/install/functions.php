@@ -79,7 +79,7 @@ function install()
     $smarty = new Smarty();
     $smarty->left_delimiter = '{';
     $smarty->right_delimiter = '}';
-    $smarty->compile_dir = $tempDir . '/Renderer_compiled';
+    $smarty->compile_dir = $tempDir . '/view_compiled';
     $smarty->template_dir = 'install/templates';
     $smarty->plugins_dir = array(
                     'plugins',
@@ -563,7 +563,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                include_once $bootstrap;
             }
 
-            
+
             ZLanguage::bindModuleDomain($module);
 
             $mid = ModUtil::getIdFromName($module);
@@ -598,7 +598,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                include_once $bootstrap;
             }
 
-            
+
             ZLanguage::bindModuleDomain($module);
 
             $results[$module['module']] = false;

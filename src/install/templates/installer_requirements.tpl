@@ -82,17 +82,17 @@
                 {else}
                 <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/error_logs"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file="`$temp`/Renderer_compiled" assign="file"}
+                {iswriteable file="`$temp`/view_compiled" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1="$temp/Renderer_compiled"}</li>
+                <li class="passed">{gt text="%s is writeable." tag1="$temp/view_compiled"}</li>
                 {else}
-                <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Renderer_compiled"}</li>{assign var=checkfailed value=true}
+                <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/view_compiled"}</li>{assign var=checkfailed value=true}
                 {/if}
-                {iswriteable file="`$temp`/Renderer_cache" assign="file"}
+                {iswriteable file="`$temp`/view_cache" assign="file"}
                 {if $file}
-                <li class="passed">{gt text="%s is writeable." tag1="$temp/Renderer_cache"}</li>
+                <li class="passed">{gt text="%s is writeable." tag1="$temp/view_cache"}</li>
                 {else}
-                <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/Renderer_cache"}</li>{assign var=checkfailed value=true}
+                <li class="failed">{gt text="You have a problem! '%s' is not writeable. Please ensure that the file permissions are set correctly for the installation process." tag1="$temp/view_cache"}</li>{assign var=checkfailed value=true}
                 {/if}
                 {iswriteable file="`$temp`/Theme_compiled" assign="file"}
                 {if $file}

@@ -4,9 +4,6 @@
  *
  * This file is a plugin for renderer, the Zikula implementation of Smarty
  *
- * @package      Xanthia_Templating_Environment
- * @subpackage   renderer
- * @version      $Id$
  * @author       The Zikula development team
  * @link         http://www.zikula.org  The Zikula Home Page
  * @copyright    Copyright (C) 2002 by the Zikula Development Team

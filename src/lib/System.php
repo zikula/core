@@ -1086,8 +1086,8 @@ class System
             $folders = array(
                     $temp,
                     $temp . 'error_logs',
-                    $temp . 'Renderer_compiled',
-                    $temp . 'Renderer_cache',
+                    $temp . 'view_compiled',
+                    $temp . 'view_cache',
                     $temp . 'Theme_compiled',
                     $temp . 'Theme_cache');
 
