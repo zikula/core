@@ -656,17 +656,22 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             }
 
             // titles
-            $titles = array(
-                $this->__('Name'),
-                $this->__('Tag'),
-                $this->__('Value'),
-                $this->__('Page'),
-                $this->__('User Name'),
-                $this->__('IP'),
-                $this->__('Impact'),
-                $this->__('PHPIDS filters used'),
-                $this->__('Date')
-            );
+            if ($exportTitles == 1) {
+                $titles = array(
+                    $this->__('Name'),
+                    $this->__('Tag'),
+                    $this->__('Value'),
+                    $this->__('Page'),
+                    $this->__('User Name'),
+                    $this->__('IP'),
+                    $this->__('Impact'),
+                    $this->__('PHPIDS filters used'),
+                    $this->__('Date')
+                );
+            } else {
+                $titles = array();
+            }
+            
 
             // actual data
             $sort = 'ids_date DESC';
@@ -676,7 +681,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
 
             $data = array();
             $find = array("\r\n", "\n");
-            $relace = array("", "");
+            $replace = array("", "");
 
             foreach($objData as $key => $idsdata) {
                 $objData[$key]['filters'] = unserialize($objData[$key]['filters']);
@@ -689,8 +694,8 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
                 $datarow = array(
                     $objData[$key]['name'],
                     $objData[$key]['tag'],
-                    htmlspecialchars(str_replace($find, $replace, $objData[$key]['value']), ENT_COMPAT, 'UTF_8', false),
-                    htmlspecialchars($objData[$key]['page'], ENT_COMPAT, 'UTF_8', false),
+                    htmlspecialchars(str_replace($find, $replace, $objData[$key]['value']), ENT_COMPAT, 'UTF-8', false),
+                    htmlspecialchars($objData[$key]['page'], ENT_COMPAT, 'UTF-8', false),
                     $objData[$key]['username'],
                     $objData[$key]['ip'],
                     $objData[$key]['impact'],
@@ -702,12 +707,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             }
 
             // export the csv file
-            ModUtil::apiFunc('SecurityCenter', 'admin', 'exportCSV',
-                                   array('exportTitles'  => $exportTitles,
-                                         'exportFile'    => $exportFile,
-                                         'delimiter'     => $delimiter,
-                                         'titles'        => $titles,
-                                         'data'          => $data));
+            FileUtil::exportCSV($data, $titles, $delimiter, '"', $exportFile);
         }
 
         // Create output object
