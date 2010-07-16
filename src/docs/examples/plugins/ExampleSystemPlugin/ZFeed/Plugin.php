@@ -39,7 +39,7 @@ class SystemPlugin_ZFeed_Plugin extends Zikula_Plugin
      */
     public function initialize()
     {
-        include_once dirname(__FILE__) . '/lib/vendor/SimplePie/simplepie.inc';
+        include_once dirname(__FILE__) . '/lib/vendor/SimplePie/simplepie.class.php';
         include_once dirname(__FILE__) . '/lib/ZFeed.php';
     }
 }

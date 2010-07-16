@@ -1,1 +1,0 @@
-This is the directory where Renderer compiled templates are stored.
