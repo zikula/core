@@ -6,7 +6,7 @@
     <ul>
         {if $notices.developer.render}
         <li>
-            <a href="{$themeurl|safetext}">{gt text="Enabled Renderer settings" domain="zikula"}:</a>
+            <a href="{$themeurl|safetext}">{gt text="Enabled Template settings" domain="zikula"}:</a>
             {foreach from=$notices.developer.render name=item item=item}
             {$item.title}{if !$smarty.foreach.item.last}, {/if}
             {/foreach}

@@ -444,7 +444,7 @@ class Zikula_View extends Smarty
     }
 
     /**
-     * Get module plugin renderer instance.
+     * Get module plugin Zikula_View_Plugin instance.
      *
      * @param string       $modName       Module name.
      * @param string       $pluginName    Plugin name.
@@ -452,7 +452,7 @@ class Zikula_View extends Smarty
      * @param string       $cache_id      Cache Id.
      * @param boolean      $add_core_data Add core data to render data.
      *
-     * @return PluginRender
+     * @return Zikula_View_Plugin
      */
     public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
@@ -460,14 +460,14 @@ class Zikula_View extends Smarty
     }
 
     /**
-     * Get system plugin renderer instance.
+     * Get system plugin Zikula_View_Plugin instance.
      *
      * @param string       $pluginName    Plugin name.
      * @param boolean|null $caching       Whether or not to cache (boolean) or use config variable (null).
      * @param string       $cache_id      Cache Id.
      * @param boolean      $add_core_data Add core data to render data.
      *
-     * @return PluginRender
+     * @return Zikula_View_Plugin
      */
     public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
@@ -984,7 +984,7 @@ function z_prefilter_add_literal_callback($matches)
  * Tags affected: <script> and <style>.
  *
  * @param string $tpl_source The template's source prior to prefiltering.
- * @param Smarty &$smarty    A reference to the renderer object.
+ * @param Smarty &$smarty    A reference to the Zikula_View object.
  *
  * @return string The prefiltered template contents.
  */
@@ -997,7 +997,7 @@ function z_prefilter_add_literal($tpl_source, &$smarty)
  * Prefilter for gettext parameters.
  *
  * @param string $tpl_source The template's source prior to prefiltering.
- * @param Smarty &$smarty    A reference to the renderer object.
+ * @param Smarty &$smarty    A reference to the Zikula_View object.
  *
  * @return string The prefiltered template contents.
  */
@@ -1025,7 +1025,7 @@ function z_prefilter_gettext_params_callback($m)
  * Prefilter for legacy tag delemitters.
  *
  * @param string $source  The template's source prior to prefiltering.
- * @param Smarty &$smarty A reference to the renderer object.
+ * @param Smarty &$smarty A reference to the Zikula_View object.
  *
  * @return string The prefiltered template contents.
  */

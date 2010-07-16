@@ -2361,7 +2361,7 @@ function theme_userapi_render_clear_compiled()
  *
  * removed since version 1.3.0 of Zikula
  * @deprecated
- * @see Renderer::clear_cache()
+ * @see Zikula_View::clear_cache()
  * @param module the module where to clear the cache, emptys = clear all caches
  * @return true or false
  */

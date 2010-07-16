@@ -441,7 +441,7 @@ class Zikula_Theme extends Zikula_View
     {
         return $this->isloggedin;
     }
-    
+
     /**
      * Get Theme instance.
      *
@@ -620,8 +620,8 @@ class Zikula_Theme extends Zikula_View
 
         // The configuration has been changed, so we clear all caches for this module.
         self::clear_all_cache();
-        $renderer = Zikula_View::getInstance();
-        $renderer->clear_all_cache();
+        $view = Zikula_View::getInstance();
+        $view->clear_all_cache();
 
         return true;
     }

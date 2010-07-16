@@ -77,9 +77,6 @@ function smarty_function_modfunc($params, &$view)
         }
     }
 
-    // ensure the renderDomain wasnt overwritten
-    //889$view->renderDomain = $saveDomain;
-
     if ($assign) {
         $view->assign($assign, $result);
     } else {
