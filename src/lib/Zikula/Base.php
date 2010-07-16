@@ -263,7 +263,7 @@ abstract class Zikula_Base implements Zikula_Translatable
      *
      * @return string
      */
-    protected function __f($msgid, $params)
+    public function __f($msgid, $params)
     {
         return __f($msgid, $params, $this->domain);
     }
@@ -277,7 +277,7 @@ abstract class Zikula_Base implements Zikula_Translatable
      *
      * @return string Translated string.
      */
-    protected function _n($singular, $plural, $count)
+    public function _n($singular, $plural, $count)
     {
         return _n($singular, $plural, $count, $this->domain);
     }
@@ -292,7 +292,7 @@ abstract class Zikula_Base implements Zikula_Translatable
      *
      * @return string
      */
-    protected function _fn($sin, $plu, $n, $params)
+    public function _fn($sin, $plu, $n, $params)
     {
         return _fn($sin, $plu, $n, $params, $this->domain);
     }
