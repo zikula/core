@@ -1415,7 +1415,7 @@ class UserUtil
         }
 
         // User theme
-        if (System::getVar('theme_change')) {
+        if (System::getVar('theme_change') || SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
             if ((self::isLoggedIn())) {
                 $usertheme = self::getVar('theme');
             } else {
