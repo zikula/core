@@ -33,6 +33,7 @@ function smarty_function_footnotes($params, &$smarty)
 
     if (is_array($link_arr) && !empty($link_arr)) {
         $text .= '<ol>';
+        $link_arr = array_unique($link_arr);
         foreach ($link_arr as $key => $link) {
             // check for an e-mail address
             if (preg_match("/^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,4}$/i", $link)) {
