@@ -1215,11 +1215,8 @@ class Users_Api_Registration extends Zikula_Api
         $verificationCode = UserUtil::generatePassword();
         $reginfo['verifycode'] = UserUtil::getHashedPassword($verificationCode);
 
-        $regExpireDays = $this->getVar('reg_expiredays', 0);
-        if (is_numeric($regExpireDays) && ((int)$regExpireDays == $regExpireDays) && ($regExpireDays > 0)) {
-            $nowUTC = new DateTime(null, DateTimeZone('UTC'));
-            $reginfo['created_dt'] = $nowUTC->format(UserUtil::DATETIME_FORMAT);
-        }
+        $nowUTC = new DateTime(null, DateTimeZone('UTC'));
+        $reginfo['created_dt'] = $nowUTC->format(UserUtil::DATETIME_FORMAT);
 
         $updateResult = ModUtil::apiFunc('Users', 'registration', 'update', array('reginfo' => $reginfo));
         if (!$updateResult) {

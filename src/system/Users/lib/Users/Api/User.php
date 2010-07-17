@@ -489,6 +489,16 @@ class Users_Api_User extends Zikula_Api
         if (!$user) {
             LogUtil::registerError('Sorry! Could not find any matching user account.');
         } else {
+            // delete all the records for password reset confirmation that have expired
+            $chgPassExpireDays = $this->getVar('chgpass_expiredays', 0);
+            if ($chgPassExpireDays > 0) {
+                $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+                $staleRecordUTC->modify("-{$chgPassExpireDays} days");
+                $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
+                $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")";
+                DBUtil::deleteWhere ('users_verifychg', $where);
+            }
+
             $tables = DBUtil::getTables();
             $verifychgColumn = $tables['users_verifychg_column'];
             $verifychgObj = DBUtil::selectObject('users_verifychg',
@@ -496,25 +506,6 @@ class Users_Api_User extends Zikula_Api
 
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
-
-                if ($codeIsGood) {
-                    $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
-                    $staleRecordUTC->modify('-5 days');
-                    try {
-                        $createdUTC = new DateTime($verifychgObj['create_dt'], new DateTimeZone('UTC'));
-                    } catch (Exception $e) {
-                        $createdUTC = new DateTime(UserUtil::EXPIRED);
-                    }
-
-                    if ($createdUTC < $staleRecordUTC) {
-                        $codeIsGood = false;
-                        LogUtil::registerError('Sorry! your confirmation code has expired.');
-                    } else {
-                        // Prevent code reuse.
-//                        $verifychgObj['created_dt'] = UserUtil::EXPIRED;
-//                        DBUtil::updateObject($verifychgObj, 'users_verifychg');
-                    }
-                }
             } else {
                 LogUtil::registerError('Sorry! Could not retrieve a confirmation code for that account.');
             }
@@ -659,11 +650,14 @@ class Users_Api_User extends Zikula_Api
         $verifychgColumn = $dbinfo['users_verifychg_column'];
 
         // delete all the records from e-mail confirmation that have expired
-        $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $staleRecordUTC->modify('-5 days');
-        $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
-        $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
-        DBUtil::deleteWhere ('users_verifychg', $where);
+        $chgEmailExpireDays = $this->getVar('chgemail_expiredays', 0);
+        if ($chgEmailExpireDays > 0) {
+            $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+            $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
+            $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
+            $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
+            DBUtil::deleteWhere ('users_verifychg', $where);
+        }
 
         $uid = UserUtil::getVar('uid');
 
