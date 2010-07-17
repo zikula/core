@@ -47,6 +47,8 @@ $connection = Doctrine_Manager::connection($GLOBALS['ZConfig']['DBInfo']['defaul
 if (!isset($columns['capabilities']) || !isset($columns['min_version'])) {
     ModUtil::dbInfoLoad('Modules', 'Modules');
     DBUtil::changeTable('modules');
+    ModUtil::dbInfoLoad('Blocks', 'Blocks');
+    DBUtil::changeTable('blocks');
 }
 
 $tables = upgrade_getTables($connection);
