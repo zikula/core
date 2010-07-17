@@ -321,6 +321,7 @@ table.z-datatable ul {
     margin: 0 0 1em 0;
     padding: 1em 0;
     overflow: hidden;
+    zoom:1; /* IE fix */
 }
 .z-form fieldset,
 .z-form .z-fieldset {
@@ -328,6 +329,7 @@ table.z-datatable ul {
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
     overflow: hidden;
+    position:relative; /* IE fix */
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -337,7 +339,6 @@ table.z-datatable ul {
     -webkit-background-size: 100% 100%;
     background: -moz-linear-gradient(top,#fafafa,#f2f2f2);
     background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#f2f2f2');
 }
 .z-form legend {
     font-size: 1.25em;
@@ -345,6 +346,7 @@ table.z-datatable ul {
     color: #000;
     background: transparent;
     border: 0;
+    position:relative; /* IE fix */
 }
 .z-form .z-formrow .z-mandatorysym {
     color: #f00;
@@ -399,6 +401,7 @@ div.z-formbuttons {
     min-height: 2em;
     overflow: hidden;
     clear: both;
+    zoom:1; /* IE fix */
 }
 div.z-formlist {
     overflow: hidden;
@@ -527,7 +530,7 @@ div.z-viewbuttons img {
     cursor: pointer;
 }
 
-/* adjust width for IE 5 and IE6 */
+/* Adjust width for IE 5 and IE6 */
 * html .z-form div.z-formrow input,
 * html .z-form div.z-formrow textarea,
 * html .z-form div.z-formrow select {
@@ -573,33 +576,34 @@ div.z-viewbuttons img {
 * IE-fixes for Fieldset/Legend
 *******************************************************************************/
 
-/* all IE */
+/* All IE versions */
 .z-form {
     padding-top: 0\9;
 }
 .z-form fieldset {
-    padding: 0 5px\9;
-    padding-top: 1em\9;
+    padding: 0 5px\9; 
+    padding-top:1em\9;
+    padding-bottom:0.5em\9;
 }
 .z-form legend {
-    position: absolute\9;
-    top: -.5em\9;
+    position:absolute\9; 
+    top:-.5em\9;
     *left: 0\9;
 }
 .z-form fieldset {
-    position: relative\9;
-    overflow: visible\9;
-    margin-top: 1.5em\9;
-    zoom: 1;
+    position:relative\9; 
+    overflow:visible\9;
+    margin-top:1.5em\9;
+    zoom:1;
 }
-/* IE5.x, IE6 & IE7 */
+/* IE5.x, IE6, IE7 */
 .z-form legend {
     *padding: 0 5px;
 }
 .z-form fieldset {
-    *padding-top: 1.5em;
+    *padding-top:1.5em;
 }
-/* IE5.x & IE6 */
+/* IE5.x, IE6 */
 * html .z-form {
     padding-top: 10px;
 }
