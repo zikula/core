@@ -477,7 +477,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         if ($objectid) {
             $id = $objectid;
         }
-        
+
         // assign any dependencies - filtering out non-active module dependents
         // when getting here without a valid id we are in interactive init mode and then
         // the dependencies checks have been done before already
@@ -498,7 +498,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                         if (!empty($dependency['minversion'])) {
                             $minok = version_compare($modversion['version'], $dependency['minversion']);
                         }
-                        
+
                         if (!empty($dependency['maxversion'])) {
                             $minok = version_compare($dependency['maxversion'], $modversion['version']);
                         }
@@ -709,7 +709,7 @@ class Modules_Controller_Admin extends Zikula_Controller
             }
 
             // Clear the Zikula_View cached/compiled files and Themes cached/compiled/cssjs combination files
-            $theme = Zikula_Theme::getInstance('Theme');
+            $theme = Zikula_View_Theme::getInstance('Theme');
             $theme->clear_compiled();
             $theme->clear_all_cache();
             $theme->clear_cssjscombinecache();
@@ -1171,7 +1171,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                            'image' => 'configure.gif',
                                            'title' => $this->__('Configure plugin'));
                     }
-                    
+
                     $actions[] = array('url' => ModUtil::url('Modules', 'admin', 'deactivatePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,

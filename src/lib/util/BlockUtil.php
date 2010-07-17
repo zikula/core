@@ -238,7 +238,7 @@ class BlockUtil
         }
         // end collapseable menu config
 
-        return Theme::getInstance()->themesidebox($row);
+        return Zikula_View_Theme::getInstance()->themesidebox($row);
     }
 
     /**

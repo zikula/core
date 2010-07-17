@@ -13,9 +13,9 @@
  */
 
 /**
- * Zikula_Theme class.
+ * Zikula_View_Theme class.
  */
-class Zikula_Theme extends Zikula_View
+class Zikula_View_Theme extends Zikula_View
 {
     // base theme info
     /**
@@ -634,10 +634,7 @@ class Zikula_Theme extends Zikula_View
     private function _plugin_dirs()
     {
         // add theme specific plugins directories, if they exist
-        $themepath = 'themes/' . $this->directory . '/plugins';
-        if (file_exists($themepath)) {
-            array_push($this->plugins_dir, $themepath);
-        }
+        $this->addPluginDir('themes/' . $this->directory . '/plugins');
 
         if (System::isLegacyMode()) {
             // load the usemodules configuration if exists

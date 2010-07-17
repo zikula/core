@@ -388,9 +388,9 @@ function _upg_sanity_check($username, $password)
  */
 function upgrade_clear_caches()
 {
-    Zikula_Theme::getInstance()->clear_all_cache();
-    Zikula_Theme::getInstance()->clear_compiled();
-    Zikula_Theme::getInstance()->clear_cssjscombinecache();
+    Zikula_View_Theme::getInstance()->clear_all_cache();
+    Zikula_View_Theme::getInstance()->clear_compiled();
+    Zikula_View_Theme::getInstance()->clear_cssjscombinecache();
     Zikula_View::getInstance()->clear_all_cache();
     Zikula_View::getInstance()->clear_compiled();
 }
@@ -471,7 +471,7 @@ function upgrade_getColumnsForTable($connection, $tableName)
     try {
         return $connection->import->listTableColumns($GLOBALS['ZConfig']['System']['prefix'] . "_$tableName");
     } catch (Exception $e) {
-        
+
     }
 }
 

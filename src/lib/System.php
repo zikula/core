@@ -371,7 +371,7 @@ class System
             PageUtil::registerVar('rawtext', true);
             PageUtil::registerVar('footer', true);
 
-            Theme::getInstance();
+            Zikula_View_Theme::getInstance();
 
             $coreInitEvent->setArg('stage', self::CORE_STAGES_THEME);
             $eventManager->notify($coreInitEvent);

@@ -48,14 +48,14 @@ class pnRender extends Zikula_View
  * Theme.
  *
  * @deprecated
- * @see Zikula_Theme
+ * @see Zikula_View_Theme
  */
-class Theme extends Zikula_Theme
+class Theme extends Zikula_View_Theme
 {
     public function __construct($theme, $usefilters = true)
     {
         parent::__construct($theme, $userfilters);
-        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_Theme')), 'STRICT');
+        LogUtil::log(__f('Warning! Class %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ , 'Zikula_View_Theme')), 'STRICT');
     }
 }
 

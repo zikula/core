@@ -29,10 +29,10 @@ class Zikula_ErrorHandler
      * @var Zikula_ServiceManager
      */
     protected $serviceManager;
-    
+
     /**
      * EventManager instance.
-     * 
+     *
      * @var Zikula_EventManager
      */
     protected $eventManager;
@@ -68,7 +68,7 @@ class Zikula_ErrorHandler
 
     /**
      * Constructor.
-     * 
+     *
      * @param Zikula_ServiceManager $serviceManager Servicemanager.
      * @param Zikula_EventManager   $eventManager   Eventmanager.
      */
@@ -120,7 +120,7 @@ class Zikula_ErrorHandler
                     // log to the system log (default php handling....)
                     error_log($msg);
                     break;
-                
+
                 case 1:
                     // e-mail the error
                     $toaddress = System::getVar('errormailto');
@@ -171,7 +171,7 @@ class Zikula_ErrorHandler
                                  'file' => $errfile,
                                  'line' => $errline));
 
-        Theme::getInstance()->themefooter();
+        Zikula_View_Theme::getInstance()->themefooter();
 
         System::shutDown();
     }
@@ -191,7 +191,7 @@ class Zikula_ErrorHandler
     {
         $event = new Zikula_Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
         $this->eventManager->notify($event);
-        
+
         // errors supressed with @
         if (error_reporting() == 0 ||$this->errordisplay == 0) {
             return;

@@ -42,7 +42,7 @@ class ThemeUtil
         static $themevars;
 
         if (!isset($themevars)) {
-            $themevars = Theme::getInstance()->get_template_vars();
+            $themevars = Zikula_View_Theme::getInstance()->get_template_vars();
         }
 
         // if no variable name is present then return all theme vars

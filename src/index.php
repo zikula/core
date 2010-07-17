@@ -20,7 +20,7 @@ if (SessionUtil::hasExpired()) {
     // Session has expired, display warning
     header('HTTP/1.0 403 Access Denied');
     echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
-    Theme::getInstance()->themefooter();
+    Zikula_View_Theme::getInstance()->themefooter();
     System::shutdown();
 }
 
@@ -157,5 +157,5 @@ switch (true)
         break;
 }
 
-Theme::getInstance()->themefooter();
+Zikula_View_Theme::getInstance()->themefooter();
 System::shutdown();
