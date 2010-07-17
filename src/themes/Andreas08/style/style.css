@@ -97,12 +97,12 @@ fieldset {
 }
 
 #theme_header h2 {
-    margin: 10px 0 0 40px;
     font-size: 1.4em;
+    font-weight: normal;
     background-color: inherit;
     color: #f0f2f4;
     letter-spacing: -1px;
-    font-weight: normal;
+    margin: 10px 0 0 40px;
 }
 
 #theme_navigation_bar {
@@ -156,6 +156,7 @@ fieldset {
     letter-spacing: -1px;
     color: #505050;
     background-color: inherit;
+    padding-top: 0.5em;
 }
 
 #theme_content h2 {
@@ -165,6 +166,7 @@ fieldset {
     letter-spacing: -1px;
     color: #505050;
     background-color: inherit;
+    padding-top: 0.5em;
 }
 
 #theme_content h2 a {
@@ -174,10 +176,12 @@ fieldset {
 #theme_content h3 {
     font-size: 1.4em;
     letter-spacing: -1px;
+    padding-top: 0.5em;
 }
 
 #theme_content h4 {
     font-size: 1.3em;
+    padding-top: 0.5em;
 }
 
 /**************** Footer styles ****************/
