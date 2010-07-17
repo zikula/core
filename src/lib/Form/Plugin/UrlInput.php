@@ -18,7 +18,7 @@
  *
  * The URL input plugin is a text input plugin that only allows URLs to be posted.
  *
- * You can also use all of the features from the pnFormTextInput plugin since the URL input
+ * You can also use all of the features from the Form_Plugin_TextInput plugin since the URL input
  * inherits from it.
  *
  * A valid URL must contain a protocol prefix ("http:" for instance)
@@ -45,33 +45,33 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
             $this->text = $this->defaultText;
         }
 
-        return parent::render($render);
+        return parent::render($view);
     }
 
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
         $this->maxLength = 2000;
 
-        parent::create($render, $params);
+        parent::create($view, $params);
 
         $this->cssClass .= ' url';
     }
@@ -79,11 +79,11 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
     /**
      * Decode post back event.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function decodePostBackEvent($render)
+    function decodePostBackEvent($view)
     {
         if (!empty($this->defaultText) && $this->text == $this->defaultText) {
             $this->text = null;
@@ -93,13 +93,13 @@ class Form_Plugin_URLInput extends Form_Plugin_TextInput
     /**
      * Validates the input.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function validate($render)
+    function validate($view)
     {
-        parent::validate($render);
+        parent::validate($view);
         if (!$this->isValid) {
             return;
         }

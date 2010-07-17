@@ -17,7 +17,7 @@
 /**
  * Image button.
  *
- * This button works like a normal {@link pnFormButton} with the exception
+ * This button works like a normal {@link Form_Plugin_Button} with the exception
  * that it displays a clickable image instead of a text button. It further
  * more returns the X and Y coordinate of the click position in the image.
  *
@@ -28,11 +28,11 @@
  * - posY: Y position of click.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formimagebutton($params, $render)
+function smarty_function_formimagebutton($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_ImageButton', $params);
+    return $view->registerPlugin('Form_Plugin_ImageButton', $params);
 }

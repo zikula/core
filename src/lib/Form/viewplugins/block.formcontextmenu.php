@@ -35,13 +35,13 @@
  * </code>
  * As you can see it is possible to reuse the same menu more than once on a page - in the example above it is
  * used as a context menu for each of the "items" (for instance articles or webshop goods). Where ever you
- * insert a "pnformcontextmenureference" you will get a small clickable arrow indicating the menu. Clicking
+ * insert a "formcontextmenureference" you will get a small clickable arrow indicating the menu. Clicking
  * on the reference will bring op the menu.
  *
  * In your event handler (which defaults to "handleCommand") you should check for both commandName and
  * commandArgument:
  * <code>
- * function handleCommand($render, &$args)
+ * function handleCommand($view, &$args)
  * {
  *   echo "Command: $args[commandName], $args[commandArgument]. ";
  * }
@@ -52,11 +52,11 @@
  *
  * @param array       $params  Parameters passed in the block tag.
  * @param string      $content Content of the block.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_block_formcontextmenu($params, $content, $render)
+function smarty_block_formcontextmenu($params, $content, $view)
 {
-    return $render->registerBlock('Form_Block_ContextMenu', $params, $content);
+    return $view->registerBlock('Form_Block_ContextMenu', $params, $content);
 }

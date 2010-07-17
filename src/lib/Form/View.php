@@ -13,21 +13,21 @@
  */
 
 /**
- * User interaction handler for pnForm system.
+ * User interaction handler for Form system.
  *
- * This class is the main entry point for using the pnForm system. It is expected to be used in Zikula's
+ * This class is the main entry point for using the Form system. It is expected to be used in Zikula's
  * user files, such as "pnuser.php", like this:
  * <code>
  * function modname_user_new($args)
  * {
- *   // Create instance of pnFormRender class
- *   $render = FormUtil::newpnForm('howtopnforms');
+ *   // Create instance of Form_View
+ *   $view = FormUtil::newForm('howtoforms');
  *
  *   // Execute form using supplied template and event handler
- *   return $render->execute('modname_user_new.html', new modname_user_newHandler());
+ *   return $view->execute('modname_user_new.html', new modname_user_newHandler());
  * }
  * </code>
- * See tutorials elsewhere for general introduction to pnForm.
+ * See tutorials elsewhere for general introduction to Form.
  */
 class Form_View extends Zikula_View
 {
@@ -98,7 +98,7 @@ class Form_View extends Zikula_View
     /**
      * Reference to the main user code event handler.
      *
-     * @var pnFormHandler
+     * @var Form_Handler
      * @internal
      */
     public $eventHandler;
@@ -112,7 +112,7 @@ class Form_View extends Zikula_View
     public $errorMsgSet;
 
     /**
-     * Set to true if pnFormRedirect was called. Means no HTML output should be returned.
+     * Set to true if Form_Vew::Redirect was called. Means no HTML output should be returned.
      *
      * @var boolean
      * @internal
@@ -122,7 +122,7 @@ class Form_View extends Zikula_View
     /**
      * Constructor.
      *
-     * Use FormUtil::newpnForm() instead of instantiating pnFormRender directly.
+     * Use FormUtil::newForm() instead of instantiating Form_View directly.
      *
      * @param string $module Module name.
      */
@@ -133,7 +133,7 @@ class Form_View extends Zikula_View
 
         // Construct and make normal Smarty use possible
         parent::__construct($module, false);
-        array_push($this->plugins_dir, "lib/Form/viewplugins");
+        array_push($this->plugins_dir, 'lib/Form/viewplugins');
 
         // Setup
         $this->idCount = 1;
@@ -153,10 +153,10 @@ class Form_View extends Zikula_View
     /**
      * Main event loop handler.
      *
-     * This is the function to call instead of the normal $render->fetch(...).
+     * This is the function to call instead of the normal $view->fetch(...).
      *
      * @param boolean      $template     Name of template file.
-     * @param Form_Handler $eventHandler Instance of object that inherits from pnFormHandler.
+     * @param Form_Handler $eventHandler Instance of object that inherits from Form_Handler.
      *
      * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
@@ -164,12 +164,14 @@ class Form_View extends Zikula_View
     {
         // Save handler for later use
         $this->eventHandler = $eventHandler;
+        $this->eventHandler->setView($this);
         $this->eventHandler->setDomain($this->domain);
+        $this->eventHandler->setup();
+        $this->eventHandler->preInitialize();
 
         if ($this->isPostBack()) {
-            if (!SecurityUtil::confirmAuthKey())
+            if (!SecurityUtil::confirmAuthKey()) {
                 return LogUtil::registerAuthidError();
-            {
             }
 
             $this->decodeIncludes();
@@ -180,13 +182,17 @@ class Form_View extends Zikula_View
                 return $this->getErrorMsg();
             }
 
+            $this->eventHandler->postInitialize();
+
             // (no create event)
             $this->initializePlugins(); // initialize event
             $this->decodePlugins(); // decode event
             $this->decodePostBackEvent(); // Execute optional postback after plugins have read their values
         } else {
-            if ($eventHandler->initialize($this) === false)
+            if ($eventHandler->initialize($this) === false) {
                 return $this->getErrorMsg();
+            }
+            $this->eventHandler->postInitialize();
         }
 
         // render event (calls registerPlugin)
@@ -209,27 +215,27 @@ class Form_View extends Zikula_View
     /**
      * Register a plugin.
      *
-     * This method registers a plugin used in a template. Plugins must beregistered to be used in pnForm
+     * This method registers a plugin used in a template. Plugins must beregistered to be used in Form_View
      * (unlike Smarty plugins). The register call must be done inside the Smarty plugin function in a
      * Smarty plugin file. Use like this:
      * <code>
      * // In file "function.myplugin.php"
      *
-     * // pnForm plugin class
-     * class MyPlugin extends pnFormPlugin
+     * // Form plugin class
+     * class MyPlugin extends Form_Plugin
      * { ... }
      *
      * // Smarty plugin function
-     * function smarty_function_myplugin($params, $render)
+     * function smarty_function_myplugin($params, $view)
      * {
-     *   return $render->registerPlugin('MyPlugin', $params);
+     *   return $view->registerPlugin('MyPlugin', $params);
      * }
      * </code>
      * Registering a plugin ensures it is included in the plugin hierarchy of the current page, so that it's
      * various event handlers can be called by the framework.
      *
      * Do not use this function for registering Smarty blocks (the $isBlock parameter is for internal use).
-     * Use pnFormRegisterBlock instead.
+     * Use Form_View::registerBlock() instead.
      *
      * See also all the function.formXXX.php plugins for examples.
      *
@@ -247,12 +253,17 @@ class Form_View extends Zikula_View
         $stackCount = count($this->blockStack);
 
         // A volatile block is a block that cannot be restored through view state
-        // This is the case for pnForm plugins inside <!--[if]--> and <!--[foreach]--> tags.
+        // This is the case for Form plugins inside {if} and {foreach} tags.
         // So create new plugins for these blocks instead of relying on the existing plugins.
 
 
         if (!$this->isPostBack() || $stackCount > 0 && $this->blockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
+            if (!$plugin instanceof Form_Plugin) {
+                throw new InvalidArgumentException(__f('Plugin %s must be an instance of Form_Plugin', $pluginName));
+            }
+            $plugin->setDomain($this->getDomain());
+            $plugin->setup();
 
             // Make sure to store ID and render reference in plugin
             $plugin->id = $id;
@@ -277,7 +288,7 @@ class Form_View extends Zikula_View
         } else {
             // Fetch plugin instance by ID
             // It has already got it's initialize and decode event at this point
-            $plugin = & $this->getPluginById($id);
+            $plugin = $this->getPluginById($id);
 
             // Kill existing plugins beneath a volatile block
             if (isset($plugin->volatile) && $plugin->volatile) {
@@ -309,18 +320,18 @@ class Form_View extends Zikula_View
     /**
      * Regiser a block plugin.
      *
-     * Use this like {@link pnFormRegisterPlugin} but for Smarty blocks instead of Smarty plugins.
+     * Use this like {@link Form_View::registerPlugin} but for Smarty blocks instead of Smarty plugins.
      * <code>
      * // In file "block.myblock.php"
      *
-     * // pnForm plugin class (also used for blocks)
-     * class MyBlock extends pnFormPlugin
+     * // Form plugin class (also used for blocks)
+     * class MyBlock extends Form_Plugin
      * { ... }
      *
      * // Smarty block function
-     * function smarty_block_myblock($params, $content, $render)
+     * function smarty_block_myblock($params, $content, $view)
      * {
-     *   return return $render->registerBlock('MyBlock', $params, $content);
+     *   return $view->registerBlock('MyBlock', $params, $content);
      * }
      * </code>
      *
@@ -340,10 +351,10 @@ class Form_View extends Zikula_View
     }
 
     /**
-     * pnFormRegisterBlockBegin.
+     * RegisterBlockBegin.
      *
      * @param string $pluginName Full class name of the plugin to register.
-     * @param array  &$params    Parameters passed from the Smarty block function.
+     * @param array  &$params    Parameters passed from the block function.
      *
      * @internal
      * @return void
@@ -356,10 +367,10 @@ class Form_View extends Zikula_View
     }
 
     /**
-     * pnFormRegisterBlockEnd.
+     * RegisterBlockEnd.
      *
      * @param string $pluginName Full class name of the plugin to register.
-     * @param array  &$params    Parameters passed from the Smarty block function.
+     * @param array  &$params    Parameters passed from the block function.
      * @param string $content    The block content.
      *
      * @internal
@@ -380,9 +391,9 @@ class Form_View extends Zikula_View
     }
 
     /**
-     * pnFormGetPluginId.
+     * GetPluginId.
      *
-     * @param array &$params Parameters passed from the Smarty block function.
+     * @param array &$params Parameters passed from the block function.
      *
      * @internal
      * @return string The plugin ID.
@@ -401,9 +412,9 @@ class Form_View extends Zikula_View
      *
      * @param intiger $id Plugin ID.
      *
-     * @return mixed
+     * @return Form_Plugin|null
      */
-    public function &getPluginById($id)
+    public function getPluginById($id)
     {
         $lim = count($this->plugins);
         for ($i = 0; $i < $lim; ++$i) {
@@ -423,9 +434,9 @@ class Form_View extends Zikula_View
      * @param object  $plugin Plugin.
      * @param intiger $id     Plugin ID.
      *
-     * @return object|null
+     * @return Form_Plugin|null
      */
-    public function &getPluginById_rec($plugin, $id)
+    public function getPluginById_rec($plugin, $id)
     {
         if ($plugin->id == $id) {
             return $plugin;
@@ -450,7 +461,7 @@ class Form_View extends Zikula_View
      */
     public function isPostBack()
     {
-        return isset($_POST['__pnFormSTATE']);
+        return isset($_POST['__FormSTATE']);
     }
 
     /**
@@ -599,7 +610,7 @@ class Form_View extends Zikula_View
      * function handleCommand(...)
      * {
      *   if (... it did not work ...)
-     *     return $render->registerError('Operation X failed due to Y');
+     *     return $view->registerError('Operation X failed due to Y');
      * }
      * </code>
      *
@@ -645,10 +656,10 @@ class Form_View extends Zikula_View
      *
      * Example:
      * <code>
-     * function initialize($render)
+     * function initialize($view)
      * {
      *   if (... not has access ...)
-     *     return $render->registerError(LogUtil::registerPermissionError());
+     *     return $view->registerError(LogUtil::registerPermissionError());
      * }
      * </code>
      *
@@ -684,24 +695,24 @@ class Form_View extends Zikula_View
      *
      * Call this method to get a piece of code that will generate a postback event. The returned JavaScript code can
      * be called at any time to generate the postback. The plugin that receives the postback must implement
-     * a function "raisePostBackEvent($render, $eventArgument)" that will handle the event.
+     * a function "raisePostBackEvent($view, $eventArgument)" that will handle the event.
      *
-     * Example (taken from the {@link pnFormContextMenuItem} plugin):
+     * Example (taken from the {@link Form_Plugin_ContextMenu_Item} plugin):
      * <code>
-     * function render($render)
+     * function render($view)
      * {
-     *   $click = $render->getPostBackEventReference($this, $this->commandName);
+     *   $click = $view->getPostBackEventReference($this, $this->commandName);
      *   $url = 'javascript:' . $click;
-     *   $title = $render->translateForDisplay($this->title);
+     *   $title = $view->translateForDisplay($this->title);
      *   $html = "<li><a href=\"$url\">$title</a></li>";
      *
      *   return $html;
      * }
      *
-     * function raisePostBackEvent($render, $eventArgument)
+     * function raisePostBackEvent($view, $eventArgument)
      * {
      *   $args = array('commandName' => $eventArgument, 'commandArgument' => null);
-     *   $render->raiseEvent($this->onCommand == null ? 'handleCommand' : $this->onCommand, $args);
+     *   $view->raiseEvent($this->onCommand == null ? 'handleCommand' : $this->onCommand, $args);
      * }
      * </code>
      *
@@ -712,7 +723,7 @@ class Form_View extends Zikula_View
      */
     public function getPostBackEventReference($plugin, $commandName)
     {
-        return "pnFormDoPostBack('$plugin->id', '$commandName');";
+        return "FormDoPostBack('$plugin->id', '$commandName');";
     }
 
     /**
@@ -777,9 +788,9 @@ class Form_View extends Zikula_View
     {
         $base64 = $this->getIncludesText();
 
-        // TODO - this is a quick hack to move __pnFormINCLUDES into a session variable.
+        // TODO - this is a quick hack to move __FormINCLUDES into a session variable.
         // A better way needs to be found rather than relying on a call to getIncludesHTML.
-        SessionUtil::setVar('__pnFormINCLUDES', $base64);
+        SessionUtil::setVar('__FormINCLUDES', $base64);
         return '';
     }
 
@@ -791,7 +802,7 @@ class Form_View extends Zikula_View
     public function decodeIncludes()
     {
         // TODO - See getIncludesHTML()
-        $base64 = SessionUtil::getVar('__pnFormINCLUDES');
+        $base64 = SessionUtil::getVar('__FormINCLUDES');
         $bytes = base64_decode($base64);
         $bytes = SecurityUtil::checkSignedData($bytes);
         if (!$bytes) {
@@ -819,7 +830,7 @@ class Form_View extends Zikula_View
     public function getAuthKeyHTML()
     {
         $key = SecurityUtil::generateAuthKey();
-        $html = "<input type=\"hidden\" name=\"authid\" value=\"$key\" id=\"pnFormAuthid\"/>";
+        $html = "<input type=\"hidden\" name=\"authid\" value=\"$key\" id=\"FormAuthid\"/>";
         return $html;
     }
 
@@ -842,10 +853,10 @@ class Form_View extends Zikula_View
      */
     public function getStateText()
     {
-        $this->setState('pnFormRender', 'eventHandler', $this->eventHandler);
+        $this->setState('Form_View', 'eventHandler', $this->eventHandler);
 
         $pluginState = $this->getPluginState();
-        $this->setState('pnFormRender', 'plugins', $pluginState);
+        $this->setState('Form_View', 'plugins', $pluginState);
 
         $bytes = serialize($this->state);
         $bytes = SecurityUtil::signData($bytes);
@@ -910,12 +921,12 @@ class Form_View extends Zikula_View
     {
         $base64 = $this->getStateText();
 
-        // TODO - this is a quick hack to move __pnFormSTATE into a session variable.
+        // TODO - this is a quick hack to move __FormSTATE into a session variable.
         // This is meant to solve issue #2013
         // A better way needs to be found rather than relying on a call to getStateHTML.
-        SessionUtil::setVar('__pnFormSTATE', $base64);
-        // TODO - __pnFormSTATE still needs to be on the form, to ensure that isPostBack() returns properly
-        return '<input type="hidden" name="__pnFormSTATE" value="true"/>';
+        SessionUtil::setVar('__FormSTATE', $base64);
+        // TODO - __FormSTATE still needs to be on the form, to ensure that isPostBack() returns properly
+        return '<input type="hidden" name="__FormSTATE" value="true"/>';
     }
 
     /**
@@ -926,7 +937,7 @@ class Form_View extends Zikula_View
     public function decodeState()
     {
         // TODO - see getStateHTML()
-        $base64 = SessionUtil::getVar('__pnFormSTATE');
+        $base64 = SessionUtil::getVar('__FormSTATE');
         $bytes = base64_decode($base64);
         $bytes = SecurityUtil::checkSignedData($bytes);
         if (!$bytes) {
@@ -946,7 +957,7 @@ class Form_View extends Zikula_View
      */
     public function &decodePluginState()
     {
-        $state = $this->getState('pnFormRender', 'plugins');
+        $state = $this->getState('Form_View', 'plugins');
         $decodedState = $this->decodePluginState_rec($state);
         return $decodedState;
     }
@@ -974,7 +985,7 @@ class Form_View extends Zikula_View
 
             $varCount = count($vars);
             if ($varCount != count($pluginState)) {
-                return z_exit("Cannot restore pnForm plugin of type '$pluginType' since stored and actual number of member vars differ");
+                return z_exit("Cannot restore Form_View plugin of type '$pluginType' since stored and actual number of member vars differ");
             }
 
             for ($i = 0; $i < $varCount; ++$i) {
@@ -1001,8 +1012,8 @@ class Form_View extends Zikula_View
      */
     public function decodeEventHandler()
     {
-        $storedHandler = & $this->getState('pnFormRender', 'eventHandler');
-        $currentHandler = & $this->eventHandler;
+        $storedHandler = & $this->getState('Form_View', 'eventHandler');
+        $currentHandler = $this->eventHandler;
 
         // Copy saved data into event handler (this is where form handler variables are restored)
         $varInfo = get_class_vars(get_class($storedHandler));
@@ -1038,7 +1049,9 @@ class Form_View extends Zikula_View
         $lim = count($plugins);
         for ($i = 0; $i < $lim; ++$i) {
             $this->initializePlugins_rec($plugins[$i]->plugins);
+            $plugins[$i]->preInitialize();
             $plugins[$i]->initialize($this);
+            $plugins[$i]->postInitialize();
         }
     }
 
@@ -1076,8 +1089,8 @@ class Form_View extends Zikula_View
      */
     public function decodePostBackEvent()
     {
-        $eventTarget = FormUtil::getPassedValue('pnFormEventTarget', null, 'POST');
-        $eventArgument = FormUtil::getPassedValue('pnFormEventArgument', null, 'POST');
+        $eventTarget = FormUtil::getPassedValue('FormEventTarget', null, 'POST');
+        $eventArgument = FormUtil::getPassedValue('FormEventArgument', null, 'POST');
 
         if ($eventTarget != '') {
             $targetPlugin = & $this->getPluginById($eventTarget);
@@ -1148,12 +1161,12 @@ class Form_View extends Zikula_View
      * </code>
      *
      * Most input plugins supports grouping of posted data. These inputs allows you to
-     * write something similar to what you do on the pnformtextinput plugin:
+     * write something similar to what you do on the formtextinput plugin:
      *
      * <code>
-     *   <!--[pnformtextinput id="title" group="A"]--><br/>
-     *   <!--[pnformtextinput id="text" textMode=multiline group="A"]-->
-     *   <!--[pnformintinput id="servings"]--><br/>
+     *   {formtextinput id="title" group="A"}<br />
+     *   {formtextinput id="text" textMode=multiline group="A"}
+     *   {formintinput id="servings"}<br />
      * </code>
      *
      * Grouped data is combined into associative arrays with all the values in the group.

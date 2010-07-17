@@ -14,21 +14,21 @@
  */
 
 /**
- * Date input for pnForms.
+ * Date input for Form_View.
  *
  * The date input plugin is a text input plugin that only allows dates to be posted. The value
- * returned from {@link pnForm::pnFormGetValues()} is although a string of the format 'YYYY-MM-DD'
+ * returned from {@link Form_View::getValues()} is although a string of the format 'YYYY-MM-DD'
  * since this is the standard internal Zikula format for dates.
  *
- * You can also use all of the features from the pnFormTextInput plugin since the date input
+ * You can also use all of the features from the Form_Plugin_TextInput plugin since the date input
  * inherits from it.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formdateinput($params, $render)
+function smarty_function_formdateinput($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_DateInput', $params);
+    return $view->registerPlugin('Form_Plugin_DateInput', $params);
 }

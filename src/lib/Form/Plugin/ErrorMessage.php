@@ -41,7 +41,7 @@
  * return true;
  * }
  * </code>
- * Beware that {@link pnFormRender::pnFormGetPluginById()} only works on postback.
+ * Beware that {@link Form_View::getPluginById()} only works on postback.
  */
 class Form_Plugin_ErrorMessage extends Form_Plugin
 {

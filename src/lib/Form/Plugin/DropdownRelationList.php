@@ -96,46 +96,46 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
         if (!isset($params['module']) || empty($params['module'])) {
-            $render->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'pnformdropdownrelationlist',
+            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
+                'formdropdownrelationlist',
                 'module')));
         }
         $this->module = $params['module'];
         unset($params['module']);
         if (!ModUtil::available($this->module)) {
-            $render->trigger_error(__('Error! in %1$s: an invalid %2$s parameter was received.', array(
-                'pnformdropdownrelationlist',
+            $view->trigger_error(__('Error! in %1$s: an invalid %2$s parameter was received.', array(
+                'formdropdownrelationlist',
                 'module')));
         }
 
         if (!isset($params['objecttype']) || empty($params['objecttype'])) {
-            $render->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'pnformdropdownrelationlist',
+            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
+                'formdropdownrelationlist',
                 'objecttype')));
         }
         $this->objecttype = $params['objecttype'];
         unset($params['objecttype']);
 
         if (!isset($params['idField']) || empty($params['idField'])) {
-            $render->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'pnformdropdownrelationlist',
+            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
+                'formdropdownrelationlist',
                 'idField')));
         }
         $this->idField = $params['idField'];
         unset($params['idField']);
 
         if (!isset($params['displayField']) || empty($params['displayField'])) {
-            $render->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'pnformdropdownrelationlist',
+            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
+                'formdropdownrelationlist',
                 'displayField')));
         }
         $this->displayField = $params['displayField'];
@@ -166,7 +166,7 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
             unset($params['num']);
         }
 
-        parent::create($render, $params);
+        parent::create($view, $params);
 
         $this->cssClass .= ' relationlist';
     }
@@ -174,12 +174,12 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load($render, $params)
+    function load($view, $params)
     {
         ModUtil::dbInfoLoad($this->module);
 
@@ -204,7 +204,7 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
             $this->addItem($obj[$this->displayField], $obj[$this->idField]);
         }
 
-        parent::load($render, $params);
+        parent::load($view, $params);
     }
 }
 

@@ -111,7 +111,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $render Reference to Form_View render object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -125,9 +125,9 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
      * Load values.
      *
      * Called internally by the plugin itself to load values from the render.
-     * Can also by called when some one is calling the render object's pnFormSetValues.
+     * Can also by called when some one is calling the render object's Form_View::setValues.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $render Reference to Form_Viewr object.
      * @param array       &$values Values to load.
      *
      * @return void

@@ -31,7 +31,7 @@
  * <!--[/formtabbedpanel]-->
  * <!--[/formtabbedpanelset]-->
  * </code>
- * You can place any pnForms plugins inside the individual panels. The tabs
+ * You can place any Form_View plugins inside the individual panels. The tabs
  * require some special styling which is handled by the styles in system/Theme/style/form/style.css.
  * If you want to override this styling then either copy the styles to another stylesheet in the
  * templates directory or change the cssClass attribute to something different than the default
@@ -81,12 +81,12 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
     /**
      * RenderContent event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string      $content The content to handle.
      *
      * @return string The (optionally) modified content.
      */
-    function renderContent($render, $content)
+    function renderContent($view, $content)
     {
         // Beware - working on 1-based offset!
 
@@ -94,7 +94,7 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
         static $firstTime = true;
         if ($firstTime) {
             PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');
-            PageUtil::addVar('javascript', 'system/Theme/javascript/form/pnform_tabbedpanelset.js');
+            PageUtil::addVar('javascript', 'system/Theme/javascript/form/form_tabbedpanelset.js');
             PageUtil::addVar('footer', "<script type=\"text/javascript\">$$('.tabsToHide').invoke('hide')</script>");
         }
         $firstTime = false;
@@ -109,13 +109,13 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
             $cssClass = 'linktab';
             $selected = ($i == $this->selectedIndex);
 
-            $title = $render->translateForDisplay($title);
+            $title = $view->translateForDisplay($title);
 
             if ($selected) {
                 $cssClass .= ' selected';
             }
 
-            $link = "<a href=\"#\" onclick=\"return pnFormTabbedPanelSet.handleTabClick($i,$titleCount,'{$this->id}')\">$title</a>";
+            $link = "<a href=\"#\" onclick=\"return FormTabbedPanelSet.handleTabClick($i,$titleCount,'{$this->id}')\">$title</a>";
 
             $html .= "<li id=\"{$this->id}Tab_{$i}\" class=\"$cssClass\">$link</li><li>&nbsp;</li>\n";
         }
@@ -132,16 +132,16 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
      *
      * Called by child panels to register themselves.
      *
-     * @param Form_View             $render Reference to Form render object.
+     * @param Form_View             $view Reference to Form_View object.
      * @param Form_Plugin_TabbedPanel &$panel  Panel object.
      * @param string                  $title   Panel title.
      *
      * @return void
      */
-    function registerTabbedPanel($render, &$panel, $title)
+    function registerTabbedPanel($view, &$panel, $title)
     {
         $panel->panelSetId = $this->id;
-        if (!$render->isPostBack()) {
+        if (!$view->isPostBack()) {
             $panel->index = $this->registeredTabIndex++;
             $this->titles[] = $title;
         }
@@ -151,11 +151,11 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
     /**
      * Decode event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function decode($render)
+    function decode($view)
     {
         $this->selectedIndex = (int)FormUtil::getPassedValue("{$this->id}SelectedIndex", 1);
     }

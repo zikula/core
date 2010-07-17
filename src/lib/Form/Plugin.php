@@ -15,16 +15,16 @@
 /**
  * Base plugin class.
  *
- * This is the base class to inherit from when creating new plugins for the pnForm framework.
- * Every pnForm plugin is normally created in a Smarty plugin function file and registered in
- * the pnForm framewith with the use of {@link pnFormRender::pnFormRegisterPlugin()}.
+ * This is the base class to inherit from when creating new plugins for the Form_View framework.
+ * Every Form plugin is normally created in a Smarty plugin function file and registered in
+ * the Form_View framewith with the use of {@link Form_View::registerPlugin()}.
  *
  * Member variables in a plugin object is persisted accross different page requests. This means
  * a member variable $this->x can be set on one request and on the next request it will still contain
  * the same value. This probably removes 99% of the use of hidden HTML variables in your web forms.
  * A member variable <i>must</i> be declared in order to be persisted:
  * <code>
- * class MyPlugin inherits pnFormPlugin
+ * class MyPlugin inherits Form_Plugin
  * {
  *    var $x;
  * }
@@ -33,7 +33,7 @@
  * Member variables in a plugin will be assigned automatically from Smarty parameters when the variable
  * and parameter names match. So assume you have a plugin like this:
  * <code>
- * class MyPlugin inherits pnFormPlugin
+ * class MyPlugin inherits Form_Plugin
  * {
  *    var $y;
  * }
@@ -66,10 +66,10 @@
  *   This is also the place where validators should be added to the list of validators.
  *   Example:
  *   <code>
- *   function load($render, &$params)
+ *   function load($view, &$params)
  *   {
- *     $this->loadValue($render, $render->get_template_vars());
- *     $render->addValidator($this);
+ *     $this->loadValue($view, $view->get_template_vars());
+ *     $view->addValidator($this);
  *   }
  *   </code>
  *   This event is only fired the first time the plugin is instantiated,
@@ -98,7 +98,7 @@
  *   the plugin to render something after the plugins contained within it.
  *
  * - <b>postRender</b>: this event is fired after all rendering is done <i>for all plugins on the page</i>.
- *   In this event handler you can use {@link pnFormRender::pnFormGetPluginById()} to fetch other plugins
+ *   In this event handler you can use {@link Form_View::getPluginById()} to fetch other plugins
  *   and read/modify their data.
  *
  * Most events on one plugin happens before the next plugin is loaded (except the postRender event). So for two
@@ -119,7 +119,7 @@ abstract class Form_Plugin implements Zikula_Translatable
     /**
      * Plugin identifier.
      *
-     * This contains the identifier for the plugin. You can use this ID in {@link pnFormRender::pnFormGetPluginById()}
+     * This contains the identifier for the plugin. You can use this ID in {@link Form_View::getPluginById()}
      * as well as in JavaScript where it should be set on the HTML elements (this does although depend on the plugin
      * implementation).
      *
@@ -154,18 +154,25 @@ abstract class Form_Plugin implements Zikula_Translatable
     public $attributes;
 
     /**
+     * Form_View property
+     *
+     * @var Form_View
+     */
+    protected $view;
+
+    /**
      * Name of function to call in form event handler when plugin is loaded.
      *
      * If you need to notify the form event handler when the plugin has been loaded then
      * specify the name of this handler here. The prototype of the function must be:
-     * function MyOnLoadHandler($render, $plugin, $params) where $render is the form render,
+     * function MyOnLoadHandler($view, $plugin, $params) where $view is the form render,
      * $plugin is this plugin, and $params are the Smarty parameters passed to the plugin.
      *
      * The data bound handler is called both on postback and first page render.
      *
      * Example:
      * <code>
-     * class MyPlugin extends FormPlugin
+     * class MyPlugin extends Form_Plugin
      * {
      *   function MyPlugin()
      *   {
@@ -175,7 +182,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * class MyFormHandler extends Form_Handler
      * {
-     *   function MyLoadHandler($render, $plugin, $params)
+     *   function MyLoadHandler($view, $plugin, $params)
      *   {
      *     // Do stuff here
      *   }
@@ -224,15 +231,24 @@ abstract class Form_Plugin implements Zikula_Translatable
     /**
      * Constructor.
      *
-     * @param Form_View $render Reference to Form_View object.
-     * @param array       &$params Parameters passed from the Smarty plugin function.
+     * @param Form_View $view    Reference to Form_View object.
+     * @param array     &$params Parameters passed from the Smarty plugin function.
      */
     public function __construct($view, &$params)
     {
         $this->plugins = array();
         $this->attributes = array();
         $this->visible = true;
-        $this->domain = $view->getDomain();
+        $this->view = $view;
+    }
+
+    /**
+     * Post construction hook
+     *
+     * @return void
+     */
+    public function setup()
+    {
     }
 
     /**
@@ -246,13 +262,70 @@ abstract class Form_Plugin implements Zikula_Translatable
     }
 
     /**
+     * Set translation domain.
+     *
+     * @param string $domain
+     *
+     * @return void
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+    }
+
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getVisible()
+    {
+        return $this->visible;
+    }
+
+    public function getParentPlugin()
+    {
+        return $this->parentPlugin;
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function getOnDataBound()
+    {
+        return $this->onDataBound;
+    }
+
+    public function getPlugins()
+    {
+        return $this->plugins;
+    }
+
+    public function getBlockBeginOutput()
+    {
+        return $this->blockBeginOutput;
+    }
+
+    public function getVolatile()
+    {
+        return $this->volatile;
+    }
+
+    /**
      * Read Smarty plugin parameters.
      *
      * This is the function that takes care of reading smarty parameters and storing them in the member variables
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
      *
-     * @param Form_View $view   Reference to Form render object.
+     * @param Form_View $view   Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -304,11 +377,29 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do nothing. Typically used to add self as validator.
      *
-     * @param Form_View $render Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
     public function initialize($view)
+    {
+    }
+
+    /**
+     * Pre-initialise hook.
+     *
+     * @return void
+     */
+    public function preInitialize()
+    {
+    }
+
+    /**
+     * Post-initialise hook.
+     *
+     * @return void
+     */
+    public function postInitialize()
     {
     }
 
@@ -344,7 +435,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to call onDataBound handler in form event handler.
      *
-     * @param Form_View $render Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array     &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -353,7 +444,7 @@ abstract class Form_Plugin implements Zikula_Translatable
     {
         if ($this->onDataBound != null) {
             $dataBoundHandlerName = $this->onDataBound;
-            $render->eventHandler->$dataBoundHandlerName($view, $this, $params);
+            $view->eventHandler->$dataBoundHandlerName($view, $this, $params);
         }
     }
 
@@ -362,11 +453,11 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to do render all attributes in form name="value".
      *
-     * @param Form_View $view Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    public function renderAttributes($render)
+    public function renderAttributes($view)
     {
         $attr = '';
         foreach ($this->attributes as $name => $value) {
@@ -381,7 +472,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to return an empty string.
      *
-     * @param Form_View $render Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output.
      */
@@ -395,7 +486,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * Default action is to return an empty string.
      *
-     * @param Form_View $render Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output.
      */

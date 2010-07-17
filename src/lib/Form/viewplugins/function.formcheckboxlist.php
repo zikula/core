@@ -25,16 +25,16 @@
  * </code>
  * with the form event handler code like this:
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- *   function initialize($render)
+ *   function initialize($view)
  *   {
  *       $items = array( array('text' => 'A', 'value' => '1'),
  *                       array('text' => 'B', 'value' => '2'),
  *                       array('text' => 'C', 'value' => '3') );
  *
- *       $render->assign('items', $items); // Supply items
- *       $render->assign('mylist', 2);     // Supply selected value
+ *       $view->assign('items', $items); // Supply items
+ *       $view->assign('mylist', 2);     // Supply selected value
  *   }
  * }
  * </code>
@@ -44,22 +44,22 @@
  * </code>
  * with the form event handler code like this:
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- *   function initialize($render)
+ *   function initialize($view)
  *   {
  *       $items = array( array('text' => 'A', 'value' => '1'),
  *                       array('text' => 'B', 'value' => '2'),
  *                       array('text' => 'C', 'value' => '3') );
  *
- *       $render->assign('mylistItems', $items);  // Supply items
- *       $render->assign('mylist', 2);            // Supply selected value
+ *       $view->assign('mylistItems', $items);  // Supply items
+ *       $view->assign('mylist', 2);            // Supply selected value
  *   }
  * }
  * </code>
  *
  * The resulting dataset is a list of strings representing the selected
- * values. So when you do a $data = $render->getValues(); you will
+ * values. So when you do a $data = $view->getValues(); you will
  * get a dataset like this:
  *
  * <code>
@@ -69,11 +69,11 @@
  * </code>
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formcheckboxlist($params, $render)
+function smarty_function_formcheckboxlist($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_CheckboxList', $params);
+    return $view->registerPlugin('Form_Plugin_CheckboxList', $params);
 }

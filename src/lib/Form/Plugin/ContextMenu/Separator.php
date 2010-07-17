@@ -40,7 +40,7 @@ class Form_Plugin_ContextMenu_Separator extends Form_Plugin
      */
     function render($render)
     {
-        $contextMenu =& $this->getParentContextMenu();
+        $contextMenu = $this->getParentContextMenu();
 
         if (!$contextMenu) {
             return '';
@@ -62,10 +62,10 @@ class Form_Plugin_ContextMenu_Separator extends Form_Plugin
     function &getParentContextMenu()
     {
         // Locate parent context menu
-        $contextMenu = &$this->parentPlugin;
+        $contextMenu = $this->parentPlugin;
 
         while ($contextMenu != null && !($contextMenu instanceof Form_Block_ContextMenu)) {
-            $contextMenu = &$contextMenu->parentPlugin;
+            $contextMenu = $contextMenu->parentPlugin;
         }
 
         return $contextMenu;

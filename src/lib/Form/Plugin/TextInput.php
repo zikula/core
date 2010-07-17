@@ -14,7 +14,7 @@
  */
 
 /**
- * TextInput plugin for pnForms
+ * TextInput plugin for Form_View
  *
  * The Form_Plugin_TextInput plugin is a general purpose input plugin that allows the user to enter any kind of character based data,
  * including text, numbers, dates and more.
@@ -114,7 +114,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * plugins to do validation on (to be implemented).
      *
      * @var string
-     * @see   pnFormRender::pnFormGetValues(), pnFormRender::pnFormIsValid()
+     * @see   Form_View::getValues(), Form_View::isValid()
      */
     public $group;
 
@@ -123,7 +123,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * The true/false value of this variable indicates whether or not the text input is valid
      * (a valid input satisfies the mandatory requirement and regex validation pattern).
-     * Use {@link pnFormTextInput::setError()} and {@link pnFormTextInput::clearValidation()}
+     * Use {@link Form_Plugin_TextInput::setError()} and {@link Form_Plugin_TextInput::clearValidation()}
      * to change the value.
      *
      * @var boolean
@@ -149,7 +149,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Error message to display when input does not validate.
      *
-     * Use {@link pnFormTextInput::setError()} and {@link pnFormTextInput::clearValidation()}
+     * Use {@link Form_Plugin_TextInput::setError()} and {@link Form_Plugin_TextInput::clearValidation()}
      * to change the value.
      *
      * @var string
@@ -159,7 +159,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Text label for this plugin.
      *
-     * This variable contains the label text for the input. The {@link pnFormLabel} plugin will set
+     * This variable contains the label text for the input. The {@link Form_Plugin_Label} plugin will set
      * this text automatically when it is a label for this input.
      *
      * @var string
@@ -231,13 +231,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, $params)
+    function create($view, $params)
     {
         // All member variables are fetched automatically before create (as strings)
         // Here we afterwards load all special and non-string parameters
@@ -250,52 +250,52 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         if (array_key_exists('maxLength', $params)) {
             $this->maxLength = $params['maxLength'];
         } else if ($this->maxLength == null && strtolower($this->textMode) != 'multiline') {
-            $render->formDie("Missing maxLength value in textInput plugin '$this->id'.");
+            $view->formDie("Missing maxLength value in textInput plugin '$this->id'.");
         }
     }
 
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load($render, &$params)
+    function load($view, &$params)
     {
         // The load function expects the plugin to read values from the render.
         // This can be done with the loadValue function (which can be called in other situations than
         // through the onLoad event).
-        $this->loadValue($render, $render->get_template_vars());
+        $this->loadValue($view, $view->get_template_vars());
     }
 
     /**
      * Initialize event handler.
      *
-     * @param FormRender $render Reference to pnForm render object.
+     * @param FormRender $view Reference to Form_View object.
      *
      * @return void
      */
-    function initialize($render)
+    function initialize($view)
     {
-        $render->addValidator($this);
+        $view->addValidator($this);
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $idHtml = $this->getIdHtml();
 
         $nameHtml = " name=\"{$this->inputName}\"";
 
-        $titleHtml = ($this->toolTip != null ? ' title="' . $render->translateForDisplay($this->toolTip) . '"' : '');
+        $titleHtml = ($this->toolTip != null ? ' title="' . $view->translateForDisplay($this->toolTip) . '"' : '');
 
         $readOnlyHtml = ($this->readOnly ? ' readonly="readonly" tabindex="-1"' : '');
 
@@ -319,7 +319,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
             $class .= ' ' . $this->cssClass;
         }
 
-        $attributes = $this->renderAttributes($render);
+        $attributes = $this->renderAttributes($view);
 
         switch (strtolower($this->textMode)) {
             case 'singleline':
@@ -360,11 +360,11 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Decode event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function decode($render)
+    function decode($view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -384,20 +384,20 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Validates the input.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function validate($render)
+    function validate($view)
     {
-        $this->clearValidation($render);
+        $this->clearValidation($view);
 
         if ($this->mandatory && $this->isEmpty()) {
             $this->setError(__('Error! An entry in this field is mandatory.'));
         } else if (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
             $this->setError(sprintf(__('Error! Input text must be no longer than %s characters.'), $this->maxLength));
         } else if ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
-            $this->setError($render->translateForDisplay($this->regexValidationMessage));
+            $this->setError($view->translateForDisplay($this->regexValidationMessage));
         }
     }
 
@@ -418,11 +418,11 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Clears the validation data.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function clearValidation($render)
+    function clearValidation($view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -432,18 +432,18 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
     /**
      * Saves value in data object.
      *
-     * Called by the render when doing $render->getValues()
+     * Called by the render when doing $view->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$data   Data object.
      *
      * @return void
      */
-    function saveValue($render, &$data)
+    function saveValue($view, &$data)
     {
         if ($this->dataBased) {
-            $value = $this->parseValue($render, $this->text);
+            $value = $this->parseValue($view, $this->text);
 
             if ($this->group == null) {
                 $data[$this->dataField] = $value;
@@ -461,12 +461,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * Override this function in inherited plugins if other format is needed.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string      $text    Text.
      *
      * @return string Parsed Text.
      */
-    function parseValue($render, $text)
+    function parseValue($view, $text)
     {
         return $text;
     }
@@ -475,14 +475,14 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * Load values.
      *
      * Called internally by the plugin itself to load values from the render.
-     * Can also by called when some one is calling the render object's pnFormSetValues.
+     * Can also by called when some one is calling the render object's Form_ViewetValues.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$values Values to load.
      *
      * @return void
      */
-    function loadValue($render, &$values)
+    function loadValue($view, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -500,7 +500,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
             }
 
             if ($value !== null) {
-                $this->text = $this->formatValue($render, $value);
+                $this->text = $this->formatValue($view, $value);
             }
         }
     }
@@ -510,12 +510,12 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      *
      * Override this function in inherited plugins if other format is needed.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string      $value   The value to format.
      *
      * @return string Formatted value.
      */
-    function formatValue($render, $value)
+    function formatValue($view, $value)
     {
         return $value;
     }

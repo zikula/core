@@ -18,11 +18,11 @@
  *
  * @param array       $params  Parameters passed in the block tag.
  * @param string      $content Content of the block.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_block_form($params, $content, $render)
+function smarty_block_form($params, $content, $view)
 {
     if ($content) {
         PageUtil::addVar('stylesheet', 'system/Theme/style/form/style.css');
@@ -33,24 +33,24 @@ function smarty_block_form($params, $content, $render)
             $classString = "class=\"$params[cssClass]\" ";
         }
 
-        $render->postRender();
+        $view->postRender();
 
-        $out  =  "<form id=\"pnFormForm\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
+        $out  =  "<form id=\"FormForm\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>";
         $out .= $content;
-        $out .= "\n<div>\n" . $render->getStateHTML() . "\n"; // Add <div> for XHTML validation
-        $out .= $render->getIncludesHTML() . "\n";
-        $out .= $render->getAuthKeyHTML() . "
-<input type=\"hidden\" name=\"pnFormEventTarget\" id=\"pnFormEventTarget\" value=\"\" />
-<input type=\"hidden\" name=\"pnFormEventArgument\" id=\"pnFormEventArgument\" value=\"\" />
+        $out .= "\n<div>\n" . $view->getStateHTML() . "\n"; // Add <div> for XHTML validation
+        $out .= $view->getIncludesHTML() . "\n";
+        $out .= $view->getAuthKeyHTML() . "
+<input type=\"hidden\" name=\"FormEventTarget\" id=\"FormEventTarget\" value=\"\" />
+<input type=\"hidden\" name=\"FormEventArgument\" id=\"FormEventArgument\" value=\"\" />
 <script type=\"text/javascript\">
 <!--
-function pnFormDoPostBack(eventTarget, eventArgument)
+function FormDoPostBack(eventTarget, eventArgument)
 {
-  var f = document.getElementById('pnFormForm');
+  var f = document.getElementById('FormForm');
   if (!f.onsubmit || f.onsubmit())
   {
-    f.pnFormEventTarget.value = eventTarget;
-    f.pnFormEventArgument.value = eventArgument;
+    f.FormEventTarget.value = eventTarget;
+    f.FormEventArgument.value = eventArgument;
     f.submit();
   }
 }

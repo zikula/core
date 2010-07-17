@@ -57,7 +57,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * plugins to do validation on (to be implemented).
      *
      * @var string
-     * @see   pnFormRender::pnFormGetValues(), pnFormRender::pnFormIsValid()
+     * @see   Form_View::getValues(), Form_View::isValid()
      */
     public $group;
 
@@ -98,7 +98,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Text label for this plugin.
      *
-     * This variable contains the label text for the input. The {@link pnFormLabel} plugin will set
+     * This variable contains the label text for the input. The {@link Form_Plugin_Label} plugin will set
      * this text automatically when it is a label for this list.
      *
      * @var string
@@ -160,7 +160,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender $render Reference to pnForm render object.
+     * @param Form_View $render Reference to Form render object.
      *
      * @return void
      */
@@ -172,7 +172,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $render Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -239,9 +239,9 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * Load values.
      *
      * Called internally by the plugin itself to load values from the render.
-     * Can also by called when some one is calling the render object's pnFormSetValues.
+     * Can also by called when some one is calling the render object's Form_View::setValues.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $render Reference to Form_View object.
      * @param array       &$values Values to load.
      *
      * @return void

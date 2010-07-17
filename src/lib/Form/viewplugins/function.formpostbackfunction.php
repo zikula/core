@@ -28,12 +28,12 @@
  * method in the form event handler.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formpostbackfunction($params, $render)
+function smarty_function_formpostbackfunction($params, $view)
 {
-    // Let the pnFormPlugin class do all the hard work
-    return $render->registerPlugin('Form_Plugin_PostBackFunction', $params);
+    // Let the Form_Plugin class do all the hard work
+    return $view->registerPlugin('Form_Plugin_PostBackFunction', $params);
 }

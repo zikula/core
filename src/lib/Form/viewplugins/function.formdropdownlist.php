@@ -24,16 +24,16 @@
  * </code>
  * with the form event handler code like this:
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- *   function initialize($render)
+ *   function initialize($view)
  *   {
  *       $items = array( array('text' => 'A', 'value' => '1'),
  *                       array('text' => 'B', 'value' => '2'),
  *                       array('text' => 'C', 'value' => '3') );
  *
- *       $render->assign('items', $items); // Supply items
- *       $render->assign('mylist', 2);     // Supply selected value
+ *       $view->assign('items', $items); // Supply items
+ *       $view->assign('mylist', 2);     // Supply selected value
  *   }
  * }
  * </code>
@@ -43,16 +43,16 @@
  * </code>
  * with the form event handler code like this:
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- *   function initialize($render)
+ *   function initialize($view)
  *   {
  *       $items = array( array('text' => 'A', 'value' => '1'),
  *                       array('text' => 'B', 'value' => '2'),
  *                       array('text' => 'C', 'value' => '3') );
  *
- *       $render->assign('mylistItems', $items);  // Supply items
- *       $render->assign('mylist', 2);            // Supply selected value
+ *       $view->assign('mylistItems', $items);  // Supply items
+ *       $view->assign('mylist', 2);            // Supply selected value
  *   }
  * }
  * </code>
@@ -64,16 +64,16 @@
  * For instance:
  *
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- *   function initialize($render)
+ *   function initialize($view)
  *   {
  *       $items = array( array('text' => 'A', 'value' => '1', 'optgroup' => 'AAA'),
  *                       array('text' => 'B', 'value' => '2', 'optgroup' => 'BBB'),
  *                       array('text' => 'C', 'value' => '3', 'optgroup' => 'CCC') );
  *
- *       $render->assign('mylistItems', $items);  // Supply items
- *       $render->assign('mylist', 2);            // Supply selected value
+ *       $view->assign('mylistItems', $items);  // Supply items
+ *       $view->assign('mylist', 2);            // Supply selected value
  *   }
  * }
  * </code>
@@ -84,15 +84,15 @@
  * a category or color selector. In this way you don't have to remember
  * to assign the items to the render every time you need such a selector.
  * In these plugins you must set the items in the load event handler.
- * See {@link pnFormLanguageSelector} for a good example of how this
+ * See {@link Form_Plugin_LanguageSelector} for a good example of how this
  * can be done.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formdropdownlist($params, $render)
+function smarty_function_formdropdownlist($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_DropdownList', $params);
+    return $view->registerPlugin('Form_Plugin_DropdownList', $params);
 }

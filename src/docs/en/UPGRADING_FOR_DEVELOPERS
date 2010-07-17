@@ -492,12 +492,49 @@ Inside a template plugin simply use $view->__() etc.
 
 FORMS
 =====
-Please note that form handlers (instances of Form_Handler) must extend the base
-class Form_Handler or they will not execute.  Form_Handler, Form_Handler and Form_View
-implement Zikula_Translatable giving access to $this->__() etc.
+There have been some very important and powerful changes to the forms framework.
 
-In the case of Form_Handler, the translation domain is set automatically when
-Form_View#execute() is invoked.
+Form Handler
+------------
+Firstly the Form_Handler interface is now enforced, so handlers must extend
+Form_Handler.
 
-In the case of Form_Plugins, the translation domain is set automatically when
-Form_Plugin#registerPlugin() is invoked.
+Form_Handler class has been modified with some powerful additions.
+  - Form_View::execute() now configures handlers
+    - Injects the Form_View into the handler's view property.
+    - Configures the handler with the domain of the Form_View.
+    - Invoked setup() hook in the handler.
+    - The handler now executes preInitialize() and postInitialize() around the
+      initialize() method.
+    - Form Handlers now implement Zikula_Translatable so you may just use
+      $this->__() etc.  The methods are configured with the handler domain.
+  
+Plugins
+-------
+Firstly the Form_Plugin interface is now enforced, so plugins must extend
+Form_Plugin.
+
+Form_Plugin class has been modified with some powerful additions.
+    - Form_View::registerPlugin() configures the plugins after instanciation.
+    - Injects the Form_View into the plugin's view property.
+    - Configures the plugin with the domain of the Form_View.
+    - Invoked setup() hook in the handler.
+    - The hooks preInitialize() and postInitialize() are invoked around the
+      initialize() method.
+    - Form Handlers now implement Zikula_Translatable so you may just use
+      $this->__() etc.  The methods are configured with the plugin's domain.
+  
+Please note that in cases, where plugins are being re-used, you will need to
+configure them with their own domain hardcoded in the setup() 
+`$this->domain = 'foo';` because by default they will take on the characteristics
+of the View they were invoked by.
+
+Plugins, Handlers and template plugins should all be separated now.  Everything
+is handled by autoloading.
+
+Example layout:
+
+lib/Foo/Form/Handler/Admin/Config.php      Foo_Form_Handler_Admin_Config
+lib/Foo/Form/Handler/User/View.php         Foo_Form_Handler_User_Config
+lib/Foo/Form/Plugin/Youtube.php            Foo_Form_Plugin_Youtube
+templates/plugins/function.formyoutube.php The actual template plugin.

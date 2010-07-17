@@ -44,6 +44,40 @@ abstract class Form_Handler implements Zikula_Translatable
     protected $domain;
 
     /**
+     * View instance.
+     *
+     * @var Form_View
+     */
+    protected $view;
+
+    /**
+     * Post construction hook.
+     */
+    public function setup()
+    {
+    }
+
+    /**
+     * Getter for view.
+     *
+     * @return Form_View
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    /**
+     * Setter for view property.
+     * 
+     * @param Form_Zikula $view Form_View
+     */
+    public function setView(Form_View $view)
+    {
+        $this->view = $view;
+    }
+
+    /**
      * Get translation domain.
      *
      * @return string $this->domain
@@ -95,6 +129,24 @@ abstract class Form_Handler implements Zikula_Translatable
     public function initialize($view)
     {
         return true;
+    }
+
+    /**
+     * Pre-initialise hook.
+     *
+     * @return void
+     */
+    public function preInitialize()
+    {
+    }
+
+    /**
+     * Post-initialise hook.
+     *
+     * @return void
+     */
+    public function postInitialize()
+    {
     }
 
     /**

@@ -134,7 +134,7 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
     /**
      * Initialize event handler.
      *
-     * @param FormRender $render Reference to pnForm render object.
+     * @param FormRender $render Reference to Form_View object.
      *
      * @return void
      */

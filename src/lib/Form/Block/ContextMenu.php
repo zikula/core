@@ -35,13 +35,13 @@
  * </code>
  * As you can see it is possible to reuse the same menu more than once on a page - in the example above it is
  * used as a context menu for each of the "items" (for instance articles or webshop goods). Where ever you
- * insert a "pnformcontextmenureference" you will get a small clickable arrow indicating the menu. Clicking
+ * insert a "formcontextmenureference" you will get a small clickable arrow indicating the menu. Clicking
  * on the reference will bring op the menu.
  *
  * In your event handler (which defaults to "handleCommand") you should check for both commandName and
  * commandArgument:
  * <code>
- * function handleCommand($render, &$args)
+ * function handleCommand($view, &$args)
  * {
  * echo "Command: $args[commandName], $args[commandArgument]. ";
  * }
@@ -92,12 +92,12 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render)
+    function create($view)
     {
         $this->styleAttributes['display'] = 'none';
         $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);
@@ -106,29 +106,29 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * DataBound event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function dataBound($render)
+    function dataBound($view)
     {
-        PageUtil::AddVar('javascript', 'system/Theme/javascript/form/pnform.js');
+        PageUtil::AddVar('javascript', 'system/Theme/javascript/form/form.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
     }
 
     /**
      * RenderBegin event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function renderBegin($render)
+    function renderBegin($view)
     {
         if ($this->firstTime(false)) {
             $cssClass = ($this->cssClass == null ? "contextMenu" : $this->cssClass);
-            $attributes = $this->renderAttributes($render);
+            $attributes = $this->renderAttributes($view);
             $hiddenName = "contentMenuArgument" . $this->id;
             $html = "<div id=\"{$this->id}\" class=\"$cssClass\"$attributes><input type=\"hidden\" name=\"$hiddenName\" id=\"$hiddenName\"/><ul>";
             return $html;
@@ -140,11 +140,11 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
     /**
      * RenderEnd event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function renderEnd($render)
+    function renderEnd($view)
     {
         if ($this->firstTime(true)) {
             $html = '</ul></div>';

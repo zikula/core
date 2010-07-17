@@ -17,7 +17,7 @@
  * Volatile block container
  *
  * This block is a hack, a not so elegant solution, to situations where you need to put
- * pnForms plugins inside conditional smarty tags like if-then-else and foreach. You can
+ * Form_View plugins inside conditional smarty tags like if-then-else and foreach. You can
  * get into problems if you make templates like this:
  * <code>
  *  <!--[foreach from=... item=...]-->
@@ -29,9 +29,9 @@
  * due to changing conditions or amount of items in the foreach loop: on the first page
  * you might have 5 iterations, whereas on postback you suddenly have 6. What should then
  * be done to the missing (or excess) persisted plugin data on postback? The answer is:
- * pnForms cannot handle this - your code will break!
+ * Form_View cannot handle this - your code will break!
  *
- * So you need to tell pnForms that the block inside the foreach tags is volatile - pnForms
+ * So you need to tell Form_View that the block inside the foreach tags is volatile - Form_View
  * should not try to save the state of the plugins inside the foreach loop. This is done
  * with the volatile block:
  * <code>
@@ -42,7 +42,7 @@
  *  <!--[/foreach]-->
  *  <!--[/formvolatile]-->
  * </code>
- * This disables the ability to persist data in the pnForms plugins, but does save you
+ * This disables the ability to persist data in the Form_View plugins, but does save you
  * from trouble in some situations.
  *
  * You don't need the volatile block if you can guarantee that the number of elements will
@@ -50,11 +50,11 @@
  *
  * @param array       $params  Parameters passed in the block tag.
  * @param string      $content Content of the block.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_block_formvolatile($params, $content, $render)
+function smarty_block_formvolatile($params, $content, $view)
 {
-    return $render->registerBlock('Form_Block_Volatile', $params, $content);
+    return $view->registerBlock('Form_Block_Volatile', $params, $content);
 }

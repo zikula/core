@@ -43,8 +43,8 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
      *
      * This is the name of a JavaScript function you want to be created on the page. By calling this
      * function in your own JavaScript code you can initiate a postback that will call the
-     * {@link pnFormPostBackFunction::$onCommand} event handler and pass
-     * {@link pnFormPostBackFunction::$commandName} to it.
+     * {@link FormPostBackFunction::$onCommand} event handler and pass
+     * {@link FormPostBackFunction::$commandName} to it.
      *
      * @var string
      */
@@ -72,36 +72,36 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $html = '';
 
         $html .= "<script type=\"text/javascript\">\n<!--\n{$this->function} = function() { ";
-        $html .= $render->getPostBackEventReference($this, $this->commandName);
+        $html .= $view->getPostBackEventReference($this, $this->commandName);
         $html .= " }\n// -->\n</script>";
 
         return $html;
     }
 
     /**
-     * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
+     * Called by Form_View framework due to the use of Form_View::getPostBackEventReference() above.
      *
-     * @param Form_View $render       Reference to Form render object.
+     * @param Form_View $view       Reference to Form_View object.
      * @param string      $eventArgument The event argument.
      *
      * @return void
      */
-    function raisePostBackEvent($render, $eventArgument)
+    function raisePostBackEvent($view, $eventArgument)
     {
         $args = array(
             'commandName' => $eventArgument,
             'commandArgument' => null);
         if (!empty($this->onCommand))
-            $render->raiseEvent($this->onCommand, $args);
+            $view->raiseEvent($this->onCommand, $args);
     }
 }
 

@@ -30,16 +30,16 @@
  * </code>
  * with the form event handler code like this:
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- * function initialize($render)
+ * function initialize($view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
  * array('text' => 'C', 'value' => '3') );
  *
- * $render->assign('items', $items); // Supply items
- * $render->assign('mylist', 2);     // Supply selected value
+ * $view->assign('items', $items); // Supply items
+ * $view->assign('mylist', 2);     // Supply selected value
  * }
  * }
  * </code>
@@ -49,16 +49,16 @@
  * </code>
  * with the form event handler code like this:
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- * function initialize($render)
+ * function initialize($view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1'),
  * array('text' => 'B', 'value' => '2'),
  * array('text' => 'C', 'value' => '3') );
  *
- * $render->assign('mylistItems', $items);  // Supply items
- * $render->assign('mylist', 2);            // Supply selected value
+ * $view->assign('mylistItems', $items);  // Supply items
+ * $view->assign('mylist', 2);            // Supply selected value
  * }
  * }
  * </code>
@@ -70,16 +70,16 @@
  * For instance:
  *
  * <code>
- * class mymodule_user_testHandler extends pnFormHandler
+ * class mymodule_user_testHandler extends Form_Handler
  * {
- * function initialize($render)
+ * function initialize($view)
  * {
  * $items = array( array('text' => 'A', 'value' => '1', 'optgroup' => 'AAA'),
  * array('text' => 'B', 'value' => '2', 'optgroup' => 'BBB'),
  * array('text' => 'C', 'value' => '3', 'optgroup' => 'CCC') );
  *
- * $render->assign('mylistItems', $items);  // Supply items
- * $render->assign('mylist', 2);            // Supply selected value
+ * $view->assign('mylistItems', $items);  // Supply items
+ * $view->assign('mylist', 2);            // Supply selected value
  * }
  * }
  * </code>
@@ -90,7 +90,7 @@
  * a category or color selector. In this way you don't have to remember
  * to assign the items to the render every time you need such a selector.
  * In these plugins you must set the items in the load event handler.
- * See {@link pnFormLanguageSelector} for a good example of how this
+ * See {@link Form_Plugin_LanguageSelector} for a good example of how this
  * can be done.
  */
 class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
@@ -102,8 +102,8 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * <code>
      * <!--[formdropdownlist selectedValue=B]-->
      * </code>
-     * But in your code you should use {@link pnFormDropdownList::setSelectedValue()}
-     * and {@link pnFormDropdownList::getSelectedValue()}.
+     * But in your code you should use {@link Form_Plugin_DropdownList::setSelectedValue()}
+     * and {@link Form_Plugin_DropdownList::getSelectedValue()}.
      *
      * Selected value is an array of values if you have set selectionMode=multiple.
      *
@@ -118,8 +118,8 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * <code>
      * <!--[formdropdownlist selectedIndex=2]-->
      * </code>
-     * But in your code you should use {@link pnFormDropdownList::setSelectedIndex()}
-     * and {@link pnFormDropdownList::getSelectedIndex()}.
+     * But in your code you should use {@link Form_Plugin_DropdownList::setSelectedIndex()}
+     * and {@link Form_Plugin_DropdownList::getSelectedIndex()}.
      *
      * Select index is not valid when selectionMode=multiple.
      *
@@ -195,29 +195,29 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, $params)
+    function create($view, $params)
     {
-        parent::create($render, $params);
+        parent::create($view, $params);
         $this->selectedIndex = -1;
     }
 
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load($render, &$params)
+    function load($view, &$params)
     {
-        parent::load($render, $params);
+        parent::load($view, $params);
 
         // If someone decided to set selected value from the template then try to "set it for real"
         // (meaning: set also selected Index) - after the items, potentially, have been loaded.
@@ -233,11 +233,11 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -265,14 +265,14 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
 
         $postbackHtml = '';
         if ($this->autoPostBack) {
-            $postbackHtml = " onchange=\"" . $render->getPostBackEventReference($this, '') . "\"";
+            $postbackHtml = " onchange=\"" . $view->getPostBackEventReference($this, '') . "\"";
         }
 
         $multipleHtml = '';
         if ($this->selectionMode == 'multiple')
             $multipleHtml = " multiple=\"multiple\"";
 
-        $attributes = $this->renderAttributes($render);
+        $attributes = $this->renderAttributes($view);
 
         $result = "<select{$idHtml}{$nameHtml}{$readOnlyHtml}{$classHtml}{$postbackHtml}{$multipleHtml}{$sizeHtml}{$attributes}>\n";
         $currentOptGroup = null;
@@ -317,31 +317,31 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     }
 
     /**
-     * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
+     * Called by Form_View framework due to the use of getPostBackEventReference() above.
      *
-     * @param Form_View $render       Reference to Form render object.
+     * @param Form_View $view       Reference to Form_View object.
      * @param string      $eventArgument The event argument.
      *
      * @return void
      */
-    function raisePostBackEvent($render, $eventArgument)
+    function raisePostBackEvent($view, $eventArgument)
     {
         $args = array(
             'commandName' => null,
             'commandArgument' => null);
         if (!empty($this->onSelectedIndexChanged)) {
-            $render->raiseEvent($this->onSelectedIndexChanged, $args);
+            $view->raiseEvent($this->onSelectedIndexChanged, $args);
         }
     }
 
     /**
      * Decode event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function decode($render)
+    function decode($view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -370,13 +370,13 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     /**
      * Validates the input.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function validate($render)
+    function validate($view)
     {
-        $this->clearValidation($render);
+        $this->clearValidation($view);
 
         // we have to allow 0 as a value, see #986
         $valueNotSelected = ((empty($this->selectedValue) && !is_numeric($this->selectedValue)) || $this->selectedValue === null);

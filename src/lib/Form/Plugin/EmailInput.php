@@ -14,11 +14,11 @@
  */
 
 /**
- * E-mail input for pnForms
+ * E-mail input for Form_View
  *
  * The e-mail input plugin is a text input plugin that only allows e-mails to be posted.
  *
- * You can also use all of the features from the pnFormTextInput plugin since the e-mail input
+ * You can also use all of the features from the Form_Plugin_TextInput plugin since the e-mail input
  * inherits from it.
  */
 class Form_Plugin_EMailInput extends Form_Plugin_TextInput
@@ -36,17 +36,17 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
         $this->maxLength = 100;
 
-        parent::create($render, $params);
+        parent::create($view, $params);
 
         $this->cssClass .= ' email';
     }
@@ -54,13 +54,13 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
     /**
      * Validates the input.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function validate($render)
+    function validate($view)
     {
-        parent::validate($render);
+        parent::validate($view);
         if (!$this->isValid) {
             return;
         }

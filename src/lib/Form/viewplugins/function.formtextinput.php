@@ -14,9 +14,9 @@
  */
 
 /**
- * TextInput plugin for pnForms
+ * TextInput plugin for Form_View
  *
- * The pnFormTextInput plugin is a general purpose input plugin that allows the user to enter any kind of character based data,
+ * The Form_Plugin_TextInput plugin is a general purpose input plugin that allows the user to enter any kind of character based data,
  * including text, numbers, dates and more.
  *
  * Typical use in template file:
@@ -24,16 +24,16 @@
  * <!--[formtextinput id="title" maxLength="100" width="30em"]-->
  * </code>
  *
- * The pnFormTextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
- * {@link pnFormStyledPlugin} for more info.
+ * The Form_Plugin_TextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
+ * {@link Form_StyledPlugin} for more info.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param array     $params  Parameters passed in the block tag.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formtextinput($params, $render)
+function smarty_function_formtextinput($params, $view)
 {
-    // Let the pnFormPlugin class do all the hard work
-    return $render->registerPlugin('Form_Plugin_TextInput', $params);
+    // Let the Form_Plugin class do all the hard work
+    return $view->registerPlugin('Form_Plugin_TextInput', $params);
 }

@@ -16,7 +16,7 @@
 /**
  * Tabbel panel element
  *
- * Use this with the {@link pnFormTabbedPanelSet}.
+ * Use this with the {@link Form_Plugin_TabbedPanel}.
  */
 class Form_Block_TabbedPanel extends Form_Plugin
 {
@@ -61,13 +61,13 @@ class Form_Block_TabbedPanel extends Form_Plugin
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
         $this->selected = false;
     }
@@ -75,11 +75,11 @@ class Form_Block_TabbedPanel extends Form_Plugin
     /**
      * RenderBegin event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    function renderBegin($render)
+    function renderBegin($view)
     {
         // Locate parent panelset and register with it
         $panelSet = $this->parentPlugin;
@@ -89,7 +89,7 @@ class Form_Block_TabbedPanel extends Form_Plugin
         }
 
         if ($panelSet != null) {
-            $panelSet->registerTabbedPanel($render, $this, $this->title);
+            $panelSet->registerTabbedPanel($view, $this, $this->title);
         }
 
         $class = ($this->selected ? '' : 'class="tabsToHide"');
@@ -100,11 +100,11 @@ class Form_Block_TabbedPanel extends Form_Plugin
     /**
      * RenderEnd event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output.
      */
-    function renderEnd($render)
+    function renderEnd($view)
     {
         $html = "</div>\n";
         return $html;

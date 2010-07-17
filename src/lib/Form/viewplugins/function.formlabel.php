@@ -22,16 +22,16 @@
  *   <!--[formtextinput id="title"]-->
  * </code>
  * The rendered output is an HTML label element with the "for" value
- * set to the supplied id. In addition to this, the pnFormLabel plugin also sets
+ * set to the supplied id. In addition to this, the Form_Plugin_Label plugin also sets
  * "myLabel" on the "pointed-to" plugin to the supplied label text. This enables
  * the validation summary to display the label text.
  *
  * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formlabel($params, $render)
+function smarty_function_formlabel($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_Label', $params);
+    return $view->registerPlugin('Form_Plugin_Label', $params);
 }

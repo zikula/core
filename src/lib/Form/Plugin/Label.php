@@ -22,7 +22,7 @@
  * <!--[formtextinput id="title"]-->
  * </code>
  * The rendered output is an HTML label element with the "for" value
- * set to the supplied id. In addition to this, the pnFormLabel plugin also sets
+ * set to the supplied id. In addition to this, the Form_Plugin_Label plugin also sets
  * "myLabel" on the "pointed-to" plugin to the supplied label text. This enables
  * the validation summary to display the label text.
  */
@@ -76,28 +76,28 @@ class Form_Plugin_Label extends Form_StyledPlugin
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $idHtml = $this->getIdHtml();
 
-        $text = $render->translateForDisplay($this->text, ($this->html == 1) ? false : true);
+        $text = $view->translateForDisplay($this->text, ($this->html == 1) ? false : true);
 
         if ($this->cssClass != null) {
             $classHtml = " class=\"$this->cssClass\"";
@@ -105,7 +105,7 @@ class Form_Plugin_Label extends Form_StyledPlugin
             $classHtml = '';
         }
 
-        $attributes = $this->renderAttributes($render);
+        $attributes = $this->renderAttributes($view);
 
         $result = "<label{$idHtml} for=\"{$this->for}\"{$classHtml}{$attributes}>$text";
 
@@ -121,15 +121,15 @@ class Form_Plugin_Label extends Form_StyledPlugin
     /**
      * PostRender event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function postRender($render)
+    function postRender($view)
     {
-        $plugin = & $render->getPluginById($this->for);
+        $plugin = & $view->getPluginById($this->for);
         if ($plugin != null) {
-            $plugin->myLabel = $render->translateForDisplay($this->text, ($this->html == 1) ? false : true);
+            $plugin->myLabel = $view->translateForDisplay($this->text, ($this->html == 1) ? false : true);
             //echo "Set label '$this->text' on $plugin->id. ";
         }
     }

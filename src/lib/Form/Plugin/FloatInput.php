@@ -17,7 +17,7 @@
  * Floating value input
  *
  * Use for text inputs where you only want to accept floats. The value saved by
- * {@link pnForm::pnFormGetValues()} is either null or a valid float.
+ * {@link Form_View::GetValues()} is either null or a valid float.
  */
 class Form_Plugin_FloatInput extends Form_Plugin_TextInput
 {
@@ -48,29 +48,29 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
         $this->maxLength = 30;
         $params['width'] = '6em';
-        parent::create($render, $params);
+        parent::create($view, $params);
     }
 
     /**
      * Validates the input.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function validate($render)
+    function validate($view)
     {
-        parent::validate($render);
+        parent::validate($view);
         if (!$this->isValid) {
             return;
         }
@@ -99,12 +99,12 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Parses a value.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string      $text    Text.
      *
      * @return string Parsed Text.
      */
-    function parseValue($render, $text)
+    function parseValue($view, $text)
     {
         if ($text == '') {
             return null;
@@ -119,12 +119,12 @@ class Form_Plugin_FloatInput extends Form_Plugin_TextInput
     /**
      * Format the value to specific format.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string      $value   The value to format.
      *
      * @return string Formatted value.
      */
-    function formatValue($render, $value)
+    function formatValue($view, $value)
     {
         return DataUtil::formatNumber($value);
     }

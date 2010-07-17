@@ -49,27 +49,27 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
     /**
      * Load event handler.
      *
-     * @param Form_View $render Reference to pnForm render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       $params  Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load($render, $params)
+    function load($view, $params)
     {
-        pnFormCategorySelector::loadParameters($this, false, $params);
-        parent::load($render, $params);
+        Form_Plugin_CategorySelector::loadParameters($this, false, $params);
+        parent::load($view, $params);
     }
 
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
-        $result = parent::render($render);
+        $result = parent::render($view);
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "$this->category[id]::", ACCESS_EDIT)) {
             $url = DataUtil::formatForDisplay(ModUtil::url ('Categories', 'user', 'edit', array('dr' => $this->category['id'])));

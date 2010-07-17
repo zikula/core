@@ -31,7 +31,7 @@
  *   <!--[/formtabbedpanel]-->
  * <!--[/formtabbedpanelset]-->
  * </code>
- * You can place any pnForms plugins inside the individual panels. The tabs
+ * You can place any Form_View plugins inside the individual panels. The tabs
  * require some special styling which is handled by the styles in system/Theme/style/form/style.css.
  * If you want to override this styling then either copy the styles to another stylesheet in the
  * templates directory or change the cssClass attribute to something different than the default
@@ -39,11 +39,11 @@
  *
  * @param array       $params  Parameters passed in the block tag.
  * @param string      $content Content of the block.
- * @param Form_View $render Reference to Form render object.
+ * @param Form_View $view Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_block_formtabbedpanelset($params, $content, $render)
+function smarty_block_formtabbedpanelset($params, $content, $view)
 {
-    return $render->registerBlock('Form_Block_TabbedPanelSet', $params, $content);
+    return $view->registerBlock('Form_Block_TabbedPanelSet', $params, $content);
 }

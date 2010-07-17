@@ -14,13 +14,13 @@
  */
 
 /**
- * Date input for pnForms
+ * Date input for Form_View
  *
  * The date input plugin is a text input plugin that only allows dates to be posted. The value
- * returned from {@link pnForm::pnFormGetValues()} is although a string of the format 'YYYY-MM-DD'
+ * returned from {@link Form_View::GetValues()} is although a string of the format 'YYYY-MM-DD'
  * since this is the standard internal Zikula format for dates.
  *
- * You can also use all of the features from the pnFormTextInput plugin since the date input
+ * You can also use all of the features from the Form_Plugin_TextInput plugin since the date input
  * inherits from it.
  */
 class Form_Plugin_DateInput extends Form_Plugin_TextInput
@@ -84,13 +84,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param array       &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, &$params)
+    function create($view, &$params)
     {
         $this->includeTime = (array_key_exists('includeTime', $params) ? $params['includeTime'] : 0);
         $this->daFormat = (array_key_exists('daFormat', $params) ? $params['daFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
@@ -100,7 +100,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         $this->maxLength = ($this->includeTime ? 19 : 12);
         $params['width'] = ($this->includeTime ? '10em' : '8em');
 
-        parent::create($render, $params);
+        parent::create($view, $params);
 
         $this->cssClass .= ' date';
     }
@@ -108,17 +108,17 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         static $firstTime = true;
 
         $i18n = ZI18n::getInstance();
 
-        if (!empty($this->defaultValue) && !$render->isPostBack()) {
+        if (!empty($this->defaultValue) && !$view->isPostBack()) {
             $d = strtolower($this->defaultValue);
             $now = getdate();
             $date = null;
@@ -200,7 +200,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
                 'type="text"',
                 '&nbsp;*'), array(
                 'type="hidden"',
-                ''), parent::render($render));
+                ''), parent::render($view));
             $result .= $hiddenInputField . '<span id="' . $this->id . 'cal" style="background-color: #ff8; cursor: default;" onmouseover="this.style.backgroundColor=\'#ff0\';" onmouseout="this.style.backgroundColor=\'#ff8\';">';
             if ($this->text) {
                 $result .= DataUtil::formatForDisplay(DateUtil::getDatetime(DateUtil::parseUIDate($this->text), $this->daFormat));
@@ -213,7 +213,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
             }
         } else {
             $result .= '<span class="date" style="white-space: nowrap">';
-            $result .= parent::render($render);
+            $result .= parent::render($view);
 
             $txt = __('Select date');
             $result .= " <img id=\"{$this->id}_img\" src=\"javascript/jscalendar/img.gif\" style=\"vertical-align: middle\" class=\"clickable\" alt=\"$txt\" /></span>";
@@ -262,12 +262,12 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Parses a value.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string      $text    Text.
      *
      * @return string Parsed Text.
      */
-    function parseValue($render, $text)
+    function parseValue($view, $text)
     {
         if (empty($text)) {
             return null;
@@ -278,13 +278,13 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Validates the input string.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return void
      */
-    function validate($render)
+    function validate($view)
     {
-        parent::validate($render);
+        parent::validate($view);
         if (!$this->isValid) {
             return;
         }
@@ -308,12 +308,12 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     /**
      * Format the value to specific format.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      * @param string      $value   The value to format.
      *
      * @return string Formatted value.
      */
-    function formatValue($render, $value)
+    function formatValue($view, $value)
     {
         return DateUtil::formatDatetime($value, ($this->includeTime ? __('%Y-%m-%d %H:%M') : __('%Y-%m-%d')), false);
     }

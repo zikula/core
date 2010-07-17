@@ -16,14 +16,14 @@
  * Base plugin class for plugins that uses CSS styling.
  *
  * This plugin adds attributes like "color", "back_groundcolor" and "font_weight" to plugins that extends it.
- * The extending plugin must call {@link pnFormPlugin::renderAttributes()} to use the added CSS features.
- * See also {@link pnFormTextInput} for an example implementation.
+ * The extending plugin must call {@link Form_Plugin::renderAttributes()} to use the added CSS features.
+ * See also {@link Form_Plugin_TextInput} for an example implementation.
  *
  * The support CSS styles are listed in the $styleElements array. Please use this as a reference. Underscores
  * are converted to hyphens in the resulting output to match the correct CSS styles. When you need to use unsupported
  * CSS styles then just write them directly in the style parameter of the plugin:
  * <code>
- * <!--[pnformtextinput id="title" maxLength="100" width="30em" style="border-left: 1px solid red;"]-->
+ * <!--[Form_Plugin_TextInput id="title" maxLength="100" width="30em" style="border-left: 1px solid red;"]-->
  * </code>
  *
  * You can also add styling in the code by adding key/value pairs to $styleAttributes. Example:
@@ -40,10 +40,17 @@ abstract class Form_StyledPlugin extends Form_Plugin
      */
     public $styleAttributes = array();
 
+    public function getStyleAttributes()
+    {
+        return $this->styleAttributes;
+    }
+
+
+
     /**
      * Render attributes.
      *
-     * @param Form_View $render Reference to Form_View object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string
      */

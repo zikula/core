@@ -25,7 +25,7 @@
  * </code>
  *
  * The above case sets 'ok' to either 'yesButton' or 'noButton' in the hashtable returned
- * by {@link pnFormRender::pnFormGetValues()}. As you can see the radiobutton defaults to using the ID for the returned value
+ * by {@link Form_View::getValues()}. As you can see the radiobutton defaults to using the ID for the returned value
  * in the hashtable. You can override this by setting 'value' to something different.
  *
  * You can also enforce a selection:

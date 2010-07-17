@@ -41,14 +41,14 @@
  *    return true;
  *  }
  * </code>
- * Beware that {@link pnFormRender::pnFormGetPluginById()} only works on postback.
+ * Beware that {@link Form_View::getPluginById()} only works on postback.
  *
- * @param array       $params  Parameters passed in the block tag.
- * @param Form_View $render Reference to Form render object.
+ * @param array     $params Parameters passed in the block tag.
+ * @param Form_View $view   Reference to Form_View object.
  *
  * @return string The rendered output.
  */
-function smarty_function_formerrormessage($params, $render)
+function smarty_function_formerrormessage($params, $view)
 {
-    return $render->registerPlugin('Form_Plugin_ErrorMessage', $params);
+    return $view->registerPlugin('Form_Plugin_ErrorMessage', $params);
 }

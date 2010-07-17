@@ -16,7 +16,7 @@
 /**
  * Image button.
  *
- * This button works like a normal {@link pnFormButton} with the exception
+ * This button works like a normal {@link Form_Plugin_Button} with the exception
  * that it displays a clickable image instead of a text button. It further
  * more returns the X and Y coordinate of the click position in the image.
  *
@@ -50,11 +50,11 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -62,14 +62,14 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
 
         $onclickHtml = '';
         if ($this->confirmMessage != null) {
-            $msg = $render->translateForDisplay($this->confirmMessage) . '?';
+            $msg = $view->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
         }
 
-        $text = $render->translateForDisplay($this->text);
+        $text = $view->translateForDisplay($this->text);
         $imageUrl = $this->imageUrl;
 
-        $attributes = $this->renderAttributes($render);
+        $attributes = $this->renderAttributes($view);
 
         $result = "<input type=\"image\" name=\"$fullName\" title=\"$text\" alt=\"$text\" value=\"$text\" src=\"$imageUrl\"$onclickHtml{$attributes}/>";
 
@@ -79,11 +79,11 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
     /**
      * Decode event handler for actions that generate a postback event.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return boolean
      */
-    function decodePostBackEvent($render)
+    function decodePostBackEvent($view)
     {
         $fullNameX = $this->id . '_' . $this->commandName . '_x';
         $fullNameY = $this->id . '_' . $this->commandName . '_y';
@@ -95,7 +95,7 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
                 'posX' => (int)$_POST[$fullNameX],
                 'posY' => (int)$_POST[$fullNameY]);
             if (!empty($this->onCommand)) {
-                if ($render->raiseEvent($this->onCommand, $args) === false) {
+                if ($view->raiseEvent($this->onCommand, $args) === false) {
                     return false;
                 }
             }

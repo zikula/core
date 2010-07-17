@@ -25,14 +25,14 @@
  * will be sent to the form event handlers handleCommand function.
  * Example:
  * <code>
- * function handleCommand($render, &$args)
+ * function handleCommand($view, &$args)
  * {
  * if ($args['commandName'] == 'update')
  * {
- * if (!$render->isValid())
+ * if (!$view->isValid())
  * return false;
  *
- * $data = $render->getValues();
+ * $data = $view->getValues();
  *
  * DBUtil::updateObject($data, 'demo_data');
  * }
@@ -112,28 +112,28 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
     /**
      * Render event handler.
      *
-     * @param Form_View $render Reference to Form render object.
+     * @param Form_View $view Reference to Form_View object.
      *
      * @return string The rendered output
      */
-    function render($render)
+    function render($view)
     {
         $idHtml = $this->getIdHtml();
 
         $onclickHtml = '';
         if ($this->confirmMessage != null) {
-            $msg = $render->translateForDisplay($this->confirmMessage) . '?';
+            $msg = $view->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
         }
 
-        $text = $render->translateForDisplay($this->text);
+        $text = $view->translateForDisplay($this->text);
 
-        $attributes = $this->renderAttributes($render);
+        $attributes = $this->renderAttributes($view);
 
         $carg = serialize(array(
             'cname' => $this->commandName,
             'carg' => $this->commandArgument));
-        $href = $render->getPostBackEventReference($this, $carg);
+        $href = $view->getPostBackEventReference($this, $carg);
         $href = htmlspecialchars($href);
 
         $result = "<a {$idHtml}{$onclickHtml}{$attributes} href=\"javascript:$href\">$text</a>";
@@ -144,20 +144,20 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
     }
 
     /**
-     * Called by pnForms framework due to the use of pnFormGetPostBackEventReference() above.
+     * Called by Form_View framework due to the use of getPostBackEventReference() above.
      *
-     * @param Form_View $render       Reference to Form render object.
+     * @param Form_View $view       Reference to Form_View object.
      * @param string      $eventArgument The event argument.
      *
      * @return void
      */
-    function raisePostBackEvent($render, $eventArgument)
+    function raisePostBackEvent($view, $eventArgument)
     {
         $carg = unserialize($eventArgument);
         $args = array(
             'commandName' => $carg['cname'],
             'commandArgument' => $carg['carg']);
         if (!empty($this->onCommand))
-            $render->raiseEvent($this->onCommand, $args);
+            $view->raiseEvent($this->onCommand, $args);
     }
 }
