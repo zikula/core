@@ -162,8 +162,9 @@ function permappend_response(req)
     // append new perm to the permission list
     $('permissionlist').appendChild(newperm);
 
-    // remove adminpermission class
+    // remove adminpermission & permlocked classes
     Element.removeClassName('permission_' + json.pid, 'adminpermission');  
+    Element.removeClassName('permission_' + json.pid, 'permlocked');
     
     // set initial values in input, hidden and select
     $('groupid_' + json.pid).value = json.gid;
