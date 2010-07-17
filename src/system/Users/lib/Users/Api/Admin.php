@@ -275,17 +275,22 @@ class Users_Api_Admin extends Zikula_Api
             if ($markOnly) {
                 UserUtil::setVar('activated', UserUtil::ACTIVATED_PENDING_DELETE, $uid);
             } else {
-                ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array('uid' => $uid));
-
+                // TODO - This should be in the Groups module, and happen as a result of an event.
                 if (!DBUtil::deleteObjectByID('group_membership', $uid, 'uid')) {
                     return false;
                 }
+
+                ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array('uid' => $uid));
+                DBUtil::deleteObjectByID('session_info', $uid, 'uid');
 
                 if (!DBUtil::deleteObjectByID('users', $uid, 'uid')) {
                     return false;
                 }
 
                 // Let other modules know we have deleted an item
+                $deleteEvent = new Zikula_Event('user.delete', null, array('uid' => $uid));
+                $this->eventManager->notify($deleteEvent);
+
                 $this->callHooks('item', 'delete', $uid, array('module' => 'Users'));
             }
         }
