@@ -6,6 +6,7 @@
 
     <h2>{$templatetitle}</h2>
 
+    {if count($reglist) > 0}
     <table class="z-admintable">
         <thead>
             <tr>
@@ -155,4 +156,7 @@
             </tr>
         </tbody>
     </table>
+    {else}
+    <p class="z-informationmsg">{gt text='There are no pending registration applications to review.'}</p>
+    {/if}
 </div>
