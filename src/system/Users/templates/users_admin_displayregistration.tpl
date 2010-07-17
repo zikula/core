@@ -46,4 +46,3 @@
         {/strip}
     </div>
 </div>
-{zdebug}
