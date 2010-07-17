@@ -346,31 +346,6 @@ function Users_tables_for_118()
     $dbinfo['users_db_extra_enable_attribution'] = true;
     $dbinfo['users_primary_key_column'] = 'uid';
 
-    // Shadow file for additional user-related security information
-    //
-    // id               - ID: Primary ID of the shadow record. Not related to the uid.
-    // uid              - User ID: Primary ID of the user record to which this shadow record is related. Foreign key to users table.
-    // code             - Confirmation Code: The confirmation code last sent to the user for password recovery, as a salted hash value.
-    // code_hash_method - Code Hash Method: An integer code identifying the hashing method used to hash the code. Uses same set of integer codes
-    //                      as does the hash_method field in users table.
-    // code_expires     - Code Expiration Date/Time: One second past the last date and time the code is valid, stored as a UNIX timestamp (The
-    //                      first date and time the code is invalid for use).
-    $dbinfo['users_shadow'] = DBUtil::getLimitedTablename('users_shadow');;
-    $dbinfo['users_shadow_column'] = array (
-        'id'                => 'pn_sid',
-        'uid'               => 'pn_uid',
-        'code'              => 'pn_code',
-        'code_hash_method'  => 'pn_hash_method',
-        'code_expires'      => 'pn_expires',
-    );
-    $dbinfo['users_shadow_column_def'] = array(
-        'id'                => "I4 PRIMARY AUTO",
-        'uid'               => "I4 NOTNULL DEFAULT 0",
-        'code'              => "C(134) NOTNULL DEFAULT ''",
-        'code_hash_method'  => "I1 NOTNULL DEFAULT 8",
-        'code_expires'      => "I4 NOTNULL DEFAULT 0",
-    );
-
     // Temporary user table.
     // Used for storing 1a) registrations that are pending administrator approval, 1b) registrations that are pending e-mail verification
     // (a.k.a. activation), 2) storing a new e-mail address pending e-mail verification for the change-of-e-mail process for existing active

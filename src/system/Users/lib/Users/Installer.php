@@ -129,8 +129,7 @@ class Users_Installer extends Zikula_Installer
             case '1.17':
                 // upgrade 1.17 to 1.18
                 if (!DBUtil::changeTable('users')
-                    || !DBUtil::changeTable('users_temp')
-                    || !DBUtil::createTable('users_shadow'))
+                    || !DBUtil::changeTable('users_temp'))
                 {
                     return '1.17';
                 }
@@ -494,25 +493,9 @@ class Users_Installer extends Zikula_Installer
             return false;
         }
 
-        // Next and last, convert the pending password change codes in users_shadow table over to users_verifychg, just like the pending emails
-        $usColumn = $GLOBALS['dbtables']['users_shadow_column'];
-        $ucColumn = $GLOBALS['dbtables']['users_verifychg_column'];
-        $sql = "INSERT INTO {$dbinfo200['users_verifychg']}
-                    ({$ucColumn['changetype']}, {$ucColumn['uid']}, {$ucColumn['verifycode']})
-                SELECT 1 AS {$ucColumn['changetype']},
-                    {$usColumn['uid']} AS {$ucColumn['uid']},
-                    CONCAT({$usColumn['code_hash_method']}, '$$', {$usColumn['code']}) AS {$ucColumn['verifycode']}
-                FROM {$dbinfo118X['users_shadow']}";
-        $updated = DBUtil::executeSQL($sql);
-        if (!$updated) {
-            return false;
-        }
-
-
         // Done upgrading. Let's lose some old fields and tables we no longer need.
         DBUtil::dropColumn('users', $usersOldFieldsDB);
         DBUtil::dropTable('users_temp');
-        DBUtil::dropTable('users_shadow');
 
         // Reset $GLOBALS['dbtables'] to the new table definitons, so the rest of the
         // system upgrade goes smoothly.
