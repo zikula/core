@@ -1798,7 +1798,7 @@ class Users_Controller_Admin extends Zikula_Controller
                  ->setVar('default_authmodule', $config['default_authmodule'])
                  ->setVar('login_displayinactive', $config['login_displayinactive'])
                  ->setVar('login_displayverify', $config['login_displayverify'])
-                 ->setVar('login_displayapprove', $config['login_displayapprove'])
+                 ->setVar('login_displayapproval', $config['login_displayapproval'])
                  ->setVar('chgemail_expiredays', $config['chgemail_expiredays'])
                  ->setVar('chgpass_expiredays', $config['chgpass_expiredays']);
 

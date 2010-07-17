@@ -83,7 +83,6 @@ class Users_Api_Auth extends Zikula_AuthApi
         ));
 
         if (!$uid) {
-            // We count on getUidForAuthinfo to set an appropriate message.
             return false;
         }
 
@@ -108,6 +107,27 @@ class Users_Api_Auth extends Zikula_AuthApi
         // Essentially, what follows is the Users module's "custom" authentication process.
 
         $userObj = UserUtil::getVars($uid);
+        if (!$userObj) {
+            // Must be a registration. Acting as an authmodule, we should not care at this point about the user's
+            // account status. The account status is something for UserUtil::loginUsing() to deal with after we
+            // tell it whether the account authenticates or not.
+            $userObj = UserUtil::getVars($uid, false, '', true);
+        }
+
+        if (!$userObj) {
+            return false;
+        } elseif (empty($userObj['pass'])) {
+            if ($userObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
+                // Special case - admin created a user account without a password, and user has not verified (and thus
+                // created a password) yet.
+                if ($this->getVar('login_displayverify', false)) {
+                    return LogUtil::registerError($this->__("Sorry! Your e-mail address must be verified before you can log in. Check for an e-mail message containing verification instructions. If you need another verification e-mail sent, contact an administrator."));
+                }
+            } else {
+                // Blank password automatically means no login.
+                return false;
+            }
+        }
 
         // The following check for non-salted passwords and the old 'hash_method' field is to allow the admin to log in
         // during an upgrade from 1.2.  It needs to be kept for any version that allows an upgrade from Zikula 1.2.X.
@@ -126,7 +146,8 @@ class Users_Api_Auth extends Zikula_AuthApi
 
         if (!UserUtil::passwordsMatch($authinfo['pass'], $currentPasswordHashed)) {
             // Need to check for an override of loginviaoption.
-            if ((isset($authinfo['loginid']) && $this->getVar('loginviaoption', 0) == 1) || (!isset($authinfo['loginid']) && isset($authinfo['email']))) {
+            $loginViaOption = $this->getVar('loginviaoption', 0);
+            if ((isset($authinfo['loginid']) && ($loginViaOption == 1)) || (!isset($authinfo['loginid']) && isset($authinfo['email']))) {
                 $idFieldDesc = $this->__('e-mail address');
             } else {
                 $idFieldDesc = $this->__('user name');
@@ -254,8 +275,18 @@ class Users_Api_Auth extends Zikula_AuthApi
 
         if ($loginOption == 1) {
             $uid = UserUtil::getIdFromEmail($loginID);
+            if (!$uid) {
+                // Might be a registration. Acting as an authmodule, we should not care at this point about the user's
+                // account status. The account status is something for UserUtil::loginUsing() to deal with after we
+                // tell it whether the account authenticates or not.
+                $uid = UserUtil::getIdFromEmail($loginID, true);
+            }
         } else {
             $uid = UserUtil::getIdFromName($loginID);
+            if (!$uid) {
+                // Might be a registration. See above.
+                $uid = UserUtil::getIdFromName($loginID, true);
+            }
         }
 
         return $uid;

@@ -598,7 +598,12 @@ class UserUtil
                 'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
             ));
             EventUtil::notify($event);
-            return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
+
+            if (!LogUtil::hasErrors()) {
+                return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
+            } else {
+                return false;
+            }
         }
 
         // At this point we are authenticated, but not logged in. Check for things that need to be done
@@ -610,6 +615,11 @@ class UserUtil
         ModUtil::loadApi('Users', 'user', true);
 
         $userObj = self::getVars($authenticatedUid);
+        if (!$userObj) {
+            // Might be a registration.
+            $userObj = self::getVars($authenticatedUid, false, '', true);
+        }
+
         if (!$userObj || !is_array($userObj)) {
             // Oops! The authmodule gave us a bad uid! Really should not happen unless that module's uid mapping is out of sync.
             // Note that we have not actually logged into anything yet, just authenticated.
@@ -626,7 +636,35 @@ class UserUtil
             $userObj['activated'] = self::ACTIVATED_INACTIVE;
         }
 
-        // Check if the account is active
+        // Check for a few statuses that will mean that we don't have a chance of logging in.
+        $errorMsg = '';
+        $loginDisplayMarkedForDelete = ModUtil::getVar('Users', 'login_displaymarkeddel', false);
+        $loginDisplayInactive = ModUtil::getVar('Users', 'login_displayinactive', false);
+        $loginDisplayApproval = ModUtil::getVar('Users', 'login_displayapproval', false);
+        $loginDisplayVerify = ModUtil::getVar('Users', 'login_displayverify', false);
+        if ((($userObj['activated']) == UserUtil::ACTIVATED_INACTIVE) && $loginDisplayInactive) {
+            $errorMsg = __("Sorry! Your account is not active. Please contact a site administrator.");
+        } elseif ((($userObj['activated']) == UserUtil::ACTIVATED_PENDING_DELETE) && $loginDisplayMarkedForDelete) {
+            $errorMsg = __("Sorry! Your account is marked to be permanently closed. Please contact a site administrator.");
+        } elseif (($userObj['activated']) == UserUtil::ACTIVATED_PENDING_REG) {
+            if (empty($userObj['approved_by']) && $loginDisplayApproval) {
+                $errorMsg = __("Sorry! Your account is still awaiting administrator approval. An e-mail message will be sent to you once an administrator has reviewed your registration request.");
+            } elseif (!$userObj['isverified'] && $loginDisplayVerify) {
+                $errorMsg = __("Sorry! Your e-mail address must be verified before you can log in. Check for an e-mail message containing verification instructions. If you need another verification e-mail sent, contact an administrator.");
+            } elseif ($loginDisplayApproval || $loginDisplayVerify) {
+                $errorMsg = __("Sorry! Your registration status is still pending.");
+            }
+        }
+        if (!empty($errorMsg)) {
+            $event = new Zikula_Event('user.login.failed', null, array(
+                'authmodule'    => $authModuleName,
+                'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
+            ));
+            EventUtil::notify($event);
+            return LogUtil::registerError($errorMsg);
+        }
+
+        // Check if the account is active -- we still have a few inactive possibilities (accept terms, change password)
         if ($userObj['activated'] != self::ACTIVATED_ACTIVE) {
             // If we came here through the normal Users module loginScreen/login Users module UI functions, then we shouldn't
             // have to deal with terms or password status issues. If we came here from some place else, then we need to
@@ -704,16 +742,7 @@ class UserUtil
                     'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
                 ));
                 EventUtil::notify($event);
-
-                $loginDisplayInactive = ModUtil::getVar('Users', 'login_displayinactive', false);
-                $loginDisplayVerify = ModUtil::getVar('Users', 'login_displayverify', false);
-                if ($loginDisplayVerify && (!isset($userObj['lastlogin']) || empty($userObj['lastlogin']) || ($userObj['lastlogin'] == '1970-01-01 00:00:00'))) {
-                    return  LogUtil::registerError(__('Sorry! Your account pending activation. Please check your e-mail for an activation message or contact an administrator.'));
-                } elseif ($loginDisplayInactive) {
-                    return  LogUtil::registerError(__('Sorry! Your account is not active. Please contact an administrator.'));
-                } else {
-                    return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
-                }
+                return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
             }
         }
 
