@@ -193,18 +193,19 @@ class Zikula_ErrorHandler
         $this->eventManager->notify($event);
 
         // errors supressed with @
-        if (error_reporting() == 0 ||$this->errordisplay == 0) {
+        if (error_reporting() == 0 || $this->errordisplay == 0) {
             return;
         }
 
         // only show fatal 8192 = E_DEPRECATED
-        if ($this->errorlog == 1 && ($errno == E_STRICT || $errno == E_DEPRECATED || $errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
+        if ($this->errorlog == 1 && ($errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
             return;
         }
 
         if (!System::isDevelopmentMode()) {
             $errfile = str_replace(realpath(dirname(__FILE__) . '/../..') . DIRECTORY_SEPARATOR, '', $errfile);
         }
+
         // if we get this far, must be $this->errorlog == 2, so show everything
         AjaxUtil::error(__f("Error %s: %s in %s line %s", array($errno, $errstr, $errfile, $errline)));
     }
