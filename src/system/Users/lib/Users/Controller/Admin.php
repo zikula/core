@@ -1691,11 +1691,29 @@ class Users_Controller_Admin extends Zikula_Controller
             $errorFields['users_minage'] = true;
             $this->registerError($this->__('The minimum age permitted to register must be zero (0) or a positive integer.'));
         }
+        if (!isset($config['reg_expiredays']) || !is_numeric($config['reg_expiredays'])
+            || ((int)$config['reg_expiredays'] != $config['reg_expiredays']) || ($config['reg_expiredays'] < 0))
+        {
+            $errorFields['reg_expiredays'] = true;
+            $this->registerError($this->__('The number of days before a registration pending verification is expired must be zero (0) or a positive integer.'));
+        }
         if (isset($config['reg_question']) && !empty($config['reg_question'])) {
             if (!isset($config['reg_answer']) || empty($config['reg_answer'])) {
                 $errorFields['users_reg_answer'] = true;
                 $this->registerError($this->__('If a spam protection question is provided, then the corresponding answer must also be provided.'));
             }
+        }
+        if (!isset($config['chgemail_expiredays']) || !is_numeric($config['chgemail_expiredays'])
+            || ((int)$config['chgemail_expiredays'] != $config['chgemail_expiredays']) || ($config['chgemail_expiredays'] < 0))
+        {
+            $errorFields['chgemail_expiredays'] = true;
+            $this->registerError($this->__('The number of days before an e-mail change request pending verification is expired must be zero (0) or a positive integer.'));
+        }
+        if (!isset($config['chgpass_expiredays']) || !is_numeric($config['chgpass_expiredays'])
+            || ((int)$config['chgpass_expiredays'] != $config['chgpass_expiredays']) || ($config['chgpass_expiredays'] < 0))
+        {
+            $errorFields['chgpass_expiredays'] = true;
+            $this->registerError($this->__('The number of days before a password reset request pending verification is expired must be zero (0) or a positive integer.'));
         }
 
         if (!empty($errorFields)) {
@@ -1724,6 +1742,7 @@ class Users_Controller_Admin extends Zikula_Controller
                  ->setVar('moderation', $config['moderation'])
                  ->setVar('moderation_order', $config['moderation_order'])
                  ->setVar('reg_verifyemail', $config['reg_verifyemail'])
+                 ->setVar('reg_expiredays', $config['reg_expiredays'])
                  ->setVar('reg_notifyemail', $config['reg_notifyemail'])
                  ->setVar('reg_Illegaldomains', $config['reg_Illegaldomains'])
                  ->setVar('reg_Illegalusername', $config['reg_Illegalusername'])
@@ -1743,7 +1762,9 @@ class Users_Controller_Admin extends Zikula_Controller
                  ->setVar('default_authmodule', $config['default_authmodule'])
                  ->setVar('login_displayinactive', $config['login_displayinactive'])
                  ->setVar('login_displayverify', $config['login_displayverify'])
-                 ->setVar('login_displayapprove', $config['login_displayapprove']);
+                 ->setVar('login_displayapprove', $config['login_displayapprove'])
+                 ->setVar('chgemail_expiredays', $config['chgemail_expiredays'])
+                 ->setVar('chgpass_expiredays', $config['chgpass_expiredays']);
 
             if (ModUtil::available('legal')) {
                 ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);

@@ -127,6 +127,24 @@
                     <label for="use_password_strength_meter_no">{gt text="No"}</label>
                 </div>
             </div>
+            <div class="z-formrow">
+                <label for="users_chgemail_expiredays">{gt text="E-mail address verifications expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <div class="z-formlist">
+                    <input id="users_chgemail_expiredays"{if isset($errorFields.chgemail_expiredays)} class="error"{/if} type="text" name="config[chgemail_expiredays]" value="{$config.chgemail_expiredays|default:0}" maxlength="3" />
+                    <label for="users_chgemail_expiredays">{gt text="days"}</label>
+                    <div class="z-sub z-italic">{gt text="Enter the number of days a user's request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration."}</div>
+                    <div class="z-warningmsg">{gt text="Changing this setting will affect all requests to change e-mail addresses currently pending verification."}</div>
+                </div>
+            </div>
+            <div class="z-formrow">
+                <label for="users_chgpass_expiredays">{gt text="Password reset requests expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <div class="z-formlist">
+                    <input id="users_chgpass_expiredays"{if isset($errorFields.chgpass_expiredays)} class="error"{/if} type="text" name="config[chgpass_expiredays]" value="{$config.chgpass_expiredays|default:0}" maxlength="3" />
+                    <label for="users_chgpass_expiredays">{gt text="days"}</label>
+                    <div class="z-sub z-italic">{gt text="This setting only affects users who have not established security question responses. Enter the number of days a user's request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration."}</div>
+                    <div class="z-warningmsg">{gt text="Changing this setting will affect all password change requests currently pending verification."}</div>
+                </div>
+            </div>
         </fieldset>
 
         <fieldset>
@@ -188,6 +206,16 @@
                 <div class="z-formlist">
                     <input id="users_reg_verifyemail0" type="radio" name="config[reg_verifyemail]" value="0" {if $config.reg_verifyemail eq 0} checked="checked"{/if}/>
                     <label for="users_reg_verifyemail0">{gt text="No"}</label>
+                </div>
+            </div>
+            <div class="z-formrow">
+                <label for="users_reg_expiredays">{gt text="Registraions pending verification expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <div class="z-formlist">
+                    <input id="users_reg_expiredays"{if isset($errorFields.reg_expiredays)} class="error"{/if} type="text" name="config[reg_expiredays]" value="{$config.reg_expiredays|default:0}" maxlength="3" />
+                    <label for="users_reg_expiredays">{gt text="days"}</label>
+                    <div class="z-sub z-italic">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</div>
+                    <div class="z-informationmsg">{gt text="If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval."}</div>
+                    <div class="z-warningmsg">{gt text="Changing this setting will affect all registrations currently pending e-mail address verification."}</div>
                 </div>
             </div>
             <div class="z-formrow" id="users_moderation_order_wrap">
