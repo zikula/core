@@ -1675,7 +1675,10 @@ class Users_Controller_Admin extends Zikula_Controller
                  ->setVar('avatarpath', $config['avatarpath'])
                  ->setVar('allowgravatars', $config['allowgravatars'])
                  ->setVar('gravatarimage', $config['gravatarimage'])
-                 ->setVar('default_authmodule', $config['default_authmodule']);
+                 ->setVar('default_authmodule', $config['default_authmodule'])
+                 ->setVar('login_displayinactive', $config['login_displayinactive'])
+                 ->setVar('login_displayverify', $config['login_displayverify'])
+                 ->setVar('login_displayapprove', $config['login_displayapprove']);
 
             if (ModUtil::available('legal')) {
                 ModUtil::setVar('Legal', 'termsofuse', $config['termsofuse']);

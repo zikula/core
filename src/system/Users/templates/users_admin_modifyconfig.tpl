@@ -271,6 +271,39 @@
                     <em class="z-sub">{gt text="Notice: Uses meta refresh."}</em>
                 </div>
             </div>
+            <div class="z-formrow">
+                <label>{gt text="Failed login displays inactive status"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <div class="z-formlist">
+                    <input id="users_login_displayinactive_yes" type="radio" name="config[login_displayinactive]" value="1" {if $config.login_displayinactive eq 1} checked="checked"{/if} />
+                    <label for="users_login_displayinactive_yes">{gt text="Yes. The log-in error message will indicate that the user account is inactive."}</label>
+                </div>
+                <div class="z-formlist">
+                    <input id="users_login_displayinactive_no" type="radio" name="config[login_displayinactive]" value="0" {if $config.login_displayinactive eq 0} checked="checked"{/if}/>
+                    <label for="users_login_displayinactive_no">{gt text="No. A generic error message is displayed."}</label> <span class="z-sub z-italic">{gt text="Recommended."}</span>
+                </div>
+            </div>
+            <div class="z-formrow">
+                <label>{gt text="Failed login displays verification status"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <div class="z-formlist">
+                    <input id="users_login_displayverify_yes" type="radio" name="config[login_displayverify]" value="1" {if $config.login_displayverify eq 1} checked="checked"{/if} />
+                    <label for="users_login_displayverify_yes">{gt text="Yes. The log-in error message will indicate that the registration is pending verification."}</label>
+                </div>
+                <div class="z-formlist">
+                    <input id="users_login_displayverify_no" type="radio" name="config[login_displayverify]" value="0" {if $config.login_displayverify eq 0} checked="checked"{/if}/>
+                    <label for="users_login_displayverify_no">{gt text="No. A generic error message is displayed."}</label> <span class="z-sub z-italic">{gt text="Recommended."}</span>
+                </div>
+            </div>
+            <div class="z-formrow">
+                <label>{gt text="Failed login displays approval status"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <div class="z-formlist">
+                    <input id="users_login_displayapproval_yes" type="radio" name="config[login_displayapproval]" value="1" {if $config.login_displayapproval eq 1} checked="checked"{/if} />
+                    <label for="users_login_displayapproval_yes">{gt text="Yes. The log-in error message will indicate that the registration is pending approval."}</label>
+                </div>
+                <div class="z-formlist">
+                    <input id="users_login_displayapproval_no" type="radio" name="config[login_displayapproval]" value="0" {if $config.login_displayapproval eq 0} checked="checked"{/if}/>
+                    <label for="users_login_displayapproval_no">{gt text="No. A generic error message is displayed."}</label> <span class="z-sub z-italic">{gt text="Recommended."}</span>
+                </div>
+            </div>
         </fieldset>
 
         <fieldset>

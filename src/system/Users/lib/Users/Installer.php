@@ -74,7 +74,10 @@ class Users_Installer extends Zikula_Installer
              ->setVar('reg_answer', '')
              ->setVar('use_password_strength_meter', 0)
              ->setVar('default_authmodule', 'Users')
-             ->setVar('moderation_order', UserUtil::APPROVAL_BEFORE);
+             ->setVar('moderation_order', UserUtil::APPROVAL_BEFORE)
+             ->setVar('login_displayinactive', false)
+             ->setVar('login_displayverify', false)
+             ->setVar('login_displayapprove', false);
 
         // Initialisation successful
         return true;
@@ -529,7 +532,10 @@ class Users_Installer extends Zikula_Installer
             $this->setVar('reg_verifyemail', UserUtil::VERIFY_USERPWD);
         }
 
-        $this->setVar('moderation_order', UserUtil::APPROVAL_BEFORE);
+        $this->setVar('moderation_order', UserUtil::APPROVAL_BEFORE)
+             ->setVar('login_displayinactive', false)
+             ->setVar('login_displayverify', false)
+             ->setVar('login_displayapprove', false);
 
         $this->delVar('reg_forcepwdchg');
         $this->delVar('lowercaseuname');
