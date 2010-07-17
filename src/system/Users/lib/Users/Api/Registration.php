@@ -875,8 +875,8 @@ class Users_Api_Registration extends Zikula_Api
             LogUtil::registerError($this->__('Error! Could not load data.'));
         } else {
             // Fix 'zero date' and empty date
-            if (isset($reginfo['validuntil']) && (empty($reginfo['validuntil']) || ($reginfo['validuntil'] == '0000-00-00 00:00:00'))) {
-                unset($reginfo['validuntil']);
+            if (isset($reginfo['created_dt']) && (empty($reginfo['created_dt']) || ($reginfo['created_dt'] == '0000-00-00 00:00:00'))) {
+                unset($reginfo['created_dt']);
             }
             // unserialize dynadata
             $reginfo['dynadata'] = unserialize($reginfo['dynadata']);
@@ -1001,8 +1001,8 @@ class Users_Api_Registration extends Zikula_Api
             // Fix 'zero dates' and blank dates
             foreach ($reglist as $key => $reginfo) {
                 // Fix 'zero dates' and blank dates
-                if (isset($reginfo['validuntil']) && (empty($reginfo['validuntil']) || ($reginfo['validuntil'] == '0000-00-00 00:00:00'))) {
-                    unset($reglist[$key]['validuntil']);
+                if (isset($reginfo['created_dt']) && (empty($reginfo['created_dt']) || ($reginfo['created_dt'] == '0000-00-00 00:00:00'))) {
+                    unset($reglist[$key]['created_dt']);
                 }
                 // unserialize dynadata
                 $reginfo['dynadata'] = unserialize($reginfo['dynadata']);
@@ -1085,10 +1085,10 @@ class Users_Api_Registration extends Zikula_Api
         }
         $reginfo['dynadata'] = serialize($reginfo['dynadata']);
 
-        if (isset($reginfo['validuntil']) && (empty($reginfo['validuntil']) || ($reginfo['validuntil'] == '0')
-            || ($reginfo['validuntil'] == '0000-00-00 00:00:00')))
+        if (isset($reginfo['created_dt']) && (empty($reginfo['created_dt']) || ($reginfo['created_dt'] == '0')
+            || ($reginfo['created_dt'] == '0000-00-00 00:00:00')))
         {
-            unset($reginfo['validuntil']);
+            unset($reginfo['created_dt']);
         }
 
         $reginfo = DBUtil::updateObject($reginfo, 'users_registration', '', 'id');
@@ -1140,14 +1140,18 @@ class Users_Api_Registration extends Zikula_Api
         $dbinfo = DBUtil::getTables();
         $regColumn = $dbinfo['users_registration_column'];
 
-        // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+        $regExpireDays = $this->getVar('reg_expiredays', 0);
+        if ($regExpireDays > 0) {
+            // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
+            $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+            $staleRecordUTC->modify("-{$regExpireDays} days");
+            $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
 
-        // The zero date is there to guard against odd DB errors
-        $where = "WHERE ({$regColumn['isverified']} = 0) AND ({$regColumn['validuntil']} IS NOT NULL) AND ({$regColumn['validuntil']} != '0000-00-00 00:00:00') AND ({$regColumn['validuntil']} < '{$nowUTCStr}')";
+            // The zero date is there to guard against odd DB errors
+            $where = "WHERE ({$regColumn['isverified']} = 0) AND ({$regColumn['created_dt']} IS NOT NULL) AND ({$regColumn['created_dt']} != '0000-00-00 00:00:00') AND ({$regColumn['created_dt']} < '{$staleRecordUTCStr}')";
 
-        DBUtil::deleteWhere('users_registration', $where);
+            DBUtil::deleteWhere('users_registration', $where);
+        }
     }
 
     /**
@@ -1211,13 +1215,10 @@ class Users_Api_Registration extends Zikula_Api
         $verificationCode = UserUtil::generatePassword();
         $reginfo['verifycode'] = UserUtil::getHashedPassword($verificationCode);
 
-        $regExpireDays = $this->getVar('regexpiredays', 0);
+        $regExpireDays = $this->getVar('reg_expiredays', 0);
         if (is_numeric($regExpireDays) && ((int)$regExpireDays == $regExpireDays) && ($regExpireDays > 0)) {
             $nowUTC = new DateTime(null, DateTimeZone('UTC'));
-            // Do not use DateTimeInterval. It is not defined in PHP 5.2.6
-            $nowUTC->modify("+{$regExpireDays} days");
-
-            $reginfo['validuntil'] = $nowUTC->format(UserUtil::DATETIME_FORMAT);
+            $reginfo['created_dt'] = $nowUTC->format(UserUtil::DATETIME_FORMAT);
         }
 
         $updateResult = ModUtil::apiFunc('Users', 'registration', 'update', array('reginfo' => $reginfo));

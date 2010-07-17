@@ -414,12 +414,15 @@ class Users_Api_User extends Zikula_Api
                 DBUtil::deleteWhere('users_verifychg',
                     "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_PWD . ")");
 
-                $verifyChangeObj = array();
-                $verifyChangeObj['changetype'] = UserUtil::VERIFYCHGTYPE_PWD;
-                $verifyChangeObj['uid'] = $user['uid'];
-                $verifyChangeObj['newemail'] = '';
-                $verifyChangeObj['verifycode'] = $hashedConfirmationCode;
-                $verifyChangeObj['validuntil'] = null;
+                $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+
+                $verifyChangeObj = array(
+                    'changetype'    => UserUtil::VERIFYCHGTYPE_PWD,
+                    'uid'           => $user['uid'],
+                    'newemail'      => '',
+                    'verifycode'    => $hashedConfirmationCode,
+                    'created_dt'    => $nowUTC->format(UserUtil::DATETIME_FORMAT),
+                );
                 $codeSaved = DBUtil::insertObject($verifyChangeObj, 'users_verifychg');
 
                 if ($codeSaved) {
@@ -495,18 +498,20 @@ class Users_Api_User extends Zikula_Api
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
 
                 if ($codeIsGood) {
-                    $now = new DateTime();
+                    $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+                    $staleRecordUTC->modify('-5 days');
                     try {
-                        $validUntil = new DateTime($verifychgObj['validuntil'], new DateTimeZone('UTC'));
+                        $createdUTC = new DateTime($verifychgObj['create_dt'], new DateTimeZone('UTC'));
                     } catch (Exception $e) {
-                        $validUntil = new DateTime(UserUtil::EXPIRED);
+                        $createdUTC = new DateTime(UserUtil::EXPIRED);
                     }
-                    if ($now > $validUntil) {
+
+                    if ($createdUTC < $staleRecordUTC) {
                         $codeIsGood = false;
                         LogUtil::registerError('Sorry! your confirmation code has expired.');
                     } else {
                         // Prevent code reuse.
-//                        $verifychgObj['validuntil'] = UserUtil::EXPIRED;
+//                        $verifychgObj['created_dt'] = UserUtil::EXPIRED;
 //                        DBUtil::updateObject($verifychgObj, 'users_verifychg');
                     }
                 }
@@ -594,8 +599,7 @@ class Users_Api_User extends Zikula_Api
         $dbinfo = DBUtil::getTables();
         $verifychgColumn = $dbinfo['users_verifychg_column'];
 
-        $theDatetime = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $theDatetime->format(UserUtil::DATETIME_FORMAT);
+        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
 
         $uid = UserUtil::getVar('uid');
         $uname = UserUtil::getVar('uname');
@@ -604,13 +608,12 @@ class Users_Api_User extends Zikula_Api
         $confirmCode = UserUtil::generatePassword();
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
-        $theDatetime->modify('+5 days');
         $obj = array(
             'changetype'    => UserUtil::VERIFYCHGTYPE_EMAIL,
             'uid'           => $uid,
             'newemail'      => DataUtil::formatForStore($args['newemail']),
             'verifycode'    => $confirmCodeHash,
-            'validuntil'    => $theDatetime->format(UserUtil::DATETIME_FORMAT),
+            'created_dt'    => $nowUTC->format(UserUtil::DATETIME_FORMAT),
         );
 
         DBUtil::deleteWhere('users_verifychg',
@@ -656,9 +659,10 @@ class Users_Api_User extends Zikula_Api
         $verifychgColumn = $dbinfo['users_verifychg_column'];
 
         // delete all the records from e-mail confirmation that have expired
-        $theDatetime = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $theDatetime->format(UserUtil::DATETIME_FORMAT);
-        $where = "({$verifychgColumn['validuntil']} < '{$nowUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
+        $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $staleRecordUTC->modify('-5 days');
+        $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
+        $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
         DBUtil::deleteWhere ('users_verifychg', $where);
 
         $uid = UserUtil::getVar('uid');

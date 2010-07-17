@@ -302,12 +302,12 @@ class Users_Installer extends Zikula_Installer
             return false;
         }
         $sql = "INSERT INTO {$dbinfo200['users_verifychg']}
-                    ({$ucColumn['changetype']}, {$ucColumn['uid']}, {$ucColumn['newemail']}, {$ucColumn['verifycode']}, {$ucColumn['validuntil']})
+                    ({$ucColumn['changetype']}, {$ucColumn['uid']}, {$ucColumn['newemail']}, {$ucColumn['verifycode']}, {$ucColumn['created_dt']})
                 SELECT 2 AS {$ucColumn['changetype']},
                     users.{$uColumn['uid']} AS {$ucColumn['uid']},
                     ut.{$utColumn['email']} AS {$ucColumn['newemail']},
                     ut.{$utColumn['comment']} AS {$ucColumn['verifycode']},
-                    ut.{$utColumn['dynamics']} AS {$ucColumn['validuntil']}
+                    ut.{$utColumn['dynamics']} AS {$ucColumn['created_dt']}
                 FROM {$dbinfo118X['users_temp']} AS ut
                     INNER JOIN {$dbinfo200['users']} AS users ON ut.{$utColumn['uname']} = users.{$uColumn['uname']}
                 WHERE ut.{$utColumn['type']} = 2";

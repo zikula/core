@@ -61,7 +61,7 @@
         </tr>
         <tr class="{cycle values='z-odd,z-even'}">
             <td class="z-right z-bold">{gt text='Expires'}</td>
-            <td>{if $reginfo.isverified}{gt text='Not applicable, registration is verified'}{elseif empty($reginfo.verifycode)}{gt text='Expiration date will be set when the verification e-mail is sent'}{elseif !isset($reginfo.validuntil) || empty($reginfo.validuntil)}{gt text='Never'}{else}{$reginfo.validuntil}&nbsp;{gt text='UTC'}{/if}</td>
+            <td>{if $reginfo.isverified}{gt text='Never, registration is verified'}{elseif empty($reginfo.verifycode)}{gt text='Expiration date will be set when the verification e-mail is sent'}{elseif !isset($reginfo.validuntil) || empty($reginfo.validuntil)}{gt text='Never'}{else}{$reginfo.validuntil}&nbsp;{gt text='UTC'}{/if}</td>
         </tr>
         <tr class="{cycle values='z-odd,z-even'}">
             <td class="z-right z-bold">{gt text='Administrator approval'}</td>
@@ -69,7 +69,7 @@
         </tr>
         {if $touActive || $ppActive}
         <tr class="{cycle values='z-odd,z-even'}">
-            <td class="z-right z-bold">{$touppString}</td>
+            <td class="z-right z-bold">{$touppText}</td>
             <td>{if !isset($reginfo.agreetoterms) || empty($reginfo.agreetoterms) || !$reginfo.agreetoterms}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Not yet accepted' __alt='Not yet accepted'} {gt text='Not yet accepted (will be asked to accept)'}{else}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Accepted' __alt='Accepted'} {gt text='Accepted'}{/if}</td>
         </tr>
         {/if}

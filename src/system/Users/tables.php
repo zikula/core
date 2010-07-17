@@ -145,7 +145,8 @@ function Users_tables_for_200()
     //                      to the user's account record.
     // verifycode       - Verification Code: The verification code last sent to the user to verify the requested action,
     //                      as a salted hash of the value sent.
-    // validuntil       - Date/Time created: The date and time the verification record was created, used to expire the record.
+    // created_dt       - Date/Time created: The date and time the verification record was created, as a UTC date/time,
+    //                      used to expire the record.
     $dbinfo['users_verifychg'] = DBUtil::getLimitedTablename('users_verifychg');;
 
     $dbinfo['users_verifychg_column'] = array (
@@ -154,7 +155,7 @@ function Users_tables_for_200()
         'uid'           => 'uid',
         'newemail'      => 'newemail',
         'verifycode'    => 'verifycode',
-        'validuntil'    => 'validuntil',
+        'created_dt'    => 'created_dt',
     );
 
     $dbinfo['users_verifychg_column_def'] = array(
@@ -163,7 +164,7 @@ function Users_tables_for_200()
         'uid'           => "I NOTNULL DEFAULT 0",
         'newemail'      => "C(60) NOTNULL DEFAULT ''",
         'verifycode'    => "C(138) NOTNULL DEFAULT ''",
-        'validuntil'    => "T DEFAULT NULL",
+        'created_dt'    => "T DEFAULT NULL",
     );
 
     // User Registration table.
@@ -182,7 +183,7 @@ function Users_tables_for_200()
         'agreetoterms'  => 'agreetoterms',
         'dynadata'      => 'dynadata',
         'verifycode'    => 'verifycode',
-        'validuntil'    => 'validuntil',
+        'created_dt'    => 'created_dt',
         'isapproved'    => 'isapproved',
         'isverified'    => 'isverified',
     );
@@ -196,7 +197,7 @@ function Users_tables_for_200()
         'agreetoterms'  => "L NOTNULL DEFAULT 0",
         'dynadata'      => "XL NOTNULL",
         'verifycode'    => "C(138) NOTNULL DEFAULT ''",
-        'validuntil'    => "T DEFAULT NULL",
+        'created_dt'    => "T DEFAULT NULL",
         'isapproved'    => "L NOTNULL DEFAULT 0",
         'isverified'    => "L NOTNULL DEFAULT 0"
     );
