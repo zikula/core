@@ -17,7 +17,7 @@ class Search_Version extends Zikula_Version
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('Site search engine');
+        $meta['displayname']    = $this->__('Site search');
         $meta['description']    = $this->__('Provides an engine for searching within the site, and an interface for managing search page settings.');
         //! module name that appears in URL
         $meta['url']            = $this->__('search');
