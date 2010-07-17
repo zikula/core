@@ -579,56 +579,56 @@ abstract class Form_Plugin implements Zikula_Translatable
     }
 
     /**
-     * singular translation for modules.
+     * Translate.
      *
-     * @param string $msg Message.
+     * @param string $msgid String to be translated.
      *
      * @return string
      */
-    public function __($msg)
+    public function __($msgid)
     {
-        return __($this->domain, $msg);
+        return __($msgid, $this->domain);
     }
 
     /**
-     * Plural translations for modules.
+     * Translate with sprintf().
      *
-     * @param string  $m1 Singular.
-     * @param string  $m2 Plural.
-     * @param integer $n  Count.
+     * @param string       $msgid  String to be translated.
+     * @param string|array $params Args for sprintf().
      *
      * @return string
      */
-    public function _n($m1, $m2, $n)
+    public function __f($msgid, $params)
     {
-        return _n($this->domain, $m1, $m2, $n);
+        return __f($msgid, $params, $this->domain);
     }
 
     /**
-     * Format translations for modules.
+     * Translate plural string.
      *
-     * @param string       $msg   Message.
-     * @param string|array $param Format parameters.
+     * @param string $singular Singular instance.
+     * @param string $plural   Plural instance.
+     * @param string $count    Object count.
      *
-     * @return string
+     * @return string Translated string.
      */
-    public function __f($msg, $param)
+    public function _n($singular, $plural, $count)
     {
-        return __f($msg, $param, $this->domain);
+        return _n($singular, $plural, $count, $this->domain);
     }
 
     /**
-     * Format pural translations for modules.
+     * Translate plural string with sprintf().
      *
-     * @param string       $m1    Singular.
-     * @param string       $m2    Plural.
-     * @param integer      $n     Count.
-     * @param string|array $param Format parameters.
+     * @param string       $sin    Singular instance.
+     * @param string       $plu    Plural instance.
+     * @param string       $n      Object count.
+     * @param string|array $params Sprintf() arguments.
      *
      * @return string
      */
-    public function _fn($m1, $m2, $n, $param)
+    public function _fn($sin, $plu, $n, $params)
     {
-        return _fn($m1, $m2, $n, $param, $this->domain);
+        return _fn($sin, $plu, $n, $params, $this->domain);
     }
 }
