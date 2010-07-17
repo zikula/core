@@ -59,60 +59,52 @@ function Users_tables_for_200()
     $dbinfo = array();
 
     // Main Users table
+    // Version 2.0.0 through current(inclusive)
     // Stores core information about each user account.
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
     //
     // uid              - User ID: Primary user identifier
-    // uname            - User Name: Primary log in identifier
+    // uname            - User Name: Primary user display name, primary log in identifier
     // email            - E-mail Address: Secondary log in identifier, user notifications
-    // user_regdate     - Registration Date/Time: Date/time user was added to the users table (not the users_temp table)
-    //                      NOTE: This is stored as an SQL datetime, which is highly dependent on both PHP's timezone setting,
-    //                      and on the database server's timezone setting. If they do not match, then inconsistencies will propogate.
-    //                      If Zikula is moved to a new database server with a different time zone configuration, then these
-    //                      dates/times will be interpreted based on the new time zone, not the original one!
-    // user_viewemail   - User's election to allow others to see his e-mail address (1 == true == others are allowed to see it)
-    //                      Modules displaying e-mail addresses are supposed to check this, but most don't
-    // user_theme       - DEPRECATED - DO NOT USE
     // pass             - Password: User's password for logging in. This value is salted and hashed. The salt is stored in this field,
     //                      delimited from the hash with a dollar sign character ($). The hash algorithm is stored as a numeric code
-    //                      in the hash_method field.
-    // storynum         - DEPRECATED - DO NOT USE
-    // ublockon         - User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
-    // ublock           - User-defined Block: Custom user-defined block content.
+    //                      in the hash_method field. This field may be blank in instances where the user registered with an
+    //                      alternative authmodule (e.g., OpenID) and did not also establish a password for his web site account.
+    // passreminder     - Password reminder: Set during registration or password changes, to remind the user what his password is.
+    //                      This field may be blank if pass is blank.
+    // activated        - Account State: The user's current state, see UserUtil::ACTIVE_* for defined constants
+    // user_regdate     - Registration Date/Time: Date/time user was added to the users table (not the users_temp table)
+    //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NOT local time.
+    //                      WARNING: The date and time related functions available in SQL on many RDBMS servers are 
+    //                      highly dependent on the database server's timezone setting. All parameters to these functions
+    //                      are treated as if the dates and times they represent are in the time zone that is set
+    //                      in the database server's settings. Use of date/time functions in SQL queries should be
+    //                      avoided if at all possible. PHP functions using UTC as the base time zone should be used
+    //                      instead. If SQL date/time functions must be used, then care should be taken to ensure that
+    //                      either the function is time zone neutral, or that the function and its relationship to
+    //                      time zone settings is completely understood.
+    // lastlogin        - Last Login Date/Time: Date/time user last successfully logged into the site.
+    //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NOT local time.
+    //                      SEE WARNING under user_regdate, above.
     // theme            - User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when
     //                      user theme switching is enabled.
-    // counter          - DEPRECATED - DO NOT USE
-    // activated        - Account State (was Activated?): The user's current state, see UserUtil::ACTIVE_* for defined constants
-    // lastlogin        - Last Login Date/Time: Date/time user last successfully logged into the site.
-    //                      NOTE: This is stored as an SQL datetime, which is highly dependent on both PHP's timezone setting,
-    //                      and on the database server's timezone setting. If they do not match, then inconsistencies will propogate.
-    //                      If Zikula is moved to a new database server with a different time zone configuration, then these
-    //                      dates/times will be interpreted based on the new time zone, not the original one!
-    // validfrom        - (FUTURE USE) Account Valid From: The first date and time a user is permitted to log into this account, stored
-    //                      as a UNIX timestamp.
-    // validuntil       - (FUTURE USE) Account Valid Until: The one second past the last date and time a user is permitted to log into
-    //                      this account (the first date and time the user can no longer log into the account), stored as a UNIX timestamp.
-    // hash_method      - Password Hash Method: The hashing algorithm used to hash the password, stored as an integer identifier.
-    //                      NOTE: This must always match the hashing method used to create the pass field! If the pass field is
-    //                      updated, then the diligent programmer will ensure that this field is updated (if appropriate) as well!
-    //                      Failure to maintain consistency between the pass field and this field will prevent users from being able
-    //                      to successfully log in!
+    // ublockon         - User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
+    // ublock           - User-defined Block: Custom user-defined block content.
+    //
     $dbinfo['users'] = DBUtil::getLimitedTablename('users');
-
-    // Version 2.0.0 through current(inclusive)
     $dbinfo['users_column'] = array(
-        'uid'             => 'pn_uid',
-        'uname'           => 'pn_uname',
-        'email'           => 'pn_email',
-        'pass'            => 'pn_pass',
-        'passreminder'    => 'passreminder',
-        'passrecovery'    => 'passrecovery',
-        'activated'       => 'pn_activated',
-        'user_regdate'    => 'pn_user_regdate',
-        'lastlogin'       => 'pn_lastlogin',
-        'theme'           => 'pn_theme',
-        'ublockon'        => 'pn_ublockon',
-        'ublock'          => 'pn_ublock',
+        'uid'           => 'pn_uid',
+        'uname'         => 'pn_uname',
+        'email'         => 'pn_email',
+        'pass'          => 'pn_pass',
+        'passreminder'  => 'passreminder',
+        'passrecovery'  => 'passrecovery',
+        'activated'     => 'pn_activated',
+        'user_regdate'  => 'pn_user_regdate',
+        'lastlogin'     => 'pn_lastlogin',
+        'theme'         => 'pn_theme',
+        'ublockon'      => 'pn_ublockon',
+        'ublock'        => 'pn_ublock',
     );
     $dbinfo['users_column_def'] = array(
         'uid'           => "I PRIMARY AUTO",
@@ -137,15 +129,23 @@ function Users_tables_for_200()
     $dbinfo['users_db_extra_enable_attribution'] = true;
     $dbinfo['users_primary_key_column'] = 'uid';
 
-    // Shadow file for additional user-related security information
+    // Account-change verification table
+    // Version 2.0.0 through current(inclusive)
+    // Holds a one-time use, expirable verification code used when a user needs to changs his email address,
+    // reset his password and has not answered any security questions, or when a new user is registering with
+    // the site for the first time.
     //
-    // id               - ID: Primary ID of the shadow record. Not related to the uid.
-    // uid              - User ID: Primary ID of the user record to which this shadow record is related. Foreign key to users table.
-    // code             - Confirmation Code: The confirmation code last sent to the user for password recovery, as a salted hash value.
-    // code_hash_method - Code Hash Method: An integer code identifying the hashing method used to hash the code. Uses same set of integer codes
-    //                      as does the hash_method field in users table.
-    // code_expires     - Code Expiration Date/Time: One second past the last date and time the code is valid, stored as a UNIX timestamp (The
-    //                      first date and time the code is invalid for use).
+    // id               - ID: Primary ID of the verification record. Not related to the uid.
+    // changetype       - Change type: a code indicating what type of change action created this record.
+    // uid              - User ID: Primary ID of the user record to which this verification record is related. Foreign key to users table.
+    // newemail         - New e-mail address: If the change type indicates that this verification record was created
+    //                      as a result of a user changing his e-mail address, then this field holds the new address
+    //                      temporarily until the verification is complete. Only after the verification code is received
+    //                      back from the user (thus, verifying the new e-mail address) is the new e-mail address saved
+    //                      to the user's account record.
+    // verifycode       - Verification Code: The verification code last sent to the user to verify the requested action,
+    //                      as a salted hash of the value sent.
+    // validuntil       - Date/Time created: The date and time the verification record was created, used to expire the record.
     $dbinfo['users_verifychg'] = DBUtil::getLimitedTablename('users_verifychg');;
 
     $dbinfo['users_verifychg_column'] = array (
@@ -166,47 +166,11 @@ function Users_tables_for_200()
         'validuntil'    => "T DEFAULT NULL",
     );
 
-    // Temporary user table.
-    // Used for storing 1a) registrations that are pending administrator approval, 1b) registrations that are pending e-mail verification
-    // (a.k.a. activation), 2) storing a new e-mail address pending e-mail verification for the change-of-e-mail process for existing active
-    // users.
+    // User Registration table.
+    // Version 2.0.0 through current(inclusive)
+    //
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
-    //
-    // *** When storing registrations pending approval and/or verification (#1a and #1b above) ***
-    // tid              - ID: Primary identifier for the record. (Unrelated to uid.)
-    // uname            - User Name: The new user's user name.
-    // email            - E-mail Address: The new user's e-mail address.
-    // femail           - DEPRECATED - DO NOT USE (was Fake E-mail Address)
-    // pass             - Password: The new user's password for logging in. This value is salted and hashed. The salt is stored in this field,
-    //                      delimited from the hash with a dollar sign character ($). The hash algorithm is stored as a numeric code
-    //                      in the hash_method field.
-    // dynamics         - The new user's profile module properties, serialized using PHP's serialize() function. Used only if the profile module
-    //                      system configuration variable is set, the module named in that variable is available, and the Users module configuration
-    //                      variable that controls whether this information is gathered is set to true (or 1).
-    // comment          - FUTURE USE? (Should this really be stored as an attribute to the users_temp record?)
-    // type             - An integer code describing the type of temporary record, in this case, 1.
-    // tag              - DEPRECATED - DO NOT USE
-    // hash_method      - Password Hash Method: The hashing algorithm used to hash the password, stored as an integer identifier.
-    //                      NOTE: This must always match the hashing method used to create the pass field! If the pass field is
-    //                      updated, then the diligent programmer will ensure that this field is updated (if appropriate) as well!
-    //                      Failure to maintain consistency between the pass field and this field will prevent users from being able
-    //                      to successfully log in!
-    //
-    // *** When storing a new e-mail address pending verification for an existing active user (#2 above) ***
-    // tid              - ID: Primary identifier for the record. (Unrelated to uid.)
-    // uname            - User Name: User's user name, foreign key to the users table.
-    // email            - E-mail Address: The user's new e-mail address.
-    // femail           - NOT USED
-    // pass             - NOT USED
-    // dynamics         - Request Date/Time: The date and time the user requested a change in password, used to expire these requests
-    //                      after a set amount of time.
-    // comment          - Confirmation Code: The confirmation code the user must use to verify the new e-mail address before the users
-    //                      table's email field will be updated.
-    // type             - An integer code describing the type of temporary record, in this case, 2.
-    // tag              - NOT USED
-    // hash_method      - NOT USED
 
-    // Version 1.11 through 1.18 (inclusive)
     $dbinfo['users_registration'] = DBUtil::getLimitedTablename('users_registration');
     $dbinfo['users_registration_column'] = array(
         'id'            => 'id',
@@ -240,6 +204,7 @@ function Users_tables_for_200()
     $dbinfo['users_registration_primary_key_column'] = 'id';
 
     // Sessions Table
+    // Version 1.11 through current(inclusive)
     // Stores per-user session information for users who are logged in. (Note: Users who use the "remember me" option when logging in
     // remain logged in across multiple visits for a defined period of time, therefore their session record remains active.)
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
@@ -294,6 +259,7 @@ function Users_tables_for_118()
     $dbinfo = array();
 
     // Main Users table
+    // Version 1.11 through 1.18 (inclusive)
     // Stores core information about each user account.
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
     //
@@ -333,8 +299,6 @@ function Users_tables_for_118()
     //                      Failure to maintain consistency between the pass field and this field will prevent users from being able
     //                      to successfully log in!
     $dbinfo['users'] = DBUtil::getLimitedTablename('users');
-
-    // Version 1.11 through 1.18 (inclusive)
     $dbinfo['users_column'] = array(
         'uid'             => 'pn_uid',
         'uname'           => 'pn_uname',
