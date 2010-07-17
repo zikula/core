@@ -73,8 +73,18 @@ function Users_tables_for_200()
     // passreminder     - Password reminder: Set during registration or password changes, to remind the user what his password is.
     //                      This field may be blank if pass is blank.
     // activated        - Account State: The user's current state, see UserUtil::ACTIVE_* for defined constants
-    // user_regdate     - Registration Date/Time: Date/time user was added to the users table (not the users_temp table)
-    //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NOT local time.
+    // user_regdate     - Registration Date/Time: Date/time the user account was registered. For users not pending the
+    //                      completion of the registration process, this is the date and time the user
+    //                      account completed the process. For example, if registrations are moderated, then this is
+    //                      the date and time the registration request was approved. If registration e-mail addresses must
+    //                      be verified, then this is the date and time the user completed the verification process. If both
+    //                      moderation and verification are in use, then this is the later of those two dates. If neither
+    //                      is in use, then this is simply the date and time the user's registration request was made.
+    //                      If the user account's activated state is "pending registration" (implying that either moderation,
+    //                      verification, or both are in use) then this will be the date and time the user made the
+    //                      registration request UNTIL the registration process is complete, and then it is updated as above.
+    //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER
+    //                      server local time nor user local time (unless one or the other happens to be UTC).
     //                      WARNING: The date and time related functions available in SQL on many RDBMS servers are 
     //                      highly dependent on the database server's timezone setting. All parameters to these functions
     //                      are treated as if the dates and times they represent are in the time zone that is set
