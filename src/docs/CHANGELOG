@@ -171,4 +171,5 @@ tables.php now supports index options in the _column_idx array.  array(inxname, 
 Merged the menutree project into the core (Blocks module).
 Added htmlentities modifier to properly convert utf8 chars to html entities
 Replaced SetEnvIf with FilesMatch in .htaccess files (Issue #2334). Removed extensions tif, flv, ico, cur from all .htaccess, swf from all except modules/ and html from all except system/Theme/includes
-Added FileUtil::exportCSV() to simplify data export to csv files
+Added FileUtil::exportCSV() to simplify data export to csv files.
+Themes can now process ajax request natively - issue #2326.
