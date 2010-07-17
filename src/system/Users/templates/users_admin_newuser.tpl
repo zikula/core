@@ -29,6 +29,7 @@
                 <div class="z-formrow">
                     <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_reginfo_uname"{if isset($errorflds.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
+                    <div class="z-formnote z-sub z-italic">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</div>
                 </div>
                 <div class="z-formrow">
                     <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>

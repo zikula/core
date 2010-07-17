@@ -52,50 +52,52 @@ class Users_Api_Admin extends Zikula_Api
         $userscolumn = $dbtable['users_column'];
 
         // Set query conditions (unless some one else sends a hardcoded one)
+        $where = array();
         if (!isset($args['condition']) || !$args['condition']) {
-            // process all of these in one loop
-            $args['condition'] = $userscolumn['uname'] . " != 'Anonymous'";
-            $vars = array('uname', 'email');
-            foreach ($vars as $var) {
-                if (isset($args[$var]) && !empty($args[$var])) {
-                    $args['condition'] .= ' AND '.$userscolumn[$var].' LIKE \'%'.DataUtil::formatForStore($args[$var]).'%\'';
-                }
-            }
+            // Do not include anonymous user
+            $where[] = "({$userscolumn['uid']} != 1)";
 
-            // do the rest manually
-            if (isset($args['ugroup']) && $args['ugroup']) {
-                $guids = UserUtil::getUsersForGroup($args['ugroup']);
-                if (!empty($guids)) {
-                    $args['condition'] .= " AND $userscolumn[uid] IN (";
-                    foreach ($guids as $uid) {
-                        $args['condition'] .= DataUtil::formatForStore($uid) . ',';
-                    }
-                    $args['condition'] .= '0)';
-                }
-            }
-            if (isset($args['regdateafter']) && $args['regdateafter']) {
-                $args['condition'] .= " AND $userscolumn[user_regdate] > '".DataUtil::formatForStore($args['regdateafter'])."'";
-            }
-            if (isset($args['regdatebefore']) && $args['regdatebefore']) {
-                $args['condition'] .= " AND $userscolumn[user_regdate] < '".DataUtil::formatForStore($args['regdatebefore'])."'";
-            }
-
-            if ($useProfileMod) {
-                // Check for attributes
-                if (isset($args['dynadata']) && is_array($args['dynadata'])) {
-                    $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => $args['dynadata']));
-                    if (is_array($uids) && !empty($uids)) {
-                        $args['condition'] .= " AND $userscolumn[uid] IN (";
-                        foreach ($uids as $uid) {
-                            $args['condition'] .= DataUtil::formatForStore($uid) . ',';
-                        }
-                        $args['condition'] .= '0)';
+            foreach ($args as $arg => $value) {
+                if ($value) {
+                    switch($arg) {
+                        case 'uname':
+                            // Fall through to next on purpose--no break
+                        case 'email':
+                            $where[] = "({$userscolumn[$arg]} LIKE '%".DataUtil::formatForStore($value)."%')";
+                            break;
+                        case 'ugroup':
+                            $uidList = UserUtil::getUsersForGroup($value);
+                            if (is_array($uidList) && !empty($uidList)) {
+                                $where[] = "({$userscolumn['uid']} IN (" . implode(', ', $uidList) . "))";
+                            }
+                            break;
+                        case 'regdateafter':
+                            $where[] = "({$userscolumn['user_regdate']} > '"
+                                . DataUtil::formatForStore($value) . "')";
+                            break;
+                        case 'regdatebefore':
+                            $where[] = "({$userscolumn['user_regdate']} < '"
+                                . DataUtil::formatForStore($value) . "')";
+                            break;
+                        case 'dynadata':
+                            if ($useProfileMod) {
+                                $uidList = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array(
+                                    'dynadata' => $value
+                                ));
+                                if (is_array($uidList) && !empty($uidList)) {
+                                    $where[] = "({$userscolumn['uid']} IN (" . implode(', ', $uidList) . "))";
+                                }
+                            }
+                            break;
+                        default:
+                            // Skip unknown values--do nothing, and no error--might be other legitimate arguments.
                     }
                 }
             }
         }
-
-        $where = 'WHERE ' . $args['condition'];
+        // TODO - Should this exclude pending delete too?
+        $where[] = "({$userscolumn['activated']} != " . UserUtil::ACTIVATED_PENDING_REG . ")";
+        $where = 'WHERE ' . implode(' AND ', $where);
 
         $permFilter = array();
         $permFilter[] = array('realm' => 0,
@@ -112,134 +114,139 @@ class Users_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Save a new user record.
+     * Save an updated user record.
      *
      * @param array $args All parameters passed to this function.
-     *                    $args['uname']              (string) The user name to store on the new user record.
-     *                    $args['email']              (string) The e-mail address to store on the new user record.
-     *                    $args['pass']               (string) The new password to store on the new user record.
-     *                    $args['vpass']              (string) A verification of the new password to store on the new user record.
-     *                    $args['dynadata']           (array)  An array of additional information to be stored by the designated profile module, and linked to the newly created
-     *                                                           user account.
-     *                    $args['access_permissions'] (array)  Used only for 'edit' operations; an array of group ids to which the user should belong.
+     *                    array  $args['userinfo']          The updated user information.
+     *                    string $args['emailagain']        A verification of the new e-mail address to store on the
+     *                                                          user record, required.
+     *                    string $args['passagain']         A verification of the new password to store on the user
+     *                                                          record, required if $args['userinfo']['pass'] is set.
+     *                    array $args['access_permissions'] An array of group ids to which the user should belong.
      *
      * @return bool true if successful, false otherwise.
      */
-    public function saveUser($args)
+    public function updateUser($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT)) {
-            return false;
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError();
         }
 
         // Checking for necessary basics
-        if (!isset($args['uid']) || empty($args['uid']) || !isset($args['uname']) || empty($args['uname']) ||
-            !isset($args['email'])  || empty($args['email'])) {
-            return LogUtil::registerError($this->__('Error! One or more required fields were left blank or incomplete.'));
+        if (!isset($args['userinfo']) || !is_array($args['userinfo']) || empty($args['userinfo'])) {
+            return LogUtil::registerArgsError();
         }
 
-        $checkpass = false;
-        if (isset($args['pass']) && !empty($args['pass'])) {
-            $checkpass = true;
+        $userInfo = $args['userinfo'];
+        if (!isset($userInfo['uid']) || empty($userInfo['uid']) || !isset($userInfo['uname'])
+            || empty($userInfo['uname']) || !isset($userInfo['email'])  || empty($userInfo['email']))
+        {
+            return LogUtil::registerArgsError();
         }
 
-        if ($checkpass) {
-            if (isset($args['pass']) && isset($args['vpass']) && $args['pass'] !== $args['vpass']) {
-                return LogUtil::registerError($this->__('Error! You did not enter the same password in each password field. '
-                    . 'Please enter the same password once in each password field (this is required for verification).'));
-            }
+        $oldUserObj = UserUtil::getVars($userInfo['uid']);
+        if (!$oldUserObj) {
+            return LogUtil::registerError($this->__('Error! Could not find the user record in order to update it.'));
+        } elseif (!SecurityUtil::checkPermission('Users::', "{$oldUserObj['uname']}::{$oldUserObj['uid']}", ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError();
+        }
 
-            $pass  = $args['pass'];
-            $vpass = $args['vpass'];
-
-            $minpass = $this->getVar('minpass');
-            if (empty($pass) || strlen($pass) < $minpass) {
-                return LogUtil::registerError($this->_fn('Your password must be at least %s character long', 'Your password must be at least %s characters long', $minpass, $minpass));
-            }
-            if (!empty($pass) && $pass) {
-                $args['pass'] = UserUtil::getHashedPassword($pass);
-            }
+        if (isset($userInfo['pass']) && !empty($userInfo['pass'])) {
+            $setpass = true;
         } else {
-            unset($args['pass']);
+            $setpass = false;
+        }
+
+        $registrationErrors = ModUtil::apiFunc('Users', 'registration', 'getRegistrationErrors', array(
+            'checkmode'  => 'modify',
+            'setpass'    => $setpass,
+            'reginfo'    => $userInfo,
+            'passagain'  => $args['passagain'],
+            'emailagain' => $args['emailagain'],
+        ));
+        if ($registrationErrors) {
+            foreach ($registrationErrors as $fieldGroup) {
+                foreach ($fieldGroup as $message) {
+                    LogUtil::registerError($message);
+                }
+            }
+            return false;
+        }
+
+        if ($setpass) {
+            $userInfo['pass'] = UserUtil::getHashedPassword($userInfo['pass']);
+        } else {
+            unset($userInfo['pass']);
         }
 
         // process the dynamic data
-        $dynadata = isset($args['dynadata']) ? $args['dynadata'] : array();
-
-        $profileModule = System::getVar('profilemodule', '');
-        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
-        if ($useProfileMod && $dynadata) {
-
-            $checkrequired = ModUtil::apiFunc($profileModule, 'user', 'checkRequired',
-                                          array('dynadata' => $dynadata));
-
-            if ($checkrequired['result'] == true) {
-                return LogUtil::registerError($this->__f('Error! A required item is missing from your profile information (%s).', $checkrequired['translatedFieldsStr']));
-            }
-        }
-
-        if (isset($dynadata['publicemail']) && !empty($dynadata['publicemail'])) {
-            $dynadata['publicemail'] = preg_replace('/[^a-zA-Z0-9_@.-]/', '', $dynadata['publicemail']);
-        }
-
-        if (isset($dynadata['url']) && !empty($dynadata['url'])) {
-            $dynadata['url'] = preg_replace('/[^a-zA-Z0-9_@.&#?;:\/-]/', '', $dynadata['url']);
-            if (!preg_match('/^http:\/\/[0-9a-z]+/i', $dynadata['url'])) {
-                $dynadata['url'] = "http://" . $dynadata['url'];
-            }
-        }
-
-        $args['dynadata'] = $dynadata;
+        $dynadata = isset($userInfo['dynadata']) ? $userInfo['dynadata'] : array();
+        unset($userInfo['dynadata']);
 
         // call the profile manager to handle dynadata if needed
+        $profileModule = System::getVar('profilemodule', '');
+        $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
         if ($useProfileMod) {
-            $adddata = ModUtil::apiFunc($profileModule, 'user', 'insertDyndata', $args);
+            $adddata = ModUtil::apiFunc($profileModule, 'user', 'insertDyndata', $userInfo);
             if (is_array($adddata)) {
-                $args = array_merge($adddata, $args);
+                $userInfo = array_merge($adddata, $userInfo);
             }
         }
 
-        DBUtil::updateObject($args, 'users', '', 'uid');
+        DBUtil::updateObject($userInfo, 'users', '', 'uid');
 
         // Fixing a high numitems to be sure to get all groups
-        $groups = ModUtil::apiFunc('Groups', 'user', 'getAll', array('numitems' => 1000));
+        $groups = ModUtil::apiFunc('Groups', 'user', 'getAll', array('numitems' => 10000));
+        $curUserGroupMembership = ModUtil::apiFunc('Groups', 'user', 'getUserGroups', array('uid' => $userInfo['uid']));
 
         foreach ($groups as $group) {
             if (in_array($group['gid'], $args['access_permissions'])) {
                 // Check if the user is already in the group
-                $useringroup = false;
-                $usergroups  = ModUtil::apiFunc('Groups', 'user', 'getUserGroups', array('uid' => $args['uid']));
-                if ($usergroups) {
-                    foreach ($usergroups as $usergroup) {
-                        if ($group['gid'] == $usergroup['gid']) {
-                            $useringroup = true;
+                $userIsMember = false;
+                if ($curUserGroupMembership) {
+                    foreach ($curUserGroupMembership as $alreadyMemberOf) {
+                        if ($group['gid'] == $alreadyMemberOf['gid']) {
+                            $userIsMember = true;
                             break;
                         }
                     }
                 }
-                // User is not in this group
-                if ($useringroup == false) {
-                    ModUtil::apiFunc('Groups', 'admin', 'addUser', array('gid' => $group['gid'], 'uid' => $args['uid']));
+                if ($userIsMember == false) {
+                    // User is not in this group
+                    ModUtil::apiFunc('Groups', 'admin', 'addUser', array(
+                        'gid' => $group['gid'],
+                        'uid' => $userInfo['uid']
+                    ));
+                    $curUserGroupMembership[] = $group;
                 }
             } else {
                 // We don't need to do a complex check, if the user is not in the group, the SQL will not return
                 // an error anyway.
-                if (SecurityUtil::checkPermission('Groups::', "$group[gid]::", ACCESS_EDIT)) {
-                    ModUtil::apiFunc('Groups', 'admin', 'removeUser', array('gid' => $group['gid'], 'uid' => $args['uid']));
-                }
+                ModUtil::apiFunc('Groups', 'admin', 'removeUser', array(
+                    'gid' => $group['gid'],
+                    'uid' => $userInfo['uid']
+                ));
             }
         }
 
         // Let other modules know we have updated an item
-        $this->callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
+        $this->callHooks('item', 'update', $userInfo['uid'], array('module' => 'Users'));
 
         return true;
     }
 
     /**
-     * Delete one or more user account records.
+     * Delete one or more user account records, or mark one or more account records for deletion.
+     *
+     * If records are marked for deletion, they remain in the system and accessible by the system, but are given an
+     * 'activated' status that prevents the user from logging in. Records marked for deletion will not appear on the
+     * regular users list. The delete hook and delete events are not triggered if the records are only marked for
+     * deletion.
      *
      * @param array $args All parameters passed to this function.
-     *                    $args['uid'] (numeric|array) A single (int) user id, or an array of user ids to delete.
+     *                    $args['uid']  numeric|array A single (int) user id, or an array of user ids to delete.
+     *                    $args['mark'] bool          If true, then mark for deletion, but do not actually delete.
+     *                                                  defaults to false.
      *
      * @return bool True if successful, false otherwise.
      */
@@ -253,22 +260,34 @@ class Users_Api_Admin extends Zikula_Api
             return LogUtil::registerError("Error! Illegal argument were passed to 'deleteuser'");
         }
 
+        if (isset($args['mark']) && is_bool($args['mark'])) {
+            $markOnly = $args['mark'];
+        } else {
+            $markOnly = false;
+        }
+
         // ensure we always have an array
         if (!is_array($args['uid'])) {
             $args['uid'] = array(0 => $args['uid']);
         }
 
-        foreach ($args['uid'] as $id) {
-            if (!DBUtil::deleteObjectByID('group_membership', $id, 'uid')) {
-                return false;
-            }
+        foreach ($args['uid'] as $uid) {
+            if ($markOnly) {
+                UserUtil::setVar('activated', UserUtil::ACTIVATED_PENDING_DELETE, $uid);
+            } else {
+                ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array('uid' => $uid));
 
-            if (!DBUtil::deleteObjectByID('users', $id, 'uid')) {
-                return false;
-            }
+                if (!DBUtil::deleteObjectByID('group_membership', $uid, 'uid')) {
+                    return false;
+                }
 
-            // Let other modules know we have deleted an item
-            $this->callHooks('item', 'delete', $id, array('module' => 'Users'));
+                if (!DBUtil::deleteObjectByID('users', $uid, 'uid')) {
+                    return false;
+                }
+
+                // Let other modules know we have deleted an item
+                $this->callHooks('item', 'delete', $uid, array('module' => 'Users'));
+            }
         }
 
         return $args['uid'];
@@ -330,13 +349,14 @@ class Users_Api_Admin extends Zikula_Api
     }
 
     /**
-     * Retrieve an array of user records whose field specified by the key parameter match one of the values specified in the valuesArray parameter.
+     * Retrieve a list of users whose field specified by the key match one of the values specified in the keyValue.
      *
      * @param array $args All parameters passed to this function.
      *                    $args['key']      (string) The field to be searched, typically 'uname' or 'email'.
      *                    $args['keyValue'] (array)  An array containing the values to be matched.
      *
-     * @return array|bool An array of user records indexed by user name, each whose key field matches one value in the valueArray; false on error.
+     * @return array|bool An array of user records indexed by user name, each whose key field matches one value in the
+     *                      valueArray; false on error.
      */
     public function checkMultipleExistence($args)
     {
@@ -351,13 +371,7 @@ class Users_Api_Admin extends Zikula_Api
         $valuesArray = $args['valuesArray'];
         $key = $args['key'];
 
-        $where = '';
-        foreach ($valuesArray as $value) {
-            $where .=  $userscolumn[$key] . "='" . $value . "' OR ";
-        }
-
-        $where = substr($where, 0, -3);
-
+        $where = "WHERE ({$userscolumn[$key]} IN ('" . implode("', '", $valuesArray) . "'))";
         $items = DBUtil::selectObjectArray ('users', $where, '', '-1', '-1', 'uname');
 
         if ($items === false) {
@@ -405,7 +419,9 @@ class Users_Api_Admin extends Zikula_Api
                                       array('valuesArray' => $usersArray,
                                             'key' => 'uname'));
         if (!$usersInDB) {
-            return LogUtil::registerError($this->__('Error! The users have been created but something has failed trying to get them from the database. Now all these users do not have group.'));
+            return LogUtil::registerError($this->__(
+                'Error! The users have been created but something has failed trying to get them from the database. '
+                . 'Now all these users do not have group.'));
         }
 
         // get available groups

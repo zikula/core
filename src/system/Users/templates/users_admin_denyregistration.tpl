@@ -13,7 +13,7 @@
     <form id="users_denyregistration" class="z-form" action="{modurl modname='Users' type='admin' func='denyRegistration'}" method="post">
         <div>
             <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
-            <input type="hidden" id="users_id" name="id" value="{$reginfo.id}" />
+            <input type="hidden" id="users_uid" name="uid" value="{$reginfo.uid}" />
             <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview}" />
             <input type="hidden" id="users_confirmed" name="confirmed" value="true" />
             <fieldset>

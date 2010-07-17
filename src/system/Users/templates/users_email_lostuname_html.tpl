@@ -1,4 +1,4 @@
-{* NOTE: This is the HTML version of this e-mail. If this is modified, ensure that users_userapi_lostunamemail.txt is also modified! *}
+{gt text='\'%1$s\' account information' tag1=$sitename assign='subject'}
 
 <p>{gt text='Hello!'}</p>
 

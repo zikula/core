@@ -24,12 +24,12 @@ function Users_tables($forVersion = null)
     if (!isset($forVersion)) {
         if (isset($_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) && $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) {
             // This check comes before System::isInstalling().
-            return Users_tables_for_118();
+            return Users_tables_for_117();
         }
 
         if (System::isInstalling()) {
             // new installs
-            return Users_tables_for_200();
+            return Users_tables_for_210();
         }
 
         // Remaining cases - this should be deleted.
@@ -37,10 +37,10 @@ function Users_tables($forVersion = null)
         $forVersion = $usersModInfo['version'];
     }
 
-    if (version_compare($forVersion, '2.0.0') >= 0) {
-        return Users_tables_for_200();
+    if (version_compare($forVersion, '2.1.0') >= 0) {
+        return Users_tables_for_210();
     } else {
-        return Users_tables_for_118();
+        return Users_tables_for_117();
     }
 }
 
@@ -53,26 +53,56 @@ function Users_tables($forVersion = null)
  *
  * @return array The table information.
  */
-function Users_tables_for_200()
+function Users_tables_for_210()
 {
     // Initialise table array
     $dbinfo = array();
 
     // Main Users table
-    // Version 2.0.0 through current(inclusive)
+    // Version 2.1.0 through current(inclusive)
     // Stores core information about each user account.
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
     //
     // uid              - User ID: Primary user identifier
-    // uname            - User Name: Primary user display name, primary log in identifier
-    // email            - E-mail Address: Secondary log in identifier, user notifications
+    // uname            - User Name: Primary user display name, primary log in identifier.
+    // email            - E-mail Address: Secondary log in identifier, user notifications. For pending registrations awaiting e-mail
+    //                      address verification, this will be an empty string, and the email address for the account will be found
+    //                      in the users_verifychg table. ("Regular" user accounts may also have e-mail addresses pending verification
+    //                      in the users_verifychg table, however those are the result of a request to change the account's address.)
     // pass             - Password: User's password for logging in. This value is salted and hashed. The salt is stored in this field,
     //                      delimited from the hash with a dollar sign character ($). The hash algorithm is stored as a numeric code
     //                      in the hash_method field. This field may be blank in instances where the user registered with an
     //                      alternative authmodule (e.g., OpenID) and did not also establish a password for his web site account.
     // passreminder     - Password reminder: Set during registration or password changes, to remind the user what his password is.
     //                      This field may be blank if pass is blank.
-    // activated        - Account State: The user's current state, see UserUtil::ACTIVE_* for defined constants
+    // activated        - Account State: The user's current state, see UserUtil::ACTIVE_* for defined constants. A state
+    //                      represented by a negative integer means that the user's account is in a pending state, and
+    //                      should not yet be considered a "real" user account. For example, user
+    //                      accounts pending the completion of the registration process (because either moderation, e-mail
+    //                      verification, or both are in use) will have a negative integer representing their state. If
+    //                      the user's registration request expires before it the process is completed, or if the
+    //                      administrator denies the request for an new account, the user account record will be deleted.
+    //                      When this deletion happens, it will be assumed by the system that no external module has
+    //                      yet interacted with the user account record, because its state never progressed beyond its
+    //                      pending state, and therefore normal hooks/events may not be triggered (although it is possible
+    //                      that events regarding the pending account may be triggered).
+    // approved_date    - Account Approved Date/Time: The date and time the user's registration request was approved through
+    //                      the moderation process. If the moderation process was not in effect at the time the user
+    //                      made a registration request, then this will be the date and time of the registration request.
+    //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER
+    //                      server local time nor user local time (unless one or the other happens to be UTC).
+    //                      WARNING: The date and time related functions available in SQL on many RDBMS servers are
+    //                      highly dependent on the database server's timezone setting. All parameters to these functions
+    //                      are treated as if the dates and times they represent are in the time zone that is set
+    //                      in the database server's settings. Use of date/time functions in SQL queries should be
+    //                      avoided if at all possible. PHP functions using UTC as the base time zone should be used
+    //                      instead. If SQL date/time functions must be used, then care should be taken to ensure that
+    //                      either the function is time zone neutral, or that the function and its relationship to
+    //                      time zone settings is completely understood.
+    // approved_by      - The uid of the user account that approved the request to register a new account. If this is
+    //                      the same as the user account's uid, then moderation was not in use at the time the request
+    //                      for a new account was made. If this is -1, the the user account that approved the request
+    //                      has since been deleted. If this is 0, the user account has not yet been approved.
     // user_regdate     - Registration Date/Time: Date/time the user account was registered. For users not pending the
     //                      completion of the registration process, this is the date and time the user
     //                      account completed the process. For example, if registrations are moderated, then this is
@@ -84,18 +114,10 @@ function Users_tables_for_200()
     //                      verification, or both are in use) then this will be the date and time the user made the
     //                      registration request UNTIL the registration process is complete, and then it is updated as above.
     //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER
-    //                      server local time nor user local time (unless one or the other happens to be UTC).
-    //                      WARNING: The date and time related functions available in SQL on many RDBMS servers are 
-    //                      highly dependent on the database server's timezone setting. All parameters to these functions
-    //                      are treated as if the dates and times they represent are in the time zone that is set
-    //                      in the database server's settings. Use of date/time functions in SQL queries should be
-    //                      avoided if at all possible. PHP functions using UTC as the base time zone should be used
-    //                      instead. If SQL date/time functions must be used, then care should be taken to ensure that
-    //                      either the function is time zone neutral, or that the function and its relationship to
-    //                      time zone settings is completely understood.
+    //                      server local time nor user local time. SEE WARNING under approved_date, above.
     // lastlogin        - Last Login Date/Time: Date/time user last successfully logged into the site.
-    //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NOT local time.
-    //                      SEE WARNING under user_regdate, above.
+    //                      NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER
+    //                      server local time nor user local time. SEE WARNING under approved_date, above.
     // theme            - User's Theme: The name (identifier) of the per-user theme the user would like to use while viewing the site, when
     //                      user theme switching is enabled.
     // ublockon         - User-defined Block On?: Whether the custom user-defined block is displayed or not (1 == true == displayed)
@@ -107,8 +129,10 @@ function Users_tables_for_200()
         'uname'         => 'pn_uname',
         'email'         => 'pn_email',
         'pass'          => 'pn_pass',
-        'passreminder'  => 'passreminder',
+        'passreminder'  => 'z_passreminder',
         'activated'     => 'pn_activated',
+        'approved_date' => 'z_approved_date',
+        'approved_by'   => 'z_approved_by',
         'user_regdate'  => 'pn_user_regdate',
         'lastlogin'     => 'pn_lastlogin',
         'theme'         => 'pn_theme',
@@ -122,6 +146,8 @@ function Users_tables_for_200()
         'pass'          => "C(138) NOTNULL DEFAULT ''",
         'passreminder'  => "C(255) NOTNULL DEFAULT ''",
         'activated'     => "I1 NOTNULL DEFAULT 0",
+        'approved_date' => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
+        'approved_by'   => "I4 NOTNULL DEFAULT 0",
         'user_regdate'  => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
         'lastlogin'     => "T DEFDATETIME NOTNULL DEFAULT '1970-01-01 00:00:00'",
         'theme'         => "C(255) NOTNULL DEFAULT ''",
@@ -138,7 +164,7 @@ function Users_tables_for_200()
     $dbinfo['users_primary_key_column'] = 'uid';
 
     // Account-change verification table
-    // Version 2.0.0 through current(inclusive)
+    // Version 2.1.0 through current(inclusive)
     // Holds a one-time use, expirable verification code used when a user needs to changs his email address,
     // reset his password and has not answered any security questions, or when a new user is registering with
     // the site for the first time.
@@ -158,12 +184,12 @@ function Users_tables_for_200()
     $dbinfo['users_verifychg'] = DBUtil::getLimitedTablename('users_verifychg');;
 
     $dbinfo['users_verifychg_column'] = array (
-        'id'            => 'id',
-        'changetype'    => 'changetype',
-        'uid'           => 'uid',
-        'newemail'      => 'newemail',
-        'verifycode'    => 'verifycode',
-        'created_dt'    => 'created_dt',
+        'id'            => 'z_id',
+        'changetype'    => 'z_changetype',
+        'uid'           => 'z_uid',
+        'newemail'      => 'z_newemail',
+        'verifycode'    => 'z_verifycode',
+        'created_dt'    => 'z_created_dt',
     );
 
     $dbinfo['users_verifychg_column_def'] = array(
@@ -176,24 +202,24 @@ function Users_tables_for_200()
     );
 
     // User Registration table.
-    // Version 2.0.0 through current(inclusive)
+    // Version 2.1.0 through current(inclusive)
     //
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
 
     $dbinfo['users_registration'] = DBUtil::getLimitedTablename('users_registration');
     $dbinfo['users_registration_column'] = array(
-        'id'            => 'id',
-        'uname'         => 'uname',
-        'email'         => 'email',
-        'pass'          => 'pass',
-        'passreminder'  => 'passreminder',
-        'passrecovery'  => 'passrecovery',
-        'agreetoterms'  => 'agreetoterms',
-        'dynadata'      => 'dynadata',
-        'verifycode'    => 'verifycode',
-        'created_dt'    => 'created_dt',
-        'isapproved'    => 'isapproved',
-        'isverified'    => 'isverified',
+        'id'            => 'z_id',
+        'uname'         => 'z_uname',
+        'email'         => 'z_email',
+        'pass'          => 'z_pass',
+        'passreminder'  => 'z_passreminder',
+        'passrecovery'  => 'z_passrecovery',
+        'agreetoterms'  => 'z_agreetoterms',
+        'dynadata'      => 'z_dynadata',
+        'verifycode'    => 'z_verifycode',
+        'created_dt'    => 'z_created_dt',
+        'isapproved'    => 'z_isapproved',
+        'isverified'    => 'z_isverified',
     );
     $dbinfo['users_registration_column_def'] = array(
         'id'            => "I PRIMARY AUTO",
@@ -262,13 +288,13 @@ function Users_tables_for_200()
  *
  * @return array The table information.
  */
-function Users_tables_for_118()
+function Users_tables_for_117()
 {
     // Initialise table array
     $dbinfo = array();
 
     // Main Users table
-    // Version 1.11 through 1.18 (inclusive)
+    // Version 1.11 through 1.17 (inclusive)
     // Stores core information about each user account.
     // DO NOT USE A FIELD FOR A PURPOSE OTHER THAN ITS DOCUMENTED INTENT!
     //
@@ -395,7 +421,7 @@ function Users_tables_for_118()
     // tag              - NOT USED
     // hash_method      - NOT USED
 
-    // Version 1.11 through 1.18 (inclusive)
+    // Version 1.11 through 1.17 (inclusive)
     $dbinfo['users_temp'] = DBUtil::getLimitedTablename('users_temp');
     $dbinfo['users_temp_column'] = array(
         'tid'          => 'pn_tid',

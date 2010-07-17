@@ -23,6 +23,7 @@
             {capture name='authid' assign='usersModifyFormAuthId'}{insert name='generateauthkey' module='Users'}{/capture}
             <input type="hidden" name="authid" value="{$usersModifyFormAuthId}" />
             <input type="hidden" name="userid" value="{$userid}" />
+            <input type="hidden" name="userinfo[uid]" value="{$userid}" />
             <input type="hidden" name="do"     value="yes" />
             <fieldset>
                 <legend>{gt text='Group membership'}</legend>
@@ -47,23 +48,28 @@
                 <legend>{gt text='Personal information'}</legend>
                 <div class="z-formrow">
                     <label for="users_uname">{gt text='User name'}</label>
-                    <input id="users_uname" type="text" name="uname" value="{$userinfo.uname|safetext}" size="30" maxlength="60" />
+                    <input id="users_uname" type="text" name="userinfo[uname]" value="{$userinfo.uname|safetext}" size="30" maxlength="60" />
+                    <div class="z-formnote z-sub z-italic">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</div>
                 </div>
                 <div class="z-formrow">
                     <label for="users_email">{gt text='E-mail address'}</label>
-                    <input id="users_email" type="text" name="email" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
+                    <input id="users_email" type="text" name="userinfo[email]" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
+                </div>
+                <div class="z-formrow">
+                    <label for="users_emailagain">{gt text='E-mail address (repeat for verification)'}</label>
+                    <input id="users_emailagain" type="text" name="emailagain" value="{$userinfo.email|safetext}" size="30" maxlength="60" />
                 </div>
                 <div class="z-formrow">
                     <label for="password1">{gt text='Password'}</label>
-                    <input id="password1" type="password" name="pass" size="15" />
+                    <input id="password1" type="password" name="userinfo[pass]" size="15" />
                 </div>
                 <div class="z-formrow">
                     <label for="password2">{gt text='Password (repeat for verification)'}</label>
-                    <input id="password2" type="password" name="vpass" size="15" />
+                    <input id="password2" type="password" name="passagain" size="15" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_activated">{gt text='User status'}</label>
-                    <select id="users_activated" name="activated">
+                    <select id="users_activated" name="userinfo[activated]">
                         <option value="{'UserUtil::ACTIVATED_INACTIVE'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE'|constant}selected="selected"{/if}>{gt text="Inactive"}</option>
                         {if $legal && ($tou_active || $pp_active eq true)}
                         <option value="{'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}selected="selected"{/if}>{gt text="Inactive until %s accepted" tag1=$touppTextString}</option>
@@ -80,7 +86,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="users_theme">{gt text='Theme'}</label>
-                    <select id="users_theme" name="theme">
+                    <select id="users_theme" name="userinfo[theme]">
                         <option value="">{gt text="Site's default theme"}</option>
                         {html_select_themes selected=$userinfo.theme state=PNTHEME_STATE_ACTIVE filter=PNTHEME_FILTER_USER}
                     </select>

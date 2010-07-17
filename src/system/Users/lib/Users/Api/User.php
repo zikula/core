@@ -82,10 +82,12 @@ class Users_Api_User extends Zikula_Api
         $usersColumn = $table['users_column'];
 
         // form where clause
-        $where = '';
+        $where = array();
         if (isset($args['letter'])) {
-            $where = "WHERE {$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%'";
+            $where[] = "({$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%')";
         }
+        $where[] = "({$usersColumn['activated']} NOT IN (" . implode(', ', array(UserUtil::ACTIVATED_PENDING_REG, UserUtil::ACTIVATED_PENDING_DELETE)) . '))';
+        $where = 'WHERE ' . implode(' AND ', $where);
 
         $objArray = DBUtil::selectObjectArray('users', $where, 'uname', $limitOffset, $limitNumRows, null, $permFilter);
 
@@ -275,34 +277,32 @@ class Users_Api_User extends Zikula_Api
             }
         }
 
-        if (isset($args['subject']) && !empty($args['subject'])) {
+        if (isset($subject) && !empty($subject)) {
+            $mailerArgs['subject'] = $subject;
+        } elseif (isset($args['subject']) && !empty($args['subject'])) {
             $mailerArgs['subject'] = $args['subject'];
         } else {
-            if (isset($subject) && !empty($subject)) {
-                $mailerArgs['subject'] = $subject;
-            } else {
-                switch ($notificationType) {
-                    case 'activation':
-                        $mailerArgs['subject'] = $this->__('Verify your account.');
-                        break;
-                    case 'adminnotification':
-                        $mailerArgs['subject'] = $this->__('New user or registration.');
-                        break;
-                    case 'confirmchemail':
-                        $mailerArgs['subject'] = $this->__('Verify your new e-mail address.');
-                        break;
-                    case 'lostpasscode':
-                        $mailerArgs['subject'] = $this->__('Recover your password.');
-                        break;
-                    case 'lostuname':
-                        $mailerArgs['subject'] = $this->__('Recover your user name.');
-                        break;
-                    case 'welcome':
-                        $mailerArgs['subject'] = $this->__('Welcome!');
-                        break;
-                    default:
-                        $mailerArgs['subject'] = $this->__f('A message from %s.', System::getVar('sitename', System::getBaseUrl()));
-                }
+            switch ($notificationType) {
+                case 'activation':
+                    $mailerArgs['subject'] = $this->__('Verify your account.');
+                    break;
+                case 'regadminnotify':
+                    $mailerArgs['subject'] = $this->__('New user or registration.');
+                    break;
+                case 'confirmchemail':
+                    $mailerArgs['subject'] = $this->__('Verify your new e-mail address.');
+                    break;
+                case 'lostpasscode':
+                    $mailerArgs['subject'] = $this->__('Recover your password.');
+                    break;
+                case 'lostuname':
+                    $mailerArgs['subject'] = $this->__('Recover your user name.');
+                    break;
+                case 'welcome':
+                    $mailerArgs['subject'] = $this->__('Welcome!');
+                    break;
+                default:
+                    $mailerArgs['subject'] = $this->__f('A message from %s.', array(System::getVar('sitename', System::getBaseUrl())));
             }
         }
 
@@ -376,7 +376,6 @@ class Users_Api_User extends Zikula_Api
      * Send the user a lost password confirmation code.
      *
      * @param array $args All parameters passed to this function.
-     *                    $args['uname'] (string) The user's user name.
      *                    $args['email'] (string) The user's e-mail address.
      *
      * @return bool True if confirmation code sent; otherwise false.
@@ -392,10 +391,9 @@ class Users_Api_User extends Zikula_Api
         }
 
         if ($args['idfield'] == 'email') {
-            $ucount = DBUtil::selectObjectCountByID ('users', $args['id'], 'email');
-            $rcount = DBUtil::selectObjectCountByID ('users_registration', $args['id'], 'email');
+            $ucount = UserUtil::getEmailUsageCount($args['id']);
 
-            if (($ucount + $rcount) > 1) {
+            if ($ucount > 1) {
                 return false;
             }
         }
@@ -672,24 +670,49 @@ class Users_Api_User extends Zikula_Api
     }
 
     /**
-     * Removes a change-of-email address verification code from the verifychg table.
+     * Removes a record from the users_verifychg table for a specified uid and changetype.
      *
-     * @return bool True.
+     * @param array $args All parameters passed to this function.
+     *                      int       $args['uid']        The uid of the verifychg record to remove. Required.
+     *                      int|array $args['changetype'] The changetype(s) of the verifychg record to remove. If more
+     *                                                      than one type is to be removed, use an array. Optional. If
+     *                                                      not specifed, all verifychg records for the user will be
+     *                                                      removed. (Note, specifying an empty array will remove none.)
      */
-    public function removeUserPreEmail()
+    public function resetVerifyChgFor($args)
     {
-        if (!UserUtil::isLoggedIn()) {
-            return LogUtil::registerPermissionError();
+        if (!isset($args['uid'])) {
+            return LogUtil::registerArgsError();
+        }
+        $uid = $args['uid'];
+        if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
+            return LogUtil::registerArgsError();
         }
 
-        $uid = UserUtil::getVar('uid');
+        if (!isset($args['changetype'])) {
+            $changeType = null;
+        } else {
+            $changeType = $args['changetype'];
+            if (!is_array($changeType)) {
+                $changeType = array($changeType);
+            } elseif (empty($changeType)) {
+                return;
+            }
+            foreach ($changeType as $theType) {
+                if (!is_numeric($theType) || ((int)$theType != $theType) || ($theType < 0)) {
+                    return LogUtil::registerArgsError();
+                }
+            }
+        }
 
         $dbinfo = DBUtil::getTables();
-        $verifychgColumn = $dbinfo['users_verifychg_column'];
-        DBUtil::deleteWhere('users_verifychg',
-            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")");
+        $verifyChgColumn = $dbinfo['users_verifychg_column'];
 
-        return true;
+        $where = "WHERE ({$verifyChgColumn['uid']} = {$uid})";
+        if (isset($changeType)) {
+            $where .= " AND ({$verifyChgColumn['changetype']} IN (" . implode(', ', $changeType) . "))";
+        }
+        DBUtil::deleteWhere('users_verifychg', $where);
     }
 
     /**

@@ -1,4 +1,4 @@
-{* NOTE: This is the HTML version of this e-mail. If this is modified, ensure that users_userapi_lostpasscodemail.txt is also modified! *}
+{gt text='Reset your password at \'%1$s\'' tag1=$sitename assign='subject'}
 
 <p>{gt text='Hello!'}</p>
 

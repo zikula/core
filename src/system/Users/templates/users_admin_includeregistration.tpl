@@ -23,7 +23,7 @@
         </tr>
         <tr class="{cycle values='z-odd,z-even'}">
             <td class="z-right z-bold">{gt text='E-mail'}</td>
-            <td>{$reginfo.email}</td>
+            <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
         </tr>
         {if !isset($reginfo.pass) || empty($reginfo.pass)}
         <tr class="{cycle values='z-odd,z-even'}">
@@ -57,11 +57,11 @@
     <tbody>
         <tr class="{cycle values='z-odd,z-even' reset=true}">
             <td class="z-right z-bold z-w30">{gt text='E-mail verification'}</td>
-            <td>{if !isset($reginfo.isverified) || empty($reginfo.isverified) || !$reginfo.isverified}{if !isset($reginfo.verifycode) || empty($reginfo.verifycode)}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent; awating approval' __alt='E-mail verification not sent; awating approval'} {gt text='Verification e-mail message not yet sent to the user'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'} {gt text='Not yet verified'}{/if}{else}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'} {gt text='Verification complete'} <span class="z-sub">{gt text='(or verification was not required when the registration was completed)'}</span>{/if}</td>
+            <td>{if !isset($reginfo.isverified) || empty($reginfo.isverified) || !$reginfo.isverified}{if !isset($reginfo.verificationsent) || empty($reginfo.verificationsent)}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent; awating approval' __alt='E-mail verification not sent; awating approval'} {gt text='Verification e-mail message not yet sent to the user'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'} {gt text='Not yet verified'}{/if}{else}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'} {gt text='Verification complete'} <span class="z-sub">{gt text='(or verification was not required when the registration was completed)'}</span>{/if}</td>
         </tr>
         <tr class="{cycle values='z-odd,z-even'}">
             <td class="z-right z-bold">{gt text='Expires'}</td>
-            <td>{if $reginfo.isverified}{gt text='Never, registration is verified'}{elseif empty($reginfo.verifycode)}{gt text='Expiration date will be set when the verification e-mail is sent'}{elseif !isset($reginfo.validuntil) || empty($reginfo.validuntil)}{gt text='Never'}{else}{$reginfo.validuntil}&nbsp;{gt text='UTC'}{/if}</td>
+            <td>{if $reginfo.isverified}{gt text='Never, registration is verified'}{elseif empty($reginfo.verificationsent)}{gt text='Expiration date will be set when the verification e-mail is sent'}{elseif !isset($reginfo.validuntil) || empty($reginfo.validuntil)}{gt text='Never'}{else}{$reginfo.validuntil}{/if}</td>
         </tr>
         <tr class="{cycle values='z-odd,z-even'}">
             <td class="z-right z-bold">{gt text='Administrator approval'}</td>

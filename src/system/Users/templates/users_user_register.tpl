@@ -66,6 +66,7 @@
             <div class="z-formrow">
                 <label for="users_reginfo_uname">{gt text="User name"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_reginfo_uname" name="reginfo[uname]"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" size="25" maxlength="25" value="{if isset($reginfo.uname)}{$reginfo.uname}{/if}" />
+                <div class="z-formnote z-sub z-italic">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</div>
             </div>
         </fieldset>
 

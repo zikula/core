@@ -709,6 +709,7 @@ class Users_Controller_User extends Zikula_Controller
         }
 
         $tryAgain = false;
+        $errorMsg = '';
 
         // ATTENTION: authenticateUser requires that this function be reentrant!
         SessionUtil::requireSession();
@@ -860,7 +861,7 @@ class Users_Controller_User extends Zikula_Controller
             // $tryAgain is true, so there was a problem of some sort. Either the authinfo was bad, or
             // the user has to complete something in order to log in (like accepting the terms, or changing
             // his password)
-            if (!LogUtil::hasErrors()) {
+            if (empty($errorMsg) && !LogUtil::hasErrors()) {
                 $errorMsg = $this->__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.');
             }
 
@@ -963,12 +964,15 @@ class Users_Controller_User extends Zikula_Controller
             $uname = mb_strtolower($uname);
         }
         $verifycode = FormUtil::getPassedValue('verifycode', '', 'GETPOST');
+        $setPass = false;
 
         if ($uname) {
             $reginfo = ModUtil::apiFunc('Users', 'registration', 'get', array('uname' => $uname));
 
             if ($reginfo) {
                 if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
+                    $setPass = true;
+
                     if (SecurityUtil::confirmAuthKey('Users', 'verifyauthid')) {
                         // Special authid verified, so we can process the form.
                         $newpass = FormUtil::getPassedValue('newpass', '', 'POST');
@@ -983,42 +987,60 @@ class Users_Controller_User extends Zikula_Controller
                         ));
 
                         if (empty($passwordErrors)) {
-                            $reginfo['pass'] = UserUtil::getHashedPassword($newpass);
-                            $reginfo['passreminder'] = $newpassreminder;
-
-                            $reginfo = ModUtil::apiFunc('Users', 'registration', 'update', array('reginfo' => $reginfo));
-
-                            if (!$reginfo) {
+                            $newpassHash = UserUtil::getHashedPassword($newpass);;
+                            $passSaved = UserUtil::setVar('pass', $newpassHash, $reginfo['uid']);
+                            if (!$passSaved) {
                                 LogUtil::registerError($this->__('Sorry! There was an error while trying to save your new password and reminder.'));
+                            } else {
+                                $reginfo['pass'] = $newpassHash;
+                            }
+
+                            $passReminderSaved = UserUtil::setVar('passreminder', $newpassreminder, $reginfo['uid']);
+                            if (!$passReminderSaved) {
+                                LogUtil::registerError($this->__('Sorry! There was an error while trying to save your new password and reminder.'));
+                            } else {
+                                $reginfo['passreminder'] = $newpassreminder;
                             }
                         }
                     }
                 }
 
-                if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])) {
-                    $codesMatch = UserUtil::passwordsMatch($verifycode, $reginfo['verifycode']);
+                if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])
+                     && isset($reginfo['passreminder']) && !empty($reginfo['passreminder']))
+                {
+                    $verifyChg = ModUtil::apiFunc('Users', 'registration', 'getVerificationCode', array(
+                        'uid'   => $reginfo['uid'],
+                    ));
 
-                    if ($codesMatch) {
-                        $verified = ModUtil::apiFunc('Users', 'registration', 'verify', array('reginfo' => $reginfo));
+                    if ($verifyChg) {
+                        $codesMatch = UserUtil::passwordsMatch($verifycode, $verifyChg['verifycode']);
 
-                        if ($verified) {
-                            if (isset($verified['uid'])) {
-                                return LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'),
-                                    ModUtil::url('Users', 'user', 'loginScreen'));
+                        if ($codesMatch) {
+                            $verified = ModUtil::apiFunc('Users', 'registration', 'verify', array('reginfo' => $reginfo));
+
+                            if ($verified) {
+                                if (isset($verified['uid'])) {
+                                    return LogUtil::registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'),
+                                        ModUtil::url('Users', 'user', 'loginScreen'));
+                                } else {
+                                    return LogUtil::registerStatus($this->__('Done! Your account has been verified, and is awaiting administrator approval.'),
+                                        ModUtil::url('Users', 'user'));
+                                }
                             } else {
-                                return LogUtil::registerStatus($this->__('Done! Your account has been verified, and is awaiting administrator approval.'),
-                                    ModUtil::url('Users', 'user'));
+                                if (!LogUtil::hasErrors()) {
+                                    return LogUtil::registerError($this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'),
+                                        ModUtil::url('Users', 'user', 'main'));
+                                } else {
+                                    return System::redirect(ModUtil::url('Users', 'user', 'main'));
+                                }
                             }
                         } else {
-                            if (!LogUtil::hasErrors()) {
-                                return LogUtil::registerError($this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'),
-                                    ModUtil::url('Users', 'user', 'main'));
-                            } else {
-                                return System::redirect(ModUtil::url('Users', 'user', 'main'));
-                            }
+                            LogUtil::registerError($this->__('Sorry! The verification code you provided does not match our records. Please check the code, and also check your e-mail for a newer verification code that might have been sent.'));
                         }
+                    } elseif ($verifyChg === false) {
+                        return LogUtil::registerError($this->__('Error! There was a problem retrieving the verification code for comparison.'));
                     } else {
-                        LogUtil::registerError($this->__('Sorry! The verification code you provided does not match our records. Please check the code, and also check your e-mail for a newer verification code that might have been sent.'));
+                        return LogUtil::registerError($this->__f('Error! There is no pending verification code for \'%1$s\'. Please contact the site administrator.', array($reginfo['uname'])));
                     }
                 }
                 // No code, or no password. Pass down through to the template rendering.
@@ -1036,7 +1058,7 @@ class Users_Controller_User extends Zikula_Controller
             'verify_uname'      => $uname,
             'verifycode'        => $verifycode,
             'reginfo'           => isset($reginfo) ? $reginfo : array(),
-            'setpass'           => isset($reginfo) && isset($reginfo['id']) && !empty($reginfo['id']) && (!isset($reginfo['pass']) || empty($reginfo['pass'])),
+            'setpass'           => $setPass,
             'newpass'           => isset($newpass) ? $newpass : '',
             'newpassreminder'   => isset($newpassreminder) ? $newpassreminder : '',
             'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
@@ -1051,7 +1073,7 @@ class Users_Controller_User extends Zikula_Controller
      * LEGACY user account activation.
      *
      * We must keep this function, because there is no way to know whether an inactive account
-     * is inactive because it needs activation, or for some other reason.
+     * is inactive because it needs activation, or for some other reason set manually by the site admin.
      *
      * Available Get/Post Parameters;
      * - code (string) Confirmation/Activation code.
@@ -1452,7 +1474,10 @@ class Users_Controller_User extends Zikula_Controller
         UserUtil::setVar('email', $preemail['newemail']);
 
         // the preemail record is deleted
-        ModUtil::apiFunc('Users', 'user', 'removeUserPreEmail');
+        ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array(
+            'uid'       => $preemail['uid'],
+            'changetype'=> UserUtil::VERIFYCHGTYPE_EMAIL,
+        ));
 
         LogUtil::registerStatus($this->__('Done! Changed your e-mail address.'));
         return System::redirect(ModUtil::url('Users', 'user', 'main'));

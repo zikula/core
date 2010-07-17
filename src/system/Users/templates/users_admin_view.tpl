@@ -29,8 +29,8 @@
             <tr>
                 <th>{gt text="User name"}</th>
                 <th>{gt text="Internal ID"}</th>
-                <th>{gt text="Registration date"}{gt text="*"}</th>
-                <th>{gt text="Last Login"}{gt text="*"}</th>
+                <th>{gt text="Registration date"}</th>
+                <th>{gt text="Last login"}</th>
                 {if $canSeeGroups}
                 <th>{gt text="User's groups"}</th>
                 {/if}
@@ -63,7 +63,6 @@
             {/section}
         </tbody>
     </table>
-    <p class="z-sub z-italic">{gt text="*"} {gt text="All dates are based on the UTC date and time the user registered or last logged in."}</p>
 
     {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 </div>

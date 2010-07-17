@@ -18,18 +18,27 @@
 class UserUtil
 {
     // Activated states
-    // DEVELOPERS: New values added to this
-    // 0 = Inactive (Not able to log in.)
+    // -32768 = Pending registration (not able to log on). Moderation and/or e-mail verification are in use
+    //              in the registration process, and one or more of the required steps has not yet been
+    //              completed.
+    const ACTIVATED_PENDING_REG = -32768;
+    // 0 = Inactive (Not able to log in.) This state may be set by the site administrator to prevent
+    //      any attempt to log in with this account.
     const ACTIVATED_INACTIVE = 0;
     // 1 = Active (Able to log in.)
     const ACTIVATED_ACTIVE = 1;
     // 2 = Inactive until Terms of Use and/or Privacy Policy accepted (Able to start log-in, but must accept TOU/PP to complete.)
     const ACTIVATED_INACTIVE_TOUPP = 2;
-    // 4 = Inactive until password changed (Able to start log-in, but must change password to complete.)
+    // 4 = Inactive until password changed (Able to start log-in, but must change web site account password to complete.)
+    //      Note, if the user attempts to log in using an alternate means of authentication (e.g., LDAP, OpenID, etc.) then
+    //      the login attempt will proceed without asking the user for a new password.
     const ACTIVATED_INACTIVE_PWD = 4;
-    // 6 = Inactive until Terms of Use and/or Privacy Policy accepted and password changed
-    //     (Able to start log-in, but must accept TOU/PP and also must change password to complete.)
+    // 6 = Inactive until Terms of Use and/or Privacy Policy accepted and password changed (See above.)
     const ACTIVATED_INACTIVE_PWD_TOUPP = 6;
+    // 16384 = Marked for deletion (not able to log on). Similar to inactive, but with the expectation that
+    //              the account could be removed at any time. This state can also be used to simulate deletion without
+    //              actually deleting the account.
+    const ACTIVATED_PENDING_DELETE = 16384;
 
     // Registration verification and pasword generation options
     // 0 = User chooses password, no verification by e-mail.
@@ -52,6 +61,8 @@ class UserUtil
     const VERIFYCHGTYPE_PWD = 1;
     // 2 = change of e-mail address request, pending e-mail address verification
     const VERIFYCHGTYPE_EMAIL = 2;
+    // 3 = registration e-mail verification
+    const VERIFYCHGTYPE_REGEMAIL = 3;
 
     // Default salt delimeter character
     const SALT_DELIM = '$';
@@ -804,15 +815,140 @@ class UserUtil
     }
 
     /**
+     * Counts how many times a user name has been used by user accounts in the system.
+     *
+     * @param string $uname The e-mail address in question (required).
+     * @param int    $excludeUid
+     *
+     * @return <type>
+     */
+    public static function getUnameUsageCount($uname, $excludeUid = 0)
+    {
+        if (!is_numeric($excludeUid) || ((int)$excludeUid != $excludeUid)) {
+            return false;
+        }
+
+        $uname = DataUtil::formatForStore(mb_strtolower($uname));
+
+        if ($excludeUid > 1) {
+            $dbinfo = DBUtil::getTables();
+            $usersColumn = $dbinfo['users_column'];
+            $where = "({$usersColumn['uname']} = '{$uname}') AND ({$usersColumn['uid']} != {$excludeUid})";
+            $ucount = DBUtil::selectObjectCount('users', $where);
+
+        } else {
+            $ucount = DBUtil::selectObjectCountByID('users', $uname, 'email');
+        }
+
+        if ($ucount === false) {
+            return false;
+        } else {
+            return $ucount;
+        }
+    }
+
+    /**
+     * Counts how many times an e-mail address has been used by user accounts in the system.
+     *
+     * @param string $emailAddress The e-mail address in question (required).
+     * @param int    $excludeUid
+     *
+     * @return <type>
+     */
+    public static function getEmailUsageCount($emailAddress, $excludeUid = 0)
+    {
+        if (!is_numeric($excludeUid) || ((int)$excludeUid != $excludeUid)) {
+            return false;
+        }
+
+        $emailAddress = DataUtil::formatForStore(mb_strtolower($emailAddress));
+
+        $dbinfo = DBUtil::getTables();
+        $usersColumn = $dbinfo['users_column'];
+        $where = "({$usersColumn['email']} = '{$emailAddress}')";
+        if ($excludeUid > 1) {
+            $where .= " AND ({$usersColumn['uid']} != {$excludeUid})";
+        }
+        $ucount = DBUtil::selectObjectCount('users', $where);
+
+        $verifyChgColumn = $dbinfo['users_verifychg_column'];
+        $where = "({$verifyChgColumn['newemail']} = '{$emailAddress}') AND ({$verifyChgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
+        if ($excludeUid > 1) {
+            $where .= " AND ({$verifyChgColumn['uid']} != {$excludeUid})";
+        }
+        $vcount = DBUtil::selectObjectCount('users_verifychg', $where);
+
+        if (($ucount === false) || ($vcount === false)) {
+            return false;
+        } else {
+            return ($ucount + $vcount);
+        }
+    }
+
+    public static function postProcessGetRegistration(&$userObj)
+    {
+        if ($userObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
+            // Get isverified from the attributes.
+            if (isset($userObj['__ATTRIBUTES__']['isverified'])) {
+                $userObj['isverified'] = $userObj['__ATTRIBUTES__']['isverified'];
+                unset($userObj['__ATTRIBUTES__']['isverified']);
+            } else {
+                $userObj['isverified'] = false;
+            }
+
+            // Get verificationsent from the users_verifychg table
+            $dbinfo = DBUtil::getTables();
+            $verifyChgColumn = $dbinfo['users_verifychg_column'];
+            $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = "
+                . self::VERIFYCHGTYPE_REGEMAIL . ")";
+            $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
+            if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0])
+                && !empty($verifyChgList[0]))
+            {
+                $userObj['verificationsent'] = $verifyChgList[0]['created_dt'];
+            } else {
+                $userObj['verificationsent'] = false;
+            }
+
+            // Calculate isapproved from approved_by
+            $userObj['isapproved'] = isset($userObj['approved_by']) && !empty($userObj['approved_by']);
+
+            // Get agreetoterms from the attributes
+            if (isset($userObj['__ATTRIBUTES__']['agreetoterms'])) {
+                $userObj['agreetoterms'] = $userObj['__ATTRIBUTES__']['agreetoterms'];
+                unset($userObj['__ATTRIBUTES__']['agreetoterms']);
+            } else {
+                $userObj['agreetoterms'] = false;
+            }
+
+            // unserialize dynadata
+            if (isset($userObj['__ATTRIBUTES__']['dynadata'])) {
+                $userObj['dynadata'] = unserialize($userObj['__ATTRIBUTES__']['dynadata']);
+                unset($userObj['__ATTRIBUTES__']['dynadata']);
+            } else {
+                $userObj['dynadata'] = array();
+            }
+        }
+        return $userObj;
+    }
+
+    /**
      * Get all user variables, maps new style attributes to old style user data.
      *
-     * @param integer $id      The user id of the user.
-     * @param boolean $force   True to force loading from database and ignore the cache.
-     * @param string  $idfield Field to use as id (possible values: uid, uname or email).
+     * @param integer $id               The user id of the user. (required)
+     * @param boolean $force            True to force loading from database and ignore the cache.
+     * @param string  $idfield          Field to use as id (possible values: uid, uname or email).
+     * @param bool    $getRegistration  Indicates whether a "regular" user record or a pending registration
+     *                                      is to be returned. False (default) for a user record and true
+     *                                      for a registration. If false and the user record is a pending 
+     *                                      registration, then the record is not returned and false is returned
+     *                                      instead; likewise, if true and the user record is not a registration,
+     *                                      then false is returned. (Defaults to false)
      *
-     * @return array an associative array with all variables for a user
+     * @return array|bool An associative array with all variables for a user (or pending registration);
+     *                      false on error.
      */
-    public static function getVars($id, $force = false, $idfield = '')
+    public static function getVars($id, $force = false, $idfield = '', $getRegistration = false)
     {
         if (empty($id)) {
             return false;
@@ -832,82 +968,105 @@ class UserUtil
         static $cache = array(), $unames = array(), $emails = array();
 
         // caching
-        if ($idfield == 'uname' && isset($unames[$id]) && $force == false) {
-            if ($unames[$id] !== false) {
-                return $cache[$unames[$id]];
+        $user = null;
+        if ($force == false) {
+
+            if ($idfield == 'uname' && isset($unames[$id])) {
+                if ($unames[$id] !== false) {
+                    $user = $cache[$unames[$id]];
+                } else {
+                    return false;
+                }
             }
-            return false;
-        }
 
-        if ($idfield == 'email' && isset($emails[$id]) && $force == false) {
-            if ($emails[$id] !== false) {
-                return $cache[$emails[$id]];
+            if ($idfield == 'email' && isset($emails[$id])) {
+                if ($emails[$id] !== false) {
+                    $user = $cache[$emails[$id]];
+                } else {
+                    return false;
+                }
             }
-            return false;
-        }
 
-        if (isset($cache[$id]) && $force == false) {
-            return $cache[$id];
-        }
-
-        // load the Users database information
-        ModUtil::dbInfoLoad('Users', 'Users');
-
-        // get user info, don't cache as this information must be up-to-date
-        // NOTE: Do not use a permission filter, or you will enter an infinite nesting loop where getVars calls checkPermission (from within
-        // DBUtil), which will call getVars to find out who you are, which will call checkPermission, etc., etc.
-        // Do your permission check in the API that is using UserUtil.
-        $user = DBUtil::selectObjectByID('users', $id, $idfield, null, null, null, false);
-
-        // If $idfield is email, make sure that we are getting a unique record.
-        if ($user && ($idfield == 'email')) {
-            $dbTables = DBUtil::getTables();
-            $usersColumn = $dbTables['users_column'];
-            $where = "WHERE {$usersColumn['email']} = '{$id}'";
-            $ucount = DBUtil::selectObjectCount('users', $where);
-
-            if ($ucount > 1) {
-                $user = false;
+            if (isset($cache[$id])) {
+                $user = $cache[$id];
             }
         }
 
-        // user can be false (error) or empty array (no such user)
-        if ($user === false || empty($user)) {
-            switch ($idfield)
-            {
-                case 'uid':
-                    $cache[$id] = false;
-                    break;
-                case 'uname':
-                    $unames[$id] = false;
-                    break;
-                case 'email':
-                    $emails[$id] = false;
-                    break;
+        if (!isset($user) || $force) {
+            // load the Users database information
+            ModUtil::dbInfoLoad('Users', 'Users');
+
+            // get user info, don't cache as this information must be up-to-date
+            // NOTE: Do not use a permission filter, or you will enter an infinite nesting loop where getVars calls checkPermission (from within
+            // DBUtil), which will call getVars to find out who you are, which will call checkPermission, etc., etc.
+            // Do your permission check in the API that is using UserUtil.
+            $user = DBUtil::selectObjectByID('users', $id, $idfield, null, null, null, false);
+
+            // If $idfield is email, make sure that we are getting a unique record.
+            if ($user && ($idfield == 'email')) {
+                $emailCount = self::getEmailUsageCount($id);
+
+                if (($emailCount > 1) || ($emailCount === false)) {
+                    $user = false;
+                }
             }
-            if ($user === false) {
-                return LogUtil::registerError(__('Error! Could not load data.'));
+
+            // update cache
+            // user can be false (error) or empty array (no such user)
+            if ($user === false || empty($user)) {
+                switch ($idfield) {
+                    case 'uid':
+                        $cache[$id] = false;
+                        break;
+                    case 'uname':
+                        $unames[$id] = false;
+                        break;
+                    case 'email':
+                        $emails[$id] = false;
+                        break;
+                }
+                if ($user === false) {
+                    return LogUtil::registerError(__('Error! Could not load data.'));
+                }
+
+                return false;
+            } else {
+                // This check should come at the very end, here, so that if $force is true the vars get
+                // reloaded into cache no matter what $getRegistration is set to. If not, and this is
+                // called from setVar(), and setVar() changed the 'activated' value, then we'd have trouble.
+                if (($getRegistration && ($user['activated'] != self::ACTIVATED_PENDING_REG))
+                    || (!$getRegistration && ($user['activated'] == self::ACTIVATED_PENDING_REG)))
+                {
+                    return false;
+                }
+
+                $user = self::postProcessGetRegistration($user);
+
+                $cache[$user['uid']] = $user;
+                $unames[$user['uname']] = $user['uid'];
+                $emails[$user['email']] = $user['uid'];
             }
-            return false;
         }
 
-        $cache[$user['uid']] = $user;
-        $unames[$user['uname']] = $user['uid'];
-        $emails[$user['email']] = $user['uid'];
-
-        return ($user);
+        return $user;
     }
 
     /**
      * Get a user variable.
      *
-     * @param string  $name    The name of the variable.
-     * @param integer $uid     The user to get the variable for.
-     * @param mixed   $default The default value to return if the specified variable doesn't exist.
+     * @param string  $name             The name of the variable.
+     * @param integer $uid              The user to get the variable for.
+     * @param mixed   $default          The default value to return if the specified variable doesn't exist.
+     * @param bool    $getRegistration  Indicates whether the variable should be retrieved from a "regular"
+     *                                      user record or from a pending registration. False (default) for a
+     *                                      user record and true for a registration. If false and the uid refers
+     *                                      to a pending registration, then the variable is not returned and
+     *                                      null is returned instead; likewise, if true and the user record is
+     *                                      not a registration, then null is returned. (Defaults to false)
      *
      * @return mixed the value of the user variable if successful, null otherwise
      */
-    public static function getVar($name, $uid = -1, $default = false)
+    public static function getVar($name, $uid = -1, $default = false, $getRegistration = false)
     {
         if (empty($name)) {
             return;
@@ -926,7 +1085,11 @@ class UserUtil
         }
 
         // get this user's variables
-        $vars = self::getVars($uid);
+        $vars = self::getVars($uid, false, '', $getRegistration);
+
+        if ($vars === false) {
+            return;
+        }
 
         // Return the variable
         if (isset($vars[$name])) {
@@ -1292,7 +1455,9 @@ class UserUtil
     public static function delVar($name, $uid = -1)
     {
         // Prevent deletion of core fields (duh)
-        if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') || ($name == 'uname')) {
+        if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') 
+            || ($name == 'uname') || ($name == 'activated'))
+        {
             return false;
         }
 
@@ -1301,6 +1466,11 @@ class UserUtil
         }
         if (empty($uid)) {
             return false;
+        }
+
+        // Special delete value for approved_by
+        if ($name == 'approved_by') {
+            return (bool)self::setVar($name, -1, $uid);
         }
 
         // this array maps old DUDs to new attributes
@@ -1529,13 +1699,14 @@ class UserUtil
     /**
      * Get the uid of a user from the username.
      *
-     * @param string $uname The username.
+     * @param string $uname             The username.
+     * @param bool   $forRegistration   Get the id for a pending registration (default = false)
      *
      * @return mixed userid if found, false if not
      */
-    public static function getIdFromName($uname)
+    public static function getIdFromName($uname, $forRegistration = false)
     {
-        $result = self::getVars($uname, false, 'uname');
+        $result = self::getVars($uname, false, 'uname', $forRegistration);
         return ($result && isset($result['uid']) ? $result['uid'] : false);
     }
 
@@ -1543,12 +1714,13 @@ class UserUtil
      * Get the uid of a user from the email (case for unique emails).
      *
      * @param string $email The user email.
+     * @param bool   $forRegistration   Get the id for a pending registration (default = false)
      *
      * @return mixed userid if found, false if not
      */
-    public static function getIdFromEmail($email)
+    public static function getIdFromEmail($email, $forRegistration = false)
     {
-        $result = self::getVars($email);
+        $result = self::getVars($email, false, 'email', $forRegistration);
         return ($result && isset($result['uid']) ? $result['uid'] : false);
     }
 

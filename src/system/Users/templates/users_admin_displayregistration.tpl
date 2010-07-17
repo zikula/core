@@ -12,7 +12,7 @@
 
     <div class="z-buttons z-center" style="margin:0 0 1em; padding:1em 0;">
         {strip}
-        {assign var="regactions" value=$actions.list[$reginfo.id]}
+        {assign var="regactions" value=$actions.list[$reginfo.uid]}
         {gt assign='titleIfSent' text='Resend verification code'}
         {gt assign='titleIfNotSent' text='Send verification code'}
         {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}

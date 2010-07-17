@@ -21,7 +21,7 @@
     <form id="users_modifyregistration" class="z-form" action="{modurl modname='Users' type='admin' func='updateRegistration'}" method="post">
         <div>
             <input type="hidden" id="users_authid" name="authid" value="{insert name='generateauthkey' module='Users'}" />
-            <input type="hidden" id="users_reginfo_id" name="reginfo[id]" value="{$reginfo.id}" />
+            <input type="hidden" id="users_reginfo_uid" name="reginfo[uid]" value="{$reginfo.uid}" />
             <input type="hidden" id="users_reginfo_agreetoterms" name="reginfo[agreetoterms]" value="{$reginfo.agreetoterms}" />
             <input type="hidden" id="users_checkmode" name="checkmode" value="modify" />
             <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview|default:'view'}" />
@@ -30,6 +30,7 @@
                 <div class="z-formrow">
                     <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_reginfo_uname"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
+                    <div class="z-formnote z-sub z-italic">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</div>
                 </div>
                 <div class="z-formrow">
                     <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>

@@ -20,18 +20,12 @@
         <tbody>
             {gt assign='titleIfSent' text='Send a new e-mail verification code.'}
             {gt assign='titleIfNotSent' text='Send an e-mail verification code.'}
-            {foreach from=$reglist item='reginfo' name='reglist'}{strip}
-            {if !isset($reginfo.verifycode) || empty($reginfo.verifycode)}
-                {assign var='verificationSent' value=0}
-            {else}
-                {assign var='verificationSent' value=1}
-            {/if}
-            {/strip}<tr class="{cycle values='z-odd,z-even'}">
+            {foreach from=$reglist item='reginfo' name='reglist'}<tr class="{cycle values='z-odd,z-even'}">
                 <td>{$reginfo.uname|safetext}</td>
-                <td>{$reginfo.email|safetext}</td>
+                <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
                 <td class="z-center">{if $reginfo.isapproved}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Approved' __alt='Approved'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending approval' __alt='Pending approval'}{/if}</td>
-                <td class="z-center">{if $reginfo.isverified}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}{elseif !$verificationSent}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent; awating approval' __alt='E-mail verification not sent; awating approval'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}{/if}</td>
-                {assign var="regactions" value=$actions.list[$reginfo.id]}
+                <td class="z-center">{if $reginfo.isverified}{img modname='core' set='icons/extrasmall' src='greenled.gif' __title='Verified' __alt='Verified'}{elseif !$reginfo.verificationsent}{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='E-mail verification not sent; awating approval' __alt='E-mail verification not sent; awating approval'}{else}{img modname='core' set='icons/extrasmall' src='redled.gif' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'}{/if}</td>
+                {assign var="regactions" value=$actions.list[$reginfo.uid]}
                 {strip}
                 {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}
                 {* ($regactions.optname == true) means that the operation can be performed for that individual registration record. *}
@@ -148,7 +142,7 @@
                             </tr>
                             <tr class="z-odd">
                                 <td>{img modname='core' set='icons/extrasmall' src='mail_delete.gif' __title='Verification e-mail message not yet sent' __alt='Verification e-mail message not yet sent'}</td>
-                                <td>{gt text='An e-mail has not been sent to the registered e-mail address yet. It will be sent on approval.'}</td>
+                                <td>{gt text='A verification e-mail has not been sent to the registered e-mail address. If it is not yet approved, then it will be sent on approval. If it is approved, then the administrator chose not to send the verification e-mail.'}</td>
                             </tr>
                         </tbody>
                     </table>
