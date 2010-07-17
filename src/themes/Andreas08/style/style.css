@@ -62,7 +62,7 @@ pre,
 table,
 address,
 fieldset {
-    margin-bottom: 20px;
+    margin-bottom: 0.5em;
 }
 
 /**************** Header and navigation styles ****************/
