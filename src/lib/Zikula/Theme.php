@@ -486,7 +486,7 @@ class Zikula_Theme extends Zikula_View
 
         // add the module wrapper
         if (!$this->system && (!isset($this->themeconfig['modulewrapper']) || $this->themeconfig['modulewrapper'])) {
-            $maincontent = '<div id="z-maincontent" class="z-module-' . DataUtil::formatForDisplay($this->toplevelmodule) . '">' . $maincontent . '</div>';
+            $maincontent = '<div id="z-maincontent" class="z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
         // Assign the main content area to the template engine
@@ -553,7 +553,7 @@ class Zikula_Theme extends Zikula_View
         $this->caching = $caching;
 
         if (!isset($this->themeconfig['blockwrapper']) || $this->themeconfig['blockwrapper']) {
-            $return = '<div class="z-block z-blockposition-' . DataUtil::formatForDisplay($block['position']) . ' z-bkey-' . DataUtil::formatForDisplay($block['bkey']) . ' z-bid-' . DataUtil::formatForDisplay($block['bid']) . '">' . "\n" . $return . "</div>\n";
+            $return = '<div class="z-block z-blockposition-' . DataUtil::formatForDisplay($block['position']) . ' z-bkey-' . DataUtil::formatForDisplay(strtolower($block['bkey'])) . ' z-bid-' . DataUtil::formatForDisplay($block['bid']) . '">' . "\n" . $return . "</div>\n";
         }
 
         return $return;
