@@ -592,9 +592,10 @@ Zikula.vsprintf = function(format, args) {
 }
 Zikula.mergeObjects = function(destination,source)
 {
+    destination = destination || {};
     for (var prop in source) {
         try {
-            if ( source[prop].constructor==Object ) {
+            if (source[prop].constructor==Object ) {
                 destination[prop] = Zikula.mergeObjects(destination[prop], source[prop]);
             } else {
                 destination[prop] = source[prop];
