@@ -19,25 +19,25 @@
                     {foreach from=$variables.variables key=name item=value}
                     <tr class="{cycle values=z-odd,z-even}">
                         <td>
-                            {if $variables.$name.editable}
-                            <input type="text" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
+                            {if isset($variables.$name.editable)}
+                                <input type="text" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
                             {else}
-                            <input type="hidden" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
-                            {if $variables.$name.language}
-                            {$variables.$name.language}
-                            {else}
-                            {$name|safetext}
-                            {/if}
+                                <input type="hidden" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
+                                {if isset($variables.$name.language)}
+                                    {$variables.$name.language}
+                                {else}
+                                    {$name|safetext}
+                                {/if}
                             {/if}
                         </td>
                         <td>
                             {if $variables.$name.type eq 'yesno'}
-                            <input type="radio" name="variablesvalues[{$name|safetext}]" value="1"{if $value eq 1} checked="checked"{/if} />&nbsp;{gt text="Yes"}&nbsp;
-                            <input type="radio" name="variablesvalues[{$name|safetext}]" value="0"{if $value eq 0} checked="checked"{/if} />&nbsp;{gt text="No"}
+                                <input type="radio" name="variablesvalues[{$name|safetext}]" value="1"{if $value eq 1} checked="checked"{/if} />&nbsp;{gt text="Yes"}&nbsp;
+                                <input type="radio" name="variablesvalues[{$name|safetext}]" value="0"{if $value eq 0} checked="checked"{/if} />&nbsp;{gt text="No"}
                             {elseif $variables.$name.type eq 'select'}
-                            {html_options name=variablesvalues[$name] values=$variables.$name.values output=$variables.$name.output selected=$value}
+                                {html_options name=variablesvalues[$name] values=$variables.$name.values output=$variables.$name.output selected=$value}
                             {else}
-                            <input type="text" name="variablesvalues[{$name|safetext}]" value="{$value|safetext}" />
+                                <input type="text" name="variablesvalues[{$name|safetext}]" value="{$value|safetext}" />
                             {/if}
                         </td>
                     </tr>
