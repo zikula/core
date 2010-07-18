@@ -79,9 +79,6 @@ class Users_Block_Login extends Zikula_Block
                            ->assign('allowregistration', $this->getVar('reg_allowreg'))
                            ->assign('returnurl', System::getCurrentUri());
 
-            // determine whether to show the rememberme option
-            $this->view->assign('rememberme', System::getVar('seclevel'));
-
             $row['content'] = $this->view->fetch('users_block_login.tpl');
 
             return BlockUtil::themeBlock($row);
