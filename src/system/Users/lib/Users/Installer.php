@@ -492,8 +492,11 @@ class Users_Installer extends Zikula_Installer
 
         $this->delVar('reg_forcepwdchg');
         $this->delVar('lowercaseuname');
-        $this->delVar('idnnames');
         $this->delVar('recovery_forcepwdchg');
+
+        // IDN domains setting moving to system settings.
+        System::setVar('idnnames', (bool)$this->getVar('idnnames', true));
+        $this->delVar('idnnames');
 
         return true;
     }

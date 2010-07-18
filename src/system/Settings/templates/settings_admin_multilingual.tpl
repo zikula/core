@@ -78,6 +78,19 @@
                     <input type="hidden" name="mlsettings_timezone_server" value="{$timezone_server|default:0}" />
                 </div>
             </fieldset>
+            <fieldset>
+                <legend>{gt text="Variable validation"}</legend>
+                <div class="z-formrow">
+                    <label>{gt text="Allow IDN domain names"}</label>
+                    <div>
+                        <input id="idnnamesyes" type="radio" name="idnnames" value="1" {if $idnnames == 1}checked="checked" {/if}/>
+                        <label for="idnnamesyes">{gt text="Yes"}</label>
+                        <input id="idnnamesno" type="radio" name="idnnames" value="0" {if $idnnames != 1}checked="checked" {/if}/>
+                        <label for="idnnamesno">{gt text="No"}</label>
+                    </div>
+                    <div class="z-formnote z-sub z-italic">{gt text="Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs."}</div>
+                </div>
+            </fieldset>
             <div class="z-buttons z-formbuttons">
                 {button src="button_ok.gif" set="icons/extrasmall" __alt="Save" __title="Save" __text="Save"}
                 <a href="{modurl modname="Settings" type="admin"}" title="{gt text="Cancel"}">{img modname="core" src="button_cancel.gif" set="icons/extrasmall" __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>

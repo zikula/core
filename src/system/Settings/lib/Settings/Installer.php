@@ -80,6 +80,8 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('language_i18n', ZLanguage::getlanguageCode());
         System::setVar('language_bc', 1);
 
+        System::setVar('idnnames', 1);
+
         if (!DBUtil::createTable('workflows')) {
             return false;
         }
@@ -155,6 +157,15 @@ class Settings_Installer extends Zikula_Installer
                 $sql = "DELETE FROM $modulesTable WHERE $name = 'ObjectData' OR $name = 'Workflow'";
                 DBUtil::executeSQL($sql);
             case '2.9.3':
+                // This may have been set by the Users module upgrade already, so only set it if it does not exist.
+                $systemIdnSetting = System::getVar('idnnames', null);
+                if (isset($systemIdnSetting)) {
+                    if (ModUtil::available('Users')) {
+                        $usersIdnSetting = ModUtil::getVar('Users', 'idnnames', null);
+                    }
+                    System::setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
+                }
+            case '2.9.4':
             // future upgrade routines
         }
 

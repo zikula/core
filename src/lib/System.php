@@ -479,7 +479,7 @@ class System
                     '%0d',
                     '%0a'), '', $var);
 
-            if (self::getVar('idnnames') == 1) {
+            if (self::getVar('idnnames')) {
                 // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
                 require_once 'lib/vendor/idn/idna_convert.class.php';
                 $IDN = new idna_convert();
