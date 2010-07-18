@@ -18,7 +18,7 @@
             </div>
             {/if}
             <div class="z-buttons">
-                {button class="z-buttonsmall users-loginbutton" src='button_ok.gif' set='icons/extrasmall' __alt='Log in' __title='Log in' __text='Log in'}
+                <input class="z-bt-ok" type="submit" value="{gt text="Log in" domain='zikula'}" />
             </div>
             {else}
             <legend>{$authmodule}</legend>

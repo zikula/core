@@ -318,11 +318,16 @@ table.z-datatable ul {
 *******************************************************************************/
 
 .z-form {
-    margin: 0 0 1em 0;
-    padding: 1em 0;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     zoom:1; /* IE fix */
 }
+.z-form.z-gap {
+    margin: 0 0 1em 0;
+    padding: 1em 0;
+}
+
 .z-form fieldset,
 .z-form .z-fieldset {
     border: 1px #ddd solid;
@@ -842,11 +847,6 @@ div.z-viewbuttons img {
     background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
     background: -moz-linear-gradient(top,  #F5F5F5, #dedede);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
-}
-
-.z-buttons .z-buttonsmall {
-    margin: 0 1px 0 0;
-    padding: 3px 8px 4px !important;
 }
 
 .z-buttons button {

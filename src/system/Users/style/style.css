@@ -79,15 +79,7 @@ div.z-accountlink {
     background:url("../../../images/icons/extrasmall/db_update.gif") no-repeat scroll 0 50% transparent;
     padding:2px 0 2px 20px;
 }
-.users-loginbutton {
-    width: 100% !important;
-}
 
-
-#users_block_loginform {
-    padding:0;
-    margin:0;
-}
 
 .user-icon-adduser {
     background:url("../../../images/icons/extrasmall/add_user.gif") no-repeat scroll 0 50% transparent;
