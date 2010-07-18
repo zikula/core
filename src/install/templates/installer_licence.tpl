@@ -8,7 +8,7 @@
         <input type="hidden" name="action" value="requirements" />
         <input type="hidden" name="locale" value="{$locale}" />
         <div class="z-buttons z-formbuttons">
-            <input type="submit" value="{gt text="Accept licence"}" class="z-btblue" />
+            <input type="submit" value="{gt text="Accept licence"}" class="z-bt-ok" />
         </div>
     </div>
 </form>

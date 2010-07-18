@@ -19,7 +19,7 @@
         </fieldset>
         {/if}
         <div class="z-buttons z-formbuttons">
-            <input type="submit" value="{gt text="Next"}" class="z-btblue" />
+            <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
         </div>
     </div>
 </form>

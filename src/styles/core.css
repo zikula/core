@@ -849,10 +849,6 @@ div.z-viewbuttons img {
     padding: 3px 8px 4px !important;
 }
 
-.z-buttons input[type=image] {
-    float: left;
-}
-
 .z-buttons button {
     width: auto;
     overflow: visible;
@@ -952,6 +948,46 @@ div.z-viewbuttons img {
     background: -moz-linear-gradient(top,  #C2EFC3, #D1EFD1);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C2EFC3', endColorstr='#D1EFD1');
     border: 1px solid #A0DF61;
+}
+
+/* input classes z-bt-ok and z-bt-classes */
+
+.z-buttons input.z-bt-ok {
+    background: url("../images/icons/extrasmall/input_ok.gif") 0 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE);
+    background: url("../images/icons/extrasmall/input_ok.gif") 0 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
+    padding-left: 24px;
+}
+
+.z-buttons input.z-bt-cancel {
+    background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE);
+    background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
+    padding-left: 24px;
+}
+
+.z-buttons input.z-bt-ok:hover {
+    background: url("../images/icons/extrasmall/input_ok.gif") 0 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5);
+    background: url("../images/icons/extrasmall/input_ok.gif") 0 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5));
+}
+
+.z-buttons input.z-bt-cancel:hover {
+    background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -moz-linear-gradient(top,  #dedede, #F5F5F5);
+    background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5));
+}
+
+.z-buttons input.z-bt-ok:active {
+    background: url("../images/icons/extrasmall/input_ok.gif") 0 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0);
+    background: url("../images/icons/extrasmall/input_ok.gif") 0 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0));
+}
+
+.z-buttons input.z-bt-cancel:active {
+    background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -moz-linear-gradient(top,  #d0d0d0, #f0f0f0);
+    background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0));
+}
+
+/* old input image buttons */
+
+.z-buttons input[type=image] {
+    float: left;
 }
 
 /* zikula.ui styles */

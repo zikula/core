@@ -117,10 +117,10 @@
         <div class="z-buttons z-formbuttons">
             {if $checkfailed neq true}
             <input type="hidden" name="action" value="dbinformation" />
-            <input type="submit" value="{gt text="Next"}" class="z-btblue" />
+            <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
             {else}
             <input type="hidden" name="action" value="requirements" />
-            <input type="submit" value="{gt text="Check again"}" class="z-btblue" />
+            <input type="submit" value="{gt text="Check again"}" class="z-bt-ok" />
             {/if}
         </div>
     </div>
