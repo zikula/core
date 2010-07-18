@@ -1,8 +1,6 @@
 /* Based on an open source xhtml/css website layout by Andreas Viklund (http://andreasviklund.com) called Andreas08 */
 /* Free to use in any way and for any purpose as long as the proper credits are given to the original designer.     */
-
 /**************** Body and tag styles ****************/
-
 body {
     font: 76% Verdana, Tahoma, Arial, sans-serif;
     line-height: 1.4em;
@@ -33,40 +31,48 @@ hr {
 }
 
 /**************** Headings ****************/
+h1 {
+    font-size: 20px;
+}
 
-h1 {font-size: 20px;}
-h2 {font-size: 18px;}
-h3 {font-size: 16px;}
-h4 {font-size: 14px;}
-h5 {font-size: 13px;}
-h6 {font-size: 12px;}
+h2 {
+    font-size: 18px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+h4 {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 13px;
+}
+
+h6 {
+    font-size: 12px;
+}
 
 /**************** Spacing ****************/
+ol {
+    list-style: decimal;
+}
 
-ol {list-style: decimal;}
-ul {list-style: square;}
-li {margin-left: 30px;}
+ul {
+    list-style: square;
+}
 
-p,
-dl,
-hr,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-ol,
-ul,
-pre,
-table,
-address,
-fieldset {
+li {
+    margin-left: 30px;
+}
+
+p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     margin-bottom: 0.5em;
 }
 
 /**************** Header and navigation styles ****************/
-
 #theme_page_container {
     margin: 20px auto;
     padding: 1px 0;
@@ -74,7 +80,7 @@ fieldset {
     background: #ffffff;
     color: #303030;
     border: 2px solid #a0a0a0;
-    -moz-box-shadow:1px 1px 1px #A0A0A0;
+    -moz-box-shadow: 1px 1px 1px #A0A0A0;
 }
 
 #theme_header {
@@ -118,8 +124,8 @@ fieldset {
     list-style-type: none;
     border-right: 1px solid #ffffff;
     white-space: nowrap;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 #theme_navigation_bar li a {
@@ -132,21 +138,20 @@ fieldset {
     background-color: inherit;
     color: #ffffff;
 }
-
-* html #theme_navigation_bar a { width: 1%; }  /* this hack targets IE<7 */
-
-#theme_navigation_bar .selected,
-#theme_navigation_bar a:hover {
+* html #theme_navigation_bar a {
+    width: 1%;
+}
+ /* this hack targets IE<7 */
+#theme_navigation_bar .selected, #theme_navigation_bar a:hover {
     background: #80b0da;
     color: #ffffff;
     text-decoration: none;
 }
 
 /**************** Content styles ****************/
-
 #theme_content {
-    margin-bottom:10px;
-    margin-top:10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 #theme_content h1 {
@@ -214,85 +219,94 @@ fieldset {
 }
 
 /**************** Misc classes and styles ****************/
-
 .z-block {
     margin-bottom: 1em;
-    font-size:0.9em;
+    font-size: 0.9em;
+}
+
+#theme_content .z-block h3,
+#theme_content .z-block h4 {
+    padding-top: 0
 }
 
 .z-blockposition-center {
-    background-color:#FAFBFC;
-    border:1px solid #C0C0C0;
-    color:#505050;
-    line-height:1.5em;
-    padding:1em;
+    background-color: #FAFBFC;
+    border: 1px solid #C0C0C0;
+    color: #505050;
+    line-height: 1.5em;
+    padding: 1em;
 }
 
-.z-blockposition-left {
-    padding:0.5em;
-}
-
+.z-blockposition-left,
 .z-blockposition-right {
-    background:#EBF3FA;
-    border:1px solid #B1C9D9;
-    padding:0.5em;
+    padding: 0.5em 0;
+}
+.z-blockposition-right.z-bkey-html,
+.z-blockposition-right.z-bkey-text {
+    background: #EBF3FA;
+    border: 1px solid #B1C9D9;
+    padding: 0.5em;
 }
 
-.z-blockposition-right.z-bkey-login {
-    border: none;
-    background:none;
-}
 
 /**************** Menu and Extmenu blocks ****************/
-
 ul.navlist {
-    border-top:1px solid #BBBBBB;
-    list-style:none outside none;
+    border-top: 1px solid #BBBBBB;
+    list-style: none outside none;
 }
+
 ul.navlist li {
-    margin:0;
+    margin: 0;
 }
+
 ul.navlist li a {
-    border-bottom:1px solid #B1C9D9;
-    display:block;
-    padding:4px 10px;
+    border-bottom: 1px solid #B1C9D9;
+    display: block;
+    padding: 4px 10px;
 }
-ul.navlist li a:hover  {
+
+ul.navlist li a:hover {
     background: #EBF3FA;
     color: #454545;
 }
+
 ul.navlist ul {
-    list-style:none;
-    margin:0;
+    list-style: none;
+    margin: 0;
 }
+
 ul.navlist ul li a {
-    padding-left:30px;
+    padding-left: 30px;
 }
 
 /**************** Menutree blocks ****************/
-
 ul.menutree {
-    border-top:1px solid #BBBBBB;
-    list-style:none outside none;
+    border-top: 1px solid #BBBBBB;
+    list-style: none outside none;
 }
+
 ul.menutree li {
-    margin:0;
+    margin: 0;
 }
+
 ul.menutree li a {
-    background:#F5F5F5;
-    border-bottom:1px solid #B1C9D9;
-    display:block;
-    padding:4px 10px;
+    background: #F5F5F5;
+    border-bottom: 1px solid #B1C9D9;
+    display: block;
+    padding: 4px 10px;
 }
+
 ul.menutree li a:hover {
     background: #EBF3FA;
     color: #454545;
 }
+
 ul.menutree ul {
-    list-style:none;
-    margin:0;
+    list-style: none;
+    margin: 0;
 }
+
 ul.menutree ul li a {
-    background:#FAFAFA;
-    padding-left:20px;
+    background: #FAFAFA;
+    padding-left: 20px;
 }
