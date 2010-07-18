@@ -24,8 +24,8 @@ function Groups_tables()
 
     $group_membership = DBUtil::getLimitedTablename('group_membership') ;
     $dbtable['group_membership'] = $group_membership;
-    $dbtable['group_membership_column'] = array ('gid' => 'pn_gid',
-                                                 'uid' => 'pn_uid');
+    $dbtable['group_membership_column'] = array ('gid' => 'z_gid',
+                                                 'uid' => 'z_uid');
 
     // column definitions
     $dbtable['group_membership_column_def'] = array ('gid' => 'I NOTNULL DEFAULT 0',
@@ -36,16 +36,16 @@ function Groups_tables()
 
     $groups = DBUtil::getLimitedTablename('groups') ;
     $dbtable['groups'] = $groups;
-    $dbtable['groups_column'] = array ('gid'          => 'pn_gid',
-                                       'name'         => 'pn_name',
-                                       'gtype'        => 'pn_gtype',
-                                       'description'  => 'pn_description',
-                                       'prefix'       => 'pn_prefix',
-                                       'state'        => 'pn_state',
-                                       'nbuser'       => 'pn_nbuser',
-                                       'nbumax'       => 'pn_nbumax',
-                                       'link'         => 'pn_link',
-                                       'uidmaster'    => 'pn_uidmaster');
+    $dbtable['groups_column'] = array ('gid'          => 'z_gid',
+                                       'name'         => 'z_name',
+                                       'gtype'        => 'z_gtype',
+                                       'description'  => 'z_description',
+                                       'prefix'       => 'z_prefix',
+                                       'state'        => 'z_state',
+                                       'nbuser'       => 'z_nbuser',
+                                       'nbumax'       => 'z_nbumax',
+                                       'link'         => 'z_link',
+                                       'uidmaster'    => 'z_uidmaster');
 
     // column definitions
     $dbtable['groups_column_def'] = array('gid'         => "I AUTO PRIMARY",
@@ -62,11 +62,11 @@ function Groups_tables()
     // limit table name, see DBUtil::limitTablename() for more information about this
     $group_applications = DBUtil::getLimitedTablename('group_applications') ;
     $dbtable['group_applications'] = $group_applications;
-    $dbtable['group_applications_column'] = array ('app_id'      => 'pn_app_id',
-                                                   'uid'         => 'pn_uid',
-                                                   'gid'         => 'pn_gid',
-                                                   'application' => 'pn_application',
-                                                   'status'      => 'pn_status');
+    $dbtable['group_applications_column'] = array ('app_id'      => 'z_app_id',
+                                                   'uid'         => 'z_uid',
+                                                   'gid'         => 'z_gid',
+                                                   'application' => 'z_application',
+                                                   'status'      => 'z_status');
 
     // column definition
     $dbtable['group_applications_column_def'] = array ('app_id'      => 'I4 NOTNULL AUTO PRIMARY',

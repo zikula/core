@@ -125,19 +125,19 @@ function Users_tables_for_210()
     //
     $dbinfo['users'] = DBUtil::getLimitedTablename('users');
     $dbinfo['users_column'] = array(
-        'uid'           => 'pn_uid',
-        'uname'         => 'pn_uname',
-        'email'         => 'pn_email',
-        'pass'          => 'pn_pass',
+        'uid'           => 'z_uid',
+        'uname'         => 'z_uname',
+        'email'         => 'z_email',
+        'pass'          => 'z_pass',
         'passreminder'  => 'z_passreminder',
-        'activated'     => 'pn_activated',
+        'activated'     => 'z_activated',
         'approved_date' => 'z_approved_date',
         'approved_by'   => 'z_approved_by',
-        'user_regdate'  => 'pn_user_regdate',
-        'lastlogin'     => 'pn_lastlogin',
-        'theme'         => 'pn_theme',
-        'ublockon'      => 'pn_ublockon',
-        'ublock'        => 'pn_ublock',
+        'user_regdate'  => 'z_user_regdate',
+        'lastlogin'     => 'z_lastlogin',
+        'theme'         => 'z_theme',
+        'ublockon'      => 'z_ublockon',
+        'ublock'        => 'z_ublock',
     );
     $dbinfo['users_column_def'] = array(
         'uid'           => "I PRIMARY AUTO",
@@ -258,12 +258,12 @@ function Users_tables_for_210()
     //
     $dbinfo['session_info'] = DBUtil::getLimitedTablename('session_info');
     $dbinfo['session_info_column'] = array (
-        'sessid'    => 'pn_sessid',
-        'ipaddr'    => 'pn_ipaddr',
-        'lastused'  => 'pn_lastused',
-        'uid'       => 'pn_uid',
-        'remember'  => 'pn_remember',
-        'vars'      => 'pn_vars'
+        'sessid'    => 'z_sessid',
+        'ipaddr'    => 'z_ipaddr',
+        'lastused'  => 'z_lastused',
+        'uid'       => 'z_uid',
+        'remember'  => 'z_remember',
+        'vars'      => 'z_vars'
     );
 
     $dbinfo['session_info_column_def'] = array(
@@ -335,23 +335,23 @@ function Users_tables_for_117()
     //                      to successfully log in!
     $dbinfo['users'] = DBUtil::getLimitedTablename('users');
     $dbinfo['users_column'] = array(
-        'uid'             => 'pn_uid',
-        'uname'           => 'pn_uname',
-        'email'           => 'pn_email',
-        'user_regdate'    => 'pn_user_regdate',
-        'user_viewemail'  => 'pn_user_viewemail',
-        'user_theme'      => 'pn_user_theme',
-        'pass'            => 'pn_pass',
-        'storynum'        => 'pn_storynum',
-        'ublockon'        => 'pn_ublockon',
-        'ublock'          => 'pn_ublock',
-        'theme'           => 'pn_theme',
-        'counter'         => 'pn_counter',
-        'activated'       => 'pn_activated',
-        'lastlogin'       => 'pn_lastlogin',
-        'validfrom'       => 'pn_validfrom',
-        'validuntil'      => 'pn_validuntil',
-        'hash_method'     => 'pn_hash_method',
+        'uid'             => 'z_uid',
+        'uname'           => 'z_uname',
+        'email'           => 'z_email',
+        'user_regdate'    => 'z_user_regdate',
+        'user_viewemail'  => 'z_user_viewemail',
+        'user_theme'      => 'z_user_theme',
+        'pass'            => 'z_pass',
+        'storynum'        => 'z_storynum',
+        'ublockon'        => 'z_ublockon',
+        'ublock'          => 'z_ublock',
+        'theme'           => 'z_theme',
+        'counter'         => 'z_counter',
+        'activated'       => 'z_activated',
+        'lastlogin'       => 'z_lastlogin',
+        'validfrom'       => 'z_validfrom',
+        'validuntil'      => 'z_validuntil',
+        'hash_method'     => 'z_hash_method',
     );
     $dbinfo['users_column_def'] = array(
         'uid'             => "I4 PRIMARY AUTO",
@@ -424,16 +424,16 @@ function Users_tables_for_117()
     // Version 1.11 through 1.17 (inclusive)
     $dbinfo['users_temp'] = DBUtil::getLimitedTablename('users_temp');
     $dbinfo['users_temp_column'] = array(
-        'tid'          => 'pn_tid',
-        'uname'        => 'pn_uname',
-        'email'        => 'pn_email',
-        'femail'       => 'pn_femail',
-        'pass'         => 'pn_pass',
-        'dynamics'     => 'pn_dynamics',
-        'comment'      => 'pn_comment',
-        'type'         => 'pn_type',
-        'tag'          => 'pn_tag',
-        'hash_method'  => 'pn_hash_method'
+        'tid'          => 'z_tid',
+        'uname'        => 'z_uname',
+        'email'        => 'z_email',
+        'femail'       => 'z_femail',
+        'pass'         => 'z_pass',
+        'dynamics'     => 'z_dynamics',
+        'comment'      => 'z_comment',
+        'type'         => 'z_type',
+        'tag'          => 'z_tag',
+        'hash_method'  => 'z_hash_method'
     );
     $dbinfo['users_temp_column_def'] = array(
         'tid'          => "I4 PRIMARY AUTO",
@@ -469,12 +469,12 @@ function Users_tables_for_117()
     //
     $dbinfo['session_info'] = DBUtil::getLimitedTablename('session_info');
     $dbinfo['session_info_column'] = array (
-        'sessid'    => 'pn_sessid',
-        'ipaddr'    => 'pn_ipaddr',
-        'lastused'  => 'pn_lastused',
-        'uid'       => 'pn_uid',
-        'remember'  => 'pn_remember',
-        'vars'      => 'pn_vars'
+        'sessid'    => 'z_sessid',
+        'ipaddr'    => 'z_ipaddr',
+        'lastused'  => 'z_lastused',
+        'uid'       => 'z_uid',
+        'remember'  => 'z_remember',
+        'vars'      => 'z_vars'
     );
 
     $dbinfo['session_info_column_def'] = array(

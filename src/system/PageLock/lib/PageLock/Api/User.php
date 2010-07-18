@@ -32,9 +32,9 @@ class PageLock_Api_User extends Zikula_Api
             PageUtil::AddVar('javascript', 'javascript/ajax/scriptaculous.js');
             PageUtil::AddVar('javascript', 'javascript/helpers/Zikula.js');
             PageUtil::AddVar('javascript', 'system/PageLock/javascript/pagelock.js');
-            PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('PageLock'));
+            PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('pagelock'));
 
-            $lockInfo = ModUtil::apiFunc('PageLock', 'user', 'requireLock',
+            $lockInfo = ModUtil::apiFunc('pagelock', 'user', 'requireLock',
                     array('lockName'      => $lockName,
                     'lockedByTitle' => $uname,
                     'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']));
@@ -42,7 +42,7 @@ class PageLock_Api_User extends Zikula_Api
             $hasLock = $lockInfo['hasLock'];
 
             if (!$hasLock) {
-                $view = Zikula_View::getInstance('PageLock');
+                $view = Zikula_View::getInstance('pagelock');
                 $view->assign('lockedBy', $lockInfo['lockedBy']);
                 $lockedHtml = $view->fetch('PageLock_lockedwindow.tpl');
             }
@@ -90,7 +90,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $this->_pageLockRequireAccess();
 
-        $locks = ModUtil::apiFunc('PageLock', 'user', 'getLocks',
+        $locks = ModUtil::apiFunc('pagelock', 'user', 'getLocks',
                 $args);
         if (count($locks) > 0) {
             $lockedBy = '';
@@ -107,8 +107,8 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         $args['lockedBy'] = null;
 
         $dbtable = DBUtil::getTables();
-        $pageLockTable = &$dbtable['PageLock'];
-        $pageLockColumn = &$dbtable['PageLock_column'];
+        $pageLockTable = &$dbtable['pagelock'];
+        $pageLockColumn = &$dbtable['pagelock_column'];
 
         // Look for existing lock
 
@@ -137,7 +137,7 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
                     'lockedBySessionId' => $sessionId,
                     'lockedByTitle' => $lockedByTitle,
                     'lockedByIPNo' => $lockedByIPNo);
-            DBUtil::insertObject($data, 'PageLock');
+            DBUtil::insertObject($data, 'pagelock');
         }
 
         $this->_pageLockReleaseAccess();
@@ -154,14 +154,14 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
         $this->_pageLockRequireAccess();
 
         $dbtable = DBUtil::getTables();
-        $pageLockColumn = &$dbtable['PageLock_column'];
+        $pageLockColumn = &$dbtable['pagelock_column'];
         $now = time();
 
         $where = "{$pageLockColumn['expiresDate']} < '" . DateUtil::getDatetime($now) . "'";
-        DBUtil::deleteWhere('PageLock', $where);
+        DBUtil::deleteWhere('pagelock', $where);
 
         $where = "{$pageLockColumn['name']} = '" . DataUtil::formatForStore($lockName) . "' AND {$pageLockColumn['lockedBySessionId']} != '" . DataUtil::formatForStore($sessionId) . "'";
-        $locks = DBUtil::selectObjectArray('PageLock', $where);
+        $locks = DBUtil::selectObjectArray('pagelock', $where);
 
         $this->_pageLockReleaseAccess();
 
@@ -176,8 +176,8 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
         $this->_pageLockRequireAccess();
 
         $dbtable = DBUtil::getTables();
-        $pageLockTable = &$dbtable['PageLock'];
-        $pageLockColumn = &$dbtable['PageLock_column'];
+        $pageLockTable = &$dbtable['pagelock'];
+        $pageLockColumn = &$dbtable['pagelock_column'];
 
         $sql = "DELETE FROM $pageLockTable WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
         DBUtil::executeSql($sql);
@@ -188,7 +188,7 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
     }
 
 
-// Internal locking mechanism to avoid concurrency inside the PageLock functions
+    // Internal locking mechanism to avoid concurrency inside the PageLock functions
     private function _pageLockRequireAccess()
     {
         global $PageLockAccessCount;
@@ -209,7 +209,7 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
     }
 
 
-// Internal locking mechanism to avoid concurrency inside the PageLock functions
+    // Internal locking mechanism to avoid concurrency inside the PageLock functions
     private function _pageLockReleaseAccess()
     {
         global $PageLockAccessCount;

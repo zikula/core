@@ -34,16 +34,16 @@ function Modules_tables()
     $hooks = $prefix . '_hooks';
     $dbtable['hooks'] = $hooks;
     $dbtable['hooks_column'] = array (
-            'id'        => 'pn_id',
-            'object'    => 'pn_object',
-            'action'    => 'pn_action',
-            'smodule'   => 'pn_smodule',
-            'stype'     => 'pn_stype',
-            'tarea'     => 'pn_tarea',
-            'tmodule'   => 'pn_tmodule',
-            'ttype'     => 'pn_ttype',
-            'tfunc'     => 'pn_tfunc',
-            'sequence'  => 'pn_sequence');
+            'id'        => 'z_id',
+            'object'    => 'z_object',
+            'action'    => 'z_action',
+            'smodule'   => 'z_smodule',
+            'stype'     => 'z_stype',
+            'tarea'     => 'z_tarea',
+            'tmodule'   => 'z_tmodule',
+            'ttype'     => 'z_ttype',
+            'tfunc'     => 'z_tfunc',
+            'sequence'  => 'z_sequence');
 
     // column definition
     $dbtable['hooks_column_def'] = array(
@@ -65,19 +65,19 @@ function Modules_tables()
     $modules = $prefix . '_modules';
     $dbtable['modules'] = $modules;
     $dbtable['modules_column'] = array (
-            'id'             => 'pn_id',
-            'name'           => 'pn_name',
-            'type'           => 'pn_type',
-            'displayname'    => 'pn_displayname',
-            'url'            => 'pn_url',
-            'description'    => 'pn_description',
-            'directory'      => 'pn_directory',
-            'version'        => 'pn_version',
-            'capabilities'   => 'capabilities',
-            'state'          => 'pn_state',
-            'securityschema' => 'pn_securityschema',
-            'core_min'       => 'core_min',
-            'core_max'       => 'core_max',
+            'id'             => 'z_id',
+            'name'           => 'z_name',
+            'type'           => 'z_type',
+            'displayname'    => 'z_displayname',
+            'url'            => 'z_url',
+            'description'    => 'z_description',
+            'directory'      => 'z_directory',
+            'version'        => 'z_version',
+            'capabilities'   => 'z_capabilities',
+            'state'          => 'z_state',
+            'securityschema' => 'z_securityschema',
+            'core_min'       => 'z_core_min',
+            'core_max'       => 'z_core_max',
         );
 
     // column definition
@@ -104,10 +104,10 @@ function Modules_tables()
     $module_vars = $prefix . '_module_vars';
     $dbtable['module_vars'] = $module_vars;
     $dbtable['module_vars_column'] = array (
-            'id'      => 'pn_id',
-            'modname' => 'pn_modname',
-            'name'    => 'pn_name',
-            'value'   => 'pn_value');
+            'id'      => 'z_id',
+            'modname' => 'z_modname',
+            'name'    => 'z_name',
+            'value'   => 'z_value');
 
     // column definition
     $dbtable['module_vars_column_def'] = array(
@@ -124,12 +124,12 @@ function Modules_tables()
     $module_deps = $prefix . '_module_deps';
     $dbtable['module_deps'] = $module_deps;
     $dbtable['module_deps_column'] = array (
-            'id'          => 'pn_id',
-            'modid'       => 'pn_modid',
-            'modname'     => 'pn_modname',
-            'minversion'  => 'pn_minversion',
-            'maxversion'  => 'pn_maxversion',
-            'status'      => 'pn_status');
+            'id'          => 'z_id',
+            'modid'       => 'z_modid',
+            'modname'     => 'z_modname',
+            'minversion'  => 'z_minversion',
+            'maxversion'  => 'z_maxversion',
+            'status'      => 'z_status');
 
     // column definition
     $dbtable['module_deps_column_def'] = array(

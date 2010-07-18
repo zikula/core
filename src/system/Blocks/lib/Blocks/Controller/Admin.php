@@ -244,8 +244,8 @@ class Blocks_Controller_Admin extends Zikula_Controller
         }
 
         // get the block placements
-        $where = "WHERE pn_bid = '" . DataUtil::formatForStore($bid) . "'";
-        $placements = DBUtil::selectObjectArray('block_placements', $where, 'pn_order', -1, -1, '', null);
+        $where = "WHERE z_bid = '" . DataUtil::formatForStore($bid) . "'";
+        $placements = DBUtil::selectObjectArray('block_placements', $where, 'z_order', -1, -1, '', null);
         $blockinfo['placements']  = array();
         foreach ($placements as $placement) {
             $blockinfo['placements'][] = $placement['pid'];

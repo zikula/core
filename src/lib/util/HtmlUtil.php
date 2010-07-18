@@ -355,7 +355,7 @@ class HtmlUtil
                     }
                 }
                 if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
-                    if (strpos($k, 'pn_') === 0) {
+                    if (strpos($k, 'z_') === 0) {
                         $k = substr($k, 4);
                     }
 
@@ -578,7 +578,7 @@ class HtmlUtil
     public static function getSelector_PNGroup($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
         $data = array();
-        $grouplist = UserUtil::getPNGroups('', 'ORDER BY pn_name');
+        $grouplist = UserUtil::getPNGroups('', 'ORDER BY z_name');
         foreach ($grouplist as $k => $v) {
             $id = $v['gid'];
             $disp = $v['name'];
@@ -611,19 +611,19 @@ class HtmlUtil
     {
         $where = '';
         if ($excludeList) {
-            $where = "WHERE pn_uid NOT IN ($excludeList)";
+            $where = "WHERE z_uid NOT IN ($excludeList)";
         }
 
         if ($gid) {
             $users = UserUtil::getUsersForGroup($gid);
             if ($users) {
                 $and = $where ? ' AND ' : '';
-                $where .= $and . 'pn_uid IN (' . implode(',', $users) . ')';
+                $where .= $and . 'z_uid IN (' . implode(',', $users) . ')';
             }
         }
 
         $data = array();
-        $userlist = UserUtil::getPNUsers($where, 'ORDER BY pn_uname');
+        $userlist = UserUtil::getPNUsers($where, 'ORDER BY z_uname');
         foreach ($userlist as $k => $v) {
             $data[$k] = $v['uname'];
         }

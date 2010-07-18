@@ -24,10 +24,10 @@ function Search_tables()
 
     $dbtable = array();
     $dbtable['search_stat'] = $search_stat;
-    $dbtable['search_stat_column'] = array ('id'     => 'pn_id',
-                                            'search' => 'pn_search',
-                                            'count'  => 'pn_count',
-                                            'date'   => 'pn_date');
+    $dbtable['search_stat_column'] = array ('id'     => 'z_id',
+                                            'search' => 'z_search',
+                                            'count'  => 'z_count',
+                                            'date'   => 'z_date');
 
     // column definitions
     $dbtable['search_stat_column_def'] = array ('id'     => 'I4 PRIMARY AUTO',
@@ -37,14 +37,14 @@ function Search_tables()
 
     $search_result = DBUtil::getLimitedTablename('search_result');
     $dbtable['search_result'] = $search_result;
-    $dbtable['search_result_column'] = array ('id'      => 'sres_id',
-                                              'title'   => 'sres_title',
-                                              'text'    => 'sres_text',
-                                              'module'  => 'sres_module',
-                                              'extra'   => 'sres_extra',
-                                              'created' => 'sres_created',
-                                              'found'   => 'sres_found',
-                                              'session' => 'sres_sesid');
+    $dbtable['search_result_column'] = array ('id'      => 'z_id',
+                                              'title'   => 'z_title',
+                                              'text'    => 'z_text',
+                                              'module'  => 'z_module',
+                                              'extra'   => 'z_extra',
+                                              'created' => 'z_created',
+                                              'found'   => 'z_found',
+                                              'session' => 'z_sesid');
 
     // column definitions
     $dbtable['search_result_column_def'] = array ('id'      => 'I4 PRIMARY AUTO',

@@ -461,7 +461,7 @@ class System
         'url' => '/^([!#\$\046-\073=\077-\132_\141-\172~]|(?:%[a-f0-9]{2}))+$/i');
 
         // special cases
-        if ($type == 'mod' && $var == '/PNConfig') {
+        if ($type == 'mod' && $var == ModUtil::CONFIG_MODULE) {
             return true;
         }
 

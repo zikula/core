@@ -42,7 +42,7 @@ define('PNPERMS_UNREGISTERED', '0');
 /**
  * Fake module for config vars
  */
-define('PN_CONFIG_MODULE', '/PNConfig');
+define('PN_CONFIG_MODULE', '/Config');
 
 /**
  *  Theme filters

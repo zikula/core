@@ -222,7 +222,7 @@ class UserUtil
 
         $where = '';
         if ($uid != -1) {
-            $where = "WHERE pn_uid = '" . DataUtil::formatForStore($uid) . "'";
+            $where = "WHERE z_uid = '" . DataUtil::formatForStore($uid) . "'";
         }
 
         $groups = DBUtil::selectFieldArray('group_membership', 'gid', $where);
@@ -275,7 +275,7 @@ class UserUtil
             return array();
         }
 
-        $where = "WHERE pn_gid = '" . DataUtil::formatForStore($gid) . "'";
+        $where = "WHERE z_gid = '" . DataUtil::formatForStore($gid) . "'";
         $users = DBUtil::selectFieldArray('group_membership', 'uid', $where);
         return $users;
     }
@@ -338,7 +338,7 @@ class UserUtil
             $dropdown[] = array('id' => $defaultValue, 'name' => $defaultText);
         }
 
-        $groupdata = self::getPNGroups('', 'ORDER BY pn_name');
+        $groupdata = self::getPNGroups('', 'ORDER BY z_name');
 
         if (sizeof($groupdata) == 0) {
             return $dropdown;
@@ -382,10 +382,10 @@ class UserUtil
 
         $where = '';
         if ($exclude) {
-            $where = "WHERE pn_uid NOT IN (" . DataUtil::formatForStore($exclude) . ")";
+            $where = "WHERE z_uid NOT IN (" . DataUtil::formatForStore($exclude) . ")";
         }
 
-        $userdata = self::getPNUsers($where, 'ORDER BY pn_uname');
+        $userdata = self::getPNUsers($where, 'ORDER BY z_uname');
 
         if (sizeof($userdata) == 0) {
             return $dropdown;
@@ -969,7 +969,7 @@ class UserUtil
      * @param string  $idfield          Field to use as id (possible values: uid, uname or email).
      * @param bool    $getRegistration  Indicates whether a "regular" user record or a pending registration
      *                                      is to be returned. False (default) for a user record and true
-     *                                      for a registration. If false and the user record is a pending 
+     *                                      for a registration. If false and the user record is a pending
      *                                      registration, then the record is not returned and false is returned
      *                                      instead; likewise, if true and the user record is not a registration,
      *                                      then false is returned. (Defaults to false)
@@ -1484,7 +1484,7 @@ class UserUtil
     public static function delVar($name, $uid = -1)
     {
         // Prevent deletion of core fields (duh)
-        if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') 
+        if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass')
             || ($name == 'uname') || ($name == 'activated'))
         {
             return false;

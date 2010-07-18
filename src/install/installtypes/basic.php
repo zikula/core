@@ -8,15 +8,13 @@ function installer_basic_modules()
 {
     // note in addition to these modules Modules, Blocks, Users, Permissions & Groups are all
     // installed - zikula will not start without these
-    return array(array('module'   => 'Admin_Messages',
-                       'category' => __('Content')),
-                 array('module'   => 'SecurityCenter',
+    return array(array('module'   => 'SecurityCenter',
                        'category' => __('Security')),
                  array('module'   => 'Tour',
                        'category' => __('Content')),
                  array('module'   => 'Categories',
                        'category' => __('Content')),
-                 array('module'   => 'legal',
+                 array('module'   => 'Legal',
                        'category' => __('Content')),
                  array('module'   => 'Mailer',
                        'category' => __('System')),
@@ -26,10 +24,6 @@ function installer_basic_modules()
                        'category' => __('Layout')),
                  array('module'   => 'Search',
                        'category' => __('Content')),
-                 array('module'   => 'Workflow',
-                       'category' => __('System')),
-                 array('module'   => 'PageLock',
-                       'category' => __('System')),
                  array('module'   => 'SysInfo',
                        'category' => __('Security')));
 }

@@ -54,7 +54,7 @@ class BlockUtil
 
         // get the blocks in this block position
         if (empty($blockplacements)) {
-            $blockplacements = DBUtil::selectObjectArray('block_placements', null, 'pn_order');
+            $blockplacements = DBUtil::selectObjectArray('block_placements', null, 'z_order');
         }
 
         // get variables from input

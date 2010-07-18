@@ -26,7 +26,7 @@ class ModUtil
     const STATE_NOTALLOWED = 6;
     const STATE_INVALID = -1;
 
-    const CONFIG_MODULE = '/PNConfig';
+    const CONFIG_MODULE = '/Config';
 
     // Types
     const TYPE_MODULE = 2;
@@ -374,7 +374,7 @@ class ModUtil
      */
     public static function getInfo($modid = 0)
     {
-        // a $modid of 0 is associated with the core ( pn_blocks.mid, ... ).
+        // a $modid of 0 is associated with the core ( z_blocks.mid, ... ).
         if (!is_numeric($modid)) {
             return false;
         }
@@ -599,7 +599,7 @@ class ModUtil
                 $table_col = substr($key, 0, -4);
                 if (substr($key, -11) == "_column_def" && !isset($data[$table_col])) {
                     foreach ($value as $fieldname => $def) {
-                        $data[$table_col][$fieldname] = $fieldname;
+                        $data[$table_col][$fieldname] = 'z_' . $fieldname;
                     }
                 }
             }

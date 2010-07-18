@@ -1150,10 +1150,6 @@ class Modules_Api_Admin extends Zikula_Api
             }
 
             System::setVar('Version_Num', System::VERSION_NUM);
-
-            // regenerate the themes list
-//            $filemodules = $this->getfilemodules();
-//            $this->regenerate(array('filemodules' => $filemodules));
         }
         return $upgradeResults;
     }
@@ -1505,7 +1501,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
-        $where = "pn_modid = '" . DataUtil::formatForStore($args['modid']) . "'";
+        $where = "z_modid = '" . DataUtil::formatForStore($args['modid']) . "'";
         return DBUtil::selectObjectArray('module_deps', $where, 'modname');
     }
 
@@ -1522,7 +1518,7 @@ class Modules_Api_Admin extends Zikula_Api
             return LogUtil::registerArgsError();
         }
         $modinfo = ModUtil::getInfo($args['modid']);
-        $where = "pn_modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
+        $where = "z_modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
         return DBUtil::selectObjectArray('module_deps', $where, 'modid');
     }
 

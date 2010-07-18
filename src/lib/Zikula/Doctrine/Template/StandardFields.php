@@ -20,7 +20,7 @@
  * <code>
  * // in a doctrine model
  * public function setUp() {
- *     $this->actAs('Zikula_Doctrine_Template_StandardFields', array('oldColumnPrefix' => 'pn_'));
+ *     $this->actAs('Zikula_Doctrine_Template_StandardFields', array('oldColumnPrefix' => 'z_'));
  * }
  * </code>
  */
@@ -30,7 +30,7 @@ class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
      * Constructor.
      *
      * Options:
-     *   oldColumnPrefix: all columns will be prefixed this string e.g. pn_
+     *   oldColumnPrefix: all columns will be prefixed this string e.g. z_
      *
      * @param array $options Options.
      */

@@ -33,27 +33,27 @@ $GLOBALS['ZConfig']['System']['multilingual'] = true;
 $GLOBALS['ZConfig']['System']['language_bc'] = false;
 
 include 'config/config.php';
-$connection = Doctrine_Manager::connection($GLOBALS['ZConfig']['DBInfo']['default']['dsn'], 'upgrader');
-//$connection->setCharset('utf8');
-//$connection->setCollate('utf8_general_ci');
-//$stmt = $connection->prepare("SET NAMES 'utf8'");// COLLATE 'utf8_general_ci'");
-//$stmt->execute();
 
-//$columns = upgrade_getColumnsForTable($connection, 'modules');
-//if (in_array('pn_id', array_keys($columns))) {
-//    upgrade_columns($connection);
-//}
+$connection = DBConnectionStack::init('default');
+//$connection = Doctrine_Manager::connection($GLOBALS['ZConfig']['DBInfo']['default']['dsn'], 'default');
 
-if (!isset($columns['capabilities']) || !isset($columns['min_version'])) {
+$columns = upgrade_getColumnsForTable($connection, 'modules');
+
+if (in_array('pn_id', array_keys($columns))) {
+    upgrade_columns($connection);
+}
+
+if (!isset($columns['capabilities'])) {
     ModUtil::dbInfoLoad('Modules', 'Modules');
     DBUtil::changeTable('modules');
     ModUtil::dbInfoLoad('Blocks', 'Blocks');
     DBUtil::changeTable('blocks');
 }
 
-$tables = upgrade_getTables($connection);
 $_SESSION['_ZikulaUpgrader'] = array();
-if (!in_array('users_registration', $tables)) {
+$installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
+
+if (version_compare( $installedVersion, '1.3.0-dev') === -1) {
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
 }
 
@@ -70,12 +70,11 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
         // force action to login
         $action = 'login';
     } else {
-        define('_ZINSTALLEDVERSION', $installed = System::getVar('Version_Num', __('version info not available')));
+        define('_ZINSTALLEDVERSION', $installedVersion);
     }
 }
 
-switch ($action)
-{
+switch ($action) {
     case 'upgradeinit':
         _upg_upgradeinit();
         break;
@@ -281,7 +280,7 @@ function _upg_upgrademodules($username, $password)
 
     // wipe out the deprecated moduels from Modules list.
     $modTable = DBUtil::getLimitedTablename('modules');
-    $sql = "DELETE FROM $modTable WHERE pn_name = 'Header_Footer' OR pn_name = 'AuthPN' OR pn_name = 'pnForm' OR pn_name = 'Workflow' OR pn_name = 'pnRender' OR pn_name = 'Admin_Messages'";
+    $sql = "DELETE FROM $modTable WHERE z_name = 'Header_Footer' OR z_name = 'AuthPN' OR z_name = 'pnForm' OR z_name = 'Workflow' OR z_name = 'pnRender' OR z_name = 'Admin_Messages'";
     DBUtil::executeSQL($sql);
 
     // regenerate the themes list
@@ -301,7 +300,7 @@ function _upg_upgrademodules($username, $password)
         echo __f('Go to the startpage for %s', $url);
     } else {
         upgrade_clear_caches();
-        $url = sprintf('<a href="%s">%s</a>', DataUtil::formatForDisplay(System::getBaseUrl().'admin.php'), DataUtil::formatForDisplay(System::getVar('sitename')));
+        $url = sprintf('<a href="%s">%s</a>', ModUtil::url('Admin', 'admin', 'adminpanel'), DataUtil::formatForDisplay(System::getVar('sitename')));
         echo __f('Go to the admin panel for %s', $url);
     }
     echo "</p>\n";
@@ -422,9 +421,9 @@ function upgrade_suppressErrors(Zikula_Event $event)
 function upgrade_getCurrentInstalledCoreVersion($connection)
 {
     $prefix = $GLOBALS['ZConfig']['System']['prefix'];
-    $moduleTable = $prefix . 'module_vars';
+    $moduleTable = $prefix . '_module_vars';
 
-    $stmt = $connection->prepare("SELECT pn_value FROM $moduleTable WHERE pn_modname = '/PNConfig' AND pn_name = 'Version_Num'");
+    $stmt = $connection->prepare("SELECT z_value FROM $moduleTable WHERE z_modname = '/Config' AND z_name = 'Version_Num'");
     if (!$stmt->execute()) {
         die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
     }
@@ -465,7 +464,7 @@ function upgrade_getColumnsForTable($connection, $tableName)
 {
     $tables = $connection->import->listTables();
     if (!$tables) {
-        die(__('FATAL ERROR: Cannot start, unable to determine installed Core version.'));
+        die(__('FATAL ERROR: Cannot start, unable access database.'));
     }
 
     try {
@@ -476,32 +475,204 @@ function upgrade_getColumnsForTable($connection, $tableName)
 }
 
 /**
- * Evil.
+ * Standardise table columns.
  *
  * @param PDOConnection $connection
  */
 function upgrade_columns($connection)
 {
     $prefix = $GLOBALS['ZConfig']['System']['prefix'];
-    $tables = array('admin_category', 'admin_module', 'block_placements', 'block_positions', 'blocks', 'categories_category', 'categories_mapmeta', 'categories_mapobj', 'categories_registry', 'group_applications', 'group_membership', 'group_perms', 'groups', 'hooks', 'message', 'module_deps', 'module_vars', 'modules', 'objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'pagelock', 'search_result', 'search_stat', 'session_info', 'themes', 'userblocks', 'users', 'users_registration', 'users_verifychg', 'workflows');
-    foreach ($tables as $table) {
-        $columns = upgrade_getColumnsForTable($connection, $table);
-        if (!$columns) {
-            continue;
-        }
-        foreach ($columns as $columnDef) {
-            $newName = preg_replace('#^pn_(.*)#', '$1', $columnDef['name']);
-            if ($newName == $columnDef['name']) {
-                echo '.';
-                continue;
-            }
-            $renameColumnArray = array($columnDef['name'] => array('name' => "z_$newName", 'definition' => $columnDef));
-            try {
-                $connection->export->alterTable($prefix.'_'.$table, array('rename' => $renameColumnArray));
-            } catch (Exception $e) {
-                echo $e->getMessage() .'<br />';
-            }
-        }
+    $commands = array();
+    $commands[] = "ALTER TABLE {$prefix}_admin_category CHANGE pn_cid z_cid BIGINT NOT NULL AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_admin_category CHANGE pn_name z_name VARCHAR(32) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_admin_category CHANGE pn_description z_description VARCHAR(254) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_admin_module CHANGE pn_amid z_amid BIGINT NOT NULL AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_admin_module CHANGE pn_mid z_mid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_admin_module CHANGE pn_cid z_cid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_bid z_bid BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_bkey z_bkey VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_title z_title VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_content z_content LONGTEXT NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_url z_url LONGTEXT NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_mid z_mid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_filter z_filter LONGTEXT NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_active z_active SMALLINT DEFAULT '1' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_collapsable z_collapsable BIGINT DEFAULT '1' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_defaultstate z_defaultstate BIGINT DEFAULT '1' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_refresh z_refresh BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_last_update z_last_update DATETIME NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_blocks CHANGE pn_language z_language VARCHAR(30) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_userblocks CHANGE pn_uid z_uid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_userblocks CHANGE pn_bid z_bid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_userblocks CHANGE pn_active z_active SMALLINT DEFAULT '1' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_userblocks CHANGE pn_last_update z_last_update DATETIME";
+    $commands[] = "ALTER TABLE {$prefix}_block_positions CHANGE pn_pid z_pid BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_block_positions CHANGE pn_name z_name VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_block_positions CHANGE pn_description z_description VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_block_placements CHANGE pn_pid z_pid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_block_placements CHANGE pn_bid z_bid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_block_placements CHANGE pn_order z_order BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_membership CHANGE pn_gid z_gid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_membership CHANGE pn_uid z_uid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_gid z_gid BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_name z_name VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_gtype z_gtype SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_description z_description VARCHAR(200) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_prefix z_prefix VARCHAR(25) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_state z_state SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_nbuser z_nbuser BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_nbumax z_nbumax BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_link z_link BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_groups CHANGE pn_uidmaster z_uidmaster BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_applications CHANGE pn_app_id z_app_id BIGINT NOT NULL AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_group_applications CHANGE pn_uid z_uid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_applications CHANGE pn_gid z_gid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_applications CHANGE pn_application z_application LONGBLOB NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_applications CHANGE pn_status z_status SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_id z_id BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_object z_object VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_action z_action VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_smodule z_smodule VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_stype z_stype VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_tarea z_tarea VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_tmodule z_tmodule VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_ttype z_ttype VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_tfunc z_tfunc VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_hooks CHANGE pn_sequence z_sequence BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_id z_id BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_name z_name VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_type z_type SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_displayname z_displayname VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_url z_url VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_description z_description VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_regid z_regid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_directory z_directory VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_version z_version VARCHAR(10) DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_official z_official SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_author z_author VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_contact z_contact VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_admin_capable z_admin_capable SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_user_capable z_user_capable SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_profile_capable z_profile_capable SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_message_capable z_message_capable SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_state z_state INT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_credits z_credits VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_changelog z_changelog VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_help z_help VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_license z_license VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_securityschema z_securityschema LONGTEXT NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_id z_id BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_modname z_modname VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_name z_name VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_value z_value LONGTEXT";
+    $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_id z_id BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_modid z_modid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_modname z_modname VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_minversion z_minversion VARCHAR(10) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_maxversion z_maxversion VARCHAR(10) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_status z_status SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_pid z_pid BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_gid z_gid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_sequence z_sequence BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_realm z_realm BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_component z_component VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_instance z_instance VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_level z_level BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_group_perms CHANGE pn_bond z_bond BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_id z_plock_id BIGINT NOT NULL AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_name z_plock_name VARCHAR(100) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_cdate z_plock_cdate DATETIME NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_edate z_plock_edate DATETIME NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_session z_plock_session VARCHAR(50) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_title z_plock_title VARCHAR(100) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_pagelock CHANGE plock_ipno z_plock_ipno VARCHAR(30) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_search_stat CHANGE pn_id z_id BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_search_stat CHANGE pn_search z_search VARCHAR(50) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_search_stat CHANGE pn_count z_count BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_search_stat CHANGE pn_date z_date DATE";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_id z_sres_id BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_title z_sres_title VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_text z_sres_text LONGTEXT";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_module z_sres_module VARCHAR(100)";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_extra z_sres_extra VARCHAR(100)";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_created z_sres_created DATETIME";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_found z_sres_found DATETIME";
+    $commands[] = "ALTER TABLE {$prefix}_search_result CHANGE sres_sesid z_sres_sesid VARCHAR(50)";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_id z_id BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_name z_name VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_type z_type SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_displayname z_displayname VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_description z_description VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_regid z_regid BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_directory z_directory VARCHAR(64) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_version z_version VARCHAR(10) DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_official z_official SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_author z_author VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_contact z_contact VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_admin z_admin SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_user z_user SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_system z_system SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_state z_state SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_credits z_credits VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_changelog z_changelog VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_help z_help VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_license z_license VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_themes CHANGE pn_xhtml z_xhtml SMALLINT DEFAULT '1' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_uid z_uid BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_uname z_uname VARCHAR(25) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_email z_email VARCHAR(60) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_user_regdate z_user_regdate DATETIME DEFAULT '1970-01-01 00:00:00' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_user_viewemail z_user_viewemail INT DEFAULT '0'";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_user_theme z_user_theme VARCHAR(64)";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_pass z_pass VARCHAR(128) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_storynum z_storynum INT DEFAULT '10' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_ublockon z_ublockon SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_ublock z_ublock LONGTEXT NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_theme z_theme VARCHAR(255) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_counter z_counter BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_activated z_activated SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_lastlogin z_lastlogin DATETIME DEFAULT '1970-01-01 00:00:00' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_validfrom z_validfrom BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_validuntil z_validuntil BIGINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users CHANGE pn_hash_method z_hash_method SMALLINT DEFAULT '8' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_tid z_tid BIGINT AUTO_INCREMENT";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_uname z_uname VARCHAR(25) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_email z_email VARCHAR(60) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_femail z_femail SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_pass z_pass VARCHAR(128) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_dynamics z_dynamics LONGTEXT NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_comment z_comment VARCHAR(254) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_type z_type SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_users_temp CHANGE pn_tag z_tag SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_sessid z_sessid VARCHAR(40) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_ipaddr z_ipaddr VARCHAR(32) NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_lastused z_lastused DATETIME DEFAULT '1970-01-01 00:00:00'";
+    $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_uid z_uid BIGINT DEFAULT '0'";
+    $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_remember z_remember SMALLINT DEFAULT '0' NOT NULL";
+    $commands[] = "ALTER TABLE {$prefix}_session_info CHANGE pn_vars z_vars LONGTEXT NOT NULL";
+    $commands[] = "UPDATE {$prefix}_module_vars SET  z_modname =  '/Config' WHERE z_modname = '/PNConfig'";
+    $silentCommands = array();
+    $silentCommands[] = "ALTER TABLE {$prefix}_message CHANGE pn_mid z_mid INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE pn_title z_title VARCHAR( 100 ) NOT NULL DEFAULT  '',
+CHANGE pn_content z_content LONGTEXT NOT NULL ,
+CHANGE pn_date z_date INT( 11 ) NOT NULL DEFAULT  '0',
+CHANGE pn_expire z_expire INT( 11 ) NOT NULL DEFAULT  '0',
+CHANGE pn_active z_active INT( 11 ) NOT NULL DEFAULT  '1',
+CHANGE pn_view z_view INT( 11 ) NOT NULL DEFAULT  '1',
+CHANGE pn_language z_language VARCHAR( 30 ) NOT NULL DEFAULT  ''";
+
+    foreach ($commands as $sql) {
+        $stmt = $connection->prepare($sql);
+        $stmt->execute();
     }
 
+    foreach ($silentCommands as $sql) {
+        $stmt = $connection->prepare($sql);
+        try {
+            $stmt->execute();
+        } catch (Exception $e) {
+
+        }
+
+    }
 }

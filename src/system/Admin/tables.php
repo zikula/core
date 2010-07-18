@@ -27,9 +27,9 @@ function Admin_tables()
     // Set the column names.  Note that the array has been formatted
     // on-screen to be very easy to read by a user.
     $dbtable['admin_category'] = DBUtil::getLimitedTablename('admin_category');
-    $dbtable['admin_category_column'] = array('cid'         => 'pn_cid',
-                                              'catname'     => 'pn_name',
-                                              'description' => 'pn_description');
+    $dbtable['admin_category_column'] = array('cid'         => 'z_cid',
+                                              'catname'     => 'z_name',
+                                              'description' => 'z_description');
 
     $dbtable['admin_category_column_def'] = array('cid'         => "I NOTNULL AUTO PRIMARY",
                                                   'catname'     => "C(32) NOTNULL DEFAULT ''",
@@ -41,9 +41,9 @@ function Admin_tables()
     // on-screen to be very easy to read by a user.
     $admin_category = DBUtil::getLimitedTablename('admin_module');
     $dbtable['admin_module'] = $admin_category;
-    $dbtable['admin_module_column'] = array('id'  => 'pn_amid',
-                                            'mid' => 'pn_mid',
-                                            'cid' => 'pn_cid');
+    $dbtable['admin_module_column'] = array('id'  => 'z_amid',
+                                            'mid' => 'z_mid',
+                                            'cid' => 'z_cid');
 
     $dbtable['admin_module_column_def'] = array('id'  => "I NOTNULL AUTO PRIMARY",
                                                 'mid' => "I NOTNULL DEFAULT 0",

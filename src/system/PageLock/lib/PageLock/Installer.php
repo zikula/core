@@ -19,7 +19,7 @@ class PageLock_Installer extends Zikula_Installer
      */
     public function install()
     {
-        if (!DBUtil::createTable('PageLock'))
+        if (!DBUtil::createTable('pagelock'))
             return false;
 
         return true;
@@ -28,7 +28,6 @@ class PageLock_Installer extends Zikula_Installer
     /**
      * upgrades the module
      *
-     * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
      * @param        string   $oldVersion   version number string to upgrade from
@@ -44,7 +43,7 @@ class PageLock_Installer extends Zikula_Installer
      */
     public function uninstall()
     {
-        DBUtil::dropTable('PageLock');
+        DBUtil::dropTable('pagelock');
 
         return true;
     }
