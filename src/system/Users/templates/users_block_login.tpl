@@ -5,7 +5,7 @@
         <input id="users_authmodule" type="hidden" name="authmodule" value="{$authmodule}" />
 
         <fieldset>
-            {modfunc modname=$authmodule type='auth' func='loginBlockFields' authinfo=$authinfo assign='loginblockfields'}
+            {modfunc modname=$authmodule type='auth' func='loginBlockFields' assign='loginblockfields'}
             {if $loginblockfields}
             {$loginblockfields}
 
