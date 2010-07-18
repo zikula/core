@@ -79,8 +79,12 @@ $ZConfig['Debug']['cache_user'] = 0;        // object cache: user filter, 0 for 
 // ----------------------------------------------------------------------
 // Error Reporting
 // ----------------------------------------------------------------------
-$ZConfig['Debug']['error_reporting_development'] = E_ALL; // preconfigured level
-$ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING; // preconfigured level
+// For < PHP 5.3
+if (!defined('E_DEPRECATED')) {
+    define('E_DEPRECATED', 8192);
+}
+$ZConfig['Debug']['error_reporting_development'] = E_ALL | E_STRICT; // preconfigured level
+$ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT & ~E_DEPRECATED; // preconfigured level
 $ZConfig['Debug']['debug_key'] = ($ZConfig['System']['development'] ? 'error_reporting_development' : 'error_reporting_production');
 error_reporting($ZConfig['Debug'][$ZConfig['Debug']['debug_key']]); // now set the appropriate level
 

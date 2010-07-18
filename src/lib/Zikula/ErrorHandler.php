@@ -13,11 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-// For < PHP 5.3
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-}
-
 /**
  * Zikula ErrorHandler.
  */
