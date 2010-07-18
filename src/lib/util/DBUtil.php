@@ -308,9 +308,9 @@ class DBUtil
             }
         } catch (Exception $e) {
             echo 'Error in DBUtil::executeSQL: ' . $sql . '<br />' . $e->getMessage() . '<br />';
-//            if ((System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN))) {
+            if ((System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN))) {
                 echo nl2br($e->getTraceAsString());
-//            }
+            }
             System::shutDown();
         }
 
