@@ -5,22 +5,22 @@
 <form id="themeform" action="" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         {foreach from=$themes item=theme}
-            <input type="hidden" id="previmg_{$theme.directory}" name="previmg_{$theme.directory}" value="{getbaseurl}{$theme.previewImage}" />
+        <input type="hidden" id="previmg_{$theme.directory}" name="previmg_{$theme.directory}" value="{getbaseurl}{$theme.previewImage}" />
         {/foreach}
         <select id="newtheme" name="newtheme" onchange="showthemeimage()">
             {foreach from=$themes item=theme}
-                <option id="theme_{$theme.directory}" title="{$theme.description}" value="{$theme.directory}"{if $theme.name eq $currenttheme.name} selected="selected"{/if}>{$theme.displayname}</option>
+            <option id="theme_{$theme.directory}" title="{$theme.description}" value="{$theme.directory}"{if $theme.name eq $currenttheme.name} selected="selected"{/if}>{$theme.displayname}</option>
             {/foreach}
         </select>
     </div>
-    <div>
-        <input class="button" type="submit" value="{gt text="Change theme" domain='zikula'}" />
+    <div class="z-buttons">
+        <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Change theme" domain='zikula'}" />
     </div>
 </form>
 {else}
 <ul>
-{foreach from=$themes item=theme}
+    {foreach from=$themes item=theme}
     <li><a href="?newtheme={$theme.name}">{$theme.displayname}</a></li>
-{/foreach}
+    {/foreach}
 </ul>
 {/if}

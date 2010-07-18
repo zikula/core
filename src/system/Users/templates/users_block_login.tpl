@@ -18,7 +18,7 @@
             </div>
             {/if}
             <div class="z-buttons">
-                <input class="z-bt-ok" type="submit" value="{gt text="Log in" domain='zikula'}" />
+                <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Log in" domain='zikula'}" />
             </div>
             {else}
             <legend>{$authmodule}</legend>

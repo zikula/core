@@ -7,7 +7,7 @@
             </div>
             {if $vars.displaySearchBtn eq 1}
             <div class="z-buttons">
-                <input class="z-bt-ok" type="submit" value="{gt text="Search now" domain='zikula'}" />
+                <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Search now" domain='zikula'}" />
             </div>
             {/if}
             {foreach item=dummy key=actives from=$vars.active}

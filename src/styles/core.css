@@ -824,7 +824,7 @@ div.z-viewbuttons img {
 * Buttons styles
 *******************************************************************************/
 
-.z-buttons .z-button,
+.z-button,
 .z-buttons a,
 .z-buttons input,
 .z-buttons button {
@@ -847,6 +847,11 @@ div.z-viewbuttons img {
     background: -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
     background: -moz-linear-gradient(top,  #F5F5F5, #dedede);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F5F5F5', endColorstr='#dedede');
+}
+
+.z-buttons .z-bt-small {
+    margin: 0 1px 0 0;
+    padding: 3px 8px 4px !important;
 }
 
 .z-buttons button {
@@ -962,6 +967,12 @@ div.z-viewbuttons img {
     background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -moz-linear-gradient(center top , #F5F5F5, #DEDEDE);
     background: url("../images/icons/extrasmall/input_cancel.gif") 0 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F5F5F5), to(#dedede));
     padding-left: 24px;
+}
+
+.z-buttons input.z-bt-ok.z-bt-small,
+.z-buttons input.z-bt-cancel.z-bt-small {
+    margin: 0 1px 0 0;
+    padding: 3px 8px 4px 24px !important;
 }
 
 .z-buttons input.z-bt-ok:hover {
