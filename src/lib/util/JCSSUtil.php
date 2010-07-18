@@ -176,7 +176,7 @@ class JCSSUtil
             return $_script;
         }
         foreach($coreScripts as $name => $meta) {
-            if(isset($$meta['aliases']) && in_array($_script,(array)$meta['aliases'])) {
+            if(isset($meta['aliases']) && in_array($_script,(array)$meta['aliases'])) {
                 return $name;
             } elseif(isset($meta['path']) && $meta['path'] == $script) {
                 return $name;
