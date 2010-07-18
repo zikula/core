@@ -95,7 +95,7 @@ class Zikula_ErrorHandler
         $this->eventManager->notify($event);
 
         // check for an @ suppression
-        if (error_reporting() == 0 || $errno == E_DEPRECATED || $errno == E_STRICT) {
+        if (error_reporting() == 0 || $this->errordisplay == 0 || $errno == E_DEPRECATED || $errno == E_STRICT) {
             return;
         }
 
@@ -188,11 +188,10 @@ class Zikula_ErrorHandler
         $this->eventManager->notify($event);
 
         // errors supressed with @
-        if (error_reporting() == 0 || $this->errordisplay == 0) {
+        if (error_reporting() == 0 || $this->errordisplay == 0 || $errno == E_DEPRECATED || $errno == E_STRICT) {
             return;
         }
 
-        // only show fatal 8192 = E_DEPRECATED
         if ($this->errorlog == 1 && ($errno == E_WARNING || $errno == E_NOTICE || $errno == E_USER_WARNING || $errno == E_USER_NOTICE)) {
             return;
         }
