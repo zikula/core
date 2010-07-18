@@ -757,10 +757,26 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function clear_all_cache($exp_time = null)
     {
+        /*
         $res = parent::clear_cache(null, null, null, $exp_time);
         // recreate index.html file
         fclose(fopen($this->cache_dir . '/index.html', 'w'));
         return $res;
+        */
+
+        $cache_dir = $this->cache_dir;
+
+        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), null, false);
+
+        if ($exp_time == null) {
+            foreach($cached_files as $cf) {
+                unlink(realpath($cf));
+            }
+        } else {
+            // actions for when $exp_time is not null
+        }
+
+        return true;
     }
 
     /**
@@ -772,11 +788,27 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function clear_compiled($exp_time = null)
     {
+        /*
         //unset($this->compile_id); // commented out because this causes an E_NOTICE in Smarty.class.php:1156
         $res = parent::clear_compiled_tpl(null, null, $exp_time);
         // recreate index.html file
         fclose(fopen($this->compile_dir . '/index.html', 'w'));
         return $res;
+        */
+        
+        $compile_dir = $this->compile_dir;
+
+        $compiled_files = FileUtil::getFiles($compile_dir, true, false, array('php', 'inc'), null, false);
+
+        if ($exp_time == null) {
+            foreach($compiled_files as $cf) {
+                unlink(realpath($cf));
+            }
+        } else {
+            // actions for when $exp_time is not null
+        }
+
+        return true;
     }
 
     /**

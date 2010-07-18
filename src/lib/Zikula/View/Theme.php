@@ -610,17 +610,29 @@ class Zikula_View_Theme extends Zikula_View
     public function clear_cssjscombinecache()
     {
         // Clear the directory
+        /*
         $files = scandir($this->cache_dir);
         foreach ($files as $file) {
             if (preg_match('#[a-f0-0]*_(js|css)\.php$#', $file)) {
                 unlink($this->cache_dir . '/' . $file);
             }
         }
+        */
+
+        $cache_dir = $this->cache_dir;
+
+        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('php'), null, false);
+
+        foreach($cached_files as $cf) {
+            unlink(realpath($cf));
+        }
+
 
         // The configuration has been changed, so we clear all caches for this module.
+        // clear Zikula_View_Theme cache
         self::clear_all_cache();
-        $view = Zikula_View::getInstance();
-        $view->clear_all_cache();
+        // clear Zikula_View cache
+        Zikula_View::getInstance()->clear_all_cache();
 
         return true;
     }

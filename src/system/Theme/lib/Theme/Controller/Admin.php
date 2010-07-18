@@ -1210,7 +1210,7 @@ class Theme_Controller_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $theme = Theme::getInstance('Theme');
+        $theme = Zikula_View_Theme::getInstance('Theme');
         $res   = $theme->clear_compiled();
 
         if ($res) {
@@ -1240,7 +1240,7 @@ class Theme_Controller_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','main'));
         }
 
-        $theme = Theme::getInstance('Theme');
+        $theme = Zikula_View_Theme::getInstance('Theme');
         $res   = $theme->clear_all_cache();
 
         if ($res) {
@@ -1270,7 +1270,7 @@ class Theme_Controller_Admin extends Zikula_Controller
             return LogUtil::registerAuthidError(ModUtil::url('Theme','admin','view'));
         }
 
-        $theme = Theme::getInstance('Theme');
+        $theme = Zikula_View_Theme::getInstance('Theme');
         $theme->clear_cssjscombinecache();
 
         LogUtil::registerStatus($this->__('Done! Deleted CSS/JS combination cached files.'));
