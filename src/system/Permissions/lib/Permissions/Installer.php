@@ -98,7 +98,7 @@ class Permissions_Installer extends Zikula_Installer
         $record['sequence']  = '2';
         $record['realm']     = '0';
         $record['component'] = 'ExtendedMenublock::';
-        $record['instance']  = '1:1:';
+        $record['instance']  = '1:2:';
         $record['level']     = '0';
         $record['bond']      = '0';
         DBUtil::insertObject($record, 'group_perms', 'pid');
@@ -118,7 +118,7 @@ class Permissions_Installer extends Zikula_Installer
         $record['sequence']  = '4';
         $record['realm']     = '0';
         $record['component'] = 'ExtendedMenublock::';
-        $record['instance']  = '1:(1|2|3):';
+        $record['instance']  = '1:(2|3|4):';
         $record['level']     = '0';
         $record['bond']      = '0';
         DBUtil::insertObject($record, 'group_perms', 'pid');
