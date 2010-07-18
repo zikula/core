@@ -39,6 +39,7 @@ function smarty_function_themelist($params, &$smarty)
             $themelist[$f] = "themes/$f/images/preview_medium.png";
         }
     }
+    ksort($themelist);
     closedir ($handle);
 
     $themestring = '<table id="themeselector" width="100%">';
