@@ -532,6 +532,7 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
         options = Object.extend({
             nameSelector: 'label',
             valueSeparator: ',',
+            excludeValues: [],
             opener: null,
             afterChange: this.afterChange.bind(this)
         }, options || { });
@@ -558,14 +559,17 @@ Zikula.UI.SelectMultiple = Class.create(Control.SelectMultiple, {
         }
         var container = new Element('div',{id:containerId,'class':'z-select-multiple z-form'});
         $(opener).insert({after:container});
+        options.excludeValues = $A(Object.isArray(options.excludeValues) ? options.excludeValues : [options.excludeValues]) || [];
         select.select('option').each(function(option) {
-            container.insert(
-                new Element('div',{'class':'z-formrow'})
-                    .insert(new Element('label',{'for':option.identify()+'m'})
-                        .update(option.text)
-                    )
-                    .insert(new Element('input',{id:option.identify()+'m',name:select.name+'[]',type:'checkbox',value:option.value,checked:option.selected}))
-            )
+            if(!options.excludeValues.include(option.value)) {
+                container.insert(
+                    new Element('div',{'class':'z-formrow'})
+                        .insert(new Element('label',{'for':option.identify()+'m'})
+                            .update(option.text)
+                        )
+                        .insert(new Element('input',{id:option.identify()+'m',name:select.name+'[]',type:'checkbox',value:option.value,checked:option.selected}))
+                )
+            }
         });
         this.dialog = new Zikula.UI.Dialog(opener,[{label: 'Ok'}],{position:'relative'});
         return container;
