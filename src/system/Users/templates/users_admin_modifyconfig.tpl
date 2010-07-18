@@ -209,7 +209,7 @@
                 </div>
             </div>
             <div class="z-formrow">
-                <label for="users_reg_expiredays">{gt text="Registraions pending verification expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
+                <label for="users_reg_expiredays">{gt text="Registrations pending verification expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <div class="z-formlist">
                     <input id="users_reg_expiredays"{if isset($errorFields.reg_expiredays)} class="error"{/if} type="text" name="config[reg_expiredays]" value="{$config.reg_expiredays|default:0}" maxlength="3" />
                     <label for="users_reg_expiredays">{gt text="days"}</label>
