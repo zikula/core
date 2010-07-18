@@ -38,6 +38,7 @@
  * <li>keywords</li>
  * <li>stylesheet</li>
  * <li>javascript</li>
+ * <li>jsgettext</li>
  * <li>body</li>
  * <li>rawtext</li>
  * <li>footer</li>
@@ -56,7 +57,10 @@ class PageUtil
      * <li>keywords</li>
      * <li>stylesheet</li>
      * <li>javascript</li>
+     * <li>jsgettext</li>
      * <li>body</li>
+     * <li>rawtext</li>
+     * <li>footer</li>
      * </ul>
      *
      * @param string  $varname    The name of the new page variable.
@@ -228,64 +232,6 @@ class PageUtil
         }
 
         $value = (array)$value;
-        if ($varname == 'javascript') {
-            // shorthand syntax for some common JS libraries
-            foreach ($value as $k => $v) {
-                if (in_array($value[$k], array('prototype', 'scriptaculous', 'validation'))) {
-                    // full renames are handled later on.
-                    $value[$k] = 'javascript/ajax/' . DataUtil::formatForOS($value[$k]) . '.js';
-                } else if ($value[$k] == 'jquery') {
-                    $value[$k] = 'javascript/jquery/jquery.min.js';
-                    $value["$k.1"] = 'javascript/jquery/noconflict.js';
-                } else if ($value[$k] == 'livepipe') {
-                    $value[$k] = 'javascript/livepipe/livepipe.combined.min.js';
-                }
-            }
-
-            // sort back to numeric index
-            $newValue = array();
-            foreach ($value as $k => $v) {
-                $newValue[] = $v;
-            }
-            $value = $newValue;
-
-            foreach ($value as $k => $v) {
-                $value[$k] = DataUtil::formatForOS($value[$k]);
-                // Handle legacy references to non-minimised scripts.
-                if (strpos($value[$k], 'javascript/livepipe/') === 0) {
-                    $value[$k] = 'javascript/livepipe/livepipe.combined.min.js';
-                } else if (strpos($value[$k], 'javascript/ajax/') === 0) {
-                    switch ($value[$k])
-                    {
-                        case 'javascript/ajax/validation.js':
-                            $value[$k] = 'javascript/ajax/validation.min.js';
-                            break;
-                        case 'javascript/ajax/unittest.js':
-                            $value[$k] = 'javascript/ajax/unittest.min.js';
-                            break;
-                        case 'javascript/ajax/prototype.js':
-                        case 'javascript/ajax/builder.js':
-                        case 'javascript/ajax/controls.js':
-                        case 'javascript/ajax/dragdrop.js':
-                        case 'javascript/ajax/slider.js':
-                        case 'javascript/ajax/sound.js':
-                            $value[$k] = 'javascript/ajax/proto_scriptaculous.combined.min.js';
-                            break;
-                    }
-                    if (strpos($value[$k], 'javascript/ajax/scriptaculous') === 0) {
-                        $value[$k] = 'javascript/ajax/proto_scriptaculous.combined.min.js';
-                    }
-                } else if (System::isLegacyMode() && (strpos($value[$k], 'system/') === 0 || strpos($value[$k], 'modules/') === 0)) {
-                    // check for customized javascripts
-                    $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $value[$k]);
-                    $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
-                    if (file_exists($custom)) {
-                        $value[$k] = $custom;
-                    }
-                }
-            }
-        }
-
         $value = array_unique($value);
 
         if (!isset($_pageVars[$varname])) {

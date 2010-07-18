@@ -57,14 +57,14 @@ function smarty_function_ajaxheader($params, $view)
     $return = '';
 
     // we always need those
-    $scripts = array('prototype', 'javascript/helpers/Zikula.js');
+    $scripts = array('prototype', 'zikula');
 
     if ($validation) {
-        $scripts[] = 'javascript/ajax/validation.min.js';
+        $scripts[] = 'validation';
     }
     if ($ui) {
         $scripts[] = 'livepipe';
-        $scripts[] = 'javascript/helpers/Zikula.UI.js';
+        $scripts[] = 'zikula.ui';
     }
 
     if ($lightbox) {
@@ -81,11 +81,9 @@ function smarty_function_ajaxheader($params, $view)
         }
     }
     if ($imageviewer) {
-        $scripts[] = 'javascript/helpers/Zikula.ImageViewer.js';
+        $scripts[] = 'zikula.imageviewer';
         if (isset($params['assign'])) {
             $return = '<link rel="stylesheet" href="javascript/helpers/ImageViewer/ImageViewer.css" type="text/css" media="screen" />';
-        } else {
-            PageUtil::addVar('stylesheet', 'javascript/helpers/ImageViewer/ImageViewer.css');
         }
     }
 
@@ -102,8 +100,9 @@ function smarty_function_ajaxheader($params, $view)
 
     if (isset($params['assign'])) {
         // create script tags now
+        $scripts = JCSSUtil::prepareJavascripts($scripts);
         foreach ($scripts as $script) {
-            $return .= '<script type="text/javascript" src="' . $script . '"></script' . "\n";
+            $return .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
         }
         $view->assign($params['assign'], $return);
     } else {

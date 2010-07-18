@@ -284,8 +284,7 @@ class Zikula_View_Theme extends Zikula_View
 
         if ($usefilters) {
             // register page vars output filter
-            $pagevarfilter = (ModUtil::getVar('Theme', 'cssjscombine', false) ? 'pagevars' : 'pagevars_notcombined');
-            $this->load_filter('output', $pagevarfilter);
+            $this->load_filter('output', 'pagevars');
 
             // register short urls output filter
             if (System::getVar('shorturls')) {

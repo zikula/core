@@ -130,7 +130,7 @@ Zikula.getcheckboxvalue = function(id)
             }
             return '';
         }
-    } catch(error) {
+    }catch(error) {
         alert("Zikula.getcheckboxvalue: unknown checkbox '" + id +"'");
     }
 }
@@ -296,8 +296,8 @@ Zikula.fixbuttons = function()
     });
 
     $$('form').invoke('observe','submit',function(e){
-        form = e.element();
-        var buttonClicked = form.retrieve('buttonClicked',null);
+        var form = e.element(),
+            buttonClicked = form.retrieve('buttonClicked',null);
         form.select('button').each(function(b){
             b.disabled = true;
             if(b.identify() == buttonClicked) {
@@ -540,3 +540,153 @@ Object.extend(Number.prototype, (function() {
     toUnits:         toUnits
   };
 })());
+
+//http://www.diveintojavascript.com/projects/sprintf-for-javascript
+Zikula.str_repeat = function(i, m) {
+    for (var o = []; m > 0; o[--m] = i);
+    return o.join('');
+}
+Zikula.sprintf = function () {
+    var i = 0, a, f = arguments[i++], o = [], m, p, c, x, s = '';
+    while (f) {
+        if (m = /^[^\x25]+/.exec(f)) {
+            o.push(m[0]);
+        }
+        else if (m = /^\x25{2}/.exec(f)) {
+            o.push('%');
+        }
+        else if (m = /^\x25(?:(\d+)\$)?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-fosuxX])/.exec(f)) {
+            if (((a = arguments[m[1] || i++]) == null) || (a == undefined)) {
+                throw('Too few arguments.');
+            }
+            if (/[^s]/.test(m[7]) && (typeof(a) != 'number')) {
+                throw('Expecting number but found ' + typeof(a));
+            }
+            switch (m[7]) {
+                case 'b':a = a.toString(2);break;
+                case 'c':a = String.fromCharCode(a);break;
+                case 'd':a = parseInt(a);break;
+                case 'e':a = m[6] ? a.toExponential(m[6]) : a.toExponential();break;
+                case 'f':a = m[6] ? parseFloat(a).toFixed(m[6]) : parseFloat(a);break;
+                case 'o':a = a.toString(8);break;
+                case 's':a = ((a = String(a)) && m[6] ? a.substring(0, m[6]) : a);break;
+                case 'u':a = Math.abs(a);break;
+                case 'x':a = a.toString(16);break;
+                case 'X':a = a.toString(16).toUpperCase();break;
+            }
+            a = (/[def]/.test(m[7]) && m[2] && a >= 0 ? '+'+ a : a);
+            c = m[3] ? m[3] == '0' ? '0' : m[3].charAt(1) : ' ';
+            x = m[5] - String(a).length - s.length;
+            p = m[5] ? Zikula.str_repeat(c, x) : '';
+            o.push(s + (m[4] ? a + p : p + a));
+        }
+        else {
+            throw('Huh ?!');
+        }
+        f = f.substring(m[0].length);
+    }
+    return o.join('');
+}
+Zikula.vsprintf = function(format, args) {
+    return Zikula.sprintf.apply(this,[format].concat(args));
+}
+Zikula.mergeObjects = function(destination,source)
+{
+    for (var prop in source) {
+        try {
+            if ( source[prop].constructor==Object ) {
+                destination[prop] = Zikula.mergeObjects(destination[prop], source[prop]);
+            } else {
+                destination[prop] = source[prop];
+            }
+        } catch(e) {
+            destination[prop] = source[prop];
+        }
+    }
+    return destination;
+}
+
+/* GETTEXT */
+Zikula.Gettext = Class.create({
+    defaults: {
+        lang: 'en',
+        domain: 'zikula',
+        pluralForms: 'nplurals=2; plural=n == 1 ? 0 : 1;'
+    },
+    pluralsPattern: /^(nplurals=\d+;\s{0,}plural=[\s\d\w\(\)\?:%><=!&\|]+)\s{0,};\s{0,}$/i,
+    nullChar: '\u0000',
+    initialize: function(lang,data) {
+        this.data = {};
+        this.setup(lang,data);
+        this.__ = this.getMessage.bind(this);
+        this.__f = this.getMessageFormatted.bind(this);
+        this._n = this.getPluralMessage.bind(this);
+        this._fn = this.getPluralMessageFormatted.bind(this);
+    },
+    setup: function(lang,data,domain) {
+        this.setLang(lang);
+        this.setDomain(domain);
+        this.addTranslations(data || {})
+    },
+    addTranslations: function(obj) {
+        Zikula.mergeObjects(this.data,obj)
+    },
+    setLang: function(lang) {
+        this.lang = lang || this.defaults.lang;
+    },
+    setDomain: function(domain) {
+        this.domain = domain || this.defaults.domain;
+    },
+    getData: function(domain,key) {
+        domain = domain || this.domain;
+        try {
+            return this.data[this.lang][domain][key];
+        } catch (e) {
+            return {};
+        }
+    },
+    getMessage: function(msgid, domain) {
+        return this.getData(domain,'translations')[msgid] || msgid;
+    },
+    getMessageFormatted: function(msgid, params, domain) {
+        return Zikula.vsprintf(this.getMessage(msgid, domain), params);
+    },
+    getPluralMessage: function(singular, plural, count, domain) {
+        var offset = this.getPluralOffset(count, domain),
+            key = singular + this.nullChar + plural,
+            messages = this.getMessage(key, domain);
+        if(messages) {
+            return messages.split(this.nullChar)[offset];
+        } else {
+            return key.split(this.nullChar)[offset];
+        }
+    },
+    getPluralMessageFormatted: function(singular, plural, count, params, domain) {
+        return Zikula.vsprintf(this.getPluralMessage(singular, plural, count, domain), params);
+    },
+    getPluralOffset: function(count, domain) {
+        var eq = null,
+            nplurals = 0,
+            plural = 0,
+            n = count || 0;
+        try {
+            eq = this.getData(domain,'plural-forms').match(this.pluralsPattern)[1];
+            eval(eq);
+        } catch(e) {
+            eq = this.defaults.pluralForms;
+            eval(eq);
+        }
+        if (plural >= nplurals) {
+            plural = nplurals - 1;
+        }
+        return plural;
+    }
+});
+Zikula.Gettext = new Zikula.Gettext(Zikula.Config.lang,Zikula._translations);
+// shortcuts
+Object.extend(Zikula,{
+    __: Zikula.Gettext.__,
+    __f: Zikula.Gettext.__f,
+    _n: Zikula.Gettext._n,
+    _fn: Zikula.Gettext._fn
+});

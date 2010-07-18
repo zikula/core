@@ -367,6 +367,7 @@ class System
             PageUtil::registerVar('keywords', true);
             PageUtil::registerVar('stylesheet', true);
             PageUtil::registerVar('javascript', true);
+            PageUtil::registerVar('jsgettext', true);
             PageUtil::registerVar('body', true);
             PageUtil::registerVar('rawtext', true);
             PageUtil::registerVar('footer', true);

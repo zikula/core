@@ -93,7 +93,8 @@ foreach ($_GET as $domain => $meta) {
 }
 
 header("HTTP/1.1 200");
-header('Content-type: application/json');
+header('Content-type: text/javascript;charset=UTF-8');
+echo "if (typeof(Zikula) == 'undefined') { Zikula = {}; }\n Zikula._translations = ";
 echo json_encode($translations);
 
 function validate($value)
