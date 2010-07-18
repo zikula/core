@@ -91,6 +91,7 @@ class SystemListenersUtil
             $handlerMethod = 'ajaxHandler';
         } else {
             $handlerMethod = 'standardHandler';
+            $event->setNotified();return;
         }
         
         $errorHandler = new Zikula_ErrorHandler($sm, EventUtil::getManager());

@@ -178,28 +178,28 @@ class LogUtil
      */
     public static function registerPermissionError($url = null, $redirect = true)
     {
-        static $strLevels = array();
-        if (!$strLevels) {
-            $strLevels[ACCESS_INVALID] = 'INVALID';
-            $strLevels[ACCESS_NONE] = 'NONE';
-            $strLevels[ACCESS_OVERVIEW] = 'OVERVIEW';
-            $strLevels[ACCESS_READ] = 'READ';
-            $strLevels[ACCESS_COMMENT] = 'COMMENT';
-            $strLevels[ACCESS_MODERATE] = 'MODERATE';
-            $strLevels[ACCESS_EDIT] = 'EDIT';
-            $strLevels[ACCESS_ADD] = 'ADD';
-            $strLevels[ACCESS_DELETE] = 'DELETE';
-            $strLevels[ACCESS_ADMIN] = 'ADMIN';
-        }
-
-        global $ZRuntime;
-        $obj = array();
-        $obj['component'] = 'PERMISSION';
-        $obj['sec_component'] = $ZRuntime['security']['last_failed_check']['component'];
-        $obj['sec_instance'] = $ZRuntime['security']['last_failed_check']['instance'];
-        $obj['sec_permission'] = $strLevels[$ZRuntime['security']['last_failed_check']['level']];
-
-        self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
+//        static $strLevels = array();
+//        if (!$strLevels) {
+//            $strLevels[ACCESS_INVALID] = 'INVALID';
+//            $strLevels[ACCESS_NONE] = 'NONE';
+//            $strLevels[ACCESS_OVERVIEW] = 'OVERVIEW';
+//            $strLevels[ACCESS_READ] = 'READ';
+//            $strLevels[ACCESS_COMMENT] = 'COMMENT';
+//            $strLevels[ACCESS_MODERATE] = 'MODERATE';
+//            $strLevels[ACCESS_EDIT] = 'EDIT';
+//            $strLevels[ACCESS_ADD] = 'ADD';
+//            $strLevels[ACCESS_DELETE] = 'DELETE';
+//            $strLevels[ACCESS_ADMIN] = 'ADMIN';
+//        }
+//
+//        global $ZRuntime;
+//        $obj = array();
+//        $obj['component'] = 'PERMISSION';
+//        $obj['sec_component'] = $ZRuntime['security']['last_failed_check']['component'];
+//        $obj['sec_instance'] = $ZRuntime['security']['last_failed_check']['instance'];
+//        $obj['sec_permission'] = $strLevels[$ZRuntime['security']['last_failed_check']['level']];
+//
+//        self::_write(__('Sorry! You have not been granted access to this page.'), 'PERMISSION', $obj);
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
@@ -253,13 +253,13 @@ class LogUtil
             $func = ((!empty($class)) ? "$class::$func" : $func);
             $msg = __f('%1$s The origin of this message was \'%2$s\' at line %3$s in file \'%4$s\'.', array($message, $func, $line, $file));
 
-            if (System::isDevelopmentMode()) {
-                $msg .= '<br />';
-                $msg .= _prayer($debug);
-                $msg .= '<br />';
-                $msg .= _prayer(debug_backtrace());
-
-            }
+//            if (System::isDevelopmentMode()) {
+//                $msg .= '<br />';
+//                $msg .= _prayer($debug);
+//                $msg .= '<br />';
+//                $msg .= _prayer(debug_backtrace());
+//
+//            }
         }
 
         $msgs = SessionUtil::getVar('_ZErrorMsg', array());
@@ -339,24 +339,24 @@ class LogUtil
      */
     public static function log($msg, $level = 'DEFAULT')
     {
-        global $ZConfig;
-        $haveConfig = count($ZConfig['Log']) > 0;
-        $logLevels = $ZConfig['Log']['log_levels'];
-        $showErrors = $ZConfig['Log']['log_show_errors'];
-        $logUser = $ZConfig['Log']['log_user'];
-        $suid = SessionUtil::getVar('uid', 0);
-
-        if ($logUser && $logUser != $suid) {
-            return;
-        }
-
-        if (!$haveConfig) {
-            print "<p><strong>".__("Logging configuration can't be loaded .... logging is disabled")."</strong></p>";
-        } elseif ($level == "ALL" && $showErrors == true) {
-            print "<p><strong>".__("You should not add an event log with log_level 'ALL'")."</strong></p>";
-        } elseif (in_array($level, $logLevels) || in_array("ALL", $logLevels)) {
-            self::_write($msg, $level);
-        }
+//        global $ZConfig;
+//        $haveConfig = count($ZConfig['Log']) > 0;
+//        $logLevels = $ZConfig['Log']['log_levels'];
+//        $showErrors = $ZConfig['Log']['log_show_errors'];
+//        $logUser = $ZConfig['Log']['log_user'];
+//        $suid = SessionUtil::getVar('uid', 0);
+//
+//        if ($logUser && $logUser != $suid) {
+//            return;
+//        }
+//
+//        if (!$haveConfig) {
+//            print "<p><strong>".__("Logging configuration can't be loaded .... logging is disabled")."</strong></p>";
+//        } elseif ($level == "ALL" && $showErrors == true) {
+//            print "<p><strong>".__("You should not add an event log with log_level 'ALL'")."</strong></p>";
+//        } elseif (in_array($level, $logLevels) || in_array("ALL", $logLevels)) {
+//            self::_write($msg, $level);
+//        }
     }
 
     /**
@@ -368,31 +368,31 @@ class LogUtil
      */
     public static function getLogFileName($level = null)
     {
-        global $ZConfig;
-        $logfileSpec = $ZConfig['Log']['log_file'];
-        $dateFormat = $ZConfig['Log']['log_file_date_format'];
-
-        if ($level && isset($ZConfig['Log']['log_level_files'][$level]) && $ZConfig['Log']['log_level_files'][$level]) {
-            $logfileSpec = $ZConfig['Log']['log_level_files'][$level];
-        }
-
-        if (strpos($logfileSpec, "%s") !== false) {
-            if ($ZConfig['Log']['log_file_uid']) {
-                $perc = strpos($logfileSpec, '%s');
-                $start = substr($logfileSpec, 0, $perc + 2);
-                $end = substr($logfileSpec, $perc + 2);
-                $uid = SessionUtil::getVar('uid', 0);
-
-                $logfileSpec = $start . '-%d' . $end;
-                $logfile = sprintf($logfileSpec, date($dateFormat), $uid);
-            } else {
-                $logfile = sprintf($logfileSpec, date($dateFormat));
-            }
-        } else {
-            $logfile = $logfileSpec;
-        }
-
-        return $logfile;
+//        global $ZConfig;
+//        $logfileSpec = $ZConfig['Log']['log_file'];
+//        $dateFormat = $ZConfig['Log']['log_file_date_format'];
+//
+//        if ($level && isset($ZConfig['Log']['log_level_files'][$level]) && $ZConfig['Log']['log_level_files'][$level]) {
+//            $logfileSpec = $ZConfig['Log']['log_level_files'][$level];
+//        }
+//
+//        if (strpos($logfileSpec, "%s") !== false) {
+//            if ($ZConfig['Log']['log_file_uid']) {
+//                $perc = strpos($logfileSpec, '%s');
+//                $start = substr($logfileSpec, 0, $perc + 2);
+//                $end = substr($logfileSpec, $perc + 2);
+//                $uid = SessionUtil::getVar('uid', 0);
+//
+//                $logfileSpec = $start . '-%d' . $end;
+//                $logfile = sprintf($logfileSpec, date($dateFormat), $uid);
+//            } else {
+//                $logfile = sprintf($logfileSpec, date($dateFormat));
+//            }
+//        } else {
+//            $logfile = $logfileSpec;
+//        }
+//
+//        return $logfile;
     }
 
     /**
@@ -408,101 +408,101 @@ class LogUtil
      */
     public static function _write($msg, $level = 'DEFAULT', $securityInfo = null)
     {
-        global $ZConfig;
-        $logEnabled = $ZConfig['Log']['log_enabled'];
-        if (!$logEnabled) {
-            return;
-        }
-
-        $logShowErr = $ZConfig['Log']['log_show_errors'];
-        $logDateFmt = $ZConfig['Log']['log_date_format'];
-        $logDest = $ZConfig['Log']['log_dest'];
-        $uid = SessionUtil::getVar('uid', 1);
-        $module = ModUtil::getName();
-        $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
-        $func = FormUtil::getPassedValue('func', 'main', 'GETPOST');
-
-        if ($level && isset($ZConfig['Log']['log_level_dest'][$level]) && $ZConfig['Log']['log_level_dest'][$level]) {
-            $logDest = $ZConfig['Log']['log_level_dest'][$level];
-        }
-
-        // permission to be logged to DB or FILE
-        if ($level == 'PERMISSION' && ($logDest != 'DB' && $logDest != 'FILE')) {
-            $logDest = 'DB';
-        }
-
-        $logDest = strtoupper($logDest);
-
-        $logline = '';
-        if ($logDest == 'FILE') {
-            $title = date($logDateFmt) . ", level=$level, uid=$uid, module=$module, type=$type, func=$func\n";
-            if ($securityInfo)
-                $title .= "++ sec_component=$securityInfo[sec_component], sec_instance=$securityInfo[sec_instance], sec_permission=$securityInfo[sec_permission]\n";
-            $logline = '+ ' . $title;
-        }
-        $logline .= "$msg\n\n";
-
-        if ($logDest == 'FILE') {
-            static $logfile = '';
-            if (!$logfile) {
-                $logfile = self::getLogFileName($level);
-            }
-
-            $logfileOK = self::_checkLogFile($logfile, $level, $reason);
-            if ($logfileOK) {
-                $fp = fopen($logfile, 'a');
-                fwrite($fp, $logline, strlen($logline));
-                fclose($fp);
-            } elseif ($logShowErr) {
-                if ($reason == 'NOWRITE') {
-                    print "<p><strong>".__f('Logging Disabled. Log file (%s) is not writable.', $logfile)."</strong></p>";
-                } elseif ($reason == 'TOOBIG') {
-                    print "<p><strong>".__f("Log file (%s) is full.", $logfile)."</strong></p>";
-                }
-            }
-        } elseif ($logDest == 'PRINT') {
-            print '<div class="z-sub" style="text-align:left;">' . $logline . '</div>';
-            //print $msg;
-        } elseif ($logDest == 'MAIL') {
-            $title = date($logDateFmt) . ", level=$level, uid=$uid\n";
-            $adminmail = System::getVar('adminmail');
-
-            $args = array();
-            $args['fromname'] = 'Zikula ' . System::getVar('slogan', 'Site Slogan');
-            $args['fromaddress'] = $adminmail;
-            $args['toname'] = 'Site Administrator';
-            $args['toaddress'] = $adminmail;
-            $args['subject'] = "Log Message: level=$level, uid=$uid";
-            $args['body'] = $logline;
-
-            $rc = ModUtil::func('Mailer', 'userapi', 'sendmessage', $args);
-        } elseif ($logDest == 'DB') {
-            $obj = array();
-            $obj['date'] = date($logDateFmt);
-            $obj['uid'] = $uid;
-            $obj['component'] = $level;
-            $obj['module'] = $module;
-            $obj['type'] = $type;
-            $obj['function'] = $func;
-            $obj['message'] = $msg;
-
-            if ($securityInfo && is_array($securityInfo)) {
-                $obj = array_merge($obj, $securityInfo);
-            }
-
-            if (ModUtil::dbInfoLoad('SecurityCenter')) {
-                if (!DBUtil::insertObject($obj, 'sc_logevent')) {
-                    print '<div class="z-sub" style="text-align:left;">';
-                    print __('Failed to insert log record into log_event table').'<br />';
-                    prayer($obj);
-                    print '</div>';
-                }
-            } else {
-                print __('Failed to load logging table definition from SecurityCenter module').'<br />';
-            }
-        } else {
-            print __f('Unknown log destination [%s].', $logDest);
-        }
+//        global $ZConfig;
+//        $logEnabled = $ZConfig['Log']['log_enabled'];
+//        if (!$logEnabled) {
+//            return;
+//        }
+//
+//        $logShowErr = $ZConfig['Log']['log_show_errors'];
+//        $logDateFmt = $ZConfig['Log']['log_date_format'];
+//        $logDest = $ZConfig['Log']['log_dest'];
+//        $uid = SessionUtil::getVar('uid', 1);
+//        $module = ModUtil::getName();
+//        $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
+//        $func = FormUtil::getPassedValue('func', 'main', 'GETPOST');
+//
+//        if ($level && isset($ZConfig['Log']['log_level_dest'][$level]) && $ZConfig['Log']['log_level_dest'][$level]) {
+//            $logDest = $ZConfig['Log']['log_level_dest'][$level];
+//        }
+//
+//        // permission to be logged to DB or FILE
+//        if ($level == 'PERMISSION' && ($logDest != 'DB' && $logDest != 'FILE')) {
+//            $logDest = 'DB';
+//        }
+//
+//        $logDest = strtoupper($logDest);
+//
+//        $logline = '';
+//        if ($logDest == 'FILE') {
+//            $title = date($logDateFmt) . ", level=$level, uid=$uid, module=$module, type=$type, func=$func\n";
+//            if ($securityInfo)
+//                $title .= "++ sec_component=$securityInfo[sec_component], sec_instance=$securityInfo[sec_instance], sec_permission=$securityInfo[sec_permission]\n";
+//            $logline = '+ ' . $title;
+//        }
+//        $logline .= "$msg\n\n";
+//
+//        if ($logDest == 'FILE') {
+//            static $logfile = '';
+//            if (!$logfile) {
+//                $logfile = self::getLogFileName($level);
+//            }
+//
+//            $logfileOK = self::_checkLogFile($logfile, $level, $reason);
+//            if ($logfileOK) {
+//                $fp = fopen($logfile, 'a');
+//                fwrite($fp, $logline, strlen($logline));
+//                fclose($fp);
+//            } elseif ($logShowErr) {
+//                if ($reason == 'NOWRITE') {
+//                    print "<p><strong>".__f('Logging Disabled. Log file (%s) is not writable.', $logfile)."</strong></p>";
+//                } elseif ($reason == 'TOOBIG') {
+//                    print "<p><strong>".__f("Log file (%s) is full.", $logfile)."</strong></p>";
+//                }
+//            }
+//        } elseif ($logDest == 'PRINT') {
+//            print '<div class="z-sub" style="text-align:left;">' . $logline . '</div>';
+//            //print $msg;
+//        } elseif ($logDest == 'MAIL') {
+//            $title = date($logDateFmt) . ", level=$level, uid=$uid\n";
+//            $adminmail = System::getVar('adminmail');
+//
+//            $args = array();
+//            $args['fromname'] = 'Zikula ' . System::getVar('slogan', 'Site Slogan');
+//            $args['fromaddress'] = $adminmail;
+//            $args['toname'] = 'Site Administrator';
+//            $args['toaddress'] = $adminmail;
+//            $args['subject'] = "Log Message: level=$level, uid=$uid";
+//            $args['body'] = $logline;
+//
+//            $rc = ModUtil::func('Mailer', 'userapi', 'sendmessage', $args);
+//        } elseif ($logDest == 'DB') {
+//            $obj = array();
+//            $obj['date'] = date($logDateFmt);
+//            $obj['uid'] = $uid;
+//            $obj['component'] = $level;
+//            $obj['module'] = $module;
+//            $obj['type'] = $type;
+//            $obj['function'] = $func;
+//            $obj['message'] = $msg;
+//
+//            if ($securityInfo && is_array($securityInfo)) {
+//                $obj = array_merge($obj, $securityInfo);
+//            }
+//
+//            if (ModUtil::dbInfoLoad('SecurityCenter')) {
+//                if (!DBUtil::insertObject($obj, 'sc_logevent')) {
+//                    print '<div class="z-sub" style="text-align:left;">';
+//                    print __('Failed to insert log record into log_event table').'<br />';
+//                    prayer($obj);
+//                    print '</div>';
+//                }
+//            } else {
+//                print __('Failed to load logging table definition from SecurityCenter module').'<br />';
+//            }
+//        } else {
+//            print __f('Unknown log destination [%s].', $logDest);
+//        }
     }
 
     /**
@@ -519,37 +519,37 @@ class LogUtil
      */
     public static function _checkLogFile($logfile, $level, &$reason)
     {
-        global $ZConfig;
-        $logSize = $ZConfig['Log']['log_maxsize'];
-
-        if (!$logfile) {
-            $logfile = self::getLogFileName($level);
-        }
-
-        $size = 0;
-        $rc = false;
-
-        if (file_exists($logfile)) {
-            $size = filesize($logfile) / 1024 / 1024;
-        }
-
-        if (file_exists($logfile) && is_writable($logfile)) {
-            $rc = true;
-        } elseif (!file_exists($logfile)) {
-            @touch($logfile);
-            if (file_exists($logfile)) {
-                chmod($logfile, 0755);
-                $rc = true;
-            } else {
-                SessionUtil::setVar('_ZStatusMsg', __f('Unable to create log file [%s].', $logfile));
-                $reason = 'NOWRITE';
-            }
-        } elseif ($logSize && $size > $logSize) {
-            SessionUtil::setVar('_ZStatusMsg', __f('Logfile [%1$s] size [%2$s] exceeds [%3$s].', array($logfile, $size, $logSize)));
-            $reason = 'TOOBIG';
-        }
-
-        return $rc;
+//        global $ZConfig;
+//        $logSize = $ZConfig['Log']['log_maxsize'];
+//
+//        if (!$logfile) {
+//            $logfile = self::getLogFileName($level);
+//        }
+//
+//        $size = 0;
+//        $rc = false;
+//
+//        if (file_exists($logfile)) {
+//            $size = filesize($logfile) / 1024 / 1024;
+//        }
+//
+//        if (file_exists($logfile) && is_writable($logfile)) {
+//            $rc = true;
+//        } elseif (!file_exists($logfile)) {
+//            @touch($logfile);
+//            if (file_exists($logfile)) {
+//                chmod($logfile, 0755);
+//                $rc = true;
+//            } else {
+//                SessionUtil::setVar('_ZStatusMsg', __f('Unable to create log file [%s].', $logfile));
+//                $reason = 'NOWRITE';
+//            }
+//        } elseif ($logSize && $size > $logSize) {
+//            SessionUtil::setVar('_ZStatusMsg', __f('Logfile [%1$s] size [%2$s] exceeds [%3$s].', array($logfile, $size, $logSize)));
+//            $reason = 'TOOBIG';
+//        }
+//
+//        return $rc;
     }
 
     /**
@@ -559,32 +559,32 @@ class LogUtil
      */
     public static function _cleanLogFiles()
     {
-        if (System::isInstalling()) {
-            return;
-        }
-
-        global $ZConfig;
-
-        $oneday = 24 * 60 * 60;
-        $log_keep_days = $ZConfig['Log']['log_keep_days'];
-        if (!$log_keep_days)
-            $log_keep_days = 30; // temporary default value for migration
-
-
-        $log_keep_seconds = $log_keep_days * $oneday;
-        $lastcheck = System::getVar('log_last_rotate');
-        $currenttime = time();
-
-        if (time() - $lastcheck > $oneday) {
-            // check once a day
-            $logfilepath = $ZConfig['Log']['log_dir'];
-            $logfiles = FileUtil::getFiles($logfilepath, false, false);
-            foreach ($logfiles as $logfile) {
-                if ($currenttime - filemtime($logfile) > $log_keep_seconds) {
-                    unlink($logfile);
-                }
-            }
-            System::setVar('log_last_rotate', $currenttime);
-        }
+//        if (System::isInstalling()) {
+//            return;
+//        }
+//
+//        global $ZConfig;
+//
+//        $oneday = 24 * 60 * 60;
+//        $log_keep_days = $ZConfig['Log']['log_keep_days'];
+//        if (!$log_keep_days)
+//            $log_keep_days = 30; // temporary default value for migration
+//
+//
+//        $log_keep_seconds = $log_keep_days * $oneday;
+//        $lastcheck = System::getVar('log_last_rotate');
+//        $currenttime = time();
+//
+//        if (time() - $lastcheck > $oneday) {
+//            // check once a day
+//            $logfilepath = $ZConfig['Log']['log_dir'];
+//            $logfiles = FileUtil::getFiles($logfilepath, false, false);
+//            foreach ($logfiles as $logfile) {
+//                if ($currenttime - filemtime($logfile) > $log_keep_seconds) {
+//                    unlink($logfile);
+//                }
+//            }
+//            System::setVar('log_last_rotate', $currenttime);
+//        }
     }
 }

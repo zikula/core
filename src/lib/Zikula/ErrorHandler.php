@@ -90,7 +90,7 @@ class Zikula_ErrorHandler
      * @return void
      */
     public function standardHandler($errno, $errstr, $errfile, $errline, $errcontext)
-    {
+    {return;
         $event = new Zikula_Event('systemerror', null, array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext));
         $this->eventManager->notify($event);
 
