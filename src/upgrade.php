@@ -53,7 +53,7 @@ if (!isset($columns['capabilities'])) {
 $_SESSION['_ZikulaUpgrader'] = array();
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
-if (version_compare( $installedVersion, '1.3.0-dev') === -1) {
+if (version_compare($installedVersion, '1.3.0-dev') === -1) {
     $_SESSION['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = true;
 }
 
