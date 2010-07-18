@@ -59,7 +59,7 @@ class ZLoader
 
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
-        //self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
+        self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
         include ZLOADER_PATH. 'legacy/Loader.php';
 
         // load eventhandlers from config/EventHandlers directory if any.
@@ -111,7 +111,7 @@ class ZLoader
         if (strpos($class, 'SystemPlugin') === 0) {
             $array = explode('_', $class);
             $pluginName = $array[1];
-            $name = substr($class, strlen("SystemPlugin_${$pluginName}"), strlen($class));
+            $name = substr($class, strlen("SystemPlugin_{$pluginName}"), strlen($class));
             $path = str_replace('_', '/', "plugins/$pluginName/lib/$name.php");
             if (file_exists($path)) {
                 return include $path;
