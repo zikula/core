@@ -52,7 +52,7 @@
                 <div class="content">
                     <h1>Zikula is not installed!</h1>
                     <p>
-                        You are seeing this message because Zikula is not yet installed.  You can install Zikula by visiting the <a href="install.php">install script</a>, but before doing so please read the <a href="docs/en/README">installation instructions</a>.
+                        You are seeing this message because Zikula is not yet installed.  You can install Zikula by visiting the <a href="install.php?lang=en">install script</a>, but before doing so please read the <a href="docs/en/README">installation instructions</a>.
                         Further information can be found in the <a href="http://community.zikula.org/Wiki-UserDocs.htm">online documentation</a>.
                     </p>
                     <p>
