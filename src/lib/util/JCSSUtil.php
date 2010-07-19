@@ -138,7 +138,7 @@ class JCSSUtil
                 'lang' => ZLanguage::getLanguageCode()
             );
             foreach($jsgettext as $entry) {
-                list($domain, $module) = explode(':',$entry);
+                @list($domain, $module) = explode(':', $entry);
                 if(!empty($domain)) {
                     $params[$domain] = !empty($module) ? $module : $domain;
                 }
