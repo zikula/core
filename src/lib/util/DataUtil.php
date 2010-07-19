@@ -745,6 +745,7 @@ class DataUtil
      */
     public static function parseIniFile($iIniFile)
     {
+        return parse_ini_file($iIniFile);
         $aResult = array();
         $aMatches = array();
 
