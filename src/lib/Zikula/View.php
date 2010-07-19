@@ -739,6 +739,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
     {
+        /*
         if ($cache_id) {
             $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $cache_id;
         } else {
@@ -746,6 +747,23 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         }
 
         return parent::clear_cache($template, $cache_id, $compile_id, $expire);
+        */
+
+        $cache_dir = $this->cache_dir;
+
+        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), 'f', false);
+
+        if ($expire == null) {
+            foreach($cached_files as $cf) {
+                if (strpos($cf, $template) !== false && strpos($cf, $this->theme.'_'.$this->language) !== false) {
+                    return unlink(realpath($cf));
+                }
+            }
+        } else {
+            // actions for when $expire is not null
+        }
+
+        return true;
     }
 
     /**
