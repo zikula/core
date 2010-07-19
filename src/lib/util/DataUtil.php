@@ -735,33 +735,49 @@ class DataUtil
     }
 
     /**
-     * Native ini file parser because PHP can't handle such a simple function cross platform.
+     * Parse ini file. If safe mode is off, parse with native parse_ini_file php function, else with custom code.
      *
-     * Taken from http://mach13.com/loose-and-multiline-parse_ini_file-function-in-php
+     * @param string  $iIniFile         File to parse.
+     * @param boolean $process_sections Whether to process sections or not. (default is true). (optional).
      *
-     * @param file $iIniFile File to parse.
-     *
-     * @return array Array with the content of ini file.
+     * @return array array with the content of ini file.
      */
-    public static function parseIniFile($iIniFile)
+    public static function parseIniFile($iIniFile, $process_sections = true)
     {
-        return parse_ini_file($iIniFile);
-        $aResult = array();
-        $aMatches = array();
+        if (ini_get('safe_mode')) {
+            $output = array();
+            $contents = file($iIniFile);
 
-        $a = &$aResult;
-        $s = '\s*([[:alnum:]_\- \*]+?)\s*';
+            foreach ($contents as $line) {
+                $line = trim($line);
+                $length = strlen($line);
+                
+                if ($length >  0) {
+                    if (substr($line, 0, 1) == ';') {
+                        continue;
+                    }
+                    else if (substr($line, 0, 1) == '[' && substr($line, -1, 1) == ']' && $process_sections == true) {
+                        $section = substr($line, 1, $length-2);
+                    } else {
+                        $parts = explode('=', $line);
 
-        preg_match_all('#^\s*((\['.$s.'\])|(("?)'.$s.'\\5\s*=\s*("?)(.*?)\\7))\s*(;[^\n]*?)?$#ms', file_get_contents($iIniFile), $aMatches, PREG_SET_ORDER);
+                        $key = trim($parts[0]);
+                        $value_tmp = explode(";", $parts[1]);
+                        $value = trim($value_tmp[0]);
 
-        foreach ($aMatches as $aMatch) {
-            if (empty($aMatch[2])) {
-                $a[$aMatch[6]] = $aMatch[8];
-            } else {
-                $a = &$aResult[$aMatch[3]];
+                        if (isset($section) && !empty($section)) {
+                            $output[$section][$key] = $value;
+                        } else {
+                            $output[$key] = $value;
+                        }
+                    }
+                }
             }
+
+            return $output;
+        } else {
+            return parse_ini_file($iIniFile, $process_sections);
         }
-        return $aResult;
-    }
+    }     
 }
 

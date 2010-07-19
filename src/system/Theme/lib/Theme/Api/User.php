@@ -140,13 +140,9 @@ class Theme_Api_User extends Zikula_Api
         $osfile = DataUtil::formatForOS($args['file']);
 
         if (file_exists($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile)) {
-            if (ini_get('safe_mode')) {
-                return $this->_parseinifile($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile);
-            } else {
-                return parse_ini_file($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile, $args['sections']);
-            }
+            return DataUtil::parseIniFile($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile, $args['sections']);
         } else if (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
-            return parse_ini_file('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
+            return DataUtil::parseIniFile('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
         }
     }
 
@@ -266,40 +262,6 @@ class Theme_Api_User extends Zikula_Api
         UserUtil::setVar('theme', '');
 
         return true;
-    }
-
-    /**
-     * read an ini file
-     *
-     * This API is only used if
-     * a) a running configuration exists and
-     * b) safe mode is on
-     *
-     * The API is necessary becasue parse_ini_file usage is restricted under safe mode.
-     */
-    function _parseinifile($filename)
-    {
-        $output = array();
-        $contents = file($filename);
-
-        foreach ($contents as $line) {
-            $line = trim($line);
-            $length = strlen($line);
-            if ($length >  0) {
-                if (substr($line, 0, 1) == '[' && substr($line, -1, 1) == ']') {
-                    $section = substr($line, 1, $length-2);
-                } else {
-                    $parts = explode('=', $line);
-                    if (isset($section) && !empty($section)) {
-                        $output[$section][trim($parts[0])] = trim($parts[1]);
-                    } else {
-                        $output[trim($parts[0])] = trim($parts[1]);
-                    }
-                }
-            }
-        }
-
-        return $output;
     }
 
     /**
