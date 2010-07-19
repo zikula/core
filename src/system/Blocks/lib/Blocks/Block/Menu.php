@@ -299,16 +299,18 @@ class Blocks_Block_Menu extends Zikula_Block
         $linkdelete = FormUtil::getPassedValue('linkdelete');
         $linkinsert = FormUtil::getPassedValue('linkinsert');
 
-        foreach ($linkname as $v) {
-            if (empty($linkdelete[$c])) {
-                $content[] = "$linkurl[$c]|$linkname[$c]|$linkdesc[$c]";
+        if (isset($linkname)) {
+            foreach ($linkname as $v) {
+                if (empty($linkdelete[$c])) {
+                    $content[] = "$linkurl[$c]|$linkname[$c]|$linkdesc[$c]";
+                }
+                if (!empty($linkinsert[$c])) {
+                    $content[] = '||';
+                }
+                $c++;
             }
-            if (!empty($linkinsert[$c])) {
-                $content[] = '||';
-            }
-            $c++;
         }
-
+        
         $new_linkname = FormUtil::getPassedValue('new_linkname');
         $new_linkurl  = FormUtil::getPassedValue('new_linkurl');
         $new_linkdesc = FormUtil::getPassedValue('new_linkdesc');
