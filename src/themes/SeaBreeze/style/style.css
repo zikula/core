@@ -383,7 +383,6 @@ a:active {
 #sidebar ul li {
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-weight: normal;
-    letter-spacing: 0.1em;
     border: 0;
     text-align: left;
     padding-left: 0;
@@ -631,7 +630,6 @@ h4.BlockTitleRight,
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: normal;
-    letter-spacing: 0.1em;
     text-align: left;
     padding-left: 0;
     margin-left: 0;
