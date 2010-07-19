@@ -867,7 +867,7 @@ div.z-viewbuttons img {
     padding: 4px 10px 3px 10px; /* IE7 */
 }
 
-.z-buttons .z-button:hover,
+.z-button:hover,
 .z-buttons a:hover,
 .z-buttons input:hover,
 .z-buttons button:hover {
@@ -878,7 +878,7 @@ div.z-viewbuttons img {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#F5F5F5');
 }
 
-.z-buttons .z-button:active,
+.z-button:active,
 .z-buttons a:active,
 .z-buttons input:active,
 .z-buttons button:active {
@@ -888,7 +888,7 @@ div.z-viewbuttons img {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d0d0d0', endColorstr='#f0f0f0');
 }
 
-.z-buttons .z-button img,
+.z-button img,
 .z-buttons button img,
 .z-buttons a img {
     margin: 0 3px -3px 0 !important;

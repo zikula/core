@@ -87,7 +87,6 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     height: 110px;
     margin: 0 1px 1px 1px;
     background: #467aa7;
-    color: #ffffff;
 }
 
 #theme_header h1 {
@@ -116,7 +115,6 @@ p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
     line-height: 2.2em;
     margin: 0 1px;
     background: #578bb8;
-    color: #ffffff;
 }
 
 #theme_navigation_bar li {
