@@ -751,18 +751,28 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         $cache_dir = $this->cache_dir;
 
-        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), 'f', false);
+        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), null, false);
 
-        if ($expire == null) {
-            foreach($cached_files as $cf) {
-                if (strpos($cf, $template) !== false && strpos($cf, $this->theme.'_'.$this->language) !== false) {
-                    return unlink(realpath($cf));
+        if ($template == null) {
+            if ($expire == null) {
+                foreach($cached_files as $cf) {
+                    unlink(realpath($cf));
                 }
+            } else {
+                // actions for when $exp_time is not null
             }
         } else {
-            // actions for when $expire is not null
+            if ($expire == null) {
+                foreach($cached_files as $cf) {
+                    if (strpos($cf, $template) !== false && strpos($cf, $this->theme.'_'.$this->language) !== false) {
+                        unlink(realpath($cf));
+                    }
+                }
+            } else {
+                // actions for when $expire is not null
+            }
         }
-
+        
         return true;
     }
 
@@ -782,19 +792,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         return $res;
         */
 
-        $cache_dir = $this->cache_dir;
-
-        $cached_files = FileUtil::getFiles($cache_dir, true, false, array('tpl'), null, false);
-
-        if ($exp_time == null) {
-            foreach($cached_files as $cf) {
-                unlink(realpath($cf));
-            }
-        } else {
-            // actions for when $exp_time is not null
-        }
-
-        return true;
+        return $this->clear_cache(null, null, null, $exp_time);
     }
 
     /**
