@@ -139,10 +139,10 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      *
      * @throws LogicException If no metadata is defined.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, Zikula_EventManager $eventManager)
+    public function __construct(Zikula_ServiceManager $serviceManager)
     {
-        $this->eventManager = $eventManager;
         $this->serviceManager = $serviceManager;
+        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
         $this->_setup();
         if (!$this->getMetaDisplayName() || !$this->getMetaDescription() || !$this->getMetaVersion()) {
             throw new LogicException(sprintf("setMeta() must be defined in %s must and return array('displayname' => 'displayname', 'description' => 'description', 'version' => 'a.b.c')", get_class($this)));
