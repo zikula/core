@@ -198,10 +198,10 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             $this->caching = false;
         }
 
-        $this->cache_lifetime = ModUtil::getVar('Theme', 'view_lifetime');
+        $this->cache_lifetime = ModUtil::getVar('Theme', 'render_lifetime');
         $this->cache_dir = CacheUtil::getLocalDir() . '/view_cache';
-        $this->compile_check = ModUtil::getVar('Theme', 'view_compile_check');
-        $this->force_compile = ModUtil::getVar('Theme', 'view_force_compile');
+        $this->compile_check = ModUtil::getVar('Theme', 'render_compile_check');
+        $this->force_compile = ModUtil::getVar('Theme', 'render_force_compile');
 
         $this->compile_dir = CacheUtil::getLocalDir() . '/view_compiled';
         $this->compile_id = $this->toplevelmodule . '_' . $theme . '_' . Zlanguage::getLanguageCode();
