@@ -160,17 +160,13 @@ class Blocks_Block_Extmenu extends Zikula_Block
                 // prepare image
 
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
-                        case 2:
-                        case 3:
-                            $menuitems[] = array('name'   => $mod['displayname'],
-                                    'url'    => ModUtil::url($mod['name'], 'user', 'main'),
-                                    'title'  => $mod['description'],
-                                    'level'  => 0,
-                                    'parentid' => null,
-                                    'image'  => ''
-                            );
-                            break;
-                    }
+                    $menuitems[] = array('name'   => $mod['displayname'],
+                            'url'    => ModUtil::url($mod['name'], 'user', 'main'),
+                            'title'  => $mod['description'],
+                            'level'  => 0,
+                            'parentid' => null,
+                            'image'  => ''
+                        );
                 }
             }
         }
