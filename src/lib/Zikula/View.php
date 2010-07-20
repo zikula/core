@@ -853,7 +853,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     function assign_by_ref($key, &$value)
     {
         $this->_assign_check($key);
-        parent::assign_by_ref($key, &$value);
+        parent::assign_by_ref($key, $value);
         return $this;
     }
 
