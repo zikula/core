@@ -47,25 +47,13 @@ abstract class Zikula_InteractiveInstaller extends Zikula_Controller
     }
 
     /**
-     * Post inialise method hook.
-     *
-     * Enforces admin level permission requirement.  Throws an exception back to the
-     * front controller if not.
-     *
-     * @return void
-     */
-    public function postInitialize()
-    {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->getName . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
-    }
-
-    /**
      * Ensure we are in an interactive session.
      *
      * @return void
      */
     public function preInvokeMethod()
     {
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->getName() . '::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
         $check = (bool)(SessionUtil::getVar('interactive_init') || SessionUtil::getVar('interactive_upgrade') || SessionUtil::getVar('interactive_remove'));
         $this->throwForbiddenUnless($check, $this->__('This doesnt appear to be an interactive session.'));
     }
