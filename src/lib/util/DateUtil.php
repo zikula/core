@@ -92,7 +92,7 @@ class DateUtil
      *
      * @return string The datetime into internal format.
      */
-    public function transformInternalDateTime($timestamp)
+    public static function transformInternalDateTime($timestamp)
     {
         return self::strftime(DATEFORMAT_FIXED, $timestamp);
     }
@@ -104,7 +104,7 @@ class DateUtil
      *
      * @return string The date into internal format.
      */
-    public function transformInternalDate($timestamp)
+    public static function transformInternalDate($timestamp)
     {
         return self::strftime(DATEONLYFORMAT_FIXED, $timestamp);
     }
@@ -119,7 +119,7 @@ class DateUtil
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public function formatDatetime($datetime=null, $format=DATEFORMAT_FIXED, $TZadjust=true)
+    public static function formatDatetime($datetime=null, $format=DATEFORMAT_FIXED, $TZadjust=true)
     {
         if ($datetime === null) {
             return '';
@@ -591,10 +591,10 @@ class DateUtil
      *
      * @return string The timestamp or null in case of errors.
      */
-    public function parseUIDate($text, $format=null)
+    public static function parseUIDate($text, $format=null)
     {
         return self::parseUIDateTime($text, $format);
-        }
+    }
 
 
     /**
@@ -605,7 +605,7 @@ class DateUtil
      *
      * @return string The timestamp or null in case of errors.
      */
-    public function parseUIDateTime($text, $dateformat=null)
+    public static function parseUIDateTime($text, $dateformat=null)
     {
         $format = self::getDateFormatData($dateformat);
         $yearPos = $format['matches']['year'];
@@ -876,7 +876,7 @@ class DateUtil
      *
      * @return array Array of the meaning of each match.
      */
-    public function getDateFormatData($dateformat=null)
+    public static function getDateFormatData($dateformat=null)
     {
         if (is_null($dateformat)) {
             $dateformat = __('%Y-%m-%d');

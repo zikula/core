@@ -2671,7 +2671,7 @@ class DBUtil
      *
      * @return array The resulting object array.
      */
-    function selectObjectArraySQL($sql, $table, $columnArray = null, $permissionFilter = null, $limitOffSet = -1, $limitNumRows = -1)
+    public static function selectObjectArraySQL($sql, $table, $columnArray = null, $permissionFilter = null, $limitOffSet = -1, $limitNumRows = -1)
     {
         $key = $sql . serialize($columnArray) . serialize($permissionFilter) . $limitOffSet . $limitNumRows;
         $objects = self::getCache($table, $key);
