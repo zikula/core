@@ -160,16 +160,6 @@ class Blocks_Block_Extmenu extends Zikula_Block
                 // prepare image
 
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
-                    switch($mod['type']) {
-                        case 1:
-                            $menuitems[] = array('name'   => $mod['displayname'],
-                                    'url'    => System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
-                                    'title'  => $mod['description'],
-                                    'level'  => 0,
-                                    'parentid' => null,
-                                    'image'  => ''
-                            );
-                            break;
                         case 2:
                         case 3:
                             $menuitems[] = array('name'   => $mod['displayname'],
@@ -238,12 +228,6 @@ class Blocks_Block_Extmenu extends Zikula_Block
         } elseif (!empty($url)) {
             switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
             {
-                case '[': // old style module link
-                    {
-                        $url = explode(':', substr($url, 1,  - 1));
-                        $url = System::getVar('entrypoint', 'index.php') . '?name='.$url[0].(isset($url[1]) ? '&file='.$url[1]:'');
-                        break;
-                    }
                 case '{': // new module link
                     {
                         $url = explode(':', substr($url, 1,  - 1));
@@ -271,7 +255,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
                             //  build the url
                             $url = ModUtil::url($modname, $type, $func, $params);
                         } else {
-                            $url = System::getVar('entrypoint', 'index.php');
+                            $url = System::getHomepageUrl();
                         }
                         break;
                     }
@@ -342,7 +326,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
             $redirect = urlencode($newurl);
             $newurl = str_replace(System::getBaseUrl(), '', $newurl);
             if (empty($newurl)) {
-                $newurl = System::getVar('entrypoint', 'index.php');
+                $newurl = System::getHomepageUrl();
             }
             foreach($languages as $singlelanguage) {
                 $vars['links'][$singlelanguage][] = array('name'   => $this->__('--New link--'),

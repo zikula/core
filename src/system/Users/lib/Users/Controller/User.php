@@ -71,7 +71,7 @@ class Users_Controller_User extends Zikula_Controller
     {
         // If has logged in, header to index.php
         if (UserUtil::isLoggedIn()) {
-            return System::redirect(System::getVar('entrypoint', 'index.php'));
+            return System::redirect(System::getHomepageUrl());
         }
 
         // other vars
@@ -926,14 +926,14 @@ class Users_Controller_User extends Zikula_Controller
             if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because
                 // we might no have the permission for the recent site any longer
-                return System::redirect(System::getVar('entrypoint', 'index.php'));
+                return System::redirect(System::getHomepageUrl());
             } else {
                 // meta refresh
                 $this->printRedirectPage($this->__('Done! You have been logged out.'));
             }
         } else {
             LogUtil::registerError($this->__('Error! You have not been logged out.'));
-            return System::redirect(System::getVar('entrypoint', 'index.php'));
+            return System::redirect(System::getHomepageUrl());
         }
 
         return true;
@@ -1131,7 +1131,7 @@ class Users_Controller_User extends Zikula_Controller
      */
     private function printRedirectPage($message, $url)
     {
-        $url = (!isset($url) || empty($url)) ? System::getVar('entrypoint', 'index.php') : $url;
+        $url = (!isset($url) || empty($url)) ? System::getHomepageUrl() : $url;
 
         // check the url
         if (substr($url, 0, 1) == '/') {
@@ -1171,9 +1171,7 @@ class Users_Controller_User extends Zikula_Controller
     {
         // do not process if the site is enabled
         if (!System::getVar('siteoff', false)) {
-            $path = dirname(System::serverGetVar('PHP_SELF'));
-            $path = str_replace('\\', '/', $path);
-            return System::redirect($path . '/' . System::getVar('entrypoint', 'index.php'));
+            return System::redirect(System::getHomepageUrl());
         }
 
         $user = FormUtil::getPassedValue('user', null, 'POST');
@@ -1186,9 +1184,7 @@ class Users_Controller_User extends Zikula_Controller
             UserUtil::logout();
         }
 
-        $path = dirname(System::serverGetVar('PHP_SELF'));
-        $path = str_replace('\\', '/', $path);
-        return System::redirect($path . '/' . System::getVar('entrypoint', 'index.php'));
+        return System::redirect(System::getHomepageUrl());
     }
 
     /**
