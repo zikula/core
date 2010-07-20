@@ -4,7 +4,7 @@
 <div id="z-developernotices">
     <h3>{gt text="Developer notices (development mode on)" domain="zikula"}</h3>
     <ul>
-        {if $notices.developer.render}
+        {if isset($notices.developer.render)}
         <li>
             <a href="{$themeurl|safetext}">{gt text="Enabled Template settings" domain="zikula"}:</a>
             {foreach from=$notices.developer.render name=item item=item}
@@ -12,7 +12,7 @@
             {/foreach}
         </li>
         {/if}
-        {if $notices.developer.theme}
+        {if isset($notices.developer.theme)}
         <li>
             <a href="{$themeurl|safetext}">{gt text="Enabled Theme settings" domain="zikula"}:</a>
             {foreach from=$notices.developer.theme name=item item=item}
@@ -20,7 +20,7 @@
             {/foreach}
         </li>
         {/if}
-        {if $notices.developer.cssjscombine}
+        {if isset($notices.developer.cssjscombine)}
         <li>{gt text="CSS/JS combination is enabled" domain="zikula"}</li>
         {/if}
         <li>
