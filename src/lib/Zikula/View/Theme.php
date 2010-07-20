@@ -873,7 +873,7 @@ class Zikula_View_Theme extends Zikula_View
      */
     private function load_vars($file, $section = null, $assign = null)
     {
-        if (!file_exists($file) || !($vars = DataUtil::parseIniFile($file))) {
+        if (!file_exists($file) || !($vars = parse_ini_file($file, true))) {
             return false;
         }
 

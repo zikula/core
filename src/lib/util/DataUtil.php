@@ -735,49 +735,16 @@ class DataUtil
     }
 
     /**
-     * Parse ini file. If safe mode is off, parse with native parse_ini_file php function, else with custom code.
+     * Parse ini file.
      *
-     * @param string  $iIniFile         File to parse.
-     * @param boolean $process_sections Whether to process sections or not. (default is true). (optional).
-     *
-     * @return array array with the content of ini file.
+     * @deprecated
+     * @since 1.3.0
+     * @see parse_ini_file()
      */
     public static function parseIniFile($iIniFile, $process_sections = true)
     {
-        if (ini_get('safe_mode')) {
-            $output = array();
-            $contents = file($iIniFile);
-
-            foreach ($contents as $line) {
-                $line = trim($line);
-                $length = strlen($line);
-                
-                if ($length >  0) {
-                    if (substr($line, 0, 1) == ';') {
-                        continue;
-                    }
-                    else if (substr($line, 0, 1) == '[' && substr($line, -1, 1) == ']' && $process_sections == true) {
-                        $section = substr($line, 1, $length-2);
-                    } else {
-                        $parts = explode('=', $line);
-
-                        $key = trim($parts[0]);
-                        $value_tmp = explode(";", $parts[1]);
-                        $value = trim($value_tmp[0]);
-
-                        if (isset($section) && !empty($section)) {
-                            $output[$section][$key] = $value;
-                        } else {
-                            $output[$key] = $value;
-                        }
-                    }
-                }
-            }
-
-            return $output;
-        } else {
-            return parse_ini_file($iIniFile, $process_sections);
-        }
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), 'STRICT');
+        return parse_ini_file($iIniFile, $process_sections);
     }     
 }
 

@@ -83,7 +83,7 @@ class ZLocale implements ArrayAccess
         $override = "config/locale/$lang/locale.ini";
         $file = (file_exists($override) ? $override : "locale/$lang/locale.ini");
         if (is_readable($file)) {
-            $array = DataUtil::parseIniFile($file);
+            $array = parse_ini_file($file, false);
             foreach ($array as $k => $v) {
                 $k = strtolower($k);
                 if ($k == "grouping" || $k == "mon_grouping") {

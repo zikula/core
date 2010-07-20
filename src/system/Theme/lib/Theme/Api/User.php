@@ -140,9 +140,9 @@ class Theme_Api_User extends Zikula_Api
         $osfile = DataUtil::formatForOS($args['file']);
 
         if (file_exists($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile)) {
-            return DataUtil::parseIniFile($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile, $args['sections']);
+            return parse_ini_file($ospntemp.'/Theme_Config/'.$ostheme.'_'.$osfile, $args['sections']);
         } else if (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
-            return DataUtil::parseIniFile('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
+            return parse_ini_file('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
         }
     }
 
