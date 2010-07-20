@@ -305,7 +305,7 @@ class Users_Api_Admin extends Zikula_Api
                 }
 
                 // Let other modules know we have deleted an item
-                $deleteEvent = new Zikula_Event('user.delete', null, array('uid' => $userObj['uid']));
+                $deleteEvent = new Zikula_Event('user.delete', $userObj);
                 $this->eventManager->notify($deleteEvent);
 
                 $this->callHooks('item', 'delete', $userObj['uid'], array('module' => 'Users'));

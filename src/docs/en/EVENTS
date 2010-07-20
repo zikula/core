@@ -60,6 +60,9 @@ user.gettheme
     This is invoked with notifyUntil so you should execute $event->setNotified() in the event handler.
     receives $event['name'] the chosen theme name, it can modify the name.
 
+user.delete
+    Occurs after a user is deleted from the system. The full user record deleted is available as the subject.
+
 module.postloadgeneric
     receives the args array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api).
 
