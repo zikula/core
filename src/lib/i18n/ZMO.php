@@ -128,13 +128,13 @@ class ZMO
     /**
      * Constructor.
      *
-     * @param StreamReader_Abstract $Reader       The StreamReader object.
+     * @param StreamReader_Abstract $reader       The StreamReader object.
      * @param boolean               $enable_cache Enable or disable caching of strings (default on).
      */
-    public function __construct(StreamReader_Abstract $Reader, $enable_cache = true)
+    public function __construct(StreamReader_Abstract $reader, $enable_cache = true)
     {
         // If there isn't a StreamReader, turn on short circuit mode.
-        if ($Reader->getError()) {
+        if ($reader->getError()) {
             $this->short_circuit = true;
             return;
         }
@@ -145,7 +145,7 @@ class ZMO
         $magic1 = (int)0x950412de;
         $magic2 = (int)0xde120495;
 
-        $this->stream = $Reader;
+        $this->stream = $reader;
         $magic = $this->readint();
         if ($magic == $magic1) {
             $this->byteorder = 0;
@@ -200,8 +200,6 @@ class ZMO
         return $this->encoding;
     }
 
-
-
     /**
      * Set encoding.
      *
@@ -240,11 +238,12 @@ class ZMO
     {
         if ($this->byteorder == 0) {
             // low endian
-            return array_shift(unpack('V', $this->stream->read(4)));
+            $data = unpack('V', $this->stream->read(4));
         } else {
             // big endian
-            return array_shift(unpack('N', $this->stream->read(4)));
+            $data = unpack('N', $this->stream->read(4));
         }
+        return array_shift($data);
     }
 
     /**
