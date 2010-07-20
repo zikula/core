@@ -252,11 +252,11 @@ class Users_Api_Admin extends Zikula_Api
      */
     public function deleteUser($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
             return false;
         }
 
-        if (!isset($args['uid']) || !(is_numeric($args['uid']) || is_array($args['uid']))) {
+        if (!isset($args['uid']) || (!is_numeric($args['uid']) && !is_array($args['uid']))) {
             return LogUtil::registerError("Error! Illegal argument were passed to 'deleteuser'");
         }
 
@@ -268,30 +268,47 @@ class Users_Api_Admin extends Zikula_Api
 
         // ensure we always have an array
         if (!is_array($args['uid'])) {
-            $args['uid'] = array(0 => $args['uid']);
+            $args['uid'] = array($args['uid']);
         }
 
+        $curUserUid = UserUtil::getVar('uid');
+        $userList = array();
         foreach ($args['uid'] as $uid) {
+            if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid == $curUserUid)) {
+                return false;
+            }
+            $userObj = UserUtil::getVars($uid);
+            if (!$userObj) {
+                return false;
+            } elseif (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE)) {
+                return false;
+            }
+
+            $userList[] = $userObj;
+        }
+
+
+        foreach ($userList as $userObj) {
             if ($markOnly) {
-                UserUtil::setVar('activated', UserUtil::ACTIVATED_PENDING_DELETE, $uid);
+                UserUtil::setVar('activated', UserUtil::ACTIVATED_PENDING_DELETE, $userObj['uid']);
             } else {
                 // TODO - This should be in the Groups module, and happen as a result of an event.
-                if (!DBUtil::deleteObjectByID('group_membership', $uid, 'uid')) {
+                if (!DBUtil::deleteObjectByID('group_membership', $userObj['uid'], 'uid')) {
                     return false;
                 }
 
-                ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array('uid' => $uid));
-                DBUtil::deleteObjectByID('session_info', $uid, 'uid');
+                ModUtil::apiFunc('Users', 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
+                DBUtil::deleteObjectByID('session_info', $userObj['uid'], 'uid');
 
-                if (!DBUtil::deleteObjectByID('users', $uid, 'uid')) {
+                if (!DBUtil::deleteObject($userObj, 'users', '', 'uid')) {
                     return false;
                 }
 
                 // Let other modules know we have deleted an item
-                $deleteEvent = new Zikula_Event('user.delete', null, array('uid' => $uid));
+                $deleteEvent = new Zikula_Event('user.delete', null, array('uid' => $userObj['uid']));
                 $this->eventManager->notify($deleteEvent);
 
-                $this->callHooks('item', 'delete', $uid, array('module' => 'Users'));
+                $this->callHooks('item', 'delete', $userObj['uid'], array('module' => 'Users'));
             }
         }
 
