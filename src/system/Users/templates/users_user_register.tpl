@@ -31,9 +31,11 @@
 {/if}
 
 <a id="users_formtop"></a>
-<p>{gt text='Registering for a user account is easy. Registration can give you access to content and to features of the site that are not available to anonymous guests.'}
-    {if $userMustAccept}{$touppString}{/if}
-    {gt text='During your visits, you are recommended to set your browser to accept cookies from this site, because various features of the site use cookies.'}</p>
+<p>
+    {gt text='Registering for a user account is easy. Registration can give you access to content and to features of the site that are not available to anonymous guests.'}
+    {if $userMustAccept}{$touppString|safehtml}{/if}
+    {gt text='During your visits, you are recommended to set your browser to accept cookies from this site, because various features of the site use cookies.'}
+</p>
 
 {if $zcore.Users.moderation && ($zcore.Users.reg_verifyemail != 'UserUtil::VERIFY_NO'|constant)}
 {if $zcore.Users.moderation_order == 'UserUtil::APPROVAL_BEFORE'|constant}
@@ -52,9 +54,11 @@
 <div id="users_errormsgs_div" class="z-errormsg{if empty($errormsgs)} z-hide{/if}">
     <p>{gt text="Please correct the following items:"}</p>
     <ul id="users_errormsgs">
+        {if isset($errorMessages)}
         {foreach from=$errorMessages item='message'}
-        <li>{$message}</li>
+        <li>{$message|safetext}</li>
         {/foreach}
+        {/if}
     </ul>
 </div>
 
@@ -131,11 +135,17 @@
                 <div>
                     <input id="users_reginfo_agreetoterms" type="checkbox" name="reginfo[agreetoterms]"{if isset($reginfo.agreetoterms)} checked=checked"{/if} value="1" />
                     {if $touActive && $ppActive}
-                    <label for="users_reginfo_agreetoterms" id="users_reginfo_agreetoterms_field"{if isset($errorFields.reginfo_agreetoterms)} class="errorrequired"{/if}>{gt text='I agree to be bound by this site\'s %1$s and %2$s' tag1=$touLink tag2=$ppLink}</label>
+                    <label for="users_reginfo_agreetoterms" id="users_reginfo_agreetoterms_field"{if isset($errorFields.reginfo_agreetoterms)} class="errorrequired"{/if}>
+                        {gt text='I agree to be bound by this site\'s %1$s and %2$s' tag1=$touLink|safehtml tag2=$ppLink|safehtml}
+                    </label>
                     {elseif  $touActive}
-                    <label for="users_reginfo_agreetoterms" id="users_reginfo_agreetoterms_field"{if isset($errorFields.reginfo_agreetoterms)} class="errorrequired"{/if}>{gt text='I agree to be bound by this site\'s %1$s' tag1=$touLink}</label>
+                    <label for="users_reginfo_agreetoterms" id="users_reginfo_agreetoterms_field"{if isset($errorFields.reginfo_agreetoterms)} class="errorrequired"{/if}>
+                        {gt text='I agree to be bound by this site\'s %1$s' tag1=$touLink|safehtml}
+                    </label>
                     {elseif $ppActive}
-                    <label for="users_reginfo_agreetoterms" id="users_reginfo_agreetoterms_field"{if isset($errorFields.reginfo_agreetoterms)} class="errorrequired"{/if}>{gt text='I agree to be bound by this site\'s %1$s' tag1=$ppLink}</label>
+                    <label for="users_reginfo_agreetoterms" id="users_reginfo_agreetoterms_field"{if isset($errorFields.reginfo_agreetoterms)} class="errorrequired"{/if}>
+                        {gt text='I agree to be bound by this site\'s %1$s' tag1=$ppLink|safehtml}
+                    </label>
                     {/if}
                 </div>
             </div>
