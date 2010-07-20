@@ -65,9 +65,10 @@ class Search_Block_Search extends Zikula_Block
 
         // add the module vars
         $vars['modvar'] = $this->getVars();
+        $vars['active'] = FormUtil::getPassedValue('active', SessionUtil::getVar('searchactive'), 'GETPOST');
 
         // assign the block vars array
-        $this->view->assign('vars',$vars);
+        $this->view->assign('vars', $vars);
 
         // set a title if one isn't present
         if (empty($blockinfo['title'])) {

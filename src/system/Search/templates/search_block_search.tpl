@@ -10,12 +10,12 @@
                 <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Search now" domain='zikula'}" />
             </div>
             {/if}
-            {foreach item=dummy key=actives from=$vars.active}
+            {foreach item="dummy" key="actives" from=$vars.active}
             <input type="hidden" name="active[{$actives|safetext}]" value="1" />
             {/foreach}
 
             {searchvartofieldnames data=$vars.modvar prefix="modvar" assign="modvars"}
-            {foreach item=value key=name from=$modvars}
+            {foreach item="value" key="name" from=$modvars}
             <input type="hidden" name="{$name|safetext}" value="{$value|safetext}" />
             {/foreach}
         </fieldset>
