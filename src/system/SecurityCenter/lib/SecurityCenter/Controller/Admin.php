@@ -571,7 +571,7 @@ class SecurityCenter_Controller_Admin extends Zikula_Controller
             return LogUtil::registerPermissionError();
         }
 
-        $sort = FormUtil::getPassedValue('sort', 'ids_date DESC', 'GETPOST');
+        $sort = FormUtil::getPassedValue('sort', 'date DESC', 'GETPOST');
         $filterdefault = array('uid' => null, 'name' => null, 'tag' => null, 'value' => null, 'page' => null, 'ip' => null, 'impact' => null);
 
         $filter   = FormUtil::getPassedValue('filter', $filterdefault, 'GETPOST');
