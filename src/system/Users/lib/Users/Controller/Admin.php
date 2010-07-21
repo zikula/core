@@ -564,12 +564,24 @@ class Users_Controller_Admin extends Zikula_Controller
             if ($do != 'yes') {
                 return System::redirect(ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $userid)));
             } else {
-                $return = ModUtil::apiFunc('Users', 'admin', 'deleteUser', array('uid' => $userid));
+                // Ensure that the current user's uid is not selected for deletion.
+                $currentUserId = UserUtil::getVar('uid');
+                if (!is_array($userid)) {
+                    $userid = array($userid);
+                }
+                foreach ($userid as $uid) {
+                    if ($uid == $currentUserId) {
+                        return LogUtil::registerError($this->__("Error! You can't delete the account you are currently logged into."));
+                    }
+                }
 
+                // Current user is not in the list to be deleted. Proceed.
+                $return = ModUtil::apiFunc('Users', 'admin', 'deleteUser', array('uid' => $userid));
                 if ($return == true) {
                     return LogUtil::registerStatus($this->__('Done! Deleted user account.'), ModUtil::url('Users', 'admin', 'main'));
+                } else {
+                    return false;
                 }
-                return false;
             }
 
         } elseif ($op == 'mail' && !empty($userid) && SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_COMMENT)) {
