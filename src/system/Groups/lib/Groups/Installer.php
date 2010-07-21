@@ -65,7 +65,7 @@ class Groups_Installer extends Zikula_Installer
         switch ($oldversion)
         {
             case '2.1':
-            // change value of defaultgroup from name to gid
+                // change value of defaultgroup from name to gid
                 $gid = DBUtil::selectObjectByID('groups', $this->getVar('defaultgroup'), 'name');
                 $this->setVar('defaultgroup', $gid['gid']);
 
@@ -98,20 +98,30 @@ class Groups_Installer extends Zikula_Installer
      */
     public function defaultdata()
     {
-        $records = array(array('name'        => $this->__('Users'),
-                        'description' => $this->__('By default, all users are made members of this group.'),
-                        'prefix'      => $this->__('usr')),
-                array('name'        => $this->__('Administrators'),
-                        'description' => $this->__('By default, all administrators are made members of this group.'),
-                        'prefix'      => $this->__('adm')));
+        $records = array(
+            array(  'name'        => $this->__('Users'),
+                    'description' => $this->__('By default, all users are made members of this group.'),
+                    'prefix'      => $this->__('usr')),
+            array(  'name'        => $this->__('Administrators'),
+                    'description' => $this->__('By default, all administrators are made members of this group.'),
+                    'prefix'      => $this->__('adm'))
+        );
 
         DBUtil::insertObjectArray($records, 'groups', 'gid');
 
         // Insert Anonymous and Admin users
-        $records = array(array('gid' => '1',
-                        'uid' => '1'),
-                array('gid' => '2',
-                        'uid' => '2'));
+        $records = array(
+            // Anonymous user, member of Users group (This is required. Handling of 'unregistered' state for
+            // permissions is handled separately.)
+            array('gid' => '1',
+                  'uid' => '1'),
+            // Admin user, member of Users group (Not strictly necessary, but for completeness.)
+            array('gid' => '1',
+                  'uid' => '2'),
+            // Admin user, member of Administrators group
+            array('gid' => '2',
+                  'uid' => '2')
+        );
 
         DBUtil::insertObjectArray($records, 'group_membership', 'gid', true);
     }
