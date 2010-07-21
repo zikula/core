@@ -42,6 +42,9 @@ class Groups_Installer extends Zikula_Installer
         $this->setVar('defaultgroup', 1);
         $this->setVar('mailwarning', 0);
         $this->setVar('hideclosed', 0);
+        // Set the primary admin group gid as a module var so it is accessible by other modules,
+        // but it should not be editable at this time. For now it is read-only.
+        $this->setVar('primaryadmingroup', 2);
 
         // create the default data for the modules module
         $this->defaultdata();
@@ -71,6 +74,11 @@ class Groups_Installer extends Zikula_Installer
 
             case '2.2':
             case '2.3':
+            case '2.3.0':
+            case '2.3.1':
+                // Set read-only primaryadmingroup so it is accessible by other modules.
+                $this->setVar('primaryadmingroup', 2);
+            case '2.3.2':
             // future upgrade routines
         }
         // Update successful

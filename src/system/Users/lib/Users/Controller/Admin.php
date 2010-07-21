@@ -751,6 +751,8 @@ class Users_Controller_Admin extends Zikula_Controller
         }
 
         $this->view->add_core_data()
+            ->assign('defaultgroupid', ModUtil::getVar('Groups', 'defaultgroup', 1))
+            ->assign('primaryadmingroupid', ModUtil::getVar('Groups', 'primaryadmingroup', 2))
             ->assign('groups_infos', $groups_infos)
             ->assign('legal', ModUtil::available('legal'))
             ->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true))

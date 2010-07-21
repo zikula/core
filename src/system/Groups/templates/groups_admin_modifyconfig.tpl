@@ -1,3 +1,4 @@
+{* Do not allow editing of primaryadmingroup. For now it is read-only. *}
 {include file="groups_admin_menu.tpl"}
 {gt text="Settings" assign=templatetitle}
 

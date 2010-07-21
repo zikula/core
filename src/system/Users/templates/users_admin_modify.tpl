@@ -42,7 +42,7 @@
                         {foreach key='group_id' item='group' from=$groups_infos}
                         <tr class="{cycle values='z-odd,z-even'}">
                             <td>{$group.name}</td>
-                            <td style="text-align:right;">{if ($userid == $zcore.user.uid) && ((($group_id == 1) && $group.access) || ($group_id == 2))}<input type="hidden" name="access_permissions[]" value="{$group_id}" />{/if}<input type="checkbox" {if ($userid == $zcore.user.uid) && ((($group_id == 1) && $group.access) || ($group_id == 2))}disabled="disabled"{else}name="access_permissions[]" value="{$group_id}"{/if} {if $group.access}checked="checked" {/if}/></td>
+                            <td style="text-align:right;">{if ($userid == $zcore.user.uid) && ((($group_id == $defaultgroupid) && $group.access) || ($group_id == $primaryadmingroupid))}<input type="hidden" name="access_permissions[]" value="{$group_id}" />{/if}<input type="checkbox" {if ($userid == $zcore.user.uid) && ((($group_id == $defaultgroupid) && $group.access) || ($group_id == $primaryadmingroupid))}disabled="disabled"{else}name="access_permissions[]" value="{$group_id}"{/if} {if $group.access}checked="checked" {/if}/></td>
                         </tr>
                         {/foreach}
                     </tbody>
