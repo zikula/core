@@ -46,12 +46,15 @@ class Blocks_Controller_Ajax extends Zikula_Controller
 
         // add new block positions
         $blockplacements = array();
-        foreach ($blockorder as $order => $bid) {
+        foreach ((array)$blockorder as $order => $bid) {
             $blockplacements[] = array('bid' => $bid, 'pid' => $position, 'order' => $order);
         }
-        $res = DBUtil::insertObjectArray($blockplacements, 'block_placements');
-        if (!$res) {
-            return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
+
+        if (!empty($blockplacements)) {
+            $res = DBUtil::insertObjectArray($blockplacements, 'block_placements');
+            if (!$res) {
+                return AjaxUtil::error(LogUtil::registerError($this->__('Error! Could not save your changes.')));
+            }
         }
 
         return array('result' => true);
