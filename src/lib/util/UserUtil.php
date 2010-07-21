@@ -866,7 +866,7 @@ class UserUtil
             $ucount = DBUtil::selectObjectCount('users', $where);
 
         } else {
-            $ucount = DBUtil::selectObjectCountByID('users', $uname, 'email');
+            $ucount = DBUtil::selectObjectCountByID('users', $uname, 'uname');
         }
 
         if ($ucount === false) {
