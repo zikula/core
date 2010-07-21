@@ -290,12 +290,15 @@ class Users_Controller_Admin extends Zikula_Controller
         // if module Legal is not available show the equivalent states for user activation value
         $adaptStateLegalMod = (!ModUtil::available('legal') || (!ModUtil::getVar('legal', 'termsofuse') && !ModUtil::getVar('legal', 'privacypolicy'))) ? 1 : 0;
 
+        // Get the current user's uid
+        $currentUid = UserUtil::getVar('uid');
+
         // Loop through each returned item adding in the options that the user has over
         // each item based on the permissions the user has.
         foreach ($items as $key => $item) {
             $options = array();
             $authId = SecurityUtil::generateAuthKey('Users');
-            if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_READ) && $item['uid'] != 1) {
+            if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_READ) && $item['uid'] != 1) {
 
                 // Options for the item.
                 if ($useProfileModule) {
@@ -312,12 +315,12 @@ class Users_Controller_Admin extends Zikula_Controller
                                        'image' => 'lostpassword.png',
                                        'title' => $this->__('Send password recovery code'));
 
-                    if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_EDIT)) {
+                    if (SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_EDIT)) {
                         $options[] = array('url'   => ModUtil::url('Users', 'admin', 'modify', array('userid' => $item['uid'])),
                                            'image' => 'xedit.gif',
                                            'title' => $this->__('Edit'));
 
-                        if (SecurityUtil::checkPermission('Users::', "$item[uname]::$item[uid]", ACCESS_DELETE)) {
+                        if (($currentUid != $item['uid']) && SecurityUtil::checkPermission('Users::', "{$item['uname']}::{$item['uid']}", ACCESS_DELETE)) {
                             $options[] = array('url'   => ModUtil::url('Users', 'admin', 'deleteUsers', array('userid' => $item['uid'])),
                                                'image' => '14_layer_deletelayer.gif',
                                                'title' => $this->__('Delete'));
@@ -474,6 +477,8 @@ class Users_Controller_Admin extends Zikula_Controller
             LogUtil::registerError($this->__('Sorry! No matching users found.'), 404, ModUtil::url('Users', 'admin', 'search'));
         }
 
+        $currentUid = UserUtil::getVar('uid');
+
         $actions = array();
         foreach ($items as $key => $userinfo) {
             $actions[$key] = array(
@@ -484,7 +489,7 @@ class Users_Controller_Admin extends Zikula_Controller
                 if (SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_EDIT)){
                     $actions[$key]['modifyUrl'] = ModUtil::url($this->getName(), 'admin', 'modify', array('userid' => $userinfo['uid']));
                 }
-                if (SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_DELETE)){
+                if (($currentUid != $userinfo['uid']) && SecurityUtil::checkPermission($this->getName().'::', $userinfo['uname'].'::'.$userinfo['uid'], ACCESS_DELETE)){
                     $actions[$key]['deleteUrl'] = ModUtil::url($this->getName(), 'admin', 'deleteusers', array('userid' => $userinfo['uid']));
                 }
             }
