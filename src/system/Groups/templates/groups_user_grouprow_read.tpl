@@ -19,7 +19,7 @@
 {if $nbumax == 0 OR $nbumax gt $nbuser}
 <td><a href="{modurl modname='Groups' type='user' func='membership' action='subscribe' gid=$gid}" title="{gt text="Apply"}">{gt text="Apply"}</a></td>
 {else}
-<td>{gt text="Sorry! This group has reached full membership."} ]{$nbumax}-{$nbuser}</td>
+<td>{gt text='Group has reached its maximum capacity'}</td>
 {/if}
 {/if}
 {/if}
