@@ -311,7 +311,7 @@
                 </div>
                 <div class="z-formlist">
                     <input id="users_login_displayinactive_no" type="radio" name="config[login_displayinactive]" value="0" {if $config.login_displayinactive eq 0} checked="checked"{/if}/>
-                    <label for="users_login_displayinactive_no">{gt text="No. A generic error message is displayed."}</label> <em class="z-sub">{gt text="Recommended."}</em>
+                    <label for="users_login_displayinactive_no">{gt text="No. A generic error message is displayed."}</label>
                 </div>
             </div>
             <div class="z-formrow">
@@ -322,7 +322,7 @@
                 </div>
                 <div class="z-formlist">
                     <input id="users_login_displayverify_no" type="radio" name="config[login_displayverify]" value="0" {if $config.login_displayverify eq 0} checked="checked"{/if}/>
-                    <label for="users_login_displayverify_no">{gt text="No. A generic error message is displayed."}</label> <em class="z-sub">{gt text="Recommended."}</em>
+                    <label for="users_login_displayverify_no">{gt text="No. A generic error message is displayed."}</label>
                 </div>
             </div>
             <div class="z-formrow">
@@ -333,7 +333,7 @@
                 </div>
                 <div class="z-formlist">
                     <input id="users_login_displayapproval_no" type="radio" name="config[login_displayapproval]" value="0" {if $config.login_displayapproval eq 0} checked="checked"{/if}/>
-                    <label for="users_login_displayapproval_no">{gt text="No. A generic error message is displayed."}</label> <em class="z-sub">{gt text="Recommended."}</em>
+                    <label for="users_login_displayapproval_no">{gt text="No. A generic error message is displayed."}</label>
                 </div>
             </div>
         </fieldset>
