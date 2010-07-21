@@ -40,6 +40,8 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip, {
     initialize: function($super, container, tooltip, options) {
         options = Object.extend({
             className: 'z-tooltip',
+            offsetTop: 0,
+            offsetLeft: 15,
             iframeshim: Zikula.Browser.IE
         }, options || { });
         if(!tooltip) {
@@ -48,15 +50,40 @@ Zikula.UI.Tooltip = Class.create(Control.ToolTip, {
                 container.store('title',tooltip);
                 container.writeAttribute('title','');
                 if(tooltip.startsWith('#')) {
-                    tooltip = $(tooltip.replace("#", ""));
+                    this.tooltipContent = $(tooltip.replace("#", ""));
+                    document.body.insert(this.tooltipContent);
+                    tooltip = this.tooltipContent;
                 }
             }
         }
         $super(container, tooltip, options);
     },
+    position: function($super,event) {
+        var dim = this.container.getDimensions(),
+            vSize = document.viewport.getDimensions(),
+            vtOffset = document.viewport.getScrollOffsets(),
+            offset = {v: $value(this.options.offsetTop), h: $value(this.options.offsetLeft)},
+            x= Event.pointerX(event),
+            y = Event.pointerY(event),
+            pos = {left:'auto',right:'auto',top:'auto',bottom:'auto'};
+        if (x + dim.width + (offset.h * 2) < vSize.width || dim.width + offset.h > vSize.width) {
+            pos.left = (x + offset.h + vtOffset.left).toUnits();
+        } else {
+            pos.right = (vSize.width - x + offset.h).toUnits();
+        }
+        if (y + dim.height + offset.v < vtOffset.top + vSize.height || dim.height + offset.v > vSize.height) {
+            pos.top = (y + offset.v).toUnits();
+        } else {
+            pos.top = (vSize.height + vtOffset.top - dim.height - offset.v).toUnits();
+        }
+        this.container.setStyle(pos);
+    },
     destroy: function($super) {
         if(this.sourceContainer) {
             this.sourceContainer.writeAttribute('title',this.sourceContainer.retrieve('title'));
+        }
+        if(this.tooltipContent) {
+            this.sourceContainer.insert(this.tooltipContent);
         }
         $super();
     }
