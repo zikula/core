@@ -610,8 +610,9 @@ class ZLanguage
                 }
             }
         }
+        $localeArray = array_unique($localeArray);
 
-        return array_unique($localeArray);
+        return $localeArray;
     }
 
     /**
