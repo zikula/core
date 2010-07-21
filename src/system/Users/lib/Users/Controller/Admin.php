@@ -750,10 +750,11 @@ class Users_Controller_Admin extends Zikula_Controller
             }
         }
 
-        $this->view->assign('groups_infos', $groups_infos)
-                       ->assign('legal', ModUtil::available('legal'))
-                       ->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true))
-                       ->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
+        $this->view->add_core_data()
+            ->assign('groups_infos', $groups_infos)
+            ->assign('legal', ModUtil::available('legal'))
+            ->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true))
+            ->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
 
         return $this->view->fetch('users_admin_modify.tpl');
     }

@@ -18,6 +18,10 @@
 
     <h2>{$templatetitle}</h2>
 
+    {if ($userid == $zcore.user.uid)}
+    <div class="z-informationmsg">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>
+    {/if}
+
     <form class="z-form" id="form_users_modify" action="{modurl modname='Users' type='admin' func='processusers' op=$op}" method="post">
         <div>
             {capture name='authid' assign='usersModifyFormAuthId'}{insert name='generateauthkey' module='Users'}{/capture}
@@ -38,7 +42,7 @@
                         {foreach key='group_id' item='group' from=$groups_infos}
                         <tr class="{cycle values='z-odd,z-even'}">
                             <td>{$group.name}</td>
-                            <td style="text-align:right;"><input type="checkbox" name="access_permissions[]" value="{$group_id}" {if $group.access}checked="checked" {/if}/></td>
+                            <td style="text-align:right;">{if ($userid == $zcore.user.uid) && ((($group_id == 1) && $group.access) || ($group_id == 2))}<input type="hidden" name="access_permissions[]" value="{$group_id}" />{/if}<input type="checkbox" {if ($userid == $zcore.user.uid) && ((($group_id == 1) && $group.access) || ($group_id == 2))}disabled="disabled"{else}name="access_permissions[]" value="{$group_id}"{/if} {if $group.access}checked="checked" {/if}/></td>
                         </tr>
                         {/foreach}
                     </tbody>
@@ -69,7 +73,8 @@
                 </div>
                 <div class="z-formrow">
                     <label for="users_activated">{gt text='User status'}</label>
-                    <select id="users_activated" name="userinfo[activated]">
+                    {if $userid == $zcore.user.uid}<input type="hidden" name="userinfo[activated]" value="{$userinfo.activated}" />{/if}
+                    <select id="users_activated" {if $userid != $zcore.user.uid}name="userinfo[activated]"{else}name="displayonly_activated" disabled="disabled"{/if}>
                         <option value="{'UserUtil::ACTIVATED_INACTIVE'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE'|constant}selected="selected"{/if}>{gt text="Inactive"}</option>
                         {if $legal && ($tou_active || $pp_active eq true)}
                         <option value="{'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}" {if $userinfo.activated eq 'UserUtil::ACTIVATED_INACTIVE_TOUPP'|constant}selected="selected"{/if}>{gt text="Inactive until %s accepted" tag1=$touppTextString}</option>
@@ -103,11 +108,10 @@
             <div class="z-center z-buttons">
                 {button src='button_ok.gif' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                 <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-                <a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userid}">{img modname='core' set='icons/extrasmall' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>
+                {if $userid != $zcore.user.uid}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$userid}">{img modname='core' set='icons/extrasmall' src="delete_user.gif" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
                 <a href="{modurl modname='Users' type='admin' func='lostUsername' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
                 <a href="{modurl modname='Users' type='admin' func='lostPassword' uid=$userid authid=$usersModifyFormAuthId}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
             </div>
         </div>
     </form>
 </div>
-
