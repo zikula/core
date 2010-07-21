@@ -472,20 +472,34 @@ class Groups_Controller_Admin extends Zikula_Controller
 
         $users = $item['members'];
 
+        $currentUid = UserUtil::getVar('uid');
+        $defaultGroup = $this->getVar('defaultgroup', 0);
+        $primaryAdminGroup = $this->getVar('primaryadmingroup', 0);
+
         $groupmembers = array();
 
         if (is_array($users) && SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
             foreach ($users as $user) {
                 $options = array();
-                $options[] = array('url'   => ModUtil::url('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
-                        'uid'    => $user['uid'],
-                        'authid' => SecurityUtil::generateAuthKey())),
-                        'imgfile' => 'edit_remove.gif',
-                        'title' => $this->__('Remove user from group'));
-                $groupmembers[] = array('uname'   => UserUtil::getVar('uname', $user['uid']),
-                        'name'    => UserUtil::getVar('name', $user['uid']),
+                if (($user['uid'] == $currentUid)
+                    && (($item['gid'] == $defaultGroup) || ($item['gid'] == $primaryAdminGroup)))
+                {
+                    $options[] = array();
+                } else {
+                    $options[] = array(
+                        'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array('gid'    => $item['gid'],
                         'uid'     => $user['uid'],
-                        'options' => $options);
+                        'authid'  => SecurityUtil::generateAuthKey())),
+                        'imgfile' => 'edit_remove.gif',
+                        'title'   => $this->__('Remove user from group')
+                    );
+                }
+                $groupmembers[] = array(
+                    'uname'   => UserUtil::getVar('uname', $user['uid']),
+                    'name'    => UserUtil::getVar('name', $user['uid']),
+                    'uid'     => $user['uid'],
+                    'options' => $options
+                );
             }
         }
 

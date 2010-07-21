@@ -20,7 +20,9 @@
                 <td class="z-right">
                     {assign var="options" value=$groupmembers[groupmembers].options}
                     {section name=options loop=$options}
+                    {if !empty($options[options])}
                     <a href="{$options[options].url|safetext}">{img src=$options[options].imgfile modname=core set=icons/extrasmall title=$options[options].title alt=$options[options].title}</a>
+                    {/if}
                     {/section}
                 </td>
             </tr>
