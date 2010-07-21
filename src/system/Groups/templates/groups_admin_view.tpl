@@ -214,7 +214,7 @@
 </div>
 
 <script type="text/javascript">
-    Event.observe(window, 'load', function(){groupinit({{$defaultgroup}},{{$groups[0].gid}});}, false);
+    Event.observe(window, 'load', function(){groupinit({{$defaultgroup}},{{$groups[0].gid}},{{$primaryadmingroup}});}, false);
 
     // some defines
     var updatinggroup = '...{{gt text="Updating group"}}...';

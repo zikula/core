@@ -89,6 +89,17 @@ class Groups_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
+        // Special groups check
+        $defaultgroupid = $this->getVar('defaultgroup', 0);
+        if ($item['gid'] == $defaultgroupid) {
+            return LogUtil::registerError($this->__('Sorry! You cannot delete the default users group.'));
+        }
+
+        $primaryadmingroupid = $this->getVar('primaryadmingroup', 0);
+        if ($item['gid'] == $primaryadmingroupid) {
+            return LogUtil::registerError($this->__('Sorry! You cannot delete the primary administrators group.'));
+        }
+
         // Delete the item
         $group_result = DBUtil::deleteObjectByID('groups', $args['gid'], 'gid');
 

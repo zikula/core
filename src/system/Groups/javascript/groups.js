@@ -8,10 +8,11 @@ var adding = Array();
  *@return none;
  *@author Frank Chestnut
  */
-function groupinit(defgroupid, frstgroup)
+function groupinit(defgroupid, frstgroup, admingroupid)
 {
     defaultgroup = defgroupid;
     firstgroup = frstgroup;
+    admingroup = admingroupid;
 
     // craigh specialsuperusability extension :-)
     deleteiconhtml = $('groupeditdelete_'+firstgroup).innerHTML;
@@ -159,7 +160,7 @@ function groupmodifyinit(groupid)
         pnsetselectoption('gtype_' + groupid, $F('gtypeid_' + groupid));
         pnsetselectoption('state_' + groupid, $F('state_' + groupid));
 
-        if(groupid == defaultgroup) {
+        if ((groupid == defaultgroup) || (groupid == admingroup)) {
             Element.addClassName('groupeditdelete_' + groupid, 'z-hide');
         } else {
             Element.removeClassName('groupeditdelete_' + groupid, 'z-hide');

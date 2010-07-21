@@ -66,6 +66,8 @@ class Groups_Controller_Admin extends Zikula_Controller
 
         // get the default user group
         $defaultgroup = $this->getVar('defaultgroup');
+        // get the primary admin group
+        $primaryadmingroup = $this->getVar('primaryadmingroup', 2);
 
         // The user API function is called.
         $items = ModUtil::apiFunc('Groups', 'user', 'getall',
@@ -98,7 +100,8 @@ class Groups_Controller_Admin extends Zikula_Controller
                             'title'   => $this->__('Edit'),
                             'imgfile' => 'xedit.gif');
                     if ((SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE))
-                            && ($item['gid'] != $defaultgroup) ) {
+                            && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup))
+                    {
                         $deleteurl  = ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid']));
                         $options[] = array('url' => ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid'])),
                                 'title'   => $this->__('Delete'),
@@ -141,11 +144,12 @@ class Groups_Controller_Admin extends Zikula_Controller
 
         $this->view->setCaching(false);
 
-        $this->view->assign('groups',         $groups)
-                       ->assign('grouptypes',     $typelabel)
-                       ->assign('states',         $statelabel)
-                       ->assign('useritems',      $users)
-                       ->assign('defaultgroup',   $defaultgroup);
+        $this->view->assign('groups',       $groups)
+            ->assign('grouptypes',          $typelabel)
+            ->assign('states',              $statelabel)
+            ->assign('useritems',           $users)
+            ->assign('defaultgroup',        $defaultgroup)
+            ->assign('primaryadmingroup',   $primaryadmingroup);
 
         // Assign the values for the smarty plugin to produce a pager
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'admin', 'countitems'),
