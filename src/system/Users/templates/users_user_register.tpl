@@ -70,7 +70,7 @@
             <div class="z-formrow">
                 <label for="users_reginfo_uname">{gt text="User name"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_reginfo_uname" name="reginfo[uname]"{if isset($errorFields.reginfo_uname)} class="errorrequired"{/if} type="text" size="25" maxlength="25" value="{if isset($reginfo.uname)}{$reginfo.uname}{/if}" />
-                <div class="z-formnote z-sub z-italic">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</div>
+                <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</em>
             </div>
         </fieldset>
 
@@ -173,8 +173,8 @@
             <p id="users_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>
             <p id="users_validmessage" class="z-hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
             <div class="z-center z-buttons">
-                {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                 {button id='submitnewuser' type='submit' src='button_ok.gif' set='icons/extrasmall' __alt='Submit new user' __title='Submit registration' __text='Submit registration'}
+                {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                 {img id='ajax_indicator' style='display: none;' modname=core set='icons/extrasmall' src='indicator_circle.gif' alt=''}
             </div>
         </fieldset>

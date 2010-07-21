@@ -11,7 +11,7 @@
     <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
     <div id="users_errormsgs_div" class="z-errormsg{if empty($errormsgs)} z-hide{/if}">
-        <p class="z-sub">Please correct the following items:</p>
+        <p>Please correct the following items:</p>
         <ul id="users_errormsgs">
             {foreach from=$errormsgs item='message'}
             <li>{$message}</li>
@@ -29,7 +29,7 @@
                 <div class="z-formrow">
                     <label for="users_reginfo_uname">{gt text='User name'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                     <input id="users_reginfo_uname"{if isset($errorflds.reginfo_uname)} class="errorrequired"{/if} type="text" name="reginfo[uname]" size="21" maxlength="25" value="{$reginfo.uname|default:''}" />
-                    <div class="z-formnote z-sub z-italic">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</div>
+                    <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</em>
                 </div>
                 <div class="z-formrow">
                     <label for="users_reginfo_email">{gt text='E-mail address'}<span class="z-mandatorysym">{gt text="*"}</span></label>
@@ -52,7 +52,7 @@
                     <div class="z-formrow">
                         <label for="users_reginfo_pass">{gt text='Password'}<span class="z-mandatorysym">{gt text="*"}</span></label>
                         <input id="users_reginfo_pass"{if isset($errorflds.reginfo_pass) || isset($errorflds.passagain)} class="errorrequired"{/if} type="password" name="reginfo[pass]" size="21" maxlength="20" />
-                        <p class="z-sub z-formnote z-italic">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$zcore.Users.minpass}</p>
+                        <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$zcore.Users.minpass}</em>
                     </div>
                     {if $zcore.Users.use_password_strength_meter eq 1}
                     {pageaddvar name='javascript' value='prototype'}
@@ -100,11 +100,11 @@
                 <div id="users_usermustverify_wrap" class="z-formrow">
                     <label for="users_usermustverify">{gt text="User's e-mail address must be verified (recommended)"}</label>
                     <input id="users_usermustverify" type="checkbox" name="usermustverify"{if $usermustverify} checked="checked"{/if} />
-                    <p class="z-sub z-formnote z-italic">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</p>
+                    <em class="z-sub z-formnote">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</em>
                 </div>
             </fieldset>
 
-            {if $showProps}
+            {if isset($showProps)}
             {modfunc modname=$profileModName type='form' func='edit' dynadata=$reginfo.dynadata}
             {/if}
 
@@ -115,8 +115,8 @@
                 <p id="users_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>
                 <p id="users_validmessage" class="z-hide z-sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
                 <div class="z-formbuttons z-buttons">
-                    {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                     {button id='submitnewuser' type='submit' src='button_ok.gif' set='icons/extrasmall' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
+                    {button id='checkuserajax' type='button' class='z-hide' src='help.gif' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                     <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.gif' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
                     {img id='ajax_indicator' style='display: none;' modname='core' set='icons/extrasmall' src='indicator_circle.gif' alt=''}
                 </div>

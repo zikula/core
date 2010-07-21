@@ -23,7 +23,7 @@
 
 {if !empty($errormessages)}
 <div id="users_errormessages_div" class="z-errormsg">
-    <p class="z-sub">Please correct the following items:</p>
+    <p>Please correct the following items:</p>
     <ul id="users_errormessages">
         {foreach from=$errormessages item='message'}
         <li>{$message}</li>

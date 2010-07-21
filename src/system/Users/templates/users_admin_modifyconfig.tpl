@@ -12,12 +12,12 @@
             <div class="z-formrow">
                 <label for="users_anonymous">{gt text="Name displayed for anonymous user"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_anonymous"{if isset($errorFields.users_anonymous)} class="error"{/if} type="text" name="config[anonymous]" value="{$config.anonymous|safehtml}" size="20" maxlength="20" />
-                <div class="z-formnote z-sub z-italic">{gt text="Anonymous users are visitors to your site who have not logged in."}</div>
+                <em class="z-formnote z-sub">{gt text="Anonymous users are visitors to your site who have not logged in."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_itemsperpage">{gt text="Number of items displayed per page"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_itemsperpage"{if isset($errorFields.users_itemsperpage)} class="error"{/if} type="text" name="config[itemsperpage]" size="3" value="{$config.itemsperpage|safetext}" />
-                <div class="z-formnote z-sub z-italic">{gt text="When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time."}</div>
+                <em class="z-formnote z-sub">{gt text="When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_avatarpath">{gt text="Path to user's avatar images"}<span class="z-mandatorysym">{gt text="*"}</span></label>
@@ -102,13 +102,13 @@
                     <input id="reg_uniemailno" type="radio" name="config[reg_uniemail]" value="0" {if $config.reg_uniemail eq 0} checked="checked"{/if} />
                     <label for="reg_uniemailno">{gt text="No"}</label>
                 </div>
-                <div class="z-formnote z-sub z-italic">{gt text="If set to yes, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration."}</div>
+                <em class="z-formnote z-sub">{gt text="If set to yes, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration."}</em>
                 <div class="z-formnote z-warningmsg">{gt text="Notice: If this option was set to 'no' at some point, then user accounts or registrations with duplicate e-mail addresses might exist in the system. Setting this option to 'yes' will not affect those accounts or registrations."}</div>
             </div>
             <div class="z-formrow">
                 <label for="users_minpass">{gt text="Minimum length for user passwords"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_minpass"{if isset($errorFields.users_minpass)} class="error"{/if} type="text" name="config[minpass]" value="{$config.minpass|safehtml}" size="2" maxlength="2" />
-                <div class="z-formnote z-sub z-italic">{gt text="This affects both passwords created during registration, as well as passwords modified by users or administrators."} {gt text="Enter an integer greater than zero."}</div>
+                <em class="z-formnote z-sub">{gt text="This affects both passwords created during registration, as well as passwords modified by users or administrators."} {gt text="Enter an integer greater than zero."}</em>
             </div>
             <div class="z-formrow">
                 <label for="hash_method">{gt text="Password hashing method"}<span class="z-mandatorysym">{gt text="*"}</span></label>
@@ -116,7 +116,7 @@
                     <option value="sha1" {if $config.hash_method eq 'sha1'} selected="selected"{/if}>SHA1</option>
                     <option value="sha256" {if $config.hash_method eq 'sha256'} selected="selected"{/if}>SHA256</option>
                 </select>
-                <div class="z-formnote z-sub z-italic">{gt text="The default hashing method is 'SHA256'."}</div>
+                <em class="z-formnote z-sub">{gt text="The default hashing method is 'SHA256'."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_use_password_strength_meter">{gt text="Show password strength meter"}<span class="z-mandatorysym">{gt text="*"}</span></label>
@@ -129,21 +129,21 @@
             </div>
             <div class="z-formrow">
                 <label for="users_chgemail_expiredays">{gt text="E-mail address verifications expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <div class="z-formlist">
+                <div>
                     <input id="users_chgemail_expiredays"{if isset($errorFields.chgemail_expiredays)} class="error"{/if} type="text" name="config[chgemail_expiredays]" value="{$config.chgemail_expiredays|default:0}" maxlength="3" />
                     <label for="users_chgemail_expiredays">{gt text="days"}</label>
-                    <div class="z-sub z-italic">{gt text="Enter the number of days a user's request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration."}</div>
-                    <div class="z-warningmsg">{gt text="Changing this setting will affect all requests to change e-mail addresses currently pending verification."}</div>
                 </div>
+                <em class="z-sub z-formnote">{gt text="Enter the number of days a user's request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration."}</em>
+                <div class="z-warningmsg z-formnote">{gt text="Changing this setting will affect all requests to change e-mail addresses currently pending verification."}</div>
             </div>
             <div class="z-formrow">
                 <label for="users_chgpass_expiredays">{gt text="Password reset requests expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <div class="z-formlist">
+                <div>
                     <input id="users_chgpass_expiredays"{if isset($errorFields.chgpass_expiredays)} class="error"{/if} type="text" name="config[chgpass_expiredays]" value="{$config.chgpass_expiredays|default:0}" maxlength="3" />
                     <label for="users_chgpass_expiredays">{gt text="days"}</label>
-                    <div class="z-sub z-italic">{gt text="This setting only affects users who have not established security question responses. Enter the number of days a user's request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration."}</div>
-                    <div class="z-warningmsg">{gt text="Changing this setting will affect all password change requests currently pending verification."}</div>
                 </div>
+                <em class="z-sub z-formnote">{gt text="This setting only affects users who have not established security question responses. Enter the number of days a user's request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration."}</em>
+                <div class="z-warningmsg z-formnote">{gt text="Changing this setting will affect all password change requests currently pending verification."}</div>
             </div>
         </fieldset>
 
@@ -170,12 +170,12 @@
             <div class="z-formrow">
                 <label for="users_reg_notifyemail">{gt text="E-mail address to notify of registrations"}</label>
                 <input id="users_reg_notifyemail" type="text" name="config[reg_notifyemail]" value="{$config.reg_notifyemail|safetext}" size="50" maxlength="255" />
-                <div class="z-formnote z-sub z-italic">{gt text="A notification is sent to this e-mail address for each registration. Leave blank for no notifications."}</div>
+                <em class="z-formnote z-sub">{gt text="A notification is sent to this e-mail address for each registration. Leave blank for no notifications."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_minage">{gt text="Minimum age permitted to register"}<span class="z-mandatorysym">{gt text="*"}</span></label>
                 <input id="users_minage"{if isset($errorFields.users_minage)} class="error"{/if} type="text" name="config[minage]" value="{$config.minage|safetext}" size="2" maxlength="2" />
-                <div class="z-formnote z-sub z-italic">{gt text="Enter a positive integer, or 0 for no age check."}</div>
+                <em class="z-formnote z-sub">{gt text="Enter a positive integer, or 0 for no age check."}</em>
             </div>
             {if $profile}
             <div class="z-formrow">
@@ -210,13 +210,13 @@
             </div>
             <div class="z-formrow">
                 <label for="users_reg_expiredays">{gt text="Registrations pending verification expire in"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <div class="z-formlist">
+                <div>
                     <input id="users_reg_expiredays"{if isset($errorFields.reg_expiredays)} class="error"{/if} type="text" name="config[reg_expiredays]" value="{$config.reg_expiredays|default:0}" maxlength="3" />
                     <label for="users_reg_expiredays">{gt text="days"}</label>
-                    <div class="z-sub z-italic">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</div>
-                    <div class="z-informationmsg">{gt text="If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval."}</div>
-                    <div class="z-warningmsg">{gt text="Changing this setting will affect all registrations currently pending e-mail address verification."}</div>
                 </div>
+                <em class="z-sub z-formnote">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</em>
+                <div class="z-informationmsg z-formnote">{gt text="If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval."}</div>
+                <div class="z-warningmsg z-formnote">{gt text="Changing this setting will affect all registrations currently pending e-mail address verification."}</div>
             </div>
             <div class="z-formrow" id="users_moderation_order_wrap">
                 <label>{gt text="Order that approval and verification occur"}<span class="z-mandatorysym">{gt text="*"}</span></label>
@@ -258,32 +258,36 @@
             <div class="z-formrow">
                 <label for="users_reg_question">{gt text="Spam protection question"}</label>
                 <input id="users_reg_question" name="config[reg_question]" value="{$config.reg_question|safehtml}" size="50" maxlength="255" />
-                <div class="z-formnote z-sub z-italic">{gt text="You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</div>
+                <em class="z-formnote z-sub">{gt text="You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_answer">{gt text="Spam protection answer"}<span id="users_reg_answer_mandatory" class="z-mandatorysym z-hide">{gt text="*"}</span></label>
                 <input id="users_reg_answer"{if $errorFields.users_reg_answer} class="error"{/if} name="config[reg_answer]" value="{if !empty($config.reg_question)}{$config.reg_answer|safehtml}{/if}" size="50" maxlength="255" />
-                <div class="z-formnote z-sub z-italic">{gt text="Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided."}</div>
+                <em class="z-formnote z-sub">{gt text="Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided."}</em>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_Illegalusername">{gt text="Reserved user names"}</label>
                 <input id="users_reg_Illegalusername" type="text" name="config[reg_Illegalusername]" value="{$config.reg_Illegalusername|safetext}" size="50" maxlength="255" />
-                <div class="z-formnote z-sub z-italic">{gt text="Separate each user name with a space."}<br />
-                {gt text="Each user name on this list is not allowed to be chosen by someone registering for a new account."}</div>
+                <em class="z-formnote z-sub">
+                    {gt text="Separate each user name with a space."}<br />
+                    {gt text="Each user name on this list is not allowed to be chosen by someone registering for a new account."}
+                </em>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_Illegaluseragents">{gt text="Banned user agents"}</label>
                 <textarea id="users_reg_Illegaluseragents" name="config[reg_Illegaluseragents]" cols="45" rows="2">{$config.reg_Illegaluseragents|safehtml}</textarea>
-                <div class="z-formnote z-sub z-italic">{gt text="Separate each user agent string with a comma."}<br />
-                {gt text="Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process."}</div>
+                <em class="z-formnote z-sub">
+                    {gt text="Separate each user agent string with a comma."}<br />
+                    {gt text="Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process."}
+                </em>
             </div>
             <div class="z-formrow">
                 <label for="users_reg_Illegaldomains">{gt text="Banned e-mail address domains"}</label>
                 <textarea id="users_reg_Illegaldomains" name="config[reg_Illegaldomains]" cols="45" rows="2">{$config.reg_Illegaldomains|safehtml}</textarea>
-                <div class="z-formnote z-sub z-italic">
+                <em class="z-formnote z-sub">
                     {gt text="Separate each domain with a comma."}<br />
                     {gt text="Each item on this list is an e-mail address domain (the part after the '@'). E-mail addresses on new registrations or on an existing user's change of e-mail address requests are not allowed to have any domain on this list."}
-                </div>
+                </em>
             </div>
         </fieldset>
 
@@ -307,7 +311,7 @@
                 </div>
                 <div class="z-formlist">
                     <input id="users_login_displayinactive_no" type="radio" name="config[login_displayinactive]" value="0" {if $config.login_displayinactive eq 0} checked="checked"{/if}/>
-                    <label for="users_login_displayinactive_no">{gt text="No. A generic error message is displayed."}</label> <span class="z-sub z-italic">{gt text="Recommended."}</span>
+                    <label for="users_login_displayinactive_no">{gt text="No. A generic error message is displayed."}</label> <em class="z-sub">{gt text="Recommended."}</em>
                 </div>
             </div>
             <div class="z-formrow">
@@ -318,7 +322,7 @@
                 </div>
                 <div class="z-formlist">
                     <input id="users_login_displayverify_no" type="radio" name="config[login_displayverify]" value="0" {if $config.login_displayverify eq 0} checked="checked"{/if}/>
-                    <label for="users_login_displayverify_no">{gt text="No. A generic error message is displayed."}</label> <span class="z-sub z-italic">{gt text="Recommended."}</span>
+                    <label for="users_login_displayverify_no">{gt text="No. A generic error message is displayed."}</label> <em class="z-sub">{gt text="Recommended."}</em>
                 </div>
             </div>
             <div class="z-formrow">
@@ -329,7 +333,7 @@
                 </div>
                 <div class="z-formlist">
                     <input id="users_login_displayapproval_no" type="radio" name="config[login_displayapproval]" value="0" {if $config.login_displayapproval eq 0} checked="checked"{/if}/>
-                    <label for="users_login_displayapproval_no">{gt text="No. A generic error message is displayed."}</label> <span class="z-sub z-italic">{gt text="Recommended."}</span>
+                    <label for="users_login_displayapproval_no">{gt text="No. A generic error message is displayed."}</label> <em class="z-sub">{gt text="Recommended."}</em>
                 </div>
             </div>
         </fieldset>

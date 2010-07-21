@@ -53,7 +53,7 @@
                 <div class="z-formrow">
                     <label for="users_uname">{gt text='User name'}</label>
                     <input id="users_uname" type="text" name="userinfo[uname]" value="{$userinfo.uname|safetext}" size="30" maxlength="60" />
-                    <div class="z-formnote z-sub z-italic">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</div>
+                    <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, and/or periods.'}</em>
                 </div>
                 <div class="z-formrow">
                     <label for="users_email">{gt text='E-mail address'}</label>
