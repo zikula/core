@@ -91,7 +91,7 @@
                     <input id="users_loginviaemail" type="radio" name="config[loginviaoption]" value="1" {if $config.loginviaoption neq 0}checked="checked" {/if}/>
                     <label for="users_loginviaemail">{gt text="E-mail address"}</label>
                     <div class="z-formnote z-warningmsg">{gt text="Notice: If the 'Credential required for user log-in' is set to 'E-mail address', then the 'New e-mail addresses must be unique' option below must be set to 'Yes'."}</div>
-                    <div class="z-formnote z-warningmsg">{gt text="Notice: If the 'New e-mail addresses must be unique' option was set to 'no' at some point, then user accounts with duplicate e-mail addresses might exist in the system. The will experience difficulties logging in if this option is set to 'e-mail address'."}</div>
+                    <div class="z-formnote z-warningmsg">{gt text="Notice: If the 'New e-mail addresses must be unique' option was set to 'no' at some point, then user accounts with duplicate e-mail addresses might exist in the system. They will experience difficulties logging in if this option is set to 'e-mail address'."}</div>
                 </div>
             </div>
             <div class="z-formrow">
