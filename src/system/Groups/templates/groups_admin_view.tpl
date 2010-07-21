@@ -33,7 +33,7 @@
                         {$group.gid|safetext}
                     </span>
                     <span id="groupname_{$group.gid}" class="z-itemcell z-w15">
-                        {$group.name|safetext} {if $group.gid eq $defaultgroup} (*){/if}
+                        {$group.name|safetext}{if $group.gid eq $defaultgroup}{gt text='*'}{elseif $group.gid eq $primaryadmingroup}{gt text='**'}{/if}
                     </span>
                     {* Hidden until called *}
                     <span id="editgroupname_{$group.gid}" class="z-itemcell z-w15 z-hide">
@@ -177,7 +177,8 @@
             {/foreach}
         </ol>
     </div>
-    <em>{gt text="* Default user group. Cannot be deleted."}</em>
+    <div class="z-italic">{gt text='*'} {gt text="Default user group. Cannot be deleted."}</div>
+    <div class="z-italic">{gt text='**'} {gt text="Primary administrators group. Cannot be deleted."}</div>
 
     {if $useritems}
     <h2> {gt text="Pending applications"} </h2>
