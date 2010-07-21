@@ -39,7 +39,7 @@
             {/if}
             <td><a href="{modurl modname="Groups" type="user" func="membership" action=$funcaction gid=$group.gid}" title="{$mbfunctitle}">{$mbfunctitle}</a></td>
             {else}
-            <td>{gt text="Sorry! This group has reached full membership."}</td>
+            <td>{gt text="Group has reached its maximum capacity"}</td>
             {/if}
             {/if}
             {/if}
