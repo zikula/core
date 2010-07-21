@@ -175,3 +175,25 @@ Added FileUtil::exportCSV() to simplify data export to csv files.
 Themes can now process ajax request natively - issue #2326.
 New block with User account links - issue #2374.
 Deprecated DataUtil::parseIniFile(), use native PHP parse_ini_file() instead.
+The Mailer module can now send text-only, HTML-only, and multi-part/alternative e-mail messages. Multi-part/alternative messages contain both a plain text message and an HTML-formatted message. If a recipient's e-mail client does not support HTML messages, then the plain-text message will be displayed to him.
+Admin can now resend a verification e-mail for a pending registration.
+Admin can now send a password reset e-mail to a user.
+All e-mail messages sent by the Users module can now be multi-part/alternative messages, containing both a plain-text version and an HTML version of the message. Templates for both are provided and automatically used if present.
+The subject line of all e-mail messages sent by the Users module can now be set from within the e-mail message template. See the templates provided for examples. If multi-part/alternative messages are to be sent, the subject from the HTML version of the message is used (however, the subject should not use HTML).
+The template file names for all e-mail messages sent from the Users module have changed. If a site upgrading from 1.2 has created custom templates for these messages, they should be converted to the new names, and the ability to send multi-part/alternative messages should be accounted for.
+If an attempt is made to log into an account that is pending registration (either because it is awaiting approval, or is awaiting verification, or both), the site admin can elect to display that status to the user in the error message on log-in failure.
+If an attempt is made to log into an account that is inactive (either because or is awaiting legacy activation, or because the admin set that activated state for the user), the site admin can elect to display that status to the user in the error message on log-in failure.
+The password recovery work flow has been improved to be clearer to the user.
+The new account registration process now collects a password reminder, and displays this reminder to the user as part of the password recovery process. For existing sites upgrading to 1.3, existing users will be asked for a password reminder when they change their password.
+The option to have the system generate a password and send it to a newly registering user has been removed as a verification option. Sites upgrading to 1.3 who have this option set will find this option changed to verification with a user-selected password.
+Except in one case, passwords are no longer sent via e-mail to newly registering users. The one exception is when an admin creates a user account, sets a password for that account himself, and specifically elects to send the password via e-mail.
+Confirmation or verification codes for registration verification, verification of change of e-mail address, and for password reset requests all now use the same mechanism and are handled consistently.
+Requests to change e-mail addresses that go unverified can be set to expire and be removed a specified number of days after the request is made.
+Requests to register a new account where e-mail address verification is required can be set to expire and be removed a specified number of days after the e-mail verification message is sent. Registrations whose e-mail verification expires will be removed from the system. Registrations awaiting approval will not expire until after they are approved.
+If the registration process is configured for both moderation (admin approval) and e-mail verification, then the order in which these occur can be set. Verification can be required before approval, after approval, or at any time before or after. The admin can override the order and cause one or the other process to occur at any time.
+Error checking of registration and user account fields has been improved and unified.
+All user names and e-mail addresses are now stored in (and thus displayed in) lower case.
+New user names are required to consist of only letters, numbers, underscores and periods. Accented and other non-ASCII characters are permitted as long as their Unicode type is set to the letter or digit group.
+When retrieving user accounts (for any purpose, including for logging in) by e-mail address, a duplicate e-mail address check is performed even if the Users module is set to require unique e-mail addresses. This is to prevent the wrong account from being returned if duplicate e-mail addresses were allowed at any point or were added by the administrator.
+A user with rights to delete user accounts is prevented from deleting his own account.
+The registration date, last login date, and all other dates saved to the database tables by the Users module are now guaranteed to be UTC date/times in the database. They might be adjusted for display by other functions, however.
