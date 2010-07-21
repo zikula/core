@@ -40,6 +40,7 @@ class Modules_Api_Admin extends Zikula_Api
                 !isset($args['url'])) {
             return LogUtil::registerArgsError();
         }
+
         // Security check
         if (!SecurityUtil::checkPermission('Modules::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -65,12 +66,14 @@ class Modules_Api_Admin extends Zikula_Api
 
         // Rename operation
         $obj = array('id'          => $args['id'],
-                'displayname' => $args['displayname'],
-                'description' => $args['description'],
-                'url'         => $args['url']);
+                     'displayname' => $args['displayname'],
+                     'description' => $args['description'],
+                     'url'         => $args['url']);
+
         if (!DBUtil::updateObject($obj, 'modules')) {
             return LogUtil::registerError($this->__('Error! Could not save your changes.'));
         }
+
         return true;
     }
 
@@ -89,6 +92,7 @@ class Modules_Api_Admin extends Zikula_Api
         if (!SecurityUtil::checkPermission('Modules::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
+
         // Rename operation
         $dbtable = DBUtil::getTables();
         $hookscolumn = $dbtable['hooks_column'];
@@ -99,12 +103,13 @@ class Modules_Api_Admin extends Zikula_Api
 
         // Delete hook regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-              AND $hookscolumn[tmodule] <> ''";
+                    AND $hookscolumn[tmodule] <> ''";
+
         DBUtil::deleteWhere('hooks', $where);
 
         $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[tmodule],
-                $hookscolumn[smodule] DESC";
+        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
+
         $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
         if ($objArray === false) {
             return false;
@@ -122,6 +127,7 @@ class Modules_Api_Admin extends Zikula_Api
                 }
             }
         }
+
         return true;
     }
 
@@ -140,6 +146,7 @@ class Modules_Api_Admin extends Zikula_Api
         if (!SecurityUtil::checkPermission('Modules::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
+
         // Rename operation
         $dbtable = DBUtil::getTables();
 
@@ -151,12 +158,13 @@ class Modules_Api_Admin extends Zikula_Api
 
         // Delete hook regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-              AND $hookscolumn[tmodule] <> ''";
+                    AND $hookscolumn[tmodule] <> ''";
+
         DBUtil::deleteWhere('hooks', $where);
 
         $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[tmodule],
-                $hookscolumn[smodule] DESC";
+        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
+
         // read the hooks themselves - the entries in the database that are not connected
         // with a module
         $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
@@ -194,6 +202,7 @@ class Modules_Api_Admin extends Zikula_Api
                 $sequence++;
             }
         }
+
         return true;
     }
 
@@ -218,6 +227,7 @@ class Modules_Api_Admin extends Zikula_Api
         } else {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int) $args['state'];
         }
+
         // for incompatible versions of the modules with the core
         $state = $args['state'];
 
@@ -391,7 +401,9 @@ class Modules_Api_Admin extends Zikula_Api
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        if (is_dir("$modpath/$osdir/lib")) {
+        $oomod = (ModUtil::isOO($modinfo['name'])) ? true : false;
+
+        if ($oomod) {
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
@@ -401,8 +413,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            $dir = "modules/$osdir/locale";
-            if (is_dir($dir)) {
+            if (is_dir("modules/$osdir/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
@@ -412,10 +423,10 @@ class Modules_Api_Admin extends Zikula_Api
 
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
-        // Module deletion function. Only execute if the module hasn't been initialised.
+
+        // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            $oo = (ModUtil::isOO($modinfo['name'])) ? true : false;
-            if (!$oo && file_exists($file = "$modpath/$osdir/pninit.php")) {
+            if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
                 if (!include_once($file)) {
                     LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
                 }
@@ -423,7 +434,7 @@ class Modules_Api_Admin extends Zikula_Api
 
             $sm = ServiceUtil::getManager();
             $em = EventUtil::getManager();
-            if ($oo) {
+            if ($oomod) {
                 $className = ucwords($modinfo['name']) . '_Installer';
                 $reflectionInstaller = new ReflectionClass($className);
                 if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
@@ -442,8 +453,8 @@ class Modules_Api_Admin extends Zikula_Api
             }
 
             // perform the actual deletion of the module
-            $func = ($oo) ? array($installer, 'uninstall') : $modinfo['name'] . '_delete';
-            $interactive_func = ($oo) ? array($interactiveController, 'uninstall') : $modinfo['name'] . '_init_interactivedelete';
+            $func = ($oomod) ? array($installer, 'uninstall') : $modinfo['name'] . '_delete';
+            $interactive_func = ($oomod) ? array($interactiveController, 'uninstall') : $modinfo['name'] . '_init_interactivedelete';
 
             // allow bypass of interactive removal during a new installation only.
             if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -474,7 +485,6 @@ class Modules_Api_Admin extends Zikula_Api
             }
         }
 
-
         // Remove variables and module
         // Delete any module variables that the module cleanup function might
         // have missed
@@ -498,6 +508,7 @@ class Modules_Api_Admin extends Zikula_Api
         } else {
             DBUtil::deleteObjectByID('modules', $args['id'], 'id');
         }
+
         return true;
     }
 
@@ -530,15 +541,15 @@ class Modules_Api_Admin extends Zikula_Api
                 $dirs = FileUtil::getFiles($rootdir, false, true, null, 'd');
 
                 foreach ($dirs as $dir) {
-                    $oo = false;
+                    $oomod = false;
                     // register autoloader
                     if (is_dir("$rootdir/$dir/lib")) {
                         ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
-                        $oo = true;
+                        $oomod = true;
                     }
 
                     // loads the gettext domain for 3rd party modules
-                    if (is_dir("modules/$dir/locale")) {
+                    if ($rootdir == 'modules' && is_dir("modules/$dir/locale")) {
                         // This is required here since including pnversion automatically executes the pnversion code
                         // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
                         // since loading is self contained in each zOO application.
@@ -873,7 +884,10 @@ class Modules_Api_Admin extends Zikula_Api
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        if (is_dir("$modpath/$osdir/lib")) {
+        // load module maintainence functions
+        $oomod = (ModUtil::isOO($modinfo['name'])) ? true : false;
+
+        if ($oomod) {
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
@@ -888,10 +902,7 @@ class Modules_Api_Admin extends Zikula_Api
             }
         }
 
-        // load module maintainence functions
-        $oo = (ModUtil::isOO($modinfo['name'])) ? true : false;
-
-        if (!$oo && file_exists($file = "$modpath/$osdir/pninit.php")) {
+        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
             if (!include_once($file)) {
                 LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
             }
@@ -899,7 +910,7 @@ class Modules_Api_Admin extends Zikula_Api
 
         $sm = ServiceUtil::getManager();
         $em = EventUtil::getManager();
-        if ($oo) {
+        if ($oomod) {
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
@@ -919,8 +930,8 @@ class Modules_Api_Admin extends Zikula_Api
 
         // perform the actual install of the module
         // system or module
-        $func = ($oo) ? array($installer, 'install') : $modinfo['name'] . '_init';
-        $interactive_func = ($oo) ? array($interactiveController, 'install') : $modinfo['name'] . '_init_interactiveinit';
+        $func = ($oomod) ? array($installer, 'install') : $modinfo['name'] . '_init';
+        $interactive_func = ($oomod) ? array($interactiveController, 'install') : $modinfo['name'] . '_init_interactiveinit';
 
         // allow bypass of interactive install during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -951,8 +962,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // Update state of module
-        if (!$this->setState(array('id' => $args['id'],
-        'state' => ModUtil::STATE_ACTIVE))) {
+        if (!$this->setState(array('id' => $args['id'], 'state' => ModUtil::STATE_ACTIVE))) {
             return LogUtil::registerError($this->__('Error! Could not change module state.'));
         }
 
@@ -1002,7 +1012,10 @@ class Modules_Api_Admin extends Zikula_Api
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        if (is_dir("$modpath/$osdir/lib")) {
+        // load module maintainence functions
+        $oomod = (ModUtil::isOO($modinfo['name'])) ? true : false;
+
+        if ($oomod) {
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         }
 
@@ -1012,16 +1025,12 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            $dir = "modules/$osdir/locale";
-            if (is_dir($dir)) {
+            if (is_dir("modules/$osdir/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
 
-        // load module maintainence functions
-        $oo = (ModUtil::isOO($modinfo['name'])) ? true : false;
-
-        if (!$oo && file_exists($file = "$modpath/$osdir/pninit.php")) {
+        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
             if (!include_once($file)) {
                 LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
             }
@@ -1029,7 +1038,7 @@ class Modules_Api_Admin extends Zikula_Api
 
         $sm = ServiceUtil::getManager();
         $em = EventUtil::getManager();
-        if ($oo) {
+        if ($oomod) {
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_Installer')) {
@@ -1048,8 +1057,8 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // perform the actual upgrade of the module
-        $func = ($oo) ? array($installer, 'upgrade') : $modinfo['name'] . '_upgrade';
-        $interactive_func = ($oo) ? array($interactiveController, 'upgrade') : $modinfo['name'] . '_init_interactiveupgrade';
+        $func = ($oomod) ? array($installer, 'upgrade') : $modinfo['name'] . '_upgrade';
+        $interactive_func = ($oomod) ? array($interactiveController, 'upgrade') : $modinfo['name'] . '_init_interactiveupgrade';
 
         // allow bypass of interactive upgrade during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -1103,8 +1112,9 @@ class Modules_Api_Admin extends Zikula_Api
         // Get module database info
         ModUtil::dbInfoLoad('Modules');
 
-        $obj = array('id'            => $args['id'],
-                'version'       => $version);
+        $obj = array('id'      => $args['id'],
+                     'version' => $version);
+
         DBUtil::updateObject($obj, 'modules');
 
         // call any module upgrade hooks
@@ -1123,9 +1133,11 @@ class Modules_Api_Admin extends Zikula_Api
     {
         $upgradeResults = array();
         $usersModule = array();
+
         // regenerate modules list
         $filemodules = $this->getfilemodules();
         $this->regenerate(array('filemodules' => $filemodules));
+
         // get a list of modules needing upgrading
         if ($this->listmodules(array('state' => ModUtil::STATE_UPGRADED))) {
             $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED, 'type' => ModUtil::TYPE_SYSTEM));
@@ -1151,6 +1163,7 @@ class Modules_Api_Admin extends Zikula_Api
 
             System::setVar('Version_Num', System::VERSION_NUM);
         }
+
         return $upgradeResults;
     }
 
@@ -1278,14 +1291,15 @@ class Modules_Api_Admin extends Zikula_Api
         // Rename operation
         // Delete hooks regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
 
         if (!DBUtil::deleteWhere('hooks', $where)) {
             return false;
         }
 
         $where = "WHERE $hookscolumn[smodule] = ''
-                AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+
         $objArray = DBUtil::selectObjectArray('hooks', $where, '', -1, -1, 'id');
         if (!$objArray) {
             return false;
@@ -1297,6 +1311,7 @@ class Modules_Api_Admin extends Zikula_Api
             $hook['smodule'] = $args['callermodname'];
             $newHooks[] = $hook;
         }
+
         $result = DBUtil::insertObjectArray($newHooks, 'hooks');
         if (!$result) {
             return false;
@@ -1331,8 +1346,8 @@ class Modules_Api_Admin extends Zikula_Api
 
         // Delete hooks regardless
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                AND $hookscolumn[stype]   = '" . DataUtil::formatForStore($args['calleritemtype']) . "'
-                AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+                    AND $hookscolumn[stype]   = '" . DataUtil::formatForStore($args['calleritemtype']) . "'
+                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
 
         return DBUtil::deleteWhere('hooks', $where);
     }
@@ -1360,9 +1375,8 @@ class Modules_Api_Admin extends Zikula_Api
         $hookscolumn = $dbtable['hooks_column'];
 
         $where = "WHERE $hookscolumn[smodule] = ''
-                 OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
-        $orderBy = "ORDER BY $hookscolumn[tmodule],
-                $hookscolumn[smodule] DESC";
+                     OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
+        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
         $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
 
         if ($objArray === false) {
@@ -1412,9 +1426,9 @@ class Modules_Api_Admin extends Zikula_Api
         $hookscolumn = $dbtable['hooks_column'];
 
         $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[action],
-                $hookscolumn[sequence] ASC";
+        $orderBy = "ORDER BY $hookscolumn[action], $hookscolumn[sequence] ASC";
         $hooksArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
+
         // sort the hooks by action
         $grouped_hooks = array();
         foreach ($hooksArray as $hookobject) {
@@ -1429,8 +1443,8 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
-        $orderBy = "ORDER BY $hookscolumn[action],
-                $hookscolumn[sequence] ASC";
+        $orderBy = "ORDER BY $hookscolumn[action], $hookscolumn[sequence] ASC";
+
         $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
         if ($objArray === false) {
             return false;
@@ -1502,6 +1516,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         $where = "z_modid = '" . DataUtil::formatForStore($args['modid']) . "'";
+
         return DBUtil::selectObjectArray('module_deps', $where, 'modname');
     }
 
@@ -1517,8 +1532,10 @@ class Modules_Api_Admin extends Zikula_Api
         if (!isset($args['modid']) || empty($args['modid']) || !is_numeric($args['modid'])) {
             return LogUtil::registerArgsError();
         }
+
         $modinfo = ModUtil::getInfo($args['modid']);
         $where = "z_modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
+
         return DBUtil::selectObjectArray('module_deps', $where, 'modid');
     }
 
@@ -1576,10 +1593,7 @@ class Modules_Api_Admin extends Zikula_Api
         }
 
         // do we need to check for duplicate oldnames as well?
-
         return array('errors_modulenames'  => $errors_modulenames,
-                'errors_displaynames' => $errors_displaynames);
-
+                     'errors_displaynames' => $errors_displaynames);
     }
-
 }

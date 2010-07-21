@@ -218,12 +218,12 @@ class Modules_Controller_Admin extends Zikula_Controller
         $this->view->assign('state', $state);
 
         // Get list of modules
-        $mods = ModUtil::apiFunc('Modules', 'admin', 'listmodules', array(
-                'startnum' => $startnum,
-                'letter' => $letter,
-                'state' => $state,
-                'numitems' => $this->getVar('itemsperpage'),
-                'sort' => $sort));
+        $mods = ModUtil::apiFunc('Modules', 'admin', 'listmodules',
+                                 array('startnum' => $startnum,
+                                       'letter' => $letter,
+                                       'state' => $state,
+                                       'numitems' => $this->getVar('itemsperpage'),
+                                       'sort' => $sort));
 
         // generate an auth key to use in urls
         $authid = SecurityUtil::generateAuthKey();
@@ -252,7 +252,7 @@ class Modules_Controller_Admin extends Zikula_Controller
                                     'image' => 'attach.gif',
                                     'title' => $this->__('Hook settings'));
 
-                            if(PluginUtil::hasModulePlugins($mod['name'])) {
+                            if (PluginUtil::hasModulePlugins($mod['name'])) {
                                 $actions[] = array(
                                         'url' => ModUtil::url('Modules', 'admin', 'viewPlugins', array(
                                         'bymodule' => $mod['name'])),
@@ -427,7 +427,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         }
 
         $this->view->assign('multi', $GLOBALS['ZConfig']['Multisites']['multi'])
-                       ->assign('modules', $moduleinfo);
+                   ->assign('modules', $moduleinfo);
 
         // Assign the values for the smarty plugin to produce a pager.
         $this->view->assign('pager', array(
@@ -484,6 +484,7 @@ class Modules_Controller_Admin extends Zikula_Controller
         $fataldependency = false;
         if ($id != 0) {
             $dependencies = ModUtil::apiFunc('Modules', 'admin', 'getdependencies', array('modid' => $id));
+
             $modulenotfound = false;
             if (empty($confirmation) && $dependencies) {
                 foreach ($dependencies as $key => $dependency) {
@@ -504,9 +505,13 @@ class Modules_Controller_Admin extends Zikula_Controller
                         }
 
                         if ($minok == -1 || $maxok == -1) {
-                            $fataldependency = true;
+                            if ($dependency['status'] == ModUtil::DEPENDENCY_REQUIRED) {
+                                $fataldependency = true;
+                            } else {
+                                unset($dependencies[$key]);
+                            }
                         } else {
-                            unset($dependencies[$key]);
+                            $dependencies[$key] = array_merge($dependencies[$key], $modinfo);
                         }
                     } elseif (!empty($modinfo)) {
                         $dependencies[$key] = array_merge($dependencies[$key], $modinfo);
@@ -524,9 +529,9 @@ class Modules_Controller_Admin extends Zikula_Controller
                 // we have some dependencies so let's warn the user about these
                 if (!empty($dependencies)) {
                     return $this->view->assign('id', $id)
-                                          ->assign('dependencies', $dependencies)
-                                          ->assign('modulenotfound', $modulenotfound)
-                                          ->fetch('modules_admin_initialise.tpl');
+                                      ->assign('dependencies', $dependencies)
+                                      ->assign('modulenotfound', $modulenotfound)
+                                      ->fetch('modules_admin_initialise.tpl');
                 }
             } else {
                 $dependencies = (array) FormUtil::getPassedValue('dependencies', array(), 'POST');
@@ -556,16 +561,16 @@ class Modules_Controller_Admin extends Zikula_Controller
         // initialise and activate any dependencies
         if (isset($dependencies) && is_array($dependencies)) {
             foreach ($dependencies as $dependency) {
-                if (!ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
-                'id' => $dependency))) {
+                if (!ModUtil::apiFunc('Modules', 'admin', 'initialise',
+                                      array('id' => $dependency))) {
                     return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                             'startnum' => $startnum,
                             'letter' => $letter,
                             'state' => $state)));
                 }
-                if (!ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-                'id' => $dependency,
-                'state' => ModUtil::STATE_ACTIVE))) {
+                if (!ModUtil::apiFunc('Modules', 'admin', 'setstate',
+                                      array('id' => $dependency,
+                                            'state' => ModUtil::STATE_ACTIVE))) {
                     return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
                             'startnum' => $startnum,
                             'letter' => $letter,
@@ -575,9 +580,10 @@ class Modules_Controller_Admin extends Zikula_Controller
         }
 
         // Now we've initialised the dependencies initialise the main module
-        $res = ModUtil::apiFunc('Modules', 'admin', 'initialise', array(
-                'id' => $id,
-                'interactive_init' => $interactive_init));
+        $res = ModUtil::apiFunc('Modules', 'admin', 'initialise',
+                                array('id' => $id,
+                                      'interactive_init' => $interactive_init));
+
         if (is_bool($res) && $res == true) {
             // Success
             SessionUtil::delVar('modules_id');
@@ -588,22 +594,22 @@ class Modules_Controller_Admin extends Zikula_Controller
             LogUtil::registerStatus($this->__('Done! Installed module.'));
 
             if ($activate == true) {
-                if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-                'id' => $id,
-                'state' => ModUtil::STATE_ACTIVE))) {
+                if (ModUtil::apiFunc('Modules', 'admin', 'setstate',
+                                     array('id' => $id,
+                                           'state' => ModUtil::STATE_ACTIVE))) {
                     // Success
                     LogUtil::registerStatus($this->__('Done! Activated module.'));
                 }
             }
-            return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
-                    'startnum' => $startnum,
-                    'letter' => $letter,
-                    'state' => $state)));
+            return System::redirect(ModUtil::url('Modules', 'admin', 'view',
+                                                 array('startnum' => $startnum,
+                                                       'letter' => $letter,
+                                                       'state' => $state)));
         } elseif (is_bool($res)) {
-            return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
-                    'startnum' => $startnum,
-                    'letter' => $letter,
-                    'state' => $state)));
+            return System::redirect(ModUtil::url('Modules', 'admin', 'view',
+                                                 array('startnum' => $startnum,
+                                                       'letter' => $letter,
+                                                       'state' => $state)));
         } else {
             return $res;
         }
@@ -639,17 +645,17 @@ class Modules_Controller_Admin extends Zikula_Controller
         }
 
         // Update state
-        if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-        'id' => $id,
-        'state' => ModUtil::STATE_ACTIVE))) {
+        if (ModUtil::apiFunc('Modules', 'admin', 'setstate',
+                             array('id' => $id,
+                                   'state' => ModUtil::STATE_ACTIVE))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Activated module.'));
         }
 
-        return System::redirect(ModUtil::url('Modules', 'admin', 'view', array(
-                'startnum' => $startnum,
-                'letter' => $letter,
-                'state' => $state)));
+        return System::redirect(ModUtil::url('Modules', 'admin', 'view',
+                                             array('startnum' => $startnum,
+                                                   'letter' => $letter,
+                                                   'state' => $state)));
     }
 
     /**
@@ -688,9 +694,10 @@ class Modules_Controller_Admin extends Zikula_Controller
         }
 
         // Upgrade module
-        $res = ModUtil::apiFunc('Modules', 'admin', 'upgrade', array(
-                'id' => $id,
-                'interactive_upgrade' => $interactive_upgrade));
+        $res = ModUtil::apiFunc('Modules', 'admin', 'upgrade',
+                                array('id' => $id,
+                                      'interactive_upgrade' => $interactive_upgrade));
+
         if (is_bool($res) && $res == true) {
             // Success
             SessionUtil::delVar('modules_id');
@@ -700,9 +707,9 @@ class Modules_Controller_Admin extends Zikula_Controller
             SessionUtil::setVar('interactive_upgrade', false);
             LogUtil::registerStatus($this->__('New version'));
             if ($activate == true) {
-                if (ModUtil::apiFunc('Modules', 'admin', 'setstate', array(
-                'id' => $id,
-                'state' => ModUtil::STATE_ACTIVE))) {
+                if (ModUtil::apiFunc('Modules', 'admin', 'setstate',
+                                     array('id' => $id,
+                                           'state' => ModUtil::STATE_ACTIVE))) {
                     // Success
                     LogUtil::registerStatus($this->__('Activated'));
                 }

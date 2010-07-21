@@ -163,7 +163,7 @@ MODULES
   in which case make the protected or private.  Generally speaking only
   install(), upgrade() and uninstall() should be public.
 
-  If you module was not compliant with previous standards you must
+  If your module was not compliant with previous standards you must
   - Add $meta['oldnames'] = array(oldnames,....); // in Version.php
   - Migrate any modvars with
 
