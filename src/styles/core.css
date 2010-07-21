@@ -871,6 +871,7 @@ div.z-viewbuttons img {
 .z-buttons a:hover,
 .z-buttons input:hover,
 .z-buttons button:hover {
+    color: #222;
     text-decoration: none !important;
     background: #616161;
     background: -webkit-gradient(linear, left top, left bottom, from(#dedede), to(#F5F5F5));
@@ -882,6 +883,7 @@ div.z-viewbuttons img {
 .z-buttons a:active,
 .z-buttons input:active,
 .z-buttons button:active {
+    color: #000;
     background: #d0d0d0;
     background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#f0f0f0));
     background: -moz-linear-gradient(top,  #d0d0d0, #f0f0f0);
