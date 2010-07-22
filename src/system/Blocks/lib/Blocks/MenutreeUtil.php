@@ -24,22 +24,25 @@ class Blocks_MenutreeUtil
     {
         $templates = array();
         $tpls = array();
+
         // restricted templates, array for possible future changes
-        $sysTpls = array('blocks_block_menutree_modify.tpl', 'blocks_block_menutree_include_help.tpl');
+        $sysTpls = array('blocks_block_menutree_modify.tpl',
+                         'blocks_block_menutree_include_help.tpl');
+
         // module templates
         $modulesTpls = FileUtil::getFiles('system/Blocks/templates/menutree', false, true, 'tpl', false);
         $configTpls = FileUtil::getFiles('config/templates/Blocks/menutree', false, true, 'tpl', false);
-        $tpls['modules'] = array_merge($modulesTpls,$configTpls);
+        $tpls['modules'] = array_merge($modulesTpls, $configTpls);
 
         // themes templates - get user and admin themes
         $userThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesTpls = array();
-        foreach($userThemes as $ut) {
+        foreach ($userThemes as $ut) {
             $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
         }
-        foreach($adminThemes as $at) {
-            if(!array_key_exists($at['name'],$themesTpls)) {
+        foreach ($adminThemes as $at) {
+            if (!array_key_exists($at['name'],$themesTpls)) {
                 $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
             }
         }
@@ -54,15 +57,16 @@ class Blocks_MenutreeUtil
         $templates = array_unique(array_merge($tpls['modules'],$tpls['themes']['all']));
         $templates = array_diff($templates,$sysTpls);
         sort($templates);
+
         // fill array keys using values
         $templates = array_combine($templates, $templates);
 
         $someThemes = __('Only in some themes');
-        if(!empty($tpls['themes']['some'])) {
+        if (!empty($tpls['themes']['some'])) {
             sort($tpls['themes']['some']);
             $templates[$someThemes] = array_combine($tpls['themes']['some'],$tpls['themes']['some']);
         }
-        
+
         return self::normalize($templates);
     }
 
@@ -70,22 +74,26 @@ class Blocks_MenutreeUtil
     {
         $stylesheets = array();
         $styles = array();
+
         // restricted stylesheets, array for possible future changes
-        $sysStyles = array('adminstyle.css','contextmenu.css','style.css');
+        $sysStyles = array('system/Blocks/style/menutree/adminstyle.css',
+                           'system/Blocks/style/menutree/contextmenu.css',
+                           'system/Blocks/style/menutree/tree.css');
+
         // module stylesheets
         $modulesStyles = FileUtil::getFiles('system/Blocks/style/menutree', false, false, 'css', false);
         $configStyles = FileUtil::getFiles('config/styles/Blocks/menutree', false, false, 'css', false);
-        $styles['modules'] = array_merge($modulesStyles,$configStyles);
+        $styles['modules'] = array_merge($modulesStyles, $configStyles);
 
         // themes stylesheets - get user and admin themes
         $userThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_USER);
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesStyles = array();
-        foreach($userThemes as $ut) {
+        foreach ($userThemes as $ut) {
             $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/style/Blocks/menutree', false, false, 'css', false);
         }
-        foreach($adminThemes as $at) {
-            if(!array_key_exists($at['name'],$themesStyles)) {
+        foreach ($adminThemes as $at) {
+            if (!array_key_exists($at['name'], $themesStyles)) {
                 $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/Blocks/menutree', false, false, 'css', false);
             }
         }
@@ -95,20 +103,21 @@ class Blocks_MenutreeUtil
 
         // get stylesheets which exist in some themes
         $styles['themes']['some'] = array_unique(call_user_func_array('array_merge', $themesStyles));
-        $styles['themes']['some'] = array_diff($styles['themes']['some'],$styles['themes']['all'],$styles['modules'],$sysStyles);
+        $styles['themes']['some'] = array_diff($styles['themes']['some'], $styles['themes']['all'], $styles['modules'], $sysStyles);
 
         $stylesheets = array_unique(array_merge($styles['modules'],$styles['themes']['all']));
         $stylesheets = array_diff($stylesheets,$sysStyles);
         sort($stylesheets);
+
         // fill array keys using values
         $stylesheets = array_combine($stylesheets, $stylesheets);
 
         $someThemes = __('Only in some themes');
-        if(!empty($styles['themes']['some'])) {
+        if (!empty($styles['themes']['some'])) {
             sort($styles['themes']['some']);
             $stylesheets[$someThemes] = array_combine($styles['themes']['some'],$styles['themes']['some']);
         }
-        
+
         return self::normalize($stylesheets);
     }
 
@@ -122,6 +131,5 @@ class Blocks_MenutreeUtil
         }
 
         return $normalizedArray;
-
     }
 }

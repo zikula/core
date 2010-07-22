@@ -24,7 +24,7 @@
     {if $menutree_adminaccess}
     <fieldset>
         <legend>{gt text="Permissions"}</legend>
-        <p class="z-formnote z-informationmsg">{gt text='You can restrict access to certain options setting higher than the default ("Edit") permissions level. Below is a list of these options.'}</p>
+        <p class="z-formnote z-informationmsg">{gt text='You can restrict the access to certain settings higher than the default ("Edit") permissions level. Below is a list of these options.'}</p>
         <div class="z-formrow">
             <label for="menutree_titlesperms">{gt text="Block titles"}</label>
             <select id="menutree_titlesperms" name="menutree[titlesperms]">
@@ -49,7 +49,7 @@
     {if $multilingual && $menutree_titlesaccess}
     <fieldset>
         <legend>{gt text="Block titles""}</legend>
-        <p class="z-formnote z-informationmsg">{gt text="You can specify diferent block title for each language. If you leave it blank - default block title (shown above) will be displayed."}</p>
+        <p class="z-formnote z-informationmsg">{gt text="You can specify a diferent block title for each language. If blank, the default block title will be displayed."}</p>
         {foreach from=$languages key=code item=name}
         <div class="z-formrow">
             <label for="menutree_titles_{$code}">{$name}</label>
@@ -82,7 +82,7 @@
         <div class="z-formrow">
             <label for="menutree_editlinks">{gt text="Show editing links"}</label>
             <input id="menutree_editlinks" type="checkbox" name="menutree[editlinks]" {if $menutree_editlinks}checked="checked"{/if}/>
-            <em class="z-sub">{gt text='Display in block links: "Add current URL" and "Edit this block".'}</em>
+            <em class="z-sub">{gt text='Display the links: "Add current URL" and "Edit this block".'}</em>
         </div>
     </fieldset>
     {/if}
@@ -99,7 +99,7 @@
             {configgetvar name="shorturls" assign="shorturls"}
             {if $shorturls}
             <p class="z-formnote z-warningmsg">
-                {gt text="<strong>Note! Short URL-s are turn on. You're strongly recommended to turn on this option when using short URL-s.</strong>"}
+                <strong>{gt text="Note! Short URLs are enabled. It's strongly recommended to turn on this option when using short URLs."}</strong>
             </p>
             {/if}
         </div>
@@ -113,27 +113,41 @@
         <div class="z-formrow">
             <label for="menutree_linkclass">{gt text="Class list for links"}</label>
             <input id="menutree_linkclass" type="checkbox" name="menutree[linkclass]" {if $menutree_linkclass}checked="checked"{/if}/>
-            <p class="z-formnote z-informationmsg">{gt text="You can give the CSS class for each link in the menu. This option allows you to prepare a list of classes, which you will be able to choose."}</p>
+            <p class="z-formnote z-informationmsg">{gt text="You can assign a CSS class for each link in the menu. This option allows you to prepare a list of classes, which you will be able to choose."}</p>
         </div>
         <fieldset id="menutree_linkclasses_group">
             <legend>{gt text="Class list for links"}</legend>
             <p>{gt text='The title of the class will be visible to the user, the name of the class will be used as an "class" attribute value.'}</p>
-            <ul id="menutree_linkclasses_list">
-                <li class="head z-clearfix"><span>{gt text="Class name"}</span><span>{gt text="Class title"}</span></li>
+            <ul id="menutree_linkclasses_list" class="z-itemlist">
+                <li class="z-clearfix z-itemheader">
+                    <span class="z-itemcell z-w30">{gt text="Class name"}</span>
+                    <span class="z-itemcell z-w30">{gt text="Class title"}</span>
+                </li>
+                {gt text="Delete" assign="alt"}
                 {assign var='classescount' value=$menutree_linkclasses|@count}
                 {foreach from=$menutree_linkclasses key=id item=class}
-                <li id="class_{$id}">
-                    <input type="text" name="menutree[linkclasses][{$id}][name]" value="{$class.name|safehtml}" size="40" maxlength="255" />
-                    <input type="text" name="menutree[linkclasses][{$id}][title]" value="{$class.title|safehtml}" size="40" maxlength="255" />
-                    {gt text="Delete" assign="alt"}
-                    <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
+                <li id="class_{$id}" class="{cycle values='z-odd,z-even'} z-clearfix">
+                    <span class="z-itemcell z-w30">
+                        <input type="text" name="menutree[linkclasses][{$id}][name]" value="{$class.name|safehtml}" size="40" maxlength="255" />
+                    </span>
+                    <span class="z-itemcell z-w30">
+                        <input type="text" name="menutree[linkclasses][{$id}][title]" value="{$class.title|safehtml}" size="40" maxlength="255" />
+                    </span>
+                    <span class="z-itemcell z-w20">
+                        <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
+                    </span>
                 </li>
                 {/foreach}
-                <li id="class_{$classescount}">
-                    <input type="text" name="menutree[linkclasses][{$classescount}][name]" size="40" maxlength="255" />
-                    <input type="text" name="menutree[linkclasses][{$classescount}][title]" size="40" maxlength="255" />
-                    {gt text="Delete" assign="alt"}
-                    <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
+                <li id="class_{$classescount}" class="{cycle values='z-odd,z-even'} z-clearfix">
+                    <span class="z-itemcell z-w30">
+                        <input type="text" name="menutree[linkclasses][{$classescount}][name]" size="40" maxlength="255" />
+                    </span>
+                    <span class="z-itemcell z-w30">
+                        <input type="text" name="menutree[linkclasses][{$classescount}][title]" size="40" maxlength="255" />
+                    </span>
+                    <span class="z-itemcell z-w20">
+                        <a href="#" class="menutree_linkclass_del">{img src='delete_table_row.gif' modname='core' set='icons/extrasmall'  alt=$alt}{gt text="Delete class"}</a>
+                    </span>
                 </li>
             </ul>
             {gt text="Add" assign="alt"}

@@ -37,7 +37,7 @@ ul#adm-menutree ul {
 
 ul#adm-menutree li {
     list-style-type: none;
-    background-image: url(../images/pion.gif);
+    background-image: url(../../images/pion.gif);
     background-position: left top;
     background-repeat: repeat-y;
     margin: 0 0 0 5px;
@@ -45,13 +45,13 @@ ul#adm-menutree li {
 }
 
 ul#adm-menutree li.noC {
-    background-image: url(../images/node.gif);
+    background-image: url(../../images/node.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }
 
 ul#adm-menutree li.last {
-    background-image: url(../images/lnode.gif);
+    background-image: url(../../images/lnode.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }
@@ -239,35 +239,6 @@ ul#adm-menutree li.dynamic a {
 
 ul#adm-menutree a {
     cursor: pointer;
-}
-
-#menutree_linkclasses_list {
-    list-style: none;
-    margin: 0;
-}
-
-#menutree_linkclasses_list li {
-    margin: 5px 0;
-}
-
-#menutree_linkclasses_list li.head span {
-    display: block;
-    float: left;
-    width: 250px;
-    text-align: center;
-    margin-right: 8px;
-}
-
-#menutree_linkclasses_list li input {
-    width: 250px;
-}
-
-#menutree_linkclasses_list li.head {
-    font-weight: bold;
-}
-
-#menutree_linkclasses_list li a img {
-    vertical-align: middle;
 }
 
 a.activelang {

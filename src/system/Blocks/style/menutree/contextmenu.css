@@ -35,7 +35,7 @@ div.ContextMenu ul li.disabled {
 
 div.ContextMenu ul li.more {
     background-color: #FFFFFF;
-    background-image: url('../images/withc.gif');
+    background-image: url('../../images/withc.gif');
     background-repeat: no-repeat;
     background-position: 100% 0;
     position: relative;
@@ -47,7 +47,7 @@ div.ContextMenu ul li:hover {
 
 div.ContextMenu ul li.more:hover {
     background-color: #B2B4BF;
-    background-image: url('../images/withc-hover.gif');
+    background-image: url('../../images/withc-hover.gif');
 }
 
 div.ContextMenu ul li ul {

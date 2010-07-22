@@ -1,3 +1,4 @@
+
 div.usermenutree ul ul, div.usermenutree ul li {
     zoom: 1;
     min-height: 5px;
@@ -11,7 +12,7 @@ div.usermenutree ul ul {
 
 div.usermenutree ul li {
     list-style-type: none;
-    background-image: url(../images/pion.gif);
+    background-image: url(../../images/pion.gif);
     background-position: left top;
     background-repeat: repeat-y;
     margin: 0 0 0 5px;
@@ -19,13 +20,13 @@ div.usermenutree ul li {
 }
 
 div.usermenutree ul li.childless {
-    background-image: url(../images/node.gif);
+    background-image: url(../../images/node.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }
 
 div.usermenutree ul li.last, div.usermenutree ul li.single {
-    background-image: url(../images/lnode.gif);
+    background-image: url(../../images/lnode.gif);
     background-position: left top;
     background-repeat: no-repeat;
 }

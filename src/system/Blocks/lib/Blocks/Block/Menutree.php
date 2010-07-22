@@ -16,25 +16,25 @@ class Blocks_Block_Menutree extends Zikula_Block
 {
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('menutree:menutreeblock:', 'Block title:Link name:');
+        SecurityUtil::registerPermissionSchema('menutree:menutreeblock:', 'Block ID:Link name:');
     }
 
     public function info()
     {
-        return array('text_type'      => 'menutree',
-                'module'         => 'menutree',
-                'text_type_long' => $this->__('Tree-like menu (menutree)'),
-                'allow_multiple' => true,
-                'form_content'   => false,
-                'form_refresh'   => false,
-                'show_preview'   => true,
-                'admin_tableless' => true);
+        return array('module'          => 'Blocks',
+                     'text_type'       => $this->__('Menutree'),
+                     'text_type_long'  => $this->__('Tree-like menu (menutree)'),
+                     'allow_multiple'  => true,
+                     'form_content'    => false,
+                     'form_refresh'    => false,
+                     'show_preview'    => true,
+                     'admin_tableless' => true);
     }
 
     public function display($blockinfo)
     {
         // Security check
-        if (!Securityutil::checkPermission('menutree:menutreeblock:', $blockinfo['title'] . '::', ACCESS_READ)) {
+        if (!Securityutil::checkPermission('menutree:menutreeblock:', "{$blockinfo['bid']}::", ACCESS_READ)) {
             return false;
         }
 
@@ -69,26 +69,26 @@ class Blocks_Block_Menutree extends Zikula_Block
             $lang = $deflang;
         }
 
-        if(!empty($vars['menutree_content'])) {
+        if (!empty($vars['menutree_content'])) {
             // select current lang, check permissions for each item and exclude unactive nodes
             $newTree = array();
             $blocked = array();
-            foreach($vars['menutree_content'] as $item) {
+            foreach ($vars['menutree_content'] as $item) {
                 $item = $item[$lang];
                 // due to bug #9 we have to check two possible perms syntax
                 $perms = !Securityutil::checkPermission('menutree:menutreeblock:',"$blockinfo[title]::$item[name]",ACCESS_READ) || !Securityutil::checkPermission('menutree:menutreeblock:',"$blockinfo[title]:$item[name]:",ACCESS_READ);
-                if($perms || in_array($item['parent'], $blocked)) {
+                if ($perms || in_array($item['parent'], $blocked)) {
                     $blocked[] = $item['id'];
                 } elseif ($item['state'] != 1) {
                     $blocked[] = $item['id'];
                 } else {
                     // dynamic components
-                    if(strpos($item['href'],'{ext:') === 0) {
+                    if (strpos($item['href'],'{ext:') === 0) {
                         $dynamic = explode(':', substr($item['href'], 1,  - 1));
                         $modname = $dynamic[1];
                         $func = $dynamic[2]; // plugin
                         $extrainfo = (isset($dynamic[3]) && !empty($dynamic[3])) ? $dynamic[3] : null;
-                        if(!empty($modname) && !empty($func)) {
+                        if (!empty($modname) && !empty($func)) {
                             $args = array(
                                     'item' => $item,
                                     'lang' => $lang,
@@ -96,7 +96,7 @@ class Blocks_Block_Menutree extends Zikula_Block
                                     'extrainfo' => $extrainfo,
                             );
                             $node = ModUtil::apiFunc($modname, 'menutree', $func, $args);
-                            if(!is_array($node)) {
+                            if (!is_array($node)) {
                                 $node = array(array($lang => $item));
                             }
                         }
@@ -109,8 +109,9 @@ class Blocks_Block_Menutree extends Zikula_Block
 
             // bulid structured array
             $langs = array('ref' => $lang,
-                    'list' => $lang,
-                    'flat' => true);
+                           'list' => $lang,
+                           'flat' => true);
+
             $newTree = $this->_decode_tree($newTree,$langs,$_parseURL = true);
         } else {
             $newTree = array();
@@ -122,13 +123,13 @@ class Blocks_Block_Menutree extends Zikula_Block
         }
 
         // stylesheet
-        if(file_exists($vars['menutree_stylesheet'])) {
+        if (file_exists($vars['menutree_stylesheet'])) {
             PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
         }
 
-        $this->view->assign('menutree_editlinks',$vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', 'menutree:'.$blockinfo['title'].':'.$blockinfo['bid'], ACCESS_EDIT));
-        $this->view->assign('menutree_content',$newTree);
-        $this->view->assign('blockinfo', $blockinfo);
+        $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', 'menutree:'.$blockinfo['title'].':'.$blockinfo['bid'], ACCESS_EDIT))
+                   ->assign('menutree_content', $newTree)
+                   ->assign('blockinfo', $blockinfo);
 
         $blockinfo['content'] = $this->view->fetch($vars['menutree_tpl']);
 
@@ -160,8 +161,9 @@ class Blocks_Block_Menutree extends Zikula_Block
 
         // get default langs
         $vars['defaultanguage'] = !empty($blockinfo['language']) ? $blockinfo['language'] : $userlanguage;
+
         // rebuild langs array - default lang has to be first
-        if(isset($vars['languages']) && count($vars['languages']) > 1) {
+        if (isset($vars['languages']) && count($vars['languages']) > 1) {
             $deflang[$vars['defaultanguage']] = $vars['languages'][$vars['defaultanguage']];
             unset($vars['languages'][$vars['defaultanguage']]);
             $vars['languages'] = array_merge($deflang,$vars['languages']);
@@ -169,21 +171,22 @@ class Blocks_Block_Menutree extends Zikula_Block
         } else {
             $vars['multilingual'] = false;
         }
+
         // check if there is allredy content
-        if(empty($vars['menutree_content'])) {
+        if (empty($vars['menutree_content'])) {
             // no content - get list of menus to allow import
             $vars['menutree_menus'] = $this->_get_current_menus($blockinfo['bid']);
         } else {
             // get data to decode content
             $langs = array('list' => array_keys($vars['languages']),
-                    'flat' => false);
+                           'flat' => false);
 
             // are there new langs not present in current menu?
             // check if there are new languages not present in current menu
             // if so - need to set reference lang to copy initial menu items data
-            if(count(array_diff($vars['languages'],$vars['oldlanguages'])) > 1) {
+            if (count(array_diff($vars['languages'],$vars['oldlanguages'])) > 1) {
                 // fisrt try current default lang
-                if(in_array($vars['defaultanguage'],$vars['oldlanguages'])) {
+                if (in_array($vars['defaultanguage'],$vars['oldlanguages'])) {
                     $langs['ref'] = $vars['defaultanguage'];
                     // or user lang
                 } elseif (in_array($userlanguage,$vars['oldlanguages'])) {
@@ -215,7 +218,7 @@ class Blocks_Block_Menutree extends Zikula_Block
         }
 
         // prepare block titles array
-        foreach(array_keys($vars['languages']) as $lang) {
+        foreach (array_keys($vars['languages']) as $lang) {
             if (!array_key_exists($lang, $vars['menutree_titles'])) {
                 $vars['menutree_titles'][$lang] = '';
             }
@@ -231,14 +234,15 @@ class Blocks_Block_Menutree extends Zikula_Block
 
         // check user permissions for settings sections
         $useraccess = SecurityUtil::getSecurityLevel(SecurityUtil::getAuthInfo(), 'Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]");
-        $vars['menutree_titlesaccess'] = $useraccess >= constant($vars['menutree_titlesperms']);
-        $vars['menutree_displayaccess'] = $useraccess >= constant($vars['menutree_displayperms']);
-        $vars['menutree_settingsaccess'] = $useraccess >= constant($vars['menutree_settingsperms']);
-        $vars['menutree_adminaccess'] = $useraccess >= ACCESS_ADMIN;
+        $vars['menutree_titlesaccess']      = $useraccess >= constant($vars['menutree_titlesperms']);
+        $vars['menutree_displayaccess']     = $useraccess >= constant($vars['menutree_displayperms']);
+        $vars['menutree_settingsaccess']    = $useraccess >= constant($vars['menutree_settingsperms']);
+        $vars['menutree_adminaccess']       = $useraccess >= ACCESS_ADMIN;
         $vars['menutree_anysettingsaccess'] = $vars['menutree_adminaccess'] || $vars['menutree_titlesaccess'] || $vars['menutree_displayaccess'] || $vars['menutree_settingsaccess'];
 
         // check if the users wants to add a new link via the "Add current url" link in the block
         $addurl = FormUtil::getPassedValue('addurl', 0, 'GET');
+
         // or if we come from the normal "edit this block" link
         $fromblock = FormUtil::getPassedValue('fromblock', null, 'GET');
 
@@ -258,8 +262,8 @@ class Blocks_Block_Menutree extends Zikula_Block
         }
 
         // assign all block variables
-        $this->view->assign($vars);
-        $this->view->assign('blockinfo', $blockinfo);
+        $this->view->assign($vars)
+                   ->assign('blockinfo', $blockinfo);
 
         // Return the output that has been generated by this function
         return $this->view->fetch('menutree/blocks_block_menutree_modify.tpl');
@@ -275,7 +279,7 @@ class Blocks_Block_Menutree extends Zikula_Block
         // check if import old menu
         $menutree_menus = FormUtil::getPassedValue('menutree_menus', 'null');
 
-        if($menutree_menus != 'null') {
+        if ($menutree_menus != 'null') {
             $vars['menutree_content'] = $this->_import_menu($menutree_menus);
         } else {
             $vars['menutree_content'] = FormUtil::getPassedValue('menutree_content', '', 'POST');
@@ -299,16 +303,16 @@ class Blocks_Block_Menutree extends Zikula_Block
 
         $vars['menutree_linkclass'] = isset($menutree_data['linkclass']) ? (bool)$menutree_data['linkclass'] : false;
         // if class list is provided - rebuild array and fill empty entries
-        if($vars['menutree_linkclass'] && isset($menutree_data['linkclasses'])) {
-            foreach((array)$menutree_data['linkclasses'] as $k => $class) {
-                if(empty($class['name'])) {
+        if ($vars['menutree_linkclass'] && isset($menutree_data['linkclasses'])) {
+            foreach ((array)$menutree_data['linkclasses'] as $k => $class) {
+                if (empty($class['name'])) {
                     unset($menutree_data['linkclasses'][$k]);
                 } elseif (empty($class['title'])) {
                     $menutree_data['linkclasses'][$k]['title'] = $class['name'];
                 }
             }
             $vars['menutree_linkclasses'] = $menutree_data['linkclasses'];
-            if(count($vars['menutree_linkclasses']) < 1) {
+            if (count($vars['menutree_linkclasses']) < 1) {
                 $vars['menutree_linkclass'] = false;
             }
         }
@@ -321,7 +325,7 @@ class Blocks_Block_Menutree extends Zikula_Block
         $vars['menutree_displayperms'] = isset($menutree_data['displayperms']) && array_key_exists($menutree_data['displayperms'],$this->_permlevels()) ? $menutree_data['displayperms'] : 'ACCESS_EDIT';
         $vars['menutree_settingsperms'] = isset($menutree_data['settingsperms']) && array_key_exists($menutree_data['settingsperms'],$this->_permlevels()) ? $menutree_data['settingsperms'] : 'ACCESS_EDIT';
 
-        if(empty($vars['menutree_content'])) {
+        if (empty($vars['menutree_content'])) {
             unset($vars['menutree_content']);
         } else {
             // check langs and save current langs list and current default lang
@@ -330,14 +334,13 @@ class Blocks_Block_Menutree extends Zikula_Block
             $vars['olddefaultanguage'] = $vars['oldlanguages'][0];
 
             // strip base url - if needed
-            if($vars['menutree_stripbaseurl'] === true) {
+            if ($vars['menutree_stripbaseurl'] === true) {
                 $baseurl = System::getBaseUrl();
-                foreach($vars['menutree_content'] as $itemid => $item) {
-                    foreach($item as $lang => $_item) {
+                foreach ($vars['menutree_content'] as $itemid => $item) {
+                    foreach ($item as $lang => $_item) {
                         // strip base url only when it occurs at the beginning of url and only once
-                        if(strpos($_item['href'],$baseurl) === 0) {
+                        if (strpos($_item['href'],$baseurl) === 0) {
                             $vars['menutree_content'][$itemid][$lang]['href'] = substr_replace($_item['href'], '', 0, strlen($baseurl));
-
                         }
                     }
                 }
@@ -362,18 +365,18 @@ class Blocks_Block_Menutree extends Zikula_Block
         $tree = array();
         $map = array();
 
-        if(!empty($langs['ref'])) {
+        if (!empty($langs['ref'])) {
             $reflang = $langs['ref'];
         } else {
             $reflang = $langs['list'][0];
         }
 
-        foreach($array as $a) {
+        foreach ($array as $a) {
             $item = array();
 
-            foreach((array)$langs['list'] as $lang) {
-                if(empty($a[$lang])) {
-                    if(!empty($a[$reflang])) {
+            foreach ((array)$langs['list'] as $lang) {
+                if (empty($a[$lang])) {
+                    if (!empty($a[$reflang])) {
                         $item[$lang] = $a[$reflang];
                     } else {
                         $item[$lang] = current($a);
@@ -388,12 +391,14 @@ class Blocks_Block_Menutree extends Zikula_Block
                 }
                 $item[$lang]['dynamic'] = strpos($item[$lang]['href'],'{ext:') === 0;
             }
-            if($langs['flat']) {
+
+            if ($langs['flat']) {
                 $_node = array('item' => $item[$reflang], 'nodes' => array());
             } else {
                 $_node = array('item' => $item, 'nodes' => array());
             }
-            if($a[$reflang]['parent'] == 0) {
+
+            if ($a[$reflang]['parent'] == 0) {
                 $tree[$a[$reflang]['id']] = $_node;
                 $path = null;
             } else {
@@ -401,16 +406,18 @@ class Blocks_Block_Menutree extends Zikula_Block
                 $path[] = $a[$reflang]['parent'];
                 $handle =& $tree;
                 while (list($key, $value) = each($path)) {
-                    if($value === 0) continue;
+                    if ($value === 0) continue;
                     $handle =& $handle[$value]['nodes'];
                 }
                 $handle[$a[$reflang]['id']] = $_node;
             }
+
             $map[$a[$reflang]['id']] = $path;
         }
-        return $tree;
 
+        return $tree;
     }
+
     /**
      * Prepare a menu item url
      * Copy of buildURL function from extmenu block
@@ -419,7 +426,8 @@ class Blocks_Block_Menutree extends Zikula_Block
     {
         // allow a simple portable way to link to the home page of the site
         if ($url == '{homepage}') {
-            $url = System::getBaseUrl();
+            $url = System::getHomepageUrl();
+
         } elseif (!empty($url)) {
             switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
             {
@@ -468,10 +476,10 @@ class Blocks_Block_Menutree extends Zikula_Block
 
     private function _permlevels()
     {
-        return array('ACCESS_EDIT' => $this->__('Edit access'),
-                'ACCESS_ADD' => $this->__('Add access'),
-                'ACCESS_DELETE' => $this->__('Delete access'),
-                'ACCESS_ADMIN' => $this->__('Admin access'));
+        return array('ACCESS_EDIT'   => $this->__('Edit access'),
+                     'ACCESS_ADD'    => $this->__('Add access'),
+                     'ACCESS_DELETE' => $this->__('Delete access'),
+                     'ACCESS_ADMIN'  => $this->__('Admin access'));
     }
 
     /**
@@ -479,11 +487,13 @@ class Blocks_Block_Menutree extends Zikula_Block
      */
     private function _get_current_menus($bid)
     {
+        $supported = array('menu', 'extmenu', 'menutree', 'dynamenu');
+
         $_menus = BlockUtil::getBlocksInfo();
+
         $menus = array();
-        $supported = array('menu','extmenu','menutree','dynamenu');
-        foreach($_menus as $menu) {
-            if(in_array($menu['bkey'],$supported) && $menu['bid'] != $bid) {
+        foreach ($_menus as $menu) {
+            if (in_array($menu['bkey'],$supported) && $menu['bid'] != $bid) {
                 $menus[$menu['bid']] = $menu['title'];
             }
         }
@@ -500,6 +510,7 @@ class Blocks_Block_Menutree extends Zikula_Block
         if ((!isset($bid)) || (isset($bid) && !is_numeric($bid))) {
             return;
         }
+
         $menu = BlockUtil::getBlockInfo($bid);
         $menuVars = BlockUtil::varsFromContent($menu['content']);
 
@@ -509,6 +520,7 @@ class Blocks_Block_Menutree extends Zikula_Block
             case 'menutree':
                 $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : array();
                 break;
+
             case 'menu':
                 if (isset($menuVars['content']) && !empty($menuVars['content'])) {
                     $reflang = $userlanguage;
@@ -517,7 +529,7 @@ class Blocks_Block_Menutree extends Zikula_Block
                     $contentlines = explode('LINESPLIT', $menuVars['content']);
                     foreach ($contentlines as $lineno => $contentline) {
                         list($href, $name, $title) = explode('|', $contentline);
-                        if(!empty($name)) {
+                        if (!empty($name)) {
                             $className = '';
                             $parent = 0;
                             $state = 1;
@@ -531,12 +543,13 @@ class Blocks_Block_Menutree extends Zikula_Block
                     $lineno++;
                 }
                 break;
+
             case 'extmenu':
                 if (isset($menuVars['links']) && !empty($menuVars['links'])) {
                     $langs = array_keys($menuVars['links']);
                     $data = array();
-                    foreach($langs as $lang) {
-                        foreach($menuVars['links'][$lang] as $id => $link) {
+                    foreach ($langs as $lang) {
+                        foreach ($menuVars['links'][$lang] as $id => $link) {
                             $data[$id][$lang] = array(
                                     'id'        => $id + 1,
                                     'name'      => isset($link['name']) && !empty($link['name']) ? $link['name'] : $this->__('no name'),
@@ -555,6 +568,7 @@ class Blocks_Block_Menutree extends Zikula_Block
                     $lineno = count($data);
                 }
                 break;
+
             // patch by Erik Spaan
             case 'dynamenu':
                 if (isset($menu['content']) && !empty($menu['content'])) {
@@ -597,30 +611,32 @@ class Blocks_Block_Menutree extends Zikula_Block
         if (!empty($menuVars['displaymodules'])) {
             $mods = ModUtil::getUserMods();
 
-            if(is_array($mods) && count($mods)>0) {
-                foreach($mods as $mod) {
+            if (is_array($mods) && count($mods)>0) {
+                foreach ($mods as $mod) {
                     switch($mod['type']) {
                         case 1:
-                            $tmp = array('name'   => $mod['displayname'],
-                                    'href'    => System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
-                                    'title'  => $mod['description']);
+                            $tmp = array('name'  => $mod['displayname'],
+                                         'href'  => System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
+                                         'title' => $mod['description']);
                             break;
                         case 2:
                         case 3:
-                            $tmp = array('name'   => $mod['displayname'],
-                                    'href'    => DataUtil::formatForDisplay(ModUtil::url($mod['name'], 'user', 'main')),
-                                    'title'  => $mod['description']);
+                            $tmp = array('name'  => $mod['displayname'],
+                                         'href'  => DataUtil::formatForDisplay(ModUtil::url($mod['name'], 'user', 'main')),
+                                         'title' => $mod['description']);
                             break;
                     }
-                    foreach($langs as $lang) {
+
+                    foreach ($langs as $lang) {
                         $tmp = array_merge($tmp, array('className' => '',
-                                'parent' => 0,
-                                'lang' => $lang,
-                                'state' => 1,
-                                'lineno' => $lineno,
-                                'id' => $pid));
+                                                       'parent' => 0,
+                                                       'lang' => $lang,
+                                                       'state' => 1,
+                                                       'lineno' => $lineno,
+                                                       'id' => $pid));
                         $tmparray[$lang] = $tmp;
                     }
+
                     $data[] = $tmparray;
                     $pid++;
                     $lineno++;
@@ -637,6 +653,7 @@ class Blocks_Block_Menutree extends Zikula_Block
     private function _parse_dynamic($dynamenu, &$id, $lang, $level=0, $parent=0)
     {
         $data = array();
+
         $lineno = 0;
         while ($id < count($dynamenu)) {
             if ($dynamenu[$id]['level'] == $level) {
@@ -660,6 +677,7 @@ class Blocks_Block_Menutree extends Zikula_Block
             $id++;
             $lineno++;
         }
+
         return $data;
     }
 }
