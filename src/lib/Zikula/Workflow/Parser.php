@@ -116,10 +116,17 @@ class Zikula_Workflow_Parser
 
                     // change the case of array keys for parameter variables
                     $operations = &$action['operations'];
-                    $ak = array_keys($operations);
-                    foreach ($ak as $key) {
+                    foreach (array_keys($operations) as $key) {
                         $parameters = &$operations[$key]['parameters'];
                         $parameters = array_change_key_case($parameters, CASE_LOWER);
+                    }
+
+                    if (isset($action['parameters'])) {
+                        $params = &$action['parameters'];
+                        foreach (array_keys($params) as $key) {
+                            $parameters = &$params[$key];
+                            $parameters = array_change_key_case($parameters, CASE_LOWER);
+                        }
                     }
 
                     // commit results
@@ -238,6 +245,9 @@ class Zikula_Workflow_Parser
             } else if ($name == 'OPERATION') {
                 $this->workflow['value'] = '';
                 $this->workflow['operationParameters'] = $attribs;
+            } else if ($name == 'PARAM') {
+                $this->workflow['value'] = '';
+                $this->workflow['actionParameter'] = $attribs;
             } else {
                 $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, $state . " " . __LINE__);
                 $state = 'error';
@@ -297,6 +307,9 @@ class Zikula_Workflow_Parser
             } else if ($name == 'OPERATION') {
                 $this->workflow['action']['operations'][] = array('name' => trim($this->workflow['value']), 'parameters' => $this->workflow['operationParameters']);
                 $this->workflow['operation'] = null;
+            } else if ($name == 'PARAM') {
+                $this->workflow['action']['parameters'][trim($this->workflow['value'])] = $this->workflow['actionParameter'];
+                $this->workflow['params'] = null;
             } else if ($name == 'NEXTSTATE') {
                 $this->workflow['action']['nextState'] = trim($this->workflow['value']);
             } else if ($name == 'ACTION') {
