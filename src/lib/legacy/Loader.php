@@ -141,7 +141,7 @@ class Loader
      */
     public static function loadClass($className, $classPath = 'lib', $exitOnError = true)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), 'STRICT'));
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), E_USER_DEPRECATED));
         if (!$className) {
             return z_exit(__f("Error! Invalid class specification '%s'.", $className));
         }
@@ -173,7 +173,7 @@ class Loader
      */
     public static function loadClassFromModule($module, $base_obj_type, $array = false, $exitOnError = false, $prefix = 'PN')
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), 'STRICT'));
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), E_USER_DEPRECATED));
         if (!$module) {
             return z_exit(__f("Error! Invalid module specification '%s'.", $module));
         }
@@ -242,7 +242,7 @@ class Loader
      */
     public static function loadArrayClassFromModule($module, $base_obj_type, $exitOnError = false, $prefix = 'PN')
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), 'STRICT'));
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), E_USER_DEPRECATED));
         return self::loadClassFromModule($module, $base_obj_type, true, $exitOnError, $prefix);
     }
 
@@ -254,7 +254,7 @@ class Loader
      */
     public static function includeOnce($file)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'include_once'), 'STRICT'));
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'include_once'), E_USER_DEPRECATED));
         if (strpos($file, 'includes/') === 0) {
             return true;
         }
@@ -270,7 +270,7 @@ class Loader
      */
     public static function requireOnce($file)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'require_once'), 'STRICT'));
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'require_once'), E_USER_DEPRECATED));
         if (strpos($file, 'includes/') === 0) {
             return true;
         }

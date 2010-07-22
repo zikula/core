@@ -419,7 +419,7 @@ class UserUtil
      */
     public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)
     {
-        LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . __f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'UserUtil::loginUsing()')), 'STRICT');
+        LogUtil::log(__CLASS__ . '::' . __FUNCTION__ . '[' . __LINE__ . '] ' . __f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'UserUtil::loginUsing()')), E_USER_DEPRECATED);
         $authinfo = array(
             'loginid'   => $loginID,
             'pass'      => $userEnteredPassword,
@@ -1211,7 +1211,7 @@ class UserUtil
             $obj = array('uid' => $uid, $name => $value);
             $res = (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
         } else if (array_key_exists($name, $mappingarray)) {
-            LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), 'STRICT');
+            LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), E_USER_DEPRECATED);
             // $name is a former DUD /old style user information now stored as an attribute
             $obj = array('uid' => $uid, '__ATTRIBUTES__' => array($mappingarray[$name] => $value));
             $res = (bool)ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
@@ -1537,7 +1537,7 @@ class UserUtil
             $obj = array('uid' => $uid, $name => '');
             return (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
         } else if (array_key_exists($name, $mappingarray)) {
-            LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), 'STRICT');
+            LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), E_USER_DEPRECATED);
             // $name is a former DUD /old style user information now stored as an attribute
             $res = ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $mappingarray[$name]);
 

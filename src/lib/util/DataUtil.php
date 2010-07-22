@@ -530,7 +530,7 @@ class DataUtil
      */
     public static function hash($string, $type = 'sha1')
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::hash()', 'hash()')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::hash()', 'hash()')), E_USER_DEPRECATED);
         return hash(strtolower($type), $string);
     }
 
@@ -743,8 +743,8 @@ class DataUtil
      */
     public static function parseIniFile($iIniFile, $process_sections = true)
     {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), 'STRICT');
+        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), E_USER_DEPRECATED);
         return parse_ini_file($iIniFile, $process_sections);
-    }     
+    }
 }
 
