@@ -123,7 +123,7 @@ class SystemListenersUtil
             $displayLogger->addWriter($writer);
         }
         if ($serviceManager['log.to_file']) {
-            $fileLogger = $serviceManager->attachService('zend.logger.display', new Zend_Log());
+            $fileLogger = $serviceManager->attachService('zend.logger.file', new Zend_Log());
             $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL);
             $filename = LogUtil::getLogFileName();
             $writer = new Zend_Log_Writer_Stream($filename);
@@ -145,7 +145,7 @@ class SystemListenersUtil
         // array('trace' => $trace, 'type' => $type, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
         $message = $event['errstr'];
         if (is_string($event['errstr'])) {
-            $message = __f("%s: %s in %s line %s", array(LogUtil::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
+            $message = __f("%s: %s in %s line %s", array(Zikula_ErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
         }
 
         $serviceManager = $event->getSubject()->getServiceManager();

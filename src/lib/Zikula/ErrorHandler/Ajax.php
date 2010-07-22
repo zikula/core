@@ -16,7 +16,7 @@
 /**
  * Ajax class.
  */
-class Zikula_ErrorHandler_Ajax extends Zikula_ErrorHandler_Base
+class Zikula_ErrorHandler_Ajax extends Zikula_ErrorHandler
 {
     /**
      * ErrorHandler for ajax front controller.
@@ -33,7 +33,9 @@ class Zikula_ErrorHandler_Ajax extends Zikula_ErrorHandler_Base
     {
         $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
-        // Notify all loggers
+        // Notify all loggers.
         $this->eventManager->notify($this->event->setArgs(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
+        // prevent PHP handler showing here.
+        return true;
     }
 }

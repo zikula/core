@@ -16,8 +16,17 @@
 /**
  * Zikula ErrorHandler base class.
  */
-abstract class Zikula_ErrorHandler_Base
+abstract class Zikula_ErrorHandler
 {
+    const EMERG = 0; // Emergency: system is unusable
+    const ALERT = -1; // Alert: action must be taken immediately
+    const CRIT = -2; // Critical: critical conditions
+    const ERR = -3; // Error: error conditions
+    const WARN = -4; // Warning: warning conditions
+    const NOTICE = -5; // Notice: normal but significant condition
+    const INFO = -6; // Informational: informational messages
+    const DEBUG = -7; // Debug: debug messages
+
     /**
      * ServiceManager instance.
      *
@@ -163,46 +172,46 @@ abstract class Zikula_ErrorHandler_Base
         // decode the error type
         switch ($errno) {
             case E_STRICT:
-                $type = LogUtil::NOTICE;
+                $type = self::NOTICE;
                 break;
             case E_DEPRECATED:
-                $type = LogUtil::NOTICE;
+                $type = self::NOTICE;
                 break;
-            case LogUtil::ALERT:
-                $type = LogUtil::ALERT;
+            case self::ALERT:
+                $type = self::ALERT;
                 break;
-            case LogUtil::CRIT:
-                $type = LogUtil::CRIT;
+            case self::CRIT:
+                $type = self::CRIT;
                 break;
-            case LogUtil::DEBUG:
+            case self::DEBUG:
             case E_STRICT:
             case E_DEPRECATED:
             case E_USER_DEPRECATED:
-                $type = LogUtil::DEBUG;
+                $type = self::DEBUG;
                 break;
             case LogUtil::EMERG:
-                $type = LogUtil::EMERG;
+                $type = self::EMERG;
                 break;
-            case LogUtil::ERR:
+            case self::ERR:
             case E_ERROR:
             case E_USER_ERROR:
-                $type = LogUtil::ERR;
+                $type = self::ERR;
                 break;
-            case LogUtil::INFO:
-                $type = LogUtil::INFO;
+            case self::INFO:
+                $type = self::INFO;
                 break;
-            case LogUtil::NOTICE:
+            case self::NOTICE:
             case E_NOTICE:
             case E_USER_NOTICE:
-                $type = LogUtil::NOTICE;
+                $type = self::NOTICE;
                 break;
-            case LogUtil::WARN:
+            case self::WARN:
             case E_WARNING:
             case E_USER_WARNING:
-                $type = LogUtil::WARN;
+                $type = self::WARN;
                 break;
             default:
-                $type = LogUtil::INFO;
+                $type = self::INFO;
                 break;
         }
         return $type;
@@ -215,6 +224,67 @@ abstract class Zikula_ErrorHandler_Base
             $errfile = str_replace(realpath(dirname(__FILE__) . '/../..') . DIRECTORY_SEPARATOR, '', $errfile);
         }
         return $errfile;
+    }
+
+    public static function translateErrorCode($code)
+    {
+        switch ($code) {
+            case E_NOTICE:
+                $word = 'E_NOTICE';
+                break;
+            case E_USER_NOTICE:
+                $word = 'E_USER_NOTICE';
+                break;
+            case E_WARNING:
+                $word = 'E_WARNING';
+                break;
+            case E_USER_WARNING:
+                $word = 'E_USER_WARNING';
+                break;
+            case E_ERROR:
+                $word = 'E_ERROR';
+                break;
+            case E_USER_ERROR:
+                $word = 'E_USER_ERROR';
+                break;
+            case E_STRICT:
+                $word = 'E_STRICT';
+                break;
+            case E_DEPRECATED:
+                $word = 'E_DEPRECATED';
+                break;
+            case E_USER_DEPRECATED:
+                $word = 'E_USER_DEPRECATED';
+                break;
+            case self::EMERG:
+                $word = 'EMERG';
+                break;
+            case self::ALERT:
+                $word = 'ALERT';
+                break;
+            case self::CRIT:
+                $word = 'CRIT';
+                break;
+            case self::ERR:
+                $word = 'ERR';
+                break;
+            case self::WARN:
+                $word = 'WARN';
+                break;
+            case self::NOTICE:
+                $word = 'NOTICE';
+                break;
+            case self::INFO:
+                $word = 'INFO';
+                break;
+            case self::DEBUG:
+                $word = 'DEBUG';
+                break;
+            default:
+                return $code;
+                break;
+        }
+        return $word;
     }
 
     /**

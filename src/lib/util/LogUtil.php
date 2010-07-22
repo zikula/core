@@ -17,15 +17,6 @@
  */
 class LogUtil
 {
-    const EMERG = 0; // Emergency: system is unusable
-    const ALERT = -1; // Alert: action must be taken immediately
-    const CRIT = -2; // Critical: critical conditions
-    const ERR = -3; // Error: error conditions
-    const WARN = -4; // Warning: warning conditions
-    const NOTICE = -5; // Notice: normal but significant condition
-    const INFO = -6; // Informational: informational messages
-    const DEBUG = -7; // Debug: debug messages
-    
     /**
      * Returns an array of status messages.
      *
@@ -367,66 +358,5 @@ class LogUtil
         }
 
         return $logfile;
-    }
-
-    public static function translateErrorCode($code)
-    {
-        switch ($code) {
-            case E_NOTICE:
-                $word = 'E_NOTICE';
-                break;
-            case E_USER_NOTICE:
-                $word = 'E_USER_NOTICE';
-                break;
-            case E_WARNING:
-                $word = 'E_WARNING';
-                break;
-            case E_USER_WARNING:
-                $word = 'E_USER_WARNING';
-                break;
-            case E_ERROR:
-                $word = 'E_ERROR';
-                break;
-            case E_USER_ERROR:
-                $word = 'E_USER_ERROR';
-                break;
-            case E_STRICT:
-                $word = 'E_STRICT';
-                break;
-            case E_DEPRECATED:
-                $word = 'E_DEPRECATED';
-                break;
-            case E_USER_DEPRECATED:
-                $word = 'E_USER_DEPRECATED';
-                break;
-            case self::EMERG:
-                $word = 'EMERG';
-                break;
-            case self::ALERT:
-                $word = 'ALERT';
-                break;
-            case self::CRIT:
-                $word = 'CRIT';
-                break;
-            case self::ERR:
-                $word = 'ERR';
-                break;
-            case self::WARN:
-                $word = 'WARN';
-                break;
-            case self::NOTICE:
-                $word = 'NOTICE';
-                break;
-            case self::INFO:
-                $word = 'INFO';
-                break;
-            case self::DEBUG:
-                $word = 'DEBUG';
-                break;
-            default:
-                return $code;
-                break;
-        }
-        return $word;
     }
 }
