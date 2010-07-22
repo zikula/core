@@ -401,7 +401,7 @@ class Modules_Api_Admin extends Zikula_Api
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        $oomod = (ModUtil::isOO($modinfo['name'])) ? true : false;
+        $oomod = ModUtil::isOO($modinfo['name']);
 
         if ($oomod) {
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
@@ -549,7 +549,7 @@ class Modules_Api_Admin extends Zikula_Api
                     }
 
                     // loads the gettext domain for 3rd party modules
-                    if ($rootdir == 'modules' && is_dir("modules/$dir/locale")) {
+                    if (is_dir("modules/$dir/locale")) {
                         // This is required here since including pnversion automatically executes the pnversion code
                         // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
                         // since loading is self contained in each zOO application.
@@ -885,7 +885,7 @@ class Modules_Api_Admin extends Zikula_Api
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = (ModUtil::isOO($modinfo['name'])) ? true : false;
+        $oomod = ModUtil::isOO($modinfo['name']);
 
         if ($oomod) {
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
@@ -1013,7 +1013,7 @@ class Modules_Api_Admin extends Zikula_Api
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = (ModUtil::isOO($modinfo['name'])) ? true : false;
+        $oomod = ModUtil::isOO($modinfo['name']);
 
         if ($oomod) {
             ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
