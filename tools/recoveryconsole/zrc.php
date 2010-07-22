@@ -201,7 +201,12 @@ class RecoveryConsole
         $this->siteTheme        = System::getVar('Default_Theme');
         $this->operation        = null;
         $this->utility          = null;
+
+        if (!isset($this->appForceLocked)) {
+            $this->appForceLocked = false;
+        }
     }
+
     // Check if lockdown is engaged.
     public function initLockMechanism()
     {
