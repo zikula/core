@@ -54,6 +54,8 @@ if (ModUtil::load($modinfo['name'], $type)) {
     // Run the function
     try {
         $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+    } catch (Zikula_Exception_Fatal $e) {
+        $return = false;
     } catch (Exception $e) {
         $return = false;
     }
@@ -77,6 +79,8 @@ if (ModUtil::load($modinfo['name'], $type)) {
 // text - return information
 if ($return === true) {
     // Nothing to do here everything was done in the module
+} elseif (isset($e) && $e instanceof Zikula_Exception_Fatal) {
+    AjaxUtil::error($e->getMessage());
 } elseif ($return === false) {
     // Failed to load the module
     AjaxUtil::error(__f("Could not load the '%s' module (at '%s' function).", array(DataUtil::formatForDisplay($module), DataUtil::formatForDisplay($func))));

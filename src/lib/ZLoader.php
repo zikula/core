@@ -55,8 +55,8 @@ class ZLoader
         self::$autoloaders->spl_autoload_register();
 
         // Setup EventManager and ServiceManager
-        $sm = ServiceUtil::getManager();
-        $em = EventUtil::getManager(ServiceUtil::getManager());
+        $serviceManager = ServiceUtil::getManager();
+        $eventManager = EventUtil::getManager(ServiceUtil::getManager());
 
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
@@ -67,12 +67,11 @@ class ZLoader
         // load eventhandlers from config/EventHandlers directory if any.
         EventUtil::attachCustomHandlers('config/EventHandlers');
 
-        // setup core events.
-        $em->attach('core.init', array('SystemListenersUtil', 'setupLoggers'));
-        $em->attach('log', array('SystemListenersUtil', 'errorLog'));
-        $em->attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
-        $em->attach('core.init', array('SystemListenersUtil', 'systemPlugins'));
-        $em->attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
+        $eventManager->attach('core.init', array('SystemListenersUtil', 'setupLoggers'));
+        $eventManager->attach('log', array('SystemListenersUtil', 'errorLog'));
+        $eventManager->attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
+        $eventManager->attach('core.init', array('SystemListenersUtil', 'systemPlugins'));
+        $eventManager->attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
     }
 
     /**

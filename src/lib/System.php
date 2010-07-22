@@ -162,10 +162,10 @@ class System
      */
     public static function init($stages = self::CORE_STAGES_ALL)
     {
-        $coreInitEvent = new Zikula_Event('core.init');
         $serviceManager = ServiceUtil::getManager();
         $eventManager = EventUtil::getManager();
-
+        $coreInitEvent = new Zikula_Event('core.init');
+        
         static $globalscleansed = false;
 
         // force register_globals = off
@@ -232,6 +232,18 @@ class System
 
             $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
 
+            if (self::isLegacyMode()) {
+                //require_once 'lib/legacy/Compat.php';
+            }
+
+            // error reporting
+            if (!self::isInstalling()) {
+                // this is here because it depends on the config.php loading.
+                $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
+                $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stages));
+                $eventManager->notifyUntil($event);
+            }
+
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArg('stage', self::CORE_STAGES_CONFIG);
             $eventManager->notify($coreInitEvent);
@@ -239,10 +251,6 @@ class System
 
         // Initialize the (ugly) additional header array
         $GLOBALS['additional_header'] = array();
-
-        if (self::isLegacyMode()) {
-            require_once 'lib/legacy/Compat.php';
-        }
 
         // schemas - holds all component/instance schemas
         // Should wrap this in a static one day, but the information
@@ -304,15 +312,6 @@ class System
             }
             $coreInitEvent->setArg('stage', self::CORE_STAGES_TABLES);
             $eventManager->notify($coreInitEvent);
-        }
-
-        // error reporting
-        if (!self::isInstalling()) {
-            if (!$serviceManager->hasService('system.errorhandler')) {
-                $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
-                $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stages));
-                $eventManager->notifyUntil($event);
-            }
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)

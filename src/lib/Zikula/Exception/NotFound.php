@@ -22,10 +22,10 @@ class Zikula_Exception_NotFound extends Zikula_Exception
      * Constructor.
      *
      * @param string  $message Message default = ''.
-     * @param integer $code    Code default = 0.
+     * @param integer $code    Code default = 404.
      * @param mixed   $debug   Debug default = null.
      */
-    public function __construct($message='', $code=0, $debug=null)
+    public function __construct($message='', $code=404, $debug=null)
     {
         if (empty($message)) {
             $message = __('The requested page could not be found or is not currently accessible.');

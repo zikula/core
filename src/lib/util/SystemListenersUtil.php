@@ -139,7 +139,9 @@ class SystemListenersUtil
         if (error_reporting() == 0) {
             return;
         }
-        
+
+        $handler = $event->getSubject();
+
         // array('trace' => $trace, 'type' => $type, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
         $message = $event['errstr'];
         if (is_string($event['errstr'])) {
@@ -148,7 +150,7 @@ class SystemListenersUtil
 
         $serviceManager = $event->getSubject()->getServiceManager();
 
-        if ($serviceManager['log.to_display']) {
+        if ($serviceManager['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
             $serviceManager->getService('zend.logger.display')->log($message, abs($event['type']));
         }
 
@@ -166,7 +168,9 @@ class SystemListenersUtil
 //                unset($trace[$key]['args']);
 //            }
 //        }
-        if ($event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
+
+        if ($handler instanceof Zikula_ErrorHandler_Ajax) {
+            throw new Zikula_Exception_Fatal($message);
             AjaxUtil::error($message);
         }
     }

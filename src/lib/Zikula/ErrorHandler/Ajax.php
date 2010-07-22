@@ -30,12 +30,10 @@ class Zikula_ErrorHandler_Ajax extends Zikula_ErrorHandler_Base
      * @return void
      */
     public function handler($errno, $errstr, $errfile, $errline, $errcontext)
-    {return true; // temporary suppress
-        $this->eventManager->notify($this->event->setArgs(array('errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)));
-        if ($this->errordisplay === 2) {
-            // allow PHP to return error
-            return false;
-        }
-        return true;
+    {
+        $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
+
+        // Notify all loggers
+        $this->eventManager->notify($this->event->setArgs(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
     }
 }

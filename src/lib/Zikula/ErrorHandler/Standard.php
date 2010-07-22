@@ -18,7 +18,6 @@
  */
 class Zikula_ErrorHandler_Standard extends Zikula_ErrorHandler_Base
 {
-
     /**
      * Handles an error.
      *
@@ -32,70 +31,20 @@ class Zikula_ErrorHandler_Standard extends Zikula_ErrorHandler_Base
      */
     public function handler($errno, $errstr, $errfile='', $errline=0, $errcontext=null)
     {
-        // Remove full path information if not in development mode.
-        if (!System::isDevelopmentMode()) {
-            $errfile = str_replace(realpath(dirname(__FILE__) . '/../..') . DIRECTORY_SEPARATOR, '', $errfile);
-        }
+        $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
-        // decode the error type
-        switch ($errno) {
-            case E_STRICT:
-                $type = LogUtil::NOTICE;
-                break;
-            case E_DEPRECATED:
-                $type = LogUtil::NOTICE;
-                break;
-            case LogUtil::ALERT:
-                $type = LogUtil::ALERT;
-                break;
-            case LogUtil::CRIT:
-                $type = LogUtil::CRIT;
-                break;
-            case LogUtil::DEBUG:
-            case E_STRICT:
-            case E_DEPRECATED:
-            case E_USER_DEPRECATED:
-                $type = LogUtil::DEBUG;
-                break;
-            case LogUtil::EMERG:
-                $type = LogUtil::EMERG;
-                break;
-            case LogUtil::ERR:
-            case E_ERROR:
-            case E_USER_ERROR:
-                $type = LogUtil::ERR;
-                break;
-            case LogUtil::INFO:
-                $type = LogUtil::INFO;
-                break;
-            case LogUtil::NOTICE:
-            case E_NOTICE:
-            case E_USER_NOTICE:
-                $type = LogUtil::NOTICE;
-                break;
-            case LogUtil::WARN:
-            case E_WARNING:
-            case E_USER_WARNING:
-                $type = LogUtil::WARN;
-                break;
-            default:
-                $type = LogUtil::INFO;
-                break;
-        }
-
-        $trace = debug_backtrace();
-        unset($trace[0]);
-        
         // Notify all loggers
-        $this->eventManager->notify($this->event->setArgs(array('trace' => $trace, 'type' => $type, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)));
-        if ($this->isPHPError($errno) && System::isDevelopmentMode() && $this->showPHPErrorHandler()) {
+        $this->eventManager->notify($this->event->setArgs(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
+        if ($this->isPHPError() && System::isDevelopmentMode() && $this->showPHPErrorHandler()) {
             // allow PHP to return error
+            $this->resetHandler();
             return false;
         }
         
         
         if (!$this->isDisplayErrorTemplate()) {
             // prevent PHP from handling the event after we return
+            $this->resetHandler();
             return true;
         }
 
