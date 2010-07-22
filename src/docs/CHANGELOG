@@ -134,6 +134,8 @@ Removed prefixed from the following module files, init.php, tables.php and versi
 Added support for HTTP 500 response in Errors module.
 Improved password recovery workflow (Issue #1631).
 Added user name recovery (Issue #243).
+New location for core stylesheet in /styles/core.css (Issue #2211).
+Added @import handling to css combiner (Issue #1801).
 Fixed issue with system vars and modvars that prevented retrieval of a stored NULL value which would return the default value instead.
 Added exception support in front controller and module controllers.
 Removed core hack for AdvMailer module, use mailer.sendmessage events instead.
