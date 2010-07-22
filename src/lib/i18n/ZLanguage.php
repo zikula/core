@@ -594,7 +594,6 @@ class ZLanguage
             return $localeArray;
         }
 
-        $languageVariations = System::getVar('language_bc');
         // search for locale and config overrides
         $localeArray = array();
         $search = array('config/locale', 'locale');
@@ -602,12 +601,7 @@ class ZLanguage
             // get only the directories of the search paths
             $locales = FileUtil::getFiles($k, false, true, null, 'd');
             foreach ($locales as $locale) {
-                $code = self::transformInternal($locale);
-                if ($languageVariations) {
-                    $localeArray[] = $code;
-                } else if (!strpos($locale, '-')) {
-                    $localeArray[] = $code;
-                }
+                $localeArray[] = self::transformInternal($locale);
             }
         }
         $localeArray = array_unique($localeArray);

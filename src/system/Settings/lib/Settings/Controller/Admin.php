@@ -72,11 +72,10 @@ class Settings_Controller_Admin extends Zikula_Controller
         }
 
         // validate the entry point
-        $falseEntryPoints = array('admin.php', 'ajax.php',  'install.php', 'upgrade.php', 'user.php');
+        $falseEntryPoints = array('admin.php', 'ajax.php',  'install.php', 'upgrade.php', 'user.php', 'mo2json.php', 'jcss.php');
         $entryPointExt = pathinfo($settings['entrypoint'], PATHINFO_EXTENSION);
 
-        if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint'])
-                || strtolower($entryPointExt) != 'php') {
+        if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint']) || strtolower($entryPointExt) != 'php') {
             LogUtil::registerError($this->__("Error! Either you entered an invalid entry point, or else the file specified as being the entry point was not found in the Zikula root directory."));
             $settings['entrypoint'] = System::getVar('entrypoint');
         }
@@ -184,7 +183,6 @@ class Settings_Controller_Admin extends Zikula_Controller
                 'mlsettings_timezone_server' => 'timezone_server',
                 'mlsettings_multilingual'    => 'multilingual',
                 'mlsettings_language_detect' => 'language_detect',
-                'mlsettings_language_bc'     => 'language_bc',
                 'mlsettings_languageurl'     => 'languageurl');
 
         // we can't detect language if multilingual feature is off so reset this to false
@@ -196,17 +194,6 @@ class Settings_Controller_Admin extends Zikula_Controller
             }
 
             $deleteLangUrl = true;
-        }
-
-        if (FormUtil::getPassedValue('mlsettings_language_bc', null, 'POST') == 0) {
-            $lang = System::getVar('language_i18n');
-            $newvalue = substr($lang, 0, (strpos($lang, '-') ? strpos($lang, '-') : strlen($lang)));
-            if ($lang != $newvalue) {
-                System::setVar('language_i18n', $newvalue);
-                unset($settings['mlsettings_language_i18n']);
-                LogUtil::registerStatus($this->__('Warning! The system language has been changed because language variations have been disabled.'));
-                $deleteLangUrl = true;
-            }
         }
 
         if (isset($deleteLangUrl)) {

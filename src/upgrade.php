@@ -30,7 +30,6 @@ define('_Z_MINUPGVER', '1.2.0');
 // include config file for retrieving name of temporary directory
 require_once 'install/modify_config.php';
 $GLOBALS['ZConfig']['System']['multilingual'] = true;
-$GLOBALS['ZConfig']['System']['language_bc'] = false;
 
 include 'config/config.php';
 
@@ -289,7 +288,6 @@ function _upg_upgrademodules($username, $password)
     // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
     System::setVar('Version_Num', System::VERSION_NUM);
     System::setVar('language_i18n', ZLanguage::getLanguageCode());
-    System::setVar('language_bc', 0);
 
     // Relogin the admin user to give a proper admin link
     SessionUtil::requireSession();

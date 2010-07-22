@@ -27,21 +27,6 @@
                         <label for="languageurl1">{gt text="Only for non-default languages"}</label>
                     </span>
                 </div>
-                <div class="z-formrow">
-                    <label for="mlsettings_language_bc">{gt text="Enable language variations"}</label>
-                    <span id="mlsettings_language_bc">
-                        <input id="language_bc1" type="radio" name="mlsettings_language_bc" value="1"{if $language_bc eq 1} checked="checked"{/if} />
-                        <label for="language_bc1">{gt text="Yes"}</label>
-                        <input id="language_bc0" type="radio" name="mlsettings_language_bc" value="0"{if $language_bc eq 0} checked="checked"{/if} />
-                        <label for="language_bc0">{gt text="No"}</label>
-                    </span>
-                </div>
-                <div id="mlsettings_language_bc_warning">
-                    <p class="z-warningmsg">
-                        {gt text="Notice: This disables any language packs of which the name template is 'LL_*'."}<br />
-                        {gt text="If this setting is disabled, data stored in such a language may be lost, depending on how a particular module handles multi-lingual content. This setting is designed for legacy modules that rely on 3-letter ISO-639-1 language codes for which there is no matching ISO-639-2 code."}
-                    </p>
-                </div>
             </fieldset>
             <fieldset>
                 <legend>{gt text="Browser"}</legend>

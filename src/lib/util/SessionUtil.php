@@ -252,14 +252,6 @@ class SessionUtil
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
-        // Legacy Handling
-        // $lang in session has deprecated and code should use ZLanguage::getLanguageCodeLegacy();
-        // if you need the current language code use ZLanguage::getLanguageCode();
-
-        if ($name == 'lang') {
-            return ZLanguage::getLanguageCodeLegacy();
-        }
-
         if ($path == '/' || $path === '') {
             if (isset($_SESSION['ZSV' . $name])) {
                 return $_SESSION['ZSV' . $name];
@@ -307,10 +299,6 @@ class SessionUtil
                 return LogUtil::registerStatus($value);
             }
         }
-
-        // temporary fix for bug #3770
-        // $value = str_replace('\\', '/', $value);
-
 
         // cause session on regeration on uid change
         if ($name == 'uid') {

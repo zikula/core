@@ -73,7 +73,6 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('language',ZLanguage::getLanguageCodeLegacy());
         System::setVar('locale', ZLanguage::getLocale());
         System::setVar('language_i18n', ZLanguage::getlanguageCode());
-        System::setVar('language_bc', 0);
 
         System::setVar('idnnames', 1);
 
@@ -160,6 +159,7 @@ class Settings_Installer extends Zikula_Installer
                     }
                     System::setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
                 }
+                System::delVar('language_bc');
             case '2.9.4':
             // future upgrade routines
         }
