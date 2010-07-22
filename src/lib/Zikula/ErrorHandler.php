@@ -171,12 +171,6 @@ abstract class Zikula_ErrorHandler
     {
         // decode the error type
         switch ($errno) {
-            case E_STRICT:
-                $type = self::NOTICE;
-                break;
-            case E_DEPRECATED:
-                $type = self::NOTICE;
-                break;
             case self::ALERT:
                 $type = self::ALERT;
                 break;
@@ -189,7 +183,7 @@ abstract class Zikula_ErrorHandler
             case E_USER_DEPRECATED:
                 $type = self::DEBUG;
                 break;
-            case LogUtil::EMERG:
+            case self::EMERG:
                 $type = self::EMERG;
                 break;
             case self::ERR:

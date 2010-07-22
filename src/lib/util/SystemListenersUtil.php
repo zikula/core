@@ -151,11 +151,15 @@ class SystemListenersUtil
         $serviceManager = $event->getSubject()->getServiceManager();
 
         if ($serviceManager['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
-            $serviceManager->getService('zend.logger.display')->log($message, abs($event['type']));
+            if (abs($handler->getType()) <= $serviceManager['log.display_level']) {
+                $serviceManager->getService('zend.logger.display')->log($message, abs($event['type']));
+            }
         }
 
         if ($serviceManager['log.to_file']) {
-            $serviceManager->getService('zend.logger.file')->log($message, abs($event['type']));
+            if (abs($handler->getType()) <= $serviceManager['log.file_level']) {
+                $serviceManager->getService('zend.logger.file')->log($message, abs($event['type']));
+            }
         }
 
 //        $trace = $event['trace'];

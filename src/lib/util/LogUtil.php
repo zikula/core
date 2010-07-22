@@ -149,7 +149,7 @@ class LogUtil
     public static function addStatusPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
-        self::_addPopup($message, self::INFO);
+        self::_addPopup($message, Zikula_ErrorHandler::INFO);
     }
 
     public static function addErrorPopup($message)
@@ -160,9 +160,9 @@ class LogUtil
 
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
-        self::log($message, self::DEBUG);
+        self::log($message, Zikula_ErrorHandler::DEBUG);
         
-        if ($type === self::INFO) {
+        if ($type === Zikula_ErrorHandler::INFO) {
             $key = '_ZStatusMsg';
         } elseif ($type === E_USER_ERROR) {
             $key = '_ZErrorMsg';
@@ -318,7 +318,7 @@ class LogUtil
      *
      * @return void
      */
-    public static function log($msg, $level = self::DEBUG)
+    public static function log($msg, $level = Zikula_ErrorHandler::DEBUG)
     {
         $errorReporting = ServiceUtil::getManager()->getService('system.errorreporting');
         $errorReporting->handler($level, $msg);
