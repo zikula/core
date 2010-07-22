@@ -120,25 +120,47 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
     {
         $idHtml = $this->getIdHtml();
 
+        $text = $view->translateForDisplay($this->text);
+
         $onclickHtml = '';
         if ($this->confirmMessage != null) {
             $msg = $view->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
         }
 
-        $text = $view->translateForDisplay($this->text);
+        $imageHtml = '';
+        if (isset($this->attributes['imgsrc']) && !empty($this->attributes['imgsrc'])) {
+            if (!isset($this->attributes['imgset']) || empty($this->attributes['imgset'])) {
+                $this->attributes['imgset'] = 'icons/extrasmall';
+            }
+            // we're going to make use of pnimg for path searching
+            require_once $view->_get_plugin_filepath('function', 'img');
+
+            // call the pnimg plugin and work out the src from the assigned template vars
+            $args = array('src' => $this->attributes['imgsrc'],
+                          'set' => $this->attributes['imgset'],
+                          'title' => $text,
+                          'alt' => $text,
+                          'modname' => 'core');
+
+            $imageHtml = smarty_function_img($args, $view);
+            $imageHtml .= !empty($imageHtml) ? ' ' : '';
+        }
+        if (isset($this->attributes['imgsrc'])) {
+            unset($this->attributes['imgsrc']);
+        }
+        if (isset($this->attributes['imgset'])) {
+            unset($this->attributes['imgset']);
+        }
 
         $attributes = $this->renderAttributes($view);
 
-        $carg = serialize(array(
-            'cname' => $this->commandName,
-            'carg' => $this->commandArgument));
+        $carg = serialize(array('cname' => $this->commandName, 'carg' => $this->commandArgument));
         $href = $view->getPostBackEventReference($this, $carg);
         $href = htmlspecialchars($href);
 
-        $result = "<a {$idHtml}{$onclickHtml}{$attributes} href=\"javascript:$href\">$text</a>";
-        //$result = "<input $idHtml type=\"submit\" name=\"$fullName\" value=\"$text\"$onclickHtml{$attributes}/>";
-
+        $result = "<a {$idHtml}{$onclickHtml}{$attributes} href=\"javascript:$href\">{$imageHtml}$text</a>";
+        //$result = "<input {$idHtml} name=\"$fullName\" value=\"$text\" type=\"submit\"{$onclickHtml}{$attributes}/>";
 
         return $result;
     }
@@ -154,10 +176,9 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
     function raisePostBackEvent($view, $eventArgument)
     {
         $carg = unserialize($eventArgument);
-        $args = array(
-            'commandName' => $carg['cname'],
-            'commandArgument' => $carg['carg']);
-        if (!empty($this->onCommand))
+        $args = array('commandName' => $carg['cname'], 'commandArgument' => $carg['carg']);
+        if (!empty($this->onCommand)) {
             $view->raiseEvent($this->onCommand, $args);
+        }
     }
 }

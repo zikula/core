@@ -130,7 +130,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
 
         $attributes = $this->renderAttributes($render);
 
-        $result = "<input $idHtml type=\"submit\" name=\"$fullName\" value=\"$text\"$onclickHtml$onkeypressHtml{$attributes}/>";
+        $result = "<input {$idHtml} name=\"$fullName\" value=\"$text\" type=\"submit\"{$onclickHtml}{$onkeypressHtml}{$attributes} />";
 
         return $result;
     }
@@ -160,4 +160,3 @@ class Form_Plugin_Button extends Form_StyledPlugin
         return true;
     }
 }
-

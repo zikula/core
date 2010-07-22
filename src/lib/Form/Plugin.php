@@ -342,6 +342,13 @@ abstract class Form_Plugin implements Zikula_Translatable
                 $this->attributes[$name] = $value;
             }
         }
+
+        if (array_key_exists('zparameters', $this->attributes)) {
+            if (is_array($this->attributes['zparameters'])) {
+                $this->attributes = array_merge($this->attributes['zparameters'], $this->attributes);
+            }
+            unset($this->attributes['zparameters']);
+        }
     }
 
     /**
