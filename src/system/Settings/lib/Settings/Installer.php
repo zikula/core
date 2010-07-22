@@ -32,8 +32,8 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('slogan', $this->__('Site description'));
         System::setVar('metakeywords', $this->__('zikula, community, portal, portal web, open source, gpl, web site, website, weblog, blog, content management, content management system, web content management, web content management system, enterprise web content management, cms, application framework'));
         System::setVar('startdate', date('m/Y', time()));
-        System::setVar('adminmail', 'me@example.com');
-        System::setVar('Default_Theme', 'andreas08');
+        System::setVar('adminmail', 'example@example.com');
+        System::setVar('Default_Theme', 'Andreas08');
         System::setVar('anonymous', $this->__('Guest'));
         System::setVar('timezone_offset', '0');
         System::setVar('timezone_server', '0');
@@ -48,10 +48,6 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('useflags', '0');
         System::setVar('theme_change', '0');
         System::setVar('UseCompression', '0');
-        System::setVar('errordisplay', 1);
-        System::setVar('errorlog', 0);
-        System::setVar('errorlogtype', 0);
-        System::setVar('errormailto', 'me@example.com');
         System::setVar('siteoff', 0);
         System::setVar('siteoffreason', '');
         System::setVar('starttype', '');
@@ -65,9 +61,8 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('shorturlsseparator', '-');
         System::setVar('shorturlsstripentrypoint', false);
         System::setVar('shorturlsdefaultmodule', '');
-        $groupModules = $this->_getDefaultGroupModules();
-        System::setVar('profilemodule', $groupModules['profile']);
-        System::setVar('messagemodule', $groupModules['message']);
+        System::setVar('profilemodule', ModUtil::available('Profile') ? 'Profile' : '');
+        System::setVar('messagemodule', '');
         System::setVar('languageurl', 0);
         System::setVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks
@@ -78,7 +73,7 @@ class Settings_Installer extends Zikula_Installer
         System::setVar('language',ZLanguage::getLanguageCodeLegacy());
         System::setVar('locale', ZLanguage::getLocale());
         System::setVar('language_i18n', ZLanguage::getlanguageCode());
-        System::setVar('language_bc', 1);
+        System::setVar('language_bc', 0);
 
         System::setVar('idnnames', 1);
 
@@ -183,30 +178,5 @@ class Settings_Installer extends Zikula_Installer
     {
         // Deletion fail - we dont want users disabling this module!
         return false;
-    }
-
-    /**
-     * utility function to retrieve default values for module group vars
-     *
-     * @return array with determined module names
-     */
-    private function _getDefaultGroupModules()
-    {
-        $groupModules = array();
-
-        $groupModules['profile'] = '';
-        if (ModUtil::available('Profile')) {
-            $groupModules['profile'] = 'Profile';
-
-        } elseif (ModUtil::available('MyProfile')) {
-            $groupModules['profile'] = 'MyProfile';
-        }
-
-        $groupModules['message'] = '';
-        if (ModUtil::available('InterCom')) {
-            $groupModules['message'] = 'InterCom';
-        }
-
-        return $groupModules;
     }
 }
