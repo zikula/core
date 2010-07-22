@@ -40,27 +40,30 @@ class Zikula_ErrorHandler_Standard extends Zikula_ErrorHandler
             $this->resetHandler();
             return false;
         }
-        
-        
+
         if (!$this->isDisplayErrorTemplate()) {
             // prevent PHP from handling the event after we return
             $this->resetHandler();
             return true;
         }
 
-        // todo..... 
-
-        // clear the output buffer
-        while (ob_get_level()) {
-            ob_end_clean();
+        // obey reporing level
+        if (abs($this->getType()) > $this->serviceManager['log.display_level']) {
+            return false;
         }
 
-        $output = ModUtil::func('Errors', 'user', 'system',
-                           array('type' => $errno,
-                                 'message' => $errstr,
-                                 'file' => $errfile,
-                                 'line' => $errline));
+        // unless in development mode, exit.
+        if (!$this->serviceManager['log.display_template']) {
+            return false;
+        }
 
-        throw new Zikula_Exception_Fatal($output); // throw back to front controller for clean exit.
+        // if we get this far, display template
+        echo ModUtil::func('Errors', 'user', 'system',
+                           array('type' => $this->errno,
+                                 'message' => $this->errstr,
+                                 'file' => $this->errfile,
+                                 'line' => $this->errline));
+        Zikula_View_Theme::getInstance()->themefooter();
+        System::shutDown();
     }
 }
