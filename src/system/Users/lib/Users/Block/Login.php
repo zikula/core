@@ -21,22 +21,6 @@
 class Users_Block_Login extends Zikula_Block
 {
     /**
-     * return the block info
-    */
-    public function info()
-    {
-        return array(
-        'module'         => 'Users',
-        'text_type'      => $this->__('Log-in'),
-        'text_type_long' => $this->__('Log-in block'),
-        'allow_multiple' => false,
-        'form_content'   => false,
-        'form_refresh'   => false,
-        'show_preview'   => false
-        );
-    }
-
-    /**
      * initialise the block
      *
      * Adds the blocks security schema to the PN environment
@@ -44,6 +28,20 @@ class Users_Block_Login extends Zikula_Block
     public function init()
     {
         SecurityUtil::registerPermissionSchema('Loginblock::', 'Block title::');
+    }
+
+    /**
+     * return the block info
+     */
+    public function info()
+    {
+        return array('module'         => 'Users',
+                     'text_type'      => $this->__('Log-in'),
+                     'text_type_long' => $this->__('Log-in block'),
+                     'allow_multiple' => false,
+                     'form_content'   => false,
+                     'form_refresh'   => false,
+                     'show_preview'   => false);
     }
 
     /**
@@ -73,11 +71,11 @@ class Users_Block_Login extends Zikula_Block
             $authmodule = FormUtil::getPassedValue('loginwith', $this->getVar('default_authmodule', 'Users'), 'GET');
 
             $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
-                           ->assign('authmodule', $authmodule)
-                           ->assign('authmodules', $authmodules)
-                           ->assign('seclevel', System::getVar('seclevel'))
-                           ->assign('allowregistration', $this->getVar('reg_allowreg'))
-                           ->assign('returnurl', System::getCurrentUri());
+                       ->assign('authmodule', $authmodule)
+                       ->assign('authmodules', $authmodules)
+                       ->assign('seclevel', System::getVar('seclevel'))
+                       ->assign('allowregistration', $this->getVar('reg_allowreg'))
+                       ->assign('returnurl', System::getCurrentUri());
 
             $row['content'] = $this->view->fetch('users_block_login.tpl');
 

@@ -14,11 +14,17 @@
 
 class Blocks_Block_Menutree extends Zikula_Block
 {
+    /**
+     * initialise block
+     */
     public function init()
     {
         SecurityUtil::registerPermissionSchema('menutree:menutreeblock:', 'Block ID:Link name:');
     }
 
+    /**
+     * get information on block
+     */
     public function info()
     {
         return array('module'          => 'Blocks',
@@ -31,6 +37,9 @@ class Blocks_Block_Menutree extends Zikula_Block
                      'admin_tableless' => true);
     }
 
+    /**
+     * display block
+     */
     public function display($blockinfo)
     {
         // Security check
@@ -136,6 +145,9 @@ class Blocks_Block_Menutree extends Zikula_Block
         return BlockUtil::themeBlock($blockinfo);
     }
 
+    /**
+     * block configuration
+     */
     public function modify($blockinfo)
     {
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
@@ -269,6 +281,9 @@ class Blocks_Block_Menutree extends Zikula_Block
         return $this->view->fetch('menutree/blocks_block_menutree_modify.tpl');
     }
 
+    /**
+     * update block configuration
+     */
     public function update($blockinfo)
     {
         // Get current content

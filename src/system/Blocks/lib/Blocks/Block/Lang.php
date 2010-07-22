@@ -13,19 +13,15 @@ class Blocks_Block_Lang extends Zikula_Block
 {
     /**
      * initialise block
-     *
-     * @author       The Zikula Development Team
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Languageblock::', 'Block title::');
     }
 
     /**
      * get information on block
      *
-     * @author       The Zikula Development Team
      * @return       array       The block information
      */
     public function info()
@@ -39,14 +35,14 @@ class Blocks_Block_Lang extends Zikula_Block
         }
 
         return array('module'          => 'Blocks',
-                'text_type'       => $this->__('Language'),
-                'text_type_long'  => $this->__('Language selector block'),
-                'allow_multiple'  => false,
-                'form_content'    => false,
-                'form_refresh'    => false,
-                'show_preview'    => true,
-                'admin_tableless' => true,
-                'requirement'     => $requirement_message);
+                     'text_type'       => $this->__('Language'),
+                     'text_type_long'  => $this->__('Language selector block'),
+                     'allow_multiple'  => false,
+                     'form_content'    => false,
+                     'form_refresh'    => false,
+                     'show_preview'    => true,
+                     'admin_tableless' => true,
+                     'requirement'     => $requirement_message);
     }
 
     /**
@@ -91,7 +87,6 @@ class Blocks_Block_Lang extends Zikula_Block
         if (empty($blockinfo['title'])) {
             $blockinfo['title'] = $this->__('Choose a language');
         }
-
 
         // prepare vars for ModUtil::url
         $module = FormUtil::getPassedValue('module', null, 'GET', FILTER_SANITIZE_STRING);
@@ -154,11 +149,9 @@ class Blocks_Block_Lang extends Zikula_Block
         return BlockUtil::themeBlock($blockinfo);
     }
 
-
     /**
      * modify block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the bock form
      */
@@ -184,11 +177,9 @@ class Blocks_Block_Lang extends Zikula_Block
         return $this->view->fetch('blocks_block_thelang_modify.tpl');
     }
 
-
     /**
      * update block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
@@ -212,7 +203,6 @@ class Blocks_Block_Lang extends Zikula_Block
         return $blockinfo;
     }
 
-
     public function getAvailableLanguages()
     {
         $langlist = ZLanguage::getInstalledLanguageNames();
@@ -223,8 +213,8 @@ class Blocks_Block_Lang extends Zikula_Block
             $img = file_exists("images/flags/flag-$code.png");
 
             $list[] = array('code' => $code,
-                    'name' => $langname,
-                    'flag' => $img ? "images/flags/flag-$code.png" : '');
+                            'name' => $langname,
+                            'flag' => $img ? "images/flags/flag-$code.png" : '');
         }
 
         usort($list, '_blocks_thelangblock_sort');

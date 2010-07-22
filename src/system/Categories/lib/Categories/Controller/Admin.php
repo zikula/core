@@ -146,15 +146,15 @@ class Categories_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $this->view->assign('mode', $mode)
-                       ->assign('category', $editCat)
-                       ->assign('attributes', $attributes)
-                       ->assign('languages', $languages)
-                       ->assign('categorySelector', $selector)
-                       ->assign('validation', $category->_objValidation);
+                   ->assign('category', $editCat)
+                   ->assign('attributes', $attributes)
+                   ->assign('languages', $languages)
+                   ->assign('categorySelector', $selector)
+                   ->assign('validation', $category->_objValidation);
 
         if ($mode == 'edit') {
             $this->view->assign('haveSubcategories', CategoryUtil::haveDirectSubcategories ($cid))
-                           ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories ($cid, false, true));
+                       ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories ($cid, false, true));
         }
 
         return $this->view->fetch('categories_admin_edit.tpl');
@@ -190,10 +190,10 @@ class Categories_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $this->view->assign('objectArray', $dataA)
-                       ->assign('newobj', $data)
-                       ->assign('root_id', $root_id)
-                       ->assign('id', $id)
-                       ->assign('validation', $obj->_objValidation);
+                   ->assign('newobj', $data)
+                   ->assign('root_id', $root_id)
+                   ->assign('id', $id)
+                   ->assign('validation', $obj->_objValidation);
 
         return $this->view->fetch('categories_admin_registry_edit.tpl');
     }
@@ -229,8 +229,8 @@ class Categories_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $this->view->assign('category', $category)
-                       ->assign('numSubcats', count($subCats))
-                       ->assign('categorySelector', $selector);
+                   ->assign('numSubcats', count($subCats))
+                   ->assign('categorySelector', $selector);
 
         $tplName = 'categories_admin_' . $op . '.tpl';
         return $this->view->fetch($tplName);
@@ -248,13 +248,12 @@ class Categories_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $this->view->assign ('userrootcat', $this->getVar('userrootcat', '/__SYSTEM__'))
-                       ->assign ('allowusercatedit', $this->getVar('allowusercatedit', 0))
-                       ->assign ('autocreateusercat', $this->getVar('autocreateusercat', 0))
-                       ->assign ('autocreateuserdefaultcat', $this->getVar('autocreateuserdefaultcat', 0))
-                       ->assign ('userdefaultcatname', $this->getVar('userdefaultcatname', 0))
-                       ->assign ('permissionsall', $this->getVar('permissionsall', 0));
+                   ->assign ('allowusercatedit', $this->getVar('allowusercatedit', 0))
+                   ->assign ('autocreateusercat', $this->getVar('autocreateusercat', 0))
+                   ->assign ('autocreateuserdefaultcat', $this->getVar('autocreateuserdefaultcat', 0))
+                   ->assign ('userdefaultcatname', $this->getVar('userdefaultcatname', 0))
+                   ->assign ('permissionsall', $this->getVar('permissionsall', 0));
 
         return $this->view->fetch('categories_admin_preferences.tpl');
     }
-
 }

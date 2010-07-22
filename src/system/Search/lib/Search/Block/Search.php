@@ -14,37 +14,32 @@ class Search_Block_Search extends Zikula_Block
 {
     /**
      * initialise block
-     *
-     * @author       The Zikula Development Team
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Searchblock::', 'Block title::');
     }
 
     /**
      * get information on block
      *
-     * @author       The Zikula Development Team
      * @return       array       The block information
      */
     public function info()
     {
         return array('module'          => 'Search',
-                'text_type'       => $this->__('Search'),
-                'text_type_long'  => $this->__('Search box'),
-                'allow_multiple'  => true,
-                'form_content'    => false,
-                'form_refresh'    => false,
-                'show_preview'    => true,
-                'admin_tableless' => true);
+                     'text_type'       => $this->__('Search'),
+                     'text_type_long'  => $this->__('Search box'),
+                     'allow_multiple'  => true,
+                     'form_content'    => false,
+                     'form_refresh'    => false,
+                     'show_preview'    => true,
+                     'admin_tableless' => true);
     }
 
     /**
      * display block
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the rendered bock
      */
@@ -77,13 +72,13 @@ class Search_Block_Search extends Zikula_Block
 
         // return the rendered block
         $blockinfo['content'] = $this->view->fetch('search_block_search.tpl');
+
         return BlockUtil::themeBlock($blockinfo);
     }
 
     /**
      * modify block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the bock form
      */
@@ -111,7 +106,7 @@ class Search_Block_Search extends Zikula_Block
 
         // assign the block vars array
         $this->view->assign('searchvars', $vars)
-                       ->assign('searchmodules', $searchmodules);
+                   ->assign('searchmodules', $searchmodules);
 
         return $this->view->fetch('search_block_search_modify.tpl');
     }
@@ -119,7 +114,6 @@ class Search_Block_Search extends Zikula_Block
     /**
      * update block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
@@ -127,12 +121,12 @@ class Search_Block_Search extends Zikula_Block
     {
         // list of vars that don't need to be saved
         $search_reserved_vars = array('authid', 'bid', 'title', 'positions', 'language', 'submit',
-                'refresh', 'filter', 'type', 'functions', 'customargs');
+                                      'refresh', 'filter', 'type', 'functions', 'customargs');
 
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        foreach($_POST as $key => $value) {
+        foreach ($_POST as $key => $value) {
             if (in_array($key, $search_reserved_vars)) {
                 continue;
             }

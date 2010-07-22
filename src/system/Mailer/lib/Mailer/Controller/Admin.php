@@ -46,9 +46,9 @@ class Mailer_Controller_Admin extends Zikula_Controller
 
         // assign the module mail agent types
         $this->view->assign('mailertypes', array(1 => DataUtil::formatForDisplay($this->__("PHP 'mail()' function")),
-                2 => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent')),
-                3 => DataUtil::formatForDisplay($this->__('QMail message transfer agent')),
-                4 => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))));
+                                                 2 => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent')),
+                                                 3 => DataUtil::formatForDisplay($this->__('QMail message transfer agent')),
+                                                 4 => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))));
 
         // assign all module vars
         $this->view->assign($this->getVars());

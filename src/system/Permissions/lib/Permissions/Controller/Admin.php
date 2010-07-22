@@ -70,10 +70,10 @@ class Permissions_Controller_Admin extends Zikula_Controller
         }
 
         $this->view->assign('testuser', $testuser)
-                       ->assign('testcomponent', $testcomponent)
-                       ->assign('testinstance', $testinstance)
-                       ->assign('testlevel', $testlevel)
-                       ->assign('testresult', $testresult);
+                   ->assign('testcomponent', $testcomponent)
+                   ->assign('testinstance', $testinstance)
+                   ->assign('testlevel', $testlevel)
+                   ->assign('testresult', $testresult);
 
         // decide the default view
         $enableFilter = $this->getVar('filter', 1);
@@ -344,7 +344,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         }
 
         $this->view->assign('title', $viewperms)
-                       ->assign('mlpermtype', $mlpermtype);
+                   ->assign('mlpermtype', $mlpermtype);
 
         $accesslevels = SecurityUtil::accesslevelnames();
         $numrows = count($objArray);
@@ -354,32 +354,32 @@ class Permissions_Controller_Admin extends Zikula_Controller
         if ($action == 'modify') {
             // Form-start
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'update'))
-                           ->assign('permgrp', $permgrp)
-                           ->assign('chgpid', $chgpid);
+                       ->assign('permgrp', $permgrp)
+                       ->assign('chgpid', $chgpid);
 
             // Realms hard-code4d - jgm
             $this->view->assign('realm', 0)
-                           ->assign('insseq', $chgpid)
-                           ->assign('submit', $this->__('Edit permission rule'));
+                       ->assign('insseq', $chgpid)
+                       ->assign('submit', $this->__('Edit permission rule'));
 
         } else if ($action == 'insert') {
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
-                           ->assign('permgrp', $permgrp)
-                           ->assign('insseq', $insseq);
+                       ->assign('permgrp', $permgrp)
+                       ->assign('insseq', $insseq);
 
             // Realms hard-coded - jgm
             $this->view->assign('realm', 0)
-                           ->assign('submit', $this->__('Create new permission rule'));
+                       ->assign('submit', $this->__('Create new permission rule'));
 
         } else if ($action == 'add') {
             // Form-start
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
-                           ->assign('permgrp', $permgrp)
-                           ->assign('insseq', -1);
+                       ->assign('permgrp', $permgrp)
+                       ->assign('insseq', -1);
 
             // Realms hard-coded - jgm
             $this->view->assign('realm', 0)
-                           ->assign('submit', $this->__('Create new permission rule'));
+                       ->assign('submit', $this->__('Create new permission rule'));
         }
 
         $this->view->assign('action', $action);

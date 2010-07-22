@@ -27,8 +27,8 @@ class SysInfo_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $this->view->assign('pnversionnum', System::VERSION_NUM)
-                       ->assign('pnversionid', System::VERSION_ID)
-                       ->assign('pnversionsub', System::VERSION_SUB);
+                   ->assign('pnversionid', System::VERSION_ID)
+                   ->assign('pnversionsub', System::VERSION_SUB);
 
         $serversig = System::serverGetVar('SERVER_SIGNATURE');
         if (!isset($serversig) || empty($serversig)) {
@@ -109,19 +109,19 @@ class SysInfo_Controller_Admin extends Zikula_Controller
         }
 
         $this->view->assign('extensions', $extensions)
-                      ->assign('opt_extensions', $opt_extensions)
-                      ->assign('opt_patches', $opt_patches)
-                      ->assign('dbinfo', $dbinfo)
-                      ->assign('php_display_errors', DataUtil::getBooleanIniValue('display_errors'))
-                      ->assign('php_display_startup_errors', DataUtil::getBooleanIniValue('display_startup_errors'))
-                      ->assign('php_expose_php', DataUtil::getBooleanIniValue('expose_php'))
-                      ->assign('php_register_globals', DataUtil::getBooleanIniValue('register_globals'))
-                      ->assign('php_magic_quotes_gpc', DataUtil::getBooleanIniValue('magic_quotes_gpc'))
-                      ->assign('php_magic_quotes_runtime', DataUtil::getBooleanIniValue('magic_quotes_runtime'))
-                      ->assign('php_allow_url_fopen', DataUtil::getBooleanIniValue('allow_url_fopen'))
-                      ->assign('php_allow_url_include', DataUtil::getBooleanIniValue('allow_url_include'))
-                      ->assign('php_disable_functions', DataUtil::getBooleanIniValue('disable_functions'))
-                      ->assign('mod_security', (bool)$mod_security);
+                   ->assign('opt_extensions', $opt_extensions)
+                   ->assign('opt_patches', $opt_patches)
+                   ->assign('dbinfo', $dbinfo)
+                   ->assign('php_display_errors', DataUtil::getBooleanIniValue('display_errors'))
+                   ->assign('php_display_startup_errors', DataUtil::getBooleanIniValue('display_startup_errors'))
+                   ->assign('php_expose_php', DataUtil::getBooleanIniValue('expose_php'))
+                   ->assign('php_register_globals', DataUtil::getBooleanIniValue('register_globals'))
+                   ->assign('php_magic_quotes_gpc', DataUtil::getBooleanIniValue('magic_quotes_gpc'))
+                   ->assign('php_magic_quotes_runtime', DataUtil::getBooleanIniValue('magic_quotes_runtime'))
+                   ->assign('php_allow_url_fopen', DataUtil::getBooleanIniValue('allow_url_fopen'))
+                   ->assign('php_allow_url_include', DataUtil::getBooleanIniValue('allow_url_include'))
+                   ->assign('php_disable_functions', DataUtil::getBooleanIniValue('disable_functions'))
+                   ->assign('mod_security', (bool)$mod_security);
 
         return $this->view->fetch('sysinfo_admin_main.tpl');
     }
@@ -198,7 +198,7 @@ class SysInfo_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         $this->view->assign('filelist', $filelist)
-                       ->assign('ztemp', $ztemp);
+                   ->assign('ztemp', $ztemp);
 
         return $this->view->fetch('sysinfo_admin_filesystem.tpl');
     }
@@ -217,8 +217,9 @@ class SysInfo_Controller_Admin extends Zikula_Controller
 
         $ztemp = DataUtil::formatForOS(CacheUtil::getLocalDir(),true);
         $filelist = ModUtil::apiFunc('SysInfo', 'admin', 'filelist',
-                array ('startdir' => $ztemp . '/',
-                'ztemp' => 1));
+                                     array('startdir' => $ztemp . '/',
+                                           'ztemp' => 1));
+
         $this->view->assign('filelist', $filelist);
 
         $this->view->assign('ztemp', $ztemp);
@@ -239,8 +240,8 @@ class SysInfo_Controller_Admin extends Zikula_Controller
         $this->view->setCaching(false);
 
         return $this->view->assign('mods', ModuleUtil::getModules())
-                              ->assign('themes', ThemeUtil::getAllThemes())
-                              ->fetch('sysinfo_admin_extensions.tpl');
+                          ->assign('themes', ThemeUtil::getAllThemes())
+                          ->fetch('sysinfo_admin_extensions.tpl');
     }
 }
 

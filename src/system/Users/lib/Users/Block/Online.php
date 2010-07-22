@@ -21,30 +21,27 @@
 class Users_Block_Online extends Zikula_Block
 {
     /**
-     * return the block info
-    */
-    public function info()
-    {
-        return array(
-        'module'         => 'Users',
-        'text_type'      => $this->__("Who's on-line"),
-        'text_type_long' => $this->__('On-line block'),
-        'allow_multiple' => false,
-        'form_content'   => false,
-        'form_refresh'   => false,
-        'show_preview'   => true
-        );
-    }
-
-    /**
      * initialise the block
      *
      * Adds the blocks security schema to the PN environment
-    */
+     */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Onlineblock::', 'Block title::');
+    }
+
+    /**
+     * return the block info
+     */
+    public function info()
+    {
+        return array('module'         => 'Users',
+                     'text_type'      => $this->__("Who's on-line"),
+                     'text_type_long' => $this->__('On-line block'),
+                     'allow_multiple' => false,
+                     'form_content'   => false,
+                     'form_refresh'   => false,
+                     'show_preview'   => true);
     }
 
     /**
@@ -53,7 +50,7 @@ class Users_Block_Online extends Zikula_Block
      * Display the output of the online block
      *
      * @todo move sql queries to calls to relevant API's
-    */
+     */
     public function display($row)
     {
         if (!SecurityUtil::checkPermission('Onlineblock::', $row['title'].'::', ACCESS_READ)) {
@@ -83,10 +80,10 @@ class Users_Block_Online extends Zikula_Block
         $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
 
         $this->view->assign('registerallowed', $this->getVar('reg_allowreg'))
-                       ->assign('loggedin', UserUtil::isLoggedIn())
-                       ->assign('userscount', $numusers )
-                       ->assign('guestcount', $numguests )
-                       ->assign('username', UserUtil::getVar('uname'));
+                   ->assign('loggedin', UserUtil::isLoggedIn())
+                   ->assign('userscount', $numusers )
+                   ->assign('guestcount', $numguests )
+                   ->assign('username', UserUtil::getVar('uname'));
 
         $msgmodule = System::getVar('messagemodule', '');
         if (SecurityUtil::checkPermission($msgmodule.'::', '::', ACCESS_READ) && UserUtil::isLoggedIn()) {
@@ -100,6 +97,7 @@ class Users_Block_Online extends Zikula_Block
         }
 
         $row['content'] = $this->view->fetch('users_block_online.tpl');
+
         return BlockUtil::themeBlock($row);
     }
 }

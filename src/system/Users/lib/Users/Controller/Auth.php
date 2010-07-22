@@ -35,7 +35,7 @@ class Users_Controller_Auth extends Zikula_Controller
     public function loginBlockFields()
     {
         return $this->view->assign('loginviaoption', ModUtil::getVar('Users', 'loginviaoption', 0))
-            ->fetch('users_auth_loginblockfields.tpl');
+                          ->fetch('users_auth_loginblockfields.tpl');
     }
 
     public function loginBlockIcon()

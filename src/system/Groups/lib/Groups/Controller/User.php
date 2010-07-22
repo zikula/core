@@ -113,7 +113,7 @@ class Groups_Controller_User extends Zikula_Controller
         $this->view->assign('items', $groupitems);
 
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
-                                               'itemsperpage' => $itemsperpage));
+                                           'itemsperpage' => $itemsperpage));
 
         return $this->view->fetch('groups_user_view.tpl');
     }
@@ -174,12 +174,12 @@ class Groups_Controller_User extends Zikula_Controller
         $this->view->add_core_data();
 
         $this->view->assign('mainpage',     true)
-                       ->assign('hooks',        false)
-                       ->assign('gid',          $gid)
-                       ->assign('gname',        $group['name'])
-                       ->assign('gtype',        $group['gtype']) // Can't use type as it is a reserved word.
-                       ->assign('action',       $action)
-                       ->assign('description',  $group['description']);
+                   ->assign('hooks',        false)
+                   ->assign('gid',          $gid)
+                   ->assign('gname',        $group['name'])
+                   ->assign('gtype',        $group['gtype']) // Can't use type as it is a reserved word.
+                   ->assign('action',       $action)
+                   ->assign('description',  $group['description']);
 
         return $this->view->fetch('groups_user_membership.tpl');
     }
@@ -315,15 +315,10 @@ class Groups_Controller_User extends Zikula_Controller
         $this->view->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
 
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
-                                               'itemsperpage' => $itemsperpage));
+                                           'itemsperpage' => $itemsperpage));
 
-        $this->view->assign('hooks', $this->callHooks('item',
-                'display',
-                $gid,
-                ModUtil::url('Groups',
-                'user',
-                'memberslist',
-                array('gid' => $gid))));
+        $this->view->assign('hooks', $this->callHooks('item', 'display', $gid,
+                                                      ModUtil::url('Groups', 'user', 'memberslist', array('gid' => $gid))));
 
         $profileModule = System::getVar('profilemodule', '');
         $this->view->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));

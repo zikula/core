@@ -14,37 +14,32 @@ class Blocks_Block_Extmenu extends Zikula_Block
 {
     /**
      * initialise block
-     *
-     * @author       The Zikula Development Team
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('ExtendedMenublock::', 'Block ID:Link ID:');
     }
 
     /**
      * get information on block
      *
-     * @author       The Zikula Development Team
      * @return       array       The block information
      */
     public function info()
     {
-        return array('module' => 'Blocks',
-                'text_type' => $this->__('Extended menu'),
-                'text_type_long' => $this->__('Extended menu block'),
-                'allow_multiple' => true,
-                'form_content' => false,
-                'form_refresh' => false,
-                'show_preview' => true,
-                'admin_tableless' => true);
+        return array('module'          => 'Blocks',
+                     'text_type'       => $this->__('Extended menu'),
+                     'text_type_long'  => $this->__('Extended menu block'),
+                     'allow_multiple'  => true,
+                     'form_content'    => false,
+                     'form_refresh'    => false,
+                     'show_preview'    => true,
+                     'admin_tableless' => true);
     }
 
     /**
      * display block
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the rendered bock
      */
@@ -139,20 +134,19 @@ class Blocks_Block_Extmenu extends Zikula_Block
             // Separate from current content, if any
             if (count($menuitems) > 0) {
                 $menuitems[] = array('name'   => '&nbsp;',
-                        'url'    => '',
-                        'title'  => '',
-                        'level'  => 0,
-                        'parentid' => null,
-                        'image'  => ''
-                );
+                                     'url'    => '',
+                                     'title'  => '',
+                                     'level'  => 0,
+                                     'parentid' => null,
+                                     'image'  => '');
+
                 if (SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_ADMIN)) {
                     $menuitems[] = array('name'   => $this->__('--Installed modules--'),
-                            'url'    => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
-                            'title'  => '',
-                            'level'  => 0,
-                            'parentid' => null,
-                            'image'  => ''
-                    );
+                                         'url'    => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $blockinfo['bid'])),
+                                         'title'  => '',
+                                         'level'  => 0,
+                                         'parentid' => null,
+                                         'image'  => '');
                 }
             }
 
@@ -161,12 +155,11 @@ class Blocks_Block_Extmenu extends Zikula_Block
 
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
                     $menuitems[] = array('name'   => $mod['displayname'],
-                            'url'    => ModUtil::url($mod['name'], 'user', 'main'),
-                            'title'  => $mod['description'],
-                            'level'  => 0,
-                            'parentid' => null,
-                            'image'  => ''
-                        );
+                                         'url'    => ModUtil::url($mod['name'], 'user', 'main'),
+                                         'title'  => $mod['description'],
+                                         'level'  => 0,
+                                         'parentid' => null,
+                                         'image'  => '');
                 }
             }
         }
@@ -180,9 +173,9 @@ class Blocks_Block_Extmenu extends Zikula_Block
 
         // assign the items
         $this->view->assign('menuitems', $menuitems)
-                       ->assign('blockinfo', $blockinfo)
-                       ->assign('currenturi', $currenturi)
-                       ->assign('access_edit', Securityutil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_EDIT));
+                   ->assign('blockinfo', $blockinfo)
+                   ->assign('currenturi', $currenturi)
+                   ->assign('access_edit', Securityutil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . '::', ACCESS_EDIT));
 
         // get the block content
         $blockinfo['content'] = $this->view->fetch($vars['template']);
@@ -221,6 +214,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
         // allow a simple portable way to link to the home page of the site
         if ($url == '{homepage}') {
             $url = htmlspecialchars(System::getHomepageUrl());
+
         } elseif (!empty($url)) {
             switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
             {
@@ -264,7 +258,6 @@ class Blocks_Block_Extmenu extends Zikula_Block
     /**
      * modify block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the bock form
      */
@@ -273,7 +266,6 @@ class Blocks_Block_Extmenu extends Zikula_Block
         // Break out options from our content field
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         $blockinfo['content'] = '';
-
 
         // Defaults
         if (empty($vars['displaymodules'])) {
@@ -324,14 +316,14 @@ class Blocks_Block_Extmenu extends Zikula_Block
             if (empty($newurl)) {
                 $newurl = System::getHomepageUrl();
             }
-            foreach($languages as $singlelanguage) {
+            foreach ($languages as $singlelanguage) {
                 $vars['links'][$singlelanguage][] = array('name'   => $this->__('--New link--'),
-                        'url'    => $newurl,
-                        'title'  => $this->__('--New link--'),
-                        'level'  => 0,
-                        'parentid' => null,
-                        'image'  => '',
-                        'active' => 1);
+                                                          'url'    => $newurl,
+                                                          'title'  => $this->__('--New link--'),
+                                                          'level'  => 0,
+                                                          'parentid' => null,
+                                                          'image'  => '',
+                                                          'active' => 1);
             }
         } elseif (isset($fromblock)) {
             $redirect = urlencode(System::serverGetVar('HTTP_REFERER'));
@@ -343,13 +335,13 @@ class Blocks_Block_Extmenu extends Zikula_Block
         // for new languages to be added. this ensures that all links for the new language
         // are prepared.
         $link_master = array();
-        foreach($languages as $lang) {
-            if(isset($vars['links'][$lang]) && count($link_master) < count($vars['links'][$lang])) {
+        foreach ($languages as $lang) {
+            if (isset($vars['links'][$lang]) && count($link_master) < count($vars['links'][$lang])) {
                 $link_master = $vars['links'][$lang];
             }
         }
 
-        foreach($languages as $lang) {
+        foreach ($languages as $lang) {
             // create an empty blocktitle string
             if (!array_key_exists($lang, $vars['blocktitles'])) {
                 $vars['blocktitles'][$lang] = '';
@@ -382,10 +374,10 @@ class Blocks_Block_Extmenu extends Zikula_Block
 
         // assign the vars
         $this->view->assign($vars)
-                       ->assign('languages', $languages)
-                       ->assign('userlanguage', $userlanguage)
-                       ->assign('redirect', $redirect)
-                       ->assign('blockinfo', $blockinfo);
+                   ->assign('languages', $languages)
+                   ->assign('userlanguage', $userlanguage)
+                   ->assign('redirect', $redirect)
+                   ->assign('blockinfo', $blockinfo);
 
         // return the output
         return $this->view->fetch('blocks_block_extmenu_modify.tpl');
@@ -394,7 +386,6 @@ class Blocks_Block_Extmenu extends Zikula_Block
     /**
      * update block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
@@ -427,7 +418,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
         // Save links hierarchy
         $linksorder = FormUtil::getPassedValue('linksorder');
         $linksorder = json_decode($linksorder, true);
-        if(is_array($linksorder) && !empty($linksorder)) {
+        if (is_array($linksorder) && !empty($linksorder)) {
             foreach ((array)$vars['links'] as $lang => $langlinks) {
                 foreach ($langlinks as $linkid => $link) {
                     $vars['links'][$lang][$linkid]['parentid'] = $linksorder[$linkid]['parentid'];

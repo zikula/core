@@ -22,11 +22,9 @@ class Users_Block_Accountlinks extends Zikula_Block
 {
     /**
      * initialise block
-     *
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Accountlinks::', 'Block title::');
     }
 
@@ -44,8 +42,6 @@ class Users_Block_Accountlinks extends Zikula_Block
                      'form_content'   => false,
                      'form_refresh'   => false,
                      'show_preview'   => true);
-
-
     }
 
     /**

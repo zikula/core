@@ -18,7 +18,6 @@ class Admin_Block_Adminnav extends Zikula_Block
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Admin:adminnavblock:', 'Block title::Block ID');
     }
 
@@ -29,12 +28,12 @@ class Admin_Block_Adminnav extends Zikula_Block
     {
         // Values
         return array('module'         => 'Admin',
-                'text_type'      => $this->__('Administration panel manager'),
-                'text_type_long' => $this->__('Display administration categories and modules'),
-                'allow_multiple' => false,
-                'form_content'   => false,
-                'form_refresh'   => false,
-                'show_preview'   => true);
+                     'text_type'      => $this->__('Administration panel manager'),
+                     'text_type_long' => $this->__('Display administration categories and modules'),
+                     'allow_multiple' => false,
+                     'form_content'   => false,
+                     'form_refresh'   => false,
+                     'show_preview'   => true);
     }
 
     /**
@@ -75,19 +74,19 @@ class Admin_Block_Adminnav extends Zikula_Block
                 foreach ($adminmodules as $adminmodule) {
                     // Get all modules in the category
                     $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
-                            array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
+                                              array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
                     if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == $this->getVar('defaultcategory')))) {
                         $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
                         $menutexturl = ModUtil::url($modinfo['name'], 'admin');
                         $menutexttitle = $modinfo['displayname'];
                         $adminlinks[] = array('menutexturl' => $menutexturl,
-                                'menutexttitle' => $menutexttitle);
+                                              'menutexttitle' => $menutexttitle);
                     }
                 }
                 $admincategories[] = array('url' => ModUtil::url('Admin', 'admin', 'adminpanel', array('cid' => $item['cid'])),
-                        'title' => DataUtil::formatForDisplay($item['catname']),
-                        'modules' => $adminlinks);
+                                           'title' => DataUtil::formatForDisplay($item['catname']),
+                                           'modules' => $adminlinks);
             }
         }
 

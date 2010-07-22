@@ -22,7 +22,6 @@ class Theme_Block_Themeswitcher extends Zikula_Block
 {
     /**
      * initialise block
-     *
      */
     public function init()
     {
@@ -45,14 +44,14 @@ class Theme_Block_Themeswitcher extends Zikula_Block
         }
 
         return array('module'       => 'Theme',
-                'text_type'         => $this->__('Theme switcher'),
-                'text_type_long'    => $this->__('Theme switcher'),
-                'allow_multiple'    => true,
-                'form_content'      => false,
-                'form_refresh'      => false,
-                'show_preview'      => true,
-                'admin_tableless'   => true,
-                'requirement'       => $requirement_message);
+                     'text_type'         => $this->__('Theme switcher'),
+                     'text_type_long'    => $this->__('Theme switcher'),
+                     'allow_multiple'    => true,
+                     'form_content'      => false,
+                     'form_refresh'      => false,
+                     'show_preview'      => true,
+                     'admin_tableless'   => true,
+                     'requirement'       => $requirement_message);
     }
 
     public function display($blockinfo)
@@ -98,8 +97,7 @@ class Theme_Block_Themeswitcher extends Zikula_Block
             $themename = $themeinfo['name'];
             if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/images/preview_small.png')) {
                 $themeinfo['previewImage'] = $themepic;
-            }
-            else {
+            } else {
                 $themeinfo['previewImage'] = 'system/Theme/images/preview_small.png';
             }
             $previewthemes[$themename] = $themeinfo;
@@ -109,9 +107,9 @@ class Theme_Block_Themeswitcher extends Zikula_Block
         }
 
         $this->view->assign($vars)
-                       ->assign('currentthemepic', $currentthemepic)
-                       ->assign('currenttheme', $currenttheme)
-                       ->assign('themes', $previewthemes);
+                   ->assign('currentthemepic', $currentthemepic)
+                   ->assign('currenttheme', $currenttheme)
+                   ->assign('themes', $previewthemes);
 
         $blockinfo['content'] = $this->view->fetch('theme_block_themeswitcher.tpl');
 

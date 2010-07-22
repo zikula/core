@@ -155,7 +155,7 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign the values for the smarty plugin to produce a pager
         $this->view->assign('pager', array('numitems' => sizeof($allthemes),
-                                               'itemsperpage' => $itemsperpage));
+                                           'itemsperpage' => $itemsperpage));
 
         // Return the output that has been generated to the template
         return $this->view->fetch('theme_admin_view.tpl');
@@ -212,8 +212,8 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign theme name, theme info and return output
         return $this->view->assign('themename', $themename)
-                              ->assign('themeinfo', $themeinfo)
-                              ->fetch('theme_admin_modify.tpl');
+                          ->assign('themeinfo', $themeinfo)
+                          ->fetch('theme_admin_modify.tpl');
     }
 
     /**
@@ -494,7 +494,7 @@ class Theme_Controller_Admin extends Zikula_Controller
 
         // assign the theme name and theme info
         $this->view->assign('themename', $themename)
-                       ->assign('themeinfo', $themeinfo);
+                   ->assign('themeinfo', $themeinfo);
 
         // assign an array to populate the modules dropdown
         $allmods = ModUtil::getAllMods();

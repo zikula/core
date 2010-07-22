@@ -23,7 +23,6 @@ class Search_Controller_Admin extends Zikula_Controller
      * the module designer feels should be the default function (often this
      * is the view() function)
      *
-     * @author       The Zikula Development Team
      * @return       output       The main module admin page.
      */
     public function main()
@@ -43,7 +42,6 @@ class Search_Controller_Admin extends Zikula_Controller
      * This is a standard function to modify the configuration parameters of the
      * module
      *
-     * @author       The Zikula Development Team
      * @return       output       The configuration page
      */
     public function modifyconfig()

@@ -22,11 +22,9 @@ class Users_Block_User extends Zikula_Block
 {
     /**
      * initialise block
-     *
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Userblock::', 'Block title::');
     }
 
@@ -44,8 +42,6 @@ class Users_Block_User extends Zikula_Block
                      'form_content'   => false,
                      'form_refresh'   => false,
                      'show_preview'   => true);
-
-
     }
 
     /**
@@ -65,8 +61,10 @@ class Users_Block_User extends Zikula_Block
                 $blockinfo['title'] = $this->__f('Custom block content for %s', UserUtil::getVar('name'));
             }
             $blockinfo['content'] = nl2br(UserUtil::getVar('ublock'));
+
             return BlockUtil::themeBlock($blockinfo);
         }
+
         return;
     }
 }

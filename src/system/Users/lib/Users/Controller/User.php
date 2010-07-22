@@ -109,32 +109,33 @@ class Users_Controller_User extends Zikula_Controller
         // assign variables for the template
         if ($changepassword) {
             $this->view->assign('default_authmodule', 'Users')
-                           ->assign('authmodule', 'Users')
-                           ->assign('authmodules', array(ModUtil::getInfoFromName('Users')));
+                       ->assign('authmodule', 'Users')
+                       ->assign('authmodules', array(ModUtil::getInfoFromName('Users')));
         } else {
             $this->view->assign('default_authmodule', $this->getVar('default_authmodule', 'Users'))
-                           ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
-                           ->assign('authmodules', array(ModUtil::getInfoFromName('Users')));
+                       ->assign('authmodule', $this->getVar('default_authmodule', 'Users'))
+                       ->assign('authmodules', array(ModUtil::getInfoFromName('Users')));
         }
+
         $this->view->assign('loginviaoption', $this->getVar('loginviaoption'))
-                       ->assign('seclevel', System::getVar('seclevel'))
-                       ->assign('allowregistration', $this->getVar('reg_allowreg'))
-                       ->assign('returnurl', $returnurl);
+                   ->assign('seclevel', System::getVar('seclevel'))
+                   ->assign('allowregistration', $this->getVar('reg_allowreg'))
+                   ->assign('returnurl', $returnurl);
 
         // do we have to show a note about reconfirming the terms of use?
         if (ModUtil::available('legal') && (ModUtil::getVar('legal', 'termsofuse') || ModUtil::getVar('legal', 'privacypolicy'))) {
             $this->view->assign('tou_active', ModUtil::getVar('legal', 'termsofuse', true))
-                           ->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
+                       ->assign('pp_active',  ModUtil::getVar('legal', 'privacypolicy', true));
         } else {
             $confirmtou = 0;
         }
 
         // do we have to force the change of password?
         $this->view->assign('changepassword', $changepassword)
-                       ->assign('confirmtou', $confirmtou)
-                       ->assign('passwordtext', $passwordtext)
-                       ->assign('use_password_strength_meter', $this->getVar('use_password_strength_meter'))
-                       ->assign('minpass', $this->getVar('minpass'));
+                   ->assign('confirmtou', $confirmtou)
+                   ->assign('passwordtext', $passwordtext)
+                   ->assign('use_password_strength_meter', $this->getVar('use_password_strength_meter'))
+                   ->assign('minpass', $this->getVar('minpass'));
 
         return $this->view->fetch('users_user_loginscreen.tpl');
     }
@@ -223,9 +224,9 @@ class Users_Controller_User extends Zikula_Controller
             $rendererArgs['useAntiSpamQuestion'] = !empty($rendererArgs['antiSpamQuestion']) && !empty($antiSpamSystemAnswer);
         }
 
-        $this->view->add_core_data();
-        return $this->view->assign($rendererArgs)
-                              ->fetch($template);
+        return $this->view->add_core_data()
+                          ->assign($rendererArgs)
+                          ->fetch($template);
     }
 
     /**
@@ -501,9 +502,9 @@ class Users_Controller_User extends Zikula_Controller
         }
 
         return $this->view->assign('lostpassword_uname', $uname)
-                              ->assign('lostpassword_email', $email)
-                              ->assign('lostpassword_code', $code)
-                              ->fetch('users_user_lostpasswordcode.tpl');
+                          ->assign('lostpassword_email', $email)
+                          ->assign('lostpassword_code', $code)
+                          ->fetch('users_user_lostpasswordcode.tpl');
     }
 
     /**
@@ -578,9 +579,9 @@ class Users_Controller_User extends Zikula_Controller
         } else {
             // $userInfo is set, and not false, and $passwordReminder is available. Show it.
             return $this->view->assign('lostpassword_uname', $userInfo['uname'])
-                                  ->assign('passreminder', $passwordReminder)
-                                  ->assign('lostpassword_code', $code)
-                                  ->fetch('users_user_passwordreminder.tpl');
+                              ->assign('passreminder', $passwordReminder)
+                              ->assign('lostpassword_code', $code)
+                              ->fetch('users_user_passwordreminder.tpl');
         }
     }
 
@@ -623,19 +624,19 @@ class Users_Controller_User extends Zikula_Controller
 
                     if (!$reminderSet) {
                         return LogUtil::registerError($this->__('Warning! Your new password has been saved, but there was an error while trying to save your new password reminder.'), null,
-                            ModUtil::url('Users', 'user', 'loginScreen'));
+                                                      ModUtil::url('Users', 'user', 'loginScreen'));
                     } else {
                         return LogUtil::registerStatus($this->__('Done! Your password has been reset, and you may now log in. Please keep your password in a safe place!'),
-                            ModUtil::url('Users', 'user', 'loginScreen'));
+                                                       ModUtil::url('Users', 'user', 'loginScreen'));
                     }
                 } else {
                     return LogUtil::registerError($this->__('Error! Your new password could not be saved.'), null,
-                        ModUtil::url('Users', 'user', 'lostPwdUname'));
+                                                  ModUtil::url('Users', 'user', 'lostPwdUname'));
                 }
             }
         } else {
             return LogUtil::registerError($this->__('Sorry! Could not load that user account.'), null,
-                ModUtil::url('Users', 'user', 'lostPwdUname'));
+                                          ModUtil::url('Users', 'user', 'lostPwdUname'));
         }
 
         if (isset($passwordErrors) && !empty($passwordErrors)) {
@@ -644,14 +645,14 @@ class Users_Controller_User extends Zikula_Controller
             $errorInfo = array();
         }
         $rendererArgs = array(
-            'lostpassword_uname'    => $uname,
-            'passreminder'          => isset($userinfo['passreminder']) ? $userinfo['passreminder'] : '',
-            'newpassreminder'       => isset($newpassreminder) ? $newpassreminder : '',
-            'errormessages'         => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
+            'lostpassword_uname' => $uname,
+            'passreminder'       => isset($userinfo['passreminder']) ? $userinfo['passreminder'] : '',
+            'newpassreminder'    => isset($newpassreminder) ? $newpassreminder : '',
+            'errormessages'      => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
         );
 
         return $this->view->assign($rendererArgs)
-                              ->fetch('users_user_passwordreminder.tpl');
+                          ->fetch('users_user_passwordreminder.tpl');
     }
 
     /**
@@ -1146,11 +1147,11 @@ class Users_Controller_User extends Zikula_Controller
         }
 
         $this->view->assign('ThemeSel', System::getVar('Default_Theme'))
-                       ->assign('url', $url)
-                       ->assign('message', $message)
-                       ->assign('stylesheet', ThemeUtil::getModuleStylesheet('Users'))
-                       ->assign('redirectmessage', $this->__('If you are not automatically re-directed then please click here.'))
-                       ->display('users_user_redirectpage.tpl');
+                   ->assign('url', $url)
+                   ->assign('message', $message)
+                   ->assign('stylesheet', ThemeUtil::getModuleStylesheet('Users'))
+                   ->assign('redirectmessage', $this->__('If you are not automatically re-directed then please click here.'))
+                   ->display('users_user_redirectpage.tpl');
 
         return true;
     }
@@ -1209,7 +1210,7 @@ class Users_Controller_User extends Zikula_Controller
         }
 
         return $this->view->assign(UserUtil::getVars(UserUtil::getVar('uid')))
-                              ->fetch('users_user_usersblock.tpl');
+                          ->fetch('users_user_usersblock.tpl');
     }
 
     /**
@@ -1432,7 +1433,7 @@ class Users_Controller_User extends Zikula_Controller
 
         // Assign the languages
         $this->view->assign('languages', ZLanguage::getInstalledLanguageNames())
-                       ->assign('usrlang', ZLanguage::getLanguageCode());
+                   ->assign('usrlang', ZLanguage::getLanguageCode());
 
         // Return the output that has been generated by this function
         return $this->view->fetch('users_user_changelang.tpl');

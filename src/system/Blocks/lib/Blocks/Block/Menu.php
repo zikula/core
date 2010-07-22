@@ -14,38 +14,32 @@ class Blocks_Block_Menu extends Zikula_Block
 {
     /**
      * initialise block
-     *
-     * @author       The Zikula Development Team
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Menublock::', 'Block title:Link name:');
     }
-
 
     /**
      * get information on block
      *
-     * @author       The Zikula Development Team
      * @return       array       The block information
      */
     public function info()
     {
         return array('module' => 'Blocks',
-                'text_type' => $this->__('Menu'),
-                'text_type_long' => $this->__('Menu block'),
-                'allow_multiple' => true,
-                'form_content' => false,
-                'form_refresh' => false,
-                'show_preview' => true,
-                'admin_tableless' => true);
+                     'text_type' => $this->__('Menu'),
+                     'text_type_long' => $this->__('Menu block'),
+                     'allow_multiple' => true,
+                     'form_content' => false,
+                     'form_refresh' => false,
+                     'show_preview' => true,
+                     'admin_tableless' => true);
     }
 
     /**
      * display block
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the rendered bock
      */
@@ -96,20 +90,20 @@ class Blocks_Block_Menu extends Zikula_Block
                 $menuitems[] = self::addMenuItem('', '', '');
             }
 
-            foreach($mods as $mod) {
+            foreach ($mods as $mod) {
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
                     switch($mod['type']) {
                         case 1:
                             $menuitems[] = self::addMenuItem($mod['displayname'],
-                                    System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
-                                    $mod['description']);
+                                                             System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
+                                                             $mod['description']);
                             $content = true;
                             break;
                         case 2:
                         case 3:
                             $menuitems[] = self::addMenuItem($mod['displayname'],
-                                    ModUtil::url($mod['name'], 'user', 'main'),
-                                    $mod['description']);
+                                                             ModUtil::url($mod['name'], 'user', 'main'),
+                                                             $mod['description']);
                             $content = true;
                             break;
                     }
@@ -140,9 +134,9 @@ class Blocks_Block_Menu extends Zikula_Block
     /**
      * Prepare a menu item array
      *
-     * @param        title           menu item title
-     * @param         url             menu item url
-     * @param        comment         menu item comment
+     * @param title   menu item title
+     * @param url     menu item url
+     * @param comment menu item comment
      */
     public function addMenuItem($title, $url, $comment)
     {
@@ -167,6 +161,7 @@ class Blocks_Block_Menu extends Zikula_Block
         // allow a simple portable way to link to the home page of the site
         if ($url == '{homepage}') {
             $url = System::getBaseUrl();
+
         } elseif (!empty($url)) {
             switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
             {
@@ -210,18 +205,17 @@ class Blocks_Block_Menu extends Zikula_Block
             }  // End Bracket Linking
         }
 
-        $item = array('MENUITEMTITLE' => $title,
-                'MENUITEMURL' =>  $url,
-                'MENUITEMCOMMENT' => DataUtil::formatForDisplay($comment),
-                'MENUITEMSELECTED' => $itemselected);
+        $item = array('MENUITEMTITLE'    => $title,
+                      'MENUITEMURL'      =>  $url,
+                      'MENUITEMCOMMENT'  => DataUtil::formatForDisplay($comment),
+                      'MENUITEMSELECTED' => $itemselected);
+
         return $item;
     }
-
 
     /**
      * modify block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the bock form
      */
@@ -268,7 +262,6 @@ class Blocks_Block_Menu extends Zikula_Block
     /**
      * update block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */

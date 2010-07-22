@@ -22,7 +22,6 @@ class Theme_Block_Render extends Zikula_Block
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Theme:Renderblock:', 'Block title::');
     }
 
@@ -34,12 +33,12 @@ class Theme_Block_Render extends Zikula_Block
     public function info()
     {
         return array('module'         => 'Theme',
-                'text_type'      => $this->__('Rendering engine'),
-                'text_type_long' => $this->__('Custom rendering engine block'),
-                'allow_multiple' => true,
-                'form_content'   => false,
-                'form_refresh'   => false,
-                'show_preview'   => true);
+                     'text_type'      => $this->__('Rendering engine'),
+                     'text_type_long' => $this->__('Custom rendering engine block'),
+                     'allow_multiple' => true,
+                     'form_content'   => false,
+                     'form_refresh'   => false,
+                     'show_preview'   => true);
     }
 
     /**

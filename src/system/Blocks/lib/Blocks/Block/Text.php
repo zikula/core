@@ -11,40 +11,33 @@
 
 class Blocks_Block_Text extends Zikula_Block
 {
-
     /**
      * initialise block
-     *
-     * @author       The Zikula Development Team
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('Textblock::', 'Block title::');
     }
 
     /**
      * get information on block
      *
-     * @author       The Zikula Development Team
      * @return       array       The block information
      */
     public function info()
     {
         return array('module'         => 'Blocks',
-                'text_type'      => $this->__('Text'),
-                'text_type_long' => $this->__('Plain text'),
-                'allow_multiple' => true,
-                'form_content'   => true,
-                'form_refresh'   => false,
-                'show_preview'   => true);
-
+                     'text_type'      => $this->__('Text'),
+                     'text_type_long' => $this->__('Plain text'),
+                     'allow_multiple' => true,
+                     'form_content'   => true,
+                     'form_refresh'   => false,
+                     'show_preview'   => true);
     }
 
     /**
      * display block
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the rendered bock
      */
@@ -54,9 +47,7 @@ class Blocks_Block_Text extends Zikula_Block
             return;
         }
 
-        // itevo: /Go; line breaks aren't displayed; added a nl2br() to fix this
         $blockinfo['content'] = nl2br($blockinfo['content']);
-        // /itevo
 
         return BlockUtil::themeBlock($blockinfo);
     }

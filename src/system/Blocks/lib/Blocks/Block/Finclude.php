@@ -14,37 +14,32 @@ class Blocks_Block_Finclude extends Zikula_Block
 {
     /**
      * initialise block
-     *
-     * @author       The Zikula Development Team
      */
     public function init()
     {
-        // Security
         SecurityUtil::registerPermissionSchema('fincludeblock::', 'Block title::');
     }
 
     /**
      * get information on block
      *
-     * @author       The Zikula Development Team
      * @return       array       The block information
      */
     public function info()
     {
         return array('module'          => 'Blocks',
-                'text_type'       => $this->__('Include'),
-                'text_type_long'  => $this->__('Simple file include'),
-                'allow_multiple'  => true,
-                'form_content'    => false,
-                'form_refresh'    => false,
-                'show_preview'    => true,
-                'admin_tableless' => true);
+                     'text_type'       => $this->__('Include'),
+                     'text_type_long'  => $this->__('Simple file include'),
+                     'allow_multiple'  => true,
+                     'form_content'    => false,
+                     'form_refresh'    => false,
+                     'show_preview'    => true,
+                     'admin_tableless' => true);
     }
 
     /**
      * display block
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the rendered bock
      */
@@ -90,13 +85,13 @@ class Blocks_Block_Finclude extends Zikula_Block
             default:
                 return;
         }
+
         return BlockUtil::themeBlock($blockinfo);
     }
 
     /**
      * modify block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       output      the bock form
      */
@@ -125,7 +120,6 @@ class Blocks_Block_Finclude extends Zikula_Block
     /**
      * update block settings
      *
-     * @author       The Zikula Development Team
      * @param        array       $blockinfo     a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
