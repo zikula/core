@@ -35,7 +35,7 @@ class Modules_Util
             LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
         } else {
             if (!file_exists($legacyVersionPath)) {
-                LogUtil::registerError(__f('Cannot %1$s for module %2$s', $legacyVersionPath, $dir));
+                LogUtil::registerError(__f('Cannot %1$s for module %2$s', array($legacyVersionPath, $moduleName)));
             } else {
                 include $legacyVersionPath;
             }

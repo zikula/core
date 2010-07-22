@@ -446,13 +446,19 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @param string  $theme      Theme name.
      * @param boolean $usefilters Whether or not to use output filters.
+     * @param string       $cache_id      Cache Id. (UNUSED - E_STRICT legacy)
+     * @param boolean      $add_core_data Add core data to render data. (UNUSED E_STRICT legacy)
      *
      * @return Theme
      */
-    public static function getInstance($theme = null, $usefilters = true)
+    public static function getInstance($theme = '', $usefilters = null, $cache_id = null, $add_core_data = false)
     {
-        if (!isset($theme)) {
+        if (!$theme) {
             $theme = UserUtil::getTheme();
+        }
+
+        if (is_null($usefilters)) {
+            $usefilters = true;
         }
 
         $serviceId = 'zikula.theme';
