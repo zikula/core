@@ -45,6 +45,7 @@ class JCSSUtil
 
         return $return;
     }
+
     public static function prepareJCSS($combine=false,$cache_dir=null)
     {
         $combine = $combine && is_writable($cache_dir);
@@ -72,11 +73,11 @@ class JCSSUtil
                 }
             }
         }
-        $javascripts = JCSSUtil::prepareJavascripts($javascripts,$combine);
-        $stylesheets = JCSSUtil::prepareStylesheets($stylesheets,$combine);
-        if($combine) {
-            $javascripts = (array)JCSSUtil::save($javascripts, 'js', $cache_dir);
-            $stylesheets = (array)JCSSUtil::save($stylesheets, 'css', $cache_dir);
+        $javascripts = self::prepareJavascripts($javascripts,$combine);
+        $stylesheets = self::prepareStylesheets($stylesheets,$combine);
+        if ($combine) {
+            $javascripts = (array)self::save($javascripts, 'js', $cache_dir);
+            $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
         }
         $jcss = array(
             'stylesheets' => $stylesheets,
@@ -85,6 +86,7 @@ class JCSSUtil
 
         return $jcss;
     }
+
     public static function prepareStylesheets($stylesheets)
     {
         // Add generic stylesheet as the first stylesheet.
@@ -98,46 +100,48 @@ class JCSSUtil
         $stylesheets = array_unique(array_values($stylesheets));
         return $stylesheets;
     }
+
     public static function prepareJavascripts($javascripts)
     {
         // first resolve any dependencies
-        $javascripts = JCSSUtil::resolveDependencies($javascripts);
+        $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts
-        $coreScripts = JCSSUtil::scriptsMap();
+        $coreScripts = self::scriptsMap();
         $styles = array();
         $gettext = false;
-        foreach($javascripts as $i => $script) {
-            if(array_key_exists($script,$coreScripts)) {
+        foreach ($javascripts as $i => $script) {
+            if (array_key_exists($script,$coreScripts)) {
                 $javascripts[$i] = $coreScripts[$script]['path'];
-                if(isset($coreScripts[$script]['styles'])) {
+                if (isset($coreScripts[$script]['styles'])) {
                     $styles = array_merge($styles,(array)$coreScripts[$script]['styles']);
                 }
-                if(isset($coreScripts[$script]['gettext'])) {
+                if (isset($coreScripts[$script]['gettext'])) {
                     $gettext = $gettext || $coreScripts[$script]['gettext'];
                 }
             }
         }
-        if($gettext) {
+        if ($gettext) {
             PageUtil::addVar('jsgettext', 'zikula');
         }
-        if(!empty($styles)) {
+        if (!empty($styles)) {
             PageUtil::addVar('stylesheet', $styles);
         }
         // some core js libs require js gettext - ensure that it will be loaded
-        $jsgettext = JCSSUtil::getJSGettext();
-        if(!empty($jsgettext)) {
+        $jsgettext = self::getJSGettext();
+        if (!empty($jsgettext)) {
             array_unshift($javascripts, $jsgettext);
         }
         return $javascripts;
     }
+
     public static function getJSGettext()
     {
         $jsgettext = PageUtil::getVar('jsgettext');
-        if(!empty($jsgettext)) {
+        if (!empty($jsgettext)) {
             $params = array(
                 'lang' => ZLanguage::getLanguageCode()
             );
-            foreach($jsgettext as $entry) {
+            foreach ($jsgettext as $entry) {
                 $vars = explode(':', $entry);
                 if (isset($vars[0])) {
                     $domain = $vars[0];
@@ -154,13 +158,14 @@ class JCSSUtil
         }
         return false;
     }
+
     private static function resolveDependencies($javascripts)
     {
-        $coreScripts = JCSSUtil::scriptsMap();
+        $coreScripts = self::scriptsMap();
         $withDeps = array();
-        foreach($javascripts as $script) {
-            $script = JCSSUtil::getScriptName($script);
-            if(isset($coreScripts[$script]) && isset($coreScripts[$script]['require'])) {
+        foreach ($javascripts as $script) {
+            $script = self::getScriptName($script);
+            if (isset($coreScripts[$script]) && isset($coreScripts[$script]['require'])) {
                 $required = $coreScripts[$script]['require'];
                 $withDeps = array_merge($withDeps,(array)$required);
 
@@ -173,23 +178,25 @@ class JCSSUtil
         $ordered = array_unique(array_merge($usedCore,$withDeps));
         return $ordered;
     }
+
     public static function getScriptName($script)
     {
-        $script = JCSSUtil::handleLegacy($script);
-        $coreScripts = JCSSUtil::scriptsMap();
+        $script = self::handleLegacy($script);
+        $coreScripts = self::scriptsMap();
         $_script = strtolower($script);
-        if(array_key_exists($_script,$coreScripts)) {
+        if (array_key_exists($_script,$coreScripts)) {
             return $_script;
         }
-        foreach($coreScripts as $name => $meta) {
-            if(isset($meta['aliases']) && in_array($_script,(array)$meta['aliases'])) {
+        foreach ($coreScripts as $name => $meta) {
+            if (isset($meta['aliases']) && in_array($_script,(array)$meta['aliases'])) {
                 return $name;
-            } elseif(isset($meta['path']) && $meta['path'] == $script) {
+            } elseif (isset($meta['path']) && $meta['path'] == $script) {
                 return $name;
             }
         }
         return $script;
     }
+
     private static function handleLegacy($script)
     {
         // Handle legacy references to non-minimised scripts.
@@ -226,6 +233,7 @@ class JCSSUtil
         }
         return $script;
     }
+
     public static function scriptsMap()
     {
         return array(
@@ -277,6 +285,7 @@ class JCSSUtil
             )
         );
     }
+
     /**
      * Save combined pagevars.
      *
@@ -317,7 +326,7 @@ class JCSSUtil
         $contents[] = "/* --- Combined file written: " . DateUtil::getDateTime() . " */\n\n";
         $contents[] = "/* --- Combined files:\n" . implode("\n",$files) . "\n*/\n\n";
         foreach ($files as $file) {
-            JCSSUtil::readfile($contents, $file, $ext);
+            self::readfile($contents, $file, $ext);
         }
 
         $contents = implode('', $contents);
@@ -416,7 +425,7 @@ class JCSSUtil
                                         $contents[] = $newLine;
                                         $newLine = "";
                                         // process include
-                                        JCSSUtil::readfile($contents, $url, $ext);
+                                        self::readfile($contents, $url, $ext);
                                     } else {
                                         $newLine .= '@import url("'.$url.'");';
                                     }
@@ -457,7 +466,7 @@ class JCSSUtil
                                     $contents[] = $newLine;
                                     $newLine = "";
                                     // process include
-                                    JCSSUtil::readfile($contents, $url, $ext);
+                                    self::readfile($contents, $url, $ext);
                                 } else {
                                     $newLine .= '@import url("'.$url.'");';
                                 }
@@ -478,7 +487,7 @@ class JCSSUtil
 
                     // fix other paths after @import processing
                     if (!$importsAllowd) {
-                        $newLine = JCSSUtil::cssfixPath($newLine, explode('/', dirname($file)));
+                        $newLine = self::cssfixPath($newLine, explode('/', dirname($file)));
                     }
 
                     $contents[] = $newLine;
