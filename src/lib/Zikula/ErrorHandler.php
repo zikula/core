@@ -292,5 +292,5 @@ abstract class Zikula_ErrorHandler
      *
      * @return boolean
      */
-    abstract public function handler($errno, $errstr, $errfile, $errline, $errcontext);
+    abstract public function handler($errno, $errstr, $errfile='', $errline=0, $errcontext=null);
 }

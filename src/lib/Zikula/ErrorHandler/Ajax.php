@@ -29,7 +29,7 @@ class Zikula_ErrorHandler_Ajax extends Zikula_ErrorHandler
      *
      * @return void
      */
-    public function handler($errno, $errstr, $errfile, $errline, $errcontext)
+    public function handler($errno, $errstr, $errfile='', $errline=0, $errcontext=null)
     {
         $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
