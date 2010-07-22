@@ -658,12 +658,7 @@ class Admin_Controller_Admin extends Zikula_Controller
         $data['register_globals'] = DataUtil::getBooleanIniValue('register_globals');
 
         // check for config.php beeing writable
-        // cannot rely on is_writable() because it falsely reports a number of cases - drak
-        $config_php = @fopen('config/config.php', 'a');
-        if ($config_php === true) {
-            fclose($config_php);
-        }
-        $data['config_php'] = (bool)$config_php;
+        $data['config_php'] = (bool)is_writable('config/config.php');
 
         // check for .htaccess in temp directory
         $temp_htaccess = false;
