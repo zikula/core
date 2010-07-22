@@ -59,8 +59,9 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
      */
     function load($render, $params)
     {
-        if ($this->mandatory)
+        if ($this->mandatory) {
             $this->addItem('---', null);
+        }
 
         if ($this->addAllOption) {
             $this->addItem(DataUtil::formatForDisplay(__('All')), '');
@@ -83,4 +84,3 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
         parent::load($render, $params);
     }
 }
-

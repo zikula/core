@@ -97,8 +97,6 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically
-
-
         $this->checked = (array_key_exists('checked', $params) ? $params['checked'] : false);
 
         $this->inputName = (array_key_exists('inputName', $params) ? $params['inputName'] : $this->id);
@@ -178,7 +176,7 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
 
         $attributes = $this->renderAttributes($render);
 
-        $result = "<input type=\"checkbox\" value=\"1\" class=\"cbx\"{$idHtml}{$nameHtml}{$readOnlyHtml}{$checkedHtml}{$attributes}/>";
+        $result = "<input{$idHtml}{$nameHtml} type=\"checkbox\" value=\"1\" class=\"cbx\"{$readOnlyHtml}{$checkedHtml}{$attributes} />";
 
         return $result;
     }
@@ -223,4 +221,3 @@ class Form_Plugin_Checkbox extends Form_StyledPlugin
         }
     }
 }
-

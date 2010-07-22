@@ -61,6 +61,7 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
     function validate($view)
     {
         parent::validate($view);
+
         if (!$this->isValid) {
             return;
         }
@@ -72,4 +73,3 @@ class Form_Plugin_EMailInput extends Form_Plugin_TextInput
         }
     }
 }
-

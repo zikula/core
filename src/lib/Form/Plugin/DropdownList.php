@@ -204,6 +204,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     function create($view, $params)
     {
         parent::create($view, $params);
+
         $this->selectedIndex = -1;
     }
 
@@ -259,9 +260,9 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
             $class .= ' ' . $this->cssClass;
         }
 
-        $classHtml = ($class == '' ? '' : " class=\"$class\"");
+        $classHtml = ($class == '' ? '' : " class=\"{$class}\"");
 
-        $sizeHtml = ($this->size == null ? '' : " size=\"$this->size\"");
+        $sizeHtml = ($this->size == null ? '' : " size=\"{$this->size}\"");
 
         $postbackHtml = '';
         if ($this->autoPostBack) {
@@ -269,8 +270,9 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         }
 
         $multipleHtml = '';
-        if ($this->selectionMode == 'multiple')
+        if ($this->selectionMode == 'multiple') {
             $multipleHtml = " multiple=\"multiple\"";
+        }
 
         $attributes = $this->renderAttributes($view);
 
@@ -303,7 +305,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
             } else {
                 $selected = '';
             }
-            $result .= "<option value=\"$value\"{$selected}>$text</option>\n";
+            $result .= "<option value=\"{$value}\"{$selected}>{$text}</option>\n";
         }
         if ($currentOptGroup != null) {
             $result .= "</optgroup>\n";
@@ -328,7 +330,8 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
     {
         $args = array(
             'commandName' => null,
-            'commandArgument' => null);
+            'commandArgument' => null
+        );
         if (!empty($this->onSelectedIndexChanged)) {
             $view->raiseEvent($this->onSelectedIndexChanged, $args);
         }
@@ -474,4 +477,3 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
         return $this->selectedIndex;
     }
 }
-

@@ -80,4 +80,3 @@ class Form_Block_Volatile extends Form_Plugin
     {
     }
 }
-

@@ -130,7 +130,7 @@ class Form_Plugin_Button extends Form_StyledPlugin
 
         $attributes = $this->renderAttributes($render);
 
-        $result = "<input {$idHtml} name=\"$fullName\" value=\"$text\" type=\"submit\"{$onclickHtml}{$onkeypressHtml}{$attributes} />";
+        $result = "<input{$idHtml} name=\"{$fullName}\" value=\"{$text}\" type=\"submit\"{$onclickHtml}{$onkeypressHtml}{$attributes} />";
 
         return $result;
     }
@@ -149,7 +149,8 @@ class Form_Plugin_Button extends Form_StyledPlugin
         if (isset($_POST[$fullName])) {
             $args = array(
                 'commandName' => $this->commandName,
-                'commandArgument' => $this->commandArgument);
+                'commandArgument' => $this->commandArgument
+            );
             if (!empty($this->onCommand)) {
                 if ($render->raiseEvent($this->onCommand, $args) === false) {
                     return false;

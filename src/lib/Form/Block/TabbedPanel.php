@@ -93,7 +93,7 @@ class Form_Block_TabbedPanel extends Form_Plugin
         }
 
         $class = ($this->selected ? '' : 'class="tabsToHide"');
-        $html = "<div id=\"{$this->panelSetId}_{$this->index}\"$class>\n";
+        $html = "<div id=\"{$this->panelSetId}_{$this->index}\"{$class}>\n";
         return $html;
     }
 

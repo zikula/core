@@ -115,14 +115,14 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
                 $cssClass .= ' selected';
             }
 
-            $link = "<a href=\"#\" onclick=\"return FormTabbedPanelSet.handleTabClick($i,$titleCount,'{$this->id}')\">$title</a>";
+            $link = "<a href=\"#\" onclick=\"return FormTabbedPanelSet.handleTabClick({$i},{$titleCount},'{$this->id}')\">{$title}</a>";
 
-            $html .= "<li id=\"{$this->id}Tab_{$i}\" class=\"$cssClass\">$link</li><li>&nbsp;</li>\n";
+            $html .= "<li id=\"{$this->id}Tab_{$i}\" class=\"{$cssClass}\">{$link}</li><li>&nbsp;</li>\n";
         }
 
         $html .= "</ul></div><div style=\"clear: both\"></div>\n";
 
-        $html .= "<input type=\"hidden\" name=\"{$this->id}SelectedIndex\" id=\"{$this->id}SelectedIndex\" value=\"{$this->selectedIndex}\"/>\n";
+        $html .= "<input type=\"hidden\" name=\"{$this->id}SelectedIndex\" id=\"{$this->id}SelectedIndex\" value=\"{$this->selectedIndex}\" />\n";
 
         return $html . $content;
     }
@@ -141,10 +141,12 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
     function registerTabbedPanel($view, &$panel, $title)
     {
         $panel->panelSetId = $this->id;
+
         if (!$view->isPostBack()) {
             $panel->index = $this->registeredTabIndex++;
             $this->titles[] = $title;
         }
+
         $panel->selected = ($this->selectedIndex == $panel->index);
     }
 
@@ -160,4 +162,3 @@ class Form_Block_TabbedPanelSet extends Form_Plugin
         $this->selectedIndex = (int)FormUtil::getPassedValue("{$this->id}SelectedIndex", 1);
     }
 }
-

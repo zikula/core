@@ -165,9 +165,9 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
             $class .= ' readonly';
         }
 
-        $titleHtml = ($this->errorMessage != null ? " title=\"$this->errorMessage\"" : '');
+        $titleHtml = ($this->errorMessage != null ? " title=\"{$this->errorMessage}\"" : '');
         $attributes = $this->renderAttributes($render);
-        $result = "<input type=\"file\" class=\"$class\"{$idHtml}{$nameHtml}{$readOnlyHtml}{$titleHtml}{$attributes}/>";
+        $result = "<input{$idHtml}{$nameHtml} type=\"file\" class=\"{$class}\"{$readOnlyHtml}{$titleHtml}{$attributes} />";
 
         return $result;
     }
@@ -256,4 +256,3 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
         }
     }
 }
-

@@ -159,8 +159,8 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
         $href = $view->getPostBackEventReference($this, $carg);
         $href = htmlspecialchars($href);
 
-        $result = "<a {$idHtml}{$onclickHtml}{$attributes} href=\"javascript:$href\">{$imageHtml}$text</a>";
-        //$result = "<input {$idHtml} name=\"$fullName\" value=\"$text\" type=\"submit\"{$onclickHtml}{$attributes}/>";
+        $result = "<a{$idHtml} href=\"javascript:{$href}\"{$onclickHtml}{$attributes}>{$imageHtml}$text</a>";
+        //$result = "<input{$idHtml} name=\"{$fullName}\" value=\"{$text}\" type=\"submit\"{$onclickHtml}{$attributes} />";
 
         return $result;
     }
@@ -176,7 +176,10 @@ class Form_Plugin_LinkButton extends Form_StyledPlugin
     function raisePostBackEvent($view, $eventArgument)
     {
         $carg = unserialize($eventArgument);
-        $args = array('commandName' => $carg['cname'], 'commandArgument' => $carg['carg']);
+        $args = array(
+            'commandName' => $carg['cname'],
+            'commandArgument' => $carg['carg']
+        );
         if (!empty($this->onCommand)) {
             $view->raiseEvent($this->onCommand, $args);
         }

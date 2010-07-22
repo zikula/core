@@ -107,13 +107,14 @@ class Form_Plugin_Label extends Form_StyledPlugin
 
         $attributes = $this->renderAttributes($view);
 
-        $result = "<label{$idHtml} for=\"{$this->for}\"{$classHtml}{$attributes}>$text";
+        $result = "<label{$idHtml} for=\"{$this->for}\"{$classHtml}{$attributes}>{$text}";
 
         if ($this->mandatorysym) {
             $result .= '<span class="z-mandatorysym">*</span>';
         }
 
         $result .= '</label>';
+
         return $result;
     }
 
@@ -128,11 +129,9 @@ class Form_Plugin_Label extends Form_StyledPlugin
     function postRender($view)
     {
         $plugin = & $view->getPluginById($this->for);
+
         if ($plugin != null) {
             $plugin->myLabel = $view->translateForDisplay($this->text, ($this->html == 1) ? false : true);
-            //echo "Set label '$this->text' on $plugin->id. ";
         }
     }
 }
-
-

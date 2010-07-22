@@ -57,6 +57,7 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
     function load($view, $params)
     {
         Form_Plugin_CategorySelector::loadParameters($this, false, $params);
+
         parent::load($view, $params);
     }
 
@@ -71,12 +72,11 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
     {
         $result = parent::render($view);
 
-        if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "$this->category[id]::", ACCESS_EDIT)) {
+        if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "{$this->category['id']}::", ACCESS_EDIT)) {
             $url = DataUtil::formatForDisplay(ModUtil::url ('Categories', 'user', 'edit', array('dr' => $this->category['id'])));
-            $result .= "<a class=\"z-formnote\" href=\"$url\">" . __('Edit') . '</a>';
+            $result .= "<a class=\"z-formnote\" href=\"{$url}\">" . __('Edit') . '</a>';
         }
 
         return $result;
     }
 }
-

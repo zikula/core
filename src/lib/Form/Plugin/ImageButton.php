@@ -71,7 +71,7 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
 
         $attributes = $this->renderAttributes($view);
 
-        $result = "<input type=\"image\" name=\"$fullName\" title=\"$text\" alt=\"$text\" value=\"$text\" src=\"$imageUrl\"$onclickHtml{$attributes}/>";
+        $result = "<input{$idHtml} name=\"{$fullName}\" type=\"image\" alt=\"{$text}\" value=\"{$text}\" src=\"{$imageUrl}\"{$onclickHtml}{$attributes} />";
 
         return $result;
     }
@@ -93,7 +93,8 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
                 'commandName' => $this->commandName,
                 'commandArgument' => $this->commandArgument,
                 'posX' => (int)$_POST[$fullNameX],
-                'posY' => (int)$_POST[$fullNameY]);
+                'posY' => (int)$_POST[$fullNameY]
+            );
             if (!empty($this->onCommand)) {
                 if ($view->raiseEvent($this->onCommand, $args) === false) {
                     return false;
@@ -104,4 +105,3 @@ class Form_Plugin_ImageButton extends Form_Plugin_Button
         return true;
     }
 }
-

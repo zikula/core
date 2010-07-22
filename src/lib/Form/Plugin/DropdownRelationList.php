@@ -105,38 +105,34 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
     function create($view, &$params)
     {
         if (!isset($params['module']) || empty($params['module'])) {
-            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'formdropdownrelationlist',
-                'module')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
+                                     array('formdropdownrelationlist', 'module')));
         }
+
         $this->module = $params['module'];
         unset($params['module']);
         if (!ModUtil::available($this->module)) {
-            $view->trigger_error(__('Error! in %1$s: an invalid %2$s parameter was received.', array(
-                'formdropdownrelationlist',
-                'module')));
+            $view->trigger_error(__f('Error! in %1$s: an invalid %2$s parameter was received.',
+                                     array('formdropdownrelationlist', 'module')));
         }
 
         if (!isset($params['objecttype']) || empty($params['objecttype'])) {
-            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'formdropdownrelationlist',
-                'objecttype')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
+                                     array('formdropdownrelationlist', 'objecttype')));
         }
         $this->objecttype = $params['objecttype'];
         unset($params['objecttype']);
 
         if (!isset($params['idField']) || empty($params['idField'])) {
-            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'formdropdownrelationlist',
-                'idField')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
+                                     array('formdropdownrelationlist', 'idField')));
         }
         $this->idField = $params['idField'];
         unset($params['idField']);
 
         if (!isset($params['displayField']) || empty($params['displayField'])) {
-            $view->trigger_error(__('Error! in %1$s: the %2$s parameter must be specified.', array(
-                'formdropdownrelationlist',
-                'displayField')));
+            $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.',
+                                     array('formdropdownrelationlist', 'displayField')));
         }
         $this->displayField = $params['displayField'];
         unset($params['displayField']);
@@ -185,10 +181,11 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
 
         // load the object class corresponding to $this->objecttype
         $class = "{$this->module}_DBObject_".StringUtil::camelize($this->objecttype).'Array';
+
         if (!class_exists($class) && System::isLegacyMode()) {
             if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
-                z_exit(__f('Unable to load class [%s] for module [%s]', array(
-                    DataUtil::formatForDisplay($this->objecttype, $this->module))));
+                z_exit(__f('Unable to load class [%s] for module [%s]',
+                           array(DataUtil::formatForDisplay($this->objecttype, $this->module))));
             }
         }
 
@@ -207,4 +204,3 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
         parent::load($view, $params);
     }
 }
-

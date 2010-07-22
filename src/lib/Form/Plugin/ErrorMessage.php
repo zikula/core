@@ -88,4 +88,3 @@ class Form_Plugin_ErrorMessage extends Form_Plugin
         return '';
     }
 }
-

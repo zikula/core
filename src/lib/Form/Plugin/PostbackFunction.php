@@ -99,10 +99,10 @@ class Form_Plugin_PostBackFunction extends Form_Plugin
     {
         $args = array(
             'commandName' => $eventArgument,
-            'commandArgument' => null);
-        if (!empty($this->onCommand))
+            'commandArgument' => null
+        );
+        if (!empty($this->onCommand)) {
             $view->raiseEvent($this->onCommand, $args);
+        }
     }
 }
-
-

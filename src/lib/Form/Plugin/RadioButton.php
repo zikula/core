@@ -206,8 +206,6 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically
-
-
         $this->checked = (array_key_exists('checked', $params) ? $params['checked'] : false);
 
         $this->readOnly = (array_key_exists('readOnly', $params) ? $params['readOnly'] : false);
@@ -244,18 +242,20 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
             $value = null;
 
             if ($this->group == null) {
-                if (array_key_exists($this->dataField, $values))
+                if (array_key_exists($this->dataField, $values)) {
                     $value = (string)$values[$this->dataField];
+                }
             } else {
                 if (array_key_exists($this->group, $values) && array_key_exists($this->dataField, $values[$this->group])) {
                     $value = (string)$values[$this->group][$this->dataField];
                 }
             }
 
-            if ($value !== null)
+            if ($value !== null) {
                 $this->checked = ($this->value === $value);
-            else
+            } else {
                 $this->checked = false;
+            }
         }
     }
 
@@ -304,7 +304,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
 
         $attributes = $this->renderAttributes($view);
 
-        $result = "<input type=\"radio\" value=\"{$this->value}\" {$idHtml}{$nameHtml}{$readOnlyHtml}{$checkedHtml}{$postbackHtml}{$attributes} class=\"$class\" />";
+        $result = "<input{$idHtml}{$nameHtml} type=\"radio\" value=\"{$this->value}\"{$readOnlyHtml}{$checkedHtml}{$postbackHtml}{$attributes} class=\"{$class}\" />";
         if ($this->mandatory && $this->mandatorysym) {
             $result .= '<span class="z-mandatorysym">*</span>';
         }
@@ -324,7 +324,8 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     {
         $args = array(
             'commandName' => null,
-            'commandArgument' => null);
+            'commandArgument' => null
+        );
         if (!empty($this->onCheckedChanged)) {
             $view->raiseEvent($this->onCheckedChanged, $args);
         }
@@ -375,11 +376,13 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
     function findCheckedRadioButton($view, &$firstRadioButton)
     {
         $lim = count($view->plugins);
+
         for ($i = 0; $i < $lim; ++$i) {
             if ($this->findCheckedRadioButton_rec($firstRadioButton, $view->plugins[$i])) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -404,11 +407,13 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
         }
 
         $lim = count($plugin->plugins);
+
         for ($i = 0; $i < $lim; ++$i) {
             if ($this->findCheckedRadioButton_rec($firstRadioButton, $plugin->plugins[$i])) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -464,5 +469,3 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
         }
     }
 }
-
-

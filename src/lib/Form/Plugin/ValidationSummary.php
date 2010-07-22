@@ -45,19 +45,19 @@ class Form_Plugin_ValidationSummary extends Form_Plugin
     function render($render)
     {
         $validators = & $render->validators;
+
         $html = '';
         foreach ($validators as $validator) {
             if (!$validator->isValid) {
-                $html .= "<li><label for=\"$validator->id\">" . DataUtil::formatForDisplay($validator->myLabel) . ': ';
+                $html .= "<li><label for=\"{$validator->id}\">" . DataUtil::formatForDisplay($validator->myLabel) . ': ';
                 $html .=  DataUtil::formatForDisplay($validator->errorMessage) . "</label></li>\n";
             }
         }
 
         if ($html != '') {
-            $html = "<div class=\"{$this->cssClass}\">\n<ul>\n" . $html . "</ul>\n</div>\n";
+            $html = "<div class=\"{$this->cssClass}\">\n<ul>\n{$html}</ul>\n</div>\n";
         }
 
         return $html;
     }
 }
-

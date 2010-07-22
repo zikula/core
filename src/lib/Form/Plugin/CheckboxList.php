@@ -223,9 +223,9 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
             } else {
                 $style = '';
             }
-            $result .= "<div class=\"z-formlist\"$style>";
-            $result .= "<input type=\"checkbox\" value=\"$value\"{$selected}{$idHtml}{$nameHtml}{$readOnlyHtml}{$classHtml}/> ";
-            $result .= "<label for=\"{$this->id}_$i\">$text</label>\n";
+            $result .= "<div class=\"z-formlist\"{$style}>";
+            $result .= "<input{$idHtml}{$nameHtml} type=\"checkbox\" value=\"$value\"{$selected}{$readOnlyHtml}{$classHtml} /> ";
+            $result .= "<label for=\"{$this->id}_{$i}\">{$text}</label>\n";
             $result .= '</div>';
 
             if ($this->repeatColumns > 0) {
@@ -399,6 +399,7 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
         } else if (!is_array($value)) {
             $value = array($value);
         }
+
         $this->selectedValue = $value;
     }
 
@@ -409,16 +410,14 @@ class Form_Plugin_CheckboxList extends Form_Plugin_BaseListSelector
      */
     function getSelectedValue()
     {
-
         if ($this->saveAsString) {
             $s = '';
             for ($i = 0, $count = count($this->selectedValue); $i < $count; ++$i) {
                 $s .= (empty($s) ? '' : ':') . $this->selectedValue[$i];
             }
-            return ':' . $s . ':';
+            return ":{$s}:";
         }
 
         return $this->selectedValue;
     }
 }
-

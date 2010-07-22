@@ -468,7 +468,7 @@ abstract class Form_Plugin implements Zikula_Translatable
     {
         $attr = '';
         foreach ($this->attributes as $name => $value) {
-            $attr .= " $name=\"$value\"";
+            $attr .= " {$name}=\"{$value}\"";
         }
 
         return $attr;
@@ -557,6 +557,7 @@ abstract class Form_Plugin implements Zikula_Translatable
     public function registerPlugin($view, $plugin)
     {
         $plugin->setDomain($this->domain);
+
         $this->plugins[] = $plugin;
     }
 
@@ -582,7 +583,7 @@ abstract class Form_Plugin implements Zikula_Translatable
             return '';
         }
 
-        return " id=\"$id\"";
+        return " id=\"{$id}\"";
     }
 
     /**

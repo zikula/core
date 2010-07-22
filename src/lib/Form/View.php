@@ -256,7 +256,6 @@ class Form_View extends Zikula_View
         // This is the case for Form plugins inside {if} and {foreach} tags.
         // So create new plugins for these blocks instead of relying on the existing plugins.
 
-
         if (!$this->isPostBack() || $stackCount > 0 && $this->blockStack[$stackCount - 1]->volatile) {
             $plugin = new $pluginName($this, $params);
             if (!$plugin instanceof Form_Plugin) {
@@ -417,6 +416,7 @@ class Form_View extends Zikula_View
     public function getPluginById($id)
     {
         $lim = count($this->plugins);
+
         for ($i = 0; $i < $lim; ++$i) {
             $plugin = $this->getPluginById_rec($this->plugins[$i], $id);
             if ($plugin != null) {
@@ -443,6 +443,7 @@ class Form_View extends Zikula_View
         }
 
         $lim = count($plugin->plugins);
+
         for ($i = 0; $i < $lim; ++$i) {
             $subPlugin = & $this->getPluginById_rec($plugin->plugins[$i], $id);
             if ($subPlugin != null) {
@@ -488,9 +489,11 @@ class Form_View extends Zikula_View
     public function translateForDisplay($txt, $doEncode = true)
     {
         $txt = (strlen($txt) > 0 && $txt[0] == '_' && defined($txt) ? constant($txt) : $txt);
+
         if ($doEncode) {
             $txt = DataUtil::formatForDisplay($txt);
         }
+
         return $txt;
     }
 
@@ -620,9 +623,9 @@ class Form_View extends Zikula_View
      */
     public function setErrorMsg($msg)
     {
-        LogUtil::registerError($msg);
         $this->errorMsgSet = true;
-        return false;
+
+        return LogUtil::registerError($msg);
     }
 
     /**
@@ -670,6 +673,7 @@ class Form_View extends Zikula_View
     public function registerError($dummy)
     {
         $this->errorMsgSet = true;
+
         return false;
     }
 
@@ -685,6 +689,7 @@ class Form_View extends Zikula_View
     public function redirect($url)
     {
         $this->redirected = true;
+
         return System::redirect($url);
     }
 
@@ -830,7 +835,7 @@ class Form_View extends Zikula_View
     public function getAuthKeyHTML()
     {
         $key = SecurityUtil::generateAuthKey();
-        $html = "<input type=\"hidden\" name=\"authid\" value=\"$key\" id=\"FormAuthid\"/>";
+        $html = "<input type=\"hidden\" name=\"authid\" value=\"{$key}\" id=\"FormAuthid\" />";
         return $html;
     }
 
@@ -926,7 +931,7 @@ class Form_View extends Zikula_View
         // A better way needs to be found rather than relying on a call to getStateHTML.
         SessionUtil::setVar('__FormSTATE', $base64);
         // TODO - __FormSTATE still needs to be on the form, to ensure that isPostBack() returns properly
-        return '<input type="hidden" name="__FormSTATE" value="true"/>';
+        return '<input type="hidden" name="__FormSTATE" value="true" />';
     }
 
     /**
@@ -959,6 +964,7 @@ class Form_View extends Zikula_View
     {
         $state = $this->getState('Form_View', 'plugins');
         $decodedState = $this->decodePluginState_rec($state);
+
         return $decodedState;
     }
 
@@ -985,7 +991,7 @@ class Form_View extends Zikula_View
 
             $varCount = count($vars);
             if ($varCount != count($pluginState)) {
-                return z_exit("Cannot restore Form_View plugin of type '$pluginType' since stored and actual number of member vars differ");
+                return LogUtil::registerError("Cannot restore Form_View plugin of type '$pluginType' since stored and actual number of member vars differ");
             }
 
             for ($i = 0; $i < $varCount; ++$i) {
@@ -1047,6 +1053,7 @@ class Form_View extends Zikula_View
     public function initializePlugins_rec($plugins)
     {
         $lim = count($plugins);
+
         for ($i = 0; $i < $lim; ++$i) {
             $this->initializePlugins_rec($plugins[$i]->plugins);
             $plugins[$i]->preInitialize();
@@ -1139,6 +1146,7 @@ class Form_View extends Zikula_View
     public function postRender_rec($plugins)
     {
         $lim = count($plugins);
+
         for ($i = 0; $i < $lim; ++$i) {
             $this->postRender_rec($plugins[$i]->plugins);
             $plugins[$i]->postRender($this);
@@ -1200,6 +1208,7 @@ class Form_View extends Zikula_View
     public function getValues_rec($plugins, &$result)
     {
         $lim = count($plugins);
+
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
             $plugin = $plugins[$i];
 
@@ -1257,6 +1266,7 @@ class Form_View extends Zikula_View
     public function setValues_rec(&$values, $group, $plugins)
     {
         $lim = count($plugins);
+
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
             $plugin = $plugins[$i];
 
@@ -1279,7 +1289,7 @@ class Form_View extends Zikula_View
     public function dumpPlugins($msg, $plugins)
     {
         echo "<pre style=\"background-color: #CFC; text-align: left;\">\n";
-        echo "** $msg **\n";
+        echo "** {$msg} **\n";
         $this->dumpPlugins_rec($this->plugins);
         echo "</pre>";
     }
@@ -1294,6 +1304,7 @@ class Form_View extends Zikula_View
     public function dumpPlugins_rec($plugins)
     {
         $lim = count($plugins);
+
         for ($i = 0, $cou = $lim; $i < $cou; ++$i) {
             $p = $plugins[$i];
             echo "\n(\n{$p->id}: {$p->parentPlugin}";

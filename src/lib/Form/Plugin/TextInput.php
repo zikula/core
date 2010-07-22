@@ -299,9 +299,9 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
         $readOnlyHtml = ($this->readOnly ? ' readonly="readonly" tabindex="-1"' : '');
 
-        $sizeHtml = ($this->size > 0 ? " size=\"$this->size\"" : '');
+        $sizeHtml = ($this->size > 0 ? " size=\"{$this->size}\"" : '');
 
-        $maxLengthHtml = ($this->maxLength > 0 ? " maxlength=\"$this->maxLength\"" : '');
+        $maxLengthHtml = ($this->maxLength > 0 ? " maxlength=\"{$this->maxLength}\"" : '');
 
         $text = DataUtil::formatForDisplay($this->text);
 
@@ -323,13 +323,13 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
 
         switch (strtolower($this->textMode)) {
             case 'singleline':
-                $result = "<input type=\"text\"{$idHtml}{$nameHtml}{$titleHtml}{$sizeHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"$class\" value=\"{$text}\"$attributes/>";
+                $result = "<input type=\"text\"{$idHtml}{$nameHtml}{$titleHtml}{$sizeHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
                 if ($this->mandatory && $this->mandatorysym)
                     $result .= '<span class="z-mandatorysym">*</span>';
                 break;
 
             case 'password':
-                $result = "<input type=\"password\"{$idHtml}{$nameHtml}{$titleHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"$class\" value=\"{$text}\"$attributes/>";
+                $result = "<input type=\"password\"{$idHtml}{$nameHtml}{$titleHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
                 if ($this->mandatory && $this->mandatorysym)
                     $result .= '<span class="z-mandatorysym">*</span>';
                 break;
@@ -337,21 +337,21 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
             case 'multiline':
                 $colsrowsHtml = '';
                 if ($this->cols != null) {
-                    $colsrowsHtml .= " cols=\"$this->cols\"";
+                    $colsrowsHtml .= " cols=\"{$this->cols}\"";
                 }
 
                 if ($this->rows != null) {
-                    $colsrowsHtml .= " rows=\"$this->rows\"";
+                    $colsrowsHtml .= " rows=\"{$this->rows}\"";
                 }
 
-                $result = "<textarea{$idHtml}{$nameHtml}{$titleHtml}{$readOnlyHtml}{$colsrowsHtml} class=\"$class\"$attributes>$text</textarea>";
+                $result = "<textarea{$idHtml}{$nameHtml}{$titleHtml}{$readOnlyHtml}{$colsrowsHtml} class=\"{$class}\"{$attributes}>{$text}</textarea>";
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-mandatorysym">*</span>';
                 }
                 break;
 
             default:
-                $result = "UNKNOWN TEXTMODE $this->textMode.";
+                $result = __f('Unknown value [%1$s] for \'%2$s\'.', array($this->textMode, 'textMode'));
         }
 
         return $result;
@@ -395,7 +395,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         if ($this->mandatory && $this->isEmpty()) {
             $this->setError(__('Error! An entry in this field is mandatory.'));
         } else if (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
-            $this->setError(sprintf(__('Error! Input text must be no longer than %s characters.'), $this->maxLength));
+            $this->setError(sprintf(__f('Error! Input text must be no longer than %s characters.'), $this->maxLength));
         } else if ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
             $this->setError($view->translateForDisplay($this->regexValidationMessage));
         }
@@ -520,4 +520,3 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
         return $value;
     }
 }
-

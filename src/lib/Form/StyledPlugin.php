@@ -66,7 +66,7 @@ abstract class Form_StyledPlugin extends Form_Plugin
             } else if (in_array($name, $styleElements)) {
                 $this->styleAttributes[$name] = $value;
             } else {
-                $attr .= " $name=\"$value\"";
+                $attr .= " {$name}=\"{$value}\"";
             }
         }
 
@@ -80,7 +80,7 @@ abstract class Form_StyledPlugin extends Form_Plugin
         }
 
         if (!empty($style)) {
-            $attr .= " style=\"$style\"";
+            $attr .= " style=\"{$style}\"";
         }
 
         return $attr;

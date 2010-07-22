@@ -196,11 +196,10 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         $result = '';
 
         if ($this->useSelectionMode) {
-            $hiddenInputField = str_replace(array(
-                'type="text"',
-                '&nbsp;*'), array(
-                'type="hidden"',
-                ''), parent::render($view));
+            $hiddenInputField = str_replace(array('type="text"', '&nbsp;*'),
+                                            array('type="hidden"', ''),
+                                            parent::render($view));
+
             $result .= $hiddenInputField . '<span id="' . $this->id . 'cal" style="background-color: #ff8; cursor: default;" onmouseover="this.style.backgroundColor=\'#ff0\';" onmouseout="this.style.backgroundColor=\'#ff8\';">';
             if ($this->text) {
                 $result .= DataUtil::formatForDisplay(DateUtil::getDatetime(DateUtil::parseUIDate($this->text), $this->daFormat));
@@ -216,7 +215,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
             $result .= parent::render($view);
 
             $txt = __('Select date');
-            $result .= " <img id=\"{$this->id}_img\" src=\"javascript/jscalendar/img.gif\" style=\"vertical-align: middle\" class=\"clickable\" alt=\"$txt\" /></span>";
+            $result .= " <img id=\"{$this->id}_img\" src=\"javascript/jscalendar/img.gif\" style=\"vertical-align: middle\" class=\"clickable\" alt=\"{$txt}\" /></span>";
         }
 
         // build jsCalendar script options
@@ -240,8 +239,8 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
 
         if ($this->useSelectionMode) {
             $result .= "
-                    displayArea :    \"" . $this->id . "cal\",
-                    daFormat    :    \"" . $this->daFormat . "\",
+                    displayArea :    \"{$this->id}cal\",
+                    daFormat    :    \"{$this->daFormat}\",
                     align       :    \"Bl\",
                     singleClick :    true,";
         } else {
@@ -285,6 +284,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
     function validate($view)
     {
         parent::validate($view);
+
         if (!$this->isValid) {
             return;
         }

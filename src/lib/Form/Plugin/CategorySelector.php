@@ -138,7 +138,6 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
             $catName = html_entity_decode((isset($cat['display_name'][$lang]) ? $cat['display_name'][$lang] : $cat['name']));
             $list->addItem($indent . ' ' . $catName, $cat['id']);
         }
-
     }
 
     /**
@@ -153,7 +152,9 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
     {
         $this->includeEmptyElement = (isset($params['includeEmptyElement']) ? $params['includeEmptyElement'] : false);
         $this->enableDBUtil = (isset($params['enableDBUtil']) ? $params['enableDBUtil'] : false);
+
         Form_Plugin_CategorySelector::loadParameters($this, $this->includeEmptyElement, $params);
+
         parent::load($render, $params);
     }
 
@@ -169,9 +170,8 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
         $result = parent::render($render);
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('Categories::', "$this->category[id]::", ACCESS_EDIT)) {
-            $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'user', 'edit', array(
-                'dr' => $this->category['id'])));
-            $result .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"images/icons/extrasmall/xedit.gif\" title=\"" . __('Edit') . '" alt="' . __('Edit') . '" /></a>';
+            $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'user', 'edit', array('dr' => $this->category['id'])));
+            $result .= "&nbsp;&nbsp;<a href=\"{$url}\"><img src=\"images/icons/extrasmall/xedit.gif\" title=\"" . __('Edit') . '" alt="' . __('Edit') . '" /></a>';
         }
 
         return $result;
@@ -245,10 +245,8 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
             }
 
             $this->setSelectedValue($value);
-
         } else {
             parent::loadValue($render, $values);
         }
     }
 }
-

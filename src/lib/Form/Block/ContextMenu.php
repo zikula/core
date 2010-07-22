@@ -130,7 +130,7 @@ class Form_Block_ContextMenu extends Form_StyledPlugin
             $cssClass = ($this->cssClass == null ? "contextMenu" : $this->cssClass);
             $attributes = $this->renderAttributes($view);
             $hiddenName = "contentMenuArgument" . $this->id;
-            $html = "<div id=\"{$this->id}\" class=\"$cssClass\"$attributes><input type=\"hidden\" name=\"$hiddenName\" id=\"$hiddenName\"/><ul>";
+            $html = "<div id=\"{$this->id}\" class=\"{$cssClass}\"{$attributes}><input type=\"hidden\" name=\"{$hiddenName}\" id=\"{$hiddenName}\" /><ul>";
             return $html;
         } else {
             return '';

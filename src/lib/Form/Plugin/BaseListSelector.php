@@ -228,8 +228,9 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
             if ($this->group == null) {
                 $data[$this->dataField] = $this->getSelectedValue();
             } else {
-                if (!array_key_exists($this->group, $data))
+                if (!array_key_exists($this->group, $data)) {
                     $data[$this->group] = array();
+                }
                 $data[$this->group][$this->dataField] = $this->getSelectedValue();
             }
         }
@@ -315,7 +316,8 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
     {
         $item = array(
             'text' => $text,
-            'value' => $value);
+            'value' => $value
+        );
 
         $this->items[] = $item;
     }

@@ -136,26 +136,26 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
 
         } else if (!empty($this->commandScript)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
-            $click = 'javascript:' . $this->renderConfirm($render, "Form.contextMenu.commandScript('$hiddenName', function(commandArgument){" . $this->commandScript . "})");
+            $click = 'javascript:' . $this->renderConfirm($render, "Form.contextMenu.commandScript('{$hiddenName}', function(commandArgument){{$this->commandScript}})");
 
         } else if (!empty($this->commandRedirect)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
             $url = urlencode($this->commandRedirect);
-            $click = 'javascript:' . $this->renderConfirm($render, "Form.contextMenu.redirect('$hiddenName','$url')");
+            $click = 'javascript:' . $this->renderConfirm($render, "Form.contextMenu.redirect('{$hiddenName}','{$url}')");
         } else {
-            z_exit('Missing commandName, commandScript, or commandRedirect in context menu item');
+            LogUtil::registerError('Missing commandName, commandScript, or commandRedirect in context menu item');
         }
 
         $url = $click;
         $title = $render->translateForDisplay($this->title);
 
         if (!empty($this->imageURL)) {
-            $style = " style=\"background-image: url($this->imageURL)\"";
+            $style = " style=\"background-image: url({$this->imageURL})\"";
         } else {
             $style = '';
         }
 
-        $html = "<li$style><a href=\"$url\">$title</a></li>";
+        $html = "<li{$style}><a href=\"{$url}\">{$title}</a></li>";
 
         return $html;
     }
@@ -172,7 +172,7 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
     {
         if (!empty($this->confirmMessage)) {
             $msg = $render->translateForDisplay($this->confirmMessage) . '?';
-            return "if (confirm('$msg')) { $script }";
+            return "if (confirm('{$msg}')) { {$script} }";
         } else {
             return $script;
         }
@@ -193,9 +193,8 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         $hiddenName = "contentMenuArgument" . $contextMenu->id;
         $commandArgument = FormUtil::getPassedValue($hiddenName, null, 'POST');
 
-        $args = array(
-            'commandName' => $eventArgument,
-            'commandArgument' => $commandArgument);
+        $args = array('commandName' => $eventArgument, 'commandArgument' => $commandArgument);
+
         $render->raiseEvent($contextMenu->onCommand == null ? 'handleCommand' : $contextMenu->onCommand, $args);
     }
 
@@ -216,4 +215,3 @@ class Form_Plugin_ContextMenu_Item extends Form_Plugin
         return $contextMenu;
     }
 }
-

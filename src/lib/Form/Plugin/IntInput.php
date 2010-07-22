@@ -58,7 +58,9 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
     {
         $this->maxLength = 20;
         $params['width'] = '6em';
+
         parent::create($view, $params);
+
         $this->regexValidationPattern = '/^\\s*[+-]?\\s*?[0-9]+\\s*$/';
         $this->regexValidationMessage = __('Error! Invalid integer.');
     }
@@ -73,6 +75,7 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
     function validate($view)
     {
         parent::validate($view);
+
         if (!$this->isValid) {
             return;
         }
@@ -81,9 +84,8 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
             $i = (int)$this->text;
             if ($this->minValue != null && $i < $this->minValue || $this->maxValue != null && $i > $this->maxValue) {
                 if ($this->minValue != null && $this->maxValue != null) {
-                    $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.', array(
-                        $this->minValue,
-                        $this->maxValue)));
+                    $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.',
+                                        array($this->minValue, $this->maxValue)));
                 } else if ($this->minValue != null) {
                     $this->setError(__f('Error! The value must be %s or more.', $this->minValue));
                 } else if ($this->maxValue != null) {
@@ -106,6 +108,7 @@ class Form_Plugin_IntInput extends Form_Plugin_TextInput
         if ($text == '') {
             return null;
         }
+
         return (int)$text;
     }
 }
