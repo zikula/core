@@ -118,6 +118,19 @@ class Zikula_Event implements ArrayAccess
     }
 
     /**
+     * Set args property.
+     * 
+     * @param array $args Arguments.
+     *
+     * @return Zikula_Event
+     */
+    public function setArgs(array $args = array())
+    {
+        $this->args = $args;
+        return $this;
+    }
+
+    /**
      * Return value from $this->args[$key].
      *
      * @param string $key Key to the args array.

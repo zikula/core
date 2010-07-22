@@ -17,6 +17,15 @@
  */
 class LogUtil
 {
+    const EMERG = 0; // Emergency: system is unusable
+    const ALERT = -1; // Alert: action must be taken immediately
+    const CRIT = -2; // Critical: critical conditions
+    const ERR = -3; // Error: error conditions
+    const WARN = -4; // Warning: warning conditions
+    const NOTICE = -5; // Notice: normal but significant condition
+    const INFO = -6; // Informational: informational messages
+    const DEBUG = -7; // Debug: debug messages
+    
     /**
      * Returns an array of status messages.
      *
@@ -132,17 +141,11 @@ class LogUtil
      */
     public static function registerStatus($message, $url = null)
     {
-        if (!isset($message) || empty($message)) {
+        if (empty($message)) {
             return z_exit(__f('Empty [%s] received.', 'message'));
         }
 
-        $msgs = SessionUtil::getVar('_ZStatusMsg', array());
-        if (is_array($message)) {
-            $msgs = array_merge($msgs, $message);
-        } else {
-            $msgs[] = DataUtil::formatForDisplayHTML($message);
-        }
-        SessionUtil::setVar('_ZStatusMsg', $msgs);
+        self::addStatusPopup($message);
 
         // check if we want to redirect
         if ($url) {
@@ -150,6 +153,35 @@ class LogUtil
         }
 
         return true;
+    }
+
+    public static function addStatusPopup($message)
+    {
+        $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
+        self::_addPopup($message, self::INFO);
+    }
+
+    public static function addErrorPopup($message)
+    {
+        $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
+        self::_addPopup($message, E_USER_ERROR);
+    }
+
+    private static function _addPopup($message, $type = E_USER_NOTICE)
+    {
+        self::log($message, self::DEBUG);
+        
+        if ($type === self::INFO) {
+            $key = '_ZStatusMsg';
+        } elseif ($type === E_USER_ERROR) {
+            $key = '_ZErrorMsg';
+        } else {
+            throw new InvalidArgumentException(__f('Invalid type %s for LogUtil::_addPopup', $type));
+        }
+
+        $msgs = SessionUtil::getVar($key, array());
+        $msgs[] = DataUtil::formatForDisplayHTML($message);
+        SessionUtil::setVar($key, $msgs);
     }
 
     /**
@@ -228,51 +260,7 @@ class LogUtil
             return z_exit(__f('Empty [%s] received.', 'message'));
         }
 
-        global $ZConfig;
-
-        $showDetailInfo = (System::isInstalling() || (System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)));
-
-        if ($showDetailInfo) {
-            $bt = debug_backtrace();
-
-            $cf0 = $bt[0];
-            $cf1 = isset($bt[1]) ? $bt[1] : array('function' => '', 'args' => '');
-            $file = $cf0['file'];
-            $line = $cf0['line'];
-            $func = !empty($cf1['function']) ? $cf1['function'] : '';
-            $class = !empty($cf1['class']) ? $cf1['class'] : '';
-            $args = $cf1['args'];
-        } else {
-            $func = '';
-        }
-
-        if (!$showDetailInfo) {
-            $msg = $message;
-        } else {
-            // TODO A [do we need to have HTML sanitization] (drak)
-            $func = ((!empty($class)) ? "$class::$func" : $func);
-            $msg = __f('%1$s The origin of this message was \'%2$s\' at line %3$s in file \'%4$s\'.', array($message, $func, $line, $file));
-
-//            if (System::isDevelopmentMode()) {
-//                $msg .= '<br />';
-//                $msg .= _prayer($debug);
-//                $msg .= '<br />';
-//                $msg .= _prayer(debug_backtrace());
-//
-//            }
-        }
-
-        $msgs = SessionUtil::getVar('_ZErrorMsg', array());
-        // no html encoding should be used here - not htmlentities nor DataUtil methods
-        // as the message *may* contain pre-formatted html
-        if (is_array($message)) {
-            $msgs = array_merge($msgs, $message);
-        } else {
-            $msgs[] = $msg;
-        }
-        // note for bug #4439 - we dont want to pass messages through HTML tag
-        // filter, only ensure the HTML is valid since this is system generated
-        SessionUtil::setVar('_ZErrorMsg', $msgs);
+        self::addErrorPopup($message);
 
         // check if we've got an error type
         if (isset($type) && is_numeric($type)) {
@@ -285,7 +273,7 @@ class LogUtil
         }
 
         // since we're registering an error, it makes sense to return false here.
-        // This allows the calling code to just return the result of pnRegisterError
+        // This allows the calling code to just return the result of LogUtil::registerError
         // if it wishes to return 'false' (which is what ususally happens).
         return false;
     }
@@ -337,254 +325,106 @@ class LogUtil
      *
      * @return void
      */
-    public static function log($msg, $level = 'DEFAULT')
+    public static function log($msg, $level = self::DEBUG)
     {
-//        global $ZConfig;
-//        $haveConfig = count($ZConfig['Log']) > 0;
-//        $logLevels = $ZConfig['Log']['log_levels'];
-//        $showErrors = $ZConfig['Log']['log_show_errors'];
-//        $logUser = $ZConfig['Log']['log_user'];
-//        $suid = SessionUtil::getVar('uid', 0);
-//
-//        if ($logUser && $logUser != $suid) {
-//            return;
-//        }
-//
-//        if (!$haveConfig) {
-//            print "<p><strong>".__("Logging configuration can't be loaded .... logging is disabled")."</strong></p>";
-//        } elseif ($level == "ALL" && $showErrors == true) {
-//            print "<p><strong>".__("You should not add an event log with log_level 'ALL'")."</strong></p>";
-//        } elseif (in_array($level, $logLevels) || in_array("ALL", $logLevels)) {
-//            self::_write($msg, $level);
-//        }
+        $errorReporting = ServiceUtil::getManager()->getService('system.errorreporting');
+        $errorReporting->handler($level, $msg);
     }
 
     /**
      * Generate the filename of todays log file.
      *
-     * @param intiger $level Log level.
+     * @param integer $level Log level.
      *
      * @return the generated filename.
      */
     public static function getLogFileName($level = null)
     {
-//        global $ZConfig;
-//        $logfileSpec = $ZConfig['Log']['log_file'];
-//        $dateFormat = $ZConfig['Log']['log_file_date_format'];
-//
-//        if ($level && isset($ZConfig['Log']['log_level_files'][$level]) && $ZConfig['Log']['log_level_files'][$level]) {
-//            $logfileSpec = $ZConfig['Log']['log_level_files'][$level];
-//        }
-//
-//        if (strpos($logfileSpec, "%s") !== false) {
-//            if ($ZConfig['Log']['log_file_uid']) {
-//                $perc = strpos($logfileSpec, '%s');
-//                $start = substr($logfileSpec, 0, $perc + 2);
-//                $end = substr($logfileSpec, $perc + 2);
-//                $uid = SessionUtil::getVar('uid', 0);
-//
-//                $logfileSpec = $start . '-%d' . $end;
-//                $logfile = sprintf($logfileSpec, date($dateFormat), $uid);
-//            } else {
-//                $logfile = sprintf($logfileSpec, date($dateFormat));
-//            }
-//        } else {
-//            $logfile = $logfileSpec;
-//        }
-//
-//        return $logfile;
+        global $ZConfig;
+        $logfileSpec = $ZConfig['Log']['log_file'];
+        $dateFormat = $ZConfig['Log']['log_file_date_format'];
+
+        if ($level && isset($ZConfig['Log']['log_level_files'][$level]) && $ZConfig['Log']['log_level_files'][$level]) {
+            $logfileSpec = $ZConfig['Log']['log_level_files'][$level];
+        }
+
+        if (strpos($logfileSpec, "%s") !== false) {
+            if ($ZConfig['Log']['log_file_uid']) {
+                $perc = strpos($logfileSpec, '%s');
+                $start = substr($logfileSpec, 0, $perc + 2);
+                $end = substr($logfileSpec, $perc + 2);
+                $uid = SessionUtil::getVar('uid', 0);
+
+                $logfileSpec = $start . '-%d' . $end;
+                $logfile = sprintf($logfileSpec, date($dateFormat), $uid);
+            } else {
+                $logfile = sprintf($logfileSpec, date($dateFormat));
+            }
+        } else {
+            $logfile = $logfileSpec;
+        }
+
+        return $logfile;
     }
 
-    /**
-     * Write the error message to the log file.
-     *
-     * Prints log file full error (if $log_show_errors is true)
-     *
-     * @param string $msg          The message to log.
-     * @param string $level        The log level to log this message under.
-     * @param array  $securityInfo Security info.
-     *
-     * @return void
-     */
-    public static function _write($msg, $level = 'DEFAULT', $securityInfo = null)
+    public static function translateErrorCode($code)
     {
-//        global $ZConfig;
-//        $logEnabled = $ZConfig['Log']['log_enabled'];
-//        if (!$logEnabled) {
-//            return;
-//        }
-//
-//        $logShowErr = $ZConfig['Log']['log_show_errors'];
-//        $logDateFmt = $ZConfig['Log']['log_date_format'];
-//        $logDest = $ZConfig['Log']['log_dest'];
-//        $uid = SessionUtil::getVar('uid', 1);
-//        $module = ModUtil::getName();
-//        $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
-//        $func = FormUtil::getPassedValue('func', 'main', 'GETPOST');
-//
-//        if ($level && isset($ZConfig['Log']['log_level_dest'][$level]) && $ZConfig['Log']['log_level_dest'][$level]) {
-//            $logDest = $ZConfig['Log']['log_level_dest'][$level];
-//        }
-//
-//        // permission to be logged to DB or FILE
-//        if ($level == 'PERMISSION' && ($logDest != 'DB' && $logDest != 'FILE')) {
-//            $logDest = 'DB';
-//        }
-//
-//        $logDest = strtoupper($logDest);
-//
-//        $logline = '';
-//        if ($logDest == 'FILE') {
-//            $title = date($logDateFmt) . ", level=$level, uid=$uid, module=$module, type=$type, func=$func\n";
-//            if ($securityInfo)
-//                $title .= "++ sec_component=$securityInfo[sec_component], sec_instance=$securityInfo[sec_instance], sec_permission=$securityInfo[sec_permission]\n";
-//            $logline = '+ ' . $title;
-//        }
-//        $logline .= "$msg\n\n";
-//
-//        if ($logDest == 'FILE') {
-//            static $logfile = '';
-//            if (!$logfile) {
-//                $logfile = self::getLogFileName($level);
-//            }
-//
-//            $logfileOK = self::_checkLogFile($logfile, $level, $reason);
-//            if ($logfileOK) {
-//                $fp = fopen($logfile, 'a');
-//                fwrite($fp, $logline, strlen($logline));
-//                fclose($fp);
-//            } elseif ($logShowErr) {
-//                if ($reason == 'NOWRITE') {
-//                    print "<p><strong>".__f('Logging Disabled. Log file (%s) is not writable.', $logfile)."</strong></p>";
-//                } elseif ($reason == 'TOOBIG') {
-//                    print "<p><strong>".__f("Log file (%s) is full.", $logfile)."</strong></p>";
-//                }
-//            }
-//        } elseif ($logDest == 'PRINT') {
-//            print '<div class="z-sub" style="text-align:left;">' . $logline . '</div>';
-//            //print $msg;
-//        } elseif ($logDest == 'MAIL') {
-//            $title = date($logDateFmt) . ", level=$level, uid=$uid\n";
-//            $adminmail = System::getVar('adminmail');
-//
-//            $args = array();
-//            $args['fromname'] = 'Zikula ' . System::getVar('slogan', 'Site Slogan');
-//            $args['fromaddress'] = $adminmail;
-//            $args['toname'] = 'Site Administrator';
-//            $args['toaddress'] = $adminmail;
-//            $args['subject'] = "Log Message: level=$level, uid=$uid";
-//            $args['body'] = $logline;
-//
-//            $rc = ModUtil::func('Mailer', 'userapi', 'sendmessage', $args);
-//        } elseif ($logDest == 'DB') {
-//            $obj = array();
-//            $obj['date'] = date($logDateFmt);
-//            $obj['uid'] = $uid;
-//            $obj['component'] = $level;
-//            $obj['module'] = $module;
-//            $obj['type'] = $type;
-//            $obj['function'] = $func;
-//            $obj['message'] = $msg;
-//
-//            if ($securityInfo && is_array($securityInfo)) {
-//                $obj = array_merge($obj, $securityInfo);
-//            }
-//
-//            if (ModUtil::dbInfoLoad('SecurityCenter')) {
-//                if (!DBUtil::insertObject($obj, 'sc_logevent')) {
-//                    print '<div class="z-sub" style="text-align:left;">';
-//                    print __('Failed to insert log record into log_event table').'<br />';
-//                    prayer($obj);
-//                    print '</div>';
-//                }
-//            } else {
-//                print __('Failed to load logging table definition from SecurityCenter module').'<br />';
-//            }
-//        } else {
-//            print __f('Unknown log destination [%s].', $logDest);
-//        }
-    }
-
-    /**
-     * Check the log file is writable and not full.
-     *
-     * Returns unwritable The file or directory cannot be written to.
-     * returns toobig The log file size is bigger than $log_length in logging.conf.php.
-     *
-     * @param string|boolean $logfile The logfile to check or false to use $level.
-     * @param string         $level   The level to get logfile for if $logfile=false.
-     * @param string         &$reason This should be an empty string updated with reason not ready for writing.
-     *
-     * @return boolean Whether or not the file is ready for writing.
-     */
-    public static function _checkLogFile($logfile, $level, &$reason)
-    {
-//        global $ZConfig;
-//        $logSize = $ZConfig['Log']['log_maxsize'];
-//
-//        if (!$logfile) {
-//            $logfile = self::getLogFileName($level);
-//        }
-//
-//        $size = 0;
-//        $rc = false;
-//
-//        if (file_exists($logfile)) {
-//            $size = filesize($logfile) / 1024 / 1024;
-//        }
-//
-//        if (file_exists($logfile) && is_writable($logfile)) {
-//            $rc = true;
-//        } elseif (!file_exists($logfile)) {
-//            @touch($logfile);
-//            if (file_exists($logfile)) {
-//                chmod($logfile, 0755);
-//                $rc = true;
-//            } else {
-//                SessionUtil::setVar('_ZStatusMsg', __f('Unable to create log file [%s].', $logfile));
-//                $reason = 'NOWRITE';
-//            }
-//        } elseif ($logSize && $size > $logSize) {
-//            SessionUtil::setVar('_ZStatusMsg', __f('Logfile [%1$s] size [%2$s] exceeds [%3$s].', array($logfile, $size, $logSize)));
-//            $reason = 'TOOBIG';
-//        }
-//
-//        return $rc;
-    }
-
-    /**
-     * Cleans up unneeded old log files.
-     *
-     * @return void
-     */
-    public static function _cleanLogFiles()
-    {
-//        if (System::isInstalling()) {
-//            return;
-//        }
-//
-//        global $ZConfig;
-//
-//        $oneday = 24 * 60 * 60;
-//        $log_keep_days = $ZConfig['Log']['log_keep_days'];
-//        if (!$log_keep_days)
-//            $log_keep_days = 30; // temporary default value for migration
-//
-//
-//        $log_keep_seconds = $log_keep_days * $oneday;
-//        $lastcheck = System::getVar('log_last_rotate');
-//        $currenttime = time();
-//
-//        if (time() - $lastcheck > $oneday) {
-//            // check once a day
-//            $logfilepath = $ZConfig['Log']['log_dir'];
-//            $logfiles = FileUtil::getFiles($logfilepath, false, false);
-//            foreach ($logfiles as $logfile) {
-//                if ($currenttime - filemtime($logfile) > $log_keep_seconds) {
-//                    unlink($logfile);
-//                }
-//            }
-//            System::setVar('log_last_rotate', $currenttime);
-//        }
+        switch ($code) {
+            case E_NOTICE:
+                $word = 'E_NOTICE';
+                break;
+            case E_USER_NOTICE:
+                $word = 'E_USER_NOTICE';
+                break;
+            case E_WARNING:
+                $word = 'E_WARNING';
+                break;
+            case E_USER_WARNING:
+                $word = 'E_USER_WARNING';
+                break;
+            case E_ERROR:
+                $word = 'E_ERROR';
+                break;
+            case E_USER_ERROR:
+                $word = 'E_USER_ERROR';
+                break;
+            case E_STRICT:
+                $word = 'E_STRICT';
+                break;
+            case E_DEPRECATED:
+                $word = 'E_DEPRECATED';
+                break;
+            case E_USER_DEPRECATED:
+                $word = 'E_USER_DEPRECATED';
+                break;
+            case self::EMERG:
+                $word = 'EMERG';
+                break;
+            case self::ALERT:
+                $word = 'ALERT';
+                break;
+            case self::CRIT:
+                $word = 'CRIT';
+                break;
+            case self::ERR:
+                $word = 'ERR';
+                break;
+            case self::WARN:
+                $word = 'WARN';
+                break;
+            case self::NOTICE:
+                $word = 'NOTICE';
+                break;
+            case self::INFO:
+                $word = 'INFO';
+                break;
+            case self::DEBUG:
+                $word = 'DEBUG';
+                break;
+            default:
+                return $code;
+                break;
+        }
+        return $word;
     }
 }

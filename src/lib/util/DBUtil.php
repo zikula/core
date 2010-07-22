@@ -246,7 +246,7 @@ class DBUtil
             (!$suid || ($suid && $suid === $uid))) {
             static $timer;
             if (!$timer) {
-                $timer = new Timer();
+                $timer = new Zikula_Debug_Timer();
             } else {
                 $timer->reset();
             }
@@ -1752,14 +1752,14 @@ class DBUtil
      * @return mixed The resulting min/max value.
      */
     public static function selectFieldMax($table, $field, $option = 'MAX', $where = '')
-    {   
+    {
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
         $fieldName = $columns[$field];
 
         $field = isset($fieldName) ? $fieldName : $field;
-        
+
         $sql = "SELECT $option($field) FROM $tableName AS tbl";
         $where = self::_checkWhereClause($where);
 
@@ -3416,7 +3416,7 @@ class DBUtil
                 }
             }
         }
-        
+
         $indexDefinition = array(
             'fields' => $indexFields,
         );

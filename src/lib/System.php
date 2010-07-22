@@ -12,6 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+// For < PHP 5.3.0
+if (!defined('E_DEPRECATED')) {
+    define('E_DEPRECATED', 8192);
+}
+if (!defined('E_USER_DEPRECATED')) {
+    define('E_USER_DEPRECATED', 16384);
+}
+
 // Defines for access levels
 define('ACCESS_INVALID', -1);
 define('ACCESS_NONE', 0);
@@ -222,6 +230,8 @@ class System
                 $GLOBALS['ZConfig']['Multisites']['multi'] = 0;
             }
 
+            $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
+
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArg('stage', self::CORE_STAGES_CONFIG);
             $eventManager->notify($coreInitEvent);
@@ -351,7 +361,7 @@ class System
         if ($stages & self::CORE_STAGES_MODS) {
             // Set compression on if desired
             if (self::getVar('UseCompression') == 1) {
-                ob_start("ob_gzhandler");
+                //ob_start("ob_gzhandler");
             }
 
             ModUtil::load('SecurityCenter');
@@ -390,9 +400,6 @@ class System
         }
 
         $eventManager->notify(new Zikula_Event('core.postinit', null, array('stages' => $stages)));
-
-        // remove log files being too old
-        LogUtil::_cleanLogFiles();
 
         return true;
     }

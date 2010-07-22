@@ -71,18 +71,11 @@ $ZConfig['Debug']['sql_time'] = 0;          // time sql statements, 0 to disable
 $ZConfig['Debug']['sql_detail'] = 0;        // collect executed sql statements, 0 to disable
 $ZConfig['Debug']['sql_data'] = 0;          // collect selected data, 0 to disable
 $ZConfig['Debug']['sql_user'] = 0;          // user filter, 0 for all, any other number is a user-id, can also be an array
-$ZConfig['Debug']['cache_time'] = 0;        // object cache: time cache access, 0 to disable
-$ZConfig['Debug']['cache_detail'] = 0;      // object cache: collect executed cache hits, 0 to disable
-$ZConfig['Debug']['cache_user'] = 0;        // object cache: user filter, 0 for all, any other number is a user-id, can also be an array
 
 
 // ----------------------------------------------------------------------
 // Error Reporting
 // ----------------------------------------------------------------------
-// For < PHP 5.3
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-}
 $ZConfig['Debug']['error_reporting_development'] = E_ALL; // preconfigured level
 $ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING; // preconfigured level
 $ZConfig['Debug']['debug_key'] = ($ZConfig['System']['development'] ? 'error_reporting_development' : 'error_reporting_production');
@@ -92,21 +85,26 @@ error_reporting($ZConfig['Debug'][$ZConfig['Debug']['debug_key']]); // now set t
 // ----------------------------------------------------------------------
 // Logging Settings
 // ----------------------------------------------------------------------
-$ZConfig['Log']['log_enabled'] = 0;     // global logging to on/off switch for 'log_dest' (0=off, 1=on)
+
 $ZConfig['Log']['log_dest'] = 'FILE';   // the default logging destination. Can be "FILE", "PRINT", "EMAIL" or "DB".
 $ZConfig['Log']['log_dir'] = $ZConfig['System']['temp'] . '/error_logs/';   // the directory containing all log files
 $ZConfig['Log']['log_file'] = $ZConfig['Log']['log_dir'] . 'zikula-%s.log'; // %s is where todays date will go
 $ZConfig['Log']['log_file_uid'] = 0;                                        // wether or not a separate log file is used for each user. The filename is derived from $ZConfig['Log']['log_file']
 $ZConfig['Log']['log_file_date_format'] = 'Ymd';                            // dateformat to be used for the generated log filename
-$ZConfig['Log']['log_maxsize'] = 1.0;                                       // value in MB. Decimal is OK. (Use 0 for no limit)
-$ZConfig['Log']['log_user'] = 0;                                            // user filter for logging, 0 for all, can also be an array
-$ZConfig['Log']['log_levels'] = array('CORE', 'DB', 'DEFAULT', 'WARNING', 'FATAL', 'STRICT'); // User defined. To get everything use: $log_level = array("All");
-$ZConfig['Log']['log_show_errors'] = true;                                  // Show php logging errors on screen (Use while developing only)
 $ZConfig['Log']['log_date_format'] = "Y-m-d H:i:s";                         // 2006-07-19 18:41:50
 $ZConfig['Log']['log_level_dest'] = array('DB' => 'PRINT');                 // array of level-specific log destinations
 $ZConfig['Log']['log_level_files'] = array('DB' => $ZConfig['System']['temp'] . '/error_logs/zikula-sql-%s.log'); // array of level-specific log files (only used if destination=="FILE")
-$ZConfig['Log']['log_keep_days'] = 30;                                      // amount of days to keep log files for (older files will be erased)
-$ZConfig['Log']['log_apache_uname'] = 0;                                    // log username to apache logs: please see documentation.  Please check you country's local law covering the logging of personally identifiable user data before enabling.
+
+$ZConfig['Log']['log.apache_uname'] = 0;                                    // log username to apache logs: please see documentation.  Please check you country's local law covering the logging of personally identifiable user data before enabling.
+
+$ZConfig['Log']['log.enabled'] = 0;     // global logging to on/off switch for 'log_dest' (0=off, 1=on)
+$ZConfig['Log']['log.suppress_all'] = 0;
+$ZConfig['Log']['log.to_display'] = 1;
+$ZConfig['Log']['log.display_level'] = 'ALL'; // ALL/ERROR/NOTICES/INFO
+$ZConfig['Log']['log.to_file'] = 0;
+$ZConfig['Log']['log.file_level'] = 'ALL'; // ALL/ERROR/NOTICES/INFO
+$ZConfig['Log']['log.show_php_errorhandler'] = 1; // required if you want to see PHP's output, including XDebug.
+$ZConfig['Log']['log.display_template'] = 0; // overrides log.show_php_error_handler and gains full control of output.
 
 // ----------------------------------------------------------------------
 // The following define some data layer settings

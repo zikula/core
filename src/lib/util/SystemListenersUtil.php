@@ -17,6 +17,7 @@
  */
 class SystemListenersUtil
 {
+
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
      *
@@ -28,7 +29,7 @@ class SystemListenersUtil
     {
         if ($event['stage'] & System::CORE_STAGES_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
-            if (isset($GLOBALS['ZConfig']['Log']['log_apache_uname']) && UserUtil::isLoggedIn()) {
+            if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
                     apache_setenv('Zikula-Username', UserUtil::getVar('uname'));
                 }
@@ -82,21 +83,93 @@ class SystemListenersUtil
      */
     public static function defaultErrorReporting(Zikula_Event $event)
     {
-        $sm = ServiceUtil::getManager();
-        if ($sm->hasService('system.errorreporting')) {
-            $sm->detachService('system.errorreporting');
-        }
+        $serviceManager = ServiceUtil::getManager();
 
-        if ($event['stage'] & System::CORE_STAGES_AJAX) {
-            $handlerMethod = 'ajaxHandler';
-        } else {
-            $handlerMethod = 'standardHandler';
-            $event->setNotified();return;
+        if (!$serviceManager['log.enabled']) {
+            return;
         }
         
-        $errorHandler = new Zikula_ErrorHandler($sm, EventUtil::getManager());
-        $sm->attachService('system.errorreporting', $errorHandler);
-        set_error_handler(array($errorHandler, $handlerMethod));
+        if ($serviceManager->hasService('system.errorreporting')) {
+            return;
+        }
+
+        $class = 'Zikula_ErrorHandler_Standard';
+        if ($event['stage'] & System::CORE_STAGES_AJAX) {
+            $class = 'Zikula_ErrorHandler_Ajax';
+        }
+        
+        $errorHandler = new $class($serviceManager);
+        $serviceManager->attachService('system.errorreporting', $errorHandler);
+        set_error_handler(array($errorHandler, 'handler'));
         $event->setNotified();
     }
+
+    public static function setupLoggers(Zikula_Event $event)
+    {
+        if (!($event['stage'] & System::CORE_STAGES_CONFIG)) {
+            return;
+        }
+
+        $serviceManager = ServiceUtil::getManager();
+        if (!$serviceManager['log.enabled']) {
+            return;
+        }
+
+        if ($serviceManager['log.to_display']) {
+            $displayLogger = $serviceManager->attachService('zend.logger.display', new Zend_Log());
+            $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
+            $writer = new Zend_Log_Writer_Stream('php://output');
+            $writer->setFormatter($formatter);
+            $displayLogger->addWriter($writer);
+        }
+        if ($serviceManager['log.to_file']) {
+            $fileLogger = $serviceManager->attachService('zend.logger.display', new Zend_Log());
+            $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL);
+            $filename = LogUtil::getLogFileName();
+            $writer = new Zend_Log_Writer_Stream($filename);
+            $writer->setFormatter($formatter);
+            $fileLogger->addWriter($writer);
+        }
+    }
+
+    public static function errorLog(Zikula_Event $event)
+    {
+        // Check for error supression.  if error @ supression was used.
+        // $errno wil still contain the real error that triggered the handler - drak
+        if (error_reporting() == 0) {
+            return;
+        }
+        
+        // array('trace' => $trace, 'type' => $type, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
+        $message = $event['errstr'];
+        if (is_string($event['errstr'])) {
+            $message = __f("%s: %s in %s line %s", array(LogUtil::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
+        }
+
+        $serviceManager = $event->getSubject()->getServiceManager();
+
+        if ($serviceManager['log.to_display']) {
+            $serviceManager->getService('zend.logger.display')->log($message, abs($event['type']));
+        }
+
+        if ($serviceManager['log.to_file']) {
+            $serviceManager->getService('zend.logger.file')->log($message, abs($event['type']));
+        }
+
+//        $trace = $event['trace'];
+//        unset($trace[0]);
+//        foreach ($trace as $key => $var) {
+//            if (isset($trace[$key]['object'])) {
+//                unset($trace[$key]['object']);
+//            }
+//            if (isset($trace[$key]['args'])) {
+//                unset($trace[$key]['args']);
+//            }
+//        }
+        if ($event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
+            AjaxUtil::error($message);
+        }
+    }
+
 }
+

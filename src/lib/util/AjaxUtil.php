@@ -87,13 +87,6 @@ class AjaxUtil
             $data['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
         }
 
-        // set locale to en_US to ensure correct decimal delimiters
-        if (stristr(getenv('OS'), 'windows')) {
-            setlocale(LC_ALL, 'eng');
-        } else {
-            setlocale(LC_ALL, 'en_US');
-        }
-
         // convert the data to UTF-8 if not already encoded as such
         // Note: this isn't strict test but relying on the site language pack encoding seems to be a good compromise
         if (ZLanguage::getEncoding() != 'utf-8') {
