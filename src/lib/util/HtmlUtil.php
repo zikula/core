@@ -650,7 +650,7 @@ class HtmlUtil
     public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
     {
         $data = array();
-        $modules = ModuleUtil::getModulesByState(3, 'displayname');
+        $modules = ModUtil::getModulesByState(3, 'displayname');
         foreach ($modules as $module) {
             $value        = $module[$field];
             $displayname  = $module['displayname'];

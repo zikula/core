@@ -40,23 +40,17 @@ function z_exit($msg, $html = true)
  */
 function _prayer($data, $functions = false, $recursionLevel = 0)
 {
-    /*
+/*
     if ($recursionLevel > 5) {
         return __('Maximum recursion level reached');
     }
 
-    global $ZConfig;
-    if (System::isInstalling() && !$ZConfig['System']['development']) {
+    if (System::isInstalling() && !System::isDevelopmentMode()) {
         return;
     }
 
     $text = '';
-
-    if ($functions != 0) {
-        $sf = 1;
-    } else {
-        $sf = 0;
-    }
+    $sf = ($functions != 0) ? 1 : 0;
 
     if (isset($data)) {
         if (is_array($data) || is_object($data)) {
@@ -108,8 +102,9 @@ function _prayer($data, $functions = false, $recursionLevel = 0)
             $text .= $data;
         }
     }
+
     return $text;
-    */
+*/
 }
 
 
@@ -123,11 +118,13 @@ function _prayer($data, $functions = false, $recursionLevel = 0)
  */
 function z_prayer($data, $die = true)
 {
-    //echo _prayer($data);
+/*
+    echo _prayer($data);
 
-    //if ($die) {
-        //System::shutdown();
-    //}
+    if ($die) {
+        System::shutdown();
+    }
+*/
 }
 
 /**

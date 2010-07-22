@@ -168,7 +168,7 @@ class Zikula_Workflow_Util
         }
 
         // instanciate workflow
-        $workflow = new ZWorkflow($schema, $module);
+        $workflow = new Zikula_Workflow($schema, $module);
 
         return $workflow->executeAction($actionID, $obj, $stateID);
     }

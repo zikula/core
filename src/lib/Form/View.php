@@ -684,8 +684,8 @@ class Form_View extends Zikula_View
      */
     public function redirect($url)
     {
-        System::redirect($url);
         $this->redirected = true;
+        return System::redirect($url);
     }
 
     // --- Event handling ---

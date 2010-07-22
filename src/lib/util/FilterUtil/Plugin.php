@@ -108,7 +108,7 @@ class FilterUtil_Plugin extends FilterUtil_Common
         }
 
         $dest[] = "config/filter/$file";
-        $dest[] = FILTERUTIL_CLASS_PATH . "/filter/$file";
+        $dest[] = "lib/util/FilterUtil/Filter/$file";
 
         Loader::loadOneFile($dest);
         $this->addCommon($config);

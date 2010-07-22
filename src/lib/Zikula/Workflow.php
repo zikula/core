@@ -75,7 +75,7 @@ class Zikula_Workflow
     public function __construct($schema, $module)
     {
         // load workflow schema
-        $schema = WorkflowUtil::loadSchema($schema, $module);
+        $schema = Zikula_Workflow_Util::loadSchema($schema, $module);
 
         $this->id = $schema['workflow']['id'];
         $this->title = $schema['workflow']['title'];
@@ -152,7 +152,7 @@ class Zikula_Workflow
         $action = $this->actionMap[$stateID][$actionID];
 
         // permission check
-        if (!WorkflowUtil::permissionCheck($this->module, $this->id, $obj, $action['permission'])) {
+        if (!Zikula_Workflow_Util::permissionCheck($this->module, $this->id, $obj, $action['permission'])) {
             return z_exit(__f('No permission to execute action: %s [permission]', $action));
         }
 
@@ -205,7 +205,7 @@ class Zikula_Workflow
         $operationParams = $operation['parameters'];
 
         // test operation file exists
-        $path = WorkflowUtil::_findpath("operations/function.{$operationName}.php", $this->module);
+        $path = Zikula_Workflow_Util::_findpath("operations/function.{$operationName}.php", $this->module);
         if (!$path) {
             return z_exit(__f('Operation file [%s] does not exist', $operationName));
         }
