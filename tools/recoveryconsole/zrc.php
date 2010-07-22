@@ -124,7 +124,7 @@ class RecoveryConsole
         //
         // load all modules.
         //
-        $mods = DBUtil::selectObjectArray('modules','pn_id>0','type');
+        $mods = DBUtil::selectObjectArray('modules',"WHERE ({$this->dbTables['modules_column']['id']} > 0)",'type');
         // Loop through modules, sorting.
         foreach ($mods as $mod) {
             if ($mod['type'] == 3) {
