@@ -340,7 +340,7 @@ Ajax.Responders.register({
                 if (Zikula.callInProgress(request.transport)) {
                     request.transport.abort();
                     if($('ajax_indicator') && $('ajax_indicator').tagName == 'IMG') {
-                        $('ajax_indicator').src = document.baseURI + 'images/icons/extrasmall/error.gif';
+                        $('ajax_indicator').src = Zikula.Config.baseURL + 'images/icons/extrasmall/error.gif';
                     }
                     pnshowajaxerror('Ajax connection time out!');
                     // Run the onFailure method if we set one up when creating the AJAX object
@@ -349,7 +349,7 @@ Ajax.Responders.register({
                     }
                 }
             },
-            (typeof(document.location.ajaxtimeout)!='undefined' && document.location.ajaxtimeout!=0)  ? document.location.ajaxtimeout : 5000 // per default five seconds - can be changed in the settings
+            (typeof(Zikula.Config.ajaxtimeout)!='undefined' && Zikula.Config.ajaxtimeout!=0)  ? Zikula.Config.ajaxtimeout : 5000 // per default five seconds - can be changed in the settings
         );
     },
     onComplete: function(request) {
