@@ -39,8 +39,8 @@ class Permissions_Api_Admin extends Zikula_Api
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
         // MMaes, 2003-06-23; Filter-view
-        if (!is_null($args['permgrp']) && ($args['permgrp'] != PNPERMS_ALL)) {
-            $where = " AND ($permcolumn[gid]=".PNPERMS_ALL." OR $permcolumn[gid]='".DataUtil::formatForStore($args['permgrp'])."')";
+        if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
+            $where = " AND ($permcolumn[gid]=".SecurityUtil::PERMS_ALL." OR $permcolumn[gid]='".DataUtil::formatForStore($args['permgrp'])."')";
             $showpartly = true;
         } else {
             $where = '';
@@ -109,8 +109,8 @@ class Permissions_Api_Admin extends Zikula_Api
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
         // MMaes, 2003-06-23; Filter-view
-        if (!is_null($args['permgrp']) && ($args['permgrp'] != PNPERMS_ALL)) {
-            $where = " AND ($permcolumn[gid]=".PNPERMS_ALL." OR  $permcolumn[gid]='".(int)DataUtil::formatForStore($args['permgrp'])."')";
+        if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
+            $where = " AND ($permcolumn[gid]=".SecurityUtil::PERMS_ALL." OR  $permcolumn[gid]='".(int)DataUtil::formatForStore($args['permgrp'])."')";
             $showpartly = true;
         } else {
             $where = '';
@@ -225,7 +225,7 @@ class Permissions_Api_Admin extends Zikula_Api
         if (!SecurityUtil::checkPermission('Permissions::', "group::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-        
+
         // Argument check
         // MMaes, 2003-06-20: Insert Capability: added $insseq
         if ((!isset($args['realm'])) ||

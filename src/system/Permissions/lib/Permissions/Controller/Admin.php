@@ -91,21 +91,21 @@ class Permissions_Controller_Admin extends Zikula_Controller
         if($enableFilter == 1) {
             $permgrpparts = explode('+', $permgrp);
             if ($permgrpparts[0] == 'g') {
-                if (is_array($permgrpparts) && $permgrpparts[1] != PNPERMS_ALL) {
-                    $where = "WHERE (".$permcolumn['gid']."='".PNPERMS_ALL."' OR ".$permcolumn['gid']."='".DataUtil::formatForStore($permgrpparts[1])."')";
+                if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
+                    $where = "WHERE (".$permcolumn['gid']."='".SecurityUtil::PERMS_ALL."' OR ".$permcolumn['gid']."='".DataUtil::formatForStore($permgrpparts[1])."')";
                     $permgrp = $permgrpparts[1];
                     $this->view->assign('filtertype', 'group');
                 } else {
-                    $permgrp = PNPERMS_ALL;
+                    $permgrp = SecurityUtil::PERMS_ALL;
                     $where = '';
                 }
             } else if ($permgrpparts[0] =='c') {
-                if (is_array($permgrpparts) && $permgrpparts[1] != PNPERMS_ALL) {
+                if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
                     $where = "WHERE (".$permcolumn['component']."='.*' OR ".$permcolumn['component']." LIKE '".DataUtil::formatForStore($permgrpparts[1])."%')";
                     $permgrp = $permgrpparts[1];
                     $this->view->assign('filtertype', 'component');
                 } else {
-                    $permgrp = PNPERMS_ALL;
+                    $permgrp = SecurityUtil::PERMS_ALL;
                     $where = '';
                 }
             } else {
@@ -117,7 +117,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         } else {
             $this->view->assign('enablefilter', false);
             $this->view->assign('filtertype', '');
-            $this->view->assign('permgrp', PNPERMS_ALL);
+            $this->view->assign('permgrp', SecurityUtil::PERMS_ALL);
         }
 
         $accesslevels = SecurityUtil::accesslevelnames();
@@ -243,7 +243,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         if (empty($permgrp)) {
             // For group-permissions, make sure we return something sensible.
             // Doesn't matter if we're looking at user-permissions...
-            $permgrp = PNPERMS_ALL;
+            $permgrp = SecurityUtil::PERMS_ALL;
         }
 
         // Pass to API
@@ -285,7 +285,7 @@ class Permissions_Controller_Admin extends Zikula_Controller
         if (!isset($permgrp) || $permgrp == '') {
             // For group-permissions, make sure we return something sensible.
             // This doesn't matter if we're looking at user-permissions...
-            $permgrp = PNPERMS_ALL;
+            $permgrp = SecurityUtil::PERMS_ALL;
         }
 
         // Pass to API
@@ -611,8 +611,8 @@ class Permissions_Controller_Admin extends Zikula_Controller
 
         $orderBy = "ORDER BY $groupcolumn[name]";
         $objArrray = DBUtil::selectObjectArray('groups', '', $orderBy);
-        $groups[PNPERMS_ALL] = $this->__('All groups');
-        $groups[PNPERMS_UNREGISTERED] = $this->__('Unregistered');
+        $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');
+        $groups[SecurityUtil::PERMS_UNREGISTERED] = $this->__('Unregistered');
 
         $ak = array_keys($objArrray);
         foreach($ak as $v) {

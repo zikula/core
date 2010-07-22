@@ -27,6 +27,9 @@
  */
 class SecurityUtil
 {
+    const PERMS_ALL = -1;
+    const PERMS_UNREGISTERED = 0;
+
     // Default salt delimeter
     const SALT_DELIM = '$';
 

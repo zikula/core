@@ -36,8 +36,8 @@ define('PNMODULE_DEPENDENCY_CONFLICTS', 3);
 /**
  * 'All' and 'unregistered' for user and group permissions
  */
-define('PNPERMS_ALL', '-1');
-define('PNPERMS_UNREGISTERED', '0');
+define('PNPERMS_ALL', SecurityUtil::PERMS_ALL);
+define('PNPERMS_UNREGISTERED', SecurityUtil::PERMS_UNREGISTERED);
 
 /**
  * Fake module for config vars
