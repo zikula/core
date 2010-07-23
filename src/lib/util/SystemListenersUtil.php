@@ -114,19 +114,22 @@ class SystemListenersUtil
         if (!$serviceManager['log.enabled']) {
             return;
         }
-
+        
         if ($serviceManager['log.to_display']) {
             $displayLogger = $serviceManager->attachService('zend.logger.display', new Zend_Log());
-            $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
+            // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream('php://output');
+            $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
             $writer->setFormatter($formatter);
             $displayLogger->addWriter($writer);
         }
         if ($serviceManager['log.to_file']) {
             $fileLogger = $serviceManager->attachService('zend.logger.file', new Zend_Log());
-            $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL);
             $filename = LogUtil::getLogFileName();
+            // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream($filename);
+            $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL);
+            
             $writer->setFormatter($formatter);
             $fileLogger->addWriter($writer);
         }
