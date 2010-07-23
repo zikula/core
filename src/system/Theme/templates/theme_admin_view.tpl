@@ -27,7 +27,7 @@
                     {if $theme.admin eq true}
                     <a href="{modurl modname=Admin type=admin func=adminpanel theme=$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
                     {else}
-                    <a href="{entrypoint}?theme={$theme.displayname}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
+                    <a href="{entrypoint}?theme={$theme.name}" title="{$theme.displayname|safetext}">{img modname=core src=14_layer_visible.gif set=icons/extrasmall __alt="Preview" __title="Preview"}</a>&nbsp;&nbsp;
                     {/if}
                     <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{img modname=core src=xedit.gif set=icons/extrasmall __alt="Edit" __title="Edit"}</a>&nbsp;&nbsp;
                     {if $theme.name neq $currenttheme and $theme.state neq 2}
