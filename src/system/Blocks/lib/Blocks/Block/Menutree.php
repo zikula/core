@@ -440,50 +440,34 @@ class Blocks_Block_Menutree extends Zikula_Block
     private function _parseUrl($url)
     {
         // allow a simple portable way to link to the home page of the site
+        $url = System::getHomepageUrl();
         if ($url == '{homepage}') {
             $url = System::getHomepageUrl();
-
         } elseif (!empty($url)) {
-            switch ($url[0]) // Used to allow support for linking to modules with the use of bracket
-            {
-                case '[': // old style module link
-                    {
-                        $url = explode(':', substr($url, 1,  - 1));
-                        $url = System::getVar('entrypoint', 'index.php') . '?name='.$url[0].(isset($url[1]) ? '&file='.$url[1]:'');
-                        break;
-                    }
-                case '{': // new module link
-                    {
-                        $url = explode(':', substr($url, 1,  - 1));
-                        // url[0] should be the module name
-                        if (isset($url[0]) && !empty($url[0])) {
-                            $modname = $url[0];
-                            // default for params
-                            $params = array();
-                            // url[1] can be a function or function&param=value
-                            if (isset($url[1]) && !empty($url[1])) {
-                                $urlparts = explode('&', $url[1]);
-                                $func = $urlparts[0];
-                                unset($urlparts[0]);
-                                if (count($urlparts) > 0) {
-                                    foreach ($urlparts as $urlpart) {
-                                        $part = explode('=', $urlpart);
-                                        $params[trim($part[0])] = trim($part[1]);
-                                    }
-                                }
-                            } else {
-                                $func = 'main';
-                            }
-                            // addon: url[2] can be the type parameter, default 'user'
-                            $type = (isset($url[2]) &&!empty($url[2])) ? $url[2] : 'user';
-                            //  build the url
-                            $url = ModUtil::url($modname, $type, $func, $params);
-                        } else {
-                            $url = System::getHomepageUrl();
+            $url = explode(':', substr($url, 1, - 1));
+            // url[0] should be the module name
+            if (isset($url[0]) && !empty($url[0])) {
+                $modname = $url[0];
+                // default for params
+                $params = array();
+                $func = 'main';
+                // url[1] can be a function or function&param=value
+                if (isset($url[1]) && !empty($url[1])) {
+                    $urlparts = explode('&', $url[1]);
+                    $func = $urlparts[0];
+                    unset($urlparts[0]);
+                    if (count($urlparts) > 0) {
+                        foreach ($urlparts as $urlpart) {
+                            $part = explode('=', $urlpart);
+                            $params[trim($part[0])] = trim($part[1]);
                         }
-                        break;
                     }
-            }  // End Bracket Linking
+                }
+                // addon: url[2] can be the type parameter, default 'user'
+                $type = (isset($url[2]) && !empty($url[2])) ? $url[2] : 'user';
+                //  build the url
+                $url = ModUtil::url($modname, $type, $func, $params);
+            }
         }
 
         return $url;
@@ -628,19 +612,9 @@ class Blocks_Block_Menutree extends Zikula_Block
 
             if (is_array($mods) && count($mods)>0) {
                 foreach ($mods as $mod) {
-                    switch($mod['type']) {
-                        case 1:
-                            $tmp = array('name'  => $mod['displayname'],
-                                         'href'  => System::getVar('entrypoint', 'index.php') . '?name=' . DataUtil::formatForDisplay($mod['directory']),
-                                         'title' => $mod['description']);
-                            break;
-                        case 2:
-                        case 3:
-                            $tmp = array('name'  => $mod['displayname'],
-                                         'href'  => DataUtil::formatForDisplay(ModUtil::url($mod['name'], 'user', 'main')),
-                                         'title' => $mod['description']);
-                            break;
-                    }
+                    $tmp = array('name'  => $mod['displayname'],
+                                 'href'  => DataUtil::formatForDisplay(ModUtil::url($mod['name'], 'user', 'main')),
+                                 'title' => $mod['description']);
 
                     foreach ($langs as $lang) {
                         $tmp = array_merge($tmp, array('className' => '',
