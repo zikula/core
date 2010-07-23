@@ -45,7 +45,7 @@ function smarty_function_pagerendertime($params, $view)
             $view->assign('rendertime', $dbg_totaltime);
         } else {
             // load language files
-            $message = '<div class="z-sub" style="text-align:center;">' . __f('Page generated in %s seconds.', $dbg_totaltime) . '</div>';
+            $message = '<div class="z-pagerendertime" style="text-align:center;">' . __f('Page generated in %s seconds.', $dbg_totaltime) . '</div>';
             return $message;
         }
     }

@@ -65,6 +65,7 @@ body {
 
 #footer {
     background: #ffffff url(../images/bottombg.png) repeat-x top;
+    font: 11px Tahoma, Verdana, Arial, Helvetica, sans-serif;
     color: #000000;
     padding: 5px;
     margin: 0 auto;
