@@ -36,7 +36,7 @@ function smarty_function_pagerendertime($params, $view)
     // show time to render
     if ($GLOBALS['ZConfig']['Debug']['pagerendertime']) {
         // calcultate time to render
-        $mtime = explode(' ',microtime());
+        $mtime = explode(' ',microtime(true));
         $dbg_endtime = $mtime[1] + $mtime[0];
         $dbg_totaltime = ($dbg_endtime - $GLOBALS['ZRuntime']['dbg_starttime']);
 
