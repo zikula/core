@@ -1420,7 +1420,7 @@ class RecoveryConsole
     public function getMarkedUpOverviewThemeListReal($themesarray)
     {
         // Looping through core themes.
-        $list .= '<ul>';
+        $list = '<ul>';
         foreach ($themesarray as $theme) {
             if ($theme['name'] === $this->siteTheme) {
                 $list .= '<li><img src="images/icons/extrasmall/greenled.gif" alt="'.$theme['name'].' :: '.__('active').'" title="'.$theme['name'].' :: '.__('set as default').'" />';
@@ -1465,22 +1465,22 @@ class RecoveryConsole
                 // Append module-state image.
                 $list .= '<li>';
                 switch($mod['state']) {
-                    case PNMODULE_STATE_UNINITIALISED:
+                    case ModUtil::STATE_UNINITIALISED:
                         $list .= '<img src="images/icons/extrasmall/redled.gif" alt="'.$mod['name'].' :: '.__('uninitialized').'" title="'.$mod['name'].' :: '.__('uninitialized').'" />';
                         break;
-                    case PNMODULE_STATE_INACTIVE:
+                    case ModUtil::STATE_INACTIVE:
                         $list .= '<img src="images/icons/extrasmall/yellowled.gif" alt="'.$mod['name'].' :: '.__('inactive').'" title="'.$mod['name'].' :: '.__('inactive').'" />';
                         break;
-                    case PNMODULE_STATE_ACTIVE:
+                    case ModUtil::STATE_ACTIVE:
                         $list .= '<img src="images/icons/extrasmall/greenled.gif" alt="'.$mod['name'].' :: '.__('active').'" title="'.$mod['name'].' :: '.__('active').'" />';
                         break;
-                    case PNMODULE_STATE_MISSING:
+                    case ModUtil::STATE_MISSING:
                         $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '.__('files missing').'" title="'.$mod['name'].' :: '.__('files missing').'" />';
                         break;
-                    case PNMODULE_STATE_UPGRADED:
+                    case ModUtil::STATE_UPGRADED:
                         $list .= '<img src="images/icons/extrasmall/agt_update-product.gif" alt="'.$mod['name'].' :: '.__('upgraded').'" title="'.$mod['name'].' :: '.__('upgraded').'" />';
                         break;
-                    case PNMODULE_STATE_INVALID:
+                    case ModUtil::STATE_INVALID:
                     default:
                         $list .= '<img src="images/icons/extrasmall/14_layer_deletelayer.gif" alt="'.$mod['name'].' :: '.__('invalid').'" title="'.$mod['name'].' :: '.__('invalid').'" />';
                 }
