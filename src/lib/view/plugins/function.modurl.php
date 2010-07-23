@@ -18,7 +18,7 @@
  *
  * This function returns a module URL string if successful. Unlike the API
  * function ModURL, this is already sanitized to display, so it should not be
- * passed to the varprepfordisplay modifier.
+ * passed to the safetext modifier.
  *
  * Available parameters:
  *   - modname:  The well-known name of a module for which to create the URL (required)

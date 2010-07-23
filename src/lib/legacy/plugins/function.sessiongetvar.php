@@ -18,8 +18,8 @@
  *
  * This function obtains a session-specific variable from the Zikula system.
  *
- * Note that the results should be handled by the varprepfordisplay or the
- * varprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the safetext or the safehtml
+ * modifier before being displayed.
  *
  *
  * Available parameters:
@@ -27,7 +27,7 @@
  *   - assign:  If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   {sessiongetvar name='foobar'|varprepfordisplay}
+ *   {sessiongetvar name='foobar'|safetext}
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      &$smarty     Reference to the Smarty object

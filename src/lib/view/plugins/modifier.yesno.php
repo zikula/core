@@ -18,7 +18,7 @@
  *
  * Example
  *
- *   {$myvar|yesno|varprepfordisplay} returns Yes if $myvar = 1 and No if $myvar = 0
+ *   {$myvar|yesno|safetext} returns Yes if $myvar = 1 and No if $myvar = 0
  *
  * @param string  $string The contents to transform.
  * @param boolean $images Display the yes/no response as tick/cross.

@@ -6,7 +6,7 @@
  *
  *   <!--[$mythemetype|themetype]-->
  *
- * @see          modifier.varprepfordisplay.php::smarty_modifier_DataUtil::formatForDisplay()
+ * @see          modifier.safetext.php::smarty_modifier_safetext
  * @param        array    $string     the contents to transform
  * @return       string   the modified output
  */

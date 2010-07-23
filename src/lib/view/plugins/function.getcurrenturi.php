@@ -18,7 +18,7 @@
  *
  * This function obtains the current request URI.
  * Unlike the API function getcurrenturi, the results of this function are already
- * sanitized to display, so it should not be passed to the varprepfordisplay modifier.
+ * sanitized to display, so it should not be passed to the safetext modifier.
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out

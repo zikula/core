@@ -18,7 +18,7 @@
  *
  * Example
  *
- *   {$myvar|onlineoffline|varprepfordisplay} returns Online if $myvar = 1 and Offline if $myvar = 0
+ *   {$myvar|onlineoffline|safetext} returns Online if $myvar = 1 and Offline if $myvar = 0
  *
  * @param mixed $string The contents to transform.
  *

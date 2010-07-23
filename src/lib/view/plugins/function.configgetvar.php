@@ -26,15 +26,15 @@
  *
  * <i>Note that if the the result is assigned to a template variable, it is not
  * prepared for display by either DataUtil::formatForDisplayHTML or
- * DataUtil::formatForDisplay. If it is to be displayed, the varprepfordisplay
- * or varprephtmldisplay should be used.</i>
+ * DataUtil::formatForDisplay. If it is to be displayed, the safetext
+ * modifier should be used.</i>
  *
  * Examples:
  *
  * <samp><p>Welcome to {configgetvar name='sitename'}!</p></samp>
  *
  * <samp>{configgetvar name='sitename' assign='thename'}</samp><br>
- * <samp><p>Welcome to {$thename|varprepfordisplay}!</p></samp>
+ * <samp><p>Welcome to {$thename|safetext}!</p></samp>
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Zikula_View $view Reference to the {@link Zikula_View} object.

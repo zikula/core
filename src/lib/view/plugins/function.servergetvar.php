@@ -18,8 +18,8 @@
  *
  * This function obtains a server-specific variable from the system.
  *
- * Note that the results should be handled by the varprepfordisplay of the
- * varprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the safetext or the safehtml
+ * modifier before being displayed.
  *
  *
  * Available parameters:

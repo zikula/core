@@ -18,7 +18,7 @@
  *
  * Example
  *
- *   {$myvar|activeinactive|varprepfordisplay} returns Active if $myvar = 1 and Inactive if $myvar = 0
+ *   {$myvar|activeinactive|safetext} returns Active if $myvar = 1 and Inactive if $myvar = 0
  *
  * @param string $string The contents to transform.
  *

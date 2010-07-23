@@ -18,8 +18,8 @@
  *
  * This function obtains a user-specific variable from the Zikula system.
  *
- * Note that the results should be handled by the varprepfordisplay of the
- * varprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the safetext or the safehtml
+ * modifier before being displayed.
  *
  *
  * Available parameters:
@@ -28,7 +28,7 @@
  *   - assign:  If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- *   {usergetvar name='user_icq' uid=1|varprepfordisplay}
+ *   {usergetvar name='user_icq' uid=$uid}
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Zikula_View $view Reference to the Zikula_View object.

@@ -35,9 +35,9 @@
  *   - tag:      You can specify if you would like a span or a div tag
  *
  * Example
- *   {getstatusmsg|varprephtmldisplay}
- *   {getstatusmsg style="color:red;" |safehtml}
- *   {getstatusmsg class="statusmessage" tag="span"|safehtml}
+ *   {getstatusmsg}
+ *   {getstatusmsg style='color:red;'}
+ *   {getstatusmsg class='statusmessage' tag='span'}
  *
  * @param array  $params  All attributes passed to this function from the template.
  * @param Zikula_View $view Reference to the Zikula_View object.

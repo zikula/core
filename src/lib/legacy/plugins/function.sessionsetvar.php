@@ -18,8 +18,8 @@
  *
  * This function sets a session-specific variable in the Zikula system.
  *
- * Note that the results should be handled by the varprepfordisplay or the
- * varprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the safetext or the safehtml
+ * modifier before being displayed.
  *
  *
  * Available parameters:

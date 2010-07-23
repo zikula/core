@@ -20,7 +20,7 @@
  * full URL for the site minus any file information  i.e. everything before the
  * 'index.php' from your start page.
  * Unlike the API function System::getBaseUrl, the results of this function are already
- * sanitized to display, so it should not be passed to the varprepfordisplay modifier.
+ * sanitized to display, so it should not be passed to the safetext modifier.
  *
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out

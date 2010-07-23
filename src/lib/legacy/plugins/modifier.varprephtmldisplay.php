@@ -34,11 +34,11 @@
  *
  *   {$MyVar|varprephtmldisplay}
  *
- * @see          modifier.varprepfordisplay.php::smarty_modifier_DataUtil::formatForDisplay()
+ * @see          modifier.safehtml.php::smarty_modifier_safehtml
  * @param        array    $string     the contents to transform
  * @return       string   the modified output
  */
-function smarty_modifier_varprephtmldisplay ($string)
+function smarty_modifier_varprephtmldisplay($string)
 {
     return DataUtil::formatForDisplayHTML($string);
 }

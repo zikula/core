@@ -18,8 +18,8 @@
  *
  * This function obtains a module-specific variable from the Zikula system.
  *
- * Note that the results should be handled by the varprepfordisplay of the
- * varprephtmldisplay modifiers before being displayed.
+ * Note that the results should be handled by the safetext or the safehtml
+ * modifier before being displayed.
  *
  *
  * Available parameters:
