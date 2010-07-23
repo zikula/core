@@ -20,7 +20,7 @@
             {/foreach}
         </li>
         {/if}
-        {if $notices.developer.cssjscombine}
+        {if isset($notices.developer.cssjscombine) && $notices.developer.cssjscombine}
         <li>{gt text="CSS/JS combination is enabled" domain="zikula"}</li>
         {/if}
         <li>
