@@ -99,9 +99,9 @@ $ZConfig['Log']['log.apache_uname'] = 0;                                    // l
 
 $ZConfig['Log']['log.enabled'] = 1;                         // Enable to allow Zikula to handle errors, 0 passes everything to PHP directly.
 $ZConfig['Log']['log.to_display'] = 1;                      // Display errors?
-$ZConfig['Log']['log.display_level'] = 5;                   // 0, 1, 2, 3, 4, 5, 6, 7
+$ZConfig['Log']['log.display_level'] = 5;                   // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 $ZConfig['Log']['log.to_file'] = 0;                         // Log to file?
-$ZConfig['Log']['log.file_level'] = 4;                      // 0, 1, 2, 3, 4, 5, 6, 7
+$ZConfig['Log']['log.file_level'] = 7;                      // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 $ZConfig['Log']['log.show_php_errorhandler'] = 0;           // Set 1 if you want to see PHP's output, including XDebug output. This overrides log.display_template.
 $ZConfig['Log']['log.display_template'] = 0;                // overrides log.show_php_error_handler and gains full control of output.
 
