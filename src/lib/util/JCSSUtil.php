@@ -13,15 +13,15 @@
  */
 
 /**
- * Zikula page variables functions
+ * Util class to manage stylesheets and javascript files
  *
  */
 class JCSSUtil
 {
     /**
-     * getJSConfig
-     *
-     * @return string with
+     * Generate a configuration for javascript and return script tag to embed in HTML HEAD
+     * 
+     * @return string HTML code with script tag
      */
     public static function getJSConfig()
     {
@@ -46,6 +46,17 @@ class JCSSUtil
         return $return;
     }
 
+    /**
+     * The main procedure for managing stylesheets and javascript files
+     * Gets demanded files from PageUtil variables, check them and resolve dependencies.
+     * Returns an array with two arrays, containing list of js and css files
+     * ready to embedded in the HTML HEAD
+     *
+     * @param bool   $combine   Should files be combined?
+     * @param string $cache_dir Path to cache directory.
+     *
+     * @return array Array with two array containing the files to be embedded into HTML HEAD
+     */
     public static function prepareJCSS($combine=false,$cache_dir=null)
     {
         $combine = $combine && is_writable($cache_dir);
@@ -87,6 +98,13 @@ class JCSSUtil
         return $jcss;
     }
 
+    /**
+     * Procedure for managinig stylesheets
+     *
+     * @param array $stylesheets List of demanded stylesheets
+     *
+     * @return array List of stylesheets
+     */
     public static function prepareStylesheets($stylesheets)
     {
         // Add generic stylesheet as the first stylesheet.
@@ -101,6 +119,15 @@ class JCSSUtil
         return $stylesheets;
     }
 
+    /**
+     * Procedure for managinig javascript files.
+     * Verify demanded files, translate script aliases to real paths, resolve dependencies.
+     * Check if gettext is needed and if so add to list file with translations.
+     *
+     * @param array $javascripts List of javascript files
+     *
+     * @return array List of javascript files
+     */
     public static function prepareJavascripts($javascripts)
     {
         // first resolve any dependencies
@@ -134,6 +161,12 @@ class JCSSUtil
         return $javascripts;
     }
 
+    /**
+     * Gets from PageUtil requests for gettext and generates url for
+     * file with translations.
+     *
+     * @return string Url to file with translations
+     */
     public static function getJSGettext()
     {
         $jsgettext = PageUtil::getVar('jsgettext');
@@ -159,6 +192,13 @@ class JCSSUtil
         return false;
     }
 
+    /**
+     * Method to resolve scripts dependencies basing on scripts map from JCSSUtil: scriptsMap
+     *
+     * @param array $javascripts List of javascript files to verify
+     *
+     * @return array List of javascript files
+     */
     private static function resolveDependencies($javascripts)
     {
         $coreScripts = self::scriptsMap();
@@ -179,6 +219,15 @@ class JCSSUtil
         return $ordered;
     }
 
+    /**
+     * Checks the given script name (alias or path).
+     * If this is the core script is returning it's alias.
+     * This method also hanldes all legacy for script paths.
+     *
+     * @param string $script Script path or alias to verify
+     *
+     * @return string Script path or alias
+     */
     public static function getScriptName($script)
     {
         $script = self::handleLegacy($script);
@@ -197,6 +246,13 @@ class JCSSUtil
         return $script;
     }
 
+    /**
+     * Internal procedure for managing legacy script paths
+     *
+     * @param string $script Script path to check
+     * 
+     * @return string Verified script path
+     */
     private static function handleLegacy($script)
     {
         // Handle legacy references to non-minimised scripts.
@@ -234,6 +290,17 @@ class JCSSUtil
         return $script;
     }
 
+    /**
+     * An array with a list of core scripts.
+     * For each script can be defined:
+     * - path: the true path to the file
+     * - require: other scripts to be loaded along with the file (aliases for core, paths for other)
+     * - aliases: aliases used for this script
+     * - styles: information about additional files (styles) that should be loaded along with the script
+     * - gettext: if script requires a translations
+     *
+     * @return array List of core scripts
+     */
     public static function scriptsMap()
     {
         return array(
@@ -506,7 +573,7 @@ class JCSSUtil
      * @param string $line     CSS file line.
      * @param string $filepath Path to original file.
      *
-     * @return tring
+     * @return string
      */
     private static function cssfixPath($line, $filepath)
     {
