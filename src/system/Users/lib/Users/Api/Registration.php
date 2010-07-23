@@ -805,7 +805,9 @@ class Users_Api_Registration extends Zikula_Api
             // data can be properly saved before the hook is fired.
             $this->callHooks('item', 'create', $userObj['uid'], array('module' => 'Users'));
 
-            // TODO - Issue a special event for user creation here!
+            $createEvent = new Zikula_Event('user.create', $userObj);
+            $this->eventManager->notify($createEvent);
+
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $sitename  = System::getVar('sitename');

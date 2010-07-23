@@ -60,6 +60,13 @@ user.gettheme
     This is invoked with notifyUntil so you should execute $event->setNotified() in the event handler.
     receives $event['name'] the chosen theme name, it can modify the name.
 
+user.create
+    Occurs after a user is created. It does not apply to creation of a pending registration.
+    The full user record created is available as the subject.
+
+user.update
+    Occurs after a user is updated. The full updated user record is available as the subject.
+
 user.delete
     Occurs after a user is deleted from the system. The full user record deleted is available as the subject.
 
