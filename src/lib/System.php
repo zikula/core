@@ -233,7 +233,7 @@ class System
             $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
 
             if (self::isLegacyMode()) {
-                //require_once 'lib/legacy/Compat.php';
+                require_once 'lib/legacy/Compat.php';
             }
 
             // error reporting
