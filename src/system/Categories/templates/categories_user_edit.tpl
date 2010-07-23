@@ -14,7 +14,7 @@
     {if ($referer)}
     <li><a class="z-icon-es-list" href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
-    <li><a class="z-icon-es-update" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
+    <li><a class="z-icon-es-regenerate" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>
 
 {insert name="getstatusmsg"}
