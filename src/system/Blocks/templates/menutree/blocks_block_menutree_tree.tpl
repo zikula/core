@@ -1,5 +1,4 @@
 {pageaddvar name="javascript" value="prototype"}
-{pageaddvar name="javascript" value="system/Blocks/javascript/cookiejar.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/usermenutree.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/tree.css"}
 

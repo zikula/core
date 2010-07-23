@@ -1,5 +1,4 @@
 {ajaxheader modname="blocks" filename="menutree.js" effects=1 dragdrop=1 ui=true}
-{pageaddvar name="javascript" value="system/Blocks/javascript/cookiejar.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
 {pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}

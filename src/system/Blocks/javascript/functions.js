@@ -94,7 +94,8 @@ function menutree_stylehelper(event)
         return;
     }
     //pattern for tpl name
-    var p = /menutree_block_(.+?)\.htm/,
+//    var p = /menutree_block_(.+?)\.htm/,
+    var p = /blocks_block_(.+?)\.tpl/,
         tpl = $('menutree_tpl').value.match(p)[1];
     //hide all options not containing selected tpl name
     if(!tpl.empty() && tpl != 'menutree') {

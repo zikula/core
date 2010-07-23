@@ -21,7 +21,6 @@ var MenuTree = Class.create({
         // bind also empty spans
         this.menu.select('li.parent > span').invoke('observe','click',this.toggleNode.bindAsEventListener(this));
         // initialy hide childnodes
-        this.cookie = new CookieJar({expires:'',path:'/'});
         this.getStatus();
         this.menu.select('ul').each(function(u) {
             if(!this.status.get(u.up('li').identify())) {
@@ -42,9 +41,9 @@ var MenuTree = Class.create({
         }
     },
     getStatus: function() {
-        this.status = this.cookie.get(this.id) ? $H(this.cookie.get(this.id)) : new Hash();
+        this.status = Zikula.Cookie.get(this.id) ? $H(Zikula.Cookie.get(this.id)) : new Hash();
     },
     saveStatus: function() {
-        this.cookie.put(this.id,this.status);
+        Zikula.Cookie.set(this.id,this.status);
     }
 });

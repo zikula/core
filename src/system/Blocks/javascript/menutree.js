@@ -123,8 +123,8 @@ myTree.prototype = {
         }
 
         // load node status from cookie
-        this.cookie = new CookieJar({expires:'',path:'/'});
-        this.cookieStatus = this.cookie.get(this.config.cookieName) ? $H($H(this.cookie.get(this.config.cookieName)).get('tree')) : new Hash();
+//        this.cookie = new CookieJar({expires:'',path:'/'});
+        this.cookieStatus = Zikula.Cookie.get(this.config.cookieName) ? $H($H(Zikula.Cookie.get(this.config.cookieName)).get('tree')) : new Hash();
 
         //przygotuj kazde li
         this.tree.select('li').each(this.initNode.bind(this));
@@ -914,9 +914,9 @@ myTree.prototype = {
                 this.cookieStatus.set(u.up('li').identify(),true);
             }
         }.bind(this));
-        var menutreeCookie = this.cookie.get(this.config.cookieName) ? $H($H(this.cookie.get(this.config.cookieName))) : new Hash();
+        var menutreeCookie = Zikula.Cookie.get(this.config.cookieName) ? $H($H(Zikula.Cookie.get(this.config.cookieName))) : new Hash();
         menutreeCookie.set('tree',this.cookieStatus);
-        this.cookie.put(this.config.cookieName,menutreeCookie);
+        Zikula.Cookie.set(this.config.cookieName,menutreeCookie);
     },
     beforeUnloadHandler: function (event) {
         if(this.unsaved && this.config.langLabels.warnbeforeunload) {
