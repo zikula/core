@@ -145,7 +145,8 @@ class DBConnectionStack
             $connection->setAttribute(Doctrine_Core::ATTR_PORTABILITY, Doctrine_Core::PORTABILITY_ALL ^ Doctrine_Core::PORTABILITY_EMPTY_TO_NULL);
         }
 
-        if ($serviceManager['log.doctrine_profiler']) {
+        // isset check is just for the installer - drak
+        if (isset($serviceManager['log.doctrine_profiler']) && $serviceManager['log.doctrine_profiler']) {
             $profiler = $serviceManager->attachService('doctrine.profiler', new Doctrine_Connection_Profiler());
             $connection->setListener($profiler);
         }
