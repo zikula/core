@@ -29,6 +29,7 @@ class JCSSUtil
         $config = array(
             'entrypoint' => System::getHomepageUrl(),
             'baseURL' => System::getBaseUrl(),
+            'baseURI' => System::getBaseUri() . '/',
             'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
             'lang' => ZLanguage::getLanguageCode(),
         );
