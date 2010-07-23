@@ -538,3 +538,18 @@ lib/Foo/Form/Handler/Admin/Config.php      Foo_Form_Handler_Admin_Config
 lib/Foo/Form/Handler/User/View.php         Foo_Form_Handler_User_Config
 lib/Foo/Form/Plugin/Youtube.php            Foo_Form_Plugin_Youtube
 templates/plugins/function.formyoutube.php The actual template plugin.
+
+API COMPLIANCE
+==============
+The following list of things are considered non Zikula API compliant.  If you
+rely on them, there is no guarantee they will remain working even from one
+bugfix version to the next.
+
+  - Accessing class properties from Smarty, Zikula_View, Zikula_View_* classes
+is completely forbidden although still possible since Smarty exposes many.  We have
+added getters and setter and new methods in Zikula_View to modify settings.
+  - The same rules apply to the forms framework.  Please access everything via
+the provided getters and setters.
+  - Reliance on $GLOBALS['ZConfig'] and $GLOBALS['ZRuntime'].
+  - Reliance on Zikula_Adapter_AdodbStatement being returned from DBUtil::executeSQL().
+
