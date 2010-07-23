@@ -145,7 +145,11 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
         $this->theme = $theme = $this->themeinfo['directory'];
 
-        $this->modinfo = $modinfo = ModUtil::getInfoFromName($module);
+        $this->modinfo = ModUtil::getInfoFromName($module);
+        // unserialize some modinfo fields
+        $this->modinfo['capabilities']   = !empty($this->modinfo['capabilities']) ? @unserialize($this->modinfo['capabilities']) : array();
+        $this->modinfo['securityschema'] = !empty($this->modinfo['securityschema']) ? @unserialize($this->modinfo['securityschema']) : array();
+
         $modpath = ($this->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         switch ($this->module[$module]['type'])
         {
@@ -212,11 +216,10 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         // register resource type 'z' this defines the way templates are searched
         // during {include file='my_template.tpl'} this enables us to store selected module
         // templates in the theme while others can be kept in the module itself.
-        $this->register_resource('z', array(
-                'z_get_template',
-                'z_get_timestamp',
-                'z_get_secure',
-                'z_get_trusted'));
+        $this->register_resource('z', array('z_get_template',
+                                            'z_get_timestamp',
+                                            'z_get_secure',
+                                            'z_get_trusted'));
 
         // set 'z' as default resource type
         $this->default_resource_type = 'z';
@@ -258,7 +261,9 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         parent::assign('eventManager', $this->eventManager);
 
         // add some useful data
-        $this->assign(array('module' => $module, 'modinfo' => $this->modinfo, 'themeinfo' => $this->themeinfo));
+        $this->assign(array('module' => $module,
+                            'modinfo' => $this->modinfo,
+                            'themeinfo' => $this->themeinfo));
 
         // This event sends $this as the subject so you can modify as required:
         // e.g.  $event->getSubject()->register_prefilter('foo');
