@@ -64,7 +64,7 @@ $ZConfig['DBInfo']['external1']['dbcollate'] = 'utf8_general_ci';
 // Debugging/Tracing settings
 // ----------------------------------------------------------------------
 $ZConfig['Debug']['debug'] = 0;             //
-$ZConfig['Debug']['pagerendertime'] = 0;    // display page render time, 0 to disable
+$ZConfig['Debug']['debug.pagerendertime'] = 1;    // display page render time, 0 to disable
 $ZConfig['Debug']['sql_verbose'] = 0;       // sql debug flag, generates lots of print output
 $ZConfig['Debug']['sql_count'] = 0;         // count sql statements, 0 to disable
 $ZConfig['Debug']['sql_time'] = 0;          // time sql statements, 0 to disable

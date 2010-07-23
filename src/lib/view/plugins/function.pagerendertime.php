@@ -34,13 +34,11 @@
 function smarty_function_pagerendertime($params, $view)
 {
     // show time to render
-    if ($GLOBALS['ZConfig']['Debug']['pagerendertime']) {
+    if ($view->getServiceManager()->getArgument('debug.pagerendertime')) {
         // calcultate time to render
-        $mtime = explode(' ',microtime(true));
-        $dbg_endtime = $mtime[1] + $mtime[0];
-        $dbg_totaltime = ($dbg_endtime - $GLOBALS['ZRuntime']['dbg_starttime']);
+        $dbg_totaltime = (microtime(true) - $GLOBALS['ZRuntime']['dbg_starttime']);
 
-        $round = isset($params['round']) ? $params['round'] : 2;
+        $round = isset($params['round']) ? $params['round'] : 5;
         $dbg_totaltime = round($dbg_totaltime, $round);
 
         if (isset($params['assign'])) {

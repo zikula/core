@@ -231,6 +231,12 @@ class System
             }
 
             $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
+            $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
+
+            // initialise time to render
+            if ($GLOBALS['ZConfig']['Debug']['debug.pagerendertime']) {
+                $GLOBALS['ZRuntime']['dbg_starttime'] = microtime(true);
+            }
 
             if (self::isLegacyMode()) {
                 require_once 'lib/legacy/Compat.php';
@@ -266,11 +272,6 @@ class System
                 require_once 'system/Theme/templates/system/notinstalled.tpl';
             }
             self::shutDown();
-        }
-
-        // initialise time to render
-        if ($GLOBALS['ZConfig']['Debug']['pagerendertime']) {
-            $GLOBALS['ZRuntime']['dbg_starttime'] = microtime(true);
         }
 
         if ($stages & self::CORE_STAGES_DB) {
