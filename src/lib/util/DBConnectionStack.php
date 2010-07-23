@@ -63,7 +63,9 @@ class DBConnectionStack
      */
     public static function init($name = 'default', $lazyConnect = false)
     {
+        $serviceManager = ServiceUtil::getManager();
         if (!isset(self::$manager)) {
+            Doctrine::debug(System::isDevelopmentMode());
             self::$manager = Doctrine_Manager::getInstance();
             self::configureDoctrine(self::$manager);
             // setup caching
@@ -132,8 +134,6 @@ class DBConnectionStack
 
         self::configureDoctrine($connection);
 
-        Doctrine::debug(System::getVar('development'));
-
         if (isset($connInfo['dbcharset']) && !System::isInstalling()) {
             $connection->setCharset($connInfo['dbcharset']);
         }
@@ -145,8 +145,8 @@ class DBConnectionStack
             $connection->setAttribute(Doctrine_Core::ATTR_PORTABILITY, Doctrine_Core::PORTABILITY_ALL ^ Doctrine_Core::PORTABILITY_EMPTY_TO_NULL);
         }
 
-        if ($GLOBALS['ZConfig']['Debug']['sql_verbose']) {
-            $profiler = new Doctrine_Connection_Profiler();
+        if ($serviceManager['log.doctrine_profiler']) {
+            $profiler = $serviceManager->attachService('doctrine.profiler', new Doctrine_Connection_Profiler());
             $connection->setListener($profiler);
         }
 
