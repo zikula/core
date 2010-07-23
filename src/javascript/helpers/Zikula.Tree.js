@@ -67,10 +67,10 @@ Zikula._Tree = Class.create({
         this.status.set(node.up('li').identify(),node.visible());
     },
     getStatus: function() {
-        this.status = Cookie.get(this.id) ? $H(Cookie.get(this.id).evalJSON()) : new Hash();
+        this.status = Zikula.Cookie.get(this.id) ? $H(Zikula.Cookie.get(this.id)) : new Hash();
     },
     saveStatus: function() {
-        Cookie.set(this.id,this.status.toJSON(),3600*24*7);
+        Zikula.Cookie.set(this.id,this.status,3600*24*7);
     },
     getNodeId: function(node) {
         return Number(node.id.match(this.config.nodeIdPattern)[1]);
