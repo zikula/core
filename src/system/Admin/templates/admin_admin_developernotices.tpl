@@ -1,4 +1,4 @@
-{securityutil_checkpermission_block component='::' instance='::' level=ACCESS_ADMIN}
+{checkpermissionblock component='::' instance='::' level=ACCESS_ADMIN}
 {modurl modname=Theme type=admin func=modifyconfig assign=themeurl}
 {if $notices.developer.devmode}
 <div id="z-developernotices">
@@ -29,4 +29,4 @@
     </ul>
 </div>
 {/if}
-{/securityutil_checkpermission_block}
+{/checkpermissionblock}
