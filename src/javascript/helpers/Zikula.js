@@ -691,3 +691,33 @@ Object.extend(Zikula,{
     _n: Zikula.Gettext._n,
     _fn: Zikula.Gettext._fn
 });
+
+Zikula.Cookie = {
+    cookie: '#{name}=#{value};expires=#{expires};path=#{path}',
+    set: function(name, value, expires, path){
+        document.cookie = Zikula.Cookie.cookie.interpolate({
+            name: name,
+            value: Zikula.Cookie.encode(value),
+            expires: expires instanceof Date ? expires.toGMTString() : Zikula.Cookie.secondsFromNow(expires),
+            path: path ? path : Zikula.Config.baseURI
+        });
+    },
+    get: function(name){
+        var cookie = document.cookie.match(name + '=(.*?)(;|$)');
+        return cookie ? Zikula.Cookie.decode(cookie[1]) : null
+    },
+    remove: function(name){
+        Zikula.Cookie.set(name,'',-1);
+    },
+    secondsFromNow: function(seconds) {
+        var d = new Date();
+        d.setTime(d.getTime() + (seconds * 1000));
+        return d.toGMTString();
+    },
+    encode: function(value) {
+        return encodeURI(encodeURI(Object.toJSON(value)));
+    },
+    decode: function(value) {
+        return decodeURI(decodeURI(value)).evalJSON(true);
+    }
+};
