@@ -66,7 +66,7 @@ Zikula.dejsonize = function(jsondata)
 {
     var result;
     try {
-        result = eval('(' + jsondata + ')');
+        result = jsondata.evalJSON(true);
     } catch(error) {
         alert('illegal JSON response: \n' + error + 'in\n' + jsondata);
     }
