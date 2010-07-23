@@ -134,7 +134,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * @var boolean
      */
-    public $visible;
+    public $visible = true;
 
     /**
      * Reference to parent plugin if used inside a block.
@@ -151,7 +151,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * @var array
      */
-    public $attributes;
+    public $attributes = array();
 
     /**
      * Form_View property
@@ -203,7 +203,7 @@ abstract class Form_Plugin implements Zikula_Translatable
      *
      * @var array
      */
-    public $plugins;
+    public $plugins = array();
 
     /**
      * Temporary storage of the output from renderBegin in blocks.
@@ -236,9 +236,6 @@ abstract class Form_Plugin implements Zikula_Translatable
      */
     public function __construct($view, &$params)
     {
-        $this->plugins = array();
-        $this->attributes = array();
-        $this->visible = true;
         $this->view = $view;
     }
 
