@@ -1004,6 +1004,451 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         }
         return $this;
     }
+
+    public function getTemplate_dir()
+    {
+        return $this->template_dir;
+    }
+
+    public function setTemplate_dir($template_dir)
+    {
+        $this->template_dir = $template_dir;
+    }
+
+    public function getCompile_dir()
+    {
+        return $this->compile_dir;
+    }
+
+    public function setCompile_dir($compile_dir)
+    {
+        $this->compile_dir = $compile_dir;
+    }
+
+    public function getConfig_dir()
+    {
+        return $this->config_dir;
+    }
+
+    public function setConfig_dir($config_dir)
+    {
+        $this->config_dir = $config_dir;
+    }
+
+    public function getPlugins_dir()
+    {
+        return $this->plugins_dir;
+    }
+
+    public function setPlugins_dir($plugins_dir)
+    {
+        $this->plugins_dir = $plugins_dir;
+    }
+
+    public function getDebugging()
+    {
+        return $this->debugging;
+    }
+
+    public function setDebugging($debugging)
+    {
+        $this->debugging = $debugging;
+    }
+
+    public function getError_reporting()
+    {
+        return $this->error_reporting;
+    }
+
+    public function setError_reporting($error_reporting)
+    {
+        $this->error_reporting = $error_reporting;
+    }
+
+    public function getDebug_tpl()
+    {
+        return $this->debug_tpl;
+    }
+
+    public function setDebug_tpl($debug_tpl)
+    {
+        $this->debug_tpl = $debug_tpl;
+    }
+
+    public function getDebugging_ctrl()
+    {
+        return $this->debugging_ctrl;
+    }
+
+    public function setDebugging_ctrl($debugging_ctrl)
+    {
+        $this->debugging_ctrl = $debugging_ctrl;
+    }
+
+    public function getCompile_check()
+    {
+        return $this->compile_check;
+    }
+
+    public function getForce_compile()
+    {
+        return $this->force_compile;
+    }
+
+    public function setForce_compile($force_compile)
+    {
+        $this->force_compile = $force_compile;
+    }
+
+    public function getCaching()
+    {
+        return $this->caching;
+    }
+
+    public function getCache_dir()
+    {
+        return $this->cache_dir;
+    }
+
+    public function setCache_dir($cache_dir)
+    {
+        $this->cache_dir = $cache_dir;
+    }
+
+    public function getCache_lifetime()
+    {
+        return $this->cache_lifetime;
+    }
+
+     public function getCache_modified_check()
+    {
+        return $this->cache_modified_check;
+    }
+
+    public function setCache_modified_check($cache_modified_check)
+    {
+        $this->cache_modified_check = $cache_modified_check;
+    }
+
+    public function getPhp_handling()
+    {
+        return $this->php_handling;
+    }
+
+    public function setPhp_handling($php_handling)
+    {
+        $this->php_handling = $php_handling;
+    }
+
+    public function getSecurity()
+    {
+        return $this->security;
+    }
+
+    public function setSecurity($security)
+    {
+        $this->security = $security;
+    }
+
+    public function getSecure_dir()
+    {
+        return $this->secure_dir;
+    }
+
+    public function setSecure_dir($secure_dir)
+    {
+        $this->secure_dir = $secure_dir;
+    }
+
+    public function getSecurity_settings()
+    {
+        return $this->security_settings;
+    }
+
+    public function setSecurity_settings($security_settings)
+    {
+        $this->security_settings = $security_settings;
+    }
+
+    public function getTrusted_dir()
+    {
+        return $this->trusted_dir;
+    }
+
+    public function setTrusted_dir($trusted_dir)
+    {
+        $this->trusted_dir = $trusted_dir;
+    }
+
+    public function getLeft_delimiter()
+    {
+        return $this->left_delimiter;
+    }
+
+    public function setLeft_delimiter($left_delimiter)
+    {
+        $this->left_delimiter = $left_delimiter;
+    }
+
+    public function getRight_delimiter()
+    {
+        return $this->right_delimiter;
+    }
+
+    public function setRight_delimiter($right_delimiter)
+    {
+        $this->right_delimiter = $right_delimiter;
+    }
+
+    public function getRequest_vars_order()
+    {
+        return $this->request_vars_order;
+    }
+
+    public function setRequest_vars_order($request_vars_order)
+    {
+        $this->request_vars_order = $request_vars_order;
+    }
+
+    public function getRequest_use_auto_globals()
+    {
+        return $this->request_use_auto_globals;
+    }
+
+    public function setRequest_use_auto_globals($request_use_auto_globals)
+    {
+        $this->request_use_auto_globals = $request_use_auto_globals;
+    }
+
+    public function getCompile_id()
+    {
+        return $this->compile_id;
+    }
+
+    public function setCompile_id($compile_id)
+    {
+        $this->compile_id = $compile_id;
+    }
+
+    public function getUse_sub_dirs()
+    {
+        return $this->use_sub_dirs;
+    }
+
+    public function setUse_sub_dirs($use_sub_dirs)
+    {
+        $this->use_sub_dirs = $use_sub_dirs;
+    }
+
+    public function getDefault_modifiers()
+    {
+        return $this->default_modifiers;
+    }
+
+    public function setDefault_modifiers($default_modifiers)
+    {
+        $this->default_modifiers = $default_modifiers;
+    }
+
+    public function getDefault_resource_type()
+    {
+        return $this->default_resource_type;
+    }
+
+    public function setDefault_resource_type($default_resource_type)
+    {
+        $this->default_resource_type = $default_resource_type;
+    }
+
+    public function getCache_handler_func()
+    {
+        return $this->cache_handler_func;
+    }
+
+    public function setCache_handler_func($cache_handler_func)
+    {
+        $this->cache_handler_func = $cache_handler_func;
+    }
+
+    public function getAutoload_filters()
+    {
+        return $this->autoload_filters;
+    }
+
+    public function setAutoload_filters($autoload_filters)
+    {
+        $this->autoload_filters = $autoload_filters;
+    }
+
+    public function getConfig_overwrite()
+    {
+        return $this->config_overwrite;
+    }
+
+    public function setConfig_overwrite($config_overwrite)
+    {
+        $this->config_overwrite = $config_overwrite;
+    }
+
+    public function getConfig_booleanize()
+    {
+        return $this->config_booleanize;
+    }
+
+    public function setConfig_booleanize($config_booleanize)
+    {
+        $this->config_booleanize = $config_booleanize;
+    }
+
+    public function getConfig_read_hidden()
+    {
+        return $this->config_read_hidden;
+    }
+
+    public function setConfig_read_hidden($config_read_hidden)
+    {
+        $this->config_read_hidden = $config_read_hidden;
+    }
+
+    public function getConfig_fix_newlines()
+    {
+        return $this->config_fix_newlines;
+    }
+
+    public function setConfig_fix_newlines($config_fix_newlines)
+    {
+        $this->config_fix_newlines = $config_fix_newlines;
+    }
+
+    public function getDefault_template_handler_func()
+    {
+        return $this->default_template_handler_func;
+    }
+
+    public function setDefault_template_handler_func($default_template_handler_func)
+    {
+        $this->default_template_handler_func = $default_template_handler_func;
+    }
+
+    public function getCompiler_file()
+    {
+        return $this->compiler_file;
+    }
+
+    public function setCompiler_file($compiler_file)
+    {
+        $this->compiler_file = $compiler_file;
+    }
+
+    public function getCompiler_class()
+    {
+        return $this->compiler_class;
+    }
+
+    public function setCompiler_class($compiler_class)
+    {
+        $this->compiler_class = $compiler_class;
+    }
+
+    public function get_tpl_vars()
+    {
+        return $this->_tpl_vars;
+    }
+
+    public function set_tpl_vars($_tpl_vars)
+    {
+        $this->_tpl_vars = $_tpl_vars;
+    }
+
+    public function get_compile_id()
+    {
+        return $this->_compile_id;
+    }
+
+    public function set_compile_id($_compile_id)
+    {
+        $this->_compile_id = $_compile_id;
+    }
+
+    public function get_cache_info()
+    {
+        return $this->_cache_info;
+    }
+
+    public function set_cache_info($_cache_info)
+    {
+        $this->_cache_info = $_cache_info;
+    }
+
+    public function get_file_perms()
+    {
+        return $this->_file_perms;
+    }
+
+    public function set_file_perms($_file_perms)
+    {
+        $this->_file_perms = $_file_perms;
+    }
+
+    public function get_dir_perms()
+    {
+        return $this->_dir_perms;
+    }
+
+    public function set_dir_perms($_dir_perms)
+    {
+        $this->_dir_perms = $_dir_perms;
+    }
+
+    public function get_reg_objects()
+    {
+        return $this->_reg_objects;
+    }
+
+    public function set_reg_objects($_reg_objects)
+    {
+        $this->_reg_objects = $_reg_objects;
+    }
+
+    public function get_plugins()
+    {
+        return $this->_plugins;
+    }
+
+    public function set_plugins($_plugins)
+    {
+        $this->_plugins = $_plugins;
+    }
+
+    public function get_cache_serials()
+    {
+        return $this->_cache_serials;
+    }
+
+    public function set_cache_serials($_cache_serials)
+    {
+        $this->_cache_serials = $_cache_serials;
+    }
+
+    public function get_cache_include()
+    {
+        return $this->_cache_include;
+    }
+
+    public function set_cache_include($_cache_include)
+    {
+        $this->_cache_include = $_cache_include;
+    }
+
+    public function get_cache_including()
+    {
+        return $this->_cache_including;
+    }
+
+    public function set_cache_including($_cache_including)
+    {
+        $this->_cache_including = $_cache_including;
+    }
 }
 
 /**
