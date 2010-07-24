@@ -320,6 +320,9 @@ class LogUtil
      */
     public static function log($msg, $level = Zikula_ErrorHandler::DEBUG)
     {
+        if (System::isInstalling()) {
+            return;
+        }
         $errorReporting = ServiceUtil::getManager()->getService('system.errorreporting');
         $errorReporting->handler($level, $msg);
     }
