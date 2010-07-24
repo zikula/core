@@ -430,7 +430,7 @@ class Blocks_Block_Extmenu extends Zikula_Block
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->view->clear_all_cache();
+        $this->view->clear_cache('blocks_block_extmenu.tpl');
 
         return $blockinfo;
     }
