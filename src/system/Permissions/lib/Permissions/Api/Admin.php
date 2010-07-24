@@ -484,7 +484,7 @@ class Permissions_Api_Admin extends Zikula_Api
         $modinfos = ModUtil::getAllMods();
         foreach($modinfos as $modinfo) {
             if (!empty($modinfo['securityschema'])) {
-                $schemas = array_merge($schemas, unserialize($modinfo['securityschema']));
+                $schemas = array_merge($schemas, $modinfo['securityschema']);
             }
         }
         uksort($schemas, 'strnatcasecmp');

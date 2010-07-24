@@ -146,9 +146,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->theme = $theme = $this->themeinfo['directory'];
 
         $this->modinfo = ModUtil::getInfoFromName($module);
-        // unserialize some modinfo fields
-        $this->modinfo['capabilities']   = !empty($this->modinfo['capabilities']) ? @unserialize($this->modinfo['capabilities']) : array();
-        $this->modinfo['securityschema'] = !empty($this->modinfo['securityschema']) ? @unserialize($this->modinfo['securityschema']) : array();
 
         $modpath = ($this->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         switch ($this->module[$module]['type'])

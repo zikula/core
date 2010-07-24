@@ -511,19 +511,11 @@ class ModUtil
         static $modsarray = array();
 
         if (empty($modsarray)) {
-            $tables  = DBUtil::getTables();
-            $cols    = $tables['modules_column'];
-            $where   = "WHERE $cols[state] = " . self::STATE_ACTIVE . "
-                           OR $cols[name] = 'Modules'";
-            $orderBy = "ORDER BY $cols[displayname]";
-
-            $modsarray = DBUtil::selectObjectArray('modules', $where, $orderBy);
-            if ($modsarray === false) {
-                return false;
-            }
-            foreach ($modsarray as $key => $mod) {
-                $capabilities = unserialize($mod['capabilities']);
-                $modsarray[$key]['capabilities'] = $capabilities;
+            $all = self::getModsTable();
+            foreach ($all as $key => $mod) {
+                if ($mod['state'] == self::STATE_ACTIVE) {
+                    $modsarray[$key] = $mod;
+                }
             }
         }
 
@@ -1617,6 +1609,8 @@ class ModUtil
                 if (!isset($module['url']) || empty($module['url'])) {
                     $modstable[$mid]['url'] = $module['displayname'];
                 }
+                $modstable[$mid]['capabilities'] = unserialize($module['capabilities']);
+                $modstable[$mid]['securityschema'] = unserialize($module['securityschema']);
             }
         }
 
