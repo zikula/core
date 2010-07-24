@@ -202,7 +202,7 @@ class Form_Plugin_RadioButton extends Form_StyledPlugin
      * @see    Form_Plugin
      * @return void
      */
-    function create($view, $params)
+    function create($view, &$params)
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically

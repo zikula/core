@@ -143,7 +143,7 @@ class Form_Plugin_BaseListSelector extends Form_StyledPlugin
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, $params)
+    function create($render, &$params)
     {
         $this->inputName = $this->id;
 

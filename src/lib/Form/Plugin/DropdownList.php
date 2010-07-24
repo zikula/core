@@ -201,7 +201,7 @@ class Form_Plugin_DropdownList extends Form_Plugin_BaseListSelector
      * @see    Form_Plugin
      * @return void
      */
-    function create($view, $params)
+    function create($view, &$params)
     {
         parent::create($view, $params);
 

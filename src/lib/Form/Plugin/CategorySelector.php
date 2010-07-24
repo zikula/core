@@ -148,7 +148,7 @@ class Form_Plugin_CategorySelector extends Form_Plugin_DropdownList
      *
      * @return void
      */
-    function load($render, $params)
+    function load($render, &$params)
     {
         $this->includeEmptyElement = (isset($params['includeEmptyElement']) ? $params['includeEmptyElement'] : false);
         $this->enableDBUtil = (isset($params['enableDBUtil']) ? $params['enableDBUtil'] : false);

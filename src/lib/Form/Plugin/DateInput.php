@@ -271,6 +271,7 @@ class Form_Plugin_DateInput extends Form_Plugin_TextInput
         if (empty($text)) {
             return null;
         }
+
         return $text;
     }
 

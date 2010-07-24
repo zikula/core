@@ -117,7 +117,7 @@ class Form_Plugin_UploadInput extends Form_StyledPlugin
      * @see    Form_Plugin
      * @return void
      */
-    function create($render, $params)
+    function create($render, &$params)
     {
         $this->inputName = (array_key_exists('inputName', $params) ? $params['inputName'] : $this->id);
         $this->readOnly = (array_key_exists('readOnly', $params) ? $params['readOnly'] : false);

@@ -54,7 +54,7 @@ class Form_Plugin_CategoryCheckboxList extends Form_Plugin_CheckboxList
      *
      * @return void
      */
-    function load($view, $params)
+    function load($view, &$params)
     {
         Form_Plugin_CategorySelector::loadParameters($this, false, $params);
 

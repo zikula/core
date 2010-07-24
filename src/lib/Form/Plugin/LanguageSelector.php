@@ -57,7 +57,7 @@ class Form_Plugin_LanguageSelector extends Form_Plugin_DropdownList
      *
      * @return void
      */
-    function load($render, $params)
+    function load($render, &$params)
     {
         if ($this->mandatory) {
             $this->addItem('---', null);

@@ -237,7 +237,7 @@ class Form_Plugin_TextInput extends Form_StyledPlugin
      * @see    Form_Plugin
      * @return void
      */
-    function create($view, $params)
+    function create($view, &$params)
     {
         // All member variables are fetched automatically before create (as strings)
         // Here we afterwards load all special and non-string parameters

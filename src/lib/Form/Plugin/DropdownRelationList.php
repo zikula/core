@@ -175,7 +175,7 @@ class Form_Plugin_DropDownRelationlist extends Form_Plugin_DropdownList
      *
      * @return void
      */
-    function load($view, $params)
+    function load($view, &$params)
     {
         ModUtil::dbInfoLoad($this->module);
 
