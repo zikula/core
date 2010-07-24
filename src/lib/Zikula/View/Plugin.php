@@ -46,6 +46,10 @@ class Zikula_View_Plugin extends Zikula_View
         array_push($this->plugins_dir, $path);
     }
 
+    public function getPluginName()
+    {
+        return $this->pluginName;
+    }
 
     /**
      * Setup the current instance of the Zikula_View class and return it back to the module.

@@ -232,6 +232,7 @@ class System
 
             $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
             $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
+            $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
 
             // initialise time to render
             if ($GLOBALS['ZConfig']['Debug']['debug.pagerendertime']) {

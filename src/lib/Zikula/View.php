@@ -734,7 +734,10 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         if ($this instanceof Zikula_View_Theme) {
             //$path .= 'themes/';
-            $path .= $this->themeinfo['directory'].'/';
+            $path .= $this->themeinfo['directory'] . '/';
+//        } elseif ($this instanceof Zikula_View_Plugin) {
+//            //$path .= 'themes/';
+//            $path .= $this->modinfo['directory'] . '/' . $this->pluginName['directory'] . '/';
         } else {
             //$path .= 'modules/';
             $path .= $this->modinfo['directory'].'/';
@@ -743,7 +746,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         //echo '<p>'.$path.'</p>';
 
         if (!file_exists($path)) {
-            mkdir($path, null, true);
+            mkdir($path, $this->serviceManager['system.chmod_dir'], true);
         }
 
         if (isset($auto_id) && !empty($auto_id)) {
