@@ -171,7 +171,7 @@
     <!-- JSDoc -->
     <target name="jsdoc">
         <echo msg="JSDoc..." />
-        <exec command="cd /opt/jsdoc-toolkit; /opt/jsdoc-toolkit/jsrun.sh --directory=${builddir}/jsdoc ${sourcedir}/src/javascript/helpers"/>
+        <exec command="cd /opt/jsdoc-toolkit; /opt/jsdoc-toolkit/jsrun.sh -t=/opt/jsdoc-toolkit/templates/jsdoc --directory=${builddir}/jsdoc ${sourcedir}/src/javascript/helpers"/>
         <!-- exec command="cd ${builddir}/jsdoc;/opt/jsdoc-toolkit ${sourcedir}/src/javascript/helpers"/ -->
     </target>
 
