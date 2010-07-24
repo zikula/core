@@ -488,8 +488,6 @@ class Form_View extends Zikula_View
      */
     public function translateForDisplay($txt, $doEncode = true)
     {
-        $txt = (strlen($txt) > 0 && $txt[0] == '_' && defined($txt) ? constant($txt) : $txt);
-
         if ($doEncode) {
             $txt = DataUtil::formatForDisplay($txt);
         }
