@@ -96,10 +96,10 @@ class Zikula_Workflow
      */
     public function registerWorkflow(&$obj, $stateID = null)
     {
-        $workflowData = $obj['__WORKFLOW__'];
-        $idcolumn = $workflowData['obj_idcolumn'];
-        $insertObj = array('obj_table'    => $workflowData['obj_table'],
-                           'obj_idcolumn' => $workflowData['obj_idcolumn'],
+        $idcolumn = $obj['__WORKFLOW__']['obj_idcolumn'];
+
+        $insertObj = array('obj_table'    => $obj['__WORKFLOW__']['obj_table'],
+                           'obj_idcolumn' => $obj['__WORKFLOW__']['obj_idcolumn'],
                            'obj_id'       => $obj[$idcolumn],
                            'module'       => $this->getModule(),
                            'schemaname'   => $this->id,
@@ -124,7 +124,8 @@ class Zikula_Workflow
      */
     public function updateWorkflowState($stateID, $debug = null)
     {
-        $obj = array('id' => $this->workflowData['id'], 'state' => $stateID);
+        $obj = array('id'    => $this->workflowData['id'],
+                     'state' => $stateID);
 
         if (isset($debug)) {
             $obj['debug'] = $debug;
@@ -164,11 +165,13 @@ class Zikula_Workflow
         // commit workflow to object
         $this->workflowData = $obj['__WORKFLOW__'];
 
-        // get operations
+        // define the next state to be passed to the operations
         $nextState = (isset($action['nextState']) ? $action['nextState'] : $stateID);
 
+        // process the action operations
         $result = array();
         foreach ($action['operations'] as $operation) {
+            // execute the operation
             $result[$operation['name']] = $this->executeOperation($operation, $obj, $nextState);
             if (!$result[$operation['name']]) {
                 // if an operation fails here, do not process further and return false
@@ -191,6 +194,9 @@ class Zikula_Workflow
             return false;
         }
 
+        // updates the workflow state value
+        $obj['__WORKFLOW__']['state'] = $nextState;
+
         // return result of all operations (possibly okay to just return true here)
         return $result;
     }
@@ -198,32 +204,45 @@ class Zikula_Workflow
     /**
      * Execute workflow operation within action.
      *
-     * @param string $operation Operation name.
-     * @param array  &$obj      Data object.
-     * @param string $nextState Next state.
+     * @param string $operation  Operation name.
+     * @param array  &$obj       Data object.
+     * @param string &$nextState Next state.
      *
      * @return mixed|false
      */
-    public function executeOperation($operation, &$obj, $nextState)
+    public function executeOperation($operation, &$obj, &$nextState)
     {
-        $operationName = $operation['name'];
-        $operationParams = $operation['parameters'];
+        $params = $operation['parameters'];
+        if (isset($params['nextstate'])) {
+            $nextState = $params['nextstate'];
+        }
+        $params['nextstate'] = $nextState;
 
         // test operation file exists
-        $path = Zikula_Workflow_Util::_findpath("operations/function.{$operationName}.php", $this->module);
+        $path = Zikula_Workflow_Util::_findpath("operations/function.{$operation['name']}.php", $this->module);
         if (!$path) {
-            return z_exit(__f('Operation file [%s] does not exist', $operationName));
+            return z_exit(__f('Operation file [%s] does not exist', $operation['name']));
         }
 
         // load file and test if function exists
         include_once $path;
-        $function = "{$this->module}_operation_{$operationName}";
+        $function = "{$this->module}_operation_{$operation['name']}";
         if (!function_exists($function)) {
             return z_exit(__f('Operation function [%s] is not defined', $function));
         }
-
+z_prayer($params, false);
         // execute operation and return result
-        return $function($obj, $operationParams);
+        $result = $function($obj, $params);
+z_prayer($params, false);
+        $states = array_keys($this->stateMap);
+        // checks for an invalid next state value
+        if (!in_array($params['nextstate'], $states)) {
+            LogUtil::registerError(__f('Invalid next-state value [%1$s] retrieved by the \'%2$s\' operation for the workflow \'%3$s\' [\'%4$s\'].', array($nextState, $operation, $this->getID(), $this->getModule())));
+        } else {
+            $nextState = $params['nextstate'];
+        }
+
+        return $result;
     }
 
     /**
