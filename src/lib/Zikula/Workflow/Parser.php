@@ -97,40 +97,37 @@ class Zikula_Workflow_Parser
      */
     public function mapWorkflow()
     {
-        $states = $this->workflow['states'];
-        $actions = $this->workflow['actions'];
-
         // create associative arrays maps
+        $stateMap  = array();
         $actionMap = array();
-        $stateMap = array();
 
-        foreach ($states as $state) {
+        foreach ($this->workflow['states'] as $state) {
             $stateMap[$state['id']] = array($state['id'], $state['title'], $state['description']);
-            foreach ($actions as $action) {
-                if (($action['state'] == 'initial') || ($action['state'] == null) || ($action['state'] == $state['id'])) {
-                    if ($action['state'] == 'initial' || $action['state'] == null) {
-                        $stateID = 'initial';
-                    } else if (($action['state']) == $state['id']) {
-                        $stateID = $state['id'];
-                    }
+        }
 
-                    // change the case of array keys for parameter variables
-                    $operations = &$action['operations'];
-                    foreach (array_keys($operations) as $key) {
-                        $parameters = &$operations[$key]['parameters'];
-                        $parameters = array_change_key_case($parameters, CASE_LOWER);
-                    }
+        $states = array_keys($stateMap);
 
-                    // commit results
-                    $actionID = $action['id'];
-                    $actionMap[$stateID][$actionID] = $action;
+        foreach ($this->workflow['actions'] as $action) {
+            if (($action['state'] == 'initial') || ($action['state'] == null) || in_array($action['state'], $states)) {
+                $action['state'] = $stateID = !empty($action['state']) ? $action['state'] : 'initial';
+
+                // change the case of array keys for parameter variables
+                $operations = &$action['operations'];
+                foreach (array_keys($operations) as $key) {
+                    $parameters = &$operations[$key]['parameters'];
+                    $parameters = array_change_key_case($parameters, CASE_LOWER);
                 }
+
+                // commit results
+                $actionMap[$stateID][$action['id']] = $action;
+            } else {
+                LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\'.', array('state', $action['state'], $action['title'])));
             }
         }
 
         // commit new array to workflow
+        $this->workflow['states']  = $stateMap;
         $this->workflow['actions'] = $actionMap;
-        $this->workflow['states'] = $stateMap;
     }
 
     /**
@@ -140,32 +137,18 @@ class Zikula_Workflow_Parser
      */
     public function validate()
     {
-        $stateMap = $this->workflow['states'];
-        $states = $this->workflow['actions'];
-        $ak = array_keys($states);
-        foreach ($ak as $stateID) {
-            $actions = $this->workflow['actions'][$stateID];
-            foreach ($actions as $action) {
-                $stateName = $action['state'];
-                if ($stateName != null) {
-                    if (!isset($stateMap[$stateName]))
-                        return LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\'', array('state', $stateName, $action['title'])));
-                }
-
-                if (isset($action['nextState'])) {
-                    $nextStateName = $action['nextState'];
-                }
-
-                if (isset($nextStateName)) {
-                    if (!isset($stateMap[$nextStateName]))
-                        return LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\'', array('next-state', $nextStateName, $action['title'])));
+        foreach (array_keys($this->workflow['actions']) as $stateID) {
+            foreach ($this->workflow['actions'][$stateID] as $action) {
+                if (isset($action['nextState']) && !isset($this->workflow['states'][$action['nextState']])) {
+                    return LogUtil::registerError(__f('Unknown %1$s name \'%2$s\' in action \'%3$s\' of the \'%4$s\' state.', array('next-state', $action['nextState'], $action['title'], $action['state'])));
                 }
 
                 foreach ($action['operations'] as $operation) {
-                    if (isset($operation['parameters']['NEXTSTATE'])) {
-                        $stateName = $operation['parameters']['NEXTSTATE'];
-                        if (!isset($stateMap[$stateName]))
-                            return LogUtil::registerError(__f('Unknown state name \'%1$s\' in action \'%2$s\' - operation \'%3$s\'', array($stateName, $action['title'], $operation['name'])));
+                    if (isset($operation['parameters']['nextState'])) {
+                        $stateName = $operation['parameters']['nextState'];
+                        if (!isset($this->workflow['states'][$stateName])) {
+                            return LogUtil::registerError(__f('Unknown state name \'%1$s\' in action \'%2$s\', operation \'%3$s\'.', array($stateName, $action['title'], $operation['name'])));
+                        }
                     }
                 }
             }
@@ -334,7 +317,7 @@ class Zikula_Workflow_Parser
      */
     public function characterData($parser, $data)
     {
-        $value = &$this->workflow['value'];
+        $value  = &$this->workflow['value'];
         $value .= $data;
         return true;
     }

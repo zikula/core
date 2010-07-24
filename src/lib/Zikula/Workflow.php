@@ -98,7 +98,12 @@ class Zikula_Workflow
     {
         $workflowData = $obj['__WORKFLOW__'];
         $idcolumn = $workflowData['obj_idcolumn'];
-        $insertObj = array('obj_table' => $workflowData['obj_table'], 'obj_idcolumn' => $workflowData['obj_idcolumn'], 'obj_id' => $obj[$idcolumn], 'module' => $this->getModule(), 'schemaname' => $this->id, 'state' => $stateID);
+        $insertObj = array('obj_table'    => $workflowData['obj_table'],
+                           'obj_idcolumn' => $workflowData['obj_idcolumn'],
+                           'obj_id'       => $obj[$idcolumn],
+                           'module'       => $this->getModule(),
+                           'schemaname'   => $this->id,
+                           'state'        => $stateID);
 
         if (!DBUtil::insertObject($insertObj, 'workflows')) {
             return false;
@@ -160,10 +165,10 @@ class Zikula_Workflow
         $this->workflowData = $obj['__WORKFLOW__'];
 
         // get operations
-        $operations = $action['operations'];
         $nextState = (isset($action['nextState']) ? $action['nextState'] : $stateID);
 
-        foreach ($operations as $operation) {
+        $result = array();
+        foreach ($action['operations'] as $operation) {
             $result[$operation['name']] = $this->executeOperation($operation, $obj, $nextState);
             if (!$result[$operation['name']]) {
                 // if an operation fails here, do not process further and return false
