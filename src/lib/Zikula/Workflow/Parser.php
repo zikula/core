@@ -121,14 +121,6 @@ class Zikula_Workflow_Parser
                         $parameters = array_change_key_case($parameters, CASE_LOWER);
                     }
 
-                    if (isset($action['parameters'])) {
-                        $params = &$action['parameters'];
-                        foreach (array_keys($params) as $key) {
-                            $parameters = &$params[$key];
-                            $parameters = array_change_key_case($parameters, CASE_LOWER);
-                        }
-                    }
-
                     // commit results
                     $actionID = $action['id'];
                     $actionMap[$stateID][$actionID] = $action;
@@ -193,6 +185,7 @@ class Zikula_Workflow_Parser
      */
     public function startElement($parser, $name, $attribs)
     {
+        $name = strtoupper($name);
         $state = &$this->workflow['state'];
 
         if ($state == 'initial') {
@@ -232,6 +225,7 @@ class Zikula_Workflow_Parser
                 $state = 'error';
             }
         } else if ($state == 'actions') {
+            xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
             if ($name == 'ACTION') {
                 $this->workflow['action'] = array('id' => trim($attribs['ID']), 'operations' => array(), 'state' => null);
                 $state = 'action';
@@ -245,7 +239,7 @@ class Zikula_Workflow_Parser
             } else if ($name == 'OPERATION') {
                 $this->workflow['value'] = '';
                 $this->workflow['operationParameters'] = $attribs;
-            } else if ($name == 'PARAM') {
+            } else if ($name == 'PARAMETER') {
                 $this->workflow['value'] = '';
                 $this->workflow['actionParameter'] = $attribs;
             } else {
@@ -277,6 +271,7 @@ class Zikula_Workflow_Parser
      */
     public function endElement($parser, $name)
     {
+        $name = strtoupper($name);
         $state = &$this->workflow['state'];
 
         if ($state == 'workflow') {
@@ -307,12 +302,12 @@ class Zikula_Workflow_Parser
             } else if ($name == 'OPERATION') {
                 $this->workflow['action']['operations'][] = array('name' => trim($this->workflow['value']), 'parameters' => $this->workflow['operationParameters']);
                 $this->workflow['operation'] = null;
-            } else if ($name == 'PARAM') {
+            } else if ($name == 'PARAMETER') {
                 $this->workflow['action']['parameters'][trim($this->workflow['value'])] = $this->workflow['actionParameter'];
-                $this->workflow['params'] = null;
             } else if ($name == 'NEXTSTATE') {
                 $this->workflow['action']['nextState'] = trim($this->workflow['value']);
             } else if ($name == 'ACTION') {
+                xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 1);
                 $this->workflow['actions'][] = $this->workflow['action'];
                 $this->workflow['action'] = null;
                 $state = 'actions';
@@ -341,6 +336,7 @@ class Zikula_Workflow_Parser
     {
         $value = &$this->workflow['value'];
         $value .= $data;
+        return true;
     }
 
     /**
