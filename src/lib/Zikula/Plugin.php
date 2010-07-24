@@ -117,6 +117,13 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
     protected $baseDir;
 
     /**
+     * Module info.
+     *
+     * @var array
+     */
+    protected $modinfo;
+
+    /**
      * This object's own reflection.
      *
      * @var ReflectionObject
@@ -253,6 +260,10 @@ abstract class Zikula_Plugin extends Zikula_EventHandler
      */
     public function getModInfo()
     {
+        if (!$this->modinfo) {
+            // this is deliberate lazy load for dependency.
+            $this->modinfo = ModUtil::getInfoFromName($this->moduleName);
+        }
         return $this->modinfo;
     }
 

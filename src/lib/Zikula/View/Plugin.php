@@ -22,7 +22,7 @@ class Zikula_View_Plugin extends Zikula_View
      *
      * @var string
      */
-    public $pluginName;
+    protected $pluginName;
 
     /**
      * Constructor.
@@ -43,7 +43,7 @@ class Zikula_View_Plugin extends Zikula_View
             $modPath = $modinfo['name'];
             $path = "$base/$modPath/plugins/{$pluginName}/templates/plugins";
         }
-        array_push($this->plugins_dir, $path);
+        $this->addPluginDir($path);
     }
 
     public function getPluginName()
@@ -67,42 +67,42 @@ class Zikula_View_Plugin extends Zikula_View
         $sm = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.renderplugin.%s.%s', $moduleName, $pluginName));
         if (!$sm->hasService($serviceId)) {
-            $render = new self($moduleName, $pluginName, $caching);
-            $sm->attachService($serviceId, $render);
+            $view = new self($moduleName, $pluginName, $caching);
+            $sm->attachService($serviceId, $view);
         } else {
             return $sm->getService($serviceId);
         }
 
         if (!is_null($caching)) {
-            $render->caching = $caching;
+            $view->caching = $caching;
         }
 
         if (!is_null($cache_id)) {
-            $render->cache_id = $cache_id;
+            $view->cache_id = $cache_id;
         }
 
         if ($moduleName === null) {
-            $moduleName = $render->toplevelmodule;
+            $moduleName = $view->toplevelmodule;
         }
 
-        if (!array_key_exists($moduleName, $render->module)) {
-            $render->module[$moduleName] = ModUtil::getInfoFromName($moduleName);
+        if (!array_key_exists($moduleName, $view->module)) {
+            $view->module[$moduleName] = ModUtil::getInfoFromName($moduleName);
             //$instance->modinfo = ModUtil::getInfoFromName($module);
-            $render->_add_plugins_dir($moduleName);
+            $view->_add_plugins_dir($moduleName);
         }
 
         if ($add_core_data) {
-            $render->add_core_data();
+            $view->add_core_data();
         }
 
         // for {gt} template plugin to detect gettext domain
-        if ($render->module[$moduleName]['type'] == ModUtil::TYPE_MODULE || $render->module[$moduleName]['type'] == ModUtil::TYPE_SYSTEM) {
-            $render->renderDomain = ZLanguage::getModulePluginDomain($render->module[$moduleName]['name'], $render->pluginName);
-        } elseif ($render->module[$moduleName]['type'] == ModUtil::TYPE_CORE) {
-            $render->renderDomain = ZLanguage::getSystemPluginDomain($render->module[$moduleName]['name'], $render->pluginName);
+        if ($view->module[$moduleName]['type'] == ModUtil::TYPE_MODULE || $view->module[$moduleName]['type'] == ModUtil::TYPE_SYSTEM) {
+            $view->renderDomain = ZLanguage::getModulePluginDomain($view->module[$moduleName]['name'], $view->pluginName);
+        } elseif ($view->module[$moduleName]['type'] == ModUtil::TYPE_CORE) {
+            $view->renderDomain = ZLanguage::getSystemPluginDomain($view->module[$moduleName]['name'], $view->pluginName);
         }
 
-        return $render;
+        return $view;
     }
 
     /**
@@ -141,10 +141,7 @@ class Zikula_View_Plugin extends Zikula_View
                 break;
         }
 
-
-        if (file_exists($mod_plugs)) {
-            array_push($this->plugins_dir, $mod_plugs);
-        }
+        $this->addPluginDir($mod_plugs);
     }
 
     /**
@@ -163,12 +160,11 @@ class Zikula_View_Plugin extends Zikula_View
         }
 
         // the current module
-        $modname = ModUtil::getName();
+        //$modname = ModUtil::getName();
 
         foreach ($this->module as $module => $modinfo) {
             // prepare the values for OS
             $module = $modinfo['name'];
-            $os_modname = DataUtil::formatForOS($modname);
             $os_module = DataUtil::formatForOS($module);
             //$os_theme = DataUtil::formatForOS($this->theme);
             $os_dir = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
@@ -179,7 +175,7 @@ class Zikula_View_Plugin extends Zikula_View
             // same as the top level mods. This limits the places to look for
             // templates.
             $base = ($modinfo['type'] == ModUtil::TYPE_CORE) ? '' : "$os_dir/$os_module/";
-            $configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
+            //$configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
             $search_path = array(
                         //"config/plugins/$configPath/{$this->pluginName}/templates", //global path
                         "{$base}plugins/{$this->pluginName}/templates",

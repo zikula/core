@@ -29,7 +29,7 @@ $ZConfig['System']['prefix'] = 'z';         // installer will change this during
 $ZConfig['System']['development'] = 0;      // should be set to 0/false when cutting a release for production use
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters
 $ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers
-$ZConfig['System']['system.chmod_dir'] = 0777;  // enable loading of compat layers
+$ZConfig['System']['system.chmod_dir'] = 0777;  // The default chmod for new directories created by Zikula.
 
 // ----------------------------------------------------------------------
 // Database & System Config
