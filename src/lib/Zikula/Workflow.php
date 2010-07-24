@@ -230,10 +230,10 @@ class Zikula_Workflow
         if (!function_exists($function)) {
             return z_exit(__f('Operation function [%s] is not defined', $function));
         }
-z_prayer($params, false);
+
         // execute operation and return result
         $result = $function($obj, $params);
-z_prayer($params, false);
+
         $states = array_keys($this->stateMap);
         // checks for an invalid next state value
         if (!in_array($params['nextstate'], $states)) {
