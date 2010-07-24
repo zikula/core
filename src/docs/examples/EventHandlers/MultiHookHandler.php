@@ -35,7 +35,7 @@ class MultiHookHandler extends Zikula_EventHandler
     {
         // subject must be an instance of Theme class.
         $theme = $event->getSubject();
-        if (!$theme instanceof Theme) {
+        if (!$theme instanceof Zikula_View_Theme) {
             return;
         }
 
