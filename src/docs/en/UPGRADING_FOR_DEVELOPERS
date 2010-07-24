@@ -13,11 +13,11 @@ TEMPLATES
 
 - All plugins with pn have been renamed without the pn prefix.  The pndebug
   plugin has been renamed to zdebug. See all deprecated template plugins in
-  lib/legacy/pluginsPlease adjust your templates accordingly.
+  lib/legacy/plugins. Please adjust your templates accordingly.
 
 - To accommodate easy transition to the new templates Zikula runs a prefilter
   that will convert the old delimiters to the new, and also remove the pn prefix
-  from any template plugin calls.  This will also affect 3rd party module so
+  from any template plugin calls. This will also affect 3rd party module so
   3rd party modules must drop their pn prefix from the actual plugins.  As a
   workaround you can copy the plugin file and rename it and the function inside
   without the prefix.
@@ -42,7 +42,7 @@ TEMPLATES
 
 - Replace all occurrences of "javascript/style.css" with "styles/core.css"
 
-- The {pager} plugin  no longer requires the parameter shift 
+- The {pager} plugin  no longer requires the parameter shift
 
 MODULES
 =======
@@ -349,6 +349,9 @@ WORKFLOW CHANGES
        now returns the result of getActionsByState.
    If you used values, replace them with the result keys, and take advantage
    of the action data now available.
+- Workflow actions can define additional parameters in the XML like:
+  <parameter className="z-bt-ok" titleText="Click me">button</parameter>
+  and the case will be respected.
 
 JAVASCRIPT CHANGES
 ==================
@@ -529,7 +532,7 @@ configure them with their own domain hardcoded in the setup()
 `$this->domain = 'foo';` because by default they will take on the characteristics
 of the View they were invoked by.
 
-Plugins, Handlers and template plugins should all be separated now.  Everything
+Plugins, Handlers and template plugins should all be separated now. Everything
 is handled by autoloading.
 
 Example layout:
@@ -538,6 +541,19 @@ lib/Foo/Form/Handler/Admin/Config.php      Foo_Form_Handler_Admin_Config
 lib/Foo/Form/Handler/User/View.php         Foo_Form_Handler_User_Config
 lib/Foo/Form/Plugin/Youtube.php            Foo_Form_Plugin_Youtube
 templates/plugins/function.formyoutube.php The actual template plugin.
+
+A 'zparameters' parameter was added as a direct way to assign the values of
+the form plugins attributes. For instance:
+$attributes = {class:z-bt-ok; confirmMessage:Are you sure?}
+{formbutton commandName='delete' __text='Delete' zparameters=$attributes}
+
+The {linkbutton} now supports an image (through the {img} plugin), using the
+new parameters 'imgset' and 'imgsrc'. imgset is default to 'icons/extrasmall'.
+Examples:
+{linkbutton commandName='edit' __text='Edit' imgsrc='edit.gif'}
+or through the core CSS:
+{linkbutton commandName='edit' __text='Edit' class='z-icon-es-edit'}
+{button commandName='cancel' __text='Cancel' class='z-bt-cancel'}
 
 API COMPLIANCE
 ==============
@@ -552,4 +568,3 @@ added getters and setter and new methods in Zikula_View to modify settings.
 the provided getters and setters.
   - Reliance on $GLOBALS['ZConfig'] and $GLOBALS['ZRuntime'].
   - Reliance on Zikula_Adapter_AdodbStatement being returned from DBUtil::executeSQL().
-
