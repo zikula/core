@@ -428,8 +428,7 @@ class UserUtil
     }
 
     /**
-     * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule
-     * without actually logging the user in.
+     * Authenticate a user (check the user's authinfo--user name and password probably) against an authmodule.
      *
      * ATTENTION: The authmodule function(s) called during this process may redirect the user to an external server
      * to perform authorization and/or authentication. The function calling checkPasswordUsing must already have anticipated
@@ -537,21 +536,21 @@ class UserUtil
      * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
      * any save user state immediately following the return of this function.
      *
-     * @param string  $authModuleName       Auth module name.
-     * @param array   $authinfo             Auth info array.
-     * @param boolean $rememberMe           Whether or not to remember login.
-     * @param string  $reentrantURL         If the authmodule needs to redirect to an external authentication server (e.g., OpenID), then
-     *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
-     *                                          state must have already been saved by the function calling loginUsing(), and the URL must
-     *                                          point to a Zikula_Controller function that is equipped to detect reentry, restore the
-     *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
-     *                                          is only optional if the authmodule identified by $authModuleName reports that it is not
-     *                                          reentrant (e.g., Users is guaranteed to not be reentrant), or if $checkPassword is false.
-     * @param boolean $checkPassword        Whether or not to check the password.
-     * @param numeric $preauthenicatedUid   If $checkPassword is false because the user has already been authenticated and a uid has
-     *                                          already been obtained, then the uid can be passed into loginUsing() here. If the
-     *                                          preauthenticated uid is supplied, then $authinfo is not used. This parameter is
-     *                                          ignored if $checkPassword is true.
+     * @param string  $authModuleName     Auth module name.
+     * @param array   $authinfo           Auth info array.
+     * @param boolean $rememberMe         Whether or not to remember login.
+     * @param string  $reentrantURL       If the authmodule needs to redirect to an external authentication server (e.g., OpenID), then
+     *                                      this is the URL to return to in order to re-enter the log-in process. The pertinent user
+     *                                      state must have already been saved by the function calling loginUsing(), and the URL must
+     *                                      point to a Zikula_Controller function that is equipped to detect reentry, restore the
+     *                                      saved user state, and get the user back to the point where loginUsing is re-executed. This
+     *                                      is only optional if the authmodule identified by $authModuleName reports that it is not
+     *                                      reentrant (e.g., Users is guaranteed to not be reentrant), or if $checkPassword is false.
+     * @param boolean $checkPassword      Whether or not to check the password.
+     * @param numeric $preauthenicatedUid If $checkPassword is false because the user has already been authenticated and a uid has
+     *                                      already been obtained, then the uid can be passed into loginUsing() here. If the
+     *                                      preauthenticated uid is supplied, then $authinfo is not used. This parameter is
+     *                                      ignored if $checkPassword is true.
      *
      * @return boolean True if the user is logged in; false if the user is not logged in or an error occurs.
      */
@@ -642,11 +641,11 @@ class UserUtil
         $loginDisplayInactive = ModUtil::getVar('Users', 'login_displayinactive', false);
         $loginDisplayApproval = ModUtil::getVar('Users', 'login_displayapproval', false);
         $loginDisplayVerify = ModUtil::getVar('Users', 'login_displayverify', false);
-        if ((($userObj['activated']) == UserUtil::ACTIVATED_INACTIVE) && $loginDisplayInactive) {
+        if ((($userObj['activated']) == self::ACTIVATED_INACTIVE) && $loginDisplayInactive) {
             $errorMsg = __("Sorry! Your account is not active. Please contact a site administrator.");
-        } elseif ((($userObj['activated']) == UserUtil::ACTIVATED_PENDING_DELETE) && $loginDisplayMarkedForDelete) {
+        } elseif ((($userObj['activated']) == self::ACTIVATED_PENDING_DELETE) && $loginDisplayMarkedForDelete) {
             $errorMsg = __("Sorry! Your account is marked to be permanently closed. Please contact a site administrator.");
-        } elseif (($userObj['activated']) == UserUtil::ACTIVATED_PENDING_REG) {
+        } elseif (($userObj['activated']) == self::ACTIVATED_PENDING_REG) {
             if (empty($userObj['approved_by']) && $loginDisplayApproval) {
                 $errorMsg = __("Sorry! Your account is still awaiting administrator approval. An e-mail message will be sent to you once an administrator has reviewed your registration request.");
             } elseif (!$userObj['isverified'] && $loginDisplayVerify) {
@@ -846,10 +845,10 @@ class UserUtil
     /**
      * Counts how many times a user name has been used by user accounts in the system.
      *
-     * @param string $uname The e-mail address in question (required).
-     * @param int    $excludeUid
+     * @param string $uname      The e-mail address in question (required).
+     * @param int    $excludeUid The uid to exclude from the check, used when checking modifications.
      *
-     * @return <type>
+     * @return int|bool The count, or false on error.
      */
     public static function getUnameUsageCount($uname, $excludeUid = 0)
     {
@@ -880,9 +879,9 @@ class UserUtil
      * Counts how many times an e-mail address has been used by user accounts in the system.
      *
      * @param string $emailAddress The e-mail address in question (required).
-     * @param int    $excludeUid
+     * @param int    $excludeUid   The uid to exclude from the check, used when checking modifications.
      *
-     * @return <type>
+     * @return int|bool The count, or false on error.
      */
     public static function getEmailUsageCount($emailAddress, $excludeUid = 0)
     {
@@ -901,7 +900,8 @@ class UserUtil
         $ucount = DBUtil::selectObjectCount('users', $where);
 
         $verifyChgColumn = $dbinfo['users_verifychg_column'];
-        $where = "({$verifyChgColumn['newemail']} = '{$emailAddress}') AND ({$verifyChgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_EMAIL . ")";
+        $where = "({$verifyChgColumn['newemail']} = '{$emailAddress}') AND ({$verifyChgColumn['changetype']} = "
+            . self::VERIFYCHGTYPE_EMAIL . ")";
         if ($excludeUid > 1) {
             $where .= " AND ({$verifyChgColumn['uid']} != {$excludeUid})";
         }
@@ -914,9 +914,17 @@ class UserUtil
         }
     }
 
+    /**
+     * When getting a registration record, this function calculates several fields needed for registration state.
+     *
+     * @param array $userObj The user object array created by UserUtil::getVars(). NOTE: this parameter is passed by
+     *                          reference, and therefore will be updated by the actions of this function.
+     *
+     * @return array The updated $userObj.
+     */
     public static function postProcessGetRegistration(&$userObj)
     {
-        if ($userObj['activated'] == UserUtil::ACTIVATED_PENDING_REG) {
+        if ($userObj['activated'] == self::ACTIVATED_PENDING_REG) {
             // Get isverified from the attributes.
             if (isset($userObj['__ATTRIBUTES__']['isverified'])) {
                 $userObj['isverified'] = $userObj['__ATTRIBUTES__']['isverified'];
@@ -964,15 +972,15 @@ class UserUtil
     /**
      * Get all user variables, maps new style attributes to old style user data.
      *
-     * @param integer $id               The user id of the user. (required)
-     * @param boolean $force            True to force loading from database and ignore the cache.
-     * @param string  $idfield          Field to use as id (possible values: uid, uname or email).
-     * @param bool    $getRegistration  Indicates whether a "regular" user record or a pending registration
+     * @param integer $id              The user id of the user (required).
+     * @param boolean $force           True to force loading from database and ignore the cache.
+     * @param string  $idfield         Field to use as id (possible values: uid, uname or email).
+     * @param bool    $getRegistration Indicates whether a "regular" user record or a pending registration
      *                                      is to be returned. False (default) for a user record and true
      *                                      for a registration. If false and the user record is a pending
      *                                      registration, then the record is not returned and false is returned
      *                                      instead; likewise, if true and the user record is not a registration,
-     *                                      then false is returned. (Defaults to false)
+     *                                      then false is returned; (Defaults to false).
      *
      * @return array|bool An associative array with all variables for a user (or pending registration);
      *                      false on error.
@@ -1083,41 +1091,41 @@ class UserUtil
     /**
      * Get a user variable.
      *
-     * @param string  $name             The name of the variable.
-     * @param integer $uid              The user to get the variable for.
-     * @param mixed   $default          The default value to return if the specified variable doesn't exist.
-     * @param bool    $getRegistration  Indicates whether the variable should be retrieved from a "regular"
+     * @param string  $name            The name of the variable.
+     * @param integer $uid             The user to get the variable for.
+     * @param mixed   $default         The default value to return if the specified variable doesn't exist.
+     * @param bool    $getRegistration Indicates whether the variable should be retrieved from a "regular"
      *                                      user record or from a pending registration. False (default) for a
      *                                      user record and true for a registration. If false and the uid refers
      *                                      to a pending registration, then the variable is not returned and
      *                                      null is returned instead; likewise, if true and the user record is
-     *                                      not a registration, then null is returned. (Defaults to false)
+     *                                      not a registration, then null is returned. (Defaults to false).
      *
-     * @return mixed the value of the user variable if successful, null otherwise
+     * @return mixed The value of the user variable if successful, null otherwise.
      */
     public static function getVar($name, $uid = -1, $default = false, $getRegistration = false)
     {
         if (empty($name)) {
-            return;
+            return null;
         }
 
         // bug fix #1311 [landseer]
         if (isset($uid) && !is_numeric($uid)) {
-            return;
+            return null;
         }
 
         if ($uid == -1) {
             $uid = SessionUtil::getVar('uid');
         }
         if (empty($uid)) {
-            return;
+            return null;
         }
 
         // get this user's variables
         $vars = self::getVars($uid, false, '', $getRegistration);
 
         if ($vars === false) {
-            return;
+            return null;
         }
 
         // Return the variable
@@ -1785,10 +1793,10 @@ class UserUtil
     /**
      * Get the uid of a user from the username.
      *
-     * @param string $uname             The username.
-     * @param bool   $forRegistration   Get the id for a pending registration (default = false)
+     * @param string $uname           The username.
+     * @param bool   $forRegistration Get the id for a pending registration (default = false).
      *
-     * @return mixed userid if found, false if not
+     * @return int|bool The uid if found, false if not.
      */
     public static function getIdFromName($uname, $forRegistration = false)
     {
@@ -1799,10 +1807,10 @@ class UserUtil
     /**
      * Get the uid of a user from the email (case for unique emails).
      *
-     * @param string $email The user email.
-     * @param bool   $forRegistration   Get the id for a pending registration (default = false)
+     * @param string $email           The user email.
+     * @param bool   $forRegistration Get the id for a pending registration (default = false).
      *
-     * @return mixed userid if found, false if not
+     * @return int|bool The uid if found, false if not.
      */
     public static function getIdFromEmail($email, $forRegistration = false)
     {
