@@ -331,6 +331,14 @@ abstract class Form_Plugin implements Zikula_Translatable
     {
         $varInfo = get_class_vars(get_class($this));
 
+        // adds the zparameters to the $params if exists
+        if (array_key_exists('zparameters', $params)) {
+            if (is_array($params['zparameters'])) {
+                $params = array_merge($params['zparameters'], $params);
+            }
+            unset($params['zparameters']);
+        }
+
         // Iterate through all params: place known params in member variables and the rest in the attributes set
         foreach ($params as $name => $value) {
             if (array_key_exists($name, $varInfo)) {
@@ -338,13 +346,6 @@ abstract class Form_Plugin implements Zikula_Translatable
             } else {
                 $this->attributes[$name] = $value;
             }
-        }
-
-        if (array_key_exists('zparameters', $this->attributes)) {
-            if (is_array($this->attributes['zparameters'])) {
-                $this->attributes = array_merge($this->attributes['zparameters'], $this->attributes);
-            }
-            unset($this->attributes['zparameters']);
         }
     }
 
