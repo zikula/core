@@ -11,8 +11,9 @@ if (typeof(Zikula) == 'undefined') {
  * Zikula.define('Module.Component') will create object chain: Zikula.Module.Component
  * If object in chain already exists it will be extended, not overwritten
  *
- * @param  path dot separated path to define
- * @return object
+ * @param {string} path Dot separated path to define.
+ * 
+ * @return {object} Zikula extended object
  */
 Zikula.define = function(path) {
     return path.split('.').inject(Zikula, function(object, prop) {
@@ -22,9 +23,9 @@ Zikula.define = function(path) {
 
 /**
  * Zikula.init
- * Load what's needed on dom loaded
+ * Load what's needed on dom loaded.
  *
- * @return array
+ * @return void
  */
 Zikula.init = function()
 {
@@ -36,9 +37,9 @@ document.observe('dom:loaded',Zikula.init);
 
 /**
  * Zikula.Browser
- * extends prototype Browser detection
+ * extends prototype Browser detection.
  *
- * @return array
+ * @return {object} Object with browsers info
  */
 Zikula.Browser = (function(){
     var IES = {IE6:false,IE7:false,IE8:false,IE8e7:false};
@@ -57,10 +58,11 @@ Zikula.Browser = (function(){
 
 /**
  * Zikula.dejsonize
- * unserializes an array
+ * Decodes json data to original format
  *
- * @param jsondata JSONized array in utf-8 (as created by AjaxUtil::output
- * @return array
+ * @param {string} jsondata JSONized array in utf-8 (as created by AjaxUtil::output).
+ *
+ * @return {mixed} Decoded data
  */
 Zikula.dejsonize = function(jsondata)
 {
@@ -75,10 +77,12 @@ Zikula.dejsonize = function(jsondata)
 
 /**
  * Zikula.showajaxerror
- * shows an error message with alert()
- * todo: beautify this
+ * Shows an error message with alert().
  *
- * @param errortext the text to show
+ * @todo beautify this
+ *
+ * @param {string} errortext The text to show.
+ *
  * @return void
  */
 Zikula.showajaxerror = function(errortext)
@@ -87,6 +91,15 @@ Zikula.showajaxerror = function(errortext)
     return;
 }
 
+/**
+ * Zikula.ajaxResponseError
+ * Manage ajax error responses returned by AjaxUtil.
+ *
+ * @param {object}  transport    Transport object returned by Ajax.Request.
+ * @param {bool}    supresserror Should error message be supressed.
+ *
+ * @return {mixed} Decoded transport data or void
+ */
 Zikula.ajaxResponseError = function(transport, supresserror)
 {
 	var json = pndejsonize(transport.responseText);
@@ -103,10 +116,11 @@ Zikula.ajaxResponseError = function(transport, supresserror)
 
 /**
  * Zikula.setselectoption
- * sets a select to a given value
+ * Sets a select to a given value.
  *
- * @param id select id or object
- * @param sel the value that should be selected
+ * @param {string} id  Select id.
+ * @param {string} sel The value that should be selected.
+ *
  * @return void
  */
 Zikula.setselectoption = function(id, sel)
@@ -116,30 +130,26 @@ Zikula.setselectoption = function(id, sel)
 
 /**
  * Zikula.getcheckboxvalue
- * gets the value of a checkbox depending on the state
+ * Gets the value of a checkbox depending on the state.
  *
- * @param id checkbox id or object
- * @return string
+ * @deprecated
+ * @see Prototype $F
+ *
+ * @param {string} id Checkbox id.
+ *
+ * @return {string} Checkbox value
  */
 Zikula.getcheckboxvalue = function(id)
 {
-    try {
-        if($(id)) {
-            if($(id).checked==true) {
-                return $(id).value;
-            }
-            return '';
-        }
-    }catch(error) {
-        alert("Zikula.getcheckboxvalue: unknown checkbox '" + id +"'");
-    }
+    return $F(id) || '';
 }
 
 /**
  * Zikula.updateauthids
- * updates all hidden authid fields with a new authid obtained with an ajax call
+ * Updates all hidden authid fields with a new authid obtained with an ajax call.
  *
- * @param authid the new authid
+ * @param {string} authid The new authid.
+ * 
  * @return void
  */
 Zikula.updateauthids = function(authid)
@@ -152,11 +162,12 @@ Zikula.updateauthids = function(authid)
 
 /**
  * Zikula.recolor
- * set z-odd / z-even on each li after append, move and delete
+ * Set z-odd / z-even on each li after append, move and delete.
  *
- * @param   string listclass class applied to the list of items
- * @param   string headerclass class applied to the header of the list
- * @return  none;
+ * @param   {string} listclass   Class applied to the list of items.
+ * @param   {string} headerclass Class applied to the header of the list.
+ * 
+ * @return  void
  * @author  Frank Schummertz
  */
 Zikula.recolor = function(listclass, headerclass)
@@ -184,9 +195,10 @@ Zikula.recolor = function(listclass, headerclass)
 
 /**
  * Zikula.switchdisplaystate
- * change the display attribute of an specific object
+ * Change the display attribute of an specific object.
  *
- * @param   string id of the object to hide/show
+ * @param   {string} id Id of the object to hide/show.
+ * 
  * @return  void
  * @author  Axel Guckelsberger
  * @author  Mateo Tibaquira
@@ -212,11 +224,12 @@ Zikula.switchdisplaystate = function(id)
 
 /**
  * Zikula.radioswitchdisplaystate
- * change the display attribute of an specific container depending of a radio input
+ * Change the display attribute of an specific container depending of a radio input.
  *
- * @param  string idgroup       id of the container where the radio input to observe are
- * @param  string idcontainer   id of the container to hide/show
- * @param  bool   state         state of the radio to show the idcontainer
+ * @param  {string} idgroup       Id of the container where the radio input to observe are.
+ * @param  {string} idcontainer   Id of the container to hide/show.
+ * @param  {bool}   state         State of the radio to show the idcontainer.
+ *
  * @return void
  */
 Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
@@ -247,11 +260,12 @@ Zikula.radioswitchdisplaystate = function(idgroup, idcontainer, state)
 
 /**
  * Zikula.checkboxswitchdisplaystate
- * change the display attribute of an specific container depending of a checkbox input
+ * Change the display attribute of an specific container depending of a checkbox input.
  *
- * @param  string idcheckbox    id of the checkbox input to observe
- * @param  string idcontainer   id of the container to hide/show
- * @param  bool   state         state of the checkbox to show the idcontainer
+ * @param  {string} idcheckbox    Id of the checkbox input to observe.
+ * @param  {string} idcontainer   Id of the container to hide/show.
+ * @param  {bool}   state         State of the checkbox to show the idcontainer.
+ *
  * @return void
  */
 Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
@@ -281,9 +295,8 @@ Zikula.checkboxswitchdisplaystate = function(idcheckbox, idcontainer, state)
 
 /**
  * Zikula.fixbuttons
- * Workaround for wrong buttons values in IE and multiple submit buttons in IE6/7
+ * Workaround for wrong buttons values in IE and multiple submit buttons in IE6/7.
  *
- * @param none
  * @return void
  */
 Zikula.fixbuttons = function()
@@ -311,7 +324,8 @@ Zikula.fixbuttons = function()
  * Ajax timeout detection. We set the time out to 5 seconds
  * taken from http://codejanitor.com/wp/2006/03/23/ajax-timeouts-with-prototype/
  *
- * @param none
+ * @param {object} xmlhttp Transport object returned by Ajax.Request.
+ *
  * @return void
  */
 Zikula.callInProgress = function(xmlhttp) {
@@ -364,6 +378,7 @@ Ajax.Responders.register({
 
 /**
  * @deprecated
+ * @see Zikula.dejsonize
  */
 function pndejsonize(jsondata)
 {
@@ -372,6 +387,7 @@ function pndejsonize(jsondata)
 
 /**
  * @deprecated
+ * @see Zikula.showajaxerror
  */
 function pnshowajaxerror(errortext)
 {
@@ -380,6 +396,7 @@ function pnshowajaxerror(errortext)
 
 /**
  * @deprecated
+ * @see Zikula.setselectoption
  */
 function pnsetselectoption(id, sel)
 {
@@ -388,6 +405,7 @@ function pnsetselectoption(id, sel)
 
 /**
  * @deprecated
+ * @see Zikula.getcheckboxvalue
  */
 function pngetcheckboxvalue(id)
 {
@@ -396,6 +414,7 @@ function pngetcheckboxvalue(id)
 
 /**
  * @deprecated
+ * @see Zikula.updateauthids
  */
 function pnupdateauthids(authid)
 {
@@ -404,6 +423,7 @@ function pnupdateauthids(authid)
 
 /**
  * @deprecated
+ * @see Zikula.callInProgress
  */
 function callInProgress(xmlhttp)
 {
@@ -412,6 +432,7 @@ function callInProgress(xmlhttp)
 
 /**
  * @deprecated
+ * @see Zikula.recolor
  */
 function pnrecolor(listclass, headerclass)
 {
@@ -420,6 +441,7 @@ function pnrecolor(listclass, headerclass)
 
 /**
  * @deprecated
+ * @see Zikula.switchdisplaystate
  */
 function switchdisplaystate(id)
 {
@@ -428,6 +450,7 @@ function switchdisplaystate(id)
 
 /**
  * @deprecated
+ * @see Zikula.radioswitchdisplaystate
  */
 function radioswitchdisplaystate(idgroup, idcontainer, state)
 {
@@ -436,6 +459,7 @@ function radioswitchdisplaystate(idgroup, idcontainer, state)
 
 /**
  * @deprecated
+ * @see Zikula.checkboxswitchdisplaystate
  */
 function checkboxswitchdisplaystate(idcheckbox, idcontainer, state)
 {
