@@ -1250,8 +1250,7 @@ class UserUtil
 
             // Fire the event
             $updateEvent = new Zikula_Event('user.update', $updatedUserObj);
-            $eventManager = EventUtil::getManager(ServiceUtil::getManager());
-            $eventManager->notify($updateEvent);
+            EventUtil::notify($updateEvent);
         }
 
         return $res;
@@ -1604,8 +1603,7 @@ class UserUtil
 
             // Fire the event
             $updateEvent = new Zikula_Event('user.update', $updatedUserObj);
-            $eventManager = EventUtil::getManager(ServiceUtil::getManager());
-            $eventManager->notify($updateEvent);
+            EventUtil::notify($updateEvent);
         }
 
         return $res;
