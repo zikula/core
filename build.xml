@@ -46,6 +46,7 @@
         <mkdir dir="${builddir}/export" />
         <mkdir dir="${builddir}/patch" />
         <mkdir dir="${builddir}/tmp" />
+        <mkdir dir="${builddir}/jsdoc" />
     </target>
 
     <!-- Build archives -->
@@ -165,6 +166,12 @@
     <target name="phpunit">
         <echo msg="PHPUnit..." />
         <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/coverage/clover.xml --coverage-html ${builddir}/coverage/ ${sourcedir}/tests"/>
+    </target>
+
+    <!-- JSDoc -->
+    <target name="jsdoc">
+        <echo msg="JSDoc..." />
+        <exec command="cd ${builddir}/jsdoc;/opt/JSDoc/jsdoc.pl ${sourcedir}/src/javascript/helpers"/>
     </target>
 
     <!-- Code Browser -->
