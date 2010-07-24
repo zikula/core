@@ -19,7 +19,7 @@
 class JCSSUtil
 {
     /**
-     * Generate a configuration for javascript and return script tag to embed in HTML HEAD
+     * Generate a configuration for javascript and return script tag to embed in HTML HEAD.
      * 
      * @return string HTML code with script tag
      */
@@ -48,12 +48,13 @@ class JCSSUtil
     }
 
     /**
-     * The main procedure for managing stylesheets and javascript files
+     * The main procedure for managing stylesheets and javascript files.
+     *
      * Gets demanded files from PageUtil variables, check them and resolve dependencies.
      * Returns an array with two arrays, containing list of js and css files
-     * ready to embedded in the HTML HEAD
+     * ready to embedded in the HTML HEAD.
      *
-     * @param bool   $combine   Should files be combined?
+     * @param bool   $combine   Should files be combined.
      * @param string $cache_dir Path to cache directory.
      *
      * @return array Array with two array containing the files to be embedded into HTML HEAD
@@ -100,9 +101,9 @@ class JCSSUtil
     }
 
     /**
-     * Procedure for managinig stylesheets
+     * Procedure for managinig stylesheets.
      *
-     * @param array $stylesheets List of demanded stylesheets
+     * @param array $stylesheets List of demanded stylesheets.
      *
      * @return array List of stylesheets
      */
@@ -122,10 +123,11 @@ class JCSSUtil
 
     /**
      * Procedure for managinig javascript files.
+     *
      * Verify demanded files, translate script aliases to real paths, resolve dependencies.
      * Check if gettext is needed and if so add to list file with translations.
      *
-     * @param array $javascripts List of javascript files
+     * @param array $javascripts List of javascript files.
      *
      * @return array List of javascript files
      */
@@ -163,8 +165,7 @@ class JCSSUtil
     }
 
     /**
-     * Gets from PageUtil requests for gettext and generates url for
-     * file with translations.
+     * Gets from PageUtil requests for gettext and generates url for file with translations.
      *
      * @return string Url to file with translations
      */
@@ -194,9 +195,9 @@ class JCSSUtil
     }
 
     /**
-     * Method to resolve scripts dependencies basing on scripts map from JCSSUtil: scriptsMap
+     * Method to resolve scripts dependencies basing on scripts map from JCSSUtil: scriptsMap.
      *
-     * @param array $javascripts List of javascript files to verify
+     * @param array $javascripts List of javascript files to verify.
      *
      * @return array List of javascript files
      */
@@ -222,6 +223,7 @@ class JCSSUtil
 
     /**
      * Checks the given script name (alias or path).
+     *
      * If this is the core script is returning it's alias.
      * This method also hanldes all legacy for script paths.
      *
@@ -248,9 +250,9 @@ class JCSSUtil
     }
 
     /**
-     * Internal procedure for managing legacy script paths
+     * Internal procedure for managing legacy script paths.
      *
-     * @param string $script Script path to check
+     * @param string $script Script path to check.
      * 
      * @return string Verified script path
      */
@@ -293,6 +295,7 @@ class JCSSUtil
 
     /**
      * An array with a list of core scripts.
+     * 
      * For each script can be defined:
      * - path: the true path to the file
      * - require: other scripts to be loaded along with the file (aliases for core, paths for other)
