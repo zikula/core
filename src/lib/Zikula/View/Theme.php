@@ -244,7 +244,7 @@ class Zikula_View_Theme extends Zikula_View
         $this->compile_dir = CacheUtil::getLocalDir() . '/Theme_compiled';
         $this->compile_check = ModUtil::getVar('Theme', 'compile_check');
         $this->force_compile = ModUtil::getVar('Theme', 'force_compile');
-        $this->compile_id = $theme;
+        $this->compile_id = '';
         // template caching
         $this->cache_dir = CacheUtil::getLocalDir() . '/Theme_cache';
         $this->caching = ModUtil::getVar('Theme', 'enablecache');

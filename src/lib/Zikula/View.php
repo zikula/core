@@ -205,7 +205,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->force_compile = ModUtil::getVar('Theme', 'render_force_compile');
 
         $this->compile_dir = CacheUtil::getLocalDir() . '/view_compiled';
-        $this->compile_id = $this->toplevelmodule . '_' . $theme . '_' . Zlanguage::getLanguageCode();
+        $this->compile_id = '';
         $this->cache_id = '';
         $this->expose_template = (ModUtil::getVar('Theme', 'render_expose_template') == true) ? true : false;
         $this->register_block('nocache', 'Zikula_View_block_nocache', false);
@@ -648,10 +648,12 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     {
         $this->_setup_template($template);
 
-        if (!is_null($cache_id)) {
-            $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $cache_id;
-        } else {
-            $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $this->cache_id;
+        if (is_null($cache_id)) {
+            $cache_id = $this->cache_id;
+        }
+
+        if (is_null($compile_id)) {
+            $compile_id = $this->compile_id;
         }
 
         $output = parent::fetch($template, $cache_id, $compile_id, $display);
@@ -689,6 +691,70 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         return true;
     }
 
+     /**
+     * returns an auto_id for auto-file-functions
+     *
+     * @param string $cache_id
+     * @param string $compile_id
+     * @return string|null
+     */
+    function _get_auto_id($cache_id=null, $compile_id=null) {
+        if (isset($cache_id)) {
+            $auto_id = (isset($compile_id) && !empty($compile_id)) ? $cache_id . '_' . $compile_id  : $cache_id;
+        }
+        elseif (isset($compile_id)) {
+            $auto_id = $compile_id;
+        }
+        else {
+            $auto_id = null;
+        }
+
+        return md5($auto_id);
+    }
+
+    /**
+     * get a concrete filename for automagically created content
+     *
+     * @param string $auto_base
+     * @param string $auto_source
+     * @param string $auto_id
+     * @return string
+     * @staticvar string|null
+     * @staticvar string|null
+     */
+    function _get_auto_filename($auto_base, $auto_source = null, $auto_id = null)
+    {
+        $path = $auto_base.'/';
+
+        $multilingual = System::getVar('multilingual');
+
+        if ($multilingual == 1) {
+            $path .= $this->language.'/';
+        }
+
+        if ($this instanceof Zikula_View_Theme) {
+            //$path .= 'themes/';
+            $path .= $this->themeinfo['directory'].'/';
+        } else {
+            //$path .= 'modules/';
+            $path .= $this->modinfo['directory'].'/';
+        }
+
+        //echo '<p>'.$path.'</p>';
+
+        if (!file_exists($path)) {
+            mkdir($path, null, true);
+        }
+
+        if (isset($auto_id) && !empty($auto_id)) {
+            $file = $auto_id.'_'.$auto_source;
+        } else {
+            $file = $auto_source;
+        }
+
+        return $path.$file;
+    }
+
     /**
      * Finds out if a template is already cached.
      *
@@ -705,19 +771,11 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function is_cached($template, $cache_id = null, $compile_id = null)
     {
-        // insert the condition to check the cache here!
-        // if (functioncheckdb($this -> module)) {
-        //        return parent :: clear_cache($template, $this -> cache_id);
-        //}
-        $this->_setup_template($template);
-
-        if ($cache_id) {
-            $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $cache_id;
-        } else {
-            $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $this->cache_id;
+        if (is_null($cache_id)) {
+            $cache_id = $this->cache_id;
         }
 
-        if (!isset($compile_id)) {
+        if (is_null($compile_id)) {
             $compile_id = $this->compile_id;
         }
 
@@ -766,7 +824,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         } else {
             if ($expire == null) {
                 foreach($cached_files as $cf) {
-                    if (strpos($cf, $template) !== false && strpos($cf, $this->theme.'_'.$this->language) !== false) {
+                    if (strpos($cf, $template) !== false) {
                         unlink(realpath($cf));
                     }
                 }
@@ -787,13 +845,6 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function clear_all_cache($exp_time = null)
     {
-        /*
-        $res = parent::clear_cache(null, null, null, $exp_time);
-        // recreate index.html file
-        fclose(fopen($this->cache_dir . '/index.html', 'w'));
-        return $res;
-        */
-
         return $this->clear_cache(null, null, null, $exp_time);
     }
 
@@ -805,15 +856,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @return boolean Results of {@link smarty_core_rm_auto()}.
      */
     public function clear_compiled($exp_time = null)
-    {
-        /*
-        //unset($this->compile_id); // commented out because this causes an E_NOTICE in Smarty.class.php:1156
-        $res = parent::clear_compiled_tpl(null, null, $exp_time);
-        // recreate index.html file
-        fclose(fopen($this->compile_dir . '/index.html', 'w'));
-        return $res;
-        */
-        
+    {   
         $compile_dir = $this->compile_dir;
 
         $compiled_files = FileUtil::getFiles($compile_dir, true, false, array('php', 'inc'), null, false);
