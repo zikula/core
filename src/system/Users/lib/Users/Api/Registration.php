@@ -629,7 +629,7 @@ class Users_Api_Registration extends Zikula_Api
                 }
             }
 
-            return $reginfo;
+            return $userObj;
         } else {
             return LogUtil::registerError($this->__('Unable to store the new user registration record.'));
         }
