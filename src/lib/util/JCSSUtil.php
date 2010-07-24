@@ -227,7 +227,7 @@ class JCSSUtil
      * If this is the core script is returning it's alias.
      * This method also hanldes all legacy for script paths.
      *
-     * @param string $script Script path or alias to verify
+     * @param string $script Script path or alias to verify.
      *
      * @return string Script path or alias
      */
