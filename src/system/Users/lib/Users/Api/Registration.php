@@ -1126,6 +1126,9 @@ class Users_Api_Registration extends Zikula_Api
             'changetype' => UserUtil::VERIFYCHGTYPE_REGEMAIL,
         ));
 
+        // NOTE: This is a registration, not a "real" user, so no user.delete event and no item delete hook
+        // TODO - Shoud we fire a special registration.delete event?
+
         return DBUtil::deleteObjectByID('users', $uid, 'uid');
     }
 
@@ -1437,14 +1440,18 @@ class Users_Api_Registration extends Zikula_Api
 
         $res = DBUtil::updateObject($obj, 'users', '', 'uid');
 
-        if (!$res) {
+        if ($res) {
             // NOTE: This is not an item-create because this is a legacy activation, and the
             // user account record was already in a state where it was a "real" record.
             // See createRegistration() and createUser() above.
             $this->callHooks('item', 'update', $args['uid'], array('module' => 'Users'));
-            return false;
-        } else {
+            // ... and call event too.
+            $updateEvent = new Zikula_Event('user.update', $res);
+            $this->eventManager->notify($updateEvent);
+
             return true;
+        } else {
+            return false;
         }
     }
 

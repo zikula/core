@@ -1306,6 +1306,7 @@ class Users_Controller_Admin extends Zikula_Controller
                         if (isset($value) && is_array($value) && !empty($value)) {
                             $value = serialize($value);
                             UserUtil::setVar($field, $value, $reginfo['uid']);
+                            // NOTE: Issuance of a user.update event or an item update hook call is controlled by setVar
                         }
                         break;
                     case 'uname':
@@ -1315,11 +1316,15 @@ class Users_Controller_Admin extends Zikula_Controller
                                 'uname' => $reginfo['uname'],
                             );
                             DBUtil::updateObject($updateUserObj, 'users', '', 'uid', false, false);
+                            // NOTE: This is a registration, not a "real" user, so no user.update event and no item
+                            // update hook call.
+                            // TODO - Should we fire a special registration.update event?
                         }
                         break;
                     default:
                         if ($value != $oldReginfo[$field]) {
                             UserUtil::setVar($field, $value, $reginfo['uid']);
+                            // NOTE: Issuance of a user.update event or an item update hook call is controlled by setVar
                         }
                 }
             }

@@ -1175,6 +1175,19 @@ class UserUtil
             return false;
         }
 
+        $isRegistration = false;
+        $origUserObj = self::getVars($uid);
+        if (!$origUserObj) {
+            // Might be a registration getting updated
+            $origUserObj = self::getVars($uid, false, '', true);
+            if ($origUserObj) {
+                $isRegistration = true;
+            } else {
+                // No such user record!
+                return false;
+            }
+        }
+
         // this array maps old DUDs to new attributes
         $mappingarray = array(
                 '_UREALNAME' => 'realname',
@@ -1215,7 +1228,6 @@ class UserUtil
             // $name is a former DUD /old style user information now stored as an attribute
             $obj = array('uid' => $uid, '__ATTRIBUTES__' => array($mappingarray[$name] => $value));
             $res = (bool)ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
-
         } else if (!in_array($name, array('uid', 'uname'))) {
             // $name not in the users table and also not found in the mapping array and also not one of the
             // forbidden names, let's make an attribute out of it
@@ -1224,7 +1236,24 @@ class UserUtil
         }
 
         // force loading of attributes from db
-        self::getVars($uid, true);
+        $updatedUserObj = self::getVars($uid, true, '', $isRegistration);
+        if (!$updatedUserObj) {
+            // Should never get here!
+            return false;
+        }
+
+        // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
+        // the password being updated, and the system is not currently being installed.
+        if ($res && !$isRegistration && ($name != 'pass') && !System::isInstalling()) {
+            // Call the hook
+            ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
+
+            // Fire the event
+            $updateEvent = new Zikula_Event('user.update', $updatedUserObj);
+            $eventManager = EventUtil::getManager(ServiceUtil::getManager());
+            $eventManager->notify($updateEvent);
+        }
+
         return $res;
     }
 
@@ -1502,6 +1531,19 @@ class UserUtil
             return (bool)self::setVar($name, -1, $uid);
         }
 
+        $isRegistration = false;
+        $origUserObj = self::getVars($uid);
+        if (!$origUserObj) {
+            // Might be a registration getting updated
+            $origUserObj = self::getVars($uid, false, '', true);
+            if ($origUserObj) {
+                $isRegistration = true;
+            } else {
+                // No such user record!
+                return false;
+            }
+        }
+
         // this array maps old DUDs to new attributes
         $mappingarray = array(
                 '_UREALNAME' => 'realname',
@@ -1535,21 +1577,38 @@ class UserUtil
         if (self::fieldAlias($name)) {
             // this value comes from the users table
             $obj = array('uid' => $uid, $name => '');
-            return (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
+            $res = (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
         } else if (array_key_exists($name, $mappingarray)) {
             LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), E_USER_DEPRECATED);
             // $name is a former DUD /old style user information now stored as an attribute
-            $res = ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $mappingarray[$name]);
+            $res = (bool)ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $mappingarray[$name]);
 
         } else {
             // $name not in the users table and also not found in the mapping array,
             // let's make an attribute out of it
-            $res = ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $name);
+            $res = (bool)ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $name);
         }
 
         // force loading of attributes from db
-        self::getVars($uid, true);
-        return (bool)$res;
+        $updatedUserObj = self::getVars($uid, true, '', $isRegistration);
+        if (!$updatedUserObj) {
+            // Should never get here!
+            return false;
+        }
+
+        // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
+        // the password being updated, and the system is not currently being installed.
+        if ($res && !$isRegistration && ($name != 'pass') && !System::isInstalling()) {
+            // Call the hook
+            ModUtil::callHooks('item', 'update', $uid, array('module' => 'Users'));
+
+            // Fire the event
+            $updateEvent = new Zikula_Event('user.update', $updatedUserObj);
+            $eventManager = EventUtil::getManager(ServiceUtil::getManager());
+            $eventManager->notify($updateEvent);
+        }
+
+        return $res;
     }
 
     /**
