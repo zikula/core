@@ -114,8 +114,8 @@ class ZLoader
         if (strpos($class, 'SystemPlugin') === 0) {
             $array = explode('_', $class);
             $pluginName = $array[1];
-            $name = substr($class, strlen("SystemPlugin_{$pluginName}"), strlen($class));
-            $path = str_replace('_', '/', "plugins/$pluginName/lib/$name.php");
+            $name = substr($class, strlen("SystemPlugin_{$pluginName}") + 1, strlen($class));
+            $path = str_replace('_', '/', "plugins/$pluginName/lib/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
             }
