@@ -51,7 +51,7 @@
 
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<div id="users_errormsgs_div" class="z-errormsg{if empty($errormsgs)} z-hide{/if}">
+<div id="users_errormsgs_div" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
     <p>{gt text="Please correct the following items:"}</p>
     <ul id="users_errormsgs">
         {if isset($errorMessages)}
@@ -123,7 +123,7 @@
             </div>
             <div class="z-formrow">
                 <label for="users_emailagain">{gt text="E-mail address (repeat for verification)"}<span class="z-mandatorysym">{gt text="*"}</span></label>
-                <input id="users_emailagain" name="emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{if isset($emailagain)}$emailagain}{/if}" />
+                <input id="users_emailagain" name="emailagain"{if isset($errorFields.emailagain)} class="errorrequired"{/if} type="text" size="25" maxlength="60" value="{if isset($emailagain)}{$emailagain}{/if}" />
             </div>
         </fieldset>
 

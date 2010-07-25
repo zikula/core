@@ -211,8 +211,8 @@ class Users_Controller_User extends Zikula_Controller
             $rendererArgs['touActive'] = $legalModAvailable && ModUtil::getVar('legal', 'termsofuse', true);
             $rendererArgs['ppActive'] = $legalModAvailable && ModUtil::getVar('legal', 'privacypolicy', true);
             $rendererArgs['userMustAccept'] = $rendererArgs['touActive'] || $rendererArgs['ppActive'];
-            $rendererArgs['errormsgs'] = (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array();
-            $rendererArgs['errorflds'] = (isset($errorInfo['errorFields']) && !empty($errorInfo['errorFields'])) ? $errorInfo['errorFields'] : array();
+            $rendererArgs['errorMessages'] = (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array();
+            $rendererArgs['errorFields'] = (isset($errorInfo['errorFields']) && !empty($errorInfo['errorFields'])) ? $errorInfo['errorFields'] : array();
             $rendererArgs['registrationErrors'] = (isset($registrationErrors) && !empty($registrationErrors)) ? $registrationErrors : array();
             $rendererArgs['usePwdStrengthMeter'] = (isset($modVars['use_password_strength_meter']) && !empty($modVars['use_password_strength_meter'])) ? $modVars['use_password_strength_meter'] : array();
             $rendererArgs['usePwdStrengthMeter'] = (isset($modVars['use_password_strength_meter']) && !empty($modVars['use_password_strength_meter'])) ? $modVars['use_password_strength_meter'] : false;
