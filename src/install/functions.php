@@ -157,6 +157,10 @@ function install()
             } elseif (preg_match('/\W/', $dbprefix)) {
                 $action = 'dbinformation';
                 $smarty->assign('dbinvalidprefix', true);
+            } elseif (!preg_match('/^[\w-]*$/', $dbname) ||
+                      strlen($dbname) > 64) {
+                $action = 'dbinformation';
+                $smarty->assign('dbinvalidname', true);
             } else {
                 update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbprefix, $dbtype, $dbtabletype);
                 update_installed_status('0');
@@ -194,7 +198,11 @@ function install()
                 if ($installbySQL && $action != 'dbinformation') {
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
-                    $exec = "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
+                    if ($dbtype == 'mysql' || $dbtype == 'mysqli') {
+                        $exec = "SHOW TABLES FROM `$dbname` LIKE '" . $dbprefix . "_%'";
+                    } else {
+                        $exec = "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
+                    }
                     $tables = DBUtil::executeSQL($exec);
                     if ($tables->rowCount() > 0) {
                         $proceed = false;
@@ -381,7 +389,7 @@ function makedb($dbh, $dbname, $dbtype)
     switch ($dbtype) {
         case 'mysql':
         case 'mysqli':
-            $query = "CREATE DATABASE $dbname DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci";
+            $query = "CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci";
             break;
         case 'pgsql':
             $query = "CREATE DATABASE $dbname ENCODING='utf8'";

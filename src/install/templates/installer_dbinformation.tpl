@@ -1,8 +1,9 @@
 <h2>{gt text="Enter database information"}</h2>
-{if $dbcreatefailed or $dbconnectfailed or $dbconnectmissing or $dbinvalidprefix or $dbdumpfailed or $dbexists}
+{if $dbcreatefailed or $dbconnectfailed or $dbconnectmissing or $dbinvalidprefix or $dbinvalidname or $dbdumpfailed or $dbexists}
 <div class="z-errormsg">
     {if $dbconnectmissing}{gt text="Error! Some of the required information was not entered. Please check your entries and try again."}<br />{$reason}
     {elseif $dbinvalidprefix}{gt text="Error! Invalid table prefix. Please use only letters or numbers."}<br />{$reason}
+    {elseif $dbinvalidname}{gt text="Error! Invalid database name. Please use only letters, numbers, '-' or '_' with a maximum of 64 characters."}<br />{$reason}
     {elseif $dbconnectfailed}{gt text="Error! Could not connect to the database. Please check that you have entered the correct database information and try again."}<br />{$reason}
     {elseif $dbcreatefailed}{gt text="Error! Could not create database. Please check that you have entered the correct database information and try again."}<br />{$reason}
     {elseif $dbdumpfailed}{gt text="Error! Could not dump the database. Please check that the file zikulacms.sql is located within the folder install/sql and it is readable."}<br />{$reason}
