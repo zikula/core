@@ -1,3 +1,4 @@
+<br />
 <div class="z-form">
     <fieldset>
         <legend>{gt text='Compilation'}</legend>

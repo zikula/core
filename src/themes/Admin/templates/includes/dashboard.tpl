@@ -1,64 +1,106 @@
-<div class="dashboard">
-<div style="width:49%;height:auto;float:left;" class="dash-div draggable">
-<span style="float:right;"><a href="#" title="{gt text='open/close'}" onclick="Effect.toggle('hint-1','BLIND'); return false;">{gt text='open/close'}</a></span>
-<h2>{gt text='Pending Content'}</h2>
-<div class="dash-content-div" id="hint-1" style="display:none">
-<ul>
-<li>2 pending News</li>
-<li>3 new Newsletter Useres waiting for approval</li>
-<li>4 pending Mediashare Items</li>
-</ul>
-</div>
-</div>
-<div style="width:49%;height:auto;float:right;" class="dash-div draggable">
-<span style="float:right;"><a href="#" title="{gt text='open/close'}" onclick="Effect.toggle('hint-2','BLIND'); return false;">{gt text='open/close'}</a></span>
-<h2>{gt text='Counters &amp; Stats'}</h2>
-<div class="dash-content-div" id="hint-2" style="display:none">
-<ul>
-<li>400 Newsarticles</li>
-<li>45000 Postings</li>
-<li>4000 Comments</li>
-<li>39 PageMaster Publications</li>
-</ul>
-</div>
-</div>
-<div style="clear:both;"></div>
-<div style="width:49%;height:auto;float:left;" class="dash-div draggable">
-<span style="float:right;"><a href="#" title="{gt text='open/close'}" onclick="Effect.toggle('hint-3','BLIND'); return false;">{gt text='open/close'}</a></span>
-<h2>{gt text='Extension Updates'}</h2>
-<div class="dash-content-div" id="hint-3" style="display:none">
-{php}
-	$src = 'http://community.zikula.org/index.php?module=Extensions&func=view&ot=component&comptype=0&sort=lu_date&sdir=desc&tpl=rss&raw=1&catms=0&catma=0&catmf=0&cattt=0&catrt=0&catcl=0';
-	$chan = 'y';
-	$num = 4;
-	$desc = 0;
-	$html = 'y';
-	$tz = 'feed';
-	$utf = 'y';
-	$date = 'n';
-	$targ = 'y';
-	include 'themes/Admin/templates/rss/feed2php.inc';
-{/php}
-</div>
-</div>
-<div style="width:49%;height:auto;float:right;" class="dash-div draggable">
-<span style="float:right;"><a href="#" title="{gt text='open/close'}" onclick="Effect.toggle('hint-4','BLIND'); return false;">{gt text='open/close'}</a></span>
-<h2>{gt text='Community News'}</h2>
-<div class="dash-content-div" id="hint-4" style="display:none">
-{php}
-    // adding Feed2Js variables
-	$src = 'http://community.zikula.org/index.php?module=News&theme=RSS';
-	$chan = 'y';
-	$num = 4;
-	$desc = 200;
-	$html = 'y';
-	$tz = 'feed';
-	$utf = 'y';
-	$date = 'y';
-	$targ = 'y';
-	include 'themes/Admin/templates/rss/feed2php.inc';
-{/php}
-</div>
-</div>
-
-</div>
+<div class="inner-page-title">
+<br />
+					<h2>Dashboard</h2>
+					<span>Check out the newest Stuff!</span>
+				</div>
+				<div class="three-column sortable">
+					<div class="three-col-mid">
+						<div class="column col1">
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								<div class="portlet-header ui-widget-header">Users<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+								12345
+								</div>
+							</div>
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								<div class="portlet-header ui-widget-header">Settings<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+									<p>asasdfdf</p></div>
+							</div>
+						</div>
+						
+						<div class="column col2">
+						
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								<div class="portlet-header ui-widget-header">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+								<p>Articles</p>
+								</div>
+							</div>
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								<div class="portlet-header ui-widget-header">Pending Content<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+								<p>Images</p>
+								</div>
+							</div>
+						
+						</div>
+						
+						<div class="column col3">
+						
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								<div class="portlet-header ui-widget-header">Forum<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+								Posts
+								</div>
+							</div>
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								<div class="portlet-header ui-widget-header">News<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+								asdf
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="content-box">
+					<div class="two-column">
+						<div class="column">
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								
+                <div class="portlet-header ui-widget-header">Extension News:<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+									{php}
+	                                    $src = 'http://community.zikula.org/index.php?module=Extensions&func=view&ot=component&comptype=0&sort=lu_date&sdir=desc&tpl=rss&raw=1&catms=0&catma=0&catmf=0&cattt=0&catrt=0&catcl=0';
+	                                    $chan = 'y';
+	                                    $num = 4;
+	                                    $desc = 0;
+	                                    $html = 'y';
+	                                    $tz = 'feed';
+	                                    $utf = 'y';
+	                                    $date = 'n';
+	                                    $targ = 'y';
+	                                    include 'themes/Admin/templates/rss/feed2php.inc';
+                                    {/php}
+								</div>
+							</div>
+						</div>
+						<div class="column column-right">
+							<div class="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+								<div class="portlet-header ui-widget-header">Project News<span class="ui-icon ui-icon-circle-arrow-s">&nbsp;</span></div>
+								<div class="portlet-content">
+                                    {php}
+	                                    $src = 'http://community.zikula.org/index.php?module=News&theme=RSS';
+	                                    $chan = 'y';
+	                                    $num = 5;
+	                                    $desc = 0;
+	                                    $html = 'y';
+	                                    $tz = 'feed';
+	                                    $utf = 'y';
+	                                    $date = 'n';
+	                                    $targ = 'y';
+	                                    include 'themes/Admin/templates/rss/feed2php.inc';
+                                    {/php}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<div class="response-msg inf ui-corner-all">
+						<span>Stay tuned!</span>
+						Visit community.zikula.org !
+					</div>
+				</div>
+				<div class="clear"></div>			 
+				
