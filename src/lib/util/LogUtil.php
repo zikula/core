@@ -132,9 +132,7 @@ class LogUtil
      */
     public static function registerStatus($message, $url = null)
     {
-        if (empty($message)) {
-            return z_exit(__f('Empty [%s] received.', 'message'));
-        }
+        $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
         self::addStatusPopup($message);
 
@@ -249,9 +247,7 @@ class LogUtil
      */
     public static function registerError($message, $type = null, $url = null, $debug=null)
     {
-        if (!isset($message) || empty($message)) {
-            return z_exit(__f('Empty [%s] received.', 'message'));
-        }
+        $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
         self::addErrorPopup($message);
 
