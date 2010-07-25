@@ -7,13 +7,22 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
+/**
+ * Provides metadata for this module to the Modules module.
+ */
 class Users_Version extends Zikula_Version
 {
+    /**
+     * Assemble and return module metadata.
+     *
+     * @return array Module metadata.
+     */
     public function getMetaData()
     {
         $meta = array();

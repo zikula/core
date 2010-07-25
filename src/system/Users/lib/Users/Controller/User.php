@@ -1,21 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
- * Controllers provide users access to actions that they can perform on the system;
- * this class provides access to (non-administrative) user-initiated actions for the Users module.
- *
- * @package Zikula
- * @subpackage Users
+ * Access to (non-administrative) user-initiated actions for the Users module.
  */
 class Users_Controller_User extends Zikula_Controller
 {

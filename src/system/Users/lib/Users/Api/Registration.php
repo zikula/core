@@ -1,21 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
- * The Register API provides system-level and database-level functions for user-initiated actions related to
- * new account registrations.
- *
- * @package Zikula
- * @subpackage Users
+ * The system-level and database-level functions for user-initiated actions related to new account registrations.
  */
 class Users_Api_Registration extends Zikula_Api
 {
@@ -42,8 +41,7 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Related to getRegistrationErrors, returns error information related to a new or
-     * modified password.
+     * Related to getRegistrationErrors, returns error information related to a new or modified password.
      *
      * @param array $args All parameters passed to this function.
      *
@@ -115,8 +113,7 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Related to getRegistrationErrors, returns error information related to a new or
-     * modified e-mail address.
+     * Related to getRegistrationErrors, returns error information related to a new or modified e-mail address.
      *
      * @param array $args All parameters passed to this function.
      *
@@ -201,12 +198,15 @@ class Users_Api_Registration extends Zikula_Api
      * Validate new user information entered by the user.
      *
      * @param array $args All parameters passed to this function.
-     *                    array  $args['reginfo']
-     *                    string $args['emailagain']
-     *                    string $args['passagain']
-     *                    string $args['antispamanswer']
-     *                    string $args['checkmode']
-     *                    string $args['setpass']
+     *                    array  $args['reginfo']        The core registration or user information collected from input.
+     *                    string $args['emailagain']     The e-mail address repeated for verification.
+     *                    string $args['passagain']      The passsword repeated for verification.
+     *                    string $args['antispamanswer'] The answer to the antispam question provided by the user.
+     *                    string $args['checkmode']      The "mode" that should be used when checking errors. If this
+     *                                                      is "modify" then certain checks are not performed or are
+     *                                                      preformed differently.
+     *                    bool   $args['setpass']        A flag indicating whether the password is to be set on the new
+     *                                                      or modified record, affecting error checking.
      *
      * @return array An array containing errors organized by field.
      *
@@ -371,8 +371,10 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Create a new user, which may yield a new user record in the users table, or may yield a new registration
-     * record in the users_registration table, depending on the configuration of the system and on the registration data
+     * Create a new user or registration.
+     * 
+     * May yield a new user record in the users table, or may yield a new registration record in the
+     * users_registration table, depending on the configuration of the system and on the registration data
      * provided.
      *
      * This is the primary and almost exclusive method for creating new user accounts, and the primary and
@@ -450,11 +452,12 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Utility method to clean up an object in preparation for storage, by moving any fields in the
-     * array that are not core database fields into the __ATTRIBUTES__ array.
+     * Utility method to clean up an object in preparation for storage.
      *
-     * @param array     $obj    The array appropriate for the $table; passed by reference (this function will cause
-     *                              the $obj to be modified in the calling function).
+     * Moves any fields in the array that are not core database fields into the __ATTRIBUTES__ array.
+     *
+     * @param array &$obj The array appropriate for the $table; passed by reference (this function will cause
+     *                      the $obj to be modified in the calling function).
      *
      * @return array The $obj, modified for storage as described.
      */
@@ -501,16 +504,16 @@ class Users_Api_Registration extends Zikula_Api
      * of a user account do not perform those actions on a pending registration, which
      * may be deleted at any point.
      *
-     * @see Users_Api_Registration#registerNewUser()
+     * @param array  $reginfo                Contains the data gathered about the user for the registration record.
+     * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
+     *                                          if the user's password was created for him, then he will receive at
+     *                                          least that notification without regard to this setting.
+     * @param bool   $adminNotification      Whether the configured administrator notification e-mail address should be
+     *                                          sent notification of the new registration.
+     * @param string $passwordCreatedForUser The password that was created for the user either automatically or by an
+     *                                          administrator (but not by the user himself).
      *
-     * @param array     $reginfo                    Contains the data gathered about the user for the registration record.
-     * @param bool      $userNotification           Whether the user should be notified of the new registration or not; however if the
-     *                                                  user's password was created for him, then he will receive at least that notification
-     *                                                  without regard to this setting.
-     * @param bool      $adminNotification          Whether the configured administrator notification e-mail address should be sent
-     *                                                  notification of the new registration.
-     * @param string    $passwordCreatedForUser     The password that was created for the user either automatically or by an administrator
-     *                                                  (but not by the user himself).
+     * @see    Users_Api_Registration#registerNewUser()
      *
      * @return array|bool The registration info, as saved in the users_registration table; false on error.
      */
@@ -648,20 +651,21 @@ class Users_Api_Registration extends Zikula_Api
      * record, even though the physical database record may have been saved previously as a pending
      * registration. See the note in createRegistration().
      *
-     * @see Users_Api_Registration#registerNewUser()
+     * @param array  $reginfo                Contains the data gathered about the user for the registration record.
+     * @param bool   $userNotification       Whether the user should be notified of the new registration or not;
+     *                                          however if the user's password was created for him, then he will
+     *                                          receive at least that notification without regard to this setting.
+     * @param bool   $adminNotification      Whether the configured administrator notification e-mail address should
+     *                                          be sent notification of the new registration.
+     * @param string $passwordCreatedForUser The password that was created for the user either automatically or by
+     *                                          an administrator (but not by the user himself).
      *
-     * @param array     $reginfo                    Contains the data gathered about the user for the registration record.
-     * @param bool      $userNotification           Whether the user should be notified of the new registration or not; however if the
-     *                                                  user's password was created for him, then he will receive at least that notification
-     *                                                  without regard to this setting.
-     * @param bool      $adminNotification          Whether the configured administrator notification e-mail address should be sent
-     *                                                  notification of the new registration.
-     * @param string    $passwordCreatedForUser     The password that was created for the user either automatically or by an administrator
-     *                                                  (but not by the user himself).
+     * @see    Users_Api_Registration#registerNewUser()
      *
      * @return array|bool The user info, as saved in the users table; false on error.
      */
-    protected function createUser(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
+    protected function createUser(array $reginfo, $userNotification = true, $adminNotification = true,
+        $passwordCreatedForUser = '')
     {
          $currentUserIsAdminOrSubadmin = $this->currentUserIsAdminOrSubAdmin();
 
@@ -852,8 +856,9 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Retrieve one registration application for a new user account (one registration request). Expired
-     * registrations are purged prior to performing the get.
+     * Retrieve one registration application for a new user account (one registration request).
+     *
+     * NOTE: Expired registrations are purged prior to performing the get.
      *
      * @param array $args All parameters passed to this function; either id, uname, or email must be specified, but
      *                      no more than one of those three, and email is not allowed if the system allows an email
@@ -959,8 +964,9 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Retrieve all pending registration applications for a new user account (all registration requests). Note: The
-     * registration table is purged of expired records prior to retrieving results for this function.
+     * Retrieve all pending registration applications for a new user account (all registration requests).
+     *
+     * NOTE: The registration table is purged of expired records prior to retrieving results for this function.
      *
      * @param array $args All parameters passed to this function.
      *                      array $args['filter']   An array of field/value combinations used to filter the results. Optional, default
@@ -1054,8 +1060,9 @@ class Users_Api_Registration extends Zikula_Api
     }
 
     /**
-     * Returns the number of pending applications for new user accounts (registration requests). Expired registrations
-     * are purged before the count is performed.
+     * Returns the number of pending applications for new user accounts (registration requests).
+     *
+     * NOTE: Expired registrations are purged before the count is performed.
      *
      * @param array $args All parameters passed to this function.
      *                      array $args['filter']   An array of field/value combinations used to filter the results. Optional, default
@@ -1134,6 +1141,8 @@ class Users_Api_Registration extends Zikula_Api
 
     /**
      * Removes expired registrations from the users_registration table.
+     *
+     * @return void
      */
     protected function purgeExpired()
     {
@@ -1148,7 +1157,10 @@ class Users_Api_Registration extends Zikula_Api
             $staleRecordUTCStr = $staleRecordUTC->format(UserUtil::DATETIME_FORMAT);
 
             // The zero date is there to guard against odd DB errors
-            $where = "WHERE ({$verifyChgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_REGEMAIL . ") AND ({$verifyChgColumn['created_dt']} IS NOT NULL) AND ({$verifyChgColumn['created_dt']} != '0000-00-00 00:00:00') AND ({$verifyChgColumn['created_dt']} < '{$staleRecordUTCStr}')";
+            $where = "WHERE ({$verifyChgColumn['changetype']} = " . UserUtil::VERIFYCHGTYPE_REGEMAIL .") "
+                    . "AND ({$verifyChgColumn['created_dt']} IS NOT NULL) "
+                    . "AND ({$verifyChgColumn['created_dt']} != '0000-00-00 00:00:00') "
+                    . "AND ({$verifyChgColumn['created_dt']} < '{$staleRecordUTCStr}')";
 
             $staleVerifyChgRecs = DBUtil::selectObjectArray('users_verifychg', $where);
 
@@ -1270,6 +1282,15 @@ class Users_Api_Registration extends Zikula_Api
         }
     }
 
+    /**
+     * Retrieves a verification code for a registration pending e-mail address verification.
+     *
+     * @param array $args All parameters passed to this function.
+     *                      numeric $args['uid'] The uid of the registration for which the code should be retrieved.
+     *
+     * @return array|bool An array containing the object from the users_verifychg table; an empty array if not found;
+     *                      false on error.
+     */
     public function getVerificationCode($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))

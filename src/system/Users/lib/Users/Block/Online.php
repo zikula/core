@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,16 +15,15 @@
 
 /**
  * A block that shows who is currently using the system.
- *
- * @package Zikula
- * @subpackage Users
  */
 class Users_Block_Online extends Zikula_Block
 {
     /**
-     * initialise the block
+     * Initialise the block.
      *
-     * Adds the blocks security schema to the PN environment
+     * Adds the blocks security schema to the PN environment.
+     *
+     * @return void
      */
     public function init()
     {
@@ -31,7 +31,9 @@ class Users_Block_Online extends Zikula_Block
     }
 
     /**
-     * return the block info
+     * Return the block info.
+     *
+     * @return array The blockinfo structure.
      */
     public function info()
     {
@@ -45,15 +47,17 @@ class Users_Block_Online extends Zikula_Block
     }
 
     /**
-     * Display the block
+     * Display the output of the online block.
      *
-     * Display the output of the online block
+     * @param array $blockInfo A blockinfo structure.
      *
-     * @todo move sql queries to calls to relevant API's
+     * @todo Move sql queries to calls to relevant API's.
+     *
+     * @return string|void The output.
      */
-    public function display($row)
+    public function display($blockInfo)
     {
-        if (!SecurityUtil::checkPermission('Onlineblock::', $row['title'].'::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Onlineblock::', $blockInfo['title'].'::', ACCESS_READ)) {
             return;
         }
 
@@ -64,8 +68,8 @@ class Users_Block_Online extends Zikula_Block
         // check out if the contents are cached.
         // If this is the case, we do not need to make DB queries.
         if ($this->view->is_cached('users_block_online.tpl')) {
-            $row['content'] = $this->view->fetch('users_block_online.tpl');
-            return BlockUtil::themeBlock($row);
+            $blockInfo['content'] = $this->view->fetch('users_block_online.tpl');
+            return BlockUtil::themeBlock($blockInfo);
         }
 
         $table = DBUtil::getTables();
@@ -96,8 +100,8 @@ class Users_Block_Online extends Zikula_Block
             }
         }
 
-        $row['content'] = $this->view->fetch('users_block_online.tpl');
+        $blockInfo['content'] = $this->view->fetch('users_block_online.tpl');
 
-        return BlockUtil::themeBlock($row);
+        return BlockUtil::themeBlock($blockInfo);
     }
 }

@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,14 +15,13 @@
 
 /**
  * A user-customizable block.
- *
- * @package Zikula
- * @subpackage Users
  */
 class Users_Block_User extends Zikula_Block
 {
     /**
-     * initialise block
+     * Initialise block.
+     *
+     * @return void
      */
     public function init()
     {
@@ -29,9 +29,9 @@ class Users_Block_User extends Zikula_Block
     }
 
     /**
-     * get information on block
+     * Get information on block.
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -45,24 +45,25 @@ class Users_Block_User extends Zikula_Block
     }
 
     /**
-     * display block
+     * Display block.
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param array $blockInfo A blockinfo structure.
+     *
+     * @return string|void The rendered block.
      */
-    public function display($blockinfo)
+    public function display($blockInfo)
     {
-        if (!SecurityUtil::checkPermission('Userblock::', $blockinfo['title']."::", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Userblock::', $blockInfo['title']."::", ACCESS_READ)) {
             return;
         }
 
         if (UserUtil::isLoggedIn() && UserUtil::getVar('ublockon') == 1) {
-            if (!isset($blockinfo['title']) || empty($blockinfo['title'])) {
-                $blockinfo['title'] = $this->__f('Custom block content for %s', UserUtil::getVar('name'));
+            if (!isset($blockInfo['title']) || empty($blockInfo['title'])) {
+                $blockInfo['title'] = $this->__f('Custom block content for %s', UserUtil::getVar('name'));
             }
-            $blockinfo['content'] = nl2br(UserUtil::getVar('ublock'));
+            $blockInfo['content'] = nl2br(UserUtil::getVar('ublock'));
 
-            return BlockUtil::themeBlock($blockinfo);
+            return BlockUtil::themeBlock($blockInfo);
         }
 
         return;

@@ -1,21 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
- * The User API provides system-level and database-level functions for user-initiated actions;
- * this class provides those functions for the Users module.
- *
- * @package Zikula
- * @subpackage Users
+ * The system-level and database-level functions for user-initiated actions for the Users module.
  */
 class Users_Api_User extends Zikula_Api
 {
@@ -677,7 +676,9 @@ class Users_Api_User extends Zikula_Api
      *                      int|array $args['changetype'] The changetype(s) of the verifychg record to remove. If more
      *                                                      than one type is to be removed, use an array. Optional. If
      *                                                      not specifed, all verifychg records for the user will be
-     *                                                      removed. (Note, specifying an empty array will remove none.)
+     *                                                      removed. Note: specifying an empty array will remove none.
+     *
+     * @return void|bool Null on success, false on error.
      */
     public function resetVerifyChgFor($args)
     {
@@ -740,12 +741,13 @@ class Users_Api_User extends Zikula_Api
     }
 
     /**
-     * A convenience function for several operations that converts registration error messages
-     * into more easily displayable sets of data.
+     * Convenience function for several functions; converts registration errors into easily displayable sets of data.
      *
      * @param array $args All parameters passed to the function.
-     *                      array   registrationErrors  The array of registration errors from getRegistrationErrors or
-     *                                                      one of its related functions.
+     *                      array   $args['registrationErrors'] The array of registration errors from
+     *                                                              getRegistrationErrors or one of its related
+     *                                                              functions.
+     *
      * @return array Modified error information.
      */
     public function processRegistrationErrorsForDisplay($args)

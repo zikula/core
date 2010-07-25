@@ -917,7 +917,7 @@ class UserUtil
     /**
      * When getting a registration record, this function calculates several fields needed for registration state.
      *
-     * @param array $userObj The user object array created by UserUtil::getVars(). NOTE: this parameter is passed by
+     * @param array &$userObj The user object array created by UserUtil::getVars(). NOTE: this parameter is passed by
      *                          reference, and therefore will be updated by the actions of this function.
      *
      * @return array The updated $userObj.

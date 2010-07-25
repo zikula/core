@@ -1,21 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright 2001 Zikula Development Team
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
- * @version $Id$
- * @link http://www.zikula.org
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
- * The Account API provides links for modules on the "user account page"; this
- * class provides those links for the Users module.
- *
- * @package Zikula
- * @subpackage Users
+ * The Account API provides links for modules on the "user account page"; this class provides them for the Users module.
  */
 class Users_Api_Account extends Zikula_Api
 {

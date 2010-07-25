@@ -1,21 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
- * Controllers provide users access to actions that they can perform on the system;
- * this class provides access to administrator-initiated actions for the Users module.
- *
- * @package Zikula
- * @subpackage Users
+ * Administrator-initiated actions for the Users module.
  */
 class Users_Controller_Admin extends Zikula_Controller
 {
@@ -900,11 +899,12 @@ class Users_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Internal function to construct a list of various actions for a list of registrations appropriate
-     * for the current user.
+     * Constructs a list of various actions for a list of registrations appropriate for the current user.
      *
-     * @param  array  $reglist      The list of registration records.
-     * @param  string $restoreView  Indicates where the calling function expects to return to; 'view' indicates
+     * NOTE: Internal function.
+     *
+     * @param array  $reglist     The list of registration records.
+     * @param string $restoreView Indicates where the calling function expects to return to; 'view' indicates
      *                                  that the calling function expects to return to the registration list
      *                                  and 'display' indicates that the calling function expects to return
      *                                  to an individual registration record.
@@ -1340,6 +1340,8 @@ class Users_Controller_Admin extends Zikula_Controller
     }
 
     /**
+     * Renders and processes the admin's force-verify form.
+     *
      * Renders and processes a form confirming an administrators desire to skip verification for
      * a registration record, approve it and add it to the users table.
      *
@@ -1691,7 +1693,7 @@ class Users_Controller_Admin extends Zikula_Controller
      * Available Post Parameters:
      * - config (array) An associative array of configuration settings for the Users module.
      *
-     * @see Setting_Admin::main()
+     * @see    Setting_Admin::main()
      *
      * @return bool True if configuration saved; false if permission error.
      */
@@ -1954,17 +1956,17 @@ class Users_Controller_Admin extends Zikula_Controller
                 $delimiter = 1;
             }
             switch ($delimiter) {
-            case 1:
-                $delimiter = ",";
-                break;
-            case 2:
-                $delimiter = ";";
-                break;
-            case 3:
-                $delimiter = ":";
-                break;
-            case 4:
-                $delimiter = chr(9);
+                case 1:
+                    $delimiter = ",";
+                    break;
+                case 2:
+                    $delimiter = ";";
+                    break;
+                case 3:
+                    $delimiter = ":";
+                    break;
+                case 4:
+                    $delimiter = chr(9);
             }
             if (!isset($exportFile) || $exportFile == '') {
                 $exportFile = 'users.csv';

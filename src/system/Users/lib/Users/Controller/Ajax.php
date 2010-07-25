@@ -13,11 +13,7 @@
  */
 
 /**
- * Controllers provide users access to actions that they can perform on the system;
- * this class provides access to actions initiated through AJAX for the Users module.
- *
- * @package Zikula
- * @subpackage Users
+ * Access to actions initiated through AJAX for the Users module.
  */
 class Users_Controller_Ajax extends Zikula_Controller
 {

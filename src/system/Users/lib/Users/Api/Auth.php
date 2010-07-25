@@ -13,31 +13,23 @@
  */
 
 /**
- * The Auth API provides user authentication services for the log-in process; this class
- * provides user authentication through the core Users table.
- *
- * While the deletion of user accounts is currently not supported, custom authmodule authors
- * should plan for the eventual inclusion of this capability, and allow for the possible deletion of
- * associations between login ids and uid in the future.
- *
- * @package Zikula
- * @subpackage Users
+ * The user authentication services for the log-in process through the core Users table.
  */
 class Users_Api_Auth extends Zikula_AuthApi
 {
      /**
-     * Informs the calling function whether this authmodule is reentrant or not.
-     *
-     * The Users module is guaranteed never to be reentrant.
-     *
-     * @return bool False.
-     */
+      * Informs the calling function whether this authmodule is reentrant or not.
+      *
+      * The Users module is guaranteed never to be reentrant.
+      *
+      * @return bool False.
+      */
     public function isReentrant()
     {
         return false;
     }
 
-   /**
+    /**
      * Authenticates authinfo with the authenticating source, returning a simple boolean result.
      *
      * Note that, despite this function's name, there is no requirement that a password be part of the authinfo.
@@ -201,8 +193,7 @@ class Users_Api_Auth extends Zikula_AuthApi
     }
 
     /**
-     * Retrieves the Zikula User ID (uid) for the given authinfo, from the mapping maintained by
-     * this authmodule.
+     * Retrieves the Zikula User ID (uid) for the given authinfo, from the mapping maintained by this authmodule.
      *
      * Custom authmodules should pay extra special attention to the accurate association of authinfo and user
      * ids (uids). Returning the wrong uid for a given authinfo will potentially expose a user's account to
@@ -293,8 +284,7 @@ class Users_Api_Auth extends Zikula_AuthApi
     }
 
     /**
-     * Authenticates authinfo with the authenticating source, and (if authenticated) returns the Zikula
-     * user ID (uid) of the user associated with the login ID.
+     * Authenticates authinfo with the authenticating source, returns the Zikula user ID (uid) of the user.
      *
      * This function may be called to initially authenticate a user during the login process, or may be called
      * for a user already logged in to re-authenticate his password for a security-sensitive operation. This function

@@ -1,13 +1,16 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
@@ -90,21 +93,21 @@ class Users_Installer extends Zikula_Installer
      *
      * @return mixed True on success, last valid version string or false if fails.
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
         // $oldversion 1.9 and 1.10 handled by Zikula 1.2.
-        if (version_compare($oldversion, '1.11') === -1) {
-            return $oldversion;
+        if (version_compare($oldVersion, '1.11') === -1) {
+            return $oldVersion;
         }
         // Versions 1.18 and 2.0.0 were development versions that were released only to developers, and many changes
         // in those two versions regarding database structure were radically modified. Upgrading from those versions
         // is not possible.
-        if ((version_compare($oldversion, '1.17') === 1) && (version_compare($oldversion, '2.1.0') === -1)) {
-            return $oldversion;
+        if ((version_compare($oldVersion, '1.17') === 1) && (version_compare($oldVersion, '2.1.0') === -1)) {
+            return $oldVersion;
         }
 
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.11':
                 // upgrade 1.11 to 1.12
                 $this->upgrade_migrateSerialisedUserTemp();
@@ -135,7 +138,7 @@ class Users_Installer extends Zikula_Installer
                 //$this->setVar('authmodules', 'Users');
             case '1.17':
                 // upgrade 1.17 to 2.1.0
-                if (!$this->upgrade117Xto210($oldversion)) {
+                if (!$this->upgrade117Xto210($oldVersion)) {
                     return '1.17';
                 }
             case '2.1.0':
@@ -167,6 +170,8 @@ class Users_Installer extends Zikula_Installer
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance.
+     *
+     * @return void
      */
     public function defaultdata()
     {
@@ -210,6 +215,8 @@ class Users_Installer extends Zikula_Installer
 
     /**
      * Migrate serialized data in users_temp.
+     *
+     * @return void
      */
     public function upgrade_migrateSerialisedUserTemp()
     {

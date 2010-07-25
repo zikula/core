@@ -1,13 +1,16 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
@@ -16,6 +19,8 @@
  * This function is called internally by the core whenever the module is
  * loaded. It delivers the table information to the core.
  * It can be loaded explicitly using the ModUtil::dbInfoLoad() API function.
+ *
+ * @param string $forVersion The module version number for which db information should be returned.
  *
  * @return array The table information.
  */

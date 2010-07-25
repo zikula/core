@@ -1,21 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
- * The Admin API provides administrative system-level and database-level functions for modules;
- * this class provides those functions for the Users module.
- *
- * @package Zikula
- * @subpackage Users
+ * The administrative system-level and database-level functions for the Users module.
  */
 class Users_Api_Admin extends Zikula_Api
 {
@@ -23,17 +22,24 @@ class Users_Api_Admin extends Zikula_Api
      * Find users.
      *
      * @param array $args All parameters passed to this function.
-     *                    $args['uname']         (string) A fragment of a user name on which to search using an SQL LIKE clause. The user name will be surrounded by wildcards.
-     *                    $args['ugroup']        (int)    A group id in which to search (only users who are members of the specified group are returned).
-     *                    $args['email']         (string) A fragment of an e-mail address on which to search using an SQL LIKE clause. The e-mail address will be surrounded by
+     *                      string $args['uname']         A fragment of a user name on which to search using an SQL
+     *                                                      LIKE clause. The user name will be surrounded by wildcards.
+     *                      int    $args['ugroup']        A group id in which to search (only users who are members of
+     *                                                      the specified group are returned).
+     *                      string $args['email']         A fragment of an e-mail address on which to search using an
+     *                                                      SQL LIKE clause. The e-mail address will be surrounded by
      *                                                      wildcards.
-     *                    $args['regdateafter']  (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date after the date specified
-     *                                                      will be returned.
-     *                    $args['regdatebefore'] (string) An SQL date-time (in the form '1970-01-01 00:00:00'); only user accounts with a registration date before the date specified
-     *                                                      will be returned.
-     *                    $args['dynadata']      (array)  An array of search values to be passed to the designated profile module. Only those user records also satisfying the profile
-     *                                                      module's search of its data are returned.
-     *                    $args['condition']     (string) An SQL condition for finding users; overrides all other parameters.
+     *                      string $args['regdateafter']  An SQL date-time (in the form '1970-01-01 00:00:00'); only
+     *                                                      user accounts with a registration date after the date
+     *                                                      specified will be returned.
+     *                      string $args['regdatebefore'] An SQL date-time (in the form '1970-01-01 00:00:00'); only
+     *                                                      user accounts with a registration date before the date
+     *                                                      specified will be returned.
+     *                      array  $args['dynadata']      An array of search values to be passed to the designated
+     *                                                      profile module. Only those user records also satisfying the
+     *                                                      profile module's search of its data are returned.
+     *                      string $args['condition']     An SQL condition for finding users; overrides all other
+     *                                                      parameters.
      *
      * @return mixed array of items if succcessful, false otherwise
      */

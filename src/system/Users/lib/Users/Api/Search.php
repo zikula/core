@@ -1,22 +1,20 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @category Zikula_Core
- * @package System_Modules
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  * @subpackage Users
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
- * The Search API allows a user to search for items in a module; this class provides
- * serach services for the Users module.
- *
- * @package Zikula
- * @subpackage Users
+ * The search for items in the Users module.
  */
 class Users_Api_Search extends Zikula_Api
 {
@@ -144,7 +142,7 @@ class Users_Api_Search extends Zikula_Api
      * Access checking is ignored since access check has
      * already been done. But we do add a URL to the found user.
      *
-     * @param array &$args The search results.
+     * @param array $args The search results.
      *
      * @return bool True.
      */

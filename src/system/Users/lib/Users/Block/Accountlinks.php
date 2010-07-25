@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,14 +15,13 @@
 
 /**
  * A user-customizable block.
- *
- * @package Zikula
- * @subpackage Users
  */
 class Users_Block_Accountlinks extends Zikula_Block
 {
     /**
-     * initialise block
+     * Initialise block.
+     *
+     * @return void
      */
     public function init()
     {
@@ -45,19 +45,20 @@ class Users_Block_Accountlinks extends Zikula_Block
     }
 
     /**
-     * display block
+     * Display block.
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param array $blockInfo A blockinfo structure.
+     *
+     * @return string|void The rendered bock.
      */
-    public function display($blockinfo)
+    public function display($blockInfo)
     {
-        if (!SecurityUtil::checkPermission('Accountlinks::', $blockinfo['title']."::", ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Accountlinks::', $blockInfo['title']."::", ACCESS_READ)) {
             return;
         }
 
         // Get variables from content block
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
+        $vars = BlockUtil::varsFromContent($blockInfo['content']);
 
         // Call the modules API to get the items
         if (!ModUtil::available('Users')) {
@@ -76,8 +77,8 @@ class Users_Block_Accountlinks extends Zikula_Block
         $this->view->assign('accountlinks', $accountlinks);
 
         // Populate block info and pass to theme
-        $blockinfo['content'] = $this->view->fetch('users_block_accountlinks.tpl');
+        $blockInfo['content'] = $this->view->fetch('users_block_accountlinks.tpl');
 
-        return BlockUtil::themeBlock($blockinfo);
+        return BlockUtil::themeBlock($blockInfo);
     }
 }

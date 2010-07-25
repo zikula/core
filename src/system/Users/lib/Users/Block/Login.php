@@ -7,6 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
+ * @subpackage Users
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,24 +15,25 @@
 
 /**
  * A block that allows users to log into the system.
- *
- * @package Zikula
- * @subpackage Users
  */
 class Users_Block_Login extends Zikula_Block
 {
     /**
-     * initialise the block
+     * Initialise the block.
      *
-     * Adds the blocks security schema to the PN environment
-    */
+     * Adds the blocks security schema to the PN environment.
+     *
+     * @return void
+     */
     public function init()
     {
         SecurityUtil::registerPermissionSchema('Loginblock::', 'Block title::');
     }
 
     /**
-     * return the block info
+     * Return the block info.
+     *
+     * @return array A blockinfo structure.
      */
     public function info()
     {
@@ -45,19 +47,21 @@ class Users_Block_Login extends Zikula_Block
     }
 
     /**
-     * Display the block
+     * Display the output of the login block.
      *
-     * Display the output of the login block
-    */
-    public function display($row)
+     * @param array $blockInfo A blockinfo structure.
+     *
+     * @return string|void The output.
+     */
+    public function display($blockInfo)
     {
-        if (!SecurityUtil::checkPermission('Loginblock::', $row['title'].'::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('Loginblock::', $blockInfo['title'].'::', ACCESS_READ)) {
             return;
         }
 
         if (!UserUtil::isLoggedIn()) {
-            if (empty($row['title'])) {
-                $row['title'] = DataUtil::formatForDisplay('Login');
+            if (empty($blockInfo['title'])) {
+                $blockInfo['title'] = DataUtil::formatForDisplay('Login');
             }
 
             $authmodules = array();
@@ -77,9 +81,9 @@ class Users_Block_Login extends Zikula_Block
                        ->assign('allowregistration', $this->getVar('reg_allowreg'))
                        ->assign('returnurl', System::getCurrentUri());
 
-            $row['content'] = $this->view->fetch('users_block_login.tpl');
+            $blockInfo['content'] = $this->view->fetch('users_block_login.tpl');
 
-            return BlockUtil::themeBlock($row);
+            return BlockUtil::themeBlock($blockInfo);
         }
 
         return;
