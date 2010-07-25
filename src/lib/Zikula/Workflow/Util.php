@@ -315,6 +315,7 @@ class Zikula_Workflow_Util
         }
 
         $workflow = $obj['__WORKFLOW__'];
+
         return self::getActionsByState($workflow['schemaname'], $workflow['module'], $workflow['state'], $obj);
     }
 
@@ -344,22 +345,30 @@ class Zikula_Workflow_Util
             return z_exit(__f('%1$s: %2$s is specified.', array('WorkflowUtil::getWorkflowForObject', 'dbTable')));
         }
 
-        // get workflow data from DB
-        $dbtables = DBUtil::getTables();
-        $workflows_column = $dbtables['workflows_column'];
-        $where = "WHERE $workflows_column[module]='" . DataUtil::formatForStore($module) . "'
-                    AND $workflows_column[obj_table]='" . DataUtil::formatForStore($dbTable) . "'
-                    AND $workflows_column[obj_idcolumn]='" . DataUtil::formatForStore($idcolumn) . "'
-                    AND $workflows_column[obj_id]='" . DataUtil::formatForStore($obj[$idcolumn]) . "'";
+        $workflow = false;
 
-        $workflow = DBUtil::selectObject('workflows', $where);
+        if (!empty($obj[$idcolumn])) {
+            // get workflow data from DB
+            $dbtables = DBUtil::getTables();
+            $workflows_column = $dbtables['workflows_column'];
+            $where = "WHERE $workflows_column[module] = '" . DataUtil::formatForStore($module) . "'
+                        AND $workflows_column[obj_table] = '" . DataUtil::formatForStore($dbTable) . "'
+                        AND $workflows_column[obj_idcolumn] = '" . DataUtil::formatForStore($idcolumn) . "'
+                        AND $workflows_column[obj_id] = '" . DataUtil::formatForStore($obj[$idcolumn]) . "'";
+
+            $workflow = DBUtil::selectObject('workflows', $where);
+        }
 
         if (!$workflow) {
-            $workflow = array('state' => 'initial', 'obj_table' => $dbTable, 'obj_idcolumn' => $idcolumn, 'obj_id' => $obj[$idcolumn]);
+            $workflow = array('state'        => 'initial',
+                              'obj_table'    => $dbTable,
+                              'obj_idcolumn' => $idcolumn,
+                              'obj_id'       => $obj[$idcolumn]);
         }
 
         // attach workflow to object
         $obj['__WORKFLOW__'] = $workflow;
+
         return true;
     }
 
@@ -386,6 +395,7 @@ class Zikula_Workflow_Util
         }
 
         $workflow = $obj['__WORKFLOW__'];
+
         return $workflow['state'];
     }
 
@@ -448,8 +458,7 @@ class Zikula_Workflow_Util
      */
     public static function translatePermission($permission)
     {
-        $permission = strtolower($permission);
-        switch ($permission) {
+        switch (strtolower($permission)) {
             case 'invalid':
                 return ACCESS_INVALID;
             case 'overview':
