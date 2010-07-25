@@ -107,7 +107,7 @@ $ZConfig['Log']['log.file_level'] = 7;                      // 0 - EMERG, 1 - CR
 $ZConfig['Log']['log.show_php_errorhandler'] = 0;           // Set 1 if you want to see PHP's output, including XDebug output. This overrides log.display_template.
 $ZConfig['Log']['log.display_template'] = 0;                // overrides log.show_php_error_handler and gains full control of output.
 
-$ZConfig['Log']['log.sql.to_display'] = 1;                  // Display sql queries?
+$ZConfig['Log']['log.sql.to_display'] = 0;                  // Display sql queries?
 $ZConfig['Log']['log.sql.to_file'] = 0;                     // Log sql queries to file?
 
 // ----------------------------------------------------------------------
