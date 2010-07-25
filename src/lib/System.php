@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 // For < PHP 5.3.0
 if (!defined('E_DEPRECATED')) {
     define('E_DEPRECATED', 8192);
@@ -44,7 +43,7 @@ class System
 {
     const VERSION_NUM = '1.3.0-dev';
     const VERSION_ID = 'Zikula';
-    const VERSION_SUB =  'vai';
+    const VERSION_SUB = 'vai';
 
     const CORE_STAGES_NONE = 0;
     const CORE_STAGES_PRE = 1;
@@ -58,7 +57,9 @@ class System
     const CORE_STAGES_DECODEURLS = 1024;
     const CORE_STAGES_THEME = 2048;
     const CORE_STAGES_ALL = 4095;
-    const CORE_STAGES_AJAX = 4096; // needs to be set explicitly, CORE_STAGES_ALL | CORE_STAGES_AJAX
+    const CORE_STAGES_AJAX = 4096;
+
+    // needs to be set explicitly, CORE_STAGES_ALL | CORE_STAGES_AJAX
 
     protected static $stages = 0;
 
@@ -110,7 +111,7 @@ class System
      */
     public static function setVar($name, $value = '')
     {
-        $name = isset($name) ? (string)$name : '';
+        $name = isset($name) ? (string) $name : '';
 
         // The database parameter are not allowed to change
         if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
@@ -174,39 +175,6 @@ class System
         $serviceManager = ServiceUtil::getManager();
         $eventManager = EventUtil::getManager();
         $coreInitEvent = new Zikula_Event('core.init');
-        
-        static $globalscleansed = false;
-
-        // force register_globals = off
-        if ($globalscleansed == false && ini_get('register_globals') && !self::isInstalling()) {
-            foreach ($GLOBALS as $s_variable_name => $m_variable_value) {
-                if (!in_array($s_variable_name, array(
-                'GLOBALS',
-                'argv',
-                'argc',
-                '_FILES',
-                '_COOKIE',
-                '_POST',
-                '_GET',
-                '_SERVER',
-                '_ENV',
-                '_SESSION',
-                '_REQUEST',
-                's_variable_name',
-                'm_variable_value',
-                '_ZSession'))) {
-                    unset($GLOBALS[$s_variable_name]);
-                }
-            }
-            unset($GLOBALS['s_variable_name']);
-            unset($GLOBALS['m_variable_value']);
-            $globalscleansed = true;
-        }
-
-        // Neither Smarty nor Zikula itself works with magic_quotes_runtime (not to be confused with magic_quotes_gpc!)
-        if (get_magic_quotes_runtime()) {
-            die('Sorry, but Zikula does not support PHP magic_quotes_runtime - please disable this feature in your php.ini file.');
-        }
 
         if (!is_numeric($stages)) {
             $stages = self::CORE_STAGES_ALL;
@@ -335,6 +303,8 @@ class System
         }
         // end block
 
+        self::_checks();
+
         if ($stages & self::CORE_STAGES_SESSIONS) {
             // Other includes
             // ensure that the sesssions table info is available
@@ -355,9 +325,6 @@ class System
             $coreInitEvent->setArg('stage', self::CORE_STAGES_SESSIONS);
             $eventManager->notify($coreInitEvent);
         }
-
-        // perform some checks that might result in a die() upon failure when we are in development mode
-        self::_development_checks();
 
         if ($stages & self::CORE_STAGES_MODS) {
             // Set compression on if desired
@@ -444,8 +411,8 @@ class System
         }
 
         // typecasting (might be useless in this function)
-        $var  = (string)$var;
-        $type = (string)$type;
+        $var = (string) $var;
+        $type = (string) $type;
 
         static $maxlength = array(
         'modvar' => 64,
@@ -462,7 +429,7 @@ class System
         'config' => 1);
 
         // commented out some regexps until some useful and working ones are found
-        static $regexp = array( // 'mod'    => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
+        static $regexp = array(// 'mod'    => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
         // 'func'   => '/[^0-9a-zA-Z_]/',
         // 'api'    => '/[^0-9a-zA-Z_]/',
         // 'theme'  => '/^[^\\\/\?\*\"\'\>\<\:\|]*$/',
@@ -482,10 +449,10 @@ class System
         if ($type == 'email' || $type == 'url') {
             // CSRF protection for email and url
             $var = str_replace(array(
-                    '\r',
-                    '\n',
-                    '%0d',
-                    '%0a'), '', $var);
+                            '\r',
+                            '\n',
+                            '%0d',
+                            '%0a'), '', $var);
 
             if (self::getVar('idnnames')) {
                 // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
@@ -520,7 +487,6 @@ class System
         }
 
         // variable passed special checks. We now to generic checkings.
-
         // check for maximal length
         if (isset($maxlength[$type]) && mb_strlen($var) > $maxlength[$type]) {
             return false;
@@ -624,13 +590,13 @@ class System
     {
         // very basic input validation against HTTP response splitting
         $redirecturl = str_replace(array(
-                '\r',
-                '\n',
-                '%0d',
-                '%0a'), '', $redirecturl);
+                        '\r',
+                        '\n',
+                        '%0d',
+                        '%0a'), '', $redirecturl);
 
         // check if the headers have already been sent
-        if (headers_sent()) {
+        if (headers_sent ()) {
             return false;
         }
 
@@ -658,7 +624,7 @@ class System
             $redirecturl = $baseurl . $redirecturl;
         }
 
-        header("Location: $redirecturl",true,(int)$type);
+        header("Location: $redirecturl", true, (int) $type);
 
         return true;
     }
@@ -717,13 +683,13 @@ class System
         // check if the mailer module is availble and if so call the API
         if ((ModUtil::available('Mailer'))) {
             $return = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', array(
-                    'toaddress' => $to,
-                    'subject' => $subject,
-                    'headers' => $headers,
-                    'body' => $message,
-                    'altbody' => $altbody,
-                    'headers' => $headers,
-                    'html' => $html));
+                            'toaddress' => $to,
+                            'subject' => $subject,
+                            'headers' => $headers,
+                            'body' => $message,
+                            'altbody' => $altbody,
+                            'headers' => $headers,
+                            'html' => $html));
         }
 
         return $return;
@@ -879,10 +845,10 @@ class System
      */
     public static function getCurrentUrl($args = array())
     {
-        $server   = self::getHost();
+        $server = self::getHost();
         $protocol = self::serverGetProtocol();
-        $baseurl  = "$protocol://$server";
-        $request  = self::getCurrentUri($args);
+        $baseurl = "$protocol://$server";
+        $request = self::getCurrentUri($args);
 
         if (empty($request)) {
             $scriptname = self::serverGetVar('SCRIPT_NAME');
@@ -982,7 +948,7 @@ class System
             // check if there is a custom url handler for this module
             // if not decode the url using the default handler
             if (isset($modinfo) && $modinfo['type'] != 0 && !ModUtil::apiFunc($modname, 'user', 'decodeurl', array(
-                    'vars' => $args))) {
+                            'vars' => $args))) {
                 // any remaining arguments are specific to the module
                 $argscount = count($args);
                 for ($i = 3; $i < $argscount; $i = $i + 2) {
@@ -1062,59 +1028,71 @@ class System
      *
      * @return void
      */
-    public static function _development_checks()
+    public static function _checks()
     {
-        if ($GLOBALS['ZConfig']['System']['development'] == 1 && !self::isInstalling()) {
-            $die = false;
+        $die = false;
 
-            // check PHP version, shouldn't be necessary, but....
-            if (version_compare(PHP_VERSION, '5.2.6', '>=') == false) {
-                echo __f('Error! Stop, please! PHP version 5.2.6 or a newer version is needed. The latest version of PHP 5 is what is actually recommended. Your server seems to be using version %s.', PHP_VERSION);
-                $die = true;
-            }
+        if (get_magic_quotes_runtime()) {
+            echo __f('Sorry, but Zikula does not support PHP magic_quotes_runtime - please disable this feature in your php.ini file.');
+            $die = true;
+        }
 
-            // token_get_all needed for Smarty
-            if (!function_exists('token_get_all')) {
-                echo __("Error! Stop, please! The PHP function 'token_get_all()' is needed, but is not available.");
-                $die = true;
-            }
+        if (ini_get('register_globals')) {
+            echo __f('Sorry, but Zikula does not support PHP register_globals = On - please disable this feature in your php.ini or .htaccess file.');
+            $die = true;
+        }
 
-            // mb_string is needed too
-            if (!function_exists('mb_get_info')) {
-                echo __("Error! Stop, please! The 'mbstring' extension for PHP is needed, but is not available.");
-                $die = true;
-            }
+        // check PHP version, shouldn't be necessary, but....
+        if (version_compare(PHP_VERSION, '5.2.6', '>=') == false) {
+            echo __f('Error! Stop, please! PHP version 5.2.6 or a newer version is needed. The latest version of PHP 5 is what is actually recommended. Your server seems to be using version %s.', PHP_VERSION);
+            $die = true;
+        }
 
-            // Mailer needs fsockopen()
-            if (ModUtil::available('Mailer') && !function_exists('fsockopen')) {
-                echo __("Error! The PHP function 'fsockopen()' is needed within the Zikula mailer module, but is not available.");
-                $die = true;
-            }
+        // token_get_all needed for Smarty
+        if (!function_exists('token_get_all')) {
+            echo __("Error! Stop, please! The PHP function 'token_get_all()' is needed, but is not available.");
+            $die = true;
+        }
 
-            $temp = DataUtil::formatForOS(self::getVar('temp'), true) . '/';
+        // mb_string is needed too
+        if (!function_exists('mb_get_info')) {
+            echo __("Error! Stop, please! The 'mbstring' extension for PHP is needed, but is not available.");
+            $die = true;
+        }
 
+        if (!function_exists('fsockopen')) {
+            echo __("Error! The PHP function 'fsockopen()' is needed within the Zikula mailer module, but is not available.");
+            $die = true;
+        }
+        
+        if (self::isDevelopmentMode() || self::isInstalling()) {
+            $temp = self::getVar('temp') . '/';
+ 
             $folders = array(
                     $temp,
-                    $temp . 'error_logs',
-                    $temp . 'view_compiled',
-                    $temp . 'view_cache',
-                    $temp . 'Theme_compiled',
-                    $temp . 'Theme_cache');
-
-            if (ModUtil::available('Feeds')) {
-                $folders[] = $temp . 'feeds';
-            }
+                    "$temp/error_logs",
+                    "$temp/view_compiled",
+                    "$temp/view_cache",
+                    "$temp/Theme_compiled",
+                    "$temp/Theme_cache",
+                    "$temp/Theme_Config",
+                    "$temp/Theme_cache",
+                    "$temp/purifierCache",
+                    "$temp/idsTmp",
+            );
 
             foreach ($folders as $folder) {
+                if (!is_dir($folder)) {
+                    mkdir($folder, ServiceUtil::getManager()->getArgument('system.chmod_dir'), true);
+                }
                 if (!is_writable($folder)) {
                     echo __f("Error! Stop, please! '%s' was not found, or else the server does not have write permission for it.", $folder) . '<br />';
                     $die = true;
                 }
             }
-
-            if ($die == true) {
-                die('<br /><br />' . __("This message is shown to you, the Administrator, because the system is in development mode (\$ZConfig['System']['development'] = 1; in config/config.php). This helps you to avoid common problems with Zikula."));
-            }
+        }
+        if ($die == true) {
+            exit;
         }
     }
 
@@ -1125,7 +1103,7 @@ class System
      */
     public static function isInstalling()
     {
-        return (bool)defined('_ZINSTALLVER');
+        return (bool) defined('_ZINSTALLVER');
     }
 
     /**
@@ -1139,7 +1117,7 @@ class System
             return false;
         }
 
-        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
+        return (bool) $GLOBALS['ZConfig']['System']['compat_layer'];
     }
 
     /**
@@ -1153,7 +1131,7 @@ class System
             return false;
         }
 
-        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
+        return (bool) $GLOBALS['ZConfig']['System']['legacy_prefilters'];
     }
 
     /**
@@ -1166,6 +1144,7 @@ class System
         if (!isset($GLOBALS['ZConfig']['System']['development'])) {
             return false;
         }
-        return (bool)$GLOBALS['ZConfig']['System']['development'];
+        return (bool) $GLOBALS['ZConfig']['System']['development'];
     }
+
 }
