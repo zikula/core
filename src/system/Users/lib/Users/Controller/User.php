@@ -1120,7 +1120,7 @@ class Users_Controller_User extends Zikula_Controller
     }
 
     /**
-     * Print a PostNuke-style login/logout redirect page. Internal use only, not intended to be called through the API.
+     * Print a (legacy) login/logout redirect page. Internal use only, not intended to be called through the API.
      *
      * @param string $message The message to display on the redirect page.
      * @param string $url     The URL of the page to redirect to after this redirect page has been displayed.

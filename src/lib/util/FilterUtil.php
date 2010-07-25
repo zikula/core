@@ -13,7 +13,7 @@
  */
 
 /**
- * Adds a Pagesetter like filter feature to PostNuke
+ * Adds a Pagesetter like filter.
  */
 class FilterUtil extends FilterUtil_Common
 {
@@ -104,10 +104,10 @@ class FilterUtil extends FilterUtil_Common
 
         return true;
     }
-    
+
     /**
      * Get plugin manager class.
-     * 
+     *
      * @return FilterUtil_Plugin
      */
     public function getPlugin()

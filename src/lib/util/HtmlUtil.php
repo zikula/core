@@ -370,7 +370,6 @@ class HtmlUtil
                     }
 
                     // Use $k2 for display also (instead of showing the internal table name)
-                    // See http://noc.postnuke.com/tracker/?func=detail&aid=16110&group_id=5&atid=101
                     $data[$k2] = $k2;
                 }
             }
