@@ -492,7 +492,7 @@ class UserUtil
      *
      * @return array The array structure for the user group selector.
      */
-    public static function getSelectorData_ZUser($defaultValue = 0, $defaultText = '', $ignore = array(), $includeAll = 0, $allText = '', $exclude = '')
+    public static function getSelectorData_User($defaultValue = 0, $defaultText = '', $ignore = array(), $includeAll = 0, $allText = '', $exclude = '')
     {
         $dropdown = array();
 
