@@ -1,7 +1,7 @@
 <!--header start -->
 <div id="header">
 <div class="box-1">
-<h3>{gt text='Welcome'} {usergetvar name="uname" uid=$userid|safetext} !</h3> 
+<h3>{gt text='Welcome'} {usergetvar name="uname" uid=$uid} !</h3> 
 <strong>{datetime}</strong>
 <br />
 <div class="zk-drop-1">
