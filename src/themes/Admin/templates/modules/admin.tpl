@@ -47,7 +47,7 @@
 				<div id="top">
 					<p class="logo">Zikula Administration</p>
 					<div class="welcome">
-						<span class="note">{gt text='Welcome'}, <a href="#" title="Admin">Admin</a></span>
+						<span class="note">{gt text='Welcome'}, <a href="#" title="{usergetvar name="uname" uid=$uid}">{usergetvar name="uname" uid=$uid}</a></span>
 						<a class="btn ui-state-default ui-corner-all" href="#">
 							<span class="ui-icon ui-icon-wrench">&nbsp;</span>
 							{gt text='Settings'}
