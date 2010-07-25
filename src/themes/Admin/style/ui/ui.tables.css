@@ -1,0 +1,105 @@
+	/* Tables */
+
+.hastable table {
+	background:#fff;
+	width:100%;
+	border:1px solid #dedede;
+	border-bottom:none;
+}
+
+.hastable thead td, .hastable thead th {
+	background-color:#e6e6e6;
+}
+
+.hastable tr td, .hastable thead th {
+	border-left:1px solid #ccc;
+	text-align:left;
+	padding:8px;
+	color:#616161;
+}
+
+.hastable tr td {
+	vertical-align:middle;
+}
+
+.hastable thead td, .hastable thead th {
+	font-weight:bold;
+	padding:8px;
+	text-align:center;
+}
+
+.hastable th, .hastable td {
+	border-bottom:1px solid #dedede;
+}
+.hastable tbody th {
+	padding:0 8px;
+	text-align:left;
+}
+
+.hastable tbody tr.alt td, .hastable tbody tr.odd td {
+	color:#464646;
+	vertical-align:middle;
+}
+
+.hastable tbody tr.alt td, .hastable tbody tr.alt th, .hastable tbody tr.odd {
+	background-color:#f5f5f5;
+}
+.hastable tbody tr:hover td, .hastable tbody tr:hover th {
+	background-color:#FFFFCF;
+}
+
+.headerSortDown, .headerSortUp {
+	background-repeat:no-repeat;
+	background-color:#dcdcdc!important;
+	color:#404040!important;
+}
+
+.header span {
+	float:right;
+	margin-top:-3px;
+}
+
+.hastable tr .center {
+	width:5px;
+}
+
+.hastable table a.btn span.ui-icon {
+	left:0.1em;
+}
+
+.hastable table a.btn {
+	margin:0 5px;
+}
+
+.content-box table {
+	margin:0;
+}
+
+	/* Tables Pagination */
+
+#pager {
+	padding:10px 0;
+	position: static!important;
+}
+
+.pager-form {
+	position:static!important;
+}
+
+.pager-form table {
+	margin:0 0 0 0;
+}
+
+.pager-form a.btn {
+	margin-top:7px
+}
+
+#pager input, #pager .pagesize {
+	color:#333;
+	padding:4px;
+	margin:5px;
+	float: left;
+	border-color:#7C7C7C #C3C3C3 #ddd;
+	border-style:solid;
+	border-width:1px;
+}

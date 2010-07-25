@@ -1,0 +1,10 @@
+@import url("ui.reset.css");
+@import url("ui.core.css");
+
+@import url("ui.forms.css");
+@import url("ui.tables.css");
+@import url("ui.messages.css");
+
+@import url("ui.dialog.css");
+@import url("ui.tabs.css");
+@import url("ui.dashboard.css");

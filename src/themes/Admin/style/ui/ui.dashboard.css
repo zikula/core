@@ -1,0 +1,77 @@
+#dashboard-buttons {
+	clear:both;
+	display:block;
+	*width:97%;
+}
+
+#dashboard-buttons ul li {
+	float:left;
+	margin:6px;
+}
+	
+#dashboard-buttons ul li a {
+	display:block;
+	width:100px;
+	padding:80px 0 0;
+	height:20px;
+	background-repeat:no-repeat;
+	background-position:50% 5px;
+	text-align:center;
+	float:left;
+}
+
+#dashboard-buttons ul li a.Books {
+	background-image:url('../../images/icons/Books.png');
+}
+
+ #dashboard-buttons ul li a.Book_phones {
+	background-image:url('../../images/icons/Book_phones.png');
+}
+
+ #dashboard-buttons ul li a.Briefcase_files {
+	background-image:url('../../images/icons/Briefcase_files.png');
+}
+
+ #dashboard-buttons ul li a.Box_recycle {
+	background-image:url('../../images/icons/Box_recycle.png');
+}
+
+ #dashboard-buttons ul li a.Box_content {
+	background-image:url('../../images/icons/Box_content.png');
+}
+
+ #dashboard-buttons ul li a.Chart_5 {
+	background-image:url('../../images/icons/Chart_5.png');
+}
+
+ #dashboard-buttons ul li a.Clipboard_3 {
+	background-image:url('../../images/icons/Clipboard_3.png');
+}
+
+ #dashboard-buttons ul li a.Chart_4 {
+	background-image:url('../../images/icons/Chart_4.png');
+}
+
+ #dashboard-buttons ul li a.Mail_open {
+	background-image:url('../../images/icons/Mail_open.png');
+}
+
+ #dashboard-buttons ul li a.Glass {
+	background-image:url('../../images/icons/Glass.png');
+}
+
+ #dashboard-buttons ul li a.Globe {
+	background-image:url('../../images/icons/Globe.png');
+}
+
+ #dashboard-buttons ul li a.Mail_compose {
+	background-image:url('../../images/icons/Mail_compose.png');
+}
+
+ #dashboard-buttons ul li a.Star {
+	background-image:url('../../images/icons/Star.png');
+}
+
+ #dashboard-buttons ul li a.Monitor {
+	background-image:url('../../images/icons/Monitor.png');
+}

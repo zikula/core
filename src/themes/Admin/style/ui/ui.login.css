@@ -1,0 +1,39 @@
+#page_wrapper #page-header #page-header-wrapper #top {
+	margin:0 20px;
+}
+
+#page_wrapper #page-header #page-header-wrapper {
+	min-height:52px!important;
+	margin:0 0 100px!important;
+}
+
+#page_wrapper #page-content #page-content-wrapper {
+	background-image:none!important;
+	padding:0!important;
+}
+
+#page_wrapper #page-content, #sub-nav {
+	width:550px;
+	margin:0 auto;
+	float:none;
+}
+
+#sidebar-left #page_wrapper #page-content #page-content-wrapper {
+	padding:10px!important;
+}
+
+#page_wrapper #page-content {
+	border:0!important;
+}
+
+#sub-nav {
+	display:block!important;
+}
+
+#sub-nav {
+	display:block!important;
+}
+
+#sub-nav .page-title {
+	padding-bottom:0;
+}

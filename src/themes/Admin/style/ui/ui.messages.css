@@ -1,0 +1,62 @@
+	/* Response Messages */
+
+.response-msg {
+	padding:6px 10px 10px 45px;
+	font-size:0.96em;
+	margin:0 0 10px;
+}
+
+.response-msg span {
+	display:block;
+	font-weight:bold;
+	padding:0 0 4px;
+}
+
+div.error {
+	background:#f9e5e6 url('../../images/icons/error.png') 10px 50% no-repeat;
+	color:#b50007;
+	border:#e8aaad solid 1px;
+}
+
+.notice  {
+	background:#f9f9e5 url('../../images/icons/notice.png') 10px 50% no-repeat;
+	color:#828400;
+	border:#e8e3aa solid 1px;
+}
+
+.inf {
+	background:#e5ecf9 url('../../images/icons/info.png') 10px 50% no-repeat;
+	color:#0055b5;
+	border:#aac6e8 solid 1px;
+}
+
+.success {
+	background:#e9f9e5 url('../../images/icons/success.png') 10px 50% no-repeat;
+	color:#1c8400;
+	border:#b4e8aa solid 1px;
+}
+
+.other-box {
+	margin:15px 0;
+}
+
+.cont {
+	border-top:#fff solid 1px;
+	padding:8px;
+	line-height:1.4em;
+}
+
+.other-box h3 {
+	font-size:1.2em;
+	font-weight:bold;
+}
+
+.gray-box {
+	background:#eaeaea;
+	border:#c0c0c0 solid 1px;
+}
+
+.yellow-box {
+	background:#fff6bf;
+	border:#fdd845 solid 1px;	
+}
