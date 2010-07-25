@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula 1.2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-12 21:03+0000\n"
+"POT-Creation-Date: 2010-07-25 23:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,127 +24,119 @@ msgstr ""
 msgid "AdminTheme"
 msgstr ""
 
-#: templates/includes/infotab.tpl:2
+#: templates/includes/infotab.tpl:4
 msgid "Informations"
 msgstr ""
 
-#: templates/includes/infotab.tpl:3
+#: templates/includes/infotab.tpl:5
 msgid "Zikula version:"
 msgstr ""
 
-#: templates/includes/infotab.tpl:4
-msgid "Server information:"
-msgstr ""
-
-#: templates/includes/infotab.tpl:5
-msgid "PHP version:"
-msgstr ""
-
-#: templates/includes/infotab.tpl:6
-msgid "Database version"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:28
-msgid "Stay in Touch"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:32
-msgid "Community"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:37
-msgid "Extensions"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:41
-msgid "Blog"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:53
-msgid "Fast Tasks"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:55
-msgid "Themes"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:56
-msgid "Blocks"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:57
-msgid "Users"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:58
-msgid "Categories"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:59
-msgid "Permissions"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:60
-msgid "Security"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:61
-msgid "Settings"
-msgstr ""
-
-#: templates/includes/dashboard.tpl:66
-msgid "Quick n clean"
-msgstr ""
-
-#: templates/includes/routinetab.tpl:3
+#: templates/includes/routinetab.tpl:4
 msgid "Compilation"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:5
+#: templates/includes/routinetab.tpl:6
 msgid "Delete compiled theme templates"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:6
+#: templates/includes/routinetab.tpl:7
 msgid "Delete compiled render templates"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:10
+#: templates/includes/routinetab.tpl:11
 msgid "Caching"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:12
+#: templates/includes/routinetab.tpl:13
 msgid "Delete cached theme pages"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:13
+#: templates/includes/routinetab.tpl:14
 msgid "Delete cached render pages"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:17
+#: templates/includes/routinetab.tpl:18
 msgid "JS/CSS"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:19
+#: templates/includes/routinetab.tpl:20
 msgid "Delete combination cache"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:23 templates/includes/routinetab.tpl:26
+#: templates/includes/routinetab.tpl:24 templates/includes/routinetab.tpl:27
 msgid "Check Folders"
 msgstr ""
 
-#: templates/includes/routinetab.tpl:25
+#: templates/includes/routinetab.tpl:26
 msgid "Check Z-Temp"
 msgstr ""
 
-#: templates/includes/helptab.tpl:3
+#: templates/includes/head.tpl:13
+msgid "Main Feed"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:5
+msgid "Close Sidebar"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:7
+msgid "Open Sidebar"
+msgstr ""
+
+#: templates/includes/sidebar.tpl:10
+msgid "Theme Switcher"
+msgstr ""
+
+#: templates/includes/header.tpl:4 templates/modules/admin.tpl:50
+msgid "Welcome"
+msgstr ""
+
+#: templates/includes/header.tpl:11 templates/modules/admin.tpl:57
+msgid "My Account"
+msgstr ""
+
+#: templates/includes/header.tpl:13
+msgid "Change E-Mail"
+msgstr ""
+
+#: templates/includes/header.tpl:14
+msgid "Change Password"
+msgstr ""
+
+#: templates/includes/header.tpl:15
+msgid "Log Out"
+msgstr ""
+
+#: templates/includes/header.tpl:22
+msgid "Quick"
+msgstr ""
+
+#: templates/includes/header.tpl:23
+msgid "Content"
+msgstr ""
+
+#: templates/includes/header.tpl:24
+msgid "Navigation"
+msgstr ""
+
+#: templates/includes/header.tpl:25
+msgid "Footer"
+msgstr ""
+
+#: templates/includes/navitop.tpl:57 templates/modules/admin.tpl:53
+msgid "Settings"
+msgstr ""
+
+#: templates/includes/helptab.tpl:4
 msgid "General"
 msgstr ""
 
-#: templates/includes/helptab.tpl:9
+#: templates/includes/helptab.tpl:10
 msgid "Modules"
 msgstr ""
 
-#: templates/includes/helptab.tpl:11
+#: templates/includes/helptab.tpl:12
 msgid "Admin Panel"
 msgstr ""
 
@@ -168,90 +160,30 @@ msgstr ""
 msgid "New module category"
 msgstr ""
 
-#: templates/modules/admin.tpl:34
-msgid "Welcome"
-msgstr ""
-
-#: templates/modules/admin.tpl:40
-msgid "switch Style"
-msgstr ""
-
-#: templates/modules/admin.tpl:42
+#: templates/modules/admin.tpl:61
 msgid "Logout"
 msgstr ""
 
-#: templates/modules/admin.tpl:43
-msgid "My Profile"
-msgstr ""
-
-#: templates/modules/admin.tpl:63
+#: templates/modules/admin.tpl:80
 msgid "Main Administration"
 msgstr ""
 
-#: templates/modules/admin.tpl:65
+#: templates/modules/admin.tpl:82
 msgid "Dashboard"
 msgstr ""
 
-#: templates/modules/admin.tpl:66
+#: templates/modules/admin.tpl:83
 msgid "Routines"
 msgstr ""
 
-#: templates/modules/admin.tpl:67
+#: templates/modules/admin.tpl:84
 msgid "Help"
 msgstr ""
 
-#: templates/modules/admin.tpl:68
+#: templates/modules/admin.tpl:85
 msgid "Info"
 msgstr ""
 
-#: templates/modules/Users/users_block_online.tpl:3
-#: templates/modules/Users/users_block_online.tpl:9
-#, php-format
-msgid "%s user"
-msgid_plural "%s users"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/modules/Users/users_block_online.tpl:4
-#: templates/modules/Users/users_block_online.tpl:7
-#, php-format
-msgid "%s on-line."
-msgstr ""
-
-#: templates/modules/Users/users_block_online.tpl:6
-#: templates/modules/Users/users_block_online.tpl:10
-#, php-format
-msgid "%s anonymous"
-msgid_plural "%s anonymous guests"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/modules/Users/users_block_online.tpl:11
-#, php-format
-msgid "%1$s and %2$s"
-msgstr ""
-
-#: templates/modules/Users/users_block_online.tpl:17
-msgid "You have no new messages."
-msgstr ""
-
-#: templates/modules/Users/users_block_online.tpl:17
-#, php-format
-msgid "You have <a href=\"%1$s\">%2$s</a> new message."
-msgid_plural "You have <a href=\"%1$s\">%2$s</a> new messages."
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/modules/Users/users_block_online.tpl:19
-#, php-format
-msgid "You are logged-in as <strong>%s</strong>."
-msgstr ""
-
-#: templates/modules/Users/users_block_online.tpl:23
-msgid "You are an anonymous guest."
-msgstr ""
-
-#: templates/modules/Users/users_block_online.tpl:25
-#, php-format
-msgid "You can <a href=\"%s\">register here</a>."
+#: templates/modules/admin.tpl:109
+msgid "Back to top"
 msgstr ""
