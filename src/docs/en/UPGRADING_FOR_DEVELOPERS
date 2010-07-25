@@ -574,3 +574,9 @@ MISCELLANEOUS
 If you have any front controllers, please note the bootstrapping process has been changed,
 see index.php for example.
 
+SECURITY
+========
+You are REQUIRED to validate and sanitize input variables.  DO NOT assume that just because
+you have retrieved them from FormUtil::getPassedValues() that they are valid or safe.
+FormUtil::getPassedValues() can now filter and sanitize with native PHP filter_* or you
+may do this manually.
