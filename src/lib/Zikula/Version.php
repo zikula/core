@@ -65,7 +65,6 @@ class Zikula_Version implements ArrayAccess
         $meta['displayname'] = $this->displayname;
         $meta['url'] = $this->url;
         $meta['version'] = $this->version;
-        $meta['contact'] = $this->contact;
         $meta['capabilities'] = $this->capabilities;
         $meta['dependencies'] = $this->dependencies;
         $meta['type'] = $this->type;
