@@ -97,7 +97,7 @@
 						</div>
 					</div>
 					<div class="clear"></div>
-					<div class="response-msg inf ui-corner-all">
+					<div class="z-informationmsg ui-corner-all">
 						<span>Stay tuned!</span>
 						Visit community.zikula.org !
 					</div>

@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{lang}" xml:lang="{lang}">
 <head>
 <title>{title}</title>
 <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
@@ -11,34 +11,32 @@
 <meta name="Copyright" content="Copyright (c) {'Y'|date} by {sitename}" />
 <meta name="Robots" content="index,follow" />
 
-<link rel="icon" type="image/png" href="{$imagepath}/favicon.png" />
-<link rel="icon" type="image/x-icon" href="{$imagepath}/favicon.ico" /><!--[* W3C *]-->
-<link rel="shortcut icon" type="image/ico" href="{$imagepath}/favicon.ico" /><!--[* IE *]-->
+<link rel="icon" type="image/png" href="{$themepath}/img/favicon.png" />
+<link rel="icon" type="image/x-icon" href="{$themepath}/img/favicon.ico" /><!--[* W3C *]-->
+<link rel="shortcut icon" type="image/ico" href="{$themepath}/img/favicon.ico" /><!--[* IE *]-->
+<link rel="alternate" href="{modurl modname='News' type='user' func='view' theme='rss'}" type="application/rss+xml" title="{sitename} {gt text='Main Feed'}" />
 
-	<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="{$themepath}/js/jquery-ui-1.8.2.custom.min.js"></script>
-	 <script type="text/javascript" src="{$themepath}/js/cookie.js"></script>
-	 <script type="text/javascript" src="{$themepath}/js/superfish.js"></script>
-	<script type="text/javascript" src="{$themepath}/js/admin.js"></script>
-	
-	<script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
-	<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
-	<script type="text/javascript" src="javascript/livepipe/livepipe.combined.min.js"></script>
-	<script type="text/javascript" src="javascript/helpers/Zikula.UI.js"></script>
+<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="{$themepath}/js/jquery-ui-1.8.2.custom.min.js"></script>
+<script type="text/javascript" src="{$themepath}/js/cookie.js"></script>
+<script type="text/javascript" src="{$themepath}/js/superfish.js"></script>
+<script type="text/javascript" src="{$themepath}/js/admin.js"></script>
+<script type="text/javascript" src="javascript/ajax/proto_scriptaculous.combined.min.js"></script>
+<script type="text/javascript" src="javascript/helpers/Zikula.js"></script>
+<script type="text/javascript" src="javascript/livepipe/livepipe.combined.min.js"></script>
+<script type="text/javascript" src="javascript/helpers/Zikula.UI.js"></script>
 
-	<link type="text/css" href="{$themepath}/style/ui/ui.base.css" rel="stylesheet" media="all" />
-	<link type="text/css" href="{$themepath}/style/themes/black_rose/ui.css" rel="stylesheet" title="style" media="all" />
+<link type="text/css" href="{$themepath}/style/ui/ui.base.css" rel="stylesheet" media="all" />
+<link type="text/css" href="{$themepath}/style/themes/black_rose/ui.css" rel="stylesheet" title="style" media="all" />
 
-	{browserhack condition="if IE"}
-	<link href="{$themepath}/style/ie6.css" rel="stylesheet" media="all" />
-	
-	<script src="{$themepath}/js/pngfix.js"></script>
-	<script>
+{browserhack condition="if IE"}
+    <link href="{$themepath}/style/ie6.css" rel="stylesheet" media="all" />
+    <script src="{$themepath}/js/pngfix.js"></script>
+    <script>
 	  /* Fix IE6 Transparent PNG */
 	  DD_belatedPNG.fix('.logo, ul#dashboard-buttons li a, .response-msg, #search-bar input');
-
-	</script>
-	{/browserhack}
+    </script>
+{/browserhack}
 </head>
 <body>
 	<div id="page_wrapper">
@@ -47,7 +45,7 @@
 				<div id="top">
 					<p class="logo">Zikula Administration</p>
 					<div class="welcome">
-						<span class="note">{gt text='Welcome'}, <a href="#" title="{usergetvar name="uname" uid=$uid}">{usergetvar name="uname" uid=$uid}</a></span>
+						<span class="note">{gt text='Welcome back'}, <a href="#" title="{usergetvar name="uname" uid=$uid}">{usergetvar name="uname" uid=$uid}</a></span>
 						<a class="btn ui-state-default ui-corner-all" href="#">
 							<span class="ui-icon ui-icon-wrench">&nbsp;</span>
 							{gt text='Settings'}
@@ -56,7 +54,7 @@
 							<span class="ui-icon ui-icon-person">&nbsp;</span>
 							{gt text='My Account'}
 						</a>
-						<a class="btn ui-state-default ui-corner-all" href="#">
+						<a class="btn ui-state-default ui-corner-all" href="{modurl modname=users type=user func=logout}">
 							<span class="ui-icon ui-icon-power">&nbsp;</span>
 							{gt text='Logout'}
 						</a>						
@@ -76,7 +74,7 @@
 				<div class="clear"></div>
 				
 				<div class="content-box">
-<ul id="tabs_example_eq">
+                <ul id="tabs_example_eq">
                     <li class="tab"><a href="#eqone">{gt text='Main Administration'}</a></li>
                     {checkgroup gid="2"}
 					<li class="tab"><a href="#eqtwo">{gt text='Dashboard'}</a></li>					
@@ -95,7 +93,7 @@
 					<script type="text/javascript">
                         var eqtabs = new Zikula.UI.Tabs('tabs_example_eq');
                     </script>
-</div>
+                </div>
 	
 			{include file="includes/sidebar.tpl"}	
 						

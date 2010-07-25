@@ -45,24 +45,20 @@
 						</ul>
 					</li>
 					<li>
-						<a href="#" class="sf-with-ul">Users</a>
+						<a href="{modurl modname=Users type=admin}" class="sf-with-ul">Users</a>
 						<ul>
 							<li><a href="#">#</a></li>
 							<li><a href="#"><strong>#</strong></a></li>
 					</ul>
 					</li>
 					<li>
-						<a href="#" class="sf-with-ul">Settings</a>
+						<a href="{modurl modname=Settings type=admin}" class="sf-with-ul">Settings</a>
 						<ul>
 							<li><a href="{modurl modname=Settings type=admin}">{gt text="Settings"}</a></li>
 							<li><a href="#"><strong>#</strong></a></li>
-					</ul>
+					    </ul>
 					</li>
 					<li>
-						<a href="#" class="sf-with-ul">Extensions</a>
-						<ul>
-							<li><a href="#">#</a></li>
-							<li><a href="#"><strong>#</strong></a></li>
-					</ul>
+						<a href="{modurl modname=Modules type=admin}" class="sf-with-ul">{gt text="Modules"}</a>
 					</li>
 				</ul>
