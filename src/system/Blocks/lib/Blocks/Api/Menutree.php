@@ -270,13 +270,13 @@ class Blocks_Api_Menutree extends Zikula_Api
     }
 
     /**
-     * Return content pages
+     * Return Content pages
      *
      * Syntax used in menutree
-     * {ext:Blocks:content:[groupby=page&parent=1]}
+     * {ext:Blocks:Content:[groupby=page&parent=1]}
      * Params in [] are optional and
      *      groupby = menuitem (default) or page, all other values stands for none
-     *      parent - id of parent node - this allows to get specified node of content pages
+     *      parent - id of parent node - this allows to get specified node of Content pages
      *
      *
      * @param array $args['item'] menu node to be replaced
@@ -284,7 +284,7 @@ class Blocks_Api_Menutree extends Zikula_Api
      * @param string $args['extrainfo'] additional params
      * @return mixed array of links if successful, false otherwise
      */
-    public function content($args)
+    public function Content($args)
     {
         $item       = isset($args['item']) && !empty($args['item']) ? $args['item'] : null;
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
@@ -335,7 +335,7 @@ class Blocks_Api_Menutree extends Zikula_Api
                         'superParentId' => $extrainfo['parent']
                 )
         );
-        $pages = ModUtil::apiFunc('content', 'page', 'getPages', $options);
+        $pages = ModUtil::apiFunc('Content', 'page', 'getPages', $options);
 
         $blocked = array();
         foreach((array)$pages as $page) {
@@ -632,138 +632,6 @@ class Blocks_Api_Menutree extends Zikula_Api
         return $links;
     }
 
-
-    /**
-     * Pagesetter plugin - returns pagesetter internal categories list for given publication type
-     *
-     * Syntax:
-     * {ext:Blocks:pagesetter:tid=x&fieldname=y[&level=z]}
-     * where x (required) is the pagesetter id for the Publication Type to display
-     * and   y (required) is the tid Publication Type Field Name that is defined to point to the pagesetter Category Title
-     * and   z (optional) is the number of levels to show
-     * example {ext:Blocks:adminlinks:tid=1&fieldname=ArticleType&level=3}
-     * To work, the publication definition must have a field (specified with 'fieldname' above, that points to a Category.
-     * The corresponding Category must be defined.  The menu created will mirror the Category structure that is defined there.
-     *
-     * @param array $args['item'] menu node to be replaced
-     * @param string $args['lang'] current menu language
-     * @param string $args['extrainfo'] additional params
-     * @return mixed array of links if successful, false otherwise
-     */
-    public function pagesetter($args)
-    {
-        $item       = isset($args['item']) && !empty($args['item']) ? $args['item'] : null;
-        $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
-        $bid        = isset($args['bid']) && !empty($args['bid']) ? $args['bid'] : null;
-        $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
-
-        // $item ang lang params are required
-        if(!$item || !$lang) {
-            return false;
-        }
-        // have to be able to get to the pagesetter routines
-        if (!ModUtil::loadApi('pagesetter', 'admin')) {
-            return false;
-        }
-
-        // Get and clean up the $extrainfo arguments
-        if($extrainfo) {
-            parse_str($extrainfo, $extrainfo);
-        }
-
-        $extrainfo['tid']       = (is_numeric($extrainfo['tid']  )) ? (int)$extrainfo['tid']   : ModUtil::getVar('pagesetter','frontpagePubType');;
-        $extrainfo['level']     = (is_numeric($extrainfo['level'])) ? (int)$extrainfo['level'] : 4;
-        $extrainfo['fieldname'] = isset($extrainfo['fieldname']) && !empty($extrainfo['fieldname']) ? $extrainfo['fieldname'] : "";
-        $extrainfo['flat']      = isset($extrainfo['flat'] ) ? true : false;
-
-        // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
-        $lineno = 0;
-
-        $links = array();
-
-        // if not flat, group the links into a single menu entry
-        if(!$extrainfo['flat']) {
-            $links['pagesetter'] = array(
-                    $lang => array(
-                            'id' => $idoffset++,
-                            'name' => $item['name'],
-                            'href' => ModUtil::url('pagesetter', 'user', 'view', array('tid' => $extrainfo['tid'])),
-                            'title' => $item['title'],
-                            'className' => $item['className'],
-                            'state' => $item['state'],
-                            'lang' => $lang,
-                            'lineno' => $lineno++,
-                            'parent' => $item['parent']
-                    )
-            );
-        }
-
-        // need to set parent node id - if links are grouped - use your_accont item id
-        // otherwise parent id of replaced menu node
-        $parentNode = (!$extrainfo['flat']) ? $links['pagesetter'][$lang]['id'] : $item['parent'];
-
-        // pagesetter
-
-        // Fetch category ID
-        $listID = ModUtil::apiFunc('pagesetter', 'admin', 'getListIDByFieldName', array('tid' => $extrainfo['tid'], 'field' => $extrainfo['fieldname']));
-        if ($listID === false) {
-            return false;
-        }
-
-        $listInfo = ModUtil::apiFunc('pagesetter', 'admin', 'getList', array('lid'=> $listID));
-        if ($listInfo === false) {
-            return false;
-        }
-
-        $ps_items = $listInfo['items'];
-
-        // start the parameter list for the URLs
-        $url_parameters = array();
-        $url_parameters['tid'] = $extrainfo['tid'];
-
-        // the indentation of the first item
-        $base_indent = $ps_items[0]['indent'];
-
-        $level_info = array();
-        // Point the top level to the right place
-        $level_info[$base_indent-1] = array (
-                'id' => $parentNode, // will need this to be a parent
-                'no' => 0            // start with 0 sub menu items
-        );
-
-        foreach ($ps_items as $ps_item) {
-            // check if the current item is to be displayed (i.e. if it is within the range of sublevels to show)
-            $level = $ps_item['indent'];
-            if ($level - $base_indent <= $extrainfo['level']) {
-                // Record our current level, so if there are sub levels later
-                $level_info[$level] = array (
-                        'id' => $idoffset, // will need this to be a parent
-                        'no' => 0          // start with 0 sub menu items
-                );
-
-                // Figure out the URL for this level
-                $url_parameters['filter'] = $extrainfo['fieldname']."^sub^".$ps_item[id];
-                $url = ModUtil::url('pagesetter', 'user', 'view', $url_parameters);
-
-                $links[] = array(
-                        $lang => array(
-                                'id'        => $idoffset++,
-                                'name'      => $ps_item['title'],
-                                'href'      => $url,
-                                'title'     => $ps_item['description'],
-                                'className' => '',
-                                'state'     => 1,
-                                'lang'      => $lang,
-                                'lineno'    => $level_info[$level-1]['no']++,
-                                'parent'    => $level_info[$level-1]['id']
-                        )
-                );
-            }
-        }
-
-        return $links;
-    }
 
     /**
      * Return some common user links
