@@ -8,7 +8,7 @@
     <fieldset>
         <legend>{gt text='Modules'}</legend>
             <ul>
-                <li><a href="index.php?module=adminpanel&amp;type=admin&amp;func=help">{gt text='Admin Panel'}</a>			
+                <li><a href="{modurl modname=Admin type=admin func=help}">{gt text='Admin Panel'}</a>			
             </ul>               
 </fieldset>
 </div>
