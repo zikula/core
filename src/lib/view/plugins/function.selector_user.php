@@ -36,7 +36,7 @@ function smarty_function_selector_user ($params, $view)
     $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
     $disabled         = isset($params['disabled'])         ? $params['disabled']         : 0;
 
-    $html = HtmlUtil::getSelector_PNUser ($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, '', $submit, $disabled, $multipleSize);
+    $html = HtmlUtil::getSelector_User ($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, '', $submit, $disabled, $multipleSize);
 
     if ($assign) {
         $view->assign($assign, $html);

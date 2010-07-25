@@ -572,12 +572,37 @@ class HtmlUtil
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
+     * @deprecated since 1.3.0
+     * @see HtmlUtil::getSelector_Group()
+     *
      * @return The html for the user group selector.
      */
     public static function getSelector_PNGroup($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getSelector_PNGroup', 'getSelector_Group')), E_USER_DEPRECATED);
+        return self::getSelector_Group($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit, $disabled);
+    }
+
+    /**
+     * Return the html for the PN user group selector.
+     *
+     * @param string  $name          The selector name.
+     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
+     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
+     * @param string  $defaultText   The text of the default value (optional) (default='').
+     * @param integer $allValue      The value to assign for the "All" choice (optional) (default=0).
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param string  $excludeList   A (string) list of IDs to exclude (optional) (default=null).
+     * @param boolean $submit        Whether or not to auto-submit the selector (optional) (default=false).
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     *
+     * @return The html for the user group selector.
+     */
+    public static function getSelector_Group($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
+    {
         $data = array();
-        $grouplist = UserUtil::getPNGroups('', 'ORDER BY z_name');
+        $grouplist = UserUtil::getGroups('', 'ORDER BY z_name');
         foreach ($grouplist as $k => $v) {
             $id = $v['gid'];
             $disp = $v['name'];
@@ -604,9 +629,35 @@ class HtmlUtil
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
+     * @deprecated since 1.3.0
+     * @see HtmlUtil::getSelector_User()
+     *
      * @return The string for the user group selector.
      */
     public static function getSelector_PNUser($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
+    {
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
+        return self::getSelector_User($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit);
+    }
+
+    /**
+     * Return a PN array strcuture for the PN user dropdown box.
+     *
+     * @param string  $name          The selector name.
+     * @param integer $gid           The group ID to get users for (optional) (default=null).
+     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
+     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
+     * @param string  $defaultText   The text of the default value (optional) (default='').
+     * @param integer $allValue      The value to assign for the "All" choice (optional) (default='').
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param string  $excludeList   A (string) list of IDs to exclude (optional) (default=null).
+     * @param boolean $submit        Whether or not to auto-submit the selector (optional) (default=false).
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     *
+     * @return The string for the user group selector.
+     */
+    public static function getSelector_User($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
         $where = '';
         if ($excludeList) {
@@ -622,7 +673,7 @@ class HtmlUtil
         }
 
         $data = array();
-        $userlist = UserUtil::getPNUsers($where, 'ORDER BY z_uname');
+        $userlist = UserUtil::getUsers($where, 'ORDER BY z_uname');
         foreach ($userlist as $k => $v) {
             $data[$k] = $v['uname'];
         }
@@ -644,9 +695,34 @@ class HtmlUtil
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      * @param string  $field         The field to use for value.
      *
+     * @deprecated since 1.3.0
+     * @see self::getSelector_Module()
+     *
      * @return The string for the user group selector.
      */
-    public static function getSelector_PNModule ($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
+    public static function getSelector_PNModule($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
+    {
+        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__ , 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
+        return self::getSelector_Module($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
+    }
+
+    /**
+     * Return the html for the PNModule selector.
+     *
+     * @param string  $name          The selector name.
+     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
+     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
+     * @param string  $defaultText   The text of the default value (optional) (default='').
+     * @param integer $allValue      The value to assign the "All" choice (optional) (default=0).
+     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
+     * @param boolean $submit        Whether or not to auto-submit the selector.
+     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
+     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
+     * @param string  $field         The field to use for value.
+     *
+     * @return The string for the user group selector.
+     */
+    public static function getSelector_Module($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
     {
         $data = array();
         $modules = ModUtil::getModulesByState(3, 'displayname');

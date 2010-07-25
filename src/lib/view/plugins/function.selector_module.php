@@ -42,6 +42,6 @@ function smarty_function_selector_module ($params, $view)
     $disabled      = isset($params['disabled'])      ? $params['disabled']      : false;
     $multipleSize  = isset($params['multipleSize'])  ? $params['multipleSize']  : 1;
 
-    return HtmlUtil::getSelector_PNModule ($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
+    return HtmlUtil::getSelector_Module ($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText,
                                            $submit, $disabled, $multipleSize, $field);
 }
