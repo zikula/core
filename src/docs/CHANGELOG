@@ -200,3 +200,4 @@ When retrieving user accounts (for any purpose, including for logging in) by e-m
 A user with rights to delete user accounts is prevented from deleting his own account.
 The registration date, last login date, and all other dates saved to the database tables by the Users module are now guaranteed to be UTC date/times in the database. They might be adjusted for display by other functions, however.
 Zikula no longer supports PHP register_globals = On
+Added option to translate the language changer block option into native language - issue #2119
