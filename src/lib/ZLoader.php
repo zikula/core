@@ -73,6 +73,8 @@ class ZLoader
         $eventManager->attach('core.init', array('SystemListenersUtil', 'sessionLogging'));
         $eventManager->attach('core.init', array('SystemListenersUtil', 'systemPlugins'));
         $eventManager->attach('core.postinit', array('SystemListenersUtil', 'systemHooks'));
+        $eventManager->attach('core.init', array('SystemListenersUtil', 'setupDebugToolbar'));
+        $eventManager->attach('log.sql', array('SystemListenersUtil', 'logSqlQueries'));
     }
 
     /**

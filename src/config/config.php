@@ -66,6 +66,7 @@ $ZConfig['DBInfo']['external1']['dbcollate'] = 'utf8_general_ci';
 // ----------------------------------------------------------------------
 $ZConfig['Debug']['debug'] = 0;             //
 $ZConfig['Debug']['debug.pagerendertime'] = 0;    // display page render time, 0 to disable
+$ZConfig['Debug']['debug.toolbar'] = 0;     // 1 to show the debug toolbar (reqires development 1), 0 to disable
 $ZConfig['Debug']['sql_verbose'] = 0;       // sql debug flag, generates lots of print output
 $ZConfig['Debug']['sql_count'] = 0;         // count sql statements, 0 to disable
 $ZConfig['Debug']['sql_time'] = 0;          // time sql statements, 0 to disable
@@ -106,7 +107,8 @@ $ZConfig['Log']['log.file_level'] = 7;                      // 0 - EMERG, 1 - CR
 $ZConfig['Log']['log.show_php_errorhandler'] = 0;           // Set 1 if you want to see PHP's output, including XDebug output. This overrides log.display_template.
 $ZConfig['Log']['log.display_template'] = 0;                // overrides log.show_php_error_handler and gains full control of output.
 
-$ZConfig['Log']['log.doctrine_profiler'] = 0;               // Turn on/off Doctrine profiler
+$ZConfig['Log']['log.sql.to_display'] = 0;                  // Display sql queries?
+$ZConfig['Log']['log.sql.to_file'] = 0;                     // Log sql queries to file?
 
 // ----------------------------------------------------------------------
 // The following define some data layer settings
@@ -143,9 +145,6 @@ $ZConfig['Multisites']['multisites.enabled'] = 0;
 // Initialize runtime variables to sane defaults
 // ----------------------------------------------------------------------
 global $ZRuntime;
-$ZRuntime['sql'] = array();
-$ZRuntime['sql_count_request'] = 0;
-$ZRuntime['sql_time_request'] = 0;
 $ZRuntime['cache_time_request'] = 0;
 
 // * NOTE  If you copy this file to personal_config.php, remove the includes below

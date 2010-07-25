@@ -146,9 +146,9 @@ class DBConnectionStack
         }
 
         // isset check is just for the installer - drak
-        if (isset($serviceManager['log.doctrine_profiler']) && $serviceManager['log.doctrine_profiler']) {
-            $profiler = $serviceManager->attachService('doctrine.profiler', new Doctrine_Connection_Profiler());
-            $connection->setListener($profiler);
+        if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
+            // add listener that sends events for all sql queries
+            $connection->setListener(new Zikula_Doctrine_Listener_Profiler());
         }
 
         self::$connectionInfo[$name] = $connInfo;

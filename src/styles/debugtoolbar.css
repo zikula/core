@@ -1,0 +1,82 @@
+#DebugToolbarContainer {
+    left: 0;
+    top: 0;
+   /* position: fixed;*/
+    width: 100%;
+}
+
+#DebugToolbar {
+    background-color: #D9D9D9;
+    right: 0;
+    top: 0;
+    position: fixed;
+    z-index: 10000;
+    line-height: 100%;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 12px;
+    white-space:nowrap;
+    text-align: left;
+}
+
+#DebugToolbarContainer a, #DebugToolbarContainer a:hover{
+    color: black;
+    font-weight: bold;
+}
+
+#DebugToolbar img{
+    vertical-align: middle;
+}
+
+#DebugToolbar ul{
+    margin:0;
+    display:inline;
+    padding:0;
+}
+
+#DebugToolbar li{
+    display:inline;
+    list-style-type:none;
+    list-style-position:outside;
+    list-style-image:none;
+    margin-left: 8px;
+}
+
+.DebugToolbarPanel {
+    background-color:#F3F3F3;
+    left:0;
+    top:0;
+    position:absolute;
+    width: 98%;
+    z-index:9999;
+    padding: 10px;
+    white-space:normal;
+    border-bottom: #000000 solid 1px;
+    border-right: #000000 solid 1px;
+}
+
+#DebugToolbarPanelsqlContent td {
+    padding-bottom: 10px;
+}
+
+
+/* Log Table */
+table.DebugToolbarLogs  {
+    width: 100%;
+}
+
+table.DebugToolbarLogs td {
+    background-color:#DDDDDD;
+}
+
+table.DebugToolbarLogs th {
+    background-color:#999999;
+}
+
+.DebugToolbarLogsType {
+    width: 6%;
+}
+
+.DebugToolbarLogsMessage {
+    width: 50%;
+}

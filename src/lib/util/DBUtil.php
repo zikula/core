@@ -239,19 +239,6 @@ class DBUtil
             return false;
         }
 
-        global $ZConfig;
-        $suid = $ZConfig['Debug']['sql_user'];
-        $uid  = SessionUtil::getVar('uid', 0);
-        if (($ZConfig['Debug']['sql_time'] || $ZConfig['Debug']['sql_detail']) ||
-            (!$suid || ($suid && $suid === $uid))) {
-            static $timer;
-            if (!$timer) {
-                $timer = new Zikula_Debug_Timer();
-            } else {
-                $timer->reset();
-            }
-        }
-
         try {
             if ($limitNumRows > 0) {
                 $tStr = strtoupper(substr(trim($sql), 0, 6));
@@ -274,32 +261,6 @@ class DBUtil
             }
 
             if ($result) {
-                global $ZRuntime;
-                $uid  = SessionUtil::getVar('uid', 0);
-                $suid = $ZConfig['Debug']['sql_user'];
-
-                if (!$suid || (is_array($suid) && in_array($uid)) || ($suid === $uid)) {
-                    if ($ZConfig['Debug']['sql_count']) {
-                        $ZRuntime['sql_count_request'] += 1;
-                    }
-
-                    if ($ZConfig['Debug']['sql_time'] || $ZConfig['Debug']['sql_detail']) {
-                        $diff = $timer->snap(true);
-                        $ZRuntime['sql_time_request'] += $diff['diff'];
-                        if ($ZConfig['Debug']['sql_detail']) {
-                            $sqlstat = array();
-                            $sqlstat['stmt'] = $sql;
-                        }
-                        if ($limitNumRows > 0) {
-                            $sqlstat['limit'] = "$limitOffset, $limitNumRows";
-                        }
-                        if ($ZConfig['Debug']['sql_detail']) {
-                            $sqlstat['rows_affected'] = $result->_numOfRows;
-                            $sqlstat['time'] = $diff['diff'];
-                            $ZRuntime['sql'][] = $sqlstat;
-                        }
-                    }
-                }
                 if (System::isLegacyMode()) {
                     return new Zikula_Adapter_AdodbStatement($result);
                 } else {
@@ -1434,17 +1395,6 @@ class DBUtil
             }
         }
 
-        global $ZConfig;
-        if ($ZConfig['Debug']['sql_detail']) {
-            $uid = SessionUtil::getVar('uid', 0);
-            $suid = $ZConfig['Debug']['sql_user'];
-            if (!$suid || (is_array($suid) && in_array($uid)) || ($suid === $uid)) {
-                global $ZRuntime;
-                $last = count($ZRuntime['sql']);
-                $ZRuntime['sql'][$last - 1]['rows_marshalled'] = count($fieldArray);
-            }
-        }
-
         return $fieldArray;
     }
 
@@ -1560,26 +1510,6 @@ class DBUtil
                 } else {
                     $objectArray[] = $object;
                 }
-            }
-        }
-
-        global $ZConfig;
-        global $ZRuntime;
-        $debugSettings = $ZConfig['Debug'];
-        $uid = SessionUtil::getVar('uid', 0);
-        $suid = $debugSettings['sql_user'];
-
-        if ($debugSettings['sql_detail']) {
-            if (!$suid || (is_array($suid) && in_array($uid)) || ($suid === $uid)) {
-                $last = count($ZRuntime['sql']);
-                $ZRuntime['sql'][$last - 1]['rows_marshalled'] = count($objectArray);
-            }
-        }
-
-        if ($debugSettings['sql_data']) {
-            if (!$suid || (is_array($suid) && in_array($uid)) || ($suid === $uid)) {
-                $last = count($ZRuntime['sql']);
-                $ZRuntime['sql'][$last - 1]['rows'] = $objectArray;
             }
         }
 

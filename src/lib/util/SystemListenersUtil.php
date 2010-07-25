@@ -115,7 +115,7 @@ class SystemListenersUtil
             return;
         }
         
-        if ($serviceManager['log.to_display']) {
+        if ($serviceManager['log.to_display'] || $serviceManager['log.sql.to_display']) {
             $displayLogger = $serviceManager->attachService('zend.logger.display', new Zend_Log());
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream('php://output');
@@ -123,7 +123,7 @@ class SystemListenersUtil
             $writer->setFormatter($formatter);
             $displayLogger->addWriter($writer);
         }
-        if ($serviceManager['log.to_file']) {
+        if ($serviceManager['log.to_file'] || $serviceManager['log.sql.to_file']) {
             $fileLogger = $serviceManager->attachService('zend.logger.file', new Zend_Log());
             $filename = LogUtil::getLogFileName();
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
@@ -182,5 +182,103 @@ class SystemListenersUtil
         }
     }
 
+    /**
+     * Listener for log.sql events.
+     *
+     * This listener logs the queries via Zend_Log to file / console.
+     *
+     * @param Zikula_Event $event Event.
+     */
+    public static function logSqlQueries(Zikula_Event $event)
+    {
+        $serviceManager = ServiceUtil::getManager();
+        if (!$serviceManager['log.enabled']) {
+            return;
+        }
+
+        $message = __f('SQL Query: %s took %s sec', array($event['query'], $event['time']));
+
+        if ($serviceManager['log.sql.to_display']) {
+            $serviceManager->getService('zend.logger.display')->log($message, Zend_Log::DEBUG);
+        }
+
+        if ($serviceManager['log.sql.to_file']) {
+            $serviceManager->getService('zend.logger.file')->log($message, Zend_Log::DEBUG);
+        }
+    }
+
+    /**
+     * Debug toolbar startup.
+     *
+     * @param Zikula_Event $event Event.
+     */
+    public static function setupDebugToolbar(Zikula_Event $event)
+    {
+        if ($event['stage'] == System::CORE_STAGES_CONFIG && System::isDevelopmentMode()
+            && $GLOBALS['ZConfig']['Debug']['debug.toolbar']) {
+
+            // create definitions
+            $toolbar = new Zikula_ServiceManager_Definition(
+                    'Zikula_DebugToolbar',
+                    array(),
+                    array('addPanels' => array(new Zikula_ServiceManager_Service('debug.toolbar.panel.version'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.config'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.momory'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.sql'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.view'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.exec'),
+                                               new Zikula_ServiceManager_Service('debug.toolbar.panel.logs')))
+            );
+
+            $versionPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Version');
+            $configPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Config');
+            $momoryPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Memory');
+            $rendertimePanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_RenderTime');
+            $sqlPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_SQL');
+            $viewPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_View');
+            $execPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Exec');
+            $logsPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Log');
+
+            // save start time (required by rendertime panel)
+            $sm = ServiceUtil::getManager();
+            $sm->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));
+
+            // register services
+            
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.version', $versionPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.config', $configPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.momory', $momoryPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.rendertime', $rendertimePanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.sql', $sqlPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.view', $viewPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.exec', $execPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar.panel.logs', $logsPanel, true));
+            $sm->registerService(new Zikula_ServiceManager_Service('debug.toolbar', $toolbar, true));
+
+            // setup rendering event listeners
+            EventUtil::attach('theme.prefooter', array('SystemListenersUtil', 'debugToolbarRendering'));
+
+            // setup event listeners
+            EventUtil::attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
+            EventUtil::attach('module.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'));
+            EventUtil::attach('module.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'));
+            EventUtil::attach('module.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'));
+            EventUtil::attach('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
+            EventUtil::attach('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
+            EventUtil::attach('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'));
+            EventUtil::attach('controller_api.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerAPINotFound'));
+        }
+    }
+
+    /**
+     * Debug toolbar rendering (listener for theme.prefooter event).
+     *
+     * @param Zikula_Event $event Event.
+     */
+    public static function debugToolbarRendering(Zikula_Event $event) {
+        $toolbar = ServiceUtil::getManager()->getService('debug.toolbar');
+        $toolbar->addHTMLToTooter();
+    }
 }
 
