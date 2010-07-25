@@ -1,12 +1,16 @@
 ## These rules serve as a reference.  You may add these to your .htaccess as required.
 
-
 # Security options, if they work in your environment. If you get a 500 error, then they won't.
 # These settings are best turned off in php.ini and will be on modern hosting environments.
 #<IfModule !mod_suphp.c>
 	#php_flag magic_quotes_gpc Off
 	#php_flag register_globals Off
 #</IfModule>
+
+# Set PHP Runtime Configuration (PHPRC)
+# <IfModule mod_suphp.c>
+#	suPHP_ConfigPath /home/username/public_html
+# </IfModule>
 
 <IfModule mod_rewrite.c>
 
