@@ -50,9 +50,6 @@ if (!$src or strpos($src, 'http://')!=0) $src=  'http://' . $_SERVER['SERVER_NAM
 if (!isset($utf)) $utf = 'n';
 
 if ($utf == 'y') {
-	define('MAGPIE_CACHE_DIR', MAGPIE_DIR . 'cache_utf8/');
-	// character encoding
-	define('MAGPIE_OUTPUT_ENCODING', 'UTF-8');
 
 } else {
 	define('MAGPIE_CACHE_DIR', MAGPIE_DIR . 'cache/');
@@ -287,7 +284,7 @@ if  (!$rss) {
 			$str.= strip_returns($my_blurb, $br) . "\n"; 
 		}
 			
-		$str.= "$more_link</li>\n";	
+		
 	}
 }
 
