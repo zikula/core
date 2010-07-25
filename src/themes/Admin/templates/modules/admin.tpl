@@ -26,11 +26,11 @@
 	<script type="text/javascript" src="javascript/livepipe/livepipe.combined.min.js"></script>
 	<script type="text/javascript" src="javascript/helpers/Zikula.UI.js"></script>
 
-	<link type="text/css" href="{$themepath}/css/ui/ui.base.css" rel="stylesheet" media="all" />
-	<link type="text/css" href="{$themepath}/css/themes/black_rose/ui.css" rel="stylesheet" title="style" media="all" />
+	<link type="text/css" href="{$themepath}/style/ui/ui.base.css" rel="stylesheet" media="all" />
+	<link type="text/css" href="{$themepath}/style/themes/black_rose/ui.css" rel="stylesheet" title="style" media="all" />
 
 	{browserhack condition="if IE"}
-	<link href="{$themepath}/css/ie6.css" rel="stylesheet" media="all" />
+	<link href="{$themepath}/style/ie6.css" rel="stylesheet" media="all" />
 	
 	<script src="{$themepath}/js/pngfix.js"></script>
 	<script>

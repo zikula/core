@@ -119,7 +119,7 @@ jQuery(document).ready(function() {
 			}, 2000);
 
 			setTimeout(function () { 
-			jQuery("link[title='style']").attr("href","themes/Admin/css/themes/" + theme_name + "/ui.css");
+			jQuery("link[title='style']").attr("href","themes/Admin/style/themes/" + theme_name + "/ui.css");
 			}, 500);
 
 			jQuery.cookie('theme', theme_name );
@@ -134,27 +134,27 @@ jQuery(document).ready(function() {
 		jQuery("a.set_theme[id="+ theme +"]").addClass("active");
 	    
 		if (theme == 'black') {
-	        jQuery("link[title='style']").attr("href","themes/Admin/css/themes/black/ui.css");
+	        jQuery("link[title='style']").attr("href","themes/Admin/style/themes/black/ui.css");
 	        
 	    };
 
 		if (theme == 'gray') {
-	        jQuery("link[title='style']").attr("href","themes/Admin/css/themes/gray/ui.css");
+	        jQuery("link[title='style']").attr("href","themes/Admin/style/themes/gray/ui.css");
 	    };
 
 		if (theme == 'gray_light') {
-	        jQuery("link[title='style']").attr("href","themes/Admin/css/themes/gray_light/ui.css");
+	        jQuery("link[title='style']").attr("href","themes/Admin/style/themes/gray_light/ui.css");
 	    };
 	    
 		if (theme == 'blue') {
-	        jQuery("link[title='style']").attr("href","themes/Admin/css/themes/blue/ui.css");
+	        jQuery("link[title='style']").attr("href","themes/Admin/style/themes/blue/ui.css");
 	    };
 	    
 		if (theme == 'green') {
-	        jQuery("link[title='style']").attr("href","themes/Admin/css/themes/green/ui.css");
+	        jQuery("link[title='style']").attr("href","themes/Admin/style/themes/green/ui.css");
 	    };
 		if (theme == 'hot') {
-	        jQuery("link[title='style']").attr("href","themes/Admin/css/themes/hot/ui.css");
+	        jQuery("link[title='style']").attr("href","themes/Admin/style/themes/hot/ui.css");
 	    };
 
     });
