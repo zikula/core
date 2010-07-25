@@ -1,13 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Mailer
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 class Mailer_Controller_Admin extends Zikula_Controller
@@ -20,7 +22,6 @@ class Mailer_Controller_Admin extends Zikula_Controller
      * shows the module menu and returns or calls whatever the module
      * designer feels should be the default function (often this is the
      * view() function)
-     * @author Mark West
      * @return string HTML string
      */
     public function main()
@@ -32,7 +33,6 @@ class Mailer_Controller_Admin extends Zikula_Controller
     /**
      * This is a standard function to modify the configuration parameters of the
      * module
-     * @author Mark West
      * @return string HTML string
      */
     public function modifyconfig()
@@ -59,7 +59,6 @@ class Mailer_Controller_Admin extends Zikula_Controller
     /**
      * This is a standard function to update the configuration parameters of the
      * module given the information passed back by the modification form
-     * @author Mark West
      * @see Mailer_admin_updateconfig()
      * @param int mailertype Mail transport agent
      * @param string charset default character set of the message
@@ -141,7 +140,6 @@ class Mailer_Controller_Admin extends Zikula_Controller
 
     /**
      * This function displays a form to sent a test mail
-     * @author Mark West
      * @return string HTML string
      */
     public function testconfig()
@@ -159,7 +157,6 @@ class Mailer_Controller_Admin extends Zikula_Controller
 
     /**
      * This function processes the results of the test form
-     * @author Mark West
      * @param string args['toname '] name to the recipient
      * @param string args['toaddress'] the address of the recipient
      * @param string args['subject'] message subject

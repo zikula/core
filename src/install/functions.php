@@ -31,8 +31,6 @@ function install()
     require_once 'install/modify_config.php';
     require 'config/config.php';
 
-    $GLOBALS['ZConfig']['System']['language_bc'] = true;
-
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     DBConnectionStack::init('default', true);
 

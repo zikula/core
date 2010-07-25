@@ -27,11 +27,23 @@
  */
 class SecurityUtil
 {
+    protected static $schemas = array();
+
     const PERMS_ALL = -1;
     const PERMS_UNREGISTERED = 0;
 
     // Default salt delimeter
     const SALT_DELIM = '$';
+
+    public static function getSchemas()
+    {
+        return self::$schemas;
+    }
+
+    public static function setSchemas($schemas)
+    {
+        self::$schemas = $schemas;
+    }
 
     /**
      * Check permissions
@@ -86,11 +98,11 @@ class SecurityUtil
      */
     public static function registerPermissionSchema($component, $schema)
     {
-        if (!empty($GLOBALS['schemas'][$component])) {
+        if (!empty(self::$schemas[$component])) {
             return false;
         }
 
-        $GLOBALS['schemas'][$component] = $schema;
+        self::$schemas[$component] = $schema;
         return true;
     }
 

@@ -1,17 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2002, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id: renderer.php 27057 2009-10-21 16:15:43Z drak $
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
  *
- * Render - Zikula wrapper class for Smarty
- * Display a Render block
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
  *
- * @package     Zikula_System_Modules
- * @subpackage  Theme
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 class Theme_Block_Render extends Zikula_Block

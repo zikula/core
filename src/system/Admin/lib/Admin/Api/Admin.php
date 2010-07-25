@@ -1,20 +1,21 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2002, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Admin
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 class Admin_Api_Admin extends Zikula_Api
 {
     /**
      * create a admin category
-     * @author Mark West
      * @param string $args['catname'] name of the category
      * @param string $args['description'] description of the category
      * @return mixed admin category ID on success, false on failure
@@ -48,7 +49,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * delete a admin category
-     * @author Mark West
      * @param int $args['cid'] ID of the category
      * @return bool true on success, false on failure
      */
@@ -108,7 +108,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * update a admin category
-     * @author Mark West
      * @param int $args['cid'] the ID of the category
      * @param string $args['catname'] the new name of the category
      * @param string $args['description'] the new description of the category
@@ -155,7 +154,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * get all admin categories
-     * @author Mark West
      * @param int $args['startnum'] starting record number
      * @param int $args['numitems'] number of items to get
      * @return mixed array of items, or false on failure
@@ -205,7 +203,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * get a specific category
-     * @author Mark West
      * @param int $args['cid'] id of example item to get
      * @return mixed item array, or false on failure
      */
@@ -232,7 +229,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * utility function to count the number of items held by this module
-     * @author Mark West
      * @return int number of items held by this module
      */
     public function countitems()
@@ -242,7 +238,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * add a module to a category
-     * @author Mark West
      * @param string $args['module'] name of the module
      * @param int $args['category'] number of the category
      * @return mixed admin category ID on success, false on failure
@@ -279,7 +274,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * Get the category a module belongs to
-     * @author Mark West
      * @param int $args['mid'] id of the module
      * @return mixed category id, or false on failure
      */
@@ -319,7 +313,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * Get the category a module belongs to
-     * @author Robert Gasch
      * @return array of categories
      */
     public function getmodcategories($args)
@@ -344,7 +337,6 @@ class Admin_Api_Admin extends Zikula_Api
 
     /**
      * Get the category a module belongs to
-     * @author Mark West
      * @param int $args['mid'] id of the module
      * @return mixed array of styles if successful, or false on failure
      */
@@ -382,7 +374,6 @@ class Admin_Api_Admin extends Zikula_Api
     /**
      * get available admin panel links
      *
-     * @author Mark West
      * @return array array of admin links
      */
     public function getlinks()

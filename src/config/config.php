@@ -135,6 +135,10 @@ $ZConfig['System']['CACHE_COMPRESSION'] = true; // true/false valid for CACHE_TY
 $ZConfig['System']['CACHE_RESULT'] = false;   // true to enable or null to disable.
 $ZConfig['System']['CACHE_RESULT_TTL'] = 30; // seconds, 3600 = 1 hour.
 
+// Initialize multisites array
+$ZConfig['Multisites'] = array();
+$ZConfig['Multisites']['multisites.enabled'] = 0;
+
 // ----------------------------------------------------------------------
 // Initialize runtime variables to sane defaults
 // ----------------------------------------------------------------------

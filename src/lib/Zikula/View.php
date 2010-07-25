@@ -222,7 +222,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->default_resource_type = 'z';
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if (($GLOBALS['loadstages'] & System::CORE_STAGES_AJAX) && System::getVar('shorturls')) {
+        if ((System::getStages() & System::CORE_STAGES_AJAX) && System::getVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
         }
 
@@ -385,7 +385,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         if (in_array($dir, $this->plugins_dir) || !is_dir($dir)) {
             return;
         }
-        
+
         array_push($this->plugins_dir, $dir);
         return $this;
     }
@@ -835,7 +835,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
                 // actions for when $expire is not null
             }
         }
-        
+
         return true;
     }
 
@@ -859,7 +859,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @return boolean Results of {@link smarty_core_rm_auto()}.
      */
     public function clear_compiled($exp_time = null)
-    {   
+    {
         $compile_dir = $this->compile_dir;
 
         $compiled_files = FileUtil::getFiles($compile_dir, true, false, array('php', 'inc'), null, false);

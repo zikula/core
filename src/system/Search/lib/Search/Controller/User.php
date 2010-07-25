@@ -1,15 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2002, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Search
- * @author Patrick Kellum
- * @author Stefano Garuti
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 class Search_Controller_User extends Zikula_Controller
@@ -20,7 +20,6 @@ class Search_Controller_User extends Zikula_Controller
      *
      * This function is the default function. Call the function to show the search form.
      *
-     * @author Stefano Garuti
      * @return string HTML string templated
      */
     public function main()
@@ -34,9 +33,6 @@ class Search_Controller_User extends Zikula_Controller
      *
      * Generate the whole search form, including the various plugins options.
      * It uses the Search API's getallplugins() function to find plugins.
-     *
-     * @author Patrick Kellum
-     * @author Stefano Garuti
      *
      * @return string HTML string templated
      */
@@ -74,8 +70,6 @@ class Search_Controller_User extends Zikula_Controller
         SessionUtil::delVar('searchactive');
         SessionUtil::delVar('searchmodvar');
 
-        //889$domain = $renderer->renderDomain;
-
         // get all the search plugins
         $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
 
@@ -93,8 +87,6 @@ class Search_Controller_User extends Zikula_Controller
                     $plugin_options[$mods['title']] = ModUtil::apiFunc($mods['title'], 'search', 'options', $vars);
                 }
             }
-
-            //889$renderer->renderDomain = $domain;
 
             // Create output object
             // add content to template
@@ -115,11 +107,6 @@ class Search_Controller_User extends Zikula_Controller
      *
      * This function includes all the search plugins, then call every one passing
      * an array that contains the string to search for, the boolean operators.
-     *
-     * @author Patrick Kellum
-     * @author Stefano Garuti
-     * @author Mark West
-     * @author Jorn Wildt
      *
      * @return string HTML string templated
      */
@@ -208,8 +195,6 @@ class Search_Controller_User extends Zikula_Controller
 
     /**
      * display a list of recent searches
-     *
-     * @author Jorg Napp
      */
     public function recent()
     {

@@ -1,14 +1,16 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2002, Zikula Development Team
- * @link http://www.zikula.org
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Admin
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
-
 class Admin_Controller_Admin extends Zikula_Controller
 {
     /**
@@ -30,7 +32,6 @@ class Admin_Controller_Admin extends Zikula_Controller
      * shows the module menu and returns or calls whatever the module
      * designer feels should be the default function (often this is the
      * view() function)
-     * @author Mark West
      * @return string HTML string
      */
     public function main()
@@ -43,7 +44,6 @@ class Admin_Controller_Admin extends Zikula_Controller
      * Add a new admin category
      * This is a standard function that is called whenever an administrator
      * wishes to create a new module item
-     * @author Mark West
      * @return string HTML string
      */
     public function newcat()
@@ -61,7 +61,6 @@ class Admin_Controller_Admin extends Zikula_Controller
     /**
      * This is a standard function that is called with the results of the
      * form supplied by admin_admin_new() to create a new category
-     * @author Mark West
      * @see Admin_admin_new()
      * @param string $args['catname'] the name of the category to be created
      * @param string $args['description'] the description of the category to be created
@@ -91,7 +90,6 @@ class Admin_Controller_Admin extends Zikula_Controller
      * Modify a category
      * This is a standard function that is called whenever an administrator
      * wishes to modify an admin category
-     * @author Mark West
      * @param int $args['cid'] category id
      * @param int $args['objectid'] generic object id maps to cid if present
      * @return string HTML string
@@ -124,7 +122,6 @@ class Admin_Controller_Admin extends Zikula_Controller
     /**
      * This is a standard function that is called with the results of the
      * form supplied by template_admin_modify() to update a current item
-     * @author Mark West
      * @see Admin_admin_modify()
      * @param int $args['cid'] the id of the item to be updated
      * @param int $args['objectid'] generic object id maps to cid if present
@@ -164,8 +161,8 @@ class Admin_Controller_Admin extends Zikula_Controller
      * modification it is generally easier to separate them into separate
      * functions.  There is no requirement in the Zikula MDG to do one or the
      * other, so either or both can be used as seen appropriate by the module
-     * developer
-     * @author Mark West
+     * developer.
+     *
      * @param int $args['cid'] the id of the category to be deleted
      * @param int $args['objectid'] generic object id maps to cid if present
      * @param bool $args['confirmation'] confirmation that this item can be deleted
@@ -213,7 +210,7 @@ class Admin_Controller_Admin extends Zikula_Controller
 
     /**
      * View all admin categories
-     * @author Mark West
+     *
      * @param int $startnum the starting id to view from - optional
      * @return string HTML string
      */
@@ -264,7 +261,7 @@ class Admin_Controller_Admin extends Zikula_Controller
 
     /**
      * Display main admin panel for a category
-     * @author Mark West
+     * 
      * @param int $args['acid'] the id of the category to be displayed
      * @return string HTML string
      */
@@ -413,8 +410,8 @@ class Admin_Controller_Admin extends Zikula_Controller
 
     /**
      * This is a standard function to modify the configuration parameters of the
-     * module
-     * @author Mark West
+     * module.
+     *
      * @return string HTML string
      */
     public function modifyconfig()
@@ -459,8 +456,8 @@ class Admin_Controller_Admin extends Zikula_Controller
 
     /**
      * This is a standard function to update the configuration parameters of the
-     * module given the information passed back by the modification form
-     * @author Mark West
+     * module given the information passed back by the modification form.
+     *
      * @see Admin_admin_modifyconfig()
      * @param int $modulesperrow the number of modules to display per row in the admin panel
      * @param int $admingraphic switch for display of admin icons
@@ -534,8 +531,8 @@ class Admin_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Main category menu
-     * @author Mark West
+     * Main category menu.
+     *
      * @return string HTML string
      */
     public function categorymenu($args)
@@ -643,8 +640,8 @@ class Admin_Controller_Admin extends Zikula_Controller
     }
 
     /**
-     * Get security analyzer data
-     * @author Mark West
+     * Get security analyzer data.
+     *
      * @return array data
      */
     private function _securityanalyzer()
@@ -699,7 +696,6 @@ class Admin_Controller_Admin extends Zikula_Controller
     /**
      * Check for updates
      *
-     * @author Drak
      * @return data or false
      */
     private function _updatecheck($force=false)
@@ -737,9 +733,8 @@ class Admin_Controller_Admin extends Zikula_Controller
 
 
     /**
-     * Developer notices
+     * Developer notices.
      *
-     * @author Carsten Volmer
      * @return data or false
      */
     private function _developernotices()
@@ -789,10 +784,6 @@ class Admin_Controller_Admin extends Zikula_Controller
      *
      * This function is internal for the time being and may be extended to be a proper library
      * or find an alternative solution later.
-     *
-     * @author Drak
-     *
-     * @todo relocate this somewhere sensible after feature has been correctly implemented - drak
      *
      * @param string $url
      * @param ing $timeout default=5

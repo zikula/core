@@ -1,12 +1,15 @@
 <?php
 /**
- * Zikula Application Framework
- * @copyright (c) Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Permissions
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 class Permissions_Api_Admin extends Zikula_Api
@@ -479,7 +482,7 @@ class Permissions_Api_Admin extends Zikula_Api
             return LogUtil::registerPermissionError();
         }
 
-        global $schemas;
+        $schemas = SecurityUtil::getSchemas();
         BlockUtil::loadAll();
         $modinfos = ModUtil::getAllMods();
         foreach($modinfos as $modinfo) {
@@ -488,6 +491,7 @@ class Permissions_Api_Admin extends Zikula_Api
             }
         }
         uksort($schemas, 'strnatcasecmp');
+        SecurityUtil::setSchemas($schemas);
         return $schemas;
     }
 

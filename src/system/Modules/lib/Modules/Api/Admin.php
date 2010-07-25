@@ -222,7 +222,7 @@ class Modules_Api_Admin extends Zikula_Api
         // Optional arguments.
         $startnum = (empty($args['startnum']) || $args['startnum'] < 0) ? 1 : (int) $args['startnum'];
         $numitems = (empty($args['numitems']) || $args['numitems'] < 0) ? -1 : (int) $args['numitems'];
-        if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
+        if ($this->serviceManager['multisites.enabled'] == 1) {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int) $args['state'];
         } else {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int) $args['state'];
@@ -330,7 +330,7 @@ class Modules_Api_Admin extends Zikula_Api
         // Check valid state transition
         switch ($args['state']) {
             case ModUtil::STATE_UNINITIALISED:
-                if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
+                if ($this->serviceManager['multisites.enabled'] == 1) {
                     if (!SecurityUtil::checkPermission('Modules::', '::', ACCESS_ADMIN)) {
                         return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                     }
@@ -494,9 +494,9 @@ class Modules_Api_Admin extends Zikula_Api
         DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'smodule');
 
         // remove the entry from the modules table
-        if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
+        if ($this->serviceManager['multisites.enabled'] == 1) {
             // who can access to the mainSite can delete the modules in any other site
-            $canDelete = (($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) ? 1 : 0;
+            $canDelete = (($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
             //delete the module infomation only if it is not allowed, missign or invalid
             if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
@@ -808,9 +808,9 @@ class Modules_Api_Admin extends Zikula_Api
                 if (!$modinfo['version']) {
                     $modinfo['state'] = ModUtil::STATE_INVALID;
                 }
-                if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
+                if ($this->serviceManager['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
-                    if (($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 0) || ($GLOBALS['ZConfig']['Multisites']['mainSiteURL'] == $_SERVER['HTTP_HOST'] && $GLOBALS['ZConfig']['Multisites']['basedOnDomains'] == 1)) {
+                    if (($this->serviceManager['multisites.main_siteurl'] == FormUtil::getPassedValue('siteDNS', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.main_siteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
                         DBUtil::insertObject($modinfo, 'modules');
                     }
                 } else {

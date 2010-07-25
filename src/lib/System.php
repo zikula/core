@@ -47,8 +47,10 @@ class System
     const VERSION_SUB =  'vai';
 
     const CORE_STAGES_NONE = 0;
-    const CORE_STAGES_CONFIG = 1;
-    const CORE_STAGES_DB = 4;
+    const CORE_STAGES_PRE = 1;
+    const CORE_STAGES_POST = 2;
+    const CORE_STAGES_CONFIG = 4;
+    const CORE_STAGES_DB = 8;
     const CORE_STAGES_TABLES = 16;
     const CORE_STAGES_SESSIONS = 32;
     const CORE_STAGES_LANGS = 64;
@@ -57,6 +59,13 @@ class System
     const CORE_STAGES_THEME = 2048;
     const CORE_STAGES_ALL = 4095;
     const CORE_STAGES_AJAX = 4096; // needs to be set explicitly, CORE_STAGES_ALL | CORE_STAGES_AJAX
+
+    protected static $stages = 0;
+
+    public static function getStages()
+    {
+        return self::$stages;
+    }
 
     /**
      * Get a configuration variable.
@@ -212,9 +221,11 @@ class System
         }
 
         // store the load stages in a global so other API's can check whats loaded
-        $GLOBALS['loadstages'] = $stages;
+        self::$stages = self::$stages | $stages;
 
-        $eventManager->notify(new Zikula_Event('core.preinit'));
+        if (($stages & self::CORE_STAGES_PRE) && (self::$stages & ~self::CORE_STAGES_PRE)) {
+            $eventManager->notify(new Zikula_Event('core.preinit'));
+        }
 
         // Initialise and load configuration
         if ($stages & self::CORE_STAGES_CONFIG) {
@@ -225,14 +236,11 @@ class System
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
                 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
             }
-            if (!isset($GLOBALS['ZConfig']['Multisites'])) {
-                $GLOBALS['ZConfig']['Multisites'] = array();
-                $GLOBALS['ZConfig']['Multisites']['multi'] = 0;
-            }
 
             $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
             $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
             $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
+            $serviceManager->loadArguments($GLOBALS['ZConfig']['Multisites']);
 
             // initialise time to render
             if ($GLOBALS['ZConfig']['Debug']['debug.pagerendertime']) {
@@ -255,14 +263,6 @@ class System
             $coreInitEvent->setArg('stage', self::CORE_STAGES_CONFIG);
             $eventManager->notify($coreInitEvent);
         }
-
-        // Initialize the (ugly) additional header array
-        $GLOBALS['additional_header'] = array();
-
-        // schemas - holds all component/instance schemas
-        // Should wrap this in a static one day, but the information
-        // isn't critical so we'll do it later
-        $GLOBALS['schemas'] = array();
 
         // Check that Zikula is installed before continuing
         if (self::getVar('installed') == 0 && !self::isInstalling()) {
@@ -400,9 +400,9 @@ class System
             }
         }
 
-        $eventManager->notify(new Zikula_Event('core.postinit', null, array('stages' => $stages)));
-
-        return true;
+        if (($stages & self::CORE_STAGES_POST) && (self::$stages & ~self::CORE_STAGES_POST)) {
+            $eventManager->notify(new Zikula_Event('core.postinit', null, array('stages' => $stages)));
+        }
     }
 
     /**
@@ -554,8 +554,9 @@ class System
             $path = str_replace(strrchr($path, '/'), '', $path);
         }
 
-        if ($GLOBALS['ZConfig']['Multisites']['multi'] == 1) {
-            $path = $GLOBALS['ZConfig']['Multisites']['siteDNS'];
+        $serviceManager = ServiceUtil::getManager();
+        if ($serviceManager['multisites.enabled'] == 1) {
+            $path = $serviceManager['multisites.sitedns'];
         }
 
         return $path;

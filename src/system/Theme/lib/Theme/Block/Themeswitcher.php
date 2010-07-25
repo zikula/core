@@ -1,22 +1,16 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * @copyright (c) 2004, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Theme
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
-
-// Based on
-// Originally a script for MamboOS http://www.mamboserver.com
-// ThemeChanger    - Version: 1.1
-// Author : Arthur Konze - webmaster@mamboportal.com
-// ThemeChanger for Zikula 0.760 - Version 0.8
-// Adapted to Zikula by N!cklas - nicklas@johansson.tk
-// Last changes by Lindbergh , http://lindbergh.ohost.de
 
 class Theme_Block_Themeswitcher extends Zikula_Block
 {

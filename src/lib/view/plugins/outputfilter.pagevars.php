@@ -70,11 +70,6 @@ function smarty_outputfilter_pagevars($source, $view)
         $return .= implode("\n", $rawtext) . "\n";
     }
 
-    // implode the remaining additional header global to a string
-    if (isset($additional_header) && count($additional_header) > 0) {
-        $return .= @implode("\n", $additional_header) . "\n";
-    }
-
     // if we've got some page vars to add the header wrap the output in
     // suitable identifiying comments when in development mode
     $return = trim($return);
