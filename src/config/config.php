@@ -67,6 +67,7 @@ $ZConfig['DBInfo']['external1']['dbcollate'] = 'utf8_general_ci';
 $ZConfig['Debug']['debug'] = 0;             //
 $ZConfig['Debug']['debug.pagerendertime'] = 0;    // display page render time, 0 to disable
 $ZConfig['Debug']['debug.toolbar'] = 0;     // 1 to show the debug toolbar (reqires development 1), 0 to disable
+
 $ZConfig['Debug']['sql_verbose'] = 0;       // sql debug flag, generates lots of print output
 $ZConfig['Debug']['sql_count'] = 0;         // count sql statements, 0 to disable
 $ZConfig['Debug']['sql_time'] = 0;          // time sql statements, 0 to disable
@@ -78,6 +79,8 @@ $ZConfig['Debug']['sql_user'] = 0;          // user filter, 0 for all, any other
 // ----------------------------------------------------------------------
 // Error Reporting
 // ----------------------------------------------------------------------
+// This level of reporting only affect PHP's own native handlers (if you enable them).
+// These settings have no effect on Zikula's error handling and reporting.
 $ZConfig['Debug']['error_reporting_development'] = E_ALL; // preconfigured level
 $ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING; // preconfigured level
 $ZConfig['Debug']['debug_key'] = ($ZConfig['System']['development'] ? 'error_reporting_development' : 'error_reporting_production');
@@ -97,18 +100,21 @@ $ZConfig['Log']['log_date_format'] = "Y-m-d H:i:s";                         // 2
 $ZConfig['Log']['log_level_dest'] = array('DB' => 'PRINT');                 // array of level-specific log destinations
 $ZConfig['Log']['log_level_files'] = array('DB' => $ZConfig['System']['temp'] . '/error_logs/zikula-sql-%s.log'); // array of level-specific log files (only used if destination=="FILE")
 
-$ZConfig['Log']['log.apache_uname'] = 0;                                    // log username to apache logs: please see documentation.  Please check you country's local law covering the logging of personally identifiable user data before enabling.
+$ZConfig['Log']['log.apache_uname'] = 0;          // log username to apache logs: please see documentation.  Please check you country's local law covering the logging of personally identifiable user data before enabling.
 
-$ZConfig['Log']['log.enabled'] = 1;                         // Enable to allow Zikula to handle errors, 0 passes everything to PHP directly.
-$ZConfig['Log']['log.to_display'] = 1;                      // Display errors?
-$ZConfig['Log']['log.display_level'] = 5;                   // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
-$ZConfig['Log']['log.to_file'] = 0;                         // Log to file?
-$ZConfig['Log']['log.file_level'] = 7;                      // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
-$ZConfig['Log']['log.show_php_errorhandler'] = 0;           // Set 1 if you want to see PHP's output, including XDebug output. This overrides log.display_template.
-$ZConfig['Log']['log.display_template'] = 0;                // overrides log.show_php_error_handler and gains full control of output.
+$ZConfig['Log']['log.enabled'] = 1;               // Enable to allow Zikula to handle errors, 0 passes everything to PHP directly.
+$ZConfig['Log']['log.to_display'] = 1;            // Display errors.
+$ZConfig['Log']['log.display_level'] = 5;         // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
+$ZConfig['Log']['log.to_file'] = 0;               // Log to file?
+$ZConfig['Log']['log.file_level'] = 7;            // 0 - EMERG, 1 - CRIT, 2 - ALERT, 3 - ERR, 4 - WARN, 5 - NOTICE, 6 - INFO, 7 - DEBUG
 
-$ZConfig['Log']['log.sql.to_display'] = 0;                  // Display sql queries?
-$ZConfig['Log']['log.sql.to_file'] = 0;                     // Log sql queries to file?
+$ZConfig['Log']['log.show_php_errorhandler'] = 0; // Allow PHP error handlers to display additionally? Set this to 1 if you want to see PHP's error handler
+                                                  // If you have XDebug installed, setting this will allow XDebug to output. If log.display_template set, PHP's handlers will not show!
+$ZConfig['Log']['log.display_template'] = 0;      // Overrides PHP's output handler if activated by log.show_php_error_handler and gains full control of output.
+                                                  // This setting is generally NOT desirable when developing/debugging.
+
+$ZConfig['Log']['log.sql.to_display'] = 0;        // Display sql queries.
+$ZConfig['Log']['log.sql.to_file'] = 0;           // Log sql queries to file.
 
 // ----------------------------------------------------------------------
 // The following define some data layer settings
