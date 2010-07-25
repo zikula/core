@@ -492,6 +492,11 @@ class Users_Api_Admin extends Zikula_Api
             $renderer->assign('siteurl', $siteurl);
 
             foreach ($importValues as $value) {
+                if ($value['activated'] == UserUtil::ACTIVATED_ACTIVE) {
+                    $this->callHooks('item', 'create', $value['uid'], array('module' => 'Users'));
+                    $createEvent = new Zikula_Event('user.create', $value);
+                    $this->eventManager->notify($createEvent);
+                }
                 if ($value['activated'] == UserUtil::ACTIVATED_ACTIVE && $value['sendMail'] == 1) {
                     $renderer->assign('email', $value['email']);
                     $renderer->assign('uname', $value['uname']);
