@@ -202,3 +202,5 @@ The registration date, last login date, and all other dates saved to the databas
 Zikula no longer supports PHP register_globals = On.
 Added option to translate the language changer block option into native language - issue #2119.
 Added {gettext} block issue #2414.
+Reworked logging and debug settings in config.php.  Error reporting configuration was removed from the Admin -> Settings.  Zikula no longer hides errors unless you specifically set it to.
+Added debugging toolbar (configurable in config.php).
