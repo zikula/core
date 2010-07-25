@@ -1,0 +1,33 @@
+.ui-widget-header {
+	height:25px;
+	line-height:25px;
+	padding:0 8px!important;
+}
+
+.portlet-header .ui-icon {
+	margin-top:-8px;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+	padding-bottom:0!important;
+	padding-top:0!important;
+}
+
+#navigation li ul {
+	z-index:9999;
+	border:#696969 solid 1px;
+}
+
+#dashboard-buttons ul {
+	display:block;
+	float:left;
+	padding-bottom:10px;
+}
+
+.sidebar-content a.btn span.ui-icon {
+	left:-18px;
+}
+
+#top-buttons a.btn span.ui-icon {
+	top:1px;
+}
