@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -11,7 +12,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 function install()
 {
     // configure our installation environment
@@ -28,8 +28,13 @@ function install()
     include 'lib/ZLoader.php';
     ZLoader::register();
 
+    $serviceManager = ServiceUtil::getManager();
     require_once 'install/modify_config.php';
     require 'config/config.php';
+    $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
+    $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
+    $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
+    $serviceManager->loadArguments($GLOBALS['ZConfig']['Multisites']);
 
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     DBConnectionStack::init('default', true);
@@ -38,25 +43,25 @@ function install()
 
     // get our input
     $vars = array(
-                    'lang',
-                    'installtype',
-                    'dbhost',
-                    'dbusername',
-                    'dbpassword',
-                    'dbname',
-                    'dbprefix',
-                    'dbtype',
-                    'dbtabletype',
-                    'createdb',
-                    'username',
-                    'password',
-                    'repeatpassword',
-                    'email',
-                    'action',
-                    'loginuser',
-                    'loginpassword',
-                    'defaultmodule',
-                    'defaulttheme');
+            'lang',
+            'installtype',
+            'dbhost',
+            'dbusername',
+            'dbpassword',
+            'dbname',
+            'dbprefix',
+            'dbtype',
+            'dbtabletype',
+            'createdb',
+            'username',
+            'password',
+            'repeatpassword',
+            'email',
+            'action',
+            'loginuser',
+            'loginpassword',
+            'defaultmodule',
+            'defaulttheme');
 
     foreach ($vars as $var) {
         // in the install we're sure we don't wany any html so we can be stricter than
@@ -80,9 +85,9 @@ function install()
     $smarty->compile_dir = $tempDir . '/view_compiled';
     $smarty->template_dir = 'install/templates';
     $smarty->plugins_dir = array(
-                    'plugins',
-                    'install/templates/plugins',
-                    'lib/view/plugins');
+            'plugins',
+            'install/templates/plugins',
+            'lib/view/plugins');
 
     // load the installer language files
     if (empty($lang)) {
@@ -128,6 +133,7 @@ function install()
     switch ($action) {
         case 'login' :
             if (empty($loginuser) && empty($loginpassword)) {
+
             } elseif (UserUtil::loginUsing('Users', array('loginid' => $loginuser, 'pass' => $loginpassword), null, false)) {
                 if (!SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                     // not admin user so boot
@@ -185,17 +191,17 @@ function install()
                 }
 
                 // if it is the distribution and the process have not failed in a previous step
-                if($installbySQL && $action != 'dbinformation') {
+                if ($installbySQL && $action != 'dbinformation') {
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
-                    $exec = "SHOW TABLES FROM $dbname LIKE '".$dbprefix."_%'";
+                    $exec = "SHOW TABLES FROM $dbname LIKE '" . $dbprefix . "_%'";
                     $tables = DBUtil::executeSQL($exec);
-                    if($tables->rowCount() > 0) {
+                    if ($tables->rowCount() > 0) {
                         $proceed = false;
                         $action = 'dbinformation';
                         $smarty->assign('dbexists', true);
                     }
-                    if($proceed){
+                    if ($proceed) {
                         // create the database
                         // set sql dump file path
                         $fileurl = 'install/sql/Zikula-MySQL.sql';
@@ -225,7 +231,7 @@ function install()
                             }
                         }
                     }
-                    if($installed) {
+                    if ($installed) {
                         $action = 'createadmin';
                     }
                 }
@@ -245,34 +251,34 @@ function install()
                 $action = 'createadmin';
                 $smarty->assign('uservalidatefailed', true);
                 $smarty->assign(array(
-                                'username' => $username,
-                                'password' => $password,
-                                'repeatpassword' => $repeatpassword,
-                                'email' => $email));
+                        'username' => $username,
+                        'password' => $password,
+                        'repeatpassword' => $repeatpassword,
+                        'email' => $email));
             } elseif (mb_strlen($password) < 7) {
                 $action = 'createadmin';
                 $smarty->assign('badpassword', true);
                 $smarty->assign(array(
-                                'username' => $username,
-                                'password' => $password,
-                                'repeatpassword' => $repeatpassword,
-                                'email' => $email));
+                        'username' => $username,
+                        'password' => $password,
+                        'repeatpassword' => $repeatpassword,
+                        'email' => $email));
             } elseif ($password !== $repeatpassword) {
                 $action = 'createadmin';
                 $smarty->assign('passwordcomparefailed', true);
                 $smarty->assign(array(
-                                'username' => $username,
-                                'password' => $password,
-                                'repeatpassword' => $repeatpassword,
-                                'email' => $email));
+                        'username' => $username,
+                        'password' => $password,
+                        'repeatpassword' => $repeatpassword,
+                        'email' => $email));
             } elseif (!System::varValidate($email, 'email')) {
                 $action = 'createadmin';
                 $smarty->assign('emailvalidatefailed', true);
                 $smarty->assign(array(
-                                'username' => $username,
-                                'password' => $password,
-                                'repeatpassword' => $repeatpassword,
-                                'email' => $email));
+                        'username' => $username,
+                        'password' => $password,
+                        'repeatpassword' => $repeatpassword,
+                        'email' => $email));
             } else {
                 // create our new site admin
                 // TODO test the call the users module api to create the user
@@ -292,15 +298,15 @@ function install()
                         @chmod('config/config.php', 0444);
                     }
                 }
-                if($installbySQL){
+                if ($installbySQL) {
                     $action = 'gotosite';
                 }
             }
-            if(!$installbySQL){
+            if (!$installbySQL) {
                 break;
             }
         case 'gotosite':
-            if(!$installbySQL){
+            if (!$installbySQL) {
                 if (!class_exists('ThemeUtil')) {
                     require_once 'lib/util/ThemeUtil.php';
                 }
@@ -340,8 +346,6 @@ function install()
     // want to avoid the need for a template compilation directory
     // TODO: smarty kicks up some odd errors when eval'ing templates
     // this way so the evaluation is suppressed.
-
-
     // get and evaluate the action specific template and assign to our
     // main smarty object as a new template variable
     $template = file_get_contents($templatename);
@@ -448,6 +452,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
     // load our installation configuration
     $installtype = DataUtil::formatForOS($installtype);
     if ($installtype == 'complete') {
+
     } elseif (file_exists("install/installtypes/$installtype.php")) {
         include "install/installtypes/$installtype.php";
         $func = "installer_{$installtype}_modules";
@@ -472,7 +477,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
                 'Groups',
                 'Blocks',
                 'Users',
-                );
+        );
         // manually install the modules module
         foreach ($coremodules as $coremodule) {
             // sanity check - check if module is already installed
@@ -486,7 +491,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
 
             $bootstrap = "$modpath/$coremodule/bootstrap.php";
             if (file_exists($bootstrap)) {
-               include_once $bootstrap;
+                include_once $bootstrap;
             }
 
             ModUtil::dbInfoLoad($coremodule, $coremodule);
@@ -517,14 +522,14 @@ function installmodules($installtype = 'basic', $lang = 'en')
         reset($coremodules);
 
         $coremodscat = array(
-                        'Modules' => __('System'),
-                        'Permissions' => __('Users'),
-                        'Groups' => __('Users'),
-                        'Blocks' => __('Layout'),
-                        'Users' => __('Users'),
-                        'Theme' => __('Layout'),
-                        'Admin' => __('System'),
-                        'Settings' => __('System'));
+                'Modules' => __('System'),
+                'Permissions' => __('Users'),
+                'Groups' => __('Users'),
+                'Blocks' => __('Layout'),
+                'Users' => __('Users'),
+                'Theme' => __('Layout'),
+                'Admin' => __('System'),
+                'Settings' => __('System'));
 
         $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
         $modscat = array();
@@ -558,7 +563,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
             }
             $bootstrap = "$modpath/$module/bootstrap.php";
             if (file_exists($bootstrap)) {
-               include_once $bootstrap;
+                include_once $bootstrap;
             }
 
 
@@ -593,7 +598,7 @@ function installmodules($installtype = 'basic', $lang = 'en')
             }
             $bootstrap = "$modpath/$module/bootstrap.php";
             if (file_exists($bootstrap)) {
-               include_once $bootstrap;
+                include_once $bootstrap;
             }
 
 

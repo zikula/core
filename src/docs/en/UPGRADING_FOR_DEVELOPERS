@@ -568,3 +568,9 @@ added getters and setter and new methods in Zikula_View to modify settings.
 the provided getters and setters.
   - Reliance on $GLOBALS['ZConfig'] and $GLOBALS['ZRuntime'].
   - Reliance on Zikula_Adapter_AdodbStatement being returned from DBUtil::executeSQL().
+
+MISCELLANEOUS
+=============
+If you have any front controllers, please note the bootstrapping process has been changed,
+see index.php for example.
+

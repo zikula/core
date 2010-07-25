@@ -67,6 +67,7 @@ class ZLoader
         // load eventhandlers from config/EventHandlers directory if any.
         EventUtil::attachCustomHandlers('config/EventHandlers');
 
+        $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
         $eventManager->attach('core.init', array('SystemListenersUtil', 'setupLoggers'));
         $eventManager->attach('log', array('SystemListenersUtil', 'errorLog'));
         $eventManager->attach('core.init', array('SystemListenersUtil', 'sessionLogging'));

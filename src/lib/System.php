@@ -180,14 +180,6 @@ class System
             $stages = self::CORE_STAGES_ALL;
         }
 
-        // initialise environment
-        if ($stages & self::CORE_STAGES_CONFIG) {
-            if (!self::isInstalling()) {
-                $GLOBALS['ZConfig'] = array();
-                $GLOBALS['ZRuntime'] = array();
-            }
-        }
-
         // store the load stages in a global so other API's can check whats loaded
         self::$stages = self::$stages | $stages;
 
@@ -197,19 +189,6 @@ class System
 
         // Initialise and load configuration
         if ($stages & self::CORE_STAGES_CONFIG) {
-            require 'config/config.php';
-
-            if (self::isInstalling()) {
-                $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
-                $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
-                $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
-            }
-
-            $serviceManager->loadArguments($GLOBALS['ZConfig']['Log']);
-            $serviceManager->loadArguments($GLOBALS['ZConfig']['Debug']);
-            $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
-            $serviceManager->loadArguments($GLOBALS['ZConfig']['Multisites']);
-
             // initialise time to render
             if ($GLOBALS['ZConfig']['Debug']['debug.pagerendertime']) {
                 $GLOBALS['ZRuntime']['dbg_starttime'] = microtime(true);
@@ -222,7 +201,6 @@ class System
             // error reporting
             if (!self::isInstalling()) {
                 // this is here because it depends on the config.php loading.
-                $eventManager->attach('setup.errorreporting', array('SystemListenersUtil', 'defaultErrorReporting'));
                 $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stages));
                 $eventManager->notifyUntil($event);
             }
@@ -1066,7 +1044,7 @@ class System
         }
         
         if (self::isDevelopmentMode() || self::isInstalling()) {
-            $temp = self::getVar('temp') . '/';
+            $temp = self::getVar('temp');
  
             $folders = array(
                     $temp,

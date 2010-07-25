@@ -11,14 +11,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
 
-include 'lib/ZLoader.php';
-ZLoader::register();
-
+include 'lib/bootstrap.php';
 EventUtil::attach('core.init', 'upgrade_suppressErrors');
 
 ini_set('max_execution_time', 86400);
@@ -31,10 +28,11 @@ define('_Z_MINUPGVER', '1.2.0');
 require_once 'install/modify_config.php';
 $GLOBALS['ZConfig']['System']['multilingual'] = true;
 
-include 'config/config.php';
+$GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = false;
+$GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
+$GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
 
 $connection = DBConnectionStack::init('default');
-//$connection = Doctrine_Manager::connection($GLOBALS['ZConfig']['DBInfo']['default']['dsn'], 'default');
 
 $columns = upgrade_getColumnsForTable($connection, 'modules');
 
@@ -669,8 +667,7 @@ CHANGE pn_language z_language VARCHAR( 30 ) NOT NULL DEFAULT  ''";
         try {
             $stmt->execute();
         } catch (Exception $e) {
-
+            
         }
-
     }
 }

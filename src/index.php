@@ -12,8 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-include 'lib/ZLoader.php';
-ZLoader::register();
+include 'lib/bootstrap.php';
 System::init();
 
 if (SessionUtil::hasExpired()) {

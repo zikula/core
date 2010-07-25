@@ -12,8 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-include 'lib/ZLoader.php';
-ZLoader::register();
+include 'lib/bootstrap.php';
 System::init(System::CORE_STAGES_ALL | System::CORE_STAGES_AJAX & ~System::CORE_STAGES_DECODEURLS);
 
 // Get variables

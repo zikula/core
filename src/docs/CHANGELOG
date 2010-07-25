@@ -199,3 +199,4 @@ New user names are required to consist of only letters, numbers, underscores and
 When retrieving user accounts (for any purpose, including for logging in) by e-mail address, a duplicate e-mail address check is performed even if the Users module is set to require unique e-mail addresses. This is to prevent the wrong account from being returned if duplicate e-mail addresses were allowed at any point or were added by the administrator.
 A user with rights to delete user accounts is prevented from deleting his own account.
 The registration date, last login date, and all other dates saved to the database tables by the Users module are now guaranteed to be UTC date/times in the database. They might be adjusted for display by other functions, however.
+Zikula no longer supports PHP register_globals = On
