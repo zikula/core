@@ -68,13 +68,6 @@ $ZConfig['Debug']['debug'] = 0;             //
 $ZConfig['Debug']['debug.pagerendertime'] = 0;    // display page render time, 0 to disable
 $ZConfig['Debug']['debug.toolbar'] = 0;     // 1 to show the debug toolbar (reqires development 1), 0 to disable
 
-$ZConfig['Debug']['sql_verbose'] = 0;       // sql debug flag, generates lots of print output
-$ZConfig['Debug']['sql_count'] = 0;         // count sql statements, 0 to disable
-$ZConfig['Debug']['sql_time'] = 0;          // time sql statements, 0 to disable
-$ZConfig['Debug']['sql_detail'] = 0;        // collect executed sql statements, 0 to disable
-$ZConfig['Debug']['sql_data'] = 0;          // collect selected data, 0 to disable
-$ZConfig['Debug']['sql_user'] = 0;          // user filter, 0 for all, any other number is a user-id, can also be an array
-
 
 // ----------------------------------------------------------------------
 // Error Reporting
