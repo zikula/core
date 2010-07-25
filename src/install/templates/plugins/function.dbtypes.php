@@ -1,13 +1,15 @@
 <?php
 /**
- * renderer plugin
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
- * This file is a plugin for renderer, the Zikula implementation of Smarty
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
  *
- * @author       The Zikula development team
- * @link         http://www.zikula.org  The Zikula Home Page
- * @copyright    Copyright (C) 2002 by the Zikula Development Team
- * @license      http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 
