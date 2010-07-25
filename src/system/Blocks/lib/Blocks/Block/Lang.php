@@ -65,6 +65,9 @@ class Blocks_Block_Lang extends Zikula_Block
             return;
         }
 
+        $currentlanguage = ZLanguage::getLanguageCode();
+        $languages = ZLanguage::getInstalledLanguages();
+
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
         $vars['bid'] = $blockinfo['bid'];
@@ -73,17 +76,28 @@ class Blocks_Block_Lang extends Zikula_Block
             $vars['format'] = 2;
         }
 
-        if (!isset($vars['languages']) || empty($vars['languages']) || !is_array($vars['languages'])) {
-            $vars['languages'] = $this->getAvailableLanguages();
+        if (empty($vars['fulltranslation'])) {
+            $vars['fulltranslation'] = 1;
         }
 
+        if ($vars['fulltranslation'] == 2) {
+            foreach ($languages as $code) {
+                // bind all languages, we'll need them later.
+                ZLanguage::setLocale($code);
+                ZLanguage::bindCoreDomain();
+            }
+            ZLanguage::setLocale($currentlanguage);
+        }
+
+        if (!isset($vars['languages']) || empty($vars['languages']) || !is_array($vars['languages'])) {
+            $vars['languages'] = $this->getAvailableLanguages($vars['fulltranslation']);
+        }
+        
         $this->view->setCaching(false);
 
         // assign the block vars
         $this->view->assign($vars);
 
-        // what's the current language
-        $currentlanguage = ZLanguage::getLanguageCode();
         $this->view->assign('currentlanguage', $currentlanguage);
 
         // set a block title
@@ -123,7 +137,7 @@ class Blocks_Block_Lang extends Zikula_Block
         }
 
         // build URLS
-        $languages = ZLanguage::getInstalledLanguages();
+        
         $urls = array();
         foreach ($languages as $code) {
             $thisurl = ModUtil::url($module, $type, $func, $get, null, null, null, $forcefqdn, $code);
@@ -132,14 +146,24 @@ class Blocks_Block_Lang extends Zikula_Block
             }
             $codeFS = ZLanguage::transformFS($code);
 
-            $flag = "images/flags/flag-$codeFS.png";
-            if (!file_exists($flag)) {
-                $flag = '';
+            $flag = '';
+            if ($vars['format']) {
+                $flag = "images/flags/flag-$codeFS.png";
+                if (!file_exists($flag)) {
+                    $flag = '';
+                }
+                $flag = (($flag && $shorturls && $dirBased) ? System::getBaseUrl() . $flag : $flag);
             }
-
-            $flag = (($flag && $shorturls && $dirBased) ? System::getBaseUrl().$flag : $flag);
-
+            
+            if ($vars['fulltranslation'] == 2) {
+                ZLanguage::setLocale($code);
+            }
+            
             $urls[] = array('code' => $code, 'name' => ZLanguage::getLanguageName($code), 'url' => $thisurl, 'flag' => $flag);
+
+            if ($vars['fulltranslation'] == 2) {
+                ZLanguage::setLocale($currentlanguage);
+            }
         }
         usort($urls, '_blocks_thelangblock_sort');
 
@@ -168,6 +192,10 @@ class Blocks_Block_Lang extends Zikula_Block
             $vars['format'] = 2;
         }
 
+        if (empty($vars['fulltranslation'])) {
+            $vars['fulltranslation'] = 1;
+        }
+
         $this->view->setCaching(false);
 
         // assign the approriate values
@@ -194,6 +222,9 @@ class Blocks_Block_Lang extends Zikula_Block
         // Read inputs
         $vars['format'] = FormUtil::getPassedValue('format');
 
+        // Read inputs
+        $vars['fulltranslation'] = FormUtil::getPassedValue('fulltranslation');
+
         // Scan for languages and save cached version
         $vars['languages'] = $this->getAvailableLanguages();
 
@@ -206,15 +237,22 @@ class Blocks_Block_Lang extends Zikula_Block
         return $blockinfo;
     }
 
-    public function getAvailableLanguages()
+    public function getAvailableLanguages($translate)
     {
-        $langlist = ZLanguage::getInstalledLanguageNames();
+        $savedLanguage = ZLanguage::getLanguageCode();
+        $langlist = ZLanguage::getInstalledLanguages();
 
         $list = array();
-        foreach ($langlist as $code => $langname)
-        {
+        foreach ($langlist as $code) {
             $img = file_exists("images/flags/flag-$code.png");
 
+            if ($translate == 2) {
+                ZLanguage::setLocale($code);
+                $langname = ZLanguage::getLanguageName($code);
+                ZLanguage::setLocale($savedLanguage);
+            } else {
+                $langname = ZLanguage::getLanguageName();
+            }
             $list[] = array('code' => $code,
                             'name' => $langname,
                             'flag' => $img ? "images/flags/flag-$code.png" : '');
