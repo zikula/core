@@ -3572,7 +3572,7 @@ function search_split_query($q, $dbwildcard = true)
  */
 function z_exit($msg, $html = true)
 {
-    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED));
     return LogUtil::registerError($msg2);
 }
 
@@ -3588,7 +3588,7 @@ function z_exit($msg, $html = true)
  */
 function _prayer($data, $functions = false, $recursionLevel = 0)
 {
-    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED));
 }
 
 /**
@@ -3601,7 +3601,7 @@ function _prayer($data, $functions = false, $recursionLevel = 0)
  */
 function z_prayer($data, $die = true)
 {
-    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED));
 }
 
 /**
@@ -3616,5 +3616,5 @@ function z_prayer($data, $die = true)
  */
 function prayer($data, $functions = false)
 {
-    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED));
 }
