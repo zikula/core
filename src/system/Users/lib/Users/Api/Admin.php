@@ -145,8 +145,8 @@ class Users_Api_Admin extends Zikula_Api
 
         $userInfo = $args['userinfo'];
         if (!isset($userInfo['uid']) || empty($userInfo['uid']) || !isset($userInfo['uname'])
-            || empty($userInfo['uname']) || !isset($userInfo['email'])  || empty($userInfo['email']))
-        {
+                || empty($userInfo['uname']) || !isset($userInfo['email'])  || empty($userInfo['email'])) {
+            
             return LogUtil::registerArgsError();
         }
 
@@ -505,12 +505,13 @@ class Users_Api_Admin extends Zikula_Api
                     $renderer->assign('pass', $value['pass']);
                     $message = $renderer->fetch('users_email_importnotify_html.tpl');
                     $subject = $this->__f('Password for %1$s from %2$s', array($value['uname'], $sitename));
-                    if (!ModUtil::apiFunc('Mailer', 'user', 'sendMessage',
-                                        array('toaddress' => $value['email'],
-                                              'subject' => $subject,
-                                              'body' => $message,
-                                              'html' => true)))
-                    {
+                    $sendMessageArgs = array(
+                        'toaddress' => $value['email'],
+                        'subject'   => $subject,
+                        'body'      => $message,
+                        'html'      => true,
+                    );
+                    if (!ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $sendMessageArgs)) {
                         LogUtil::registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
                         break;
                     }
