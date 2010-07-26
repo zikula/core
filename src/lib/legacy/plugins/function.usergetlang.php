@@ -31,6 +31,7 @@
  */
 function smarty_function_usergetlang($params,&$smarty)
 {
+    LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('usergetlang', 'lang')), E_USER_DEPRECATED);
     $assign = isset($params['assign'])  ? $params['assign']  : null;
 
     $result = ZLanguage::getLanguageCodeLegacy();
