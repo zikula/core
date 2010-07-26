@@ -17,29 +17,160 @@
  */
 class Zikula_Version implements ArrayAccess
 {
+    /**
+     * The module name, computed from the implementing class name.
+     *
+     * @var string
+     */
     protected $name;
+
+    /**
+     * The display name for the module.
+     *
+     * @var string
+     */
     protected $displayname;
+
+    /**
+     * The string used in the URL to access the module.
+     *
+     * @var string
+     */
     protected $url;
+
+    /**
+     * A brief description of the module.
+     *
+     * @var string
+     */
     protected $description;
+
+    /**
+     * The module version number.
+     *
+     * NOTE: It is highly recommended to use version numbers compatible with {@link version_compare()}.
+     *
+     * @var string
+     */
     protected $version = 0;
+
+    /**
+     * An array of security schemas used by the module.
+     *
+     * Displayed by the Permissions module to assist the user, example:
+     * <code>
+     * array(
+     *     'ModName::'          => 'ItemName::',
+     *     'ModName::Component' => '::',
+     * );
+     * </code>
+     *
+     * @var array
+     */
     protected $securityschema;
+
+    /**
+     * Module dependencies.
+     *
+     * @var array
+     */
     protected $dependencies = array();
+
+    /**
+     * Module capabilities.
+     *
+     * @var array
+     */
     protected $capabilities = array();
+
+    /**
+     * Gettext language domain, computed from {@link ZLanguage::getModuleDomain()}.
+     *
+     * @var <type>
+     */
     protected $domain;
+
+    /**
+     * The module type, computed from the module's base directory.
+     *
+     * Values:
+     * <ul>
+     *   <li>ModUtil::TYPE_MODULE</li>
+     *   <li>ModUtil::TYPE_SYSTEM</li>
+     * </ul>
+     *
+     * @var integer
+     */
     protected $type;
+
+    /**
+     * The state of the module, set when the Modules module regenerates its list.
+     *
+     * @var integer
+     */
     protected $state;
+
+    /**
+     * For legacy handling, an alias to the module {@link $name name}.
+     *
+     * @var string
+     */
     protected $directory;
+
+    /**
+     * The minimum core version supported by the module.
+     *
+     * @var string
+     */
     protected $core_min;
+
+    /**
+     * The maximum core version supported by the module.
+     *
+     * @var string
+     */
     protected $core_max;
+
+    /**
+     * A list of names this module used to be known as.
+     *
+     * @var array
+     */
     protected $oldnames;
 
+    /**
+     * The base directory for the module, computed.
+     *
+     * @var string
+     */
     protected $baseDir;
+
+    /**
+     * The base directory for this module's libraries, computed.
+     *
+     * @var string
+     */
     protected $libBaseDir;
+
+    /**
+     * The system base directory, computed.
+     *
+     * @var string
+     */
     protected $systemBaseDir;
+
+    /**
+     * A {@link ReflectionObject} instance for this instance of the class.
+     *
+     * @var ReflectionObject
+     */
     protected $reflection;
 
-//    abstract public function getMetaData();
+    //abstract public function getMetaData();
 
+    /**
+     * Build a new instance.
+     */
     public function __construct()
     {
         $this->reflection = new ReflectionObject($this);
@@ -57,6 +188,12 @@ class Zikula_Version implements ArrayAccess
         Zikula_ClassProperties::load($this, $this->getMetaData());
     }
 
+    /**
+     * Return certain data elements from this class as an array.
+     *
+     * @return array An array containing the name, description, display name, url, version, capabilities, dependencies,
+     *                  type, directory and security schema.
+     */
     public function toArray()
     {
         $meta = array();
@@ -73,71 +210,156 @@ class Zikula_Version implements ArrayAccess
         return $meta;
     }
 
+    /**
+     * Translate a string using gettext.
+     *
+     * @param string $msgid The string to translate.
+     *
+     * @return string The translated string.
+     */
     public function __($msgid)
     {
         return __($msgid, $this->domain);
     }
 
+    /**
+     * Translate a string using the sprintf version of gettext.
+     *
+     * @param string $msgid  The string to translate.
+     * @param array  $params The parameters to substitute into the string.
+     *
+     * @return string The translated string with variables substituted.
+     */
     public function __f($msgid, $params)
     {
         return __f($msgid, $params, $this->domain);
     }
 
+    /**
+     * Retrieve the module base directory.
+     *
+     * @return string The directory.
+     */
     public function getBaseDir()
     {
         return $this->baseDir;
     }
 
+    /**
+     * Return the base directory for the module's libraries.
+     *
+     * @return string The directory.
+     */
     public function getLibBaseDir()
     {
         return $this->libBaseDir;
     }
 
+    /**
+     * Return the system base directory.
+     *
+     * @return string The directory.
+     */
     public function getSystemBaseDir()
     {
         return $this->systemBaseDir;
     }
 
+    /**
+     * Retrieve the module name.
+     *
+     * @return string The name of the module.
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * Retrieve the display name for the module.
+     *
+     * @return string The display name.
+     */
     public function getDisplayName()
     {
         return $this->displayname;
     }
 
+    /**
+     * Set the module's display name.
+     *
+     * @param string $displayName The display name.
+     *
+     * @return void
+     */
     public function setDisplayName($displayName)
     {
         $this->displayname = $displayName;
     }
 
+    /**
+     * Return the string used in the module's URL.
+     *
+     * @return string The URL fragment.
+     */
     public function getUrl()
     {
         return $this->url;
     }
 
+    /**
+     * Set the string used in URLs to access the module.
+     *
+     * @param string $url The URL fragment.
+     *
+     * @return void
+     */
     public function setUrl($url)
     {
         $this->url = $url;
     }
 
+    /**
+     * Retrieve the module's brief description.
+     *
+     * @return string The description.
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
+    /**
+     * Set a brief description of the module.
+     *
+     * @param string $description The description.
+     *
+     * @return void
+     */
     public function setDescription($description)
     {
         $this->description = $description;
     }
 
+    /**
+     * Retrieve the module's version number.
+     *
+     * @return string The version.
+     */
     public function getVersion()
     {
         return $this->version;
     }
 
+    /**
+     * Set the module's version.
+     *
+     * @param string $version The version string, in the format a.b.c where a, b and c are digit sequences.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if $version does not match the regular expression #\d+\.\d+\.\d+#.
+     */
     public function setVersion($version)
     {
         if (!preg_match('#\d+\.\d+\.\d+#', $version)) {
@@ -146,31 +368,87 @@ class Zikula_Version implements ArrayAccess
         $this->version = $version;
     }
 
+    /**
+     * Retrieve the security schema.
+     *
+     * @return array The security schema.
+     */
     public function getSecuritySchema()
     {
         return $this->securityschema;
     }
 
+    /**
+     * Set the security schema.
+     *
+     * Example:
+     * <code>
+     * $moduleVersion->setSecuritySchema(array(
+     *     'ModName::'          => 'ItemName::',
+     *     'ModName::Component' => '::',
+     * ));
+     * </code>
+     *
+     * @param array $securitySchema The schema.
+     *
+     * @return void
+     */
     public function setSecuritySchema($securitySchema)
     {
         $this->securityschema = $securitySchema;
     }
 
+    /**
+     * Retrieve the module dependencies.
+     *
+     * @return array The dependency array.
+     */
     public function getDependencies()
     {
         return $this->dependencies;
     }
 
+    /**
+     * Set the dependencies on other modules.
+     *
+     * @param array $dependencies Teh dependencies.
+     *
+     * @return void
+     */
     public function setDependencies($dependencies)
     {
         $this->dependencies = $dependencies;
     }
 
+    /**
+     * Retrieve the module's advertised capabilities.
+     *
+     * @return array The capabilities of the module.
+     */
     public function getCapabilities()
     {
         return $this->capabilities;
     }
 
+    /**
+     * Set the module's capabilities.
+     *
+     * The capabilities array is in the form: array(capability => array(version => capabilityVersion ...
+     *
+     * Example:
+     * <code>
+     * $capabilities = array(
+     *     'authentication' => array('version' => '1.0')
+     * );
+     * $moduleVersion->setCapabilities($capabilities);
+     * </code>
+     *
+     * @param array $capabilities The module's advertised capabilities.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if $capabilities does not conform to the specified structure.
+     */
     public function setCapabilities($capabilities)
     {
         if (!is_array($capabilities) || !$capabilities) {
@@ -189,61 +467,160 @@ class Zikula_Version implements ArrayAccess
         $this->capabilities = $capabilities;
     }
 
+    /**
+     * Retrieve the minimum core version string.
+     *
+     * @return string The minimum acceptable core version.
+     */
     public function getCore_min()
     {
         return $this->core_min;
     }
 
+    /**
+     * Set the minimum acceptable core version for this module version.
+     *
+     * @param string $core_min The minimum version.
+     *
+     * @return void
+     */
     public function setCore_min($core_min)
     {
         $this->core_min = $core_min;
     }
 
+    /**
+     * Retrieve the highest core version this module version will operate with.
+     *
+     * @return string The highest acceptable core version.
+     */
     public function getCore_max()
     {
         return $this->core_max;
     }
 
+    /**
+     * Set the maximum acceptable core version with which this module version will operate.
+     *
+     * @param string $core_max The maximum core version.
+     *
+     * @return void
+     */
     public function setCore_max($core_max)
     {
         $this->core_max = $core_max;
     }
 
+    /**
+     * Retrieve this module's prior names.
+     *
+     * @return array The module's former names.
+     */
     public function getOldnames()
     {
         return $this->oldnames;
     }
 
+    /**
+     * Set the list of names this module was once known as.
+     *
+     * @param array $oldnames The former names.
+     *
+     * @return void
+     */
     public function setOldnames($oldnames)
     {
         $this->oldnames = $oldnames;
     }
-    
+
+    /**
+     * Retrieve the module's state.
+     *
+     * Values:
+     * <ul>
+     *   <li>ModUtil::STATE_UNINITIALISED</li>
+     *   <li>ModUtil::STATE_INACTIVE</li>
+     *   <li>ModUtil::STATE_ACTIVE</li>
+     *   <li>ModUtil::STATE_MISSING</li>
+     *   <li>ModUtil::STATE_UPGRADED</li>
+     *   <li>ModUtil::STATE_NOTALLOWED</li>
+     *   <li>ModUtil::STATE_INVALID</li>
+     * </ul>
+     *
+     * @return integer The state of the module.
+     */
     public function getState()
     {
         return $this->state;
     }
 
+    /**
+     * Set the module's state.
+     *
+     * Values:
+     * <ul>
+     *   <li>ModUtil::STATE_UNINITIALISED</li>
+     *   <li>ModUtil::STATE_INACTIVE</li>
+     *   <li>ModUtil::STATE_ACTIVE</li>
+     *   <li>ModUtil::STATE_MISSING</li>
+     *   <li>ModUtil::STATE_UPGRADED</li>
+     *   <li>ModUtil::STATE_NOTALLOWED</li>
+     *   <li>ModUtil::STATE_INVALID</li>
+     * </ul>
+     *
+     * @param integer $state The state of the module.
+     *
+     * @return void
+     */
     public function setState($state)
     {
         $this->state = $state;
     }
 
+    /**
+     * Returns the value at the specified offset (see {@link ArrayAccess::offsetGet()}).
+     *
+     * @param mixed $key The offset to retrieve.
+     *
+     * @return mixed The value at the specified offset.
+     */
     public function offsetGet($key)
     {
         return $this->$key;
     }
 
+    /**
+     * Set the value at the specified offset (see {@link ArrayAccess::offsetSet()}).
+     *
+     * @param mixed $key   The offset to retrieve.
+     * @param mixed $value The value to set at the specified offset.
+     *
+     * @return void
+     */
     public function offsetSet($key, $value)
     {
         $this->$key = $value;
     }
 
+    /**
+     * Indicate whether the specified offset is set (see {@link ArrayAccess::offsetExists()}).
+     *
+     * @param mixed $key The offset to check.
+     *
+     * @return boolean True if the offset is set, otherwise false.
+     */
     public function offsetExists($key)
     {
         return (bool)isset($this->$key);
     }
 
+    /**
+     * Unset the specified offset (see {@link ArrayAccess::offsetUnset()}).
+     *
+     * @param mixed $key The offset to unset.
+     *
+     * @return void
+     */
     public function offsetUnset($key)
     {
         $this->$key = null;
