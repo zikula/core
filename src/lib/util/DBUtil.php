@@ -155,7 +155,6 @@ class DBUtil
     public static function metaTables($ttype = false, $showSchema = false, $mask = false)
     {
         return DBConnectionStack::getConnection()->import->listTables();
-        //return $dbconn->MetaTables($ttype, $showSchema, $mask);
     }
 
     /**

@@ -248,13 +248,13 @@ class System
             $GLOBALS['dbtables'] = isset($GLOBALS['dbtables']) ? $GLOBALS['dbtables'] : array();
             // ensure that the base modules info is available
             ModUtil::dbInfoLoad('Modules', 'Modules');
+            ModUtil::initCoreVars();
             ModUtil::dbInfoLoad('Settings', 'Settings');
             ModUtil::dbInfoLoad('Theme', 'Theme');
             ModUtil::dbInfoLoad('Users', 'Users');
             ModUtil::dbInfoLoad('Groups', 'Groups');
             ModUtil::dbInfoLoad('Permissions', 'Permissions');
-            // load core module vars
-            ModUtil::initCoreVars();
+
             if (!System::isInstalling()) {
                 ModUtil::registerAutoloaders();
             }
@@ -1042,10 +1042,10 @@ class System
             echo __("Error! The PHP function 'fsockopen()' is needed within the Zikula mailer module, but is not available.");
             $die = true;
         }
-        
+
         if (self::isDevelopmentMode() || self::isInstalling()) {
             $temp = self::getVar('temp');
- 
+
             $folders = array(
                     $temp,
                     "$temp/error_logs",

@@ -53,6 +53,13 @@ class ModUtil
     protected static $modinfo;
 
     /**
+     * Module vars.
+     * 
+     * @var array
+     */
+    protected static $modvars = array();
+
+    /**
      * The initCoreVars preloads some module vars.
      *
      * Preloads module vars for a number of key modules to reduce sql statements.
@@ -61,40 +68,22 @@ class ModUtil
      */
     public static function initCoreVars()
     {
-        global $pnmodvar;
-
         // don't init vars during the installer
         if (System::isInstalling()) {
             return;
         }
 
         // if we haven't got vars for this module yet then lets get them
-        if (!isset($pnmodvar)) {
-            $pnmodvar = array();
-            $tables   = DBUtil::getTables();
-            $col      = $tables['module_vars_column'];
-            $where =   "$col[modname] = '" . self::CONFIG_MODULE ."'
-                     OR $col[modname] = '" . PluginUtil::CONFIG ."'
-                     OR $col[modname] = '" . EventUtil::HANDLERS ."'
-                     OR $col[modname] = 'Theme'
-                     OR $col[modname] = 'Blocks'
-                     OR $col[modname] = 'Users'
-                     OR $col[modname] = 'Settings'
-                     OR $col[modname] = 'SecurityCenter'";
-
-            $profileModule = System::getVar('profilemodule', '');
-            if (!empty($profileModule) && self::available($profileModule)) {
-                $where .= " OR $col[modname] = '$profileModule'";
-            }
-
-            $pnmodvars = DBUtil::selectObjectArray('module_vars', $where);
-            foreach ($pnmodvars as $var) {
+        if (!(self::$modvars)) {
+            self::$modvars = array(EventUtil::HANDLERS => array(), 'Settings' => array());
+            $modvars = DBUtil::selectObjectArray('module_vars');//, $where);
+            foreach ($modvars as $var) {
                 if (array_key_exists($var['name'],$GLOBALS['ZConfig']['System'])) {
-                    $pnmodvar[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
+                    self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
                 } elseif ($var['value'] == '0' || $var['value'] == '1') {
-                    $pnmodvar[$var['modname']][$var['name']] = $var['value'];
+                    self::$modvars[$var['modname']][$var['name']] = $var['value'];
                 } else {
-                    $pnmodvar[$var['modname']][$var['name']] = unserialize($var['value']);
+                    self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
                 }
             }
         }
@@ -151,10 +140,9 @@ class ModUtil
             $modname = self::getName();
         }
 
-        global $pnmodvar;
-
         // if we haven't got vars for this module yet then lets get them
-        if (!isset($pnmodvar[$modname])) {
+        if (!array_key_exists($modname, self::$modvars)) {
+            self::$modvars[$modname] = array();
             $tables = DBUtil::getTables();
             $col    = $tables['module_vars_column'];
             $where  = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
@@ -164,11 +152,11 @@ class ModUtil
             foreach ($results as $k => $v) {
                 // ref #2045 vars are being stored with 0/1 unserialised.
                 if (array_key_exists($k,$GLOBALS['ZConfig']['System'])) {
-                    $pnmodvar[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
+                    self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
                 } else if ($v == '0' || $v == '1') {
-                    $pnmodvar[$modname][$k] = $v;
+                    self::$modvars[$modname][$k] = $v;
                 } else {
-                    $pnmodvar[$modname][$k] = unserialize($v);
+                    self::$modvars[$modname][$k] = unserialize($v);
                 }
             }
         }
@@ -176,14 +164,14 @@ class ModUtil
         // if they didn't pass a variable name then return every variable
         // for the specified module as an associative array.
         // array('var1' => value1, 'var2' => value2)
-        if (empty($name) && array_key_exists($modname, $pnmodvar)) {
-            return $pnmodvar[$modname];
+        if (empty($name) && array_key_exists($modname, self::$modvars)) {
+            return self::$modvars[$modname];
         }
 
         // since they passed a variable name then only return the value for
         // that variable
-        if (isset($pnmodvar[$modname]) && array_key_exists($name, $pnmodvar[$modname])) {
-            return $pnmodvar[$modname][$name];
+        if (isset(self::$modvars[$modname]) && array_key_exists($name, self::$modvars[$modname])) {
+            return self::$modvars[$modname][$name];
         }
 
         // we don't know the required module var but we established all known
@@ -211,8 +199,6 @@ class ModUtil
             return false;
         }
 
-        global $pnmodvar;
-
         $obj = array();
         $obj['value'] = serialize($value);
 
@@ -229,7 +215,7 @@ class ModUtil
         }
 
         if ($res) {
-            $pnmodvar[$modname][$name] = $value;
+            self::$modvars[$modname][$name] = $value;
         }
 
         return (bool)$res;
@@ -273,17 +259,15 @@ class ModUtil
             return false;
         }
 
-        global $pnmodvar;
-
         $val = null;
         if (empty($name)) {
-            if (array_key_exists($modname, $pnmodvar)) {
-                unset($pnmodvar[$modname]);
+            if (array_key_exists($modname, self::$modvars)) {
+                unset(self::$modvars[$modname]);
             }
         } else {
-            if (array_key_exists($name, $pnmodvar[$modname])) {
-                $val = $pnmodvar[$modname][$name];
-                unset($pnmodvar[$modname][$name]);
+            if (array_key_exists($name, self::$modvars[$modname])) {
+                $val = self::$modvars[$modname][$name];
+                unset(self::$modvars[$modname][$name]);
             }
         }
 
