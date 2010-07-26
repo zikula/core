@@ -35,10 +35,9 @@ function smarty_block_checkgroup($params, $content, &$smarty)
    
 
    // group check ...
-    if (!pnModAPIFunc('Groups', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))){
+    if (!ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))){
 		return;
 	}
 
     return $content;
 }
-?>
