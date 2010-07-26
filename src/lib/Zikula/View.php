@@ -18,7 +18,7 @@
 class Zikula_View extends Smarty implements Zikula_Translatable
 {
     /**
-     * Module name.
+     * Module info array.
      *
      * @var string
      */
@@ -102,11 +102,15 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     public $domain;
 
     /**
+     * The service manager instance.
+     *
      * @var Zikula_ServiceManager
      */
     protected $serviceManager;
 
     /**
+     * The event manager instance.
+     *
      * @var Zikula_EventManager
      */
     protected $eventManager;
@@ -268,60 +272,126 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $this->eventManager->notify($event);
     }
 
+    /**
+     * Retrieve an array of module information, indexed by module name.
+     *
+     * @return array An array containing the module info, indexed by module name.
+     */
     public function getModule()
     {
         return $this->module;
     }
 
+    /**
+     * Retrieve the name of the top-level module.
+     *
+     * @return string The name of the top-level module.
+     */
     public function getToplevelmodule()
     {
         return $this->toplevelmodule;
     }
 
+    /**
+     * Retrieve the module info array for the top-level module (or the module specified in the constructor).
+     *
+     * @return array The module info array.
+     */
     public function getModinfo()
     {
         return $this->modinfo;
     }
 
+    /**
+     * Retrieve the name of the current theme.
+     *
+     * @return string The name of the current theme.
+     */
     public function getTheme()
     {
         return $this->theme;
     }
 
+    /**
+     * Retrieve the theme info array for the current theme.
+     *
+     * @return array The theme info array.
+     */
     public function getThemeinfo()
     {
         return $this->themeinfo;
     }
 
+    /**
+     * Retrieve the current language code.
+     *
+     * @return string The current language code.
+     */
     public function getLanguage()
     {
         return $this->language;
     }
 
+    /**
+     * Retrieve the site's base URL.
+     *
+     * The value returned is the same as {@link System::getBaseUrl()}.
+     *
+     * @return string The base URL.
+     */
     public function getBaseurl() {
         return $this->baseurl;
     }
 
+    /**
+     * Retrieve the site's base URI.
+     *
+     * The value returned is the same as {@link System::getBaseUri()}.
+     *
+     * @return string The base URI.
+     */
     public function getBaseuri()
     {
         return $this->baseuri;
     }
 
+    /**
+     * Retrieve the current cache ID.
+     *
+     * @return string The current cache ID.
+     */
     public function getCache_id()
     {
         return $this->cache_id;
     }
 
+    /**
+     * Return the current userdb flag.
+     *
+     * @return boolean Set if Theme is an active module and templates stored in database.
+     */
     public function getUserdb()
     {
         return $this->userdb;
     }
 
+    /**
+     * Retrieve the current setting for the 'render_expose_template' Theme module variable.
+     *
+     * @return boolean True if The 'render_expose_template' Theme module template is true.
+     */
     public function getExpose_template()
     {
         return $this->expose_template;
     }
 
+    /**
+     * Retrieves the gettext domain for the module, as {@link ZLanguage::getModuleDomain()}.
+     *
+     * If the module is a system module this is not set.
+     *
+     * @return string The gettext domain for the module, or null for system modules.
+     */
     public function getDomain()
     {
         return $this->domain;
@@ -330,7 +400,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     /**
      * Get ServiceManager.
      *
-     * @return Zikula_ServiceManager
+     * @return Zikula_ServiceManager The service manager.
      */
     public function getServiceManager()
     {
@@ -340,7 +410,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     /**
      * Get EventManager.
      *
-     * @return Zikula_Eventmanager
+     * @return Zikula_Eventmanager The event manager.
      */
     public function getEventManager()
     {
@@ -352,7 +422,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $id Cache ID.
      *
-     * @return Zikula_View
+     * @return Zikula_View This instance.
      */
     public function setCache_Id($id)
     {
@@ -363,13 +433,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     /**
      * Set compile check.
      *
-     * @param $boolean
+     * @param boolean $doCompileCheck If true, checks for compile will be performed.
      *
-     * @retrun Zikula_View
+     * @return Zikula_View This instance.
      */
-    public function setCompile_check($boolean)
+    public function setCompile_check($doCompileCheck)
     {
-        $this->compile_check = $boolean;
+        $this->compile_check = $doCompileCheck;
         return $this;
     }
 
@@ -378,7 +448,10 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * Avoids adding duplicates.
      *
-     * @return Zikula_View
+     * @param string $dir The directory to add.
+     *
+     * @return Zikula_View|null This instance, or void if the directory is already a plugin directory or the string
+     *                              specified is not a directory.
      */
     public function addPluginDir($dir)
     {
@@ -395,7 +468,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $msgid String to be translated.
      *
-     * @return string
+     * @return string The $msgid translated by gettext.
      */
     public function __($msgid)
     {
@@ -408,7 +481,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string       $msgid  String to be translated.
      * @param string|array $params Args for sprintf().
      *
-     * @return string
+     * @return string The $msgid translated by gettext.
      */
     public function __f($msgid, $params)
     {
@@ -437,7 +510,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string       $n      Object count.
      * @param string|array $params Sprintf() arguments.
      *
-     * @return string
+     * @return string The $sin or $plu translated by gettext, based on $n.
      */
     public function _fn($sin, $plu, $n, $params)
     {
@@ -452,7 +525,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string       $cache_id      Cache Id.
      * @param boolean      $add_core_data Add core data to render data.
      *
-     * @return Zikula_View
+     * @return Zikula_View This instance.
      */
     public static function getInstance($module = null, $caching = null, $cache_id = null, $add_core_data = false)
     {
@@ -530,7 +603,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string       $cache_id      Cache Id.
      * @param boolean      $add_core_data Add core data to render data.
      *
-     * @return Zikula_View_Plugin
+     * @return Zikula_View_Plugin The plugin instance.
      */
     public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
@@ -545,7 +618,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      * @param string       $cache_id      Cache Id.
      * @param boolean      $add_core_data Add core data to render data.
      *
-     * @return Zikula_View_Plugin
+     * @return Zikula_View_Plugin The plugin instance.
      */
     public static function getSystemPluginInstance($pluginName, $caching = null, $cache_id = null, $add_core_data = false)
     {
@@ -691,12 +764,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         return true;
     }
 
-     /**
-     * returns an auto_id for auto-file-functions
+    /**
+     * Returns an auto_id for auto-file-functions.
      *
-     * @param string $cache_id
-     * @param string $compile_id
-     * @return string|null
+     * @param string $cache_id   The cache ID (optional).
+     * @param string $compile_id The compile ID (optional).
+     *
+     * @return string|null The auto_id, or null if neither $cache_id nor $compile_id are set.
      */
     function _get_auto_id($cache_id=null, $compile_id=null) {
         if (isset($cache_id)) {
@@ -713,12 +787,14 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     }
 
     /**
-     * get a concrete filename for automagically created content
+     * Get a concrete filename for automagically created content.
      *
      * @param string $auto_base
      * @param string $auto_source
      * @param string $auto_id
+     *
      * @return string
+     * 
      * @staticvar string|null
      * @staticvar string|null
      */
