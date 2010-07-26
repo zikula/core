@@ -34,7 +34,7 @@
                 {if $canSeeGroups}
                 <th>{gt text="User's groups"}</th>
                 {/if}
-                <th class="z-center">{gt text="Activation"}</th>
+                <th class="z-center">{gt text="Status"}</th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>
