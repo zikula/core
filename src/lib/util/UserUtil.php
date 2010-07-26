@@ -1250,6 +1250,10 @@ class UserUtil
                 $unames[$user['uname']] = $user['uid'];
                 $emails[$user['email']] = $user['uid'];
             }
+        } elseif (($getRegistration && ($user['activated'] != self::ACTIVATED_PENDING_REG))
+                || (!$getRegistration && ($user['activated'] == self::ACTIVATED_PENDING_REG))) {
+                
+            return false;
         }
 
         return $user;
@@ -1361,8 +1365,6 @@ class UserUtil
                 // No such user record!
                 return false;
             }
-        } else {
-            $isRegistration = (bool)($origUserObj['activated'] == self::ACTIVATED_PENDING_REG);
         }
 
         // this array maps old DUDs to new attributes
