@@ -77,9 +77,8 @@ class UserUtil
      * @param integer $uid     The userID of the user to retrieve.
      * @param boolean $getVars Obsolete, we also return the attributes.
      *
-     * @deprecated
-     * @since 1.3.0
-     * @see self::getVars()
+     * @deprecated since 1.3.0
+     * @see    self::getVars()
      *
      * @return array The resulting user object.
      */
@@ -94,9 +93,8 @@ class UserUtil
      * @param integer $id    The userID of the user to retrieve.
      * @param string  $field The field from the user object to get.
      *
-     * @deprecated
-     * @since 1.3.0
-     * @see self::getVars()
+     * @deprecated since 1.3.0
+     * @see    self::getVars()
      *
      * @return mixed The requested field.
      */
@@ -114,8 +112,7 @@ class UserUtil
      * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
      * @param string  $assocKey     The associative key to apply (optional) (default='gid').
      *
-     * @deprecated
-     * @since 1.3.0
+     * @deprecated since 1.3.0
      *
      * @return array An array mapping uid to username.
      */
@@ -134,8 +131,7 @@ class UserUtil
      * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
      * @param string  $assocKey     The associative key to apply (optional) (default='gid').
      *
-     * @deprecated
-     * @since 1.3.0
+     * @deprecated since 1.3.0
      *
      * @return array An array mapping uid to username.
      */
@@ -151,9 +147,8 @@ class UserUtil
      *
      * @param integer $gid The groupID to retrieve.
      *
-     * @deprecated
-     * @since 1.3.0
-     * @see UserUtil::getGroup()
+     * @deprecated since 1.3.0
+     * @see    UserUtil::getGroup()
      *
      * @return array The resulting group object.
      */
@@ -184,8 +179,7 @@ class UserUtil
      * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
      * @param string  $assocKey     The associative key to apply (optional) (default='gid').
      *
-     * @deprecated
-     * @since 1.3.0
+     * @deprecated since 1.3.0
      *
      * @return array An array mapping gid to groupname
      */
@@ -219,7 +213,7 @@ class UserUtil
      * @param string $separator The field separator to use (default=",") (optional).
      *
      * @deprecated since 1.3.0
-     * @see UserUtil::getUserIdList()
+     * @see    UserUtil::getUserIdList()
      *
      * @return string A string list of user ids.
      */
@@ -269,7 +263,7 @@ class UserUtil
      * @param string $separator The field separator to use (default=",") (optional).
      *
      * @deprecated since 1.3.0
-     * @see UserUtil::getGroupIdList()
+     * @see    UserUtil::getGroupIdList()
      *
      * @return string A string list of group ids
      */
@@ -429,7 +423,7 @@ class UserUtil
      * @param string $allText      The text to display for the "All" choice (optional).
      *
      * @deprecated since 1.3.0
-     * @see UserUtil::getSelectorData_Group()
+     * @see    UserUtil::getSelectorData_Group()
      *
      * @return array The array structure for the user group selector
      */
@@ -854,7 +848,8 @@ class UserUtil
                     'loginid'       => isset($authinfo['loginid']) ? $authinfo['loginid'] : '',
                 ));
                 EventUtil::notify($event);
-                return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account. Please correct your entry and try again.'));
+                return LogUtil::registerError(__('Sorry! Either there is no active user in our system with that information, or the information you provided '
+                    . 'does not match the information for your account. Please correct your entry and try again.'));
             }
         }
 
@@ -961,7 +956,7 @@ class UserUtil
      * @param string $uname      The e-mail address in question (required).
      * @param int    $excludeUid The uid to exclude from the check, used when checking modifications.
      *
-     * @return int|bool The count, or false on error.
+     * @return integer|boolean The count, or false on error.
      */
     public static function getUnameUsageCount($uname, $excludeUid = 0)
     {
@@ -993,7 +988,7 @@ class UserUtil
      * @param string $emailAddress The e-mail address in question (required).
      * @param int    $excludeUid   The uid to exclude from the check, used when checking modifications.
      *
-     * @return int|bool The count, or false on error.
+     * @return integer|boolean The count, or false on error.
      */
     public static function getEmailUsageCount($emailAddress, $excludeUid = 0)
     {
@@ -1306,33 +1301,34 @@ class UserUtil
 
         // this array maps old DUDs to new attributes
         $mappingarray = array(
-                '_UREALNAME' => 'realname',
-                '_UFAKEMAIL' => 'publicemail',
-                '_YOURHOMEPAGE' => 'url',
-                '_TIMEZONEOFFSET' => 'tzoffset',
-                '_YOURAVATAR' => 'avatar',
-                '_YLOCATION' => 'city',
-                '_YICQ' => 'icq',
-                '_YAIM' => 'aim',
-                '_YYIM' => 'yim',
-                '_YMSNM' => 'msnm',
-                '_YOCCUPATION' => 'occupation',
-                '_SIGNATURE' => 'signature',
-                '_EXTRAINFO' => 'extrainfo',
-                '_YINTERESTS' => 'interests',
-                'name' => 'realname',
-                'femail' => 'publicemail',
-                'timezone_offset' => 'tzoffset',
-                'user_avatar' => 'avatar',
-                'user_icq' => 'icq',
-                'user_aim' => 'aim',
-                'user_yim' => 'yim',
-                'user_msnm' => 'msnm',
-                'user_from' => 'city',
-                'user_occ' => 'occupation',
-                'user_intrest' => 'interests',
-                'user_sig' => 'signature',
-                'bio' => 'extrainfo');
+            '_UREALNAME' => 'realname',
+            '_UFAKEMAIL' => 'publicemail',
+            '_YOURHOMEPAGE' => 'url',
+            '_TIMEZONEOFFSET' => 'tzoffset',
+            '_YOURAVATAR' => 'avatar',
+            '_YLOCATION' => 'city',
+            '_YICQ' => 'icq',
+            '_YAIM' => 'aim',
+            '_YYIM' => 'yim',
+            '_YMSNM' => 'msnm',
+            '_YOCCUPATION' => 'occupation',
+            '_SIGNATURE' => 'signature',
+            '_EXTRAINFO' => 'extrainfo',
+            '_YINTERESTS' => 'interests',
+            'name' => 'realname',
+            'femail' => 'publicemail',
+            'timezone_offset' => 'tzoffset',
+            'user_avatar' => 'avatar',
+            'user_icq' => 'icq',
+            'user_aim' => 'aim',
+            'user_yim' => 'yim',
+            'user_msnm' => 'msnm',
+            'user_from' => 'city',
+            'user_occ' => 'occupation',
+            'user_intrest' => 'interests',
+            'user_sig' => 'signature',
+            'bio' => 'extrainfo',
+        );
 
         $res = false;
         if (self::fieldAlias($name)) {
@@ -1431,9 +1427,8 @@ class UserUtil
             $hashMethodCodesByName = self::getPasswordHashMethods(false);
         }
 
-        if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName)
-            || !isset($hashMethodCodesByName[$hashAlgorithmName]) || empty($hashMethodCodesByName[$hashAlgorithmName])
-            || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
+        if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName) || !isset($hashMethodCodesByName[$hashAlgorithmName])
+            || empty($hashMethodCodesByName[$hashAlgorithmName]) || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
 
             return LogUtil::registerArgsError();
         }
@@ -1457,6 +1452,7 @@ class UserUtil
 
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
             || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
+            
             return LogUtil::registerArgsError();
         }
 
@@ -1628,9 +1624,9 @@ class UserUtil
     public static function delVar($name, $uid = -1)
     {
         // Prevent deletion of core fields (duh)
-        if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass')
-            || ($name == 'uname') || ($name == 'activated'))
-        {
+        if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') || ($name == 'uname')
+            || ($name == 'activated')) {
+            
             return false;
         }
 
@@ -1661,33 +1657,34 @@ class UserUtil
 
         // this array maps old DUDs to new attributes
         $mappingarray = array(
-                '_UREALNAME' => 'realname',
-                '_UFAKEMAIL' => 'publicemail',
-                '_YOURHOMEPAGE' => 'url',
-                '_TIMEZONEOFFSET' => 'tzoffset',
-                '_YOURAVATAR' => 'avatar',
-                '_YLOCATION' => 'city',
-                '_YICQ' => 'icq',
-                '_YAIM' => 'aim',
-                '_YYIM' => 'yim',
-                '_YMSNM' => 'msnm',
-                '_YOCCUPATION' => 'occupation',
-                '_SIGNATURE' => 'signature',
-                '_EXTRAINFO' => 'extrainfo',
-                '_YINTERESTS' => 'interests',
-                'name' => 'realname',
-                'femail' => 'publicemail',
-                'timezone_offset' => 'tzoffset',
-                'user_avatar' => 'avatar',
-                'user_icq' => 'icq',
-                'user_aim' => 'aim',
-                'user_yim' => 'yim',
-                'user_msnm' => 'msnm',
-                'user_from' => 'city',
-                'user_occ' => 'occupation',
-                'user_intrest' => 'interests',
-                'user_sig' => 'signature',
-                'bio' => 'extrainfo');
+            '_UREALNAME' => 'realname',
+            '_UFAKEMAIL' => 'publicemail',
+            '_YOURHOMEPAGE' => 'url',
+            '_TIMEZONEOFFSET' => 'tzoffset',
+            '_YOURAVATAR' => 'avatar',
+            '_YLOCATION' => 'city',
+            '_YICQ' => 'icq',
+            '_YAIM' => 'aim',
+            '_YYIM' => 'yim',
+            '_YMSNM' => 'msnm',
+            '_YOCCUPATION' => 'occupation',
+            '_SIGNATURE' => 'signature',
+            '_EXTRAINFO' => 'extrainfo',
+            '_YINTERESTS' => 'interests',
+            'name' => 'realname',
+            'femail' => 'publicemail',
+            'timezone_offset' => 'tzoffset',
+            'user_avatar' => 'avatar',
+            'user_icq' => 'icq',
+            'user_aim' => 'aim',
+            'user_yim' => 'yim',
+            'user_msnm' => 'msnm',
+            'user_from' => 'city',
+            'user_occ' => 'occupation',
+            'user_intrest' => 'interests',
+            'user_sig' => 'signature',
+            'bio' => 'extrainfo',
+        );
 
         if (self::fieldAlias($name)) {
             // this value comes from the users table
@@ -1867,7 +1864,7 @@ class UserUtil
             if (array_key_exists($sortbyfield, $userscolumn)) {
                 $sqlFragments[] = $userscolumn[$sortbyfield] . ' ' . DataUtil::formatForStore($sortorder);
             } else {
-                $sqlFragments[] = DataUtil::formatForStore($sortbyfield) . ' ' . DataUtil::formatForStore($sortorder); //sorty by dynamic.....
+                $sqlFragments[] = DataUtil::formatForStore($sortbyfield) . ' ' . DataUtil::formatForStore($sortorder); //sort by dynamic.....
             }
             if ($sortbyfield != 'uname') {
                 $sqlFragments[] = $userscolumn['uname'] . ' ASC ';
@@ -1889,7 +1886,7 @@ class UserUtil
      * @param string $uname           The username.
      * @param bool   $forRegistration Get the id for a pending registration (default = false).
      *
-     * @return int|bool The uid if found, false if not.
+     * @return integer|boolean The uid if found, false if not.
      */
     public static function getIdFromName($uname, $forRegistration = false)
     {
@@ -1903,7 +1900,7 @@ class UserUtil
      * @param string $email           The user email.
      * @param bool   $forRegistration Get the id for a pending registration (default = false).
      *
-     * @return int|bool The uid if found, false if not.
+     * @return integer|boolean The uid if found, false if not.
      */
     public static function getIdFromEmail($email, $forRegistration = false)
     {
