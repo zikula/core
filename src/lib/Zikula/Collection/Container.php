@@ -13,8 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+/**
+ * Generic Collection.
+ */
 class Zikula_Collection_Container implements Zikula_Collection_Interface
 {
+    /**
+     * Name.
+     *
+     * @var string
+     */
     protected $name;
 
     /**
@@ -30,41 +38,92 @@ class Zikula_Collection_Container implements Zikula_Collection_Interface
         $this->collection = !$collection ? new ArrayObject(array()) : $collection;
     }
 
+    /**
+     * Get collection.
+     *
+     * @return ArrayObject
+     */
     public function getCollection()
     {
         return $this->collection;
     }
 
+    /**
+     * Set collection.
+     * 
+     * @param ArrayObject $collection The collection
+     *
+     * @return void
+     */
     public function setCollection(ArrayObject $collection)
     {
         $this->collection = $collection;
     }
 
+    /**
+     * Get name.
+     *
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * Add without index.
+     *
+     * @param mixed $value Value.
+     *
+     * @return void
+     */
     public function add($value)
     {
         $this->collection[] = $value;
     }
 
+    /**
+     * Set with index.
+     *
+     * @param string $key   Key.
+     * @param mixed  $value Value.
+     */
     public function set($key, $value)
     {
         $this->collection[$key] = $value;
     }
 
+    /**
+     * Get element by key.
+     *
+     * @param string $key Key.
+     *
+     * @return mixed
+     */
     public function get($key)
     {
-        $this->collection[$key];
+        return $this->collection[$key];
     }
 
+    /**
+     * Offset exists.
+     *
+     * @param string $key Key
+     *
+     * @return boolean
+     */
     public function has($key)
     {
         return $this->offsetExists($key);
     }
 
+    /**
+     * Unset offset.
+     *
+     * @param string $key Key.
+     *
+     * @return void
+     */
     public function del($key)
     {
         if ($this->has($key)) {
@@ -74,17 +133,33 @@ class Zikula_Collection_Container implements Zikula_Collection_Interface
 
     // interatoraggregate interface implementation
 
+    /**
+     * Get iterator for collection.
+     *
+     * @return Iterator
+     */
     public function getIterator()
     {
         return $this->collection->getIterator();
     }
 
     // countable interface implementation
+
+    /**
+     * Number of elements in collection.
+     *
+     * @return integer
+     */
     public function count()
     {
         return count($this->collection);
     }
 
+    /**
+     * Has collection.
+     *
+     * @return boolean
+     */
     public function hasCollection()
     {
         return !$this->collection;
@@ -92,6 +167,13 @@ class Zikula_Collection_Container implements Zikula_Collection_Interface
 
     // ArrayAccess interface implementation
 
+    /**
+     * Offset Get for ArrayAccess.
+     *
+     * @param string $key Key.
+     *
+     * @return mixed
+     */
     public function offsetGet($key)
     {
         if ($this->has($key)) {
@@ -100,18 +182,40 @@ class Zikula_Collection_Container implements Zikula_Collection_Interface
         throw new InvalidArgumentException(sprintf('Key %s does not exist in collection', $key));
     }
 
+    /**
+     * Offset Set for ArrayAccess.
+     *
+     * @param string $key   Key.
+     * @param mixed  $value Value.
+     *
+     * @return mixed
+     */
     public function offsetSet($key, $value)
     {
         $this->collection[$key] = $value;
     }
 
+    /**
+     * Isset implementation for key.
+     *
+     * @param string $key Key.
+     *
+     * @return boolean
+     */
     public function offsetExists($key)
     {
         return $this->collection->offsetExists($key);
     }
 
+    /**
+     * Unset key.
+     *
+     * @param <type> $key Key.
+     *
+     * @return void
+     */
     public function offsetUnset($key)
     {
-        return $this->collection->offsetUnset($key);
+        $this->collection->offsetUnset($key);
     }
 }
