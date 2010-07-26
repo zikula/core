@@ -550,12 +550,12 @@ class Users_Controller_User extends Zikula_Controller
                 SessionUtil::setVar('lostpassword_email', $email);
             }
 
-            if (ModUtil::apiFunc('Users', 'user', 'checkConfirmationCode', array(
-                    'idfield' => $idfield,
-                    'id' => $idvalue,
-                    'code' => $code,
-                )))
-            {
+            $checkConfArgs =array(
+                'idfield' => $idfield,
+                'id'      => $idvalue,
+                'code'    => $code,
+            );
+            if (ModUtil::apiFunc('Users', 'user', 'checkConfirmationCode', $checkConfArgs)) {
                 $userInfo = UserUtil::getVars($idvalue, true, $idfield);
                 $passwordReminder = $userInfo['passreminder'];
             } else {
@@ -759,8 +759,8 @@ class Users_Controller_User extends Zikula_Controller
                     // handled.
                     if ($mustConfirmTOUPP) {
                         if (ModUtil::available('legal')
-                            && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true)))
-                        {
+                                && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
+                            
                             $touppAccepted = (int)FormUtil::getPassedValue('touaccepted', 0, 'GETPOST');
                             $mustConfirmTOUPP = !$touppAccepted;
                             $tryAgain = !$touppAccepted;
@@ -1006,8 +1006,8 @@ class Users_Controller_User extends Zikula_Controller
                 }
 
                 if ($verifycode && $reginfo && isset($reginfo['pass']) && !empty($reginfo['pass'])
-                     && isset($reginfo['passreminder']) && !empty($reginfo['passreminder']))
-                {
+                        && isset($reginfo['passreminder']) && !empty($reginfo['passreminder'])) {
+                    
                     $verifyChg = ModUtil::apiFunc('Users', 'registration', 'getVerificationCode', array(
                         'uid'   => $reginfo['uid'],
                     ));
