@@ -48,30 +48,90 @@ class Zikula
      */
     protected $uptime;
 
+    /**
+     * Base memory at start.
+     *
+     * @var int
+     */
     protected $baseMemory;
 
+    /**
+     * ServiceManager.
+     *
+     * @var Zikula_ServiceManager
+     */
     protected $serviceManager;
 
+    /**
+     * EventManager.
+     *
+     * @var Zikula_EventManager
+     */
     protected $eventManager;
 
-    protected $booted;
+    /**
+     * Booted flag.
+     *
+     * @var boolean
+     */
+    protected $booted = false;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->baseMemory = memory_get_usage();
     }
 
+    /**
+     * Get base memory.
+     * 
+     * @return integer
+     */
+    public function getBaseMemory()
+    {
+        return $this->baseMemory;
+    }
+
+    /**
+     * Check booted status.
+     *
+     * @return boolean
+     */
+    public function hasBooted()
+    {
+        return $this->booted;
+    }
+
+
+    /**
+     * Getter for servicemanager property.
+     *
+     * @return Zikula_ServiceManager
+     */
     public function getServiceManager()
     {
         return $this->serviceManager;
     }
 
+    /**
+     * Getter for eventmanager property.
+     *
+     * @return Zikula_Eventmanager
+     */
     public function getEventManager()
     {
         return $this->eventManager;
     }
 
-    
+    /**
+     * Boot Zikula.
+     *
+     * @throws LogicException If already booted.
+     *
+     * @return void
+     */
     public function boot()
     {
         if ($this->booted) {
@@ -85,8 +145,8 @@ class Zikula
         $this->serviceManager->attachService('zikula.eventmanager', $this->eventManager);
         $this->serviceManager->attachService('zikula', $this);
 
-        $serviceManager = ServiceUtil::getManager($this);
-        $eventManager = EventUtil::getManager($this);
+        ServiceUtil::getManager($this);
+        EventUtil::getManager($this);
     }
 
     /**
