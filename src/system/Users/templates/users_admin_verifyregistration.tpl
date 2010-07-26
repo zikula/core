@@ -17,7 +17,6 @@
             <input type="hidden" id="users_confirmed" name="confirmed" value="true" />
             <div class="z-formbuttons z-buttons">
                 {strip}
-                {assign var="regactions" value=$actions.list[$reginfo.uid]}
                 {gt assign='titleIfSent' text='Resend verification code'}
                 {gt assign='titleIfNotSent' text='Send verification code'}
                 {if !empty($reginfo.verifycode)}
