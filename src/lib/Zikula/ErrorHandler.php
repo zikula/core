@@ -41,21 +41,81 @@ abstract class Zikula_ErrorHandler
      */
     protected $eventManager;
 
+    /**
+     * The log event instance.
+     *
+     * @var Zikula_Event
+     */
     protected $event;
 
+    /**
+     * The PHP or user error number.
+     *
+     * @var integer
+     */
     protected $errno;
+
+    /**
+     * The error message.
+     *
+     * @var string
+     */
     protected $errstr;
+
+    /**
+     * The name of the file in which the error was raised.
+     *
+     * @var string
+     */
     protected $errfile;
+
+    /**
+     * The line number of the file on which the error was raised.
+     *
+     * @var integer
+     */
     protected $errline;
+
+    /**
+     * The array that points to the active symbol table at the point the error occurred.
+     *
+     * In other words, errcontext will contain an array of every variable that existed in the scope the error was
+     * triggered in. The error handler must not modify error context.
+     *
+     * @var array
+     */
     protected $errcontext;
+
+    /**
+     * The computed error type.
+     *
+     * Values:
+     * <ul>
+     *   <li>Zikula_ErrorHandler::EMERG</li>
+     *   <li>Zikula_ErrorHandler::ALERT</li>
+     *   <li>Zikula_ErrorHandler::CRIT</li>
+     *   <li>Zikula_ErrorHandler::ERR</li>
+     *   <li>Zikula_ErrorHandler::WARN</li>
+     *   <li>Zikula_ErrorHandler::NOTICE</li>
+     *   <li>Zikula_ErrorHandler::INFO</li>
+     *   <li>Zikula_ErrorHandler::DEBUG</li>
+     * </ul>
+     *
+     * @var integer
+     */
     protected $type;
+
+    /**
+     * The array of {@link debug_backtrace()} information.
+     *
+     * @var array
+     */
     protected $trace;
 
     /**
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager Servicemanager.
-     * @param Zikula_EventManager   $eventManager   Eventmanager.
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
@@ -64,62 +124,126 @@ abstract class Zikula_ErrorHandler
         $this->event = new Zikula_Event('log', $this);
     }
 
+    /**
+     * Retrieve the computed error type.
+     *
+     * @return integer The error type.
+     */
     public function getType()
     {
         return $this->type;
     }
 
+    /**
+     * Retrieve the {@link debug_backtrace()} information.
+     *
+     * @return array The backtrace information.
+     */
     public function getTrace()
     {
         return $this->trace;
     }
 
-    
+    /**
+     * Retrieve the error number.
+     *
+     * @return integer The error number.
+     */
     public function getErrno()
     {
         return $this->errno;
     }
 
+    /**
+     * Retrieve the error message.
+     *
+     * @return string The error message.
+     */
     public function getErrstr()
     {
         return $this->errstr;
     }
 
+    /**
+     * Retrieve the name of the file in which the error was raised.
+     *
+     * @return string The file name.
+     */
     public function getErrfile()
     {
         return $this->errfile;
     }
 
+    /**
+     * Retrieve the line number on which the error was raised.
+     *
+     * @return integer The line number.
+     */
     public function getErrline()
     {
         return $this->errline;
     }
 
+    /**
+     * Retrieve the array that points to the active symbol table at the point the error occurred.
+     *
+     * In other words, errcontext will contain an array of every variable that existed in the scope the error was
+     * triggered in. The error handler must not modify error context.
+     *
+     * @return array The error context information.
+     */
     public function getErrcontext()
     {
         return $this->errcontext;
     }
 
+    /**
+     * Retrieve the service manager instance.
+     *
+     * @return Zikula_ServiceManager The service manager instance.
+     */
     public function getServiceManager()
     {
         return $this->serviceManager;
     }
 
+    /**
+     * Retrieve the event manager instance.
+     *
+     * @return Zikula_EventManager The event manager instance.
+     */
     public function getEventManager()
     {
         return $this->eventManager;
     }
 
+    /**
+     * Retrieve the log event instance.
+     *
+     * @return Zikula_Event The log event instance.
+     */
     public function getEvent()
     {
         return $this->event;
     }
 
+    /**
+     * Indicates whether the PHP error handler should be displayed.
+     *
+     * Set in config.php or personal_config.php.
+     *
+     * @return integer|boolean True (or equivalent) to show the PHP error handler.
+     */
     public function showPHPErrorHandler()
     {
         return $this->serviceManager['log.show_php_errorhandler'];
     }
 
+    /**
+     * Indicates whether the error number represents a PHP error or not.
+     *
+     * @return bool True if the error number ({@link $errno}) is a PHP error, otherwise false.
+     */
     public function isPHPError()
     {
         switch ($this->errno) {
@@ -139,6 +263,11 @@ abstract class Zikula_ErrorHandler
         }
     }
 
+    /**
+     * Resets the error handler.
+     *
+     * @return void
+     */
     public function resetHandler()
     {
         $this->errno = null;
@@ -150,6 +279,17 @@ abstract class Zikula_ErrorHandler
         $this->trace = null;
     }
 
+    /**
+     * Sets up the error handler with error information.
+     *
+     * @param integer $errno      The error number.
+     * @param string  $errstr     The error message.
+     * @param string  $errfile    The file name in which the error was raised.
+     * @param integer $errline    The line number on which the error was raised.
+     * @param array   $errcontext The error context information.
+     *
+     * @return void
+     */
     public function setupHandler($errno, $errstr, $errfile='', $errline=0, $errcontext=null)
     {
         $this->errno = $errno;
@@ -162,11 +302,23 @@ abstract class Zikula_ErrorHandler
         unset($this->trace[0]);
     }
 
+    /**
+     * Indicates whether log.display_template is set in the config.php file (or personal_config.php file).
+     *
+     * @return boolean True if set, otherwise false.
+     */
     public function isDisplayErrorTemplate()
     {
         return (bool)$this->serviceManager['log.display_template'];
     }
 
+    /**
+     * Decode the error number given with the error to the internal type.
+     *
+     * @param integer $errno The error number.
+     *
+     * @return integer The internal error {@link $type}.
+     */
     public function decodeError($errno)
     {
         // decode the error type
@@ -211,6 +363,14 @@ abstract class Zikula_ErrorHandler
         return $type;
     }
 
+    /**
+     * Adjusts the error file name, removing path information if the system is not in development mode.
+     *
+     * @param string $errfile The name of the file in which the error was raised.
+     *
+     * @return The name of the file in which the error was raised, without path information if the system is not in
+     *              development mode.
+     */
     public function decoratePath($errfile)
     {
         // Remove full path information if not in development mode.
@@ -220,6 +380,13 @@ abstract class Zikula_ErrorHandler
         return $errfile;
     }
 
+    /**
+     * Translate the error number/type into a human-readable string.
+     *
+     * @param integer $code The error number/type.
+     * 
+     * @return string The human-readable string corresponding to that number/type.
+     */
     public static function translateErrorCode($code)
     {
         switch ($code) {
@@ -284,10 +451,10 @@ abstract class Zikula_ErrorHandler
     /**
      * ErrorHandler.
      *
-     * @param integer $errno      Number of the error.
-     * @param string  $errstr     Error message.
+     * @param integer $errno      The error number.
+     * @param string  $errstr     The error message.
      * @param string  $errfile    Filename where the error occurred.
-     * @param integer $errline    Line of the error.
+     * @param integer $errline    Line number on which the error occurred.
      * @param string  $errcontext Context of the error.
      *
      * @return boolean
