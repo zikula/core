@@ -27,14 +27,14 @@
     <table class="z-admintable">
         <thead>
             <tr>
-                <th>{gt text="User name"}</th>
-                <th>{gt text="Internal ID"}</th>
-                <th>{gt text="Registration date"}</th>
-                <th>{gt text="Last login"}</th>
+                <th>{gt text="User name"}<span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='uname' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
+                <th>{gt text="Internal ID"}<span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='uid' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='uid' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
+                <th>{gt text="Registration date"}<span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='user_regdate' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='user_regdate' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
+                <th>{gt text="Last login"}<span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='lastlogin' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='lastlogin' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
                 {if $canSeeGroups}
                 <th>{gt text="User's groups"}</th>
                 {/if}
-                <th class="z-center">{gt text="Status"}</th>
+                <th class="z-center">{gt text="Status"}<span class="z-floatright"><a href="{modurl modname='Users' type='admin' func='view' sort='activated' sortdir='ASC'}">{img modname='core' set='icons' src='extrasmall/14_layer_raiselayer.gif' __alt='+' __title='+'}</a><a href="{modurl modname='Users' type='admin' func='view' sort='activated' sortdir='DESC'}">{img modname='core' set='icons' src='extrasmall/14_layer_lowerlayer.gif' __alt='-' __title='-'}</a></span></th>
                 <th class="z-right">{gt text="Actions"}</th>
             </tr>
         </thead>

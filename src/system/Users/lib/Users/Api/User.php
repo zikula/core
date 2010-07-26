@@ -21,9 +21,10 @@ class Users_Api_User extends Zikula_Api
      * Get all users (for which the current user has permission to read).
      *
      * @param array $args All parameters passed to this function.
-     *                    $args['letter']   (string) The first letter of the set of user names to return.
-     *                    $args['starnum']  (int)    First item to return (optional).
-     *                    $args['numitems'] (int)    Number if items to return (optional).
+     *                      string  $args['letter']   The first letter of the set of user names to return.
+     *                      integer $args['starnum']  First item to return (optional).
+     *                      integer $args['numitems'] Number if items to return (optional).
+     *                      array   $args['sort']     The field(s) on which to sort the result (optional).
      *
      * @return array An array of users, or false on failure.
      */
@@ -62,6 +63,41 @@ class Users_Api_User extends Zikula_Api
             return LogUtil::registerArgsError();
         }
 
+        // Sort
+        $table = DBUtil::getTables();
+        $usersColumn = $table['users_column'];
+        if (isset($args['sort']) && !empty($args['sort'])) {
+            if (is_string($args['sort'])) {
+                $sortBy = array($args['sort']);
+            } elseif (is_array($args['sort'])) {
+                $sortBy = $args['sort'];
+            } else {
+                return LogUtil::registerArgsError();
+            }
+
+            $orderBy = array();
+            foreach ($sortBy as $key => $value) {
+                if (is_numeric($key)) {
+                    $fieldName = $value;
+                    $direction = '';
+                } else {
+                    $fieldName = $key;
+                    $direction = $value;
+                }
+                if (!empty($direction) && ($direction != 'ASC') && ($direction != 'DESC')) {
+                    return LogUtil::registerArgsError();
+                } elseif (isset($usersColumn[$fieldName])) {
+                    $orderBy[] = $usersColumn[$fieldName] . (!empty($direction) ? ' ' . $direction : '');
+                } else {
+                    return LogUtil::registerArgsError();
+                }
+            }
+
+            $orderBy = 'ORDER BY ' . implode(', ', $orderBy);
+        } else {
+            $orderBy = 'ORDER BY uname';
+        }
+
         $permFilter = array();
         // corresponding filter permission to filter anonymous in admin view:
         // Administrators | Users:: | Anonymous:: | None
@@ -76,9 +112,6 @@ class Users_Api_User extends Zikula_Api
             'level'             => ACCESS_READ
         );
 
-        $table = DBUtil::getTables();
-        $usersColumn = $table['users_column'];
-
         // form where clause
         $where = array();
         if (isset($args['letter'])) {
@@ -87,7 +120,7 @@ class Users_Api_User extends Zikula_Api
         $where[] = "({$usersColumn['activated']} NOT IN (" . implode(', ', array(UserUtil::ACTIVATED_PENDING_REG, UserUtil::ACTIVATED_PENDING_DELETE)) . '))';
         $where = 'WHERE ' . implode(' AND ', $where);
 
-        $objArray = DBUtil::selectObjectArray('users', $where, 'uname', $limitOffset, $limitNumRows, null, $permFilter);
+        $objArray = DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, null, $permFilter);
 
         // Check for a DB error
         if ($objArray === false) {
