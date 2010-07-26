@@ -83,7 +83,7 @@ class Users_Api_Search extends Zikula_Api
 
         // build the where clause
         $where   = array();
-        $where[] = "{$userscolumn['activated']} = " . UserUtil::ACTIVATED_ACTIVE;
+        $where[] = "({$userscolumn['activated']} != " . UserUtil::ACTIVATED_PENDING_REG . ')';
 
         $unameClause = Search_Api_User::construct_where($args, array($userscolumn['uname']));
 
