@@ -1297,6 +1297,8 @@ class UserUtil
                 // No such user record!
                 return false;
             }
+        } else {
+            $isRegistration = (bool)($origUserObj['activated'] == self::ACTIVATED_PENDING_REG);
         }
 
         // this array maps old DUDs to new attributes
