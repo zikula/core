@@ -497,11 +497,7 @@ abstract class Zikula_Base implements Zikula_Translatable
             throw new Zikula_Exception($this->__f('Empty [%s] received.', 'message'));
         }
 
-        $msgs = SessionUtil::getVar('_ZStatusMsg', array());
-
-        $msgs[] = DataUtil::formatForDisplayHTML((string)$message);
-
-        SessionUtil::setVar('_ZStatusMsg', $msgs);
+        LogUtil::addStatusPopup($message);
 
         return $this;
     }
@@ -567,47 +563,7 @@ abstract class Zikula_Base implements Zikula_Translatable
             throw new Zikula_Exception($this->__f('Empty [%s] received.', 'message'));
         }
 
-        $showDetailInfo = (System::isInstalling() || (System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)));
-
-        if ($showDetailInfo) {
-            $bt = debug_backtrace();
-
-            $cf0 = $bt[0];
-            $cf1 = isset($bt[1]) ? $bt[1] : array('function' => '', 'args' => '');
-            $file = $cf0['file'];
-            $line = $cf0['line'];
-            $func = !empty($cf1['function']) ? $cf1['function'] : '';
-            $class = !empty($cf1['class']) ? $cf1['class'] : '';
-            $args = $cf1['args'];
-        } else {
-            $func = '';
-        }
-
-        $message = DataUtil::formatForDisplayHTML((string)$message);
-        if (!$showDetailInfo) {
-            $msg = $message;
-        } else {
-            // TODO A [do we need to have HTML sanitization] (drak)
-            $func = ((!empty($class)) ? "$class::$func" : $func);
-            $msg = __f('%1$s The origin of this message was \'%2$s\' at line %3$s in file \'%4$s\'.', array($message, $func, $line, $file));
-            if (System::isDevelopmentMode()) {
-                $msg .= '<br />';
-                $msg .= _prayer($debug);
-                $msg .= '<br />';
-                $msg .= _prayer(debug_backtrace());
-
-            }
-        }
-
-        $msgs = SessionUtil::getVar('_ZErrorMsg', array());
-        $msgs[] = DataUtil::formatForDisplayHTML($message);
-
-        SessionUtil::setVar('_ZErrorMsg', $msgs);
-
-        // check if we've got an error type
-        if (isset($type) && is_numeric($type)) {
-            SessionUtil::setVar('_ZErrorMsgType', $type);
-        }
+        LogUtil::addErrorPopup($message);
 
         return $this;
     }
