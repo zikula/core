@@ -583,9 +583,7 @@ class UserUtil
         if (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         }
-        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')
-            && (!isset($reentrantURL) || empty($reentrantURL)))
-        {
+        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi') && (!isset($reentrantURL) || empty($reentrantURL))) {
             return LogUtil::registerArgsError();
         }
 
@@ -634,9 +632,7 @@ class UserUtil
         if (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         }
-        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')
-            && (!isset($reentrantURL) || empty($reentrantURL)))
-        {
+        if (ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')  && (!isset($reentrantURL) || empty($reentrantURL))) {
             return LogUtil::registerArgsError();
         }
 
@@ -690,9 +686,7 @@ class UserUtil
         if (!ModUtil::available($authModuleName)) {
             return LogUtil::registerArgsError();
         }
-        if ($checkPassword && ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi')
-            && (!isset($reentrantURL) || empty($reentrantURL)))
-        {
+        if ($checkPassword && ModUtil::apiFunc($authModuleName, 'auth', 'isReentrant', null, 'Zikula_AuthApi') && (!isset($reentrantURL) || empty($reentrantURL))) {
             return LogUtil::registerArgsError();
         }
 
@@ -802,8 +796,7 @@ class UserUtil
             if ($mustConfirmTOUPP) {
                 // The user needs to confirm acceptance of the terms and/or privacy policy.
                 // First, let's see if the administrator is still using that stuff.
-                if (ModUtil::available('legal')
-                    && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
+                if (ModUtil::available('legal') && (ModUtil::getVar('legal', 'termsofuse', true) || ModUtil::getVar('legal', 'privacypolicy', true))) {
 
                     if ($mustConfirmTOUPP && $mustChangePassword) {
                         $errorMsg = __('Your log-in request was not completed because you must agree to our terms, and must also change your account\'s password first.');
@@ -983,7 +976,6 @@ class UserUtil
             $usersColumn = $dbinfo['users_column'];
             $where = "({$usersColumn['uname']} = '{$uname}') AND ({$usersColumn['uid']} != {$excludeUid})";
             $ucount = DBUtil::selectObjectCount('users', $where);
-
         } else {
             $ucount = DBUtil::selectObjectCountByID('users', $uname, 'uname');
         }
@@ -1056,12 +1048,9 @@ class UserUtil
             // Get verificationsent from the users_verifychg table
             $dbinfo = DBUtil::getTables();
             $verifyChgColumn = $dbinfo['users_verifychg_column'];
-            $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = "
-                . self::VERIFYCHGTYPE_REGEMAIL . ")";
+            $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = " . self::VERIFYCHGTYPE_REGEMAIL . ")";
             $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
-            if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0])
-                && !empty($verifyChgList[0]))
-            {
+            if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0])  && !empty($verifyChgList[0])) {
                 $userObj['verificationsent'] = $verifyChgList[0]['created_dt'];
             } else {
                 $userObj['verificationsent'] = false;
@@ -1192,8 +1181,7 @@ class UserUtil
                 // reloaded into cache no matter what $getRegistration is set to. If not, and this is
                 // called from setVar(), and setVar() changed the 'activated' value, then we'd have trouble.
                 if (($getRegistration && ($user['activated'] != self::ACTIVATED_PENDING_REG))
-                    || (!$getRegistration && ($user['activated'] == self::ACTIVATED_PENDING_REG)))
-                {
+                    || (!$getRegistration && ($user['activated'] == self::ACTIVATED_PENDING_REG))) {
                     return false;
                 }
 
