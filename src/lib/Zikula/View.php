@@ -450,13 +450,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      *
      * @param string $dir The directory to add.
      *
-     * @return Zikula_View|null This instance, or void if the directory is already a plugin directory or the string
-     *                              specified is not a directory.
+     * @return Zikula_View This instance.
      */
     public function addPluginDir($dir)
     {
         if (in_array($dir, $this->plugins_dir) || !is_dir($dir)) {
-            return;
+            // TODO - !is_dir(...) should probably throw an exception.
+            return $this;
         }
 
         array_push($this->plugins_dir, $dir);
