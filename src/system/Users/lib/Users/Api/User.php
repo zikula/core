@@ -324,9 +324,9 @@ class Users_Api_User extends Zikula_Api
     {
         $emailMessageSent = false;
 
-        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
-            || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid')))
-        {
+        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) 
+                || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
+            
             return LogUtil::registerArgsError();
         }
 
@@ -382,9 +382,9 @@ class Users_Api_User extends Zikula_Api
     {
         $emailMessageSent = false;
 
-        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
-            || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid')))
-        {
+        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) 
+                || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
+            
             return LogUtil::registerArgsError();
         }
 
@@ -473,10 +473,9 @@ class Users_Api_User extends Zikula_Api
     {
         $codeIsGood = false;
 
-        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
-            || !isset($args['code']) || empty($args['code'])
-            || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email')))
-        {
+        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) || !isset($args['code'])
+                || empty($args['code']) || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email'))) {
+            
             return LogUtil::registerArgsError();
         }
 
