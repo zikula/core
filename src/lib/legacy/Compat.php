@@ -3559,3 +3559,62 @@ function search_split_query($q, $dbwildcard = true)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('search_split_query()', 'Search_Api_User::split_query()')), E_USER_DEPRECATED);
     return Search_Api_User::split_query($q, $dbwildcard);
 }
+
+
+/**
+ * Exit.
+ *
+ * @param string  $msg  Message.
+ * @param boolean $html True for html.
+ *
+ * @global array $ZConfig Configuration.
+ * @return void|boolean
+ */
+function z_exit($msg, $html = true)
+{
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+    return LogUtil::registerError($msg2);
+}
+
+
+/**
+ * Serialize the given data in an easily human-readable way for debug purposes.
+ *
+ * @param array   $data           The object to serialize.
+ * @param boolean $functions      Whether to show function names for objects (default=false) (optional).
+ * @param integer $recursionLevel The current recursion level.
+ *
+ * @return string A string containing serialized data.
+ */
+function _prayer($data, $functions = false, $recursionLevel = 0)
+{
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+}
+
+/**
+ * A prayer shortcut.
+ *
+ * @param array   $data The object to serialize.
+ * @param boolean $die  Whether to shutdown the process or not.
+ *
+ * @return void
+ */
+function z_prayer($data, $die = true)
+{
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+}
+
+/**
+ * Serialize the given data in an easily human-readable way for debug purposes.
+ *
+ * Taken from http://dev.nexen.net/scripts/details.php?scripts=707.
+ *
+ * @param array   $data      The object to serialize.
+ * @param boolean $functions Whether to show function names for objects (default=false) (optional).
+ *
+ * @return void
+ */
+function prayer($data, $functions = false)
+{
+    LogUtil::log(__f('Warning! Function %s is deprecated.', array(__FUNCTION__), E_USER_DEPRECATED);
+}

@@ -22,7 +22,6 @@ if (!defined('E_USER_DEPRECATED')) {
 
 include 'lib/i18n/ZGettextFunctions.php';
 include 'lib/Zikula/KernelClassLoader.php';
-include 'lib/debug.php';
 
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
