@@ -306,136 +306,278 @@ class Zikula_View_Theme extends Zikula_View
         ob_start();
     }
 
+    /**
+     * Retrieve the theme ID.
+     *
+     * @return integer The theme ID.
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * Retrieve the name of the theme.
+     *
+     * @return string The name.
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * Retrieve the theme's display name.
+     *
+     * @return string The display name.
+     */
     public function getDisplayname()
     {
         return $this->displayname;
     }
 
+    /**
+     * Retrieve the theme's description.
+     *
+     * @return string The description of the theme.
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
+    /**
+     * Retrieve the theme type.
+     *
+     * @return <type>
+     */
     public function getType()
     {
         return $this->type;
     }
 
+    /**
+     * Retrieve the theme directory name.
+     *
+     * @return <type>
+     */
     public function getDirectory()
     {
         return $this->directory;
     }
 
+    /**
+     * Retrieve the theme's version string.
+     *
+     * @return string The version of the theme.
+     */
     public function getVersion()
     {
         return $this->version;
     }
 
+    /**
+     * Retrieve the contact information for the theme.
+     *
+     * @return string The theme's contact information.
+     */
     public function getContact()
     {
         return $this->contact;
     }
 
+    /**
+     * Retrieve the state of the theme.
+     *
+     * Values:
+     * <ul>
+     *   <li>ThemeUtil::STATE_ACTIVE</li>
+     *   <li>ThemeUtil::STATE_INACTIVE</li>
+     *   <li>ThemeUtil::STATE_ALL</li>
+     * </ul>
+     *
+     * @return integer The theme's state.
+     */
     public function getState()
     {
         return $this->state;
     }
 
+    /**
+     * Indicates whether the theme is an XHTML-based theme or an HTML-based theme.
+     *
+     * @return integer 1 for XHTML-capable, otherwise HTML.
+     */
     public function getXhtml()
     {
         return $this->xhtml;
     }
 
+    /**
+     * Retrieve the path to the theme.
+     *
+     * @return string The path to the theme.
+     */
     public function getThemepath()
     {
         return $this->themepath;
     }
 
+    /**
+     * Retrieve the path to the theme's images.
+     *
+     * @return string The path to the theme's images.
+     */
     public function getImagepath()
     {
         return $this->imagepath;
     }
 
+    /**
+     * Retrieve the path to the theme's language-specific images.
+     *
+     * @return string The path to the theme's language-specific images.
+     */
     public function getImagelangpath()
     {
         return $this->imagelangpath;
     }
 
+    /**
+     * Retrieve the path to the theme's stylesheets.
+     *
+     * @return string The path to the theme's stylesheets.
+     */
     public function getStylepath()
     {
         return $this->stylepath;
     }
 
+    /**
+     * Retrieve the path to the theme's javascript files.
+     *
+     * @return string The path to the theme's javascript files.
+     */
     public function getScriptpath()
     {
         return $this->scriptpath;
     }
 
+    /**
+     * Retrieve the theme configuration.
+     *
+     * @return array The contents of the theme configuration (or the master configuration).
+     */
     public function getThemeconfig()
     {
         return $this->themeconfig;
     }
 
+    /**
+     * Indicates whether this page can/should be cached.
+     *
+     * @return boolean True if this page can/should be cached, otherwise false.
+     */
     public function getCachepage()
     {
         return $this->cachepage;
     }
 
+    /**
+     * Indicates whether this is a home page or not.
+     *
+     * @return boolean True if this is a home page (module name is empty), otherwise false.
+     */
     public function getHome()
     {
         return $this->home;
     }
 
+    /**
+     * Retrieve the current user's uid.
+     *
+     * @return numeric The current user's uid.
+     */
     public function getUid()
     {
         return $this->uid;
     }
 
+    /**
+     * Retrive the name of the controller function.
+     *
+     * @return string The name of the controller function.
+     */
     public function getFunc()
     {
         return $this->func;
     }
 
+    /**
+     * Retrieve the component ID.
+     *
+     * @return <type>
+     */
     public function getComponentid()
     {
         return $this->componentid;
     }
 
+    /**
+     * Retrieve the current page's cache ID.
+     *
+     * @return an MD5 digest of the page's unique identifying string, computed.
+     */
     public function getPageid()
     {
         return $this->pageid;
     }
 
+    /**
+     * The current page's type.
+     *
+     * @return string One of 'module', 'admin' or 'home'.
+     */
     public function getPagetype()
     {
         return $this->pagetype;
     }
 
+    /**
+     * Retrieve the query string for the current page request.
+     *
+     * @return string The query string for the current request.
+     */
     public function getQstring()
     {
         return $this->qstring;
     }
 
+    /**
+     * Retrieve the current page's request URI.
+     *
+     * @return string The current page's request URI.
+     */
     public function getRequesturi()
     {
         return $this->requesturi;
     }
 
+    /**
+     * Retrieve the permission level.
+     *
+     * @return mixed The permission level.
+     */
     public function getPermlevel()
     {
         return $this->permlevel;
     }
 
+    /**
+     * Indicates whether the current user is logged in.
+     *
+     * @return boolean True if the current user is logged in, false if the current user is anonymous (a guest).
+     */
     public function getIsloggedin()
     {
         return $this->isloggedin;
@@ -444,10 +586,10 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Get Theme instance.
      *
-     * @param string  $theme      Theme name.
-     * @param boolean $usefilters Whether or not to use output filters.
-     * @param string       $cache_id      Cache Id. (UNUSED - E_STRICT legacy)
-     * @param boolean      $add_core_data Add core data to render data. (UNUSED E_STRICT legacy)
+     * @param string  $theme         Theme name.
+     * @param boolean $usefilters    Whether or not to use output filters.
+     * @param string  $cache_id      Cache Id (UNUSED - E_STRICT legacy).
+     * @param boolean $add_core_data Add core data to render data (UNUSED E_STRICT legacy).
      *
      * @return Theme
      */
@@ -616,20 +758,18 @@ class Zikula_View_Theme extends Zikula_View
     public function clear_cssjscombinecache()
     {
         // Clear the directory
-        /*
-        $files = scandir($this->cache_dir);
-        foreach ($files as $file) {
-            if (preg_match('#[a-f0-0]*_(js|css)\.php$#', $file)) {
-                unlink($this->cache_dir . '/' . $file);
-            }
-        }
-        */
+        //$files = scandir($this->cache_dir);
+        //foreach ($files as $file) {
+        //    if (preg_match('#[a-f0-0]*_(js|css)\.php$#', $file)) {
+        //        unlink($this->cache_dir . '/' . $file);
+        //    }
+        //}
 
         $cache_dir = $this->cache_dir;
 
         $cached_files = FileUtil::getFiles($cache_dir, true, false, array('php'), null, false);
 
-        foreach($cached_files as $cf) {
+        foreach ($cached_files as $cf) {
             unlink(realpath($cf));
         }
 
@@ -826,7 +966,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // check if we've not got a valid theme configation
         if (!$this->themeconfig) {
-            $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array( 'theme' => $this->name, 'filename' => 'master.ini'));
+            $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => 'master.ini'));
         }
 
         // register any filters
