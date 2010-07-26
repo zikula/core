@@ -16,7 +16,7 @@
                 <div class="z-formrow">
                     <label for="groups_gtype">{gt text="Type"}</label>
                     <select id="groups_gtype" name="gtype">
-                        {html_options options=$grouptype default='-1'}
+                        {html_options options=$grouptype default='0'}
                     </select>
                 </div>
                 <div class="z-formrow">

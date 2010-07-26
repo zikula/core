@@ -29,7 +29,7 @@ class Groups_Api_Admin extends Zikula_Api
 
         // Setting defaults
         if (!isset($args['gtype'])) {
-            $args['gtype'] = '-1';
+            $args['gtype'] = '0';
         }
         if (!isset($args['state'])) {
             $args['state'] = 0;
@@ -161,7 +161,7 @@ class Groups_Api_Admin extends Zikula_Api
 
         // Setting defaults
         if (!isset($args['gtype'])) {
-            $args['gtype'] = '-1';
+            $args['gtype'] = '0';
         }
         if (!isset($args['state'])) {
             $args['state'] = 0;

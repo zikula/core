@@ -179,7 +179,7 @@ class Groups_Controller_Admin extends Zikula_Controller
 
         // Setting various defines
         $grouptype = array(
-            '-1' => $this->__('Core'),
+            '0' => $this->__('Core'),
             '1'  => $this->__('Public'),
             '2'  => $this->__('Private'));
 
@@ -284,7 +284,7 @@ class Groups_Controller_Admin extends Zikula_Controller
 
         // Setting various defines
         $grouptype = array(
-            '-1' => $this->__('Core'),
+            '0' => $this->__('Core'),
             '1'  => $this->__('Public'),
             '2'  => $this->__('Private'));
 

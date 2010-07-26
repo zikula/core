@@ -80,7 +80,8 @@ class Groups_Controller_User extends Zikula_Controller
         $typelabel  = array();
         $statelabel = array();
 
-        $typelabel = array('-1' => $this->__('Core'),
+        $typelabel = array(
+                // '-1' => $this->__('Core'),
                 '0'  => $this->__('Core'),
                 '1'  => $this->__('Public'),
                 '2'  => $this->__('Private'));
@@ -256,7 +257,8 @@ class Groups_Controller_User extends Zikula_Controller
         $typelabel  = array();
         $statelabel = array();
 
-        $typelabel = array('-1' => $this->__('Core'),
+        $typelabel = array(
+                // '-1' => $this->__('Core'),
                 '0'  => $this->__('Core'),
                 '1'  => $this->__('Public'),
                 '2'  => $this->__('Private'));
