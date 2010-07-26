@@ -18,9 +18,9 @@
 class Zikula_View extends Smarty implements Zikula_Translatable
 {
     /**
-     * Module info array.
+     * Module info array, indexed by module name.
      *
-     * @var string
+     * @var array
      */
     public $module;
 
@@ -775,11 +775,9 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     function _get_auto_id($cache_id=null, $compile_id=null) {
         if (isset($cache_id)) {
             $auto_id = (isset($compile_id) && !empty($compile_id)) ? $cache_id . '_' . $compile_id  : $cache_id;
-        }
-        elseif (isset($compile_id)) {
+        } elseif (isset($compile_id)) {
             $auto_id = $compile_id;
-        }
-        else {
+        } else {
             $auto_id = null;
         }
 
@@ -789,11 +787,11 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     /**
      * Get a concrete filename for automagically created content.
      *
-     * @param string $auto_base
-     * @param string $auto_source
-     * @param string $auto_id
+     * @param string $auto_base   The base path.
+     * @param string $auto_source The file name (optional).
+     * @param string $auto_id     The ID (optional).
      *
-     * @return string
+     * @return string The concrete path and file name to the content.
      * 
      * @staticvar string|null
      * @staticvar string|null
@@ -811,9 +809,9 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         if ($this instanceof Zikula_View_Theme) {
             //$path .= 'themes/';
             $path .= $this->themeinfo['directory'] . '/';
-//        } elseif ($this instanceof Zikula_View_Plugin) {
-//            //$path .= 'themes/';
-//            $path .= $this->modinfo['directory'] . '/' . $this->pluginName['directory'] . '/';
+            //} elseif ($this instanceof Zikula_View_Plugin) {
+            //    //$path .= 'themes/';
+            //    $path .= $this->modinfo['directory'] . '/' . $this->pluginName['directory'] . '/';
         } else {
             //$path .= 'modules/';
             $path .= $this->modinfo['directory'].'/';
@@ -878,15 +876,13 @@ class Zikula_View extends Smarty implements Zikula_Translatable
      */
     public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
     {
-        /*
-        if ($cache_id) {
-            $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $cache_id;
-        } else {
-            $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $this->cache_id;
-        }
-
-        return parent::clear_cache($template, $cache_id, $compile_id, $expire);
-        */
+        //if ($cache_id) {
+        //    $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $cache_id;
+        //} else {
+        //    $cache_id = $this->baseurl . '_' . $this->toplevelmodule . '_' . $this->cache_id;
+        //}
+        //
+        //return parent::clear_cache($template, $cache_id, $compile_id, $expire);
 
         $cache_dir = $this->cache_dir;
 
@@ -894,7 +890,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
         if ($template == null) {
             if ($expire == null) {
-                foreach($cached_files as $cf) {
+                foreach ($cached_files as $cf) {
                     unlink(realpath($cf));
                 }
             } else {
@@ -902,7 +898,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
             }
         } else {
             if ($expire == null) {
-                foreach($cached_files as $cf) {
+                foreach ($cached_files as $cf) {
                     if (strpos($cf, $template) !== false) {
                         unlink(realpath($cf));
                     }
@@ -941,7 +937,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         $compiled_files = FileUtil::getFiles($compile_dir, true, false, array('php', 'inc'), null, false);
 
         if ($exp_time == null) {
-            foreach($compiled_files as $cf) {
+            foreach ($compiled_files as $cf) {
                 unlink(realpath($cf));
             }
         } else {
@@ -954,8 +950,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     /**
      * Assign variable to template.
      *
-     * @param string $key Variable name.
-     * @param mixed  $value   Value.
+     * @param string $key   Variable name.
+     * @param mixed  $value Value.
      *
      * @return Zikula_View
      */
@@ -969,8 +965,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
     /**
      * Assign variable to template by reference.
      *
-     * @param string $key   Variable name.
-     * @param mixed  $value Value.
+     * @param string $key    Variable name.
+     * @param mixed  &$value Value.
      *
      * @return Zikula_View
      */
@@ -983,6 +979,8 @@ class Zikula_View extends Smarty implements Zikula_Translatable
 
     /**
      * Prevent certain variables from being overwritten.
+     *
+     * @param string $key The protected variable key.
      *
      * @return void
      */
@@ -1129,446 +1127,1104 @@ class Zikula_View extends Smarty implements Zikula_Translatable
         return $this;
     }
 
+    /**
+     * Retrieve the name of the directory where templates are located.
+     *
+     * @return string The directory name.
+     */
     public function getTemplate_dir()
     {
         return $this->template_dir;
     }
 
+    /**
+     * Set the name of the directory where templates are located.
+     *
+     * @param string $template_dir The directory name.
+     *
+     * @return void
+     */
     public function setTemplate_dir($template_dir)
     {
         $this->template_dir = $template_dir;
     }
 
+    /**
+     * Retrieve the directory where compiled templates are located.
+     *
+     * @return string The directory name.
+     */
     public function getCompile_dir()
     {
         return $this->compile_dir;
     }
 
+    /**
+     * Set the directory where compiled templates are located.
+     *
+     * @param string $compile_dir The directory name.
+     *
+     * @return void
+     */
     public function setCompile_dir($compile_dir)
     {
         $this->compile_dir = $compile_dir;
     }
 
+    /**
+     * Retrieve the directgory where config files are located.
+     *
+     * @return string The directory name.
+     */
     public function getConfig_dir()
     {
         return $this->config_dir;
     }
 
+    /**
+     * Set the directgory where config files are located.
+     *
+     * @param string $config_dir The directory name.
+     *
+     * @return void
+     */
     public function setConfig_dir($config_dir)
     {
         $this->config_dir = $config_dir;
     }
 
+    /**
+     * Retrieve the directories that are searched for plugins.
+     *
+     * @return array An array of directory names.
+     */
     public function getPlugins_dir()
     {
         return $this->plugins_dir;
     }
 
+    /**
+     * Set an array of directories that are searched for plugins.
+     *
+     * @param array $plugins_dir An array of directory names.
+     *
+     * @return void
+     */
     public function setPlugins_dir($plugins_dir)
     {
         $this->plugins_dir = $plugins_dir;
     }
 
+    /**
+     * Retrieve whether debugging mode is enabled or disabled.
+     *
+     * @return boolean True if enabled, otherwise false.
+     */
     public function getDebugging()
     {
         return $this->debugging;
     }
 
+    /**
+     * Enable or disable debugging mode.
+     *
+     * If debugging is enabled, a debug console window will display when the page loads (make sure your browser
+     * allows unrequested popup windows)
+     *
+     * @param boolean $debugging True to enable, otherwise false.
+     *
+     * @return void
+     */
     public function setDebugging($debugging)
     {
         $this->debugging = $debugging;
     }
 
+    /**
+     * Retrieve the PHP error reporting level to be used within this class.
+     *
+     * @see    error_reporting()
+     *
+     * @return integer The PHP error reporting level.
+     */
     public function getError_reporting()
     {
         return $this->error_reporting;
     }
 
+    /**
+     * Set the PHP error reporting level to be used for this class.
+     *
+     * @param integer $error_reporting The PHP error reporting level.
+     *
+     * @see    error_reporting()
+     *
+     * @return void
+     */
     public function setError_reporting($error_reporting)
     {
         $this->error_reporting = $error_reporting;
     }
 
+    /**
+     * Retrieve the custom path to the debug console template.
+     *
+     * If empty, the default template is used.
+     *
+     * @return string The custom path to the debug console template.
+     */
     public function getDebug_tpl()
     {
         return $this->debug_tpl;
     }
 
+    /**
+     * Set a custom path to the debug console template.
+     *
+     * If empty, the default template is used.
+     *
+     * @param string $debug_tpl The custom path to the debug console template.
+     *
+     * @return void
+     */
     public function setDebug_tpl($debug_tpl)
     {
         $this->debug_tpl = $debug_tpl;
     }
 
+    /**
+     * Retrieve whether debugging is enable-able from the browser.
+     *
+     * Values:
+     * <ul>
+     *  <li>NONE => no debugging control allowed</li>
+     *  <li>URL => enable debugging when SMARTY_DEBUG is found in the URL.</li>
+     * </ul>
+     *
+     * @return string Either 'NONE' or 'URL'.
+     */
     public function getDebugging_ctrl()
     {
         return $this->debugging_ctrl;
     }
 
+    /**
+     * Set whether debugging is enable-able from the browser.
+     *
+     * Values:
+     * <ul>
+     *  <li>NONE => no debugging control allowed</li>
+     *  <li>URL => enable debugging when SMARTY_DEBUG is found in the URL.</li>
+     * </ul>
+     *
+     * http://www.example.com/index.php?SMARTY_DEBUG
+     *
+     * @param string $debugging_ctrl Either 'NONE' or 'URL'.
+     *
+     * @return void
+     */
     public function setDebugging_ctrl($debugging_ctrl)
     {
         $this->debugging_ctrl = $debugging_ctrl;
     }
 
+    /**
+     * Retrieve the flag that controls whether to check for recompiling or not.
+     *
+     * Recompiling does not need to happen unless a template or config file is changed.
+     * Typically you enable this during development, and disable for production.
+     *
+     * @return boolean True if checked, otherwise false.
+     */
     public function getCompile_check()
     {
         return $this->compile_check;
     }
 
+    /**
+     * Retrieve whether templates are forced to be compiled.
+     *
+     * @return boolean True if templates are forced to be compiled, otherwise false.
+     */
     public function getForce_compile()
     {
         return $this->force_compile;
     }
 
+    /**
+     * Set whether templates are forced to be compiled.
+     *
+     * @param boolean $force_compile True to force compilation, otherwise false.
+     *
+     * @return void
+     */
     public function setForce_compile($force_compile)
     {
         $this->force_compile = $force_compile;
     }
 
+    /**
+     * Retrieve whether caching is enabled.
+     *
+     * Values:
+     * <ul>
+     *  <li>0 = no caching</li>
+     *  <li>1 = use class cache_lifetime value</li>
+     *  <li>2 = use cache_lifetime in cache file</li>
+     * </ul>
+     *
+     * @return integer A code indicating whether caching is enabled.
+     */
     public function getCaching()
     {
         return $this->caching;
     }
 
+    /**
+     * Retrieve the name of the directory for cache files.
+     *
+     * @return string The name of the cache file directory.
+     */
     public function getCache_dir()
     {
         return $this->cache_dir;
     }
 
+    /**
+     * Set the name of the directory for cache files.
+     *
+     * @param string $cache_dir The name of the cache file directory.
+     *
+     * @return void
+     */
     public function setCache_dir($cache_dir)
     {
         $this->cache_dir = $cache_dir;
     }
 
+    /**
+     * Retrieve the number of seconds cached content will persist.
+     *
+     * Special values:
+     * <ul>
+     *  <li>0 = always regenerate cache</li>
+     *  <li>-1 = never expires</li>
+     * </ul>
+     *
+     * @return integer The number of seconds cached content will persist.
+     */
     public function getCache_lifetime()
     {
         return $this->cache_lifetime;
     }
 
-     public function getCache_modified_check()
+    /**
+     * Retrieve whether If-Modified-Since headers are respected.
+     *
+     * Only used when caching is enabled (see (@link setCaching())). If true, then If-Modified-Since headers
+     * are respected with cached content, and appropriate HTTP headers are sent.
+     * This way repeated hits to a cached page do not send the entire page to the
+     * client every time.
+     *
+     * @return boolean True if If-Modified-Since headers are respected, otherwise false.
+     */
+    public function getCache_modified_check()
     {
         return $this->cache_modified_check;
     }
 
+    /**
+     * Set whether If-Modified-Since headers are respected.
+     *
+     * Only used when caching is enabled (see (@link setCaching())). If true, then If-Modified-Since headers
+     * are respected with cached content, and appropriate HTTP headers are sent.
+     * This way repeated hits to a cached page do not send the entire page to the
+     * client every time.
+     *
+     * @param boolean $cache_modified_check True to respect If-Modified-Since headers, otherwise false.
+     *
+     * @return void
+     */
     public function setCache_modified_check($cache_modified_check)
     {
         $this->cache_modified_check = $cache_modified_check;
     }
 
+    /**
+     * Retrieve how "<?php ... ?>" tags in templates are handled.
+     *
+     * Possible values:
+     * <ul>
+     *  <li>SMARTY_PHP_PASSTHRU -> print tags as plain text</li>
+     *  <li>SMARTY_PHP_QUOTE    -> escape tags as entities</li>
+     *  <li>SMARTY_PHP_REMOVE   -> remove php tags</li>
+     *  <li>SMARTY_PHP_ALLOW    -> execute php tags</li>
+     * </ul>
+     *
+     * @return integer A code indicating how php tags in templates are handled.
+     */
     public function getPhp_handling()
     {
         return $this->php_handling;
     }
 
+    /**
+     * Set how "<?php ... ?>" tags in templates are handled.
+     *
+     * Possible values:
+     * <ul>
+     *  <li>SMARTY_PHP_PASSTHRU -> print tags as plain text</li>
+     *  <li>SMARTY_PHP_QUOTE    -> escape tags as entities</li>
+     *  <li>SMARTY_PHP_REMOVE   -> remove php tags</li>
+     *  <li>SMARTY_PHP_ALLOW    -> execute php tags</li>
+     * </ul>
+     *
+     * @param integer $php_handling A code indicating how php tags in templates are to be handled.
+     *
+     * @return void
+     */
     public function setPhp_handling($php_handling)
     {
         $this->php_handling = $php_handling;
     }
 
+    /**
+     * Retrieve whether template security is enabled or disabled.
+     *
+     * When enabled, many things are restricted in the templates that normally would go unchecked. This is useful when
+     * untrusted parties are editing templates and you want a reasonable level of security.
+     * (no direct execution of PHP in templates for example)
+     *
+     * @return boolean True if enabled, otherwise false.
+     */
     public function getSecurity()
     {
         return $this->security;
     }
 
+    /**
+     * Enable or disable template security.
+     *
+     * When enabled, many things are restricted in the templates that normally would go unchecked. This is useful when
+     * untrusted parties are editing templates and you want a reasonable level of security.
+     * (no direct execution of PHP in templates for example)
+     *
+     * @param boolean $security True to enable, otherwise false.
+     *
+     * @return void
+     */
     public function setSecurity($security)
     {
         $this->security = $security;
     }
 
+    /**
+     * Retrieve the list of template directories that are considered secure.
+     *
+     * @return array An array of secure template directories.
+     */
     public function getSecure_dir()
     {
         return $this->secure_dir;
     }
 
+    /**
+     * Set the list of template directories that are considered secure.
+     *
+     * This is used only if template security enabled (see {@link setSecurity()}). One directory per array
+     * element.  The template directory (see {@link setTemplate_dir()}) is in this list implicitly.
+     *
+     * @param array $secure_dir An array of secure template directories.
+     *
+     * @return void
+     */
     public function setSecure_dir($secure_dir)
     {
         $this->secure_dir = $secure_dir;
     }
 
+    /**
+     * Retrieve an array of security settings, only used if template security is enabled (see {@link setSecurity()).
+     *
+     * @return array An array of security settings.
+     */
     public function getSecurity_settings()
     {
         return $this->security_settings;
     }
 
+    /**
+     * Set an array of security settings, only used if template security is enabled (see {@link setSecurity()).
+     *
+     * @param array $security_settings An array of security settings.
+     *
+     * @return void
+     */
     public function setSecurity_settings($security_settings)
     {
         $this->security_settings = $security_settings;
     }
 
+    /**
+     * Retrieve an array of directories where trusted php scripts reside.
+     *
+     * @return array An array of trusted directories.
+     */
     public function getTrusted_dir()
     {
         return $this->trusted_dir;
     }
 
+    /**
+     * Set an array of directories where trusted php scripts reside.
+     *
+     * Template security (see {@link setSecurity()) is disabled during their inclusion/execution.
+     *
+     * @param array $trusted_dir An array of trusted directories.
+     *
+     * @return void
+     */
     public function setTrusted_dir($trusted_dir)
     {
         $this->trusted_dir = $trusted_dir;
     }
 
+    /**
+     * Retrieve the left delimiter used for template tags.
+     *
+     * @return string The delimiter.
+     */
     public function getLeft_delimiter()
     {
         return $this->left_delimiter;
     }
 
+    /**
+     * Set the left delimiter used for template tags.
+     *
+     * @param string $left_delimiter The delimiter.
+     *
+     * @return void
+     */
     public function setLeft_delimiter($left_delimiter)
     {
         $this->left_delimiter = $left_delimiter;
     }
 
+    /**
+     * Retrieve the right delimiter used for template tags.
+     *
+     * @return string The delimiter.
+     */
     public function getRight_delimiter()
     {
         return $this->right_delimiter;
     }
 
+    /**
+     * Set the right delimiter used for template tags.
+     *
+     * @param string $right_delimiter The delimiter.
+     *
+     * @return void
+     */
     public function setRight_delimiter($right_delimiter)
     {
         $this->right_delimiter = $right_delimiter;
     }
 
+    /**
+     * Retrieve the order in which request variables are registered, similar to variables_order in php.ini.
+     *
+     * E = Environment, G = GET, P = POST, C = Cookies, S = Server
+     *
+     * @return string The string indicating the order, e.g., 'EGPCS'.
+     */
     public function getRequest_vars_order()
     {
         return $this->request_vars_order;
     }
 
+    /**
+     * Set the order in which request variables are registered, similar to variables_order in php.ini.
+     *
+     * E = Environment, G = GET, P = POST, C = Cookies, S = Server
+     *
+     * @param string $request_vars_order A string indicating the order, e.g., 'EGPCS'.
+     *
+     * @return void
+     */
     public function setRequest_vars_order($request_vars_order)
     {
         $this->request_vars_order = $request_vars_order;
     }
 
+    /**
+     * Retrieve whether $HTTP_*_VARS[] (request_use_auto_globals=false) are used as request-vars or $_*[]-vars.
+     *
+     * @return boolean True if auto globals are used, otherwise false.
+     */
     public function getRequest_use_auto_globals()
     {
         return $this->request_use_auto_globals;
     }
 
+    /**
+     * Set whether $HTTP_*_VARS[] (request_use_auto_globals=false) are used as request-vars or $_*[]-vars.
+     *
+     * Note: if request_use_auto_globals is true, then $request_vars_order has
+     * no effect, but the php-ini-value "gpc_order"
+     *
+     * @param boolean $request_use_auto_globals True to use auto globals, otherwise false.
+     *
+     * @return void
+     */
     public function setRequest_use_auto_globals($request_use_auto_globals)
     {
         $this->request_use_auto_globals = $request_use_auto_globals;
     }
 
+    /**
+     * Retrieve the compile ID used to compile different sets of compiled files for the same templates.
+     *
+     * @return string|null The compile id, or null if none.
+     */
     public function getCompile_id()
     {
         return $this->compile_id;
     }
 
+    /**
+     * Set this if you want different sets of compiled files for the same templates.
+     *
+     * This is useful for things like different languages.
+     * Instead of creating separate sets of templates per language, you
+     * set different compile_ids like 'en' and 'de'.
+     *
+     * @param string|null $compile_id The compile id, or null.
+     *
+     * @return void
+     */
     public function setCompile_id($compile_id)
     {
         $this->compile_id = $compile_id;
     }
 
+    /**
+     * Retrieve whether or not sub dirs in the cache/ and templates_c/ directories are used.
+     *
+     * @return boolean True if sub dirs are used, otherwise false.
+     */
     public function getUse_sub_dirs()
     {
         return $this->use_sub_dirs;
     }
 
+    /**
+     * Set whether or not to use sub dirs in the cache/ and templates_c/ directories.
+     *
+     * Sub directories better organized, but may not work well with PHP safe mode enabled.
+     *
+     * @param boolean $use_sub_dirs True to use sub dirs, otherwise false.
+     *
+     * @return void
+     */
     public function setUse_sub_dirs($use_sub_dirs)
     {
         $this->use_sub_dirs = $use_sub_dirs;
     }
 
+    /**
+     * Retrieve a list of the modifiers applied to all template variables.
+     *
+     * @return array An array of default modifiers.
+     */
     public function getDefault_modifiers()
     {
         return $this->default_modifiers;
     }
 
+    /**
+     * Set a list of the modifiers to apply to all template variables.
+     *
+     * Put each modifier in a separate array element in the order you want
+     * them applied. example: <code>array('escape:"htmlall"');</code>
+     *
+     * @param array $default_modifiers An array of default modifiers.
+     *
+     * @return void
+     */
     public function setDefault_modifiers($default_modifiers)
     {
         $this->default_modifiers = $default_modifiers;
     }
 
+    /**
+     * Retrieve the resource type used when not specified at the beginning of the resource path (see {@link Smarty::$default_resource_type}).
+     *
+     * @return string The resource type used.
+     */
     public function getDefault_resource_type()
     {
         return $this->default_resource_type;
     }
 
+    /**
+     * Set the resource type to be used when not specified at the beginning of the resource path (see {@link Smarty::$default_resource_type}).
+     *
+     * @param string $default_resource_type The resource type to use.
+     *
+     * @return void
+     */
     public function setDefault_resource_type($default_resource_type)
     {
         $this->default_resource_type = $default_resource_type;
     }
 
+    /**
+     * Retrieve the name of the function used for cache file handling.
+     *
+     * If not set, built-in caching is used.
+     *
+     * @return string|null The name of the function, or null if built-in caching is used.
+     */
     public function getCache_handler_func()
     {
         return $this->cache_handler_func;
     }
 
+    /**
+     * Set the name of the function used for cache file handling.
+     *
+     * If not set, built-in caching is used.
+     *
+     * @param string|null $cache_handler_func The name of the function, or null to use built-in caching.
+     *
+     * @return void
+     */
     public function setCache_handler_func($cache_handler_func)
     {
         $this->cache_handler_func = $cache_handler_func;
     }
 
+    /**
+     * Retrieve whether filters are automatically loaded or not.
+     *
+     * @return boolean True if automatically loaded, otherwise false.
+     */
     public function getAutoload_filters()
     {
         return $this->autoload_filters;
     }
 
+    /**
+     * Set whether filters are automatically loaded or not.
+     *
+     * @param boolean $autoload_filters True to automatically load, otherwise false.
+     *
+     * @return void
+     */
     public function setAutoload_filters($autoload_filters)
     {
         $this->autoload_filters = $autoload_filters;
     }
 
+    /**
+     * Retrieve if config file vars of the same name overwrite each other or not.
+     *
+     * @return boolean True if overwritten, otherwise false.
+     */
     public function getConfig_overwrite()
     {
         return $this->config_overwrite;
     }
 
+    /**
+     * Set if config file vars of the same name overwrite each other or not.
+     *
+     * If disabled, same name variables are accumulated in an array.
+     *
+     * @param boolean $config_overwrite True to overwrite, otherwise false.
+     *
+     * @return void
+     */
     public function setConfig_overwrite($config_overwrite)
     {
         $this->config_overwrite = $config_overwrite;
     }
 
+    /**
+     * Retrieve whether or not to automatically booleanize config file variables.
+     *
+     * If enabled, then the strings "on", "true", and "yes" are treated as boolean
+     * true, and "off", "false" and "no" are treated as boolean false.
+     *
+     * @return boolean True if config variables are booleanized, otherwise false.
+     */
     public function getConfig_booleanize()
     {
         return $this->config_booleanize;
     }
 
+    /**
+     * Set whether or not to automatically booleanize config file variables.
+     *
+     * If enabled, then the strings "on", "true", and "yes" are treated as boolean
+     * true, and "off", "false" and "no" are treated as boolean false.
+     *
+     * @param boolean $config_booleanize True to booleanize, otherwise false.
+     *
+     * @return void
+     */
     public function setConfig_booleanize($config_booleanize)
     {
         $this->config_booleanize = $config_booleanize;
     }
 
+    /**
+     * Retrieve whether hidden sections [.foobar] in config files are readable from the tempalates or not.
+     *
+     * @return boolean True if hidden sections readable, otherwise false.
+     */
     public function getConfig_read_hidden()
     {
         return $this->config_read_hidden;
     }
 
+    /**
+     * Set whether hidden sections [.foobar] in config files are readable from the tempalates or not.
+     *
+     * Normally you would never allow this since that is the point behind hidden sections: the application can access
+     * them, but the templates cannot.
+     *
+     * @param boolean $config_read_hidden True to make hidden sections readable, otherwise false.
+     *
+     * @return void
+     */
     public function setConfig_read_hidden($config_read_hidden)
     {
         $this->config_read_hidden = $config_read_hidden;
     }
 
+    /**
+     * Retrieve the flag that indicates whether newlines are automatically corrected in config files.
+     *
+     * This indicates whether or not automatically fix newlines in config files.
+     * It basically converts \r (mac) or \r\n (dos) to \n
+     *
+     * @return boolean True if automatically fixed, otherwise false.
+     */
     public function getConfig_fix_newlines()
     {
         return $this->config_fix_newlines;
     }
 
+    /**
+     * Set the flag that corrects newlines automatically in config files.
+     *
+     * This indicates whether or not automatically fix newlines in config files.
+     * It basically converts \r (mac) or \r\n (dos) to \n
+     *
+     * @param boolean $config_fix_newlines True to automatically fix, otherwise false.
+     *
+     * @return void
+     */
     public function setConfig_fix_newlines($config_fix_newlines)
     {
         $this->config_fix_newlines = $config_fix_newlines;
     }
 
+    /**
+     * Retrieve the name of the PHP function that will be called if a template cannot be found.
+     *
+     * @return string The name of the PHP function called if a template cannot be found.
+     */
     public function getDefault_template_handler_func()
     {
         return $this->default_template_handler_func;
     }
 
+    /**
+     * Set the name of the PHP function that will be called if a template cannot be found.
+     *
+     * @param string $default_template_handler_func The name of the PHP function to call if a template cannot be found.
+     *
+     * @return void
+     */
     public function setDefault_template_handler_func($default_template_handler_func)
     {
         $this->default_template_handler_func = $default_template_handler_func;
     }
 
+    /**
+     * Retrieve the name of the file that contains the compiler class.
+     *
+     * This could be a full pathname, or relative to the php_include path.
+     *
+     * @see    Smarty::$compiler_file
+     * @see    setCompilerClass()
+     *
+     * @return string The name of the file that contains the compiler class.
+     */
     public function getCompiler_file()
     {
         return $this->compiler_file;
     }
 
+    /**
+     * Set the name of the file that contains the compiler class.
+     *
+     * This can a full pathname, or relative to the php_include path.
+     *
+     * @param string $compiler_file The name of the file that contains the compiler class.
+     *
+     * @see    Smarty::$compiler_file
+     * @see    setCompilerClass()
+     *
+     * @return void
+     */
     public function setCompiler_file($compiler_file)
     {
         $this->compiler_file = $compiler_file;
     }
 
+    /**
+     * Retrieve the name of the class used to compile templates.
+     *
+     * @return string The name of the class used to compile templates.
+     */
     public function getCompiler_class()
     {
         return $this->compiler_class;
     }
 
+    /**
+     * Set the name of the class that will be used to compile templates.
+     *
+     * @param string $compiler_class The name of the class used to compile templates.
+     *
+     * @return void
+     */
     public function setCompiler_class($compiler_class)
     {
         $this->compiler_class = $compiler_class;
     }
 
+    /**
+     * Retrieve the template variables array ({@link Smarty::$_tpl_vars}).
+     *
+     * @return array The template variables array.
+     */
     public function get_tpl_vars()
     {
         return $this->_tpl_vars;
     }
 
+    /**
+     * Set the template variables array ({@link Smarty::$_tpl_vars}).
+     *
+     * @param array $_tpl_vars The template variables array.
+     *
+     * @return void
+     */
     public function set_tpl_vars($_tpl_vars)
     {
         $this->_tpl_vars = $_tpl_vars;
     }
 
+    /**
+     * Retrieve the compile ID.
+     *
+     * @return string The compile ID.
+     */
     public function get_compile_id()
     {
         return $this->_compile_id;
     }
 
+    /**
+     * Set the compile ID.
+     *
+     * @param string $_compile_id The compile ID.
+     *
+     * @return void
+     */
     public function set_compile_id($_compile_id)
     {
         $this->_compile_id = $_compile_id;
     }
 
+    /**
+     * Retrieve the info that makes up a cache file ({@link Smarty::$_cache_info}).
+     *
+     * @return array Array of info that makes up a cache file.
+     */
     public function get_cache_info()
     {
         return $this->_cache_info;
     }
 
+    /**
+     * Set the info that makes up a cache file ({@link Smarty::$_cache_info}).
+     *
+     * @param array $_cache_info Array of info that makes up a cache file.
+     *
+     * @return void
+     */
     public function set_cache_info($_cache_info)
     {
         $this->_cache_info = $_cache_info;
     }
 
+    /**
+     * Retrieve the file permissions ({@link Smarty::$_file_perms}).
+     *
+     * @return int File permissions.
+     */
     public function get_file_perms()
     {
         return $this->_file_perms;
     }
 
+    /**
+     * Set the file permissions ({@link Smarty::$_file_perms}).
+     *
+     * @param int $_file_perms File permissions; use an octal number, e.g. set_file_perms(0664).
+     *
+     * @return void
+     */
     public function set_file_perms($_file_perms)
     {
         $this->_file_perms = $_file_perms;
     }
 
+    /**
+     * Retrieve the directory permissions ({@link Smarty::$_dir_perms}).
+     *
+     * @return int Directory permissions.
+     */
     public function get_dir_perms()
     {
         return $this->_dir_perms;
     }
 
+    /**
+     * Set the directory permissions ({@link Smarty::$_dir_perms}).
+     *
+     * @param int $_dir_perms Directory permissions; use an octal number, e.g. set_dir_perms(0771).
+     *
+     * @return void
+     */
     public function set_dir_perms($_dir_perms)
     {
         $this->_dir_perms = $_dir_perms;
     }
 
+    /**
+     * Retrieve the {@link Smarty::$_reg_objects} registered objects.
+     *
+     * @return array Registered objects array.
+     */
     public function get_reg_objects()
     {
         return $this->_reg_objects;
     }
 
+    /**
+     * Set the {@link Smarty::$_reg_objects} registered objects.
+     *
+     * @param array $_reg_objects Registered objects.
+     *
+     * @return void
+     */
     public function set_reg_objects($_reg_objects)
     {
         $this->_reg_objects = $_reg_objects;
     }
 
+    /**
+     * Retrieve the array keeping track of plugins (see {@link Smarty::$_plugins}.
+     *
+     * @return array An array of plugins by type.
+     */
     public function get_plugins()
     {
         return $this->_plugins;
     }
 
+    /**
+     * Set the array keeping track of plugins (see {@link Smarty::$_plugins}.
+     *
+     * @param array $_plugins An array of plugins by type.
+     *
+     * @return void
+     */
     public function set_plugins($_plugins)
     {
         $this->_plugins = $_plugins;
     }
 
+    /**
+     * Retrieve the value of {@link Smarty::$_cache_serials}.
+     *
+     * @return array Cache serials.
+     */
     public function get_cache_serials()
     {
         return $this->_cache_serials;
     }
 
+    /**
+     * Setter for {@link Smarty::$_cache_serials}
+     *
+     * @param array $_cache_serials Cache serials.
+     *
+     * @return void
+     */
     public function set_cache_serials($_cache_serials)
     {
         $this->_cache_serials = $_cache_serials;
     }
 
+    /**
+     * Retrieve the value of {@link Smarty::$_cache_include}.
+     *
+     * @return string Name of optional cache include file.
+     */
     public function get_cache_include()
     {
         return $this->_cache_include;
     }
 
+    /**
+     * Setter for {@link Smarty::$_cache_include}.
+     *
+     * @param string $_cache_include Name of optional cache include file.
+     *
+     * @return void
+     */
     public function set_cache_include($_cache_include)
     {
         $this->_cache_include = $_cache_include;
     }
 
+    /**
+     * Retrieve the value of {@link Smarty::$_cache_including}.
+     *
+     * @return boolean True if the current code is used in a compiled include, otherwise false.
+     */
     public function get_cache_including()
     {
         return $this->_cache_including;
     }
 
+    /**
+     * Setter for {@link Smarty::$_cache_including}.
+     *
+     * @param boolean $_cache_including Indicate if the current code is used in a compiled include.
+     *
+     * @return void
+     */
     public function set_cache_including($_cache_including)
     {
         $this->_cache_including = $_cache_including;
@@ -1580,7 +2236,7 @@ class Zikula_View extends Smarty implements Zikula_Translatable
  *
  * @param array       $param   Tag parameters.
  * @param string      $content Block content.
- * @param Zikula_View $view Reference to smarty instance.
+ * @param Zikula_View $view    Reference to smarty instance.
  *
  * @return string
  **/
@@ -1596,7 +2252,7 @@ function Zikula_View_block_nocache($param, $content, $view)
  *
  * @param string      $tpl_name    Template name.
  * @param string      &$tpl_source Template source.
- * @param Zikula_View $view     Reference to Smarty instance.
+ * @param Zikula_View $view        Reference to Smarty instance.
  *
  * @access private
  * @return boolean
