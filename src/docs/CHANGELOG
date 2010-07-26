@@ -204,3 +204,5 @@ Added option to translate the language changer block option into native language
 Added {gettext} block issue #2414.
 Reworked logging and debug settings in config.php.  Error reporting configuration was removed from the Admin -> Settings.  Zikula no longer hides errors unless you specifically set it to.
 Added debugging toolbar (configurable in config.php).
+Changed the label for the user's account activated status from 'Activated' to 'Status' in the administrator's Users manager.
+The users list in the administrator's Users manager is now sortable by user name, uid (internal ID), registration date, date last logged in, and status.
